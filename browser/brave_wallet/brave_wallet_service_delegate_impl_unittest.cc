@@ -153,6 +153,7 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
   EXPECT_TRUE(result);
   EXPECT_EQ(info.mnemonic, valid_mnemonic);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 1u);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
@@ -213,6 +214,7 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWallet) {
   EXPECT_TRUE(result);
   EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
   EXPECT_TRUE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 2u);
 }
 
 }  // namespace brave_wallet

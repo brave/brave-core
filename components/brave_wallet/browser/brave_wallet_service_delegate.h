@@ -23,6 +23,7 @@ class BraveWalletServiceDelegate {
   struct ImportInfo {
     std::string mnemonic;
     bool is_legacy_crypto_wallets;
+    size_t number_of_accounts;
   };
 
   using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;

@@ -222,13 +222,22 @@ class BraveWalletServiceUnitTest : public testing::Test {
     run_loop2.Run();
   }
 
-  void CheckFirstAddress(const std::string& address, bool* valid_address) {
-    ASSERT_NE(valid_address, nullptr);
+  void CheckAddresses(const std::vector<std::string>& addresses,
+                      bool* valid_addresses) {
+    ASSERT_NE(valid_addresses, nullptr);
 
     base::RunLoop run_loop;
     keyring_controller_->GetDefaultKeyringInfo(
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          *valid_address = (keyring_info->account_infos[0]->address == address);
+          *valid_addresses = false;
+          if (keyring_info->account_infos.size() == addresses.size()) {
+            for (size_t i = 0; i < addresses.size(); ++i) {
+              *valid_addresses =
+                  (keyring_info->account_infos[i]->address == addresses[i]);
+              if (!*valid_addresses)
+                break;
+            }
+          }
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -741,7 +750,8 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }),
-        true, BraveWalletServiceDelegate::ImportInfo({valid_mnemonic, false}));
+        true,
+        BraveWalletServiceDelegate::ImportInfo({valid_mnemonic, false, 3}));
     run_loop.Run();
     bool is_valid_password = false;
     bool is_valid_mnemonic = false;
@@ -750,10 +760,13 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
     EXPECT_TRUE(is_valid_password);
     EXPECT_TRUE(is_valid_mnemonic);
 
-    bool is_valid_address = false;
-    CheckFirstAddress("0x084DCb94038af1715963F149079cE011C4B22961",
-                      &is_valid_address);
-    EXPECT_TRUE(is_valid_address);
+    bool is_valid_addresses = false;
+    const std::vector<std::string> expected_addresses(
+        {"0x084DCb94038af1715963F149079cE011C4B22961",
+         "0xE60A2209372AF1049C4848B1bF0136258c35f268",
+         "0xb41c52De621B42A3a186ae1e608073A546195C9C"});
+    CheckAddresses(expected_addresses, &is_valid_addresses);
+    EXPECT_TRUE(is_valid_addresses);
   }
 
   const char* valid_legacy_mnemonic =
@@ -764,13 +777,14 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
       "laundry";
   {
     base::RunLoop run_loop;
-    service_->OnGetImportInfo(
-        new_password, base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }),
-        true,
-        BraveWalletServiceDelegate::ImportInfo({valid_legacy_mnemonic, true}));
+    service_->OnGetImportInfo(new_password,
+                              base::BindLambdaForTesting([&](bool success) {
+                                EXPECT_TRUE(success);
+                                run_loop.Quit();
+                              }),
+                              true,
+                              BraveWalletServiceDelegate::ImportInfo(
+                                  {valid_legacy_mnemonic, true, 4}));
     run_loop.Run();
     bool is_valid_password = false;
     bool is_valid_mnemonic = false;
@@ -779,10 +793,14 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
     EXPECT_TRUE(is_valid_password);
     EXPECT_TRUE(is_valid_mnemonic);
 
-    bool is_valid_address = false;
-    CheckFirstAddress("0xea3C17c81E3baC3472d163b2c8b12ddDAa027874",
-                      &is_valid_address);
-    EXPECT_TRUE(is_valid_address);
+    bool is_valid_addresses = false;
+    const std::vector<std::string> expected_addresses(
+        {"0xea3C17c81E3baC3472d163b2c8b12ddDAa027874",
+         "0xEc1BB5a4EC94dE9107222c103907CCC720fA3854",
+         "0x8cb80Ef1d274ED215A4C08B31b77e5A813eD8Ea1",
+         "0x3899D70A5D45368807E38Ef2c1EB5E4f07542e4f"});
+    CheckAddresses(expected_addresses, &is_valid_addresses);
+    EXPECT_TRUE(is_valid_addresses);
   }
 }
 

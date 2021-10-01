@@ -406,6 +406,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
   }
 
   const std::string* mnemonic = nullptr;
+  absl::optional<int> number_of_accounts = absl::nullopt;
   for (const auto& keyring : keyrings->GetList()) {
     DCHECK(keyring.is_dict());
     const auto* type = keyring.FindStringKey("type");
@@ -422,6 +423,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
       std::move(callback).Run(false, ImportInfo());
       return;
     }
+    number_of_accounts = keyring.FindIntPath("data.numberOfAccounts");
     break;
   }
 
@@ -430,8 +432,11 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
     std::move(callback).Run(false, ImportInfo());
   }
 
-  std::move(callback).Run(true,
-                          ImportInfo({*mnemonic, is_legacy_crypto_wallets}));
+  std::move(callback).Run(
+      true,
+      ImportInfo(
+          {*mnemonic, is_legacy_crypto_wallets,
+           number_of_accounts ? static_cast<size_t>(*number_of_accounts) : 1}));
 }
 
 bool BraveWalletServiceDelegateImpl::IsCryptoWalletsInstalledInternal() const {

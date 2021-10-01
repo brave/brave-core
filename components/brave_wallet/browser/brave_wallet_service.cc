@@ -493,10 +493,16 @@ void BraveWalletService::OnGetImportInfo(
   keyring_controller_->RestoreWallet(
       info.mnemonic, new_password, info.is_legacy_crypto_wallets,
       base::BindOnce(
-          [](ImportFromCryptoWalletsCallback callback, bool is_valid_mnemonic) {
+          [](ImportFromCryptoWalletsCallback callback,
+             size_t number_of_accounts, KeyringController* keyring_controller,
+             bool is_valid_mnemonic) {
+            if (number_of_accounts > 1) {
+              keyring_controller->AddAccountsWithDefaultName(
+                  number_of_accounts - 1);
+            }
             std::move(callback).Run(is_valid_mnemonic);
           },
-          std::move(callback)));
+          std::move(callback), info.number_of_accounts, keyring_controller_));
 }
 
 }  // namespace brave_wallet

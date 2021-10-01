@@ -148,6 +148,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                        EthTransaction* tx,
                                        uint256_t chain_id);
 
+  void AddAccountsWithDefaultName(size_t number);
+
   bool IsLocked() const;
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>

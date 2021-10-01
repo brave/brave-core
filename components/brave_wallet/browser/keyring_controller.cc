@@ -905,6 +905,14 @@ void KeyringController::SignTransactionByDefaultKeyring(
   default_keyring_->SignTransaction(address, tx, chain_id);
 }
 
+void KeyringController::AddAccountsWithDefaultName(size_t number) {
+  size_t current_num = default_keyring_->GetAccountsNumber();
+  for (size_t i = current_num + 1; i <= current_num + number; ++i) {
+    const std::string account_name = "Account " + base::NumberToString(i);
+    AddAccountForDefaultKeyring(account_name);
+  }
+}
+
 bool KeyringController::IsLocked() const {
   return encryptor_ == nullptr;
 }
