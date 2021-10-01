@@ -10,16 +10,20 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/browser/storage_partition.h"
@@ -327,6 +331,66 @@ void EphemeralStorageBrowserTest::ClearBroadcastMessage(
 content::EvalJsResult EphemeralStorageBrowserTest::GetBroadcastMessage(
     RenderFrameHost* frame) {
   return content::EvalJs(frame, "self.bc_message");
+}
+
+void EphemeralStorageBrowserTest::SetCookieSetting(
+    const GURL& url,
+    ContentSetting content_setting) {
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  host_content_settings_map->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString(
+          base::StrCat({"[*.]", url.host_piece(), ":*"})),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
+      content_setting);
+}
+
+// Helper to load easy-to-use Indexed DB API.
+void EphemeralStorageBrowserTest::LoadIndexedDbHelper(RenderFrameHost* host) {
+  const char kLoadIndexMinScript[] =
+      "new Promise((resolve) => {"
+      "  const script = document.createElement('script');"
+      "  script.onload = () => {"
+      "    resolve(true);"
+      "  };"
+      "  script.onerror = () => {"
+      "    resolve(false);"
+      "  };"
+      "  script.src = '/ephemeral-storage/static/js/libs/index-min.js';"
+      "  document.body.appendChild(script);"
+      "});";
+
+  ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
+}
+
+bool EphemeralStorageBrowserTest::SetIDBValue(RenderFrameHost* host) {
+  LoadIndexedDbHelper(host);
+  content::EvalJsResult eval_js_result = content::EvalJs(
+      host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
+  return eval_js_result.error.empty();
+}
+
+HostContentSettingsMap* EphemeralStorageBrowserTest::content_settings() {
+  return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+}
+
+network::mojom::CookieManager* EphemeralStorageBrowserTest::CookieManager() {
+  return browser()
+      ->profile()
+      ->GetDefaultStoragePartition()
+      ->GetCookieManagerForBrowserProcess();
+}
+
+std::vector<net::CanonicalCookie> EphemeralStorageBrowserTest::GetAllCookies() {
+  base::RunLoop run_loop;
+  std::vector<net::CanonicalCookie> cookies_out;
+  CookieManager()->GetAllCookies(base::BindLambdaForTesting(
+      [&](const std::vector<net::CanonicalCookie>& cookies) {
+        cookies_out = cookies;
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+  return cookies_out;
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {

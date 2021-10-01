@@ -24,6 +24,7 @@
 
 class AdBlockServiceTest;
 class BraveAdBlockTPNetworkDelegateHelperTest;
+class EphemeralStorage1pDomainBlockBrowserTest;
 class PerfPredictorTabHelperTest;
 
 using brave_component_updater::BraveComponent;
@@ -69,6 +70,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
  protected:
   friend class ::AdBlockServiceTest;
   friend class ::BraveAdBlockTPNetworkDelegateHelperTest;
+  friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::PerfPredictorTabHelperTest;
 
   bool Init() override;

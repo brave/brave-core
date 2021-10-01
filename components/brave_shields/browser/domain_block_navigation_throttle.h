@@ -21,6 +21,10 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+namespace ephemeral_storage {
+class EphemeralStorageService;
+}  // namespace ephemeral_storage
+
 namespace brave_shields {
 
 class AdBlockService;
@@ -32,6 +36,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
   ~DomainBlockNavigationThrottle() override;
@@ -44,6 +49,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersService* ad_block_custom_filters_service,
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
 
@@ -61,6 +67,8 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
   AdBlockService* ad_block_service_ = nullptr;
   AdBlockCustomFiltersService* ad_block_custom_filters_service_ = nullptr;
+  ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_ =
+      nullptr;
   HostContentSettingsMap* content_settings_ = nullptr;
   std::string locale_;
   base::WeakPtrFactory<DomainBlockNavigationThrottle> weak_ptr_factory_{this};

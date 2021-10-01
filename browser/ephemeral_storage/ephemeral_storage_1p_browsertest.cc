@@ -6,7 +6,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -31,64 +30,6 @@ class EphemeralStorage1pBrowserTest : public EphemeralStorageBrowserTest {
         net::features::kBraveFirstPartyEphemeralStorage);
   }
   ~EphemeralStorage1pBrowserTest() override {}
-
-  void SetCookieSetting(const GURL& url, ContentSetting content_setting) {
-    auto* host_content_settings_map =
-        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    host_content_settings_map->SetContentSettingCustomScope(
-        ContentSettingsPattern::FromString(
-            base::StrCat({"[*.]", url.host_piece(), ":*"})),
-        ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
-        content_setting);
-  }
-
-  // Helper to load easy-to-use Indexed DB API.
-  void LoadIndexedDbHelper(RenderFrameHost* host) {
-    const char kLoadIndexMinScript[] =
-        "new Promise((resolve) => {"
-        "  const script = document.createElement('script');"
-        "  script.onload = () => {"
-        "    resolve(true);"
-        "  };"
-        "  script.onerror = () => {"
-        "    resolve(false);"
-        "  };"
-        "  script.src = '/ephemeral-storage/static/js/libs/index-min.js';"
-        "  document.body.appendChild(script);"
-        "});";
-
-    ASSERT_EQ(true, content::EvalJs(host, kLoadIndexMinScript));
-  }
-
-  bool SetIDBValue(RenderFrameHost* host) {
-    LoadIndexedDbHelper(host);
-    content::EvalJsResult eval_js_result = content::EvalJs(
-        host, "(async () => { await window.idbKeyval.set('a', 'a'); })()");
-    return eval_js_result.error.empty();
-  }
-
-  HostContentSettingsMap* content_settings() {
-    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-  }
-
-  network::mojom::CookieManager* CookieManager() {
-    return browser()
-        ->profile()
-        ->GetDefaultStoragePartition()
-        ->GetCookieManagerForBrowserProcess();
-  }
-
-  std::vector<net::CanonicalCookie> GetAllCookies() {
-    base::RunLoop run_loop;
-    std::vector<net::CanonicalCookie> cookies_out;
-    CookieManager()->GetAllCookies(base::BindLambdaForTesting(
-        [&](const std::vector<net::CanonicalCookie>& cookies) {
-          cookies_out = cookies;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return cookies_out;
-  }
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;

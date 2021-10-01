@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
 #include "components/security_interstitials/core/metrics_helper.h"
@@ -32,6 +33,7 @@ DomainBlockControllerClient::DomainBlockControllerClient(
     content::WebContents* web_contents,
     const GURL& request_url,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     PrefService* prefs,
     const std::string& locale)
     : security_interstitials::SecurityInterstitialControllerClient(
@@ -43,7 +45,10 @@ DomainBlockControllerClient::DomainBlockControllerClient(
           nullptr /* settings_page_helper */),
       request_url_(request_url),
       ad_block_custom_filters_service_(ad_block_custom_filters_service),
+      ephemeral_storage_service_(ephemeral_storage_service),
       dont_warn_again_(false) {}
+
+DomainBlockControllerClient::~DomainBlockControllerClient() = default;
 
 void DomainBlockControllerClient::GoBack() {
   SecurityInterstitialControllerClient::GoBackAfterNavigationCommitted();
@@ -59,7 +64,25 @@ void DomainBlockControllerClient::Proceed() {
     ad_block_custom_filters_service_->UpdateCustomFilters(
         "@@||" + request_url_.host() + "^\n" + custom_filters);
   }
+  if (ephemeral_storage_service_) {
+    ephemeral_storage_service_->CanEnable1PESForUrl(
+        request_url_,
+        base::BindOnce(&DomainBlockControllerClient::OnCanEnable1PESForUrl,
+                       weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    ReloadPage();
+  }
+}
+
+void DomainBlockControllerClient::ReloadPage() {
   web_contents_->GetController().Reload(content::ReloadType::NORMAL, false);
+}
+
+void DomainBlockControllerClient::OnCanEnable1PESForUrl(bool can_enable_1pes) {
+  if (can_enable_1pes) {
+    ephemeral_storage_service_->Set1PESEnabledForUrl(request_url_, true);
+  }
+  ReloadPage();
 }
 
 void DomainBlockControllerClient::SetDontWarnAgain(bool value) {

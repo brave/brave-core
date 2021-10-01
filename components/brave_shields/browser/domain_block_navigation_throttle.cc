@@ -62,6 +62,7 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale) {
   if (!ad_block_service || !ad_block_custom_filters_service)
@@ -70,18 +71,20 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     return nullptr;
   return std::make_unique<DomainBlockNavigationThrottle>(
       navigation_handle, ad_block_service, ad_block_custom_filters_service,
-      content_settings, locale);
+      ephemeral_storage_service, content_settings, locale);
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersService* ad_block_custom_filters_service,
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ad_block_service_(ad_block_service),
       ad_block_custom_filters_service_(ad_block_custom_filters_service),
+      ephemeral_storage_service_(ephemeral_storage_service),
       content_settings_(content_settings),
       locale_(locale) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -170,8 +173,8 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   // The controller client implements the actual logic to "go back" or "proceed"
   // from the interstitial.
   auto controller_client = std::make_unique<DomainBlockControllerClient>(
-      web_contents, request_url, ad_block_custom_filters_service_, pref_service,
-      locale_);
+      web_contents, request_url, ad_block_custom_filters_service_,
+      ephemeral_storage_service_, pref_service, locale_);
 
   // This handles populating the HTML template of the interstitial page with
   // localized strings and other information we only know at runtime,
