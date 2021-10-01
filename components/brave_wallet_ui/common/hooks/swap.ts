@@ -23,6 +23,7 @@ import { BAT, ETH } from '../../options/asset-options'
 import { formatBalance, toWei } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
+import useBalance from './balance'
 
 export default function useSwap (
   selectedAccount: WalletAccountType,

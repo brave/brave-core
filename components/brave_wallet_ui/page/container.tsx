@@ -53,7 +53,7 @@ import {
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useSwap, useAssets, useTimeout } from '../common/hooks'
+import { useSwap, useAssets, useTimeout, useBalance } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
@@ -151,6 +151,9 @@ function Container (props: Props) {
     assetOptions,
     swapQuote
   )
+
+  const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -309,14 +312,6 @@ function Container (props: Props) {
     })
     return formated
   }, [selectedAssetPriceHistory])
-
-  const fromAssetBalance = React.useMemo(() => {
-    if (!selectedAccount) {
-      return '0'
-    }
-    const token = selectedAccount.tokens ? selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol) : undefined
-    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
-  }, [accounts, selectedAccount, fromAsset])
 
   const onSelectPresetFromAmount = (percent: number) => {
     const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
