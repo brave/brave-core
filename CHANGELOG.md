@@ -1,6 +1,33 @@
 # Changelog
 
 
+## [1.31.1](https://github.com/brave/brave-ios/releases/tag/v1.31.1)
+
+- Updated user agent for devices running iOS 15. ([#4230](https://github.com/brave/brave-ios/issues/4230))
+- Fixed "Create PDF" action button in menu. ([#4193](https://github.com/brave/brave-ios/issues/4193))
+- Fixed app freeze on iOS 13 devices when setting focus on the URL bar. ([#4200](https://github.com/brave/brave-ios/issues/4200))
+- Fixed reader mode bug where wrong content is shown when reader mode is enabled. ([#4208](https://github.com/brave/brave-ios/issues/4208))
+
+## [1.31](https://github.com/brave/brave-ios/releases/tag/v1.31)
+
+- Added auto-play settings for sites to auto-play video/audio. ([#1738](https://github.com/brave/brave-ios/issues/1738))
+- Added "Scan QR Code" shortcut when long pressed on Brave on home-screen. ([#3798](https://github.com/brave/brave-ios/issues/3798))
+- Added new playlist URL button and menu notification icon. ([#3976](https://github.com/brave/brave-ios/issues/3976))
+- Added support for background playback and picture-in-picture (PiP) support for videos. ([#4031](https://github.com/brave/brave-ios/issues/4031))
+- Added support for IPv6 address resolution. ([#3866](https://github.com/brave/brave-ios/issues/3866))
+- Updated "Brave Search beta" to "Brave Search" under search engines and on the on-boarding screen. ([#4049](https://github.com/brave/brave-ios/issues/4049))
+- Updated settings for playlist menu notification. ([#4098](https://github.com/brave/brave-ios/issues/4098))
+- Fixed preview URLs always showing in lowercase. ([#3901](https://github.com/brave/brave-ios/issues/3901))
+- Fixed shields stats not updating in certain cases. ([#4021](https://github.com/brave/brave-ios/issues/4021))
+- Fixed share menu only sharing the canonical (base) URL instead of the actual page URL. ([#4071](https://github.com/brave/brave-ios/issues/4071))
+- Fixed Brave crashing in certain cases when history sync is enabled. ([#4073](https://github.com/brave/brave-ios/issues/4073))
+- Fixed issue when returning search results instead of computing arithmetic queries typed into the URL bar. ([#4081](https://github.com/brave/brave-ios/issues/4081))
+- Fixed links not marked as visited when revisiting a search link via "Open in Brave". ([#4082](https://github.com/brave/brave-ios/issues/4082))
+- Fixed issue where audio continues to play on tab when opening and closing the settings menu. ([#4092](https://github.com/brave/brave-ios/issues/4092))
+- Fixed playlist playback speed when playing in background. ([#4102](https://github.com/brave/brave-ios/issues/4102))
+- Fixed issue with playlist where it continues to play even after removing the item from playlist. ([#4129](https://github.com/brave/brave-ios/issues/4129))
+- Fixed tab appearing black when the subsequent tab is closed. ([#4149](https://github.com/brave/brave-ios/issues/4149))
+
 ## [1.30.1](https://github.com/brave/brave-ios/releases/tag/v1.30.1)
 
 - Reordered "Pull-to-Refresh" setting position to be above "Set default browser" option for iOS 14 devices. ([#4045](https://github.com/brave/brave-ios/issues/4045))

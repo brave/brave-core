@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var receivedURLs: [URL]?
     
     var windowProtection: WindowProtection?
-    var shutdownWebServer: DispatchSourceTimer?
+    var shutdownWebServer: Timer?
     
     /// Object used to handle server pings
     let dau = DAU()
@@ -447,7 +447,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     // We sync in the foreground only, to avoid the possibility of runaway resource usage.
     // Eventually we'll sync in response to notifications.
     func applicationDidBecomeActive(_ application: UIApplication) {
-        shutdownWebServer?.cancel()
+        shutdownWebServer?.invalidate()
         shutdownWebServer = nil
         
         Preferences.AppState.backgroundedCleanly.value = false
@@ -499,15 +499,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         profile.shutdown()
         application.endBackgroundTask(taskId)
         
-        let singleShotTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-        // 2 seconds is ample for a localhost request to be completed by GCDWebServer. <500ms is expected on newer devices.
-        singleShotTimer.schedule(deadline: .now() + 2.0, repeating: .never)
-        singleShotTimer.setEventHandler {
+        shutdownWebServer?.invalidate()
+        shutdownWebServer = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
             WebServer.sharedInstance.server.stop()
-            self.shutdownWebServer = nil
+            self?.shutdownWebServer = nil
         }
-        singleShotTimer.resume()
-        shutdownWebServer = singleShotTimer
     }
 
     fileprivate func shutdownProfileWhenNotActive(_ application: UIApplication) {

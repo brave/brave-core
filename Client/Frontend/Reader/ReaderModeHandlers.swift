@@ -43,10 +43,15 @@ struct ReaderModeHandlers {
                                 readerModeStyle = style
                             }
                         }
-                        if let html = ReaderModeUtils.generateReaderContent(readabilityResult, initialStyle: readerModeStyle),
+                        
+                        // Must generate a unique nonce, every single time as per Content-Policy spec.
+                        let setTitleNonce = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+                        
+                        if let html = ReaderModeUtils.generateReaderContent(readabilityResult, initialStyle: readerModeStyle,
+                            titleNonce: setTitleNonce),
                             let response = GCDWebServerDataResponse(html: html) {
                             // Apply a Content Security Policy that disallows everything except images from anywhere and fonts and css from our internal server
-                            response.setValue("default-src 'none'; img-src *; style-src http://localhost:* '\(readerModeStyleHash)'; font-src http://localhost:*", forAdditionalHeader: "Content-Security-Policy")
+                            response.setValue("default-src 'none'; img-src *; style-src http://localhost:* '\(readerModeStyleHash)'; font-src http://localhost:*; script-src 'nonce-\(setTitleNonce)'", forAdditionalHeader: "Content-Security-Policy")
                             return response
                         }
                     } catch _ {
