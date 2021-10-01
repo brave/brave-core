@@ -45,6 +45,7 @@ grit("static_resources") {
     "decentralized_dns_enabled=$decentralized_dns_enabled",
     "enable_ftx=$enable_ftx",
     "enable_brave_vpn=$enable_brave_vpn",
+    "brave_wallet_enabled=$brave_wallet_enabled",
   ]
 
   grit_flags = [
@@ -98,6 +99,7 @@ repack("resources") {
 
     deps += [
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+      "//brave/components/trezor_bridge/:copy_trezor_data",
       "//brave/components/trezor_bridge/resources:generated_resources",
     ]
     sources += [
