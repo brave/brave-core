@@ -303,10 +303,10 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   EXPECT_TRUE(callback_called);
   ASSERT_EQ(token->symbol, "CK");
 
-  // Token with empty contract address will fail.
+  // Token with empty contract address with symbol that's not eth will fail.
   auto token_with_empty_contract_address = token.Clone();
   token_with_empty_contract_address->contract_address = "";
-  AddUserAsset(std::move(token_with_empty_contract_address), "0x1",
+  AddUserAsset(std::move(token_with_empty_contract_address), "0x4",
                &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
