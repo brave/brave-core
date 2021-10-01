@@ -15,6 +15,19 @@ config("mojom_header_config") {
   include_dirs = [ "$target_gen_dir" ]
 }
 
+source_set("brave_wallet") {
+  sources = [
+    "token_registry_utils.h",
+    "token_registry_utils.mm",
+  ]
+  deps = [
+    ":wallet_mojom_wrappers",
+    "//base",
+    "//brave/components/brave_wallet/browser",
+    "//ios/chrome/browser",
+  ]
+}
+
 mojom_wrappers("wallet_mojom_wrappers") {
   mojom_target = "//brave/components/brave_wallet/common:mojom"
   mojom_file = "//brave/components/brave_wallet/common/brave_wallet.mojom"
