@@ -22,7 +22,7 @@ base::Value GetDefaultUserAssets() {
       user_assets_pref.SetKey("mainnet", base::Value(base::Value::Type::LIST));
 
   base::Value eth(base::Value::Type::DICTIONARY);
-  eth.SetKey("contract_address", base::Value("eth"));
+  eth.SetKey("contract_address", base::Value(""));
   eth.SetKey("name", base::Value("Ethereum"));
   eth.SetKey("symbol", base::Value("ETH"));
   eth.SetKey("is_erc20", base::Value(false));

@@ -22,7 +22,7 @@
 //    "mainnet": {  // network_id
 //      [
 //        {
-//          "contract_address": "eth",
+//          "contract_address": "",
 //          "name": "Ethereum",
 //          "symbol": "ETH",
 //          "is_erc20": false,
@@ -67,8 +67,7 @@ namespace {
 base::CheckedContiguousIterator<base::Value> FindAsset(
     base::Value* user_assets_list,
     const std::string& contract_address) {
-  DCHECK(user_assets_list && user_assets_list->is_list() &&
-         !contract_address.empty());
+  DCHECK(user_assets_list && user_assets_list->is_list());
 
   auto iter = std::find_if(
       user_assets_list->GetList().begin(), user_assets_list->GetList().end(),
@@ -111,6 +110,10 @@ void BraveWalletService::Bind(
 absl::optional<std::string> BraveWalletService::GetChecksumAddress(
     const std::string& contract_address,
     const std::string& chain_id) {
+  if (contract_address.empty()) {
+    return "";
+  }
+
   const auto eth_addr = EthAddress::FromHex(contract_address);
   if (eth_addr.IsEmpty()) {
     return absl::nullopt;
