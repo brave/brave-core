@@ -683,7 +683,8 @@ void EthTxController::SetGasFeeAndLimitForUnapprovedTransaction(
 
   std::unique_ptr<EthTxStateManager::TxMeta> tx_meta =
       tx_state_manager_->GetTx(tx_meta_id);
-  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved) {
+  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved ||
+      tx_meta->tx->type() != 2 /* Eip1559 */) {
     std::move(callback).Run(false);
     return;
   }

@@ -978,4 +978,34 @@ TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   EXPECT_EQ(tx1559->max_fee_per_gas(), update_max_fee_per_gas);
 }
 
+TEST_F(EthTxControllerUnitTest,
+       SetGasFeeAndLimitForUnapprovedTransactionRejectNotEip1559) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x3344", "0x5566", "0xFED8",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
 }  //  namespace brave_wallet
