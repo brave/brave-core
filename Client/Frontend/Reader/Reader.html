@@ -9,13 +9,18 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=.25, maximum-scale=1.6, initial-scale=1.0">
   <meta name="referrer" content="never">
   <link rel="stylesheet" type="text/css" href="/reader-mode/styles/Reader.css">
-  <title>%READER-TITLE%</title>
+  <title id="reader-page-title"></title>
 </head>
 
 <body data-readerStyle='%READER-STYLE%'>
   <div id="reader-header" class="header">
-    <h1 id="reader-title">%READER-TITLE%</h1>
+    <h1 id="reader-title"></h1>
     <div id="reader-credits" class="credits">%READER-CREDITS%</div>
+    <script type="text/javascript" src="/reader-mode/javascript/Reader.js"></script>
+    <script nonce="%READER-TITLE-NONCE%">
+        document.getElementById("reader-page-title").textContent = "%READER-TITLE%";
+        document.getElementById("reader-title").textContent = "%READER-TITLE%";
+    </script>
   </div>
 
   <div id="reader-content" class="content">
