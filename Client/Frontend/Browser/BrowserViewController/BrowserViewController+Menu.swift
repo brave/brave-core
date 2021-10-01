@@ -102,7 +102,7 @@ extension BrowserViewController {
                 }
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
-                let vc = SettingsViewController(profile: self.profile, tabManager: self.tabManager, feedDataSource: self.feedDataSource, rewards: self.rewards, legacyWallet: self.legacyWallet, historyAPI: self.historyAPI)
+                let vc = SettingsViewController(profile: self.profile, tabManager: self.tabManager, feedDataSource: self.feedDataSource, rewards: self.rewards, legacyWallet: self.legacyWallet, historyAPI: self.historyAPI, syncAPI: self.syncAPI)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
             }

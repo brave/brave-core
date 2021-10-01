@@ -20,6 +20,18 @@ class SyncPairCameraViewController: SyncViewController {
         $0.color = .white
     }
     
+    private let syncAPI: BraveSyncAPI
+
+    init(syncAPI: BraveSyncAPI) {
+        self.syncAPI = syncAPI
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,7 +87,7 @@ class SyncPairCameraViewController: SyncViewController {
             
             // If multiple calls get in here due to race conditions it isn't a big deal
             
-            let codeWords = BraveSyncAPI.shared.syncCode(fromHexSeed: data)
+            let codeWords = self.syncAPI.syncCode(fromHexSeed: data)
             if codeWords.isEmpty {
                 self.cameraView.cameraOverlayError()
             } else {
@@ -154,7 +166,7 @@ class SyncPairCameraViewController: SyncViewController {
     }
     
     @objc func SEL_enterWords() {
-        let wordsVC = SyncPairWordsViewController()
+        let wordsVC = SyncPairWordsViewController(syncAPI: syncAPI)
         wordsVC.syncHandler = self.syncHandler
         navigationController?.pushViewController(wordsVC, animated: true)
     }

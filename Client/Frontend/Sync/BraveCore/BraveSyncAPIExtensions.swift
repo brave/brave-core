@@ -10,8 +10,6 @@ import BraveShared
 extension BraveSyncAPI {
     
     public static let seedByteLength = 32
-    private static var serviceObservers = NSHashTable<BraveSyncServiceListener>.weakObjects()
-    private static var deviceObservers = NSHashTable<BraveSyncDeviceListener>.weakObjects()
     
     var isInSyncGroup: Bool {
         return Preferences.Chromium.syncEnabled.value
@@ -29,14 +27,14 @@ extension BraveSyncAPI {
     }
     
     func removeDeviceFromSyncGroup(deviceGuid: String) {
-        BraveSyncAPI.shared.deleteDevice(deviceGuid)
+        deleteDevice(deviceGuid)
     }
     
     func leaveSyncGroup() {
         // Remove all observers before leaving the sync chain
-        BraveSyncAPI.removeAllObservers()
+        removeAllObservers()
         
-        BraveSyncAPI.shared.resetSync()
+        resetSync()
         Preferences.Chromium.syncEnabled.value = false
     }
     
@@ -58,72 +56,105 @@ extension BraveSyncAPI {
         }
     }
     
-    static func addServiceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {
-        let result = BraveSyncServiceListener(observer, onRemoved: { observer in
-            serviceObservers.remove(observer)
+    func addServiceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {
+        let serviceStateListener = BraveSyncServiceListener(onRemoved: { [weak self] observer in
+            self?.serviceObservers.remove(observer)
         })
-        serviceObservers.add(result)
-        return result
+        serviceStateListener.observer = createSyncServiceObserver(observer)
+
+        serviceObservers.add(serviceStateListener)
+        return serviceStateListener
     }
     
-    static func addDeviceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {
-        let result = BraveSyncDeviceListener(observer, onRemoved: { observer in
-            deviceObservers.remove(observer)
+    func addDeviceStateObserver(_ observer: @escaping () -> Void) -> AnyObject {
+        let deviceStateListener = BraveSyncDeviceListener(observer, onRemoved: { [weak self] observer in
+            self?.deviceObservers.remove(observer)
         })
-        deviceObservers.add(result)
-        return result
+        deviceStateListener.observer = createSyncDeviceObserver(observer)
+        
+        deviceObservers.add(deviceStateListener)
+        return deviceStateListener
     }
     
-    static func removeAllObservers() {
+    func removeAllObservers() {
         serviceObservers.objectEnumerator().forEach({
-            ($0 as? BraveSyncServiceListener)?.remove()
+            ($0 as? BraveSyncServiceListener)?.observer = nil
         })
         
         deviceObservers.objectEnumerator().forEach({
-            ($0 as? BraveSyncDeviceListener)?.remove()
+            ($0 as? BraveSyncDeviceListener)?.observer = nil
         })
         
         serviceObservers.removeAllObjects()
         deviceObservers.removeAllObjects()
     }
+    
+    private struct AssociatedObjectKeys {
+        static var serviceObservers: Int = 0
+        static var deviceObservers: Int = 1
+    }
+    
+    private var serviceObservers: NSHashTable<BraveSyncServiceListener> {
+        if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceObservers) as? NSHashTable<BraveSyncServiceListener> {
+            return observers
+        }
+        
+        let defaultValue = NSHashTable<BraveSyncServiceListener>.weakObjects()
+        objc_setAssociatedObject(self, &AssociatedObjectKeys.serviceObservers, defaultValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+        return defaultValue
+    }
+    
+    private var deviceObservers: NSHashTable<BraveSyncDeviceListener> {
+        if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.deviceObservers) as? NSHashTable<BraveSyncDeviceListener> {
+            return observers
+        }
+        
+        let defaultValue = NSHashTable<BraveSyncDeviceListener>.weakObjects()
+        objc_setAssociatedObject(self, &AssociatedObjectKeys.deviceObservers, defaultValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+        return defaultValue
+    }
+
 }
 
 extension BraveSyncAPI {
     private class BraveSyncServiceListener: NSObject {
-        private var observer: Any?
+        
+        // MARK: Internal
+        
+        var observer: Any?
         private var onRemoved: (BraveSyncServiceListener) -> Void
-        fileprivate init(_ onSyncServiceStateChanged: @escaping () -> Void,
-                         onRemoved: @escaping (BraveSyncServiceListener) -> Void) {
+        
+        // MARK: Lifecycle
+        
+        fileprivate init(onRemoved: @escaping (BraveSyncServiceListener) -> Void) {
             self.onRemoved = onRemoved
-            self.observer = BraveSyncAPI.shared.createSyncServiceObserver(onSyncServiceStateChanged)
             super.init()
         }
         
         deinit {
             self.onRemoved(self)
         }
-        
-        fileprivate func remove() {
-            observer = nil
-        }
     }
-    
+
     private class BraveSyncDeviceListener: NSObject {
-        private var observer: Any?
+        
+        // MARK: Internal
+        
+        var observer: Any?
         private var onRemoved: (BraveSyncDeviceListener) -> Void
+        
+        // MARK: Lifecycle
+        
         fileprivate init(_ onDeviceInfoChanged: @escaping () -> Void,
                          onRemoved: @escaping (BraveSyncDeviceListener) -> Void) {
             self.onRemoved = onRemoved
-            self.observer = BraveSyncAPI.shared.createSyncDeviceObserver(onDeviceInfoChanged)
             super.init()
         }
         
         deinit {
             self.onRemoved(self)
-        }
-        
-        fileprivate func remove() {
-            observer = nil
         }
     }
 }
