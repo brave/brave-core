@@ -8,6 +8,12 @@
 #include "net/base/features.h"
 #include "url/origin.h"
 
+// Determines whether a 3p cookies block should be applied if a requesting URL
+// uses an explicit 1PES setting (CONTENT_SETTING_SESSION_ONLY). By default
+// Chromimum allows all 3p cookies if applied CookieSettingsPatterns for the URL
+// were explicit. We use explicit setting to enable 1PES mode, but in this mode
+// we still want to block 3p frames as usual and not fallback to "allow
+// everything" path.
 #define BRAVE_COOKIE_SETTINGS_GET_COOKIE_SETTINGS_INTERNAL                     \
   if (!blocked_by_third_party_setting && is_third_party_request) {             \
     blocked_by_third_party_setting = ShouldBlockThirdPartyIfSettingIsExplicit( \
@@ -16,6 +22,7 @@
         base::Contains(third_party_cookies_allowed_schemes_,                   \
                        first_party_url.scheme()));                             \
   }                                                                            \
+  /* Store patterns information to determine if Shields are disabled. */       \
   if (auto* setting_with_brave_metadata =                                      \
           cookie_setting_with_brave_metadata()) {                              \
     setting_with_brave_metadata->primary_pattern_matches_all_hosts =           \

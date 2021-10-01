@@ -111,8 +111,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (!first_party_url.is_valid())
     return false;
 
-  // SESSION_ONLY cookie setting works as a "1PES enabler" for the website if
-  // a 1PES feature is enabled.
+  // Enable ephemeral storage for a first party URL if SESSION_ONLY cookie
+  // setting is set and the feature is enabled.
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage) &&
       IsCookieSessionOnly(first_party_url)) {
@@ -188,37 +188,49 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   const GURL first_party_url = GetFirstPartyURL(
       site_for_cookies, base::OptionalOrNullptr(top_frame_origin));
 
-  // Determine whether a first party frame is ephemeral or shields are down.
-  enum class FirstPartyFrameMode {
+  // Determine whether a main frame is ephemeral or Shields are down.
+  // This is required to properly handle main and nested frames depending on the
+  // main frame mode.
+  enum class MainFrameMode {
+    // Main frame works as usual, nested 3p frames use ephemeral storage if
+    // necessary.
     kDefault,
+    // Main frame is in Ephemeral Storage mode, 1p/3p frames use ephemeral
+    // storage if necessary.
     kEphemeral,
+    // Main frame is in "Shields down" mode, all 1p/3p frames should use
+    // persistend storage, *including* 3p frames with enabled "First party
+    // ephemeral storage" mode.
     kShieldsDown,
   };
-  FirstPartyFrameMode first_party_frame_mode = FirstPartyFrameMode::kDefault;
+  MainFrameMode main_frame_mode = MainFrameMode::kDefault;
   if (is_1p_ephemeral_feature_enabled) {
+    // Get CookieSetting for the main frame and get matched patterns if any.
     CookieSettingWithBraveMetadata setting_with_brave_metadata =
         GetCookieSettingWithBraveMetadata(first_party_url, first_party_url);
 
     if (setting_with_brave_metadata.setting == CONTENT_SETTING_SESSION_ONLY) {
-      first_party_frame_mode = FirstPartyFrameMode::kEphemeral;
-    } else if (setting_with_brave_metadata.setting == CONTENT_SETTING_ALLOW &&
-               setting_with_brave_metadata.primary_pattern_matches_all_hosts &&
-               !setting_with_brave_metadata
-                    .secondary_pattern_matches_all_hosts) {
-      // Disabled shields mode allows everything in nested frames, so we
-      // determine the fact that shields are disabled by expecting primary and
-      // secondary patterns to be in a specific state.
-      first_party_frame_mode = FirstPartyFrameMode::kShieldsDown;
+      main_frame_mode = MainFrameMode::kEphemeral;
+    } else {
+      // Disabled shields mode allows everything in nested frames. To properly
+      // handle this state we need to know if Shields are down in the main
+      // frame. The shields check is done by analyzing the primary and secondary
+      // patterns and expecting them to be in a specific state.
+      if (setting_with_brave_metadata.setting == CONTENT_SETTING_ALLOW &&
+          setting_with_brave_metadata.primary_pattern_matches_all_hosts &&
+          !setting_with_brave_metadata.secondary_pattern_matches_all_hosts) {
+        main_frame_mode = MainFrameMode::kShieldsDown;
+      }
     }
   }
 
   if (allow) {
-    // Block all non ephemeral-supported activities (service workers, etc.) if
-    // 1p is ephemeral.
-    if (first_party_frame_mode == FirstPartyFrameMode::kEphemeral) {
-      allow = false;
+    // When the main frame is in ephemeral mode, we should block all non
+    // ephemeral-supported activities (service workers, etc.).
+    if (main_frame_mode == MainFrameMode::kEphemeral) {
+      return false;
     }
-    return allow;
+    return true;
   }
 
   if (!IsFirstPartyAccessAllowed(first_party_url, this))
@@ -227,10 +239,11 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   if (BraveIsAllowedThirdParty(url, first_party_url, this))
     return true;
 
+  // This allows Session-only frames to work as usual when Shields are down for
+  // the main frame.
   if (is_1p_ephemeral_feature_enabled &&
-      first_party_frame_mode == FirstPartyFrameMode::kShieldsDown &&
+      main_frame_mode == MainFrameMode::kShieldsDown &&
       IsCookieSessionOnly(url)) {
-    // Allow 3p session-only frames when shields are disabled.
     return true;
   }
 
