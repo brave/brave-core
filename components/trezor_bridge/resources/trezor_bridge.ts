@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { sendWithPromise } from 'chrome://resources/js/cr.m'
+import apiProxy from './trezor_bridge_api_proxy.js'
 
 // Hooks to trick some checks inside TrezorConnect to use webextension env.
 function setupBraveHooks () {
@@ -12,6 +13,8 @@ function setupBraveHooks () {
 }
 
 setupBraveHooks()
+
+apiProxy.getInstance().onUnlocked(false);
 
 import TrezorConnect, {
   TRANSPORT_EVENT,

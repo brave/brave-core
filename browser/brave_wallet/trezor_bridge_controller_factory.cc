@@ -51,7 +51,7 @@ TrezorBridgeControllerFactory::~TrezorBridgeControllerFactory() {}
 
 KeyedService* TrezorBridgeControllerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new TrezorBridgeController();
+  return new TrezorBridgeController(context);
 }
 
 content::BrowserContext* TrezorBridgeControllerFactory::GetBrowserContextToUse(

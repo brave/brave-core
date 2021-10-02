@@ -5,13 +5,8 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
-import("//tools/grit/preprocess_if_expr.gni")
 
 assert(brave_wallet_enabled)
-
-preprocess_folder = "preprocessed"
-preprocess_page_manifest = "preprocessed_page_manifest.json"
 
 transpile_web_ui("trezor_bridge_ui") {
   entry_points = [
@@ -26,32 +21,10 @@ transpile_web_ui("trezor_bridge_ui") {
   ]
 
   resource_name = "trezor_bridge"
-  deps = [
-    ":preprocess_bridge",
-    ":trezor_bridge_api_proxy",
-    "//brave/components/trezor_bridge:mojo_bindings",
-    "//brave/components/trezor_bridge:preprocess_mojo",
-  ]
 }
 
 pack_web_resources("generated_resources") {
   resource_name = "trezor_bridge"
   output_dir = "$root_gen_dir/brave/components/trezor_bridge/resources"
   deps = [ ":trezor_bridge_ui" ]
-}
-
-
-preprocess_if_expr("preprocess_bridge") {
-  in_folder = "./"
-  out_folder = "$target_gen_dir/$preprocess_folder"
-  out_manifest = "$target_gen_dir/$preprocess_page_manifest"
-  in_files = [ "trezor_bridge_api_proxy.js" ]
-}
-
-js_library("trezor_bridge_api_proxy") {
-  deps = [
-    "//brave/components/trezor_bridge:mojo_bindings_js_library_for_compile",
-    "//ui/webui/resources/js:cr.m",
-    "//url/mojom:url_mojom_gurl_js_library_for_compile",
-  ]
 }

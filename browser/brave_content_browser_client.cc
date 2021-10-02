@@ -159,6 +159,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/browser/ui/webui/brave_wallet/trezor_bridge/trezor_bridge_ui.h"
 #if !defined(OS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
@@ -435,7 +436,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
+      trezor_bridge::mojom::PageHandlerFactory, TrezorBridgeUI>(map);
 #endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)

@@ -5,12 +5,8 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
-import("//tools/grit/preprocess_if_expr.gni")
 
 assert(brave_wallet_enabled)
-preprocess_folder = "preprocessed"
-preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
-preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("trezor_bridge") {
   sources = [
@@ -48,12 +44,4 @@ mojom("mojo_bindings") {
     "//ui/base/mojom",
     "//url/mojom:url_mojom_gurl",
   ]
-}
-
-preprocess_if_expr("preprocess_mojo") {
-  deps = [ "//brave/components/trezor_bridge:mojo_bindings_js" ]
-  in_folder = "$target_gen_dir"
-  out_folder = "$target_gen_dir/$preprocess_folder"
-  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
-  in_files = [ "trezor_bridge.mojom-lite.js" ]
 }

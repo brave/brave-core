@@ -8,14 +8,30 @@
 
 #include <string>
 
+#include "base/macros.h"
+
+#include "brave/browser/ui/webui/brave_wallet/trezor_bridge/trezor_bridge_page_handler.h"
+#include "brave/components/trezor_bridge/mojo_trezor_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 
-class TrezorBridgeUI : public content::WebUIController {
+
+class TrezorBridgePageHandler;
+
+class TrezorBridgeUI : public MojoTrezorWebUIController {
  public:
   TrezorBridgeUI(content::WebUI* web_ui, const std::string& host);
   ~TrezorBridgeUI() override;
   TrezorBridgeUI(const TrezorBridgeUI&) = delete;
   TrezorBridgeUI& operator=(const TrezorBridgeUI&) = delete;
+
+  void CreatePageHandler(
+      mojo::PendingRemote<trezor_bridge::mojom::Page> page,
+      mojo::PendingReceiver<trezor_bridge::mojom::PageHandler> receiver) override;
+
+
+private:
+  std::unique_ptr<TrezorBridgePageHandler> page_handler_;
 };
+
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_TREZOR_BRIDGE_UI_H_
