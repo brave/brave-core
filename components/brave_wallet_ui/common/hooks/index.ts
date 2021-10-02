@@ -6,5 +6,6 @@
 import useSwap from './swap'
 import useAssets from './assets'
 import useTimeout from './timeout'
+import useBalance from './balance'
 
-export { useAssets, useSwap, useTimeout }
+export { useAssets, useSwap, useTimeout, useBalance }

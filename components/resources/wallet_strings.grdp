@@ -273,5 +273,12 @@
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_GWEI" desc="Edit gas panel gwei label">Gwei</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM" desc="Edit gas panel set custom button">Set custom</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED" desc="Edit gas panel set suggested button">Set suggested</message>
+    <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE" desc="Swap CTA text for insufficient balance">Insufficient balance</message>
+    <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE" desc="Swap CTA text for insufficient ETH balance">Insufficient funds for gas</message>
+    <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
+    <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ALLOWANCE" desc="Swap CTA text for insufficient allowance">
+      Activate <ph name="FROM_ASSET_SYMBOL">$1</ph>
+    </message>
+    <message name="IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR" desc="Swap CTA text for unknown error">Unknown error</message>
   </if>
 </grit-part>

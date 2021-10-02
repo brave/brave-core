@@ -5,7 +5,7 @@
 /* global window */
 
 import { createReducer } from 'redux-act'
-import { PanelState, SwapResponse } from '../../constants/types'
+import { PanelState, SwapErrorResponse, SwapResponse } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import { ShowConnectToSitePayload, EthereumChainPayload } from '../constants/action_types'
 
@@ -24,7 +24,8 @@ const defaultState: PanelState = {
     rpcUrls: ['https://mainnet-infura.brave.com/'], blockExplorerUrls: [],
     iconUrls: [], symbol: 'ETH', symbolName: 'Ethereum', decimals: 18
   },
-  swapQuote: undefined
+  swapQuote: undefined,
+  swapError: undefined
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -63,6 +64,13 @@ reducer.on(PanelActions.setPanelSwapQuote, (state: any, payload: SwapResponse) =
   return {
     ...state,
     swapQuote: payload
+  }
+})
+
+reducer.on(PanelActions.setPanelSwapError, (state: any, payload?: SwapErrorResponse) => {
+  return {
+    ...state,
+    swapError: payload
   }
 })
 

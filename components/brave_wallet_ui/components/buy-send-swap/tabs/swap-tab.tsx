@@ -7,7 +7,8 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  EthereumChain
+  EthereumChain,
+  SwapValidationErrorType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -32,6 +33,7 @@ export interface Props {
   toAssetBalance: string
   assetOptions: AccountAssetOptionType[]
   isSubmitDisabled: boolean
+  validationError?: SwapValidationErrorType
   onSubmitSwap: () => void
   flipSwapAssets: () => void
   onSelectNetwork: (network: EthereumChain) => void
@@ -65,6 +67,7 @@ function SwapTab (props: Props) {
     toAssetBalance,
     assetOptions,
     isSubmitDisabled,
+    validationError,
     onSubmitSwap,
     flipSwapAssets,
     onSelectNetwork,
@@ -147,6 +150,7 @@ function SwapTab (props: Props) {
             slippageTolerance={slippageTolerance}
             orderExpiration={orderExpiration}
             isSubmitDisabled={isSubmitDisabled}
+            validationError={validationError}
             onInputChange={onInputChange}
             onFlipAssets={flipSwapAssets}
             onSubmitSwap={onSubmitSwap}

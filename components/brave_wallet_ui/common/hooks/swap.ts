@@ -13,6 +13,8 @@ import {
   ExpirationPresetObjectType,
   OrderTypes,
   SlippagePresetObjectType,
+  SwapErrorResponse,
+  SwapValidationErrorType,
   SwapResponse,
   ToOrFromType,
   WalletAccountType
@@ -23,13 +25,17 @@ import { BAT, ETH } from '../../options/asset-options'
 import { formatBalance, toWei } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
+import useBalance from './balance'
+
+const SWAP_VALIDATION_ERROR_CODE = 100
 
 export default function useSwap (
   selectedAccount: WalletAccountType,
   selectedNetwork: EthereumChain,
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   assetOptions: AccountAssetOptionType[],
-  quote?: SwapResponse
+  quote?: SwapResponse,
+  rawError?: SwapErrorResponse
 ) {
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
@@ -41,6 +47,68 @@ export default function useSwap (
   const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(BAT)
   const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(assetOptions)
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
+
+  const getBalance = useBalance(selectedAccount)
+  const { assetBalance: fromAssetBalance } = getBalance(fromAsset)
+  const { assetBalance: ethBalance } = getBalance(ETH)
+
+  const feesBN = React.useMemo(() => {
+    if (!quote) {
+      return new BigNumber('0')
+    }
+
+    const { gasPrice, gas } = quote
+    const gasPriceBN = new BigNumber(gasPrice)
+    const gasBN = new BigNumber(gas)
+    return gasPriceBN.multipliedBy(gasBN)
+  }, [quote])
+
+  const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
+    const fromAmountWei = toWei(fromAmount, fromAsset.asset.decimals)
+    const fromAssetBalanceWei = toWei(fromAssetBalance, fromAsset.asset.decimals)
+    const ethBalanceWei = toWei(ethBalance, ETH.asset.decimals)
+
+    const amountBN = new BigNumber(fromAmountWei)
+    const balanceBN = new BigNumber(fromAssetBalanceWei)
+    const ethBalanceBN = new BigNumber(ethBalanceWei)
+
+    if (amountBN.gt(balanceBN)) {
+      return 'insufficientBalance'
+    }
+
+    if (feesBN.gt(ethBalanceBN)) {
+      return 'insufficientEthBalance'
+    }
+
+    if (fromAsset.asset.symbol === ETH.asset.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
+      return 'insufficientEthBalance'
+    }
+
+    // TODO: Add case for "insufficientAllowance" by querying token allowance.
+    // tslint:disable-next-line:no-constant-condition
+    if (false) {
+      return 'insufficientAllowance'
+    }
+
+    // TODO: provide more granular information about the error.
+    if (rawError === undefined) {
+      return
+    }
+
+    const { code, validationErrors } = rawError
+    switch (code) {
+      case SWAP_VALIDATION_ERROR_CODE:
+        if (validationErrors?.find(err => err.reason === 'INSUFFICIENT_ASSET_LIQUIDITY')) {
+          return 'insufficientLiquidity'
+        }
+        break
+
+      default:
+        return 'unknownError'
+    }
+
+    return
+  }, [fromAsset, fromAmount, fromAssetBalance, ethBalance, feesBN, rawError])
 
   /**
    * React effect to extract fields from the swap quote and write the relevant
@@ -98,18 +166,18 @@ export default function useSwap (
    *                           function on change.
    */
   const onSwapParamsChange = React.useCallback((
-      overrides: {
-        toOrFrom: ToOrFromType
-        fromAsset?: AccountAssetOptionType
-        toAsset?: AccountAssetOptionType
-        amount?: string
-        slippageTolerance?: SlippagePresetObjectType
-      },
-      state: {
-        fromAmount: string,
-        toAmount: string
-      },
-      full: boolean = false
+    overrides: {
+      toOrFrom: ToOrFromType
+      fromAsset?: AccountAssetOptionType
+      toAsset?: AccountAssetOptionType
+      amount?: string
+      slippageTolerance?: SlippagePresetObjectType
+    },
+    state: {
+      fromAmount: string,
+      toAmount: string
+    },
+    full: boolean = false
   ) => {
     // if (selectedWidgetTab !== 'swap') {
     //   return
@@ -286,10 +354,11 @@ export default function useSwap (
   }
 
   const isSwapButtonDisabled = React.useMemo(() => (
-      !quote ||
-      toWei(toAmount, toAsset.asset.decimals) === '0' ||
-      toWei(fromAmount, fromAsset.asset.decimals) === '0'
-  ), [toAmount, fromAmount, toAsset, fromAsset, quote])
+    quote === undefined ||
+    (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
+    toWei(toAmount, toAsset.asset.decimals) === '0' ||
+    toWei(fromAmount, fromAsset.asset.decimals) === '0'
+  ), [toAmount, fromAmount, toAsset, fromAsset, quote, swapValidationError])
 
   const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
@@ -335,6 +404,7 @@ export default function useSwap (
     orderType,
     slippageTolerance,
     swapToOrFrom,
+    swapValidationError,
     toAmount,
     toAsset,
     setFromAsset,

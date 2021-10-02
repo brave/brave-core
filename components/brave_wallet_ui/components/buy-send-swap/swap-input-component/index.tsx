@@ -1,5 +1,11 @@
 import * as React from 'react'
-import { AccountAssetOptionType, OrderTypes, SlippagePresetObjectType, ExpirationPresetObjectType } from '../../../constants/types'
+import {
+  AccountAssetOptionType,
+  OrderTypes,
+  SlippagePresetObjectType,
+  ExpirationPresetObjectType,
+  SwapValidationErrorType
+} from '../../../constants/types'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
@@ -44,6 +50,7 @@ export interface Props {
   orderType?: OrderTypes
   slippageTolerance?: SlippagePresetObjectType
   orderExpiration?: ExpirationPresetObjectType
+  validationError?: SwapValidationErrorType
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
   onSelectSlippageTolerance?: (slippage: SlippagePresetObjectType) => void
@@ -65,6 +72,7 @@ function SwapInputComponent (props: Props) {
     orderType,
     slippageTolerance,
     orderExpiration,
+    validationError,
     onInputChange,
     onPaste,
     onRefresh,
@@ -146,6 +154,11 @@ function SwapInputComponent (props: Props) {
     setSpin(0)
   }
 
+  const fromAmountHasErrors = validationError && (
+    validationError === 'insufficientBalance' ||
+    validationError === 'insufficientEthBalance'
+  )
+
   return (
     <BubbleContainer>
       {componentType !== 'selector' &&
@@ -179,7 +192,7 @@ function SwapInputComponent (props: Props) {
               name={inputName}
               onChange={onInputChanged}
               spellCheck={false}
-              hasError={selectedAssetBalance && componentType === 'fromAmount' ? Number(selectedAssetInputAmount) > Number(selectedAssetBalance) : false}
+              hasError={componentType === 'fromAmount' && fromAmountHasErrors}
               disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
             />
             {componentType === 'exchange' && orderType === 'market' &&

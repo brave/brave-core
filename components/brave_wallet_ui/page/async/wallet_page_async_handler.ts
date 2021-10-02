@@ -171,7 +171,10 @@ handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: 
   await pageHandler.showApprovePanelUI()
 })
 
-handler.on(WalletPageActions.fetchPageSwapQuote.getType(), fetchSwapQuoteFactory(WalletPageActions.setPageSwapQuote))
+handler.on(
+  WalletPageActions.fetchPageSwapQuote.getType(),
+  fetchSwapQuoteFactory(WalletPageActions.setPageSwapQuote, WalletPageActions.setPageSwapError)
+)
 
 handler.on(WalletPageActions.openWalletSettings.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {

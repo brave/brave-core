@@ -57,7 +57,7 @@ import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useAssets, useSwap } from '../common/hooks'
+import { useAssets, useBalance, useSwap } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -100,7 +100,8 @@ function Container (props: Props) {
     panelTitle,
     selectedPanel,
     networkPayload,
-    swapQuote
+    swapQuote,
+    swapError
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -131,6 +132,7 @@ function Container (props: Props) {
     orderExpiration,
     orderType,
     slippageTolerance,
+    swapValidationError,
     swapToOrFrom,
     toAmount,
     toAsset,
@@ -150,8 +152,13 @@ function Container (props: Props) {
     selectedNetwork,
     props.walletPanelActions.fetchPanelSwapQuote,
     assetOptions,
-    swapQuote
+    swapQuote,
+    swapError
   )
+
+  const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
+  const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -207,14 +214,6 @@ function Container (props: Props) {
       setSendAmount(value)
     }
   }
-
-  const getAssetBalance = React.useCallback((asset: AccountAssetOptionType) => {
-    if (!selectedAccount || !selectedAccount.tokens) {
-      return '0'
-    }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === asset.asset.symbol)
-    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
-  }, [accounts, selectedAccount])
 
   const onSelectPresetSendAmount = (percent: number) => {
     const amount = Number(fromAsset.assetBalance) * percent
@@ -590,7 +589,7 @@ function Container (props: Props) {
                 onSubmit={onSubmitSend}
                 selectedAsset={fromAsset}
                 selectedAssetAmount={sendAmount}
-                selectedAssetBalance={getAssetBalance(fromAsset)}
+                selectedAssetBalance={fromAssetBalance}
                 toAddress={toAddress}
               />
             </SendWrapper>
@@ -646,8 +645,9 @@ function Container (props: Props) {
                   orderExpiration={orderExpiration}
                   slippageTolerance={slippageTolerance}
                   isSubmitDisabled={isSwapButtonDisabled}
-                  fromAssetBalance={getAssetBalance(fromAsset)}
-                  toAssetBalance={getAssetBalance(toAsset)}
+                  validationError={swapValidationError}
+                  fromAssetBalance={fromAssetBalance}
+                  toAssetBalance={toAssetBalance}
                   onToggleOrderType={onToggleOrderType}
                   onSelectExpiration={onSelectExpiration}
                   onSelectSlippageTolerance={onSelectSlippageTolerance}

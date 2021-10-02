@@ -5,7 +5,7 @@
 
 import { createAction } from 'redux-act'
 import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
-import { SwapResponse } from '../../constants/types'
+import { SwapErrorResponse, SwapResponse } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -22,4 +22,5 @@ export const openWalletApps = createAction('openWalletApps')
 export const expandRestoreWallet = createAction('expandRestoreWallet')
 export const navigateTo = createAction<string>('navigateTo')
 export const setPanelSwapQuote = createAction<SwapResponse>('setPanelSwapQuote')
+export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('setPanelSwapError')
 export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')

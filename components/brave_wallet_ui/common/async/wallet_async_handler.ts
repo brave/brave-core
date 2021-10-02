@@ -27,6 +27,7 @@ import {
   TransactionInfo,
   WalletAccountType,
   ER20TransferParams,
+  SwapErrorResponse,
   SwapResponse
 } from '../../constants/types'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -349,7 +350,8 @@ export const getBalance = (address: string): Promise<string> => {
 // fetchSwapQuoteFactory creates a handler function that can be used with
 // both panel and page actions.
 export const fetchSwapQuoteFactory = (
-  setSwapQuote: SimpleActionCreator<SwapResponse>
+  setSwapQuote: SimpleActionCreator<SwapResponse>,
+  setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
 ) => async (store: Store, payload: SwapParamsPayloadType) => {
   const swapController = (await getAPIProxy()).swapController
 
@@ -382,6 +384,7 @@ export const fetchSwapQuoteFactory = (
   )
 
   if (quote.success && quote.response) {
+    await store.dispatch(setSwapError(undefined))
     await store.dispatch(setSwapQuote(quote.response))
 
     if (full) {
@@ -403,6 +406,15 @@ export const fetchSwapQuoteFactory = (
       }
 
       store.dispatch(WalletActions.sendTransaction(params))
+    }
+  } else if (quote.errorResponse) {
+    try {
+      const err = JSON.parse(quote.errorResponse) as SwapErrorResponse
+      await store.dispatch(setSwapError(err))
+    } catch (e) {
+      console.error(`[swap] error parsing response: ${e}`)
+    } finally {
+      console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
     }
   }
 }

@@ -1,14 +1,18 @@
 import * as React from 'react'
+
+import { getLocale } from '../../../../common/locale'
 import {
   AccountAssetOptionType,
   OrderTypes,
   BuySendSwapViewTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  ToOrFromType
+  ToOrFromType,
+  SwapValidationErrorType
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -28,6 +32,7 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   isSubmitDisabled: boolean
+  validationError?: SwapValidationErrorType
   onToggleOrderType: () => void
   onFlipAssets: () => void
   onSubmitSwap: () => void
@@ -53,6 +58,7 @@ function Swap (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     isSubmitDisabled,
+    validationError,
     onToggleOrderType,
     onInputChange,
     onSelectPresetAmount,
@@ -75,6 +81,31 @@ function Swap (props: Props) {
     onFilterAssetList(toAsset)
   }
 
+  const submitText = React.useMemo(() => {
+    if (validationError === 'insufficientBalance') {
+      return getLocale('braveWalletSwapInsufficientBalance')
+    }
+
+    if (validationError === 'insufficientEthBalance') {
+      return getLocale('braveWalletSwapInsufficientEthBalance')
+    }
+
+    if (validationError === 'insufficientAllowance') {
+      return getLocale('braveWalletSwapInsufficientAllowance')
+        .replace('$1', fromAsset.asset.symbol)
+    }
+
+    if (validationError === 'insufficientLiquidity') {
+      return getLocale('braveWalletSwapInsufficientLiquidity')
+    }
+
+    if (validationError === 'unknownError') {
+      return getLocale('braveWalletSwapUnknownError')
+    }
+
+    return getLocale('braveWalletSwap')
+  }, [validationError])
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -86,6 +117,7 @@ function Swap (props: Props) {
         selectedAssetBalance={fromAssetBalance}
         selectedAsset={fromAsset}
         onShowSelection={onShowAssetFrom}
+        validationError={validationError}
       />
       <ArrowButton onClick={onFlipAssets}>
         <ArrowDownIcon />
@@ -121,7 +153,7 @@ function Swap (props: Props) {
       <NavButton
         disabled={isSubmitDisabled}
         buttonType='primary'
-        text='Swap'
+        text={submitText}
         onSubmit={onSubmitSwap}
       />
     </StyledWrapper>

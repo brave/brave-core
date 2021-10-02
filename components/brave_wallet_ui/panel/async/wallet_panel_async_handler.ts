@@ -194,6 +194,9 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store, paylo
   }
 })
 
-handler.on(PanelActions.fetchPanelSwapQuote.getType(), fetchSwapQuoteFactory(PanelActions.setPanelSwapQuote))
+handler.on(
+  PanelActions.fetchPanelSwapQuote.getType(),
+  fetchSwapQuoteFactory(PanelActions.setPanelSwapQuote, PanelActions.setPanelSwapError)
+)
 
 export default handler.middleware
