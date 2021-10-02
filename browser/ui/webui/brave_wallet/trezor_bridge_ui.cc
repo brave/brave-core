@@ -34,6 +34,9 @@ TrezorBridgeUI::TrezorBridgeUI(content::WebUI* web_ui, const std::string& name)
       network::mojom::CSPDirectiveName::FrameSrc,
       "frame-src chrome://trezor-bridge;");
   html_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      "frame-ancestors chrome://trezor-bridge;");
+  html_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src chrome://resources/ chrome://trezor-bridge ;");
   // Disable DenyXFrame to allow TrezorConnect to create iframes.
