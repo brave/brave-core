@@ -92,6 +92,35 @@ async function refreshWalletInfo (store: Store) {
   const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
   result.accountInfos = [...result.accountInfos, ...hardwareAccounts.accounts]
 
+  // Get/Set selectedAccount
+  if (result.isWalletCreated) {
+
+    // Get selectedAccountAddress
+    const getSelectedAccount = await apiProxy.keyringController.getSelectedAccount()
+    const selectedAddress = getSelectedAccount.address
+
+    // Fallback account address if selectedAccount returns null
+    const fallbackAddress = result.accountInfos[0].address
+
+    // If selectedAccount is null will setSelectedAccount to fallback address
+    if (!selectedAddress) {
+      await apiProxy.keyringController.setSelectedAccount(fallbackAddress)
+      result.selectedAccount = fallbackAddress
+    } else {
+      // If a user has already created an wallet but then chooses to restore
+      // a different wallet, getSelectedAccount still returns the previous wallets
+      // selected account.
+      // This check looks to see if the returned selectedAccount exist in the accountInfos
+      // payload, if not it will setSelectedAccount to the fallback address
+      if (!result.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
+        result.selectedAccount = fallbackAddress
+        await apiProxy.keyringController.setSelectedAccount(fallbackAddress)
+      } else {
+        result.selectedAccount = selectedAddress
+      }
+    }
+  }
+
   store.dispatch(WalletActions.initialized(result))
   const networkList = await ethJsonRpcController.getAllNetworks()
   store.dispatch(WalletActions.setAllNetworks(networkList))
@@ -217,6 +246,8 @@ handler.on(WalletActions.selectNetwork.getType(), async (store, payload: Ethereu
 
 handler.on(WalletActions.selectAccount.getType(), async (store, payload: WalletAccountType) => {
   const apiProxy = await getAPIProxy()
+  await apiProxy.keyringController.setSelectedAccount(payload.address)
+  store.dispatch(WalletActions.setSelectedAccount(payload))
   const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.address)
   store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
 })

@@ -75,3 +75,4 @@ export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTr
 export const setTransactionList = createAction<TransactionListInfo[]>('setTransactionList')
 export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')
 export const notifyUserInteraction = createAction('notifyUserInteraction')
+export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')

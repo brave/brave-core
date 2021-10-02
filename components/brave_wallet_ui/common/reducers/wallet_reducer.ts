@@ -90,6 +90,9 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       tokens: []
     }
   })
+  const selectedAccount = payload.selectedAccount ?
+    accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
+    : accounts[0]
   return {
     ...state,
     hasInitialized: true,
@@ -98,7 +101,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    selectedAccount: accounts[0]
+    selectedAccount: selectedAccount
   }
 })
 
@@ -109,7 +112,7 @@ reducer.on(WalletActions.hasIncorrectPassword, (state: any, payload: boolean) =>
   }
 })
 
-reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType) => {
+reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccountType) => {
   return {
     ...state,
     selectedAccount: payload
