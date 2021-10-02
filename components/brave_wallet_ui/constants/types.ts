@@ -466,11 +466,22 @@ export class TxData {
   data: Uint8Array
 }
 
+export class GasEstimation {
+  slowMaxPriorityFeePerGas: string
+  avgMaxPriorityFeePerGas: string
+  fastMaxPriorityFeePerGas: string
+  slowMaxFeePerGas: string
+  avgMaxFeePerGas: string
+  fastMaxFeePerGas: string
+  baseFeePerGas: string
+}
+
 export class TxData1559 {
   baseData: TxData
   chainId: string
   maxPriorityFeePerGas: string
   maxFeePerGas: string
+  gasEstimation?: GasEstimation
 }
 
 export interface AddUnapprovedTransactionReturnInfo {
@@ -486,6 +497,10 @@ export interface AddUnapproved1559TransactionReturnInfo {
 }
 
 export interface SetGasPriceAndLimitForUnapprovedTransactionReturnInfo {
+  success: boolean
+}
+
+export interface SetGasFeeAndLimitForUnapprovedTransactionReturnInfo {
   success: boolean
 }
 
@@ -548,6 +563,7 @@ export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
   setGasPriceAndLimitForUnapprovedTransaction: (txMetaId: string, gasPrice: string, gasLimit: string) => Promise<SetGasPriceAndLimitForUnapprovedTransactionReturnInfo>
+  setGasFeeAndLimitForUnapprovedTransaction: (txMetaId: string, maxPriorityFeePerGas: string, maxFeePerGas: string, gasLimit: string) => Promise<SetGasFeeAndLimitForUnapprovedTransactionReturnInfo>
   approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
@@ -574,9 +590,20 @@ export interface SwapController {
   getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
 }
 
+export interface GetEstimatedTimeReturnInfo {
+  success: boolean
+  seconds: string
+}
+
+export interface GetGasOracleReturnInfo {
+  gasEstimation?: GasEstimation
+}
+
 export interface AssetRatioController {
   getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
   getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
+  getEstimatedTime: (gasPrice: string /* decimal string in wei */) => Promise<GetEstimatedTimeReturnInfo>
+  getGasOracle: () => Promise<GetGasOracleReturnInfo>
 }
 
 export interface KeyringController {

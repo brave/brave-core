@@ -10,6 +10,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_types.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -176,6 +178,153 @@ bool ParseAssetPriceHistory(
   }
 
   return true;
+}
+
+std::string ParseEstimatedTime(const std::string& json) {
+  // {
+  //   "payload": {
+  //     "status": "1",
+  //     "message": "",
+  //     "result": "3615"
+  //   },
+  //   "lastUpdated": "2021-09-22T21:45:40.015Z"
+  // }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return "";
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return "";
+  }
+
+  const std::string* result = response_dict->FindStringPath("payload.result");
+  return result ? *result : "";
+}
+
+brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
+    const std::string& json) {
+  // {
+  //   "payload": {
+  //     "status": "1",
+  //     "message": "",
+  //     "result": {
+  //       "LastBlock": "13243541",
+  //       "SafeGasPrice": "47",
+  //       "ProposeGasPrice": "48",
+  //       "FastGasPrice": "48",
+  //       "suggestBaseFee": "46.574033786",
+  //       "gasUsedRatio": "0.27036175840958,0.0884828740801432,
+  //           0.0426623303159149,0.972173412918789,0.319781207901446"
+  //     }
+  //   },
+  //   "lastUpdated": "2021-09-22T21:45:40.015Z"
+  // }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return nullptr;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return nullptr;
+  }
+
+  auto* result = response_dict->FindPath("payload.result");
+  if (!result || !result->is_dict()) {
+    return nullptr;
+  }
+
+  const std::string* safe_gas_price = result->FindStringKey("SafeGasPrice");
+  if (!safe_gas_price || safe_gas_price->empty()) {
+    return nullptr;
+  }
+
+  const std::string* proposed_gas_price =
+      result->FindStringKey("ProposeGasPrice");
+  if (!proposed_gas_price || proposed_gas_price->empty()) {
+    return nullptr;
+  }
+
+  const std::string* fast_gas_price = result->FindStringKey("FastGasPrice");
+  if (!fast_gas_price || fast_gas_price->empty()) {
+    return nullptr;
+  }
+
+  const std::string* base_fee = result->FindStringKey("suggestBaseFee");
+  if (!base_fee || base_fee->empty()) {
+    return nullptr;
+  }
+
+  mojom::GasEstimation1559Ptr estimation =
+      brave_wallet::mojom::GasEstimation1559::New();
+
+  // We save the original value in wei as the base_fee_per_gas, but use only
+  // the integer part in gwei value to calculate the priority fee.
+  size_t point = base_fee->find(".");
+  std::string gwei_str = base_fee->substr(0, point);
+  // Takes at most 9 digits and convert to wei, zeros will be padded if needed.
+  std::string fractional =
+      point == std::string::npos ? "" : base_fee->substr(point + 1, 9);
+  size_t padding_len = 9 - fractional.size();
+  std::string wei_str = gwei_str + fractional + std::string(padding_len, '0');
+
+  uint64_t base_fee_gwei;
+  if (!base::StringToUint64(gwei_str, &base_fee_gwei)) {
+    return nullptr;
+  }
+
+  uint64_t base_fee_wei;
+  if (!base::StringToUint64(wei_str, &base_fee_wei)) {
+    return nullptr;
+  }
+  estimation->base_fee_per_gas = Uint256ValueToHex(base_fee_wei);
+
+  uint64_t safe_gas_price_gwei;
+  if (!base::StringToUint64(*safe_gas_price, &safe_gas_price_gwei)) {
+    return nullptr;
+  }
+  estimation->slow_max_fee_per_gas =
+      Uint256ValueToHex(static_cast<uint256_t>(safe_gas_price_gwei) *
+                        static_cast<uint256_t>(1e9));
+  estimation->slow_max_priority_fee_per_gas = Uint256ValueToHex(
+      static_cast<uint256_t>(safe_gas_price_gwei - base_fee_gwei) *
+      static_cast<uint256_t>(1e9));
+
+  uint64_t proposed_gas_price_gwei;
+  if (!base::StringToUint64(*proposed_gas_price, &proposed_gas_price_gwei)) {
+    return nullptr;
+  }
+  estimation->avg_max_fee_per_gas =
+      Uint256ValueToHex(static_cast<uint256_t>(proposed_gas_price_gwei) *
+                        static_cast<uint256_t>(1e9));
+  estimation->avg_max_priority_fee_per_gas = Uint256ValueToHex(
+      static_cast<uint256_t>(proposed_gas_price_gwei - base_fee_gwei) *
+      static_cast<uint256_t>(1e9));
+
+  uint64_t fast_gas_price_gwei;
+  if (!base::StringToUint64(*fast_gas_price, &fast_gas_price_gwei)) {
+    return nullptr;
+  }
+  estimation->fast_max_fee_per_gas =
+      Uint256ValueToHex(static_cast<uint256_t>(fast_gas_price_gwei) *
+                        static_cast<uint256_t>(1e9));
+  estimation->fast_max_priority_fee_per_gas = Uint256ValueToHex(
+      static_cast<uint256_t>(fast_gas_price_gwei - base_fee_gwei) *
+      static_cast<uint256_t>(1e9));
+
+  return estimation;
 }
 
 }  // namespace brave_wallet

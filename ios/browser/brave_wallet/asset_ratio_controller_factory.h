@@ -21,10 +21,14 @@ class BrowserState;
 
 namespace brave_wallet {
 
+class AssetRatioController;
+
 class AssetRatioControllerFactory : public BrowserStateKeyedServiceFactory {
  public:
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojom::AssetRatioController* GetForBrowserState(
+      ChromeBrowserState* browser_state);
+  static AssetRatioController* GetControllerForBrowserState(
       ChromeBrowserState* browser_state);
 
   static AssetRatioControllerFactory* GetInstance();

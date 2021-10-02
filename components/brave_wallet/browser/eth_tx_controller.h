@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -26,6 +27,7 @@ class SequencedTaskRunner;
 
 namespace brave_wallet {
 
+class AssetRatioController;
 class EthJsonRpcController;
 class KeyringController;
 
@@ -34,6 +36,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
       KeyringController* keyring_controller,
+      AssetRatioController* asset_ratio_controller,
       std::unique_ptr<EthTxStateManager> tx_state_manager,
       std::unique_ptr<EthNonceTracker> nonce_tracker,
       std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
@@ -64,11 +67,19 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                             MakeERC20ApproveDataCallback) override;
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
+
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
+  void SetGasFeeAndLimitForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::string& max_priority_fee_per_gas,
+      const std::string& max_fee_per_gas,
+      const std::string& gas_limit,
+      SetGasFeeAndLimitForUnapprovedTransactionCallback callback) override;
+
   void ApproveHardwareTransaction(
       const std::string& tx_meta_id,
       ApproveHardwareTransactionCallback callback) override;
@@ -77,6 +88,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                               const std::string& r,
                               const std::string& s,
                               ProcessLedgerSignatureCallback callback) override;
+
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
@@ -105,21 +117,33 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void OnPublishTransaction(std::string tx_meta_id,
                             bool status,
                             const std::string& tx_hash);
-  void OnGetEstimateGas(const std::string& from,
-                        const std::string& gas_price,
-                        std::unique_ptr<EthTransaction> tx,
-                        AddUnapprovedTransactionCallback callback,
-                        bool success,
-                        const std::string& result);
+  void OnGetGasPrice(const std::string& from,
+                     const std::string& to,
+                     const std::string& value,
+                     const std::string& data,
+                     const std::string& gas_limit,
+                     std::unique_ptr<EthTransaction> tx,
+                     AddUnapprovedTransactionCallback callback,
+                     bool success,
+                     const std::string& result);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool success,
       const std::string& result);
+  void OnGetGasOracle(const std::string& from,
+                      const std::string& to,
+                      const std::string& value,
+                      const std::string& data,
+                      const std::string& gas_limit,
+                      std::unique_ptr<Eip1559Transaction> tx,
+                      AddUnapprovedTransactionCallback callback,
+                      mojom::GasEstimation1559Ptr gas_estimation);
 
   EthJsonRpcController* rpc_controller_;   // NOT OWNED
   KeyringController* keyring_controller_;  // NOT OWNED
+  AssetRatioController* asset_ratio_controller_;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;

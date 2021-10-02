@@ -23,6 +23,10 @@ bool ParseAssetPriceHistory(
     const std::string& json,
     std::vector<brave_wallet::mojom::AssetTimePricePtr>* values);
 
+std::string ParseEstimatedTime(const std::string& json);
+brave_wallet::mojom::GasEstimation1559Ptr ParseGasOracle(
+    const std::string& json);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_

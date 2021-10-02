@@ -57,6 +57,14 @@ class AssetRatioController : public KeyedService,
   static GURL GetPriceHistoryURL(
       const std::string& asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
+
+  void GetEstimatedTime(const std::string& gas_price,
+                        GetEstimatedTimeCallback callback) override;
+  void GetGasOracle(GetGasOracleCallback callback) override;
+
+  static GURL GetEstimatedTimeURL(const std::string& gas_price);
+  static GURL GetGasOracleURL();
+
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
@@ -71,6 +79,17 @@ class AssetRatioController : public KeyedService,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetEstimatedTime(
+      GetEstimatedTimeCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetGasOracle(GetGasOracleCallback callback,
+                      const int status,
+                      const std::string& body,
+                      const base::flat_map<std::string, std::string>& headers);
 
   mojo::ReceiverSet<mojom::AssetRatioController> receivers_;
 
