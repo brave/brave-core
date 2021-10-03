@@ -21,6 +21,7 @@ import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
+import { ETH } from '../../../../options/asset-options'
 
 // Components
 import { SearchBar, BackButton } from '../../../shared'
@@ -273,7 +274,7 @@ const Portfolio = (props: Props) => {
       ) : (
         <InfoColumn>
           <AssetRow>
-            <AssetIcon icon={selectedAsset.logo} />
+            <AssetIcon icon={selectedAsset.symbol === 'ETH' ? ETH.asset.logo : selectedAsset.logo} />
             <AssetNameText>{selectedAsset.name}</AssetNameText>
           </AssetRow>
           <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>

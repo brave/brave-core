@@ -162,7 +162,13 @@ reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalance
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userVisibleTokensInfo: TokenInfo[] = state.userVisibleTokensInfo
+  const userTokens: TokenInfo[] = state.userVisibleTokensInfo
+  const userVisibleTokensInfo = userTokens.map((token) => {
+    return {
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    }
+  })
   const prices = payload.prices
   const findTokenPrice = (symbol: string) => {
     if (prices.success) {
