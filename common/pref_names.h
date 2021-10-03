@@ -99,4 +99,10 @@ extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
 extern const char kDontAskForCrashReporting[];
 
+// Cast extension requires a browser restart once the setting is toggled.
+// kEnableMediaRouterOnRestart is used as a proxy to identify the current
+// state of the switch and prefs::kEnableMediaRouter is updated to
+// kEnableMediaRouterOnRestart on restart.
+extern const char kEnableMediaRouterOnRestart[];
+
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
