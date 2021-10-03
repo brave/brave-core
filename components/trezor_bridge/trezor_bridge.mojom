@@ -5,6 +5,13 @@
 
 module trezor_bridge.mojom;
 
+struct HardwareWalletAccount {
+  string address;
+  string derivation_path;
+  string name;
+  string hardware_vendor;
+};
+
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PageHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
@@ -14,14 +21,14 @@ interface PageHandlerFactory {
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
-  OnAddressesFetched(array<string> addresses);
+  OnAddressesReceived(bool success, array<HardwareWalletAccount> accounts);
   OnUnlocked(bool success);
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
   // TODO
-  GetAddress(array<string> paths);
+  requestAddresses(array<string> paths);
   // TODO
   // to update the state of the current page action button to `state`.
   Unlock();

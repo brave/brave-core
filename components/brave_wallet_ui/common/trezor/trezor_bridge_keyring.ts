@@ -13,7 +13,7 @@ import {
 import {
   kTrezorHardwareVendor,
   TrezorBridgeController,
-  TrezorBridgeGetAddressReturnInfo
+  TrezorBridgeGetTrezorAccountsReturnInfo
 } from '../../constants/types'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
@@ -68,28 +68,24 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     }
   }
 
-  _getAddress = async (path: string):Promise<TrezorBridgeGetAddressReturnInfo> => {
+  _getTrezorAccounts = async (paths: string[]):Promise<TrezorBridgeGetTrezorAccountsReturnInfo> => {
     if (!this.isUnlocked()) {
       return Promise.reject({succes: false, address: ''})
     }
-    return this.bridge_.getAddress(path)
+    return this.bridge_.getTrezorAccounts(paths)
   }
 
   _getAccounts = async (from: number, to: number, scheme: string) => {
-    const accounts = []
+    const paths = []
     for (let i = from; i <= to; i++) {
-      const path = this._getPathForIndex(i, scheme)
-      const address = await this._getAddress(path)
-      if (!address.success) {
-        continue
-      }
-      accounts.push({
-        address: address.address,
-        derivationPath: path,
-        name: this.type() + ' ' + i,
-        hardwareVendor: this.type()
-      })
+      paths.push(this._getPathForIndex(i, scheme))
     }
-    return accounts
+    
+    const accounts = await this._getTrezorAccounts(paths)
+    if (!accounts.success) {
+      throw Error(`Unable to get accounts from device`)
+    }
+    console.log(accounts.accounts)
+    return accounts.accounts
   }
 }

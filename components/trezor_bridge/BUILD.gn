@@ -14,14 +14,16 @@ preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("trezor_bridge") {
   sources = [
+    "mojo_trezor_web_ui_controller.cc",
+    "mojo_trezor_web_ui_controller.h",
     "trezor_bridge_handler.cc",
     "trezor_bridge_handler.h",
-    "mojo_trezor_web_ui_controller.cc",
-    "mojo_trezor_web_ui_controller.h"
+    "trezor_bridge_page_handler.cc",
+    "trezor_bridge_page_handler.h",
   ]
   deps = [
-    "//base",
     ":mojo_bindings",
+    "//base",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings_grit",
     "//content/public/browser",
@@ -41,7 +43,7 @@ copy("copy_trezor_data") {
 }
 
 mojom("mojo_bindings") {
-  sources = [ "trezor_bridge.mojom" ]
+  sources = [ "trezor_bridge.mojom", "../brave_wallet/common/brave_wallet_types.mojom" ]
 
   public_deps = [
     "//mojo/public/mojom/base",

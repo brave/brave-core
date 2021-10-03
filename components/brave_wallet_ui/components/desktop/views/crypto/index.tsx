@@ -13,14 +13,14 @@ import {
   TokenInfo,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultWallet
+  DefaultWallet,
+  HardwareWalletAccount
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
 import { getLocale } from '../../../../../common/locale'
 import { PortfolioView, AccountsView } from '../'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
 

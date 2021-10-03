@@ -20,10 +20,7 @@ import {
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType
 } from '../constants/action_types'
-import {
-  HardwareWalletAccount
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { SwapResponse, SwapErrorResponse, TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
+import { SwapResponse, SwapErrorResponse, TokenInfo, UpdateAccountNamePayloadType, HardwareWalletAccount } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')

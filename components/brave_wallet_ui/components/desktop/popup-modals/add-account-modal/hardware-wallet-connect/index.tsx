@@ -19,11 +19,12 @@ import {
 } from './style'
 
 // Custom types
-import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, HardwareWalletDerivationPathsMapping } from './types'
+import { HardwareWalletConnectOpts, LedgerDerivationPaths, HardwareWalletDerivationPathsMapping } from './types'
 
 import {
   kLedgerHardwareVendor,
-  kTrezorHardwareVendor
+  kTrezorHardwareVendor,
+  HardwareWalletAccount
 } from '../../../../../constants/types'
 
 import HardwareWalletAccountsList from './accounts-list'

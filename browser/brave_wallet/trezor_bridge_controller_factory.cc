@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/trezor_bridge/trezor_content_proxy.h"
 #include "brave/components/brave_wallet/browser/trezor_bridge_controller.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -51,7 +52,8 @@ TrezorBridgeControllerFactory::~TrezorBridgeControllerFactory() {}
 
 KeyedService* TrezorBridgeControllerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new TrezorBridgeController(context);
+  return new TrezorBridgeController(
+      context, std::make_unique<TrezorContentProxy>(context));
 }
 
 content::BrowserContext* TrezorBridgeControllerFactory::GetBrowserContextToUse(

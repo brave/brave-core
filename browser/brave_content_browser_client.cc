@@ -156,10 +156,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/brave_wallet/trezor_bridge_controller_factory.h"
+#include "brave/browser/ui/webui/trezor_bridge/trezor_bridge_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/browser/ui/webui/brave_wallet/trezor_bridge/trezor_bridge_ui.h"
 #if !defined(OS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
@@ -435,6 +435,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       trezor_bridge::mojom::PageHandlerFactory, TrezorBridgeUI>(map);
 #endif

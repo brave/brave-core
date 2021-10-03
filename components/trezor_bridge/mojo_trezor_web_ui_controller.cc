@@ -11,7 +11,6 @@ MojoTrezorWebUIController::MojoTrezorWebUIController(content::WebUI* contents)
 
 MojoTrezorWebUIController::~MojoTrezorWebUIController() = default;
 
-
 WEB_UI_CONTROLLER_TYPE_IMPL(MojoTrezorWebUIController)
 
 void MojoTrezorWebUIController::BindInterface(

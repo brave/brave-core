@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AddAccountNavTypes, WalletAccountType } from '../../../../constants/types'
+import { AddAccountNavTypes, WalletAccountType, HardwareWalletAccount } from '../../../../constants/types'
 import { AddAccountNavOptions } from '../../../../options/add-account-nav-options'
 import { Select } from 'brave-ui/components'
 import { PopupModal, TopTabNav } from '../..'
@@ -18,7 +18,7 @@ import {
   ErrorText
 } from './style'
 
-import { HardwareWalletAccount, HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
+import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
 
 export interface Props {

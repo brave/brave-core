@@ -14,7 +14,7 @@
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/trezor_bridge/trezor_bridge_ui.h"
+#include "brave/browser/ui/webui/trezor_bridge/trezor_bridge_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"

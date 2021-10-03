@@ -36,7 +36,8 @@ import {
   UpdateAccountNamePayloadType,
   EthereumChain,
   WalletRoutes,
-  BuySendSwapTypes
+  BuySendSwapTypes,
+  HardwareWalletAccount
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -46,9 +47,6 @@ import { formatPrices } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
-import {
-  HardwareWalletAccount
-} from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
 

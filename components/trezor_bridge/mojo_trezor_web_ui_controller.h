@@ -7,23 +7,34 @@
 #define BRAVE_COMPONENTS_TREZOR_BRIDGE_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
 
 #include "base/memory/weak_ptr.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 #include "brave/components/trezor_bridge/trezor_bridge.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "ui/webui/mojo_web_ui_controller.h"
 
 namespace content {
 class WebUI;
 }  // namespace content
 
-class MojoTrezorWebUIController : public ui::MojoWebUIController,
-                                  public trezor_bridge::mojom::PageHandlerFactory {
+class MojoTrezorWebUIController
+    : public ui::MojoWebUIController,
+      public trezor_bridge::mojom::PageHandlerFactory {
  public:
-  class Embedder {
+  class LibraryController {
    public:
+    virtual void RequestAddresses(
+        const std::vector<std::string>& addresses) = 0;
     virtual void Unlock() = 0;
-    virtual void GetAccounts(std::vector<std::string>) = 0;
+  };
+
+  class Subscriber {
+   public:
+    virtual void OnAddressesReceived(
+        bool success,
+        std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr>
+            accounts) = 0;
+    virtual void OnUnlocked(bool success) = 0;
   };
 
   explicit MojoTrezorWebUIController(content::WebUI* contents);
@@ -37,17 +48,22 @@ class MojoTrezorWebUIController : public ui::MojoWebUIController,
   void BindInterface(
       mojo::PendingReceiver<trezor_bridge::mojom::PageHandlerFactory> receiver);
 
+  base::WeakPtr<Subscriber> subscriber() { return subscriber_; }
+  base::WeakPtr<LibraryController> controller() { return controller_; }
 
-  void set_embedder(base::WeakPtr<Embedder> embedder) { embedder_ = embedder; }
-  base::WeakPtr<Embedder> embedder() { return embedder_; }
+ protected:
+  void SetLibraryController(base::WeakPtr<LibraryController> controller) {
+    controller_ = controller;
+  }
 
  private:
-  base::WeakPtr<Embedder> embedder_;
+  base::WeakPtr<Subscriber> subscriber_;
+  base::WeakPtr<LibraryController> controller_;
+
+  mojo::Receiver<trezor_bridge::mojom::PageHandlerFactory>
+      page_factory_receiver_{this};
+
   WEB_UI_CONTROLLER_TYPE_DECL();
-  
-  
-  mojo::Receiver<trezor_bridge::mojom::PageHandlerFactory> page_factory_receiver_{
-      this};
 };
 
 #endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_MOJO_TREZOR_WEB_UI_CONTROLLER_H_

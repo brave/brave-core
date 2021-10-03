@@ -29,12 +29,12 @@ import {
   ER20TransferParams,
   SwapErrorResponse,
   SwapResponse,
-  TokenInfo
+  TokenInfo,
+  HardwareWalletAccount
 } from '../../constants/types'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { formatBalance, toWeiHex } from '../../utils/format-balances'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import getSwapConfig from '../../constants/swap.config'

@@ -532,10 +532,10 @@ source_set("ui") {
   }
   if (brave_wallet_enabled && !is_ios) {
     sources += [
-      "webui/brave_wallet/trezor_bridge/trezor_bridge_ui.cc",
-      "webui/brave_wallet/trezor_bridge/trezor_bridge_ui.h",
-      "webui/brave_wallet/trezor_bridge/trezor_bridge_page_handler.cc",
-      "webui/brave_wallet/trezor_bridge/trezor_bridge_page_handler.h",
+      "webui/trezor_bridge/trezor_bridge_ui.cc",
+      "webui/trezor_bridge/trezor_bridge_ui.h",
+      "webui/trezor_bridge/trezor_content_proxy.cc",
+      "webui/trezor_bridge/trezor_content_proxy.h",
     ]
     deps += [
       "//brave/components/trezor_bridge",

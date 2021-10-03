@@ -7,7 +7,7 @@ import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
-import { UpdateAccountNamePayloadType } from '../../constants/types'
+import { UpdateAccountNamePayloadType, HardwareWalletAccount } from '../../constants/types'
 import {
   CreateWalletPayloadType,
   RestoreWalletPayloadType,
@@ -20,9 +20,6 @@ import {
   ImportAccountFromJsonPayloadType,
   ImportFromExternalWalletPayloadType
 } from '../constants/action_types'
-import {
-  HardwareWalletAccount
-} from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
 

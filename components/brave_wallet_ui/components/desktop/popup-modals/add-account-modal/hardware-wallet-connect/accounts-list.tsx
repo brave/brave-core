@@ -10,8 +10,8 @@ import {
   HardwareWalletAccountsList,
   SelectWrapper
 } from './style'
+import { HardwareWalletAccount } from '../../../../../constants/types'
 import {
-  HardwareWalletAccount,
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping
 } from './types'

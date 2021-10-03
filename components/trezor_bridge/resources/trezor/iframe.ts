@@ -10,7 +10,12 @@ const { setFetch } = require('trezor-link/lib/bridge/http')
 window.fetch = function (url, options) {
   return new Promise(async (resolve, reject) => {
     // @ts-ignore
-    const payload = await window.parent.sendWithPromise('trezor-fetch', url, options)
+    let payload = await window.parent.sendWithPromise('trezor-fetch', url, options)
+    if ((url as string).startsWith('./data/config.js')) {
+      let response = JSON.parse(payload.text)
+      response["whitelist"].push({ "origin": window.location.origin, "priority": 0 })
+      payload.text = JSON.stringify(response);
+    }
     const response = {
       ok: payload.ok,
       text: () => { return payload.text },

@@ -1,0 +1,9 @@
+module brave_wallet_types.mojom;
+
+[Stable]
+struct HardwareWalletAccount {
+  string address;
+  string derivation_path;
+  string name;
+  string hardware_vendor;
+};

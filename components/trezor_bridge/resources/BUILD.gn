@@ -40,7 +40,6 @@ pack_web_resources("generated_resources") {
   deps = [ ":trezor_bridge_ui" ]
 }
 
-
 preprocess_if_expr("preprocess_bridge") {
   in_folder = "./"
   out_folder = "$target_gen_dir/$preprocess_folder"

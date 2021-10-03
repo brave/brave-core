@@ -11,4 +11,5 @@
   <include name="IDR_TREZOR_BRIDGE_IFRAME_DATA_FIRMWARE_RELEASES1" file="${root_gen_dir}/brave/components/trezor_bridge/resources/data/firmware/1/releases.json" resource_path="firmware/1/releases.json" use_base_dir="false" type="BINDATA" />
   <include name="IDR_TREZOR_BRIDGE_IFRAME_DATA_FIRMWARE_RELEASES2" file="${root_gen_dir}/brave/components/trezor_bridge/resources/data/firmware/2/releases.json" resource_path="firmware/2/releases.json" use_base_dir="false" type="BINDATA" />
   <include name="IDR_TREZOR_BRIDGE_IFRAME_DATA_BRIDGE_RELEASES" file="${root_gen_dir}/brave/components/trezor_bridge/resources/data/bridge/releases.json" resource_path="bridge/releases.json" use_base_dir="false" type="BINDATA" />
+  <include name="IDR_TREZOR_BRIDGE_IFRAME_DATA_BRIDGE_LATEST" file="${root_gen_dir}/brave/components/trezor_bridge/resources/data/bridge/latest.txt" resource_path="bridge/latest.txt" use_base_dir="false" type="BINDATA" />
 </grit-part>

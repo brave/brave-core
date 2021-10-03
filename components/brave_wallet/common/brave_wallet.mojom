@@ -398,7 +398,8 @@ enum DefaultWallet {
   BraveWallet
 };
 
+// Handles work with Trezor library which is loaded inside webui sandbox.
 interface TrezorBridgeController {
   Unlock() => (bool success);
-  GetAddress(string path) => (bool success, string address);
+  GetTrezorAccounts(array<string> paths) => (bool success, array<HardwareWalletAccount> accounts);
 };

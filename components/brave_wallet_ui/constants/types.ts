@@ -639,9 +639,18 @@ export interface TrezorBridgeUnlockReturnInfo {
   success: boolean
 }
 
-export interface TrezorBridgeGetAddressReturnInfo {
+export interface TrezorBridgeGetTrezorAccountsReturnInfo {
   success: boolean,
+  accounts: HardwareWalletAccount[]
+}
+
+// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
+// we auto generate this type file from mojo.
+export interface HardwareWalletAccount {
   address: string
+  derivationPath: string
+  name: string
+  hardwareVendor: string
 }
 
 export enum DefaultWallet {
@@ -678,7 +687,7 @@ export interface BraveWalletService {
 
 export interface TrezorBridgeController {
   unlock: () => Promise<TrezorBridgeUnlockReturnInfo>
-  getAddress: (path: string) => Promise<TrezorBridgeGetAddressReturnInfo>
+  getTrezorAccounts: (paths: string[]) => Promise<TrezorBridgeGetTrezorAccountsReturnInfo>
 }
 
 export interface RecoveryObject {
