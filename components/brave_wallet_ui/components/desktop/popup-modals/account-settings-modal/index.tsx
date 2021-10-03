@@ -135,6 +135,12 @@ const AddAccountModal = (props: Props) => {
     }
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && accountName) {
+      onSubmitUpdateName()
+    }
+  }
+
   return (
     <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
@@ -151,6 +157,7 @@ const AddAccountModal = (props: Props) => {
               value={accountName}
               placeholder={getLocale('braveWalletAddAccountPlaceholder')}
               onChange={handleAccountNameChanged}
+              onKeyDown={handleKeyDown}
             />
             {updateError &&
               <ErrorText>{getLocale('braveWalletAccountSettingsUpdateError')}</ErrorText>
