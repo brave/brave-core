@@ -376,6 +376,7 @@ class BrowserViewController: UIViewController {
         Preferences.Rewards.hideRewardsIcon.observe(from: self)
         Preferences.Rewards.rewardsToggledOnce.observe(from: self)
         Preferences.Playlist.enablePlaylistMenuBadge.observe(from: self)
+        Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
         rewardsEnabledObserveration = rewards.observe(\.isEnabled, options: [.new]) { [weak self] _, _ in
             guard let self = self else { return }
             self.updateRewardsButtonState()
@@ -2925,7 +2926,8 @@ extension BrowserViewController: PreferencesObserver {
                 $0.userScriptManager?.isMediaBackgroundPlaybackEnabled = Preferences.General.mediaAutoBackgrounding.value
                 $0.webView?.reload()
             }
-        case Preferences.Playlist.enablePlaylistMenuBadge.key:
+        case Preferences.Playlist.enablePlaylistMenuBadge.key,
+            Preferences.Playlist.enablePlaylistURLBarButton.key:
             let selectedTab = tabManager.selectedTab
             updatePlaylistURLBar(tab: selectedTab,
                                  state: selectedTab?.playlistItemState ?? .none,
