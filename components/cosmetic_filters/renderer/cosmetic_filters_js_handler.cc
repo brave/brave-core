@@ -318,17 +318,19 @@ bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
     return false;
   }
 
-  SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.ProcessURL");
-
   enabled_1st_party_cf_ =
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
 
   if (callback.has_value()) {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+        "Brave.CosmeticFilters.UrlCosmeticResources");
     cosmetic_filters_resources_->UrlCosmeticResources(
       url_.spec(),
       base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
                      base::Unretained(this), std::move(callback.value())));
   } else {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+        "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
     base::Value result;
     cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
     resources_dict_ = base::DictionaryValue::From(
