@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+<script>
+// Adds an script to the DOM with the specified src
+function addScript(src) {
+  const script = document.createElement('script')
+  script.src = src
+  script.onload = function() {
+    window.domAutomationController.send(true);
+  };
+  script.onerror = function() {
+    window.domAutomationController.send(false);
+  };
+  document.body.appendChild(script)
+}
+</script>
+</head>
+<body>
+</body>
+</html>

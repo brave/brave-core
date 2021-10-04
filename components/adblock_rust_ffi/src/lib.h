@@ -37,6 +37,9 @@ bool set_domain_resolver(C_DomainResolverCallback resolver);
  * Create a new `Engine`.
  */
 struct C_Engine* engine_create(const char* rules);
+struct C_Engine* engine_create_with_redirect_urls(
+    const char* rules,
+    const bool include_redirect_urls);
 struct C_Engine* engine_create_from_buffer(const char* data, size_t data_size);
 
 /**

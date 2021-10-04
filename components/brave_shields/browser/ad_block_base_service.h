@@ -50,7 +50,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                           bool* did_match_rule,
                           bool* did_match_exception,
                           bool* did_match_important,
-                          std::string* mock_data_url) override;
+                          std::string* replacement_url) override;
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
@@ -78,7 +78,9 @@ class AdBlockBaseService : public BaseBraveShieldsService {
                       base::OnceClosure callback = base::DoNothing());
   void AddKnownTagsToAdBlockInstance();
   void AddKnownResourcesToAdBlockInstance();
-  void ResetForTest(const std::string& rules, const std::string& resources);
+  void ResetForTest(const std::string& rules,
+                    const std::string& resources = "",
+                    bool include_redirect_urls = false);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
 

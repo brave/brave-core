@@ -14,6 +14,7 @@ namespace features {
 
 NET_EXPORT extern const base::Feature kBraveEphemeralStorage;
 NET_EXPORT extern const base::Feature kBraveEphemeralStorageKeepAlive;
+NET_EXPORT extern const base::Feature kAdblockRedirectUrl;
 NET_EXPORT extern const base::FeatureParam<int>
     kBraveEphemeralStorageKeepAliveTimeInSeconds;
 NET_EXPORT extern const base::Feature kBraveFirstPartyEphemeralStorage;

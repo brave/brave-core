@@ -20,11 +20,13 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void SetUpOnMainThread() override;
   void SetUp() override;
   void PreRunTestOnMainThread() override;
+  void SetUpCommandLine(base::CommandLine* command_line) override;
 
  protected:
   HostContentSettingsMap* content_settings();
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "");
+                                      const std::string& resources = "",
+                                      bool include_redirect_urls = false);
   void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);

@@ -36,15 +36,18 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/test/extension_test_message_listener.h"
+#include "net/base/features.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/host_resolver.h"
 
 const char kAdBlockTestPage[] = "/blocking.html";
+const char kAdBlockTestPageWithCsp[] = "/blocking_csp.html";
 
 const char kAdBlockEasyListFranceUUID[] =
     "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
@@ -76,6 +79,18 @@ using brave_shields::features::kBraveAdblockCollapseBlockedElements;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_shields::features::kBraveAdblockDefault1pBlocking;
 
+std::unique_ptr<net::EmbeddedTestServer> https_server_;
+net::EmbeddedTestServer* https_server() {
+  return https_server_.get();
+}
+
+void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
+  // HTTPS server only serves a valid cert for localhost, so this is needed
+  // to load pages from other hosts without an error.
+  command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+  ExtensionBrowserTest::SetUpCommandLine(command_line);
+}
+
 void AdBlockServiceTest::SetUpOnMainThread() {
   ExtensionBrowserTest::SetUpOnMainThread();
   host_resolver()->AddRule("*", "127.0.0.1");
@@ -98,13 +113,14 @@ HostContentSettingsMap* AdBlockServiceTest::content_settings() {
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
-    const std::string& resources) {
+    const std::string& resources,
+    bool include_redirect_urls) {
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
   ad_block_service->GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
-                     base::Unretained(ad_block_service), rules, resources));
+      FROM_HERE, base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
+                                base::Unretained(ad_block_service), rules,
+                                resources, include_redirect_urls));
   WaitForAdBlockServiceThreads();
 }
 
@@ -129,6 +145,12 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
   embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
   content::SetupCrossSiteRedirector(embedded_test_server());
   ASSERT_TRUE(embedded_test_server()->Start());
+
+  https_server_.reset(new net::EmbeddedTestServer(
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+  content::SetupCrossSiteRedirector(https_server());
+  https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+  https_server_->ServeFilesFromDirectory(test_data_dir);
 }
 
 void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
@@ -693,7 +715,6 @@ class TestAdBlockSubscriptionServiceManagerObserver
 
  private:
   void OnServiceUpdateEvent() override { run_loop_.Quit(); }
-
   base::RunLoop run_loop_;
   brave_shields::AdBlockSubscriptionServiceManager* sub_service_manager_;
 };
@@ -1399,6 +1420,65 @@ IN_PROC_BROWSER_TEST_F(CollapseBlockedElementsFlagDisabledTest,
                          "i[0].clientHeight !== 0"));
 }
 
+class RedirectUrlFlagDisabledTest : public AdBlockServiceTest {
+ public:
+  RedirectUrlFlagDisabledTest() {
+    feature_list_.InitAndDisableFeature(net::features::kAdblockRedirectUrl);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(RedirectUrlFlagDisabledTest,
+                       RedirectUrlWithFeatureDisabled) {
+  ASSERT_TRUE(https_server()->Start());
+  const std::string page_domain = "example.com";
+  const std::string redirect_url_domain = "pcdn.brave.software";
+  GURL redirect_url =
+      https_server()->GetURL(redirect_url_domain, "/redirected_return_true.js");
+
+  UpdateAdBlockInstanceWithRules(
+      base::StringPrintf("*redirected_return_false.js\n"
+                         "@@redirected_return_false.js\n"
+                         "redirected_return_false.js$important,redirect-url=%s",
+                         redirect_url.spec().c_str()),
+      "", true);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url = https_server()->GetURL(page_domain, kAdBlockTestPageWithCsp);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContentsConsoleObserver console_observer(contents);
+  bool result;
+  // Try to load resource redirected_return_true...
+  EXPECT_EQ(true,
+            content::ExecuteScriptAndExtractBool(
+                contents, "addScript('redirected_return_false.js')", &result));
+  EXPECT_TRUE(result);
+  // but original resource redirected_return_false.js is loaded instead
+  EXPECT_EQ(true, content::ExecuteScriptAndExtractBool(contents, "redirected()",
+                                                       &result));
+  EXPECT_FALSE(result);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  // Try to load script on PCDN domain and verify blocked by CSP.
+  // We want there to be a redirect to the PCDN resource, so we use
+  // cross-site (via SetupCrossSiteRedirector)
+  // "/cross-site/hostname/rest/of/path" redirects to
+  // "<scheme>://hostname:<port>/rest/of/path"
+  GURL replacement_resource = https_server()->GetURL(
+      page_domain, base::StringPrintf("/cross-site/%s/%s",
+                                      redirect_url_domain.c_str(), "test.js"));
+  EXPECT_EQ(true, content::ExecuteScriptAndExtractBool(
+                      contents,
+                      base::StringPrintf("addScript('%s')",
+                                         replacement_resource.spec().c_str()),
+                      &result));
+  EXPECT_FALSE(result);
+  console_observer.Wait();
+}
+
 class Default1pBlockingFlagDisabledTest : public AdBlockServiceTest {
  public:
   Default1pBlockingFlagDisabledTest() {
@@ -1514,6 +1594,92 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
                                  "xhr_expect_content('%s', '%s');",
                                  resource_url.spec().c_str(), noopjs.c_str())));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectUrl) {
+  ASSERT_TRUE(https_server()->Start());
+  const std::string page_domain = "pcdn.brave.com";
+  int numXHRLoaded;
+  int numXHRBlocked;
+
+  GURL redirect_url = https_server()->GetURL(page_domain, "/redirected.js");
+  UpdateAdBlockInstanceWithRules(
+      base::StringPrintf("js_mock_me.js\n"
+                         "@@js_mock_me.js\n"
+                         "js_mock_me.js$important,redirect-url=%s",
+                         redirect_url.spec().c_str()),
+      "", true);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url = https_server()->GetURL(page_domain, kAdBlockTestPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  const std::string redirected_src = "redirected\\n";
+  const GURL resource_url =
+      https_server()->GetURL(page_domain, "/js_mock_me.js");
+  EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
+      contents, "window.domAutomationController.send(numXHRLoaded)",
+      &numXHRLoaded));
+  EXPECT_EQ(0, numXHRLoaded);
+  std::string exec_xhr =
+      base::StringPrintf("xhr_expect_content('%s', '%s');",
+                         resource_url.spec().c_str(), redirected_src.c_str());
+  EXPECT_TRUE(content::ExecJs(contents, exec_xhr));
+  EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
+      contents, "window.domAutomationController.send(numXHRLoaded)",
+      &numXHRLoaded));
+  EXPECT_TRUE(content::ExecuteScriptAndExtractInt(
+      contents, "window.domAutomationController.send(numXHRBlocked)",
+      &numXHRBlocked));
+  EXPECT_EQ(1, numXHRLoaded);
+  EXPECT_EQ(0, numXHRBlocked);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectUrlWithCsp) {
+  ASSERT_TRUE(https_server()->Start());
+  const std::string redirect_domain = "redirect.com";
+  const std::string page_domain = "example.com";
+  const std::string redirect_url_domain = "pcdn.brave.software";
+
+  GURL redirect_url =
+      https_server()->GetURL(redirect_domain, "/redirected_return_true.js");
+  // Setting domain allowed so that the redirect is set and we can test that
+  // only pcdn domains bypass CSP.
+  brave::SetRedirectUrlAllowedDomainForTesting({redirect_url.host()});
+  UpdateAdBlockInstanceWithRules(
+      "js_mock_me.js$redirect-url=" + redirect_url.spec(), "", true);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  const GURL url = https_server()->GetURL(page_domain, kAdBlockTestPageWithCsp);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  // Load fails because of CSP
+  content::WebContentsConsoleObserver console_observer(contents);
+  console_observer.SetPattern("Refused to load the script*");
+  bool result;
+  EXPECT_TRUE(content::ExecuteScriptAndExtractBool(
+      contents, "addScript('js_mock_me.js')", &result));
+  EXPECT_FALSE(result);
+  console_observer.Wait();
+  // Now try to load replacement resource
+  redirect_url =
+      https_server()->GetURL(redirect_url_domain, "/redirected_return_true.js");
+  brave::SetRedirectUrlAllowedDomainForTesting({redirect_url.host()});
+  UpdateAdBlockInstanceWithRules(
+      "js_mock_me.js$redirect-url=" + redirect_url.spec(), "", true);
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  // This script load+execution should succeed because of CSP bypass for PCDN
+  // hosts
+  EXPECT_EQ(true, content::ExecuteScriptAndExtractBool(
+                      contents, "addScript('js_mock_me.js')", &result));
+  EXPECT_TRUE(result);
+  EXPECT_EQ(true, content::ExecuteScriptAndExtractBool(contents, "redirected()",
+                                                       &result));
+  EXPECT_TRUE(result);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
 // A redirection should only be applied if there's also a matching blocking
