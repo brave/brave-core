@@ -134,6 +134,8 @@ public class BraveVpnUtils {
                     new BraveVpnProfileCredentials(profileCredentials.getString("api-auth-token"),
                             profileCredentials.getString("eap-username"),
                             profileCredentials.getString("eap-password"));
+            BraveVpnPrefUtils.setUsername(braveVpnProfileCredentials.getUsername());
+            BraveVpnPrefUtils.setApiAuthToken(braveVpnProfileCredentials.getApiAuthToken());
             return braveVpnProfileCredentials;
         } catch (JSONException e) {
             Log.e("BraveVPN", "BraveVpnUtils -> getProfileCredentials JSONException error " + e);

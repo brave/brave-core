@@ -27,6 +27,11 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
 
+    public static final String PREF_BRAVE_VPN_USERNAME = "brave_vpn_username";
+    public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
+    public static final String PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL =
+            "brave_vpn_subscriber_credential";
+
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
 
@@ -129,5 +134,35 @@ public class BraveVpnPrefUtils {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION, newValue);
         sharedPreferencesEditor.apply();
+    }
+
+    public static void setUsername(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_USERNAME, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getUsername() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_USERNAME, "");
+    }
+
+    public static void setApiAuthToken(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_API_AUTH_TOKEN, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getApiAuthToken() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_API_AUTH_TOKEN, "");
+    }
+
+    public static void setSubscriberCredential(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getSubscriberCredential() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, "");
     }
 }
