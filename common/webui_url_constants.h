@@ -35,7 +35,6 @@ extern const char kWalletSettingsURL[];
 extern const char kBraveSyncPath[];
 extern const char kBraveSyncSetupPath[];
 extern const char kTorInternalsHost[];
-extern const char kBraveTrezorBridgeURL[];
 extern const char kBraveTrezorBridgeHost[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

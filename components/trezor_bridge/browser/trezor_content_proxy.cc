@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/trezor_bridge/trezor_content_proxy.h"
+#include "brave/components/trezor_bridge/browser/trezor_content_proxy.h"
 
 #include <string>
+#include <utility>
 
 #include "base/macros.h"
-#include "brave/browser/ui/webui/trezor_bridge/trezor_bridge_ui.h"
-#include "brave/common/webui_url_constants.h"
-#include "brave/components/trezor_bridge/mojo_trezor_web_ui_controller.h"
+#include "brave/components/trezor_bridge/browser/mojo_trezor_web_ui_controller.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_content_observer.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_ui.h"
-#include "content/public/browser/web_ui_controller.h"
 #include "net/base/load_states.h"
 
 namespace {
+
+const char kBraveTrezorBridgeURL[] = "chrome://trezor-bridge/";
 
 content::WebContents::CreateParams GetWebContentsCreateParams(
     content::BrowserContext* browser_context) {
@@ -28,7 +28,7 @@ content::WebContents::CreateParams GetWebContentsCreateParams(
 }  // namespace
 
 TrezorContentProxy::TrezorContentProxy(content::BrowserContext* context)
-    : TrezorBridgeContentProxy(context), browser_context_(context) {}
+    : browser_context_(context) {}
 
 TrezorContentProxy::~TrezorContentProxy() {}
 
@@ -66,26 +66,26 @@ void TrezorContentProxy::DidFailLoad(
 
 void TrezorContentProxy::DocumentOnLoadCompletedInMainFrame(
     content::RenderFrameHost* render_frame_host) {
-  DCHECK_EQ(web_contents_->GetVisibleURL().host(), kBraveTrezorBridgeHost);
+  DCHECK_EQ(web_contents_->GetVisibleURL(), GURL(kBraveTrezorBridgeURL));
   if (observer_)
     observer_->BridgeReady();
 }
 
-TrezorBridgeUI* TrezorContentProxy::GetWebUIController() const {
+MojoTrezorWebUIController* TrezorContentProxy::GetWebUIController() const {
   content::WebUI* const webui = web_contents_->GetWebUI();
   if (!webui || !webui->GetController()) {
     return nullptr;
   }
 
-  TrezorBridgeUI* webui_controller =
-      webui->GetController()->template GetAs<TrezorBridgeUI>();
+  MojoTrezorWebUIController* webui_controller =
+      webui->GetController()->template GetAs<MojoTrezorWebUIController>();
   return webui_controller;
 }
 
 bool TrezorContentProxy::IsReady() const {
   if (!web_contents_)
     return false;
-  if ((web_contents_->GetVisibleURL().host() != kBraveTrezorBridgeHost) &&
+  if ((web_contents_->GetVisibleURL() != GURL(kBraveTrezorBridgeURL)) &&
       (web_contents_->GetLoadState().state != net::LOAD_STATE_IDLE)) {
     return false;
   }
@@ -97,12 +97,11 @@ TrezorContentProxy::ConnectWithWebUIBridge(
     base::WeakPtr<MojoTrezorWebUIController::Subscriber> subscriber) {
   if (!IsReady())
     return nullptr;
-  TrezorBridgeUI* webui_controller = GetWebUIController();
+  auto* webui_controller = GetWebUIController();
   webui_controller->SetSubscriber(std::move(subscriber));
   return webui_controller->controller();
 }
 
-void TrezorContentProxy::SetObserver(
-    brave_wallet::TrezorBridgeContentObserver* observer) {
+void TrezorContentProxy::SetObserver(TrezorBridgeContentObserver* observer) {
   observer_ = observer;
 }

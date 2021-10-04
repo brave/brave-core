@@ -16,6 +16,7 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/browser/brave_wallet/trezor_bridge_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
@@ -23,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/trezor_bridge_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -83,11 +85,14 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     eth_tx_controller_ =
         brave_wallet::EthTxControllerFactory::GetControllerForContext(
             browser_context());
+    trezor_controller_ =
+        brave_wallet::TrezorBridgeControllerFactory::GetControllerForContext(
+            browser_context());
     eth_json_rpc_controller_->SetNetwork("0x1");
     base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         eth_json_rpc_controller()->MakeRemote(),
-        eth_tx_controller()->MakeRemote(),
+        eth_tx_controller()->MakeRemote(), trezor_controller()->MakeRemote(),
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
         prefs());
@@ -97,6 +102,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
   EthTxController* eth_tx_controller() { return eth_tx_controller_; }
+  TrezorBridgeController* trezor_controller() { return trezor_controller_; }
   EthJsonRpcController* eth_json_rpc_controller() {
     return eth_json_rpc_controller_;
   }
@@ -138,6 +144,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   EthJsonRpcController* eth_json_rpc_controller_;
   KeyringController* keyring_controller_;
   EthTxController* eth_tx_controller_;
+  TrezorBridgeController* trezor_controller_;
   content::TestWebContentsFactory factory_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
@@ -177,6 +184,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(eth_json_rpc_controller()->MakeRemote(),
                                         eth_tx_controller()->MakeRemote(),
+                                        trezor_controller()->MakeRemote(),
                                         nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{

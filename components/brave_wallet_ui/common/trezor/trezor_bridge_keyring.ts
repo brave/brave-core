@@ -50,7 +50,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     const result = (await this.bridge_.unlock())
     this.unlocked = result.success
     if (!result.success) {
-      throw new Error(result.error);
+      throw new Error(result.error)
     }
     return this.unlocked
   }
@@ -76,7 +76,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     for (let i = from; i <= to; i++) {
       paths.push(this._getPathForIndex(i, scheme))
     }
-    
+
     const accounts = await this.bridge_.getTrezorAccounts(paths)
     if (!accounts.success) {
       throw Error(accounts.error)

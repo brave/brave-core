@@ -7,7 +7,7 @@ import {addSingletonGetter} from 'chrome://resources/js/cr.m.js'
 import 'gen/mojo/public/js/mojo_bindings_lite.js'
 import 'gen/url/mojom/url.mojom-lite.js'
 import 'gen/mojo/public/mojom/base/time.mojom-lite.js';
-import 'gen/brave/components/trezor_bridge/trezor_bridge.mojom-lite.js'
+import 'gen/brave/components/trezor_bridge/browser/trezor_bridge.mojom-lite.js'
 
 // /** @implements {TrezorBridgeAApiProxy} */
 export default class TrezorBridgeApiProxyImpl {

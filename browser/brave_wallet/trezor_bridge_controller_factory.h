@@ -41,4 +41,4 @@ class TrezorBridgeControllerFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_BROWSER_BRAVE_WALLET_ETH_TX_CONTROLLER_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_WALLET_TREZOR_BRIDGE_CONTROLLER_FACTORY_H_

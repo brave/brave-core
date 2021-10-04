@@ -534,11 +534,9 @@ source_set("ui") {
     sources += [
       "webui/trezor_bridge/trezor_bridge_ui.cc",
       "webui/trezor_bridge/trezor_bridge_ui.h",
-      "webui/trezor_bridge/trezor_content_proxy.cc",
-      "webui/trezor_bridge/trezor_content_proxy.h",
     ]
     deps += [
-      "//brave/components/trezor_bridge",
+      "//brave/components/trezor_bridge/browser",
       "//brave/components/trezor_bridge/resources:generated_resources",
     ]
   }

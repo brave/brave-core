@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_TREZOR_BRIDGE_TREZOR_CONTENT_PROXY_H_
-#define BRAVE_BROWSER_UI_WEBUI_TREZOR_BRIDGE_TREZOR_CONTENT_PROXY_H_
+#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_CONTENT_PROXY_H_
+#define BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_CONTENT_PROXY_H_
 
+#include <memory>
 #include <string>
 
 #include "base/macros.h"
-#include "brave/components/brave_wallet/browser/trezor_bridge_controller.h"
+#include "brave/components/trezor_bridge/browser/mojo_trezor_web_ui_controller.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_ui_controller.h"
 
 class TrezorBridgeContentObserver;
 
@@ -19,24 +19,22 @@ namespace content {
 class BrowserContext;
 }
 
-class TrezorContentProxy : public content::WebContentsObserver,
-                           public brave_wallet::TrezorBridgeContentProxy {
+class TrezorContentProxy : public content::WebContentsObserver {
  public:
-  TrezorContentProxy(content::BrowserContext* context);
+  explicit TrezorContentProxy(content::BrowserContext* context);
   ~TrezorContentProxy() override;
   TrezorContentProxy(const TrezorContentProxy&) = delete;
   TrezorContentProxy& operator=(const TrezorContentProxy&) = delete;
 
-  // brave_wallet::TrezorBridgeContentProxy
-  void InitWebContents() override;
-  void SetObserver(
-      brave_wallet::TrezorBridgeContentObserver* observer) override;
+  void InitWebContents();
+  void SetObserver(TrezorBridgeContentObserver* observer);
   base::WeakPtr<MojoTrezorWebUIController::LibraryController>
   ConnectWithWebUIBridge(
-      base::WeakPtr<MojoTrezorWebUIController::Subscriber> subscriber) override;
-  bool IsReady() const override;
+      base::WeakPtr<MojoTrezorWebUIController::Subscriber> subscriber);
+  bool IsReady() const;
 
  protected:
+  // content::WebContentsObserver
   void RenderProcessGone(base::TerminationStatus status) override;
 
   void DidFailLoad(content::RenderFrameHost* render_frame_host,
@@ -47,11 +45,12 @@ class TrezorContentProxy : public content::WebContentsObserver,
       content::RenderFrameHost* render_frame_host) override;
 
  private:
-  TrezorBridgeUI* GetWebUIController() const;
+  MojoTrezorWebUIController* GetWebUIController() const;
   void DestroyContent();
-  brave_wallet::TrezorBridgeContentObserver* observer_ = nullptr;
+
+  TrezorBridgeContentObserver* observer_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
   content::BrowserContext* browser_context_ = nullptr;
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_BRIDGE_TREZOR_CONTENT_PROXY_H_
+#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_CONTENT_PROXY_H_

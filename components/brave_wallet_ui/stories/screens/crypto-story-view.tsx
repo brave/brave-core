@@ -18,7 +18,8 @@ import {
   AssetPriceTimeframe,
   EthereumChain,
   TokenInfo,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  HardwareWalletAccount
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -28,7 +29,6 @@ import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
 import { PortfolioView, AccountsView } from '../../components/desktop/views'
 import {
-  HardwareWalletAccount,
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 

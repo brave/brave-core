@@ -8,12 +8,11 @@ import("//testing/test.gni")
 
 source_set("brave_trezor_bridge_unit_tests") {
   testonly = true
-  sources =
-      [ "//brave/components/trezor_bridge/trezor_bridge_handler_unittest.cc" ]
+  sources = [ "//brave/components/trezor_bridge/browser/trezor_bridge_handler_unittest.cc" ]
 
   deps = [
     "//base/test:test_support",
-    "//brave/components/trezor_bridge:trezor_bridge",
+    "//brave/components/trezor_bridge/browser",
     "//content/public/browser",
     "//content/test:test_support",
     "//net",

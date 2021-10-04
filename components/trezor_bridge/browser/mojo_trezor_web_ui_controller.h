@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
-#define BRAVE_COMPONENTS_TREZOR_BRIDGE_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
+#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
+#define BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
+
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/trezor_bridge/trezor_bridge.mojom.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -16,6 +20,8 @@
 namespace content {
 class WebUI;
 }  // namespace content
+
+class TrezorBridgePageHandler;
 
 class MojoTrezorWebUIController
     : public ui::MojoWebUIController,
@@ -50,15 +56,19 @@ class MojoTrezorWebUIController
 
   base::WeakPtr<Subscriber> subscriber() { return subscriber_; }
   base::WeakPtr<LibraryController> controller() { return controller_; }
+  void CreatePageHandler(
+      mojo::PendingRemote<trezor_bridge::mojom::Page> page,
+      mojo::PendingReceiver<trezor_bridge::mojom::PageHandler> receiver)
+      override;
+  void SetSubscriber(base::WeakPtr<Subscriber> subscriber);
 
  protected:
-  void SetLibraryController(base::WeakPtr<LibraryController> controller) {
-    controller_ = controller;
-  }
+  void SetLibraryController(base::WeakPtr<LibraryController> controller);
 
  private:
   base::WeakPtr<Subscriber> subscriber_;
   base::WeakPtr<LibraryController> controller_;
+  std::unique_ptr<TrezorBridgePageHandler> page_handler_;
 
   mojo::Receiver<trezor_bridge::mojom::PageHandlerFactory>
       page_factory_receiver_{this};
@@ -66,4 +76,4 @@ class MojoTrezorWebUIController
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_MOJO_TREZOR_WEB_UI_CONTROLLER_H_
+#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_MOJO_TREZOR_WEB_UI_CONTROLLER_H_

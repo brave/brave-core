@@ -8,45 +8,34 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 
 assert(brave_wallet_enabled)
+
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-static_library("trezor_bridge") {
+static_library("browser") {
   sources = [
     "mojo_trezor_web_ui_controller.cc",
     "mojo_trezor_web_ui_controller.h",
+    "trezor_bridge_content_observer.h",
     "trezor_bridge_handler.cc",
     "trezor_bridge_handler.h",
     "trezor_bridge_page_handler.cc",
-    "trezor_bridge_page_handler.h",
+    "trezor_content_proxy.cc",
+    "trezor_content_proxy.h",
   ]
   deps = [
     ":mojo_bindings",
     "//base",
-    "//brave/components/resources:static_resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//content/public/browser",
+    "//ui/webui",
   ]
-}
-
-copy("copy_trezor_data") {
-  node_data_dir = "//brave/node_modules/trezor-connect/data"
-  sources = [
-    "$node_data_dir/bridge",
-    "$node_data_dir/coins.json",
-    "$node_data_dir/config.json",
-    "$node_data_dir/firmware",
-    "$node_data_dir/messages",
-  ]
-  outputs = [ "$root_gen_dir/brave/components/trezor_bridge/resources/data/{{source_file_part}}" ]
 }
 
 mojom("mojo_bindings") {
-  sources = [
-    "../brave_wallet/common/brave_wallet_types.mojom",
-    "trezor_bridge.mojom",
-  ]
+  sources = [ "trezor_bridge.mojom" ]
 
   public_deps = [
     "//mojo/public/mojom/base",
@@ -56,7 +45,7 @@ mojom("mojo_bindings") {
 }
 
 preprocess_if_expr("preprocess_mojo") {
-  deps = [ "//brave/components/trezor_bridge:mojo_bindings_js" ]
+  deps = [ "//brave/components/trezor_bridge/browser:mojo_bindings_js" ]
   in_folder = "$target_gen_dir"
   out_folder = "$target_gen_dir/$preprocess_folder"
   out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"

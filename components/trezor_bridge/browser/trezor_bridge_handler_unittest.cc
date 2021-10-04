@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/trezor_bridge/trezor_bridge_handler.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_handler.h"
 
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
@@ -80,7 +80,7 @@ TEST_F(TrezorBridgeHandlerUnitTest, HandleLocalResourcePageRequests) {
 
         callback_called = true;
       }));
-  handler_->HandleFetchRequest(&list);
+  handler_->HandleFetchRequest(list.GetList());
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
 }
@@ -112,7 +112,7 @@ TEST_F(TrezorBridgeHandlerUnitTest, HandleSuitePOSTRequests) {
 
         callback_called = true;
       }));
-  handler_->HandleFetchRequest(&list);
+  handler_->HandleFetchRequest(list.GetList());
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
 }
@@ -143,7 +143,7 @@ TEST_F(TrezorBridgeHandlerUnitTest, HandleSuiteGETRequests) {
 
         callback_called = true;
       }));
-  handler_->HandleFetchRequest(&list);
+  handler_->HandleFetchRequest(list.GetList());
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
 }
@@ -174,7 +174,7 @@ TEST_F(TrezorBridgeHandlerUnitTest, HandleUnknownGETRequests) {
 
         callback_called = true;
       }));
-  handler_->HandleFetchRequest(&list);
+  handler_->HandleFetchRequest(list.GetList());
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
 }
@@ -206,7 +206,7 @@ TEST_F(TrezorBridgeHandlerUnitTest, HandleUnknownPOSTRequests) {
 
         callback_called = true;
       }));
-  handler_->HandleFetchRequest(&list);
+  handler_->HandleFetchRequest(list.GetList());
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
 }

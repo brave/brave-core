@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_TREZOR_BRIDGE_TREZOR_BRIDGE_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_TREZOR_BRIDGE_TREZOR_BRIDGE_PAGE_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_PAGE_HANDLER_H_
+#define BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_PAGE_HANDLER_H_
 
 #include <string>
+#include <vector>
 
-#include "brave/components/trezor_bridge/mojo_trezor_web_ui_controller.h"
-#include "brave/components/trezor_bridge/trezor_bridge.mojom.h"
+#include "brave/components/trezor_bridge/browser/mojo_trezor_web_ui_controller.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -54,4 +55,4 @@ class TrezorBridgePageHandler
   base::WeakPtrFactory<TrezorBridgePageHandler> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_TREZOR_BRIDGE_TREZOR_BRIDGE_PAGE_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_PAGE_HANDLER_H_

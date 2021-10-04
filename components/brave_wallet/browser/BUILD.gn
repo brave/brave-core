@@ -95,6 +95,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
+    "//brave/components/trezor_bridge/browser",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/third_party/ethash",

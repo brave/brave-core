@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/trezor_bridge/trezor_bridge_page_handler.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_page_handler.h"
 
 #include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/webui/trezor_bridge/trezor_bridge_ui.h"
 #include "url/gurl.h"
 
 TrezorBridgePageHandler::TrezorBridgePageHandler(

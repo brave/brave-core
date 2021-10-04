@@ -99,7 +99,7 @@ repack("resources") {
 
     deps += [
       "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
-      "//brave/components/trezor_bridge/:copy_trezor_data",
+      "//brave/components/trezor_bridge/resources:copy_trezor_data",
       "//brave/components/trezor_bridge/resources:generated_resources",
     ]
     sources += [

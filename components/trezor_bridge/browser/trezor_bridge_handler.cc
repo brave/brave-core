@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/trezor_bridge/trezor_bridge_handler.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_handler.h"
 
 #include <memory>
 #include <string>
@@ -101,18 +101,17 @@ void TrezorBridgeHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void TrezorBridgeHandler::HandleFetchRequest(const base::ListValue* args) {
-  std::string url;
-  CHECK(args->GetString(1, &url));
+void TrezorBridgeHandler::HandleFetchRequest(base::Value::ConstListView args) {
+  DCHECK_LT(args.size(), 2U);
+  std::string url = args[1].GetString();
   auto path = url.substr(0, url.find("?"));
-  DLOG(INFO) << "path:" << path;
   if (trezor_data_resources.contains(path)) {
     auto resource_id = trezor_data_resources.at(path);
     const ui::ResourceBundle& resource_bundle =
         ui::ResourceBundle::GetSharedInstance();
     const std::string& resource_text =
         resource_bundle.LoadDataResourceString(resource_id);
-    RespondRequestCallback(args->GetList()[0], true, resource_text, "ok");
+    RespondRequestCallback(args[0], true, resource_text, "ok");
     return;
   }
   const auto trezor_suite_url = GURL(kTrezorSuiteURL);
@@ -122,11 +121,12 @@ void TrezorBridgeHandler::HandleFetchRequest(const base::ListValue* args) {
                       (requested_url.scheme() == trezor_suite_url.scheme());
   if (!trezor_suite) {
     RespondRequestCallback(
-        args->GetList()[0], false, std::string(),
+        args[0], false, std::string(),
         l10n_util::GetStringUTF8(IDS_TREZOR_UNKNOWN_REQUEST));
     return;
   }
-  const base::Value& options = args->GetList()[2];
+  DCHECK_LT(args.size(), 3U);
+  const base::Value& options = args[2];
   std::string method = "GET";
   const std::string* method_value = options.FindStringKey("method");
   if (method_value)
@@ -142,8 +142,7 @@ void TrezorBridgeHandler::HandleFetchRequest(const base::ListValue* args) {
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&TrezorBridgeHandler::OnRequestResponse,
-                     weak_ptr_factory_.GetWeakPtr(), iter,
-                     args->GetList()[0].Clone()));
+                     weak_ptr_factory_.GetWeakPtr(), iter, args[0].Clone()));
 }
 
 void TrezorBridgeHandler::RespondRequestCallback(

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_TREZOR_BRIDGE_HANDLER_H_
-#define BRAVE_COMPONENTS_TREZOR_BRIDGE_TREZOR_BRIDGE_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_HANDLER_H_
+#define BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_HANDLER_H_
 
 #include <list>
 #include <memory>
@@ -28,7 +28,7 @@ class TrezorBridgeHandler : public content::WebUIMessageHandler {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~TrezorBridgeHandler() override;
 
-  void HandleFetchRequest(const base::ListValue* args);
+  void HandleFetchRequest(base::Value::ConstListView args);
   void SetRequestCallbackForTesting(
       base::OnceCallback<void(const base::Value&)> callback) {
     callback_for_testing_ = std::move(callback);
@@ -56,4 +56,4 @@ class TrezorBridgeHandler : public content::WebUIMessageHandler {
   DISALLOW_COPY_AND_ASSIGN(TrezorBridgeHandler);
 };
 
-#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_TREZOR_BRIDGE_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_TREZOR_BRIDGE_BROWSER_TREZOR_BRIDGE_HANDLER_H_

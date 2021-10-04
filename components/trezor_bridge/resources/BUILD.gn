@@ -29,8 +29,8 @@ transpile_web_ui("trezor_bridge_ui") {
   deps = [
     ":preprocess_bridge",
     ":trezor_bridge_api_proxy",
-    "//brave/components/trezor_bridge:mojo_bindings",
-    "//brave/components/trezor_bridge:preprocess_mojo",
+    "//brave/components/trezor_bridge/browser:mojo_bindings",
+    "//brave/components/trezor_bridge/browser:preprocess_mojo",
   ]
 }
 
@@ -49,8 +49,20 @@ preprocess_if_expr("preprocess_bridge") {
 
 js_library("trezor_bridge_api_proxy") {
   deps = [
-    "//brave/components/trezor_bridge:mojo_bindings_js_library_for_compile",
+    "//brave/components/trezor_bridge/browser:mojo_bindings_js_library_for_compile",
     "//ui/webui/resources/js:cr.m",
     "//url/mojom:url_mojom_gurl_js_library_for_compile",
   ]
+}
+
+copy("copy_trezor_data") {
+  node_data_dir = "//brave/node_modules/trezor-connect/data"
+  sources = [
+    "$node_data_dir/bridge",
+    "$node_data_dir/coins.json",
+    "$node_data_dir/config.json",
+    "$node_data_dir/firmware",
+    "$node_data_dir/messages",
+  ]
+  outputs = [ "$root_gen_dir/brave/components/trezor_bridge/resources/data/{{source_file_part}}" ]
 }

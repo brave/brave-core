@@ -10,9 +10,9 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_handler.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_page_handler.h"
 #include "brave/components/trezor_bridge/resources/grit/trezor_bridge_generated_map.h"
-#include "brave/components/trezor_bridge/trezor_bridge_handler.h"
-#include "brave/components/trezor_bridge/trezor_bridge_page_handler.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -52,19 +52,3 @@ TrezorBridgeUI::TrezorBridgeUI(content::WebUI* web_ui, const std::string& name)
 }
 
 TrezorBridgeUI::~TrezorBridgeUI() {}
-
-void TrezorBridgeUI::CreatePageHandler(
-    mojo::PendingRemote<trezor_bridge::mojom::Page> page,
-    mojo::PendingReceiver<trezor_bridge::mojom::PageHandler> receiver) {
-  DCHECK(page);
-  // TODO
-  page_handler_ = std::make_unique<TrezorBridgePageHandler>(std::move(receiver),
-                                                            std::move(page));
-
-  SetLibraryController(page_handler_->GetWeakPtr());
-}
-
-void TrezorBridgeUI::SetSubscriber(base::WeakPtr<Subscriber> subscriber) {
-  DCHECK(page_handler_);
-  page_handler_->SetSubscriber(std::move(subscriber));
-}

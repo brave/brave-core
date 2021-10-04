@@ -8,12 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/trezor_bridge/mojo_trezor_web_ui_controller.h"
+#include "brave/components/trezor_bridge/browser/mojo_trezor_web_ui_controller.h"
+#include "brave/components/trezor_bridge/browser/trezor_bridge_content_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -23,28 +24,9 @@ namespace content {
 class BrowserContext;
 }
 
-class TrezorBridgeUI;
+class TrezorContentProxy;
 
 namespace brave_wallet {
-
-class TrezorBridgeContentObserver {
- public:
-  virtual void BridgeReady() = 0;
-  virtual void BridgeFail() = 0;
-};
-
-class TrezorBridgeContentProxy {
- public:
-  explicit TrezorBridgeContentProxy(content::BrowserContext* browser_context) {}
-  virtual ~TrezorBridgeContentProxy() = default;
-
-  virtual void SetObserver(TrezorBridgeContentObserver* observer) = 0;
-  virtual void InitWebContents() = 0;
-  virtual base::WeakPtr<MojoTrezorWebUIController::LibraryController>
-  ConnectWithWebUIBridge(
-      base::WeakPtr<MojoTrezorWebUIController::Subscriber> subscriber) = 0;
-  virtual bool IsReady() const = 0;
-};
 
 class TrezorBridgeController : public KeyedService,
                                public mojom::TrezorBridgeController,
@@ -52,8 +34,7 @@ class TrezorBridgeController : public KeyedService,
                                public TrezorBridgeContentObserver {
  public:
   explicit TrezorBridgeController(
-      content::BrowserContext* browser_context,
-      std::unique_ptr<TrezorBridgeContentProxy> content_proxy);
+      std::unique_ptr<TrezorContentProxy> content_proxy);
   ~TrezorBridgeController() override;
 
   TrezorBridgeController(const TrezorBridgeController&) = delete;
@@ -74,7 +55,6 @@ class TrezorBridgeController : public KeyedService,
   void OnUnlocked(bool success, const std::string& error) override;
 
  private:
-  void InitWebContents(content::BrowserContext* browser_context);
   bool IsUnlocked() const;
 
   void BridgeReady() override;
@@ -85,7 +65,7 @@ class TrezorBridgeController : public KeyedService,
   GetTrezorAccountsCallback get_trezor_accounts_callback_;
   base::WeakPtr<MojoTrezorWebUIController::LibraryController>
       library_controller_;
-  std::unique_ptr<TrezorBridgeContentProxy> content_proxy_;
+  std::unique_ptr<TrezorContentProxy> content_proxy_;
 
   mojo::ReceiverSet<mojom::TrezorBridgeController> receivers_;
   base::WeakPtrFactory<TrezorBridgeController> weak_ptr_factory_{this};
