@@ -121,6 +121,7 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -132,6 +133,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
+    private static final List<String> mBraveSearchEngineDefaultRegions =
+            Arrays.asList("CA", "DE", "FR", "GB", "US");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -939,12 +942,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
+        String countryCode = Locale.getDefault().getCountry();
         if (hasFocus && PackageUtils.isFirstInstall(context)
                 && BraveActivity.getBraveActivity() != null
                 && BraveActivity.getBraveActivity().getActivityTab() != null
                 && UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
-                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+                && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
