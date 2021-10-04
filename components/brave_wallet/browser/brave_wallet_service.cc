@@ -65,10 +65,6 @@
 //
 //
 namespace {
-
-constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
-constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
-constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
 constexpr int kRefreshP3AFrequencyHours = 3;
 
 base::CheckedContiguousIterator<base::Value> FindAsset(

@@ -23,6 +23,10 @@ class PrefService;
 
 namespace brave_wallet {
 
+constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
+constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
+constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
+
 class BraveWalletServiceDelegate;
 
 class BraveWalletService : public KeyedService,
