@@ -94,9 +94,12 @@ class BraveShieldStatsView: UIView {
     }
     
     @objc private func update() {
-        adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).kFormattedNumber
-        dataSavedStatView.stat = dataSaved
-        timeStatView.stat = timeSaved
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).kFormattedNumber
+            self.dataSavedStatView.stat = self.dataSaved
+            self.timeStatView.stat = self.timeSaved
+        }
     }
     
     var dataSaved: String {
