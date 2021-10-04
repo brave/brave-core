@@ -83,7 +83,13 @@ class CryptoPagesViewController: TabbedPageViewController {
   }
   
   @objc private func presentSearch() {
-    let controller = UIHostingController(rootView: AssetSearchView(tokenRegistry: BraveCoreMain.ercTokenRegistry))
+    let controller = UIHostingController(
+      rootView: AssetSearchView(
+        tokenRegistry: BraveCoreMain.ercTokenRegistry,
+        keyringStore: walletStore.keyringStore,
+        networkStore: walletStore.networkStore
+      )
+    )
     present(controller, animated: true)
   }
   

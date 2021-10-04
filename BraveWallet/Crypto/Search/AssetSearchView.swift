@@ -7,13 +7,40 @@ import Foundation
 import SwiftUI
 import BraveCore
 
+private struct TokenView: View {
+  var token: BraveWallet.ERCToken
+  
+  var body: some View {
+    HStack(spacing: 8) {
+      Circle()
+        .frame(width: 40, height: 40)
+        .overlay(
+          Image(uiImage: .init())
+        )
+        .clipShape(Circle())
+      VStack(alignment: .leading) {
+        Text(token.name)
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+        Text(token.symbol.uppercased())
+          .foregroundColor(Color(.secondaryBraveLabel))
+      }
+      .font(.footnote)
+    }
+    .padding(.vertical, 8)
+  }
+}
+
 struct AssetSearchView: View {
   var tokenRegistry: BraveWalletERCTokenRegistry
+  var keyringStore: KeyringStore
+  var networkStore: NetworkStore
+  
   @State private var allTokens: [BraveWallet.ERCToken] = []
-  @StateObject private var searchDelegate = SearchDelegate()
+  @State private var query = ""
   
   private var tokens: [BraveWallet.ERCToken] {
-    let query = searchDelegate.query.lowercased()
+    let query = query.lowercased()
     if query.isEmpty {
       return allTokens
     }
@@ -25,7 +52,7 @@ struct AssetSearchView: View {
   
   var body: some View {
     NavigationView {
-      Form {
+      List {
         Section(
           header: WalletListHeaderView(
             title: Text("Assets") // NSLocalizedString
@@ -42,10 +69,10 @@ struct AssetSearchView: View {
           let tokens = self.tokens
           if tokens.isEmpty {
             Group {
-              if searchDelegate.query.isEmpty {
+              if query.isEmpty {
                 Text("No assets found") // NSLocalizedString
               } else {
-                Text("No assets found for \"\(searchDelegate.query)\" query") // NSLocalizedString
+                Text("No assets found for \"\(query)\" query") // NSLocalizedString
               }
             }
             .font(.footnote)
@@ -54,7 +81,15 @@ struct AssetSearchView: View {
             .frame(maxWidth: .infinity)
           } else {
             ForEach(tokens) { token in
-              Text(token.name)
+              NavigationLink(
+                destination: AssetDetailView(
+                  keyringStore: keyringStore,
+                  networkStore: networkStore,
+                  token: token
+                )
+              ) {
+                TokenView(token: token)
+              }
             }
           }
         }
@@ -63,40 +98,21 @@ struct AssetSearchView: View {
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Search") // NSLocalizedString
       .listStyle(InsetGroupedListStyle())
+      .animation(nil, value: query)
+      .filterable(text: $query)
       .introspectViewController { vc in
-        // TODO: In iOS 15, use `searchable`
-        if vc.navigationItem.searchController == nil {
-          vc.navigationItem.searchController = UISearchController(searchResultsController: nil).then {
-            $0.automaticallyShowsCancelButton = true
-            $0.hidesNavigationBarDuringPresentation = false
-            $0.obscuresBackgroundDuringPresentation = false
-            $0.searchBar.delegate = searchDelegate
-          }
-          vc.navigationItem.hidesSearchBarWhenScrolling = false
-          // TODO: In iOS 15, use `toolbar` & `presentationMode` now that PresentationMode is passed to
-          //       SwiftUI when presented from UIKit
-          vc.navigationItem.leftBarButtonItem = .init(systemItem: .cancel, primaryAction: .init(handler: { [unowned vc] _ in
-            vc.dismiss(animated: true)
-          }))
-        }
+        // TODO: In iOS 15, use `toolbar` & `presentationMode` now that PresentationMode is passed to
+        //       SwiftUI when presented from UIKit
+        vc.navigationItem.leftBarButtonItem = .init(systemItem: .cancel, primaryAction: .init(handler: { [unowned vc] _ in
+          vc.dismiss(animated: true)
+        }))
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
       tokenRegistry.allTokens { tokens in
-        self.allTokens = tokens
+        self.allTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
       }
     }
-  }
-}
-
-private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
-  @Published var query: String = ""
-  
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    query = searchText
-  }
-  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    query = ""
   }
 }

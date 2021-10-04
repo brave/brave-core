@@ -12,7 +12,8 @@ import BraveUI
 struct AssetDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  
+  var token: BraveWallet.ERCToken
+
   var body: some View {
     List {
       Section(
@@ -66,7 +67,17 @@ struct CurrencyDetailView_Previews: PreviewProvider {
     NavigationView {
       AssetDetailView(
         keyringStore: .previewStore,
-        networkStore: .previewStore
+        networkStore: .previewStore,
+        token: .init(
+          contractAddress: "",
+          name: "Ethereum",
+          logo: "",
+          isErc20: false,
+          isErc721: false,
+          symbol: "ETH",
+          decimals: 18,
+          visible: true
+        )
       )
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -74,28 +85,3 @@ struct CurrencyDetailView_Previews: PreviewProvider {
   }
 }
 #endif
-
-//struct AccountView: View {
-//  var address: String
-//  var name: String
-//
-//  var body: some View {
-//    HStack {
-//      Blockie(address: address)
-//        .frame(width: 40, height: 40)
-//      VStack(alignment: .leading, spacing: 2) {
-//        Text(name)
-//          .fontWeight(.semibold)
-//        Text("0xFCdF***DDee")
-//      }
-//      Spacer()
-//      VStack(alignment: .trailing, spacing: 2) {
-//        Text("$616.47")
-//        Text("0.31178 ETH")
-//      }
-//    }
-//    .font(.caption)
-//    .padding(12)
-//    .frame(maxWidth: .infinity, alignment: .leading)
-//  }
-//}
