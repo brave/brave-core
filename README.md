@@ -10,7 +10,7 @@ This branch (development)
 
 This branch is for mainline development that will ship in the next release.
 
-This branch currently supports iOS 12.4, and is written in Swift 5.
+This branch currently supports iOS 14+, and is written in Swift 5.
 
 Please make sure you aim your pull requests in the right direction.
 
