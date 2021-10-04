@@ -15,6 +15,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
@@ -36,7 +37,7 @@ class CosmeticFiltersJSHandler {
   // Fetches an initial set of resources to inject into the page if cosmetic
   // filtering is enabled, and returns whether or not to proceed with cosmetic
   // filtering.
-  bool ProcessURL(const GURL& url);
+  bool ProcessURL(const GURL& url, absl::optional<base::OnceClosure> callback);
   void ApplyRules();
 
  private:
@@ -60,6 +61,8 @@ class CosmeticFiltersJSHandler {
   // A function to be called from JS
   void HiddenClassIdSelectors(const std::string& input);
 
+  void OnUrlCosmeticResources(base::OnceClosure callback,
+                              base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);
   bool OnIsFirstParty(const std::string& url_string);

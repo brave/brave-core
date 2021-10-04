@@ -56,6 +56,8 @@ using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
+using brave_shields::features::kCosmeticFilteringSyncLoad;
+
 using debounce::features::kBraveDebounce;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
@@ -114,6 +116,11 @@ constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
 constexpr char kBraveExtensionNetworkBlockingDescription[] =
     "Enable blocking for network requests initiated by extensions";
+
+constexpr char kCosmeticFilteringSyncLoadName[] =
+    "Enable sync loading of cosmetic filter rules";
+constexpr char kCosmeticFilteringSyncLoadDescription[] =
+    "Enable sync loading of cosmetic filter rules";
 
 constexpr char kBraveIpfsName[] = "Enable IPFS";
 constexpr char kBraveIpfsDescription[] = "Enable native support of IPFS.";
@@ -340,6 +347,10 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                   \
+    {"brave-cosmetic-filtering-sync-load",                                  \
+     flag_descriptions::kCosmeticFilteringSyncLoadName,                     \
+     flag_descriptions::kCosmeticFilteringSyncLoadDescription, kOsAll,      \
+     FEATURE_VALUE_TYPE(kCosmeticFilteringSyncLoad)},                       \
     {"brave-super-referral",                                                \
      flag_descriptions::kBraveSuperReferralName,                            \
      flag_descriptions::kBraveSuperReferralDescription,                     \

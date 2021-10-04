@@ -299,7 +299,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
-bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
+bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
+    absl::optional<base::OnceClosure> callback) {
   resources_dict_.reset();
   url_ = url;
   enabled_1st_party_cf_ = false;
@@ -319,12 +320,30 @@ bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url) {
   enabled_1st_party_cf_ =
       content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
 
-  base::Value result;
-  cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
-  resources_dict_ = base::DictionaryValue::From(
-      base::Value::ToUniquePtrValue(std::move(result)));
+  if (callback.has_value()) {
+    cosmetic_filters_resources_->UrlCosmeticResources(
+      url_.spec(),
+      base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
+                     base::Unretained(this), std::move(callback.value())));
+  } else {
+    base::Value result;
+    cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
+    resources_dict_ = base::DictionaryValue::From(
+        base::Value::ToUniquePtrValue(std::move(result)));
+  }
 
   return true;
+}
+
+void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
+    base::OnceClosure callback,
+    base::Value result) {
+  if (!EnsureConnected())
+    return;
+
+  resources_dict_ = base::DictionaryValue::From(
+      base::Value::ToUniquePtrValue(std::move(result)));
+  std::move(callback).Run();
 }
 
 void CosmeticFiltersJSHandler::ApplyRules() {

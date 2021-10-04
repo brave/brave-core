@@ -17,6 +17,7 @@ source_set("renderer") {
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/common",
     "//brave/components/content_settings/renderer:renderer",
     "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
