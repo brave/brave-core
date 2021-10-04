@@ -55,3 +55,55 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
 
   histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 2);
 }
+
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
+                       DISABLED_SwitchSearchEngineP3A) {
+  // Check that the metric is reported on startup.
+  // For some reason we record kNoSwitch twice, even through
+  // kDefaultSearchEngineMetric is only updated once at this point.
+  histogram_tester_->ExpectUniqueSample(kSwitchSearchEngineMetric,
+                                        SearchEngineSwitchP3A::kNoSwitch, 2);
+
+  // Load service for switching the default search engine.
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
+
+  // Check that changing the default engine triggers emission of a new value.
+  auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+  TemplateURL ddg_url(*ddg_data);
+
+  // This assumes Brave Search is the default!
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kBraveToDDG, 1);
+
+  // Check additional changes.
+  auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  TemplateURL brave_url(*brave_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&brave_url);
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kDDGToBrave, 1);
+
+  // Check additional changes.
+  auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
+  TemplateURL bing_url(*bing_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&bing_url);
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kBraveToOther, 1);
+
+  // Check that incognito or TOR profiles do not emit the metric.
+  CreateIncognitoBrowser();
+#if BUILDFLAG(ENABLE_TOR)
+  brave::NewOffTheRecordWindowTor(browser());
+#endif
+
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
+}
