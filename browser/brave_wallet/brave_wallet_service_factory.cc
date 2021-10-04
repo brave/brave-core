@@ -52,13 +52,8 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(
-#if defined(OS_ANDROID)
-      std::make_unique<BraveWalletServiceDelegate>(),
-#else
-      std::make_unique<BraveWalletServiceDelegateImpl>(context),
-#endif
-      user_prefs::UserPrefs::Get(context));
+  return new BraveWalletService(BraveWalletServiceDelegate::Create(context),
+                                user_prefs::UserPrefs::Get(context));
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
