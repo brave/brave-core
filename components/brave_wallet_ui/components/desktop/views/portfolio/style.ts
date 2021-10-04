@@ -112,7 +112,6 @@ export const DetailText = styled.span`
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
   height: '40px',
-  borderRadius: '100%',
   marginRight: '12px'
 })
 
