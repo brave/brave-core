@@ -78,39 +78,31 @@ void BraveSyncHandler::OnDeviceInfoChange() {
 void BraveSyncHandler::HandleGetDeviceList(base::Value::ConstListView args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
-  CHECK(args[0].is_int());
-  const base::Value& callback_id = args[0];
-
-  ResolveJavascriptCallback(callback_id, GetSyncDeviceList());
+  ResolveJavascriptCallback(args[0].Clone(), GetSyncDeviceList());
 }
 
 void BraveSyncHandler::HandleGetSyncCode(base::Value::ConstListView args) {
   AllowJavascript();
-
   CHECK_EQ(1U, args.size());
-  CHECK(args[0].is_int());
-  const base::Value& callback_id = args[0];
 
   auto* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
-  ResolveJavascriptCallback(callback_id, base::Value(sync_code));
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(sync_code));
 }
 
 void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
-  CHECK(args[0].is_int());
-  CHECK(args[1].is_int());
-  const base::Value& callback_id = args[0];
-  const base::Value& sync_code = args[1];
+  CHECK(args[1].is_string());
+  const std::string sync_code = args[1].GetString();
 
   std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(sync_code.GetString(), &seed)) {
+  if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed)) {
     LOG(ERROR) << "invalid sync code when generating qr code";
-    RejectJavascriptCallback(callback_id, base::Value("invalid sync code"));
+    RejectJavascriptCallback(args[0].Clone(), base::Value("invalid sync code"));
     return;
   }
 
@@ -118,8 +110,8 @@ void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
   // seed then we will have 64 bytes input data
   const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
 
-  base::Value callback_id_disconnect(callback_id.Clone());
-  base::Value callback_id_arg(callback_id.Clone());
+  base::Value callback_id_disconnect(args[0].Clone());
+  base::Value callback_id_arg(args[0].Clone());
 
   qr_code_service_remote_ = qrcode_generator::LaunchQRCodeGeneratorService();
   qr_code_service_remote_.set_disconnect_handler(
@@ -149,39 +141,35 @@ void BraveSyncHandler::HandleGetQRCode(base::Value::ConstListView args) {
 void BraveSyncHandler::HandleSetSyncCode(base::Value::ConstListView args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
-  CHECK(args[0].is_int());
-  CHECK(args[1].is_int());
-  const base::Value& callback_id = args[0];
-  const base::Value& sync_code = args[1];
+  CHECK(args[1].is_string());
+  const std::string sync_code = args[1].GetString();
 
-  if (sync_code.GetString().empty()) {
+  if (sync_code.empty()) {
     LOG(ERROR) << "No sync code parameter provided!";
-    RejectJavascriptCallback(callback_id, base::Value(false));
+    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
 
   auto* sync_service = GetSyncService();
-  if (!sync_service || !sync_service->SetSyncCode(sync_code.GetString())) {
-    RejectJavascriptCallback(callback_id, base::Value(false));
+  if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
+    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
 
-  ResolveJavascriptCallback(callback_id, base::Value(true));
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
 }
 
 void BraveSyncHandler::HandleReset(base::Value::ConstListView args) {
   AllowJavascript();
   CHECK_EQ(1U, args.size());
-  CHECK(args[0].is_int());
-  const base::Value& callback_id = args[0];
 
   auto* sync_service = GetSyncService();
   if (!sync_service) {
-    ResolveJavascriptCallback(callback_id, base::Value(true));
+    ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
     return;
   }
 
-  base::Value callback_id_arg(callback_id.Clone());
+  base::Value callback_id_arg(args[0].Clone());
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   brave_sync::ResetSync(sync_service, device_info_sync_service,
@@ -193,28 +181,25 @@ void BraveSyncHandler::HandleReset(base::Value::ConstListView args) {
 void BraveSyncHandler::HandleDeleteDevice(base::Value::ConstListView args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
-  CHECK(args[0].is_int());
-  CHECK(args[1].is_int());
-  const base::Value& callback_id = args[0];
-  const base::Value& device_id_value = args[1];
+  CHECK(args[1].is_string());
+  const std::string device_guid = args[1].GetString();
 
-  std::string device_guid = device_id_value.GetString();
   if (device_guid.empty()) {
     LOG(ERROR) << "No device id to remove!";
-    RejectJavascriptCallback(callback_id, base::Value(false));
+    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
 
   auto* sync_service = GetSyncService();
   if (!sync_service) {
-    ResolveJavascriptCallback(callback_id, base::Value(false));
+    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
 
-  base::Value callback_id_arg(callback_id.Clone());
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   brave_sync::DeleteDevice(sync_service, device_info_sync_service, device_guid);
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(true));
 }
 
 syncer::BraveSyncServiceImpl* BraveSyncHandler::GetSyncService() const {
