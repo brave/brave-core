@@ -146,7 +146,6 @@ class EthTxControllerUnitTest : public testing::Test {
 
           if (request.url.spec().find("action=gasoracle") !=
               std::string::npos) {
-            LOG(ERROR) << "GAS ORACLE";
             url_loader_factory_.AddResponse(
                 request.url.spec(),
                 "{\"payload\": {\"status\": \"1\", \"message\": \"\", "
@@ -742,7 +741,7 @@ TEST_F(EthTxControllerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", std::vector<uint8_t>()),
+                         "0x016345785d8a0000", data_),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   bool callback_called = false;
@@ -771,7 +770,7 @@ TEST_F(EthTxControllerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", std::vector<uint8_t>()),
+                         "0x016345785d8a0000", data_),
       "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
 
   bool callback_called = false;
@@ -801,7 +800,7 @@ TEST_F(EthTxControllerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", gas_limit,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", std::vector<uint8_t>()),
+                         "0x016345785d8a0000", data_),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -833,7 +832,7 @@ TEST_F(EthTxControllerUnitTest,
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
-                         "0x016345785d8a0000", std::vector<uint8_t>()),
+                         "0x016345785d8a0000", data_),
       "0x04", "", "", nullptr);
 
   bool callback_called = false;
@@ -860,11 +859,140 @@ TEST_F(EthTxControllerUnitTest,
                 GetMojomGasEstimation()));
 }
 
-TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasFeeAndLimitForEthSend) {
   auto tx_data = mojom::TxData1559::New(
       mojom::TxData::New("0x1", "", "",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Default gas limit value will be used.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithGasFeeAndLimitForEthSend) {
+  const std::string gas_limit = "0x0974";
+
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasLimitForEthSend) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Default gas limit value will be used.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasFeeForEthSend) {
+  const std::string gas_limit = "0x0974";
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
       "0x04", "", "", nullptr);
   bool callback_called = false;
   std::string tx_meta_id;
