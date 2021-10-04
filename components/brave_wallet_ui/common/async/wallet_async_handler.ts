@@ -330,18 +330,71 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payloa
 handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendTransactionParams) => {
   const apiProxy = await getAPIProxy()
 
-  const txData = apiProxy.makeTxData(
-    '0x1' /* nonce */,
-    payload.gasPrice || '',  // Estimated by eth_tx_controller if value is ''
-    payload.gas || '',  // Estimated by eth_tx_controller if value is ''
-    payload.to,
-    payload.value,
-    payload.data || []
-  )
+  /***
+   * TODO: determine whether to create a legacy or EIP-1559 transaction.
+   *
+   * isEIP1559 is true IFF:
+   *   - network supports EIP-1559
+   *   - keyring supports EIP-1559 (ex: certain hardware wallets vendors)
+   *   - payload: SendTransactionParams has specified EIP-1559 gas-pricing
+   *     fields.
+   *
+   * In all other cases, fallback to legacy gas-pricing fields.
+   */
+  let isEIP1559 = false
+  if (payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined) {
+    isEIP1559 = true
+  } else if (payload.gasPrice !== undefined) {
+    isEIP1559 = false
+  } else {
+    // check if network and keyring support EIP-1559
+    isEIP1559 = true
+  }
 
-  const addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
+  const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
+
+  const txData = isEIP1559
+    ? apiProxy.makeEIP1559TxData(
+      chainId,
+      '0x1',
+
+      // Estimated by eth_tx_controller if value is ''
+      payload.maxPriorityFeePerGas || '',
+
+      // Estimated by eth_tx_controller if value is ''
+      payload.maxFeePerGas || '',
+
+      // Estimated by eth_tx_controller if value is ''
+      // FIXME: using empty string to auto-estimate gas limit throws the error:
+      //  "Failed to get the gas limit for the transaction"
+      payload.gas || '',
+      payload.to,
+      payload.value,
+      payload.data || []
+    )
+    : apiProxy.makeTxData(
+      '0x1' /* nonce */,
+
+      // Estimated by eth_tx_controller if value is ''
+      payload.gasPrice || '',
+
+      // Estimated by eth_tx_controller if value is ''
+      payload.gas || '',
+      payload.to,
+      payload.value,
+      payload.data || []
+    )
+
+  const addResult = await (
+    isEIP1559
+      ? apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
+      : apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
+  )
   if (!addResult.success) {
-    console.log('Sending unapproved transaction failed, txData: ', txData, ', from: ', payload.from)
+    console.log(
+      `Sending unapproved transaction failed: ` +
+      `from=${payload.from} err=${addResult.errorMessage} txData=`, txData
+    )
     return
   }
 
@@ -359,9 +412,11 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store, payload: ER2
   await store.dispatch(WalletActions.sendTransaction({
     from: payload.from,
     to: payload.contractAddress,
+    value: '0x0',
     gas: payload.gas,
     gasPrice: payload.gasPrice,
-    value: '0x0',
+    maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
+    maxFeePerGas: payload.maxFeePerGas,
     data
   }))
 })

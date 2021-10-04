@@ -65,6 +65,15 @@ export default class WalletApiProxy {
     return txData
   }
 
+  makeEIP1559TxData(chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data) {
+    const txData = new braveWallet.mojom.TxData1559()
+    txData.baseData = this.makeTxData(nonce, '', gasLimit, to, value, data)
+    txData.maxPriorityFeePerGas = maxPriorityFeePerGas
+    txData.maxFeePerGas = maxFeePerGas
+    txData.chainId = chainId
+    return txData
+  }
+
   getKeyringsByType(type) {
     if (type == kLedgerHardwareVendor) {
       return this.ledgerHardwareKeyring;

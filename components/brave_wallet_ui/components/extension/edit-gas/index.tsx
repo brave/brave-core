@@ -21,6 +21,7 @@ import {
   SliderWrapper,
   SliderValue
 } from './style'
+import { useTransactionFeesParser } from '../../../common/hooks'
 
 enum MaxPriorityPanels {
   setSuggested = 0,
@@ -62,9 +63,9 @@ const EditGas = (props: Props) => {
   const [gasTipAmountLimit, setGasTipAmountLimit] = React.useState<string>('2')
   const [gasTipPriceLimit, setGasTipPriceLimit] = React.useState<string>('150')
 
-  // Will determine how best to differentiate between EIP1559 and Legacy
-  // when wiring up to API.
-  const isEIP1559 = false
+  const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
+  const transactionFees = parseTransactionFees(transactionInfo)
+  const { isEIP1559Transaction } = transactionFees
 
   const handleGasPriceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasPrice(event.target.value)
@@ -101,15 +102,15 @@ const EditGas = (props: Props) => {
   return (
     <Panel
       navAction={onCancel}
-      title={isEIP1559 ? getLocale('braveWalletEditGasTitle1') : getLocale('braveWalletEditGasTitle2')}
+      title={isEIP1559Transaction ? getLocale('braveWalletEditGasTitle1') : getLocale('braveWalletEditGasTitle2')}
     >
       <StyledWrapper>
-        {isEIP1559 &&
+        {isEIP1559Transaction &&
           <Description>{getLocale('braveWalletEditGasDescription')}</Description>
         }
-        {(maxPriorityPanel !== MaxPriorityPanels.setSuggested || !isEIP1559) &&
+        {(maxPriorityPanel !== MaxPriorityPanels.setSuggested || !isEIP1559Transaction) &&
           <FormColumn>
-            {!isEIP1559 &&
+            {!isEIP1559Transaction &&
               <>
                 <InputLabel>{getLocale('braveWalletEditGasPerGasPrice')}</InputLabel>
                 <Input
@@ -134,7 +135,7 @@ const EditGas = (props: Props) => {
               value={gasLimit}
               onChange={handleGasAmountLimitInputChanged}
             />
-            {isEIP1559 &&
+            {isEIP1559Transaction &&
               <>
                 <InputLabel>{getLocale('braveWalletEditGasPerTipLimit')}</InputLabel>
                 <Input
@@ -161,7 +162,7 @@ const EditGas = (props: Props) => {
             }
           </FormColumn>
         }
-        {isEIP1559 && maxPriorityPanel === MaxPriorityPanels.setSuggested &&
+        {isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested &&
           <SliderWrapper>
             <SliderLabel>{getLocale('braveWalletEditGasMaxFee')}:</SliderLabel>
             <SliderValue>
@@ -185,13 +186,13 @@ const EditGas = (props: Props) => {
         <ButtonRow>
           <NavButton
             buttonType='secondary'
-            text={!isEIP1559 ? getLocale('braveWalletBackupButtonCancel')
+            text={!isEIP1559Transaction ? getLocale('braveWalletBackupButtonCancel')
               : maxPriorityPanel === MaxPriorityPanels.setCustom ? getLocale('braveWalletEditGasSetSuggested')
                 : getLocale('braveWalletEditGasSetCustom')
 
             }
             onSubmit={
-              !isEIP1559 ? onCancel
+              !isEIP1559Transaction ? onCancel
                 : maxPriorityPanel === MaxPriorityPanels.setCustom ? onSetPanelToSuggested
                   : onSetPanelToCustom}
           />
