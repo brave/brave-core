@@ -95,10 +95,12 @@ public class KeyringStore: ObservableObject {
       password: password,
       isLegacyBraveWallet: isLegacyBraveWallet
     ) { [weak self] isMnemonicValid in
+      guard let self = self else { return }
       if isMnemonicValid {
         // Restoring from wallet means you already have your phrase backed up
-        self?.notifyWalletBackupComplete()
-        self?.updateKeyringInfo()
+        self.notifyWalletBackupComplete()
+        self.updateKeyringInfo()
+        Self.resetKeychainStoredPassword()
       }
       completion?(isMnemonicValid)
     }
