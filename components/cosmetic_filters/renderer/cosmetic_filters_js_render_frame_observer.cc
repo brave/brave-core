@@ -54,7 +54,8 @@ CosmeticFiltersJsRenderFrameObserver::CosmeticFiltersJsRenderFrameObserver(
           render_frame),
       isolated_world_id_(isolated_world_id),
       native_javascript_handle_(
-          new CosmeticFiltersJSHandler(render_frame, isolated_world_id)) {}
+          new CosmeticFiltersJSHandler(render_frame, isolated_world_id)),
+      ready_(new base::OneShotEvent()) {}
 
 CosmeticFiltersJsRenderFrameObserver::~CosmeticFiltersJsRenderFrameObserver() {}
 
