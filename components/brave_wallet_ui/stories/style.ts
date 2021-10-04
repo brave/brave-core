@@ -45,7 +45,7 @@ export const SelectContainer = styled.div`
   background-color: ${(p) => p.theme.color.background01};
 `
 
-export const SignContainer = styled.div`
+export const LongWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -30,7 +30,7 @@ import {
   ScrollContainer,
   StyledExtensionWrapper,
   SelectContainer,
-  SignContainer,
+  LongWrapper,
   ConnectWithSiteWrapper
 } from '../stories/style'
 import { SendWrapper, PanelWrapper } from './style'
@@ -385,9 +385,9 @@ function Container (props: Props) {
   if (!isWalletCreated) {
     return (
       <PanelWrapper isLonger={true}>
-        <StyledExtensionWrapper>
+        <LongWrapper>
           <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
-        </StyledExtensionWrapper>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -411,7 +411,7 @@ function Container (props: Props) {
   if (selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <ConfirmTransactionPanel
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
@@ -421,7 +421,7 @@ function Container (props: Props) {
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokenOptions}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -445,14 +445,14 @@ function Container (props: Props) {
   if (selectedPanel === 'addEthereumChain') {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <AllowAddNetworkPanel
             onApprove={onApproveAddNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
             networkPayload={networkPayload}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -460,7 +460,7 @@ function Container (props: Props) {
   if (selectedPanel === 'signData') {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <SignPanel
             message='Pass Sign Transaction Message Here'
             onCancel={onCancelSigning}
@@ -470,7 +470,7 @@ function Container (props: Props) {
             // Pass a boolean here if the signing method is risky
             showWarning={true}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -627,42 +627,42 @@ function Container (props: Props) {
 
   if (selectedPanel === 'swap') {
     return (
-        <PanelWrapper isLonger={false}>
-          <StyledExtensionWrapper>
-            <Panel
-                navAction={navigateTo}
-                title={panelTitle}
-                useSearch={false}
-            >
-              <SendWrapper>
-                <Swap
-                  fromAsset={fromAsset}
-                  toAsset={toAsset}
-                  fromAmount={fromAmount}
-                  toAmount={toAmount}
-                  exchangeRate={exchangeRate}
-                  orderType={orderType}
-                  orderExpiration={orderExpiration}
-                  slippageTolerance={slippageTolerance}
-                  isSubmitDisabled={isSwapButtonDisabled}
-                  validationError={swapValidationError}
-                  fromAssetBalance={fromAssetBalance}
-                  toAssetBalance={toAssetBalance}
-                  onToggleOrderType={onToggleOrderType}
-                  onSelectExpiration={onSelectExpiration}
-                  onSelectSlippageTolerance={onSelectSlippageTolerance}
-                  onFlipAssets={flipSwapAssets}
-                  onSubmitSwap={onSubmitSwap}
-                  onQuoteRefresh={onSwapQuoteRefresh}
-                  onSelectPresetAmount={onSelectPresetSendAmount}
-                  onInputChange={onSwapInputChange}
-                  onFilterAssetList={onFilterAssetList}
-                  onChangeSwapView={onChangeSwapView}
-                />
-              </SendWrapper>
-            </Panel>
-          </StyledExtensionWrapper>
-        </PanelWrapper>
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <SendWrapper>
+              <Swap
+                fromAsset={fromAsset}
+                toAsset={toAsset}
+                fromAmount={fromAmount}
+                toAmount={toAmount}
+                exchangeRate={exchangeRate}
+                orderType={orderType}
+                orderExpiration={orderExpiration}
+                slippageTolerance={slippageTolerance}
+                isSubmitDisabled={isSwapButtonDisabled}
+                validationError={swapValidationError}
+                fromAssetBalance={fromAssetBalance}
+                toAssetBalance={toAssetBalance}
+                onToggleOrderType={onToggleOrderType}
+                onSelectExpiration={onSelectExpiration}
+                onSelectSlippageTolerance={onSelectSlippageTolerance}
+                onFlipAssets={flipSwapAssets}
+                onSubmitSwap={onSubmitSwap}
+                onQuoteRefresh={onSwapQuoteRefresh}
+                onSelectPresetAmount={onSelectPresetSendAmount}
+                onInputChange={onSwapInputChange}
+                onFilterAssetList={onFilterAssetList}
+                onChangeSwapView={onChangeSwapView}
+              />
+            </SendWrapper>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
     )
   }
 
