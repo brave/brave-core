@@ -108,7 +108,7 @@ public class SmoothLineChartEquallySpaced extends View {
         mDates = new String[values.length];
 
         if (values != null && values.length > 0) {
-            mMinY = mValues[0];
+            mMinY = values[0];
             mMaxY = values[0];
             for (float y : values) {
                 if (y > mMaxY) mMaxY = y;
