@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -35,6 +36,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 
 public class BraveTalkOptInPopup {
+    private static final long AUTO_DISMISS_CONFIRMATION_INTERVAL = 3000;
+
     private final View mAnchor;
     private final BraveTalkOptInPopupListener mListener;
     private final LayoutInflater mInflater;
@@ -46,6 +49,7 @@ public class BraveTalkOptInPopup {
     private final TextView mOptInPopupTitle;
     private final TextView mOptInPopupDescription;
     private final TextView mOptInPopupTos;
+    private final Handler mHandler = new Handler();
 
     public BraveTalkOptInPopup(View anchor, BraveTalkOptInPopupListener listener) {
         mAnchor = anchor;
@@ -107,6 +111,8 @@ public class BraveTalkOptInPopup {
         window.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                mHandler.removeCallbacksAndMessages(null);
+
                 BraveActivity braveActivity = BraveRewardsHelper.getBraveActivity();
                 if (braveActivity != null) {
                     braveActivity.onBraveTalkOptInPopupDismiss();
@@ -231,6 +237,13 @@ public class BraveTalkOptInPopup {
         mOptInPopupTos.setVisibility(View.VISIBLE);
         mOptInPopupTos.setTextSize(14);
         showQuickTourTextLink();
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismissPopup();
+            }
+        }, AUTO_DISMISS_CONFIRMATION_INTERVAL);
     }
 
     private void showQuickTourTextLink() {
