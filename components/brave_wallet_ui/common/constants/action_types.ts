@@ -19,6 +19,7 @@ export type InitializedPayloadType = {
   isWalletBackedUp: boolean
   visibleTokens: string[]
   accountInfos: AccountInfo[]
+  selectedAccount: string
 }
 
 export type UnlockWalletPayloadType = {

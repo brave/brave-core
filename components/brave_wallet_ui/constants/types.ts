@@ -245,6 +245,7 @@ export interface WalletInfo {
   isWalletBackedUp: boolean
   visibleTokens: string[]
   accountInfos: AccountInfo[]
+  selectedAccount: string
 }
 
 export interface UnlockReturnInfo {
@@ -552,7 +553,7 @@ export interface GetAllTransactionInfoReturnInfo {
 }
 
 export interface GetSelectedAccountReturnInfo {
-  selectedACcount: string | undefined
+  address: string | undefined
 }
 
 export interface SetSelectedAccountReturnInfo {
