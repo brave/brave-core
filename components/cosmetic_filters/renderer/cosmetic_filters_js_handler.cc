@@ -300,7 +300,8 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
-bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
+bool CosmeticFiltersJSHandler::ProcessURL(
+    const GURL& url,
     absl::optional<base::OnceClosure> callback) {
   resources_dict_.reset();
   url_ = url;
@@ -325,9 +326,9 @@ bool CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
         "Brave.CosmeticFilters.UrlCosmeticResources");
     cosmetic_filters_resources_->UrlCosmeticResources(
-      url_.spec(),
-      base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
-                     base::Unretained(this), std::move(callback.value())));
+        url_.spec(),
+        base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
+                       base::Unretained(this), std::move(callback.value())));
   } else {
     SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
         "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
