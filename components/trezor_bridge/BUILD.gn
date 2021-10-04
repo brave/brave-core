@@ -43,7 +43,10 @@ copy("copy_trezor_data") {
 }
 
 mojom("mojo_bindings") {
-  sources = [ "trezor_bridge.mojom", "../brave_wallet/common/brave_wallet_types.mojom" ]
+  sources = [
+    "../brave_wallet/common/brave_wallet_types.mojom",
+    "trezor_bridge.mojom",
+  ]
 
   public_deps = [
     "//mojo/public/mojom/base",

@@ -31,9 +31,9 @@ class TrezorBridgePageHandler
   // trezor_bridge::mojom::PageHandler:
   void OnAddressesReceived(
       bool success,
-      std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts)
-      override;
-  void OnUnlocked(bool success) override;
+      std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts,
+      const std::string& error) override;
+  void OnUnlocked(bool success, const std::string& error) override;
 
   // MojoTrezorWebUIController:LibraryController
   void RequestAddresses(const std::vector<std::string>& addresses) override;

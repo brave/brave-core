@@ -25,13 +25,13 @@ export default class TrezorBridgeApiProxyImpl {
   }
 
   /** @override */
-  onAddressesReceived(success, accounts) {
-    this.pageHandler.onAddressesReceived(success, accounts);
+  onAddressesReceived(success, accounts, error) {
+    this.pageHandler.onAddressesReceived(success, accounts, error);
   }
 
   /** @override */
-  onUnlocked(success) {
-    this.pageHandler.onUnlocked(success);
+  onUnlocked(success, error) {
+    this.pageHandler.onUnlocked(success, error);
   }
 
   /** @override */

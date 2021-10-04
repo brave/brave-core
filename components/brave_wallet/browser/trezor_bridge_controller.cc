@@ -46,7 +46,7 @@ void TrezorBridgeController::Bind(
 void TrezorBridgeController::BridgeFail() {
   unlocked_ = false;
   if (unlock_callback_)
-    std::move(unlock_callback_).Run(false);
+    std::move(unlock_callback_).Run(false, "todo add brige fail message");
 }
 
 void TrezorBridgeController::BridgeReady() {
@@ -68,11 +68,11 @@ bool TrezorBridgeController::IsUnlocked() const {
 void TrezorBridgeController::Unlock(UnlockCallback callback) {
   if (unlock_callback_) {
     LOG(ERROR) << "Unlock is already in progress";
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, "add unlock is already in progress");
     return;
   }
   if (IsUnlocked()) {
-    std::move(callback).Run(true);
+    std::move(callback).Run(true, std::string());
     return;
   }
   unlock_callback_ = std::move(callback);
@@ -90,9 +90,10 @@ void TrezorBridgeController::Unlock(UnlockCallback callback) {
 void TrezorBridgeController::GetTrezorAccounts(
     const std::vector<std::string>& paths,
     GetTrezorAccountsCallback callback) {
-  if (!IsUnlocked() || !content_proxy_->IsReady() ||
-      !library_controller_|| get_trezor_accounts_callback_) {
-    std::move(callback).Run(false, {});
+  if (!IsUnlocked() || !content_proxy_->IsReady() || !library_controller_ ||
+      get_trezor_accounts_callback_) {
+    std::move(callback).Run(false, {},
+                            "to do add messagse to unlock or initialize");
     return;
   }
 
@@ -101,21 +102,25 @@ void TrezorBridgeController::GetTrezorAccounts(
 }
 
 void TrezorBridgeController::OnAddressesReceived(
-    bool success, std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts) {
+    bool success,
+    std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts,
+    const std::string& error) {
   std::vector<mojom::HardwareWalletAccountPtr> results;
   for (const auto& it : accounts) {
     results.push_back(mojom::HardwareWalletAccount::New(
         it->address, it->derivation_path, it->name, it->hardware_vendor));
   }
-  DLOG(INFO) << "OnAddressesReceived";
-  std::move(get_trezor_accounts_callback_).Run(success, std::move(results));
+  DLOG(INFO) << "OnAddressesReceived:" << success << " error:" << error;
+  std::move(get_trezor_accounts_callback_)
+      .Run(success, std::move(results), error);
 }
 
-void TrezorBridgeController::OnUnlocked(bool success) {
-  DLOG(INFO) << "OnUnlocked:" << success;
+void TrezorBridgeController::OnUnlocked(bool success,
+                                        const std::string& error) {
+  DLOG(INFO) << "OnUnlocked:" << success << " error:" << error;
   unlocked_ = success;
   if (unlock_callback_)
-    std::move(unlock_callback_).Run(success);
+    std::move(unlock_callback_).Run(success, error);
 }
 
 }  // namespace brave_wallet

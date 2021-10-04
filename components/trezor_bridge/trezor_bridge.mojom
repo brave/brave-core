@@ -21,8 +21,8 @@ interface PageHandlerFactory {
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
-  OnAddressesReceived(bool success, array<HardwareWalletAccount> accounts);
-  OnUnlocked(bool success);
+  OnAddressesReceived(bool success, array<HardwareWalletAccount> accounts, string error);
+  OnUnlocked(bool success, string error);
 };
 
 // WebUI-side handler for requests from the browser.

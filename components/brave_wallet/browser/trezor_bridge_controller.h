@@ -68,9 +68,10 @@ class TrezorBridgeController : public KeyedService,
                          GetTrezorAccountsCallback callback) override;
 
   void OnAddressesReceived(
-      bool success, std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts)
-      override;
-  void OnUnlocked(bool success) override;
+      bool success,
+      std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts,
+      const std::string& error) override;
+  void OnUnlocked(bool success, const std::string& error) override;
 
  private:
   void InitWebContents(content::BrowserContext* browser_context);

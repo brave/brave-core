@@ -636,12 +636,14 @@ export interface SetUserAssetVisibleReturnInfo {
 }
 
 export interface TrezorBridgeUnlockReturnInfo {
-  success: boolean
+  success: boolean,
+  error: string
 }
 
 export interface TrezorBridgeGetTrezorAccountsReturnInfo {
   success: boolean,
-  accounts: HardwareWalletAccount[]
+  accounts: HardwareWalletAccount[],
+  error: string
 }
 
 // Keep in sync with components/brave_wallet/common/brave_wallet.mojom until

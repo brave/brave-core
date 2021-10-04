@@ -43,8 +43,7 @@ const base::flat_map<std::string, int> trezor_data_resources = {
      IDR_TREZOR_BRIDGE_IFRAME_DATA_FIRMWARE_RELEASES2},
     {"./data/bridge/releases.json",
      IDR_TREZOR_BRIDGE_IFRAME_DATA_BRIDGE_RELEASES},
-    {"./data/bridge/latest.txt",
-     IDR_TREZOR_BRIDGE_IFRAME_DATA_BRIDGE_LATEST},
+    {"./data/bridge/latest.txt", IDR_TREZOR_BRIDGE_IFRAME_DATA_BRIDGE_LATEST},
 };
 
 // TrezorSuite local address.

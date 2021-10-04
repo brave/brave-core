@@ -10,8 +10,8 @@ import {
 
 export default class APIProxy {
   static getInstance: () => APIProxy
-  onUnlocked: (success: boolean) => {}
-  onAddressesReceived: (success: boolean, accounts: HardwareWalletAccount[]) => {}
+  onUnlocked: (success: boolean, error: string) => {}
+  onAddressesReceived: (success: boolean, accounts: HardwareWalletAccount[], error: string) => {}
   
   /** @return {!trezorBridge.mojom.PageCallbackRouter} */
   getCallbackRouter: () => trezorBridge.mojom.PageCallbackRouter

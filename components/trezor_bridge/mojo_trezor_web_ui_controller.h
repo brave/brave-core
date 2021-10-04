@@ -32,9 +32,9 @@ class MojoTrezorWebUIController
    public:
     virtual void OnAddressesReceived(
         bool success,
-        std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr>
-            accounts) = 0;
-    virtual void OnUnlocked(bool success) = 0;
+        std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts,
+        const std::string& error) = 0;
+    virtual void OnUnlocked(bool success, const std::string& error) = 0;
   };
 
   explicit MojoTrezorWebUIController(content::WebUI* contents);

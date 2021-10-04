@@ -5,7 +5,7 @@
 
 import { sendWithPromise } from 'chrome://resources/js/cr.m'
 import apiProxy from './trezor_bridge_api_proxy.js'
-
+const ethUtil = require('ethereumjs-util');
 // Hooks to trick some checks inside TrezorConnect to use webextension env.
 function setupBraveHooks () {
   // @ts-ignore
@@ -22,8 +22,6 @@ import TrezorConnect, {
 // Listen to UI_EVENT
 // most common requests
 TrezorConnect.on(UI_EVENT, (event) => {
-  console.log(event);
-
   if (event.type === UI.REQUEST_PIN) {
       // example how to respond to pin request
       TrezorConnect.uiResponse({ type: UI.RECEIVE_PIN, payload: '1234' });
@@ -57,7 +55,7 @@ TrezorConnect.on(UI_EVENT, (event) => {
               payload: { device: event.payload.devices[0], remember: true },
           });
       } else {
-          // no devices connected, waiting for connection
+        console.log('no devices connected, waiting for connection')
       }
   }
 
@@ -65,7 +63,6 @@ TrezorConnect.on(UI_EVENT, (event) => {
   // there is a high risk of coin loss at this point
   // warn user about it
   if (event.type === UI.REQUEST_CONFIRMATION) {
-    console.log(UI.REQUEST_CONFIRMATION)
       // payload: true - user decides to continue anyway
       TrezorConnect.uiResponse({ type: UI.RECEIVE_CONFIRMATION, payload: true });
   }
@@ -74,24 +71,34 @@ TrezorConnect.on(UI_EVENT, (event) => {
 const callbackRouter = apiProxy.getInstance().getCallbackRouter()
 callbackRouter.requestAddresses.addListener(
   async (paths: string[]) => {
+    if (!paths.length) {
+      apiProxy.getInstance().onAddressesReceived(false, [], 'Error: paths empty')
+      return
+    }
     const requestedPaths = []
     for (const path of paths) {
-      requestedPaths.push({path: path, showOnTrezor: false})
+      requestedPaths.push({path: path})
     }
-    const response = await TrezorConnect.getAddress({ bundle: requestedPaths })
-    const accounts = []
-    const hardwareVendor = 'Trezor'
-    if (response.success) {
+    TrezorConnect.getPublicKey({ bundle: requestedPaths }).then(response => {
+      const accounts = []
+      const hardwareVendor = 'Trezor'
       for (let index = 0; index < (response.payload as any[]).length; index++) {
+        const value = response.payload[index]
+        const buffer = Buffer.from(value.publicKey, 'hex')
+        const address = ethUtil.publicToAddress(buffer, true).toString('hex')
         accounts.push({
-          address: response.payload[index].address,
-          derivationPath: response.payload[index].serializedPath,
-          name: hardwareVendor + ' ' + index,
+          address: ethUtil.toChecksumAddress(`0x${address}`),
+          derivationPath: value.serializedPath,
+          name: hardwareVendor + ' ' + value.serializedPath.substr(paths[0].lastIndexOf('/') + 1),
           hardwareVendor: hardwareVendor
         })
       }
-    }
-    apiProxy.getInstance().onAddressesReceived(response.success, accounts)
+      // @ts-ignore
+      const error = response.payload.error ? response.payload.error : ''
+      apiProxy.getInstance().onAddressesReceived(response.success, accounts, error)
+    }).catch(error => {
+      apiProxy.getInstance().onAddressesReceived(false, [], error.payload.error)
+    })
   })
 
 callbackRouter.unlock.addListener(async () => {
@@ -109,39 +116,8 @@ callbackRouter.unlock.addListener(async () => {
     },
     env: 'web'
   }).then(() => {
-    console.log('TrezorConnect is ready!')
-    apiProxy.getInstance().onUnlocked(true);
+    apiProxy.getInstance().onUnlocked(true, '');
   }).catch(error => {
-    console.log('TrezorConnect init error', `TrezorConnect init error:${error}`)
-    apiProxy.getInstance().onUnlocked(false);
+    apiProxy.getInstance().onUnlocked(false, error);
   })
 })
-
-
-// @ts-ignore
-window.test = function() {
-  TrezorConnect.init({
-    connectSrc: './trezor/',
-    popup: false, // render your own UI
-    webusb: false, // webusb is not supported
-    debug: true, // see what's going on inside connect
-    // lazyLoad: true, // set to "false" (default) if you want to start communication with bridge on application start (and detect connected device right away)
-    // set it to "true", then trezor-connect will not be initialized until you call some TrezorConnect.method()
-    // this is useful when you don't know if you are dealing with Trezor user
-    manifest: {
-      email: 'support@brave.com',
-      appUrl: 'web-ui-boilerplate'
-    },
-    env: 'web'
-  }).then(async () => {
-    console.log('TrezorConnect is ready!')
-    // TrezorConnect.getPublicKey({"path":"m/49'/0'/0'","coin":"btc" }).then(console.log).catch(console.log)
-    TrezorConnect.getAddress({
-      bundle: [{ path: "m/49'/0'/0'", showOnTrezor: false},{ path: "m/49'/0'/1'", showOnTrezor: false}]
-    }).then(response => {
-        console.log(response)
-    });
-  }).catch(error => {
-    console.log('TrezorConnect init error', `TrezorConnect init error:${error}`)
-  })
-}

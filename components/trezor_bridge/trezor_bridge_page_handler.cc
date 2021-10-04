@@ -22,16 +22,18 @@ TrezorBridgePageHandler::~TrezorBridgePageHandler() = default;
 
 void TrezorBridgePageHandler::OnAddressesReceived(
     bool success,
-    std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts) {
+    std::vector<trezor_bridge::mojom::HardwareWalletAccountPtr> accounts,
+    const std::string& error) {
   DCHECK(subscriber_);
   if (subscriber_)
-    subscriber_->OnAddressesReceived(success, std::move(accounts));
+    subscriber_->OnAddressesReceived(success, std::move(accounts), error);
 }
 
-void TrezorBridgePageHandler::OnUnlocked(bool success) {
+void TrezorBridgePageHandler::OnUnlocked(bool success,
+                                         const std::string& error) {
   DCHECK(subscriber_);
   if (subscriber_)
-    subscriber_->OnUnlocked(success);
+    subscriber_->OnUnlocked(success, error);
 }
 
 void TrezorBridgePageHandler::RequestAddresses(

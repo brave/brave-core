@@ -400,6 +400,6 @@ enum DefaultWallet {
 
 // Handles work with Trezor library which is loaded inside webui sandbox.
 interface TrezorBridgeController {
-  Unlock() => (bool success);
-  GetTrezorAccounts(array<string> paths) => (bool success, array<HardwareWalletAccount> accounts);
+  Unlock() => (bool success, string error);
+  GetTrezorAccounts(array<string> paths) => (bool success, array<HardwareWalletAccount> accounts, string error);
 };

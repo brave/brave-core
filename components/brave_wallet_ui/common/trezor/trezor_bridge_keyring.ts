@@ -12,8 +12,7 @@ import {
 
 import {
   kTrezorHardwareVendor,
-  TrezorBridgeController,
-  TrezorBridgeGetTrezorAccountsReturnInfo
+  TrezorBridgeController
 } from '../../constants/types'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
@@ -33,7 +32,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       }
       try {
         if (!this.isUnlocked() && !(await this.unlock())) {
-          return reject(new Error())
+          return reject(new Error('Unable to unlock device, try to reconnect'))
         }
       } catch (e) {
         reject(e)
@@ -48,8 +47,12 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   unlock = async () => {
-    this.unlocked = (await this.bridge_.unlock()).success
-    return this.isUnlocked()
+    const result = (await this.bridge_.unlock())
+    this.unlocked = result.success
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    return this.unlocked
   }
 
   signTransaction = async (path: string, rawTxHex: string) => {
@@ -62,17 +65,10 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   /* PRIVATE METHODS */
   _getPathForIndex = (index: number, scheme: string) => {
     if (scheme === TrezorDerivationPaths.Default) {
-      return `m/49'/0'/${index}'`
+      return `m/44'/60'/0'/${index}`
     } else {
       throw Error(`Unknown scheme: ${scheme}`)
     }
-  }
-
-  _getTrezorAccounts = async (paths: string[]):Promise<TrezorBridgeGetTrezorAccountsReturnInfo> => {
-    if (!this.isUnlocked()) {
-      return Promise.reject({succes: false, address: ''})
-    }
-    return this.bridge_.getTrezorAccounts(paths)
   }
 
   _getAccounts = async (from: number, to: number, scheme: string) => {
@@ -81,9 +77,9 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       paths.push(this._getPathForIndex(i, scheme))
     }
     
-    const accounts = await this._getTrezorAccounts(paths)
+    const accounts = await this.bridge_.getTrezorAccounts(paths)
     if (!accounts.success) {
-      throw Error(`Unable to get accounts from device`)
+      throw Error(accounts.error)
     }
     console.log(accounts.accounts)
     return accounts.accounts
