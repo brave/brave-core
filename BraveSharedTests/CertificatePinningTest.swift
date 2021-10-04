@@ -25,18 +25,6 @@ class CertificatePinningTest: XCTestCase {
     private lazy var intermediate = certificate(named: "intermediate")
     private lazy var root = certificate(named: "root")
     
-    func testPinningWithHostValidation() {
-        let host = "brave.com"
-        let trust = self.trust(for: [leaf, intermediate, root])
-        let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost])
-        
-        do {
-            try evaluator.evaluate(trust, forHost: host)
-        } catch {
-            XCTFail("Validation failed but should have succeeded: \(error)")
-        }
-    }
-    
     func testFailPinningWithHostValidation() {
         let host = "github.com"
         let trust = self.trust(for: [leaf, intermediate, root])
