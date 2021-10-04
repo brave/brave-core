@@ -12,7 +12,6 @@ private let log = Logger.browserLogger
 #if compiler(>=5.3)
 
 /// An activity that will create a PDF of a given web page
-@available(iOS 14.0, *)
 class CreatePDFActivity: UIActivity {
     private let callback: (Data) -> Void
     private let webView: WKWebView

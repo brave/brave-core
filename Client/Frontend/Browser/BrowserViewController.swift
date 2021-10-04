@@ -216,7 +216,7 @@ class BrowserViewController: UIViewController {
             }
         }
 
-        let buildChannel = Ads.BraveAdsBuildChannel().then {
+        let buildChannel = Ads.BuildChannel().then {
           $0.name = AppConstants.buildChannel.rawValue
           $0.isRelease = AppConstants.buildChannel == .release
         }
