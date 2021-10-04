@@ -19,6 +19,7 @@ public class BraveClassAdapter {
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
+        chain = new BraveFourStateCookieSettingsPreferenceBaseClassAdapter(chain);
         chain = new BraveFreIntentCreatorClassAdapter(chain);
         chain = new BraveHomepageManagerClassAdapter(chain);
         chain = new BraveIncognitoToggleTabLayoutClassAdapter(chain);
