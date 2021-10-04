@@ -404,3 +404,19 @@
 -keep class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources {
     *** getResourceItem(...);
 }
+
+-keep class org.chromium.components.browser_ui.site_settings.FourStateCookieSettingsPreference {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveFourStateCookieSettingsPreferenceBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SiteSettings {
+    public <init>(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase {
+    public <init>(...);
+}
