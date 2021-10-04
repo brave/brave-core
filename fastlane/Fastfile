@@ -44,7 +44,8 @@ platform :ios do
         "ClientTests/ContentBlockerTests",
         "ClientTests/HttpCookieExtensionTest/testSaveAndLoadCookie",
         "ClientTests/UserAgentTests",
-        "DataTests"
+        "DataTests",
+        "SPMLibrariesTests/WebServerTests/testWebServerIsServingRequests"
       ]
     )
 

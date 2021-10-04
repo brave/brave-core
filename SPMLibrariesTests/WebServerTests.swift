@@ -36,6 +36,7 @@ class WebServerTests: XCTestCase {
         XCTAssertTrue(webServer.isRunning)
     }
 
+    // Flaky test, currently disabled on CI(#4277)
     func testWebServerIsServingRequests() {
         let response = try? String(contentsOf: URL(string: "\(webServerBase!)/hello")!, encoding: .utf8)
         XCTAssertNotNil(response)
