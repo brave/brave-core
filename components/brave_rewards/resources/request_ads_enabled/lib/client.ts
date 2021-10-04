@@ -38,6 +38,7 @@ export function createClient (): Client {
 
     enableAds () {
       port.postMessage(true)
+      setTimeout(() => window.close(), 3000)
     }
   }
 }
