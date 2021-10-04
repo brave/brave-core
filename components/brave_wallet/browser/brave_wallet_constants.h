@@ -402,6 +402,15 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ALLOWANCE},
     {"braveWalletSwapUnknownError", IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR}};
 
+const char kRopstenSwapAPIURL[] = "https://ropsten.api.0x.org/swap/v1";
+const char kRopstenBuyTokenPercentageFee[] = "0.00875";
+const char kRopstenFeeRecipient[] =
+    "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+
+const char kSwapAPIURL[] = "https://api.0x.org/swap/v1";
+const char kBuyTokenPercentageFee[] = "0.00875";
+const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

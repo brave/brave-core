@@ -7,9 +7,12 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.ErcToken;
@@ -29,6 +33,10 @@ import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.EthTxControllerObserver;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
+import org.chromium.brave_wallet.mojom.SwapConfig;
+import org.chromium.brave_wallet.mojom.SwapController;
+import org.chromium.brave_wallet.mojom.SwapParams;
+import org.chromium.brave_wallet.mojom.SwapResponse;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
@@ -37,6 +45,7 @@ import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.SwapControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -56,6 +65,10 @@ import java.util.Map;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener {
+    private final static String TAG = "BuySendSwapActivity";
+    private final static String ETHEREUM_CONTRACT_FOR_SWAP =
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+
     public enum ActivityType {
         BUY(0),
         SEND(1),
@@ -115,10 +128,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private KeyringController mKeyringController;
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
-    private double mConvertedBalance;
+    private double mConvertedFromBalance;
+    private double mConvertedToBalance;
     private EthTxControllerObserverImpl mEthTxControllerObserver;
     private AssetRatioController mAssetRatioController;
     private ErcToken mCurrentErcToken;
+    private ErcToken mCurrentSwapToErcToken;
+    private SwapController mSwapController;
 
     @Override
     protected void onDestroy() {
@@ -137,7 +153,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView fromValueText = findViewById(R.id.from_value_text);
+        EditText fromValueText = findViewById(R.id.from_value_text);
         fromValueText.setText("");
         fromValueText.setHint("0");
 
@@ -159,9 +175,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
         marketPriceValueText.setText("0.0005841");
 
-        TextView slippingToleranceValueText = findViewById(R.id.slipping_tolerance_value_text);
-        slippingToleranceValueText.setText("2%");
-
         Spinner spinner = findViewById(R.id.network_spinner);
         spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
@@ -177,6 +190,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         InitEthTxController();
         InitKeyringController();
         InitAssetRatioController();
+        InitSwapController();
 
         if (mEthJsonRpcController != null) {
             mEthJsonRpcController.getChainId(
@@ -200,7 +214,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 accountSpinner.setAdapter(mCustomAccountAdapter);
                 accountSpinner.setOnItemSelectedListener(this);
                 if (accountTitles.length > 0) {
-                    updateBalance(accountTitles[accountTitles.length - 1]);
+                    updateBalance(accountTitles[0], true);
+                    if (mActivityType == ActivityType.SWAP) {
+                        updateBalance(accountTitles[0], false);
+                    }
                 }
             });
         }
@@ -215,43 +232,243 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             }
             Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                    accountSpinner.getSelectedItemPosition()));
+                                  accountSpinner.getSelectedItemPosition()),
+                    true);
+            if (mActivityType == ActivityType.SWAP) {
+                updateBalance(mCustomAccountAdapter.getTitleAtPosition(
+                                      accountSpinner.getSelectedItemPosition()),
+                        false);
+            }
         } else if (parent.getId() == R.id.accounts_spinner) {
-            updateBalance(mCustomAccountAdapter.getTitleAtPosition(position));
+            updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), true);
+            if (mActivityType == ActivityType.SWAP) {
+                updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), false);
+            }
+        } else if (parent.getId() == R.id.slippage_tolerance_spinner) {
+            getSendSwapQuota(true, false);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {}
 
-    private void updateBalance(String address) {
+    private void getSendSwapQuota(boolean calculatePerSellAsset, boolean sendTx) {
+        assert mEthJsonRpcController != null;
+        mEthJsonRpcController.getChainId(chainId -> {
+            assert mSwapController != null;
+            mSwapController.getSwapConfiguration(chainId, swapConfig -> {
+                Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+                String from = mCustomAccountAdapter.getTitleAtPosition(
+                        accountSpinner.getSelectedItemPosition());
+                EditText fromValueText = findViewById(R.id.from_value_text);
+                String value = fromValueText.getText().toString();
+                EditText toValueText = findViewById(R.id.to_value_text);
+                String valueTo = toValueText.getText().toString();
+                String buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+                if (mCurrentSwapToErcToken != null) {
+                    buyAddress = mCurrentSwapToErcToken.contractAddress;
+                    if (buyAddress.isEmpty()) {
+                        buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+                    }
+                }
+                String sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+                if (mCurrentErcToken != null) {
+                    sellAddress = mCurrentErcToken.contractAddress;
+                    if (sellAddress.isEmpty()) {
+                        sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+                    }
+                }
+                Spinner slippageToleranceSpinner = findViewById(R.id.slippage_tolerance_spinner);
+                String percent = slippageToleranceSpinner
+                                         .getItemAtPosition(
+                                                 slippageToleranceSpinner.getSelectedItemPosition())
+                                         .toString();
+                percent = percent.replace("%", "");
+
+                SwapParams swapParams = new SwapParams();
+                swapParams.takerAddress = from;
+                swapParams.sellAmount = Utils.toWei(value);
+                if (swapParams.sellAmount.equals("0") || !calculatePerSellAsset) {
+                    swapParams.sellAmount = "";
+                }
+                swapParams.buyAmount = Utils.toWei(valueTo);
+                if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
+                    swapParams.buyAmount = "";
+                }
+                swapParams.buyToken = buyAddress;
+                swapParams.sellToken = sellAddress;
+                try {
+                    swapParams.buyTokenPercentageFee =
+                            Double.parseDouble(swapConfig.buyTokenPercantageFee);
+                    swapParams.slippagePercentage = Double.parseDouble(percent) / 100;
+                } catch (NumberFormatException ex) {
+                }
+                swapParams.feeRecipient = swapConfig.feeRecipient;
+                swapParams.gasPrice = "";
+
+                if (!sendTx) {
+                    mSwapController.getPriceQuote(
+                            swapParams, (success, response, error_response) -> {
+                                workWithSwapQuota(success, response, error_response,
+                                        calculatePerSellAsset, sendTx, from);
+                            });
+                } else {
+                    mSwapController.getTransactionPayload(
+                            swapParams, (success, response, error_response) -> {
+                                workWithSwapQuota(success, response, error_response,
+                                        calculatePerSellAsset, sendTx, from);
+                            });
+                }
+            });
+        });
+    }
+
+    private void workWithSwapQuota(boolean success, SwapResponse response, String errorResponse,
+            boolean calculatePerSellAsset, boolean sendTx, String from) {
+        if (!success) {
+            SwapResponse nullResponse = new SwapResponse();
+            nullResponse.sellAmount = "0";
+            nullResponse.buyAmount = "0";
+            nullResponse.price = "0";
+            updateSwapControls(nullResponse, calculatePerSellAsset, errorResponse);
+            if (errorResponse != null) {
+                if (sendTx) {
+                    Log.e(TAG, "Swap error: " + errorResponse);
+                }
+            }
+
+            return;
+        }
+        updateSwapControls(response, calculatePerSellAsset, null);
+        if (sendTx) {
+            TxData data = Utils.getTxData("0x1", Utils.toWeiHex(response.gasPrice),
+                    Utils.toWeiHex(response.estimatedGas), response.to,
+                    Utils.toWeiHex(response.value), Utils.hexStrToNumberArray(response.data));
+            addUnapprovedTransaction(data, from);
+        }
+    }
+
+    private void updateSwapControls(
+            SwapResponse response, boolean calculatePerSellAsset, String errorResponse) {
+        EditText fromValueText = findViewById(R.id.from_value_text);
+        EditText toValueText = findViewById(R.id.to_value_text);
+        TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
+        if (!calculatePerSellAsset) {
+            fromValueText.setText(
+                    String.format(Locale.getDefault(), "%.4f", Utils.fromWei(response.sellAmount)));
+        } else {
+            toValueText.setText(
+                    String.format(Locale.getDefault(), "%.4f", Utils.fromWei(response.buyAmount)));
+        }
+        marketPriceValueText.setText(response.price);
+        checkBalanceShowError(response, errorResponse);
+    }
+
+    private void checkBalanceShowError(SwapResponse response, String errorResponse) {
+        if (mConvertedFromBalance == 0 && mConvertedToBalance == 0) {
+            return;
+        }
+        EditText fromValueText = findViewById(R.id.from_value_text);
+        String value = fromValueText.getText().toString();
+        double valueFrom = 0;
+        double gasLimit = 0;
+        try {
+            valueFrom = Double.parseDouble(value);
+            gasLimit = Double.parseDouble(response.estimatedGas);
+        } catch (NumberFormatException | NullPointerException ex) {
+        }
+        final Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+        if (valueFrom > mConvertedFromBalance) {
+            btnBuySendSwap.setText(getString(R.string.crypto_wallet_error_insufficient_balance));
+            btnBuySendSwap.setEnabled(false);
+
+            return;
+        }
+        final Double fee = gasLimit * Utils.fromWei(response.gasPrice);
+        final Double fromValue = valueFrom;
+        assert mEthJsonRpcController != null;
+        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+        mEthJsonRpcController.getBalance(
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                (success, balance) -> {
+                    if (!success) {
+                        return;
+                    }
+                    Double currentBalance = Utils.fromHexWei(balance);
+                    if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
+                        if (currentBalance < fee + fromValue) {
+                            btnBuySendSwap.setText(
+                                    getString(R.string.crypto_wallet_error_insufficient_gas));
+                            btnBuySendSwap.setEnabled(false);
+
+                            return;
+                        }
+                    } else {
+                        if (currentBalance < fee) {
+                            btnBuySendSwap.setText(
+                                    getString(R.string.crypto_wallet_error_insufficient_gas));
+                            btnBuySendSwap.setEnabled(false);
+
+                            return;
+                        }
+                    }
+
+                    if (errorResponse == null) {
+                        btnBuySendSwap.setText(getString(R.string.swap));
+                        btnBuySendSwap.setEnabled(true);
+                        enableDisableSwapButton();
+                    } else {
+                        if (Utils.isSwapLiquidityErrorReason(errorResponse)) {
+                            btnBuySendSwap.setText(
+                                    getString(R.string.crypto_wallet_error_insufficient_liquidity));
+                        } else {
+                            btnBuySendSwap.setText(
+                                    getString(R.string.crypto_wallet_error_unknown_error));
+                        }
+                        btnBuySendSwap.setEnabled(false);
+                    }
+                });
+    }
+
+    private void updateBalance(String address, boolean from) {
         assert mEthJsonRpcController != null;
         if (mEthJsonRpcController == null) {
             return;
         }
-        if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
+        ErcToken ercToken = mCurrentErcToken;
+        if (!from) {
+            ercToken = mCurrentSwapToErcToken;
+        }
+        if (ercToken == null || ercToken.contractAddress.isEmpty()) {
             mEthJsonRpcController.getBalance(address, (success, balance) -> {
                 if (!success) {
                     return;
                 }
-                populateBalance(balance);
+                populateBalance(balance, from);
             });
         } else {
             mEthJsonRpcController.getErc20TokenBalance(
-                    mCurrentErcToken.contractAddress, address, (success, balance) -> {
+                    ercToken.contractAddress, address, (success, balance) -> {
                         if (!success) {
                             return;
                         }
-                        populateBalance(balance);
+                        populateBalance(balance, from);
                     });
         }
     }
 
-    private void populateBalance(String balance) {
-        TextView fromBalanceText = findViewById(R.id.from_balance_text);
-        mConvertedBalance = Utils.fromHexWei(balance);
-        fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
-                + String.format(Locale.getDefault(), "%.4f", mConvertedBalance));
+    private void populateBalance(String balance, boolean from) {
+        if (from) {
+            TextView fromBalanceText = findViewById(R.id.from_balance_text);
+            mConvertedFromBalance = Utils.fromHexWei(balance);
+            fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
+                    + String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance));
+        } else {
+            TextView toBalanceText = findViewById(R.id.to_balance_text);
+            mConvertedToBalance = Utils.fromHexWei(balance);
+            toBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
+                    + String.format(Locale.getDefault(), "%.4f", mConvertedToBalance));
+        }
     }
 
     private int getIndexOf(Spinner spinner, String chainId) {
@@ -268,29 +485,27 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private void adjustControls() {
         EditText toValueText = findViewById(R.id.to_value_text);
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
-        TextView slippingToleranceValueText = findViewById(R.id.slipping_tolerance_value_text);
-        RadioGroup radioBuySendSwap = findViewById(R.id.buy_send_swap_type_radio_group);
+        // RadioGroup radioBuySendSwap = findViewById(R.id.buy_send_swap_type_radio_group);
         LinearLayout marketPriceSection = findViewById(R.id.market_price_section);
         LinearLayout toleranceSection = findViewById(R.id.tolerance_section);
         Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
         TextView currencySign = findViewById(R.id.currency_sign);
         TextView toEstimateText = findViewById(R.id.to_estimate_text);
-        TextView assetDropDown = findViewById(R.id.from_asset_text);
+        TextView assetFromDropDown = findViewById(R.id.from_asset_text);
         RadioGroup radioPerPercent = findViewById(R.id.per_percent_radiogroup);
+        ImageView arrowDown = findViewById(R.id.arrow_down);
         radioPerPercent.clearCheck();
         if (mActivityType == ActivityType.BUY) {
             TextView fromBuyText = findViewById(R.id.from_buy_text);
             fromBuyText.setText(getText(R.string.buy_wallet));
-            ImageView arrowDown = findViewById(R.id.arrow_down);
-            arrowDown.setVisibility(View.GONE);
             LinearLayout toSection = findViewById(R.id.to_section);
             toSection.setVisibility(View.GONE);
-            radioBuySendSwap.setVisibility(View.GONE);
+            // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
             toleranceSection.setVisibility(View.GONE);
             btnBuySendSwap.setText(getText(R.string.buy_wallet));
             radioPerPercent.setVisibility(View.GONE);
-            assetDropDown.setOnClickListener(v -> {
+            assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST);
@@ -302,13 +517,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             toEstimateText.setText(getText(R.string.to_address));
             toValueText.setText("");
             toValueText.setHint(getText(R.string.to_address_edit));
-            radioBuySendSwap.setVisibility(View.GONE);
+            arrowDown.setVisibility(View.GONE);
+            // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
             toleranceSection.setVisibility(View.GONE);
             btnBuySendSwap.setText(getText(R.string.send));
             LinearLayout toBalanceSection = findViewById(R.id.to_balance_section);
             toBalanceSection.setVisibility(View.GONE);
-            assetDropDown.setOnClickListener(v -> {
+            assetFromDropDown.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                                 WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
@@ -319,45 +535,74 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             currencySign.setVisibility(View.GONE);
             toValueText.setText("");
             toValueText.setHint("0");
-            Button btMarket = findViewById(R.id.market_radio);
-            Button btLimit = findViewById(R.id.limit_radio);
-            TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
-            EditText limitPriceValue = findViewById(R.id.limit_price_value);
-            TextView slippingExpiresValueText = findViewById(R.id.slipping_expires_value_text);
+            // Comment market, limit for now, but we may need it in the future
+            // Button btMarket = findViewById(R.id.market_radio);
+            // Button btLimit = findViewById(R.id.limit_radio);
+            // TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
+            // EditText limitPriceValue = findViewById(R.id.limit_price_value);
+            // TextView slippingExpiresValueText = findViewById(R.id.slipping_expires_value_text);
+            // ImageView refreshPrice = findViewById(R.id.refresh_price);
+            // btMarket.setOnClickListener(new View.OnClickListener() {
+            //     @Override
+            //     public void onClick(View v) {
+            //         toEstimateText.setText(getText(R.string.to_estimate));
+            //         marketLimitPriceText.setText(getText(R.string.market_price_in));
+            //         marketPriceValueText.setVisibility(View.VISIBLE);
+            //         limitPriceValue.setVisibility(View.GONE);
+            //         marketPriceValueText.setVisibility(View.VISIBLE);
+            //         slippingExpiresValueText.setText(getText(R.string.slipping_tolerance));
+            //         slippingToleranceValueText.setText("2%");
+            //         refreshPrice.setVisibility(View.VISIBLE);
+            //     }
+            // });
+            // btLimit.setOnClickListener(new View.OnClickListener() {
+            //     @Override
+            //     public void onClick(View v) {
+            //         toEstimateText.setText(getText(R.string.to_address));
+            //         marketLimitPriceText.setText(getText(R.string.price_in));
+            //         marketPriceValueText.setVisibility(View.GONE);
+            //         limitPriceValue.setVisibility(View.VISIBLE);
+            //         marketPriceValueText.setVisibility(View.GONE);
+            //         slippingExpiresValueText.setText(getText(R.string.expires_in));
+            //         slippingToleranceValueText.setText("1 days");
+            //         refreshPrice.setVisibility(View.GONE);
+            //     }
+            // });
+            assetFromDropDown.setOnClickListener(v -> {
+                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                                WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST);
+                bottomSheetDialogFragment.show(getSupportFragmentManager(),
+                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
+            TextView assetToDropDown = findViewById(R.id.to_asset_text);
+            assetToDropDown.setOnClickListener(v -> {
+                EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
+                        EditVisibleAssetsBottomSheetDialogFragment.newInstance(
+                                WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST);
+                bottomSheetDialogFragment.show(getSupportFragmentManager(),
+                        EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+            });
+            enableDisableSwapButton();
+            Spinner spinner = findViewById(R.id.slippage_tolerance_spinner);
+            spinner.setOnItemSelectedListener(this);
+            // Creating adapter for a slippage tolerance spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, Utils.getSlippageToleranceList(this));
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(dataAdapter);
             ImageView refreshPrice = findViewById(R.id.refresh_price);
-            btMarket.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toEstimateText.setText(getText(R.string.to_estimate));
-                    marketLimitPriceText.setText(getText(R.string.market_price_in));
-                    marketPriceValueText.setVisibility(View.VISIBLE);
-                    limitPriceValue.setVisibility(View.GONE);
-                    marketPriceValueText.setVisibility(View.VISIBLE);
-                    slippingExpiresValueText.setText(getText(R.string.slipping_tolerance));
-                    slippingToleranceValueText.setText("2%");
-                    refreshPrice.setVisibility(View.VISIBLE);
-                }
-            });
-            btLimit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toEstimateText.setText(getText(R.string.to_address));
-                    marketLimitPriceText.setText(getText(R.string.price_in));
-                    marketPriceValueText.setVisibility(View.GONE);
-                    limitPriceValue.setVisibility(View.VISIBLE);
-                    marketPriceValueText.setVisibility(View.GONE);
-                    slippingExpiresValueText.setText(getText(R.string.expires_in));
-                    slippingToleranceValueText.setText("1 days");
-                    refreshPrice.setVisibility(View.GONE);
-                }
-            });
+            refreshPrice.setOnClickListener(v -> { getSendSwapQuota(true, false); });
+            EditText fromValueText = findViewById(R.id.from_value_text);
+            fromValueText.addTextChangedListener(filterTextWatcherFrom);
+            toValueText.addTextChangedListener(filterTextWatcherTo);
         }
 
         btnBuySendSwap.setOnClickListener(v -> {
             Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             String from = mCustomAccountAdapter.getTitleAtPosition(
                     accountSpinner.getSelectedItemPosition());
-            TextView fromValueText = findViewById(R.id.from_value_text);
+            EditText fromValueText = findViewById(R.id.from_value_text);
             // TODO(sergz): Some kind of validation that we have enough balance
             String value = fromValueText.getText().toString();
             if (mActivityType == ActivityType.SEND) {
@@ -376,11 +621,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
             } else if (mActivityType == ActivityType.BUY) {
                 assert mErcTokenRegistry != null;
-                String asset = assetDropDown.getText().toString();
+                String asset = assetFromDropDown.getText().toString();
                 mErcTokenRegistry.getBuyUrl(from, asset, value, url -> {
                     TabUtils.openUrlInNewTab(false, url);
                     TabUtils.bringChromeTabbedActivityToTheTop(this);
                 });
+            } else if (mActivityType == ActivityType.SWAP) {
+                getSendSwapQuota(true, true);
             }
         });
 
@@ -392,21 +639,54 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 }
                 double amountToGet = 0;
                 if (checkedId == R.id.per_25_radiobutton) {
-                    amountToGet = 0.25 * mConvertedBalance;
+                    amountToGet = 0.25 * mConvertedFromBalance;
                 } else if (checkedId == R.id.per_50_radiobutton) {
-                    amountToGet = 0.5 * mConvertedBalance;
+                    amountToGet = 0.5 * mConvertedFromBalance;
                 } else if (checkedId == R.id.per_75_radiobutton) {
-                    amountToGet = 0.75 * mConvertedBalance;
+                    amountToGet = 0.75 * mConvertedFromBalance;
                 } else {
-                    amountToGet = mConvertedBalance;
+                    amountToGet = mConvertedFromBalance;
                 }
 
-                TextView fromValueText = findViewById(R.id.from_value_text);
+                EditText fromValueText = findViewById(R.id.from_value_text);
                 fromValueText.setText(String.format(Locale.getDefault(), "%f", amountToGet));
                 radioPerPercent.clearCheck();
+                getSendSwapQuota(true, false);
             }
         });
     }
+
+    private TextWatcher filterTextWatcherFrom = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            EditText fromValueText = findViewById(R.id.from_value_text);
+            if (fromValueText.hasFocus()) {
+                getSendSwapQuota(true, false);
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher filterTextWatcherTo = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            EditText toValueText = findViewById(R.id.to_value_text);
+            if (toValueText.hasFocus()) {
+                getSendSwapQuota(false, false);
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
 
     private void addUnapprovedTransaction(TxData data, String from) {
         assert mEthTxController != null;
@@ -450,8 +730,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             int accountPic = mCustomAccountAdapter.getPictureAtPosition(
                     accountSpinner.getSelectedItemPosition());
             String txType = getText(R.string.send).toString();
-            TextView assetDropDown = findViewById(R.id.from_asset_text);
-            String asset = assetDropDown.getText().toString();
+            if (mActivityType == ActivityType.SWAP) {
+                txType = getText(R.string.swap).toString();
+            }
+            TextView assetFromDropDown = findViewById(R.id.from_asset_text);
+            String asset = assetFromDropDown.getText().toString();
             ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
                     ApproveTxBottomSheetDialogFragment.newInstance(
                             chainName, txInfo, accountName, accountPic, txType, asset);
@@ -461,12 +744,48 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     public void updateBuySendAsset(String asset, ErcToken ercToken) {
-        TextView assetDropDown = findViewById(R.id.from_asset_text);
-        assetDropDown.setText(asset);
+        TextView assetFromDropDown = findViewById(R.id.from_asset_text);
+        assetFromDropDown.setText(asset);
         mCurrentErcToken = ercToken;
         Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         updateBalance(
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()));
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                true);
+        enableDisableSwapButton();
+        getSendSwapQuota(true, false);
+    }
+
+    public void updateSwapToAsset(String asset, ErcToken ercToken) {
+        TextView assetToDropDown = findViewById(R.id.to_asset_text);
+        assetToDropDown.setText(asset);
+        mCurrentSwapToErcToken = ercToken;
+        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+        updateBalance(
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                false);
+        enableDisableSwapButton();
+        getSendSwapQuota(true, false);
+    }
+
+    private void enableDisableSwapButton() {
+        boolean enable = true;
+        if (mCurrentSwapToErcToken == null && mCurrentErcToken == null) {
+            enable = false;
+        } else if (mCurrentSwapToErcToken == null && mCurrentErcToken != null) {
+            if (mCurrentErcToken.contractAddress.isEmpty()) {
+                enable = false;
+            }
+        } else if (mCurrentErcToken == null && mCurrentSwapToErcToken != null) {
+            if (mCurrentSwapToErcToken.contractAddress.isEmpty()) {
+                enable = false;
+            }
+        } else if (mCurrentSwapToErcToken.contractAddress.equals(
+                           mCurrentErcToken.contractAddress)) {
+            enable = false;
+        }
+
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+        btnBuySendSwap.setEnabled(enable);
     }
 
     public ErcTokenRegistry getErcTokenRegistry() {
@@ -480,11 +799,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthTxController = null;
         mKeyringController = null;
         mAssetRatioController = null;
+        mSwapController = null;
         InitAssetRatioController();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitEthTxController();
         InitKeyringController();
+        InitSwapController();
     }
 
     public AssetRatioController getAssetRatioController() {
@@ -537,6 +858,14 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthTxController = EthTxControllerFactory.getInstance().getEthTxController(this);
         mEthTxControllerObserver = new EthTxControllerObserverImpl(this);
         mEthTxController.addObserver(mEthTxControllerObserver);
+    }
+
+    private void InitSwapController() {
+        if (mSwapController != null) {
+            return;
+        }
+
+        mSwapController = SwapControllerFactory.getInstance().getSwapController(this);
     }
 
     @Override

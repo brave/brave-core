@@ -135,10 +135,11 @@ public class TxFragment extends Fragment {
 
     private void setupView(View view) {
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
+        final double gasLimit = Utils.fromHexWeiToGWEI(mTxInfo.txData.baseData.gasLimit);
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
                         String.format(Locale.getDefault(), "%.8f",
-                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice) * gasLimit)));
         String valueAsset = mTxInfo.txData.baseData.value;
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueAsset = mTxInfo.txArgs[1];
@@ -148,7 +149,7 @@ public class TxFragment extends Fragment {
                 getResources().getString(R.string.crypto_wallet_total_amount),
                 String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)), mAsset,
                 String.format(Locale.getDefault(), "%.8f",
-                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice) * gasLimit)));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};
@@ -158,7 +159,8 @@ public class TxFragment extends Fragment {
                         if (!success || values.length == 0) {
                             return;
                         }
-                        double value = Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice);
+                        double value =
+                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice) * gasLimit;
                         double price = Double.valueOf(values[0].price);
                         double totalPrice = value * price;
                         TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);

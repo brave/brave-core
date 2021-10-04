@@ -161,6 +161,17 @@ public class Utils {
         return categories.toArray(new String[0]);
     }
 
+    public static List<String> getSlippageToleranceList(Activity activity) {
+        List<String> categories = new ArrayList<String>();
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_05).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_1).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_15).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_3).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_6).toString());
+
+        return categories;
+    }
+
     public static CharSequence getNetworkText(Activity activity, String chain_id) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
         switch (chain_id) {
@@ -270,6 +281,41 @@ public class Utils {
         return 0;
     }
 
+    public static String toWei(String number) {
+        if (number.isEmpty()) {
+            return "0";
+        }
+        int dotPosition = number.indexOf(".");
+        String multiplier = "1000000000000000000";
+        if (dotPosition != -1) {
+            int zeroToRemove = number.length() - dotPosition - 1;
+            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            number = number.replace(".", "");
+        }
+        try {
+            BigInteger bigNumber = new BigInteger(number, 10);
+            BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
+
+            return res.toString();
+        } catch (NumberFormatException ex) {
+        }
+
+        return "0";
+    }
+
+    public static double fromWei(String number) {
+        if (number == null || number.isEmpty()) {
+            return 0;
+        }
+        BigInteger bigNumber = new BigInteger(number);
+        BigInteger divider = new BigInteger("1000000000000000000");
+        BigDecimal bDecimal = new BigDecimal(bigNumber);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        String resStr = bDecimalRes.toPlainString();
+
+        return Double.valueOf(resStr);
+    }
+
     public static String toHexWei(String number) {
         if (number.isEmpty()) {
             return "0x0";
@@ -302,6 +348,31 @@ public class Utils {
         }
 
         return "0x0";
+    }
+
+    public static String toWeiHex(String number) {
+        if (number.isEmpty()) {
+            return "0x0";
+        }
+        BigInteger bigNumber = new BigInteger(number, 10);
+
+        return "0x" + bigNumber.toString(16);
+    }
+
+    public static byte[] hexStrToNumberArray(String value) {
+        if (value.startsWith("0x")) {
+            value = value.substring(2);
+        }
+        if (value.isEmpty()) {
+            return new byte[0];
+        }
+
+        byte[] data = new byte[value.length() / 2];
+        for (int n = 0; n < value.length(); n += 2) {
+            data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+        }
+
+        return data;
     }
 
     public static TxData getTxData(
@@ -338,5 +409,28 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static boolean isSwapLiquidityErrorReason(String error) {
+        try {
+            JSONObject mainObj = new JSONObject(error);
+            JSONArray errorsArray = mainObj.getJSONArray("validationErrors");
+            if (errorsArray == null) {
+                return false;
+            }
+            for (int index = 0; index < errorsArray.length(); index++) {
+                JSONObject errorObj = errorsArray.getJSONObject(index);
+                if (errorObj == null) {
+                    continue;
+                }
+                String reason = errorObj.getString("reason");
+                if (reason.equals("INSUFFICIENT_ASSET_LIQUIDITY")) {
+                    return true;
+                }
+            }
+        } catch (JSONException ex) {
+        }
+
+        return false;
     }
 }

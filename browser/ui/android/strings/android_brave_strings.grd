@@ -2311,6 +2311,33 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_PRIVATE_TITLE" desc="Text used to explain the block third-party cookies in Private option in settings">
       Block third-party cookies in Private
     </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_05" desc="Slippage tolerance %" translateable="false">
+      0.5%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_1" desc="Slippage tolerance %" translateable="false">
+      1%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_15" desc="Slippage tolerance %" translateable="false">
+      1.5%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_3" desc="Slippage tolerance %" translateable="false">
+      3%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_6" desc="Slippage tolerance %" translateable="false">
+      6%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_BALANCE" desc="Error on crypto wallets">
+      Insufficient balance
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_GAS" desc="Error on crypto wallets">
+      Insufficient funds for gas
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_LIQUIDITY" desc="Error on crypto wallets">
+      Insufficient liquidity
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_UNKNOWN_ERROR" desc="Error on crypto wallets">
+      Unknown error
+    </message>
     </messages>
   </release>
 </grit>

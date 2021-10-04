@@ -39,6 +39,7 @@ source_set("brave_wallet") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
   ]
+
   if (enable_extensions) {
     deps += [
       "//brave/browser/extensions",
