@@ -28,6 +28,15 @@ extension BraveWallet.EthereumChain: Identifiable {
 
 extension BraveWallet.ERCToken: Identifiable {
   public var id: String {
-    contractAddress
+    isETH ? "eth" : contractAddress
   }
+  /// Whether or not this ERCToken is actually ETH
+  public var isETH: Bool {
+    contractAddress.isEmpty && symbol.lowercased() == "eth"
+  }
+}
+
+extension BraveWallet {
+  /// The address that is expected when you are swapping ETH via SwapController APIs
+  public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 }
