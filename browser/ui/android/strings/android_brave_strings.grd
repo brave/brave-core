@@ -1781,7 +1781,7 @@ until they verify, or until 90 days have passed.
       Re-typed password did not match
     </message>
     <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
-      Live
+      1H
     </message>
     <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
       1D

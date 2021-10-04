@@ -110,6 +110,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
         chartES = findViewById(R.id.line_chart);
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
+        chartES.drawLine(0.f, findViewById(R.id.asset_price));
         chartES.setOnTouchListener(new View.OnTouchListener() {
             @Override
             @SuppressLint("ClickableViewAccessibility")
