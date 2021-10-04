@@ -333,6 +333,7 @@
 		2765826A2171266900754B2F /* UrpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582662171266900754B2F /* UrpService.swift */; };
 		2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582672171266900754B2F /* CustomHeaderData.swift */; };
 		2765826C2171266900754B2F /* UrpLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582682171266900754B2F /* UrpLogsViewController.swift */; };
+		2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */; };
 		27676D472555F34D00BC955A /* BraveRewardsStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */; };
 		276A790A244660B100AC9446 /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A7909244660B100AC9446 /* SpringButton.swift */; };
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
@@ -1865,6 +1866,7 @@
 		276582662171266900754B2F /* UrpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpService.swift; sourceTree = "<group>"; };
 		276582672171266900754B2F /* CustomHeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderData.swift; sourceTree = "<group>"; };
 		276582682171266900754B2F /* UrpLogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpLogsViewController.swift; sourceTree = "<group>"; };
+		2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableViewModifier.swift; sourceTree = "<group>"; };
 		27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsStatusView.swift; sourceTree = "<group>"; };
 		276A7909244660B100AC9446 /* SpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
@@ -4282,6 +4284,7 @@
 				271F68D126EBD35100AA2A50 /* PopupView.swift */,
 				271F688826EBD27D00AA2A50 /* HostingTableViewCell.swift */,
 				270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */,
+				2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -7398,6 +7401,7 @@
 				278C46B023F4A91C0083347F /* PopoverContainerView.swift in Sources */,
 				5E2A74B8262DE62900DBBE88 /* Gradients.swift in Sources */,
 				278C46A323F1EDAB0083347F /* Colors.swift in Sources */,
+				2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */,
 				271F68C426EBD29500AA2A50 /* EdgeInsetsExtensions.swift in Sources */,
 				276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */,
 				278C469523F1E8620083347F /* LoaderView.swift in Sources */,
