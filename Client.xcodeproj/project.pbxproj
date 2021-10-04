@@ -838,7 +838,6 @@
 		A198E75120C701ED00334C11 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198E75020C701ED00334C11 /* HistoryViewController.swift */; };
 		A1AD4BCF20BF3E8C007A6EA1 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */; };
 		A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */; };
-		A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */; };
 		A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */; };
 		A1F66A7320DD71C400303328 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F66A7220DD71C400303328 /* SettingsViewController.swift */; };
 		A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FEEE1F20BF28D900298DA2 /* Then.swift */; };
@@ -2547,7 +2546,6 @@
 		A198E75020C701ED00334C11 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
 		A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizerExtensions.swift; sourceTree = "<group>"; };
-		A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemExtensions.swift; sourceTree = "<group>"; };
 		A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectionViewController.swift; sourceTree = "<group>"; };
 		A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = POPExtensions.swift; sourceTree = "<group>"; };
 		A1D841FF20BC44F800BDAFF7 /* PopoverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = PopoverController.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -4104,7 +4102,6 @@
 				E65075501E37F6D1006961AC /* UIViewExtensions.swift */,
 				C817B34C1FC609500086018E /* UIScrollViewSwizzled.swift */,
 				A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */,
-				A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */,
 				595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */,
 				592F521D2217327B0078395E /* HttpCookieExtension.swift */,
 				5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */,
@@ -7685,7 +7682,6 @@
 				4422D54C21BFFB7E00BF1855 /* strutil.cc in Sources */,
 				CA8D5C1C26D7CF04009BF13D /* PlaylistCarplayManager.swift in Sources */,
 				59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */,
-				A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */,
 				C6D267522136800100465DFA /* PrivateBrowsingManager.swift in Sources */,
 				0A4B012220D02F26004D4011 /* TabBarCell.swift in Sources */,
 				27FD2CAC2146C31C00A5A779 /* FindInPageActivity.swift in Sources */,
@@ -8920,7 +8916,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -9595,7 +9591,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -10520,7 +10516,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10555,7 +10550,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10590,7 +10584,6 @@
 				DEVELOPMENT_TEAM = L6556KQ6XT;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10625,7 +10618,6 @@
 				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10660,7 +10652,6 @@
 				DEVELOPMENT_TEAM = KL8N8XSYF4;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10694,7 +10685,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BrowserIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -11939,7 +11929,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -12175,7 +12165,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -12478,7 +12468,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -12734,7 +12724,7 @@
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
