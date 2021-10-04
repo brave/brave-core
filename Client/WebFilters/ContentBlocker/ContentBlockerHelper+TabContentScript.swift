@@ -59,34 +59,36 @@ extension ContentBlockerHelper: TabContentScript {
         var req = URLRequest(url: url)
         req.mainDocumentURL = mainDocumentUrl
 
-        TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType).uponQueue(.main) { listItem in
-            if let listItem = listItem {
-                if listItem == .https {
-                    if mainDocumentUrl.scheme == "https" && url.scheme == "http" && resourceType != .image {
-                        // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
-                        // Unfortunately, it does not check to see if a content blocker would promote said URL to https
-                        // before blocking the load
+        TPStatsBlocklistChecker.shared.isBlocked(request: req, domain: domain, resourceType: resourceType) { listItem in
+            DispatchQueue.main.async {
+                if let listItem = listItem {
+                    if listItem == .https {
+                        if mainDocumentUrl.scheme == "https" && url.scheme == "http" && resourceType != .image {
+                            // WKWebView will block loading this URL so we can't count it due to mixed content restrictions
+                            // Unfortunately, it does not check to see if a content blocker would promote said URL to https
+                            // before blocking the load
+                            return
+                        }
+                    }
+                    if self.blockedRequests.contains(url) {
                         return
                     }
-                }
-                if self.blockedRequests.contains(url) {
-                    return
-                }
-                
-                self.blockedRequests.insert(url)
-                self.stats = self.stats.create(byAddingListItem: listItem)
-                
-                // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
-                // in BraveShared)
-                let stats = BraveGlobalShieldStats.shared
-                switch listItem {
-                case .ad: stats.adblock += 1
-                case .https: stats.httpse += 1
-                case .tracker: stats.trackingProtection += 1
-                case .image: stats.images += 1
-                default:
-                    // TODO: #97 Add fingerprinting count here when it is integrated
-                    break
+
+                    self.blockedRequests.insert(url)
+                    self.stats = self.stats.create(byAddingListItem: listItem)
+
+                    // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
+                    // in BraveShared)
+                    let stats = BraveGlobalShieldStats.shared
+                    switch listItem {
+                    case .ad: stats.adblock += 1
+                    case .https: stats.httpse += 1
+                    case .tracker: stats.trackingProtection += 1
+                    case .image: stats.images += 1
+                    default:
+                        // TODO: #97 Add fingerprinting count here when it is integrated
+                        break
+                    }
                 }
             }
         }
