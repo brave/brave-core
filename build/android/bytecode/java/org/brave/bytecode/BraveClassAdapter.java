@@ -44,6 +44,7 @@ public class BraveClassAdapter {
         chain = new BraveSingleWebsiteSettingsClassAdapter(chain);
         chain = new BraveSiteSettingsCategoryClassAdapter(chain);
         chain = new BraveSiteSettingsDelegateClassAdapter(chain);
+        chain = new BraveSiteSettingsPreferencesBaseClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
