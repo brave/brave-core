@@ -12,12 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -59,9 +59,12 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
             @Override
             @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    InputMethodManager inputMethodManager =
+                            (InputMethodManager) getActivity().getSystemService(
+                                    Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(
+                            getActivity().getCurrentFocus().getWindowToken(), 0);
                 }
                 return true;
             }
