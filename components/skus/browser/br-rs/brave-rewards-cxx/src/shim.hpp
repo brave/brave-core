@@ -21,6 +21,9 @@ namespace brave_rewards {
       RewardsResult result,
       rust::cxxbridge1::Str order
   );
+  void shim_purge();
+  void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value);
+  const std::string& shim_get(rust::cxxbridge1::Str key);
 
   void shim_scheduleWakeup(::std::uint64_t delay_ms,
                            rust::cxxbridge1::Fn<void()> done);
