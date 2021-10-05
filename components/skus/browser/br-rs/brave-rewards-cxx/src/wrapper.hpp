@@ -947,18 +947,26 @@ namespace brave_rewards {
 #define CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 enum class RewardsResult : ::std::uint8_t {
   Ok = 0,
-  // An error occured when converting from a `CompressedRistretto` to a `RistrettoPoint`
-  PointDecompressionError = 1,
-  // An error occured when interpretting bytes as a scalar
-  ScalarFormatError = 2,
-  // An error in the length of bytes handed to a constructor.
-  BytesLengthError = 3,
-  // Verification failed
-  VerifyError = 4,
-  // Inputs differed in length
-  LengthMismatchError = 5,
-  // Decoding failed
-  DecodingError = 6,
+  RequestFailed = 1,
+  InternalServer = 2,
+  BadRequest = 3,
+  UnhandledStatus = 4,
+  RetryLater = 5,
+  NotFound = 6,
+  SerializationFailed = 7,
+  InvalidResponse = 8,
+  InvalidProof = 9,
+  QueryError = 10,
+  OutOfCredentials = 11,
+  StorageWriteFailed = 12,
+  StorageReadFailed = 13,
+  OrderUnpaid = 14,
+  UnhandledVariant = 15,
+  OrderLocationMismatch = 16,
+  ItemCredentialsMissing = 17,
+  ItemCredentialsExpired = 18,
+  InvalidMerchantOrSku = 19,
+  UnknownError = 20,
 };
 #endif // CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 
