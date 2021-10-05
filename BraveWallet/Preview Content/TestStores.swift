@@ -55,6 +55,14 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
   func priceHistory(_ asset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
 //    completion(true, assets)
   }
+  
+  func estimatedTime(_ gasPrice: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func gasOracle(_ completion: @escaping (BraveWallet.GasEstimation1559?) -> Void) {
+    completion(nil)
+  }
 }
 
 class TestSwapController: BraveWalletSwapController {
@@ -98,6 +106,9 @@ class TestEthTxController: BraveWalletEthTxController {
   }
   
   func add(_ observer: BraveWalletEthTxControllerObserver) {
+  }
+  
+  func setGasFeeAndLimitForUnapprovedTransaction(_ txMetaId: String, maxPriorityFeePerGas: String, maxFeePerGas: String, gasLimit: String, completion: @escaping (Bool) -> Void) { 
   }
 }
 
