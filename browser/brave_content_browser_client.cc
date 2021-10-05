@@ -340,7 +340,7 @@ void BindSkuSdkImpl(
                                      ->GetURLLoaderFactoryForBrowserProcess()),
         std::move(receiver));
   } else {
-    // TODO - finish me
+    // TODO(bsclifton) - finish me
 
     // Dummy API which always returns false for private contexts.
     // mojo::MakeSelfOwnedReceiver(
