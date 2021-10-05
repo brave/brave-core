@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.SwapController;
@@ -13,21 +12,20 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
 import org.chromium.mojo.system.MessagePipeHandle;
-import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
 public class SwapControllerFactory {
-    private static final Object lock = new Object();
-    private static SwapControllerFactory instance;
+    private static final Object sLock = new Object();
+    private static SwapControllerFactory sInstance;
 
     public static SwapControllerFactory getInstance() {
-        synchronized (lock) {
-            if (instance == null) {
-                instance = new SwapControllerFactory();
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new SwapControllerFactory();
             }
         }
-        return instance;
+        return sInstance;
     }
 
     private SwapControllerFactory() {}
