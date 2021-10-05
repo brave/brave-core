@@ -40,7 +40,7 @@ export interface State {
   shouldUpdateElementOverflow: boolean
 }
 
-const totalScreensSize = 5
+let totalScreensSize = 5
 
 export class WelcomePage extends React.Component<Props, State> {
   constructor (props: Props) {
@@ -51,6 +51,8 @@ export class WelcomePage extends React.Component<Props, State> {
       skipped: false,
       shouldUpdateElementOverflow: false
     }
+    const { welcomeData } = this.props
+    totalScreensSize = welcomeData.hideSearchOnboarding ? 4 : 5
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -129,13 +131,17 @@ export class WelcomePage extends React.Component<Props, State> {
               />
               <ShieldsBox index={3} currentScreen={this.currentScreen} />
               <SearchBox
-                index={4}
+                index={welcomeData.hideSearchOnboarding ? -1 : 4}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickNext}
                 changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
                 searchProviders={welcomeData.searchProviders}
               />
-              <RewardsBox index={5} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />
+              <RewardsBox
+                index={welcomeData.hideSearchOnboarding ? 4 : 5}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickRewardsGetStarted}
+              />
             </SlideContent>
             <FooterBox
               totalScreensSize={totalScreensSize}
