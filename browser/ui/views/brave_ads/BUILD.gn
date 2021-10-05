@@ -13,6 +13,8 @@ source_set("brave_ads") {
     "ad_notification_header_view.h",
     "ad_notification_popup.cc",
     "ad_notification_popup.h",
+    "ad_notification_popup_collection.cc",
+    "ad_notification_popup_collection.h",
     "ad_notification_popup_handler.cc",
     "ad_notification_popup_widget.cc",
     "ad_notification_popup_widget.h",

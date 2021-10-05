@@ -9,6 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_popup_collection.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup_widget.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_view.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_view_factory.h"
@@ -191,6 +192,9 @@ void AdNotificationPopup::OnWidgetDestroyed(views::Widget* widget) {
 
   DCHECK(widget_observation_.IsObservingSource(widget));
   widget_observation_.Reset();
+
+  // Remove current popup from global visible ad notification popups collection.
+  AdNotificationPopupCollection::Remove(ad_notification_.id());
 }
 
 void AdNotificationPopup::OnWidgetBoundsChanged(views::Widget* widget,

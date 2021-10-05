@@ -7,7 +7,9 @@
 #include "base/run_loop.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_ads/ad_notification.h"
+#include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/ad_notification_popup.h"
+#include "brave/browser/ui/views/brave_ads/ad_notification_popup_collection.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
@@ -54,9 +56,12 @@ IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   std::string notification_id = "notification_id";
-  AdNotification notification("id", u"test", u"test", {});
+  AdNotification notification(notification_id, u"test", u"test", {});
+  AdNotificationPopupHandler::Show(browser()->profile(), notification);
   AdNotificationPopup* popup =
-      new AdNotificationPopup(browser()->profile(), notification);
+      AdNotificationPopupCollection::Get(notification_id);
+  ASSERT_TRUE(popup);
+
   WidgetSnapshotChecker widget_checker;
   EXPECT_NO_FATAL_FAILURE(
       widget_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
@@ -67,7 +72,7 @@ IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
   EXPECT_NO_FATAL_FAILURE(
       widget_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
 
-  popup->ClosePopup();
+  AdNotificationPopupHandler::Close(notification_id, false);
 }
 
 }  // namespace brave_ads
