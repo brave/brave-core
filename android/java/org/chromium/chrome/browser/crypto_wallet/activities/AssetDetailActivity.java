@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
+    private int checkedTimeframeType;
 
     @Override
     protected void onDestroy() {
@@ -91,7 +93,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         });
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
+        checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int leftDot = R.drawable.ic_live_dot;
+            ((RadioButton) findViewById(checkedTimeframeType))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            RadioButton button = findViewById(checkedId);
+            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType;
             if (checkedId == R.id.live_radiobutton) {
                 timeframeType = AssetPriceTimeframe.LIVE;
@@ -109,6 +117,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 timeframeType = AssetPriceTimeframe.ALL;
             }
             getPriceHistory("eth", timeframeType);
+            checkedTimeframeType = checkedId;
         });
 
         chartES = findViewById(R.id.line_chart);

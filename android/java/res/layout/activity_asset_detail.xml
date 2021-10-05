@@ -103,6 +103,7 @@
                     android:button="@null"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:checked="true"
                     app:drawableStartCompat="@drawable/ic_live_dot"
                     android:drawablePadding="4dp"
                     android:text="@string/live" />
@@ -124,7 +125,6 @@
                     android:button="@null"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:checked="true"
                     android:text="@string/day_1" />
 
                 <RadioButton
