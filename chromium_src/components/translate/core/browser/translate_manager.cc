@@ -4,25 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/translate/core/browser/translate_manager.h"
+
+#include "brave/components/translate/core/browser/brave_translate_language_filter.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_prefs.h"
-
-namespace {
-bool IsSourceLanguageSupported(const std::string& lang) {
-  return lang == "fr" || lang == "en" || lang == "de" || lang == "und";
-}
-
-bool IsTargetLanguageSupported(const std::string& lang) {
-  return lang == "en" || lang == "ru";
-}
-}  // namespace
 
 namespace translate {
 
 class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
  public:
   static bool IsSupportedLanguage(const std::string& lang) {
-    return IsTargetLanguageSupported(lang);
+    return IsTargetLanguageCodeSupported(lang);
   }
   ~BraveIsSupportedTargetLanguageProxy() override;
 };
@@ -48,7 +40,7 @@ void TranslateManager::FilterIsTranslatePossible(
     const std::string& target_lang) {
   ChromiumTranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
-  if (!IsSourceLanguageSupported(page_language_code)) {
+  if (!IsSourceLanguageCodeSupported(page_language_code)) {
     decision->PreventAutoTranslate();
     decision->PreventShowingUI();
     decision->initiation_statuses.push_back(
@@ -59,7 +51,7 @@ void TranslateManager::FilterIsTranslatePossible(
         TriggerDecision::kDisabledUnsupportedLanguage);
   }
 
-  if (!IsTargetLanguageSupported(target_lang)) {
+  if (!IsTargetLanguageCodeSupported(target_lang)) {
     decision->PreventAllTriggering();
     decision->initiation_statuses.push_back(
         TranslateBrowserMetrics::INITIATION_STATUS_LANGUAGE_IS_NOT_SUPPORTED);

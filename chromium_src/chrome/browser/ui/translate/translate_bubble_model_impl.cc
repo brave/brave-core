@@ -10,18 +10,11 @@
 #undef TranslateBubbleModelImpl
 
 #include "base/containers/contains.h"
+#include "brave/components/translate/core/browser/brave_translate_language_filter.h"
 
 namespace {
 const int kNoIndex = static_cast<int>(translate::TranslateUIDelegate::kNoIndex);
 }  // namespace
-
-bool IsSourceLanguageSupported(const std::string& lang) {
-  return lang == "fr" || lang == "en" || lang == "de" || lang == "und";
-}
-
-bool IsTargetLanguageSupported(const std::string& lang) {
-  return lang == "en" || lang == "ru";
-}
 
 class BraveLanguageMap {
  public:
@@ -69,13 +62,13 @@ TranslateBubbleModelImpl::TranslateBubbleModelImpl(
     std::unique_ptr<translate::TranslateUIDelegate> ui_delegate)
     : ChromiumTranslateBubbleModelImpl(step, std::move(ui_delegate)) {
   source_language_map_ = std::make_unique<BraveLanguageMap>(
-      ui_delegate_.get(), base::BindRepeating(&IsSourceLanguageSupported));
+      ui_delegate_.get(), base::BindRepeating(&translate::IsSourceLanguageCodeSupported));
   target_language_map_ = std::make_unique<BraveLanguageMap>(
-      ui_delegate_.get(), base::BindRepeating(&IsTargetLanguageSupported));
+      ui_delegate_.get(), base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
 
   // If the source language is unsupported the drop it to unknown.
   // TODO(atuchin): is it good place to call this?
-  if (!IsSourceLanguageSupported(ui_delegate_->GetSourceLanguageCode())) {
+  if (!translate::IsSourceLanguageCodeSupported(ui_delegate_->GetSourceLanguageCode())) {
     ui_delegate_->UpdateSourceLanguageIndex(0u);
   }
 }
