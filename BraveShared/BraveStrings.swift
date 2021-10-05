@@ -1137,7 +1137,7 @@ extension Strings {
                               comment: "Text when there are no items in the playlist")
         
         public static let noItemLabelDetailLabel =
-            NSLocalizedString("playList.noItemLabelTitle",
+            NSLocalizedString("playList.noItemLabelDetailLabel",
                               bundle: .braveShared,
                               value: "You can add items to your Brave Playlist within the browser",
                               comment: "Detail Text when there are no items in the playlist")
