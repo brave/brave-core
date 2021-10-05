@@ -215,11 +215,11 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
-  auto unidle_timestamp_diagnostics =
+  auto last_unidle_timestamp_diagnostics =
       std::make_unique<LastUnIdleTimestampAdDiagnosticsEntry>();
-  unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
+  last_unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
   AdDiagnostics::Get()->SetDiagnosticsEntry(
-      std::move(unidle_timestamp_diagnostics));
+      std::move(last_unidle_timestamp_diagnostics));
 
   MaybeUpdateIdleTimeThreshold();
 

@@ -96,6 +96,12 @@ void AdServing::StopServingAdsAtRegularIntervals() {
 }
 
 void AdServing::MaybeServeAd() {
+  if (is_serving_) {
+    return;
+  }
+
+  is_serving_ = true;
+
   frequency_capping::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Ad notification not served: Not allowed due to permission rules");
@@ -228,6 +234,8 @@ bool AdServing::ServeAd(
 }
 
 void AdServing::FailedToServeAd() {
+  is_serving_ = false;
+
   NotifyFailedToServeAdNotification();
 
   RetryServingAdAtNextInterval();
@@ -236,6 +244,8 @@ void AdServing::FailedToServeAd() {
 void AdServing::ServedAd(
     const CreativeAdNotificationInfo& creative_ad_notification) {
   eligible_ads_->SetLastServedAd(creative_ad_notification);
+
+  is_serving_ = false;
 
   MaybeServeAdAtNextRegularInterval();
 }
