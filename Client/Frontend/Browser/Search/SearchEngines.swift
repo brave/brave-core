@@ -58,14 +58,19 @@ enum DefaultEngineType: String {
 class SearchEngines {
     fileprivate let fileAccessor: FileAccessor
     
-    init(files: FileAccessor) {
+    private let initialSearchEngines: InitialSearchEngines
+    private let locale: Locale
+    
+    init(files: FileAccessor, locale: Locale = .current) {
+        initialSearchEngines = InitialSearchEngines(locale: locale)
+        self.locale = locale
         self.fileAccessor = files
         self.disabledEngineNames = getDisabledEngineNames()
         self.orderedEngines = getOrderedEngines()
     }
     
     func searchEngineSetup() {
-        setInitialDefaultEngine(InitialSearchEngines().defaultSearchEngine.rawValue)
+        setInitialDefaultEngine(initialSearchEngines.defaultSearchEngine.rawValue)
     }
     
     /// If no engine type is specified this method returns search engine for regular browsing.
@@ -77,7 +82,7 @@ class SearchEngines {
             return defaultEngine
         }
         
-        let defaultEngineName = InitialSearchEngines().defaultSearchEngine.rawValue
+        let defaultEngineName = initialSearchEngines.defaultSearchEngine.rawValue
         
         let defaultEngine = orderedEngines.first(where: { $0.engineID == defaultEngineName })
         return defaultEngine ?? orderedEngines[0]
@@ -86,12 +91,12 @@ class SearchEngines {
     /// Initialize default engine and set order of remaining search engines.
     /// Call this method only at initialization(app launch or onboarding).
     /// For updating search engines use `updateDefaultEngine()` method.
-    func setInitialDefaultEngine(_ engine: String, locale: Locale = .current) {
+    func setInitialDefaultEngine(_ engine: String) {
         // update engine
         DefaultEngineType.standard.option.value = engine
         DefaultEngineType.privateMode.option.value = engine
         
-        let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue
+        let priorityEngine = initialSearchEngines.priorityEngine?.rawValue
         let defEngine = defaultEngine(forType: .standard)
         
         // Sort engines, priority engine at first place
@@ -277,7 +282,7 @@ class SearchEngines {
     /// Get all bundled (not custom) search engines, with the default search engine first,
     /// but the others in no particular order.
     class func getUnorderedBundledEngines(for selectedEngines: [String] = [],
-                                          isOnboarding: Bool) -> [OpenSearchEngine] {
+                                          locale: Locale) -> [OpenSearchEngine] {
         let parser = OpenSearchParser(pluginMode: true)
 
         guard let pluginDirectory = Bundle.main.resourceURL?.appendingPathComponent("SearchPlugins") else {
@@ -285,8 +290,8 @@ class SearchEngines {
             return []
         }
 
-        let se = InitialSearchEngines()
-        let engines = isOnboarding ? se.onboardingEngines : se.engines
+        let se = InitialSearchEngines(locale: locale)
+        let engines = se.engines
         let engineIdentifiers: [(id: String, reference: String?)] = engines.map { (id: ($0.customId ?? $0.id.rawValue).lowercased(), reference: $0.reference) }
         assert(!engineIdentifiers.isEmpty, "No search engines")
 
@@ -299,8 +304,8 @@ class SearchEngines {
     fileprivate func getOrderedEngines() -> [OpenSearchEngine] {
         let selectedSearchEngines = [Preferences.Search.defaultEngineName, Preferences.Search.defaultPrivateEngineName].compactMap { $0.value }
         let unorderedEngines =
-        SearchEngines.getUnorderedBundledEngines(for: selectedSearchEngines, isOnboarding: false) +
-        customEngines
+        SearchEngines.getUnorderedBundledEngines(for: selectedSearchEngines,
+                                                    locale: locale) + customEngines
 
         // might not work to change the default.
         guard let orderedEngineNames = Preferences.Search.orderedEngines.value else {

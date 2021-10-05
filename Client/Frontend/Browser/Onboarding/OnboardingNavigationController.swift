@@ -56,7 +56,9 @@ class OnboardingNavigationController: UINavigationController {
                         return [.rewardsAgreement]
                     }
                     
-                    var newUserScreens: [Screens] = [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+                    var newUserScreens: [Screens] =
+                    [searchEnginesScreenOrNil, .shieldsInfo, .rewardsAgreement]
+                        .compactMap { $0 }
                     
                     // FIXME: Update to iOS14 clipboard api once ready (#2838)
                     if Preferences.URP.referralCode.value == nil && UIPasteboard.general.hasStrings {
@@ -73,10 +75,19 @@ class OnboardingNavigationController: UINavigationController {
                 }
             } else {
                 switch self {
-                case .newUser: return [.searchEnginePicker, .shieldsInfo]
+                case .newUser: return [searchEnginesScreenOrNil, .shieldsInfo].compactMap { $0 }
                 case .existingUserRewardsOff: return []
                 }
             }
+        }
+        
+        /// Depending on device's region we may or may not show the search engine picker screen.
+        private var searchEnginesScreenOrNil: Screens? {
+            guard let region = Locale.current.regionCode,
+                !InitialSearchEngines.braveSearchDefaultRegions.contains(region) else {
+                return nil
+            }
+            return .searchEnginePicker
         }
     }
     

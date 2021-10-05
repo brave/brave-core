@@ -25,16 +25,6 @@ class InitialSearchEngines {
                 case .ecosia: return "ecosia.org/opensearch"
             }
         }
-        
-        func excludedFromOnboarding(for locale: Locale) -> Bool {
-            switch self {
-                case .google, .bing, .duckduckgo, .yandex, .qwant, .startpage, .ecosia:
-                    return false
-                case .braveSearch:
-                    guard let region = locale.regionCode else { return true }
-                    return !InitialSearchEngines.braveSearchOnboardingRegions.contains(region)
-            }
-        }
     }
     
     struct SearchEngine: Equatable, CustomStringConvertible {
@@ -68,13 +58,7 @@ class InitialSearchEngines {
     /// List of available engines for given locale. This list is sorted by with priority and default engines at the top.
     var engines: [SearchEngine]
     
-    /// Lists of engines available during onboarding.
-    var onboardingEngines: [SearchEngine] {
-        engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
-    }
-    
-    static let braveSearchOnboardingRegions = ["US", "CA"]
-    static let qwantDefaultRegions = ["FR"]
+    static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE"]
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
     static let ecosiaDefaultRegions = ["AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
                                        "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE", "IE"]
@@ -132,16 +116,16 @@ class InitialSearchEngines {
     private func regionOverrides() {
         guard let region = locale.regionCode else { return }
         
-        if Self.qwantDefaultRegions.contains(region) {
-            defaultSearchEngine = .qwant
-        }
-        
         if Self.yandexDefaultRegions.contains(region) {
             defaultSearchEngine = .yandex
         }
         
         if Self.ecosiaDefaultRegions.contains(region) {
             replaceOrInsert(engineId: .ecosia, customId: nil)
+        }
+        
+        if Self.braveSearchDefaultRegions.contains(region) {
+            defaultSearchEngine = .braveSearch
         }
     }
     

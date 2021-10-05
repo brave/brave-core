@@ -44,7 +44,7 @@ class SearchEnginesTests: XCTestCase {
     func testDefaultEngineOnStartup() {
         // If this is our first run, Google should be first for the en locale.
         let profile = MockProfile()
-        let engines = SearchEngines(files: profile.files)
+        let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
         XCTAssertEqual(engines.defaultEngine().shortName, DefaultSearchEngineName)
         // The default is `DefaultSearchEngineName` for both regular and private browsing.
         // Different search engine options might apply to certain regions.
@@ -189,7 +189,7 @@ class SearchEnginesTests: XCTestCase {
         // setup an existing search engine in the profile
         let profile = MockProfile()
         profile.prefs.setObject(["Google"], forKey: "search.orderedEngineNames")
-        let engines = SearchEngines(files: profile.files)
+        let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
         XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")
         // default engine should be on second place if a priority engine is present.
         XCTAssertEqual(engines.orderedEngines[0].shortName, "Google", "Google should be the first search engine")
