@@ -38,6 +38,17 @@ static const char kIpfsClientComponentBase64PublicKey[] =
 #elif defined(OS_MAC)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Mac)";
+#if defined(ARCH_CPU_ARM64)
+static const char kIpfsClientComponentId[] = "lejaflgbgglfaomemffoaappaihfligf";
+static const char kIpfsClientComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2qqbXvEZP1dlJW7FhKLB"
+    "+8ZTRF4mZjxRwU9VMyPrymWhAyhurtp2eIaAY2YiFMAfg4v3Eragxlt4+fL0QETc"
+    "lkmRUTvZ4wm93HODXPfL8LvKoFDBsjv9vnsT+PDonnpQBKdgRGpVYxxDY3vYu4AI"
+    "KuLLY1tOGnC7XNiQWPSnagSycdQfTxdmPaiEwDde1jYcBVyIbZPkiE2F+np9jQah"
+    "SKJJOKGmBaL/YO9xmjIBfPopwVVyVJPAIH6SPxI+XQMpYA1zagih5ULm+wXBNYcq"
+    "Xn9W/KQPkB4HKZ0eVgcKKS6T8lwDhB2oYAaTtxRno5Fu6wlEQBGmdFxqJw8KNPu2"
+    "JQIDAQAB";
+#else
 static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
 static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4gvE67b2T0U0i5awN5Q"
@@ -47,6 +58,7 @@ static const char kIpfsClientComponentBase64PublicKey[] =
     "ryEr9a5YL0h4vkBF2x9qSEErNj/ksDAcvKS1S+GjKVwYzJpzRG5mgWlpaqXNRIYY"
     "59uo1UEJYwr+HQ0pvt/gEdns1ccUsGEm9PAMJRptvrGX/fauIMAASvByMRG7XC27"
     "gwIDAQAB";
+#endif
 #elif defined(OS_LINUX)
 static const char kIpfsClientComponentName[] =
     "Brave IPFS Client Updater (Linux)";
