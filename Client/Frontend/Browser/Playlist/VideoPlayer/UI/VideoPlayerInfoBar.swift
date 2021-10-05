@@ -27,11 +27,12 @@ class VideoPlayerInfoBar: UIView {
         $0.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
     }
     
-    private let favIconImageView = UIImageView().then {
+    let favIconImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = 6.0
         $0.layer.cornerCurve = .continuous
         $0.layer.masksToBounds = true
+        $0.isUserInteractionEnabled = true
     }
     
     let titleLabel = UILabel().then {

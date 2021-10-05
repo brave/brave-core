@@ -403,11 +403,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     }
     
     func onExitFullscreen() {
-        if !UIDevice.isIpad || splitViewController?.isCollapsed == true {
-            listController.onExitFullscreen()
-        } else {
-            detailController.onExitFullscreen()
-        }
+        listController.onExitFullscreen()
     }
     
     func deleteItem(item: PlaylistInfo, at index: Int) {
@@ -613,6 +609,10 @@ extension PlaylistViewController: VideoViewDelegate {
     
     func onExitFullscreen(_ videoView: VideoView) {
         onExitFullscreen()
+    }
+    
+    func onFavIconSelected(_ videoView: VideoView) {
+        listController.onFavIconSelected(videoView)
     }
     
     func play(_ videoView: VideoView) {

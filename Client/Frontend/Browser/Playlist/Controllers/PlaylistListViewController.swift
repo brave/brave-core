@@ -485,6 +485,19 @@ extension PlaylistListViewController {
             splitViewController?.parent?.dismiss(animated: true, completion: nil)
         }
     }
+    
+    func onFavIconSelected(_ videoView: VideoView) {
+        if let browser = PlaylistCarplayManager.shared.browserController,
+           let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem,
+           let pageURL = URL(string: currentItem.pageSrc) {
+            
+            self.dismiss(animated: true) {
+                let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                browser.tabManager.addTabAndSelect(URLRequest(url: pageURL),
+                                                   isPrivate: isPrivateBrowsing)
+            }
+        }
+    }
 }
 
 // MARK: - PlaylistManagerDelegate
