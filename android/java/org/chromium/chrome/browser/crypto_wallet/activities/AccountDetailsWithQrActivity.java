@@ -58,9 +58,8 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         accountValueText.setText(Utils.stripAccountAddress(mAddress));
 
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
-        accountCopyImage.setOnClickListener(v
-                -> Utils.saveTextToClipboard(
-                        AccountDetailsWithQrActivity.this, accountValueText.getText().toString()));
+        accountCopyImage.setOnClickListener(
+                v -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText(mName);
