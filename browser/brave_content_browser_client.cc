@@ -36,6 +36,7 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -205,21 +206,12 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
   return false;
 }
 
-void BindCosmeticFiltersResources(
-    content::RenderFrameHost* const frame_host,
+void BindCosmeticFiltersResourcesOnTaskRunner(
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
         receiver) {
-  auto* web_contents = content::WebContents::FromRenderFrameHost(frame_host);
-  if (!web_contents)
-    return;
-
-  auto* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile);
-
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<cosmetic_filters::CosmeticFiltersResources>(
-          settings_map, g_brave_browser_process->ad_block_service()),
+          g_brave_browser_process->ad_block_service()),
       std::move(receiver));
 }
 
@@ -239,6 +231,15 @@ void BindBraveAdsHost(
           profile),
       std::move(receiver));
 #endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
+}
+
+void BindCosmeticFiltersResources(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
+        receiver) {
+  g_brave_browser_process->ad_block_service()->GetTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&BindCosmeticFiltersResourcesOnTaskRunner,
+                                std::move(receiver)));
 }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

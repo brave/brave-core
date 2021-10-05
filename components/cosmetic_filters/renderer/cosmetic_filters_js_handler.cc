@@ -9,10 +9,13 @@
 
 #include "base/bind.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated_map.h"
+#include "components/content_settings/renderer/content_settings_agent_impl.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
@@ -297,28 +300,53 @@ void CosmeticFiltersJSHandler::OnRemoteDisconnect() {
   EnsureConnected();
 }
 
-void CosmeticFiltersJSHandler::ProcessURL(const GURL& url,
-                                          base::OnceClosure callback) {
+bool CosmeticFiltersJSHandler::ProcessURL(
+    const GURL& url,
+    absl::optional<base::OnceClosure> callback) {
   resources_dict_.reset();
   url_ = url;
+  enabled_1st_party_cf_ = false;
+
   // Trivially, don't make exceptions for malformed URLs.
   if (!EnsureConnected() || url_.is_empty() || !url_.is_valid())
-    return;
+    return false;
 
-  cosmetic_filters_resources_->UrlCosmeticResources(
-      url_.spec(),
-      base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
-                     base::Unretained(this), std::move(callback)));
+  auto* content_settings =
+      static_cast<content_settings::BraveContentSettingsAgentImpl*>(
+          content_settings::ContentSettingsAgentImpl::Get(render_frame_));
+
+  if (!content_settings->IsCosmeticFilteringEnabled(url_)) {
+    return false;
+  }
+
+  enabled_1st_party_cf_ =
+      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_);
+
+  if (callback.has_value()) {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+        "Brave.CosmeticFilters.UrlCosmeticResources");
+    cosmetic_filters_resources_->UrlCosmeticResources(
+        url_.spec(),
+        base::BindOnce(&CosmeticFiltersJSHandler::OnUrlCosmeticResources,
+                       base::Unretained(this), std::move(callback.value())));
+  } else {
+    SCOPED_UMA_HISTOGRAM_TIMER_MICROS(
+        "Brave.CosmeticFilters.UrlCosmeticResourcesSync");
+    base::Value result;
+    cosmetic_filters_resources_->UrlCosmeticResources(url_.spec(), &result);
+    resources_dict_ = base::DictionaryValue::From(
+        base::Value::ToUniquePtrValue(std::move(result)));
+  }
+
+  return true;
 }
 
 void CosmeticFiltersJSHandler::OnUrlCosmeticResources(
     base::OnceClosure callback,
-    bool enabled,
-    bool first_party_enabled,
     base::Value result) {
-  if (!enabled || !EnsureConnected())
+  if (!EnsureConnected())
     return;
-  enabled_1st_party_cf_ = first_party_enabled;
+
   resources_dict_ = base::DictionaryValue::From(
       base::Value::ToUniquePtrValue(std::move(result)));
   std::move(callback).Run();
