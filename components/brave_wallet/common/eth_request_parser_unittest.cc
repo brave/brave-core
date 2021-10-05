@@ -104,4 +104,38 @@ TEST(EthResponseParserUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_FALSE(ParseEthSendTransaction1559Params("[0]", &from));
 }
 
+TEST(EthResponseParserUnitTest, GetEthJsonRequestMethod) {
+  // Happy path
+  std::string json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": "eth_blockNumber",
+    "params": []
+  })";
+  std::string method;
+  EXPECT_TRUE(GetEthJsonRequestMethod(json, &method));
+  EXPECT_EQ(method, "eth_blockNumber");
+
+  // Missing method
+  std::string missing_method_json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "params": []
+  })";
+  EXPECT_FALSE(GetEthJsonRequestMethod(missing_method_json, &method));
+
+  // Invalid method type
+  std::string wrong_type_method_json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": 1,
+    "params": []
+  })";
+  EXPECT_FALSE(GetEthJsonRequestMethod(wrong_type_method_json, &method));
+
+  // Not even JSON
+  std::string invalid_input = "Your sound card works perfectly!";
+  EXPECT_FALSE(GetEthJsonRequestMethod(invalid_input, &method));
+}
+
 }  // namespace brave_wallet

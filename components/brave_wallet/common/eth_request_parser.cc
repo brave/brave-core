@@ -122,4 +122,27 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
+bool GetEthJsonRequestMethod(const std::string& json, std::string* method) {
+  CHECK(method);
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  const std::string* found_method = response_dict->FindStringPath(kMethod);
+  if (!found_method)
+    return false;
+
+  *method = *found_method;
+  return true;
+}
+
 }  // namespace brave_wallet
