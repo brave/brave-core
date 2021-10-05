@@ -83,6 +83,10 @@ class EthJsonRpcController : public KeyedService,
   void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
                             GetERC20TokenBalanceCallback callback) override;
+  void GetERC20TokenAllowance(const std::string& contract_address,
+                              const std::string& owner_address,
+                              const std::string& spender_address,
+                              GetERC20TokenAllowanceCallback callback) override;
 
   // Call getMany function of ProxyReader contract from Unstoppable Domains.
   void UnstoppableDomainsProxyReaderGetMany(
@@ -173,6 +177,11 @@ class EthJsonRpcController : public KeyedService,
       const base::flat_map<std::string, std::string>& headers);
   void OnGetERC20TokenBalance(
       GetERC20TokenBalanceCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetERC20TokenAllowance(
+      GetERC20TokenAllowanceCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

@@ -364,6 +364,41 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
   std::move(callback).Run(true, result);
 }
 
+void EthJsonRpcController::GetERC20TokenAllowance(
+    const std::string& contract_address,
+    const std::string& owner_address,
+    const std::string& spender_address,
+    EthJsonRpcController::GetERC20TokenAllowanceCallback callback) {
+  std::string data;
+  if (!erc20::Allowance(owner_address, spender_address, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenAllowance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetERC20TokenAllowance(
+    GetERC20TokenAllowanceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::string result;
+  if (!ParseEthCall(body, &result)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+  std::move(callback).Run(true, result);
+}
+
 void EthJsonRpcController::EnsProxyReaderGetResolverAddress(
     const std::string& contract_address,
     const std::string& domain,

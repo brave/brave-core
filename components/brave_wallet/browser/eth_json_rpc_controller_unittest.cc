@@ -536,6 +536,42 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
   EXPECT_TRUE(callback_called);
 }
 
+TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenAllowance) {
+  bool callback_called = false;
+  SetInterceptor(
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x00000000000000000000000000000000000000000000000166e12cfce39a0000\""
+      "}");
+
+  rpc_controller_->GetERC20TokenAllowance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
+      base::BindOnce(&OnStringResponse, &callback_called, true,
+                     "0x00000000000000000000000000000000000000000000000166e12cf"
+                     "ce39a0000"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->GetERC20TokenAllowance(
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Invalid input should fail.
+  callback_called = false;
+  rpc_controller_->GetERC20TokenAllowance(
+      "", "", "",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
 TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
   bool callback_called = false;
   SetInterceptor(
