@@ -56,6 +56,8 @@ class AdServing final {
   void OnAdsPerHourChanged();
 
  private:
+  bool is_serving_ = false;
+
   Timer timer_;
 
   std::unique_ptr<EligibleAds> eligible_ads_;
