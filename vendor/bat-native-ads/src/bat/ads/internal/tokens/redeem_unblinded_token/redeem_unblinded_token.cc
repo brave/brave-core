@@ -48,6 +48,8 @@ RedeemUnblindedToken::~RedeemUnblindedToken() {
 }
 
 void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   BLOG(1, "Redeem unblinded token");
 
   if (!confirmation.was_created) {
@@ -78,8 +80,6 @@ void RedeemUnblindedToken::CreateConfirmation(
 void RedeemUnblindedToken::OnCreateConfirmation(
     const mojom::UrlResponse& url_response,
     const ConfirmationInfo& confirmation) {
-  DCHECK(!confirmation.id.empty());
-
   BLOG(1, "OnCreateConfirmation");
 
   BLOG(6, UrlResponseToString(url_response));
@@ -108,8 +108,6 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 
 void RedeemUnblindedToken::FetchPaymentToken(
     const ConfirmationInfo& confirmation) {
-  DCHECK(!confirmation.id.empty());
-
   BLOG(1, "FetchPaymentToken");
   BLOG(2, "GET /v1/confirmation/{confirmation_id}/paymentToken");
 

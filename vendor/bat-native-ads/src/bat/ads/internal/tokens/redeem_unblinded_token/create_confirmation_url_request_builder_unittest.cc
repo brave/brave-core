@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 
+#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -22,12 +22,9 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
   ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
 
   ConfirmationInfo GetConfirmationForType(const ConfirmationType type) {
-    ConfirmationInfo confirmation;
-
-    confirmation.id = "d990ed8d-d739-49fb-811b-c2e02158fb60";
-    confirmation.creative_instance_id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
-
-    confirmation.type = type;
+    ConfirmationInfo confirmation =
+        BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
+                          "546fe7b0-5047-4f28-a11c-81f14edcf0f6", type);
 
     const std::string blinded_token_base64 =
         "PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=";
@@ -43,8 +40,6 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
         "MnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIs"
         "InQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUy"
         "WEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=";
-
-    confirmation.created_at = Now();
 
     return confirmation;
   }

@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check_op.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
@@ -28,6 +29,9 @@ namespace user_data {
 void Build(const std::string& creative_instance_id,
            const ConfirmationType& confirmation_type,
            Callback callback) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+
   base::DictionaryValue user_data;
 
   const base::DictionaryValue platform_user_data = GetPlatform();

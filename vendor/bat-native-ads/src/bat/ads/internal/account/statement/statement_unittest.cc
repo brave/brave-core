@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "bat/ads/internal/account/ad_rewards/ad_rewards_delegate_mock.h"
+#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -48,10 +49,10 @@ class BatAdsStatementTest : public UnitTestBase {
   }
 
   void AddTransactions(const int count) {
-    for (int i = 0; i < count; i++) {
-      ConfirmationInfo confirmation;
-      confirmation.type = ConfirmationType::kViewed;
+    const ConfirmationInfo confirmation = BuildConfirmation(
+        "9cf19f6e-25b8-44f1-9050-2a7247185489", ConfirmationType::kViewed);
 
+    for (int i = 0; i < count; i++) {
       transactions::Add(0.05, confirmation);
     }
   }
