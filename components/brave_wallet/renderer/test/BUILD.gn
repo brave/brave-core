@@ -8,10 +8,7 @@ import("//testing/test.gni")
 
 source_set("unit_tests") {
   testonly = true
-  sources = [
-    "//brave/components/brave_wallet/renderer/brave_wallet_response_helpers_unittest.cc",
-    "//brave/components/brave_wallet/renderer/eth_request_parser_unittest.cc",
-  ]
+  sources = [ "//brave/components/brave_wallet/renderer/brave_wallet_response_helpers_unittest.cc" ]
 
   deps = [
     "//base",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_ETH_REQUEST_PARSER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_ETH_REQUEST_PARSER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_PARSER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_PARSER_H_
 
 #include <string>
 
@@ -19,4 +19,4 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_ETH_REQUEST_PARSER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_PARSER_H_

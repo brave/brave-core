@@ -8,6 +8,8 @@ preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 static_library("common") {
   public_deps = [ "buildflags" ]
   sources = [
+    "eth_request_parser.cc",
+    "eth_request_parser.h",
     "features.cc",
     "features.h",
     "value_conversion_utils.cc",
