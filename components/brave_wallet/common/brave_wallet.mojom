@@ -382,7 +382,12 @@ interface EthTxController {
   ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 
+interface BraveWalletServiceObserver {
+  OnActiveOriginChanged(string origin);
+};
+
 interface BraveWalletService {
+  AddObserver(pending_remote<BraveWalletServiceObserver> observer);
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
   RemoveUserAsset(string contract_address, string chain_id) => (bool success);
@@ -395,6 +400,7 @@ interface BraveWalletService {
   SetDefaultWallet(DefaultWallet default_wallet);
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
   ResetEthereumPermission(string origin, string account) => (bool success);
+  GetActiveOrigin() => (string origin);
 };
 
 enum DefaultWallet {

@@ -71,6 +71,7 @@ source_set("brave_wallet_delegate") {
       "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/ui",
       "//brave/components/brave_wallet/common:mojom",
+      "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
       "//components/content_settings/core/common",
       "//components/permissions",

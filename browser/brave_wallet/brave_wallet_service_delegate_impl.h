@@ -16,6 +16,9 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/browser/ui/browser_tab_strip_tracker.h"
+#include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace value_store {
@@ -32,7 +35,9 @@ class Extension;
 
 namespace brave_wallet {
 
-class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
+class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
+                                       public TabStripModelObserver,
+                                       public BrowserTabStripTrackerDelegate {
  public:
   explicit BraveWalletServiceDelegateImpl(content::BrowserContext* context);
   BraveWalletServiceDelegateImpl(const BraveWalletServiceDelegateImpl&) =
@@ -59,6 +64,23 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
 
+  void GetActiveOrigin(GetActiveOriginCallback callback) override;
+
+  void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
+  void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;
+
+  // TabStripModelObserver:
+  void OnTabStripModelChanged(
+      TabStripModel* tab_strip_model,
+      const TabStripModelChange& change,
+      const TabStripSelectionChange& selection) override;
+  void TabChangedAt(content::WebContents* contents,
+                    int index,
+                    TabChangeType change_type) override;
+
+  // BrowserTabStripTrackerDelegate:
+  bool ShouldTrackBrowser(Browser* browser) override;
+
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
   void OnCryptoWalletsLoaded(const std::string& password,
@@ -83,9 +105,14 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
   void EnsureConnected();
   void OnConnectionError();
 
+  std::string GetActiveOriginInternal();
+  void FireActiveOriginChanged();
+
   mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
   scoped_refptr<extensions::Extension> extension_;
+  BrowserTabStripTracker browser_tab_strip_tracker_;
+  base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };
 
