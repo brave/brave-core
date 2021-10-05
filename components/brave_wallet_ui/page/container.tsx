@@ -240,7 +240,9 @@ function Container (props: Props) {
     return false
   }, [invalidMnemonic])
 
-  const recoveryPhrase = (mnemonic || '').split(' ')
+  const recoveryPhrase = React.useMemo(() => {
+    return (mnemonic || '').split(' ')
+  }, [mnemonic])
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = (asset: TokenInfo) => {
