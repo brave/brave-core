@@ -49,6 +49,8 @@ class AdServing {
   void OnAdsPerHourChanged();
 
  private:
+  bool is_serving_ = false;
+
   Timer timer_;
 
   ad_targeting::geographic::SubdivisionTargeting*
