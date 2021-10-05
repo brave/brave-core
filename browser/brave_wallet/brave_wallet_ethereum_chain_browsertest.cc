@@ -324,3 +324,27 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddBrokenChain) {
   ASSERT_FALSE(tab_helper->IsShowingBubble());
   EXPECT_EQ(base::Value(true), result_first.value);
 }
+
+IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, CheckIncognitoTab) {
+  GURL url =
+      https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
+  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  ui_test_utils::NavigateToURL(private_browser, url);
+  content::WebContents* contents =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents);
+  EXPECT_EQ(url, contents->GetURL());
+  base::RunLoop().RunUntilIdle();
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  EXPECT_EQ(title, "PAGE_SCRIPT_STARTED");
+  auto result_first = EvalJs(contents,
+                             "window.domAutomationController.send("
+                             "window.ethereum != null)",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  EXPECT_EQ(base::Value(false), result_first.value);
+}

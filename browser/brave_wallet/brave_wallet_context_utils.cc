@@ -4,12 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave_wallet {
 
 bool IsAllowedForContext(content::BrowserContext* context) {
-  if (context && context->IsTor())
+  if (context && !brave::IsRegularProfile(context))
     return false;
 
   return true;

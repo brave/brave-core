@@ -51,6 +51,7 @@ class BraveRendererUpdater : public KeyedService {
 
   // Prefs that we sync to the renderers.
   IntegerPrefMember brave_wallet_web3_provider_;
+  bool is_wallet_allowed_for_context_;
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_H_

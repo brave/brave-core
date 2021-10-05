@@ -23,7 +23,7 @@
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
-    : profile_(profile) {
+    : profile_(profile), is_wallet_allowed_for_context_(false) {
   PrefService* pref_service = profile->GetPrefs();
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet_web3_provider_.Init(kBraveWalletWeb3Provider, pref_service);
@@ -43,6 +43,9 @@ BraveRendererUpdater::~BraveRendererUpdater() {}
 void BraveRendererUpdater::InitializeRenderer(
     content::RenderProcessHost* render_process_host) {
   auto renderer_configuration = GetRendererConfiguration(render_process_host);
+  Profile* profile =
+      Profile::FromBrowserContext(render_process_host->GetBrowserContext());
+  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
   UpdateRenderer(&renderer_configuration);
 }
 
@@ -94,7 +97,7 @@ void BraveRendererUpdater::UpdateRenderer(
       (static_cast<brave_wallet::mojom::DefaultWallet>(
            brave_wallet_web3_provider_.GetValue()) ==
        brave_wallet::mojom::DefaultWallet::BraveWallet) &&
-      brave_wallet::IsAllowedForContext(profile_);
+      is_wallet_allowed_for_context_;
 
   (*renderer_configuration)
       ->SetConfiguration(
