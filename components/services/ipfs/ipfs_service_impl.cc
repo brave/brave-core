@@ -13,11 +13,13 @@
 #include "base/files/file_util.h"
 #include "base/process/kill.h"
 #include "base/process/launch.h"
+#include "base/version.h"
 #include "brave/components/services/ipfs/ipfs_service_utils.h"
 
 namespace {
 
 const char kRepoLockFile[] = "repo.lock";
+const char kVersionWithAgentSuffixSupport[] = "0.10.0";
 
 bool LaunchProcessAndExit(const base::FilePath& path,
                           std::initializer_list<std::string> args,
@@ -157,10 +159,20 @@ void IpfsServiceImpl::Launch(mojom::IpfsConfigPtr config,
 
   // Launch IPFS daemon.
   base::CommandLine args(config->binary_path);
+
   args.AppendArg("daemon");
   args.AppendArg("--migrate=true");
   args.AppendArg("--enable-gc");
   args.AppendArg("--routing=dhtclient");
+
+  auto version = ipfs::GetVersionFromNodeFilename(
+      config->binary_path.BaseName().MaybeAsASCII());
+
+  if (!version.empty() &&
+      base::Version(version) >= base::Version(kVersionWithAgentSuffixSupport)) {
+    args.AppendArg("--agent-version-suffix=brave");
+  }
+
   base::Process ipfs_process = base::LaunchProcess(args, options);
   bool result = ipfs_process.IsValid();
 

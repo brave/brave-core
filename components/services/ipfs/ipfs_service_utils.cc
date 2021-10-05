@@ -7,11 +7,21 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/re2/src/re2/re2.h"
+
+namespace {
+
+// RegEx to extract version from node name
+constexpr char kExecutableRegEx[] =
+    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-\\w+";
+
+}  // namespace
 
 namespace ipfs {
 
@@ -53,6 +63,18 @@ bool UpdateConfigJSON(const std::string& source,
   }
   *result = json_string;
   return true;
+}
+
+std::string GetVersionFromNodeFilename(const std::string& filename) {
+  static const RE2 version_pattern(kExecutableRegEx);
+  std::vector<re2::StringPiece> matched_groups(
+      version_pattern.NumberOfCapturingGroups() + 1);
+  if (!version_pattern.Match(filename, 0, filename.size(), RE2::ANCHOR_START,
+                             matched_groups.data(), matched_groups.size()) ||
+      matched_groups.size() < 2) {
+    return std::string();
+  }
+  return matched_groups[1].as_string();
 }
 
 }  // namespace ipfs
