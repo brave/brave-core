@@ -7,12 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/common/eth_request_parser.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-TEST(EthRequestParserUnitTest, ParseEthSendTransactionParams) {
+TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   std::string json(
       R"({
         "params": [{
@@ -44,7 +44,7 @@ TEST(EthRequestParserUnitTest, ParseEthSendTransactionParams) {
   EXPECT_FALSE(ParseEthSendTransactionParams("[0]", &from));
 }
 
-TEST(EthResponseParserUnitTest, ParseEthSendTransaction1559Params) {
+TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   std::string json(
       R"({
         "params": [{
@@ -104,7 +104,7 @@ TEST(EthResponseParserUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_FALSE(ParseEthSendTransaction1559Params("[0]", &from));
 }
 
-TEST(EthResponseParserUnitTest, GetEthJsonRequestMethod) {
+TEST(EthResponseHelperUnitTest, GetEthJsonRequestMethod) {
   // Happy path
   std::string json = R"({
     "id": 1,
