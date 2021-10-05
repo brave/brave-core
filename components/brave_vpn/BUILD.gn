@@ -50,6 +50,7 @@ static_library("brave_vpn") {
       "brave_vpn_service_observer.cc",
       "brave_vpn_service_observer.h",
       "switches.h",
+      "url_constants.h",
     ]
 
     if (is_win) {

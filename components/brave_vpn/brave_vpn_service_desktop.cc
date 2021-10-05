@@ -19,6 +19,7 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
+#include "brave/components/brave_vpn/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
@@ -30,6 +31,24 @@ constexpr char kBraveVPNEntryName[] = "BraveVPN";
 constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
+
+std::string GetManageUrl() {
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNAccountHost))
+    return brave_vpn::kManageUrlProd;
+
+  const std::string value =
+      cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNAccountHost);
+  if (value == "prod")
+    return brave_vpn::kManageUrlProd;
+  if (value == "staging")
+    return brave_vpn::kManageUrlStaging;
+  if (value == "dev")
+    return brave_vpn::kManageUrlDev;
+
+  NOTREACHED();
+  return brave_vpn::kManageUrlProd;
+}
 
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
@@ -452,6 +471,14 @@ void BraveVpnServiceDesktop::SetSelectedRegion(
 
   // Start hostname fetching for selected region.
   FetchHostnamesForRegion(region_ptr->name);
+}
+
+void BraveVpnServiceDesktop::GetProductUrls(GetProductUrlsCallback callback) {
+  brave_vpn::mojom::ProductUrls urls;
+  urls.feedback = brave_vpn::kFeedbackUrl;
+  urls.about = brave_vpn::kAboutUrl;
+  urls.manage = GetManageUrl();
+  std::move(callback).Run(urls.Clone());
 }
 
 void BraveVpnServiceDesktop::FetchHostnamesForRegion(const std::string& name) {

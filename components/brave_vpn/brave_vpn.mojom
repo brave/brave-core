@@ -47,10 +47,17 @@ interface ServiceHandler {
   GetDeviceRegion() => (Region device_region);
   GetSelectedRegion() => (Region current_region);
   SetSelectedRegion(Region region);
+  GetProductUrls() => (ProductUrls urls);
 };
 
 // WebUI-side handler for requests from the browser.
 interface Page {
+};
+
+struct ProductUrls {
+  string feedback;
+  string about;
+  string manage;
 };
 
 enum ConnectionState {
