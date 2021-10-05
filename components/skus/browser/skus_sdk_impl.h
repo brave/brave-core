@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_IMPL_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_IMPL_H_
 
+#include <map>
 #include <string>
 
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -39,10 +40,14 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
                     RefreshOrderCallback callback) override;
   void FetchOrderCredentials(const std::string& order_id) override;
 
-  // TODO: re-implement when setting preferences
-  // private:
-  //  PrefService* prefs_;
+  // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  // used for storing order key/value pairs
+  std::map<std::string, std::string> dictionary_;
+
+  // used to store the credential
+  PrefService* prefs_;
 };
 
 }  // namespace brave_rewards
