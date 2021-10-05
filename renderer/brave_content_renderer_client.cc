@@ -81,6 +81,8 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
+  // TODO(bsclifton): only inject on Brave properties?
+  // ex: account.brave.com / account.brave.software
   new brave_rewards::BraveSkusRenderFrameObserver(
       render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
 }
