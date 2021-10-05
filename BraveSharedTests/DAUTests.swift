@@ -94,20 +94,20 @@ class DAUTests: XCTestCase {
         pingWithDateAndCompare(dateString: "2017-11-20", daily: true, weekly: true,
                                monthly: false, dtoi: dateString)
         
-        // Exact 14 days after install date
-        pingWithDateAndCompare(dateString: "2017-11-24", daily: true, weekly: false,
-                               monthly: false, dtoi: dateString)
+        // Exact 30 days after install date
+        pingWithDateAndCompare(dateString: "2017-12-10", daily: true, weekly: true,
+                               monthly: true, dtoi: dateString)
         
         XCTAssertNotNil(Preferences.DAU.installationDate.value)
         
-        pingWithDateAndCompare(dateString: "2017-11-25", daily: true, weekly: false,
+        pingWithDateAndCompare(dateString: "2017-12-25", daily: true, weekly: true,
                                monthly: false, dtoi: "null")
         
-        // After 14 days installation date pref should be removed.
+        // After 30 days installation date pref should be removed.
         XCTAssertNil(Preferences.DAU.installationDate.value)
         
-        pingWithDateAndCompare(dateString: "2017-12-20", daily: true, weekly: true,
-                               monthly: true, dtoi: "null")
+        pingWithDateAndCompare(dateString: "2017-12-28", daily: true, weekly: false,
+                               monthly: false, dtoi: "null")
     }
     
     func testDtoiParamExistingUser() {
