@@ -39,6 +39,16 @@ TEST(EthCallDataBuilderTest, Approve) {
       "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
 }
 
+TEST(EthCallDataBuilderTest, Allowance) {
+  std::string data;
+  Allowance("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+            "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", &data);
+  ASSERT_EQ(
+      data,
+      "0xdd62ed3e000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a");
+}
+
 }  // namespace erc20
 
 namespace unstoppable_domains {

@@ -25,6 +25,9 @@ bool BalanceOf(const std::string& address, std::string* data);
 bool Approve(const std::string& spender_address,
              uint256_t amount,
              std::string* data);
+bool Allowance(const std::string& owner_address,
+               const std::string& spender_address,
+               std::string* data);
 
 }  // namespace erc20
 

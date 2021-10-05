@@ -56,6 +56,26 @@ bool Approve(const std::string& spender_address,
   return ConcatHexStrings(hex_strings, data);
 }
 
+bool Allowance(const std::string& owner_address,
+               const std::string& spender_address,
+               std::string* data) {
+  const std::string function_hash =
+      GetFunctionHash("allowance(address,address)");
+  std::string padded_owner_address;
+  if (!brave_wallet::PadHexEncodedParameter(owner_address,
+                                            &padded_owner_address)) {
+    return false;
+  }
+  std::string padded_spender_address;
+  if (!brave_wallet::PadHexEncodedParameter(spender_address,
+                                            &padded_spender_address)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_owner_address,
+                                          padded_spender_address};
+  return ConcatHexStrings(hex_strings, data);
+}
+
 }  // namespace erc20
 
 namespace unstoppable_domains {
