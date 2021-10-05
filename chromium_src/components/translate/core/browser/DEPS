@@ -1,5 +1,6 @@
 include_rules = [
   "+../../../../../../components/translate/core/browser",
+  "+../../../../../../../components/translate/core/browser",
   "+components/translate/core/browser",
   "+components/translate/core/common",
   "+components/language/core/browser",
