@@ -21,9 +21,12 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
 
 }  // namespace translate
 
-#define GetRecentTargetLanguage                                         \
-  GetRecentTargetLanguage();                                            \
-  using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy; \
+#define GetRecentTargetLanguage                                              \
+  GetRecentTargetLanguage();                                                 \
+  static_assert(base::StringPiece(__FUNCTION__).find("GetTargetLanguage") != \
+                    base::StringPiece::npos,                                 \
+                "bad override, should work only for GetTargetLanguage");     \
+  using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy;      \
   void
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
 #define TranslateManager ChromiumTranslateManager
