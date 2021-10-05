@@ -685,6 +685,12 @@ public class BytecodeTest {
                 "org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings"));
         Assert.assertTrue(checkSuperName("org/chromium/components/browser_ui/site_settings/Website",
                 "org/chromium/components/browser_ui/site_settings/BraveWebsite"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/components/browser_ui/site_settings/FourStateCookieSettingsPreference",
+                "org/chromium/components/browser_ui/site_settings/BraveFourStateCookieSettingsPreferenceBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/components/browser_ui/site_settings/SiteSettings",
+                "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase"));
     }
 
     private boolean classExists(String className) {

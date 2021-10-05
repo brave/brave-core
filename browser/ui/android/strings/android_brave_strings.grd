@@ -2308,6 +2308,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CHOOSE_A_FILE" desc="Brave wallet accounts text">
       Choose a file
     </message>
+    <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_PRIVATE_TITLE" desc="Text used to explain the block third-party cookies in Private option in settings">
+      Block third-party cookies in Private
+    </message>
     </messages>
   </release>
 </grit>
