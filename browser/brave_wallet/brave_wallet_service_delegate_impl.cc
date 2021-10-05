@@ -11,6 +11,7 @@
 #include "base/bind_post_task.h"
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversion_utils.h"
+#include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -73,6 +74,87 @@ content::WebContents* GetActiveWebContents() {
   return browser ? browser->tab_strip_model()->GetActiveWebContents() : nullptr;
 }
 
+std::string GetLegacyCryptoWalletsPassword(const std::string& password,
+                                           base::Value&& dict) {
+  std::string legacy_crypto_wallets_password;
+  const base::Value* argon_params_value =
+      dict.FindPath("data.KeyringController.argonParams");
+  CHECK(argon_params_value);
+  if (!argon_params_value->is_dict()) {
+    VLOG(0) << "data.KeyringController.argonParams is not dict";
+    return std::string();
+  }
+  auto hash_len = argon_params_value->FindIntKey("hashLen");
+  auto mem = argon_params_value->FindIntKey("mem");
+  auto time = argon_params_value->FindIntKey("time");
+  auto type = argon_params_value->FindIntKey("type");
+  if (!hash_len || !mem || !time) {
+    VLOG(0) << "missing hashLen, mem, time or type in argonParams";
+    return std::string();
+  }
+
+  if (type != 2) {
+    VLOG(0) << "Type should be Argon2_id";
+    return std::string();
+  }
+
+  const std::string* salt_str =
+      dict.FindStringPath("data.KeyringController.salt");
+  if (!salt_str) {
+    VLOG(0) << "missing data.KeyringController.salt";
+    return std::string();
+  }
+
+  // We need to count characters here because js implemenation forcibly utf8
+  // decode random bytes
+  // (https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L91)
+  // and causes 0xEFBFBD which is � (code point 0xFFFD) to be // NOLINT
+  // inserted and replace the original byte when it is not a valid unicode
+  // encoding. When we pass salt to argon2, argon2 decides salt size by
+  // salt.length which would be 32 because it counts character length not
+  // bytes size
+  // https://github.com/urbit/argon2-wasm/blob/c9e73723cebe3d76cf286f5c7709b64edb25c684/index.js#L73
+  size_t character_count = 0;
+  for (int32_t i = 0; i < (int32_t)salt_str->size(); ++i) {
+    uint32_t code_point;
+    if (base::ReadUnicodeCharacter((const char*)salt_str->data(),
+                                   salt_str->size(), &i, &code_point))
+      ++character_count;
+  }
+
+  std::vector<uint8_t> master_key(*hash_len);
+  if (argon2id_hash_raw(*time, *mem, 1, password.data(), password.size(),
+                        salt_str->data(), character_count, master_key.data(),
+                        *hash_len) != ARGON2_OK) {
+    VLOG(1) << "argon2id_hash_raw failed";
+    return std::string();
+  }
+  const std::string info = "metamask-encryptor";
+  std::vector<uint8_t> sub_key(*hash_len);
+  if (!HKDF(sub_key.data(), sub_key.size(), EVP_sha512(), master_key.data(),
+            master_key.size(), nullptr, 0, (uint8_t*)info.data(),
+            info.size())) {
+    VLOG(1) << "HKDF failed";
+    return std::string();
+  }
+
+  // We need to go through whole buffer trying to see if there is an invalid
+  // unicdoe encoding and replace it with � (code point 0xFFFD) // NOLINT
+  // because js implementation forcibly utf8 decode sub_key
+  // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
+  for (int32_t i = 0; i < (int32_t)sub_key.size(); ++i) {
+    uint32_t code_point;
+    if (!base::ReadUnicodeCharacter((const char*)sub_key.data(), sub_key.size(),
+                                    &i, &code_point) ||
+        !base::IsValidCodepoint(code_point)) {
+      code_point = 0xfffd;
+    }
+    base::WriteUnicodeCharacter(code_point, &legacy_crypto_wallets_password);
+  }
+
+  return legacy_crypto_wallets_password;
+}
+
 }  // namespace
 
 BraveWalletServiceDelegateImpl::BraveWalletServiceDelegateImpl(
@@ -123,7 +205,7 @@ void BraveWalletServiceDelegateImpl::ImportFromCryptoWallets(
     const std::string& password,
     const std::string& new_password,
     ImportFromCryptoWalletsCallback callback) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(context_);
 
 #if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -157,7 +239,7 @@ void BraveWalletServiceDelegateImpl::ImportFromMetaMask(
     const std::string& password,
     const std::string& new_password,
     ImportFromMetaMaskCallback callback) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(context_);
 
   if (password.empty() || new_password.empty()) {
@@ -201,7 +283,7 @@ void BraveWalletServiceDelegateImpl::GetLocalStorage(
     const std::string& password,
     const std::string& new_password,
     ImportFromCryptoWalletsCallback callback) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   std::string error;
   extension_ = Extension::Create(
@@ -222,10 +304,9 @@ void BraveWalletServiceDelegateImpl::GetLocalStorage(
           &OnRunWithStorage,
           base::BindPostTask(
               base::SequencedTaskRunnerHandle::Get(),
-              base::BindOnce(
-                  &BraveWalletServiceDelegateImpl ::OnGetLocalStorage,
-                  weak_ptr_factory_.GetWeakPtr(), password, new_password,
-                  std::move(callback)))));
+              base::BindOnce(&BraveWalletServiceDelegateImpl::OnGetLocalStorage,
+                             weak_ptr_factory_.GetWeakPtr(), password,
+                             new_password, std::move(callback)))));
 }
 
 void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
@@ -233,7 +314,7 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
     const std::string& new_password,
     ImportFromCryptoWalletsCallback callback,
     std::unique_ptr<base::DictionaryValue> dict) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   EnsureConnected();
 
   if (password.empty() || new_password.empty()) {
@@ -242,87 +323,33 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
     return;
   }
 
-  std::string legacy_crypto_wallets_password;
-  const base::Value* argon_params_value =
-      dict->FindPath("data.KeyringController.argonParams");
-  if (argon_params_value) {
-    if (!argon_params_value->is_dict()) {
-      VLOG(0) << "data.KeyringController.argonParams is not dict";
-      std::move(callback).Run(false);
-      return;
-    }
-    auto hash_len = argon_params_value->FindIntKey("hashLen");
-    auto mem = argon_params_value->FindIntKey("mem");
-    auto time = argon_params_value->FindIntKey("time");
-    auto type = argon_params_value->FindIntKey("type");
-    if (!hash_len || !mem || !time) {
-      VLOG(0) << "missing hashLen, mem, time or type in argonParams";
-      std::move(callback).Run(false);
-      return;
-    }
+  if (dict->FindPath("data.KeyringController.argonParams")) {
+    auto dict_clone = dict->Clone();
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(&GetLegacyCryptoWalletsPassword, password,
+                       std::move(dict_clone)),
+        base::BindOnce(&BraveWalletServiceDelegateImpl::GetMnemonic,
+                       weak_ptr_factory_.GetWeakPtr(), true, new_password,
+                       std::move(callback), std::move(dict)));
+  } else {
+    GetMnemonic(false, new_password, std::move(callback), std::move(dict),
+                password);
+  }
+}
 
-    if (type != 2) {
-      VLOG(0) << "Type should be Argon2_id";
-      std::move(callback).Run(false);
-      return;
-    }
+void BraveWalletServiceDelegateImpl::GetMnemonic(
+    bool is_legacy_crypto_wallets,
+    const std::string& new_password,
+    ImportFromCryptoWalletsCallback callback,
+    std::unique_ptr<base::DictionaryValue> dict,
+    const std::string& password) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-    const std::string* salt_str =
-        dict->FindStringPath("data.KeyringController.salt");
-    if (!salt_str) {
-      VLOG(0) << "missing data.KeyringController.salt";
-      std::move(callback).Run(false);
-      return;
-    }
-
-    // We need to count characters here because js implemenation forcibly utf8
-    // decode random bytes
-    // (https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L91)
-    // and causes 0xEFBFBD which is � (code point 0xFFFD) to be // NOLINT
-    // inserted and replace the original byte when it is not a valid unicode
-    // encoding. When we pass salt to argon2, argon2 decides salt size by
-    // salt.length which would be 32 because it counts character length not
-    // bytes size
-    // https://github.com/urbit/argon2-wasm/blob/c9e73723cebe3d76cf286f5c7709b64edb25c684/index.js#L73
-    size_t character_count = 0;
-    for (int32_t i = 0; i < (int32_t)salt_str->size(); ++i) {
-      uint32_t code_point;
-      if (base::ReadUnicodeCharacter((const char*)salt_str->data(),
-                                     salt_str->size(), &i, &code_point))
-        ++character_count;
-    }
-
-    std::vector<uint8_t> master_key(*hash_len);
-    if (argon2id_hash_raw(*time, *mem, 1, password.data(), password.size(),
-                          salt_str->data(), character_count, master_key.data(),
-                          *hash_len) != ARGON2_OK) {
-      VLOG(1) << "argon2id_hash_raw failed";
-      std::move(callback).Run(false);
-      return;
-    }
-    const std::string info = "metamask-encryptor";
-    std::vector<uint8_t> sub_key(*hash_len);
-    if (!HKDF(sub_key.data(), sub_key.size(), EVP_sha512(), master_key.data(),
-              master_key.size(), nullptr, 0, (uint8_t*)info.data(),
-              info.size())) {
-      VLOG(1) << "HKDF failed";
-      std::move(callback).Run(false);
-      return;
-    }
-
-    // We need to go through whole buffer trying to see if there is an invalid
-    // unicdoe encoding and replace it with � (code point 0xFFFD) // NOLINT
-    // because js implementation forcibly utf8 decode sub_key
-    // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
-    for (int32_t i = 0; i < (int32_t)sub_key.size(); ++i) {
-      uint32_t code_point;
-      if (!base::ReadUnicodeCharacter((const char*)sub_key.data(),
-                                      sub_key.size(), &i, &code_point) ||
-          !base::IsValidCodepoint(code_point)) {
-        code_point = 0xfffd;
-      }
-      base::WriteUnicodeCharacter(code_point, &legacy_crypto_wallets_password);
-    }
+  if (password.empty()) {
+    VLOG(0) << "Failed to get password of legacy Crypto Wallets";
+    std::move(callback).Run(false);
+    return;
   }
 
   const std::string* vault_str =
@@ -366,12 +393,9 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
     return;
   }
 
-  const std::string password_to_use = legacy_crypto_wallets_password.empty()
-                                          ? password
-                                          : legacy_crypto_wallets_password;
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password_to_use, ToSpan(salt_decoded), 10000, 256);
+          password, ToSpan(salt_decoded), 10000, 256);
   DCHECK(encryptor);
 
   std::vector<uint8_t> decrypted_keyrings;
@@ -417,7 +441,7 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
   }
 
   keyring_controller_->RestoreWallet(
-      *mnemonic, new_password, !legacy_crypto_wallets_password.empty(),
+      *mnemonic, new_password, is_legacy_crypto_wallets,
       base::BindOnce(
           [](ImportFromCryptoWalletsCallback callback, bool is_valid_mnemonic) {
             std::move(callback).Run(is_valid_mnemonic);
