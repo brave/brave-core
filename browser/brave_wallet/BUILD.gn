@@ -25,6 +25,7 @@ source_set("brave_wallet") {
     "swap_controller_factory.h",
   ]
   deps = [
+    "//brave/browser/profiles:util",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
