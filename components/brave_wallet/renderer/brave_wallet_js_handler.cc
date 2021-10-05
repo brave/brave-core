@@ -8,7 +8,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
@@ -31,9 +30,6 @@ namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
 
-// Hardcode id to 1 as it is unused
-const uint32_t kRequestId = 1;
-const char kRequestJsonRPC[] = "2.0";
 
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
@@ -283,17 +279,15 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
 void BraveWalletJSHandler::CreateEthereumObject(
     v8::Isolate* isolate, v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
-  v8::Local<v8::Object> cosmetic_filters_obj;
-  v8::Local<v8::Value> cosmetic_filters_value;
+  v8::Local<v8::Object> ethereum_obj;
+  v8::Local<v8::Value> ethereum_value;
   if (!global->Get(context, gin::StringToV8(isolate, "ethereum"))
-           .ToLocal(&cosmetic_filters_value) ||
-      !cosmetic_filters_value->IsObject()) {
-    cosmetic_filters_obj = v8::Object::New(isolate);
-    global
-        ->Set(context, gin::StringToSymbol(isolate, "ethereum"),
-              cosmetic_filters_obj)
+           .ToLocal(&ethereum_value) ||
+      !ethereum_value->IsObject()) {
+    ethereum_obj = v8::Object::New(isolate);
+    global->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
         .Check();
-    BindFunctionsToObject(isolate, context, cosmetic_filters_obj);
+    BindFunctionsToObject(isolate, context, ethereum_obj);
   }
 }
 
@@ -349,26 +343,22 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
   if (!input->IsObject())
     return;
 
-  std::unique_ptr<base::Value> out(
-      content::V8ValueConverter::Create()->FromV8Value(
-          input, isolate->GetCurrentContext()));
-
-  base::DictionaryValue* out_dict;
-  if (!out || !out->is_dict() || !out->GetAsDictionary(&out_dict))
+  std::string input_json;
+  if (!base::JSONWriter::Write(
+          *content::V8ValueConverter::Create()->FromV8Value(
+              input, isolate->GetCurrentContext()),
+          &input_json))
     return;
 
-  // Hardcode id to 1 as it is unused
-  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
-  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
-  std::string formed_input;
-  if (!base::JSONWriter::Write(*out_dict, &formed_input))
+  std::string normalized_json_request;
+  if (!NormalizeEthRequest(input_json, &normalized_json_request))
     return;
 
   auto global_callback =
       std::make_unique<v8::Global<v8::Function>>(isolate, callback);
 
   brave_wallet_provider_->Request(
-      formed_input, true,
+      normalized_json_request, true,
       base::BindOnce(&BraveWalletJSHandler::OnSendAsync, base::Unretained(this),
                      std::move(global_callback)));
 }
@@ -401,45 +391,38 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
 
-  std::unique_ptr<base::Value> out(
-      content::V8ValueConverter::Create()->FromV8Value(
-          input, isolate->GetCurrentContext()));
-
-  base::DictionaryValue* out_dict;
-  if (!out || !out->is_dict() || !out->GetAsDictionary(&out_dict))
+  std::string input_json;
+  if (!base::JSONWriter::Write(
+          *content::V8ValueConverter::Create()->FromV8Value(
+              input, isolate->GetCurrentContext()),
+          &input_json))
     return v8::Local<v8::Promise>();
 
-  const std::string* method = out_dict->FindStringPath(kMethod);
-  if (method && *method == kEthAccounts) {
+  std::string method;
+  if (!GetEthJsonRequestMethod(input_json, &method))
+    return v8::Local<v8::Promise>();
+
+  std::string normalized_json_request;
+  if (!NormalizeEthRequest(input_json, &normalized_json_request))
+    return v8::Local<v8::Promise>();
+
+  if (method == kEthAccounts) {
     brave_wallet_provider_->GetAllowedAccounts(
         base::BindOnce(&OnGetAllowedAccounts, std::move(promise_resolver),
                        isolate, std::move(context_old)));
-  } else if (method && *method == kEthRequestAccounts) {
+  } else if (method == kEthRequestAccounts) {
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
         std::move(context_old)));
-  } else if (method && *method == kAddEthereumChainMethod) {
-    std::string formed_input;
-    // Hardcode id to 1 as it is unused
-    ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
-    ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
-    if (!base::JSONWriter::Write(*out_dict, &formed_input))
-      return v8::Local<v8::Promise>();
-
+  } else if (method == kAddEthereumChainMethod) {
     brave_wallet_provider_->AddEthereumChain(
-        formed_input,
+        normalized_json_request,
         base::BindOnce(&OnAddEthereumChain, std::move(promise_resolver),
                        isolate, std::move(context_old)));
-  } else if (method && *method == kEthSendTransaction) {
-    std::string formed_input;
-    // Hardcode id to 1 as it is unused
-    ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
-    ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
-    if (!base::JSONWriter::Write(*out_dict, &formed_input))
-      return v8::Local<v8::Promise>();
-
+  } else if (method == kEthSendTransaction) {
     std::string from;
-    auto tx_data = ParseEthSendTransactionParams(formed_input, &from);
+    auto tx_data =
+        ParseEthSendTransactionParams(normalized_json_request, &from);
     if (!tx_data)
       tx_data = mojom::TxData::New();
 
@@ -448,14 +431,9 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
         base::BindOnce(&OnAddUnapprovedTransaction, std::move(promise_resolver),
                        isolate, std::move(context_old)));
   } else {
-    std::string formed_input;
-    // Hardcode id to 1 as it is unused
-    ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
-    ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
-    if (!base::JSONWriter::Write(*out_dict, &formed_input))
-      return v8::Local<v8::Promise>();
+    return v8::Local<v8::Promise>();
     brave_wallet_provider_->Request(
-        formed_input, true,
+        normalized_json_request, true,
         base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
                        std::move(promise_resolver), isolate,
                        std::move(context_old)));
