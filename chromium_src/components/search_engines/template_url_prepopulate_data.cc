@@ -59,36 +59,30 @@ const std::vector<BravePrepopulatedEngineID> brave_engines_with_yandex = {
 };
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_QWANT,         PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_BING,          PREPOPULATED_ENGINE_ID_STARTPAGE,
+    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+    PREPOPULATED_ENGINE_ID_QWANT,  PREPOPULATED_ENGINE_ID_GOOGLE,
+    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
     PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
-    PREPOPULATED_ENGINE_ID_QWANT,  PREPOPULATED_ENGINE_ID_BRAVE,
+    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
     PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_AU_IE = {
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
-    PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,
-    PREPOPULATED_ENGINE_ID_STARTPAGE,
+    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+    PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_QWANT,
+    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
     PREPOPULATED_ENGINE_ID_ECOSIA,
 };
 
 const std::vector<BravePrepopulatedEngineID> brave_engines_NZ = {
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
-    PREPOPULATED_ENGINE_ID_BRAVE,
-    PREPOPULATED_ENGINE_ID_GOOGLE,
-    PREPOPULATED_ENGINE_ID_QWANT,
-    PREPOPULATED_ENGINE_ID_BING,
-    PREPOPULATED_ENGINE_ID_STARTPAGE,
+    PREPOPULATED_ENGINE_ID_BRAVE,  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
+    PREPOPULATED_ENGINE_ID_GOOGLE, PREPOPULATED_ENGINE_ID_QWANT,
+    PREPOPULATED_ENGINE_ID_BING,   PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
 // A map to keep track of a full list of default engines for countries
@@ -234,7 +228,48 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('U', 'Z'),
            PREPOPULATED_ENGINE_ID_YANDEX},
       });
-  if (version > 15) {
+  static const base::NoDestructor<
+      base::flat_map<int, BravePrepopulatedEngineID>>
+      content_v17({
+          {country_codes::CountryCharsToCountryID('A', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('A', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('B', 'Y'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('C', 'A'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('D', 'E'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('F', 'R'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('G', 'B'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('K', 'G'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('K', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('M', 'D'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('R', 'U'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'J'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('T', 'M'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+          {country_codes::CountryCharsToCountryID('U', 'S'),
+           PREPOPULATED_ENGINE_ID_BRAVE},
+          {country_codes::CountryCharsToCountryID('U', 'Z'),
+           PREPOPULATED_ENGINE_ID_YANDEX},
+      });
+
+  if (version > 16) {
+    auto it = content_v17->find(country_id);
+    if (it == content_v17->end()) {
+      return default_v6;
+    }
+    return it->second;
+  } else if (version > 15) {
     auto it = content_v16->find(country_id);
     if (it == content_v16->end()) {
       return default_v6;
