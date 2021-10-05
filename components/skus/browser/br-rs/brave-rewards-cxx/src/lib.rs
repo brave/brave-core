@@ -1,3 +1,4 @@
+mod errors;
 mod httpclient;
 mod storage;
 
@@ -6,6 +7,7 @@ use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::LocalPool;
 use futures::task::LocalSpawnExt;
 use std::cell::RefCell;
+use std::error::Error;
 use std::rc::Rc;
 
 use crate::httpclient::HttpRoundtripContext;
@@ -22,18 +24,26 @@ mod ffi {
     #[derive(Debug)]
     pub enum RewardsResult {
         Ok,
-        /// An error occured when converting from a `CompressedRistretto` to a `RistrettoPoint`
-        PointDecompressionError,
-        /// An error occured when interpretting bytes as a scalar
-        ScalarFormatError,
-        /// An error in the length of bytes handed to a constructor.
-        BytesLengthError,
-        /// Verification failed
-        VerifyError,
-        /// Inputs differed in length
-        LengthMismatchError,
-        /// Decoding failed
-        DecodingError,
+        RequestFailed,
+        InternalServer,
+        BadRequest,
+        UnhandledStatus,
+        RetryLater,
+        NotFound,
+        SerializationFailed,
+        InvalidResponse,
+        InvalidProof,
+        QueryError,
+        OutOfCredentials,
+        StorageWriteFailed,
+        StorageReadFailed,
+        OrderUnpaid,
+        UnhandledVariant,
+        OrderLocationMismatch,
+        ItemCredentialsMissing,
+        ItemCredentialsExpired,
+        InvalidMerchantOrSku,
+        UnknownError,
     }
 
     pub struct HttpRequest {
@@ -73,6 +83,10 @@ mod ffi {
         );
 
         fn shim_scheduleWakeup(delay_ms: u64, done: fn());
+
+        fn shim_purge();
+        fn shim_set(key: &str, value: &str);
+        fn shim_get<'a>(key: &str) -> &'a CxxString;
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -149,8 +163,19 @@ async fn refresh_order_task(
     callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
     order_id: String,
 ) {
-    let order = sdk.refresh_order::<NativeClient>(&order_id).await;
-    let order = serde_json::to_string(&order.unwrap()).unwrap();
-
-    callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &order);
+    match sdk.refresh_order::<NativeClient>(&order_id).await {
+        Ok(order) => {
+            let order = serde_json::to_string(&order).unwrap();
+            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &order)
+        }
+        Err(e) => callback.0(
+            callback_state.into_raw(),
+            e.source()
+                .unwrap()
+                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .unwrap()
+                .into(),
+            "",
+        ),
+    }
 }

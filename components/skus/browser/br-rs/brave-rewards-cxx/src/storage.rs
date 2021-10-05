@@ -1,4 +1,4 @@
-use crate::{NativeClient, LOCAL_POOL};
+use crate::{ffi, NativeClient, LOCAL_POOL};
 use brave_rewards::{errors, KVClient, KVStore};
 
 impl KVClient<NativeClient> for NativeClient {
@@ -10,15 +10,19 @@ impl KVClient<NativeClient> for NativeClient {
 
 impl KVStore for NativeClient {
     fn purge(&mut self) -> Result<(), errors::InternalError> {
+        ffi::shim_purge();
         Ok(())
-        //unimplemented!();
     }
-    fn set(&mut self, _key: &str, _value: &str) -> Result<(), errors::InternalError> {
+    fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
+        ffi::shim_set(key, value);
         Ok(())
-        //unimplemented!();
     }
-    fn get(&mut self, _key: &str) -> Result<Option<String>, errors::InternalError> {
-        Ok(None)
-        //unimplemented!();
+    fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
+        let ret = ffi::shim_get(key).to_string_lossy();
+        Ok(if ret.len() > 0 {
+            Some(ret.to_string())
+        } else {
+            None
+        })
     }
 }
