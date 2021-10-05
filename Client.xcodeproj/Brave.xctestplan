@@ -43,7 +43,8 @@
     },
     {
       "skippedTests" : [
-        "NavigationRouterTests\/testNavigationPathInPrivateBrowsingOnlyMode()"
+        "NavigationRouterTests\/testNavigationPathInPrivateBrowsingOnlyMode()",
+        "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()"
       ],
       "target" : {
         "containerPath" : "container:Client.xcodeproj",

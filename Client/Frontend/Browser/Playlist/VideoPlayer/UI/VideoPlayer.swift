@@ -19,6 +19,7 @@ protocol VideoViewDelegate: AnyObject {
     func onPictureInPicture(_ videoView: VideoView)
     func onFullscreen(_ videoView: VideoView)
     func onExitFullscreen(_ videoView: VideoView)
+    func onFavIconSelected(_ videoView: VideoView)
     
     func play(_ videoView: VideoView)
     func pause(_ videoView: VideoView)
@@ -140,9 +141,15 @@ class VideoView: UIView, VideoTrackerBarDelegate {
             $0.delegate = self
         }
         
+        let favIconTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onFavIconTapped(_:))).then {
+            $0.numberOfTapsRequired = 1
+            $0.numberOfTouchesRequired = 1
+        }
+        
         addGestureRecognizer(overlayTappedGesture)
         addGestureRecognizer(overlayDoubleTappedGesture)
         overlayTappedGesture.require(toFail: overlayDoubleTappedGesture)
+        infoView.favIconImageView.addGestureRecognizer(favIconTappedGesture)
         
         // Logic
         self.toggleOverlays(showOverlay: true)
@@ -196,6 +203,11 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     @objc
     private func onOverlayDoubleTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         delegate?.togglePlayerGravity(self)
+    }
+    
+    @objc
+    private func onFavIconTapped(_ gestureRecognizer: UITapGestureRecognizer) {
+        delegate?.onFavIconSelected(self)
     }
 
     private func seekDirectionWithAnimation(_ seekBlock: () -> Void) {
