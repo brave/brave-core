@@ -138,4 +138,23 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestMethod) {
   EXPECT_FALSE(GetEthJsonRequestMethod(invalid_input, &method));
 }
 
+TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
+  // Identity works
+  std::string full_json =
+      "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":"
+      "[]}";
+  std::string output_json;
+  EXPECT_TRUE(NormalizeEthRequest(full_json, &output_json));
+  EXPECT_EQ(full_json, output_json);
+
+  // Fills missing id and jsonrpc values
+  std::string partial_json = "{\"method\":\"eth_blockNumber\",\"params\":[]}";
+  EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
+  EXPECT_EQ(full_json, output_json);
+
+  // Invalid input
+  EXPECT_FALSE(NormalizeEthRequest(
+      "There is only one thing we say to death: Not today.", &output_json));
+}
+
 }  // namespace brave_wallet

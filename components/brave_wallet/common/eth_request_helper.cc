@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
@@ -76,6 +77,10 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   return tx_data;
 }
 
+// Hardcode id to 1 as it is unused
+const uint32_t kRequestId = 1;
+const char kRequestJsonRPC[] = "2.0";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -142,6 +147,26 @@ bool GetEthJsonRequestMethod(const std::string& json, std::string* method) {
     return false;
 
   *method = *found_method;
+  return true;
+}
+
+bool NormalizeEthRequest(const std::string& input_json,
+                         std::string* output_json) {
+  CHECK(output_json);
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          input_json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v)
+    return false;
+
+  base::DictionaryValue* out_dict;
+  if (!records_v->GetAsDictionary(&out_dict))
+    return false;
+
+  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
+  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
+  base::JSONWriter::Write(*out_dict, output_json);
   return true;
 }
 

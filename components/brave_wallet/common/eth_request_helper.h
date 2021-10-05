@@ -17,6 +17,8 @@ mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
                                                std::string* from);
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
                                                        std::string* from);
+bool NormalizeEthRequest(const std::string& input_json,
+                         std::string* output_json);
 
 }  // namespace brave_wallet
 
