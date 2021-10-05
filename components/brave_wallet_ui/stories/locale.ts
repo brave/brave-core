@@ -192,6 +192,7 @@ provideStrings({
   braveWalletWatchListTokenSymbol: 'Token symbol',
   braveWalletWatchListTokenDecimals: 'Decimals of percision',
   braveWalletWatchListAdd: 'Add',
+  braveWalletWatchListDoneButton: 'Done',
   braveWalletWatchListSuggestion: 'as a custtom token',
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',

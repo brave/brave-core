@@ -158,6 +158,7 @@
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL" desc="Visible assets modal token symbol label">Token symbol</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of percision</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADD" desc="Visible assets modal add button">Add</message>
+    <message name="IDS_BRAVE_WALLET_WATCH_LIST_DONE_BUTTON" desc="Visible assets modal done button">Done</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_SUGGESTION" desc="Visible assets modal suggestion second half button">as a custtom token</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
