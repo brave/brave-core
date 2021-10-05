@@ -287,13 +287,28 @@ void EthTxController::AddUnapproved1559Transaction(
 
   auto tx_ptr = std::make_unique<Eip1559Transaction>(*tx);
 
+  mojom::TransactionType tx_type;
+  if (!GetTransactionInfoFromData(ToHex(tx_ptr->data()), &tx_type, nullptr,
+                                  nullptr)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED));
+    return;
+  }
+
+  // Use default gas limit for ETHSend if it is empty.
+  std::string gas_limit = tx_data->base_data->gas_limit;
+  if (gas_limit.empty() && tx_type == mojom::TransactionType::ETHSend)
+    gas_limit = Uint256ValueToHex(kDefaultSendEthGasLimit);
+
   if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
     asset_ratio_controller_->GetGasOracle(base::BindOnce(
         &EthTxController::OnGetGasOracle, weak_factory_.GetWeakPtr(), from,
         tx_data->base_data->to, tx_data->base_data->value,
-        ToHex(tx_data->base_data->data), tx_data->base_data->gas_limit,
-        std::move(tx_ptr), std::move(callback)));
-  } else if (!tx->gas_limit()) {
+        ToHex(tx_data->base_data->data), gas_limit, std::move(tx_ptr),
+        std::move(callback)));
+  } else if (gas_limit.empty()) {
     rpc_controller_->GetEstimateGas(
         from, tx_data->base_data->to, "" /* gas */, "" /* gas_price */,
         tx_data->base_data->value, ToHex(tx_data->base_data->data),
@@ -302,8 +317,7 @@ void EthTxController::AddUnapproved1559Transaction(
                        std::move(callback)));
   } else {
     ContinueAddUnapprovedTransaction(from, std::move(tx_ptr),
-                                     std::move(callback), true,
-                                     tx_data->base_data->gas_limit);
+                                     std::move(callback), true, gas_limit);
   }
 }
 
@@ -330,7 +344,7 @@ void EthTxController::OnGetGasOracle(
   tx->set_max_fee_per_gas(estimation->avg_max_fee_per_gas);
   tx->set_max_priority_fee_per_gas(estimation->avg_max_priority_fee_per_gas);
 
-  if (!tx->gas_limit()) {
+  if (gas_limit.empty()) {
     rpc_controller_->GetEstimateGas(
         from, to, "" /* gas */, "" /* gas_price */, value, data,
         base::BindOnce(&EthTxController::ContinueAddUnapprovedTransaction,
