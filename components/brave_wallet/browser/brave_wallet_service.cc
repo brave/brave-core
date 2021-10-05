@@ -8,8 +8,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -63,6 +65,7 @@
 //
 //
 namespace {
+constexpr int kRefreshP3AFrequencyHours = 3;
 
 base::CheckedContiguousIterator<base::Value> FindAsset(
     base::Value* user_assets_list,
@@ -91,6 +94,16 @@ BraveWalletService::BraveWalletService(
     PrefService* prefs)
     : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
+
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      kBraveWalletLastUnlockTime,
+      base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
+                          base::Unretained(this)));
+  p3a_periodic_timer_.Start(
+      FROM_HERE, base::TimeDelta::FromHours(kRefreshP3AFrequencyHours), this,
+      &BraveWalletService::OnP3ATimerFired);
+  OnP3ATimerFired();  // Also call on startup
 }
 
 BraveWalletService::~BraveWalletService() = default;
@@ -412,6 +425,30 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   }
 
   prefs->SetBoolean(kBraveWalletUserAssetEthContractAddressMigrated, true);
+}
+
+void BraveWalletService::OnP3ATimerFired() {
+  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+  RecordWalletUsage(wallet_last_used);
+}
+
+void BraveWalletService::OnWalletUnlockPreferenceChanged(
+    const std::string& pref_name) {
+  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+  RecordWalletUsage(wallet_last_used);
+}
+
+void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
+  uint8_t usage = brave_stats::UsageBitstringFromTimestamp(wallet_last_used);
+
+  bool daily = !!(usage & brave_stats::kIsDailyUser);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, daily);
+
+  bool weekly = !!(usage & brave_stats::kIsWeeklyUser);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletWeeklyHistogramName, weekly);
+
+  bool monthly = !!(usage & brave_stats::kIsMonthlyUser);
+  UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, monthly);
 }
 
 }  // namespace brave_wallet

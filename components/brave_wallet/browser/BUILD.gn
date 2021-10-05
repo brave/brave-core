@@ -87,6 +87,7 @@ static_library("browser") {
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",

@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include "base/test/bind.h"
+#include "base/test/metrics/histogram_tester.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
@@ -60,6 +62,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
+    histogram_tester_.reset(new base::HistogramTester);
     service_.reset(new BraveWalletService(
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs()));
 
@@ -191,6 +194,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
+  std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
   mojom::ERCTokenPtr token1_;
   mojom::ERCTokenPtr token2_;
@@ -651,6 +655,24 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
+  service_->RecordWalletUsage(base::Time::Now());
+  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, true, 1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, true,
+                                       1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
+                                       1);
+
+  service_->RecordWalletUsage(base::Time::Now() +
+                              base::TimeDelta::FromDays(31));
+  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, false,
+                                       2);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, false,
+                                       2);
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, false,
+                                       2);
 }
 
 }  // namespace brave_wallet
