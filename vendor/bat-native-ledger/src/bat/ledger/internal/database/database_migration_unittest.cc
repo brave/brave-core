@@ -10,14 +10,26 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/core/test_ledger_client.h"
+#include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/option_keys.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+// npm run test -- brave_unit_tests --filter=LedgerDatabaseMigrationTest.*
+
 namespace ledger {
+using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public testing::Test {
+ public:
+  LedgerDatabaseMigrationTest() { ledger::is_testing = true; }
+
+  ~LedgerDatabaseMigrationTest() override {
+    DatabaseMigration::SetTargetVersionForTesting(0);
+    ledger::is_testing = false;
+  }
+
  protected:
   sql::Database* GetDB() {
     return client_.database()->GetInternalDatabaseForTesting();
@@ -96,6 +108,8 @@ class LedgerDatabaseMigrationTest : public testing::Test {
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
+  DatabaseMigration::SetTargetVersionForTesting(
+      ledger::database::GetCurrentVersion());
   InitializeLedger();
   std::string expected_schema = GetExpectedSchema();
   EXPECT_FALSE(expected_schema.empty());
@@ -103,6 +117,7 @@ TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(4);
   InitializeDatabaseAtVersion(3);
   InitializeLedger();
 
@@ -118,13 +133,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_4_ActivityInfo) {
     list.push_back(std::move(info));
   }
 
-  EXPECT_EQ(list.at(0)->id, "brave.com");
+  EXPECT_EQ(list.at(0)->id, "slo-tech.com");
   EXPECT_EQ(list.at(0)->visits, 5u);
-  EXPECT_EQ(list.at(1)->id, "slo-tech.com");
+  EXPECT_EQ(list.at(1)->id, "brave.com");
   EXPECT_EQ(list.at(1)->visits, 5u);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(5);
   InitializeDatabaseAtVersion(4);
   InitializeLedger();
 
@@ -141,15 +157,16 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_5_ActivityInfo) {
     list.push_back(std::move(info));
   }
 
-  EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
-  EXPECT_EQ(list.at(0)->visits, 3u);
-  EXPECT_EQ(list.at(1)->id, "brave.com");
+  EXPECT_EQ(list.at(0)->id, "brave.com");
+  EXPECT_EQ(list.at(0)->visits, 1u);
+  EXPECT_EQ(list.at(1)->id, "slo-tech.com");
   EXPECT_EQ(list.at(1)->visits, 1u);
-  EXPECT_EQ(list.at(2)->id, "slo-tech.com");
-  EXPECT_EQ(list.at(2)->visits, 1u);
+  EXPECT_EQ(list.at(2)->id, "basicattentiontoken.org");
+  EXPECT_EQ(list.at(2)->visits, 3u);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(6);
   InitializeDatabaseAtVersion(5);
   InitializeLedger();
 
@@ -199,6 +216,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_6_ActivityInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
+  DatabaseMigration::SetTargetVersionForTesting(8);
   InitializeDatabaseAtVersion(7);
   InitializeLedger();
 
@@ -230,6 +248,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_8_PendingContribution) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(11);
   InitializeDatabaseAtVersion(10);
   InitializeLedger();
 
@@ -273,6 +292,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_11_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(12);
   InitializeDatabaseAtVersion(11);
   InitializeLedger();
 
@@ -304,12 +324,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_12_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_13_Promotion) {
+  DatabaseMigration::SetTargetVersionForTesting(13);
   InitializeDatabaseAtVersion(12);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
+  DatabaseMigration::SetTargetVersionForTesting(14);
   InitializeDatabaseAtVersion(13);
   InitializeLedger();
 
@@ -344,6 +366,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_14_UnblindedToken) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
+  DatabaseMigration::SetTargetVersionForTesting(16);
   InitializeDatabaseAtVersion(15);
   InitializeLedger();
 
@@ -366,6 +389,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_16_ContributionInfo) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
+  DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -394,6 +418,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_Promotion) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
+  DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -445,6 +470,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_CredsBatch) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
+  DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeLedger();
 
@@ -470,6 +496,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_18_UnblindedToken) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
+  DatabaseMigration::SetTargetVersionForTesting(21);
   InitializeDatabaseAtVersion(20);
   InitializeLedger();
 
@@ -511,6 +538,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
+  DatabaseMigration::SetTargetVersionForTesting(23);
   InitializeDatabaseAtVersion(22);
   InitializeLedger();
 
@@ -555,6 +583,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_23_ContributionQueue) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
+  DatabaseMigration::SetTargetVersionForTesting(24);
   InitializeDatabaseAtVersion(23);
   InitializeLedger();
 
@@ -584,6 +613,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_24_ContributionQueue) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
+  DatabaseMigration::SetTargetVersionForTesting(26);
   InitializeDatabaseAtVersion(25);
   InitializeLedger();
 
@@ -662,6 +692,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_26_UnblindedTokens) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
+  DatabaseMigration::SetTargetVersionForTesting(27);
   InitializeDatabaseAtVersion(26);
   InitializeLedger();
 
@@ -695,6 +726,7 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_27_UnblindedTokens) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
+  DatabaseMigration::SetTargetVersionForTesting(28);
   InitializeDatabaseAtVersion(27);
   InitializeLedger();
 
@@ -717,12 +749,14 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
+  DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
+  DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
   client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
   InitializeLedger();
@@ -731,28 +765,32 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_31) {
+  DatabaseMigration::SetTargetVersionForTesting(31);
   InitializeDatabaseAtVersion(30);
   InitializeLedger();
-
-  sql::Statement sql(GetDB()->GetUniqueStatement(R"sql(
-      SELECT processor FROM pending_contribution
-  )sql"));
-
-  EXPECT_TRUE(sql.Step());
-  EXPECT_EQ(sql.ColumnInt64(0), 0);
+  EXPECT_TRUE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
+  DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 1);
 }
 
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
+  DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
   client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
+}
+
+TEST_F(LedgerDatabaseMigrationTest, Migration_33) {
+  DatabaseMigration::SetTargetVersionForTesting(33);
+  InitializeDatabaseAtVersion(32);
+  InitializeLedger();
+  EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
 }  // namespace ledger

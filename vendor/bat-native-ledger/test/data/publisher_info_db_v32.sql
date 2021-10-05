@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS "pending_contribution" (
 	"added_date"	INTEGER NOT NULL DEFAULT 0,
 	"viewing_id"	LONGVARCHAR NOT NULL,
 	"type"	INTEGER NOT NULL,
+	"processor" INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("pending_contribution_id" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "recurring_donation" (
@@ -203,9 +204,8 @@ CREATE TABLE IF NOT EXISTS "event_log" (
 	PRIMARY KEY("event_log_id")
 );
 INSERT INTO "meta" VALUES ('mmap_status','-1'),
- ('version','30'),
+ ('version','32'),
  ('last_compatible_version','1');
-INSERT INTO "balance_report_info" VALUES ('2014_04', 0, 0, 0, 0, 0);
 CREATE INDEX IF NOT EXISTS "promotion_promotion_id_index" ON "promotion" (
 	"promotion_id"
 );
