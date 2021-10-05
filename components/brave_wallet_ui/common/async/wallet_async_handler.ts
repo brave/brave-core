@@ -28,7 +28,8 @@ import {
   WalletAccountType,
   ER20TransferParams,
   SwapErrorResponse,
-  SwapResponse
+  SwapResponse,
+  TokenInfo
 } from '../../constants/types'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { formatBalance, toWeiHex } from '../../utils/format-balances'
@@ -125,8 +126,8 @@ async function refreshWalletInfo (store: Store) {
   const networkList = await ethJsonRpcController.getAllNetworks()
   store.dispatch(WalletActions.setAllNetworks(networkList))
   const chainId = await ethJsonRpcController.getChainId()
-  const current = GetNetworkInfo(chainId.chainId, networkList.networks)
-  store.dispatch(WalletActions.setNetwork(current))
+  const currentNetwork = GetNetworkInfo(chainId.chainId, networkList.networks)
+  store.dispatch(WalletActions.setNetwork(currentNetwork))
   const state = getWalletState(store)
 
   // Populate tokens from ERC-20 token registry.
@@ -138,7 +139,21 @@ async function refreshWalletInfo (store: Store) {
   const defaultWallet = await braveWalletService.getDefaultWallet()
   store.dispatch(WalletActions.defaultWalletUpdated(defaultWallet.defaultWallet))
   const visibleTokensInfo = await braveWalletService.getUserAssets(chainId.chainId)
-  store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokensInfo.tokens))
+
+  // Selected Network's Base Asset
+  const initialToken: TokenInfo[] = [{
+    contractAddress: '',
+    decimals: currentNetwork.decimals,
+    isErc20: false,
+    isErc721: false,
+    logo: '',
+    name: currentNetwork.symbolName,
+    symbol: currentNetwork.symbol,
+    visible: false
+  }]
+
+  const visibleTokens: TokenInfo[] = visibleTokensInfo.tokens.length === 0 ? initialToken : visibleTokensInfo.tokens
+  store.dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
   // Update ETH Balances
   const getEthPrice = await assetPriceController.getPrice(['eth'], ['usd'], state.selectedPortfolioTimeline)
@@ -154,9 +169,8 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.ethBalancesUpdated(balancesAndPrice))
 
   // Update Token Balances
-  const tokenInfos = visibleTokensInfo.tokens
-  if (tokenInfos) {
-    const getTokenPrices = await Promise.all(tokenInfos.map(async (token) => {
+  if (visibleTokens) {
+    const getTokenPrices = await Promise.all(visibleTokens.map(async (token) => {
       const emptyPrice = {
         assetTimeframeChange: '0',
         fromAsset: token.symbol,
@@ -167,7 +181,7 @@ async function refreshWalletInfo (store: Store) {
       return price.success ? price.values[0] : emptyPrice
     }))
     const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
-      return Promise.all(tokenInfos.map(async (token) => {
+      return Promise.all(visibleTokens.map(async (token) => {
         return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))
