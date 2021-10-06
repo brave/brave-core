@@ -66,13 +66,8 @@ class TPStatsBlocklistChecker {
         // to avoid threading problems(#1094, #1096)
         assertIsMainThread("Getting enabled blocklists should happen on main thread")
         let domainBlockLists = BlocklistName.blocklists(forDomain: domain).on
-        
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            completion(nil)
-            return
-        }
-        let currentTabUrl = delegate.browserViewController.tabManager.selectedTab?.url
-        
+        let currentTabUrl = request.mainDocumentURL
+
         adblockSerialQueue.async {
             let enabledLists = domainBlockLists
             
