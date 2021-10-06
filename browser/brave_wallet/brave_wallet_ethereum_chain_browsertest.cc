@@ -329,7 +329,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, CheckIncognitoTab) {
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
-  ui_test_utils::NavigateToURL(private_browser, url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
