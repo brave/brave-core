@@ -11,7 +11,9 @@ private let log = Logger.browserLogger
 // swiftlint:disable force_try force_cast
 
 class TestAppDelegate: AppDelegate {
-    override func getProfile(_ application: UIApplication) -> Profile {
+    private var profile: Profile?
+    
+    func getProfile(_ application: UIApplication) -> Profile {
         if let profile = self.profile {
             return profile
         }

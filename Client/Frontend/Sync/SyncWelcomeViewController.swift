@@ -181,7 +181,7 @@ class SyncWelcomeViewController: SyncViewController {
             
             if !self.syncAPI.isInSyncGroup {
                 self.dismiss(animated: true)
-                let bvc = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController
+                let bvc = self.currentScene?.browserViewController
                 bvc?.present(SyncAlerts.initializationError, animated: true)
             }
         }

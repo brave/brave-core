@@ -80,7 +80,9 @@ extension BrowserViewController: PlaylistHelperDelegate {
             tab.playlistItemState = state
             tab.playlistItem = item
             
-            let shouldShowPlaylistURLBarButton = tab.url?.isPlaylistSupportedSiteURL == true
+            let shouldShowPlaylistURLBarButton = tab.url?.isPlaylistSupportedSiteURL == true &&
+                                                 Preferences.Playlist.enablePlaylistURLBarButton.value
+            
             let playlistButton = topToolbar.locationView.playlistButton
             switch state {
             case .none:
@@ -233,7 +235,8 @@ extension BrowserViewController: PlaylistHelperDelegate {
     func showPlaylistOnboarding(tab: Tab?) {
         // Do NOT show the playlist onboarding popup if the tab isn't visible
         
-        guard let selectedTab = tabManager.selectedTab,
+        guard Preferences.Playlist.enablePlaylistURLBarButton.value,
+              let selectedTab = tabManager.selectedTab,
               selectedTab === tab,
               selectedTab.playlistItemState != .none else {
             return
@@ -254,7 +257,7 @@ extension BrowserViewController: PlaylistHelperDelegate {
     }
     
     func openPlaylist(item: PlaylistInfo?, playbackOffset: Double) {
-        let playlistController = PlaylistCarplayManager.shared.getPlaylistController(initialItem: item, initialItemPlaybackOffset: playbackOffset)
+        let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: nil, initialItem: item, initialItemPlaybackOffset: playbackOffset)
         playlistController.modalPresentationStyle = .fullScreen
         
         /// Donate Open Playlist Activity for suggestions

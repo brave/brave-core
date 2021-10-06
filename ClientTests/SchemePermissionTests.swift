@@ -58,8 +58,7 @@ class SchemePermissionTests: XCTestCase {
         profile = BrowserProfile(localName: "mockProfile")
 
         imageStore = try! DiskImageStore(files: MockFiles(), namespace: "MockTabManagerScreenshots", quality: 1)
-        tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
-        
+
         guard let appDelegate = UIApplication.shared.delegate as? TestAppDelegate else {
             return
         }
@@ -74,7 +73,7 @@ class SchemePermissionTests: XCTestCase {
         
         subject = BrowserViewController(
             profile: profile,
-            tabManager: tabManager,
+            diskImageStore: imageStore,
             historyAPI: historyAPI,
             bookmarkAPI: bookmarksAPI,
             syncAPI: syncAPI,

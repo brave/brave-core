@@ -426,7 +426,10 @@ extension PlaylistListViewController {
                 
                 if let url = URL(string: item.pageSrc) {
                     self.dismiss(animated: true, completion: nil)
-                    (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.openURLInNewTab(url, isPrivileged: false)
+                    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                    self.delegate?.openURLInNewTab(url,
+                                                   isPrivate: isPrivateBrowsing,
+                                                   isPrivileged: false)
                 }
             }))
             alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
@@ -483,6 +486,19 @@ extension PlaylistListViewController {
             playerView.setFullscreenButtonHidden(true)
             playerView.setExitButtonHidden(false)
             splitViewController?.parent?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func onFavIconSelected(_ videoView: VideoView) {
+        if let browser = PlaylistCarplayManager.shared.browserController,
+           let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem,
+           let pageURL = URL(string: currentItem.pageSrc) {
+            
+            self.dismiss(animated: true) {
+                let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                browser.tabManager.addTabAndSelect(URLRequest(url: pageURL),
+                                                   isPrivate: isPrivateBrowsing)
+            }
         }
     }
 }

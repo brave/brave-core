@@ -32,6 +32,7 @@ protocol TabCellDelegate: AnyObject {
 }
 
 protocol TabTrayDelegate: AnyObject {
+    func tabLocationViewDidTapLocation()
     func tabTrayDidDismiss(_ tabTray: TabTrayController)
     func tabTrayDidAddTab(_ tabTray: TabTrayController, tab: Tab)
     func tabTrayDidAddBookmark(_ tab: Tab)
@@ -90,10 +91,11 @@ class TabTrayController: UIViewController {
         return tabDataSource.tabs
     }
 
-    init(tabManager: TabManager, profile: Profile) {
+    init(tabManager: TabManager, profile: Profile, tabTrayDelegate: TabTrayDelegate) {
         self.tabManager = tabManager
         self.profile = profile
         self.otherBrowsingModeOffset = CGPoint(x: 0.0, y: 0.0)
+        self.delegate = tabTrayDelegate
         super.init(nibName: nil, bundle: nil)
 
         tabManager.addDelegate(self)
@@ -101,11 +103,6 @@ class TabTrayController: UIViewController {
         Preferences.Privacy.privateBrowsingOnly.observe(from: self)
         
         setPrivateMode()
-    }
-
-    convenience init(tabManager: TabManager, profile: Profile, tabTrayDelegate: TabTrayDelegate) {
-        self.init(tabManager: tabManager, profile: profile)
-        self.delegate = tabTrayDelegate
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -347,10 +344,9 @@ class TabTrayController: UIViewController {
             // The addTab delegate method will pop to the BVC no need to do anything here.
             self.toolbar.isUserInteractionEnabled = true
             if finished, request == nil, NewTabAccessors.getNewTabPage() == .blankPage,
-                let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-                let bvc = appDelegate.browserViewController {
+               let delegate = self.delegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                    bvc.topToolbar.tabLocationViewDidTapLocation(bvc.topToolbar.locationView)
+                    delegate.tabLocationViewDidTapLocation()
                 }
             }
 

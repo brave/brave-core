@@ -63,7 +63,8 @@ enum DomainUserScript: CaseIterable {
         case .braveTalk:
             return .init(arrayLiteral: "talk.brave.com", "beta.talk.brave.com",
                          "talk.bravesoftware.com", "beta.talk.bravesoftware.com",
-                         "dev.talk.brave.software", "beta.talk.brave.software")
+                         "dev.talk.brave.software", "beta.talk.brave.software",
+                         "talk.brave.software")
         }
     }
     

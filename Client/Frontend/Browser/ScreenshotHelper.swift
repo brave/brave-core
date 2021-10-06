@@ -10,10 +10,10 @@ import Foundation
 class ScreenshotHelper {
     var viewIsVisible = false
 
-    fileprivate weak var controller: BrowserViewController?
+    fileprivate weak var tabManager: TabManager?
 
-    init(controller: BrowserViewController) {
-        self.controller = controller
+    init(tabManager: TabManager) {
+        self.tabManager = tabManager
     }
 
     func takeScreenshot(_ tab: Tab) {
@@ -21,7 +21,7 @@ class ScreenshotHelper {
 
         if let url = tab.url {
             if url.isAboutHomeURL {
-                if let homePanel = controller?.tabManager.selectedTab?.newTabPageViewController {
+                if let homePanel = tabManager?.selectedTab?.newTabPageViewController {
                     screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
                 }
             } else {

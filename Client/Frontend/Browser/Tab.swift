@@ -28,6 +28,7 @@ protocol TabDelegate {
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
     func showRequestRewardsPanel(_ tab: Tab)
+    func stopMediaPlayback(_ tab: Tab)
 }
 
 @objc
@@ -361,12 +362,6 @@ class Tab: NSObject {
         deleteWebView()
         deleteNewTabPageController()
         contentScriptManager.helpers.removeAll()
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let rewards = appDelegate.browserViewController.rewards
-        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            rewards.reportTabClosed(tabId: Int(rewardsId))
-        }
     }
 
     var loading: Bool {
@@ -638,6 +633,10 @@ class Tab: NSObject {
         if let existing = self.urlDidChangeDelegate, existing === delegate {
             self.urlDidChangeDelegate = nil
         }
+    }
+    
+    func stopMediaPlayback() {
+        tabDelegate?.stopMediaPlayback(self)
     }
 }
 

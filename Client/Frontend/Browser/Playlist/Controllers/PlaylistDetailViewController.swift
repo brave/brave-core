@@ -11,6 +11,7 @@ import Data
 class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private var playerView: VideoView?
+    weak var delegate: PlaylistViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +141,11 @@ extension PlaylistDetailViewController {
                 
                 if let url = URL(string: item.pageSrc) {
                     self.dismiss(animated: true, completion: nil)
-                    (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.openURLInNewTab(url, isPrivileged: false)
+                    
+                    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                    self.delegate?.openURLInNewTab(url,
+                                                   isPrivate: isPrivateBrowsing,
+                                                   isPrivileged: false)
                 }
             }))
             alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))

@@ -14,12 +14,12 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         static let spaceBetweenRows: CGFloat = 8
     }
     
-    var searchEngines: SearchEngines {
-        profile.searchEngines
+    private var searchEngines: SearchEngines? {
+        profile?.searchEngines
     }
     
     private lazy var availableEngines: [OpenSearchEngine] = {
-        SearchEngines.getUnorderedBundledEngines(isOnboarding: true)
+        SearchEngines.getUnorderedBundledEngines(isOnboarding: true, locale: .current)
     }()
     
     private var contentView: View {
@@ -49,7 +49,7 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         // We initially select the default search engine's cell
         DispatchQueue.main.async {
             for searchEngine in self.availableEngines.enumerated() {
-                if searchEngine.element.shortName == self.searchEngines.defaultEngine().shortName {
+                if searchEngine.element.shortName == self.searchEngines?.defaultEngine().shortName {
                     let indexPath = IndexPath(row: 0, section: searchEngine.offset)
                     self.contentView.searchEnginesTable.selectRow(at: indexPath, animated: false,
                                                                   scrollPosition: .none)
@@ -66,7 +66,7 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
             log.error("Failed to unwrap selected row or selected engine.")
         }
         
-        searchEngines.setInitialDefaultEngine(selectedEngine)
+        searchEngines?.setInitialDefaultEngine(selectedEngine)
         
         delegate?.presentNextScreen(current: self)
     }
