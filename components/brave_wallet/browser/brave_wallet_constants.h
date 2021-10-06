@@ -193,6 +193,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ADD_CHECKED_ACCOUNTS_HARDWARE_WALLET},
     {"braveWalletLoadMoreAccountsHardwareWallet",
      IDS_BRAVE_WALLET_LOAD_MORE_ACCOUNTS_HARDWARE_WALLET},
+    {"braveWalletLoadingMoreAccountsHardwareWallet",
+     IDS_BRAVE_WALLET_LOADING_MORE_ACCOUNTS_HARDWARE_WALLET},
     {"braveWalletSearchScannedAccounts",
      IDS_BRAVE_WALLET_SEARCH_SCANNED_ACCOUNTS},
     {"braveWalletSwitchHDPathTextHardwareWallet",
