@@ -88,6 +88,9 @@ bool WebDiscoveryTabHelper::NeedVisitCountHandling(
   if (prefs->GetBoolean(kWebDiscoveryEnabled))
     return false;
 
+  if (prefs->GetInteger(kBraveSearchVisitCount) >= 20)
+    return false;
+
   return true;
 }
 
