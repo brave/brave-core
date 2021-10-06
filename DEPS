@@ -14,7 +14,7 @@ deps = {
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@f2eff7aca4ea04564e3647b93eb72f33ebdbf683",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@17236e350dbee79cefe79f281a344170794cadf7",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@e5b6cdbdc1af4b498e6f9c737fa3baf756cae773",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
 }
