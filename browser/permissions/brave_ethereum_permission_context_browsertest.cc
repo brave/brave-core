@@ -105,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
 
   was_called = false;
   const GURL& url = https_server()->GetURL("a.com", "/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   // No allowed accounts before setting permissions.
   BraveEthereumPermissionContext::GetAllowedAccounts(
@@ -144,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(BraveEthereumPermissionContextBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
 
   GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
-  ui_test_utils::NavigateToURL(browser(), top_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
   GURL iframe_url(https_server()->GetURL("b.com", "/"));
   EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
 

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/utils_win.h"
 
+#include <windows.h>
+
 #include <ras.h>
 #include <raserror.h>
 #include <stdio.h>

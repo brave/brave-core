@@ -93,7 +93,8 @@ class DecentralizedDnsNavigationThrottleBrowserTest
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
                        ShowUnstoppableDomainsInterstitialAndProceed) {
-  ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto")));
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -113,7 +114,8 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
                        ShowUnstoppableDomainsInterstitialAndReject) {
-  ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("http://test.crypto")));
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -133,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
                        ShowENSInterstitialAndProceed) {
-  ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -153,7 +155,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
                        ShowENSInterstitialAndReject) {
-  ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("http://test.eth")));
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

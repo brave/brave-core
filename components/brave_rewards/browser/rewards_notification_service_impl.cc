@@ -228,7 +228,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     dict->SetInteger("timestamp", item.second.timestamp_);
     auto args = std::make_unique<base::ListValue>();
     for (auto& arg : item.second.args_) {
-      args->AppendString(arg);
+      args->Append(arg);
     }
     dict->SetList("args", std::move(args));
     notifications->Append(std::move(dict));
@@ -236,7 +236,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
 
   auto displayed = std::make_unique<base::ListValue>();
   for (auto& item : rewards_notifications_displayed_) {
-    displayed->AppendString(item);
+    displayed->Append(item);
   }
 
   root.SetList("notifications", std::move(notifications));

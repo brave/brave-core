@@ -45,7 +45,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   std::vector<std::string> classes;
   base::ListValue* classes_list;
   if (input_dict->GetList("classes", &classes_list)) {
-    for (size_t i = 0; i < classes_list->GetSize(); i++) {
+    for (size_t i = 0; i < classes_list->GetList().size(); i++) {
       if (!classes_list->GetList()[i].is_string()) {
         continue;
       }
@@ -55,7 +55,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   std::vector<std::string> ids;
   base::ListValue* ids_list;
   if (input_dict->GetList("ids", &ids_list)) {
-    for (size_t i = 0; i < ids_list->GetSize(); i++) {
+    for (size_t i = 0; i < ids_list->GetList().size(); i++) {
       if (!ids_list->GetList()[i].is_string()) {
         continue;
       }

@@ -97,7 +97,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   }
 
   void NavigateToURLUntilLoadStop(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     ASSERT_TRUE(WaitForLoadStop(contents()));
   }
 

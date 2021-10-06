@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index b067be7aa84a44add702d5551ea7b440d0186fdd..3e75b08a85d225560841446e589120d45160e8f0 100644
+index a82a3a752bb676c062a920056fdc22a57dabed8e..50146da96535feeeb183d30d337049919966e6da 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -75,6 +75,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -76,6 +76,7 @@ class AvatarToolbarButton : public ToolbarButton,
    static void SetIPHMinDelayAfterCreationForTesting(base::TimeDelta delay);
  
   private:

@@ -79,7 +79,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
 IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                        IncludesSecGPCHeader) {
   const GURL target = https_server().GetURL("example.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_EQ(header_result(), GPCHeaderResult::kOk);
 }
 
@@ -89,7 +89,7 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                        NavigatorGlobalPrivacyAPI) {
   const GURL target = https_server().GetURL("example.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
 
   auto* rfh =
       browser()->tab_strip_model()->GetActiveWebContents()->GetMainFrame();

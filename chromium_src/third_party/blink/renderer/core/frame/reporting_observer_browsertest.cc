@@ -36,7 +36,7 @@ class ReportingObserverTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsDisabled) {
   GURL url = embedded_test_server()->GetURL(kReportingObserver);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 

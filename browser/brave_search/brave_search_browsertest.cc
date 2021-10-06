@@ -150,7 +150,7 @@ class BraveSearchTestEnabled : public BraveSearchTest {
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunction) {
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
   GURL url = https_server()->GetURL(kAllowedDomainDev, "/bravesearch.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -174,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAFunctionDev) {
 
 IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/bravesearch.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -190,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(browser()->profile()));
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -211,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIHiddenUnknownHost) {
   GURL url = https_server()->GetURL(kNotAllowedDomain, "/");
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(browser()->profile()));
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -229,7 +229,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
   GURL url = https_server()->GetURL(kAllowedDomain, "/bravesearch.html");
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(browser()->profile()));
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -251,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIFalsePrivateWindow) {
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(private_browser->profile()));
-  ui_test_utils::NavigateToURL(private_browser, url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));
   content::WebContents* contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -272,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTestDisabled, DefaultAPIInvisibleKnownHost) {
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
   search_test_utils::WaitForTemplateURLServiceToLoad(
       TemplateURLServiceFactory::GetForProfile(browser()->profile()));
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);

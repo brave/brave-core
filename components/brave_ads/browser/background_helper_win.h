@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BACKGROUND_HELPER_WIN_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BACKGROUND_HELPER_WIN_H_
 
-#include <windows.h>
 #include <memory>
 
 #include "base/macros.h"
 #include "base/memory/singleton.h"
+#include "base/win/windows_types.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "ui/gfx/win/singleton_hwnd_observer.h"
 

@@ -76,7 +76,7 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   base::ListValue blockExplorerUrlsValue;
   if (!chain->block_explorer_urls.empty()) {
     for (const auto& url : chain->block_explorer_urls) {
-      blockExplorerUrlsValue.AppendString(url);
+      blockExplorerUrlsValue.Append(url);
     }
   }
   dict.SetKey("blockExplorerUrls", std::move(blockExplorerUrlsValue));
@@ -84,14 +84,14 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   base::ListValue iconUrlsValue;
   if (!chain->icon_urls.empty()) {
     for (const auto& url : chain->icon_urls) {
-      iconUrlsValue.AppendString(url);
+      iconUrlsValue.Append(url);
     }
   }
   dict.SetKey("iconUrls", std::move(iconUrlsValue));
 
   base::ListValue rpcUrlsValue;
   for (const auto& url : chain->rpc_urls) {
-    rpcUrlsValue.AppendString(url);
+    rpcUrlsValue.Append(url);
   }
   dict.SetKey("rpcUrls", std::move(rpcUrlsValue));
   base::Value currency(base::Value::Type::DICTIONARY);

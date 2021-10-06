@@ -61,7 +61,7 @@ public class BraveSigninManager implements SigninManager {
             @Nullable SignInCallback callback) {}
 
     @Override
-    public void signin(CoreAccountInfo accountInfo, @Nullable SignInCallback callback) {}
+    public void signin(Account account, @Nullable SignInCallback callback) {}
 
     @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}

@@ -39,23 +39,23 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   void OnInstallationEvent(ipfs::ComponentUpdaterEvents event) override;
 
  private:
-  void HandleGetConnectedPeers(const base::ListValue* args);
-  void HandleGetAddressesConfig(const base::ListValue* args);
+  void HandleGetConnectedPeers(base::Value::ConstListView args);
+  void HandleGetAddressesConfig(base::Value::ConstListView args);
   void OnGetAddressesConfig(bool success,
                             const ipfs::AddressesConfig& config);
-  void HandleGetDaemonStatus(const base::ListValue* args);
-  void HandleLaunchDaemon(const base::ListValue* args);
+  void HandleGetDaemonStatus(base::Value::ConstListView args);
+  void HandleLaunchDaemon(base::Value::ConstListView args);
   void LaunchDaemon();
   void OnLaunchDaemon(bool success);
-  void HandleShutdownDaemon(const base::ListValue* args);
-  void HandleRestartDaemon(const base::ListValue* args);
+  void HandleShutdownDaemon(base::Value::ConstListView args);
+  void HandleRestartDaemon(base::Value::ConstListView args);
   void OnShutdownDaemon(bool success);
-  void HandleGetRepoStats(const base::ListValue* args);
+  void HandleGetRepoStats(base::Value::ConstListView args);
   void OnGetRepoStats(bool success, const ipfs::RepoStats& stats);
-  void HandleGetNodeInfo(const base::ListValue* args);
+  void HandleGetNodeInfo(base::Value::ConstListView args);
   void OnGetNodeInfo(bool success, const ipfs::NodeInfo& info);
 
-  void HandleGarbageCollection(const base::ListValue* args);
+  void HandleGarbageCollection(base::Value::ConstListView args);
   void OnGarbageCollection(bool success, const std::string& error);
 
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>

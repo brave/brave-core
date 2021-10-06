@@ -1,8 +1,8 @@
 diff --git a/extensions/common/api/_permission_features.json b/extensions/common/api/_permission_features.json
-index d9e0ea3166747329a4f4a219f9867cb5b43b0c75..7a187519e2c78a056c9c64f30c263d641ca35a3f 100644
+index b749a69f5cd8d2cb7b502f1eeed47433dea25632..3070c41e3da01ba65916a83a8472056560d7d10e 100644
 --- a/extensions/common/api/_permission_features.json
 +++ b/extensions/common/api/_permission_features.json
-@@ -319,6 +319,7 @@
+@@ -321,6 +321,7 @@
        "channel": "stable",
        "extension_types": ["extension"],
        "allowlist": [
@@ -10,7 +10,7 @@ index d9e0ea3166747329a4f4a219f9867cb5b43b0c75..7a187519e2c78a056c9c64f30c263d64
          "496B6890097EB6E19809ADEADD095A8721FBB2E0",  // FIDO U2F APIs
          "AD8ED80B705E1818AAD4684F9FF62B43D6D79620",  // FIDO U2F APIs (dev)
          "E24F1786D842E91E74C27929B0B3715A4689A473",  // CryptoToken
-@@ -654,6 +655,7 @@
+@@ -656,6 +657,7 @@
        "channel": "stable",
        "extension_types": ["extension"],
        "allowlist": [
@@ -18,7 +18,7 @@ index d9e0ea3166747329a4f4a219f9867cb5b43b0c75..7a187519e2c78a056c9c64f30c263d64
          "496B6890097EB6E19809ADEADD095A8721FBB2E0",  // FIDO U2F APIs
          "AD8ED80B705E1818AAD4684F9FF62B43D6D79620",  // FIDO U2F APIs (dev)
          "E24F1786D842E91E74C27929B0B3715A4689A473",  // CryptoToken
-@@ -670,6 +672,7 @@
+@@ -672,6 +674,7 @@
        "channel": "stable",
        "extension_types": ["extension"],
        "allowlist": [

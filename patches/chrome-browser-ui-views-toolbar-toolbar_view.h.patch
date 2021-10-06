@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 8346b612cfbe61a420ee0f4a1c2ceb168086b365..a1a6efd5363e951033230fbbe20454409b232203 100644
+index 1da8e4f42dc998abd71bf7807fd8c51bc1a00d34..b2bf786cc5f7b53dd9c4c8ebc5ba444b478e0b6e 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -96,12 +96,14 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -97,12 +97,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -17,7 +17,7 @@ index 8346b612cfbe61a420ee0f4a1c2ceb168086b365..a1a6efd5363e951033230fbbe2045440
    void Update(content::WebContents* tab);
  
    // Updates the visibility of the custom tab bar, potentially animating the
-@@ -132,6 +134,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -133,6 +135,7 @@ class ToolbarView : public views::AccessiblePaneView,
        IntentPickerResponse callback);
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -25,7 +25,7 @@ index 8346b612cfbe61a420ee0f4a1c2ceb168086b365..a1a6efd5363e951033230fbbe2045440
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -196,6 +199,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -199,6 +202,7 @@ class ToolbarView : public views::AccessiblePaneView,
    friend class AvatarToolbarButtonBrowserTest;
  
   protected:
@@ -33,7 +33,7 @@ index 8346b612cfbe61a420ee0f4a1c2ceb168086b365..a1a6efd5363e951033230fbbe2045440
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
    // on Chrome OS.
-@@ -246,6 +250,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -250,6 +254,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.

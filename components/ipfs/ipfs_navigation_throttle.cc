@@ -193,7 +193,7 @@ IpfsNavigationThrottle::ShowIPFSOnboardingInterstitial() {
   std::string page_content = page->GetHTMLContents();
 
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(page));
+      handle, std::move(page));
   return content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
       page_content);
@@ -213,7 +213,7 @@ void IpfsNavigationThrottle::ShowInterstitial() {
   std::string page_content = page->GetHTMLContents();
 
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(page));
+      handle, std::move(page));
 
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,

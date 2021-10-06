@@ -394,7 +394,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
     GURL tab_url = embedded_test_server()->GetURL("dev-pages.brave.software",
                                                   kEphemeralStorageTestPage);
-    ui_test_utils::NavigateToURL(browser(), tab_url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
     original_tab_ = tabs_->GetActiveWebContents();
 
     ClickStartTest(original_tab_);

@@ -7,6 +7,7 @@
 
 #include "net/base/features.h"
 #include "third_party/blink/public/common/dom_storage/session_storage_namespace_id.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -168,8 +169,8 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
   if (!ephemeral_namespace)
     return nullptr;
 
-  auto storage_area = ephemeral_namespace->session_storage()->GetCachedArea(
-      window->GetSecurityOrigin());
+  auto storage_area =
+      ephemeral_namespace->session_storage()->GetCachedArea(window);
 
   ephemeral_session_storage_ =
       StorageArea::Create(window, std::move(storage_area),
@@ -180,29 +181,14 @@ StorageArea* BraveDOMWindowStorage::ephemeralSessionStorage() {
 StorageArea* BraveDOMWindowStorage::localStorage(
     ExceptionState& exception_state) {
   LocalDOMWindow* window = GetSupplementable();
-  auto* storage = DOMWindowStorage::From(*window).localStorage(exception_state);
-
   const SecurityOrigin* ephemeral_storage_origin =
       GetEphemeralStorageOrigin(window);
-  if (!ephemeral_storage_origin)
-    return storage;
+  if (ephemeral_storage_origin &&
+      window->GetEphemeralStorageOrigin() != ephemeral_storage_origin) {
+    window->SetEphemeralStorageOrigin(ephemeral_storage_origin);
+  }
 
-  return ephemeralLocalStorage(ephemeral_storage_origin);
-}
-
-StorageArea* BraveDOMWindowStorage::ephemeralLocalStorage(
-    const SecurityOrigin* ephemeral_storage_origin) {
-  DCHECK(ephemeral_storage_origin);
-  if (ephemeral_local_storage_)
-    return ephemeral_local_storage_;
-
-  LocalDOMWindow* window = GetSupplementable();
-  auto storage_area = StorageController::GetInstance()->GetLocalStorageArea(
-      ephemeral_storage_origin);
-
-  ephemeral_local_storage_ = StorageArea::Create(
-      window, std::move(storage_area), StorageArea::StorageType::kLocalStorage);
-  return ephemeral_local_storage_;
+  return DOMWindowStorage::From(*window).localStorage(exception_state);
 }
 
 void BraveDOMWindowStorage::Trace(Visitor* visitor) const {

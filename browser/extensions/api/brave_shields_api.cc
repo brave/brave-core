@@ -48,7 +48,7 @@ const char kInvalidControlTypeError[] = "Invalid ControlType.";
 ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
   std::unique_ptr<brave_shields::AddSiteCosmeticFilter::Params> params(
-      brave_shields::AddSiteCosmeticFilter::Params::Create(*args_));
+      brave_shields::AddSiteCosmeticFilter::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* custom_filters_service =
@@ -73,7 +73,7 @@ BraveShieldsOpenFilterManagementPageFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
-      brave_shields::AllowScriptsOnce::Params::Create(*args_));
+      brave_shields::AllowScriptsOnce::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   // Get web contents for this tab
@@ -98,7 +98,7 @@ BraveShieldsOpenBrowserActionUIFunction::
 ExtensionFunction::ResponseAction
 BraveShieldsOpenBrowserActionUIFunction::Run() {
   std::unique_ptr<brave_shields::OpenBrowserActionUI::Params> params(
-      brave_shields::OpenBrowserActionUI::Params::Create(*args_));
+      brave_shields::OpenBrowserActionUI::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
   std::string error;
   if (!BraveActionAPI::ShowActionUI(this,
@@ -113,7 +113,7 @@ BraveShieldsOpenBrowserActionUIFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetBraveShieldsEnabledFunction::Run() {
   std::unique_ptr<brave_shields::SetBraveShieldsEnabled::Params> params(
-      brave_shields::SetBraveShieldsEnabled::Params::Create(*args_));
+      brave_shields::SetBraveShieldsEnabled::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -135,7 +135,7 @@ BraveShieldsSetBraveShieldsEnabledFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsGetBraveShieldsEnabledFunction::Run() {
   std::unique_ptr<brave_shields::GetBraveShieldsEnabled::Params> params(
-      brave_shields::GetBraveShieldsEnabled::Params::Create(*args_));
+      brave_shields::GetBraveShieldsEnabled::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -155,8 +155,8 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetCosmeticFilteringControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetCosmeticFilteringControlType::Params>
-    params(
-      brave_shields::SetCosmeticFilteringControlType::Params::Create(*args_));
+      params(brave_shields::SetCosmeticFilteringControlType::Params::Create(
+          args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -185,7 +185,7 @@ BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction::Run() {
   std::unique_ptr<brave_shields::IsFirstPartyCosmeticFilteringEnabled::Params>
       params(
           brave_shields::IsFirstPartyCosmeticFilteringEnabled::Params::Create(
-          *args_));
+              args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -203,7 +203,7 @@ BraveShieldsIsFirstPartyCosmeticFilteringEnabledFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetAdControlType::Params> params(
-      brave_shields::SetAdControlType::Params::Create(*args_));
+      brave_shields::SetAdControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -229,7 +229,7 @@ ExtensionFunction::ResponseAction BraveShieldsSetAdControlTypeFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveShieldsGetAdControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::GetAdControlType::Params> params(
-      brave_shields::GetAdControlType::Params::Create(*args_));
+      brave_shields::GetAdControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -249,7 +249,7 @@ ExtensionFunction::ResponseAction BraveShieldsGetAdControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetCookieControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetCookieControlType::Params> params(
-      brave_shields::SetCookieControlType::Params::Create(*args_));
+      brave_shields::SetCookieControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -276,7 +276,7 @@ BraveShieldsSetCookieControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsGetCookieControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::GetCookieControlType::Params> params(
-      brave_shields::GetCookieControlType::Params::Create(*args_));
+      brave_shields::GetCookieControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -296,7 +296,7 @@ BraveShieldsGetCookieControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetFingerprintingControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetFingerprintingControlType::Params> params(
-      brave_shields::SetFingerprintingControlType::Params::Create(*args_));
+      brave_shields::SetFingerprintingControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -323,7 +323,7 @@ BraveShieldsSetFingerprintingControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsGetFingerprintingControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::GetFingerprintingControlType::Params> params(
-      brave_shields::GetFingerprintingControlType::Params::Create(*args_));
+      brave_shields::GetFingerprintingControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -343,7 +343,7 @@ BraveShieldsGetFingerprintingControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetHTTPSEverywhereEnabledFunction::Run() {
   std::unique_ptr<brave_shields::SetHTTPSEverywhereEnabled::Params> params(
-      brave_shields::SetHTTPSEverywhereEnabled::Params::Create(*args_));
+      brave_shields::SetHTTPSEverywhereEnabled::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -365,7 +365,7 @@ BraveShieldsSetHTTPSEverywhereEnabledFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsGetHTTPSEverywhereEnabledFunction::Run() {
   std::unique_ptr<brave_shields::GetHTTPSEverywhereEnabled::Params> params(
-      brave_shields::GetHTTPSEverywhereEnabled::Params::Create(*args_));
+      brave_shields::GetHTTPSEverywhereEnabled::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -385,7 +385,7 @@ BraveShieldsGetHTTPSEverywhereEnabledFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsSetNoScriptControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::SetNoScriptControlType::Params> params(
-      brave_shields::SetNoScriptControlType::Params::Create(*args_));
+      brave_shields::SetNoScriptControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -412,7 +412,7 @@ BraveShieldsSetNoScriptControlTypeFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveShieldsGetNoScriptControlTypeFunction::Run() {
   std::unique_ptr<brave_shields::GetNoScriptControlType::Params> params(
-      brave_shields::GetNoScriptControlType::Params::Create(*args_));
+      brave_shields::GetNoScriptControlType::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   const GURL url(params->url);
@@ -438,7 +438,7 @@ BraveShieldsOnShieldsPanelShownFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveShieldsReportBrokenSiteFunction::Run() {
   std::unique_ptr<brave_shields::ReportBrokenSite::Params> params(
-      brave_shields::ReportBrokenSite::Params::Create(*args_));
+      brave_shields::ReportBrokenSite::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   // Get web contents for this tab

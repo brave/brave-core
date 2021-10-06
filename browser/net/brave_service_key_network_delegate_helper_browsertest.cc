@@ -59,27 +59,27 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
                        NotIncludesBraveServiceKey) {
   GURL target = https_server().GetURL("notbrave.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 
   target = https_server().GetURL("brave.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 
   target = https_server().GetURL("bravesoftware.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 
   target = https_server().GetURL("brave.demo.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 
   target = https_server().GetURL("demo.brave.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 
   target = https_server().GetURL("randomdomain.com", "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_FALSE(header_result());
 }
 
@@ -87,15 +87,15 @@ IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
                        IncludesBraveServiceKey) {
   GURL target =
       https_server().GetURL(GURL(UPDATER_DEV_ENDPOINT).host(), "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_TRUE(header_result());
 
   target =
       https_server().GetURL(GURL(UPDATER_PROD_ENDPOINT).host(), "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_TRUE(header_result());
 
   target = https_server().GetURL(kExtensionUpdaterDomain, "/index.html");
-  ui_test_utils::NavigateToURL(browser(), target);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_TRUE(header_result());
 }

@@ -1,12 +1,12 @@
 diff --git a/extensions/common/api/_api_features.json b/extensions/common/api/_api_features.json
-index d06120a16b6844f9797db135f1259165d517dcea..2e58f29b31f3fa943b0ff74627a30cba809fdfdd 100644
+index 7583898fce111d520dcb123df24c72a2d6e1e43b..ccb8996c97feaeac6ae93e63f9dc869c706275ed 100644
 --- a/extensions/common/api/_api_features.json
 +++ b/extensions/common/api/_api_features.json
-@@ -527,6 +527,7 @@
+@@ -541,6 +541,7 @@
      "matches": [
        "chrome://password-change/*",
        "chrome://file-manager/*"
 +      ,"chrome://newtab/*"
      ]
-   }],
-   "runtime.sendNativeMessage": {
+   },{
+     "channel": "dev",

@@ -192,19 +192,18 @@ bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
 }
 
 void BraveDefaultExtensionsHandler::GetRestartNeeded(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0], base::Value(IsRestartNeeded()));
+  ResolveJavascriptCallback(args[0], base::Value(IsRestartNeeded()));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  bool enabled = args[0].GetBool();
 
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
@@ -226,11 +225,10 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
 }
 
 void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  bool enabled = args[0].GetBool();
 
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
@@ -274,21 +272,22 @@ void BraveDefaultExtensionsHandler::OnRestartNeededChanged() {
   }
 }
 
-void BraveDefaultExtensionsHandler::SetTorEnabled(const base::ListValue* args) {
+void BraveDefaultExtensionsHandler::SetTorEnabled(
+    base::Value::ConstListView args) {
 #if BUILDFLAG(ENABLE_TOR)
-  CHECK_EQ(args->GetSize(), 1U);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  CHECK_EQ(args.size(), 1U);
+  bool enabled = args[0].GetBool();
   AllowJavascript();
   TorProfileServiceFactory::SetTorDisabled(!enabled);
 #endif
 }
 
-void BraveDefaultExtensionsHandler::IsTorEnabled(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void BraveDefaultExtensionsHandler::IsTorEnabled(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
-      args->GetList()[0],
+      args[0],
 #if BUILDFLAG(ENABLE_TOR)
       base::Value(!TorProfileServiceFactory::IsTorDisabled()));
 #else
@@ -307,8 +306,9 @@ void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
   }
 }
 
-void BraveDefaultExtensionsHandler::IsTorManaged(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void BraveDefaultExtensionsHandler::IsTorManaged(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
 
 #if BUILDFLAG(ENABLE_TOR)
   const bool is_managed = g_browser_process->local_state()
@@ -319,25 +319,24 @@ void BraveDefaultExtensionsHandler::IsTorManaged(const base::ListValue* args) {
 #endif
 
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0], base::Value(is_managed));
+  ResolveJavascriptCallback(args[0], base::Value(is_managed));
 }
 
 void BraveDefaultExtensionsHandler::SetWidevineEnabled(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  CHECK_EQ(args->GetSize(), 1U);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  CHECK_EQ(args.size(), 1U);
+  bool enabled = args[0].GetBool();
   enabled ? EnableWidevineCdmComponent() : DisableWidevineCdmComponent();
   AllowJavascript();
 #endif
 }
 
 void BraveDefaultExtensionsHandler::IsWidevineEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0],
+  ResolveJavascriptCallback(args[0],
 #if BUILDFLAG(ENABLE_WIDEVINE)
                             base::Value(IsWidevineOptedIn()));
 #else
@@ -357,11 +356,11 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
   }
 }
 
-void BraveDefaultExtensionsHandler::ExportIPNSKey(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void BraveDefaultExtensionsHandler::ExportIPNSKey(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  std::string key_name;
-  args->GetString(0, &key_name);
+  std::string key_name = args[0].GetString();
   DCHECK(!key_name.empty());
   auto* web_contents = web_ui()->GetWebContents();
   select_file_dialog_ = ui::SelectFileDialog::Create(
@@ -386,11 +385,10 @@ void BraveDefaultExtensionsHandler::ExportIPNSKey(const base::ListValue* args) {
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  bool enabled = args[0].GetBool();
 
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
@@ -421,11 +419,10 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  bool enabled;
-  args->GetBoolean(0, &enabled);
+  bool enabled = args[0].GetBool();
 
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
@@ -440,11 +437,11 @@ void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
 #endif
 
 void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(
-      args->GetList()[0],
+      args[0],
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
       base::Value(decentralized_dns::IsDecentralizedDnsEnabled()));
 #else
@@ -453,24 +450,23 @@ void BraveDefaultExtensionsHandler::IsDecentralizedDnsEnabled(
 }
 
 void BraveDefaultExtensionsHandler::GetDecentralizedDnsResolveMethodList(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 2U);
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 2U);
   AllowJavascript();
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   decentralized_dns::Provider provider =
-      static_cast<decentralized_dns::Provider>(args->GetList()[1].GetInt());
-  ResolveJavascriptCallback(args->GetList()[0],
+      static_cast<decentralized_dns::Provider>(args[1].GetInt());
+  ResolveJavascriptCallback(args[0],
                             decentralized_dns::GetResolveMethodList(provider));
 #else
-  ResolveJavascriptCallback(args->GetList()[0],
-                            base::Value(base::Value::Type::LIST));
+  ResolveJavascriptCallback(args[0], base::Value(base::Value::Type::LIST));
 #endif
 }
 
 #if BUILDFLAG(ENABLE_IPFS)
 void BraveDefaultExtensionsHandler::LaunchIPFSService(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
   if (!service) {
@@ -481,11 +477,11 @@ void BraveDefaultExtensionsHandler::LaunchIPFSService(
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
-    const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  CHECK(args->GetList()[0].is_int());
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(args[0].is_int());
   CHECK(profile_);
-  int storage_max_gb = args->GetList()[0].GetInt();
+  int storage_max_gb = args[0].GetInt();
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
   ipfs::IpfsService* service =
@@ -539,11 +535,11 @@ void BraveDefaultExtensionsHandler::FileSelectionCanceled(void* params) {
   dialog_key_.clear();
 }
 
-void BraveDefaultExtensionsHandler::ImportIpnsKey(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
+void BraveDefaultExtensionsHandler::ImportIpnsKey(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  std::string key_name;
-  args->GetString(0, &key_name);
+  std::string key_name = args[0].GetString();
   auto* web_contents = web_ui()->GetWebContents();
   select_file_dialog_ = ui::SelectFileDialog::Create(
       this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
@@ -565,7 +561,7 @@ void BraveDefaultExtensionsHandler::ImportIpnsKey(const base::ListValue* args) {
 }
 
 void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   NotifyNodeStatus();
 }
 

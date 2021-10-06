@@ -58,6 +58,7 @@
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #else
+#include "chrome/browser/apps/app_discovery_service/app_discovery_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #endif
@@ -206,15 +207,18 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Disabled features.
   std::unordered_set<const char*> disabled_features = {
+#if !defined(OS_ANDROID)
+    apps::kAppDiscoveryRemoteUrlSearch.name,
+#endif
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kComputePressure.name,
     blink::features::kConversionMeasurement.name,
     blink::features::kFledgeInterestGroupAPI.name,
     blink::features::kFledgeInterestGroups.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
-    blink::features::kLangClientHintHeader.name,
     blink::features::kNavigatorPluginsFixed.name,
     blink::features::kTextFragmentAnchor.name,
 #if !defined(OS_ANDROID)
@@ -223,24 +227,32 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     features::kDirectSockets.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,
-    features::kPrivacySandboxSettings.name,
+    features::kPrivacySandboxSettings2.name,
+#if !defined(OS_ANDROID)
+    features::kSettingsLandingPageRedesign.name,
+#endif
     features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
+#if defined(OS_ANDROID)
+    features::kWebNfc.name,
+#endif
     features::kWebOTP.name,
     federated_learning::kFederatedLearningOfCohorts.name,
     federated_learning::kFlocIdComputedEventLogging.name,
+#if defined(OS_ANDROID)
+    feed::kInterestFeedContentSuggestions.name,
+    feed::kInterestFeedV2.name,
+#endif
     media::kLiveCaption.name,
     net::features::kFirstPartySets.name,
     network::features::kTrustTokens.name,
     network_time::kNetworkTimeServiceQuerying.name,
+#if defined(OS_ANDROID)
+    offline_pages::kPrefetchingOfflinePagesFeature.name,
+#endif
     reading_list::switches::kReadLater.name,
 #if defined(OS_ANDROID)
-    features::kWebNfc.name,
-    feed::kInterestFeedContentSuggestions.name,
-    feed::kInterestFeedV2.name,
-    offline_pages::kPrefetchingOfflinePagesFeature.name,
-    signin::kMobileIdentityConsistency.name,
     translate::kTranslate.name,
 #endif
   };

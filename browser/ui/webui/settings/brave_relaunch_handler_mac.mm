@@ -9,11 +9,10 @@
 
 void BraveRelaunchHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-      "relaunchOnMac",
-      base::BindRepeating(&BraveRelaunchHandler::Relaunch,
-                          base::Unretained(this)));
+      "relaunchOnMac", base::BindRepeating(&BraveRelaunchHandler::Relaunch,
+                                           base::Unretained(this)));
 }
 
-void BraveRelaunchHandler::Relaunch(const base::ListValue* args) {
+void BraveRelaunchHandler::Relaunch(base::Value::ConstListView args) {
   [[SparkleGlue sharedSparkleGlue] relaunch];
 }

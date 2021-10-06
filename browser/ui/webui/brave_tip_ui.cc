@@ -52,13 +52,11 @@ class TipMessageHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
   // RewardsServiceObserver:
-  void OnRecurringTipSaved(
-      RewardsService* rewards_service,
-      bool success) override;
+  void OnRecurringTipSaved(RewardsService* rewards_service,
+                           bool success) override;
 
-  void OnRecurringTipRemoved(
-      RewardsService* rewards_service,
-      bool success) override;
+  void OnRecurringTipRemoved(RewardsService* rewards_service,
+                             bool success) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
@@ -72,21 +70,21 @@ class TipMessageHandler : public WebUIMessageHandler,
 
  private:
   // Message handlers
-  void DialogReady(const base::ListValue* args);
-  void GetPublisherBanner(const base::ListValue* args);
-  void GetRewardsParameters(const base::ListValue* args);
-  void GetOnboardingStatus(const base::ListValue* args);
-  void SaveOnboardingResult(const base::ListValue* args);
-  void OnTip(const base::ListValue* args);
-  void GetRecurringTips(const base::ListValue* args);
-  void GetReconcileStamp(const base::ListValue* args);
-  void GetAutoContributeAmount(const base::ListValue* args);
-  void SetAutoContributeAmount(const base::ListValue* args);
-  void GetAdsPerHour(const base::ListValue* args);
-  void SetAdsPerHour(const base::ListValue* args);
-  void TweetTip(const base::ListValue* args);
-  void GetExternalWallet(const base::ListValue* args);
-  void FetchBalance(const base::ListValue* args);
+  void DialogReady(base::Value::ConstListView args);
+  void GetPublisherBanner(base::Value::ConstListView args);
+  void GetRewardsParameters(base::Value::ConstListView args);
+  void GetOnboardingStatus(base::Value::ConstListView args);
+  void SaveOnboardingResult(base::Value::ConstListView args);
+  void OnTip(base::Value::ConstListView args);
+  void GetRecurringTips(base::Value::ConstListView args);
+  void GetReconcileStamp(base::Value::ConstListView args);
+  void GetAutoContributeAmount(base::Value::ConstListView args);
+  void SetAutoContributeAmount(base::Value::ConstListView args);
+  void GetAdsPerHour(base::Value::ConstListView args);
+  void SetAdsPerHour(base::Value::ConstListView args);
+  void TweetTip(base::Value::ConstListView args);
+  void GetExternalWallet(base::Value::ConstListView args);
+  void FetchBalance(base::Value::ConstListView args);
 
   // Rewards service callbacks
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
@@ -102,14 +100,13 @@ class TipMessageHandler : public WebUIMessageHandler,
 
   void GetShareURLCallback(const std::string& url);
 
-  void FetchBalanceCallback(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance);
+  void FetchBalanceCallback(const ledger::type::Result result,
+                            ledger::type::BalancePtr balance);
 
   void GetRewardsParametersCallback(
-    ledger::type::RewardsParametersPtr parameters);
+      ledger::type::RewardsParametersPtr parameters);
 
-  RewardsService* rewards_service_ = nullptr;  // NOT OWNED
+  RewardsService* rewards_service_ = nullptr;     // NOT OWNED
   brave_ads::AdsService* ads_service_ = nullptr;  // NOT OWNED
   base::WeakPtrFactory<TipMessageHandler> weak_factory_{this};
 };
@@ -124,52 +121,42 @@ TipMessageHandler::~TipMessageHandler() {
 
 void TipMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
-      "dialogReady",
-      base::BindRepeating(
-          &TipMessageHandler::DialogReady,
-          base::Unretained(this)));
+      "dialogReady", base::BindRepeating(&TipMessageHandler::DialogReady,
+                                         base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getPublisherBanner",
-      base::BindRepeating(
-          &TipMessageHandler::GetPublisherBanner,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetPublisherBanner,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getRewardsParameters",
-      base::BindRepeating(
-          &TipMessageHandler::GetRewardsParameters,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetRewardsParameters,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getOnboardingStatus",
-      base::BindRepeating(
-          &TipMessageHandler::GetOnboardingStatus,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetOnboardingStatus,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "saveOnboardingResult",
-      base::BindRepeating(
-          &TipMessageHandler::SaveOnboardingResult,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::SaveOnboardingResult,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "onTip",
-       base::BindRepeating(
-           &TipMessageHandler::OnTip,
-           base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::OnTip, base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getRecurringTips",
-      base::BindRepeating(
-          &TipMessageHandler::GetRecurringTips,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetRecurringTips,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getReconcileStamp",
-      base::BindRepeating(
-          &TipMessageHandler::GetReconcileStamp,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetReconcileStamp,
+                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getAutoContributeAmount",
@@ -190,27 +177,21 @@ void TipMessageHandler::RegisterMessages() {
                                            base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
-      "tweetTip",
-      base::BindRepeating(
-          &TipMessageHandler::TweetTip,
-          base::Unretained(this)));
+      "tweetTip", base::BindRepeating(&TipMessageHandler::TweetTip,
+                                      base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
-      "fetchBalance",
-      base::BindRepeating(
-          &TipMessageHandler::FetchBalance,
-          base::Unretained(this)));
+      "fetchBalance", base::BindRepeating(&TipMessageHandler::FetchBalance,
+                                          base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
       "getExternalWallet",
-      base::BindRepeating(
-          &TipMessageHandler::GetExternalWallet,
-          base::Unretained(this)));
+      base::BindRepeating(&TipMessageHandler::GetExternalWallet,
+                          base::Unretained(this)));
 }
 
-void TipMessageHandler::OnRecurringTipRemoved(
-    RewardsService* rewards_service,
-    bool success) {
+void TipMessageHandler::OnRecurringTipRemoved(RewardsService* rewards_service,
+                                              bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -218,9 +199,8 @@ void TipMessageHandler::OnRecurringTipRemoved(
   FireWebUIListener("recurringTipRemoved", base::Value(success));
 }
 
-void TipMessageHandler::OnRecurringTipSaved(
-    RewardsService* rewards_service,
-    bool success) {
+void TipMessageHandler::OnRecurringTipSaved(RewardsService* rewards_service,
+                                            bool success) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -255,7 +235,7 @@ void TipMessageHandler::OnUnblindedTokensReady(
   FireWebUIListener("unblindedTokensReady");
 }
 
-void TipMessageHandler::DialogReady(const base::ListValue* args) {
+void TipMessageHandler::DialogReady(base::Value::ConstListView args) {
   Profile* profile = Profile::FromWebUI(web_ui());
 
   if (!rewards_service_) {
@@ -275,9 +255,9 @@ void TipMessageHandler::DialogReady(const base::ListValue* args) {
   }
 }
 
-void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
-  CHECK_EQ(1U, args->GetSize());
-  const std::string publisher_key = args->GetList()[0].GetString();
+void TipMessageHandler::GetPublisherBanner(base::Value::ConstListView args) {
+  CHECK_EQ(1U, args.size());
+  const std::string publisher_key = args[0].GetString();
 
   if (publisher_key.empty() || !rewards_service_) {
     return;
@@ -289,7 +269,7 @@ void TipMessageHandler::GetPublisherBanner(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
+void TipMessageHandler::GetRewardsParameters(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -299,7 +279,7 @@ void TipMessageHandler::GetRewardsParameters(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
+void TipMessageHandler::GetOnboardingStatus(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -309,20 +289,20 @@ void TipMessageHandler::GetOnboardingStatus(const base::ListValue* args) {
   FireWebUIListener("onboardingStatusUpdated", data);
 }
 
-void TipMessageHandler::SaveOnboardingResult(const base::ListValue* args) {
-  CHECK_EQ(1U, args->GetSize());
+void TipMessageHandler::SaveOnboardingResult(base::Value::ConstListView args) {
+  CHECK_EQ(1U, args.size());
   if (!rewards_service_)
     return;
 
-  if (args->GetList()[0].GetString() == "opted-in")
+  if (args[0].GetString() == "opted-in")
     rewards_service_->EnableRewards();
 }
 
-void TipMessageHandler::OnTip(const base::ListValue* args) {
-  CHECK_EQ(3U, args->GetSize());
-  const std::string publisher_key = args->GetList()[0].GetString();
-  const double amount = args->GetList()[1].GetDouble();
-  const bool recurring = args->GetList()[2].GetBool();
+void TipMessageHandler::OnTip(base::Value::ConstListView args) {
+  CHECK_EQ(3U, args.size());
+  const std::string publisher_key = args[0].GetString();
+  const double amount = args[1].GetDouble();
+  const bool recurring = args[2].GetBool();
 
   if (publisher_key.empty() || !rewards_service_) {
     return;
@@ -335,7 +315,7 @@ void TipMessageHandler::OnTip(const base::ListValue* args) {
   }
 }
 
-void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
+void TipMessageHandler::GetReconcileStamp(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -345,7 +325,8 @@ void TipMessageHandler::GetReconcileStamp(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
+void TipMessageHandler::GetAutoContributeAmount(
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -355,9 +336,10 @@ void TipMessageHandler::GetAutoContributeAmount(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::SetAutoContributeAmount(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  double amount = args->GetList()[0].GetDouble();
+void TipMessageHandler::SetAutoContributeAmount(
+    base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
+  double amount = args[0].GetDouble();
   if (!rewards_service_ || amount < 0) {
     return;
   }
@@ -366,7 +348,7 @@ void TipMessageHandler::SetAutoContributeAmount(const base::ListValue* args) {
   FireWebUIListener("autoContributeAmountUpdated", base::Value(amount));
 }
 
-void TipMessageHandler::GetAdsPerHour(const base::ListValue* args) {
+void TipMessageHandler::GetAdsPerHour(base::Value::ConstListView args) {
   if (!ads_service_) {
     return;
   }
@@ -375,9 +357,9 @@ void TipMessageHandler::GetAdsPerHour(const base::ListValue* args) {
   FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
 }
 
-void TipMessageHandler::SetAdsPerHour(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 1U);
-  const double adsPerHour = args->GetList()[0].GetDouble();
+void TipMessageHandler::SetAdsPerHour(base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 1U);
+  const double adsPerHour = args[0].GetDouble();
   if (!ads_service_ || adsPerHour < 0) {
     return;
   }
@@ -386,18 +368,17 @@ void TipMessageHandler::SetAdsPerHour(const base::ListValue* args) {
   FireWebUIListener("adsPerHourUpdated", base::Value(adsPerHour));
 }
 
-void TipMessageHandler::TweetTip(const base::ListValue* args) {
-  CHECK_EQ(args->GetSize(), 2U);
-  const std::string name = args->GetList()[0].GetString();
-  const std::string tweet_id = args->GetList()[1].GetString();
+void TipMessageHandler::TweetTip(base::Value::ConstListView args) {
+  CHECK_EQ(args.size(), 2U);
+  const std::string name = args[0].GetString();
+  const std::string tweet_id = args[1].GetString();
 
   if (name.empty() || !rewards_service_) {
     return;
   }
 
   const std::string comment = l10n_util::GetStringFUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET,
-      base::UTF8ToUTF16(name));
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
 
   const std::string hashtag = l10n_util::GetStringUTF8(
       IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
@@ -413,16 +394,15 @@ void TipMessageHandler::TweetTip(const base::ListValue* args) {
                                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::FetchBalance(const base::ListValue* args) {
+void TipMessageHandler::FetchBalance(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
   rewards_service_->FetchBalance(base::BindOnce(
-      &TipMessageHandler::FetchBalanceCallback,
-      weak_factory_.GetWeakPtr()));
+      &TipMessageHandler::FetchBalanceCallback, weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetExternalWallet(const base::ListValue* args) {
+void TipMessageHandler::GetExternalWallet(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -431,13 +411,13 @@ void TipMessageHandler::GetExternalWallet(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetRecurringTips(const base::ListValue* args) {
+void TipMessageHandler::GetRecurringTips(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
-  rewards_service_->GetRecurringTips(base::BindOnce(
-      &TipMessageHandler::GetRecurringTipsCallback,
-      weak_factory_.GetWeakPtr()));
+  rewards_service_->GetRecurringTips(
+      base::BindOnce(&TipMessageHandler::GetRecurringTipsCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TipMessageHandler::GetRewardsParametersCallback(
@@ -550,16 +530,12 @@ void TipMessageHandler::GetShareURLCallback(const std::string& url) {
       Profile::FromWebUI(web_ui()));
 
   browser_displayer.browser()->OpenURL(content::OpenURLParams(
-      gurl,
-      content::Referrer(),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-      false));
+      gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false));
 }
 
-void TipMessageHandler::FetchBalanceCallback(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance) {
+void TipMessageHandler::FetchBalanceCallback(const ledger::type::Result result,
+                                             ledger::type::BalancePtr balance) {
   if (!IsJavascriptAllowed()) {
     return;
   }
