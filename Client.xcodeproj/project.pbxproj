@@ -246,7 +246,7 @@
 		271F68A526EBD27E00AA2A50 /* UnlockWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F686D26EBD27D00AA2A50 /* UnlockWalletView.swift */; };
 		271F68A626EBD27E00AA2A50 /* PortfolioAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F686F26EBD27D00AA2A50 /* PortfolioAssetView.swift */; };
 		271F68A726EBD27E00AA2A50 /* BackupNotifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687026EBD27D00AA2A50 /* BackupNotifyView.swift */; };
-		271F68A826EBD27E00AA2A50 /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687126EBD27D00AA2A50 /* PortfolioViewController.swift */; };
+		271F68A826EBD27E00AA2A50 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687126EBD27D00AA2A50 /* PortfolioView.swift */; };
 		271F68A926EBD27E00AA2A50 /* BuySendSwapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687226EBD27D00AA2A50 /* BuySendSwapView.swift */; };
 		271F68AA26EBD27E00AA2A50 /* TransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687426EBD27D00AA2A50 /* TransactionView.swift */; };
 		271F68AB26EBD27E00AA2A50 /* AssetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F687526EBD27D00AA2A50 /* AssetDetailView.swift */; };
@@ -334,6 +334,8 @@
 		2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582672171266900754B2F /* CustomHeaderData.swift */; };
 		2765826C2171266900754B2F /* UrpLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582682171266900754B2F /* UrpLogsViewController.swift */; };
 		2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */; };
+		27668489270CD9AA00DF45C5 /* EditUserAssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */; };
+		2766848B270CDA3500DF45C5 /* UserAssetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */; };
 		27676D472555F34D00BC955A /* BraveRewardsStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */; };
 		276A790A244660B100AC9446 /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A7909244660B100AC9446 /* SpringButton.swift */; };
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
@@ -1790,7 +1792,7 @@
 		271F686D26EBD27D00AA2A50 /* UnlockWalletView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockWalletView.swift; sourceTree = "<group>"; };
 		271F686F26EBD27D00AA2A50 /* PortfolioAssetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioAssetView.swift; sourceTree = "<group>"; };
 		271F687026EBD27D00AA2A50 /* BackupNotifyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupNotifyView.swift; sourceTree = "<group>"; };
-		271F687126EBD27D00AA2A50 /* PortfolioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
+		271F687126EBD27D00AA2A50 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		271F687226EBD27D00AA2A50 /* BuySendSwapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuySendSwapView.swift; sourceTree = "<group>"; };
 		271F687426EBD27D00AA2A50 /* TransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionView.swift; sourceTree = "<group>"; };
 		271F687526EBD27D00AA2A50 /* AssetDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetDetailView.swift; sourceTree = "<group>"; };
@@ -1867,6 +1869,8 @@
 		276582672171266900754B2F /* CustomHeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderData.swift; sourceTree = "<group>"; };
 		276582682171266900754B2F /* UrpLogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpLogsViewController.swift; sourceTree = "<group>"; };
 		2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableViewModifier.swift; sourceTree = "<group>"; };
+		27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserAssetsView.swift; sourceTree = "<group>"; };
+		2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAssetsStore.swift; sourceTree = "<group>"; };
 		27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsStatusView.swift; sourceTree = "<group>"; };
 		276A7909244660B100AC9446 /* SpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
@@ -3624,6 +3628,7 @@
 				271F685B26EBD27D00AA2A50 /* NetworkStore.swift */,
 				271F685D26EBD27D00AA2A50 /* KeyringStore.swift */,
 				27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */,
+				2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -3679,7 +3684,8 @@
 			children = (
 				271F686F26EBD27D00AA2A50 /* PortfolioAssetView.swift */,
 				271F687026EBD27D00AA2A50 /* BackupNotifyView.swift */,
-				271F687126EBD27D00AA2A50 /* PortfolioViewController.swift */,
+				271F687126EBD27D00AA2A50 /* PortfolioView.swift */,
+				27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */,
 			);
 			path = Portfolio;
 			sourceTree = "<group>";
@@ -7313,9 +7319,10 @@
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */,
 				271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */,
-				271F68A826EBD27E00AA2A50 /* PortfolioViewController.swift in Sources */,
+				271F68A826EBD27E00AA2A50 /* PortfolioView.swift in Sources */,
 				277190EA2702512900DC81D5 /* TestStores.swift in Sources */,
 				271F68BD26EBD27E00AA2A50 /* Blockies.swift in Sources */,
+				27668489270CD9AA00DF45C5 /* EditUserAssetsView.swift in Sources */,
 				271F689E26EBD27E00AA2A50 /* TestTokenRegistry.swift in Sources */,
 				27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */,
 				271F68B126EBD27E00AA2A50 /* EnableBiometricsView.swift in Sources */,
@@ -7336,6 +7343,7 @@
 				271F68A726EBD27E00AA2A50 /* BackupNotifyView.swift in Sources */,
 				2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */,
 				271F68A426EBD27E00AA2A50 /* AccountsView.swift in Sources */,
+				2766848B270CDA3500DF45C5 /* UserAssetsStore.swift in Sources */,
 				271F68AC26EBD27E00AA2A50 /* AssetDetailHeaderView.swift in Sources */,
 				271F689A26EBD27E00AA2A50 /* KeyringStore.swift in Sources */,
 				271F68A026EBD27E00AA2A50 /* AccountDetailsView.swift in Sources */,

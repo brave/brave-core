@@ -26,6 +26,7 @@ struct PortfolioView: View {
   
   @State private var dismissedBackupBannerThisSession: Bool = false
   @State private var isPresentingBackup: Bool = false
+  @State private var isPresentingEditUserAssets: Bool = false
   
   private var isShowingBackupBanner: Bool {
     !keyringStore.keyring.isBackedUp && !dismissedBackupBannerThisSession
@@ -77,12 +78,17 @@ struct PortfolioView: View {
             quantity: asset.price
           )
         }
-        Button(action: { }) {
+        Button(action: { isPresentingEditUserAssets = true }) {
           Text("Edit Visible Assets")
             .multilineTextAlignment(.center)
             .font(.footnote.weight(.semibold))
             .foregroundColor(Color(.bravePrimary))
             .frame(maxWidth: .infinity)
+        }
+        .sheet(isPresented: $isPresentingEditUserAssets) {
+          EditUserAssetsView(userAssetsStore: portfolioStore.userAssetsStore) {
+            portfolioStore.update()
+          }
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
