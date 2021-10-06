@@ -133,6 +133,9 @@ export default class WalletApiProxy {
     const braveWalletServiceObserverReceiver = new braveWallet.mojom.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (origin) {
         store.dispatch(WalletActions.activeOriginChanged({origin}))
+      },
+      onDefaultWalletChanged: function (defaultWallet) {
+        store.dispatch(WalletActions.defaultWalletChanged({defaultWallet}))
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote());

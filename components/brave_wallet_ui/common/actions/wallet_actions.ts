@@ -13,6 +13,7 @@ import {
   UnapprovedTxUpdated,
   TransactionStatusChanged,
   ActiveOriginChanged,
+  DefaultWalletChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
@@ -88,3 +89,4 @@ export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOrig
 export const refreshGasEstimates = createAction('refreshGasEstimates')
 export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
+export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
