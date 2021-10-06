@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.vpn;
+package org.chromium.chrome.browser.vpn.activities;
 
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -26,8 +26,10 @@ import com.google.android.material.tabs.TabLayout;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
-import org.chromium.chrome.browser.vpn.BraveVpnParentActivity;
-import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
+import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
+import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
+import org.chromium.chrome.browser.vpn.activities.BraveVpnParentActivity;
+import org.chromium.chrome.browser.vpn.adapters.BraveVpnPlanPagerAdapter;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 

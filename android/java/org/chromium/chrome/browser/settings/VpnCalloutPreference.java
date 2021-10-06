@@ -19,7 +19,6 @@ import androidx.cardview.widget.CardView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;

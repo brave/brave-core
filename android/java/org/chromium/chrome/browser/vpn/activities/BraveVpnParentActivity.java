@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.vpn;
+package org.chromium.chrome.browser.vpn.activities;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
@@ -16,7 +16,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
-import org.chromium.chrome.browser.vpn.BraveVpnProfileCredentials;
+import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -64,16 +65,7 @@ public abstract class BraveVpnParentActivity
             }
         } else {
             if (!mIsVerification) {
-                BraveVpnPrefUtils.setPurchaseToken("");
-                BraveVpnPrefUtils.setProductId("");
-                BraveVpnPrefUtils.setPurchaseExpiry(0L);
-                BraveVpnPrefUtils.setSubscriptionPurchase(false);
-                if (BraveVpnProfileUtils.getInstance().isVPNConnected(
-                            BraveVpnParentActivity.this)) {
-                    BraveVpnProfileUtils.getInstance().stopVpn(BraveVpnParentActivity.this);
-                }
-                BraveVpnProfileUtils.getInstance().deleteVpnProfile(BraveVpnParentActivity.this);
-                BraveVpnUtils.openBraveVpnPlansActivity(BraveVpnParentActivity.this);
+                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
             } else {
                 hideProgress();
             }
@@ -100,18 +92,7 @@ public abstract class BraveVpnParentActivity
                     BraveVpnProfileUtils.getInstance().startStopVpn(BraveVpnParentActivity.this);
                 }
             } else {
-                BraveVpnPrefUtils.setPurchaseToken("");
-                BraveVpnPrefUtils.setProductId("");
-                BraveVpnPrefUtils.setPurchaseExpiry(0L);
-                BraveVpnPrefUtils.setSubscriptionPurchase(false);
-                if (BraveVpnProfileUtils.getInstance().isVPNConnected(
-                            BraveVpnParentActivity.this)) {
-                    BraveVpnProfileUtils.getInstance().stopVpn(BraveVpnParentActivity.this);
-                }
-                BraveVpnProfileUtils.getInstance().deleteVpnProfile(BraveVpnParentActivity.this);
-                Toast.makeText(BraveVpnParentActivity.this,
-                             R.string.purchase_token_verification_failed, Toast.LENGTH_SHORT)
-                        .show();
+                BraveVpnApiResponseUtils.queryPurchaseFailed(BraveVpnParentActivity.this);
                 if (mIsVerification) {
                     mIsVerification = false;
                     showRestoreMenu(false);

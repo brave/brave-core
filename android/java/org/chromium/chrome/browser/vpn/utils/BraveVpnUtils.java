@@ -24,11 +24,11 @@ import org.json.JSONObject;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.vpn.BraveVpnPlansActivity;
-import org.chromium.chrome.browser.vpn.BraveVpnProfileActivity;
-import org.chromium.chrome.browser.vpn.BraveVpnProfileCredentials;
-import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
-import org.chromium.chrome.browser.vpn.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
+import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
+import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
+import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
 import java.util.ArrayList;
