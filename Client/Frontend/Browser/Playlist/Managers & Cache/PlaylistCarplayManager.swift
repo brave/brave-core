@@ -20,35 +20,22 @@ class PlaylistCarplayManager: NSObject {
     private weak var mediaPlayer: MediaPlayer?
     private(set) var isCarPlayAvailable = false
     
-    private var contentManager: MPPlayableContentManager?
-    private var carPlayController: NSObject?
+    private var carPlayController: PlaylistCarplayController?
     private var carplayInterface: CPInterfaceController?
     private var carplaySessionConfiguration: CPSessionConfiguration?
     
     var browserController: BrowserViewController?
     
     var currentlyPlayingItemIndex = -1
-    var currentPlaylistItem: PlaylistInfo? {
-        didSet {
-            if #available(iOS 14, *) {
-                // There doesn't seem to be a reason OR a way to do this on iOS 14+
-                // Possibly need to index the `CPListItem` and set `.isPlaying`
-            } else {
-                if let item = currentPlaylistItem {
-                    // Show the Now-Playing item indicator in Car-Play screen
-                    contentManager?.nowPlayingIdentifiers = [item.pageSrc]
-                } else {
-                    contentManager?.nowPlayingIdentifiers = []
-                }
-            }
-        }
-    }
+    var currentPlaylistItem: PlaylistInfo?
     
     // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
     var playlistController: PlaylistViewController? {
         didSet {
-            let selectedTab = browserController?.tabManager.selectedTab
-            if let selectedTab = selectedTab,
+            // TODO: REFACTOR and Decide what happens to Playlist in multiple windows in the future
+            // IE: Will we show it on each window OR just the one browser controller.
+            // After all, we can't play media simultaneously.
+            if let selectedTab = browserController?.tabManager.selectedTab,
                let playlistItem = selectedTab.playlistItem,
                PlaylistManager.shared.index(of: playlistItem.pageSrc) == nil {
                 
@@ -64,99 +51,37 @@ class PlaylistCarplayManager: NSObject {
     // in use at any given moment
     static let shared = PlaylistCarplayManager()
     
-    private override init() {
-        super.init()
-        
-        if #available(iOS 14, *) {
-            // iOS 14 does NOT require initialization :)
-            // This is because the CPTemplate gets called properly
-            // So we know exactly when CarPlay is connected, and when it is disconnected.
-            return
-        } else {
-            contentManager = MPPlayableContentManager.shared()
+    func getCarPlayController() -> PlaylistCarplayController? {
+        // On iOS 14, we use CPTemplate (Custom UI)
+        // We control what gets displayed
+        guard let carplayInterface = carplayInterface else {
+            return nil
         }
         
-        #if targetEnvironment(simulator)
-        // Force CarPlay on the simulator
-        // This is because we don't actually know if the CarPlay simulator is showing or not
-        // and we don't get notified when it disconnects :(
-        attemptInterfaceConnection(isCarPlayAvailable: true)
-        #else
-        guard let contentManager = contentManager else {
-            log.error("Invalid MPPlayableContentManager!")
-            return
-        }
+        // REFACTOR to support multiple windows.
+        // OR find a way to get WebKit to load `Youtube` and other sites WITHOUT having to be in the view hierarchy..
+        let currentWindow = browserController?.view.window
         
-        // We need to observe when CarPlay is connected
-        // That way, we can  determine where the controls are coming from for Playlist
-        // OR determine where the AudioSession is outputting
+        // If there is no media player, create one,
+        // pass it to the car-play controller
+        let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
+        let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView(),
+                                                  certStore: browserController?.profile.certStore)
         
-        // We need to observe the audio route because sometimes the car will be disconnected
-        // and contentManager.context.endpointAvailable will still return true!
-        carPlayStatusObservers.append(NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: .main) { [weak self] _ in
-            
-            let hasCarPlay = AVAudioSession.sharedInstance().currentRoute.outputs.contains(where: { $0.portType == .carAudio })
-            self?.attemptInterfaceConnection(isCarPlayAvailable: hasCarPlay)
-        })
-        
-        // Using publisher for this crashes no matter what!
-        // The moment you call `sink` on the publisher, it will crash.
-        // Seems like a bug in iOS itself.
-        // We observe the contentManager.context.endpointAvailable to determine when to create
-        // a carplay handler
-        carPlayStatusObservers.append(contentManager.observe(\.context) { [weak self] contentManager, _ in
-            self?.carPlayStatusObservers.append(contentManager.context.observe(\.endpointAvailable) { [weak self] context, change in
-                self?.attemptInterfaceConnection(isCarPlayAvailable: context.endpointAvailable)
-            })
-        })
-        
-        // This is needed because the notifications for carplay doesn't get posted initial
-        // until you actually attempt to use the AudioSession or Context
-        let hasCarPlay = AVAudioSession.sharedInstance().currentRoute.outputs.contains(where: { $0.portType == .carAudio })
-        let hasCarPlayEndpoint = contentManager.context.endpointAvailable
-        attemptInterfaceConnection(isCarPlayAvailable: hasCarPlay || hasCarPlayEndpoint)
-        #endif
+        let carPlayController = PlaylistCarplayController(mediaStreamer: mediaStreamer,
+                                                          player: mediaPlayer,
+                                                          interfaceController: carplayInterface)
+        self.mediaPlayer = mediaPlayer
+        return carPlayController
     }
     
-    func getCarPlayController() -> NSObject? {
-        if #available(iOS 14, *) {
-            // On iOS 14, we use CPTemplate (Custom UI)
-            // We control what gets displayed
-            guard let carplayInterface = carplayInterface else {
-                return nil
-            }
-            
-            // If there is no media player, create one,
-            // pass it to the car-play controller
-            let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-            let carPlayController = PlaylistCarplayControllerIOS14(browser: browserController, player: mediaPlayer, interfaceController: carplayInterface)
-            self.mediaPlayer = mediaPlayer
-            return carPlayController
-        } else {
-            // On iOS 13, we cannot use anything custom, so we must resort to display
-            // data base on models and `NowPlayingInfoCenter`
-            guard let contentManager = contentManager else {
-                return nil
-            }
-            
-            // If there is no media player, create one,
-            // pass it to the car-play controller
-            let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-            let carPlayController = PlaylistCarplayController(browser: browserController, player: mediaPlayer, contentManager: contentManager)
-            self.mediaPlayer = mediaPlayer
-            return carPlayController
-        }
-    }
-    
-    func getPlaylistController(initialItem: PlaylistInfo?, initialItemPlaybackOffset: Double) -> PlaylistViewController {
+    func getPlaylistController(tab: Tab?, initialItem: PlaylistInfo?, initialItemPlaybackOffset: Double) -> PlaylistViewController {
         
         // If background playback is enabled, tabs will continue to play media
         // Even if another controller is presented and even when PIP is enabled in playlist.
         // Therefore we need to stop the page/tab from playing when using playlist.
         if Preferences.General.mediaAutoBackgrounding.value {
-            browserController?.tabManager.allTabs.forEach({
-                PlaylistHelper.stopPlayback(tab: $0)
-            })
+            tab?.stopMediaPlayback()
         }
         
         // If there is no media player, create one,
@@ -164,7 +89,9 @@ class PlaylistCarplayManager: NSObject {
         let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
         
         let playlistController = self.playlistController ??
-            PlaylistViewController(mediaPlayer: mediaPlayer,
+            PlaylistViewController(openInNewTab: browserController?.openURLInNewTab,
+                                   profile: browserController?.profile,
+                                   mediaPlayer: mediaPlayer,
                                    initialItem: initialItem,
                                    initialItemPlaybackOffset: initialItemPlaybackOffset)
         self.mediaPlayer = mediaPlayer
@@ -181,13 +108,13 @@ class PlaylistCarplayManager: NSObject {
            let webView = tab.webView,
            let tag = tab.playlistItem?.tagId {
             PlaylistHelper.getCurrentTime(webView: webView, nodeTag: tag) { [unowned self] currentTime in
-                DispatchQueue.main.async {
-                    completion(self.getPlaylistController(initialItem: item,
-                                                     initialItemPlaybackOffset: currentTime))
-                }
+                completion(self.getPlaylistController(tab: tab,
+                                                      initialItem: item,
+                                                      initialItemPlaybackOffset: currentTime))
             }
         } else {
-            return completion(getPlaylistController(initialItem: nil,
+            return completion(getPlaylistController(tab: tab,
+                                                    initialItem: nil,
                                                     initialItemPlaybackOffset: 0.0))
         }
     }
@@ -211,7 +138,6 @@ class PlaylistCarplayManager: NSObject {
             // Sometimes the `endpointAvailable` WILL RETURN TRUE!
             // Even when the car is NOT connected.
             log.debug("CARPLAY CONNECTED: \(isCarPlayAvailable)")
-            log.debug("CARPLAY ENDPOINT AVAILABLE: \(self.contentManager?.context.endpointAvailable == true)")
         }
     }
 }

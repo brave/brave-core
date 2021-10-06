@@ -23,28 +23,26 @@ private let log = Logger.browserLogger
 let LatestAppVersionProfileKey = "latestAppVersion"
 private let InitialPingSentKey = "initialPingSent"
 
-class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestoration {
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        return nil
+extension AppDelegate {
+    // A model that is passed used in every scene
+    struct SceneInfoModel {
+        let profile: Profile
+        let diskImageStore: DiskImageStore?
+        let migration: Migration?
     }
+}
 
+class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var browserViewController: BrowserViewController!
-    var rootViewController: UIViewController!
-    weak var profile: Profile?
-    var tabManager: TabManager!
-    
     let braveCore = BraveCoreMain(userAgent: UserAgent.mobile)
     var migration: Migration?
-    
-    weak var application: UIApplication?
+
+    private weak var application: UIApplication?
     var launchOptions: [AnyHashable: Any]?
 
     let appVersion = Bundle.main.infoDictionaryString(forKey: "CFBundleShortVersionString")
 
     var receivedURLs: [URL]?
-    
-    var windowProtection: WindowProtection?
     var shutdownWebServer: Timer?
     
     /// Object used to handle server pings
@@ -53,10 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     /// Must be added at launch according to Apple's documentation.
     let iapObserver = IAPObserver()
     
-    /// A car-play manager instance that will handle when car-play status changes
-    var carPlayManager: PlaylistCarplayManager?
+    private var cancellables: Set<AnyCancellable> = []
+    private var sceneInfo: SceneInfoModel?
 
-    @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    @discardableResult
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Hold references to willFinishLaunching parameters for delayed app launch
         self.application = application
         self.launchOptions = launchOptions
@@ -72,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                     default: return .verbose
                     }
                 }()
+                
                 Logger.braveCoreLogger.logln(
                     level,
                     fileName: file,
@@ -87,10 +87,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         migration = Migration(bookmarksAPI: braveCore.bookmarksAPI,
                               historyAPI: braveCore.historyAPI,
                               syncAPI: braveCore.syncAPI)
-        
+
+        // Setup Adblock Stats and HTTPSE Stats.
         AdBlockStats.shared.startLoading()
         HttpsEverywhereStats.shared.startLoading()
         
+        // Setup Application Shortcuts
         updateShortcutItems(application)
         
         // Must happen before passcode check, otherwise may unnecessarily reset keychain
@@ -98,11 +100,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Passcode checking, must happen on immediate launch
         if !DataController.shared.storeExists() {
-            // Since passcode is stored in keychain it persists between installations.
-            //  If there is no database (either fresh install, or deleted in file system), there is no real reason
-            //  to passcode the browser (no data to protect).
-            // Main concern is user installs Brave after a long period of time, cannot recall passcode, and can
-            //  literally never use Brave. This bypasses this situation, while not using a modifiable pref.
+            // Reset password authentication prior to `WindowProtection`
+            // This reset is done if there is no database as the user will be locked out
+            // upon reinstall.
             KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
         }
         
@@ -113,7 +113,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         return startApplication(application, withLaunchOptions: launchOptions)
     }
 
-    @discardableResult fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
+    @discardableResult
+    fileprivate func startApplication(_ application: UIApplication, withLaunchOptions launchOptions: [AnyHashable: Any]?) -> Bool {
         log.info("startApplication begin")
         
         // Set the Safari UA for browsing.
@@ -132,19 +133,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         Logger.syncLogger.newLogWithDate(logDate)
         Logger.browserLogger.newLogWithDate(logDate)
 
-        let profile = getProfile(application)
+        // Setup Profile
+        let profile = BrowserProfile(localName: "profile")
+        
+        // Setup DiskImageStore for Screenshots
+        let diskImageStore = { () -> DiskImageStore? in
+            do {
+                return try DiskImageStore(files: profile.files,
+                                          namespace: "TabManagerScreenshots",
+                                          quality: UIConstants.screenshotQuality)
+            } catch {
+                log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
+                assertionFailure()
+            }
+            return nil
+        }()
+        
+        // Setup Scene Info
+        sceneInfo = SceneInfoModel(profile: profile,
+                                   diskImageStore: diskImageStore,
+                                   migration: migration)
+        
+        // Perform migrations
         let profilePrefix = profile.prefs.getBranchPrefix()
         migration?.launchMigrations(keyPrefix: profilePrefix)
         
+        // Setup GCD-WebServer
         setUpWebServer(profile)
-        
-        var imageStore: DiskImageStore?
-        do {
-            imageStore = try DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.screenshotQuality)
-        } catch {
-            log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
-            assertionFailure()
-        }
         
         // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
@@ -167,103 +182,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         #endif
 
-        self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
-
-        // Make sure current private browsing flag respects the private browsing only user preference
-        PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
-        
-        // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
-        // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
-        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug
-        Preferences.AppState.backgroundedCleanly.value = false
-
-        browserViewController = BrowserViewController(
-            profile: self.profile!,
-            tabManager: self.tabManager,
-            historyAPI: braveCore.historyAPI,
-            bookmarkAPI: braveCore.bookmarksAPI,
-            syncAPI: braveCore.syncAPI,
-            migration: migration,
-            crashedLastSession: crashedLastSession)
-        browserViewController.edgesForExtendedLayout = []
-
-        // Add restoration class, the factory that will return the ViewController we will restore with.
-        browserViewController.restorationIdentifier = NSStringFromClass(BrowserViewController.self)
-        browserViewController.restorationClass = AppDelegate.self
-
-        let navigationController = UINavigationController(rootViewController: browserViewController)
-        navigationController.delegate = self
-        navigationController.isNavigationBarHidden = true
-        navigationController.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
-        rootViewController = navigationController
-
         SystemUtils.onFirstRun()
         
         // Schedule Brave Core Priority Tasks
         braveCore.scheduleLowPriorityStartupTasks()
-        browserViewController.removeScheduledAdGrantReminders()
 
         log.info("startApplication end")
         return true
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // We have only five seconds here, so let's hope this doesn't take too long.
-        self.profile?.shutdown()
-
-        // Allow deinitializers to close our database connections.
-        self.profile = nil
-        self.tabManager = nil
-        self.browserViewController = nil
-        self.rootViewController = nil
-        SKPaymentQueue.default().remove(iapObserver)
-        
-        // Clean up BraveCore
-        braveCore.syncAPI.removeAllObservers()
-    }
-
-    /**
-     * We maintain a weak reference to the profile so that we can pause timed
-     * syncs when we're backgrounded.
-     *
-     * The long-lasting ref to the profile lives in BrowserViewController,
-     * which we set in application:willFinishLaunchingWithOptions:.
-     *
-     * If that ever disappears, we won't be able to grab the profile to stop
-     * syncing... but in that case the profile's deinit will take care of things.
-     */
-    func getProfile(_ application: UIApplication) -> Profile {
-        if let profile = self.profile {
-            return profile
-        }
-        let p = BrowserProfile(localName: "profile")
-        self.profile = p
-        return p
-    }
-    
-    func updateShortcutItems(_ application: UIApplication) {
-        let newTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewTab",
-            localizedTitle: Strings.quickActionNewTab,
-            localizedSubtitle: nil,
-            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_tab"),
-            userInfo: [:])
-        
-        let privateTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewPrivateTab",
-            localizedTitle: Strings.quickActionNewPrivateTab,
-            localizedSubtitle: nil,
-            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
-            userInfo: [:])
-        
-        let scanQRCodeItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
-            localizedTitle: Strings.scanQRCodeViewTitle,
-            localizedSubtitle: nil,
-            icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
-            userInfo: [:])
-
-        application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
-    }
-    
-    private var cancellables: Set<AnyCancellable> = []
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // IAPs can trigger on the app as soon as it launches,
@@ -285,12 +211,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                 }
                 return urlString
             }()
+            
             guard let url = URL(string: parsableURLString),
                   let baseDomain = url.baseDomain,
                   let range = urlString.range(of: baseDomain) else {
                 log.error("Failed to resolve domain ")
                 return
             }
+            
             let startIndex: Int = urlString.distance(from: urlString.startIndex, to: range.lowerBound)
             let endIndex: Int = urlString.distance(from: urlString.startIndex, to: range.upperBound)
             start?.pointee = UInt32(startIndex)
@@ -323,31 +251,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // that is an iOS bug or not.
         AutocompleteTextField.appearance().semanticContentAttribute = .forceLeftToRight
         
-        let isFirstLaunch = Preferences.General.isFirstLaunch.value
-        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.undetermined.rawValue {
-            Preferences.General.basicOnboardingCompleted.value =
-                isFirstLaunch ? OnboardingState.unseen.rawValue : OnboardingState.completed.rawValue
-        }
-        Preferences.General.isFirstLaunch.value = false
         Preferences.Review.launchCount.value += 1
         
         if !Preferences.VPN.popupShowed.value {
             Preferences.VPN.appLaunchCountForVPNPopup.value += 1
         }
         
-        browserViewController.shouldShowIntroScreen =
+        let isFirstLaunch = Preferences.General.isFirstLaunch.value
+        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.undetermined.rawValue {
+            Preferences.General.basicOnboardingCompleted.value =
+                isFirstLaunch ? OnboardingState.unseen.rawValue : OnboardingState.completed.rawValue
+        }
+        
+        Preferences.General.isFirstLaunch.value = false
+        SceneDelegate.shouldShowIntroScreen =
             DefaultBrowserIntroManager.prepareAndShowIfNeeded(isNewUser: isFirstLaunch)
         
         // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
         // There was a bug that when you skipped onboarding, default search engine preference
         // was not set.
         if Preferences.Search.defaultEngineName.value == nil {
-            profile?.searchEngines.searchEngineSetup()
+            sceneInfo?.profile.searchEngines.searchEngineSetup()
         }
         
         // Migration of Yahoo Search Engines
         if !Preferences.Search.yahooEngineMigrationCompleted.value {
-            profile?.searchEngines.migrateDefaultYahooSearchEngines()
+            sceneInfo?.profile.searchEngines.migrateDefaultYahooSearchEngines()
         }
         
         if isFirstLaunch {
@@ -369,130 +298,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                 Preferences.URP.referralLookupOutstanding.value = isFirstLaunch
             }
             
-            handleReferralLookup(urp, checkClipboard: false)
+            SceneDelegate.shouldHandleUrpLookup = true
         } else {
             log.error("Failed to initialize user referral program")
             UrpLog.log("Failed to initialize user referral program")
         }
         
         AdblockResourceDownloader.shared.startLoading()
+        
+        // Setup Playlist
+        // This restores the playlist incomplete downloads. So if a download was started
+        // and interrupted on application death, we restart it on next launch.
         PlaylistManager.shared.restoreSession()
-        carPlayManager = PlaylistCarplayManager.shared.then {
-            $0.browserController = browserViewController
-        }
       
         return shouldPerformAdditionalDelegateHandling
     }
     
-    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool) {
-        let initialOnboarding =
-            Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue
+    func applicationWillTerminate(_ application: UIApplication) {
+        // We have only five seconds here, so let's hope this doesn't take too long.
+        sceneInfo?.profile.shutdown()
         
-        // FIXME: Update to iOS14 clipboard api once ready (#2838)
-        if initialOnboarding && UIPasteboard.general.hasStrings {
-            log.debug("Skipping URP call at app launch, this is handled in privacy consent onboarding screen")
-            return
-        }
+        SKPaymentQueue.default().remove(iapObserver)
         
-        if Preferences.URP.referralLookupOutstanding.value == true {
-            var refCode: String?
-            
-            if Preferences.URP.referralCode.value == nil {
-                UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
-                let savedRefCode = checkClipboard ? UIPasteboard.general.string : nil
-                refCode = UserReferralProgram.sanitize(input: savedRefCode)
-                
-                if refCode != nil {
-                    UrpLog.log("Clipboard ref code found: " + (savedRefCode ?? "!Clipboard Empty!"))
-                    UrpLog.log("Clearing clipboard.")
-                    UIPasteboard.general.clearPasteboard()
-                }
-            }
-            
-            urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
-                // Attempting to send ping after first urp lookup.
-                // This way we can grab the referral code if it exists, see issue #2586.
-                self.dau.sendPingToServer()
-                if let code = referralCode {
-                    let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
-                    let retryDeadline = Date() + retryTime
-                    
-                    Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
-                    
-                    self.browserViewController.backgroundDataSource
-                        .fetchSpecificResource(.superReferral(code: code))
-                } else {
-                    self.browserViewController.backgroundDataSource.startFetching()
-                }
-                
-                guard let url = offerUrl?.asURL else { return }
-                self.browserViewController.openReferralLink(url: url)
-            }
-        } else {
-            urp.pingIfEnoughTimePassed()
-            browserViewController.backgroundDataSource.startFetching()
-        }
+        // Clean up BraveCore
+        braveCore.syncAPI.removeAllObservers()
     }
+    
+    func updateShortcutItems(_ application: UIApplication) {
+        let newTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewTab",
+            localizedTitle: Strings.quickActionNewTab,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_tab"),
+            userInfo: [:])
+        
+        let privateTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewPrivateTab",
+            localizedTitle: Strings.quickActionNewPrivateTab,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
+            userInfo: [:])
+        
+        let scanQRCodeItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
+            localizedTitle: Strings.scanQRCodeViewTitle,
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
+            userInfo: [:])
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        guard let routerpath = NavigationPath(url: url) else {
-            return false
-        }
-        self.browserViewController.handleNavigationPath(path: routerpath)
-        return true
+        application.shortcutItems = Preferences.Privacy.privateBrowsingOnly.value ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
     }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        if let presentedViewController = rootViewController.presentedViewController {
+        if let presentedViewController = window?.rootViewController?.presentedViewController {
             return presentedViewController.supportedInterfaceOrientations
         } else {
-            return rootViewController.supportedInterfaceOrientations
+            return window?.rootViewController?.supportedInterfaceOrientations ?? .portraitUpsideDown
         }
     }
 
-    // We sync in the foreground only, to avoid the possibility of runaway resource usage.
-    // Eventually we'll sync in response to notifications.
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        shutdownWebServer?.invalidate()
-        shutdownWebServer = nil
-        
-        Preferences.AppState.backgroundedCleanly.value = false
-
-        if let profile = self.profile {
-            profile.reopen()
-            setUpWebServer(profile)
-        }
-        
-        self.receivedURLs = nil
-        application.applicationIconBadgeNumber = 0
-
-        // handle quick actions is available
-        let quickActions = QuickActions.sharedInstance
-        if let shortcut = quickActions.launchedShortcutItem {
-            // dispatch asynchronously so that BVC is all set up for handling new tabs
-            // when we try and open them
-            quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
-            quickActions.launchedShortcutItem = nil
-        }
-        
-        // We try to send DAU ping each time the app goes to foreground to work around network edge cases
-        // (offline, bad connection etc.).
-        // Also send the ping only after the URP lookup has processed.
-        if Preferences.URP.referralLookupOutstanding.value == false {
-            dau.sendPingToServer()
-        }
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        syncOnDidEnterBackground(application: application)
-        BraveVPN.sendVPNWorksInBackgroundNotification()
-    }
-
-    fileprivate func syncOnDidEnterBackground(application: UIApplication) {
-        guard let profile = self.profile else {
-            return
-        }
-      
+    func syncOnDidEnterBackground(application: UIApplication) {
         // BRAVE TODO: Decide whether or not we want to use this for our own sync down the road
 
         var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
@@ -502,7 +364,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             application.endBackgroundTask(taskId)
         }
 
-        profile.shutdown()
+        sceneInfo?.profile.shutdown()
+        
         application.endBackgroundTask(taskId)
         
         shutdownWebServer?.invalidate()
@@ -518,23 +381,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             return
         }
 
-        profile?.shutdown()
+        sceneInfo?.profile.shutdown()
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // The reason we need to call this method here instead of `applicationDidBecomeActive`
-        // is that this method is only invoked whenever the application is entering the foreground where as
-        // `applicationDidBecomeActive` will get called whenever the Touch ID authentication overlay disappears.
-        AdblockResourceDownloader.shared.startLoading()
-        
-        browserViewController.showWalletTransferExpiryPanelIfNeeded()
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        Preferences.AppState.backgroundedCleanly.value = true
-    }
-
-    fileprivate func setUpWebServer(_ profile: Profile) {
+    func setUpWebServer(_ profile: Profile) {
         let server = WebServer.sharedInstance
         if server.server.isRunning { return }
         
@@ -585,103 +435,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             self.window?.rootViewController?.present(mailComposeViewController, animated: true, completion: nil)
         }
     }
-}
-
-// MARK: - NSUserActivity
-
-extension AppDelegate {
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if let url = userActivity.webpageURL {
-            switch UniversalLinkManager.universalLinkType(for: url, checkPath: false) {
-            case .buyVPN:
-                browserViewController.presentCorrespondingVPNViewController()
-                return true
-            case .none:
-                break
-            }
-
-            browserViewController.switchToTabForURLOrOpen(url, isPrivileged: true)
-            return true
-        }
-
-        switch userActivity.activityType {
-            case CSSearchableItemActionType:
-                // Otherwise, check if the `NSUserActivity` is a CoreSpotlight item and switch to its tab or
-                // open a new one.
-                if let userInfo = userActivity.userInfo,
-                    let urlString = userInfo[CSSearchableItemActivityIdentifier] as? String,
-                    let url = URL(string: urlString) {
-                    browserViewController.switchToTabForURLOrOpen(url, isPrivileged: false)
-                    return true
-                }
-            case ActivityType.newTab.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .newTab, using: browserViewController)
-                
-                return true
-            case ActivityType.newPrivateTab.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .newPrivateTab, using: browserViewController)
-                
-                return true
-            case ActivityType.clearBrowsingHistory.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .clearBrowsingHistory, using: browserViewController)
-                
-                return true
-            case ActivityType.enableBraveVPN.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .enableBraveVPN, using: browserViewController)
-                
-                return true
-            case ActivityType.openBraveNews.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .openBraveNews, using: browserViewController)
-                
-                return true
-            case ActivityType.openPlayList.identifier:
-                ActivityShortcutManager.shared.performShortcutActivity(
-                    type: .openPlayList, using: browserViewController)
-                
-                return true
-            default:
-                break
-        }
-        
-        func switchToTabForIntentURL(intentURL: String?) -> Bool {
-            guard let siteURL = intentURL, let url = URL(string: siteURL) else {
-                return false
-            }
-
-            browserViewController.switchToTabForURLOrOpen(
-                url,
-                isPrivate: Preferences.Privacy.privateBrowsingOnly.value,
-                isPrivileged: false)
-            return true
-        }
-        
-        if let intent = userActivity.interaction?.intent as? OpenWebsiteIntent {
-            return switchToTabForIntentURL(intentURL: intent.websiteURL)
-        }
-        
-        if let intent = userActivity.interaction?.intent as? OpenHistoryWebsiteIntent {
-            return switchToTabForIntentURL(intentURL: intent.websiteURL)
-        }
-        
-        if let intent = userActivity.interaction?.intent as? OpenBookmarkWebsiteIntent {
-            return switchToTabForIntentURL(intentURL: intent.websiteURL)
-        }
-        
-        return false
-    }
-    
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void) {
-        let handledShortCutItem = QuickActions.sharedInstance.handleShortCutItem(shortcutItem, withBrowserViewController: browserViewController)
-
-        completionHandler(handledShortCutItem)
+    func sceneInfo(for sceneSession: UISceneSession) -> SceneInfoModel? {
+        return sceneInfo
     }
 }
 
@@ -713,7 +469,10 @@ extension AppDelegate {
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role).then {
+            $0.sceneClass = UIWindowScene.self
+            $0.delegateClass = SceneDelegate.self
+        }
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {

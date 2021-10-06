@@ -270,6 +270,9 @@ extension Preferences {
         /// The option to enable or disable the 3-dot menu badge for playlist
         static let enablePlaylistMenuBadge =
             Option<Bool>(key: "playlist.enablePlaylistMenuBadge", default: true)
+        /// The option to enable or disable the URL-Bar button for playlist
+        static let enablePlaylistURLBarButton =
+            Option<Bool>(key: "playlist.enablePlaylistURLBarButton", default: true)
         /// The option to enable or disable the continue where left-off playback in CarPlay
         static let enableCarPlayRestartPlayback =
             Option<Bool>(key: "playlist.enableCarPlayRestartPlayback", default: false)

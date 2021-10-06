@@ -2,6 +2,7 @@
 
 1. Clone [brave-browser](https://github.com/brave/brave-browser) if you haven't already
 1. Make sure you meet [brave-browser's prerequisites](https://github.com/brave/brave-browser/wiki/macOS-Development-Environment)
+1. Install Java [JDK](https://www.oracle.com/java/technologies/downloads/) and make sure it is in your `PATH` environment variable.
 1. Run `npm install` if you haven't already
 1. Make sure its up to date:
     ```shell

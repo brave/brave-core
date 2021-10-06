@@ -26,7 +26,7 @@ class CertificatePinningTest: XCTestCase {
     private lazy var root = certificate(named: "root")
     
     func testPinningWithHostValidation() {
-        let host = "brave.com"
+        let host = "www.apple.com"
         let trust = self.trust(for: [leaf, intermediate, root])
         let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost])
         
@@ -109,7 +109,7 @@ class CertificatePinningTest: XCTestCase {
 
         let host = "unit-test.brave.com"
         let trust = self.trust(for: [leaf])
-        let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost, .allowSelfSigned])
+        let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost, .anchorSpecificTrustsOnly])
         
         do {
             try evaluator.evaluate(trust, forHost: host)
@@ -125,7 +125,7 @@ class CertificatePinningTest: XCTestCase {
 
         let host = "badssl.com"
         let trust = self.trust(for: [root])
-        let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost, .allowSelfSigned])
+        let evaluator = PinningCertificateEvaluator(hosts: [host: leaf], options: [.default, .validateHost, .anchorSpecificTrustsOnly])
         
         do {
             try evaluator.evaluate(trust, forHost: host)

@@ -80,16 +80,19 @@ class TabManager: NSObject {
     fileprivate let prefs: Prefs
     var selectedIndex: Int { return _selectedIndex }
     var tempTabs: [Tab]?
+    private weak var rewards: BraveRewards?
 
-    init(prefs: Prefs, imageStore: DiskImageStore?) {
+    init(prefs: Prefs, imageStore: DiskImageStore?, rewards: BraveRewards?) {
         assert(Thread.isMainThread)
 
         self.prefs = prefs
         self.navDelegate = TabManagerNavDelegate()
         self.imageStore = imageStore
+        self.rewards = rewards
         self.tabEventHandlers = TabEventHandlers.create(with: prefs)
         super.init()
 
+        self.navDelegate.tabManager = self
         addNavigationDelegate(self)
 
         Preferences.Shields.blockImages.observe(from: self)
@@ -269,23 +272,20 @@ class TabManager: NSObject {
             TabMO.touch(tabID: tabID)
         }
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-            let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
-        
-        let rewards = appDelegate.browserViewController.rewards
+        guard let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
             if previousFaviconURL == nil && !previousTabUrl.isLocal {
                 rewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
             }
-            rewards.reportTabUpdated(Int(previousTab.rewardsId), url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
+            rewards?.reportTabUpdated(Int(previousTab.rewardsId), url: previousTabUrl, faviconURL: previousFaviconURL, isSelected: false,
                                      isPrivate: previousTab.isPrivate)
             let faviconURL = URL(string: newSelectedTab.displayFavicon?.url ?? "")
             if faviconURL == nil && !newTabUrl.isLocal {
                 rewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
             }
-            rewards.reportTabUpdated(Int(newSelectedTab.rewardsId), url: newTabUrl, faviconURL: faviconURL, isSelected: true,
+            rewards?.reportTabUpdated(Int(newSelectedTab.rewardsId), url: newTabUrl, faviconURL: faviconURL, isSelected: true,
                                      isPrivate: newSelectedTab.isPrivate)
         }
     }
@@ -959,7 +959,8 @@ extension TabManager: WKNavigationDelegate {
 
 // WKNavigationDelegates must implement NSObjectProtocol
 class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
-    fileprivate var delegates = WeakList<WKNavigationDelegate>()
+    private var delegates = WeakList<WKNavigationDelegate>()
+    weak var tabManager: TabManager?
 
     func insert(_ delegate: WKNavigationDelegate) {
         delegates.insert(delegate)
@@ -1062,8 +1063,8 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
             })
         }
 
-        if res == .allow, let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let tab = appDelegate.browserViewController.tabManager[webView]
+        if res == .allow {
+            let tab = tabManager?[webView]
             tab?.mimeType = navigationResponse.response.mimeType
         }
 

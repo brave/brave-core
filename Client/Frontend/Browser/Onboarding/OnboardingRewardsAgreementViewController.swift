@@ -24,9 +24,10 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         
         (view as! View).onTermsOfServicePressed = { [weak self] in  // swiftlint:disable:this force_cast
-            guard let self = self else { return }
+            guard let self = self,
+                  let profile = self.profile else { return }
             
-            self.present(OnboardingWebViewController(profile: self.profile), animated: true, completion: nil)
+            self.present(OnboardingWebViewController(profile: profile), animated: true, completion: nil)
         }
     }
     

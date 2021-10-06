@@ -196,8 +196,9 @@ extension BrowserViewController: WKNavigationDelegate {
         if navigationAction.targetFrame?.isMainFrame == true,
            BraveSearchManager.isValidURL(url) {
             // We fetch cookies to determine if backup search was enabled on the website.
+            let profile = self.profile
             webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                tab?.braveSearchManager = BraveSearchManager(url: url, cookies: cookies)
+                tab?.braveSearchManager = BraveSearchManager(profile: profile, url: url, cookies: cookies)
                 if let braveSearchManager = tab?.braveSearchManager {
                     braveSearchManager.fallbackQueryResultsPending = true
                     braveSearchManager.shouldUseFallback { backupQuery in
@@ -234,9 +235,13 @@ extension BrowserViewController: WKNavigationDelegate {
             if let urlHost = url.normalizedHost() {
                 if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
                     let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
-                    if domainForShields.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) && HttpsEverywhereStats.shared.shouldUpgrade(url) {
-                        // Check if HTTPSE is on and if it is, whether or not this http url would be upgraded
-                        pendingHTTPUpgrades[urlHost] = navigationAction.request
+                    HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
+                        DispatchQueue.main.async {
+                            if domainForShields.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) && shouldupgrade {
+                                self.pendingHTTPUpgrades[urlHost] = navigationAction.request
+                            }
+                        }
+                        
                     }
                 }
             }

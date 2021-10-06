@@ -66,6 +66,12 @@ class PlaylistSettingsViewController: TableViewController {
         dataSource.sections = [
             Section(
                 rows: [
+                    .boolRow(title: Strings.PlayList.urlBarButtonOptionTitle, option: Preferences.Playlist.enablePlaylistURLBarButton),
+                ],
+                footer: .title(Strings.PlayList.urlBarButtonOptionFooter)
+            ),
+            Section(
+                rows: [
                     .boolRow(title: Strings.PlayList.menuBadgeOptionTitle, option: Preferences.Playlist.enablePlaylistMenuBadge),
                 ],
                 footer: .title(Strings.PlayList.menuBadgeOptionFooterText)

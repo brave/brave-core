@@ -14,6 +14,7 @@ class HttpsEverywhereStats: LocalAdblockResourceProtocol {
     let folderName = "https-everywhere-data"
     
     let httpseDb = HttpsEverywhereObjC()
+    let loadDbQueue = DispatchQueue(label: "com.brave.loaddb", qos: .userInteractive)
     
     fileprivate init() { }
     
@@ -23,13 +24,14 @@ class HttpsEverywhereStats: LocalAdblockResourceProtocol {
         }
     }
     
-    func shouldUpgrade(_ url: URL?) -> Bool {
+    func shouldUpgrade(_ url: URL?, _ completion: @escaping (Bool) -> Void) {
         guard let url = url else {
             log.error("Httpse should block called with empty url")
-            return false
+            completion(false)
+            return
         }
         
-        return tryRedirectingUrl(url) != nil
+        return tryRedirectingUrl(url, completion)
     }
     
     func loadDb(dir: String, name: String) {
@@ -43,15 +45,20 @@ class HttpsEverywhereStats: LocalAdblockResourceProtocol {
         assert(httpseDb.isLoaded())
     }
     
-    func tryRedirectingUrl(_ url: URL) -> URL? {
-        
-        if url.scheme?.starts(with: "https") == true {
-            return nil
+    func tryRedirectingUrl(_ url: URL, _ completion: @escaping(Bool) -> Void) {
+        loadDbQueue.async {
+            if url.scheme?.starts(with: "https") == true {
+                completion(false)
+                return
+            }
+            
+            if let redirectUrl = self.httpseDb.tryRedirectingUrl(url) {
+                let result = redirectUrl.isEmpty ? false : true
+                completion(result)
+            } else {
+                completion(false)
+            }
         }
-        
-        guard let result = httpseDb.tryRedirectingUrl(url) else { return nil }
-        
-        return result.isEmpty ? nil : URL(string: result)
     }
     
     func setData(data: Data) {
@@ -72,7 +79,7 @@ class HttpsEverywhereStats: LocalAdblockResourceProtocol {
             
             self.unzipFile(dir: dir, data: data)
             
-            DispatchQueue.main.async {
+            self.loadDbQueue.async {
                 self.loadDb(dir: dir, name: HttpsEverywhereStats.levelDbFileName)
             }
         }
