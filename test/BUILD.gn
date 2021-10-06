@@ -490,7 +490,6 @@ test("brave_unit_tests") {
 
   if (enable_speedreader) {
     sources += [
-      "//brave/components/speedreader/rust/ffi/speedreader_unittest.cc",
       "//brave/components/speedreader/speedreader_throttle_unittest.cc",
       "//brave/components/speedreader/speedreader_util_unittest.cc",
     ]

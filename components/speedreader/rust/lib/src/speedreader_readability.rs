@@ -41,8 +41,7 @@ impl<O: OutputSink> SpeedReaderProcessor for SpeedReaderReadability<O> {
         if let Some(parser) = self.parser.take() {
             let mut dom: Sink = parser.finish();
             if let Some(features) = statistics::collect_statistics(&dom) {
-                if features.moz_score > 20.0
-                {
+                if features.moz_score > 20.0 {
                     let extracted = extractor::extract_dom(&mut dom, &self.url, &HashMap::new())?;
                     self.output_sink.handle_chunk(extracted.content.as_bytes());
                     Ok(())
