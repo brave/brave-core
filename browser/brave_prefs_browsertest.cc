@@ -44,7 +44,7 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/components/brave_vpn/pref_names.h"
 #endif
 
@@ -127,7 +127,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       kBraveGCMChannelStatus));
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       brave_vpn::prefs::kBraveVPNShowButton));
 #endif

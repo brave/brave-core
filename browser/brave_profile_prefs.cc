@@ -178,7 +178,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   brave_vpn::prefs::RegisterProfilePrefs(registry);
 #endif
 

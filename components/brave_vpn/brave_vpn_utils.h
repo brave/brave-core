@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BRAVE_VPN_UTILS_H_
 
+#include <string>
+
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled();
+std::string GetManageUrl();
 
 }  // namespace brave_vpn
 

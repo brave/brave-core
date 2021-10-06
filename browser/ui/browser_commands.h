@@ -20,6 +20,7 @@ void CloseWalletBubble(Browser* browser);
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
 void ShowBraveVPNBubble(Browser* browser);
 void ToggleBraveVPNButton(Browser* browser);
+void OpenBraveVPNUrls(Browser* browser, int command_id);
 
 }  // namespace brave
 

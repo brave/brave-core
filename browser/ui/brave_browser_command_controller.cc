@@ -304,7 +304,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SEND_BRAVE_VPN_FEEDBACK:
     case IDC_ABOUT_BRAVE_VPN:
     case IDC_MANAGE_BRAVE_VPN_PLAN:
-      NOTIMPLEMENTED();
+      brave::OpenBraveVPNUrls(browser_, id);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

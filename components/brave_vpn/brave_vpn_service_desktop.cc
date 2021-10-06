@@ -32,24 +32,6 @@ constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
 
-std::string GetManageUrl() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNAccountHost))
-    return brave_vpn::kManageUrlProd;
-
-  const std::string value =
-      cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNAccountHost);
-  if (value == "prod")
-    return brave_vpn::kManageUrlProd;
-  if (value == "staging")
-    return brave_vpn::kManageUrlStaging;
-  if (value == "dev")
-    return brave_vpn::kManageUrlDev;
-
-  NOTREACHED();
-  return brave_vpn::kManageUrlProd;
-}
-
 bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
   DCHECK(info);
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -477,7 +459,7 @@ void BraveVpnServiceDesktop::GetProductUrls(GetProductUrlsCallback callback) {
   brave_vpn::mojom::ProductUrls urls;
   urls.feedback = brave_vpn::kFeedbackUrl;
   urls.about = brave_vpn::kAboutUrl;
-  urls.manage = GetManageUrl();
+  urls.manage = brave_vpn::GetManageUrl();
   std::move(callback).Run(urls.Clone());
 }
 
