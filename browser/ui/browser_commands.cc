@@ -5,7 +5,10 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include <string>
+
 #include "base/files/file_path.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -18,6 +21,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
@@ -41,7 +45,9 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/brave_vpn/url_constants.h"
 #endif
 
 using content::WebContents;
@@ -127,6 +133,27 @@ void ToggleBraveVPNButton(Browser* browser) {
   auto* prefs = browser->profile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
+#endif
+}
+
+void OpenBraveVPNUrls(Browser* browser, int command_id) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  std::string target_url;
+  switch (command_id) {
+    case IDC_SEND_BRAVE_VPN_FEEDBACK:
+      target_url = brave_vpn::kFeedbackUrl;
+      break;
+    case IDC_ABOUT_BRAVE_VPN:
+      target_url = brave_vpn::kAboutUrl;
+      break;
+    case IDC_MANAGE_BRAVE_VPN_PLAN:
+      target_url = brave_vpn::GetManageUrl();
+      break;
+    default:
+      NOTREACHED();
+  }
+
+  chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
 

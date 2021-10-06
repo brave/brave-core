@@ -24,7 +24,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "net/base/features.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/components/brave_vpn/features.h"
 #endif
 
@@ -219,12 +219,12 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 // file so we turn it off for the macro sections.
 // clang-format off
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
     {kBraveVPNFeatureInternalName,                        \
      flag_descriptions::kBraveVPNName,                    \
      flag_descriptions::kBraveVPNDescription,             \
-     kOsMac | kOsWin | kOsAndroid,                        \
+     kOsMac | kOsWin,                                     \
      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
