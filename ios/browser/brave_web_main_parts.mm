@@ -5,7 +5,6 @@
 
 #include "brave/ios/browser/brave_web_main_parts.h"
 
-#include "base/base_switches.h"
 #include "base/metrics/user_metrics.h"
 #include "base/path_service.h"
 #include "base/sequenced_task_runner.h"
@@ -101,12 +100,8 @@ void BraveWebMainParts::SetupFieldTrials() {
   std::vector<std::string> variation_ids;
   RegisterAllFeatureVariationParameters(&flags_storage, feature_list.get());
 
-  // On iOS, GPU benchmarking is not supported. So, pass in a dummy value for
-  // the name of the switch that enables gpu benchmarking.
   application_context_->GetVariationsService()->SetupFieldTrials(
-      "dummy-enable-gpu-benchmarking", switches::kEnableFeatures,
-      switches::kDisableFeatures, variation_ids,
-      std::vector<base::FeatureList::FeatureOverrideInfo>(),
+      variation_ids, std::vector<base::FeatureList::FeatureOverrideInfo>(),
       std::move(feature_list), &ios_field_trials_);
 }
 
