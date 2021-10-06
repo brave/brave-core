@@ -60,16 +60,31 @@ class SearchSettingsTableViewController: UITableViewController {
     private let profile: Profile
     private var showDeletion = false
     
-    private var searchPickerEngines: [OpenSearchEngine] {
-        let orderedEngines = searchEngines.orderedEngines.sorted { $0.shortName < $1.shortName }
+    private func searchPickerEngines(type: DefaultEngineType) -> [OpenSearchEngine] {
+        let isPrivate = type == .privateMode
         
-        guard let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue else {
-            return orderedEngines
+        var orderedEngines = searchEngines.orderedEngines
+            .sorted { $0.shortName < $1.shortName }
+        
+        if let initialDefaultEngine =
+            SearchEngines.getUnorderedBundledEngines(isOnboarding: false, locale: .current).first {
+            orderedEngines = orderedEngines
+                .sorted { engine, _ in engine.shortName == initialDefaultEngine.shortName }
         }
         
-        return orderedEngines.sorted { engine, _ in
-            engine.engineID == priorityEngine
+        if isPrivate {
+            orderedEngines = orderedEngines
+                .filter { !$0.isCustomEngine || $0.engineID == OpenSearchEngine.migratedYahooEngineID }
         }
+        
+        if let priorityEngine = InitialSearchEngines().priorityEngine?.rawValue {
+            orderedEngines = orderedEngines
+                .sorted { engine, _ in
+                    engine.engineID == priorityEngine
+                }
+        }
+        
+        return orderedEngines
     }
     
     private var customSearchEngines: [OpenSearchEngine] {
@@ -129,9 +144,7 @@ class SearchSettingsTableViewController: UITableViewController {
             // Order alphabetically, so that picker is always consistently ordered.
             // Every engine is a valid choice for the default engine, even the current default engine.
             // In private mode only custom engines will not be shown excluding migrated Yahoo Search Engine
-            $0.engines = type == .privateMode ?
-                searchPickerEngines.filter { !$0.isCustomEngine || $0.engineID == OpenSearchEngine.migratedYahooEngineID } :
-                searchPickerEngines
+            $0.engines = searchPickerEngines(type: type)
             $0.delegate = self
             $0.selectedSearchEngineName = searchEngines.defaultEngine(forType: type).shortName
         }
