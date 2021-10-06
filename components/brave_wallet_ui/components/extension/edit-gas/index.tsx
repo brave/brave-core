@@ -1,8 +1,22 @@
 import * as React from 'react'
+import BigNumber from 'bignumber.js'
+
 import { getLocale } from '../../../../common/locale'
 import { TransactionInfo, EthereumChain } from '../../../constants/types'
+import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 import { NavButton, Panel } from '../'
-import { formatFiatBalance, formatBalance } from '../../../utils/format-balances'
+import {
+  formatFiatGasFee,
+  toWei,
+  toGWei,
+  addCurrencies,
+  formatGasFee,
+  gWeiToWei,
+  gWeiToWeiHex,
+  toWeiHex
+} from '../../../utils/format-balances'
+import { useTransactionFeesParser } from '../../../common/hooks'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -21,66 +35,72 @@ import {
   SliderWrapper,
   SliderValue
 } from './style'
-import { useTransactionFeesParser } from '../../../common/hooks'
 
-enum MaxPriorityPanels {
+export enum MaxPriorityPanels {
   setSuggested = 0,
   setCustom = 1
 }
 
 export interface Props {
   onCancel: () => void
-  onSave: () => void
   networkSpotPrice: string
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
+  baseFeePerGas: string
+  suggestedMaxPriorityFeeChoices: string[]
+  suggestedSliderStep: string
+  maxPriorityPanel: MaxPriorityPanels
+  updateUnapprovedTransactionGasFields: (payload: UpdateUnapprovedTransactionGasFieldsType) => void
+  setSuggestedSliderStep: (value: string) => void
+  setMaxPriorityPanel: (value: MaxPriorityPanels) => void
 }
-
-// Example of suggested max priority fees
-const suggestedMaxPriorityFees = [
-  '10000000000000000',
-  '15000000000000000',
-  '20000000000000000'
-]
 
 const EditGas = (props: Props) => {
   const {
     onCancel,
-    onSave,
     networkSpotPrice,
     selectedNetwork,
-    transactionInfo
+    transactionInfo,
+    baseFeePerGas,
+    suggestedMaxPriorityFeeChoices,
+    suggestedSliderStep,
+    maxPriorityPanel,
+    updateUnapprovedTransactionGasFields,
+    setSuggestedSliderStep,
+    setMaxPriorityPanel
   } = props
-  const { txData } = transactionInfo
-  const { baseData } = txData
-  const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
-  const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] = React.useState<string>(suggestedMaxPriorityFees[1])
-  const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')
-  const [gasPrice, setGasPrice] = React.useState<string>(baseData.gasPrice)
-  const [gasLimit, setGasLimit] = React.useState<string>(baseData.gasLimit)
-
-  // Will determine what values to set for all these when the API is ready
-  const [gasTipAmountLimit, setGasTipAmountLimit] = React.useState<string>('2')
-  const [gasTipPriceLimit, setGasTipPriceLimit] = React.useState<string>('150')
-
   const parseTransactionFees = useTransactionFeesParser(selectedNetwork, networkSpotPrice)
   const transactionFees = parseTransactionFees(transactionInfo)
   const { isEIP1559Transaction } = transactionFees
+
+  const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] = React.useState<string>(suggestedMaxPriorityFeeChoices[1])
+  const [gasLimit, setGasLimit] = React.useState<string>(toWei(transactionFees.gasLimit, 0))
+  const [gasPrice, setGasPrice] = React.useState<string>(toGWei(transactionFees.gasPrice, selectedNetwork.decimals))
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas, selectedNetwork.decimals))
+  const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas, selectedNetwork.decimals))
 
   const handleGasPriceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasPrice(event.target.value)
   }
 
-  const handleGasAmountLimitInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGasLimitInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasLimit(event.target.value)
   }
 
-  const handleGasTipAmountLimitInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGasTipAmountLimit(event.target.value)
+  const handleMaxPriorityFeePerGasInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+    setMaxPriorityFeePerGas(value)
+
+    const computedMaxFeePerGasWeiHex = addCurrencies(baseFeePerGas, gWeiToWei(value))
+    const computedMaxFeePerGasGWei = toGWei(
+      computedMaxFeePerGasWeiHex,
+      selectedNetwork.decimals
+    )
+    setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
-  const handleGasTipPriceLimitInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGasTipPriceLimit(event.target.value)
+  const handleMaxFeePerGasInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxFeePerGas(event.target.value)
   }
 
   const onSetPanelToCustom = () => {
@@ -92,12 +112,96 @@ const EditGas = (props: Props) => {
   }
 
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSuggestedSliderStep(event.target.value)
+    const suggestedSliderStep = event.target.value
+    setSuggestedSliderStep(suggestedSliderStep)
+    setSuggestedMaxPriorityFee(suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)])
   }
 
-  React.useMemo(() => {
-    setSuggestedMaxPriorityFee(suggestedMaxPriorityFees[Number(suggestedSliderStep)])
-  }, [suggestedSliderStep])
+  const showSuggestedMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested
+  const showCustomMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setCustom
+  const suggestedEIP1559GasFee = showSuggestedMaxPriorityPanel
+    ? formatGasFee(
+      addCurrencies(suggestedMaxPriorityFee, baseFeePerGas),
+      gasLimit,
+      selectedNetwork.decimals
+    )
+    : undefined
+  const suggestedEIP1559FiatGasFee = suggestedEIP1559GasFee && formatFiatGasFee(suggestedEIP1559GasFee, networkSpotPrice)
+  const customEIP1559GasFee = showCustomMaxPriorityPanel
+    ? formatGasFee(gWeiToWei(maxFeePerGas), gasLimit, selectedNetwork.decimals)
+    : undefined
+  const customEIP1559FiatGasFee = customEIP1559GasFee && formatFiatGasFee(customEIP1559GasFee, networkSpotPrice)
+
+  const gasLimitComponent = (
+    <>
+      <InputLabel>{getLocale('braveWalletEditGasLimit')}</InputLabel>
+      <Input
+        placeholder='0'
+        type='number'
+        value={gasLimit}
+        onChange={handleGasLimitInputChanged}
+      />
+    </>
+  )
+
+  const onSave = () => {
+    if (!isEIP1559Transaction) {
+      updateUnapprovedTransactionGasFields({
+        txMetaId: transactionInfo.id,
+        gasPrice: gWeiToWeiHex(gasPrice),
+        gasLimit: toWeiHex(gasLimit, 0)
+      })
+
+      onCancel()
+      return
+    }
+
+    if (maxPriorityPanel === MaxPriorityPanels.setCustom) {
+      updateUnapprovedTransactionGasFields({
+        txMetaId: transactionInfo.id,
+        maxPriorityFeePerGas: gWeiToWeiHex(maxPriorityFeePerGas),
+        maxFeePerGas: gWeiToWeiHex(maxFeePerGas),
+        gasLimit: toWeiHex(gasLimit, 0)
+      })
+    } else if (maxPriorityPanel === MaxPriorityPanels.setSuggested) {
+      updateUnapprovedTransactionGasFields({
+        txMetaId: transactionInfo.id,
+        gasLimit: toWeiHex(gasLimit, 0),
+        maxPriorityFeePerGas: suggestedMaxPriorityFee,
+        maxFeePerGas: addCurrencies(suggestedMaxPriorityFee, baseFeePerGas)
+      })
+    }
+
+    onCancel()
+  }
+
+  const isSaveButtonDisabled = React.useMemo(() => {
+    if (gasLimit === '') {
+      return true
+    }
+
+    if (new BigNumber(gasLimit).lte(0)) {
+      return true
+    }
+
+    if (!isEIP1559Transaction && gasPrice === '') {
+      return true
+    }
+
+    if (!isEIP1559Transaction && new BigNumber(gWeiToWei(gasPrice)).lte(0)) {
+      return true
+    }
+
+    if (isEIP1559Transaction && maxFeePerGas === '') {
+      return true
+    }
+
+    if (isEIP1559Transaction && new BigNumber(baseFeePerGas).gt(gWeiToWei(maxFeePerGas))) {
+      return true
+    }
+
+    return isEIP1559Transaction && new BigNumber(gWeiToWei(maxPriorityFeePerGas)).lt(0)
+  }, [gasLimit, gasPrice, maxPriorityFeePerGas, maxFeePerGas])
 
   return (
     <Panel
@@ -108,71 +212,53 @@ const EditGas = (props: Props) => {
         {isEIP1559Transaction &&
           <Description>{getLocale('braveWalletEditGasDescription')}</Description>
         }
-        {(maxPriorityPanel !== MaxPriorityPanels.setSuggested || !isEIP1559Transaction) &&
+        {showCustomMaxPriorityPanel &&
           <FormColumn>
-            {!isEIP1559Transaction &&
-              <>
-                <InputLabel>{getLocale('braveWalletEditGasPerGasPrice')}</InputLabel>
-                <Input
-                  placeholder='0'
-                  type='number'
-                  value={gasPrice}
-                  onChange={handleGasPriceInputChanged}
-                />
-              </>
-            }
-            {maxPriorityPanel === MaxPriorityPanels.setCustom &&
-              <CurrentBaseRow>
-                <CurrentBaseText>{getLocale('braveWalletEditGasBaseFee')}</CurrentBaseText>
-                {/* Will determine what values to set here when the API is ready */}
-                <CurrentBaseText>150 {getLocale('braveWalletEditGasGwei')}</CurrentBaseText>
-              </CurrentBaseRow>
-            }
-            <InputLabel>{getLocale('braveWalletEditGasLimit')}</InputLabel>
+            <CurrentBaseRow>
+              <CurrentBaseText>{getLocale('braveWalletEditGasBaseFee')}</CurrentBaseText>
+              <CurrentBaseText>
+                {`${toGWei(baseFeePerGas, selectedNetwork.decimals)} ${getLocale('braveWalletEditGasGwei')}`}
+              </CurrentBaseText>
+            </CurrentBaseRow>
+
+            {gasLimitComponent}
+
+            <InputLabel>{getLocale('braveWalletEditGasPerTipLimit')}</InputLabel>
             <Input
               placeholder='0'
               type='number'
-              value={gasLimit}
-              onChange={handleGasAmountLimitInputChanged}
+              value={maxPriorityFeePerGas}
+              onChange={handleMaxPriorityFeePerGasInputChanged}
             />
-            {isEIP1559Transaction &&
-              <>
-                <InputLabel>{getLocale('braveWalletEditGasPerTipLimit')}</InputLabel>
-                <Input
-                  placeholder='0'
-                  type='number'
-                  value={gasTipAmountLimit}
-                  onChange={handleGasTipAmountLimitInputChanged}
-                />
-                <InputLabel>{getLocale('braveWalletEditGasPerPriceLimit')}</InputLabel>
-                <Input
-                  placeholder='0'
-                  type='number'
-                  value={gasTipPriceLimit}
-                  onChange={handleGasTipPriceLimitInputChanged}
-                />
-              </>
-            }
-            {maxPriorityPanel === MaxPriorityPanels.setCustom &&
-              <MaximumFeeRow>
-                <MaximumFeeText>{getLocale('braveWalletEditGasMaximumFee')}</MaximumFeeText>
-                {/* Will determine what values to set here when the API is ready */}
-                <MaximumFeeText>~$0.24 USD (315,000 Gwei)</MaximumFeeText>
-              </MaximumFeeRow>
-            }
+
+            <InputLabel>{getLocale('braveWalletEditGasPerPriceLimit')}</InputLabel>
+            <Input
+              placeholder='0'
+              type='number'
+              value={maxFeePerGas}
+              onChange={handleMaxFeePerGasInputChanged}
+            />
+
+            <MaximumFeeRow>
+              <MaximumFeeText>{getLocale('braveWalletEditGasMaximumFee')}</MaximumFeeText>
+              <MaximumFeeText>
+                ~${customEIP1559FiatGasFee} USD (${customEIP1559GasFee} {selectedNetwork.symbol})
+              </MaximumFeeText>
+            </MaximumFeeRow>
           </FormColumn>
         }
-        {isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested &&
+
+        {showSuggestedMaxPriorityPanel &&
           <SliderWrapper>
             <SliderLabel>{getLocale('braveWalletEditGasMaxFee')}:</SliderLabel>
             <SliderValue>
-              ~${formatFiatBalance(suggestedMaxPriorityFee, selectedNetwork.decimals, networkSpotPrice)}
-              {` `}USD ({formatBalance(suggestedMaxPriorityFee, selectedNetwork.decimals)}
+              ~${suggestedEIP1559FiatGasFee}
+              {` `}USD ({suggestedEIP1559GasFee}
               {` `}{selectedNetwork.symbol})</SliderValue>
             <GasSlider
               type='range'
               min='0'
-              max={suggestedMaxPriorityFees.length - 1}
+              max={suggestedMaxPriorityFeeChoices.length - 1}
               value={suggestedSliderStep}
               onChange={handleSliderChange}
             />
@@ -183,6 +269,21 @@ const EditGas = (props: Props) => {
             </SliderLabelRow>
           </SliderWrapper>
         }
+
+        {!isEIP1559Transaction &&
+          <FormColumn>
+            {gasLimitComponent}
+
+            <InputLabel>{getLocale('braveWalletEditGasPerGasPrice')}</InputLabel>
+            <Input
+              placeholder='0'
+              type='number'
+              value={gasPrice}
+              onChange={handleGasPriceInputChanged}
+            />
+          </FormColumn>
+        }
+
         <ButtonRow>
           <NavButton
             buttonType='secondary'
@@ -200,6 +301,7 @@ const EditGas = (props: Props) => {
             buttonType='primary'
             text={getLocale('braveWalletAccountSettingsSave')}
             onSubmit={onSave}
+            disabled={isSaveButtonDisabled}
           />
         </ButtonRow>
       </StyledWrapper>

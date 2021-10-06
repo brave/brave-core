@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 import * as React from 'react'
 
 import { AssetPriceInfo, EthereumChain, TokenInfo, TransactionInfo, TransactionType } from '../../constants/types'
@@ -9,7 +14,7 @@ export function useTransactionFeesParser (selectedNetwork: EthereumChain, networ
     const { txData } = transactionInfo
     const { baseData: { gasLimit, gasPrice }, maxFeePerGas, maxPriorityFeePerGas } = txData
 
-    const isEIP1559Transaction = maxPriorityFeePerGas && maxFeePerGas
+    const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
     const gasFee = isEIP1559Transaction
       ? formatGasFee(maxFeePerGas, gasLimit, selectedNetwork.decimals)
       : formatGasFee(gasPrice, gasLimit, selectedNetwork.decimals)

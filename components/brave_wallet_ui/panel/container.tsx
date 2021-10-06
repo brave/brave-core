@@ -92,7 +92,8 @@ function Container (props: Props) {
     hasInitialized,
     isWalletCreated,
     networkList,
-    transactionSpotPrices
+    transactionSpotPrices,
+    gasEstimates
   } = props.wallet
 
   const {
@@ -420,6 +421,9 @@ function Container (props: Props) {
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokenOptions}
+            refreshGasEstimates={props.walletActions.refreshGasEstimates}
+            updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
+            gasEstimates={gasEstimates}
           />
         </LongWrapper>
       </PanelWrapper>

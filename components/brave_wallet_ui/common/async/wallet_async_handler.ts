@@ -14,7 +14,8 @@ import {
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
-  SwapParamsPayloadType
+  SwapParamsPayloadType,
+  UpdateUnapprovedTransactionGasFieldsType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -538,6 +539,57 @@ export const fetchSwapQuoteFactory = (
 handler.on(WalletActions.notifyUserInteraction.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.notifyUserInteraction()
+})
+
+handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
+  const assetPriceController = (await getAPIProxy()).assetRatioController
+  const basicEstimates = await assetPriceController.getGasOracle()
+  if (!basicEstimates.estimation) {
+    console.error(`Failed to fetch gas estimates`)
+    return
+  }
+
+  store.dispatch(WalletActions.setGasEstimates(basicEstimates.estimation))
+})
+
+handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (store, payload: UpdateUnapprovedTransactionGasFieldsType) => {
+  const apiProxy = await getAPIProxy()
+
+  const isEIP1559 = payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined
+
+  if (isEIP1559) {
+    const result = await apiProxy.ethTxController.setGasFeeAndLimitForUnapprovedTransaction(
+      payload.txMetaId,
+      payload.maxPriorityFeePerGas || '',
+      payload.maxFeePerGas || '',
+      payload.gasLimit
+    )
+
+    if (!result.success) {
+      console.error(
+        `Failed to update unapproved transaction: ` +
+        `id=${payload.txMetaId} ` +
+        `maxPriorityFeePerGas=${payload.maxPriorityFeePerGas}` +
+        `maxFeePerGas=${payload.maxFeePerGas}` +
+        `gasLimit=${payload.gasLimit}`
+      )
+    }
+  }
+
+  if (!isEIP1559 && payload.gasPrice) {
+    const result = await apiProxy.ethTxController.setGasPriceAndLimitForUnapprovedTransaction(
+      payload.txMetaId, payload.gasPrice, payload.gasLimit
+    )
+
+    if (!result.success) {
+      console.error(
+        `Failed to update unapproved transaction: ` +
+        `id=${payload.txMetaId} ` +
+        `gasPrice=${payload.gasPrice}` +
+        `gasLimit=${payload.gasLimit}`
+      )
+    }
+  }
 })
 
 export default handler.middleware

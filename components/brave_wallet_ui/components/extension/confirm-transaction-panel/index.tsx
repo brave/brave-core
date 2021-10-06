@@ -1,20 +1,24 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
+
 import {
   WalletAccountType,
   EthereumChain,
   TransactionInfo,
   TransactionType,
   AssetPriceInfo,
-  TokenInfo
+  TokenInfo,
+  GasEstimation
 } from '../../../constants/types'
+import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/constants/action_types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
 import { usePricing, useTransactionParser } from '../../../common/hooks'
 
-import { NavButton, PanelTab, TransactionDetailBox, EditGas } from '../'
+import { NavButton, PanelTab, TransactionDetailBox } from '../'
+import EditGas, { MaxPriorityPanels } from '../edit-gas'
 
 // Styled Components
 import {
@@ -62,8 +66,11 @@ export interface Props {
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
   transactionSpotPrices: AssetPriceInfo[]
+  gasEstimates?: GasEstimation
   onConfirm: () => void
   onReject: () => void
+  refreshGasEstimates: () => void
+  updateUnapprovedTransactionGasFields: (payload: UpdateUnapprovedTransactionGasFieldsType) => void
 }
 
 function ConfirmTransactionPanel (props: Props) {
@@ -73,10 +80,23 @@ function ConfirmTransactionPanel (props: Props) {
     transactionInfo,
     visibleTokens,
     transactionSpotPrices,
+    gasEstimates,
     onConfirm,
-    onReject
+    onReject,
+    refreshGasEstimates,
+    updateUnapprovedTransactionGasFields
   } = props
 
+  const { txData: { gasEstimation: transactionGasEstimates } } = transactionInfo
+
+  const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
+  const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')
+  const [suggestedMaxPriorityFeeChoices, setSuggestedMaxPriorityFeeChoices] = React.useState<string[]>([
+    transactionGasEstimates?.slowMaxPriorityFeePerGas || '0',
+    transactionGasEstimates?.avgMaxPriorityFeePerGas || '0',
+    transactionGasEstimates?.fastMaxPriorityFeePerGas || '0'
+  ])
+  const [baseFeePerGas, setBaseFeePerGas] = React.useState<string>(transactionGasEstimates?.baseFeePerGas || '')
   const [selectedTab, setSelectedTab] = React.useState<confirmPanelTabs>('transaction')
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
 
@@ -87,6 +107,28 @@ function ConfirmTransactionPanel (props: Props) {
   const findSpotPrice = usePricing(transactionSpotPrices)
   const parseTransaction = useTransactionParser(selectedNetwork, transactionSpotPrices, visibleTokens)
   const transactionDetails = parseTransaction(transactionInfo)
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      refreshGasEstimates()
+    }, 15000)
+
+    refreshGasEstimates()
+    return () => clearInterval(interval)
+  }, [])
+
+  React.useEffect(
+    () => {
+      setSuggestedMaxPriorityFeeChoices([
+        gasEstimates?.slowMaxPriorityFeePerGas || '0',
+        gasEstimates?.avgMaxPriorityFeePerGas || '0',
+        gasEstimates?.fastMaxPriorityFeePerGas || '0'
+      ])
+
+      setBaseFeePerGas(gasEstimates?.baseFeePerGas || '0')
+    },
+    [gasEstimates]
+  )
 
   const onSelectTab = (tab: confirmPanelTabs) => () => {
     setSelectedTab(tab)
@@ -108,10 +150,6 @@ function ConfirmTransactionPanel (props: Props) {
     setIsEditing(!isEditing)
   }
 
-  const onSaveGasPrice = () => {
-    // Logic here to save gas prices
-  }
-
   return (
     <>
       {isEditing ? (
@@ -120,7 +158,13 @@ function ConfirmTransactionPanel (props: Props) {
           onCancel={onToggleEditGas}
           networkSpotPrice={findSpotPrice(selectedNetwork.symbol)}
           selectedNetwork={selectedNetwork}
-          onSave={onSaveGasPrice}
+          baseFeePerGas={baseFeePerGas}
+          suggestedMaxPriorityFeeChoices={suggestedMaxPriorityFeeChoices}
+          updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
+          suggestedSliderStep={suggestedSliderStep}
+          setSuggestedSliderStep={setSuggestedSliderStep}
+          maxPriorityPanel={maxPriorityPanel}
+          setMaxPriorityPanel={setMaxPriorityPanel}
         />
       ) : (
         <StyledWrapper>
@@ -191,7 +235,7 @@ function ConfirmTransactionPanel (props: Props) {
                     <SectionRow>
                       <TransactionTitle>{getLocale('braveWalletConfirmTransactionGasFee')}</TransactionTitle>
                       <SectionRightColumn>
-                        {/* Disabled until wired up to the API*/}
+                        <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
                         <TransactionTypeText>{transactionDetails.gasFee} {selectedNetwork.symbol}</TransactionTypeText>
                         <TransactionText>${transactionDetails.gasFeeFiat}</TransactionText>
                       </SectionRightColumn>

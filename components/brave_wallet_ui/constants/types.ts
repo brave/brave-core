@@ -176,6 +176,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultWallet: DefaultWallet
   activeOrigin: string
+  gasEstimates?: GasEstimation
 }
 
 export interface PanelState {
@@ -608,7 +609,7 @@ export interface GetEstimatedTimeReturnInfo {
 }
 
 export interface GetGasOracleReturnInfo {
-  gasEstimation?: GasEstimation
+  estimation?: GasEstimation
 }
 
 export interface AssetRatioController {

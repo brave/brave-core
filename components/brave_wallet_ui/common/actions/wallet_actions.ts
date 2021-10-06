@@ -14,7 +14,8 @@ import {
   ActiveOriginChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
-  RemoveUserAssetPayloadType
+  RemoveUserAssetPayloadType,
+  UpdateUnapprovedTransactionGasFieldsType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -31,7 +32,8 @@ import {
   ER20TransferParams,
   TransactionInfo,
   TransactionListInfo,
-  DefaultWallet
+  DefaultWallet,
+  GasEstimation
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -78,3 +80,6 @@ export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUp
 export const notifyUserInteraction = createAction('notifyUserInteraction')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
 export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
+export const refreshGasEstimates = createAction('refreshGasEstimates')
+export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
+export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
