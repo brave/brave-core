@@ -142,6 +142,7 @@
     <message name="IDS_BRAVE_WALLET_CONNECTING_HARDWARE_WALLET" desc="Connect hardware wallet connecting status">Connecting...</message>
     <message name="IDS_BRAVE_WALLET_ADD_CHECKED_ACCOUNTS_HARDWARE_WALLET" desc="Connect hardware wallet check box description">Add checked accounts</message>
     <message name="IDS_BRAVE_WALLET_LOAD_MORE_ACCOUNTS_HARDWARE_WALLET" desc="Connect hardware wallet load more button">Load more</message>
+    <message name="IDS_BRAVE_WALLET_LOADING_MORE_ACCOUNTS_HARDWARE_WALLET" desc="Connect hardware wallet loading more button">Loading more...</message>
     <message name="IDS_BRAVE_WALLET_SEARCH_SCANNED_ACCOUNTS" desc="Connect hardware wallet search input placeholder">Search account 0x</message>
     <message name="IDS_BRAVE_WALLET_SWITCH_H_D_PATH_TEXT_HARDWARE_WALLET" desc="Connect hardware wallet connected description">Try switching HD path (above) if you cannot find the account you are looking for.</message>
     <message name="IDS_BRAVE_WALLET_LEDGER_LIVE_DERIVATION_PATH" desc="Connect hardware wallet ledger live selection">Ledger Live</message>

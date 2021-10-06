@@ -174,6 +174,7 @@ provideStrings({
   braveWalletConnectingHardwareWallet: 'Connecting...',
   braveWalletAddCheckedAccountsHardwareWallet: 'Add checked accounts',
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',
+  braveWalletLoadingMoreAccountsHardwareWallet: 'Loading more...',
   braveWalletSearchScannedAccounts: 'Search account 0x',
   braveWalletSwitchHDPathTextHardwareWallet: 'Try switching HD path (above) if you cannot find the account you are looking for.',
   braveWalletLedgerLiveDerivationPath: 'Ledger Live',
