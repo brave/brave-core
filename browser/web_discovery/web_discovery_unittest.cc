@@ -132,6 +132,14 @@ TEST_F(WebDiscoveryDialogTest, ShouldShowWebDiscoveryDialogTest) {
   prefs()->SetBoolean(kDontAskEnableWebDiscovery, true);
   EXPECT_FALSE(NeedVisitCountHandling());
 
+  prefs()->SetBoolean(kWebDiscoveryEnabled, false);
+  prefs()->SetBoolean(kDontAskEnableWebDiscovery, false);
+  EXPECT_TRUE(NeedVisitCountHandling());
+
+  // After reaching 20 visit count, we don't need to handling count any more.
+  prefs()->SetInteger(kBraveSearchVisitCount, 20);
+  EXPECT_FALSE(NeedVisitCountHandling());
+
   // Check dialog is shown for 3rd, 10th and 20th visit.
   prefs()->SetInteger(kBraveSearchVisitCount, 1);
   EXPECT_FALSE(ShouldShowWebDiscoveryDialog());
