@@ -152,6 +152,11 @@ KeyringController::KeyringController(PrefService* prefs) : prefs_(prefs) {
       kBraveWalletAutoLockMinutes,
       base::BindRepeating(&KeyringController::OnAutoLockPreferenceChanged,
                           base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kBraveWalletSelectedAccount,
+      base::BindRepeating(
+          &KeyringController::OnSelectedAccountPreferenceChanged,
+          base::Unretained(this)));
 }
 
 KeyringController::~KeyringController() {
@@ -1237,6 +1242,12 @@ void KeyringController::OnAutoLockPreferenceChanged() {
   ResetAutoLockTimer();
   for (const auto& observer : observers_) {
     observer->AutoLockMinutesChanged();
+  }
+}
+
+void KeyringController::OnSelectedAccountPreferenceChanged() {
+  for (const auto& observer : observers_) {
+    observer->SelectedAccountChanged();
   }
 }
 

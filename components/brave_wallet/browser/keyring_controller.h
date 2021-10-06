@@ -255,6 +255,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();
+  void OnSelectedAccountPreferenceChanged();
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;

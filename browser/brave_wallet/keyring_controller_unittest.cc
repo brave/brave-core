@@ -60,17 +60,26 @@ class TestKeyringControllerObserver
   void BackedUp() override {}
   void AccountsChanged() override {}
 
+  void SelectedAccountChanged() override {
+    selectedAccountChangedFired_ = true;
+  }
+
   bool AutoLockMinutesChangedFired() { return autoLockMinutesChangedFired_; }
+  bool SelectedAccountChangedFired() { return selectedAccountChangedFired_; }
 
   mojo::PendingRemote<brave_wallet::mojom::KeyringControllerObserver>
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
 
-  void Reset() { autoLockMinutesChangedFired_ = false; }
+  void Reset() {
+    autoLockMinutesChangedFired_ = false;
+    selectedAccountChangedFired_ = false;
+  }
 
  private:
   bool autoLockMinutesChangedFired_ = false;
+  bool selectedAccountChangedFired_ = false;
   mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
       observer_receiver_{this};
 };
@@ -124,7 +133,9 @@ class KeyringControllerUnitTest : public testing::Test {
   }
 
   static bool SetSelectedAccount(KeyringController* controller,
+                                 TestKeyringControllerObserver* observer,
                                  const std::string& account) {
+    EXPECT_FALSE(observer->SelectedAccountChangedFired());
     bool success = false;
     base::RunLoop run_loop;
     controller->SetSelectedAccount(account,
@@ -133,6 +144,12 @@ class KeyringControllerUnitTest : public testing::Test {
                                      run_loop.Quit();
                                    }));
     run_loop.Run();
+    base::RunLoop().RunUntilIdle();
+    if (success) {
+      EXPECT_TRUE(observer->SelectedAccountChangedFired());
+      observer->Reset();
+    }
+    EXPECT_FALSE(observer->SelectedAccountChangedFired());
     return success;
   }
 
@@ -1746,6 +1763,10 @@ TEST_F(KeyringControllerUnitTest, NotifyUserInteraction) {
 
 TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   CreateWallet(&controller, "brave");
 
   std::string first_account = controller.default_keyring_->GetAddress(0);
@@ -1757,15 +1778,17 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
 
   // No account set as the default
   EXPECT_EQ(absl::nullopt, GetSelectedAccount(&controller));
+  base::RunLoop().RunUntilIdle();
 
   // Setting account to a valid address works
-  EXPECT_TRUE(SetSelectedAccount(&controller, second_account));
+  EXPECT_TRUE(SetSelectedAccount(&controller, &observer, second_account));
   EXPECT_EQ(second_account, GetSelectedAccount(&controller));
 
   // Setting account to a non-existing account doesn't work
   EXPECT_FALSE(SetSelectedAccount(
-      &controller, "0xf83C3cBfF68086F276DD4f87A82DF73B57b21559"));
+      &controller, &observer, "0xf83C3cBfF68086F276DD4f87A82DF73B57b21559"));
   EXPECT_EQ(second_account, GetSelectedAccount(&controller));
+  base::RunLoop().RunUntilIdle();
 
   // Can import only when unlocked.
   // Then check that the account can be set to an imported account.
@@ -1775,7 +1798,8 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5");
   ASSERT_TRUE(imported_account.has_value());
   EXPECT_TRUE(Lock(&controller));
-  EXPECT_TRUE(SetSelectedAccount(&controller, *imported_account));
+  EXPECT_TRUE(SetSelectedAccount(&controller, &observer, *imported_account));
+  base::RunLoop().RunUntilIdle();
   EXPECT_EQ(*imported_account, GetSelectedAccount(&controller));
 
   // Can set hardware account
@@ -1784,7 +1808,7 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
   AddHardwareAccount(&controller, std::move(new_accounts));
-  EXPECT_TRUE(SetSelectedAccount(&controller, hardware_account));
+  EXPECT_TRUE(SetSelectedAccount(&controller, &observer, hardware_account));
   EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));
 }
 
