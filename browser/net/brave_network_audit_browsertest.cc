@@ -9,7 +9,6 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/strings/strcat.h"
 #include "base/test/test_timeouts.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
@@ -174,17 +173,12 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     base::FilePath source_root_path;
     base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root_path);
 
-    // Use a test-dependent suffix not to collide on the generated files.
-    std::string test_name =
-        testing::UnitTest::GetInstance()->current_test_info()->name();
-
     // Full log containing all the network requests.
-    net_log_path_ = source_root_path.AppendASCII(
-        base::StrCat({test_name, "-network_log.json"}));
+    net_log_path_ = source_root_path.AppendASCII("network_log.json");
 
     // Log containing the results of the audit only.
-    audit_results_path_ = source_root_path.AppendASCII(
-        base::StrCat({test_name, "-network_audit_results.json"}));
+    audit_results_path_ =
+        source_root_path.AppendASCII("network_audit_results.json");
 
     command_line->AppendSwitchPath(network::switches::kLogNetLog,
                                    net_log_path_);
@@ -238,15 +232,16 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   DISALLOW_COPY_AND_ASSIGN(BraveNetworkAuditTest);
 };
 
-IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, SimpleTest) {
+// Loads brave://welcome first to simulate a first run and then loads another
+// URL, waiting some time after each load to allow gathering network requests.
+IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL simple_url(embedded_test_server()->GetURL("/simple.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
-  WaitForTimeout(kMaxTimeoutPerLoadedURL);
-}
 
-IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BraveWelcome) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
