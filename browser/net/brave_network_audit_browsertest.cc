@@ -8,7 +8,11 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
+#include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/test/test_timeouts.h"
+#include "base/threading/thread_task_runner_handle.h"
+#include "base/time/time.h"
 #include "brave/browser/net/brave_network_audit_whitelists.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -19,6 +23,15 @@
 
 namespace brave {
 namespace {
+
+// Max amount of time to wait after getting an URL loaded, in milliseconds. Note
+// that the value passed to --ui-test-action-timeout in //brave/package.json, as
+// part of the 'test-security' script, must be big enough to accomodate this.
+//
+// In particular:
+//   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
+//   --test-launcher-timeout: should be able to fit the total sum of timeouts.
+const int kMaxTimeoutPerLoadedURL = 120000;
 
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
@@ -32,6 +45,14 @@ constexpr const char* kPrivateIPRegexps[] = {
     "fe80:.*",
     "::1",
     "::"};
+
+void WaitForTimeout(int timeout) {
+  base::RunLoop run_loop;
+  base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(),
+      base::TimeDelta::FromMilliseconds(timeout));
+  run_loop.Run();
+}
 
 bool isPrivateURL(const GURL& url) {
   for (const char* regexp : kPrivateIPRegexps) {
@@ -221,10 +242,12 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, SimpleTest) {
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL simple_url(embedded_test_server()->GetURL("/simple.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BraveWelcome) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
 }  // namespace
