@@ -39,6 +39,14 @@ void OnRequestResponse(
   *callback_run = true;
 }
 
+void OnRequestSwapConfigResponse(
+    bool* callback_run,
+    brave_wallet::mojom::SwapConfigPtr expected_swap_config,
+    brave_wallet::mojom::SwapConfigPtr swap_config_response) {
+  EXPECT_EQ(expected_swap_config, swap_config_response);
+  *callback_run = true;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -249,6 +257,45 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayloadUnexpectedReturn) {
   swap_controller_->GetTransactionPayload(
       GetCannedSwapParams(),
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationRopsten) {
+  bool callback_run = false;
+  auto expected_swap_config = brave_wallet::mojom::SwapConfig::New();
+  expected_swap_config->swap_api_url = "https://ropsten.api.0x.org/swap/v1";
+  expected_swap_config->buy_token_percantage_fee = "0.00875";
+  expected_swap_config->fee_recipient =
+      "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  swap_controller_->GetSwapConfiguration(
+      mojom::kRopstenChainId,
+      base::BindOnce(&OnRequestSwapConfigResponse, &callback_run,
+                     std::move(expected_swap_config)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationMainnet) {
+  bool callback_run = false;
+  auto expected_swap_config = brave_wallet::mojom::SwapConfig::New();
+  expected_swap_config->swap_api_url = "https://api.0x.org/swap/v1";
+  expected_swap_config->buy_token_percantage_fee = "0.00875";
+  expected_swap_config->fee_recipient =
+      "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+  swap_controller_->GetSwapConfiguration(
+      mojom::kMainnetChainId,
+      base::BindOnce(&OnRequestSwapConfigResponse, &callback_run,
+                     std::move(expected_swap_config)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationOtherNet) {
+  bool callback_run = false;
+  swap_controller_->GetSwapConfiguration(
+      mojom::kRinkebyChainId,
+      base::BindOnce(&OnRequestSwapConfigResponse, &callback_run, nullptr));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
