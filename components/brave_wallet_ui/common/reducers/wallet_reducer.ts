@@ -30,6 +30,7 @@ import {
   UnapprovedTxUpdated,
   TransactionStatusChanged,
   ActiveOriginChanged,
+  IsEip1559Changed,
   InitializedPayloadType
 } from '../constants/action_types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
@@ -52,7 +53,8 @@ const defaultState: WalletState = {
     iconUrls: [],
     symbol: 'ETH',
     symbolName: 'Ethereum',
-    decimals: 18
+    decimals: 18,
+    isEip1559: true
   } as EthereumChain,
   accounts: [],
   userVisibleTokensInfo: [],
@@ -344,6 +346,11 @@ reducer.on(WalletActions.activeOriginChanged, (state: any, payload: ActiveOrigin
     ...state,
     activeOrigin: payload.origin
   }
+})
+
+reducer.on(WalletActions.isEip1559Changed, (state: any, payload: IsEip1559Changed) => {
+  // TODO: update selectedNetwork and the entry in networkList.
+  return state
 })
 
 reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {

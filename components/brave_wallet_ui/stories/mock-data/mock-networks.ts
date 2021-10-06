@@ -11,6 +11,7 @@ export const mockNetworks: EthereumChain[] = [
     symbol: 'ETH',
     symbolName: 'Ethereum',
     decimals: 18,
-    iconUrls: [ETHIconUrl]
+    iconUrls: [ETHIconUrl],
+    isEip1559: true
   }
 ]
