@@ -69,9 +69,8 @@ public class BraveVpnUtils {
         context.startActivity(braveVpnSupportIntent);
     }
 
-    public static void showProgressDialog(Context context) {
-        mProgressDialog = ProgressDialog.show(
-                context, "", context.getResources().getString(R.string.vpn_loading_text), true);
+    public static void showProgressDialog(Context context, String message) {
+        mProgressDialog = ProgressDialog.show(context, "", message, true);
     }
 
     public static void dismissProgressDialog() {
