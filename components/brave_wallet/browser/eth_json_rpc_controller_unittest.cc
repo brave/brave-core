@@ -150,9 +150,11 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
   }
 
   void SetInterceptor(const std::string& expected_method,
+                      const std::string& expected_cache_header,
                       const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_method, content](const network::ResourceRequest& request) {
+        [&, expected_method, expected_cache_header,
+         content](const network::ResourceRequest& request) {
           std::string header_value(100, '\0');
           EXPECT_TRUE(request.headers.GetHeader("x-brave-key", &header_value));
           EXPECT_EQ(BRAVE_SERVICES_KEY, header_value);
@@ -161,7 +163,11 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
           if (expected_method == "eth_blockNumber") {
             EXPECT_TRUE(
                 request.headers.GetHeader("X-Eth-Block", &header_value));
-            EXPECT_EQ("true", header_value);
+            EXPECT_EQ(expected_cache_header, header_value);
+          } else if (expected_method == "eth_getBlockByNumber") {
+            EXPECT_TRUE(
+                request.headers.GetHeader("X-eth-get-block", &header_value));
+            EXPECT_EQ(expected_cache_header, header_value);
           }
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
@@ -474,12 +480,26 @@ TEST_F(EthJsonRpcControllerUnitTest, StartWithNetwork) {
 
 TEST_F(EthJsonRpcControllerUnitTest, Request) {
   bool callback_called = false;
-  const std::string request =
+  std::string request =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\",\"params\":"
       "[]}";
-  const std::string expected_response =
+  std::string expected_response =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
-  SetInterceptor("eth_blockNumber", expected_response);
+  SetInterceptor("eth_blockNumber", "true", expected_response);
+  rpc_controller_->Request(
+      request, true,
+      base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
+                     expected_response));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  request =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_getBlockByNumber\","
+      "\"params\":"
+      "[\"0x5BAD55\",true]}";
+  expected_response = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
+  SetInterceptor("eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   rpc_controller_->Request(
       request, true,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
@@ -498,7 +518,7 @@ TEST_F(EthJsonRpcControllerUnitTest, Request) {
 
 TEST_F(EthJsonRpcControllerUnitTest, GetBalance) {
   bool callback_called = false;
-  SetInterceptor("eth_getBalance",
+  SetInterceptor("eth_getBalance", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}");
   rpc_controller_->GetBalance(
       "0x4e02f254184E904300e0775E4b8eeCB1",
@@ -518,7 +538,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetBalance) {
 TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
   bool callback_called = false;
   SetInterceptor(
-      "eth_call",
+      "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000000000166e12cfce39a0000\""
       "}");
@@ -552,7 +572,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
 TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
   bool callback_called = false;
   SetInterceptor(
-      "eth_call",
+      "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
       "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
       "000000000000000000000000000000000000000000000000000000000004000000000000"

@@ -12,7 +12,9 @@
 
 namespace brave_wallet {
 
-bool GetEthJsonRequestMethod(const std::string& json, std::string* method);
+bool GetEthJsonRequestInfo(const std::string& json,
+                           std::string* method,
+                           std::string* params);
 mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
                                                std::string* from);
 mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,

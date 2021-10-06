@@ -399,7 +399,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     return v8::Local<v8::Promise>();
 
   std::string method;
-  if (!GetEthJsonRequestMethod(input_json, &method))
+  if (!GetEthJsonRequestInfo(input_json, &method, nullptr))
     return v8::Local<v8::Promise>();
 
   std::string normalized_json_request;

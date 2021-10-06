@@ -83,10 +83,13 @@ void EthJsonRpcController::Request(const std::string& json_payload,
                                    bool auto_retry_on_network_change,
                                    RequestCallback callback) {
   base::flat_map<std::string, std::string> request_headers;
-  std::string method;
-  if (GetEthJsonRequestMethod(json_payload, &method)) {
+  std::string method, params;
+  if (GetEthJsonRequestInfo(json_payload, &method, &params)) {
     request_headers["X-Eth-Method"] = method;
     if (method == kEthGetBlockByNumber) {
+      std::string cleaned_params;
+      base::RemoveChars(params, "\" []", &cleaned_params);
+      request_headers["X-eth-get-block"] = cleaned_params;
     } else if (method == kEthBlockNumber) {
       request_headers["X-Eth-Block"] = "true";
     }

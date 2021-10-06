@@ -127,8 +127,9 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
   return tx_data;
 }
 
-bool GetEthJsonRequestMethod(const std::string& json, std::string* method) {
-  CHECK(method);
+bool GetEthJsonRequestInfo(const std::string& json,
+                           std::string* method,
+                           std::string* params) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -142,11 +143,20 @@ bool GetEthJsonRequestMethod(const std::string& json, std::string* method) {
     return false;
   }
 
-  const std::string* found_method = response_dict->FindStringPath(kMethod);
-  if (!found_method)
-    return false;
+  if (method) {
+    const std::string* found_method = response_dict->FindStringPath(kMethod);
+    if (!found_method)
+      return false;
+    *method = *found_method;
+  }
 
-  *method = *found_method;
+  if (params) {
+    const base::Value* found_params = response_dict->FindListPath(kParams);
+    if (!found_params)
+      return false;
+    base::JSONWriter::Write(*found_params, params);
+  }
+
   return true;
 }
 
