@@ -25,6 +25,15 @@ class InitialSearchEngines {
                 case .ecosia: return "ecosia.org/opensearch"
             }
         }
+        
+        func excludedFromOnboarding(for locale: Locale) -> Bool {
+            switch self {
+            case .braveSearch: return true
+            // In general we want all engines to be pickable,
+            // hence using default clause here instead of picking engines one by one
+            default: return false
+            }
+        }
     }
     
     struct SearchEngine: Equatable, CustomStringConvertible {
@@ -57,6 +66,11 @@ class InitialSearchEngines {
     private let locale: Locale
     /// List of available engines for given locale. This list is sorted by with priority and default engines at the top.
     var engines: [SearchEngine]
+    
+    /// Lists of engines available during onboarding.
+    var onboardingEngines: [SearchEngine] {
+        engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
+    }
     
     static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE"]
     static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
