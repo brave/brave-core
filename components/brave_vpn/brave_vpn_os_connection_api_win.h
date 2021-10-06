@@ -54,7 +54,9 @@ class BraveVPNOSConnectionAPIWin : public BraveVPNOSConnectionAPI,
   HANDLE event_handle_for_connected_ = NULL;
   HANDLE event_handle_for_disconnected_ = NULL;
   base::win::ObjectWatcher connected_event_watcher_;
+  base::win::ObjectWatcher connect_failed_event_watcher_;
   base::win::ObjectWatcher connecting_event_watcher_;
+  base::win::ObjectWatcher disconnecting_event_watcher_;
   base::win::ObjectWatcher disconnected_event_watcher_;
   base::WeakPtrFactory<BraveVPNOSConnectionAPIWin> weak_factory_{this};
 };

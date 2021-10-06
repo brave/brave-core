@@ -121,13 +121,13 @@ source_set("unit_tests") {
 executable("vpntool") {
   sources = []
   deps = [
-    ":brave_vpn",
     ":brave_vpn_internal",
     "//base",
   ]
 
   if (is_win) {
     sources += [ "winvpntool.cc" ]
+    libs = [ "rasapi32.lib" ]
   }
 }
 
