@@ -58,14 +58,16 @@ class TestKeyringControllerObserver
   void Locked() override {}
   void Unlocked() override {}
   void BackedUp() override {}
-  void AccountsChanged() override {}
 
   void SelectedAccountChanged() override {
     selectedAccountChangedFired_ = true;
   }
 
+  void AccountsChanged() override { accountsChangedFired_ = true; }
+
   bool AutoLockMinutesChangedFired() { return autoLockMinutesChangedFired_; }
   bool SelectedAccountChangedFired() { return selectedAccountChangedFired_; }
+  bool AccountsChangedFired() { return accountsChangedFired_; }
 
   mojo::PendingRemote<brave_wallet::mojom::KeyringControllerObserver>
   GetReceiver() {
@@ -75,11 +77,13 @@ class TestKeyringControllerObserver
   void Reset() {
     autoLockMinutesChangedFired_ = false;
     selectedAccountChangedFired_ = false;
+    accountsChangedFired_ = false;
   }
 
  private:
   bool autoLockMinutesChangedFired_ = false;
   bool selectedAccountChangedFired_ = false;
+  bool accountsChangedFired_ = false;
   mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
       observer_receiver_{this};
 };
@@ -439,11 +443,16 @@ TEST_F(KeyringControllerUnitTest, CreateEncryptorForKeyring) {
 
 TEST_F(KeyringControllerUnitTest, CreateDefaultKeyringInternal) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   // encryptor is nullptr
   ASSERT_FALSE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
   ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
+  base::RunLoop().RunUntilIdle();
   controller.default_keyring_->AddAccounts(1);
   EXPECT_EQ(controller.default_keyring_->GetAddress(0),
             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
@@ -1011,6 +1020,10 @@ TEST_F(KeyringControllerUnitTest, MigrationPrefsFailSafe) {
 
 TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
   base::RunLoop().RunUntilIdle();
   const struct {
@@ -1055,6 +1068,9 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
   }
 
   bool callback_called = false;
+  base::RunLoop().RunUntilIdle();
+  observer.Reset();
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.RemoveImportedAccount(
       imported_accounts[1].address,
       base::BindLambdaForTesting([&](bool success) {
@@ -1063,8 +1079,11 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
 
   // remove invalid address
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.RemoveImportedAccount(
       "0xxxxxxxxxx0", base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
@@ -1072,6 +1091,7 @@ TEST_F(KeyringControllerUnitTest, ImportedAccounts) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(observer.AccountsChangedFired());
 
   callback_called = false;
   controller.GetDefaultKeyringInfo(
@@ -1329,8 +1349,14 @@ TEST_F(KeyringControllerUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
 
 TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountMeta) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   const std::string kUpdatedName = "Updated";
   bool callback_called = false;
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.SetDefaultKeyringDerivedAccountName(
       "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db", kUpdatedName,
       base::BindLambdaForTesting([&](bool success) {
@@ -1339,6 +1365,8 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountMeta) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(observer.AccountsChangedFired());
+  observer.Reset();
 
   EXPECT_TRUE(controller.CreateEncryptorForKeyring("brave", "default"));
   ASSERT_TRUE(controller.CreateDefaultKeyringInternal(kMnemonic1, false));
@@ -1368,30 +1396,40 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountMeta) {
             address2);
 
   callback_called = false;
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.SetDefaultKeyringDerivedAccountName(
       "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.AccountsChangedFired());
+  observer.Reset();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.SetDefaultKeyringDerivedAccountName(
       address2, "", base::BindLambdaForTesting([&](bool success) {
         EXPECT_FALSE(success);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.AccountsChangedFired());
+  observer.Reset();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.SetDefaultKeyringDerivedAccountName(
       address2, kUpdatedName, base::BindLambdaForTesting([&](bool success) {
         EXPECT_TRUE(success);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
   EXPECT_TRUE(callback_called);
 
   EXPECT_EQ(KeyringController::GetAccountNameForKeyring(
@@ -1404,6 +1442,10 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringDerivedAccountMeta) {
 
 TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
   base::RunLoop().RunUntilIdle();
 
@@ -1439,6 +1481,7 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     callback_called = false;
+    EXPECT_FALSE(observer.AccountsChangedFired());
     controller.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
         base::BindLambdaForTesting(
@@ -1449,6 +1492,8 @@ TEST_F(KeyringControllerUnitTest, SetDefaultKeyringImportedAccountName) {
             }));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(callback_called);
+    EXPECT_TRUE(observer.AccountsChangedFired());
+    observer.Reset();
   }
 
   // Empty address should fail.
@@ -1580,6 +1625,10 @@ TEST_F(KeyringControllerUnitTest, RestoreLegacyBraveWallet) {
 
 TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
   KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
   controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
   base::RunLoop().RunUntilIdle();
 
@@ -1591,8 +1640,11 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger", "device2"));
 
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.AddHardwareAccounts(std::move(new_accounts));
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
                   ->FindPath("hardware.device1.account_metas.0x111"));
@@ -1625,8 +1677,11 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.RemoveHardwareAccount("0x111");
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
@@ -1640,8 +1695,11 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
                   ->GetDictionary(kBraveWalletKeyrings)
                   ->FindPath("hardware.device2.account_metas.0xEA0"));
 
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.RemoveHardwareAccount("0x264");
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
 
   callback_called = false;
   controller.GetHardwareAccounts(base::BindLambdaForTesting(
@@ -1658,8 +1716,11 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(observer.AccountsChangedFired());
   controller.RemoveHardwareAccount("0xEA0");
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.AccountsChangedFired());
+  observer.Reset();
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
