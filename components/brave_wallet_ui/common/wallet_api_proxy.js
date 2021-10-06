@@ -86,23 +86,29 @@ export default class WalletApiProxy {
 
   addKeyringControllerObserver(store) {
     const keyringControllerObserverReceiver = new braveWallet.mojom.KeyringControllerObserverReceiver({
-      keyringCreated: function (chainId) {
+      keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
       },
-      keyringRestored: function (chainId) {
+      keyringRestored: function () {
         store.dispatch(WalletActions.keyringRestored())
       },
-      locked: function (chainId) {
+      locked: function () {
         store.dispatch(WalletActions.locked())
       },
-      unlocked: function (chainId) {
+      unlocked: function () {
         store.dispatch(WalletActions.unlocked())
       },
-      backedUp: function (chainId) {
+      backedUp: function () {
         store.dispatch(WalletActions.backedUp())
       },
-      accountsChanged: function (chainId) {
+      accountsChanged: function () {
         store.dispatch(WalletActions.accountsChanged())
+      },
+      autoLockMinutesChanged: function () {
+        store.dispatch(WalletActions.autoLockMinutesChanged())
+      },
+      selectedAccountChanged: function () {
+        store.dispatch(WalletActions.selectedAccountChanged())
       }
     })
     this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote());

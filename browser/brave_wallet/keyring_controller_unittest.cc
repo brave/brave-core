@@ -1778,7 +1778,6 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
 
   // No account set as the default
   EXPECT_EQ(absl::nullopt, GetSelectedAccount(&controller));
-  base::RunLoop().RunUntilIdle();
 
   // Setting account to a valid address works
   EXPECT_TRUE(SetSelectedAccount(&controller, &observer, second_account));
