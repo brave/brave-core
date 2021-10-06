@@ -1235,6 +1235,9 @@ void KeyringController::NotifyAccountsChanged() {
 void KeyringController::OnAutoLockPreferenceChanged() {
   StopAutoLockTimer();
   ResetAutoLockTimer();
+  for (const auto& observer : observers_) {
+    observer->AutoLockMinutesChanged();
+  }
 }
 
 void KeyringController::GetAutoLockMinutes(

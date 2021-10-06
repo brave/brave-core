@@ -195,6 +195,7 @@ interface KeyringControllerObserver {
   Unlocked();
   BackedUp();
   AccountsChanged();
+  AutoLockMinutesChanged();
 };
 
 interface ERCTokenRegistry {

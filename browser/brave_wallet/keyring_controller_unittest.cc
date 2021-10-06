@@ -43,6 +43,38 @@ const char kMnemonic2[] =
     "goat";
 }  // namespace
 
+class TestKeyringControllerObserver
+    : public brave_wallet::mojom::KeyringControllerObserver {
+ public:
+  TestKeyringControllerObserver() {}
+
+  void AutoLockMinutesChanged() override {
+    autoLockMinutesChangedFired_ = true;
+  }
+
+  // TODO(bbondy): We should be testing all of these observer events
+  void KeyringCreated() override {}
+  void KeyringRestored() override {}
+  void Locked() override {}
+  void Unlocked() override {}
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+
+  bool AutoLockMinutesChangedFired() { return autoLockMinutesChangedFired_; }
+
+  mojo::PendingRemote<brave_wallet::mojom::KeyringControllerObserver>
+  GetReceiver() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void Reset() { autoLockMinutesChangedFired_ = false; }
+
+ private:
+  bool autoLockMinutesChangedFired_ = false;
+  mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
+      observer_receiver_{this};
+};
+
 class KeyringControllerUnitTest : public testing::Test {
  public:
   KeyringControllerUnitTest()
@@ -164,15 +196,25 @@ class KeyringControllerUnitTest : public testing::Test {
   }
 
   static bool SetAutoLockMinutes(KeyringController* controller,
+                                 TestKeyringControllerObserver* observer,
                                  int32_t minutes) {
     bool success = false;
     base::RunLoop run_loop;
+    int32_t old_minutes = GetAutoLockMinutes(controller);
     controller->SetAutoLockMinutes(minutes,
                                    base::BindLambdaForTesting([&](bool v) {
                                      success = v;
                                      run_loop.Quit();
                                    }));
     run_loop.Run();
+    // Make sure observers are received
+    base::RunLoop().RunUntilIdle();
+    if (old_minutes != minutes) {
+      EXPECT_TRUE(observer->AutoLockMinutesChangedFired());
+    } else {
+      EXPECT_FALSE(observer->AutoLockMinutesChangedFired());
+    }
+    observer->Reset();
     return success;
   }
 
@@ -1828,9 +1870,15 @@ TEST_F(KeyringControllerUnitTest, SignMessageByDefaultKeyring) {
 
 TEST_F(KeyringControllerUnitTest, GetSetAutoLockMinutes) {
   KeyringController controller(GetPrefs());
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+  base::RunLoop().RunUntilIdle();
+
   EXPECT_EQ(5, GetAutoLockMinutes(&controller));
-  EXPECT_TRUE(SetAutoLockMinutes(&controller, 7));
+  EXPECT_TRUE(SetAutoLockMinutes(&controller, &observer, 7));
   EXPECT_EQ(7, GetAutoLockMinutes(&controller));
+  EXPECT_TRUE(SetAutoLockMinutes(&controller, &observer, 3));
+  EXPECT_EQ(3, GetAutoLockMinutes(&controller));
 }
 
 }  // namespace brave_wallet
