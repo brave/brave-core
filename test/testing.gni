@@ -11,11 +11,8 @@ template("fix_testing_install_name_impl") {
       executable_path,
     ]
 
-    args = [
-      "/usr/bin/install_name_tool",
-    ] + command_args + [
-      rebase_path(executable_path, root_build_dir),
-    ]
+    args = [ "/usr/bin/install_name_tool" ] + command_args +
+           [ rebase_path(executable_path, root_build_dir) ]
   }
 }
 
@@ -23,18 +20,27 @@ template("fix_testing_install_name") {
   change_args = []
   if (defined(invoker.changes)) {
     foreach(change, invoker.changes) {
-      change_args += ["-change", change[0], change[1]]
+      change_args += [
+        "-change",
+        change[0],
+        change[1],
+      ]
     }
   }
 
   if (defined(invoker.new_path) && defined(invoker.current_path)) {
-    change_args += ["-change", invoker.current_path, invoker.new_path]
+    change_args += [
+      "-change",
+      invoker.current_path,
+      invoker.new_path,
+    ]
   }
 
   fix_testing_install_name_impl(target_name + "_unit_tests") {
     forward_variables_from(invoker, "*")
     executable_path = "$root_build_dir/brave_unit_tests"
     command_args = change_args
+
     # input is the same as the output so just fake it
     outputs = [ "$root_build_dir/alwaysrununittests/$target_name" ]
     deps = [ "//brave/test:brave_unit_tests" ]
@@ -44,8 +50,19 @@ template("fix_testing_install_name") {
     forward_variables_from(invoker, "*")
     executable_path = "$root_build_dir/brave_browser_tests"
     command_args = change_args
+
     # input is the same as the output so just fake it
     outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
     deps = [ "//brave/test:brave_browser_tests" ]
+  }
+
+  fix_testing_install_name_impl(target_name + "_network_audit_tests") {
+    forward_variables_from(invoker, "*")
+    executable_path = "$root_build_dir/brave_network_audit_tests"
+    command_args = change_args
+
+    # input is the same as the output so just fake it
+    outputs = [ "$root_build_dir/alwaysrunbrowsertests/$target_name" ]
+    deps = [ "//brave/test:brave_network_audit_tests" ]
   }
 }
