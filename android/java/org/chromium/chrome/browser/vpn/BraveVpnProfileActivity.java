@@ -79,6 +79,11 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
             }
         });
+
+        if (getIntent() != null
+                && getIntent().getBooleanExtra(BraveVpnUtils.VERIFY_CREDENTIALS_FAILED, false)) {
+            verifySubscription();
+        }
     }
 
     @Override

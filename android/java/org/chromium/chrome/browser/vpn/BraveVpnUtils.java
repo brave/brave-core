@@ -37,8 +37,9 @@ import java.util.Random;
 public class BraveVpnUtils {
     public static final String SUBSCRIPTION_PARAM_TEXT = "subscription";
     public static final String IAP_ANDROID_PARAM_TEXT = "iap-android";
+    public static final String VERIFY_CREDENTIALS_FAILED = "verify_credentials_failed"
 
-    public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
+            public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     public static boolean mIsServerLocationChanged;
     private static ProgressDialog mProgressDialog;

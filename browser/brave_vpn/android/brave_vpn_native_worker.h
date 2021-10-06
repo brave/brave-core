@@ -49,6 +49,16 @@ class BraveVpnNativeWorker {
   void OnGetProfileCredentials(const std::string& profile_credentials_json,
                                bool success);
 
+  void VerifyCredentials(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& hostname,
+      const base::android::JavaParamRef<jstring>& username,
+      const base::android::JavaParamRef<jstring>& subscriber_credential,
+      const base::android::JavaParamRef<jstring>& api_auth_token);
+
+  void OnVerifyCredentials(const std::string& verify_credentials_json,
+                           bool success);
+
   void GetSubscriberCredential(
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& product_type,

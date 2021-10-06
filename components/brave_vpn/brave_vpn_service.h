@@ -129,6 +129,11 @@ class BraveVpnService :
   void GetProfileCredentials(ResponseCallback callback,
                              const std::string& subscriber_credential,
                              const std::string& hostname);
+  void VerifyCredentials(ResponseCallback callback,
+                         const std::string& hostname,
+                         const std::string& username,
+                         const std::string& subscriber_credential,
+                         const std::string& api_auth_token);
   void GetSubscriberCredential(ResponseCallback callback,
                                const std::string& product_type,
                                const std::string& product_id,

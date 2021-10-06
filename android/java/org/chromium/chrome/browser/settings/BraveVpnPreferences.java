@@ -270,7 +270,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
     private void verifyPurchase(boolean isVerification) {
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
-        if (purchases.size() == 1) {
+        if (purchases != null && purchases.size() == 1) {
             Purchase purchase = purchases.get(0);
             mPurchaseToken = purchase.getPurchaseToken();
             mProductId = purchase.getSkus().get(0).toString();
