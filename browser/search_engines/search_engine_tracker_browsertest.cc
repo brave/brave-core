@@ -28,13 +28,15 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
-  // Check that the metric is reported on startup.
-  histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
-                                        SearchEngineP3A::kGoogle, 1);
-
+  // Load service for switching the default search engine.
+  // NB: This adds delay which helps reliability of the first measurement.
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
   search_test_utils::WaitForTemplateURLServiceToLoad(service);
+
+  // Check that the metric is reported on startup.
+  histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
+                                        SearchEngineP3A::kGoogle, 1);
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
