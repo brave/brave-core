@@ -413,6 +413,11 @@ export interface GetERC20TokenBalanceReturnInfo {
   balance: string
 }
 
+export interface GetERC20TokenAllowanceReturnInfo {
+  success: boolean
+  allowance: string
+}
+
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
   balances: GetERC20TokenBalanceReturnInfo[][]
   prices: GetPriceReturnInfo
@@ -584,6 +589,7 @@ export interface EthJsonRpcController {
   getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
   getBalance: (address: string) => Promise<GetBalanceReturnInfo>
   getERC20TokenBalance: (contract: string, address: string) => Promise<GetERC20TokenBalanceReturnInfo>
+  getERC20TokenAllowance: (contract: string, ownerAddress: string, spenderAddress: string) => Promise<GetERC20TokenAllowanceReturnInfo>
 }
 
 export interface SwapController {

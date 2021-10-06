@@ -317,6 +317,8 @@ interface EthJsonRpcController {
   GetBalance(string address) => (bool success, string balance);
   GetERC20TokenBalance(string contract,
                        string address) => (bool success, string balance);
+  GetERC20TokenAllowance(string contract,
+                         string owner_address, string spender_address) => (bool success, string allowance);
   UnstoppableDomainsProxyReaderGetMany(string contract_address, string domain, array<string> keys) => (bool status, string result);
   EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
