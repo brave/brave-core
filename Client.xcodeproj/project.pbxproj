@@ -873,7 +873,6 @@
 		CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */ = {isa = PBXBuildFile; fileRef = CA55048F269DED8F00C19917 /* MediaBackgrounding.js */; };
 		CA752EA526CEABF8009356EF /* PlaylistToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA752EA426CEABF8009356EF /* PlaylistToast.swift */; };
 		CA752EB126CEBE52009356EF /* FontScaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9A22FF26A7370C00923D70 /* FontScaling.swift */; };
-		CA8D5C0C26D7CD54009BF13D /* PlaylistCarplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0B26D7CD54009BF13D /* PlaylistCarplayController.swift */; };
 		CA8D5C0E26D7CD8A009BF13D /* PlaylistDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */; };
 		CA8D5C1026D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */; };
 		CA8D5C1226D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */; };
@@ -895,7 +894,7 @@
 		CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */; };
 		CAADEFB326E26A9D0020DC4C /* CPTemplateApplicationSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFB226E26A9D0020DC4C /* CPTemplateApplicationSceneDelegate.swift */; };
 		CAADEFE026E2707F0020DC4C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */; };
-		CAADEFE226E2857F0020DC4C /* PlaylistCarplayControllerIOS14.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFE126E2857F0020DC4C /* PlaylistCarplayControllerIOS14.swift */; };
+		CAADEFE226E2857F0020DC4C /* PlaylistCarplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAADEFE126E2857F0020DC4C /* PlaylistCarplayController.swift */; };
 		CAB127632639F37C00BBFC75 /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127622639F37C00BBFC75 /* RecentSearches.swift */; };
 		CAB127652639FB7000BBFC75 /* RecentSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */; };
 		CAB54B8626A5BFA800F08BF3 /* PlaylistURLBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB54B8526A5BFA800F08BF3 /* PlaylistURLBarButton.swift */; };
@@ -2583,7 +2582,6 @@
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
 		CA55048F269DED8F00C19917 /* MediaBackgrounding.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MediaBackgrounding.js; sourceTree = "<group>"; };
 		CA752EA426CEABF8009356EF /* PlaylistToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistToast.swift; sourceTree = "<group>"; };
-		CA8D5C0B26D7CD54009BF13D /* PlaylistCarplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCarplayController.swift; sourceTree = "<group>"; };
 		CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailViewController.swift; sourceTree = "<group>"; };
 		CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+DragDropDelegate.swift"; sourceTree = "<group>"; };
 		CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaylistListViewController+TableViewDataSource.swift"; sourceTree = "<group>"; };
@@ -2606,7 +2604,7 @@
 		CAA1058B266FE94700A0372D /* RecentSearchQRCodeScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchQRCodeScannerController.swift; sourceTree = "<group>"; };
 		CAADEFB226E26A9D0020DC4C /* CPTemplateApplicationSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPTemplateApplicationSceneDelegate.swift; sourceTree = "<group>"; };
 		CAADEFDF26E2707F0020DC4C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CAADEFE126E2857F0020DC4C /* PlaylistCarplayControllerIOS14.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCarplayControllerIOS14.swift; sourceTree = "<group>"; };
+		CAADEFE126E2857F0020DC4C /* PlaylistCarplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCarplayController.swift; sourceTree = "<group>"; };
 		CAB127622639F37C00BBFC75 /* RecentSearches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearches.swift; sourceTree = "<group>"; };
 		CAB127642639FB7000BBFC75 /* RecentSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCell.swift; sourceTree = "<group>"; };
 		CAB54B8526A5BFA800F08BF3 /* PlaylistURLBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistURLBarButton.swift; sourceTree = "<group>"; };
@@ -5030,7 +5028,6 @@
 		CA8D5C0A26D7CD46009BF13D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CA8D5C0B26D7CD54009BF13D /* PlaylistCarplayController.swift */,
 				CA8D5C0D26D7CD8A009BF13D /* PlaylistDetailViewController.swift */,
 				CA8D5C0F26D7CDAF009BF13D /* PlaylistListViewController+DragDropDelegate.swift */,
 				CA8D5C1126D7CDCD009BF13D /* PlaylistListViewController+TableViewDataSource.swift */,
@@ -5038,7 +5035,7 @@
 				CAA0BDD426F4D76600F14212 /* PlaylistListViewController.swift */,
 				CA8D5C1726D7CE2E009BF13D /* PlaylistViewController+AVDelegates.swift */,
 				CA8D5C1926D7CE46009BF13D /* PlaylistViewController.swift */,
-				CAADEFE126E2857F0020DC4C /* PlaylistCarplayControllerIOS14.swift */,
+				CAADEFE126E2857F0020DC4C /* PlaylistCarplayController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -7522,12 +7519,11 @@
 				44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */,
 				5E5E6E4625BA041E0035B6A0 /* PlaylistParticleEmitter.swift in Sources */,
 				2718780A216526240006036E /* PopupView.swift in Sources */,
-				CA8D5C0C26D7CD54009BF13D /* PlaylistCarplayController.swift in Sources */,
 				CA8D5C2726D7D0A8009BF13D /* MPRemoteCommandCenter+Combine.swift in Sources */,
 				4422D4C221BFFB7600BF1855 /* comparator.cc in Sources */,
 				0A1E84452190A57F0042F782 /* SyncPairWordsViewController.swift in Sources */,
 				2746D27524A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift in Sources */,
-				CAADEFE226E2857F0020DC4C /* PlaylistCarplayControllerIOS14.swift in Sources */,
+				CAADEFE226E2857F0020DC4C /* PlaylistCarplayController.swift in Sources */,
 				270A0F392605267D0091D880 /* LegacyWalletTransferStatusButton.swift in Sources */,
 				4422D4DF21BFFB7600BF1855 /* table_builder.cc in Sources */,
 				27448536245B608E001920B5 /* QRCodePopupView.swift in Sources */,

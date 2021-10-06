@@ -19,11 +19,14 @@ protocol Onboardable: AnyObject {
     func presentPreviousScreen(current: OnboardingViewController)
     /// Skip all onboarding screens, onboarding is considered as completed.
     func skip()
+    /// Handles referral lookup
+    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool)
 }
 
 protocol OnboardingControllerDelegate: AnyObject {
     func onboardingCompleted(_ onboardingController: OnboardingNavigationController)
     func onboardingSkipped(_ onboardingController: OnboardingNavigationController)
+    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool)
 }
 
 enum OnboardingViewAnimationID: Int {
@@ -98,7 +101,7 @@ class OnboardingNavigationController: UINavigationController {
         case rewardsAgreement
         
         /// Returns new ViewController associated with the screen type
-        func viewController(with profile: Profile, rewards: BraveRewards?) -> OnboardingViewController {
+        func viewController(with profile: Profile?, rewards: BraveRewards?) -> OnboardingViewController {
             switch self {
             case .privacyConsent: return OnboardingPrivacyConsentViewController(profile: profile, rewards: rewards)
             case .searchEnginePicker:
@@ -120,13 +123,17 @@ class OnboardingNavigationController: UINavigationController {
         }
     }
     
+    private var profile: Profile?
+    private var rewards: BraveRewards?
     private(set) var onboardingType: OnboardingType?
     
-    convenience init?(profile: Profile, onboardingType: OnboardingType, rewards: BraveRewards?) {
+    convenience init?(profile: Profile?, rewards: BraveRewards?, onboardingType: OnboardingType) {
         guard let firstScreen = onboardingType.screens.first else { return nil }
         
         let firstViewController = firstScreen.viewController(with: profile, rewards: rewards)
         self.init(rootViewController: firstViewController)
+        self.profile = profile
+        self.rewards = rewards
         self.onboardingType = onboardingType
         firstViewController.delegate = self
         
@@ -157,7 +164,7 @@ extension OnboardingNavigationController: Onboardable {
         let index = allScreens.firstIndex { $0.type == type(of: current) }
         
         guard let nextIndex = index?.advanced(by: 1),
-            let nextScreen = allScreens[safe: nextIndex]?.viewController(with: current.profile, rewards: current.rewards) else {
+              let nextScreen = allScreens[safe: nextIndex]?.viewController(with: profile, rewards: rewards) else {
                 log.info("Last screen reached, onboarding is complete")
                 onboardingDelegate?.onboardingCompleted(self)
                 return
@@ -183,6 +190,10 @@ extension OnboardingNavigationController: Onboardable {
     
     func skip() {
         onboardingDelegate?.onboardingSkipped(self)
+    }
+    
+    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool) {
+        onboardingDelegate?.handleReferralLookup(urp, checkClipboard: checkClipboard)
     }
 }
 

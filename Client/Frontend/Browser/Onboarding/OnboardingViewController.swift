@@ -10,10 +10,10 @@ import BraveCore
 /// A base class to provide common implementations needed for user onboarding screens.
 class OnboardingViewController: UIViewController {
     weak var delegate: Onboardable?
-    var profile: Profile
-    var rewards: BraveRewards?
+    let profile: Profile?
+    let rewards: BraveRewards?
     
-    init(profile: Profile, rewards: BraveRewards?) {
+    init(profile: Profile?, rewards: BraveRewards?) {
         self.profile = profile
         self.rewards = rewards
         super.init(nibName: nil, bundle: nil)

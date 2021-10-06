@@ -312,6 +312,7 @@ class MediaPlayer: NSObject {
                                                             event: .changePlaybackRate))
     }
     
+    @discardableResult
     func attachLayer() -> CALayer {
         playerLayer.player = player
         return playerLayer
@@ -433,7 +434,7 @@ extension MediaPlayer {
                 return
             }
             
-            self.playerLayer.player = nil
+            self.detachLayer()
         }.store(in: &notificationObservers)
         
         NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
@@ -446,7 +447,7 @@ extension MediaPlayer {
                 return
             }
             
-            self.playerLayer.player = self.player
+            self.attachLayer()
         }.store(in: &notificationObservers)
         
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)

@@ -196,8 +196,9 @@ extension BrowserViewController: WKNavigationDelegate {
         if navigationAction.targetFrame?.isMainFrame == true,
            BraveSearchManager.isValidURL(url) {
             // We fetch cookies to determine if backup search was enabled on the website.
+            let profile = self.profile
             webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
-                tab?.braveSearchManager = BraveSearchManager(url: url, cookies: cookies)
+                tab?.braveSearchManager = BraveSearchManager(profile: profile, url: url, cookies: cookies)
                 if let braveSearchManager = tab?.braveSearchManager {
                     braveSearchManager.fallbackQueryResultsPending = true
                     braveSearchManager.shouldUseFallback { backupQuery in
