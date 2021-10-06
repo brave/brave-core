@@ -7,6 +7,7 @@
 
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -49,6 +51,37 @@ const char token_list_json[] = R"(
 
 namespace brave_wallet {
 
+class TestBraveWalletServiceObserver
+    : public brave_wallet::mojom::BraveWalletServiceObserver {
+ public:
+  TestBraveWalletServiceObserver() {}
+
+  void OnDefaultWalletChanged(mojom::DefaultWallet wallet) override {
+    default_wallet_ = wallet;
+    defaultWalletChangedFired_ = true;
+  }
+  void OnActiveOriginChanged(const std::string& origin) override {}
+
+  mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
+  bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }
+
+  mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
+  GetReceiver() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void Reset() {
+    default_wallet_ = mojom::DefaultWallet::BraveWallet;
+    defaultWalletChangedFired_ = false;
+  }
+
+ private:
+  mojom::DefaultWallet default_wallet_ = mojom::DefaultWallet::BraveWallet;
+  bool defaultWalletChangedFired_ = false;
+  mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
+      observer_receiver_{this};
+};
+
 class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
@@ -57,6 +90,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kNativeBraveWalletFeature);
+
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
@@ -69,6 +105,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     service_.reset(new BraveWalletService(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_controller_,
         GetPrefs()));
+    observer_.reset(new TestBraveWalletServiceObserver());
+    service_->AddObserver(observer_->GetReceiver());
 
     auto* registry = ERCTokenRegistry::GetInstance();
     std::vector<mojom::ERCTokenPtr> input_erc_tokens;
@@ -181,7 +219,17 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   void SetDefaultWallet(mojom::DefaultWallet default_wallet) {
+    auto old_default_wallet = observer_->GetDefaultWallet();
+    EXPECT_FALSE(observer_->DefaultWalletChangedFired());
     service_->SetDefaultWallet(default_wallet);
+    base::RunLoop().RunUntilIdle();
+    if (old_default_wallet != default_wallet) {
+      EXPECT_TRUE(observer_->DefaultWalletChangedFired());
+    } else {
+      EXPECT_FALSE(observer_->DefaultWalletChangedFired());
+    }
+    EXPECT_EQ(default_wallet, observer_->GetDefaultWallet());
+    observer_->Reset();
   }
 
   mojom::DefaultWallet GetDefaultWallet() {
@@ -248,6 +296,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
   KeyringController* keyring_controller_;
+  std::unique_ptr<TestBraveWalletServiceObserver> observer_;
+  base::test::ScopedFeatureList scoped_feature_list_;
+
   mojom::ERCTokenPtr token1_;
   mojom::ERCTokenPtr token2_;
   mojom::ERCTokenPtr eth_token_;

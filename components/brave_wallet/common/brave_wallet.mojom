@@ -386,6 +386,7 @@ interface EthTxController {
 
 interface BraveWalletServiceObserver {
   OnActiveOriginChanged(string origin);
+  OnDefaultWalletChanged(DefaultWallet wallet);
 };
 
 interface BraveWalletService {
