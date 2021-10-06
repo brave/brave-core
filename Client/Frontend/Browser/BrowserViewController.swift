@@ -44,7 +44,11 @@ private struct BrowserViewControllerUX {
     fileprivate static let bookmarkStarAnimationOffset: CGFloat = 80
 }
 
-class BrowserViewController: UIViewController {
+protocol BrowserViewControllerDelegate: AnyObject {
+    func openInNewTab(_ url: URL, isPrivate: Bool)
+}
+
+class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     var webViewContainer: UIView!
     var topToolbar: TopToolbarView!
     var tabsBar: TabsBarViewController!
@@ -183,16 +187,14 @@ class BrowserViewController: UIViewController {
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
 
     init(profile: Profile,
-         tabManager: TabManager,
+         diskImageStore: DiskImageStore?,
          historyAPI: BraveHistoryAPI,
          bookmarkAPI: BraveBookmarksAPI,
          crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
         self.profile = profile
-        self.tabManager = tabManager
         self.historyAPI = historyAPI
         self.bookmarkAPI = bookmarkAPI
-        self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
 
@@ -233,7 +235,18 @@ class BrowserViewController: UIViewController {
                 }
             }
         }
-        rewards = BraveRewards(configuration: configuration, buildChannel: buildChannel)
+        
+        // Initialize Rewards
+        self.rewards = BraveRewards(configuration: configuration, buildChannel: buildChannel)
+        
+        // Initialize TabManager
+        self.tabManager = TabManager(prefs: profile.prefs,
+                                     imageStore: diskImageStore,
+                                     rewards: rewards)
+        
+        // Setup ReaderMode Cache
+        self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
+        
         if !BraveRewards.isAvailable {
             // Disable rewards services in case previous user already enabled
             // rewards in previous build
@@ -243,7 +256,8 @@ class BrowserViewController: UIViewController {
                 Preferences.Rewards.rewardsToggledOnce.value = true
             }
         }
-        deviceCheckClient = DeviceCheckClient(environment: configuration.ledgerEnvironment)
+        
+        self.deviceCheckClient = DeviceCheckClient(environment: configuration.ledgerEnvironment)
         
         if Locale.current.regionCode == "JP" {
             benchmarkBlockingDataSource = BlockingSummaryDataSource()
@@ -360,7 +374,7 @@ class BrowserViewController: UIViewController {
     private var rewardsEnabledObserveration: NSKeyValueObservation?
 
     fileprivate func didInit() {
-        screenshotHelper = ScreenshotHelper(controller: self)
+        screenshotHelper = ScreenshotHelper(tabManager: tabManager)
         tabManager.addDelegate(self)
         tabManager.addNavigationDelegate(self)
         downloadQueue.delegate = self
@@ -1524,7 +1538,9 @@ class BrowserViewController: UIViewController {
     // MARK: Opening New Tabs
 
     func switchToPrivacyMode(isPrivate: Bool ) {
-        let tabTrayController = self.tabTrayController ?? TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
+        let tabTrayController = self.tabTrayController ?? TabTrayController(tabManager: tabManager,
+                                                                            profile: profile,
+                                                                            tabTrayDelegate: self)
         if tabTrayController.privateMode != isPrivate {
             tabTrayController.changePrivacyMode(isPrivate)
         }
@@ -2151,6 +2167,18 @@ extension BrowserViewController: TabDelegate {
                 .addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }
     }
+    
+    func stopMediaPlayback(_ tab: Tab) {
+        if #available(iOS 15, *) {
+            tabManager.allTabs.forEach({
+                $0.webView?.pauseAllMediaPlayback(completionHandler: nil)
+            })
+        } else {
+            tabManager.allTabs.forEach({
+                PlaylistHelper.stopPlayback(tab: $0)
+            })
+        }
+    }
 }
 
 extension BrowserViewController: SearchViewControllerDelegate {
@@ -2326,7 +2354,9 @@ extension BrowserViewController: TabManagerDelegate {
         topToolbar.leaveOverlayMode(didCancel: true)
         updateTabsBarVisibility()
         
-        rewards.reportTabClosed(tabId: Int(tab.rewardsId))
+        if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+            rewards.reportTabClosed(tabId: Int(tab.rewardsId))
+        }
     }
 
     func tabManagerDidAddTabs(_ tabManager: TabManager) {
@@ -2663,6 +2693,10 @@ extension BrowserViewController: SessionRestoreHelperDelegate {
 }
 
 extension BrowserViewController: TabTrayDelegate {
+    func tabLocationViewDidTapLocation() {
+        topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
+    }
+    
     // This function animates and resets the tab chrome transforms when
     // the tab tray dismisses.
     func tabTrayDidDismiss(_ tabTray: TabTrayController) {

@@ -14,10 +14,10 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
     
     func pictureInPictureControllerWillStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
         
-        PlaylistCarplayManager.shared.playlistController = splitViewController?.parent as? PlaylistViewController
+        PlaylistCarplayManager.shared.playlistController = self
         
         if UIDevice.isIpad {
-            splitViewController?.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -50,8 +50,7 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
         if let restorationController = PlaylistCarplayManager.shared.playlistController {
             restorationController.modalPresentationStyle = .fullScreen
             if view.window == nil {
-                PlaylistCarplayManager.shared.browserController?.present(restorationController,
-                                                                         animated: true)
+                self.currentScene?.browserViewController?.present(restorationController, animated: true)
             }
             
             PlaylistCarplayManager.shared.playlistController = nil

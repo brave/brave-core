@@ -625,10 +625,10 @@ extension BrowserViewController: ToolbarDelegate {
         
         if tabManager.openedWebsitesCount > 0 {
             controller.addAction( UIAlertAction(title: Strings.bookmarkAllTabsTitle, style: .default, handler: { [unowned self] _ in
-                let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: tabManager.tabsForCurrentMode)
-                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: bookmarkAPI, mode: mode)
+                let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: self.tabManager.tabsForCurrentMode)
+                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: self.bookmarkAPI, mode: mode)
                 
-                presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+                self.presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
             }), accessibilityIdentifier: "toolbarTabButtonLongPress.bookmarkTab")
         }
             

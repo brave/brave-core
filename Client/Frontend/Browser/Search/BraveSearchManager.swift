@@ -32,6 +32,8 @@ class BraveSearchManager: NSObject {
     /// such as whether to use search fallback, should safe search be performed etc.
     private let domainCookies: [HTTPCookie]
     
+    private let profile: Profile
+    
     /// The result we got from querying the fallback search engine.
     var fallbackQueryResult: String?
     /// Whether the call to the fallback search engine is pending.
@@ -56,7 +58,7 @@ class BraveSearchManager: NSObject {
     
     private var callbackLog: BraveSearchLogEntry.FallbackLogEntry?
     
-    init?(url: URL, cookies: [HTTPCookie]) {
+    init?(profile: Profile, url: URL, cookies: [HTTPCookie]) {
         if !Self.isValidURL(url) {
             return nil
         }
@@ -65,6 +67,7 @@ class BraveSearchManager: NSObject {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
               let queryItem = components.valueForQuery("q") else { return nil }
         
+        self.profile = profile
         self.url = url
         self.query = queryItem
         self.domainCookies = cookies.filter { $0.domain == url.host }
@@ -293,12 +296,7 @@ extension BraveSearchManager: URLSessionDataDelegate {
         
         // Lookup the credentials
         // If there is no profile or the challenge is not an auth challenge, reject the challenge
-        guard let profile = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController.profile else {
-            completionHandler(.rejectProtectionSpace, nil)
-            return
-        }
-        
-        self.findLoginsForProtectionSpace(profile: profile, challenge: challenge, completion: { credential in
+        findLoginsForProtectionSpace(profile: profile, challenge: challenge, completion: { credential in
             if let credential = credential {
                 BraveSearchManager.cachedCredentials = credential
                 

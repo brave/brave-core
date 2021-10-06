@@ -168,7 +168,7 @@ class SyncWelcomeViewController: SyncViewController {
             guard let self = self else { return }
             if !BraveSyncAPI.shared.isInSyncGroup {
                 self.dismiss(animated: true)
-                let bvc = (UIApplication.shared.delegate as? AppDelegate)?.browserViewController
+                let bvc = self.currentScene?.browserViewController
                 bvc?.present(SyncAlerts.initializationError, animated: true)
             }
         }

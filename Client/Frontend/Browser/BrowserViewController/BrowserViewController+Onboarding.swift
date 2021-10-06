@@ -43,8 +43,8 @@ extension BrowserViewController {
             if daysUntilNextPrompt <= Date() && !isRewardsEnabled {
                 guard let onboarding = OnboardingNavigationController(
                     profile: profile,
-                    onboardingType: .existingUserRewardsOff(currentProgress),
-                    rewards: rewards
+                    rewards: rewards,
+                    onboardingType: .existingUserRewardsOff(currentProgress)
                     ) else { return }
                 
                 onboarding.onboardingDelegate = self
@@ -64,8 +64,8 @@ extension BrowserViewController {
             
             guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
                 profile: profile,
-                onboardingType: .existingUserRewardsOff(currentProgress),
-                rewards: rewards
+                rewards: rewards,
+                onboardingType: .existingUserRewardsOff(currentProgress)
                 ) else { return }
             
             onboarding.onboardingDelegate = self
@@ -81,8 +81,8 @@ extension BrowserViewController {
             
             guard !isRewardsEnabled, let onboarding = OnboardingNavigationController(
                 profile: profile,
-                onboardingType: .existingUserRewardsOff(currentProgress),
-                rewards: rewards
+                rewards: rewards,
+                onboardingType: .existingUserRewardsOff(currentProgress)
                 ) else { return }
             
             onboarding.onboardingDelegate = self
@@ -98,8 +98,8 @@ extension BrowserViewController {
             
             guard let onboarding = OnboardingNavigationController(
                 profile: profile,
-                onboardingType: .newUser(currentProgress),
-                rewards: rewards
+                rewards: rewards,
+                onboardingType: .newUser(currentProgress)
                 ) else { return }
             
             onboarding.onboardingDelegate = self

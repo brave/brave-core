@@ -36,8 +36,7 @@ class OnboardingPrivacyConsentViewController: OnboardingViewController {
     private func presentNextScreen(withPrivacyConsent: Bool) {
         Preferences.General.basicOnboardingProgress.value = OnboardingProgress.privacyConsent.rawValue
         if let urp = UserReferralProgram.shared {
-            (UIApplication.shared.delegate as? AppDelegate)?
-                .handleReferralLookup(urp, checkClipboard: withPrivacyConsent)
+            self.delegate?.handleReferralLookup(urp, checkClipboard: withPrivacyConsent)
         }
         
         delegate?.presentNextScreen(current: self)

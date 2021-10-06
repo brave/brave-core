@@ -10,11 +10,13 @@ import Data
 import WebKit
 import MediaPlayer
 import Shared
+import Storage
 
 private let log = Logger.browserLogger
 
 class PlaylistMediaStreamer {
     private weak var playerView: UIView?
+    private weak var certStore: CertStore?
     private var webLoader: PlaylistWebLoader?
     
     enum PlaybackError: Error {
@@ -24,8 +26,9 @@ class PlaylistMediaStreamer {
         case other(Error)
     }
     
-    init(playerView: UIView) {
+    init(playerView: UIView, certStore: CertStore?) {
         self.playerView = playerView
+        self.certStore = certStore
     }
     
     func loadMediaStreamingAsset(_ item: PlaylistInfo) -> AnyPublisher<Void, PlaybackError> {
@@ -69,7 +72,7 @@ class PlaylistMediaStreamer {
                 return
             }
             
-            self.webLoader = PlaylistWebLoader(handler: { [weak self] newItem in
+            self.webLoader = PlaylistWebLoader(certStore: self.certStore, handler: { [weak self] newItem in
                 guard let self = self else { return }
                 defer {
                     // Destroy the web loader when the callback is complete.

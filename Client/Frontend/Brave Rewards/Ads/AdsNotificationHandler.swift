@@ -103,7 +103,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
   
   public func shouldShowNotifications() -> Bool {
     guard let presentingController = presentingController,
-      let rootVC = UIApplication.shared.delegate?.window??.rootViewController else { return false }
+          let rootVC = presentingController.currentScene?.browserViewController else { return false }
     func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
       var top = viewController
       if let navigationController = top as? UINavigationController,
