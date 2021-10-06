@@ -15,10 +15,11 @@ import("//tools/grit/grit_rule.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/html_to_js.gni")
 import("//tools/polymer/polymer.gni")
+import("//tools/typescript/ts_library.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 
-preprocess_folder = "tsc"
+preprocess_folder = "preprocessed"
 preprocess_manifest = "brave_preprocessed_manifest.json"
 preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 
@@ -173,6 +174,93 @@ preprocess_if_expr("preprocess_generated") {
     "default_brave_shields_page/default_brave_shields_page.m.js",
     "getting_started_page/getting_started.js",
     "social_blocking_page/social_blocking_page.m.js",
+  ]
+}
+
+ts_library("build_ts") {
+  root_dir =
+      "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
+  out_dir = "$root_gen_dir/chrome/browser/resources/settings/tsc"
+  tsconfig_base = "//chrome/browser/resources/settings/tsconfig_base.json"
+  in_files = [
+    "brave_appearance_page/brave_appearance_browser_proxy.js",
+    "brave_appearance_page/brave_theme.js",
+    "brave_appearance_page/sidebar.js",
+    "brave_appearance_page/super_referral.js",
+    "brave_appearance_page/toolbar.js",
+    "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js",
+    "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.js",
+    "brave_default_extensions_page/brave_default_extensions_browser_proxy.m.js",
+    "brave_default_extensions_page/brave_default_extensions_page.m.js",
+    "brave_help_tips_page/brave_help_tips_page.m.js",
+    "brave_icons.m.js",
+    "brave_ipfs_page/brave_ipfs_browser_proxy.m.js",
+    "brave_ipfs_page/brave_ipfs_page.m.js",
+    "brave_ipfs_page/change_ipfs_gateway_dialog.js",
+    "brave_ipfs_page/add_p2p_key_dialog.js",
+    "brave_ipfs_page/rotate_p2p_key_dialog.js",
+    "brave_ipfs_page/p2p_keys_subpage.m.js",
+    "brave_ipfs_page/ipfs_peers_subpage.m.js",
+    "brave_ipfs_page/add_ipfs_peer_dialog.js",
+    "brave_new_tab_page/brave_new_tab_browser_proxy.m.js",
+    "brave_new_tab_page/brave_new_tab_page.m.js",
+    "brave_overrides/about_page.js",
+    "brave_overrides/appearance_page.js",
+    "brave_overrides/basic_page.js",
+    "brave_overrides/clear_browsing_data_dialog.js",
+    "brave_overrides/config.js",
+    "brave_overrides/cookies_page.js",
+    "brave_overrides/default_browser_page.js",
+    "brave_overrides/icons.js",
+    "brave_overrides/import_data_dialog.js",
+    "brave_overrides/index.js",
+    "brave_overrides/page_visibility.js",
+    "brave_overrides/passwords_section.js",
+    "brave_overrides/payments_section.js",
+    "brave_overrides/people_page.js",
+    "brave_overrides/personalization_options.js",
+    "brave_overrides/printing_page.js",
+    "brave_overrides/privacy_page.js",
+    "brave_overrides/reset_profile_dialog.js",
+    "brave_overrides/safety_check_passwords_child.js",
+    "brave_overrides/search_engines_section.js",
+    "brave_overrides/search_page.js",
+    "brave_overrides/security_page.js",
+    "brave_overrides/settings_menu.js",
+    "brave_overrides/settings_section.js",
+    "brave_overrides/settings_ui.js",
+    "brave_overrides/site_details.js",
+    "brave_overrides/site_settings_page.js",
+    "brave_overrides/sync_account_control.js",
+    "brave_overrides/sync_controls.js",
+    "brave_privacy_page/brave_personalization_options.m.js",
+    "brave_privacy_page/brave_privacy_page_browser_proxy.m.js",
+    "brave_reset_page/brave_reset_profile_dialog_behavior.js",
+    "brave_routes.js",
+    "brave_search_engines_page/brave_search_engines_page.m.js",
+    "brave_sync_page/brave_sync_browser_proxy.js",
+    "brave_sync_page/brave_sync_code_dialog.js",
+    "brave_sync_page/brave_sync_configure.js",
+    "brave_sync_page/brave_sync_page.js",
+    "brave_sync_page/brave_sync_setup.js",
+    "brave_sync_page/brave_sync_subpage.js",
+    "brave_wallet_page/brave_wallet_browser_proxy.m.js",
+    "brave_wallet_page/brave_wallet_page.m.js",
+    "default_brave_shields_page/default_brave_shields_browser_proxy.m.js",
+    "default_brave_shields_page/default_brave_shields_page.m.js",
+    "getting_started_page/getting_started.js",
+    "social_blocking_page/social_blocking_page.m.js",
+  ]
+
+  definitions = [
+    "//tools/typescript/definitions/chrome_send.d.ts",
+    "//tools/typescript/definitions/management.d.ts",
+    "//tools/typescript/definitions/settings_private.d.ts",
+  ]
+
+  extra_deps = [
+    ":preprocess",
+    ":preprocess_generated",
   ]
 }
 

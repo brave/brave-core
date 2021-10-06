@@ -3,7 +3,5 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_deps_chrome_browser_resources_settings_build = [
-  "//brave/browser/resources/settings:preprocess",
-  "//brave/browser/resources/settings:preprocess_generated",
-]
+brave_deps_chrome_browser_resources_settings_build =
+    [ "//brave/browser/resources/settings:build_ts" ]

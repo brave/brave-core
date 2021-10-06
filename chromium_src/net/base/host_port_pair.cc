@@ -19,13 +19,13 @@ bool HasAuthentication(const GURL& url) {
   return url.has_username() || url.has_password();
 }
 
-bool HasAuthentication(const std::string& str) {
+bool HasAuthentication(base::StringPiece str) {
   std::vector<base::StringPiece> auth_host = base::SplitStringPiece(
       str, "@", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   return auth_host.size() == 2;
 }
 
-HostPortPair FromStringWithAuthentication(const std::string& str) {
+HostPortPair FromStringWithAuthentication(base::StringPiece str) {
   std::vector<base::StringPiece> auth_host = base::SplitStringPiece(
       str, "@", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
   HostPortPair host_port_pair =

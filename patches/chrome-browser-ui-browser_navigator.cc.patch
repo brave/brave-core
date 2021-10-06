@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index a4af0836da1aa34768f01774df321c7ae458bad2..b07017b833fbd436a2b56c0818fc09efeda1c914 100644
+index b304e3ebb6bb1c486fccbd1158079f6d567e6457..8828b92861d24ae921f80a1b954a79080881c250 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -490,6 +490,7 @@ void Navigate(NavigateParams* params) {
+@@ -489,6 +489,7 @@ void Navigate(NavigateParams* params) {
      // Block any navigation requests in locked fullscreen mode.
      return;
    }
@@ -10,7 +10,7 @@ index a4af0836da1aa34768f01774df321c7ae458bad2..b07017b833fbd436a2b56c0818fc09ef
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/1096345): Remove this code after we integrate with intent
-@@ -749,6 +750,7 @@ void Navigate(NavigateParams* params) {
+@@ -748,6 +749,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();

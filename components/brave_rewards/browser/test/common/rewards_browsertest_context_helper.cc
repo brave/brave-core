@@ -201,7 +201,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(
 }
 
 void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
-  ui_test_utils::NavigateToURL(browser_, url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser_, url));
   auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
 }

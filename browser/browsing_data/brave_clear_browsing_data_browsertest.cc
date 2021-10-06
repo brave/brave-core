@@ -32,11 +32,13 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "url/url_constants.h"
 
 using content::BraveClearBrowsingData;
 using content::WebContents;
@@ -247,7 +249,8 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     search_test_utils::WaitForTemplateURLServiceToLoad(
         TemplateURLServiceFactory::GetForProfile(guest));
     // Navigate to about:blank.
-    ui_test_utils::NavigateToURL(browser, GURL(url::kAboutBlankURL));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser, GURL(url::kAboutBlankURL)));
     return browser;
   }
 

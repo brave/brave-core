@@ -92,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -110,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -130,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -142,7 +142,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   // Prediction triggered when web contents are closed
   GURL second_url =
       embedded_test_server()->GetURL("example.com", "/blocking.html");
-  ui_test_utils::NavigateToURL(browser(), second_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), second_url));
   EXPECT_EQ(true, EvalJs(contents,
                          "addImage('logo.png');"
                          "setExpectations(0, 0, 0, 1);"

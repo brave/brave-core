@@ -512,9 +512,16 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_SEARCH_NO_RESULTS" desc="Text description of a search that has no results.">
           No search results found
         </message>
-        <message name="IDS_SHOW_BUBBLE_INACTIVE_DESCRIPTION" desc="Message announced to screen reader users when an inactive bubble gets shown.">
-          Press Alt Shift A to show
-        </message>
+        <if expr="is_macosx">
+          <message name="IDS_SHOW_BUBBLE_INACTIVE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when an inactive bubble gets shown.">
+            This dialog is not currently focused. Press Command-Shift-Option A to focus this dialog.
+          </message>
+        </if>
+        <if expr="not is_macosx">
+          <message name="IDS_SHOW_BUBBLE_INACTIVE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when an inactive bubble gets shown.">
+            This dialog is not currently focused. Press Alt-Shift A to focus this dialog.
+          </message>
+        </if>
       </if>
 
        <!-- content area context menus. Android does not use it -->
@@ -748,16 +755,19 @@ are declared in tools/grit/grit_rule.gni.
             Search image with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="The name of the Lens Region Search command in the content area context menu">
-            Search part of the page with Brave Lens
+            Search part of the page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="The name of the Lens Region Search command in the content area context menu">
-            Drag to search images with Brave Lens
+            Drag to search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="The name of the Lens Region Search command in the content area context menu">
-            Drag over images to search with Brave Lens
+            Drag over images to search with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="The name of the Lens Region Search command in the content area context menu">
-            Search your screen with Brave Lens
+            Search your screen with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="The name of the Lens Region Search command in the content area context menu">
+            Search images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="The name of the Go to 'url' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -1001,16 +1011,19 @@ are declared in tools/grit/grit_rule.gni.
             Search Image with Brave Lens
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Search Part of the Page with Brave Lens
+            Search Part of the Page with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT1" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Drag to Search Images with Brave Lens
+            Drag to Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT2" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Drag over Images to Search with Brave Lens
+            Drag over Images to Search with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT3" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
-            Search Your Screen with Brave Lens
+            Search Your Screen with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_LENS_REGION_SEARCH_ALT4" desc="In Title Case: The name of the Lens Region Search command in the content area context menu">
+            Search Images with <ph name="VISUAL_SEARCH_PROVIDER">$1<ex>Brave Lens</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_GOTOURL" desc="In Title Case: The name of the Go to url for 'string' command in the content area context menu">
             &amp;Go to <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
@@ -3702,6 +3715,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
       </message>
+      <message name="IDS_SERVICE_PROCESS_DOCUMENT_ANALYSIS_NAME" desc="The name of the service process used for document analysis operations as part of Safe Browsing.">
+        Brave Document Analysis
+      </message>
       <!-- Theme preview infobar -->
       <message name="IDS_THEME_INSTALL_INFOBAR_LABEL" desc="Text displayed on an infobar when a theme has been installed.">
         Installed theme "<ph name="THEME_NAME">$1<ex>Snowflake Theme</ex></ph>"
@@ -3831,27 +3847,32 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Extension alerts. -->
-      <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert">
+      <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert for blocklisted extensions">
         {NUM_EXTENSIONS, plural,
-        =1 {This extension may be dangerous}
-        other {These extensions may be dangerous}}
+        =1 {This extension is blocked}
+        other {These extensions are blocked}}
       </message>
-      <message name="IDS_APP_ALERT_TITLE" desc="Titlebar of the app notification alert">
+      <message name="IDS_APP_ALERT_TITLE" desc="Titlebar of the app notification alert for blocklisted apps">
        {NUM_APPS, plural,
-        =1 {This app may be dangerous}
-        other {These apps may be dangerous}}
+        =1 {This app is blocked}
+        other {Some apps are blocked}}
       </message>
-       <message name="IDS_EXTENSION_AND_APP_ALERT_TITLE" desc="Titlebar of the extension and app notification alert">
-        These items may be dangerous
+       <message name="IDS_EXTENSION_AND_APP_ALERT_TITLE" desc="Titlebar of the extension and app notification alert for blocklisted items">
+        Some items are blocked
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_BLOCKLISTED_OTHER" desc="A statement that an extension has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was automatically disabled.
+      <message name="IDS_POLICY_BLOCKED_EXTENSION_ALERT_TITLE" desc="Titlebar of the policy blocked extension notification alert">
+        {NUM_EXTENSIONS, plural,
+        =1 {This extension is not allowed}
+        other {Some extensions are not allowed}}
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_BLOCKLISTED_MALWARE" desc="A statement that an extension has been newly blocklisted for malware.">
-        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it contains malware
+      <message name="IDS_POLICY_BLOCKED_EXTENSIONS_ALERT_ITEM_TITLE" desc="A statement that several extensions has been newly blocked by policy.">
+        The following extensions were blocked by your administrator:
       </message>
-      <message name="IDS_APP_ALERT_ITEM_BLOCKLISTED_OTHER" desc="A statement that a packaged app has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
-        The app "<ph name="EXTENSION_NAME">$1<ex>Gmail</ex></ph>" was automatically removed.
+      <message name="IDS_BLOCKLISTED_EXTENSIONS_ALERT_ITEM" desc="Name of the extension that is blocklisted">
+        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
+      </message>
+      <message name="IDS_POLICY_BLOCKED_EXTENSION_ALERT_ITEM_DETAIL" desc="A statement that an extension has been newly blocklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
+        The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was blocked by your administrator
       </message>
       <message name="IDS_EXTENSION_ALERT_ITEM_OK" desc="The title of the default button acknowledging the information presented.">
         OK
@@ -5911,6 +5932,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Delete
       </message>
 
+      <!-- Side panel strings -->
+      <message name="IDS_SIDE_PANEL_TITLE" desc="Title of the Side Panel">
+        Side Panel
+      </message>
+
       <!--Tooltip strings-->
       <message name="IDS_TOOLTIP_BACK" desc="The tooltip for back button">
         Click to go back, hold to see history
@@ -6143,6 +6169,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARK_PROMO_2" desc="Text shown on promotional UI appearing next to the Bookmarks button, which encourages users to use it.">
         Get back here fast by bookmarking this tab
       </message>
+      <message name="IDS_CLOSE_TUTORIAL" desc="Accessible name used by a screen reader for the in-product-help bubble close button." is_accessibility_with_no_ui="true">
+        Close tutorial
+      </message>
       <message name="IDS_GLOBAL_MEDIA_CONTROLS_PROMO" desc="Text shown on promotional UI appearing next to the global media controls toolbar button.">
         New! Control your music, videos, and more.
       </message>
@@ -6184,6 +6213,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_REOPEN_TAB_PROMO_SCREENREADER" desc="Text announced encouraging users to reopen a tab with the given shortcut">
         <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+T</ex></ph> can reopen accidentally closed tabs
+      </message>
+      <message name="IDS_READING_LIST_IN_SIDE_PANEL_PROMO" desc="Text shown on promotional UI appearing next to the side panel button">
+        Your reading list has moved to the new side panel. Try it here.
       </message>
       <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
         To group tabs together, right-click a tab
@@ -6435,6 +6467,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
+        </message>
+        <message name="IDS_PASSWORD_GENERATION_DIALOG_DESCRIPTION" desc="Text for password generation dialog, explaining that the password will be saved in Brave sync chain.">
+          Password will be saved in your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>. You won’t have to remember it.
         </message>
         <message name="IDS_CONFIRM_USERNAME_DIALOG_TITLE" desc="The title of the confirm username dialog." formatter_data="android_java">
           Confirm your username
@@ -7120,6 +7155,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Tab Group Editor Bubble -->
       <if expr="not use_titlecase">
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_SAVE_GROUP" desc="The label of the tab group header context menu item for saving the current group.">
+          Save group
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP" desc="The label of the tab group header context menu item for adding a new tab into the current group.">
           New tab in group
         </message>
@@ -7140,6 +7178,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
       <if expr="use_titlecase">
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_SAVE_GROUP" desc="In Title Case: The label of the tab group header context menu item for saving the current group.">
+          Save Group
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP" desc="In Title Case: The label of the tab group header context menu item for adding a new tab into the current group.">
           New Tab in Group
         </message>
@@ -7599,6 +7640,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
       <message name="IDS_SEND_TAB_TO_SELF_SENDING_ANNOUNCE" desc="Text read by a screenreader when a tab is sent to a target device." is_accessibility_with_no_ui="true">
         Sending link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
+      </message>
+       <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
+        <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
       </message>
 
       <!-- Share via QR Code strings -->
@@ -8144,11 +8188,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_APP_CONTEXT_MENU_INSTALL_ARC" desc="Text for the button that installs the Android app. (In sentence case.)">
             Install
           </message>
-          <message name="IDS_APP_TERMINAL_SPLIT_HORIZONTAL" desc="Text for the menu item to create a horizontal split in terminal app">
-            Split horizontal
+          <message name="IDS_APP_TERMINAL_LINUX" desc="Text for the menu item to open Linux in a tab in Terminal system app">
+            Linux
           </message>
-          <message name="IDS_APP_TERMINAL_SPLIT_VERTICAL" desc="Text for the menu item to create a vertical split in terminal app">
-            Split vertical
+          <message name="IDS_APP_TERMINAL_SSH" desc="Text for the menu item to open an SSH tab in Terminal system app">
+            SSH
           </message>
         </if>
         <message name="IDS_APP_CONTEXT_MENU_RUN_ON_OS_LOGIN" desc="Text for the button that toggles open app automatically at OS Login. (In sentence case.)">
@@ -8215,6 +8259,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Start App When You Sign In
         </message>
       </if>
+
+      <message name="IDS_APPS_PAGE_DEPRECATED_APP_TITLE" desc="Title text for deprecated apps in the apps page.">
+        <ph name="APP_NAME">$1<ex>GMail</ex></ph> (unsupported app)
+      </message>
 
       <!--  Sync Confirmation section of the tab modal signin flow -->
       <message name="IDS_SYNC_CONFIRMATION_TITLE" desc="Title of the sync confirmation dialog in the tab modal signin flow when Dice is enabled">
@@ -8813,7 +8861,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Always translate
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="Text to show for the translate bubble 'Options' menu button">
-            Options
+            Translate options
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="Text to show for the translate bubble label next to the combobox of the page language">
             Page language:
@@ -8869,7 +8917,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Always Translate
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_OPTIONS_MENU_BUTTON" desc="In Title Case: Text to show for the translate bubble 'Options' button">
-            Options
+            Translate Options
           </message>
           <message name="IDS_TRANSLATE_BUBBLE_PAGE_LANGUAGE" desc="In Title Case: Text to show for the translate bubble label next to the combobox of the page language">
             Page Language:
@@ -11200,10 +11248,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       other {Some of these files are encrypted. Ask their owner to decrypt.}}
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure.">
-      Your administrator says "<ph name="CUSTOM_MESSAGE">$1<ex>Please don't upload this type of data.</ex></ph>".
+      Your administrator says: "<ph name="CUSTOM_MESSAGE">$1<ex>Please don't upload this type of data.</ex></ph>"
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_DOWNLOADS_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure on a downloaded file.">
-      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your administrator says "<ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>".
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your administrator says: "<ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>"
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE_LEARN_MORE_LINK" desc="Text value of the link passed for the custom message set by the administrator when deep scanning returns a failure.">
       Learn more
@@ -11469,7 +11517,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Search your screen with Brave Lens
     </message>
     <message name="IDS_LENS_REGION_SEARCH_EXPERIMENT_DESCRIPTION" desc="Description for Lens Region Search experiment">
-      Right click and select “Search part of the page with Brave Lens” to search any region of the site to learn more about the visual content you see while you browse and shop on the web.
+      Right click and select “Search images with Brave Lens” to search any region of the site to learn more about the visual content you see while you browse and shop on the web.
+    </message>
+    <!-- Lens Region Search bubble dialog -->
+    <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Brave Lens.">
+      Drag over any image to search
     </message>
 
     <if expr="is_cfm">

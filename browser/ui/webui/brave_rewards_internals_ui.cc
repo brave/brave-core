@@ -42,28 +42,27 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  void HandleGetRewardsInternalsInfo(const base::ListValue* args);
+  void HandleGetRewardsInternalsInfo(base::Value::ConstListView args);
   void OnGetRewardsInternalsInfo(ledger::type::RewardsInternalsInfoPtr info);
-  void GetBalance(const base::ListValue* args);
-  void OnGetBalance(
-    const ledger::type::Result result,
-    ledger::type::BalancePtr balance);
-  void GetContributions(const base::ListValue* args);
+  void GetBalance(base::Value::ConstListView args);
+  void OnGetBalance(const ledger::type::Result result,
+                    ledger::type::BalancePtr balance);
+  void GetContributions(base::Value::ConstListView args);
   void OnGetContributions(ledger::type::ContributionInfoList contributions);
-  void GetPromotions(const base::ListValue* args);
+  void GetPromotions(base::Value::ConstListView args);
   void OnGetPromotions(ledger::type::PromotionList list);
-  void GetPartialLog(const base::ListValue* args);
+  void GetPartialLog(base::Value::ConstListView args);
   void OnGetPartialLog(const std::string& log);
-  void GetFulllLog(const base::ListValue* args);
+  void GetFulllLog(base::Value::ConstListView args);
   void OnGetFulllLog(const std::string& log);
-  void ClearLog(const base::ListValue* args);
+  void ClearLog(base::Value::ConstListView args);
   void OnClearLog(const bool success);
-  void GetExternalWallet(const base::ListValue* args);
+  void GetExternalWallet(base::Value::ConstListView args);
   void OnGetExternalWallet(const ledger::type::Result result,
                            ledger::type::ExternalWalletPtr wallet);
-  void GetEventLogs(const base::ListValue* args);
+  void GetEventLogs(base::Value::ConstListView args);
   void OnGetEventLogs(ledger::type::EventLogs logs);
-  void GetAdDiagnostics(const base::ListValue* args);
+  void GetAdDiagnostics(base::Value::ConstListView args);
   void OnGetAdDiagnostics(const bool success, const std::string& json);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
@@ -87,43 +86,36 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getBalance",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetBalance,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetBalance,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getContributions",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetContributions,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetContributions,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getPromotions",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetPromotions,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetPromotions,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getPartialLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetPartialLog,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetPartialLog,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getFullLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetFulllLog,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetFulllLog,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.clearLog",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::ClearLog,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::ClearLog,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getExternalWallet",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetExternalWallet,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getEventLogs",
-      base::BindRepeating(
-          &RewardsInternalsDOMHandler::GetEventLogs,
-          base::Unretained(this)));
+      base::BindRepeating(&RewardsInternalsDOMHandler::GetEventLogs,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getAdDiagnostics",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetAdDiagnostics,
@@ -145,7 +137,7 @@ void RewardsInternalsDOMHandler::OnJavascriptDisallowed() {
 }
 
 void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -173,16 +165,16 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
                          info_dict);
 }
 
-void RewardsInternalsDOMHandler::GetBalance(const base::ListValue* args) {
+void RewardsInternalsDOMHandler::GetBalance(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
 
   AllowJavascript();
 
-  rewards_service_->FetchBalance(base::BindOnce(
-      &RewardsInternalsDOMHandler::OnGetBalance,
-      weak_ptr_factory_.GetWeakPtr()));
+  rewards_service_->FetchBalance(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetBalance,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetBalance(
@@ -208,16 +200,17 @@ void RewardsInternalsDOMHandler::OnGetBalance(
                          std::move(balance_value));
 }
 
-void RewardsInternalsDOMHandler::GetContributions(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetContributions(
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
 
   AllowJavascript();
 
-  rewards_service_->GetAllContributions(base::BindOnce(
-      &RewardsInternalsDOMHandler::OnGetContributions,
-      weak_ptr_factory_.GetWeakPtr()));
+  rewards_service_->GetAllContributions(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetContributions,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetContributions(
@@ -227,7 +220,7 @@ void RewardsInternalsDOMHandler::OnGetContributions(
   }
 
   base::Value list(base::Value::Type::LIST);
-  for (const auto & item : contributions) {
+  for (const auto& item : contributions) {
     base::Value contribution(base::Value::Type::DICTIONARY);
     contribution.SetStringKey("id", item->contribution_id);
     contribution.SetDoubleKey("amount", item->amount);
@@ -239,14 +232,11 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     base::Value publishers(base::Value::Type::LIST);
     for (const auto& publisher_item : item->publishers) {
       base::Value publisher(base::Value::Type::DICTIONARY);
-      publisher.SetStringKey(
-          "contributionId",
-          publisher_item->contribution_id);
+      publisher.SetStringKey("contributionId", publisher_item->contribution_id);
       publisher.SetStringKey("publisherKey", publisher_item->publisher_key);
       publisher.SetDoubleKey("totalAmount", publisher_item->total_amount);
-      publisher.SetDoubleKey(
-          "contributedAmount",
-          publisher_item->contributed_amount);
+      publisher.SetDoubleKey("contributedAmount",
+                             publisher_item->contributed_amount);
       publishers.Append(std::move(publisher));
     }
     contribution.SetPath("publishers", std::move(publishers));
@@ -257,16 +247,17 @@ void RewardsInternalsDOMHandler::OnGetContributions(
                          std::move(list));
 }
 
-void RewardsInternalsDOMHandler::GetPromotions(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetPromotions(
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
 
   AllowJavascript();
 
-  rewards_service_->GetAllPromotions(base::BindOnce(
-      &RewardsInternalsDOMHandler::OnGetPromotions,
-      weak_ptr_factory_.GetWeakPtr()));
+  rewards_service_->GetAllPromotions(
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetPromotions,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetPromotions(
@@ -276,7 +267,7 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
   }
 
   base::ListValue promotions;
-  for (const auto & item : list) {
+  for (const auto& item : list) {
     auto dict = std::make_unique<base::DictionaryValue>();
     dict->SetDouble("amount", item->approximate_value);
     dict->SetString("promotionId", item->id);
@@ -294,7 +285,8 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
                          std::move(promotions));
 }
 
-void RewardsInternalsDOMHandler::GetPartialLog(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetPartialLog(
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -303,9 +295,8 @@ void RewardsInternalsDOMHandler::GetPartialLog(const base::ListValue *args) {
 
   rewards_service_->LoadDiagnosticLog(
       g_partial_log_max_lines,
-      base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetPartialLog,
-          weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetPartialLog,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetPartialLog(const std::string& log) {
@@ -317,7 +308,7 @@ void RewardsInternalsDOMHandler::OnGetPartialLog(const std::string& log) {
                          base::Value(log));
 }
 
-void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::GetFulllLog(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -325,10 +316,8 @@ void RewardsInternalsDOMHandler::GetFulllLog(const base::ListValue *args) {
   AllowJavascript();
 
   rewards_service_->LoadDiagnosticLog(
-      -1,
-      base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetFulllLog,
-          weak_ptr_factory_.GetWeakPtr()));
+      -1, base::BindOnce(&RewardsInternalsDOMHandler::OnGetFulllLog,
+                         weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetFulllLog(const std::string& log) {
@@ -339,17 +328,15 @@ void RewardsInternalsDOMHandler::OnGetFulllLog(const std::string& log) {
   CallJavascriptFunction("brave_rewards_internals.fullLog", base::Value(log));
 }
 
-void RewardsInternalsDOMHandler::ClearLog(const base::ListValue *args) {
+void RewardsInternalsDOMHandler::ClearLog(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
 
   AllowJavascript();
 
-  rewards_service_->ClearDiagnosticLog(
-      base::BindOnce(
-          &RewardsInternalsDOMHandler::OnClearLog,
-          weak_ptr_factory_.GetWeakPtr()));
+  rewards_service_->ClearDiagnosticLog(base::BindOnce(
+      &RewardsInternalsDOMHandler::OnClearLog, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
@@ -365,7 +352,7 @@ void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
 }
 
 void RewardsInternalsDOMHandler::GetExternalWallet(
-    const base::ListValue* args) {
+    base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -400,7 +387,7 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
   CallJavascriptFunction("brave_rewards_internals.externalWallet", data);
 }
 
-void RewardsInternalsDOMHandler::GetEventLogs(const base::ListValue* args) {
+void RewardsInternalsDOMHandler::GetEventLogs(base::Value::ConstListView args) {
   if (!rewards_service_) {
     return;
   }
@@ -408,9 +395,8 @@ void RewardsInternalsDOMHandler::GetEventLogs(const base::ListValue* args) {
   AllowJavascript();
 
   rewards_service_->GetEventLogs(
-      base::BindOnce(
-          &RewardsInternalsDOMHandler::OnGetEventLogs,
-          weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&RewardsInternalsDOMHandler::OnGetEventLogs,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
@@ -432,7 +418,8 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
   CallJavascriptFunction("brave_rewards_internals.eventLogs", std::move(data));
 }
 
-void RewardsInternalsDOMHandler::GetAdDiagnostics(const base::ListValue* args) {
+void RewardsInternalsDOMHandler::GetAdDiagnostics(
+    base::Value::ConstListView args) {
   if (!ads_service_) {
     NOTREACHED();
     return;

@@ -765,7 +765,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest,
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("a.com", "/"));
-  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto error_caught =
@@ -791,7 +792,7 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanFetchIPFSResourcesFromIPFS) {
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
 
   GURL url("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto got_fetch =
@@ -815,7 +816,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIframeFromHTTP) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
-  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/iframe.html"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/iframe.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -844,8 +846,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIFrameFromIPFS) {
       kIPFSResolveMethod,
       static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
 
-  ui_test_utils::NavigateToURL(
-      browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto result =
@@ -883,8 +886,9 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CanLoadIPFSImageFromIPFS) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
-  ui_test_utils::NavigateToURL(
-      browser(), GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto loaded = EvalJs(
@@ -909,7 +913,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, CannotLoadIPFSImageFromHTTP) {
       base::BindRepeating(&IpfsServiceBrowserTest::HandleEmbeddedSrvrRequest,
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
-  ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("b.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   auto loaded = EvalJs(
@@ -935,7 +940,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOn) {
   browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
   GURL gateway = GetURL("b.com", "/");
   SetIPFSDefaultGatewayForTest(gateway);
-  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), gateway.host());
@@ -947,7 +953,8 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {
                           base::Unretained(this)));
   SetIPFSDefaultGatewayForTest(GetURL("b.com", "/"));
   GURL other_gateway = GetURL("a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html")));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(contents->GetURL().host(), other_gateway.host());

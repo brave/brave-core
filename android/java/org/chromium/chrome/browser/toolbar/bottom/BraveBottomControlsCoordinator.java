@@ -56,15 +56,15 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
             Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
+            ThemeColorProvider themeColorProvider,
             /* Below are parameters from BottomControlsCoordinator */
             Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
             ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
             FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
-            ThemeColorProvider themeColorProvider, BottomControlsContentDelegate contentDelegate,
+            BottomControlsContentDelegate contentDelegate,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
         super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
-                fullscreenManager, root, themeColorProvider, contentDelegate,
-                overlayPanelVisibilitySupplier);
+                fullscreenManager, root, contentDelegate, overlayPanelVisibilitySupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;

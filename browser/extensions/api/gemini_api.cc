@@ -80,7 +80,7 @@ void GeminiRefreshAccessTokenFunction::OnRefreshResult(bool success) {
 ExtensionFunction::ResponseAction
 GeminiGetTickerPriceFunction::Run() {
   std::unique_ptr<gemini::GetTickerPrice::Params> params(
-      gemini::GetTickerPrice::Params::Create(*args_));
+      gemini::GetTickerPrice::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetGeminiService(browser_context());
@@ -132,7 +132,7 @@ void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
 ExtensionFunction::ResponseAction
 GeminiGetDepositInfoFunction::Run() {
   std::unique_ptr<gemini::GetDepositInfo::Params> params(
-      gemini::GetDepositInfo::Params::Create(*args_));
+      gemini::GetDepositInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetGeminiService(browser_context());
@@ -174,7 +174,7 @@ void GeminiRevokeTokenFunction::OnRevokeToken(bool success) {
 ExtensionFunction::ResponseAction
 GeminiGetOrderQuoteFunction::Run() {
   std::unique_ptr<gemini::GetOrderQuote::Params> params(
-      gemini::GetOrderQuote::Params::Create(*args_));
+      gemini::GetOrderQuote::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetGeminiService(browser_context());
@@ -207,7 +207,7 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
 ExtensionFunction::ResponseAction
 GeminiExecuteOrderFunction::Run() {
   std::unique_ptr<gemini::ExecuteOrder::Params> params(
-      gemini::ExecuteOrder::Params::Create(*args_));
+      gemini::ExecuteOrder::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetGeminiService(browser_context());

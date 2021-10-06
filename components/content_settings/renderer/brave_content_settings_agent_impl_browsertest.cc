@@ -320,7 +320,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     const std::string link_query =
         referrer_policy.empty() ? "" : "?policy=" + referrer_policy;
     GURL link(link_url().spec() + link_query);
-    ui_test_utils::NavigateToURL(browser(), link);
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), link));
 
     std::string clickLink =
         "domAutomationController.send(clickLink('" + url.spec() + "'));";
@@ -340,7 +340,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   }
 
   void NavigateToPageWithIframe() {
-    ui_test_utils::NavigateToURL(browser(), url());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url()));
     ASSERT_EQ(contents()->GetAllFrames().size(), 2u)
         << "Two frames (main + iframe) should be created.";
     content::RenderFrameHost* main_frame = contents()->GetMainFrame();
@@ -349,8 +349,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    ui_test_utils::NavigateToURL(browser(),
-                                 https_server().GetURL(origin, path));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), https_server().GetURL(origin, path)));
   }
 
   void NavigateIframe(const GURL& url) {
@@ -1127,13 +1127,13 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Throws when used on a data url.
   const GURL data_url("data:text/html,<title>Data URL</title>");
-  ui_test_utils::NavigateToURL(browser(), data_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), data_url));
   CheckLocalStorageThrows(contents());
 
   // Throws in a sandboxed iframe.
   const GURL sandboxed(
       https_server().GetURL("a.com", "/sandboxed_iframe.html"));
-  ui_test_utils::NavigateToURL(browser(), sandboxed);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sandboxed));
   CheckLocalStorageThrows(child_frame());
 }
 

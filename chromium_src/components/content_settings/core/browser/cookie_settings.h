@@ -11,24 +11,25 @@
 #include "base/containers/flat_map.h"
 #include "components/content_settings/core/browser/content_settings_provider.h"
 #include "components/keyed_service/core/refcounted_keyed_service.h"
+#include "net/cookies/site_for_cookies.h"
 #include "url/origin.h"
 
-#define ShutdownOnUIThread                                                   \
-  ShutdownOnUIThread_ChromiumImpl();                                         \
-  bool ShouldUseEphemeralStorage(                                            \
-      const url::Origin& origin, const GURL& site_for_cookies,               \
-      const absl::optional<url::Origin>& top_frame_origin,                   \
-      url::Origin& storage_origin);                                          \
-  std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(                \
-      const std::string& ephemeral_storage_domain);                          \
-                                                                             \
- private:                                                                    \
-  /* Ephemeral storage domain to non_opaque->opaque origins map. */          \
-  using EphemeralStorageOrigins =                                            \
-      base::flat_map<std::string, base::flat_map<url::Origin, url::Origin>>; \
-  EphemeralStorageOrigins ephemeral_storage_origins_;                        \
-                                                                             \
- public:                                                                     \
+#define ShutdownOnUIThread                                                    \
+  ShutdownOnUIThread_ChromiumImpl();                                          \
+  bool ShouldUseEphemeralStorage(                                             \
+      const url::Origin& origin, const net::SiteForCookies& site_for_cookies, \
+      const absl::optional<url::Origin>& top_frame_origin,                    \
+      url::Origin& storage_origin);                                           \
+  std::vector<url::Origin> TakeEphemeralStorageOpaqueOrigins(                 \
+      const std::string& ephemeral_storage_domain);                           \
+                                                                              \
+ private:                                                                     \
+  /* Ephemeral storage domain to non_opaque->opaque origins map. */           \
+  using EphemeralStorageOrigins =                                             \
+      base::flat_map<std::string, base::flat_map<url::Origin, url::Origin>>;  \
+  EphemeralStorageOrigins ephemeral_storage_origins_;                         \
+                                                                              \
+ public:                                                                      \
   void ShutdownOnUIThread
 
 #include "../../../../../../components/content_settings/core/browser/cookie_settings.h"

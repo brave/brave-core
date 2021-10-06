@@ -6,13 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_BORDER_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_BUBBLE_BUBBLE_BORDER_H_
 
-#include "build/build_config.h"
-
-#if defined(OS_WIN)
-// Prevent overriding global GetClientRect Win32 api.
-#include <Windows.h>
-#endif
-
 #define GetClientRect virtual GetClientRect
 #include "../../../../../ui/views/bubble/bubble_border.h"
 #undef GetClientRect

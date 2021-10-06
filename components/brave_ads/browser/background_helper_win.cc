@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/background_helper_win.h"
 
+#include <windows.h>
+
 #include "base/bind.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"

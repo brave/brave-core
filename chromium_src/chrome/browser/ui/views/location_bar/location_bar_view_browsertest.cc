@@ -103,8 +103,8 @@ IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {
 
   auto c = GetParam();
   SetUpInterceptor(c.cert_status);
-  ui_test_utils::NavigateToURL(
-      browser(), c.use_secure_url ? kMockSecureURL : kMockNonsecureURL);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), c.use_secure_url ? kMockSecureURL : kMockNonsecureURL));
   EXPECT_EQ(c.security_level, helper->GetSecurityLevel());
   EXPECT_EQ(c.should_show_text,
             location_bar_view->location_icon_view()->ShouldShowLabel());

@@ -36,8 +36,6 @@ class BraveDOMWindowStorage final
 
  private:
   StorageArea* ephemeralSessionStorage();
-  StorageArea* ephemeralLocalStorage(
-      const SecurityOrigin* ephemeral_storage_origin);
 
   mutable Member<StorageArea> ephemeral_session_storage_;
   mutable Member<StorageArea> ephemeral_local_storage_;

@@ -139,7 +139,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
     for (const std::string& scheme : schemes) {
       content::WebContents* contents =
           browser()->tab_strip_model()->GetActiveWebContents();
-      ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/"));
+      ASSERT_TRUE(
+          ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
       EXPECT_STREQ(base::UTF16ToUTF8(
@@ -177,7 +178,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
     for (const std::string& scheme : schemes) {
       content::WebContents* contents =
           browser()->tab_strip_model()->GetActiveWebContents();
-      ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/"));
+      ASSERT_TRUE(
+          ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
       EXPECT_STREQ(base::UTF16ToUTF8(
@@ -209,7 +211,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(), GURL(scheme + "about/"));
+    ASSERT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL(scheme + "about/")));
     ASSERT_TRUE(WaitForLoadStop(contents));
 
     EXPECT_STREQ(base::UTF16ToUTF8(
@@ -239,8 +242,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
   for (const std::string& scheme : schemes) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
-    ui_test_utils::NavigateToURL(browser(),
-                                 GURL(scheme + chrome::kChromeUISyncHost));
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), GURL(scheme + chrome::kChromeUISyncHost)));
     ASSERT_TRUE(WaitForLoadStop(contents));
 
     EXPECT_STREQ(base::UTF16ToUTF8(
@@ -266,7 +269,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
                magnet_url().spec().c_str())
@@ -280,7 +283,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLURLBar) {
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ui_test_utils::NavigateToURL(browser(), magnet_html_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
   bool value;
   EXPECT_TRUE(
@@ -312,10 +315,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   // Used to add the extension
-  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), torrent_extension_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
@@ -334,11 +337,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   // Used to add the extension
-  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
-  ui_test_utils::NavigateToURL(browser(),
-                               torrent_invalid_query_extension_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), torrent_invalid_query_extension_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
                torrent_invalid_query_extension_url().spec().c_str())
@@ -361,7 +364,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   WaitForLoadStop(contents);
 
   ASSERT_TRUE(
@@ -384,7 +387,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ui_test_utils::NavigateToURL(browser(), magnet_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(), "about:blank");
   content::NavigationEntry* entry =
@@ -408,7 +411,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ui_test_utils::NavigateToURL(browser(), magnet_html_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
   bool value;
   EXPECT_TRUE(
@@ -440,7 +443,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
 
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ui_test_utils::NavigateToURL(browser(), torrent_extension_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), torrent_extension_url()));
   WaitForLoadStop(contents);
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),

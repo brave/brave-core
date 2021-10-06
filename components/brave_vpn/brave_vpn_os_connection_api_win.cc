@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api_win.h"
 
+#include <windows.h>
+
 #include <ras.h>
 
 #include "base/logging.h"

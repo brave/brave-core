@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 1202f21e719b26b8b04c1bf330d4f2e335fb7058..739d1e29bcc195f2e7425a50b1da17eed7244659 100644
+index 4af2ddb128bdc6173ae76251d153ff0fe0144683..202b5b823feb0895883c90a7b6b4aedc31e61b0b 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
-@@ -286,6 +286,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -292,6 +292,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
      case permissions::RequestType::kWindowPlacement:
        return "window_placement";
  #endif

@@ -412,6 +412,7 @@ Config.prototype.buildArgs = function () {
     args.enable_stripping = !this.isDebug()
     args.use_xcode_clang = false
     args.use_clang_coverage = false
+    args.use_lld = false
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false

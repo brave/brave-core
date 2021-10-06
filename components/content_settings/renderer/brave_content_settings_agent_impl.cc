@@ -158,9 +158,8 @@ BraveContentSettingsAgentImpl::GetEphemeralStorageOriginSync() {
 
   absl::optional<url::Origin> optional_ephemeral_storage_origin;
   GetContentSettingsManager().AllowEphemeralStorageAccess(
-      routing_id(), frame_origin,
-      frame->GetDocument().SiteForCookies().RepresentativeUrl(), top_origin,
-      &optional_ephemeral_storage_origin);
+      routing_id(), frame_origin, frame->GetDocument().SiteForCookies(),
+      top_origin, &optional_ephemeral_storage_origin);
   blink::WebSecurityOrigin ephemeral_storage_origin(
       optional_ephemeral_storage_origin
           ? blink::WebSecurityOrigin(*optional_ephemeral_storage_origin)

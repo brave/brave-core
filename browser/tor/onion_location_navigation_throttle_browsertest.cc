@@ -126,7 +126,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        OnionLocationHeader) {
   GURL url1 = test_server()->GetURL("/onion");
-  ui_test_utils::NavigateToURL(browser(), url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -136,7 +136,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   CheckOnionLocationLabel(browser(), GURL(kTestOnionURL));
 
   GURL url2 = test_server()->GetURL("/no_onion");
-  ui_test_utils::NavigateToURL(browser(), url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
   EXPECT_FALSE(helper->should_show_icon());
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   content::TestNavigationObserver nav_observer(web_contents);
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
   nav_observer.Wait();
   // Original request was blocked
   EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
@@ -158,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
   CheckOnionLocationLabel(browser(), GURL(kTestOnionURL));
 
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestNotOnionURL));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestNotOnionURL)));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
   EXPECT_FALSE(helper->should_show_icon());
@@ -170,7 +170,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
   BrowserList* browser_list = BrowserList::GetInstance();
-  ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com")));
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
   ASSERT_EQ(browser(), browser_list->get(0));
@@ -180,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   content::TestNavigationObserver nav_observer(web_contents);
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
   browser_creation_observer.Wait();
   nav_observer.Wait();
   // Original request was blocked
@@ -200,9 +201,10 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        OnionDomain_AutoOnionRedirect_OffByDefault) {
   BrowserList* browser_list = BrowserList::GetInstance();
-  ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com")));
 
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
 
@@ -219,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
 
   GURL url = test_server()->GetURL("/onion");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   browser_creation_observer.Wait();
   // We don't close the original tab
   EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
@@ -260,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
   // OnionLocationHeader_
   GURL url = test_server()->GetURL("/onion");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -269,21 +271,21 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   EXPECT_TRUE(helper->onion_location().is_empty());
 
   // Onion Domain
-  ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
 
   // AutoOnionLocationPref
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, browser_list->size());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        InvalidScheme) {
   GURL url = test_server()->GetURL("/invalid_scheme");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -293,7 +295,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
@@ -305,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   GURL url = test_server()->GetURL("/not_onion");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -315,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
 
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
@@ -327,7 +329,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   GURL url = test_http_server()->GetURL("/onion");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   tor::OnionLocationTabHelper* helper =
@@ -337,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
 
   browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
                                                true);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
   ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());

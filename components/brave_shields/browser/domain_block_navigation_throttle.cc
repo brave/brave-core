@@ -186,7 +186,7 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
 
   // Replace the tab contents with our interstitial page.
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      web_contents, handle->GetNavigationId(), std::move(blocked_page));
+      handle, std::move(blocked_page));
 
   // Navigation was deferred rather than canceled outright because the
   // call to the ad blocking service happens on a task runner, but now we

@@ -29,7 +29,7 @@ class NavigatorGetBatteryDisabledTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(NavigatorGetBatteryDisabledTest, IsDisabled) {
   GURL url = embedded_test_server()->GetURL(kBatteryTest);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
