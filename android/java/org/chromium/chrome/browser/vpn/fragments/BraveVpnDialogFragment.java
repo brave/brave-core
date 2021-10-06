@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser.vpn;
+package org.chromium.chrome.browser.vpn.fragments;
 
 import android.content.DialogInterface;
 import android.content.res.Configuration;
