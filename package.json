@@ -26,7 +26,7 @@
     "format": "node ./build/commands/scripts/commands.js format",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
-    "test-security": "npm run check_security && npm run audit_deps && npm run test brave_browser_tests -- --filter=BraveNetworkAuditTest*",
+    "test-security": "npm run check_security && npm run audit_deps && npm run test brave_network_audit_tests",
     "tslint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "pylint": "node ./build/commands/scripts/commands.js pylint",

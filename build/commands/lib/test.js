@@ -74,7 +74,12 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
   braveArgs = braveArgs.concat(passthroughArgs)
 
   // Build the tests
-  if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests') {
+  let testSuites = [
+    'brave_unit_tests',
+    'brave_browser_tests',
+    'brave_network_audit_tests',
+  ]
+  if (testSuites.includes(suite)) {
     util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
   } else {
     util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)

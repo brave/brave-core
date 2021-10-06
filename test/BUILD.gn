@@ -614,7 +614,6 @@ if (!is_android) {
       "//brave/browser/extensions/brave_extension_functional_test.h",
       "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
       "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
-      "//brave/browser/net/brave_network_audit_browsertest.cc",
       "//brave/browser/net/brave_network_delegate_browsertest.cc",
       "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
       "//brave/browser/net/brave_service_key_network_delegate_helper_browsertest.cc",
@@ -959,6 +958,28 @@ if (!is_android) {
         "//brave/components/ipfs:ipfs",
       ]
     }
+    public_deps = [ ":browser_tests_runner" ]
+  }
+
+  test("brave_network_audit_tests") {
+    testonly = true
+
+    sources = [
+      "//brave/browser/net/brave_network_audit_browsertest.cc",
+      "//brave/browser/net/brave_network_audit_whitelists.h",
+    ]
+
+    deps = [
+      "//base",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//services/network/public/cpp",
+      "//testing/gmock",
+      "//third_party/re2",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
     public_deps = [ ":browser_tests_runner" ]
   }
 } else {  # if (!is_android) {
