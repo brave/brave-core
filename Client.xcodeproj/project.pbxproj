@@ -674,7 +674,6 @@
 		4452CAF0255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */; };
 		4457123226BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4457123126BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift */; };
 		4457123F26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4457123E26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift */; };
-		445E1F5B26B7292B005C56C3 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 445E1F5A26B72923005C56C3 /* leaf.cer */; };
 		4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */; };
 		4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */; };
 		4481F22F26CBD1C600658EAC /* AmazonRootCA2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */; };
@@ -688,7 +687,6 @@
 		4481F24026CBD3DC00658EAC /* ISRGRootCA_X2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */; };
 		4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */; };
 		4481F24426CBD42C00658EAC /* GlobalSignRootCA_R1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */; };
-		4481F24626CBF9C900658EAC /* DSTRootCA_X3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */; };
 		448DC7D6268A5C3E00F4795C /* BraveSearchDebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7D5268A5C3E00F4795C /* BraveSearchDebugMenu.swift */; };
 		448DC7E4268A6A2200F4795C /* BraveSearchLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DC7E3268A6A2200F4795C /* BraveSearchLogEntry.swift */; };
 		449AC16226D8FE5B00A53F33 /* BraveTalkScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449AC16126D8FE5B00A53F33 /* BraveTalkScriptHandler.swift */; };
@@ -867,6 +865,20 @@
 		C8F457A81F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */; };
 		C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */; };
 		CA04E8A627022D9D00BFBB4D /* PlaylistTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04E8A527022D9D00BFBB4D /* PlaylistTests.swift */; };
+		CA10BE702704BA7900A265A6 /* AmazonRootCA4.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */; };
+		CA10BE712704BA7900A265A6 /* GlobalSignRootCA_R1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */; };
+		CA10BE722704BA7900A265A6 /* GlobalSignRootCA_R3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */; };
+		CA10BE732704BA7900A265A6 /* AmazonRootCA1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23926CBD30800658EAC /* AmazonRootCA1.cer */; };
+		CA10BE742704BA7900A265A6 /* ISRGRootCA_X1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23D26CBD3DA00658EAC /* ISRGRootCA_X1.cer */; };
+		CA10BE752704BA7900A265A6 /* GlobalSignRootCA_R6.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23426CBD27A00658EAC /* GlobalSignRootCA_R6.cer */; };
+		CA10BE762704BA7900A265A6 /* ISRGRootCA_X2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */; };
+		CA10BE772704BA7900A265A6 /* GlobalSignRootCA_R46.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23326CBD27A00658EAC /* GlobalSignRootCA_R46.cer */; };
+		CA10BE782704BA7900A265A6 /* GlobalSignRootCA_E46.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23226CBD27900658EAC /* GlobalSignRootCA_E46.cer */; };
+		CA10BE792704BA7900A265A6 /* AmazonRootCA3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */; };
+		CA10BE7A2704BA7900A265A6 /* AmazonRootCA2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */; };
+		CA10BE7C2704BA7900A265A6 /* GlobalSignRootCA_R5.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23126CBD27900658EAC /* GlobalSignRootCA_R5.cer */; };
+		CA10BE7D2704BA7900A265A6 /* SFSRootCAG2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22C26CBD1C600658EAC /* SFSRootCAG2.cer */; };
+		CA10BE7F2704BCAE00A265A6 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = CA10BE7E2704BCAE00A265A6 /* leaf.cer */; };
 		CA439A5925E6F29D00FE9150 /* VideoPlayerInfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */; };
 		CA439A7625E8054A00FE9150 /* VideoPlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */; };
 		CA439A9025E80EE400FE9150 /* VideoPlayerTrackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */; };
@@ -2219,7 +2231,6 @@
 		4452CAEF255412800053EFE6 /* DefaultBrowserIntroCalloutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserIntroCalloutViewController.swift; sourceTree = "<group>"; };
 		4457123126BAB1D200B60C1A /* BraveTalkOptInSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkOptInSuccessViewController.swift; sourceTree = "<group>"; };
 		4457123E26BAB20000B60C1A /* BraveTalkOptInSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTalkOptInSuccessView.swift; sourceTree = "<group>"; };
-		445E1F5A26B72923005C56C3 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA3.cer; sourceTree = "<group>"; };
 		4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA4.cer; sourceTree = "<group>"; };
 		4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA2.cer; sourceTree = "<group>"; };
@@ -2233,7 +2244,6 @@
 		4481F23E26CBD3DB00658EAC /* ISRGRootCA_X2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = ISRGRootCA_X2.cer; sourceTree = "<group>"; };
 		4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R3.cer; sourceTree = "<group>"; };
 		4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = GlobalSignRootCA_R1.cer; sourceTree = "<group>"; };
-		4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = DSTRootCA_X3.cer; sourceTree = "<group>"; };
 		4484BAE8265422760099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4484BAE9265422770099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4484BAEA265422770099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveShared.strings; sourceTree = "<group>"; };
@@ -2577,6 +2587,7 @@
 		C8F457A71F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+WKNavigationDelegate.swift"; sourceTree = "<group>"; };
 		C8F457A91F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+KeyCommands.swift"; sourceTree = "<group>"; };
 		CA04E8A527022D9D00BFBB4D /* PlaylistTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
+		CA10BE7E2704BCAE00A265A6 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
 		CA439A5825E6F29D00FE9150 /* VideoPlayerInfoBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerInfoBar.swift; sourceTree = "<group>"; };
 		CA439A7525E8054A00FE9150 /* VideoPlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerControlsView.swift; sourceTree = "<group>"; };
 		CA439A8F25E80EE400FE9150 /* VideoPlayerTrackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerTrackbar.swift; sourceTree = "<group>"; };
@@ -3431,7 +3442,6 @@
 				4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */,
 				4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */,
 				4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */,
-				4481F24526CBF9C900658EAC /* DSTRootCA_X3.cer */,
 				4481F23226CBD27900658EAC /* GlobalSignRootCA_E46.cer */,
 				4481F24226CBD42C00658EAC /* GlobalSignRootCA_R1.cer */,
 				4481F24126CBD42B00658EAC /* GlobalSignRootCA_R3.cer */,
@@ -4898,9 +4908,9 @@
 		5EA84392234F803100076A91 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				CA10BE7E2704BCAE00A265A6 /* leaf.cer */,
 				5E46C37B234FB9A700ACA8C1 /* self-signed.cer */,
 				5E46C36F234FACC600ACA8C1 /* intermediate.cer */,
-				445E1F5A26B72923005C56C3 /* leaf.cer */,
 				5E46C36D234FACC600ACA8C1 /* root.cer */,
 				5EA84393234F803C00076A91 /* expired.badssl.com */,
 			);
@@ -6623,13 +6633,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E46C377234FB54000ACA8C1 /* untrusted.badssl.com-root.cer in Resources */,
+				CA10BE7F2704BCAE00A265A6 /* leaf.cer in Resources */,
 				5E46C37A234FB61000ACA8C1 /* self-signed.badssl.com.cer in Resources */,
 				5E46C37C234FB9A700ACA8C1 /* self-signed.cer in Resources */,
 				5EA84390234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer in Resources */,
 				5E46C378234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer in Resources */,
 				5EA84391234F802C00076A91 /* expired.badssl.com-leaf.cer in Resources */,
 				5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */,
-				445E1F5B26B7292B005C56C3 /* leaf.cer in Resources */,
 				5E46C371234FACC600ACA8C1 /* root.cer in Resources */,
 				5E46C373234FACC600ACA8C1 /* intermediate.cer in Resources */,
 				5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */,
@@ -6759,7 +6769,6 @@
 				2F676FAD260BA4860048A1DB /* blocking-summary.json in Resources */,
 				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
 				0A64384E24FD4E43000E80A3 /* ArchiveIsCompat.js in Resources */,
-				4481F24626CBF9C900658EAC /* DSTRootCA_X3.cer in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */,
@@ -6775,11 +6784,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA10BE782704BA7900A265A6 /* GlobalSignRootCA_E46.cer in Resources */,
 				A83E5B1A1C1DA8BF0026D912 /* image.gif in Resources */,
+				CA10BE772704BA7900A265A6 /* GlobalSignRootCA_R46.cer in Resources */,
 				27C5AE4B25D72B9700B8F50E /* states.opml in Resources */,
+				CA10BE732704BA7900A265A6 /* AmazonRootCA1.cer in Resources */,
+				CA10BE762704BA7900A265A6 /* ISRGRootCA_X2.cer in Resources */,
+				CA10BE712704BA7900A265A6 /* GlobalSignRootCA_R1.cer in Resources */,
 				A83E5B1B1C1DA8BF0026D912 /* image.png in Resources */,
+				CA10BE752704BA7900A265A6 /* GlobalSignRootCA_R6.cer in Resources */,
+				CA10BE7A2704BA7900A265A6 /* AmazonRootCA2.cer in Resources */,
 				2F26C43A267B9F9400E5AD60 /* blocking-summary-test.json in Resources */,
+				CA10BE742704BA7900A265A6 /* ISRGRootCA_X1.cer in Resources */,
+				CA10BE722704BA7900A265A6 /* GlobalSignRootCA_R3.cer in Resources */,
 				27C5AE4A25D72B9700B8F50E /* subscriptionList.opml in Resources */,
+				CA10BE702704BA7900A265A6 /* AmazonRootCA4.cer in Resources */,
+				CA10BE7D2704BA7900A265A6 /* SFSRootCAG2.cer in Resources */,
+				CA10BE792704BA7900A265A6 /* AmazonRootCA3.cer in Resources */,
+				CA10BE7C2704BA7900A265A6 /* GlobalSignRootCA_R5.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
