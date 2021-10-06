@@ -31,15 +31,14 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  for (const auto& ad : document["filtered_ads"].GetArray()) {
-    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
+  for (const auto& advertiser : document["filtered_advertisers"].GetArray()) {
+    if (!advertiser["id"].IsString()) {
       return false;
     }
 
-    FilteredAdInfo filtered_ad;
-    filtered_ad.creative_instance_id = ad["uuid"].GetString();
-    filtered_ad.creative_set_id = ad["creative_set_id"].GetString();
-    filtered_ads.push_back(filtered_ad);
+    FilteredAdvertiserInfo filtered_advertiser;
+    filtered_advertiser.id = advertiser["id"].GetString();
+    filtered_advertisers.push_back(filtered_advertiser);
   }
 
   for (const auto& ad : document["filtered_categories"].GetArray()) {
@@ -80,16 +79,13 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
 void SaveToJson(JsonWriter* writer, const AdPreferencesInfo& info) {
   writer->StartObject();
 
-  writer->String("filtered_ads");
+  writer->String("filtered_advertisers");
   writer->StartArray();
-  for (const auto& ad : info.filtered_ads) {
+  for (const auto& advertiser : info.filtered_advertisers) {
     writer->StartObject();
 
-    writer->String("uuid");
-    writer->String(ad.creative_instance_id.c_str());
-
-    writer->String("creative_set_id");
-    writer->String(ad.creative_set_id.c_str());
+    writer->String("id");
+    writer->String(advertiser.id.c_str());
 
     writer->EndObject();
   }

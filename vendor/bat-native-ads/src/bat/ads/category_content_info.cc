@@ -5,6 +5,7 @@
 
 #include "bat/ads/category_content_info.h"
 
+#include "base/values.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
@@ -23,6 +24,37 @@ bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {
 
 bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
   return !(*this == rhs);
+}
+
+base::DictionaryValue CategoryContentInfo::ToValue() const {
+  base::DictionaryValue dictionary;
+
+  dictionary.SetKey("category", base::Value(category));
+  dictionary.SetKey("opt_action",
+                    base::Value(static_cast<int>(opt_action_type)));
+
+  return dictionary;
+}
+
+bool CategoryContentInfo::FromValue(const base::Value& value) {
+  const base::DictionaryValue* dictionary = nullptr;
+  if (!(&value)->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  const std::string* category_value = dictionary->FindStringKey("category");
+  if (category_value) {
+    category = *category_value;
+  }
+
+  const absl::optional<int> opt_action_type_optional =
+      dictionary->FindIntKey("opt_action");
+  if (opt_action_type_optional) {
+    opt_action_type = static_cast<CategoryContentOptActionType>(
+        opt_action_type_optional.value());
+  }
+
+  return true;
 }
 
 std::string CategoryContentInfo::ToJson() const {
