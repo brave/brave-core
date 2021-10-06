@@ -13,17 +13,21 @@ export const root = styled.div`
   font-family: var(--brave-font-heading);
   text-align: center;
   background-color: var(--brave-palette-white);
+  .brave-theme-dark & {
+    background-color: #1E2029;
+  }
   background-image: url(${modalBackground});
   background-repeat: no-repeat;
   background-position: 4px -11px;
   background-size: auto 200px;
-  box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.2);
-  border-radius: 8px;
 `
 
 export const header = styled.div`
   margin-top: 17px;
   color: var(--brave-palette-black);
+  .brave-theme-dark & {
+    color: #F0F2FF;
+  }
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
@@ -39,6 +43,9 @@ export const header = styled.div`
 export const text = styled.div`
   margin: 8px 6px 0;
   color: var(--brave-palette-neutral700);
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey400);
+  }
   font-size: 14px;
   line-height: 24px;
 `
@@ -54,9 +61,12 @@ export const enable = styled.div`
 
 export const terms = styled.div`
   margin: 15px 14px 15px;
-  color: var(--brave-palette-neutral600);
+  color: var(--brave-palette-neutral700);
   font-size: 11px;
   line-height: 16px;
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey400);
+  }
 
   a {
     color: var(--brave-color-brandBat);
@@ -68,6 +78,9 @@ export const terms = styled.div`
 export const learn = styled.div`
   margin: 15px 6px 15px;
   color: var(--brave-palette-neutral700);
+  .brave-theme-dark & {
+    color: var(--brave-palette-grey400);
+  }
   font-size: 14px;
   line-height: 24px;
 `
