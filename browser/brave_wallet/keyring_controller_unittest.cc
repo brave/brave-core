@@ -152,6 +152,30 @@ class KeyringControllerUnitTest : public testing::Test {
     return success;
   }
 
+  static int32_t GetAutoLockMinutes(KeyringController* controller) {
+    int32_t minutes;
+    base::RunLoop run_loop;
+    controller->GetAutoLockMinutes(base::BindLambdaForTesting([&](int32_t v) {
+      minutes = v;
+      run_loop.Quit();
+    }));
+    run_loop.Run();
+    return minutes;
+  }
+
+  static bool SetAutoLockMinutes(KeyringController* controller,
+                                 int32_t minutes) {
+    bool success = false;
+    base::RunLoop run_loop;
+    controller->SetAutoLockMinutes(minutes,
+                                   base::BindLambdaForTesting([&](bool v) {
+                                     success = v;
+                                     run_loop.Quit();
+                                   }));
+    run_loop.Run();
+    return success;
+  }
+
   static bool Lock(KeyringController* controller) {
     controller->Lock();
     return controller->IsLocked();
@@ -1800,6 +1824,13 @@ TEST_F(KeyringControllerUnitTest, SignMessageByDefaultKeyring) {
   EXPECT_EQ(
       sig_with_err.error_message,
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
+}
+
+TEST_F(KeyringControllerUnitTest, GetSetAutoLockMinutes) {
+  KeyringController controller(GetPrefs());
+  EXPECT_EQ(5, GetAutoLockMinutes(&controller));
+  EXPECT_TRUE(SetAutoLockMinutes(&controller, 7));
+  EXPECT_EQ(7, GetAutoLockMinutes(&controller));
 }
 
 }  // namespace brave_wallet

@@ -173,6 +173,9 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void GetSelectedAccount(GetSelectedAccountCallback callback) override;
   void SetSelectedAccount(const std::string& address,
                           SetSelectedAccountCallback callback) override;
+  void GetAutoLockMinutes(GetAutoLockMinutesCallback callback) override;
+  void SetAutoLockMinutes(int32_t minutes,
+                          SetAutoLockMinutesCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);

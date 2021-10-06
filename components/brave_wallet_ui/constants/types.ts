@@ -620,6 +620,14 @@ export interface GetGasOracleReturnInfo {
   estimation?: GasEstimation
 }
 
+export interface GetAutoLockMinutesReturnInfo {
+  minutes: number
+}
+
+export interface SetAutoLockMinutesReturnInfo {
+  success: boolean
+}
+
 export interface AssetRatioController {
   getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
   getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
@@ -637,6 +645,9 @@ export interface KeyringController {
   notifyUserInteraction: () => Promise<void>
   getSelectedAccount: () => Promise<GetSelectedAccountReturnInfo>
   setSelectedAccount: (address: string) => Promise<SetSelectedAccountReturnInfo>
+  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
+  setAutoLockMinutes: (minutes: number) => Promise<SetAutoLockMinutesReturnInfo>
+  getAutoLockMinutes: () => Promise<GetAutoLockMinutesReturnInfo>
 }
 
 export interface GetUserAssetsReturnInfo {

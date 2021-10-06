@@ -236,6 +236,9 @@ interface KeyringController {
   NotifyUserInteraction();
   GetSelectedAccount() => (string? address);
   SetSelectedAccount(string address) => (bool success);
+  GetAutoLockMinutes() => (int32 minutes);
+  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
+  SetAutoLockMinutes(int32 minutes) => (bool success);
 };
 
 interface AssetRatioController {

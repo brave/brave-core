@@ -1237,4 +1237,26 @@ void KeyringController::OnAutoLockPreferenceChanged() {
   ResetAutoLockTimer();
 }
 
+void KeyringController::GetAutoLockMinutes(
+    GetAutoLockMinutesCallback callback) {
+  std::move(callback).Run(prefs_->GetInteger(kBraveWalletAutoLockMinutes));
+}
+
+void KeyringController::SetAutoLockMinutes(
+    int32_t minutes,
+    SetAutoLockMinutesCallback callback) {
+  // Check bounds
+  if (minutes < kAutoLockMinutesMin || minutes > kAutoLockMinutesMax) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  int32_t old_auto_lock_minutes =
+      prefs_->GetInteger(kBraveWalletAutoLockMinutes);
+  if (minutes != old_auto_lock_minutes) {
+    prefs_->SetInteger(kBraveWalletAutoLockMinutes, minutes);
+  }
+  std::move(callback).Run(true);
+}
+
 }  // namespace brave_wallet
