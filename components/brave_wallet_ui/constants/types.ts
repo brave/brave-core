@@ -175,6 +175,7 @@ export interface WalletState {
   transactionSpotPrices: AssetPriceInfo[]
   addUserAssetError: boolean
   defaultWallet: DefaultWallet
+  activeOrigin: string
 }
 
 export interface PanelState {
@@ -662,6 +663,10 @@ export interface ResetEthereumPermissionReturnInfo {
   success: boolean
 }
 
+export interface GetActiveOriginReturnInfo {
+  origin: string
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
@@ -671,6 +676,7 @@ export interface BraveWalletService {
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
   resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
+  getActiveOrigin: () => Promise<GetActiveOriginReturnInfo>
 }
 
 export interface RecoveryObject {

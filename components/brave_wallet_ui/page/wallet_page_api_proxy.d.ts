@@ -23,6 +23,7 @@ export default class APIProxy {
   addEthJsonRpcControllerObserver: (store: any) => void
   addKeyringControllerObserver: (store: any) => void
   addEthTxControllerObserverObserver: (store: any) => void
+  addBraveWalletServiceObserver: (store: any) => void
   makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
   getKeyringsByType: (type: string) => any
 }

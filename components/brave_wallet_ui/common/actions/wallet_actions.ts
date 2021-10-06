@@ -11,6 +11,7 @@ import {
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
+  ActiveOriginChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType
@@ -76,3 +77,4 @@ export const setTransactionList = createAction<TransactionListInfo[]>('setTransa
 export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')
 export const notifyUserInteraction = createAction('notifyUserInteraction')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
+export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
