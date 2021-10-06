@@ -23,10 +23,10 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
-import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.BraveVpnServerSelectionAdapter;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 import java.util.Collections;
 import java.util.Comparator;

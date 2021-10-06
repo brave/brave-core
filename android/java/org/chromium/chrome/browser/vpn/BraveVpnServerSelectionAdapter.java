@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveVpnServerSelectionPreferences.OnServerRegionSelection;
-import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnServerRegion;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;

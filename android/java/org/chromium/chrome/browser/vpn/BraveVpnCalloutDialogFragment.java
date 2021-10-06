@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 
 public class BraveVpnCalloutDialogFragment
         extends BraveVpnDialogFragment implements View.OnClickListener {

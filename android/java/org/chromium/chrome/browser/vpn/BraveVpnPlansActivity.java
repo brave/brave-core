@@ -28,8 +28,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.vpn.BraveVpnParentActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPlanPagerAdapter;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
-import org.chromium.chrome.browser.vpn.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 
 public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;

@@ -22,8 +22,8 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
-import org.chromium.chrome.browser.vpn.BraveVpnUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class VpnCalloutPreference extends Preference {
