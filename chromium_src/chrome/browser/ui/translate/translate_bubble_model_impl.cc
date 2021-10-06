@@ -62,13 +62,16 @@ TranslateBubbleModelImpl::TranslateBubbleModelImpl(
     std::unique_ptr<translate::TranslateUIDelegate> ui_delegate)
     : ChromiumTranslateBubbleModelImpl(step, std::move(ui_delegate)) {
   source_language_map_ = std::make_unique<BraveLanguageMap>(
-      ui_delegate_.get(), base::BindRepeating(&translate::IsSourceLanguageCodeSupported));
+      ui_delegate_.get(),
+      base::BindRepeating(&translate::IsSourceLanguageCodeSupported));
   target_language_map_ = std::make_unique<BraveLanguageMap>(
-      ui_delegate_.get(), base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
+      ui_delegate_.get(),
+      base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
 
   // If the source language is unsupported the drop it to unknown.
   // TODO(atuchin): is it good place to call this?
-  if (!translate::IsSourceLanguageCodeSupported(ui_delegate_->GetSourceLanguageCode())) {
+  if (!translate::IsSourceLanguageCodeSupported(
+          ui_delegate_->GetSourceLanguageCode())) {
     ui_delegate_->UpdateSourceLanguageIndex(0u);
   }
 }

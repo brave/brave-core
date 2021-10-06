@@ -10,7 +10,9 @@ class TranslateBubbleModelImpl;
 using BraveTranslateBubbleModelImpl = TranslateBubbleModelImpl;
 
 #define TranslateBubbleModelImpl ChromiumTranslateBubbleModelImpl
-#define translate_executed_ translate_executed_; friend BraveTranslateBubbleModelImpl
+#define translate_executed_ \
+  translate_executed_;      \
+  friend BraveTranslateBubbleModelImpl
 #include "../../../../../../../chrome/browser/ui/translate/translate_bubble_model_impl.h"
 #undef translate_executed_
 #undef TranslateBubbleModelImpl
