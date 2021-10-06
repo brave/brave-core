@@ -28,6 +28,7 @@ constexpr const char* kWhitelistedUrlPrefixes[] = {
 
     // stats/referrals
     "https://laptop-updates.brave.com/",
+    "https://laptop-updates-staging.brave.com/",
 
     // needed for DoH on Mac build machines
     "https://dns.google/dns-query",
