@@ -31,21 +31,30 @@ public class PortfolioStore: ObservableObject {
   /// A set of balances of your portfolio's visible assets based on `timeframe`
   @Published var historicalBalances: [BraveWallet.AssetTimePrice] = []
   
+  public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
+    walletService: self.walletService,
+    tokenRegistry: self.tokenRegistry,
+    rpcController: self.rpcController
+  )
+  
   private let keyringController: BraveWalletKeyringController
   private let rpcController: BraveWalletEthJsonRpcController
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioController: BraveWalletAssetRatioController
+  private let tokenRegistry: BraveWalletERCTokenRegistry
   
   public init(
     keyringController: BraveWalletKeyringController,
     rpcController: BraveWalletEthJsonRpcController,
     walletService: BraveWalletBraveWalletService,
-    assetRatioController: BraveWalletAssetRatioController
+    assetRatioController: BraveWalletAssetRatioController,
+    tokenRegistry: BraveWalletERCTokenRegistry
   ) {
     self.keyringController = keyringController
     self.rpcController = rpcController
     self.walletService = walletService
     self.assetRatioController = assetRatioController
+    self.tokenRegistry = tokenRegistry
     
     self.rpcController.add(self)
     self.keyringController.add(self)

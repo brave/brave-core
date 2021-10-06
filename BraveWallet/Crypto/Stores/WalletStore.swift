@@ -46,7 +46,8 @@ public class WalletStore {
       keyringController: keyringController,
       rpcController: rpcController,
       walletService: walletService,
-      assetRatioController: assetRatioController
+      assetRatioController: assetRatioController,
+      tokenRegistry: tokenRegistry
     )
   }
 }
