@@ -126,10 +126,14 @@ void SwapController::GetSwapConfiguration(
     swap_config->swap_api_url = kRopstenSwapAPIURL;
     swap_config->buy_token_percantage_fee = kRopstenBuyTokenPercentageFee;
     swap_config->fee_recipient = kRopstenFeeRecipient;
-  } else {
+  } else if (chain_id == mojom::kMainnetChainId) {
     swap_config->swap_api_url = kSwapAPIURL;
     swap_config->buy_token_percantage_fee = kBuyTokenPercentageFee;
     swap_config->fee_recipient = kFeeRecipient;
+  } else {
+    std::move(callback).Run(nullptr);
+
+    return;
   }
 
   std::move(callback).Run(std::move(swap_config));

@@ -359,6 +359,21 @@ public class Utils {
         return "0x" + bigNumber.toString(16);
     }
 
+    public static String multiplyHexBN(String number1, String number2) {
+        if (number1.startsWith("0x")) {
+            number1 = number1.substring(2);
+        }
+        if (number2.startsWith("0x")) {
+            number2 = number2.substring(2);
+        }
+        BigInteger bigNumber1 = new BigInteger(number1, 16);
+        BigInteger bigNumber2 = new BigInteger(number2, 16);
+
+        BigInteger res = bigNumber1.multiply(bigNumber2);
+
+        return "0x" + res.toString(16);
+    }
+
     public static byte[] hexStrToNumberArray(String value) {
         if (value.startsWith("0x")) {
             value = value.substring(2);

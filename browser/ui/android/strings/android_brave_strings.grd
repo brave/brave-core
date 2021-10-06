@@ -1904,7 +1904,7 @@ until they verify, or until 90 days have passed.
       Kovan
     </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
-      Market Price in ETH
+      Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
     </message>
     <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Price in ETH

@@ -257,6 +257,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController.getChainId(chainId -> {
             assert mSwapController != null;
             mSwapController.getSwapConfiguration(chainId, swapConfig -> {
+                if (swapConfig == null) {
+                    return;
+                }
                 Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                 String from = mCustomAccountAdapter.getTitleAtPosition(
                         accountSpinner.getSelectedItemPosition());
@@ -361,6 +364,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     String.format(Locale.getDefault(), "%.4f", Utils.fromWei(response.buyAmount)));
         }
         marketPriceValueText.setText(response.price);
+        TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
+        String symbol = "ETH";
+        if (mCurrentErcToken != null) {
+            symbol = mCurrentErcToken.symbol;
+        }
+        marketLimitPriceText.setText(String.format(getString(R.string.market_price_in), symbol));
         checkBalanceShowError(response, errorResponse);
     }
 

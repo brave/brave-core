@@ -255,7 +255,7 @@ struct SwapConfig {
 };
 
 interface SwapController {
-  GetSwapConfiguration(string chain_id) => (SwapConfig config);
+  GetSwapConfiguration(string chain_id) => (SwapConfig? config);
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
   GetTransactionPayload(SwapParams params) =>
