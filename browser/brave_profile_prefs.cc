@@ -377,6 +377,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery extension, default false
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
+  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
+  registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
