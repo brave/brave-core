@@ -1077,7 +1077,9 @@ void KeyringController::AddObserver(
 }
 
 void KeyringController::NotifyUserInteraction() {
-  auto_lock_timer_->Reset();
+  if (auto_lock_timer_->IsRunning()) {
+    auto_lock_timer_->Reset();
+  }
 }
 
 void KeyringController::GetSelectedAccount(
