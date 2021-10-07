@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/renderer/eth_request_parser.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <utility>
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
@@ -76,6 +77,10 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   return tx_data;
 }
 
+// Hardcode id to 1 as it is unused
+const uint32_t kRequestId = 1;
+const char kRequestJsonRPC[] = "2.0";
+
 }  // namespace
 
 namespace brave_wallet {
@@ -120,6 +125,59 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
     tx_data->max_fee_per_gas = *max_fee_per_gas;
 
   return tx_data;
+}
+
+bool GetEthJsonRequestInfo(const std::string& json,
+                           std::string* method,
+                           std::string* params) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  if (method) {
+    const std::string* found_method = response_dict->FindStringPath(kMethod);
+    if (!found_method)
+      return false;
+    *method = *found_method;
+  }
+
+  if (params) {
+    const base::Value* found_params = response_dict->FindListPath(kParams);
+    if (!found_params)
+      return false;
+    base::JSONWriter::Write(*found_params, params);
+  }
+
+  return true;
+}
+
+bool NormalizeEthRequest(const std::string& input_json,
+                         std::string* output_json) {
+  CHECK(output_json);
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          input_json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v)
+    return false;
+
+  base::DictionaryValue* out_dict;
+  if (!records_v->GetAsDictionary(&out_dict))
+    return false;
+
+  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
+  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
+  base::JSONWriter::Write(*out_dict, output_json);
+  return true;
 }
 
 }  // namespace brave_wallet

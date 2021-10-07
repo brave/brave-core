@@ -7,12 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/renderer/eth_request_parser.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-TEST(EthRequestParserUnitTest, ParseEthSendTransactionParams) {
+TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   std::string json(
       R"({
         "params": [{
@@ -44,7 +44,7 @@ TEST(EthRequestParserUnitTest, ParseEthSendTransactionParams) {
   EXPECT_FALSE(ParseEthSendTransactionParams("[0]", &from));
 }
 
-TEST(EthResponseParserUnitTest, ParseEthSendTransaction1559Params) {
+TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   std::string json(
       R"({
         "params": [{
@@ -102,6 +102,92 @@ TEST(EthResponseParserUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_FALSE(ParseEthSendTransaction1559Params("[]", &from));
   EXPECT_FALSE(ParseEthSendTransaction1559Params("[[]]", &from));
   EXPECT_FALSE(ParseEthSendTransaction1559Params("[0]", &from));
+}
+
+TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
+  // Happy path
+  std::string json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": "eth_blockNumber",
+    "params": []
+  })";
+  std::string method, params;
+  EXPECT_TRUE(GetEthJsonRequestInfo(json, &method, &params));
+  EXPECT_EQ(method, "eth_blockNumber");
+  EXPECT_EQ(params, "[]");
+
+  json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": "eth_getBlockByNumber",
+    "params": ["0x5BaD55",true]
+  })";
+  method.clear();
+  params.clear();
+  EXPECT_TRUE(GetEthJsonRequestInfo(json, &method, &params));
+  EXPECT_EQ(method, "eth_getBlockByNumber");
+  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+
+  // Can pass nullptr for method
+  params.clear();
+  EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, &params));
+  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+
+  // Can pass nullptr for params
+  method.clear();
+  EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, &params));
+  EXPECT_TRUE(GetEthJsonRequestInfo(json, &method, nullptr));
+  EXPECT_EQ(method, "eth_getBlockByNumber");
+
+  // Missing method
+  std::string missing_method_json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "params": []
+  })";
+  EXPECT_FALSE(GetEthJsonRequestInfo(missing_method_json, &method, &params));
+
+  // Invalid method type
+  std::string wrong_type_method_json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": 1,
+    "params": []
+  })";
+  EXPECT_FALSE(GetEthJsonRequestInfo(wrong_type_method_json, &method, &params));
+
+  // Invalid params type
+  std::string wrong_type_params_json = R"({
+    "id": 1,
+    "jsonrpc": "2.0",
+    "method": "eth_getBlockByNumber",
+    "params": 1
+  })";
+  EXPECT_FALSE(GetEthJsonRequestInfo(wrong_type_params_json, &method, &params));
+
+  // Not even JSON
+  std::string invalid_input = "Your sound card works perfectly!";
+  EXPECT_FALSE(GetEthJsonRequestInfo(invalid_input, &method, &params));
+}
+
+TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
+  // Identity works
+  std::string full_json =
+      "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":"
+      "[]}";
+  std::string output_json;
+  EXPECT_TRUE(NormalizeEthRequest(full_json, &output_json));
+  EXPECT_EQ(full_json, output_json);
+
+  // Fills missing id and jsonrpc values
+  std::string partial_json = "{\"method\":\"eth_blockNumber\",\"params\":[]}";
+  EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
+  EXPECT_EQ(full_json, output_json);
+
+  // Invalid input
+  EXPECT_FALSE(NormalizeEthRequest(
+      "There is only one thing we say to death: Not today.", &output_json));
 }
 
 }  // namespace brave_wallet
