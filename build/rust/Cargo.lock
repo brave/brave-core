@@ -29,7 +29,7 @@ dependencies = [
 name = "adblock-ffi"
 version = "0.1.0"
 dependencies = [
- "adblock 0.4.0",
+ "adblock",
  "libc",
  "serde_json",
 ]
