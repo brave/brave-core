@@ -18,7 +18,6 @@ constexpr const char* kWhitelistedUrlProtocols[] = {
 // Before adding to this list, get approval from the security team.
 constexpr const char* kWhitelistedUrlPrefixes[] = {
     // allowed because it 307's to https://componentupdater.brave.com
-    "http://componentupdater.brave.com/service/update2",
     "https://componentupdater.brave.com/service/update2",
     "https://crlsets.brave.com/",
     "https://crxdownload.brave.com/crx/blobs/",
