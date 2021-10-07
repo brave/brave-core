@@ -15,5 +15,6 @@ static_library("ipfs") {
     "//brave/components/child_process_monitor",
     "//brave/components/services/ipfs/public/mojom",
     "//mojo/public/cpp/bindings",
+    "//third_party/re2",
   ]
 }
