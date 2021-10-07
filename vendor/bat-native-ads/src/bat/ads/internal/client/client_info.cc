@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/client/client_info.h"
 
+#include "base/check.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 
@@ -62,6 +63,8 @@ bool ClientInfo::FromJson(const std::string& json) {
     for (const auto& segment_history :
          document["purchaseIntentSignalHistory"].GetObject()) {
       std::string segment = segment_history.name.GetString();
+      DCHECK(!segment.empty());
+
       std::deque<ad_targeting::PurchaseIntentSignalHistoryInfo> histories;
       for (const auto& segment_history_item :
            segment_history.value.GetArray()) {
@@ -73,6 +76,7 @@ bool ClientInfo::FromJson(const std::string& json) {
           histories.push_back(history);
         }
       }
+
       purchase_intent_signal_history.insert({segment, histories});
     }
   }
@@ -118,6 +122,8 @@ bool ClientInfo::FromJson(const std::string& json) {
       for (const auto& probability :
            probabilities["textClassificationProbabilities"].GetArray()) {
         const std::string segment = probability["segment"].GetString();
+        DCHECK(!segment.empty());
+
         const double page_score = probability["pageScore"].GetDouble();
 
         new_probabilities.insert({segment, page_score});
@@ -208,6 +214,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
 
       writer->String("segment");
       const std::string segment = probability.first;
+      DCHECK(!segment.empty());
       writer->String(segment.c_str());
 
       writer->String("pageScore");

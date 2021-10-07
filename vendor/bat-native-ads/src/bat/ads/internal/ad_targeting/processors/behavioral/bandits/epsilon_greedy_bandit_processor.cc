@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
@@ -82,7 +83,10 @@ EpsilonGreedyBandit::EpsilonGreedyBandit() {
 EpsilonGreedyBandit::~EpsilonGreedyBandit() = default;
 
 void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
+  DCHECK(!feedback.segment.empty());
+
   const std::string segment = GetParentSegment(feedback.segment);
+  DCHECK(!segment.empty());
 
   switch (feedback.ad_event_type) {
     case mojom::AdNotificationEventType::kTimedOut:

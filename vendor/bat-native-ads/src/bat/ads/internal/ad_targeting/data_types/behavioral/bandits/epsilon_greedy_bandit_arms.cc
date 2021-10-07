@@ -44,6 +44,7 @@ bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
     return false;
   }
   arm.segment = *segment;
+  DCHECK(!arm.segment.empty());
 
   arm.pulls = dictionary->FindIntKey(kPullsKey).value_or(0);
 

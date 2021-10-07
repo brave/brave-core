@@ -32,7 +32,10 @@ SegmentList ReadSegments(const std::string& json) {
       continue;
     }
 
-    segments.push_back(element.GetString());
+    const std::string segment = element.GetString();
+    DCHECK(!segment.empty());
+
+    segments.push_back(segment);
   }
 
   return segments;
