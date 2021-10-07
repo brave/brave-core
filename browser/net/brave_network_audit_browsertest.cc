@@ -30,7 +30,7 @@ namespace {
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-const int kMaxTimeoutPerLoadedURL = 120000;
+const int kMaxTimeoutPerLoadedURL = 300000;
 
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
