@@ -507,6 +507,10 @@ class SettingsViewController: TableViewController {
         return Static.Section(
             rows: [
                 Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
+                Row(text: "Sandbox Inspector", selection: { [unowned self] in
+                    let vc = UIHostingController(rootView: SandboxInspectorView())
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }, accessory: .disclosureIndicator),
                 Row(text: "Adblock Debug", selection: { [unowned self] in
                     let vc = AdblockDebugMenuTableViewController(style: .grouped)
                     self.navigationController?.pushViewController(vc, animated: true)
