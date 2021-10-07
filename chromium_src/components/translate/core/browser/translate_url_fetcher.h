@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_TRANSLATE_CORE_BROWSER_TRANSLATE_URL_FETCHER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_TRANSLATE_CORE_BROWSER_TRANSLATE_URL_FETCHER_H_
 
-#include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "../../../../../../components/translate/core/browser/translate_url_fetcher.h"

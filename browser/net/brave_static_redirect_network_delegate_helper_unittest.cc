@@ -10,8 +10,8 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/translate_network_constants.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"

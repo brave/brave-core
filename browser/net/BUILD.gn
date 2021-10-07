@@ -1,9 +1,10 @@
-import("//brave/browser/translate/buildflags/buildflags.gni")
+
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/translate/core/browser/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("net") {
@@ -49,7 +50,6 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
-    "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
@@ -59,6 +59,7 @@ source_set("net") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/decentralized_dns/buildflags",
     "//brave/components/ipfs/buildflags",
+    "//brave/components/translate/core/browser:buildflags",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
     "//components/prefs",

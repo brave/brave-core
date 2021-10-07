@@ -11,9 +11,6 @@
 
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 
-#include "brave/browser/translate/buildflags/buildflags.h"
-#include "extensions/buildflags/buildflags.h"
-
 class BraveTranslateIconView;
 
 // The purpose of this subclass is to repurpose the translate bubble to install

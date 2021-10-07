@@ -7,9 +7,9 @@
 
 #include "base/test/bind.h"
 #include "brave/browser/tor/tor_profile_manager.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -20,7 +20,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
@@ -75,7 +76,8 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kWebTorrentEnabled));
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   // Check translate.enabled for translate bubble.
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));

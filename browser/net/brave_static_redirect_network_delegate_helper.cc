@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/strings/string_piece_forward.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/translate_network_constants.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 

@@ -1,6 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
-import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
@@ -17,6 +16,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/translate/core/browser/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -169,7 +169,6 @@ test("brave_unit_tests") {
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
     "//brave/browser/tor:unit_tests",
-    "//brave/browser/translate/buildflags",
     "//brave/browser/ui",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/sidebar:unit_tests",
@@ -217,6 +216,7 @@ test("brave_unit_tests") {
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
+    "//brave/components/translate/core/browser:buildflags",
     "//brave/components/weekly_storage",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net/proxy_resolution:unit_tests",

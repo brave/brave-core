@@ -1,11 +1,21 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/translate/core/browser/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_TRANSLATE_GO=$enable_brave_translate_go",
+    "ENABLE_BRAVE_TRANSLATE_EXTENSION=$enable_brave_translate_extension",
+  ]
+}
+
 source_set("browser") {
   sources = [
     "brave_translate_language_filter.cc",
     "brave_translate_language_filter.h",
   ]
-  deps = [ "//base" ]
-  public_deps = [
-    # TODO(jocelyn): move buildflags to brave/components/translate/core/browser
-    "//brave/browser/translate/buildflags",
+  deps = [
+    ":buildflags",
+    "//base",
   ]
 }

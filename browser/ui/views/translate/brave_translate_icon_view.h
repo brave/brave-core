@@ -11,7 +11,7 @@
 #include "chrome/browser/ui/views/translate/translate_icon_view.h"
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/buildflags/buildflags.h"
 

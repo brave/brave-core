@@ -11,7 +11,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
