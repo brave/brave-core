@@ -10,8 +10,12 @@
 
 namespace translate {
 
+// Returns true if the source language |lang_code| is supported by Brave
+// backend.
 bool IsSourceLanguageCodeSupported(const std::string& lang_code);
 
+// Returns true if the target language |lang_code| is supported by Brave
+// backend.
 bool IsTargetLanguageCodeSupported(const std::string& lang_code);
 
 }  // namespace translate

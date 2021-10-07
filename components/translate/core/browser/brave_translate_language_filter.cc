@@ -8,12 +8,16 @@
 namespace translate {
 
 bool IsSourceLanguageCodeSupported(const std::string& lang_code) {
-  return lang_code == "fr" || lang_code == "en" || lang_code == "de" ||
-         lang_code == "und";
+  // Note: keep sync with language/language.go (brave/go-translate repo)
+  return lang_code == "und" || lang_code == "en" || lang_code == "es" ||
+         lang_code == "et" || lang_code == "it" || lang_code == "pt" ||
+         lang_code == "ru";
 }
 
 bool IsTargetLanguageCodeSupported(const std::string& lang_code) {
-  return lang_code == "en" || lang_code == "ru";
+  // Note: keep sync with language/language.go (brave/go-translate repo)
+  return lang_code == "de" || lang_code == "en" || lang_code == "es" ||
+         lang_code == "et" || lang_code == "ru";
 }
 
 }  // namespace translate
