@@ -243,13 +243,19 @@
     <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_NEW_PASSWORD" desc="Import external wallet screen new password title">A more secure password is required for Brave Wallet</message>
     <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_CREATE_PASSWORD" desc="Import external wallet screen password title">Set a Brave wallet password</message>
     <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_PASSWORD_CHECK" desc="Import external wallet screen same password button">Use the same password</message>
-    <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_TITLE" desc="Import MetaMask screen title">Import from MetaMask</message>
-    <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_DESCRIPTION" desc="Import MetaMask screen description">Import your MetaMask accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_TITLE" desc="Import MetaMask screen title">MetaMask</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_TITLE" desc="Import screen title">Import from</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_DESCRIPTION_ONE" desc="Import MetaMask screen description first half">Import your</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_DESCRIPTION_TWO" desc="Import MetaMask screen description second half"> MetaMask accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</message>
     <message name="IDS_BRAVE_WALLET_IMPORT_META_MASK_INPUT" desc="Import MetaMask screen password input placeholder">MetaMask password</message>
-    <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_TITLE" desc="Import CryptoWallets screen title">Existing crypto wallets detected</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_TITLE" desc="Import CryptoWallets screen title">crypto wallets</message>
+    <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
+    <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_ONE" desc="Wallet welcome screen detected crypto wallets first description">When you click &quot;Get started&quot; you&apos;ll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!</message>
+    <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO_FIRST" desc="Wallet welcome screen detected crypto wallets second description first half">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser</message>
+    <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO_SECOND" desc="Wallet welcome screen detected crypto wallets second description second half">and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
     <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</message>
     <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_INPUT" desc="Import CryptoWallets screen password input placeholder">Crypto wallets password</message>
-    <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_ALT_BUTTON" desc="Import CryptoWallets screen lost password button">I’ve lost my password and recovery phrase</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_ALT_BUTTON" desc="Import CryptoWallets screen lost password button">I’ve lost my password and recovery phrase, create a new wallet.</message>
     <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status">connected</message>
     <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status">disconnected</message>
     <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>

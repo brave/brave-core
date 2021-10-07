@@ -4,10 +4,9 @@ import {
   StyledWrapper,
   Title,
   Description,
-  IconBackground,
-  PageIcon,
   TermsRow,
-  SkipButton
+  SkipButton,
+  PageIcon
 } from './style'
 import { NavButton } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
@@ -26,9 +25,7 @@ function OnboardingRecovery (props: Props) {
 
   return (
     <StyledWrapper>
-      <IconBackground>
-        <PageIcon />
-      </IconBackground>
+      <PageIcon />
       <Title>{getLocale('braveWalletBackupIntroTitle')}</Title>
       <Description>{getLocale('braveWalletBackupIntroDescription')}</Description>
       <TermsRow>

@@ -310,15 +310,21 @@ provideStrings({
   braveWalletImportFromExternalPasswordCheck: 'Use the same password',
 
   // Import from MetaMask
-  braveWalletImportMetaMaskTitle: 'Import from MetaMask',
-  braveWalletImportMetaMaskDescription: 'Import your MetaMask accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
+  braveWalletImportTitle: 'Import from',
+  braveWalletImportMetaMaskTitle: 'MetaMask',
+  braveWalletImportDescriptionOne: 'Import your',
+  braveWalletImportDescriptionTwo: 'accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
   braveWalletImportMetaMaskInput: 'MetaMask password',
 
   // Import from Legacy Wallet
-  braveWalletImportBraveLegacyTitle: 'Existing crypto wallets detected',
+  braveWalletImportBraveLegacyTitle: 'crypto wallets',
+  braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
+  braveWalletCryptoWalletsDescriptionOne: 'When you click Get started youll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!',
+  braveWalletCryptoWalletsDescriptionTwoFirst: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser',
+  braveWalletCryptoWalletsDescriptionTwoSecond: 'and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
   braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
   braveWalletImportBraveLegacyInput: 'Crypto wallets password',
-  braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase',
+  braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase, create a new wallet.',
 
   // Connect Hardware Wallet Panel
   braveWalletConnectHardwarePanelConnected: 'connected',

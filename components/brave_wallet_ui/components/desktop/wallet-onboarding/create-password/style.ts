@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LockIcon from '../../../../assets/svg-icons/graphic-lock-icon.svg'
+import SecureIcon from '../../../../assets/svg-icons/onboarding/secure-your-crypto.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -46,9 +46,11 @@ export const IconBackground = styled.div`
 `
 
 export const PageIcon = styled.div`
-  width: 103px;
-  height: 88px;
-  background: url(${LockIcon});
+  width: 176px;
+  height: 160px;
+  background: url(${SecureIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
 `
 
 export const InputColumn = styled.div`
