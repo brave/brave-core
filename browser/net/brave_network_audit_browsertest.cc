@@ -241,7 +241,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   ASSERT_TRUE(embedded_test_server()->Start());
   GURL simple_url(embedded_test_server()->GetURL("/simple.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
-
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
