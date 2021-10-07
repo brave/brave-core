@@ -64,10 +64,12 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
                  v8::Isolate* isolate,
                  v8::Global<v8::Context> context_old,
+                 base::Value id,
                  const int http_code,
                  const std::string& response,
                  const base::flat_map<std::string, std::string>& headers);
   void OnSendAsync(std::unique_ptr<v8::Global<v8::Function>> callback,
+                   base::Value id,
                    const int http_code,
                    const std::string& response,
                    const base::flat_map<std::string, std::string>& headers);

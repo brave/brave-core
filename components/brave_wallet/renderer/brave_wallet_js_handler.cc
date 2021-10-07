@@ -10,8 +10,6 @@
 
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -86,6 +84,7 @@ void OnEthereumPermissionRequested(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
+    base::Value id,
     bool success,
     const std::vector<std::string>& accounts) {
   v8::HandleScope handle_scope(isolate);
@@ -103,7 +102,7 @@ void OnEthereumPermissionRequested(
         !success ? "Internal JSON-RPC error" : "User rejected the request.";
 
     std::unique_ptr<base::Value> formed_response;
-    formed_response = FormProviderResponse(code, message);
+    formed_response = GetProviderErrorDictionary(code, message);
 
     v8::Local<v8::Value> result;
     result = content::V8ValueConverter::Create()->ToV8Value(
@@ -126,6 +125,7 @@ void OnEthereumPermissionRequested(
 void OnGetAllowedAccounts(v8::Global<v8::Promise::Resolver> promise_resolver,
                           v8::Isolate* isolate,
                           v8::Global<v8::Context> context_old,
+                          base::Value id,
                           bool success,
                           const std::vector<std::string>& accounts) {
   v8::HandleScope handle_scope(isolate);
@@ -140,7 +140,7 @@ void OnGetAllowedAccounts(v8::Global<v8::Promise::Resolver> promise_resolver,
         brave_wallet::ProviderErrors::kInternalError;
     std::string message = "Internal JSON-RPC error";
     std::unique_ptr<base::Value> formed_response;
-    formed_response = FormProviderResponse(code, message);
+    formed_response = GetProviderErrorDictionary(code, message);
 
     v8::Local<v8::Value> result;
     result = content::V8ValueConverter::Create()->ToV8Value(
@@ -163,6 +163,7 @@ void OnGetAllowedAccounts(v8::Global<v8::Promise::Resolver> promise_resolver,
 void OnAddEthereumChain(v8::Global<v8::Promise::Resolver> promise_resolver,
                         v8::Isolate* isolate,
                         v8::Global<v8::Context> context_old,
+                        base::Value id,
                         bool success,
                         int provider_error,
                         const std::string& error_message) {
@@ -175,16 +176,17 @@ void OnAddEthereumChain(v8::Global<v8::Promise::Resolver> promise_resolver,
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (success) {
     base::Value value;
-    auto response = brave_wallet::ToProviderResponse(&value, nullptr);
+    auto response =
+        brave_wallet::ToProviderResponse(std::move(id), &value, nullptr);
     v8::Local<v8::Value> result =
         content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
     ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
   } else {
-    auto error_response = FormProviderResponse(
+    auto error_response = GetProviderErrorDictionary(
         static_cast<brave_wallet::ProviderErrors>(provider_error),
         error_message);
-    auto response =
-        brave_wallet::ToProviderResponse(nullptr, error_response.get());
+    auto response = brave_wallet::ToProviderResponse(std::move(id), nullptr,
+                                                     error_response.get());
     v8::Local<v8::Value> result =
         content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
     ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
@@ -195,6 +197,7 @@ void OnAddUnapprovedTransaction(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
+    base::Value id,
     bool success,
     const std::string& tx_meta_id,
     const std::string& error_message) {
@@ -208,11 +211,12 @@ void OnAddUnapprovedTransaction(
   std::unique_ptr<base::Value> response;
   if (success) {
     base::Value value("0x0");
-    response = brave_wallet::ToProviderResponse(&value, nullptr);
+    response = brave_wallet::ToProviderResponse(std::move(id), &value, nullptr);
   } else {
-    auto error_response = FormProviderResponse(
+    auto error_response = GetProviderErrorDictionary(
         brave_wallet::ProviderErrors::kInvalidParams, error_message);
-    response = brave_wallet::ToProviderResponse(nullptr, error_response.get());
+    response = brave_wallet::ToProviderResponse(std::move(id), nullptr,
+                                                error_response.get());
   }
 
   v8::Local<v8::Value> result;
@@ -354,13 +358,17 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
   if (!NormalizeEthRequest(input_json, &normalized_json_request))
     return;
 
+  base::Value id;
+  if (!GetEthJsonRequestInfo(input_json, &id, nullptr, nullptr))
+    return;
+
   auto global_callback =
       std::make_unique<v8::Global<v8::Function>>(isolate, callback);
 
   brave_wallet_provider_->Request(
       normalized_json_request, true,
       base::BindOnce(&BraveWalletJSHandler::OnSendAsync, base::Unretained(this),
-                     std::move(global_callback)));
+                     std::move(global_callback), std::move(id)));
 }
 
 v8::Local<v8::Value> BraveWalletJSHandler::IsConnected() {
@@ -399,7 +407,8 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     return v8::Local<v8::Promise>();
 
   std::string method;
-  if (!GetEthJsonRequestInfo(input_json, nullptr, &method, nullptr))
+  base::Value id;
+  if (!GetEthJsonRequestInfo(input_json, &id, &method, nullptr))
     return v8::Local<v8::Promise>();
 
   std::string normalized_json_request;
@@ -409,16 +418,16 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
   if (method == kEthAccounts) {
     brave_wallet_provider_->GetAllowedAccounts(
         base::BindOnce(&OnGetAllowedAccounts, std::move(promise_resolver),
-                       isolate, std::move(context_old)));
+                       isolate, std::move(context_old), std::move(id)));
   } else if (method == kEthRequestAccounts) {
     brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
         &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
-        std::move(context_old)));
+        std::move(context_old), std::move(id)));
   } else if (method == kAddEthereumChainMethod) {
     brave_wallet_provider_->AddEthereumChain(
         normalized_json_request,
         base::BindOnce(&OnAddEthereumChain, std::move(promise_resolver),
-                       isolate, std::move(context_old)));
+                       isolate, std::move(context_old), std::move(id)));
   } else if (method == kEthSendTransaction) {
     std::string from;
     auto tx_data =
@@ -429,14 +438,13 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
     brave_wallet_provider_->AddUnapprovedTransaction(
         std::move(tx_data), from,
         base::BindOnce(&OnAddUnapprovedTransaction, std::move(promise_resolver),
-                       isolate, std::move(context_old)));
+                       isolate, std::move(context_old), std::move(id)));
   } else {
-    return v8::Local<v8::Promise>();
     brave_wallet_provider_->Request(
         normalized_json_request, true,
         base::BindOnce(&BraveWalletJSHandler::OnRequest, base::Unretained(this),
                        std::move(promise_resolver), isolate,
-                       std::move(context_old)));
+                       std::move(context_old), std::move(id)));
   }
 
   return resolver.ToLocalChecked()->GetPromise();
@@ -446,6 +454,7 @@ void BraveWalletJSHandler::OnRequest(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
+    base::Value id,
     const int http_code,
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
@@ -456,17 +465,9 @@ void BraveWalletJSHandler::OnRequest(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
-  bool reject = http_code != 200;
-  ProviderErrors code = ProviderErrors::kDisconnected;
-  std::string message;
-  std::unique_ptr<base::Value> formed_response;
-  if (reject) {
-    code = ProviderErrors::kUnsupportedMethod;
-    message = "HTTP Status code: " + base::NumberToString(http_code);
-    formed_response = FormProviderResponse(code, message);
-  } else {
-    formed_response = FormProviderResponse(response, false, &reject);
-  }
+  bool reject;
+  std::unique_ptr<base::Value> formed_response =
+      GetProviderRequestReturnFromEthJsonResponse(http_code, response, &reject);
   v8::Local<v8::Value> result;
   if (formed_response) {
     result = content::V8ValueConverter::Create()->ToV8Value(
@@ -497,13 +498,14 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
   brave_wallet_provider_->RequestEthereumPermissions(base::BindOnce(
       &OnEthereumPermissionRequested, std::move(promise_resolver), isolate,
-      std::move(context_old)));
+      std::move(context_old), base::Value()));
 
   return resolver.ToLocalChecked()->GetPromise();
 }
 
 void BraveWalletJSHandler::OnSendAsync(
     std::unique_ptr<v8::Global<v8::Function>> callback,
+    base::Value id,
     const int http_code,
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
@@ -517,17 +519,10 @@ void BraveWalletJSHandler::OnSendAsync(
   v8::Local<v8::Function> callback_local =
       v8::Local<v8::Function>::New(isolate, *callback);
 
-  bool reject = http_code != 200;
-  ProviderErrors code = ProviderErrors::kDisconnected;
-  std::string message;
-  std::unique_ptr<base::Value> formed_response;
-  if (reject) {
-    code = ProviderErrors::kUnsupportedMethod;
-    message = "HTTP Status code: " + base::NumberToString(http_code);
-    formed_response = FormProviderResponse(code, message);
-  } else {
-    formed_response = FormProviderResponse(response, true, &reject);
-  }
+  bool reject;
+  std::unique_ptr<base::Value> formed_response =
+      GetProviderSendAsyncReturnFromEthJsonResponse(http_code, std::move(id),
+                                                    response, &reject);
   v8::Local<v8::Value> result;
   if (formed_response) {
     result = content::V8ValueConverter::Create()->ToV8Value(

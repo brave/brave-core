@@ -14,15 +14,26 @@
 
 namespace brave_wallet {
 
-std::unique_ptr<base::Value> FormProviderResponse(ProviderErrors code,
-                                                  const std::string& message);
-std::unique_ptr<base::Value> FormProviderResponse(
+std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
+    int http_code,
     const std::string& controller_response,
-    const bool send_async,
     bool* reject);
-std::string FormProviderErrorResponse(const std::string& controller_response);
-std::unique_ptr<base::Value> ToProviderResponse(base::Value* result,
+std::unique_ptr<base::Value> GetProviderSendAsyncReturnFromEthJsonResponse(
+    int http_code,
+    base::Value id,
+    const std::string& controller_response,
+    bool* reject);
+std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
+                                                base::Value* result,
                                                 base::Value* error);
+
+std::unique_ptr<base::Value> GetJsonRpcErrorResponse(
+    base::Value id,
+    base::Value error_dictionary);
+std::unique_ptr<base::Value> GetProviderErrorDictionary(
+    ProviderErrors code,
+    const std::string& message);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_BRAVE_WALLET_RESPONSE_HELPERS_H_
