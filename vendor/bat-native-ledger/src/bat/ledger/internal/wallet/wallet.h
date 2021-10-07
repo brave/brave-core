@@ -49,7 +49,8 @@ class Wallet {
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
-  type::BraveWalletPtr GetWallet(bool create = false);
+  type::BraveWalletPtr GetWallet();
+  type::BraveWalletPtr GetWallet(bool* corrupted);
 
   bool SetWallet(type::BraveWalletPtr wallet);
 

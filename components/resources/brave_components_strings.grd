@@ -592,6 +592,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Wallet address:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Wallet info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Wallet was not yet created</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet payment ID:</message>

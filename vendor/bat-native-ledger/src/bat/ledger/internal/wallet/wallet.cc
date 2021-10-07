@@ -16,7 +16,6 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bitflyer/bitflyer.h"
 #include "bat/ledger/internal/bitflyer/bitflyer_util.h"
-#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/state/state_keys.h"
@@ -240,30 +239,28 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
   callback(type::Result::LEDGER_OK);
 }
 
-type::BraveWalletPtr Wallet::GetWallet(bool create) {
+type::BraveWalletPtr Wallet::GetWallet(bool* corrupted) {
+  DCHECK(corrupted);
+  *corrupted = false;
+
   const std::string json =
       ledger_->ledger_client()->GetStringState(state::kWalletBrave);
 
   if (json.empty()) {
-    if (create) {
-      auto wallet = type::BraveWallet::New();
-      wallet->recovery_seed = util::Security::GenerateSeed();
-      if (SetWallet(wallet->Clone()))
-        return wallet;
-    }
-
     return nullptr;
   }
 
   absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of brave wallet failed");
+    *corrupted = true;
     return nullptr;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Parsing of brave wallet failed");
+    *corrupted = true;
     return nullptr;
   }
 
@@ -271,18 +268,20 @@ type::BraveWalletPtr Wallet::GetWallet(bool create) {
 
   auto* payment_id = dictionary->FindStringKey("payment_id");
   if (!payment_id) {
+    *corrupted = true;
     return nullptr;
   }
   wallet->payment_id = *payment_id;
 
   auto* seed = dictionary->FindStringKey("recovery_seed");
   if (!seed) {
+    *corrupted = true;
     return nullptr;
   }
   std::string decoded_seed;
   if (!base::Base64Decode(*seed, &decoded_seed)) {
     BLOG(0, "Problem decoding recovery seed");
-    NOTREACHED();
+    *corrupted = true;
     return nullptr;
   }
 
@@ -291,6 +290,11 @@ type::BraveWalletPtr Wallet::GetWallet(bool create) {
   wallet->recovery_seed = vector_seed;
 
   return wallet;
+}
+
+type::BraveWalletPtr Wallet::GetWallet() {
+  bool corrupted;
+  return GetWallet(&corrupted);
 }
 
 bool Wallet::SetWallet(type::BraveWalletPtr wallet) {
