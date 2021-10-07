@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -303,6 +304,25 @@ public class BraveWalletActivity
         tabLayout.setupWithViewPager(viewPager);
 
         if (swapButton != null) swapButton.setVisibility(View.VISIBLE);
+
+        if (mKeyringController != null)
+            mKeyringController.isWalletBackedUp(backed_up -> {
+                if (!backed_up) {
+                    showWalletBackupBanner();
+                }
+            });
+    }
+
+    private void showWalletBackupBanner() {
+        final ViewGroup backupTopBannerLayout = (ViewGroup) findViewById(R.id.wallet_backup_banner);
+        backupTopBannerLayout.setVisibility(View.VISIBLE);
+        ImageView bannerClose = backupTopBannerLayout.findViewById(R.id.backup_banner_close);
+        bannerClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backupTopBannerLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
