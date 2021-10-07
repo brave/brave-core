@@ -30,10 +30,13 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
+class EthJsonRpcController;
+
 class SwapController : public KeyedService, public mojom::SwapController {
  public:
   SwapController(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      EthJsonRpcController* eth_json_rpc_controller);
   ~SwapController() override;
   SwapController(const SwapController&) = delete;
   SwapController& operator=(const SwapController&) = delete;
@@ -41,9 +44,6 @@ class SwapController : public KeyedService, public mojom::SwapController {
   mojo::PendingRemote<mojom::SwapController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SwapController> receiver);
 
-  // SwapController interface overrides
-  void GetSwapConfiguration(const std::string& chain_id,
-                            GetSwapConfigurationCallback callback) override;
   // Obtians a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      GetPriceQuoteCallback callback) override;
@@ -51,8 +51,10 @@ class SwapController : public KeyedService, public mojom::SwapController {
   void GetTransactionPayload(mojom::SwapParamsPtr swap_params,
                              GetTransactionPayloadCallback callback) override;
 
-  static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params);
-  static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params);
+  static GURL GetPriceQuoteURL(const mojom::SwapParamsPtr swap_params,
+                               const std::string& chain_id);
+  static GURL GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
+                                       const std::string& chain_id);
   static void SetBaseURLForTest(const GURL& base_url_for_test);
 
  private:
@@ -69,6 +71,7 @@ class SwapController : public KeyedService, public mojom::SwapController {
   static GURL base_url_for_test_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
+  EthJsonRpcController* rpc_controller_;  // NOT OWNED
   mojo::ReceiverSet<mojom::SwapController> receivers_;
 
   base::WeakPtrFactory<SwapController> weak_ptr_factory_;

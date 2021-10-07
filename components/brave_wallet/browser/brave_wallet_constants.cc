@@ -8,6 +8,5 @@
 namespace brave_wallet {
 
 const char kAssetRatioBaseURL[] = "https://ratios.rewards.brave.com/";
-const char kSwapBaseURL[] = "https://api.0x.org/";
 
 }  // namespace brave_wallet
