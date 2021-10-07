@@ -174,7 +174,6 @@ program
   .option('--brave_ads_staging', 'ads staging')
   .option('--brave_ads_debug', 'ads debug')
   .option('--single_process', 'use a single process')
-  .option('--network_log', 'log network activity to network_log.json')
   .option('--output_path [pathname]', 'use the Brave binary located at [pathname]')
   .arguments('[build_config]')
   .action(start.bind(null, parsedArgs.unknown))

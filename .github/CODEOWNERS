@@ -103,8 +103,7 @@ patches/*.java.patch @samartnik
 third_party/bitcoin-core/BUILD.gn @orspetol
 
 # Network auditor
-build/commands/lib/whitelistedUrlPatterns.js @brave/sec-team
-build/commands/lib/whitelistedUrlPrefixes.js @brave/sec-team
+browser/net/brave_network_audit_whitelists.h @brave/sec-team
 
 # iOS
 ios/ @brave/ios

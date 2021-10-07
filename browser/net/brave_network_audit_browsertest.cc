@@ -9,6 +9,7 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/net/brave_network_audit_whitelists.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -18,94 +19,6 @@
 
 namespace brave {
 namespace {
-
-constexpr const char* kWhitelistedUrlProtocols[] = {
-    "chrome-extension", "chrome", "brave", "file", "data", "blob",
-};
-
-// Keep on sync with //brave/build/commands/lib/whitelistedUrlPrefixes.js
-constexpr const char* kWhitelistedUrlPrefixes[] = {
-    // allowed because it 307's to https://componentupdater.brave.com
-    "http://componentupdater.brave.com/service/update2",
-    "https://componentupdater.brave.com/service/update2",
-    "https://crlsets.brave.com/",
-    "https://crxdownload.brave.com/crx/blobs/",
-
-    // Omaha/Sparkle
-    "https://updates.bravesoftware.com/",
-
-    // stats/referrals
-    "https://laptop-updates.brave.com/",
-
-    // needed for DoH on Mac build machines
-    "https://dns.google/dns-query",
-    "https://chrome.cloudflare-dns.com/dns-query",
-
-    // for fetching tor client updater component
-    "https://tor.bravesoftware.com/",
-
-    // brave sync v2 production
-    "https://sync-v2.brave.com/v2",
-
-    // brave sync v2 staging
-    "https://sync-v2.bravesoftware.com/v2",
-
-    // brave sync v2 dev
-    "https://sync-v2.brave.software/v2",
-
-    // brave A/B testing
-    "https://variations.brave.com/seed",
-
-    // Brave Today (production)
-    "https://brave-today-cdn.brave.com/",
-
-    // Brave's Privacy-focused CDN
-    "https://pcdn.brave.com/",
-
-    // allowed because it 307's to go-updater.brave.com. should never actually
-    // connect to googleapis.com.
-    "http://update.googleapis.com/service/update2",
-    "https://update.googleapis.com/service/update2",
-
-    // allowed because it 307's to safebrowsing.brave.com
-    "https://safebrowsing.googleapis.com/v4/threatListUpdates",
-    "https://clients2.googleusercontent.com/crx/blobs/",
-
-    // allowed because it 307's to redirector.brave.com
-    "http://dl.google.com/",
-    "https://dl.google.com/",
-
-    // fake gaia URL
-    "https://no-thanks.invalid/",
-
-    // Other
-    "https://brave-core-ext.s3.brave.com/",
-    "https://go-updater.brave.com/",
-    "https://p3a.brave.com/",
-    "https://redirector.brave.com/",
-    "https://safebrowsing.brave.com/",
-    "https://static.brave.com/",
-    "https://static1.brave.com/",
-};
-
-// Keep on sync with brave/build/commands/lib/whitelistedUrlPatterns.js
-constexpr const char* kWhitelistedUrlPatterns[] = {
-    // allowed because it 307's to redirector.brave.com
-    "http://[A-Za-z0-9-\\.]+\\.gvt1\\.com/edgedl/release2/.+",
-    "https://[A-Za-z0-9-\\.]+\\.gvt1\\.com/edgedl/release2/.+",
-
-    // allowed because it 307's to crlsets.brave.com
-    "http://www.google.com/dl/release2/chrome_component/.+crl-set.+",
-    "https://www.google.com/dl/release2/chrome_component/.+crl-set.+",
-    "http://storage.googleapis.com/update-delta/"
-    "hfnkpimlhhgieaddgfemjhofmfblmnib/.+crxd",
-    "https://storage.googleapis.com/update-delta/"
-    "hfnkpimlhhgieaddgfemjhofmfblmnib/.+crxd",
-
-    // allowed because it's url for fetching super referral's mapping table
-    "https://mobile-data.s3.brave.com/superreferrer/map-table.json",
-    "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",
-};
 
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
