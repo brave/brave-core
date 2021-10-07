@@ -91,6 +91,13 @@ class BraveSearchTest : public InProcessBrowserTest {
     ASSERT_TRUE(https_server_->Start());
     GURL url = https_server()->GetURL("a.com", "/search");
     brave_search::BraveSearchFallbackHost::SetBackupProviderForTest(url);
+
+    // Force default search engine to Google
+    // Some tests will fail if Brave is default
+    auto* template_url_service =
+        TemplateURLServiceFactory::GetForProfile(browser()->profile());
+    TemplateURL* google = template_url_service->GetTemplateURLForKeyword(u":g");
+    template_url_service->SetUserSelectedDefaultSearchProvider(google);
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
