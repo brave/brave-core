@@ -9,12 +9,18 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/test_timeouts.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/net/brave_network_audit_whitelists.h"
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -169,6 +175,24 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
  public:
   BraveNetworkAuditTest() = default;
 
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+
+    ASSERT_TRUE(embedded_test_server()->Start());
+
+    // Create and start the Rewards service
+    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
+        brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
+    base::RunLoop run_loop;
+    rewards_service_->StartProcess(run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  void TearDownOnMainThread() override {
+    rewards_service_->Shutdown();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     base::FilePath source_root_path;
     base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root_path);
@@ -189,6 +213,15 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     VerifyNetworkAuditLog();
   }
+
+  bool EnableBraveRewards() {
+    PrefService* pref_service = profile()->GetPrefs();
+    pref_service->SetInteger("brave.rewards.version", 7);
+    pref_service->SetBoolean("brave.rewards.enabled", true);
+    return pref_service->GetBoolean("brave.rewards.enabled");
+  }
+
+  Profile* profile() { return browser()->profile(); }
 
  private:
   // Verify that the netlog file was written, appears to be well formed, and
@@ -226,6 +259,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::PathExists(audit_results_path_));
   }
 
+  brave_rewards::RewardsServiceImpl* rewards_service_;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
 
@@ -233,14 +267,21 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 };
 
 // Loads brave://welcome first to simulate a first run and then loads another
-// URL, waiting some time after each load to allow gathering network requests.
+// URL, and finally enables brave rewards, waiting some time after each load to
+// allow gathering network requests.
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
+  // Load the Welcome page.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 
-  ASSERT_TRUE(embedded_test_server()->Start());
+  // Load a simple HTML page from the test server.
   GURL simple_url(embedded_test_server()->GetURL("/simple.html"));
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
+  WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
+  // Finally, load brave://rewards and enable Brave Rewards.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://rewards")));
+  ASSERT_TRUE(EnableBraveRewards());
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
 }
 
