@@ -41,42 +41,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-std::string GetBaseSwapURL(const std::string& chain_id) {
-  std::string url;
-
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    url = brave_wallet::kRopstenSwapBaseAPIURL;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
-    url = brave_wallet::kSwapBaseAPIURL;
-  }
-
-  return url;
-}
-
-std::string GetFee(const std::string& chain_id) {
-  std::string fee;
-
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    fee = brave_wallet::kRopstenBuyTokenPercentageFee;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
-    fee = brave_wallet::kBuyTokenPercentageFee;
-  }
-
-  return fee;
-}
-
-std::string GetFeeRecipient(const std::string& chain_id) {
-  std::string feeRecipient;
-
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    feeRecipient = brave_wallet::kRopstenFeeRecipient;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
-    feeRecipient = brave_wallet::kFeeRecipient;
-  }
-
-  return feeRecipient;
-}
-
 bool IsNetworkSupported(const std::string& chain_id) {
   if (chain_id == brave_wallet::mojom::kRopstenChainId ||
       chain_id == brave_wallet::mojom::kMainnetChainId) {
@@ -101,13 +65,15 @@ GURL AppendSwapParams(const GURL& swap_url,
   if (!params.sell_token.empty())
     url = net::AppendQueryParameter(url, "sellToken", params.sell_token);
   url =
-      net::AppendQueryParameter(url, "buyTokenPercentageFee", GetFee(chain_id));
+      net::AppendQueryParameter(url, "buyTokenPercentageFee",
+                                brave_wallet::SwapController::GetFee(chain_id));
   url = net::AppendQueryParameter(
       url, "slippagePercentage",
       base::StringPrintf("%.6f", params.slippage_percentage));
-  std::string fee_recipient = GetFeeRecipient(chain_id);
+  std::string fee_recipient =
+      brave_wallet::SwapController::GetFeeRecipient(chain_id);
   if (!fee_recipient.empty())
-    url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient.c_str());
+    url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
   if (!params.gas_price.empty())
     url = net::AppendQueryParameter(url, "gasPrice", params.gas_price);
   return url;
@@ -143,6 +109,45 @@ void SwapController::Bind(
 
 void SwapController::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
+}
+
+// static
+std::string SwapController::GetFee(const std::string& chain_id) {
+  std::string fee;
+
+  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
+    fee = brave_wallet::kRopstenBuyTokenPercentageFee;
+  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+    fee = brave_wallet::kBuyTokenPercentageFee;
+  }
+
+  return fee;
+}
+
+// static
+std::string SwapController::GetBaseSwapURL(const std::string& chain_id) {
+  std::string url;
+
+  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
+    url = brave_wallet::kRopstenSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+    url = brave_wallet::kSwapBaseAPIURL;
+  }
+
+  return url;
+}
+
+// static
+std::string SwapController::GetFeeRecipient(const std::string& chain_id) {
+  std::string feeRecipient;
+
+  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
+    feeRecipient = brave_wallet::kRopstenFeeRecipient;
+  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+    feeRecipient = brave_wallet::kFeeRecipient;
+  }
+
+  return feeRecipient;
 }
 
 // static
