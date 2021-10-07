@@ -18,6 +18,10 @@ using BraveTranslateBubbleModelImpl = TranslateBubbleModelImpl;
 #undef TranslateBubbleModelImpl
 
 class BraveLanguageMap;
+
+// Brave customization of TranslateBubbleModelImpl to uses separated lists for
+// source and target languages. Holds two mappings between chromium list in
+// |ui_delegate| and brave lists.
 class TranslateBubbleModelImpl : public ChromiumTranslateBubbleModelImpl {
  public:
   TranslateBubbleModelImpl(

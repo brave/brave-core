@@ -22,8 +22,7 @@ class BraveTranslateRedirectNetworkDelegateHelperTest
     : public testing::Test {
  public:
   BraveTranslateRedirectNetworkDelegateHelperTest()
-      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {}
+      : context_(new net::TestURLRequestContext(true)) {}
   ~BraveTranslateRedirectNetworkDelegateHelperTest() override {}
   void SetUp() override { context_->Init(); }
   net::TestURLRequestContext* context() { return context_.get(); }

@@ -16,6 +16,9 @@ namespace {
 const int kNoIndex = static_cast<int>(translate::TranslateUIDelegate::kNoIndex);
 }  // namespace
 
+// A mapping between a chromium languages list in |ui_delegate| and a brave
+// languages list (a limited subset of chromium list preassigned by |filter|).
+// Note: mixin of int/size_t types is used because of chromium implementation.
 class BraveLanguageMap {
  public:
   BraveLanguageMap(const translate::TranslateUIDelegate* ui_delegate,
@@ -33,28 +36,39 @@ class BraveLanguageMap {
     DCHECK_EQ(to_ui_index_.size(), to_core_index_.size());
 #if DCHECK_IS_ON()
     for (int i = 0; i < static_cast<int>(to_core_index_.size()); ++i) {
-      const int core_ind = to_core_index_[i];
+      const auto core_ind = to_core_index_[i];
       DCHECK_EQ(to_ui_index_[to_core_index_[i]], i);
       DCHECK_EQ(to_core_index_[to_ui_index_[core_ind]], core_ind);
     }
 #endif  // DCHECK_IS_ON()
   }
+
+  // Coverts index in brave list (index in [0, GetSize() - 1]) to a correspoding
+  // chromium index.
   size_t ToCoreIndex(int index) const {
-    if (index == kNoIndex || !base::Contains(to_core_index_, index))
+    if (index == kNoIndex)
       return translate::TranslateUIDelegate::kNoIndex;
-    return to_core_index_.at(index);
+    const auto it = to_core_index_.find(index);
+    return it != to_core_index_.end()
+               ? it->second
+               : translate::TranslateUIDelegate::kNoIndex;
   }
-  size_t ToUiIndex(int index) const {
-    if (index == kNoIndex || !base::Contains(to_ui_index_, index))
-      return translate::TranslateUIDelegate::kNoIndex;
-    return to_ui_index_.at(index);
+
+  // An inverse function to ToCoreIndex(). Coverts chromium index
+  // (form [0, ui_delegate->GetNumberOfLanguages()] to a
+  // correspoding index in brave list.
+  int FromCoreIndex(size_t index) const {
+    if (index == translate::TranslateUIDelegate::kNoIndex)
+      return kNoIndex;
+    const auto it = to_ui_index_.find(index);
+    return it != to_ui_index_.end() ? it->second : kNoIndex;
   }
 
   int GetSize() const { return to_core_index_.size(); }
 
  private:
-  std::map<int, int> to_core_index_;
-  std::map<int, int> to_ui_index_;
+  std::map<int, size_t> to_core_index_;
+  std::map<size_t, int> to_ui_index_;
 };
 
 TranslateBubbleModelImpl::TranslateBubbleModelImpl(
@@ -68,7 +82,7 @@ TranslateBubbleModelImpl::TranslateBubbleModelImpl(
       ui_delegate_.get(),
       base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
 
-  // If the source language is unsupported the drop it to unknown.
+  // If the source language is unsupported then drop it to unknown.
   // TODO(atuchin): is it good place to call this?
   if (!translate::IsSourceLanguageCodeSupported(
           ui_delegate_->GetSourceLanguageCode())) {
@@ -99,12 +113,12 @@ std::u16string TranslateBubbleModelImpl::GetTargetLanguageNameAt(
 }
 
 int TranslateBubbleModelImpl::GetSourceLanguageIndex() const {
-  return source_language_map_->ToUiIndex(
+  return source_language_map_->FromCoreIndex(
       ui_delegate_->GetSourceLanguageIndex());
 }
 
 int TranslateBubbleModelImpl::GetTargetLanguageIndex() const {
-  return target_language_map_->ToUiIndex(
+  return target_language_map_->FromCoreIndex(
       ui_delegate_->GetTargetLanguageIndex());
 }
 
