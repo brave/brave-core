@@ -248,7 +248,14 @@ interface AssetRatioController {
   GetGasOracle() => (GasEstimation1559? estimation);
 };
 
+struct SwapConfig {
+  string swap_api_url;
+  string buy_token_percantage_fee;
+  string fee_recipient;
+};
+
 interface SwapController {
+  GetSwapConfiguration(string chain_id) => (SwapConfig? config);
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
   GetTransactionPayload(SwapParams params) =>

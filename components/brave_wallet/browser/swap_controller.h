@@ -41,6 +41,9 @@ class SwapController : public KeyedService, public mojom::SwapController {
   mojo::PendingRemote<mojom::SwapController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SwapController> receiver);
 
+  // SwapController interface overrides
+  void GetSwapConfiguration(const std::string& chain_id,
+                            GetSwapConfigurationCallback callback) override;
   // Obtians a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      GetPriceQuoteCallback callback) override;

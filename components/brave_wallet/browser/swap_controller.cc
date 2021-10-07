@@ -117,6 +117,28 @@ GURL SwapController::GetTransactionPayloadURL(
   return url;
 }
 
+void SwapController::GetSwapConfiguration(
+    const std::string& chain_id,
+    GetSwapConfigurationCallback callback) {
+  auto swap_config = mojom::SwapConfig::New();
+
+  if (chain_id == mojom::kRopstenChainId) {
+    swap_config->swap_api_url = kRopstenSwapAPIURL;
+    swap_config->buy_token_percantage_fee = kRopstenBuyTokenPercentageFee;
+    swap_config->fee_recipient = kRopstenFeeRecipient;
+  } else if (chain_id == mojom::kMainnetChainId) {
+    swap_config->swap_api_url = kSwapAPIURL;
+    swap_config->buy_token_percantage_fee = kBuyTokenPercentageFee;
+    swap_config->fee_recipient = kFeeRecipient;
+  } else {
+    std::move(callback).Run(nullptr);
+
+    return;
+  }
+
+  std::move(callback).Run(std::move(swap_config));
+}
+
 void SwapController::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                    GetPriceQuoteCallback callback) {
   auto internal_callback =

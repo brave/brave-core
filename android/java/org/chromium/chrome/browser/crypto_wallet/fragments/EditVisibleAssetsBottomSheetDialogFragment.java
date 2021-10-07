@@ -152,7 +152,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
         if (ercTokenRegistry != null) {
             if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
+                    || mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
+                    || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
                 ercTokenRegistry.getAllTokens(tokens -> { setUpAssetsList(view, tokens); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                 ercTokenRegistry.getBuyTokens(tokens -> { setUpAssetsList(view, tokens); });
@@ -216,13 +217,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment
 
     @Override
     public void onAssetClick() {
-        if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-            List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
-            Activity activity = getActivity();
-            if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
+        List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
+        Activity activity = getActivity();
+        if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
+            if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
+                    || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
                 ((BuySendSwapActivity) activity)
                         .updateBuySendAsset(checkedAssets.get(0).getSubTitle(),
+                                checkedAssets.get(0).getErcToken());
+            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
+                ((BuySendSwapActivity) activity)
+                        .updateSwapToAsset(checkedAssets.get(0).getSubTitle(),
                                 checkedAssets.get(0).getErcToken());
             }
         }
