@@ -14,6 +14,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.AppHooks;
 import org.chromium.chrome.browser.signin.services.SigninManager;
+import org.chromium.components.signin.base.CoreAccountId;
 import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.AccountTrackerService;
@@ -91,6 +92,9 @@ public class BraveSigninManager implements SigninManager {
     public String extractDomainName(String accountEmail) {
         return "";
     };
+
+    @Override
+    public void reloadAllAccountsFromSystem(@Nullable CoreAccountId primaryAccountId) {}
 
     @CalledByNative
     static SigninManager create(long nativeSigninManagerAndroid,
