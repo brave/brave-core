@@ -39,6 +39,7 @@ const derivationBatch = 4
 export default function (props: Props) {
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<string>(kLedgerHardwareVendor)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
+  const [isConnected, setIsConnected] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<Array<HardwareWalletAccount>>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<string>('')
@@ -66,13 +67,15 @@ export default function (props: Props) {
       scheme: scheme
     }).then((result) => {
       setAccounts(result)
+      setIsConnected(true)
     }).catch((error) => {
+      setIsConnecting(false)
       setConnectionError(getErrorMessage(error))
     })
   }
+
   const onConnectHardwareWallet = (hardware: string) => {
     setIsConnecting(true)
-
     props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
@@ -80,9 +83,11 @@ export default function (props: Props) {
       scheme: selectedDerivationScheme
     }).then((result) => {
       setAccounts([...accounts, ...result])
+      setIsConnected(true)
       setIsConnecting(false)
     }).catch((error) => {
       setConnectionError(getErrorMessage(error))
+      setIsConnected(false)
       setIsConnecting(false)
     })
   }
@@ -110,7 +115,7 @@ export default function (props: Props) {
     console.error(connectionError)
   }
 
-  if (accounts.length > 0) {
+  if (isConnected) {
     return (
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}

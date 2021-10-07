@@ -8,7 +8,10 @@ import {
   HardwareWalletAccountListItem,
   HardwareWalletAccountListItemColumn,
   HardwareWalletAccountsList,
-  SelectWrapper
+  SelectWrapper,
+  LoadingWrapper,
+  LoadIcon,
+  AddressBalanceWrapper
 } from './style'
 import {
   HardwareWalletAccount,
@@ -61,7 +64,6 @@ export default function (props: Props) {
     const updatedPaths = isSelected
       ? selectedDerivationPaths.filter((path) => path !== derivationPath)
       : [...selectedDerivationPaths, derivationPath]
-
     setSelectedDerivationPaths(updatedPaths)
   }
 
@@ -105,17 +107,25 @@ export default function (props: Props) {
       </DisclaimerWrapper>
       <SearchBar placeholder={getLocale('braveWalletSearchScannedAccounts')} action={filterAccountList} />
       <HardwareWalletAccountsList>
-        {filteredAccountList?.map((account) => {
-          return (
-            <AccountListItem
-              key={account.derivationPath}
-              account={account}
-              selected={selectedDerivationPaths.includes(account.derivationPath)}
-              onSelect={onSelectAccountCheckbox(account)}
-              getBalance={getBalance}
-            />
-          )
-        })}
+        {filteredAccountList?.length === 0 ? (
+          <LoadingWrapper>
+            <LoadIcon />
+          </LoadingWrapper>
+        ) : (
+          <>
+            {filteredAccountList?.map((account) => {
+              return (
+                <AccountListItem
+                  key={account.derivationPath}
+                  account={account}
+                  selected={selectedDerivationPaths.includes(account.derivationPath)}
+                  onSelect={onSelectAccountCheckbox(account)}
+                  getBalance={getBalance}
+                />
+              )
+            })}
+          </>
+        )}
       </HardwareWalletAccountsList>
       <ButtonsContainer>
         <NavButton
@@ -155,8 +165,10 @@ function AccountListItem (props: AccountListItemProps) {
     <HardwareWalletAccountListItem>
       <HardwareWalletAccountCircle orb={orb} />
       <HardwareWalletAccountListItemColumn>
-        <div>{reduceAddress(account.address)}</div>
-        <div>{balance}</div>
+        <AddressBalanceWrapper>
+          <div>{reduceAddress(account.address)}</div>
+        </AddressBalanceWrapper>
+        <AddressBalanceWrapper>{balance}</AddressBalanceWrapper>
         <Checkbox value={{ selected }} onChange={onSelect}>
           <div data-key='selected' />
         </Checkbox>
