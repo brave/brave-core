@@ -56,6 +56,16 @@ constexpr const char* kWhitelistedUrlPrefixes[] = {
     // Brave's Privacy-focused CDN
     "https://pcdn.brave.com/",
 
+    // Brave Rewards production
+    "https://api.rewards.brave.com/v1/parameters",
+    "https://rewards.brave.com/publishers/prefix-list",
+    "https://grant.rewards.brave.com/v1/promotions",
+
+    // Brave Rewards staging & dev
+    "https://api.rewards.bravesoftware.com/v1/parameters",
+    "https://rewards-stg.bravesoftware.com/publishers/prefix-list",
+    "https://grant.rewards.bravesoftware.com/v1/promotions",
+
     // Other
     "https://brave-core-ext.s3.brave.com/",
     "https://go-updater.brave.com/",
