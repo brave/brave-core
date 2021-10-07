@@ -971,7 +971,13 @@ if (!is_android) {
 
     deps = [
       "//base",
+      "//brave/components/brave_rewards/browser",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
       "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//content/public/browser",
       "//content/test:test_support",
       "//services/network/public/cpp",
       "//testing/gmock",
