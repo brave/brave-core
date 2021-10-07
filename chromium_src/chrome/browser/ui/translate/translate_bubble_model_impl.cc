@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/translate/translate_bubble_model_impl.h"
 
 #define TranslateBubbleModelImpl ChromiumTranslateBubbleModelImpl
-#include "../../../../../../../chrome/browser/ui/translate/translate_bubble_model_impl.cc"
+#include "../../../../../../chrome/browser/ui/translate/translate_bubble_model_impl.cc"
 #undef TranslateBubbleModelImpl
 
 #include "base/containers/contains.h"
@@ -82,8 +82,10 @@ TranslateBubbleModelImpl::TranslateBubbleModelImpl(
       ui_delegate_.get(),
       base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
 
-  // If the source language is unsupported then drop it to unknown.
-  // TODO(atuchin): is it good place to call this?
+  // If the source language is unsupported then drop it to "und".
+  // Theoretically isn't the same as creating ui_delegate with source_lang ==
+  // und, because |initial_source_language_index_| hasn't been updated. But in
+  // fact chromium doesn't use |initial_source_language_index_| at all.
   if (!translate::IsSourceLanguageCodeSupported(
           ui_delegate_->GetSourceLanguageCode())) {
     ui_delegate_->UpdateSourceLanguageIndex(0u);

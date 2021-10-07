@@ -20,19 +20,21 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
 };
 
 }  // namespace translate
+#define ASSERT_INSIDE_FUNCTION(fname)                     \
+  static_assert(base::StringPiece(__FUNCTION__) == fname, \
+                "should work only within " fname " function");
 
-#define GetRecentTargetLanguage                                              \
-  GetRecentTargetLanguage();                                                 \
-  static_assert(base::StringPiece(__FUNCTION__).find("GetTargetLanguage") != \
-                    base::StringPiece::npos,                                 \
-                "bad override, should work only for GetTargetLanguage");     \
-  using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy;      \
+#define GetRecentTargetLanguage                                         \
+  GetRecentTargetLanguage();                                            \
+  ASSERT_INSIDE_FUNCTION("GetTargetLanguage")\
+  using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy; \
   void
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
 #define TranslateManager ChromiumTranslateManager
-#include "../../../../../../components/translate/core/browser/translate_manager.cc"  // NOLINT
+#include "../../../../../../components/translate/core/browser/translate_manager.cc"
 #undef HasAPIKeyConfigured
 #undef TranslateManager
+#undef ASSERT_INSIDE_FUNCTION
 
 namespace translate {
 
@@ -43,6 +45,9 @@ void TranslateManager::FilterIsTranslatePossible(
     const std::string& target_lang) {
   ChromiumTranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
+  // The source language is not supported by Brave backend. Current we allow a
+  // user to trigger a manual translation to have a chance to fix if it wasn't
+  // recognized correctly (in that case it will shown as "Detect Language").
   if (!IsSourceLanguageCodeSupported(page_language_code)) {
     decision->PreventAutoTranslate();
     decision->PreventShowingUI();
@@ -54,6 +59,9 @@ void TranslateManager::FilterIsTranslatePossible(
         TriggerDecision::kDisabledUnsupportedLanguage);
   }
 
+  // Just in case. In general a user can't trigger a translation to an
+  // unsupported target language. But some new entry points can be added so
+  // block translation in that case.
   if (!IsTargetLanguageCodeSupported(target_lang)) {
     decision->PreventAllTriggering();
     decision->initiation_statuses.push_back(

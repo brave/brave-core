@@ -16,13 +16,16 @@ using BraveTranslateManager = TranslateManager;
   ignore_missing_key_for_testing_;      \
   friend BraveTranslateManager
 #define FilterIsTranslatePossible virtual FilterIsTranslatePossible
-#include "../../../../../../../components/translate/core/browser/translate_manager.h"
+#include "../../../../../../components/translate/core/browser/translate_manager.h"
 #undef FilterIsTranslatePossible
 #undef ignore_missing_key_for_testing_
 #undef TranslateManager
 
 namespace translate {
 
+// Brave customization of TranslateManager that limit the number of supported
+// languages. Also two independet lists are used for source and target
+// languages.
 class TranslateManager : public ChromiumTranslateManager,
                          public base::SupportsWeakPtr<TranslateManager> {
  public:

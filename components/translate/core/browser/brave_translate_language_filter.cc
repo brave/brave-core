@@ -5,19 +5,26 @@
 
 #include "brave/components/translate/core/browser/brave_translate_language_filter.h"
 
+#include "base/containers/contains.h"
+#include "base/strings/string_piece.h"
+
 namespace translate {
+namespace {
+// Note: keep sync with language/language.go (brave/go-translate repo)
+constexpr base::StringPiece kSourceLanguages[] = {"und", "en", "es", "et",
+                                                  "it",  "pt", "ru"};
+
+// Note: keep sync with language/language.go (brave/go-translate repo)
+constexpr base::StringPiece kTargetLanguages[] = {"de", "en", "es", "et", "ru"};
+
+}  // namespace
 
 bool IsSourceLanguageCodeSupported(const std::string& lang_code) {
-  // Note: keep sync with language/language.go (brave/go-translate repo)
-  return lang_code == "und" || lang_code == "en" || lang_code == "es" ||
-         lang_code == "et" || lang_code == "it" || lang_code == "pt" ||
-         lang_code == "ru";
+  return base::Contains(kSourceLanguages, lang_code);
 }
 
 bool IsTargetLanguageCodeSupported(const std::string& lang_code) {
-  // Note: keep sync with language/language.go (brave/go-translate repo)
-  return lang_code == "de" || lang_code == "en" || lang_code == "es" ||
-         lang_code == "et" || lang_code == "ru";
+  return base::Contains(kTargetLanguages, lang_code);
 }
 
 }  // namespace translate
