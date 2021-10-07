@@ -11,6 +11,9 @@ import BraveCore
 public class WalletHostingViewController: UIHostingController<CryptoView> {
   
   public init(walletStore: WalletStore) {
+    gesture = WalletInteractionGestureRecognizer(
+      keyringStore: walletStore.keyringStore
+    )
     super.init(
       rootView: CryptoView(
         walletStore: walletStore,
@@ -27,6 +30,17 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     fatalError()
   }
   
+  deinit {
+    view.window?.removeGestureRecognizer(gesture)
+  }
+  
+  private let gesture: WalletInteractionGestureRecognizer
+  
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    view.window?.addGestureRecognizer(gesture)
+  }
+  
   // MARK: -
   
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -35,5 +49,20 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   
   public override var shouldAutorotate: Bool {
     false
+  }
+}
+
+private class WalletInteractionGestureRecognizer: UIGestureRecognizer {
+  private let store: KeyringStore
+  init(keyringStore: KeyringStore) {
+    store = keyringStore
+    super.init(target: nil, action: nil)
+    cancelsTouchesInView = false
+    delaysTouchesEnded = false
+  }
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+    super.touchesBegan(touches, with: event)
+    state = .failed
+    store.notifyUserInteraction()
   }
 }
