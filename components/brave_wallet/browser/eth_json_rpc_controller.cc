@@ -84,7 +84,7 @@ void EthJsonRpcController::Request(const std::string& json_payload,
                                    RequestCallback callback) {
   base::flat_map<std::string, std::string> request_headers;
   std::string method, params;
-  if (GetEthJsonRequestInfo(json_payload, &method, &params)) {
+  if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
     request_headers["X-Eth-Method"] = method;
     if (method == kEthGetBlockByNumber) {
       std::string cleaned_params;
