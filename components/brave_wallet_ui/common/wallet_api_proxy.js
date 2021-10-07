@@ -110,4 +110,13 @@ export default class WalletApiProxy {
     })
     this.ethTxController.addObserver(ethTxControllerObserverReceiver.$.bindNewPipeAndPassRemote());
   }
+
+  addBraveWalletServiceObserver(store) {
+    const braveWalletServiceObserverReceiver = new braveWallet.mojom.BraveWalletServiceObserverReceiver({
+      onActiveOriginChanged: function (origin) {
+        store.dispatch(WalletActions.activeOriginChanged({origin}))
+      }
+    })
+    this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote());
+  }
 }

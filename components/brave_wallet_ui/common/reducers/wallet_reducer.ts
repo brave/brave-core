@@ -28,6 +28,7 @@ import {
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
+  ActiveOriginChanged,
   InitializedPayloadType
 } from '../constants/action_types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
@@ -65,7 +66,8 @@ const defaultState: WalletState = {
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: DefaultWallet.BraveWallet
+  defaultWallet: DefaultWallet.BraveWallet,
+  activeOrigin: ''
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -332,6 +334,13 @@ reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: DefaultWall
   return {
     ...state,
     defaultWallet: payload
+  }
+})
+
+reducer.on(WalletActions.activeOriginChanged, (state: any, payload: ActiveOriginChanged) => {
+  return {
+    ...state,
+    activeOrigin: payload.origin
   }
 })
 

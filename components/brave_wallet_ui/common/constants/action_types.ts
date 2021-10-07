@@ -68,3 +68,7 @@ export type SwapParamsPayloadType = {
   networkChainId: string,
   full: boolean
 }
+
+export type ActiveOriginChanged = {
+  origin: string
+}

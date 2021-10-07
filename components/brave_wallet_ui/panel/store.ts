@@ -18,5 +18,6 @@ const store = createStore(
 apiProxy.getInstance().addEthJsonRpcControllerObserver(store)
 apiProxy.getInstance().addKeyringControllerObserver(store)
 apiProxy.getInstance().addEthTxControllerObserverObserver(store)
+apiProxy.getInstance().addBraveWalletServiceObserver(store)
 
 export default store

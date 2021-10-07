@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/observer_list_types.h"
 
 namespace content {
 class BrowserContext;
@@ -25,12 +26,20 @@ class BraveWalletServiceDelegate {
   using ImportFromMetaMaskCallback = base::OnceCallback<void(bool)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
+  using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;
 
   BraveWalletServiceDelegate() = default;
   BraveWalletServiceDelegate(const BraveWalletServiceDelegate&) = delete;
   BraveWalletServiceDelegate& operator=(const BraveWalletServiceDelegate&) =
       delete;
   virtual ~BraveWalletServiceDelegate() = default;
+
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnActiveOriginChanged(const std::string& origin) {}
+  };
+  virtual void AddObserver(Observer* observer) {}
+  virtual void RemoveObserver(Observer* observer) {}
 
   virtual void IsCryptoWalletsInstalled(
       IsCryptoWalletsInstalledCallback callback);
@@ -49,6 +58,8 @@ class BraveWalletServiceDelegate {
       const std::string& origin,
       const std::string& account,
       ResetEthereumPermissionCallback callback);
+
+  virtual void GetActiveOrigin(GetActiveOriginCallback callback);
 
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);

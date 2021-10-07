@@ -93,6 +93,8 @@ BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* prefs)
     : delegate_(std::move(delegate)), prefs_(prefs) {
+  if (delegate_)
+    delegate_->AddObserver(this);
   DCHECK(prefs_);
 
   pref_change_registrar_.Init(prefs_);
@@ -449,6 +451,24 @@ void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
 
   bool monthly = !!(usage & brave_stats::kIsMonthlyUser);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, monthly);
+}
+
+void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
+  if (delegate_)
+    delegate_->GetActiveOrigin(std::move(callback));
+  else
+    std::move(callback).Run("");
+}
+
+void BraveWalletService::AddObserver(
+    ::mojo::PendingRemote<mojom::BraveWalletServiceObserver> observer) {
+  observers_.Add(std::move(observer));
+}
+
+void BraveWalletService::OnActiveOriginChanged(const std::string& origin) {
+  for (const auto& observer : observers_) {
+    observer->OnActiveOriginChanged(origin);
+  }
 }
 
 }  // namespace brave_wallet

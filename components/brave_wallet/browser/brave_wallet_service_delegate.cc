@@ -13,16 +13,19 @@ void BraveWalletServiceDelegate::IsCryptoWalletsInstalled(
     IsCryptoWalletsInstalledCallback callback) {
   std::move(callback).Run(false);
 }
+
 void BraveWalletServiceDelegate::IsMetaMaskInstalled(
     IsMetaMaskInstalledCallback callback) {
   std::move(callback).Run(false);
 }
+
 void BraveWalletServiceDelegate::ImportFromCryptoWallets(
     const std::string& password,
     const std::string& new_password,
     ImportFromCryptoWalletsCallback callback) {
   std::move(callback).Run(false);
 }
+
 void BraveWalletServiceDelegate::ImportFromMetaMask(
     const std::string& password,
     const std::string& new_password,
@@ -42,6 +45,11 @@ void BraveWalletServiceDelegate::ResetEthereumPermission(
     const std::string& account,
     ResetEthereumPermissionCallback callback) {
   std::move(callback).Run(false);
+}
+
+void BraveWalletServiceDelegate::GetActiveOrigin(
+    GetActiveOriginCallback callback) {
+  std::move(callback).Run("");
 }
 
 }  // namespace brave_wallet

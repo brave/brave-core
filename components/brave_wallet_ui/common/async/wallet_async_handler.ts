@@ -209,6 +209,11 @@ async function refreshWalletInfo (store: Store) {
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
+  // Initialize active origin state.
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  const origin = await braveWalletService.getActiveOrigin()
+  store.dispatch(WalletActions.activeOriginChanged(origin))
+
   await refreshWalletInfo(store)
 })
 
