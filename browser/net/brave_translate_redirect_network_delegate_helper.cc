@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"

@@ -83,7 +83,7 @@ TranslateBubbleModelImpl::TranslateBubbleModelImpl(
       base::BindRepeating(&translate::IsTargetLanguageCodeSupported));
 
   // If the source language is unsupported then drop it to "und".
-  // Theoretically isn't the same as creating ui_delegate with source_lang ==
+  // Theoretically it isn't the same as creating ui_delegate with source_lang ==
   // und, because |initial_source_language_index_| hasn't been updated. But in
   // fact chromium doesn't use |initial_source_language_index_| at all.
   if (!translate::IsSourceLanguageCodeSupported(

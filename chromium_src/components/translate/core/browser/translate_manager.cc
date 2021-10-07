@@ -26,7 +26,7 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
 
 #define GetRecentTargetLanguage                                         \
   GetRecentTargetLanguage();                                            \
-  ASSERT_INSIDE_FUNCTION("GetTargetLanguage")\
+  ASSERT_INSIDE_FUNCTION("GetTargetLanguage")                           \
   using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy; \
   void
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
@@ -45,9 +45,9 @@ void TranslateManager::FilterIsTranslatePossible(
     const std::string& target_lang) {
   ChromiumTranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
-  // The source language is not supported by Brave backend. Current we allow a
-  // user to trigger a manual translation to have a chance to fix if it wasn't
-  // recognized correctly (in that case it will shown as "Detect Language").
+  // The source language is not supported by Brave backend. Currently we allow a
+  // user to trigger a manual translation to have a chance to change the
+  // incorrectly recognized source language to the correct one.
   if (!IsSourceLanguageCodeSupported(page_language_code)) {
     decision->PreventAutoTranslate();
     decision->PreventShowingUI();
