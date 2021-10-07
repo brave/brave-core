@@ -605,6 +605,10 @@ TEST_F(IpfsUtilsUnitTest, ValidateNodeFilename) {
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_darwin-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_darwin-amd64"));
 
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_darwin-arm64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_darwin-arm64"));
+  ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_darwin-arm64"));
+
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc1_linux-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0-rc21_linux-amd64"));
   ASSERT_TRUE(ipfs::IsValidNodeFilename("go-ipfs_v0.9.0_linux-amd64"));
