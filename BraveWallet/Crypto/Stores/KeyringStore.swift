@@ -168,6 +168,14 @@ public class KeyringStore: ObservableObject {
     }
   }
   
+  func notifyUserInteraction() {
+    if keyring.isLocked {
+      // Auto-lock isn't running until the keyring is unlocked
+      return
+    }
+    controller.notifyUserInteraction()
+  }
+  
   // MARK: - Keychain
   
   private static let passwordKeychainKey = "brave-wallet-password"

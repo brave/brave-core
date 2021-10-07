@@ -88,8 +88,5 @@ public struct CryptoView: View {
     }
     .animation(.default, value: visibleScreen) // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .onDisappear {
-      keyringStore.lock()
-    }
   }
 }
