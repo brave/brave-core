@@ -572,6 +572,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenBalance) {
 TEST_F(EthJsonRpcControllerUnitTest, GetERC20TokenAllowance) {
   bool callback_called = false;
   SetInterceptor(
+      "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x00000000000000000000000000000000000000000000000166e12cfce39a0000\""
       "}");
