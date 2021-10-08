@@ -20,9 +20,9 @@ namespace brave_ads {
 namespace {
 
 constexpr auto kVettedHosts = base::MakeFixedFlatSet<base::StringPiece>(
-    {"talk.brave.com", "talk.bravesoftware.com", "dev.talk.brave.software",
-     "beta.talk.brave.com", "beta.talk.bravesoftware.com",
-     "beta.talk.brave.software"});
+    {"talk.brave.com", "beta.talk.brave.com", "talk.bravesoftware.com",
+     "beta.talk.bravesoftware.com", "talk.brave.software",
+     "beta.talk.brave.software", "dev.talk.brave.software"});
 
 bool IsAllowedHost(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
