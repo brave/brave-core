@@ -88,7 +88,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       accounts.push({
         address: address.address,
         derivationPath: path,
-        name: this.type() + ' ' + i,
+        name: this.type(),
         hardwareVendor: this.type()
       })
     }

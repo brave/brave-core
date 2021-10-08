@@ -143,6 +143,7 @@ struct HardwareWalletAccount {
 struct HardwareInfo {
   string path;
   string vendor;
+  string device_id;
 };
 
 struct AccountInfo {

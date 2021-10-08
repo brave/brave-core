@@ -231,6 +231,7 @@ export const kTrezorHardwareVendor = 'Trezor'
 export interface HardwareInfo {
   vendor: string
   path: string
+  deviceId: string
 }
 
 export interface AccountInfo {
