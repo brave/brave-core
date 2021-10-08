@@ -5,6 +5,7 @@
 
 #include "components/translate/core/browser/translate_manager.h"
 
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/components/translate/core/browser/brave_translate_language_filter.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -13,9 +14,11 @@ namespace translate {
 
 class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
  public:
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   static bool IsSupportedLanguage(const std::string& lang) {
     return IsTargetLanguageCodeSupported(lang);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   ~BraveIsSupportedTargetLanguageProxy() override;
 };
 
@@ -45,6 +48,7 @@ void TranslateManager::FilterIsTranslatePossible(
     const std::string& target_lang) {
   ChromiumTranslateManager::FilterIsTranslatePossible(
       decision, translate_prefs, page_language_code, target_lang);
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   // The source language is not supported by Brave backend. Currently we allow a
   // user to trigger a manual translation to have a chance to change the
   // incorrectly recognized source language to the correct one.
@@ -71,6 +75,7 @@ void TranslateManager::FilterIsTranslatePossible(
     GetActiveTranslateMetricsLogger()->LogTriggerDecision(
         TriggerDecision::kDisabledUnsupportedLanguage);
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 }
 
 base::WeakPtr<TranslateManager> TranslateManager::GetWeakPtr() {
