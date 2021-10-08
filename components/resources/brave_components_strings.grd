@@ -328,7 +328,9 @@
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A" desc="">This is a</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW" desc="">Private Window</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC" desc="">Brave doesn’t remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.</message>
-      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1" desc="">Brave never remembers what you do in a Private Window. Sites you visit won't show up in your history. Cookies, form data, and site data vanish when you close the window.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2" desc="">Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you're using a work machine or network). For more privacy, open a private window with Tor.</message>
+      <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor Connectivity</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave never remembers what you do in a Private Window. With Tor connectivity, your IP address is also hidden from the sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WIONDOW_TOR_BUTTON" desc="">Learn more about Private Windows with Tor</message>

@@ -6,25 +6,22 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Grid,
+  Grid3Columns,
   HeaderGrid,
-  ButtonGroup,
-  Box,
-  Content,
+  ControlBox,
   HeaderBox,
+  IconText,
   Title,
-  SubTitle,
   Text,
+  ToggleGroup,
+  PrivacyEyeImage,
   PrivateImage,
   DuckDuckGoImage,
-  Separator,
-  FakeButton,
   Link
 } from '../../components/private'
 
 // Components
 import { Toggle } from '../../components/toggle'
-import TorContent from './torContent'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
@@ -34,6 +31,7 @@ import { toggleAlternativePrivateSearchEngine } from '../../api/privateTabData'
 
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window.svg')
+const privacyEyeImg = require('../../../img/newtab/privacy-eye.svg')
 
 interface Props {
   actions: any
@@ -48,52 +46,50 @@ export default class PrivateTab extends React.PureComponent<Props, {}> {
     )
   }
 
+  get showAlternativePrivateSearchEngineToggle () {
+    return (
+      this.props.newTabData &&
+      this.props.newTabData.showAlternativePrivateSearchEngineToggle
+    )
+  }
+
   onChangePrivateSearchEngine = () => {
     toggleAlternativePrivateSearchEngine()
   }
 
   render () {
     return (
-      <Grid>
-        <HeaderBox>
-          <HeaderGrid>
-            <PrivateImage src={privateWindowImg} />
-            <div>
-              <SubTitle>{getLocale('headerLabel')}</SubTitle>
+      <>
+        <Grid3Columns>
+          <HeaderBox>
+            <HeaderGrid>
+              <PrivateImage src={privateWindowImg} />
               <Title>{getLocale('headerTitle')}</Title>
-              <Text>{getLocale('headerText')} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank'>{getLocale('headerButton')}</Link>
-              </Text>
-            </div>
-          </HeaderGrid>
-        </HeaderBox>
-        <Box style={{ minHeight: '475px' }}>
-          <Content>
-            <DuckDuckGoImage />
-            <SubTitle>{getLocale('boxDdgLabel')}</SubTitle>
-            <Title>{getLocale('boxDdgTitle')}</Title>
-            <Text>{getLocale('boxDdgText')}</Text>
-          </Content>
-          <Separator />
-          <ButtonGroup>
-            <FakeButton withToggle={true}>
-              <span style={{ color: '#fff' }}>{getLocale('boxDdgButton')}</span>
+            </HeaderGrid>
+          </HeaderBox>
+          <PrivacyEyeImage src={privacyEyeImg} />
+          <Text>{getLocale('headerText1')}</Text>
+          <Text>{getLocale('headerText2')} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank'>{getLocale('headerButton')}</Link></Text>
+        </Grid3Columns>
+        {
+          this.showAlternativePrivateSearchEngineToggle ?
+          <ControlBox>
+            <ToggleGroup>
+              <IconText>
+                <DuckDuckGoImage />
+                <Text>{getLocale('boxDdgButton')}</Text>
+              </IconText>
               <Toggle
                 id='duckduckgo'
+                size='large'
                 checked={this.useAlternativePrivateSearchEngine}
                 onChange={this.onChangePrivateSearchEngine}
               />
-            </FakeButton>
-            <Link href='https://support.brave.com/hc/en-us/articles/360018266171' target='_blank'>{getLocale('learnMore')}</Link>
-          </ButtonGroup>
-        </Box>
-        <Box>
-          <TorContent />
-          <Separator />
-          <FakeButton href='https://support.brave.com/hc/en-us/articles/360018121491' target='_blank'>
-            {getLocale('boxTorButton')}
-          </FakeButton>
-        </Box>
-      </Grid>
+            </ToggleGroup>
+          </ControlBox>
+          : null
+        }
+      </>
     )
   }
 }

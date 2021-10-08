@@ -26,6 +26,7 @@ extern const char kStatsReportingEnabled[];
 extern const char kWidevineOptedIn[];
 extern const char kAskWidevineInstall[];
 extern const char kUseAlternativeSearchEngineProvider[];
+extern const char kShowAlternativeSearchEngineProviderToggle[];
 extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
 extern const char kUseOverriddenBraveThemeType[];

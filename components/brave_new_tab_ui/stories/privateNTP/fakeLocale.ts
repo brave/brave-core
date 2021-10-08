@@ -12,6 +12,8 @@ const locale = {
   // Header Private Window
   headerTitle: 'Private Window',
   headerText: 'Brave doesn’t remember what you do in a Private Window. Sites you visit won\'t show up in your history and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.',
+  headerText1: 'Brave never remembers what you do in a Private Window. Sites you visit won\'t show up in your history. Cookies, form data, and site data vanish when you close the window.',
+  headerText2: 'Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you\'re using a work machine or network). For more privacy, open a private window with Tor.',
   headerButton: 'Learn more',
 
   // Header Private Window with Tor
