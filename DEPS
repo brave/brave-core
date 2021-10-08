@@ -17,6 +17,7 @@ deps = {
   "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@e5b6cdbdc1af4b498e6f9c737fa3baf756cae773",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@95ea54ba089610019a74c1176a2c7c0dba144b1c",
+  "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
 }
 
 hooks = [
@@ -82,6 +83,7 @@ include_rules = [
   "-brave/services",
   "-ios",
   "-brave/third_party/bitcoin-core",
+  "-brave/third_party/argon2",
 ]
 
 # Temporary workaround for massive nummber of incorrect test includes

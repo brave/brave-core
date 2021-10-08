@@ -13,6 +13,7 @@
 /out/
 node_modules/
 patches/**/*.patchinfo
+/third_party/argon2/src
 /third_party/ethash/src
 /third_party/bitcoin-core/src
 *.xcodeproj

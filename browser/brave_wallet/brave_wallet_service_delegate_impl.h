@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -97,7 +98,12 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
                          ImportFromCryptoWalletsCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
 
-  bool IsLegacyCryptoWallets() const;
+  void GetMnemonic(bool is_legacy_crypto_wallets,
+                   const std::string& new_password,
+                   ImportFromCryptoWalletsCallback callback,
+                   std::unique_ptr<base::DictionaryValue> dict,
+                   const std::string& password);
+
   bool IsCryptoWalletsInstalledInternal() const;
   const extensions::Extension* GetCryptoWallets();
   const extensions::Extension* GetMetaMask();
@@ -113,6 +119,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   scoped_refptr<extensions::Extension> extension_;
   BrowserTabStripTracker browser_tab_strip_tracker_;
   base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
+
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
 };
 
