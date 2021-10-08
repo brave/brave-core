@@ -3,12 +3,10 @@ import { WalletOnboardingSteps } from '../../../../constants/types'
 import {
   StyledWrapper,
   Title,
-  PageIcons,
   InputColumn,
   Description,
   MetaMaskIcon,
   BraveIcon,
-  ArrowIcon,
   LostButton,
   PasswordTitle,
   CheckboxRow
@@ -75,25 +73,23 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
 
   return (
     <StyledWrapper>
-      <PageIcons>
-        {isMetaMask &&
-          <>
-            <MetaMaskIcon />
-            <ArrowIcon />
-          </>
-        }
-        <BraveIcon isMetaMask={isMetaMask} />
-      </PageIcons>
+      {isMetaMask ? (
+        <MetaMaskIcon />
+      ) : (
+        <BraveIcon />
+      )}
       <Title>
+        {getLocale('braveWalletImportTitle')}{` `}
         {isMetaMask ?
           getLocale('braveWalletImportMetaMaskTitle')
           : getLocale('braveWalletImportBraveLegacyTitle')}
       </Title>
       <Description>
+        {getLocale('braveWalletImportDescriptionOne')}{` `}
         {isMetaMask ?
-          getLocale('braveWalletImportMetaMaskDescription')
-          : getLocale('braveWalletImportBraveLegacyDescription')
-        }
+          getLocale('braveWalletImportMetaMaskTitle')
+          : getLocale('braveWalletImportBraveLegacyTitle')
+        }{` `}{getLocale('braveWalletImportDescriptionTwo')}
       </Description>
       <InputColumn useSamePasswordVerified={useSamePasswordVerified}>
         <PasswordInput

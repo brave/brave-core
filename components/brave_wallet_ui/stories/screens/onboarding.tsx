@@ -192,6 +192,7 @@ function Onboarding (props: Props) {
             onSetup={nextStep}
             onClickImportMetaMask={onClickImportMetaMask}
             metaMaskWalletDetected={metaMaskWalletDetected}
+            cryptoWalletsDetected={braveLegacyWalletDetected}
           />
         }
         {onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword &&

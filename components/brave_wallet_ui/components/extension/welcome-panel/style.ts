@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import WelcomeIcon from '../../../assets/svg-icons/graphic-wallet-welcome-panel.svg'
+import WelcomeIcon from '../../../assets/svg-icons/onboarding/brave-wallet.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -34,9 +34,11 @@ export const Description = styled.span`
 `
 
 export const PageIcon = styled.div`
-  width: 222px;
-  height: 130px;
+  width: 200px;
+  height: 160px;
   background: url(${WelcomeIcon});
+  background-size: 100%;
+  background-repeat: no-repeat;
   margin-bottom: 20px;
 `
 

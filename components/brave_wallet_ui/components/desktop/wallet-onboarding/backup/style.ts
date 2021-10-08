@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import FlashdriveIcon from '../../../../assets/svg-icons/graphic-flashdrive-icon.svg'
+import BackupIcon from '../../../../assets/svg-icons/onboarding/backup-your-crypto.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -66,9 +66,12 @@ export const IconBackground = styled.div`
 `
 
 export const PageIcon = styled.div`
-  width: 92px;
-  height: 92px;
-  background: url(${FlashdriveIcon});
+  width: 200px;
+  height: 160px;
+  background: url(${BackupIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-bottom: 35px;
 `
 
 export const SkipButton = styled.button`

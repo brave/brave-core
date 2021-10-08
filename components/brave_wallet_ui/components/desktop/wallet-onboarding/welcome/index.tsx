@@ -8,8 +8,12 @@ import {
   RestoreButton,
   Divider,
   ImportButton,
+  SettingsButton,
   ImportButtonText,
-  MetaMaskIcon
+  MetaMaskIcon,
+  CryptoWalletsAlertBox,
+  CryptoWalletsAlertTitle,
+  CryptoWalletsAlertDescription
 } from './style'
 import { NavButton } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
@@ -19,10 +23,20 @@ export interface Props {
   onRestore: () => void
   onClickImportMetaMask: () => void
   metaMaskWalletDetected: boolean
+  cryptoWalletsDetected: boolean
 }
 
 function OnboardingWelcome (props: Props) {
-  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected } = props
+  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected, cryptoWalletsDetected } = props
+
+  const onClickSettings = () => {
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
   return (
     <StyledWrapper>
       <PageIcon />
@@ -35,9 +49,20 @@ function OnboardingWelcome (props: Props) {
           <Divider />
           <ImportButton onClick={onClickImportMetaMask}>
             <MetaMaskIcon />
-            <ImportButtonText>{getLocale('braveWalletImportMetaMaskTitle')}</ImportButtonText>
+            <ImportButtonText>{getLocale('braveWalletImportTitle')} {getLocale('braveWalletImportMetaMaskTitle')}</ImportButtonText>
           </ImportButton>
         </>
+      }
+      {cryptoWalletsDetected &&
+        <CryptoWalletsAlertBox>
+          <CryptoWalletsAlertTitle>{getLocale('braveWalletCryptoWalletsDetected')}</CryptoWalletsAlertTitle>
+          <CryptoWalletsAlertDescription>{getLocale('braveWalletCryptoWalletsDescriptionOne')}</CryptoWalletsAlertDescription>
+          <CryptoWalletsAlertDescription>
+            {getLocale('braveWalletCryptoWalletsDescriptionTwoFirst')}{` `}
+            <SettingsButton onClick={onClickSettings}>{getLocale('braveWalletWalletPopupSettings')}</SettingsButton>{` `}
+            {getLocale('braveWalletCryptoWalletsDescriptionTwoSecond')}
+          </CryptoWalletsAlertDescription>
+        </CryptoWalletsAlertBox>
       }
     </StyledWrapper>
   )
