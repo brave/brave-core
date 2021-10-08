@@ -61,18 +61,17 @@ class BraveTalkScriptHandler: TabContentScript {
         }
     }
     
-    private func callback(result: Bool?) {
+    private func callback(result: Bool) {
         let functionName =
             "window.__firefox__.BT\(UserScriptManager.messageHandlerTokenString).resolve"
         
-        var args: [Any] = [1]
-        if let result = result {
-            args.append(result)
+        // Have to use old evaluateJavaScript to escape bool value properly.
+        // TODO: Switch to proper implementation once #3824 is done.
+        // swiftlint:disable:next safe_javascript
+        tab?.webView?.evaluateJavaScript(functionName + "(1, \(result))") { _, error  in
+            if let error = error {
+                log.error("BraveTalk api error: \(error)")
+            }
         }
-        
-        self.tab?.webView?.evaluateSafeJavaScript(
-            functionName: functionName,
-            args: args,
-            sandboxed: false)
     }
 }
