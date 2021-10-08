@@ -44,7 +44,7 @@ export const HardwareButton = styled.button<StyleProps>`
 
 export const LedgerIcon = styled.div`
   width: 93px;
-  height: 25px;
+  height: 23px;
   background-color: ${(p) => p.theme.color.interactive07};
   -webkit-mask-image: url(${LedgerLogo});
   mask-image: url(${LedgerLogo});
