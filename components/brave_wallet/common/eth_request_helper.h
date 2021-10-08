@@ -24,6 +24,10 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
 bool NormalizeEthRequest(const std::string& input_json,
                          std::string* output_json);
 
+bool ParseEthSignParams(const std::string& json,
+                        std::string* address,
+                        std::string* message);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_

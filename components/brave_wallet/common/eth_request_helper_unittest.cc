@@ -12,6 +12,21 @@
 
 namespace brave_wallet {
 
+TEST(EthRequestHelperUnitTest, CommonParseErrors) {
+  // Invalid things to pass in for parsing
+  const std::vector<std::string> error_cases(
+      {"not json data", "{\"params\":[{},{}]}", "{\"params\":[0]}", "{}", "[]",
+       "[[]]", "[0]"});
+  for (const auto& error_case : error_cases) {
+    std::string from;
+    EXPECT_FALSE(ParseEthSendTransactionParams(error_case, &from));
+    EXPECT_FALSE(ParseEthSendTransaction1559Params(error_case, &from));
+    std::string address;
+    std::string message;
+    EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
+  }
+}
+
 TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   std::string json(
       R"({
@@ -33,15 +48,6 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   EXPECT_EQ(tx_data->gas_price, "0x123");
   EXPECT_EQ(tx_data->value, "0x25F38E9E0000000");
   EXPECT_EQ(tx_data->data, (std::vector<uint8_t>{1, 2, 3}));
-
-  // Invalid things to pass in for parsing
-  EXPECT_FALSE(ParseEthSendTransactionParams("not json data", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("{\"params\":[{},{}]}", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("{\"params\":[0]}", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("{}", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("[]", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("[[]]", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("[0]", &from));
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
@@ -93,15 +99,37 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   // reasonable values in this case.
   EXPECT_TRUE(tx_data->max_priority_fee_per_gas.empty());
   EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
+}
 
-  // Invalid things to pass in for parsing
-  EXPECT_FALSE(ParseEthSendTransaction1559Params("not json data", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("{\"params\":[{},{}]}", &from));
-  EXPECT_FALSE(ParseEthSendTransactionParams("{\"params\":[0]}", &from));
-  EXPECT_FALSE(ParseEthSendTransaction1559Params("{}", &from));
-  EXPECT_FALSE(ParseEthSendTransaction1559Params("[]", &from));
-  EXPECT_FALSE(ParseEthSendTransaction1559Params("[[]]", &from));
-  EXPECT_FALSE(ParseEthSendTransaction1559Params("[0]", &from));
+TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          "0xdeadbeaf"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          "0xdeadbeaf",
+          "0xdeafbeaf"
+        ]
+      })");
+  std::string address;
+  std::string message;
+  EXPECT_TRUE(ParseEthSignParams(json, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeaf");
+
+  EXPECT_FALSE(ParseEthSignParams(json, &address, nullptr));
+  EXPECT_FALSE(ParseEthSignParams(json, nullptr, &message));
+  EXPECT_FALSE(ParseEthSignParams(json, nullptr, nullptr));
+  EXPECT_FALSE(ParseEthSignParams(json_extra_entry, &address, &message));
+  EXPECT_FALSE(ParseEthSignParams("{\"params\":[{}]}", &address, &message));
+  EXPECT_FALSE(
+      ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
 }
 
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {

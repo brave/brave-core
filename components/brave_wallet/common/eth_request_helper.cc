@@ -15,19 +15,25 @@
 
 namespace {
 
-absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
+absl::optional<base::Value::ListStorage> GetParamsList(
+    const std::string& json) {
   auto json_value = base::JSONReader::Read(json);
   if (!json_value || !json_value->is_dict())
     return absl::nullopt;
 
-  const base::Value* params = json_value->FindListPath(brave_wallet::kParams);
+  base::Value* params = json_value->FindListPath(brave_wallet::kParams);
   if (!params || !params->is_list())
     return absl::nullopt;
-  const auto list = params->GetList();
-  if (list.size() != 1 || !list.front().is_dict())
+
+  return std::move(*params).TakeList();
+}
+
+absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
+  auto list = GetParamsList(json);
+  if (!list || list->size() != 1 || !list->front().is_dict())
     return absl::nullopt;
 
-  return list.front().Clone();
+  return list->front().Clone();
 }
 
 // This is a best effort parsing of the data
@@ -191,6 +197,28 @@ bool NormalizeEthRequest(const std::string& input_json,
 
   ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
   base::JSONWriter::Write(*out_dict, output_json);
+
+  return true;
+}
+
+bool ParseEthSignParams(const std::string& json,
+                        std::string* address,
+                        std::string* message) {
+  if (!address || !message)
+    return false;
+
+  auto list = GetParamsList(json);
+  if (!list || list->size() != 2)
+    return false;
+
+  const std::string* address_str = (*list)[0].GetIfString();
+  const std::string* message_str = (*list)[1].GetIfString();
+  if (!address_str || !message_str)
+    return false;
+
+  *address = *address_str;
+  *message = *message_str;
+
   return true;
 }
 
