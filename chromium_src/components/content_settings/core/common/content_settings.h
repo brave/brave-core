@@ -25,4 +25,11 @@ struct RendererContentSettingRules
   ContentSettingsForOneType cosmetic_filtering_rules;
 };
 
+namespace content_settings {
+
+bool IsExplicitSetting(const ContentSettingPatternSource& setting);
+bool IsExplicitSetting(const SettingInfo& setting);
+
+}  // namespace content_settings
+
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
