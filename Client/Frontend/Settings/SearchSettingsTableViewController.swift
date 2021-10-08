@@ -65,12 +65,7 @@ class SearchSettingsTableViewController: UITableViewController {
         
         var orderedEngines = searchEngines.orderedEngines
             .sorted { $0.shortName < $1.shortName }
-        
-        if let initialDefaultEngine =
-            SearchEngines.getUnorderedBundledEngines(isOnboarding: false, locale: .current).first {
-            orderedEngines = orderedEngines
-                .sorted { engine, _ in engine.shortName == initialDefaultEngine.shortName }
-        }
+            .sorted { engine, _ in engine.shortName == OpenSearchEngine.EngineNames.brave }
         
         if isPrivate {
             orderedEngines = orderedEngines
