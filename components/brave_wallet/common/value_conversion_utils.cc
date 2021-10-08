@@ -65,6 +65,8 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
       chain.decimals = decimals.value();
     }
   }
+
+  chain.is_eip1559 = params_dict->FindBoolKey("is_eip1559").value_or(false);
   return chain;
 }
 
@@ -72,6 +74,7 @@ base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("chainId", chain->chain_id);
   dict.SetStringKey("chainName", chain->chain_name);
+  dict.SetBoolKey("is_eip1559", chain->is_eip1559);
 
   base::ListValue blockExplorerUrlsValue;
   if (!chain->block_explorer_urls.empty()) {

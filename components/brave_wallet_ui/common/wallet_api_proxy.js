@@ -49,6 +49,9 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.chainChangedEvent({ chainId }))
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
+      },
+      onEip1559Changed: function (chainId, isEip1559) {
+        store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
       }
     })
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote());

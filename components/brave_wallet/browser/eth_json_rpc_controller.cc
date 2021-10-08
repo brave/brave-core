@@ -173,10 +173,60 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid())
     return;
+
   chain_id_ = chain_id;
   network_url_ = network_url;
   prefs_->SetString(kBraveWalletCurrentChainId, chain_id);
+
   FireNetworkChanged();
+  MaybeUpdateIsEip1559(chain_id);
+}
+
+void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
+  // Only try to update is_eip1559 for localhost or custom chains.
+  auto chain = GetKnownChain(prefs_, chain_id);
+  if (chain && chain_id != brave_wallet::mojom::kLocalhostChainId)
+    return;
+
+  GetIsEip1559(base::BindOnce(&EthJsonRpcController::UpdateIsEip1559,
+                              weak_ptr_factory_.GetWeakPtr(), chain_id));
+}
+
+void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
+                                           bool success,
+                                           bool is_eip1559) {
+  if (!success)
+    return;
+
+  bool changed = false;
+  if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
+    changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
+    prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
+  } else {
+    ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    for (base::Value& custom_network : update.Get()->GetList()) {
+      if (!custom_network.is_dict())
+        continue;
+
+      const std::string* id = custom_network.FindStringKey("chainId");
+      if (!id || *id != chain_id)
+        continue;
+
+      changed = custom_network.FindBoolKey("is_eip1559").value_or(false) !=
+                is_eip1559;
+      custom_network.SetBoolKey("is_eip1559", is_eip1559);
+      // Break the loop cuz we don't expect multiple entries with the same
+      // chainId in the list.
+      break;
+    }
+  }
+
+  if (!changed)
+    return;
+
+  for (const auto& observer : observers_) {
+    observer->OnIsEip1559Changed(chain_id, is_eip1559);
+  }
 }
 
 void EthJsonRpcController::FireNetworkChanged() {
@@ -602,6 +652,34 @@ void EthJsonRpcController::OnGetGasPrice(
   }
 
   std::move(callback).Run(true, result);
+}
+
+void EthJsonRpcController::GetIsEip1559(GetIsEip1559Callback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetIsEip1559,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_getBlockByNumber("latest", false), true,
+                 std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetIsEip1559(
+    GetIsEip1559Callback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  base::Value result;
+  if (!ParseResult(body, &result) || !result.is_dict()) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  const std::string* base_fee = result.FindStringKey("baseFeePerGas");
+  std::move(callback).Run(true, base_fee && !base_fee->empty());
 }
 
 }  // namespace brave_wallet

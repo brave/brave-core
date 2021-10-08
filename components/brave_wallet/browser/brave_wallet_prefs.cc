@@ -71,6 +71,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
+  registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -96,6 +97,8 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
+  prefs->ClearPref(kBraveWalletSelectedAccount);
+  prefs->ClearPref(kSupportEip1559OnLocalhostChain);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {

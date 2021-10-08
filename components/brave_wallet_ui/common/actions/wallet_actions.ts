@@ -8,6 +8,7 @@ import {
   InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
+  IsEip1559Changed,
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
@@ -54,6 +55,7 @@ export const setNetwork = createAction<EthereumChain>('setNetwork')
 export const getAllNetworks = createAction('getAllNetworks')
 export const setAllNetworks = createAction<GetAllNetworksList>('getAllNetworks')
 export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
+export const isEip1559Changed = createAction<IsEip1559Changed>('isEip1559Changed')
 export const keyringCreated = createAction('keyringCreated')
 export const keyringRestored = createAction('keyringRestored')
 export const locked = createAction('locked')

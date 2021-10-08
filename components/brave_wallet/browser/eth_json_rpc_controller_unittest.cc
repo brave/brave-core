@@ -69,15 +69,38 @@ void OnStringResponse(bool* callback_called,
   EXPECT_EQ(expected_success, success);
 }
 
-class FakeEthereumChainObserver
+void OnBoolResponse(bool* callback_called,
+                    bool expected_success,
+                    bool expected_response,
+                    bool success,
+                    bool response) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_success, success);
+}
+
+class TestEthJsonRpcControllerObserver
     : public brave_wallet::mojom::EthJsonRpcControllerObserver {
  public:
-  FakeEthereumChainObserver(base::OnceClosure callback,
-                            const std::string& expected_chain_id,
-                            const bool expected_error_empty) {
+  TestEthJsonRpcControllerObserver(base::OnceClosure callback,
+                                   const std::string& expected_chain_id,
+                                   bool expected_error_empty) {
     callback_ = std::move(callback);
     expected_chain_id_ = expected_chain_id;
     expected_error_empty_ = expected_error_empty;
+  }
+
+  TestEthJsonRpcControllerObserver(const std::string& expected_chain_id,
+                                   bool expected_is_eip1559) {
+    expected_chain_id_ = expected_chain_id;
+    expected_is_eip1559_ = expected_is_eip1559;
+  }
+
+  void Reset(const std::string& expected_chain_id, bool expected_is_eip1559) {
+    expected_chain_id_ = expected_chain_id;
+    expected_is_eip1559_ = expected_is_eip1559;
+    chain_changed_called_ = false;
+    is_eip1559_changed_called_ = false;
   }
 
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
@@ -86,14 +109,33 @@ class FakeEthereumChainObserver
     EXPECT_EQ(error.empty(), expected_error_empty_);
     std::move(callback_).Run();
   }
-  void ChainChangedEvent(const std::string& chain_id) override { NOTREACHED(); }
+
+  void ChainChangedEvent(const std::string& chain_id) override {
+    chain_changed_called_ = true;
+    EXPECT_EQ(chain_id, expected_chain_id_);
+  }
+
+  void OnIsEip1559Changed(const std::string& chain_id,
+                          bool is_eip1559) override {
+    is_eip1559_changed_called_ = true;
+    EXPECT_EQ(chain_id, expected_chain_id_);
+    EXPECT_EQ(is_eip1559, expected_is_eip1559_);
+  }
+
+  bool is_eip1559_changed_called() { return is_eip1559_changed_called_; }
+  bool chain_changed_called() { return chain_changed_called_; }
+
   ::mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
+
   base::OnceClosure callback_;
   std::string expected_chain_id_;
   bool expected_error_empty_;
+  bool expected_is_eip1559_;
+  bool chain_changed_called_ = false;
+  bool is_eip1559_changed_called_ = false;
   mojo::Receiver<brave_wallet::mojom::EthJsonRpcControllerObserver>
       observer_receiver_{this};
 };
@@ -139,6 +181,28 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 
   PrefService* prefs() { return &prefs_; }
 
+  bool GetIsEip1559FromPrefs(const std::string& chain_id) {
+    if (chain_id == mojom::kLocalhostChainId)
+      return prefs()->GetBoolean(kSupportEip1559OnLocalhostChain);
+    const base::ListValue* custom_networks =
+        prefs()->GetList(kBraveWalletCustomNetworks);
+    if (!custom_networks)
+      return false;
+
+    for (const auto& chain : custom_networks->GetList()) {
+      if (!chain.is_dict())
+        continue;
+
+      const std::string* id = chain.FindStringKey("chainId");
+      if (!id || *id != chain_id)
+        continue;
+
+      return chain.FindBoolKey("is_eip1559").value_or(false);
+    }
+
+    return false;
+  }
+
   void SetRegistrarResponse() {
     auto localhost_url_spec =
         brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId).spec();
@@ -183,6 +247,18 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
         }));
   }
 
+  void SetIsEip1559Interceptor(bool is_eip1559) {
+    if (is_eip1559)
+      SetInterceptor(
+          "eth_getBlockByNumber", "latest,false",
+          "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
+          "{\"baseFeePerGas\":\"0x181f22e7a9\", \"gasLimit\":\"0x6691b8\"}}");
+    else
+      SetInterceptor("eth_getBlockByNumber", "latest,false",
+                     "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
+                     "{\"gasLimit\":\"0x6691b8\"}}");
+  }
+
   void ValidateStartWithNetwork(const std::string& chain_id,
                                 const std::string& expected_id) {
     prefs()->SetString(kBraveWalletCurrentChainId, chain_id);
@@ -209,7 +285,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 
 TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
   std::vector<mojom::EthereumChainPtr> networks;
-  brave_wallet::GetAllKnownChains(&networks);
+  brave_wallet::GetAllKnownChains(prefs(), &networks);
   for (const auto& network : networks) {
     bool callback_is_called = false;
     rpc_controller_->SetNetwork(network->chain_id);
@@ -239,13 +315,13 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
   auto chain_ptr1 = chain1.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
 
   brave_wallet::mojom::EthereumChain chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22);
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
   auto chain_ptr2 = chain2.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
@@ -274,13 +350,13 @@ TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
   auto chain_ptr1 = chain1.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
 
   brave_wallet::mojom::EthereumChain chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22);
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
   auto chain_ptr2 = chain2.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
@@ -327,7 +403,7 @@ TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain(
       "0x1", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
   auto chain_ptr = chain.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr));
   UpdateCustomNetworks(prefs(), &values);
@@ -347,11 +423,11 @@ TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
 TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   base::RunLoop loop;
-  std::unique_ptr<FakeEthereumChainObserver> observer(
-      new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", true));
+  std::unique_ptr<TestEthJsonRpcControllerObserver> observer(
+      new TestEthJsonRpcControllerObserver(loop.QuitClosure(), "0x111", true));
 
   rpc_controller_->AddObserver(observer->GetReceiver());
 
@@ -383,11 +459,11 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
 TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   base::RunLoop loop;
-  std::unique_ptr<FakeEthereumChainObserver> observer(
-      new FakeEthereumChainObserver(loop.QuitClosure(), "0x111", false));
+  std::unique_ptr<TestEthJsonRpcControllerObserver> observer(
+      new TestEthJsonRpcControllerObserver(loop.QuitClosure(), "0x111", false));
 
   rpc_controller_->AddObserver(observer->GetReceiver());
 
@@ -420,7 +496,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainRejected) {
 TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   bool callback_is_called = false;
   bool expected = true;
@@ -439,7 +515,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainError) {
   // other chain, same origin
   brave_wallet::mojom::EthereumChain chain2(
       "0x222", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   bool second_callback_is_called = false;
   bool second_expected = false;
@@ -662,6 +738,160 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
       base::BindOnce(&OnStringResponse, &callback_called, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetIsEip1559) {
+  bool callback_called = false;
+
+  SetIsEip1559Interceptor(true);
+  rpc_controller_->GetIsEip1559(
+      base::BindOnce(&OnBoolResponse, &callback_called, true, true));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetIsEip1559Interceptor(false);
+  rpc_controller_->GetIsEip1559(
+      base::BindOnce(&OnBoolResponse, &callback_called, true, false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->GetIsEip1559(
+      base::BindOnce(&OnBoolResponse, &callback_called, false, false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559NotCalledForKnownChains) {
+  TestEthJsonRpcControllerObserver observer(mojom::kMainnetChainId, false);
+  rpc_controller_->AddObserver(observer.GetReceiver());
+
+  rpc_controller_->SetNetwork(brave_wallet::mojom::kMainnetChainId);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
+  TestEthJsonRpcControllerObserver observer(mojom::kLocalhostChainId, true);
+  rpc_controller_->AddObserver(observer.GetReceiver());
+
+  // Switching to localhost should update is_eip1559 to true when is_eip1559 is
+  // true in the RPC response.
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+  SetIsEip1559Interceptor(true);
+
+  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_TRUE(observer.is_eip1559_changed_called());
+  EXPECT_TRUE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+
+  // Switching to localhost should update is_eip1559 to false when is_eip1559
+  // is false in the RPC response.
+  observer.Reset(mojom::kLocalhostChainId, false);
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_TRUE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+
+  // Switch to localhost again without changing is_eip1559 should not trigger
+  // event.
+  observer.Reset(mojom::kLocalhostChainId, false);
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+
+  // OnEip1559Changed will not be called if RPC fails.
+  observer.Reset(mojom::kLocalhostChainId, false);
+  SetErrorInterceptor();
+
+  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
+  std::vector<base::Value> values;
+  brave_wallet::mojom::EthereumChain chain1(
+      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+  auto chain_ptr1 = chain1.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+
+  brave_wallet::mojom::EthereumChain chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
+      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
+  auto chain_ptr2 = chain2.Clone();
+  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
+  UpdateCustomNetworks(prefs(), &values);
+
+  // Switch to chain1 should trigger is_eip1559 being updated to true when
+  // is_eip1559 is true in the RPC response.
+  TestEthJsonRpcControllerObserver observer(chain1.chain_id, true);
+  rpc_controller_->AddObserver(observer.GetReceiver());
+
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain1.chain_id));
+  SetIsEip1559Interceptor(true);
+
+  rpc_controller_->SetNetwork(chain1.chain_id);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_TRUE(observer.is_eip1559_changed_called());
+  EXPECT_TRUE(GetIsEip1559FromPrefs(chain1.chain_id));
+
+  // Switch to chain2 should trigger is_eip1559 being updated to false when
+  // is_eip1559 is false in the RPC response.
+  observer.Reset(chain2.chain_id, false);
+  EXPECT_TRUE(GetIsEip1559FromPrefs(chain2.chain_id));
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(chain2.chain_id);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_TRUE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+
+  // Switch to chain2 again without changing is_eip1559 should not trigger
+  // event.
+  observer.Reset(chain2.chain_id, false);
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(chain2.chain_id);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+
+  // OnEip1559Changed will not be called if RPC fails.
+  observer.Reset(chain2.chain_id, false);
+  SetErrorInterceptor();
+
+  rpc_controller_->SetNetwork(chain2.chain_id);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
 }
 
 }  // namespace brave_wallet

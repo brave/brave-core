@@ -810,7 +810,8 @@ export type EthereumChain = {
   rpcUrls: string[],
   symbol: string,
   symbolName: string,
-  decimals: number
+  decimals: number,
+  isEip1559: boolean
 }
 
 export interface GetAllNetworksList {

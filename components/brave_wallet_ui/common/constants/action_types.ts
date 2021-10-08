@@ -30,6 +30,11 @@ export type ChainChangedEventPayloadType = {
   chainId: string
 }
 
+export type IsEip1559Changed = {
+  chainId: string,
+  isEip1559: boolean
+}
+
 export type NewUnapprovedTxAdded = {
   txInfo: TransactionInfo
 }
