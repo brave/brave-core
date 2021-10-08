@@ -146,9 +146,10 @@ bool GetEthJsonRequestInfo(const std::string& json,
 
   if (id) {
     const base::Value* found_id = response_dict->FindPath(kId);
-    if (!found_id)
-      return false;
-    *id = found_id->Clone();
+    if (found_id)
+      *id = found_id->Clone();
+    else
+      *id = base::Value();
   }
 
   if (method) {

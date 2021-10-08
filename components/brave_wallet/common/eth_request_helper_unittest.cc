@@ -170,6 +170,19 @@ TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   // Can pass nullptr for all params
   EXPECT_TRUE(GetEthJsonRequestInfo(json, nullptr, nullptr, nullptr));
 
+  // Can omit id but ask for id return
+  std::string missing_id_json = R"({
+    "method": "eth_getBlockByNumber",
+    "params": ["0x5BaD55",true]
+  })";
+  id = base::Value("something");
+  method.clear();
+  params.clear();
+  EXPECT_TRUE(GetEthJsonRequestInfo(missing_id_json, &id, &method, &params));
+  EXPECT_EQ(id, base::Value());
+  EXPECT_EQ(method, "eth_getBlockByNumber");
+  EXPECT_EQ(params, "[\"0x5BaD55\",true]");
+
   // Missing method
   std::string missing_method_json = R"({
     "id": "1",
