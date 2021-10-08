@@ -1567,6 +1567,39 @@ until they verify, or until 90 days have passed.
       <message name="IDS_IM_IN" desc="Brave rewards opt in button text">
         I’m In!
       </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_TEXT" desc="Turn on brave rewards">
+        To start a free call, turn on Brave Rewards
+      </message>
+      <message name="IDS_BRAVE_TALK_REWARDS_DESCRIPTION_TEXT" desc="Brave rewards description">
+        With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_BUTTON_TEXT" desc="Turn on brave rewards button">
+        Turn on Rewards
+      </message>
+      <message name="IDS_BRAVE_TALK_REWARDS_TOS_PP_TEXT" desc="Brave rewards terms of service and privacy policy">
+        By tapping, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>. Disable any time in Settings.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TEXT" desc="Turn on brave private ads">
+        To start a free call, enable Brave Private Ads
+      </message>
+      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_DESCRIPTION_TEXT" desc="Brave private ads description">
+        With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_BUTTON_TEXT" desc="Turn on brave private ads button">
+        Turn on Brave Private Ads
+      </message>
+      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_TOS_PP_TEXT" desc="Brave private ads terms of service and privacy policy">
+        By turning on Ads, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
+      </message>
+      <message name="IDS_BRAVE_TALK_START_FREE_CALL_TEXT" desc="Brave talk start call popup header">
+        You can now start a free call
+      </message>
+      <message name="IDS_BRAVE_TALK_TAP_ANYWHERE_TEXT" desc="Brave talk continue popup text">
+        Tap anywhere on the screen to continue to Brave Talk.
+      </message>
+      <message name="IDS_BRAVE_TALK_WANT_LEARN_MORE_TEXT" desc="Brave talk learn more popup text">
+        Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR">%1$s</ph>.
+      </message>
       <message name="IDS_CONVERT_SUCCESS" desc="Binance convert success text">
         You converted <ph name="FROM_VALUE">%1$s</ph> <ph name="FROM_CURRENCY">%2$s</ph> to <ph name="TO_VALUE">%3$s</ph> <ph name="TO_CURRENCY">%4$s</ph>!
       </message>

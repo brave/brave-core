@@ -113,6 +113,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveTalkOptInPopup.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveTalkOptInPopupListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnViewPagerAction.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingPrefManager.java",
