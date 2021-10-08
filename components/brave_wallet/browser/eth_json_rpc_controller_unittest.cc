@@ -801,6 +801,19 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
 
+  // Switch to localhost again without changing is_eip1559 should not trigger
+  // event.
+  observer.Reset(mojom::kLocalhostChainId, false);
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
+
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(mojom::kLocalhostChainId, false);
   SetErrorInterceptor();
@@ -854,6 +867,19 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+
+  // Switch to chain2 again without changing is_eip1559 should not trigger
+  // event.
+  observer.Reset(chain2.chain_id, false);
+  EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+  SetIsEip1559Interceptor(false);
+
+  rpc_controller_->SetNetwork(chain2.chain_id);
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.chain_changed_called());
+  EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
 
   // OnEip1559Changed will not be called if RPC fails.

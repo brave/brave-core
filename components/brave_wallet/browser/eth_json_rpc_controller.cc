@@ -198,7 +198,9 @@ void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
   if (!success)
     return;
 
+  bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
+    changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
     prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
   } else {
     ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
@@ -210,12 +212,17 @@ void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
       if (!id || *id != chain_id)
         continue;
 
+      changed = custom_network.FindBoolKey("is_eip1559").value_or(false) !=
+                is_eip1559;
       custom_network.SetBoolKey("is_eip1559", is_eip1559);
       // Break the loop cuz we don't expect multiple entries with the same
       // chainId in the list.
       break;
     }
   }
+
+  if (!changed)
+    return;
 
   for (const auto& observer : observers_) {
     observer->OnIsEip1559Changed(chain_id, is_eip1559);
