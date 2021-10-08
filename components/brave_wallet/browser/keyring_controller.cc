@@ -932,8 +932,9 @@ KeyringController::SignMessageByDefaultKeyring(
     return ret;
   }
 
+  // MM currently doesn't provide chain_id when signing message
   std::vector<uint8_t> signature =
-      default_keyring_->SignMessage(address, message);
+      default_keyring_->SignMessage(address, message, 0);
   if (signature.empty()) {
     ret.signature = absl::nullopt;
     ret.error_message =
