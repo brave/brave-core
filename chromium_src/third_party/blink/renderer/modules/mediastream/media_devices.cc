@@ -25,10 +25,10 @@ namespace brave {
 
 void FarbleMediaDevices(ExecutionContext* context,
                         MediaDeviceInfoVector* media_devices) {
-  WebContentSettingsClient* settings = GetContentSettingsClientFor(context);
   // |media_devices| is guaranteed not to be null here.
   if (media_devices->size() <= 2)
     return;
+  WebContentSettingsClient* settings = GetContentSettingsClientFor(context);
   if (!settings)
     return;
   if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
