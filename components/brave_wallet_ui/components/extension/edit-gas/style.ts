@@ -29,6 +29,7 @@ export const InputLabel = styled.span`
 `
 
 export const Input = styled.input`
+  box-sizing: border-box;
   outline: none;
   width: 100%;
   background-image: none;
