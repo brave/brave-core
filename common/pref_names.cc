@@ -31,6 +31,8 @@ const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
+const char kShowAlternativeSearchEngineProviderToggle[] =
+    "brave.show_alternate_private_search_engine_toggle";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";

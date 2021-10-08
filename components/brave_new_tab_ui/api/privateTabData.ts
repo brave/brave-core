@@ -14,6 +14,7 @@ import * as Cr from '../../common/cr'
 
 export type PrivateTabData = {
   useAlternativePrivateSearchEngine: boolean
+  showAlternativePrivateSearchEngineToggle: boolean
 }
 
 type PrivateTabDataUpdatedHandler = (data: PrivateTabData) => void

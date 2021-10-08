@@ -81,12 +81,63 @@ export const Grid2Columns = styled('section')<{}>`
   }
 `
 
+export const Grid3Columns = styled('section')<{}>`
+  box-sizing: border-box;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 10% 45% 45%;
+  grid-template-areas:
+    "header header header"
+    "image content1 content2";
+
+  grid-auto-rows: auto;
+  grid-gap: 20px 20px;
+  padding: 0;
+  justify-items: center;
+
+  > *:first-child {
+    grid-area: header;
+  }
+
+  > *:nth-child(2) {
+    grid-area: image;
+  }
+
+  > *:nth-child(3) {
+    grid-area: content1;
+  }
+
+  > *:nth-child(4) {
+    grid-area: content2;
+  }
+
+  @media screen and (max-width: 1170px) {
+    grid-template-columns: 460px;
+    justify-content: center;
+    grid-template-areas:
+    "header"
+    "content1"
+    "content2";
+
+    > *:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 490px) {
+    /* TODO: @cezaraugusto this needs more love */
+    zoom: 0.8;
+  }
+`
+
 export const HeaderGrid = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: "image content";
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "image"
+    "content";
 
   grid-auto-rows: auto;
   grid-gap: 50px;
@@ -114,4 +165,17 @@ export const ButtonGroup = styled('footer')<{}>`
   display: flex;
   flex: 1;
   justify-content: flex-start;
+`
+
+export const ToggleGroup = styled('footer')<{}>`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const IconText = styled('div')<{}>`
+  display: flex;
+  justify: space-between;
+  align-items: center;
 `

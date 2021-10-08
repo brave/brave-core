@@ -16,6 +16,18 @@ export const Box = styled('section')<{}>`
   border: 1px solid rgba(255,255,255,0.25);
 `
 
+export const ControlBox = styled('section')<{}>`
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  padding: 10px 20px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin: 10px auto;
+`
+
 export const HeaderBox = styled('section')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -31,7 +43,7 @@ export const DuckDuckGoImage = styled(DuckDuckGoIcon)`
   box-sizing: border-box;
   display: block;
   width: 40px;
-  margin-bottom: 20px;
+  margin-right: 10px;
 `
 
 export const TorLockImage = styled(TorLockIcon)`
@@ -45,10 +57,14 @@ export const PrivateImage = styled('img')<{}>`
   box-sizing: border-box;
   display: block;
   width: 293px;
+  margin: auto;
+`
 
-  @media screen and (max-width: 1170px) {
-    margin: auto;
-  }
+export const PrivacyEyeImage = styled('img')<{}>`
+  box-sizing: border-box;
+  display: block;
+  width: 73px;
+  margin: auto;
 `
 
 export const TorImage = styled('img')<{}>`
@@ -78,8 +94,9 @@ export const Title = styled(Heading)`
   letter-spacing: 0.02px;
   font-weight: 500;
   color: #fff;
-  margin: 0 0 0px;
+  margin: auto;
 `
+
 export const Text = styled('p')<{}>`
   font-family: ${p => p.theme.fontFamily.body};
   letter-spacing: 0.19px;
@@ -105,14 +122,14 @@ export const PurpleButton = styled(Button as ComponentType<ButtonProps>)`
 `
 export const Link = styled('a')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 14px;
-  color: #814EFF;
+  font-size: 15px;
+  color: #fff;
   font-style: normal;
   line-height: 1;
   align-self: center;
   margin: 25px 20px 0 0;
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: underline;
 `
 
 interface FakeButtonProps {

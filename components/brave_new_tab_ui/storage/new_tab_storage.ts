@@ -41,6 +41,7 @@ export const defaultState: NewTab.State = {
   ftxSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
+  showAlternativePrivateSearchEngineToggle: false,
   torCircuitEstablished: false,
   torInitProgress: '',
   isTor: false,

@@ -101,6 +101,8 @@ SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 void SearchEngineProviderServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kUseAlternativeSearchEngineProvider, false);
+  registry->RegisterBooleanPref(kShowAlternativeSearchEngineProviderToggle,
+                                false);
   registry->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension,
                                 false);
   registry->RegisterBooleanPref(prefs::kAddOpenSearchEngines, false);

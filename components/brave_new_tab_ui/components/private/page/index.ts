@@ -11,7 +11,7 @@ interface PageProps {
 export const Page = styled('div')<PageProps>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  background: linear-gradient(${p => p.isPrivate ? '#381980' : '#5F0C8A'}, #0C041E);
+  background: linear-gradient(${p => p.isPrivate ? '180deg, #0C041E -8.41%, #4E21B7 98.85%' : '#5F0C8A, #0C041E'});
   min-height: 100vh;
   height: initial;
 `
