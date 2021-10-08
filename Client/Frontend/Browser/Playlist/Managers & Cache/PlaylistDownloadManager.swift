@@ -195,6 +195,7 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
 private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
     private var activeDownloadTasks = [URLSessionTask: MediaDownloadTask]()
     private var pendingDownloadTasks = [URLSessionTask: URL]()
+    private var pendingCancellationTasks = [URLSessionTask]()
     private static let minimumBitRate = 265_000
     
     weak var delegate: PlaylistStreamDownloadManagerDelegate?
@@ -212,9 +213,10 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
             for task in tasks {
                 // TODO: Investigate progress calculation of AVAggregateAssetDownloadTask
                 guard let downloadTask = task as? AVAssetDownloadTask,
-                      let pageSrc = task.taskDescription else { break }
+                      let pageSrc = task.taskDescription else { continue }
                 
-                if let item = PlaylistItem.getItem(pageSrc: pageSrc) {
+                if downloadTask.state != .completed,
+                    let item = PlaylistItem.getItem(pageSrc: pageSrc) {
                     let info = PlaylistInfo(item: item)
                     let asset = MediaDownloadTask(id: info.pageSrc, name: info.name, asset: downloadTask.urlAsset)
                     self.activeDownloadTasks[downloadTask] = asset
@@ -251,9 +253,8 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
     
     func cancelDownload(item: PlaylistInfo) {
         if let task = activeDownloadTasks.first(where: { $0.value.id == item.pageSrc })?.key {
-            task.cancel()
-            activeDownloadTasks.removeValue(forKey: task)
-            pendingDownloadTasks.removeValue(forKey: task)
+            pendingCancellationTasks.append(task)
+            task.cancel() // will call didCompleteWithError which will cleanup the assets
         }
     }
     
@@ -320,8 +321,19 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
             return
         }
         
-        guard let asset = activeDownloadTasks.removeValue(forKey: task),
-              let assetUrl = pendingDownloadTasks.removeValue(forKey: task) else { return }
+        var asset = activeDownloadTasks.removeValue(forKey: task)
+        let assetUrl = pendingDownloadTasks.removeValue(forKey: task)
+        
+        if asset == nil,
+           let taskDescription = task.taskDescription,
+           let taskURL = URL(string: taskDescription) {
+            asset = MediaDownloadTask(id: taskDescription,
+                                      name: "System Restore - Cached Item",
+                                      asset: AVURLAsset(url: taskURL))
+        }
+        
+        guard let asset = asset,
+                let assetUrl = assetUrl else { return }
         
         let cleanupAndFailDownload = { (location: URL?, error: Error) in
             if let location = location {
@@ -341,13 +353,33 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
         if let error = error as NSError? {
             switch (error.domain, error.code) {
             case (NSURLErrorDomain, NSURLErrorCancelled):
-                guard let cacheLocation = delegate?.localAsset(for: asset.id)?.url else { return }
-
+                // HLS streams can be in two spots, we need to delete from both
+                // just in case the download process was in the middle of transferring the asset
+                // to its proper location
+                if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
+                    do {
+                        try FileManager.default.removeItem(at: cacheLocation)
+                    } catch {
+                        log.error("Could not delete asset cache \(asset.name): \(error)")
+                    }
+                }
+                
                 do {
-                    try FileManager.default.removeItem(at: cacheLocation)
-                    PlaylistItem.updateCache(pageSrc: asset.id, cachedData: nil)
+                    try FileManager.default.removeItem(atPath: assetUrl.path)
                 } catch {
                     log.error("Could not delete asset cache \(asset.name): \(error)")
+                }
+                
+                // Update the asset state, but do not propagate the error
+                // because the download was cancelled by the user
+                if pendingCancellationTasks.contains(task) {
+                    pendingCancellationTasks.removeAll(where: { $0 == task })
+                    
+                    DispatchQueue.main.async {
+                        PlaylistItem.updateCache(pageSrc: asset.id, cachedData: nil)
+                        self.delegate?.onDownloadStateChanged(streamDownloader: self, id: asset.id, state: .invalid, displayName: nil, error: nil)
+                    }
+                    return
                 }
 
             case (NSURLErrorDomain, NSURLErrorUnknown):
@@ -358,6 +390,8 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
             }
             
             DispatchQueue.main.async {
+                log.debug(PlaylistItem.getItem(pageSrc: asset.id))
+                PlaylistItem.updateCache(pageSrc: asset.id, cachedData: nil)
                 self.delegate?.onDownloadStateChanged(streamDownloader: self, id: asset.id, state: .invalid, displayName: nil, error: error)
             }
         } else {
@@ -388,6 +422,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
 
 private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate {
     private var activeDownloadTasks = [URLSessionTask: MediaDownloadTask]()
+    private var pendingCancellationTasks = [URLSessionTask]()
     
     weak var delegate: PlaylistStreamDownloadManagerDelegate?
     
@@ -402,10 +437,13 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
             guard let self = self else { return }
             
             for task in tasks {
-                guard let pageSrc = task.taskDescription else { break }
+                guard let pageSrc = task.taskDescription else {
+                    continue
+                }
 
                 ensureMainThread {
-                    if let item = PlaylistItem.getItem(pageSrc: pageSrc),
+                    if task.state != .completed,
+                       let item = PlaylistItem.getItem(pageSrc: pageSrc),
                        let mediaSrc = item.mediaSrc,
                        let assetUrl = URL(string: mediaSrc) {
                         let info = PlaylistInfo(item: item)
@@ -443,8 +481,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     
     func cancelDownload(item: PlaylistInfo) {
         if let task = activeDownloadTasks.first(where: { item.pageSrc == $0.value.id })?.key {
-            task.cancel()
-            activeDownloadTasks.removeValue(forKey: task)
+            task.cancel() // will call didCompleteWithError which will cleanup the assets
         }
     }
     
@@ -455,19 +492,39 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     // MARK: - URLSessionDownloadDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let task = task as? URLSessionDownloadTask,
-              let asset = activeDownloadTasks.removeValue(forKey: task) else { return }
+        guard let task = task as? URLSessionDownloadTask else { return }
+        
+        var asset = activeDownloadTasks.removeValue(forKey: task)
+        if asset == nil,
+           let taskDescription = task.taskDescription,
+           let taskURL = URL(string: taskDescription) {
+            asset = MediaDownloadTask(id: taskDescription,
+                                      name: "System Restore - Cached Item",
+                                      asset: AVURLAsset(url: taskURL))
+        }
+        
+        guard let asset = asset else { return }
 
         if let error = error as NSError? {
             switch (error.domain, error.code) {
             case (NSURLErrorDomain, NSURLErrorCancelled):
-                guard let cacheLocation = delegate?.localAsset(for: asset.id)?.url else { return }
-
-                do {
-                    try FileManager.default.removeItem(at: cacheLocation)
-                    PlaylistItem.updateCache(pageSrc: asset.id, cachedData: nil)
-                } catch {
-                    log.error("Could not delete asset cache \(asset.name): \(error)")
+                if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
+                    do {
+                        try FileManager.default.removeItem(at: cacheLocation)
+                        PlaylistItem.updateCache(pageSrc: asset.id, cachedData: nil)
+                    } catch {
+                        log.error("Could not delete asset cache \(asset.name): \(error)")
+                    }
+                }
+                
+                // Update the asset state, but do not propagate the error
+                // because the download was cancelled by the user
+                if pendingCancellationTasks.contains(task) {
+                    pendingCancellationTasks.removeAll(where: { $0 == task })
+                    DispatchQueue.main.async {
+                        self.delegate?.onDownloadStateChanged(streamDownloader: self, id: asset.id, state: .invalid, displayName: nil, error: nil)
+                    }
+                    return
                 }
 
             case (NSURLErrorDomain, NSURLErrorUnknown):
@@ -500,7 +557,18 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        guard let asset = activeDownloadTasks.removeValue(forKey: downloadTask) else { return }
+        
+        var asset = activeDownloadTasks.removeValue(forKey: downloadTask)
+        
+        if asset == nil,
+           let taskDescription = downloadTask.taskDescription,
+           let taskURL = URL(string: taskDescription) {
+            asset = MediaDownloadTask(id: taskDescription,
+                                      name: "System Restore - Cached Item",
+                                      asset: AVURLAsset(url: taskURL))
+        }
+        
+        guard let asset = asset else { return }
         
         func cleanupAndFailDownload(location: URL?, error: Error) {
             if let location = location {

@@ -50,6 +50,9 @@ class PlaylistManager: NSObject {
         
         downloadManager.delegate = self
         frc.delegate = self
+        
+        // Delete system cache always on startup.
+        deleteUserManagedAssets()
     }
     
     var contentWillChange: AnyPublisher<Void, Never> {
@@ -285,6 +288,54 @@ class PlaylistManager: NSObject {
             
             if !cacheOnly {
                 PlaylistItem.removeItem(item)
+            }
+        }
+        
+        // Delete playlist directory.
+        // Though it should already be empty
+        if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+            do {
+                try FileManager.default.removeItem(at: playlistDirectory)
+            } catch {
+                log.error("Failed to delete Playlist Directory: \(error)")
+            }
+        }
+        
+        // Delete system cache
+        deleteUserManagedAssets()
+    }
+    
+    private func deleteUserManagedAssets() {
+        // Cleanup System Cache Folder com.apple.UserManagedAssets*
+        if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first {
+            do {
+                let urls = try FileManager.default.contentsOfDirectory(at: libraryPath,
+                                                                       includingPropertiesForKeys: nil,
+                                                                       options: [.skipsHiddenFiles])
+                for url in urls where url.absoluteString.contains("com.apple.UserManagedAssets") {
+                    do {
+                        let assets = try FileManager.default.contentsOfDirectory(at: url,
+                                                                                 includingPropertiesForKeys: nil,
+                                                                                 options: [.skipsHiddenFiles])
+                        assets.forEach({
+                            if let item = PlaylistItem.cachedItem(cacheURL: $0),
+                               let pageSrc = item.pageSrc {
+                                self.cancelDownload(item: PlaylistInfo(item: item))
+                                PlaylistItem.updateCache(pageSrc: pageSrc, cachedData: nil)
+                            }
+                        })
+                    } catch {
+                        log.error("Failed to update Playlist item cached state: \(error)")
+                    }
+                    
+                    do {
+                        try FileManager.default.removeItem(at: url)
+                    } catch {
+                        log.error("Deleting Playlist Item for \(url.absoluteString) failed: \(error)")
+                    }
+                }
+            } catch {
+                log.error("Deleting Playlist Incomplete Items failed: \(error)")
             }
         }
     }
