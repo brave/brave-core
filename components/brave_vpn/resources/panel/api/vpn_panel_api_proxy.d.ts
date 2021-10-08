@@ -2,7 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-import { ConnectionState } from './types/connection_state'
+import { ConnectionState } from './panel_browser_api'
+import { Region } from './region_interface'
+
 export default class APIProxy {
   static getInstance: () => APIProxy
   showUI: () => {}
@@ -12,12 +14,22 @@ export default class APIProxy {
   connect: () => {}
   disconnect: () => {}
   addVPNObserver: (obj: ServiceObserver) => {}
+  getAllRegions: () => Promise<RegionResponse>
+  getSelectedRegion: () => Promise<DeviceRegionResponse>
+  setSelectedRegion: (region: Region) => {}
 }
 interface ServiceObserver {
-  onConnectionCreated?: Function
-  onConnectionRemoved?: Function
-  onConnectionStateChanged?: Function
+  onConnectionCreated: Function
+  onConnectionRemoved: Function
+  onConnectionStateChanged: Function
+  onPurchasedStateChanged: Function
 }
 interface StateResponse {
   state: ConnectionState
+}
+interface RegionResponse {
+  regions: Array<Region>
+}
+interface DeviceRegionResponse {
+  currentRegion: Region
 }

@@ -3,11 +3,11 @@ import * as S from './style'
 import { Button } from 'brave-ui'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import locale from '../../constants/locale'
-
+import { RegionState } from '../../api/region_interface'
 interface Props {
   onTryAgainClick: Function
   onChooseServerClick: Function
-  region: string
+  region: RegionState
 }
 
 function ErrorPanel (props: Props) {
@@ -21,7 +21,8 @@ function ErrorPanel (props: Props) {
           <AlertCircleIcon color='#84889C' />
         </S.IconBox>
         <S.ReasonTitle>{locale.cantConnectError}</S.ReasonTitle>
-        <S.ReasonDesc>Brave Firewall + VPN couldn't connect to the {props.region} server.
+        <S.ReasonDesc>Brave Firewall + VPN couldn't connect to the{' '}
+          {props.region?.current?.namePretty} server.
           You can try again, or choose another.</S.ReasonDesc>
         <S.ActionArea>
             <Button

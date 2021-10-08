@@ -4,12 +4,12 @@ import StatusIndicator from '../../components/status-indicator'
 import PanelBox from '../../components/panel-box'
 import Toggle from '../../components/toggle'
 import { SettingsAdvancedIcon, CaratStrongRightIcon } from 'brave-ui/components/icons'
-import { ConnectionState } from '../../types/connection_state'
-
+import { ConnectionState } from '../../api/panel_browser_api'
+import { Region } from '../../api/region_interface'
 interface Props {
   isOn: boolean
   status: ConnectionState
-  region: string
+  region: Region
   onToggleClick: () => void
   onSelectRegionButtonClick: () => void
 }
@@ -41,7 +41,7 @@ function MainPanel (props: Props) {
           type='button'
           onClick={props.onSelectRegionButtonClick}
         >
-          <S.RegionLabel>{props.region}</S.RegionLabel>
+          <S.RegionLabel>{props.region.namePretty}</S.RegionLabel>
           <CaratStrongRightIcon />
         </S.RegionSelectorButton>
       </S.PanelContent>

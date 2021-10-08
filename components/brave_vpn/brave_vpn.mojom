@@ -29,12 +29,6 @@ interface ServiceObserver {
   OnPurchasedStateChanged(PurchasedState state);
 };
 
-struct Region {
-  string continent;
-  string name;
-  string name_pretty;
-};
-
 // Browser-side handler for vpn service things
 interface ServiceHandler {
   GetConnectionState() => (ConnectionState state);
@@ -43,7 +37,9 @@ interface ServiceHandler {
   CreateVPNConnection();
   Connect();
   Disconnect();
+  // Gets all region from internal cache which is fetched from Guardian API
   GetAllRegions() => (array<Region> regions);
+  // Gets region based on user's device timezone
   GetDeviceRegion() => (Region device_region);
   GetSelectedRegion() => (Region current_region);
   SetSelectedRegion(Region region);
@@ -72,4 +68,10 @@ enum PurchasedState {
   NOT_PURCHASED,
   PURCHASED,
   EXPIRED,
+};
+
+struct Region {
+  string continent;
+  string name;
+  string name_pretty;
 };

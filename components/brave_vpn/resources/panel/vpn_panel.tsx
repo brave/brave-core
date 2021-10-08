@@ -11,7 +11,7 @@ import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
 import Container from './container'
 import { PanelWrapper } from './style'
-import apiProxy from './vpn_panel_api_proxy.js'
+import apiProxy from './api/vpn_panel_api_proxy.js'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()

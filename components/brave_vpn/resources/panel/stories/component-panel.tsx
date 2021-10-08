@@ -3,10 +3,12 @@ import * as React from 'react'
 import * as S from './style'
 
 // Components
+import { mockRegionList } from './mock-data/region-list'
 import MainPanel from '../components/main-panel'
 import ErrorPanel from '../components/error-panel'
-import SelectRegion from '../components/select-region'
-import { ConnectionState } from '../types/connection_state'
+import SelectRegionList from '../components/select-region-list'
+import { RegionState, Region } from '../api/region_interface'
+import { ConnectionState } from '../api/panel_browser_api'
 
 const statusOptions = {
   'Disconnected': ConnectionState.DISCONNECTED,
@@ -25,17 +27,25 @@ export default {
   }
 }
 
+function useRegion () {
+  const result = React.useState<RegionState>(mockRegionList)
+  return result
+}
+
 export const _Main = () => {
   const [isOn, setIsOn] = React.useState(false)
   const handleToggleClick = () => setIsOn(state => !state)
   const handleSelectRegionButtonClick = () => {/**/}
+  const [region] = useRegion()
+
+  if (!region.current) return null
 
   return (
     <S.PanelFrame>
       <MainPanel
         isOn={isOn}
         status={select('Current Status', statusOptions, ConnectionState.DISCONNECTED)}
-        region='Tokyo'
+        region={region.current}
         onToggleClick={handleToggleClick}
         onSelectRegionButtonClick={handleSelectRegionButtonClick}
       />
@@ -44,6 +54,8 @@ export const _Main = () => {
 }
 
 export const _Error = () => {
+  const [region] = useRegion()
+
   const handleTryAgain = () => {
     alert('Trying..')
   }
@@ -57,19 +69,39 @@ export const _Error = () => {
       <ErrorPanel
         onTryAgainClick={handleTryAgain}
         onChooseServerClick={handleChooseServer}
-        region='Tokyo'
+        region={region}
       />
     </S.PanelFrame>
   )
 }
 
 export const _SelectLocation = () => {
+  const [region, setRegion] = useRegion()
+
   const onDone = () => {
     alert('Going back')
   }
+
+  const clickConnect = () => {
+    alert('Connecting...')
+  }
+
+  const handleRegionClick = (currentRegion: Region) => {
+    setRegion((prevState) => ({
+      ...prevState,
+      current: currentRegion
+    }))
+  }
+
   return (
     <S.PanelFrame>
-      <SelectRegion onDone={onDone} />
+      <SelectRegionList
+        onDone={onDone}
+        regions={region.all!}
+        selectedRegion={region.current!}
+        onRegionClick={handleRegionClick}
+        onConnectClick={clickConnect}
+      />
     </S.PanelFrame>
   )
 }

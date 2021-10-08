@@ -295,6 +295,13 @@ bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
     regions_.push_back(region);
   }
 
+  // Sort region list alphabetically
+  std::sort(regions_.begin(), regions_.end(),
+            [](brave_vpn::mojom::Region& a, brave_vpn::mojom::Region& b) {
+              return (a.name_pretty < b.name_pretty);
+            });
+
+  // If we can't get region list, we can't determine device region.
   if (regions_.empty())
     return false;
 

@@ -11,7 +11,6 @@ preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("brave_vpn") {
-  assert(enable_brave_vpn)
   sources = [
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
