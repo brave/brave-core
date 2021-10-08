@@ -18,9 +18,9 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/preferences/public/cpp/dictionary_value_update.h"
+#include "services/preferences/public/cpp/scoped_pref_update.h"
 #include "url/gurl.h"
-
-using namespace rust::cxxbridge1;
 
 namespace {
 
@@ -191,24 +191,39 @@ namespace brave_rewards {
 
 void shim_purge() {
   LOG(ERROR) << "shim_purge";
+  ::prefs::ScopedDictionaryPrefUpdate update(g_SkusSdk->prefs_,
+                                             prefs::kSkusDictionary);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
+  DCHECK(dictionary);
+  dictionary->Clear();
 }
 
 void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
-  LOG(ERROR) << "shim_set: `" << ruststr_2_stdstring(key) << "` = `"
-             << ruststr_2_stdstring(value) << "`";
+  std::string key_string = ruststr_2_stdstring(key);
+  std::string value_string = ruststr_2_stdstring(value);
+  LOG(ERROR) << "shim_set: `" << key_string << "` = `" << value_string << "`";
+
+  ::prefs::ScopedDictionaryPrefUpdate update(g_SkusSdk->prefs_,
+                                             prefs::kSkusDictionary);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
+  DCHECK(dictionary);
+  dictionary->SetString(key_string, value_string);
 }
 
 const std::string& shim_get(rust::cxxbridge1::Str key) {
-  std::string key_str = ruststr_2_stdstring(key);
-  LOG(ERROR) << "shim_get: `" << key_str << "`";
+  static const std::string empty = "";
+  std::string key_string = ruststr_2_stdstring(key);
+  LOG(ERROR) << "shim_get: `" << key_string << "`";
 
-  auto it = g_SkusSdk->dictionary_.find(key_str);
-  if (it != g_SkusSdk->dictionary_.end()) {
-    return it->second;
+  const base::Value* dictionary =
+      g_SkusSdk->prefs_->GetDictionary(prefs::kSkusDictionary);
+  DCHECK(dictionary);
+  DCHECK(dictionary->is_dict());
+  const base::Value* value = dictionary->FindKey(key_string);
+  if (value) {
+    return value->GetString();
   }
-
-  g_SkusSdk->dictionary_[key_str] = "";
-  return g_SkusSdk->dictionary_[key_str];
+  return empty;
 }
 
 void shim_scheduleWakeup(::std::uint64_t delay_ms,
@@ -241,17 +256,13 @@ SkusSdkImpl::SkusSdkImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory), prefs_(prefs) {
   g_SkusSdk = this;
-  // TODO(bsclifton): for prefs, implement calls
-  // also have a static method for registering the names of the keys
-  // g_SkusSdk->prefs_->GetString(formatted_key);
-  // g_SkusSdk->prefs_->GetString("", formatted_key);
 }
 
 SkusSdkImpl::~SkusSdkImpl() {}
 
 void SkusSdkImpl::RefreshOrder(const std::string& order_id,
                                RefreshOrderCallback callback) {
-  Box<CppSDK> sdk = initialize_sdk("development");
+  ::rust::Box<CppSDK> sdk = initialize_sdk("development");
 
   std::unique_ptr<RefreshOrderCallbackState> cbs(new RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
@@ -260,7 +271,7 @@ void SkusSdkImpl::RefreshOrder(const std::string& order_id,
 }
 
 void SkusSdkImpl::FetchOrderCredentials(const std::string& order_id) {
-  Box<CppSDK> sdk = initialize_sdk("development");
+  ::rust::Box<CppSDK> sdk = initialize_sdk("development");
 
   // TODO(bsclifton): fill me in
 
@@ -268,4 +279,4 @@ void SkusSdkImpl::FetchOrderCredentials(const std::string& order_id) {
   // order_id.c_str());
 }
 
-} // namespace brave_rewards
+}  // namespace brave_rewards

@@ -22,6 +22,10 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}  // namespace user_prefs
+
 namespace brave_rewards {
 
 class SkusSdkImpl final : public skus::mojom::SkusSdk {
@@ -42,9 +46,6 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
 
   // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-
-  // used for storing order key/value pairs
-  std::map<std::string, std::string> dictionary_;
 
   // used to store the credential
   PrefService* prefs_;
