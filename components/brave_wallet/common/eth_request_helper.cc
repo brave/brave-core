@@ -77,8 +77,8 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   return tx_data;
 }
 
-// Hardcode id to 1 as it is unused
-const uint32_t kRequestId = 1;
+// null request ID when unspecified is expected
+const base::Value kDefaultRequestIdWhenUnspecified;
 const char kRequestJsonRPC[] = "2.0";
 
 }  // namespace
@@ -128,6 +128,7 @@ mojom::TxData1559Ptr ParseEthSendTransaction1559Params(const std::string& json,
 }
 
 bool GetEthJsonRequestInfo(const std::string& json,
+                           base::Value* id,
                            std::string* method,
                            std::string* params) {
   base::JSONReader::ValueWithError value_with_error =
@@ -141,6 +142,14 @@ bool GetEthJsonRequestInfo(const std::string& json,
   const base::DictionaryValue* response_dict;
   if (!records_v->GetAsDictionary(&response_dict)) {
     return false;
+  }
+
+  if (id) {
+    const base::Value* found_id = response_dict->FindPath(kId);
+    if (found_id)
+      *id = found_id->Clone();
+    else
+      *id = base::Value();
   }
 
   if (method) {
@@ -174,7 +183,12 @@ bool NormalizeEthRequest(const std::string& input_json,
   if (!records_v->GetAsDictionary(&out_dict))
     return false;
 
-  ALLOW_UNUSED_LOCAL(out_dict->SetIntPath("id", kRequestId));
+  const base::Value* found_id = out_dict->FindPath(kId);
+  if (!found_id) {
+    ALLOW_UNUSED_LOCAL(
+        out_dict->SetPath("id", kDefaultRequestIdWhenUnspecified.Clone()));
+  }
+
   ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
   base::JSONWriter::Write(*out_dict, output_json);
   return true;

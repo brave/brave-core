@@ -8,11 +8,13 @@
 
 #include <string>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
 bool GetEthJsonRequestInfo(const std::string& json,
+                           base::Value* id,
                            std::string* method,
                            std::string* params);
 mojom::TxDataPtr ParseEthSendTransactionParams(const std::string& json,
