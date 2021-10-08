@@ -154,6 +154,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -257,11 +258,18 @@ void MaybeBindBraveWalletProvider(
   if (!tx_controller)
     return;
 
+  auto* keyring_controller =
+      brave_wallet::KeyringControllerFactory::GetControllerForContext(
+          frame_host->GetBrowserContext());
+  if (!keyring_controller)
+    return;
+
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           std::move(rpc_controller), std::move(tx_controller),
+          keyring_controller,
 #if defined(OS_ANDROID)
           std::make_unique<
               brave_wallet::BraveWalletProviderDelegateImplAndroid>(

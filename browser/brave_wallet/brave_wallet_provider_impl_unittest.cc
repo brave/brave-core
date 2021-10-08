@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -39,6 +41,7 @@
 #include "content/test/test_web_contents.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -87,7 +90,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         eth_json_rpc_controller()->MakeRemote(),
-        eth_tx_controller()->MakeRemote(),
+        eth_tx_controller()->MakeRemote(), keyring_controller_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
         prefs());
@@ -115,7 +118,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     keyring_controller()->CreateWallet(
         "testing123", base::DoNothing::Once<const std::string&>());
     base::RunLoop().RunUntilIdle();
-    keyring_controller()->AddAccount("Account 1",
+    keyring_controller()->AddAccount("Account 2",
                                      base::DoNothing::Once<bool>());
     base::RunLoop().RunUntilIdle();
   }
@@ -129,6 +132,41 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
+  }
+
+  void SignMessage(const std::string& address,
+                   const std::string& message,
+                   std::string* signature_out,
+                   int* error_out,
+                   std::string* error_message_out) {
+    if (!signature_out || !error_out || !error_message_out)
+      return;
+
+    base::RunLoop run_loop;
+    provider()->SignMessage(
+        address, message,
+        base::BindLambdaForTesting([&](const std::string& signature, int error,
+                                       const std::string& error_message) {
+          *signature_out = signature;
+          *error_out = error;
+          *error_message_out = error_message;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  std::vector<std::string> GetAddresses() {
+    std::vector<std::string> result;
+    base::RunLoop run_loop;
+    keyring_controller_->GetDefaultKeyringInfo(
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          for (size_t i = 0; i < keyring_info->account_infos.size(); ++i) {
+            result.push_back(keyring_info->account_infos[i]->address);
+          }
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
   }
 
  protected:
@@ -177,7 +215,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(eth_json_rpc_controller()->MakeRemote(),
                                         eth_tx_controller()->MakeRemote(),
-                                        nullptr, prefs());
+                                        keyring_controller(), nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
@@ -465,6 +503,50 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(permission_callback_called);
   EXPECT_TRUE(new_setup_callback_called);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
+  CreateWalletAndAccount();
+  std::string signature;
+  int error;
+  std::string error_message;
+  SignMessage("1234", "0x1234", &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  const std::string address = "0x1234";
+  SignMessage(address, "0x1234", &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(address)));
+
+  // No permission
+  const std::vector<std::string> addresses = GetAddresses();
+  ASSERT_FALSE(address.empty());
+  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(addresses[0])));
+
+  NavigateAndAddEthereumPermission();
+  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  EXPECT_FALSE(signature.empty());
+  EXPECT_EQ(error, 0);
+  EXPECT_TRUE(error_message.empty());
+
+  keyring_controller()->Lock();
+
+  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                               IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
 }
 
 }  // namespace brave_wallet
