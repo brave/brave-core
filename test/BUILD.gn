@@ -97,6 +97,7 @@ test("brave_unit_tests") {
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_system_request_handler_unittest.cc",
+    "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/profiles/profile_util_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/lookalikes/lookalike_url_navigation_throttle_unittest.cc",
@@ -468,10 +469,6 @@ test("brave_unit_tests") {
       "//brave/browser/ethereum_remote_client",
       "//brave/common:pref_names",
     ]
-  }
-
-  if (enable_brave_translate_go) {
-    sources += [ "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc" ]
   }
 
   if (enable_brave_translate_extension) {

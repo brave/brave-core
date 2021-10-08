@@ -10,12 +10,18 @@
 #include <vector>
 
 #include "brave/common/translate_network_constants.h"
+#include "brave/components/translate/core/browser/brave_translate_features.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 
 namespace {
 const char kTranslateElementLibQuery[] = "client=te_lib";
+
+int OkIfBraveTranslateGoAvailableElseAbort() {
+  return translate::IsBraveTranslateGoAvailable() ? net::OK : net::ERR_ABORTED;
 }
+
+}  // namespace
 
 namespace brave {
 
@@ -61,6 +67,12 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
 
+  // TODO(atuchin): temporary hack to not break translate extension.
+  // |initiator_url| is not more related to script url.
+  if (ctx->initiator_url.scheme_piece() != "https") {
+    return net::OK;
+  }
+
   // Abort those gen204 requests triggered by translate element library.
   if (IsTranslateGen204Request(ctx->request_url)) {
     return net::ERR_ABORTED;
@@ -73,14 +85,7 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     replacements.SetPathStr(ctx->request_url.path_piece());
     ctx->new_url_spec =
       GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
-    return net::OK;
-  }
-
-  // For translate scripts and translate requests, only process them if the
-  // initiator is https://translate.googleapis.com so we won't process requests
-  // which are not from the translate element library.
-  if (ctx->initiator_url.spec() != kTranslateInitiatorURL) {
-    return net::OK;
+    return OkIfBraveTranslateGoAvailableElseAbort();
   }
 
   if (IsTranslateScriptRequest(ctx->request_url)) {
@@ -88,14 +93,14 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     replacements.SetPathStr(ctx->request_url.path_piece());
     ctx->new_url_spec =
       GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
-    return net::OK;
+    return OkIfBraveTranslateGoAvailableElseAbort();
   }
 
   if (IsTranslateRequest(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     ctx->new_url_spec =
       GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
-    return net::OK;
+    return OkIfBraveTranslateGoAvailableElseAbort();
   }
 
   return net::OK;
