@@ -24,5 +24,22 @@ export default class APIProxy implements APIProxyControllers {
   addEthTxControllerObserverObserver: (store: any) => void
   addBraveWalletServiceObserver: (store: any) => void
   getKeyringsByType: (type: string) => any
-  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string) => any
+  makeTxData: (
+    nonce: string,
+    gasPrice: string,
+    gasLimit: string,
+    to: string,
+    value: string,
+    data: number[]
+  ) => any
+  makeEIP1559TxData: (
+    chainId: string,
+    nonce: string,
+    maxPriorityFeePerGas: string,
+    maxFeePerGas: string,
+    gasLimit: string,
+    to: string,
+    value: string,
+    data: number[]
+  ) => any
 }

@@ -7,5 +7,15 @@ import useSwap from './swap'
 import useAssets from './assets'
 import useTimeout from './timeout'
 import useBalance from './balance'
+import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
+import usePricing from './pricing'
 
-export { useAssets, useSwap, useTimeout, useBalance }
+export {
+  useAssets,
+  useSwap,
+  useTimeout,
+  useBalance,
+  useTransactionParser,
+  useTransactionFeesParser,
+  usePricing
+}

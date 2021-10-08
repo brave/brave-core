@@ -22,7 +22,8 @@ import {
   TransactionInfo,
   TransactionStatus,
   TransactionListInfo,
-  DefaultWallet
+  DefaultWallet,
+  GasEstimation
 } from '../../constants/types'
 import {
   NewUnapprovedTxAdded,
@@ -67,7 +68,8 @@ const defaultState: WalletState = {
   transactionSpotPrices: [],
   addUserAssetError: false,
   defaultWallet: DefaultWallet.BraveWallet,
-  activeOrigin: ''
+  activeOrigin: '',
+  gasEstimates: undefined
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -341,6 +343,13 @@ reducer.on(WalletActions.activeOriginChanged, (state: any, payload: ActiveOrigin
   return {
     ...state,
     activeOrigin: payload.origin
+  }
+})
+
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {
+  return {
+    ...state,
+    gasEstimates: payload
   }
 })
 

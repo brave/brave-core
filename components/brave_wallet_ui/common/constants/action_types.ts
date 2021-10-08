@@ -72,3 +72,11 @@ export type SwapParamsPayloadType = {
 export type ActiveOriginChanged = {
   origin: string
 }
+
+export type UpdateUnapprovedTransactionGasFieldsType = {
+  txMetaId: string,
+  gasLimit: string,
+  gasPrice?: string,
+  maxPriorityFeePerGas?: string,
+  maxFeePerGas?: string
+}

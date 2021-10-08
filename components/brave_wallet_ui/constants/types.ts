@@ -176,6 +176,7 @@ export interface WalletState {
   addUserAssetError: boolean
   defaultWallet: DefaultWallet
   activeOrigin: string
+  gasEstimates?: GasEstimation
 }
 
 export interface PanelState {
@@ -429,22 +430,26 @@ export interface PortfolioTokenHistoryAndInfo {
   token: AccountAssetOptionType
 }
 
-export interface SendTransactionParams {
+interface BaseTransactionParams {
   from: string
   to: string
-  gas?: string
-  gasPrice?: string
   value: string
+  gas?: string
+
+  // Legacy gas pricing
+  gasPrice?: string
+
+  // EIP-1559 gas pricing
+  maxPriorityFeePerGas?: string
+  maxFeePerGas?: string
+}
+
+export interface SendTransactionParams extends BaseTransactionParams {
   data?: number[]
 }
 
-export interface ER20TransferParams {
-  from: string
-  to: string
+export interface ER20TransferParams extends BaseTransactionParams {
   contractAddress: string
-  gas?: string
-  gasPrice?: string
-  value: string
 }
 
 export interface CreateWalletReturnInfo {
@@ -604,7 +609,7 @@ export interface GetEstimatedTimeReturnInfo {
 }
 
 export interface GetGasOracleReturnInfo {
-  gasEstimation?: GasEstimation
+  estimation?: GasEstimation
 }
 
 export interface AssetRatioController {
@@ -736,7 +741,24 @@ export interface APIProxyControllers {
   ethTxController: EthTxController
   braveWalletService: BraveWalletService
   getKeyringsByType: (type: string) => any
-  makeTxData: (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) => any
+  makeTxData: (
+    nonce: string,
+    gasPrice: string,
+    gasLimit: string,
+    to: string,
+    value: string,
+    data: number[]
+  ) => any
+  makeEIP1559TxData: (
+    chainId: string,
+    nonce: string,
+    maxPriorityFeePerGas: string,
+    maxFeePerGas: string,
+    gasLimit: string,
+    to: string,
+    value: string,
+    data: number[]
+  ) => any
 }
 
 export type TransactionDataType = {

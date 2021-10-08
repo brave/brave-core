@@ -30,6 +30,7 @@ import {
   TransactionInfo,
   TransactionType
 } from '../constants/types'
+import { UpdateUnapprovedTransactionGasFieldsType } from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
@@ -120,6 +121,14 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
+  const refreshGasEstimates = () => {
+    // do nothing
+  }
+
+  const updateUnapprovedTransactionGasFields = (payload: UpdateUnapprovedTransactionGasFieldsType) => {
+    alert('Updated gas fields')
+  }
+
   const transactionSpotPrices = [
     {
       fromAsset: 'ETH',
@@ -145,6 +154,8 @@ export const _ConfirmTransaction = () => {
         transactionInfo={transactionInfo}
         visibleTokens={NewAssetOptions}
         transactionSpotPrices={transactionSpotPrices}
+        refreshGasEstimates={refreshGasEstimates}
+        updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
       />
     </StyledExtensionWrapperLonger>
   )

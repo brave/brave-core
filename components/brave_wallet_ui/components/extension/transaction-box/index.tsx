@@ -1,25 +1,28 @@
 import * as React from 'react'
-import { TransactionInfo, TransactionType } from '../../../constants/types'
+
 import { getLocale } from '../../../../common/locale'
-import {
-  CodeSnippet,
-  CodeSnippetText,
-  DetailRow,
-  TransactionText,
-  DetailText
-} from './style'
+import { uint8ArrayToHexStr } from '../../../utils/hex-utils'
+import { TransactionInfo, TransactionType } from '../../../constants/types'
+import { CodeSnippet, CodeSnippetText, DetailRow, DetailText, TransactionText } from './style'
 
 export interface Props {
   transactionInfo: TransactionInfo
-  hasNoData: boolean
 }
 
 const TransactionDetailBox = (props: Props) => {
-  const { transactionInfo, hasNoData } = props
-  const { txArgs, txParams, txType } = transactionInfo
+  const { transactionInfo } = props
+  const {
+    txData: {
+      baseData: { data }
+    },
+    txArgs,
+    txParams,
+    txType
+  } = transactionInfo
+
   return (
     <>
-      {hasNoData ? (
+      {data.length === 0 ? (
         <CodeSnippet>
           <code>
             <CodeSnippetText>{getLocale('braveWalletConfirmTransactionNoData')}</CodeSnippetText>
@@ -31,10 +34,20 @@ const TransactionDetailBox = (props: Props) => {
             <TransactionText>{getLocale('braveWalletTransactionDetailBoxFunction')}:</TransactionText>
             <DetailText>{TransactionType[txType]}</DetailText>
           </DetailRow>
-          {txParams.map((data, i) =>
+          {txType !== TransactionType.Other && txParams.map((param, i) =>
             <CodeSnippet key={i}>
               <code>
-                <CodeSnippetText>{data}: {txArgs[i]}</CodeSnippetText>
+                <CodeSnippetText>{param}: {txArgs[i]}</CodeSnippetText>
+              </code>
+            </CodeSnippet>
+          )}
+
+          {txType === TransactionType.Other && (
+            <CodeSnippet>
+              <code>
+                <CodeSnippetText>
+                  {`0x${uint8ArrayToHexStr(data)}`}
+                </CodeSnippetText>
               </code>
             </CodeSnippet>
           )}
