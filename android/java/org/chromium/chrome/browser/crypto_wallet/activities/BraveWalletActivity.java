@@ -28,11 +28,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthJsonRpcControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
@@ -68,6 +70,7 @@ public class BraveWalletActivity
     private ErcTokenRegistry mErcTokenRegistry;
     private EthJsonRpcController mEthJsonRpcController;
     private AssetRatioController mAssetRatioController;
+    private BraveWalletService mBraveWalletService;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,10 +158,12 @@ public class BraveWalletActivity
         mErcTokenRegistry = null;
         mEthJsonRpcController = null;
         mAssetRatioController = null;
+        mBraveWalletService = null;
         InitKeyringController();
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitAssetRatioController();
+        InitBraveWalletService();
     }
 
     private void InitKeyringController() {
@@ -195,6 +200,14 @@ public class BraveWalletActivity
                 AssetRatioControllerFactory.getInstance().getAssetRatioController(this);
     }
 
+    private void InitBraveWalletService() {
+        if (mBraveWalletService != null) {
+            return;
+        }
+
+        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
+    }
+
     public KeyringController getKeyringController() {
         return mKeyringController;
     }
@@ -211,6 +224,10 @@ public class BraveWalletActivity
         return mAssetRatioController;
     }
 
+    public BraveWalletService getBraveWalletService() {
+        return mBraveWalletService;
+    }
+
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
@@ -218,6 +235,7 @@ public class BraveWalletActivity
         InitErcTokenRegistry();
         InitEthJsonRpcController();
         InitAssetRatioController();
+        InitBraveWalletService();
         if (Utils.shouldShowCryptoOnboarding()) {
             setNavigationFragments(ONBOARDING_ACTION);
         } else if (mKeyringController != null) {
