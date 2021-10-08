@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -15,10 +16,12 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -1743,6 +1746,60 @@ TEST_F(KeyringControllerUnitTest, AddAccountsWithDefaultName) {
         run_loop.Quit();
       }));
   run_loop.Run();
+}
+
+TEST_F(KeyringControllerUnitTest, SignMessageByDefaultKeyring) {
+  // HDKeyringUnitTest.SignMessage already tests the correctness of signature
+  KeyringController controller(GetPrefs());
+  controller.RestoreWallet(kMnemonic1, "brave", false,
+                           base::DoNothing::Once<bool>());
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(controller.IsLocked());
+
+  std::string account1;
+  {
+    base::RunLoop run_loop;
+    controller.GetDefaultKeyringInfo(
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
+          account1 = keyring_info->account_infos[0]->address;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+  const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
+  auto sig_with_err = controller.SignMessageByDefaultKeyring(account1, message);
+  EXPECT_NE(sig_with_err.signature, absl::nullopt);
+  EXPECT_FALSE(sig_with_err.signature->empty());
+  EXPECT_TRUE(sig_with_err.error_message.empty());
+
+  // message is 0x
+  sig_with_err =
+      controller.SignMessageByDefaultKeyring(account1, std::vector<uint8_t>());
+  EXPECT_NE(sig_with_err.signature, absl::nullopt);
+  EXPECT_FALSE(sig_with_err.signature->empty());
+  EXPECT_TRUE(sig_with_err.error_message.empty());
+
+  // not a valid account in this wallet
+  const std::vector<std::string> invalid_accounts(
+      {"0xea3C17c81E3baC3472d163b2c8b12ddDAa027874", "", "0x1234"});
+  for (const auto& invalid_account : invalid_accounts) {
+    sig_with_err =
+        controller.SignMessageByDefaultKeyring(invalid_account, message);
+    EXPECT_EQ(sig_with_err.signature, absl::nullopt);
+    EXPECT_EQ(
+        sig_with_err.error_message,
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
+                                  base::ASCIIToUTF16(invalid_account)));
+  }
+
+  // Cannot sign message when locked
+  controller.Lock();
+  sig_with_err = controller.SignMessageByDefaultKeyring(account1, message);
+  EXPECT_EQ(sig_with_err.signature, absl::nullopt);
+  EXPECT_EQ(
+      sig_with_err.error_message,
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
 }
 
 }  // namespace brave_wallet

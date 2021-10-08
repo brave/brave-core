@@ -137,6 +137,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//chrome/browser",
     "//chrome/test:test_support",
     "//testing/gtest",
