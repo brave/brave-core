@@ -1,14 +1,13 @@
 diff --git a/chrome/browser/devtools/devtools_ui_bindings.h b/chrome/browser/devtools/devtools_ui_bindings.h
-index 32aa300af86ac1fcb4e923d17d4e9190741b323a..850afcc334317951130fc4c95a1f6950d8d8b849 100644
+index 579243c6907cb26947b4102c04b6eda92b62935e..8ee17a08f7cd4e878ac1ddec97efc67187887e2f 100644
 --- a/chrome/browser/devtools/devtools_ui_bindings.h
 +++ b/chrome/browser/devtools/devtools_ui_bindings.h
-@@ -95,6 +95,9 @@ class DevToolsUIBindings : public DevToolsEmbedderMessageDispatcher::Delegate,
-   bool IsAttachedTo(content::DevToolsAgentHost* agent_host);
+@@ -98,6 +98,8 @@ class DevToolsUIBindings : public DevToolsEmbedderMessageDispatcher::Delegate,
  
   private:
+   using DevToolsUIBindingsList = std::vector<DevToolsUIBindings*>;
 +  friend class BraveDevToolsUIBindings;
 +  FRIEND_TEST_ALL_PREFIXES(BraveDevToolsUIBindingsBrowserTest, ThemeTest);
-+
+ 
    void HandleMessageFromDevToolsFrontend(base::Value);
  
-   // content::DevToolsAgentHostClient implementation.

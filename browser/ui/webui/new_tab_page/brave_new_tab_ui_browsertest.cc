@@ -59,11 +59,11 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
   ObserverLogger observer_logger(host);
 
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
 
   GURL simple_url = embedded_test_server()->GetURL("/simple.html");
-  ui_test_utils::NavigateToURL(browser(), simple_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple_url));
   WaitForLoadStop(contents);
 
   GoBack(contents);
@@ -76,7 +76,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, StartupURLTest) {
 IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
   bool is_brave_new_tab = false;
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
@@ -96,7 +96,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
 
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   GURL new_tab_url(chrome::kChromeUINewTabURL);
-  ui_test_utils::NavigateToURL(browser(), new_tab_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), new_tab_url));
   WaitForLoadStop(contents);
 
   std::string inner_text;

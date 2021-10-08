@@ -151,7 +151,11 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win or desktop_linux or is_fuchsia">
         </if>
       <if expr="not is_android">
-        </if>
+        <if expr="is_macosx">
+          </if>
+        <if expr="not is_macosx">
+          </if>
+      </if>
 
        <if expr="not is_android">
         <if expr="not use_titlecase">

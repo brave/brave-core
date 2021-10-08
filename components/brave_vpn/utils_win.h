@@ -6,8 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_UTILS_WIN_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_UTILS_WIN_H_
 
-#include <windows.h>
 #include <string>
+
+#include "base/win/windows_types.h"
 
 namespace brave_vpn {
 

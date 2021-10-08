@@ -243,9 +243,9 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
   WebContents* LoadURLInNewTab(GURL url) {
     ui_test_utils::AllBrowserTabAddedWaiter add_tab;
-    ui_test_utils::NavigateToURLWithDisposition(
+    EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
     return add_tab.Wait();
   }
 
@@ -372,8 +372,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        NavigatingClearsEphemeralStorageAfterKeepAlive) {
-  ui_test_utils::NavigateToURL(
-      browser(), a_site_ephemeral_storage_with_network_cookies_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), a_site_ephemeral_storage_with_network_cookies_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
@@ -392,8 +392,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=bcom_simple; from=a.com", values.iframe_2.cookies);
 
   // Navigate away and then navigate back to the original site.
-  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   // within keepalive values should be the same
   ValuesFromFrames before_timeout = GetValuesFromFrames(web_contents);
@@ -411,7 +413,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=bcom_simple; from=a.com", before_timeout.iframe_2.cookies);
 
   // after keepalive values should be cleared
-  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
 
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
@@ -419,7 +422,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       base::TimeDelta::FromSeconds(kKeepAliveInterval));
   run_loop.Run();
 
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   ValuesFromFrames after_timeout = GetValuesFromFrames(web_contents);
   EXPECT_EQ("a.com value", after_timeout.main_frame.local_storage);
@@ -466,7 +470,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_TRUE(was_closed);
 
   // Navigate the main tab to the same site.
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   // Closing the tab earlier should have cleared the ephemeral storage area.
@@ -486,8 +491,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        ReloadDoesNotClearEphemeralStorage) {
-  ui_test_utils::NavigateToURL(
-      browser(), a_site_ephemeral_storage_with_network_cookies_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), a_site_ephemeral_storage_with_network_cookies_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
@@ -506,7 +511,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   EXPECT_EQ("name=bcom_simple; from=a.com", values_before.iframe_2.cookies);
 
   // Reload the page (without network cookies).
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
   EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
@@ -524,8 +530,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                        EphemeralStorageDoesNotLeakBetweenProfiles) {
-  ui_test_utils::NavigateToURL(
-      browser(), a_site_ephemeral_storage_with_network_cookies_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), a_site_ephemeral_storage_with_network_cookies_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
@@ -546,8 +552,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // A browser with the same profile should share all values with the
   // first browser, including ephemeral storage values.
   Browser* same_profile_browser = CreateBrowser(browser()->profile());
-  ui_test_utils::NavigateToURL(same_profile_browser,
-                               a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(same_profile_browser,
+                                           a_site_ephemeral_storage_url_));
   auto* same_profile_web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -571,7 +577,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   // A browser with a different profile shouldn't share any values with
   // the first set of browsers.
   Browser* private_browser = CreateIncognitoBrowser(nullptr);
-  ui_test_utils::NavigateToURL(private_browser, a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser,
+                                           a_site_ephemeral_storage_url_));
   auto* private_web_contents =
       private_browser->tab_strip_model()->GetActiveWebContents();
 
@@ -596,9 +603,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
   GURL b_site_set_cookie_url = https_server_.GetURL(
       "b.com", "/set-cookie?name=bcom;path=/;SameSite=None;Secure");
 
-  ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url);
-  ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url);
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), b_site_set_cookie_url));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   std::string a_cookie =
       content::GetCookies(browser()->profile(), GURL("https://a.com/"));
@@ -632,7 +640,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   // Navigating to a new TLD should clear all ephemeral cookies after keep-alive
   // timeout.
-  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
 
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
@@ -640,7 +649,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       base::TimeDelta::FromSeconds(kKeepAliveInterval));
   run_loop.Run();
 
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
   EXPECT_EQ("name=acom", values_after.main_frame.cookies);
@@ -878,8 +888,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
   GURL a_site_set_cookie_url = https_server_.GetURL(
       "a.com", "/set-cookie?name=acom;path=/;SameSite=None;Secure");
-  ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url);
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), a_site_set_cookie_url));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   RenderFrameHost* site_a_main_frame = web_contents->GetMainFrame();
   RenderFrameHost* nested_frames_tab =
@@ -932,8 +943,8 @@ class EphemeralStorageKeepAliveDisabledBrowserTest
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
                        NavigatingClearsEphemeralStorageWhenKeepAliveDisabled) {
-  ui_test_utils::NavigateToURL(
-      browser(), a_site_ephemeral_storage_with_network_cookies_url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), a_site_ephemeral_storage_with_network_cookies_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");
@@ -952,8 +963,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageKeepAliveDisabledBrowserTest,
   EXPECT_EQ("name=bcom_simple; from=a.com", values_before.iframe_2.cookies);
 
   // Navigate away and then navigate back to the original site.
-  ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_);
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
 
   ValuesFromFrames values_after = GetValuesFromFrames(web_contents);
   EXPECT_EQ("a.com value", values_after.main_frame.local_storage);
@@ -986,7 +999,8 @@ class EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest
 IN_PROC_BROWSER_TEST_F(
     EphemeralStorageNoSiteIsolationAndKeepAliveDisabledBrowserTest,
     RenderInitiatedNavigationClearsEphemeralStorage) {
-  ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   SetValuesInFrames(web_contents, "a.com value", "from=a.com");

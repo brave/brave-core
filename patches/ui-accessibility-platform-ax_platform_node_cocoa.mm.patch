@@ -1,0 +1,12 @@
+diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
+index cd42b97e64168b9523c897a191f67a089c57612e..30b406cec591b003ca79dec4e83dd9340e4fa80e 100644
+--- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
++++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
+@@ -1175,6 +1175,7 @@ bool IsAXSetter(SEL selector) {
+   if (!_node)
+     return nil;
+ 
++  BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE
+   return [self AXAttributedStringForRange:[NSValue valueWithRange:range]];
+ }
+ 

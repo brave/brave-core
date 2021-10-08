@@ -21,9 +21,9 @@ import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -36,7 +36,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private TabGroupUiToolbarView mToolbarView;
 
     public BraveTabGroupUiCoordinator(@NonNull Activity activity, @NonNull ViewGroup parentView,
-            @NonNull ThemeColorProvider themeColorProvider,
+            @NonNull IncognitoStateProvider incognitoStateProvider,
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
@@ -49,15 +49,13 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull Supplier<ShareDelegate> shareDelegateSupplier,
             @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             @NonNull SnackbarManager snackbarManager) {
-        super(activity, parentView, themeColorProvider, scrimCoordinator, omniboxFocusStateSupplier,
-                bottomSheetController, activityLifecycleDispatcher, isWarmOnResumeSupplier,
-                tabModelSelector, tabContentManager, rootView, dynamicResourceLoaderSupplier,
-                tabCreatorManager, shareDelegateSupplier, overviewModeBehaviorSupplier,
-                snackbarManager);
+        super(activity, parentView, incognitoStateProvider, scrimCoordinator,
+                omniboxFocusStateSupplier, bottomSheetController, activityLifecycleDispatcher,
+                isWarmOnResumeSupplier, tabModelSelector, tabContentManager, rootView,
+                dynamicResourceLoaderSupplier, tabCreatorManager, shareDelegateSupplier,
+                overviewModeBehaviorSupplier, snackbarManager);
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
-        mToolbarView.setBackgroundColor(ApiCompatibilityUtils.getColor(
-                mToolbarView.getResources(), R.color.toolbar_background_primary));
         ChromeImageView fadingEdgeStart =
                 mToolbarView.findViewById(R.id.tab_strip_fading_edge_start);
         assert fadingEdgeStart != null : "Something has changed in upstream.";

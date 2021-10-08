@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 56a342be7add7a2227d9f66c0eb2d2e9d19337d6..80ac5a517f8a1b1d0fc3fe1f1d3cdccd8281dea4 100644
+index 19e8ebebce843516e2e193a7e600a38ee447512d..4e6de49767f434da0f4c123784ddec28647b4b07 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -35,6 +35,7 @@
@@ -10,33 +10,19 @@ index 56a342be7add7a2227d9f66c0eb2d2e9d19337d6..80ac5a517f8a1b1d0fc3fe1f1d3cdccd
          <template is="dom-if" if="[[enablePrivacyReview_]]">
            <cr-link-row id="privacyReviewLinkRow"
                start-icon="settings20:safety-check"
-@@ -173,6 +174,7 @@
-           </template>
+@@ -155,6 +156,7 @@
+           </category-setting-exceptions>
          </settings-subpage>
        </template>
 +<if expr="_google_chrome">
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -216,6 +218,7 @@
-           </template>
+@@ -182,6 +184,7 @@
+           </category-setting-exceptions>
          </settings-subpage>
        </template>
 +</if>
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -481,11 +484,13 @@
-             </category-setting-exceptions>
-           </template>
-           <template is="dom-if" if="[[!enableContentSettingsRedesign_]]">
-+<if expr="_google_chrome">
-             <category-default-setting
-                 toggle-off-label="$i18n{siteSettingsBlocked}"
-                 toggle-on-label="$i18n{siteSettingsAllowedRecommended}"
-                 category="[[contentSettingsTypesEnum_.JAVASCRIPT]]">
-             </category-default-setting>
-+</if>
-             <category-setting-exceptions
-                 category="[[contentSettingsTypesEnum_.JAVASCRIPT]]"
-                 block-header="$i18n{siteSettingsBlock}"

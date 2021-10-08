@@ -53,7 +53,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
 
   // If current active tab is NTP, we can't add current url to sidebar.
-  ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
   EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
 
   // Currently we have 4 default items.
@@ -104,7 +104,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   // By default, sidebar has 4 items.
   EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
-  ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/"));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/")));
 
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
   controller()->AddItemWithCurrentTab();
@@ -115,10 +116,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   EXPECT_EQ(0, current_tab_index);
 
   // Load NTP in newtab and activate it. (tab index 1)
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("brave://newtab/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   current_tab_index = tab_model()->active_index();
   EXPECT_EQ(1, tab_model()->active_index());
 

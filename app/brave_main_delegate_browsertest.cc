@@ -31,6 +31,7 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
+#include "chrome/browser/apps/app_discovery_service/app_discovery_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -71,15 +72,18 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
+#if !defined(OS_ANDROID)
+    &apps::kAppDiscoveryRemoteUrlSearch,
+#endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
+    &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
     &blink::features::kFledgeInterestGroupAPI,
     &blink::features::kFledgeInterestGroups,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestCohortAPIOriginTrial,
     &blink::features::kInterestCohortFeaturePolicy,
-    &blink::features::kLangClientHintHeader,
     &blink::features::kNavigatorPluginsFixed,
     &blink::features::kTextFragmentAnchor,
 #if !defined(OS_ANDROID)
@@ -88,7 +92,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kDirectSockets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
-    &features::kPrivacySandboxSettings,
+    &features::kPrivacySandboxSettings2,
+#if !defined(OS_ANDROID)
+    &features::kSettingsLandingPageRedesign,
+#endif
     &features::kSignedExchangePrefetchCacheForNavigations,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,

@@ -1,7 +1,7 @@
 module content_settings.mojom;
 
+import "services/network/public/mojom/site_for_cookies.mojom";
 import "url/mojom/origin.mojom";
-import "url/mojom/url.mojom";
 
 [BraveExtend]
 interface ContentSettingsManager {
@@ -9,6 +9,6 @@ interface ContentSettingsManager {
   AllowEphemeralStorageAccess(
       int32 render_frame_id,
       url.mojom.Origin origin,
-      url.mojom.Url site_for_cookies,
+      network.mojom.SiteForCookies site_for_cookies,
       url.mojom.Origin top_frame_origin) => (url.mojom.Origin? storage_origin);
 };

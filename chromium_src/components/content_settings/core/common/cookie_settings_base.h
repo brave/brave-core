@@ -26,24 +26,24 @@ class ScopedEphemeralStorageAwareness {
 
 #define IsCookieSessionOnly                                                  \
   ShouldUseEphemeralStorage(                                                 \
-      const GURL& url, const GURL& site_for_cookies,                         \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,          \
       const absl::optional<url::Origin>& top_frame_origin) const;            \
   ScopedEphemeralStorageAwareness CreateScopedEphemeralStorageAwareness()    \
       const;                                                                 \
   bool IsEphemeralCookieAccessAllowed(const GURL& url,                       \
                                       const GURL& first_party_url) const;    \
   bool IsEphemeralCookieAccessAllowed(                                       \
-      const GURL& url, const GURL& site_for_cookies,                         \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,          \
       const absl::optional<url::Origin>& top_frame_origin) const;            \
   bool IsChromiumFullCookieAccessAllowed(const GURL& url,                    \
                                          const GURL& first_party_url) const; \
   bool IsChromiumFullCookieAccessAllowed(                                    \
-      const GURL& url, const GURL& site_for_cookies,                         \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,          \
       const absl::optional<url::Origin>& top_frame_origin) const;            \
                                                                              \
  private:                                                                    \
   bool IsCookieAccessAllowedImpl(                                            \
-      const GURL& url, const GURL& site_for_cookies,                         \
+      const GURL& url, const net::SiteForCookies& site_for_cookies,          \
       const absl::optional<url::Origin>& top_frame_origin) const;            \
                                                                              \
   mutable bool ephemeral_storage_aware_ = false;                             \

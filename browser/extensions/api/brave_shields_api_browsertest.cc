@@ -68,8 +68,8 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
 
   bool NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
-    ui_test_utils::NavigateToURL(browser(),
-                                 embedded_test_server()->GetURL(origin, path));
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL(origin, path)));
 
     return WaitForLoadStop(active_contents());
   }
@@ -143,18 +143,18 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       << "Scripts from a.com should be temporarily allowed after reload.";
 
   // same doc navigation
-  ui_test_utils::NavigateToURL(browser(),
-                               embedded_test_server()->GetURL(
-                                   "a.com", "/load_js_from_origins.html#foo"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL(
+                     "a.com", "/load_js_from_origins.html#foo")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
       << "Scripts from a.com should be temporarily allowed for same doc "
          "navigation.";
 
   // navigate to a different origin
-  ui_test_utils::NavigateToURL(
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(),
-      embedded_test_server()->GetURL("b.com", "/load_js_from_origins.html"));
+      embedded_test_server()->GetURL("b.com", "/load_js_from_origins.html")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
       << "All script loadings should be blocked after navigating away.";

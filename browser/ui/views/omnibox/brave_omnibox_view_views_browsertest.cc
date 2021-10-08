@@ -27,7 +27,7 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
 // Load brave url and check copied url also has brave scheme.
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
   const std::string test_url("brave://version/");
-  ui_test_utils::NavigateToURL(browser(), GURL(test_url));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
 
   omnibox_view()->SelectAll(true);
   omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);

@@ -127,7 +127,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                        RequestEthereumPermissions) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
@@ -221,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
                        RequestEthereumPermissionsTabClosed) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
@@ -281,7 +281,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8B"};
 
   GURL top_url(https_server()->GetURL("a.com", "/iframe.html"));
-  ui_test_utils::NavigateToURL(browser(), top_url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
   GURL iframe_url(https_server()->GetURL("b.com", "/"));
   EXPECT_TRUE(NavigateIframeToURL(web_contents(), "test", iframe_url));
 
@@ -300,7 +300,7 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
   const GURL& url = https_server()->GetURL("/empty.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   std::vector<std::string> addresses = {
       "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",

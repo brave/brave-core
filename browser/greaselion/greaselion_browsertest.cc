@@ -234,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -251,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat1.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat2.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -285,7 +285,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   ASSERT_TRUE(InstallMockExtension());
   GURL url = embedded_test_server()->GetURL("runat3.b.com", "/intercept.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -304,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -327,7 +327,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -373,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-low-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -394,7 +394,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-low-format.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -416,7 +416,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-match-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -437,7 +437,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-match-exact.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -458,7 +458,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-high-wild.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -479,7 +479,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-high-exact.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -500,7 +500,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-empty.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -521,7 +521,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
   GURL url = embedded_test_server()->GetURL(
       "version-bad-format.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -540,7 +540,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
@@ -563,7 +563,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -587,7 +587,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
@@ -611,7 +611,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
 
   const GURL url =
       embedded_test_server()->GetURL("messages.example.com", "/simple.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));

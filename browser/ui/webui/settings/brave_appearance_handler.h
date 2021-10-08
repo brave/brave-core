@@ -30,10 +30,10 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnBraveDarkModeChanged();
   void OnBackgroundPreferenceChanged(const std::string& pref_name);
   void OnPreferenceChanged(const std::string& pref_name);
-  void SetBraveThemeType(const base::ListValue* args);
-  void GetBraveThemeType(const base::ListValue* args);
-  void GetNewTabShowsOptionsList(const base::ListValue* args);
-  void ShouldShowNewTabDashboardSettings(const base::ListValue* args);
+  void SetBraveThemeType(base::Value::ConstListView args);
+  void GetBraveThemeType(base::Value::ConstListView args);
+  void GetNewTabShowsOptionsList(base::Value::ConstListView args);
+  void ShouldShowNewTabDashboardSettings(base::Value::ConstListView args);
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;

@@ -1,8 +1,8 @@
 diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
-index a0b8fd1895f77395dee6ed26bf545511351ac765..fe6c00c8a93c2f5ac89e536a4891ab2487ed5356 100644
+index 5b65299892604fc4ca29b9c797b9d8c342d0c9e2..fda194477387af2ae744f2c97818023c59c09250 100644
 --- a/net/base/proxy_server.cc
 +++ b/net/base/proxy_server.cc
-@@ -213,10 +213,13 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
+@@ -209,10 +209,13 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
    HostPortPair host_port_pair;
  
    if (scheme != SCHEME_INVALID && scheme != SCHEME_DIRECT) {
@@ -17,7 +17,7 @@ index a0b8fd1895f77395dee6ed26bf545511351ac765..fe6c00c8a93c2f5ac89e536a4891ab24
      if (!ok)
        return ProxyServer();  // Invalid -- failed parsing <host>[":"<port>]
  
-@@ -224,7 +227,8 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
+@@ -220,7 +223,8 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(
      if (port == -1)
        port = GetDefaultPortForScheme(scheme);
  

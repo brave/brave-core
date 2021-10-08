@@ -87,7 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest, FirstPartySTS) {
       embedded_test_server()->GetURL("c.com", "/iframe_hsts.html");
 
   RedirectObserver redirect_observer(active_contents());
-  ui_test_utils::NavigateToURL(browser(), third_party);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), third_party));
 
   EXPECT_TRUE(redirect_observer.has_sts_header(third_party));
 }
@@ -99,7 +99,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBaseBrowserTest, ThirdPartySTS) {
       embedded_test_server()->GetURL("a.com", "/hsts.html");
 
   RedirectObserver redirect_observer(active_contents());
-  ui_test_utils::NavigateToURL(browser(), first_party);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), first_party));
 
   EXPECT_FALSE(redirect_observer.has_sts_header(third_party));
 }

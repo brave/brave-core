@@ -286,6 +286,9 @@
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Notifications settings, with a toggle to enable/disable the feature. Phone Hub Task Continuation allows user to continue a task between connected device and Chrome OS">
     Phone Hub task continuation
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB_APPS" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Phone Hub Apps settings, with a toggle to enable/disable the feature. Phone Hub Aapps allows user to app streaming from connected phone device.">
+    Phone Hub apps
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_WIFI_SYNC" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Wi-Fi Sync V2 settings, with a toggle to enable/disable the feature. Wi-Fi Sync V2 allows user to sync network configurations between Chrome OS devices and a connected Android phone">
     Wi-Fi Sync
   </message>
@@ -1312,6 +1315,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_TERMS_OF_SERVICE" desc="Text for search result item which, when clicked, navigates the user to 'About Chrome OS' settings, with a link to the Terms of Service.">
     Terms of Service
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DEVICE_NAME" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change the device name.">
+    Change device name
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_DEVICE_NAME_ALT1" desc="Text for search result item which, when clicked, navigates the user to detailed build information settings, with a button to change the device name.">
+    Change hostname
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Troubleshooting', 'Battery Health', 'CPU Usage', 'Memory Usage'">
     Diagnostics

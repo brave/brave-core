@@ -12,13 +12,13 @@ import android.graphics.Bitmap;
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.site_settings.ChromeSiteSettingsDelegate;
-import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.url.GURL;
 
 public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {
-    public BraveSiteSettingsDelegate(Context context, BrowserContextHandle browserContextHandle) {
-        super(context, browserContextHandle);
+    public BraveSiteSettingsDelegate(Context context, Profile profile) {
+        super(context, profile);
     }
 
     @Override

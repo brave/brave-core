@@ -46,7 +46,7 @@ CryptoDotComGetTickerInfoFunction::Run() {
   }
 
   std::unique_ptr<crypto_dot_com::GetTickerInfo::Params> params(
-      crypto_dot_com::GetTickerInfo::Params::Create(*args_));
+      crypto_dot_com::GetTickerInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetCryptoDotComService(browser_context());
@@ -81,7 +81,7 @@ CryptoDotComGetChartDataFunction::Run() {
   }
 
   std::unique_ptr<crypto_dot_com::GetChartData::Params> params(
-      crypto_dot_com::GetChartData::Params::Create(*args_));
+      crypto_dot_com::GetChartData::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetCryptoDotComService(browser_context());
