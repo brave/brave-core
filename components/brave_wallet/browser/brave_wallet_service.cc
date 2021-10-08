@@ -12,9 +12,9 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
+#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -91,8 +91,12 @@ namespace brave_wallet {
 
 BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
+    KeyringController* keyring_controller,
     PrefService* prefs)
-    : delegate_(std::move(delegate)), prefs_(prefs) {
+    : delegate_(std::move(delegate)),
+      keyring_controller_(keyring_controller),
+      prefs_(prefs),
+      weak_ptr_factory_(this) {
   if (delegate_)
     delegate_->AddObserver(this);
   DCHECK(prefs_);
@@ -360,8 +364,10 @@ void BraveWalletService::ImportFromCryptoWallets(
     const std::string& new_password,
     ImportFromCryptoWalletsCallback callback) {
   if (delegate_)
-    delegate_->ImportFromCryptoWallets(password, new_password,
-                                       std::move(callback));
+    delegate_->GetImportInfoFromCryptoWallets(
+        password, base::BindOnce(&BraveWalletService::OnGetImportInfo,
+                                 weak_ptr_factory_.GetWeakPtr(), new_password,
+                                 std::move(callback)));
   else
     std::move(callback).Run(false);
 }
@@ -371,7 +377,10 @@ void BraveWalletService::ImportFromMetaMask(
     const std::string& new_password,
     ImportFromMetaMaskCallback callback) {
   if (delegate_)
-    delegate_->ImportFromMetaMask(password, new_password, std::move(callback));
+    delegate_->GetImportInfoFromMetaMask(
+        password, base::BindOnce(&BraveWalletService::OnGetImportInfo,
+                                 weak_ptr_factory_.GetWeakPtr(), new_password,
+                                 std::move(callback)));
   else
     std::move(callback).Run(false);
 }
@@ -469,6 +478,31 @@ void BraveWalletService::OnActiveOriginChanged(const std::string& origin) {
   for (const auto& observer : observers_) {
     observer->OnActiveOriginChanged(origin);
   }
+}
+
+void BraveWalletService::OnGetImportInfo(
+    const std::string& new_password,
+    base::OnceCallback<void(bool)> callback,
+    bool result,
+    BraveWalletServiceDelegate::ImportInfo info) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  keyring_controller_->RestoreWallet(
+      info.mnemonic, new_password, info.is_legacy_crypto_wallets,
+      base::BindOnce(
+          [](ImportFromCryptoWalletsCallback callback,
+             size_t number_of_accounts, KeyringController* keyring_controller,
+             bool is_valid_mnemonic) {
+            if (number_of_accounts > 1) {
+              keyring_controller->AddAccountsWithDefaultName(
+                  number_of_accounts - 1);
+            }
+            std::move(callback).Run(is_valid_mnemonic);
+          },
+          std::move(callback), info.number_of_accounts, keyring_controller_));
 }
 
 }  // namespace brave_wallet

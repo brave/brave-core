@@ -289,5 +289,6 @@
       Activate <ph name="FROM_ASSET_SYMBOL">$1</ph>
     </message>
     <message name="IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR" desc="Swap CTA text for unknown error">Unknown error</message>
+    <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="VALUE">$1<ex>1</ex></ph></message>
   </if>
 </grit-part>

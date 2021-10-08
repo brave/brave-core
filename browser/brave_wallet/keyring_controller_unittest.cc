@@ -1715,4 +1715,30 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));
 }
 
+TEST_F(KeyringControllerUnitTest, AddAccountsWithDefaultName) {
+  KeyringController controller(GetPrefs());
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+  ASSERT_FALSE(controller.IsLocked());
+
+  controller.AddAccount("AccountAAAAH", base::DoNothing::Once<bool>());
+
+  controller.AddAccountsWithDefaultName(3);
+
+  base::RunLoop run_loop;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->account_infos.size(), 5u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_EQ(keyring_info->account_infos[1]->name, "AccountAAAAH");
+        EXPECT_EQ(keyring_info->account_infos[2]->name, "Account 3");
+        EXPECT_EQ(keyring_info->account_infos[3]->name, "Account 4");
+        EXPECT_EQ(keyring_info->account_infos[4]->name, "Account 5");
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+}
+
 }  // namespace brave_wallet

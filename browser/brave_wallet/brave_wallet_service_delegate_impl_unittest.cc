@@ -10,8 +10,6 @@
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -65,23 +63,19 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
   void TearDown() override { delegate_.reset(); }
 
   void SetUp() override {
-    keyring_controller_ =
-        KeyringControllerFactory::GetControllerForContext(browser_context());
     delegate_ =
         std::make_unique<BraveWalletServiceDelegateImpl>(browser_context());
   }
 
   ~BraveWalletServiceDelegateImplUnitTest() override = default;
 
-  KeyringController* keyring_controller() { return keyring_controller_; }
-  BraveWalletServiceDelegateImpl* importer() { return delegate_.get(); }
-
   content::BrowserContext* browser_context() { return &profile_; }
 
-  void SimulateGetLocalStorage(const std::string& password,
-                               const std::string& new_password,
-                               const std::string& json_str,
-                               bool* out_success) {
+  void SimulateGetLocalStorage(
+      const std::string& password,
+      const std::string& json_str,
+      bool* out_success,
+      BraveWalletServiceDelegate::ImportInfo* out_info) {
     ASSERT_NE(out_success, nullptr);
 
     auto json = base::JSONReader::Read(json_str);
@@ -89,50 +83,15 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     delegate_->OnGetLocalStorage(
-        password, new_password, base::BindLambdaForTesting([&](bool success) {
-          *out_success = success;
-          run_loop.Quit();
-        }),
+        password,
+        base::BindLambdaForTesting(
+            [&](bool success, BraveWalletServiceDelegate::ImportInfo info) {
+              *out_success = success;
+              *out_info = info;
+              run_loop.Quit();
+            }),
         base::DictionaryValue::From(
             base::Value::ToUniquePtrValue(std::move(*json))));
-    run_loop.Run();
-  }
-
-  void CheckPasswordAndMnemonic(const std::string& new_password,
-                                const std::string& in_mnemonic,
-                                bool* valid_password,
-                                bool* valid_mnemonic) {
-    ASSERT_NE(valid_password, nullptr);
-    ASSERT_NE(valid_mnemonic, nullptr);
-
-    keyring_controller_->Lock();
-    // Check new password
-    base::RunLoop run_loop;
-    keyring_controller_->Unlock(new_password,
-                                base::BindLambdaForTesting([&](bool success) {
-                                  *valid_password = success;
-                                  run_loop.Quit();
-                                }));
-    run_loop.Run();
-
-    base::RunLoop run_loop2;
-    keyring_controller_->GetMnemonicForDefaultKeyring(
-        base::BindLambdaForTesting([&](const std::string& mnemonic) {
-          *valid_mnemonic = (mnemonic == in_mnemonic);
-          run_loop2.Quit();
-        }));
-    run_loop2.Run();
-  }
-
-  void CheckFirstAddress(const std::string& address, bool* valid_address) {
-    ASSERT_NE(valid_address, nullptr);
-
-    base::RunLoop run_loop;
-    keyring_controller_->GetDefaultKeyringInfo(
-        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-          *valid_address = (keyring_info->account_infos[0]->address == address);
-          run_loop.Quit();
-        }));
     run_loop.Run();
   }
 
@@ -140,95 +99,88 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
   content::BrowserTaskEnvironment browser_task_environment_;
 
  private:
-  KeyringController* keyring_controller_;
   std::unique_ptr<BraveWalletServiceDelegateImpl> delegate_;
   TestingProfile profile_;
 };
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
   bool result = true;
+  BraveWalletServiceDelegate::ImportInfo info;
   // empty password
-  SimulateGetLocalStorage("", "", valid_data, &result);
+  SimulateGetLocalStorage("", valid_data, &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // no vault
-  SimulateGetLocalStorage("123", "1234",
-                          R"({"data": { "KeyringController": {}}})", &result);
+  SimulateGetLocalStorage("123", R"({"data": { "KeyringController": {}}})",
+                          &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // vault is not a valid json
   SimulateGetLocalStorage(
-      "123", "1234", R"({"data": { "KeyringController": { "vault": "{[}]"}}})",
-      &result);
+      "123", R"({"data": { "KeyringController": { "vault": "{[}]"}}})", &result,
+      &info);
   EXPECT_FALSE(result);
 
   result = true;
   // vault missing iv and salt
   SimulateGetLocalStorage(
-      "123", "1234",
+      "123",
       R"({"data": { "KeyringController": { "vault": "{\"data\": \"data\"}"}}})",
-      &result);
+      &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // data is not base64 encoded
-  SimulateGetLocalStorage("123", "1234",
+  SimulateGetLocalStorage("123",
                           R"({"data": {"KeyringController": {
                           "vault": "{\"data\": \"data\",
                           \"iv\": \"aXY=\", \"salt\": \"c2FsdA==\"}"}}})",
-                          &result);
+                          &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // wrong password
-  SimulateGetLocalStorage("123", "1234", valid_data, &result);
+  SimulateGetLocalStorage("123", valid_data, &result, &info);
   EXPECT_FALSE(result);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
   bool result = false;
-  SimulateGetLocalStorage("brave4ever", "brave5ever", valid_data, &result);
+  BraveWalletServiceDelegate::ImportInfo info;
+  SimulateGetLocalStorage("brave4ever", valid_data, &result, &info);
   EXPECT_TRUE(result);
-
-  bool is_valid_password = false;
-  bool is_valid_mnemonic = false;
-  CheckPasswordAndMnemonic("brave5ever", valid_mnemonic, &is_valid_password,
-                           &is_valid_mnemonic);
-  EXPECT_TRUE(is_valid_password);
-  EXPECT_TRUE(is_valid_mnemonic);
-
-  bool is_valid_address = false;
-  CheckFirstAddress("0x084DCb94038af1715963F149079cE011C4B22961",
-                    &is_valid_address);
-  EXPECT_TRUE(is_valid_address);
+  EXPECT_EQ(info.mnemonic, valid_mnemonic);
+  EXPECT_FALSE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 1u);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
   bool result = true;
   // argonParams is not a dict
-  SimulateGetLocalStorage("123", "1234", R"({
+  BraveWalletServiceDelegate::ImportInfo info;
+  SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
                   "argonParams": "123"
               }}})",
-                          &result);
+                          &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // argonParams multiple fields are missing
-  SimulateGetLocalStorage("123", "1234", R"({
+  SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "mem": 256
                   }
               }}})",
-                          &result);
+                          &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // argonParams type is not 2
-  SimulateGetLocalStorage("123", "1234", R"({
+  SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "hashLen": 32,
@@ -237,12 +189,12 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 1
                   }
               }}})",
-                          &result);
+                          &result, &info);
   EXPECT_FALSE(result);
 
   result = true;
   // KeyringController.salt is missing
-  SimulateGetLocalStorage("123", "1234", R"({
+  SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
                   "argonParams": {
                     "hashLen": 32,
@@ -251,26 +203,18 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 2
                   }
               }}})",
-                          &result);
+                          &result, &info);
   EXPECT_FALSE(result);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWallet) {
   bool result = false;
-  SimulateGetLocalStorage("bbbravey", "bbbakery", valid_legacy_data, &result);
+  BraveWalletServiceDelegate::ImportInfo info;
+  SimulateGetLocalStorage("bbbravey", valid_legacy_data, &result, &info);
   EXPECT_TRUE(result);
-
-  bool is_valid_password = false;
-  bool is_valid_mnemonic = false;
-  CheckPasswordAndMnemonic("bbbakery", valid_legacy_mnemonic,
-                           &is_valid_password, &is_valid_mnemonic);
-  EXPECT_TRUE(is_valid_password);
-  EXPECT_TRUE(is_valid_mnemonic);
-
-  bool is_valid_address = false;
-  CheckFirstAddress("0xea3C17c81E3baC3472d163b2c8b12ddDAa027874",
-                    &is_valid_address);
-  EXPECT_TRUE(is_valid_address);
+  EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
+  EXPECT_TRUE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 2u);
 }
 
 }  // namespace brave_wallet

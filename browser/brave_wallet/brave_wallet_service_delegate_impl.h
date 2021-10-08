@@ -50,13 +50,10 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   void IsCryptoWalletsInstalled(
       IsCryptoWalletsInstalledCallback callback) override;
   void IsMetaMaskInstalled(IsMetaMaskInstalledCallback callback) override;
-  void ImportFromCryptoWallets(
-      const std::string& password,
-      const std::string& new_password,
-      ImportFromCryptoWalletsCallback callback) override;
-  void ImportFromMetaMask(const std::string& password,
-                          const std::string& new_password,
-                          ImportFromMetaMaskCallback callback) override;
+  void GetImportInfoFromCryptoWallets(const std::string& password,
+                                      GetImportInfoCallback callback) override;
+  void GetImportInfoFromMetaMask(const std::string& password,
+                                 GetImportInfoCallback callback) override;
   void HasEthereumPermission(const std::string& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
@@ -85,22 +82,18 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
   void OnCryptoWalletsLoaded(const std::string& password,
-                             const std::string& new_password,
-                             ImportFromCryptoWalletsCallback callback,
+                             GetImportInfoCallback callback,
                              bool should_unload);
 
   void GetLocalStorage(const extensions::Extension* extension,
                        const std::string& password,
-                       const std::string& new_password,
-                       ImportFromCryptoWalletsCallback callback);
+                       GetImportInfoCallback callback);
   void OnGetLocalStorage(const std::string& password,
-                         const std::string& new_password,
-                         ImportFromCryptoWalletsCallback callback,
+                         GetImportInfoCallback callback,
                          std::unique_ptr<base::DictionaryValue> dict);
 
   void GetMnemonic(bool is_legacy_crypto_wallets,
-                   const std::string& new_password,
-                   ImportFromCryptoWalletsCallback callback,
+                   GetImportInfoCallback callback,
                    std::unique_ptr<base::DictionaryValue> dict,
                    const std::string& password);
 
@@ -108,13 +101,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
   const extensions::Extension* GetCryptoWallets();
   const extensions::Extension* GetMetaMask();
 
-  void EnsureConnected();
-  void OnConnectionError();
-
   std::string GetActiveOriginInternal();
   void FireActiveOriginChanged();
 
-  mojo::Remote<brave_wallet::mojom::KeyringController> keyring_controller_;
   content::BrowserContext* context_;
   scoped_refptr<extensions::Extension> extension_;
   BrowserTabStripTracker browser_tab_strip_tracker_;
