@@ -168,4 +168,48 @@ bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
 }
 
+bool ParseEnsRegistryResolver(const std::string& json,
+                              std::string* resolver_address) {
+  DCHECK(resolver_address);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 24 /* len of offset to array */;
+  if (offset >= result.size())
+    return false;
+
+  *resolver_address = "0x" + result.substr(offset);
+  return true;
+}
+
+bool ParseEnsResolverContentHash(const std::string& json,
+                                 std::string* content_hash) {
+  DCHECK(content_hash);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  return brave_wallet::DecodeString(offset, result, content_hash);
+}
+
+bool ParseUnstoppableDomainsProxyReaderGetMany(
+    const std::string& json,
+    std::vector<std::string>* values) {
+  DCHECK(values);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  if (offset > result.size())
+    return false;
+
+  return brave_wallet::DecodeStringArray(result.substr(offset), values);
+}
+
 }  // namespace brave_wallet

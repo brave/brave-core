@@ -7,8 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_RESPONSE_PARSER_H_
 
 #include <string>
-#include "base/values.h"
+#include <vector>
 
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 
 namespace brave_wallet {
@@ -24,6 +25,14 @@ bool ParseEthSendRawTransaction(const std::string& json, std::string* tx_hash);
 bool ParseEthCall(const std::string& json, std::string* result);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
+
+bool ParseEnsRegistryResolver(const std::string& json,
+                              std::string* resolver_address);
+bool ParseEnsResolverContentHash(const std::string& json,
+                                 std::string* content_hash);
+bool ParseUnstoppableDomainsProxyReaderGetMany(
+    const std::string& json,
+    std::vector<std::string>* values);
 
 }  // namespace brave_wallet
 

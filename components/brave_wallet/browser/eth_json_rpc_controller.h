@@ -55,6 +55,9 @@ class EthJsonRpcController : public KeyedService,
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
 
+  using StringResultCallback =
+      base::OnceCallback<void(bool success, const std::string& result)>;
+
   using GetBlockNumberCallback =
       base::OnceCallback<void(bool status, uint256_t result)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
@@ -62,6 +65,7 @@ class EthJsonRpcController : public KeyedService,
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
                RequestCallback callback) override;
+
   void GetBalance(const std::string& address,
                   GetBalanceCallback callback) override;
 
@@ -88,22 +92,19 @@ class EthJsonRpcController : public KeyedService,
                               const std::string& spender_address,
                               GetERC20TokenAllowanceCallback callback) override;
 
+  using UnstoppableDomainsProxyReaderGetManyCallback =
+      base::OnceCallback<void(bool success,
+                              const std::vector<std::string>& values)>;
   // Call getMany function of ProxyReader contract from Unstoppable Domains.
   void UnstoppableDomainsProxyReaderGetMany(
-      const std::string& contract_address,
+      const std::string& chain_id,
       const std::string& domain,
       const std::vector<std::string>& keys,
-      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
-
-  void EnsProxyReaderGetResolverAddress(
-      const std::string& contract_address,
-      const std::string& domain,
-      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
-
-  bool EnsProxyReaderResolveAddress(
-      const std::string& contract_address,
-      const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
+
+  void EnsResolverGetContentHash(const std::string& chain_id,
+                                 const std::string& domain,
+                                 StringResultCallback callback);
 
   void SetNetwork(const std::string& chain_id) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
@@ -196,15 +197,24 @@ class EthJsonRpcController : public KeyedService,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnEnsProxyReaderGetResolverAddress(
-      UnstoppableDomainsProxyReaderGetManyCallback callback,
-      const std::string& domain,
+  void EnsRegistryGetResolver(const std::string& chain_id,
+                              const std::string& domain,
+                              StringResultCallback callback);
+
+  void OnEnsRegistryGetResolver(
+      StringResultCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnEnsProxyReaderResolveAddress(
-      UnstoppableDomainsProxyReaderGetManyCallback callback,
+  void ContinueEnsResolverGetContentHash(const std::string& chain_id,
+                                         const std::string& domain,
+                                         StringResultCallback callback,
+                                         bool success,
+                                         const std::string& resolver_address);
+
+  void OnEnsResolverGetContentHash(
+      StringResultCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
@@ -229,6 +239,11 @@ class EthJsonRpcController : public KeyedService,
   void UpdateIsEip1559(const std::string& chain_id,
                        bool success,
                        bool is_eip1559);
+
+  void RequestInternal(const std::string& json_payload,
+                       bool auto_retry_on_network_change,
+                       const GURL& network_url,
+                       RequestCallback callback);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;

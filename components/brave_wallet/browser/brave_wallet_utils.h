@@ -115,6 +115,10 @@ mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
 std::vector<std::string> GetAllKnownNetworkIds();
 std::string GetKnownNetworkId(const std::string& chain_id);
 
+std::string GetUnstoppableDomainsProxyReaderContractAddress(
+    const std::string& chain_id);
+std::string GetEnsRegistryContractAddress(const std::string& chain_id);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

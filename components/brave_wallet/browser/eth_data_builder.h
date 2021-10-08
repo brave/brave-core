@@ -42,8 +42,8 @@ bool GetMany(const std::vector<std::string>& keys,
 
 namespace ens {
 
-bool GetResolverAddress(const std::string& domain, std::string* data);
-bool GetContentHashAddress(const std::string& domain, std::string* data);
+bool Resolver(const std::string& domain, std::string* data);
+bool ContentHash(const std::string& domain, std::string* data);
 
 }  // namespace ens
 
