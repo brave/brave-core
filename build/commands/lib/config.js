@@ -818,6 +818,10 @@ Config.prototype.update = function (options) {
       opts.push(value)
     })
   }
+
+  if (options.target) {
+    this.buildTarget = options.target
+  }
 }
 
 Config.prototype.getCachePath = function () {
