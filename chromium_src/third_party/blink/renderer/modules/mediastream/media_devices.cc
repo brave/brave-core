@@ -26,15 +26,19 @@ namespace brave {
 void FarbleMediaDevices(ExecutionContext* context,
                         MediaDeviceInfoVector* media_devices) {
   WebContentSettingsClient* settings = GetContentSettingsClientFor(context);
+  // |media_devices| is guaranteed not to be null here.
+  if (media_devices->size() <= 2)
+    return;
   if (!settings)
     return;
-  if (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
-    // Shuffle the list of plugins pseudo-randomly, based on the
-    // domain+session key.
-    std::mt19937_64 prng =
-        BraveSessionCache::From(*context).MakePseudoRandomGenerator();
-    std::shuffle(media_devices->begin(), media_devices->end(), prng);
-  }
+  if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::OFF)
+    return;
+  // Shuffle the list of devices pseudo-randomly, based on the
+  // domain+session key, starting with the second device.
+  std::mt19937_64 prng =
+      BraveSessionCache::From(*context).MakePseudoRandomGenerator();
+  MediaDeviceInfoVector::iterator it_begin = media_devices->begin();
+  std::shuffle(++it_begin, media_devices->end(), prng);
 }
 
 }  // namespace brave
