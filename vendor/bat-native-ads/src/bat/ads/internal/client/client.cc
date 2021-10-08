@@ -36,6 +36,7 @@ const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
 FilteredAdList::iterator FindFilteredAd(const std::string& creative_instance_id,
                                         FilteredAdList* filtered_ads) {
+  DCHECK(!creative_instance_id.empty());
   DCHECK(filtered_ads);
 
   return std::find_if(
@@ -162,6 +163,9 @@ AdContentActionType Client::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentActionType action) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   DCHECK(is_initialized_);
 
   AdContentActionType like_action;
@@ -194,6 +198,9 @@ AdContentActionType Client::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentActionType action) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   DCHECK(is_initialized_);
 
   AdContentActionType like_action;
@@ -326,6 +333,9 @@ CategoryContentActionType Client::GetOptActionForSegment(
 bool Client::ToggleSaveAd(const std::string& creative_instance_id,
                           const std::string& creative_set_id,
                           const bool saved) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   DCHECK(is_initialized_);
 
   const bool is_saved_ad = !saved;
@@ -377,6 +387,9 @@ bool Client::GetSavedAdForCreativeInstanceId(
 bool Client::ToggleFlagAd(const std::string& creative_instance_id,
                           const std::string& creative_set_id,
                           const bool flagged) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   DCHECK(is_initialized_);
 
   const bool is_flagged_ad = !flagged;

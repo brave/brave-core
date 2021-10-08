@@ -9,7 +9,7 @@
 #include <functional>
 #include <vector>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
@@ -85,6 +85,9 @@ void Confirmations::SetCatalogIssuers(
 
 void Confirmations::Confirm(const std::string& creative_instance_id,
                             const ConfirmationType& confirmation_type) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+
   BLOG(1, "Confirming " << std::string(confirmation_type)
                         << " for creative instance id "
                         << creative_instance_id);
@@ -119,7 +122,8 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const ConfirmationType& confirmation_type,
     const base::DictionaryValue& user_data) const {
   DCHECK(!creative_instance_id.empty());
-  DCHECK(confirmation_type != ConfirmationType::kUndefined);
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+
   ConfirmationInfo confirmation;
 
   confirmation.id = base::GenerateGUID();
@@ -158,6 +162,8 @@ ConfirmationInfo Confirmations::CreateConfirmation(
 
 void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   if (ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
     AppendToRetryQueue(confirmation);
     return;
@@ -177,6 +183,8 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
 }
 
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   ConfirmationsState::Get()->AppendFailedConfirmation(confirmation);
   ConfirmationsState::Get()->Save();
 
@@ -189,6 +197,8 @@ void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {
 }
 
 void Confirmations::RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   if (!ConfirmationsState::Get()->RemoveFailedConfirmation(confirmation)) {
     BLOG(0, "Failed to remove confirmation id "
                 << confirmation.id << ", creative instance id "

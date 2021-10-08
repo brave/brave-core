@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
 
-#include "bat/ads/internal/unittest_time_util.h"
+#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -14,11 +14,9 @@ namespace ads {
 
 TEST(BatAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  ConfirmationInfo confirmation;
-  confirmation.id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
-  confirmation.creative_instance_id = "6b233edf-4c0a-4029-a0a7-6a5d96fb769e";
-  confirmation.type = ConfirmationType::kViewed;
-  confirmation.created_at = Now();
+  const ConfirmationInfo confirmation = BuildConfirmation(
+      "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+      "6b233edf-4c0a-4029-a0a7-6a5d96fb769e", ConfirmationType::kViewed);
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
 
