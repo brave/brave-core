@@ -851,24 +851,24 @@ void KeyringController::AddHardwareAccounts(
     std::vector<mojom::HardwareWalletAccountPtr> infos) {
   if (infos.empty())
     return;
-  const auto& hardware_vendor = infos.front()->hardware_vendor;
-  const auto hash = base::PersistentHash(infos.front()->address);
-  std::string device_id = hardware_vendor + std::to_string(hash);
 
   base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
 
-  base::Value* device_value = hardware_keyrings->FindKey(device_id);
-  if (!device_value) {
-    device_value = hardware_keyrings->SetKey(
-        device_id, base::Value(base::Value::Type::DICTIONARY));
-  }
-
-  base::Value* meta_value = device_value->FindKey(kAccountMetas);
-  if (!meta_value) {
-    meta_value = device_value->SetKey(
-        kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
-  }
   for (const auto& info : infos) {
+    const auto& hardware_vendor = info->hardware_vendor;
+    std::string device_id = info->device_id;
+    base::Value* device_value = hardware_keyrings->FindKey(device_id);
+    if (!device_value) {
+      device_value = hardware_keyrings->SetKey(
+          device_id, base::Value(base::Value::Type::DICTIONARY));
+    }
+
+    base::Value* meta_value = device_value->FindKey(kAccountMetas);
+    if (!meta_value) {
+      meta_value = device_value->SetKey(
+          kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
+    }
+
     DCHECK_EQ(hardware_vendor, info->hardware_vendor);
     if (hardware_vendor != info->hardware_vendor)
       continue;
