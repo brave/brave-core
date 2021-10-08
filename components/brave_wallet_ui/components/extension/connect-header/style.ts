@@ -6,7 +6,7 @@ export const StyledWrapper = styled.div`
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	padding-top: 28px;
+	padding-top: 25px;
 `
 
 export const URLText = styled.span`

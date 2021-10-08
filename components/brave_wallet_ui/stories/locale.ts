@@ -292,6 +292,11 @@ provideStrings({
   braveWalletPanelConnected: 'Connected',
   braveWalletPanelNotConnected: 'Not connected',
 
+  // Site Permissions Panel
+  braveWalletSitePermissionsTitle: 'Site permissions',
+  braveWalletSitePermissionsAccounts: 'accounts connected',
+  braveWalletSitePermissionsDisconnect: 'Disconnect',
+
   // Transaction Detail Box
   braveWalletTransactionDetailBoxFunction: 'FUNCTION TYPE',
   braveWalletTransactionDetailBoxHex: 'HEX DATA',

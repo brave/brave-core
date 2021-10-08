@@ -14,7 +14,8 @@ import {
   SignPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel,
-  ConnectHardwareWalletPanel
+  ConnectHardwareWalletPanel,
+  SitePermissions
 } from '../components/extension'
 import {
   Send,
@@ -48,7 +49,8 @@ import {
   BuySendSwapViewTypes,
   AccountAssetOptionType,
   EthereumChain,
-  ToOrFromType
+  ToOrFromType,
+  WalletOrigin
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
@@ -93,11 +95,13 @@ function Container (props: Props) {
     isWalletCreated,
     networkList,
     transactionSpotPrices,
-    gasEstimates
+    gasEstimates,
+    connectedAccounts,
+    activeOrigin
   } = props.wallet
 
   const {
-    connectedSiteOrigin,
+    connectToSiteOrigin,
     panelTitle,
     selectedPanel,
     networkPayload,
@@ -111,7 +115,6 @@ function Container (props: Props) {
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [toAddress, setToAddress] = React.useState('')
@@ -158,6 +161,10 @@ function Container (props: Props) {
     swapQuote,
     swapError
   )
+
+  React.useMemo(() => {
+    setSelectedAccounts([selectedAccount])
+  }, [selectedAccount])
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
@@ -239,10 +246,6 @@ function Container (props: Props) {
     })
   }
 
-  const toggleConnected = () => {
-    setWalletConnected(!walletConnected)
-  }
-
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
   const selectAccount = (account: WalletAccountType) => {
     const newList = [...selectedAccounts, account]
@@ -258,7 +261,7 @@ function Container (props: Props) {
   const onSubmit = () => {
     props.walletPanelActions.connectToSite({
       selectedAccounts,
-      siteToConnectTo: connectedSiteOrigin
+      siteToConnectTo: connectToSiteOrigin
     })
   }
   const primaryAction = () => {
@@ -276,7 +279,7 @@ function Container (props: Props) {
     } else {
       props.walletPanelActions.cancelConnectToSite({
         selectedAccounts,
-        siteToConnectTo: props.panel.connectedSiteOrigin
+        siteToConnectTo: props.panel.connectToSiteOrigin
       })
       setSelectedAccounts([])
       setReadyToConnect(false)
@@ -380,6 +383,18 @@ function Container (props: Props) {
   const onCancelConnectHardwareWallet = () => {
     // Logic here to cancel connecting your hardware wallet
   }
+
+  const removeSitePermission = (origin: string, address: string) => {
+    props.walletActions.removeSitePermission({ origin: origin, account: address })
+  }
+
+  const isConnectedToSite = React.useMemo((): boolean => {
+    if (activeOrigin === WalletOrigin) {
+      return true
+    } else {
+      return connectedAccounts.some(account => account.address === selectedAccount.address)
+    }
+  }, [connectedAccounts, selectedAccount, activeOrigin])
 
   if (!hasInitialized || !accounts) {
     return null
@@ -564,7 +579,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <ConnectWithSiteWrapper>
           <ConnectWithSite
-            siteURL={connectedSiteOrigin}
+            siteURL={connectToSiteOrigin}
             isReady={readyToConnect}
             accounts={accountsToConnect}
             primaryAction={primaryAction}
@@ -672,16 +687,36 @@ function Container (props: Props) {
     )
   }
 
+  if (selectedPanel === 'sitePermissions') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <SitePermissions
+              connectedAccounts={connectedAccounts}
+              onDisconnect={removeSitePermission}
+              siteURL={activeOrigin}
+            />
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
   return (
     <PanelWrapper isLonger={false}>
       <ConnectedPanel
         selectedAccount={selectedAccount}
         selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
-        isConnected={walletConnected}
-        connectAction={toggleConnected}
+        isConnected={isConnectedToSite}
         navAction={navigateTo}
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
+        activeOrigin={activeOrigin}
       />
     </PanelWrapper>
   )

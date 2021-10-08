@@ -32,7 +32,14 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { WalletAccountType, PanelTypes, EthereumChain, BuySupportedChains, SwapSupportedChains } from '../../../constants/types'
+import {
+  WalletAccountType,
+  PanelTypes,
+  EthereumChain,
+  BuySupportedChains,
+  SwapSupportedChains,
+  WalletOrigin
+} from '../../../constants/types'
 import { create, background } from 'ethereum-blockies'
 import { getLocale } from '../../../../common/locale'
 
@@ -40,14 +47,14 @@ export interface Props {
   selectedAccount: WalletAccountType
   selectedNetwork: EthereumChain
   isConnected: boolean
-  connectAction: () => void
+  activeOrigin: string
   navAction: (path: PanelTypes) => void
   onLockWallet: () => void
   onOpenSettings: () => void
 }
 
 const ConnectedPanel = (props: Props) => {
-  const { onLockWallet, onOpenSettings, connectAction, isConnected, navAction, selectedAccount, selectedNetwork } = props
+  const { onLockWallet, onOpenSettings, isConnected, navAction, selectedAccount, selectedNetwork, activeOrigin } = props
   const [showMore, setShowMore] = React.useState<boolean>(false)
 
   const navigate = (path: PanelTypes) => () => {
@@ -56,6 +63,10 @@ const ConnectedPanel = (props: Props) => {
 
   const onExpand = () => {
     navAction('expanded')
+  }
+
+  const onShowSitePermissions = () => {
+    navAction('sitePermissions')
   }
 
   const onShowMore = () => {
@@ -99,7 +110,7 @@ const ConnectedPanel = (props: Props) => {
       />
       <CenterColumn>
         <StatusRow>
-          <OvalButton onClick={connectAction}>
+          <OvalButton disabled={activeOrigin === WalletOrigin} onClick={onShowSitePermissions}>
             {isConnected && <BigCheckMark />}
             <OvalButtonText>{isConnected ? getLocale('braveWalletPanelConnected') : getLocale('braveWalletPanelNotConnected')}</OvalButtonText>
           </OvalButton>
