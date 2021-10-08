@@ -1,7 +1,7 @@
 import("//brave/build/config.gni")
 
 declare_args() {
-  enable_brave_translate_go = false
+  enable_brave_translate_go = true
 }
 
 declare_args() {

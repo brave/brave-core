@@ -5,14 +5,14 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
 
-#include "chrome/browser/ui/browser.h"
+#include "brave/browser/translate/brave_translate_utils.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 #include "content/public/browser/web_contents.h"
-#include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 
 BraveTranslateIconView::BraveTranslateIconView(
@@ -60,9 +60,7 @@ void BraveTranslateIconView::UpdateImpl() {
 
   // Hide TranslateIcon & TranslateBubble when google translate extension is
   // already installed.
-  extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(GetWebContents()->GetBrowserContext());
-  if (registry->GetInstalledExtension(google_translate_extension_id)) {
+  if (translate::TranslateExtensionIsEnabled(GetWebContents()->GetBrowserContext())) {
     SetVisible(false);
     TranslateBubbleView::CloseCurrentBubble();
     return;

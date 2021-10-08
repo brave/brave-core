@@ -42,6 +42,8 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   void DisableOfferTranslatePref();
   void ButtonPressed(ButtonID button_id);
 
+  int GetTitleBeforeTranslateTitle() override;
+
   // Remove this. As we replace |translate_view_|, we should destroy after
   // replacing it. However, its child view(|tabbed_pane_|) is still referenced
   // from TranslateBubbleView. Keep to prevent leak.

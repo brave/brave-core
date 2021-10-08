@@ -35,6 +35,11 @@
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#include "brave/browser/translate/brave_translate_utils.h"
+#endif
+
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
 #undef RenderViewContextMenu
@@ -352,9 +357,7 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
-#if BUILDFLAG(ENABLE_TOR) || !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   int index = -1;
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled() &&
@@ -378,12 +381,19 @@ void BraveRenderViewContextMenu::InitMenu() {
   BuildIPFSMenu();
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  const bool remove_translate =
+      !translate::InternalTranslationIsEnabled(GetProfile());
+#else
+  const bool remove_translate = true;
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+
   // Only show the translate item when go-translate is enabled.
   // This removes menu item, but keeps the duplicated separator. The duplicated
   // separator is removed in |BraveRenderViewContextMenuViews::Show|
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
-  if (index != -1)
-    menu_model_.RemoveItemAt(index);
-#endif
+  if (remove_translate) {
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_TRANSLATE);
+    if (index != -1)
+      menu_model_.RemoveItemAt(index);
+  }
 }

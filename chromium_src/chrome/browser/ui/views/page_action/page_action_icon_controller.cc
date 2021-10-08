@@ -23,14 +23,16 @@ constexpr PageActionIconType kUndefinedPageActionIconType =
   break;                \
   case kUndefinedPageActionIconType
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #define TranslateIconView BraveTranslateIconView
 #endif
 #define ReaderModeIconView SpeedreaderIconView
 #define StarView BraveStarView
 #include "../../../../../../../chrome/browser/ui/views/page_action/page_action_icon_controller.cc"
 #undef StarView
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #undef TranslateIconView
 #endif
 #undef ReaderModeIconView

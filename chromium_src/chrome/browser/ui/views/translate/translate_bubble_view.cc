@@ -4,24 +4,38 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
+
+#include "brave/components/translate/core/browser/brave_translate_features.h"
 #include "brave/components/translate/core/browser/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 
+int TranslateBubbleView::GetTitleBeforeTranslateTitle() {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
-  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#elif BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
-  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#define BRAVE_TRANSLATE_BUBBLE_VIEW_ BraveTranslateBubbleView
+  return IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE;
 #else
-#define BRAVE_TRANSLATE_BUBBLE_VIEW_ TranslateBubbleView
+  return IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE;
+#endif
+}
+
+// static
+template <typename... Args>
+TranslateBubbleView* TranslateBubbleView::MakeTranslateBubbleView(
+    Args&&... args) {
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  if (translate::IsTranslateExtensionAvailable()) {
+    return new BraveTranslateBubbleView(std::forward<Args>(args)...);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  return new TranslateBubbleView(std::forward<Args>(args)...);
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  GetTitleBeforeTranslateTitle()
+#define MAKE_TRANSLATE_BUBBLE_VIEW_ MakeTranslateBubbleView
 #endif
 
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"

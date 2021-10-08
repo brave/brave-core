@@ -39,6 +39,7 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/translate/core/browser/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -315,6 +316,13 @@ if (enable_widevine) {
 
 if (enable_ftx) {
   brave_chrome_browser_deps += [ "//brave/browser/ftx" ]
+}
+
+if (enable_brave_translate_go || enable_brave_translate_extension) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/translate/brave_translate_utils.cc",
+    "//brave/browser/translate/brave_translate_utils.h",
+  ]
 }
 
 if (is_win) {
