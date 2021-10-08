@@ -26,6 +26,7 @@ export interface RewardsSummaryData {
 
 interface Props {
   data: RewardsSummaryData
+  autoContributeEnabled: boolean
   hideAdEarnings: boolean
   earningsLastMonth: number
   nextPaymentDate: number
@@ -101,7 +102,10 @@ export function RewardsSummary (props: Props) {
                 !props.hideAdEarnings &&
                   renderRow(data.adEarnings, 'walletRewardsFromAds', 'ads')
               }
-              {renderRow(-data.autoContributions, 'walletAutoContribute', 'ac')}
+              {
+                props.autoContributeEnabled && renderRow(
+                  -data.autoContributions, 'walletAutoContribute', 'ac')
+              }
               {renderRow(-data.oneTimeTips, 'walletOneTimeTips', 'one-time')}
               {renderRow(-data.monthlyTips, 'walletMonthlyTips', 'monthly')}
             </tbody>
