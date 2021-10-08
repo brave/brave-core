@@ -9,8 +9,8 @@
 namespace brave_rewards {
 namespace prefs {
 
-extern const char kSkusDictionary[];
-extern const char kSkusVPNCredential[];
+constexpr char kSkusDictionary[] = "skus.dictionary";
+constexpr char kSkusVPNCredential[] = "skus.credential.vpn";
 
 }  // namespace prefs
 }  // namespace brave_rewards
