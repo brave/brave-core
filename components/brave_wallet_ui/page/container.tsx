@@ -50,7 +50,7 @@ import {
   HardwareWalletAccount
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
-import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
+import { onConnectHardwareWallet, getBalance, getERC20Allowance } from '../common/async/wallet_async_handler'
 
 import { formatBalance, toWeiHex } from '../utils/format-balances'
 import { useSwap, useAssets, useTimeout, useBalance } from '../common/hooks'
@@ -136,6 +136,7 @@ function Container (props: Props) {
     swapValidationError,
     toAmount,
     toAsset,
+    swapAssetOptions,
     onToggleOrderType,
     onSwapQuoteRefresh,
     onSetToAmount,
@@ -149,8 +150,10 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    props.walletPageActions.fetchPageSwapQuote,
     assetOptions,
+    props.walletPageActions.fetchPageSwapQuote,
+    getERC20Allowance,
+    props.walletActions.approveERC20Allowance,
     swapQuote,
     swapError
   )
@@ -615,7 +618,7 @@ function Container (props: Props) {
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}
-            swapAssetOptions={assetOptions}
+            swapAssetOptions={swapAssetOptions}
             isSwapSubmitDisabled={isSwapButtonDisabled}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
