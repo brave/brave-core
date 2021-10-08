@@ -1789,6 +1789,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_COPY" desc="Brave Wallet onboarding button text">
       Copy
     </message>
+    <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
+      Backup your wallet now to protect your crypto portfolio from loss of access.
+    </message>
     <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
       Buy crypto with Apple Pay, credit or debit card.
     </message>

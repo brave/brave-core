@@ -42,7 +42,7 @@
             app:tabGravity="fill"
             app:tabSelectedTextColor="@color/tab_color"
             app:tabTextColor="@color/wallet_text_color" />
-
+        <include layout="@layout/wallet_backup_banner"/>
         <org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager
             android:id="@+id/navigation_view_pager"
             android:layout_width="match_parent"
