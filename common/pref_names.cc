@@ -90,6 +90,8 @@ const char kDefaultBrowserPromptEnabled[] =
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+const char kDontAskEnableWebDiscovery[] = "brave.dont_ask_enable_web_discovery";
+const char kBraveSearchVisitCount[] = "brave.brave_search_visit_count";
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

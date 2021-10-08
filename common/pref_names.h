@@ -79,6 +79,8 @@ extern const char kDefaultBrowserPromptEnabled[];
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 // Web discovery project
 extern const char kWebDiscoveryEnabled[];
+extern const char kDontAskEnableWebDiscovery[];
+extern const char kBraveSearchVisitCount[];
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
