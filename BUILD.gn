@@ -486,3 +486,7 @@ group("tools") {
     deps = [ "//brave/components/brave_vpn:vpntool" ]
   }
 }
+
+group("storybook") {
+  deps = [ "//brave/.storybook:storybook" ]
+}
