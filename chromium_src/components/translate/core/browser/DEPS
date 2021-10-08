@@ -14,4 +14,7 @@ specific_include_rules = {
   "translate_url_fetcher(\.cc|\.h)": [
     "+brave/browser/translate/buildflags/buildflags.h",
   ],
+  "translate_manager(\.cc|\.h)": [
+    "+brave/browser/translate/buildflags/buildflags.h",
+  ],
 }

@@ -233,6 +233,7 @@ test("brave_unit_tests") {
     "//components/country_codes",
     "//components/domain_reliability:domain_reliability",
     "//components/language/core/browser",
+    "//components/language/core/common",
     "//components/os_crypt:test_support",
     "//components/page_load_metrics/common",
     "//components/permissions",
