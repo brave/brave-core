@@ -24,26 +24,27 @@ ConversionFrequencyCap::ConversionFrequencyCap(const AdEventList& ad_events)
 
 ConversionFrequencyCap::~ConversionFrequencyCap() = default;
 
-bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
+bool ConversionFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!features::frequency_capping::ShouldExcludeAdIfConverted()) {
     return false;
   }
 
-  if (!ShouldAllow(ad)) {
+  if (!ShouldAllow(creative_ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s excluded due to ad conversion tracking being "
         "disabled",
-        ad.creative_set_id.c_str());
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
 
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+  const AdEventList filtered_ad_events =
+      FilterAdEvents(ad_events_, creative_ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s has exceeded the frequency capping for conversions",
-        ad.creative_set_id.c_str());
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -55,9 +56,9 @@ std::string ConversionFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool ConversionFrequencyCap::ShouldAllow(const CreativeAdInfo& ad) {
-  if (ad.conversion && !AdsClientHelper::Get()->GetBooleanPref(
-                           prefs::kShouldAllowConversionTracking)) {
+bool ConversionFrequencyCap::ShouldAllow(const CreativeAdInfo& creative_ad) {
+  if (creative_ad.conversion && !AdsClientHelper::Get()->GetBooleanPref(
+                                    prefs::kShouldAllowConversionTracking)) {
     return false;
   }
 
@@ -74,15 +75,15 @@ bool ConversionFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 
 AdEventList ConversionFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& creative_ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
+      [&creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.type != AdType::kAdNotification &&
                 ad_event.type != AdType::kInlineContentAd) ||
-               ad_event.creative_set_id != ad.creative_set_id ||
+               ad_event.creative_set_id != creative_ad.creative_set_id ||
                ad_event.confirmation_type != ConfirmationType::kConversion;
       });
 

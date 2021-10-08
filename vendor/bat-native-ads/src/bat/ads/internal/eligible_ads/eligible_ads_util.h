@@ -11,32 +11,39 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
 #include "bat/ads/internal/eligible_ads/ad_predictor_info.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_util_aliases.h"
 
 namespace ads {
 
-struct CreativeAdNotificationInfo;
-struct CreativeInlineContentAdInfo;
+template <typename T>
+bool ShouldCapLastServedAd(const T& ads) {
+  return ads.size() != 1;
+}
 
 template <typename T>
-std::map<std::string, AdPredictorInfo<T>> GroupEligibleAdsByCreativeInstanceId(
-    const std::vector<T>& eligible_ads) {
-  std::map<std::string, AdPredictorInfo<T>> ads;
-  for (const auto& eligible_ad : eligible_ads) {
-    const auto iter = ads.find(eligible_ad.creative_instance_id);
-    if (iter != ads.end()) {
-      iter->second.segments.push_back(eligible_ad.segment);
+std::map<std::string, AdPredictorInfo<T>> GroupCreativeAdsByCreativeInstanceId(
+    const std::vector<T>& creative_ads) {
+  std::map<std::string, AdPredictorInfo<T>> grouped_creative_ads;
+
+  for (const auto& creative_ad : creative_ads) {
+    const auto iter =
+        grouped_creative_ads.find(creative_ad.creative_instance_id);
+    if (iter != grouped_creative_ads.end()) {
+      iter->second.segments.push_back(creative_ad.segment);
       continue;
     }
 
     AdPredictorInfo<T> ad_predictor;
-    ad_predictor.segments = {eligible_ad.segment};
-    ad_predictor.creative_ad = eligible_ad;
-    ads.insert({eligible_ad.creative_instance_id, ad_predictor});
+    ad_predictor.segments = {creative_ad.segment};
+    ad_predictor.creative_ad = creative_ad;
+
+    grouped_creative_ads.insert(
+        {creative_ad.creative_instance_id, ad_predictor});
   }
 
-  return ads;
+  return grouped_creative_ads;
 }
 
 }  // namespace ads

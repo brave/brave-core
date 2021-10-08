@@ -5,14 +5,13 @@
 
 #include "bat/ads/internal/ad_serving/inline_content_ads/inline_content_ad_serving.h"
 
-#include "base/guid.h"
 #include "bat/ads/inline_content_ad_info.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_builder.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
 
@@ -52,37 +51,6 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
   }
 
-  CreativeInlineContentAdInfo GetCreativeInlineContentAd() {
-    CreativeInlineContentAdInfo creative_inline_content_ad;
-
-    creative_inline_content_ad.creative_instance_id = base::GenerateGUID();
-    creative_inline_content_ad.creative_set_id = base::GenerateGUID();
-    creative_inline_content_ad.campaign_id = base::GenerateGUID();
-    creative_inline_content_ad.start_at = DistantPast();
-    creative_inline_content_ad.end_at = DistantFuture();
-    creative_inline_content_ad.daily_cap = 1;
-    creative_inline_content_ad.advertiser_id = base::GenerateGUID();
-    creative_inline_content_ad.priority = 1;
-    creative_inline_content_ad.ptr = 1.0;
-    creative_inline_content_ad.per_day = 1;
-    creative_inline_content_ad.per_week = 1;
-    creative_inline_content_ad.per_month = 1;
-    creative_inline_content_ad.total_max = 1;
-    creative_inline_content_ad.value = 1.0;
-    creative_inline_content_ad.segment = "untargeted";
-    creative_inline_content_ad.geo_targets = {"US"};
-    creative_inline_content_ad.target_url = "https://brave.com";
-    CreativeDaypartInfo daypart;
-    creative_inline_content_ad.dayparts = {daypart};
-    creative_inline_content_ad.title = "Test Ad Title";
-    creative_inline_content_ad.description = "Test Ad Description";
-    creative_inline_content_ad.image_url = "https://brave.com/image.jpg";
-    creative_inline_content_ad.dimensions = "200x100";
-    creative_inline_content_ad.cta_text = "Call to action text";
-
-    return creative_inline_content_ad;
-  }
-
   void Save(const CreativeInlineContentAdList& creative_inline_content_ads) {
     database_table_->Save(creative_inline_content_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
@@ -100,21 +68,19 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
   RecordUserActivityEvents();
 
-  CreativeInlineContentAdList creative_inline_content_ads;
-  CreativeInlineContentAdInfo creative_inline_content_ad =
-      GetCreativeInlineContentAd();
-  creative_inline_content_ads.push_back(creative_inline_content_ad);
-  Save(creative_inline_content_ads);
+  CreativeInlineContentAdList creative_ads;
+  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
   // Act
-  const InlineContentAdInfo expected_inline_content_ad =
-      BuildInlineContentAd(creative_inline_content_ad);
+  const InlineContentAdInfo expected_ad = BuildInlineContentAd(creative_ad);
 
   ad_serving_->MaybeServeAd(
-      "200x100", [&expected_inline_content_ad](
-                     const bool success, const std::string& dimensions,
-                     const InlineContentAdInfo& inline_content_ad) {
-        EXPECT_EQ(expected_inline_content_ad, inline_content_ad);
+      "200x100",
+      [&expected_ad](const bool success, const std::string& dimensions,
+                     const InlineContentAdInfo& ad) {
+        EXPECT_EQ(expected_ad, ad);
       });
 
   // Assert
@@ -124,18 +90,15 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
   // Arrange
   RecordUserActivityEvents();
 
-  CreativeInlineContentAdList creative_inline_content_ads;
-  CreativeInlineContentAdInfo creative_inline_content_ad =
-      GetCreativeInlineContentAd();
-  creative_inline_content_ads.push_back(creative_inline_content_ad);
-  Save(creative_inline_content_ads);
+  CreativeInlineContentAdList creative_ads;
+  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
   // Act
   ad_serving_->MaybeServeAd(
       "?x?", [](const bool success, const std::string& dimensions,
-                const InlineContentAdInfo& inline_content_ad) {
-        EXPECT_FALSE(success);
-      });
+                const InlineContentAdInfo& ad) { EXPECT_FALSE(success); });
 
   // Assert
 }
@@ -143,18 +106,15 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
 TEST_F(BatAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
-  CreativeInlineContentAdInfo creative_inline_content_ad =
-      GetCreativeInlineContentAd();
-  creative_inline_content_ads.push_back(creative_inline_content_ad);
-  Save(creative_inline_content_ads);
+  CreativeInlineContentAdList creative_ads;
+  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
   // Act
   ad_serving_->MaybeServeAd(
       "200x100", [](const bool success, const std::string& dimensions,
-                    const InlineContentAdInfo& inline_content_ad) {
-        EXPECT_FALSE(success);
-      });
+                    const InlineContentAdInfo& ad) { EXPECT_FALSE(success); });
 
   // Assert
 }

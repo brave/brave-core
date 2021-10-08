@@ -12,29 +12,28 @@
 namespace ads {
 
 AdNotificationInfo BuildAdNotification(
-    const CreativeAdNotificationInfo& creative_ad_notification) {
+    const CreativeAdNotificationInfo& creative_ad) {
   const std::string uuid = base::GenerateGUID();
-  return BuildAdNotification(creative_ad_notification, uuid);
+  return BuildAdNotification(creative_ad, uuid);
 }
 
 AdNotificationInfo BuildAdNotification(
-    const CreativeAdNotificationInfo& creative_ad_notification,
+    const CreativeAdNotificationInfo& creative_ad,
     const std::string& uuid) {
-  AdNotificationInfo ad_notification;
+  AdNotificationInfo ad;
 
-  ad_notification.type = AdType::kAdNotification;
-  ad_notification.uuid = uuid;
-  ad_notification.creative_instance_id =
-      creative_ad_notification.creative_instance_id;
-  ad_notification.creative_set_id = creative_ad_notification.creative_set_id;
-  ad_notification.campaign_id = creative_ad_notification.campaign_id;
-  ad_notification.advertiser_id = creative_ad_notification.advertiser_id;
-  ad_notification.segment = creative_ad_notification.segment;
-  ad_notification.title = creative_ad_notification.title;
-  ad_notification.body = creative_ad_notification.body;
-  ad_notification.target_url = creative_ad_notification.target_url;
+  ad.type = AdType::kAdNotification;
+  ad.uuid = uuid;
+  ad.creative_instance_id = creative_ad.creative_instance_id;
+  ad.creative_set_id = creative_ad.creative_set_id;
+  ad.campaign_id = creative_ad.campaign_id;
+  ad.advertiser_id = creative_ad.advertiser_id;
+  ad.segment = creative_ad.segment;
+  ad.title = creative_ad.title;
+  ad.body = creative_ad.body;
+  ad.target_url = creative_ad.target_url;
 
-  return ad_notification;
+  return ad;
 }
 
 }  // namespace ads

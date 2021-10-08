@@ -9,15 +9,15 @@
 #include "base/feature_list.h"
 
 namespace ads {
-namespace features {
 namespace inline_content_ads {
+namespace features {
 
 extern const base::Feature kFeature;
 
 bool IsEnabled();
 
-}  // namespace inline_content_ads
 }  // namespace features
+}  // namespace inline_content_ads
 }  // namespace ads
 
 #endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_FEATURES_INLINE_CONTENT_ADS_INLINE_CONTENT_ADS_FEATURES_H_

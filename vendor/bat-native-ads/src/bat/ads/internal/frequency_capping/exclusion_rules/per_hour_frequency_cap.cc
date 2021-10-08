@@ -24,14 +24,14 @@ PerHourFrequencyCap::PerHourFrequencyCap(const AdEventList& ad_events)
 
 PerHourFrequencyCap::~PerHourFrequencyCap() = default;
 
-bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  const AdEventList filtered_ad_events =
+      FilterAdEvents(ad_events_, creative_ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf(
-        "creativeInstanceId %s has exceeded the "
-        "frequency capping for perHour",
-        ad.creative_instance_id.c_str());
+        "creativeInstanceId %s has exceeded the frequency capping for perHour",
+        creative_ad.creative_instance_id.c_str());
 
     return true;
   }
@@ -55,15 +55,16 @@ bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 
 AdEventList PerHourFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& creative_ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
+      [&creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.type != AdType::kAdNotification &&
                 ad_event.type != AdType::kInlineContentAd) ||
-               ad_event.creative_instance_id != ad.creative_instance_id ||
+               ad_event.creative_instance_id !=
+                   creative_ad.creative_instance_id ||
                ad_event.confirmation_type != ConfirmationType::kServed;
       });
 

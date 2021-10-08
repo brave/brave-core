@@ -14,12 +14,13 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
+namespace inline_content_ads {
 
 TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = features::inline_content_ads::IsEnabled();
+  const bool is_enabled = features::IsEnabled();
 
   // Assert
   EXPECT_TRUE(is_enabled);
@@ -31,17 +32,18 @@ TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsDisabled) {
       enabled_features;
 
   std::vector<base::Feature> disabled_features;
-  disabled_features.push_back(features::inline_content_ads::kFeature);
+  disabled_features.push_back(features::kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
   // Act
-  const bool is_enabled = features::inline_content_ads::IsEnabled();
+  const bool is_enabled = features::IsEnabled();
 
   // Assert
   EXPECT_FALSE(is_enabled);
 }
 
+}  // namespace inline_content_ads
 }  // namespace ads

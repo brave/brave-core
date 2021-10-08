@@ -15,7 +15,7 @@ struct AdEventInfo;
 struct CreativeAdInfo;
 
 AdEventInfo GenerateAdEvent(const AdType& type,
-                            const CreativeAdInfo& ad,
+                            const CreativeAdInfo& creative_ad,
                             const ConfirmationType& confirmation_type);
 
 AdEventInfo GenerateAdEvent(const AdType& type,

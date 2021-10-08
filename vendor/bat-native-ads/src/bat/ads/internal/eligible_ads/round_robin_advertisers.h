@@ -19,14 +19,14 @@ T FilterSeenAdvertisers(const T& ads,
                         const std::map<std::string, bool>& seen_advertisers) {
   T unseen_advertisers = ads;
 
-  const auto iter =
-      std::remove_if(unseen_advertisers.begin(), unseen_advertisers.end(),
-                     [&seen_advertisers](CreativeAdInfo& ad) {
-                       SplitTestFrequencyCap frequency_cap;
-                       return frequency_cap.ShouldExclude(ad) ||
-                              seen_advertisers.find(ad.advertiser_id) !=
-                                  seen_advertisers.end();
-                     });
+  const auto iter = std::remove_if(
+      unseen_advertisers.begin(), unseen_advertisers.end(),
+      [&seen_advertisers](const CreativeAdInfo& creative_ad) {
+        SplitTestFrequencyCap frequency_cap;
+        return frequency_cap.ShouldExclude(creative_ad) ||
+               seen_advertisers.find(creative_ad.advertiser_id) !=
+                   seen_advertisers.end();
+      });
 
   unseen_advertisers.erase(iter, unseen_advertisers.end());
 

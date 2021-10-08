@@ -8,8 +8,8 @@
 #include "base/metrics/field_trial_params.h"
 
 namespace ads {
-namespace features {
 namespace inline_content_ads {
+namespace features {
 
 namespace {
 const char kFeatureName[] = "InlineContentAds";
@@ -21,6 +21,6 @@ bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
 }
 
-}  // namespace inline_content_ads
 }  // namespace features
+}  // namespace inline_content_ads
 }  // namespace ads

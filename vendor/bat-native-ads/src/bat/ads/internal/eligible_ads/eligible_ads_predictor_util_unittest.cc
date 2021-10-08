@@ -31,11 +31,11 @@ TEST(BatAdsEligibleAdsUtilTest,
   const std::string segment = "foo-bar";
   const double ptr = 1.0;
   const double priority = 1;
-  const CreativeAdNotificationInfo creative_ad_notification =
+  const CreativeAdNotificationInfo creative_ad =
       GetCreativeAdNotification(segment, ptr, priority);
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
-  ad_predictor.creative_ad = creative_ad_notification;
+  ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {segment};
   ad_predictor.does_match_intent_child_segments = 1;
   ad_predictor.does_match_intent_parent_segments = 0;
@@ -56,11 +56,11 @@ TEST(BatAdsEligibleAdsUtilTest, ComputePredictorScoreWithDefaultWeights) {
   const std::string segment = "foo-bar";
   const double ptr = 1.0;
   const double priority = 1;
-  const CreativeAdNotificationInfo creative_ad_notification =
+  const CreativeAdNotificationInfo creative_ad =
       GetCreativeAdNotification(segment, ptr, priority);
 
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
-  ad_predictor.creative_ad = creative_ad_notification;
+  ad_predictor.creative_ad = creative_ad;
   ad_predictor.segments = {segment};
   ad_predictor.does_match_intent_child_segments = 1;
   ad_predictor.does_match_intent_parent_segments = 0;
@@ -79,12 +79,6 @@ TEST(BatAdsEligibleAdsUtilTest, ComputePredictorScoreWithDefaultWeights) {
 
 TEST(BatAdsEligibleAdsUtilTest, ComputePredictorScoreWithEmptyAdFeatures) {
   // Arrange
-  const std::string segment = "foo-bar";
-  const double ptr = 1.0;
-  const double priority = 1;
-  const CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification(segment, ptr, priority);
-
   AdPredictorInfo<CreativeAdNotificationInfo> ad_predictor;
 
   // Act

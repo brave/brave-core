@@ -6,6 +6,7 @@
 #include "bat/ads/internal/bundle/creative_ad_unittest_util.h"
 
 #include "base/guid.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/unittest_time_util.h"
 
 namespace ads {
@@ -26,6 +27,7 @@ CreativeAdInfo GetCreativeAd() {
   creative_ad.per_week = 1;
   creative_ad.per_month = 1;
   creative_ad.total_max = 1;
+  creative_ad.value = 1.0;
   creative_ad.segment = "untargeted";
   creative_ad.geo_targets = {"US"};
   creative_ad.target_url = "https://brave.com";

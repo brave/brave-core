@@ -19,9 +19,6 @@ class TimeDelta;
 
 namespace ads {
 
-struct AdNotificationInfo;
-struct CreativeAdNotificationInfo;
-
 namespace ad_targeting {
 namespace geographic {
 class SubdivisionTargeting;
@@ -32,9 +29,11 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
+struct AdNotificationInfo;
+
 namespace ad_notifications {
 
-class EligibleAds;
+class EligibleAdsBase;
 
 class AdServing final {
  public:
@@ -50,29 +49,28 @@ class AdServing final {
   void StopServingAdsAtRegularIntervals();
 
   void MaybeServeAd();
-  void MaybeServeAdV1();
-  void MaybeServeAdV2();
 
-  void OnAdsPerHourChanged();
+  void OnPrefChanged();
 
  private:
   bool is_serving_ = false;
 
   Timer timer_;
 
-  std::unique_ptr<EligibleAds> eligible_ads_;
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
+  bool IsSupported() const;
 
   bool ShouldServeAdsAtRegularIntervals() const;
+  bool HasPreviouslyServedAnAd() const;
+  bool ShouldServeAd() const;
+  base::TimeDelta CalculateDelayBeforeServingAnAd() const;
   void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();
-
-  bool ShouldServeAd() const;
   base::Time MaybeServeAdAfter(const base::TimeDelta delay);
 
-  bool ServeAd(
-      const CreativeAdNotificationInfo& creative_ad_notification) const;
+  bool ServeAd(const AdNotificationInfo& ad) const;
   void FailedToServeAd();
-  void ServedAd(const CreativeAdNotificationInfo& creative_ad_notification);
+  void ServedAd(const AdNotificationInfo& ad);
 
   base::ObserverList<AdNotificationServingObserver> observers_;
 
