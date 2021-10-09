@@ -38,12 +38,18 @@ bool GetMany(const std::vector<std::string>& keys,
              const std::string& domain,
              std::string* data);
 
+// Get the value of the key for the target domain.
+bool Get(const std::string& key, const std::string& domain, std::string* data);
+
 }  // namespace unstoppable_domains
 
 namespace ens {
 
 bool Resolver(const std::string& domain, std::string* data);
 bool ContentHash(const std::string& domain, std::string* data);
+
+// Get Ethereum address from an ENS name.
+bool Addr(const std::string& domain, std::string* data);
 
 }  // namespace ens
 

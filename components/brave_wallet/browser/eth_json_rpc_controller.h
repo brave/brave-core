@@ -102,9 +102,15 @@ class EthJsonRpcController : public KeyedService,
       const std::vector<std::string>& keys,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
+  void UnstoppableDomainsGetEthAddr(
+      const std::string& domain,
+      UnstoppableDomainsGetEthAddrCallback callback) override;
+
   void EnsResolverGetContentHash(const std::string& chain_id,
                                  const std::string& domain,
                                  StringResultCallback callback);
+  void EnsGetEthAddr(const std::string& domain,
+                     EnsGetEthAddrCallback callback) override;
 
   void SetNetwork(const std::string& chain_id) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
@@ -197,6 +203,12 @@ class EthJsonRpcController : public KeyedService,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  void OnUnstoppableDomainsGetEthAddr(
+      UnstoppableDomainsGetEthAddrCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
   void EnsRegistryGetResolver(const std::string& chain_id,
                               const std::string& domain,
                               StringResultCallback callback);
@@ -218,6 +230,16 @@ class EthJsonRpcController : public KeyedService,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
+
+  void ContinueEnsGetEthAddr(const std::string& domain,
+                             StringResultCallback callback,
+                             bool success,
+                             const std::string& resolver_address);
+
+  void OnEnsGetEthAddr(StringResultCallback callback,
+                       int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
 
   void OnGetEstimateGas(
       GetEstimateGasCallback callback,

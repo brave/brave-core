@@ -26,13 +26,15 @@ bool ParseEthCall(const std::string& json, std::string* result);
 bool ParseEthEstimateGas(const std::string& json, std::string* result);
 bool ParseEthGasPrice(const std::string& json, std::string* result);
 
-bool ParseEnsRegistryResolver(const std::string& json,
-                              std::string* resolver_address);
+bool ParseEnsAddress(const std::string& json, std::string* resolver_address);
 bool ParseEnsResolverContentHash(const std::string& json,
                                  std::string* content_hash);
 bool ParseUnstoppableDomainsProxyReaderGetMany(
     const std::string& json,
     std::vector<std::string>* values);
+
+bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
+                                           std::string* value);
 
 }  // namespace brave_wallet
 

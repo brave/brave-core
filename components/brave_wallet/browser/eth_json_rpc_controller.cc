@@ -523,8 +523,7 @@ void EthJsonRpcController::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!ParseEnsRegistryResolver(body, &resolver_address) ||
-      resolver_address.empty()) {
+  if (!ParseEnsAddress(body, &resolver_address) || resolver_address.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
@@ -593,6 +592,57 @@ void EthJsonRpcController::OnEnsResolverGetContentHash(
   std::move(callback).Run(true, content_hash);
 }
 
+void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
+                                         EnsGetEthAddrCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::ContinueEnsGetEthAddr,
+      weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
+  EnsRegistryGetResolver(chain_id_, domain, std::move(internal_callback));
+}
+
+void EthJsonRpcController::ContinueEnsGetEthAddr(
+    const std::string& domain,
+    StringResultCallback callback,
+    bool success,
+    const std::string& resolver_address) {
+  if (!success || resolver_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!ens::Addr(domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsGetEthAddr,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", resolver_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnEnsGetEthAddr(
+    StringResultCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  DCHECK(callback);
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseEnsAddress(body, &address) || address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
+}
+
 void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
     const std::string& chain_id,
     const std::string& domain,
@@ -641,6 +691,48 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
   }
 
   std::move(callback).Run(true, values);
+}
+
+void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
+    const std::string& domain,
+    UnstoppableDomainsGetEthAddrCallback callback) {
+  const std::string contract_address =
+      GetUnstoppableDomainsProxyReaderContractAddress(chain_id_);
+  if (contract_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!unstoppable_domains::Get(kCryptoEthAddressKey, domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnUnstoppableDomainsGetEthAddr,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
+    UnstoppableDomainsGetEthAddrCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseUnstoppableDomainsProxyReaderGet(body, &address)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
 }
 
 GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
