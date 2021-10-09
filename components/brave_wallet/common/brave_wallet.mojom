@@ -106,9 +106,7 @@ struct SwapParams {
   string buy_amount;
   string buy_token;
   string sell_token;
-  double buy_token_percentage_fee;
   double slippage_percentage;
-  string fee_recipient;
   string gas_price;
 };
 
@@ -248,14 +246,7 @@ interface AssetRatioController {
   GetGasOracle() => (GasEstimation1559? estimation);
 };
 
-struct SwapConfig {
-  string swap_api_url;
-  string buy_token_percantage_fee;
-  string fee_recipient;
-};
-
 interface SwapController {
-  GetSwapConfiguration(string chain_id) => (SwapConfig? config);
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
   GetTransactionPayload(SwapParams params) =>

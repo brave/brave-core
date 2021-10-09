@@ -33,7 +33,6 @@ import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.EthTxControllerObserver;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
-import org.chromium.brave_wallet.mojom.SwapConfig;
 import org.chromium.brave_wallet.mojom.SwapController;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
@@ -253,77 +252,65 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void onNothingSelected(AdapterView<?> arg0) {}
 
     private void getSendSwapQuota(boolean calculatePerSellAsset, boolean sendTx) {
-        assert mEthJsonRpcController != null;
-        mEthJsonRpcController.getChainId(chainId -> {
-            assert mSwapController != null;
-            mSwapController.getSwapConfiguration(chainId, swapConfig -> {
-                if (swapConfig == null) {
-                    return;
-                }
-                Spinner accountSpinner = findViewById(R.id.accounts_spinner);
-                String from = mCustomAccountAdapter.getTitleAtPosition(
-                        accountSpinner.getSelectedItemPosition());
-                EditText fromValueText = findViewById(R.id.from_value_text);
-                String value = fromValueText.getText().toString();
-                EditText toValueText = findViewById(R.id.to_value_text);
-                String valueTo = toValueText.getText().toString();
-                String buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
-                if (mCurrentSwapToErcToken != null) {
-                    buyAddress = mCurrentSwapToErcToken.contractAddress;
-                    if (buyAddress.isEmpty()) {
-                        buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
-                    }
-                }
-                String sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
-                if (mCurrentErcToken != null) {
-                    sellAddress = mCurrentErcToken.contractAddress;
-                    if (sellAddress.isEmpty()) {
-                        sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
-                    }
-                }
-                Spinner slippageToleranceSpinner = findViewById(R.id.slippage_tolerance_spinner);
-                String percent = slippageToleranceSpinner
-                                         .getItemAtPosition(
-                                                 slippageToleranceSpinner.getSelectedItemPosition())
-                                         .toString();
-                percent = percent.replace("%", "");
+        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+        String from =
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition());
+        EditText fromValueText = findViewById(R.id.from_value_text);
+        String value = fromValueText.getText().toString();
+        EditText toValueText = findViewById(R.id.to_value_text);
+        String valueTo = toValueText.getText().toString();
+        String buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+        if (mCurrentSwapToErcToken != null) {
+            buyAddress = mCurrentSwapToErcToken.contractAddress;
+            if (buyAddress.isEmpty()) {
+                buyAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+            }
+        }
+        String sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+        if (mCurrentErcToken != null) {
+            sellAddress = mCurrentErcToken.contractAddress;
+            if (sellAddress.isEmpty()) {
+                sellAddress = ETHEREUM_CONTRACT_FOR_SWAP;
+            }
+        }
+        Spinner slippageToleranceSpinner = findViewById(R.id.slippage_tolerance_spinner);
+        String percent =
+                slippageToleranceSpinner
+                        .getItemAtPosition(slippageToleranceSpinner.getSelectedItemPosition())
+                        .toString();
+        percent = percent.replace("%", "");
 
-                SwapParams swapParams = new SwapParams();
-                swapParams.takerAddress = from;
-                swapParams.sellAmount = Utils.toWei(value);
-                if (swapParams.sellAmount.equals("0") || !calculatePerSellAsset) {
-                    swapParams.sellAmount = "";
-                }
-                swapParams.buyAmount = Utils.toWei(valueTo);
-                if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
-                    swapParams.buyAmount = "";
-                }
-                swapParams.buyToken = buyAddress;
-                swapParams.sellToken = sellAddress;
-                try {
-                    swapParams.buyTokenPercentageFee =
-                            Double.parseDouble(swapConfig.buyTokenPercantageFee);
-                    swapParams.slippagePercentage = Double.parseDouble(percent) / 100;
-                } catch (NumberFormatException ex) {
-                }
-                swapParams.feeRecipient = swapConfig.feeRecipient;
-                swapParams.gasPrice = "";
+        SwapParams swapParams = new SwapParams();
+        swapParams.takerAddress = from;
+        swapParams.sellAmount = Utils.toWei(value);
+        if (swapParams.sellAmount.equals("0") || !calculatePerSellAsset) {
+            swapParams.sellAmount = "";
+        }
+        swapParams.buyAmount = Utils.toWei(valueTo);
+        if (swapParams.buyAmount.equals("0") || calculatePerSellAsset) {
+            swapParams.buyAmount = "";
+        }
+        swapParams.buyToken = buyAddress;
+        swapParams.sellToken = sellAddress;
+        try {
+            swapParams.slippagePercentage = Double.parseDouble(percent) / 100;
+        } catch (NumberFormatException ex) {
+        }
+        swapParams.gasPrice = "";
 
-                if (!sendTx) {
-                    mSwapController.getPriceQuote(
-                            swapParams, (success, response, error_response) -> {
-                                workWithSwapQuota(success, response, error_response,
-                                        calculatePerSellAsset, sendTx, from);
-                            });
-                } else {
-                    mSwapController.getTransactionPayload(
-                            swapParams, (success, response, error_response) -> {
-                                workWithSwapQuota(success, response, error_response,
-                                        calculatePerSellAsset, sendTx, from);
-                            });
-                }
+        assert mSwapController != null;
+        if (!sendTx) {
+            mSwapController.getPriceQuote(swapParams, (success, response, error_response) -> {
+                workWithSwapQuota(
+                        success, response, error_response, calculatePerSellAsset, sendTx, from);
             });
-        });
+        } else {
+            mSwapController.getTransactionPayload(
+                    swapParams, (success, response, error_response) -> {
+                        workWithSwapQuota(success, response, error_response, calculatePerSellAsset,
+                                sendTx, from);
+                    });
+        }
     }
 
     private void workWithSwapQuota(boolean success, SwapResponse response, String errorResponse,
@@ -400,25 +387,25 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthJsonRpcController.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
                 (success, balance) -> {
-                    if (!success) {
-                        return;
-                    }
-                    Double currentBalance = Utils.fromHexWei(balance);
-                    if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
-                        if (currentBalance < fee + fromValue) {
-                            btnBuySendSwap.setText(
-                                    getString(R.string.crypto_wallet_error_insufficient_gas));
-                            btnBuySendSwap.setEnabled(false);
+                    if (success) {
+                        Double currentBalance = Utils.fromHexWei(balance);
+                        if (mCurrentErcToken == null
+                                || mCurrentErcToken.contractAddress.isEmpty()) {
+                            if (currentBalance < fee + fromValue) {
+                                btnBuySendSwap.setText(
+                                        getString(R.string.crypto_wallet_error_insufficient_gas));
+                                btnBuySendSwap.setEnabled(false);
 
-                            return;
-                        }
-                    } else {
-                        if (currentBalance < fee) {
-                            btnBuySendSwap.setText(
-                                    getString(R.string.crypto_wallet_error_insufficient_gas));
-                            btnBuySendSwap.setEnabled(false);
+                                return;
+                            }
+                        } else {
+                            if (currentBalance < fee) {
+                                btnBuySendSwap.setText(
+                                        getString(R.string.crypto_wallet_error_insufficient_gas));
+                                btnBuySendSwap.setEnabled(false);
 
-                            return;
+                                return;
+                            }
                         }
                     }
 
