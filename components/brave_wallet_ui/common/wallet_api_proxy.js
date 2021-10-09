@@ -50,7 +50,7 @@ export default class WalletApiProxy {
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
       },
-      onEip1559Changed: function (chainId, isEip1559) {
+      onIsEip1559Changed: function (chainId, isEip1559) {
         store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
       }
     })
