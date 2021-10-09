@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import {addSingletonGetter} from 'chrome://resources/js/cr.m.js';
+import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
 /** @interface */
 export class BraveWalletBrowserProxy {
@@ -13,6 +13,7 @@ export class BraveWalletBrowserProxy {
    setBraveWalletEnabled (value) {}
    getWeb3ProviderList () {}
    isNativeWalletEnabled() {}
+   getAutoLockMinutes() {}
 }
 
 /**
@@ -32,6 +33,11 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   isNativeWalletEnabled () {
     return new Promise(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
+  }
+
+  /** @override */
+  getAutoLockMinutes() {
+    return sendWithPromise('getAutoLockMinutes')
   }
 }
 

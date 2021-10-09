@@ -50,6 +50,10 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -65,6 +69,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_SPARKLE)
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
+#endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
 #endif
 }
 
