@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  marging-bottom: 10px;
+  margin-bottom: 40px;
 `
 
 export const PrimaryRow = styled.div`

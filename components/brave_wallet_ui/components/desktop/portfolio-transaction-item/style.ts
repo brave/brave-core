@@ -50,6 +50,9 @@ export const FromCircle = styled.div<Partial<StyleProps>>`
   background-image: url(${(p) => p.orb});
   background-size: cover;
   margin-right: 30px;
+  @media screen and (max-width: 600px) {
+    display: none
+  }
 `
 
 export const ToCircle = styled.div<Partial<StyleProps>>`
@@ -60,6 +63,9 @@ export const ToCircle = styled.div<Partial<StyleProps>>`
   background-size: cover;
   position: absolute;
   left: 26px;
+  @media screen and (max-width: 600px) {
+    display: none
+  }
 `
 
 export const MoreButton = styled.button`

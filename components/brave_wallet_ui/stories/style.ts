@@ -116,4 +116,7 @@ export const WalletWidgetStandIn = styled.div`
   align-items: center;
   justify-content: center;
   width: 285px;
+  @media screen and (max-width: 800px) {
+    margin-bottom: 40px;
+  }
 `

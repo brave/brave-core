@@ -5,7 +5,7 @@ export const StyledWrapper = styled('div') <{}>`
   flex-direction: column;
   align-items: flex-start;
   justify-conent: center;
-  flex: 1;
+  width: 100%;
   height: 100%;
   padding: 0px 25px;
   background-color: ${(p) => p.theme.color.background02};
