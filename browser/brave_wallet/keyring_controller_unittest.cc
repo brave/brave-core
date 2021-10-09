@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -230,7 +231,7 @@ class KeyringControllerUnitTest : public testing::Test {
     run_loop.Run();
     // Make sure observers are received
     base::RunLoop().RunUntilIdle();
-    if (old_minutes != minutes) {
+    if (old_minutes != minutes && success) {
       EXPECT_TRUE(observer->AutoLockMinutesChangedFired());
     } else {
       EXPECT_FALSE(observer->AutoLockMinutesChangedFired());
@@ -1963,6 +1964,20 @@ TEST_F(KeyringControllerUnitTest, GetSetAutoLockMinutes) {
   EXPECT_EQ(7, GetAutoLockMinutes(&controller));
   EXPECT_TRUE(SetAutoLockMinutes(&controller, &observer, 3));
   EXPECT_EQ(3, GetAutoLockMinutes(&controller));
+
+  // Out of bound values cannot be set
+  EXPECT_FALSE(
+      SetAutoLockMinutes(&controller, &observer, kAutoLockMinutesMin - 1));
+  EXPECT_EQ(3, GetAutoLockMinutes(&controller));
+  EXPECT_FALSE(
+      SetAutoLockMinutes(&controller, &observer, kAutoLockMinutesMax + 1));
+  EXPECT_EQ(3, GetAutoLockMinutes(&controller));
+
+  // Bound values can be set
+  EXPECT_TRUE(SetAutoLockMinutes(&controller, &observer, kAutoLockMinutesMin));
+  EXPECT_EQ(kAutoLockMinutesMin, GetAutoLockMinutes(&controller));
+  EXPECT_TRUE(SetAutoLockMinutes(&controller, &observer, kAutoLockMinutesMax));
+  EXPECT_EQ(kAutoLockMinutesMax, GetAutoLockMinutes(&controller));
 }
 
 }  // namespace brave_wallet
