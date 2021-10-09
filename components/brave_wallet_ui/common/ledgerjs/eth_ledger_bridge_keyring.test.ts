@@ -20,42 +20,52 @@ class MockApp {
   }
 }
 
-test('Extracting accounts from device', () => {
+const createLedgerKeyring = () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
-  return expect(ledgerHardwareKeyring.getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
+  ledgerHardwareKeyring.unlock = async () => {
+    ledgerHardwareKeyring.app = new MockApp()
+    ledgerHardwareKeyring.deviceId_ = 'device1'
+    return true
+  }
+  return ledgerHardwareKeyring
+}
+
+test('Extracting accounts from device', () => {
+  return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
     .resolves.toStrictEqual([
       {
         'address': 'address for m/44\'/60\'/0\'/0/0',
         'derivationPath': 'm/44\'/60\'/0\'/0/0',
         'hardwareVendor': 'Ledger',
-        'name': 'Ledger 0'
+        'name': 'Ledger',
+        'deviceId': 'device1'
       },
       {
         'address': 'address for m/44\'/60\'/1\'/0/0',
         'derivationPath': 'm/44\'/60\'/1\'/0/0',
         'hardwareVendor': 'Ledger',
-        'name': 'Ledger 1'
+        'name': 'Ledger',
+        'deviceId': 'device1'
       }]
     )
 })
 
 test('Extracting accounts from legacy device', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
-  return expect(ledgerHardwareKeyring.getAccounts(-2, 1, LedgerDerivationPaths.Legacy))
+  return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Legacy))
     .resolves.toStrictEqual([
       {
         'address': 'address for m/44\'/60\'/0\'/0',
         'derivationPath': 'm/44\'/60\'/0\'/0',
         'hardwareVendor': 'Ledger',
-        'name': 'Ledger 0'
+        'name': 'Ledger',
+        'deviceId': 'device1'
       },
       {
         'address': 'address for m/44\'/60\'/1\'/0',
         'derivationPath': 'm/44\'/60\'/1\'/0',
         'hardwareVendor': 'Ledger',
-        'name': 'Ledger 1'
+        'name': 'Ledger',
+        'deviceId': 'device1'
       }]
     )
 })

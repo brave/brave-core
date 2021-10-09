@@ -1499,17 +1499,17 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
 
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger"));
+      "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger"));
+      "0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger", "device1"));
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      "0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger"));
+      "0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger", "device2"));
 
   controller.AddHardwareAccounts(std::move(new_accounts));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("hardware.Ledger4235202380.account_metas.0x111"));
+                  ->FindPath("hardware.device1.account_metas.0x111"));
 
   bool callback_called = false;
   controller.GetHardwareAccounts(base::BindLambdaForTesting(
@@ -1520,16 +1520,19 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
         EXPECT_EQ(accounts[0]->name, "name 1");
         EXPECT_EQ(accounts[0]->is_imported, false);
         ASSERT_TRUE(accounts[0]->hardware);
+        EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
 
         EXPECT_EQ(accounts[1]->address, "0x264");
         EXPECT_EQ(accounts[1]->name, "name 2");
         EXPECT_EQ(accounts[1]->is_imported, false);
         ASSERT_TRUE(accounts[1]->hardware);
+        EXPECT_EQ(accounts[1]->hardware->device_id, "device1");
 
         EXPECT_EQ(accounts[2]->address, "0xEA0");
         EXPECT_EQ(accounts[2]->name, "name 3");
         EXPECT_EQ(accounts[2]->is_imported, false);
         ASSERT_TRUE(accounts[2]->hardware);
+        EXPECT_EQ(accounts[2]->hardware->device_id, "device2");
 
         callback_called = true;
       }));
@@ -1541,15 +1544,15 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("hardware.Ledger4235202380.account_metas.0x111"));
+                   ->FindPath("hardware.device1.account_metas.0x111"));
 
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("hardware.Ledger4235202380.account_metas.0x264"));
+                  ->FindPath("hardware.device1.account_metas.0x264"));
 
   ASSERT_TRUE(GetPrefs()
                   ->GetDictionary(kBraveWalletKeyrings)
-                  ->FindPath("hardware.Ledger4235202380.account_metas.0xEA0"));
+                  ->FindPath("hardware.device2.account_metas.0xEA0"));
 
   controller.RemoveHardwareAccount("0x264");
   base::RunLoop().RunUntilIdle();
@@ -1563,6 +1566,7 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
         EXPECT_EQ(accounts[0]->name, "name 3");
         EXPECT_EQ(accounts[0]->is_imported, false);
         ASSERT_TRUE(accounts[0]->hardware);
+        EXPECT_EQ(accounts[0]->hardware->device_id, "device2");
 
         callback_called = true;
       }));
@@ -1573,11 +1577,11 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("hardware.Ledger4235202380.account_metas.0xEA0"));
+                   ->FindPath("hardware.device2.account_metas.0xEA0"));
 
   ASSERT_FALSE(GetPrefs()
                    ->GetDictionary(kBraveWalletKeyrings)
-                   ->FindPath("hardware.Ledger4235202380"));
+                   ->FindPath("hardware.device2"));
 }
 
 TEST_F(KeyringControllerUnitTest, AutoLock) {
@@ -1709,7 +1713,7 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   std::string hardware_account = "0x1111111111111111111111111111111111111111";
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
-      hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger"));
+      hardware_account, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
   AddHardwareAccount(&controller, std::move(new_accounts));
   EXPECT_TRUE(SetSelectedAccount(&controller, hardware_account));
   EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));

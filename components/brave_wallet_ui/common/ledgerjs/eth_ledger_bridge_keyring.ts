@@ -13,7 +13,8 @@ import {
 import {
   kLedgerHardwareVendor
 } from '../../constants/types'
-
+import { TextEncoder } from 'util'
+const crypto = require('crypto')
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 
@@ -52,6 +53,9 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       return this.app
     }
     this.app = new Eth(await TransportWebHID.create())
+    if (this.app) {
+      this.deviceId_ = await this._getDeviceId()
+    }
     return this.isUnlocked()
   }
 
@@ -63,6 +67,16 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   /* PRIVATE METHODS */
+  _getDeviceId = async () => {
+    const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+    const address = await this._getAddress(zeroPath)
+    const msgBuffer = new TextEncoder().encode(address)
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashHex
+  }
+
   _getPathForIndex = (index: number, scheme: string) => {
     if (scheme === LedgerDerivationPaths.LedgerLive) {
       return `m/44'/60'/${index}'/0/0`
@@ -88,8 +102,9 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       accounts.push({
         address: address.address,
         derivationPath: path,
-        name: this.type() + ' ' + i,
-        hardwareVendor: this.type()
+        name: this.type(),
+        hardwareVendor: this.type(),
+        deviceId: this.deviceId_
       })
     }
     return accounts

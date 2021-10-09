@@ -36,12 +36,12 @@
  *     "Ledger12445": {
  *        "account_metas": {
  *            "0xEA04...CC8Acc": {
- *              "account_name": "Ledger 1",
+ *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/1'/0/0",
  *              "hardware_vendor": "ledger"
  *           },
  *           "0x264Ef...6b8F1": {
- *              "account_name": "Ledger 2",
+ *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/2'/0/0",
  *              "hardware_vendor": "ledger"
  *            }
@@ -111,7 +111,8 @@ std::string GetAccountName(size_t number) {
                                    base::NumberToString16(number));
 }
 
-void SerializeHardwareAccounts(const base::Value* account_value,
+void SerializeHardwareAccounts(const std::string& device_id,
+                               const base::Value* account_value,
                                std::vector<mojom::AccountInfoPtr>* accounts) {
   for (const auto account : account_value->DictItems()) {
     std::string address = account.first;
@@ -134,7 +135,7 @@ void SerializeHardwareAccounts(const base::Value* account_value,
 
     accounts->push_back(mojom::AccountInfo::New(
         address, name, false,
-        mojom::HardwareInfo::New(derivation_path, hardware_vendor)));
+        mojom::HardwareInfo::New(derivation_path, hardware_vendor, device_id)));
   }
 }
 
@@ -820,7 +821,7 @@ KeyringController::GetHardwareAccountsSync() {
     const base::Value* account_value = hw_keyring.second.FindKey(kAccountMetas);
     if (!account_value)
       continue;
-    SerializeHardwareAccounts(account_value, &accounts);
+    SerializeHardwareAccounts(device_id, account_value, &accounts);
   }
 
   return accounts;
@@ -850,24 +851,24 @@ void KeyringController::AddHardwareAccounts(
     std::vector<mojom::HardwareWalletAccountPtr> infos) {
   if (infos.empty())
     return;
-  const auto& hardware_vendor = infos.front()->hardware_vendor;
-  const auto hash = base::PersistentHash(infos.front()->address);
-  std::string device_id = hardware_vendor + std::to_string(hash);
 
   base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
 
-  base::Value* device_value = hardware_keyrings->FindKey(device_id);
-  if (!device_value) {
-    device_value = hardware_keyrings->SetKey(
-        device_id, base::Value(base::Value::Type::DICTIONARY));
-  }
-
-  base::Value* meta_value = device_value->FindKey(kAccountMetas);
-  if (!meta_value) {
-    meta_value = device_value->SetKey(
-        kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
-  }
   for (const auto& info : infos) {
+    const auto& hardware_vendor = info->hardware_vendor;
+    std::string device_id = info->device_id;
+    base::Value* device_value = hardware_keyrings->FindKey(device_id);
+    if (!device_value) {
+      device_value = hardware_keyrings->SetKey(
+          device_id, base::Value(base::Value::Type::DICTIONARY));
+    }
+
+    base::Value* meta_value = device_value->FindKey(kAccountMetas);
+    if (!meta_value) {
+      meta_value = device_value->SetKey(
+          kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
+    }
+
     DCHECK_EQ(hardware_vendor, info->hardware_vendor);
     if (hardware_vendor != info->hardware_vendor)
       continue;
