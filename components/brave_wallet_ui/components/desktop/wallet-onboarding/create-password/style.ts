@@ -18,6 +18,7 @@ export const Title = styled.span`
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 10px;
+  text-align: center;
 `
 
 export const Description = styled.span`
