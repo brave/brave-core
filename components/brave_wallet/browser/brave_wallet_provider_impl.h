@@ -24,6 +24,7 @@ namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
 class EthJsonRpcController;
+class KeyringController;
 
 class BraveWalletProviderImpl final
     : public mojom::BraveWalletProvider,
@@ -34,6 +35,7 @@ class BraveWalletProviderImpl final
   BraveWalletProviderImpl(
       mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
       mojo::PendingRemote<mojom::EthTxController> tx_controller,
+      KeyringController* keyring_controller,
       std::unique_ptr<BraveWalletProviderDelegate> delegate,
       PrefService* prefs);
   ~BraveWalletProviderImpl() override;
@@ -58,6 +60,9 @@ class BraveWalletProviderImpl final
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       AddUnapproved1559TransactionCallback callback) override;
+  void SignMessage(const std::string& address,
+                   const std::string& message,
+                   SignMessageCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             bool success,
                             const std::vector<std::string>& accounts);
@@ -103,6 +108,11 @@ class BraveWalletProviderImpl final
       const std::string& from,
       bool success,
       const std::vector<std::string>& allowed_accounts);
+  void ContinueSignMessage(const std::string& address,
+                           std::vector<uint8_t>&& message,
+                           SignMessageCallback callback,
+                           bool success,
+                           const std::vector<std::string>& allowed_accounts);
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
 
@@ -110,6 +120,7 @@ class BraveWalletProviderImpl final
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Remote<mojom::EthTxController> tx_controller_;
+  KeyringController* keyring_controller_;
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
   PrefService* prefs_ = nullptr;

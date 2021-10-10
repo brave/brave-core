@@ -125,9 +125,9 @@ void HDKeyring::SignTransaction(const std::string& address,
   tx->ProcessSignature(signature, recid, chain_id);
 }
 
-std::vector<uint8_t> HDKeyring::SignMessage(
-    const std::string& address,
-    const std::vector<uint8_t>& message) {
+std::vector<uint8_t> HDKeyring::SignMessage(const std::string& address,
+                                            const std::vector<uint8_t>& message,
+                                            uint256_t chain_id) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return std::vector<uint8_t>();
@@ -139,7 +139,12 @@ std::vector<uint8_t> HDKeyring::SignMessage(
   hash_input.insert(hash_input.end(), message.begin(), message.end());
   const std::vector<uint8_t> hash = KeccakHash(hash_input);
 
-  return hd_key->Sign(hash);
+  int recid;
+  std::vector<uint8_t> signature = hd_key->Sign(hash, &recid);
+  uint8_t v = chain_id ? recid + chain_id * 2 + 35 : recid + 27;
+  signature.push_back(v);
+
+  return signature;
 }
 
 HDKey* HDKeyring::GetHDKeyFromAddress(const std::string& address) {

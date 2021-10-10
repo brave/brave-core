@@ -28,7 +28,6 @@ namespace {
 
 static base::NoDestructor<std::string> g_provider_script("");
 
-
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -67,12 +66,12 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
   v8::Local<v8::Value> method;
   if (!GetProperty(context, context->Global(), object_name).ToLocal(&object) ||
       !GetProperty(context, object, method_name).ToLocal(&method)) {
-     return;
+    return;
   }
   std::vector<v8::Local<v8::Value>> args;
   for (auto const& argument : arguments.GetList()) {
-    args.push_back(content::V8ValueConverter::Create()->ToV8Value(&argument,
-                                                                  context));
+    args.push_back(
+        content::V8ValueConverter::Create()->ToV8Value(&argument, context));
   }
 
   web_frame->ExecuteMethodAndReturnValue(v8::Local<v8::Function>::Cast(method),
@@ -231,6 +230,43 @@ void OnAddUnapprovedTransaction(
   }
 }
 
+#if 0
+void OnSignMessage(v8::Global<v8::Promise::Resolver> promise_resolver,
+                   v8::Isolate* isolate,
+                   v8::Global<v8::Context> context_old,
+                   base::Value id,
+                   const std::string& signature,
+                   int error,
+                   const std::string& error_message) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  std::unique_ptr<base::Value> response;
+  if (!error) {
+    base::Value value(signature);
+    response = brave_wallet::ToProviderResponse(std::move(id), &value, nullptr);
+  } else {
+    auto error_response = GetProviderErrorDictionary(
+        static_cast<brave_wallet::ProviderErrors>(error), error_message);
+    response = brave_wallet::ToProviderResponse(std::move(id), nullptr,
+                                                error_response.get());
+  }
+
+  v8::Local<v8::Value> result;
+  result =
+      content::V8ValueConverter::Create()->ToV8Value(response.get(), context);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  if (!error) {
+    ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  } else {
+    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+  }
+}
+#endif
+
 }  // namespace
 
 namespace brave_wallet {
@@ -281,7 +317,8 @@ void BraveWalletJSHandler::AddJavaScriptObjectToFrame(
 }
 
 void BraveWalletJSHandler::CreateEthereumObject(
-    v8::Isolate* isolate, v8::Local<v8::Context> context) {
+    v8::Isolate* isolate,
+    v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> ethereum_obj;
   v8::Local<v8::Value> ethereum_value;
@@ -439,6 +476,18 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
         std::move(tx_data), from,
         base::BindOnce(&OnAddUnapprovedTransaction, std::move(promise_resolver),
                        isolate, std::move(context_old), std::move(id)));
+  } else if (method == kEthSign || method == kPersonalSign) {
+#if 0
+    std::string address;
+    std::string message;
+    if (!ParseEthSignParams(normalized_json_request, &address, &message))
+      return v8::Local<v8::Promise>();
+
+    brave_wallet_provider_->SignMessage(
+        address, message,
+        base::BindOnce(&OnSignMessage, std::move(promise_resolver), isolate,
+                       std::move(context_old), std::move(id)));
+#endif
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,
@@ -554,9 +603,7 @@ void BraveWalletJSHandler::FireEvent(const std::string& event,
   base::Value args = base::Value(base::Value::Type::LIST);
   args.Append(event);
   args.Append(std::move(event_args));
-  CallMethodOfObject(render_frame_->GetWebFrame(),
-                     u"ethereum",
-                     u"emit",
+  CallMethodOfObject(render_frame_->GetWebFrame(), u"ethereum", u"emit",
                      std::move(args));
 }
 

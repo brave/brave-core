@@ -28,6 +28,7 @@
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_LIMIT_FAILED" desc="Failed to get gas limit">Failed to get the gas limit for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED" desc="Failed to get tx type">Failed to get the type for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_ESTIMATION_FAILED" desc="Failed to get gas estimation">Failed to get the gas estimation for EIP-1559 transaction</message>
+    <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
     <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
     <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
     <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>
@@ -290,5 +291,7 @@
     </message>
     <message name="IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR" desc="Swap CTA text for unknown error">Unknown error</message>
     <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="VALUE">$1<ex>1</ex></ph></message>
+    <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
+    <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS" desc="Sign message error"><ph name="VALUE">$1<ex>1</ex></ph> is not a valid address</message>
   </if>
 </grit-part>

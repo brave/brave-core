@@ -12,6 +12,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -909,6 +910,40 @@ void KeyringController::SignTransactionByDefaultKeyring(
   if (!default_keyring_)
     return;
   default_keyring_->SignTransaction(address, tx, chain_id);
+}
+
+KeyringController::SignatureWithError::SignatureWithError() = default;
+KeyringController::SignatureWithError::SignatureWithError(
+    SignatureWithError&& other) = default;
+KeyringController::SignatureWithError&
+KeyringController::SignatureWithError::operator=(SignatureWithError&& other) =
+    default;
+KeyringController::SignatureWithError::~SignatureWithError() = default;
+
+KeyringController::SignatureWithError
+KeyringController::SignMessageByDefaultKeyring(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  SignatureWithError ret;
+  if (!default_keyring_) {
+    ret.signature = absl::nullopt;
+    ret.error_message =
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST);
+    return ret;
+  }
+
+  // MM currently doesn't provide chain_id when signing message
+  std::vector<uint8_t> signature =
+      default_keyring_->SignMessage(address, message, 0);
+  if (signature.empty()) {
+    ret.signature = absl::nullopt;
+    ret.error_message =
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
+                                  base::ASCIIToUTF16(address));
+    return ret;
+  }
+  ret.signature = std::move(signature);
+  return ret;
 }
 
 void KeyringController::AddAccountsWithDefaultName(size_t number) {

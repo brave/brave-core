@@ -148,6 +148,21 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                        EthTransaction* tx,
                                        uint256_t chain_id);
 
+  struct SignatureWithError {
+    SignatureWithError();
+    SignatureWithError(SignatureWithError&& other);
+    SignatureWithError& operator=(SignatureWithError&& other);
+    SignatureWithError(const SignatureWithError&) = delete;
+    SignatureWithError& operator=(const SignatureWithError&) = delete;
+    ~SignatureWithError();
+
+    absl::optional<std::vector<uint8_t>> signature;
+    std::string error_message;
+  };
+  SignatureWithError SignMessageByDefaultKeyring(
+      const std::string& address,
+      const std::vector<uint8_t>& message);
+
   void AddAccountsWithDefaultName(size_t number);
 
   bool IsLocked() const;

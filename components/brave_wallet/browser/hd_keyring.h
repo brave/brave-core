@@ -55,7 +55,8 @@ class HDKeyring {
                                uint256_t chain_id);
   // eth_sign
   virtual std::vector<uint8_t> SignMessage(const std::string& address,
-                                           const std::vector<uint8_t>& message);
+                                           const std::vector<uint8_t>& message,
+                                           uint256_t chain_id);
 
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
