@@ -36,6 +36,8 @@ class TestBraveWalletServiceObserver
  public:
   TestBraveWalletServiceObserver() {}
 
+  void OnDefaultWalletChanged(mojom::DefaultWallet default_wallet) override {}
+
   void OnActiveOriginChanged(const std::string& origin) override {
     active_origin_ = origin;
   }

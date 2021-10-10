@@ -13,6 +13,7 @@ import {
   UnapprovedTxUpdated,
   TransactionStatusChanged,
   ActiveOriginChanged,
+  DefaultWalletChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
@@ -63,6 +64,7 @@ export const locked = createAction('locked')
 export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
 export const accountsChanged = createAction('accountsChanged')
+export const selectedAccountChanged = createAction('selectedAccountChanged')
 export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
 export const ethBalancesUpdated = createAction<GetETHBalancesPriceReturnInfo>('ethBalancesUpdated')
@@ -87,3 +89,4 @@ export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOrig
 export const refreshGasEstimates = createAction('refreshGasEstimates')
 export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
+export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')

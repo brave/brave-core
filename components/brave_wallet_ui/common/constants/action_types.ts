@@ -6,6 +6,7 @@
 import {
   AppObjectType,
   AccountInfo,
+  DefaultWallet,
   TransactionInfo,
   TokenInfo,
   AccountAssetOptionType,
@@ -84,4 +85,8 @@ export type UpdateUnapprovedTransactionGasFieldsType = {
   gasPrice?: string,
   maxPriorityFeePerGas?: string,
   maxFeePerGas?: string
+}
+
+export type DefaultWalletChanged = {
+  defaultWallet: DefaultWallet
 }

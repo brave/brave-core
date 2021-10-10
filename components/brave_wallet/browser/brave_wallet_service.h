@@ -93,6 +93,8 @@ class BraveWalletService : public KeyedService,
   void RecordWalletUsage(base::Time wallet_last_used);
 
  private:
+  void OnDefaultWalletChanged();
+
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, OnGetImportInfo);
 

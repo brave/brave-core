@@ -21,6 +21,9 @@ extern const char kAssetRatioBaseURL[];
 constexpr uint256_t kDefaultSendEthGasLimit = 21000;
 constexpr uint256_t kDefaultSendEthGasPrice = 150000000000ULL;  // 150 Gwei
 
+constexpr int32_t kAutoLockMinutesMin = 1;
+constexpr int32_t kAutoLockMinutesMax = 10080;
+
 // List of assets from Wyre, available to buy
 static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
     {{"", "Basic Attention Token", "bat.svg", true, false, "BAT", 0, true},

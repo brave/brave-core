@@ -247,6 +247,14 @@ handler.on(WalletActions.accountsChanged.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.selectedAccountChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
+  await refreshWalletInfo(store)
+})
+
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.lock()

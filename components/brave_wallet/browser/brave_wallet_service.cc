@@ -106,6 +106,10 @@ BraveWalletService::BraveWalletService(
       kBraveWalletLastUnlockTime,
       base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBraveWalletWeb3Provider,
+      base::BindRepeating(&BraveWalletService::OnDefaultWalletChanged,
+                          base::Unretained(this)));
   p3a_periodic_timer_.Start(
       FROM_HERE, base::TimeDelta::FromHours(kRefreshP3AFrequencyHours), this,
       &BraveWalletService::OnP3ATimerFired);
@@ -390,7 +394,17 @@ void BraveWalletService::GetDefaultWallet(GetDefaultWalletCallback callback) {
 }
 
 void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
-  ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
+  auto old_default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
+  if (old_default_wallet != default_wallet) {
+    ::brave_wallet::SetDefaultWallet(prefs_, default_wallet);
+  }
+}
+
+void BraveWalletService::OnDefaultWalletChanged() {
+  auto default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
+  for (const auto& observer : observers_) {
+    observer->OnDefaultWalletChanged(default_wallet);
+  }
 }
 
 void BraveWalletService::HasEthereumPermission(
