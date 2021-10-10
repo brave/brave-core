@@ -13,10 +13,10 @@ import {
 import {
   kLedgerHardwareVendor
 } from '../../constants/types'
-import { TextEncoder } from 'util'
-const crypto = require('crypto')
+
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { getLocale } from '../../../common/locale'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -34,7 +34,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
       try {
         if (!this.isUnlocked() && !(await this.unlock())) {
-          return reject(new Error())
+          return reject(new Error(getLocale('braveWalletUnlockError')))
         }
       } catch (e) {
         reject(e)
@@ -54,24 +54,25 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     }
     this.app = new Eth(await TransportWebHID.create())
     if (this.app) {
-      this.deviceId_ = await this._getDeviceId()
+      const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+      const address = await this._getAddress(zeroPath)
+      this.deviceId_ = await this._getDeviceId(address)
     }
     return this.isUnlocked()
   }
 
   signTransaction = async (path: string, rawTxHex: string) => {
     if (!this.isUnlocked() && !(await this.unlock())) {
-      return new Error('Unable to unlock device, try to reconnect')
+      return new Error(getLocale('braveWalletUnlockError'))
     }
     return this.app.signTransaction(path, rawTxHex)
   }
 
   /* PRIVATE METHODS */
-  _getDeviceId = async () => {
-    const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
-    const address = await this._getAddress(zeroPath)
-    const msgBuffer = new TextEncoder().encode(address)
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  _getDeviceId = async (address: string) => {
+    const utf8 = new TextEncoder()
+    const msgBuffer = utf8.encode(address)
+    const hashBuffer = await Promise.resolve(crypto.subtle.digest('SHA-256', msgBuffer))
     const hashArray = Array.from(new Uint8Array(hashBuffer))
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
     return hashHex
@@ -83,7 +84,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     } else if (scheme === LedgerDerivationPaths.Legacy) {
       return `m/44'/60'/${index}'/0`
     } else {
-      throw Error('Unknown scheme')
+      throw Error(getLocale('braveWalletDeviceUnknownScheme'))
     }
   }
 

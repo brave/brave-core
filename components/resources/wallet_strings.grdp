@@ -293,5 +293,7 @@
     <message name="IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME" desc="The name with account number.">Account <ph name="VALUE">$1<ex>1</ex></ph></message>
     <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST" desc="Sign message error">Wallet needs to be unlocked first</message>
     <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS" desc="Sign message error"><ph name="VALUE">$1<ex>1</ex></ph> is not a valid address</message>
+    <message name="IDS_BRAVE_WALLET_UNLOCK_ERROR" desc="Connect hardware wallet panel, error when device unlock failed">Unable to unlock device, try to reconnect</message>
+    <message name="IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR" desc="Connect hardware wallet panel, error when requested unsupported scheme for device">Internal error, unknown scheme</message>
   </if>
 </grit-part>
