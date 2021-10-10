@@ -93,6 +93,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       fiatBalance: '0',
       asset: 'eth',
       accountType: getAccountType(info),
+      deviceId: info.hardware ? info.hardware.deviceId : '',
       tokens: []
     }
   })

@@ -71,7 +71,7 @@ function AccountListItem (props: Props) {
         </AccountAndAddress>
       </NameAndIcon>
       <RightSide>
-        {(account.accountType === 'Secondary' || account.accountType === 'Ledger') &&
+        {(account.accountType !== 'Primary') &&
           <DeleteButton onClick={removeAccount}>
             <DeleteIcon />
           </DeleteButton>
