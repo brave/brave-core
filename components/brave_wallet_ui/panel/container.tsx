@@ -55,7 +55,7 @@ import LockPanel from '../components/extension/lock-panel'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
-
+import { getERC20Allowance } from '../common/async/wallet_async_handler'
 import { formatBalance, toWeiHex } from '../utils/format-balances'
 import { useAssets, useBalance, useSwap } from '../common/hooks'
 
@@ -151,8 +151,10 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    props.walletPanelActions.fetchPanelSwapQuote,
     assetOptions,
+    props.walletPanelActions.fetchPanelSwapQuote,
+    getERC20Allowance,
+    props.walletActions.approveERC20Allowance,
     swapQuote,
     swapError
   )

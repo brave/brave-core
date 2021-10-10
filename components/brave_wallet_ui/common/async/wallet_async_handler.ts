@@ -30,7 +30,8 @@ import {
   ER20TransferParams,
   SwapErrorResponse,
   SwapResponse,
-  TokenInfo
+  TokenInfo,
+  ApproveERC20Params
 } from '../../constants/types'
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { formatBalance, toWeiHex } from '../../utils/format-balances'
@@ -422,6 +423,27 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store, payload: ER2
   }))
 })
 
+handler.on(WalletActions.approveERC20Allowance.getType(), async (store, payload: ApproveERC20Params) => {
+  const apiProxy = await getAPIProxy()
+  const { data, success } = await apiProxy.ethTxController.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
+  if (!success) {
+    console.log(
+      'Failed making ERC20 approve data, contract: ',
+      payload.contractAddress,
+      ', spender: ', payload.spenderAddress,
+      ', allowance: ', payload.allowance
+    )
+    return
+  }
+
+  await store.dispatch(WalletActions.sendTransaction({
+    from: payload.from,
+    to: payload.contractAddress,
+    value: '0x0',
+    data
+  }))
+})
+
 handler.on(WalletActions.approveTransaction.getType(), async (store, txInfo: TransactionInfo) => {
   const apiProxy = await getAPIProxy()
   const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
@@ -591,6 +613,18 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
     }
   }
 })
+
+export const getERC20Allowance = (contractAddress: string, ownerAddress: string, spenderAddress: string): Promise<string> => {
+  return new Promise(async (resolve, reject) => {
+    const controller = (await getAPIProxy()).ethJsonRpcController
+    const result = await controller.getERC20TokenAllowance(contractAddress, ownerAddress, spenderAddress)
+    if (result.success) {
+      resolve(result.allowance)
+    } else {
+      reject()
+    }
+  })
+}
 
 export default handler.middleware
 

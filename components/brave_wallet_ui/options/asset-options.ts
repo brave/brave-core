@@ -36,6 +36,36 @@ export const BAT: AccountAssetOptionType = {
   fiatBalance: '0'
 }
 
+export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
+  ETH,
+  {
+    asset: {
+      contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
+      name: 'DAI Stablecoin',
+      symbol: 'DAI',
+      logo: `chrome://erc-token-images/dai.svg`,
+      isErc20: true,
+      isErc721: false,
+      decimals: 18
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  },
+  {
+    asset: {
+      contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
+      name: 'USD Coin',
+      symbol: 'USDC',
+      logo: `chrome://erc-token-images/usdc.svg`,
+      isErc20: true,
+      isErc721: false,
+      decimals: 18
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
+  }
+]
+
 // Use only with storybook as dummy data.
 export const NewAssetOptions: TokenInfo[] = [
   {

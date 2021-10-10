@@ -34,7 +34,8 @@ import {
   TransactionInfo,
   TransactionListInfo,
   DefaultWallet,
-  GasEstimation
+  GasEstimation,
+  ApproveERC20Params
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -71,6 +72,7 @@ export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('select
 export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParams>('sendTransaction')
 export const sendERC20Transfer = createAction<ER20TransferParams>('sendERC20Transfer')
+export const approveERC20Allowance = createAction<ApproveERC20Params>('approveERC20Allowance')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
 export const unapprovedTxUpdated = createAction<UnapprovedTxUpdated>('unapprovedTxUpdated')
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')

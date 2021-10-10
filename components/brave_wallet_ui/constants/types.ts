@@ -453,6 +453,13 @@ export interface ER20TransferParams extends BaseTransactionParams {
   contractAddress: string
 }
 
+export interface ApproveERC20Params {
+  from: string
+  contractAddress: string
+  spenderAddress: string
+  allowance: string
+}
+
 export interface CreateWalletReturnInfo {
   mnemonic: string
 }
