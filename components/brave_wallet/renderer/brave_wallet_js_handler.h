@@ -60,19 +60,78 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   v8::Local<v8::Value> IsConnected();
   v8::Local<v8::Promise> Enable();
   void SendAsync(gin::Arguments* args);
+  bool CommonRequestOrSendAsync(
+      v8::Local<v8::Value> input,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate);
 
-  void OnRequest(v8::Global<v8::Promise::Resolver> promise_resolver,
-                 v8::Isolate* isolate,
-                 v8::Global<v8::Context> context_old,
-                 base::Value id,
-                 const int http_code,
-                 const std::string& response,
-                 const base::flat_map<std::string, std::string>& headers);
-  void OnSendAsync(std::unique_ptr<v8::Global<v8::Function>> callback,
-                   base::Value id,
+  void OnCommonRequestOrSendAsync(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      const int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnSendAsync(base::Value id,
+                   v8::Global<v8::Context> global_context,
+                   std::unique_ptr<v8::Global<v8::Function>> callback,
                    const int http_code,
                    const std::string& response,
                    const base::flat_map<std::string, std::string>& headers);
+  void OnEthereumPermissionRequested(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool success,
+      const std::vector<std::string>& accounts);
+  void OnGetAllowedAccounts(base::Value id,
+                            v8::Global<v8::Context> global_context,
+                            std::unique_ptr<v8::Global<v8::Function>> callback,
+                            v8::Global<v8::Promise::Resolver> promise_resolver,
+                            v8::Isolate* isolate,
+                            bool success,
+                            const std::vector<std::string>& accounts);
+  void OnAddEthereumChain(base::Value id,
+                          v8::Global<v8::Context> global_context,
+                          std::unique_ptr<v8::Global<v8::Function>> callback,
+                          v8::Global<v8::Promise::Resolver> promise_resolver,
+                          v8::Isolate* isolate,
+                          bool success,
+                          int provider_error,
+                          const std::string& error_message);
+  void OnAddUnapprovedTransaction(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> resolver,
+      v8::Isolate* isolate,
+      bool success,
+      const std::string& tx_meta_id,
+      const std::string& error_message);
+  void SendResponse(base::Value id,
+                    v8::Global<v8::Context> global_context,
+                    std::unique_ptr<v8::Global<v8::Function>> callback,
+                    v8::Global<v8::Promise::Resolver> promise_resolver,
+                    v8::Isolate* isolate,
+                    std::unique_ptr<base::Value> formed_response,
+                    bool success);
+#if 0
+  void OnSignMessage(
+                   base::Value id,
+                   v8::Global<v8::Context> global_context,
+                   std::unique_ptr<v8::Global<v8::Function>> global_callback,
+                   v8::Global<v8::Promise::Resolver> promise_resolver,
+                   v8::Isolate* isolate,
+                   const std::string& signature,
+                   int error,
+                   const std::string& error_message);
+#endif
 
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;

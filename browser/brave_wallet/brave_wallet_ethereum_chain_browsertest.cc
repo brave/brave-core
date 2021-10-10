@@ -73,7 +73,7 @@ const char kScriptRunEmptyAndCheckChainResult[] = R"(
 
 const char kRejectedResult[] =
     R"(window.domAutomationController.send(
-        result.error && result.error.code == %s))";
+        result.code == %s))";
 
 }  // namespace
 
