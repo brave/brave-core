@@ -412,7 +412,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY},
     {"braveWalletSwapInsufficientAllowance",
      IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ALLOWANCE},
-    {"braveWalletSwapUnknownError", IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR}};
+    {"braveWalletSwapUnknownError", IDS_BRAVE_WALLET_SWAP_UNKNOWN_ERROR},
+    {"braveWalletUnlockError", IDS_BRAVE_WALLET_UNLOCK_ERROR},
+    {"braveWalletDeviceUnknownScheme", IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";
