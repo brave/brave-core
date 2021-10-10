@@ -16,7 +16,7 @@ import {
 import { getLocale } from '../../../../../common/locale'
 
 // Utils
-import { formatPrices } from '../../../../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../../../../utils/format-prices'
 import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
@@ -175,13 +175,13 @@ const Portfolio = (props: Props) => {
   const onUpdateBalance = (value: number | undefined) => {
     if (!selectedAsset) {
       if (value) {
-        setHoverBalance(formatPrices(value))
+        setHoverBalance(formatWithCommasAndDecimals(value.toString()))
       } else {
         setHoverBalance(undefined)
       }
     } else {
       if (value) {
-        setHoverPrice(formatPrices(value))
+        setHoverPrice(formatWithCommasAndDecimals(value.toString()))
       } else {
         setHoverPrice(undefined)
       }
@@ -279,7 +279,7 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatPrices(Number(selectedUSDAssetPrice.price)) : 0.00}</PriceText>
+            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatWithCommasAndDecimals(selectedUSDAssetPrice.price) : 0.00}</PriceText>
             <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}>
               <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false} />
               <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
@@ -300,7 +300,7 @@ const Portfolio = (props: Props) => {
         <>
           <DividerRow>
             <DividerText>{getLocale('braveWalletAccounts')}</DividerText>
-            <AssetBalanceDisplay>${fullAssetBalances?.fiatBalance} ({formatPrices(Number(fullAssetBalances?.assetBalance))} {selectedAsset.symbol})</AssetBalanceDisplay>
+            <AssetBalanceDisplay>${formatWithCommasAndDecimals(fullAssetBalances?.fiatBalance ?? '')} ({formatWithCommasAndDecimals(fullAssetBalances?.assetBalance ?? '')} {selectedAsset.symbol})</AssetBalanceDisplay>
           </DividerRow>
           <SubDivider />
           {accounts.map((account) =>

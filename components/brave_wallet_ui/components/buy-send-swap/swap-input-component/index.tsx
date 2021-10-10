@@ -9,6 +9,7 @@ import {
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
+import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
@@ -172,7 +173,7 @@ function SwapInputComponent (props: Props) {
             */}
 
             {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-              <FromBalanceText>{getLocale('braveWalletBalance')}: {selectedAssetBalance}</FromBalanceText>
+              <FromBalanceText>{getLocale('braveWalletBalance')}: {formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')}</FromBalanceText>
             }
             {componentType === 'toAddress' &&
               <PasteButton onClick={onPaste}>

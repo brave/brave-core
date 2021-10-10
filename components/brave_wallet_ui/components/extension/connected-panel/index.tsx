@@ -6,7 +6,7 @@ import {
   ConnectedHeader
 } from '../'
 import { Tooltip } from '../../shared'
-import { formatPrices } from '../../../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { formatBalance } from '../../../utils/format-balances'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
@@ -119,7 +119,7 @@ const ConnectedPanel = (props: Props) => {
         </BalanceColumn>
         <BalanceColumn>
           <AssetBalanceText>{formatBalance(selectedAccount.balance, 18)} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
-          <FiatBalanceText>${formatPrices(Number(selectedAccount.fiatBalance))}</FiatBalanceText>
+          <FiatBalanceText>${formatWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
       <ConnectedBottomNav
