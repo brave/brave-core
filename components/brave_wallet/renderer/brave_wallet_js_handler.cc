@@ -230,6 +230,7 @@ void OnAddUnapprovedTransaction(
   }
 }
 
+#if 0
 void OnSignMessage(v8::Global<v8::Promise::Resolver> promise_resolver,
                    v8::Isolate* isolate,
                    v8::Global<v8::Context> context_old,
@@ -264,6 +265,7 @@ void OnSignMessage(v8::Global<v8::Promise::Resolver> promise_resolver,
     ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
   }
 }
+#endif
 
 }  // namespace
 
@@ -475,6 +477,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
         base::BindOnce(&OnAddUnapprovedTransaction, std::move(promise_resolver),
                        isolate, std::move(context_old), std::move(id)));
   } else if (method == kEthSign || method == kPersonalSign) {
+#if 0
     std::string address;
     std::string message;
     if (!ParseEthSignParams(normalized_json_request, &address, &message))
@@ -484,6 +487,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Request(
         address, message,
         base::BindOnce(&OnSignMessage, std::move(promise_resolver), isolate,
                        std::move(context_old), std::move(id)));
+#endif
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,
