@@ -218,6 +218,11 @@ class PasswordStoreConsumerHelper
   password_store_ = nil;
 }
 
+- (bool)isAbleToSavePasswords {
+  // Returns whether the initialization was successful.
+  return password_store_->IsAbleToSavePasswords();
+}
+
 // - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer
 // {
 //   return [[PasswordStoreListenerImpl alloc] init:observer];
@@ -253,6 +258,13 @@ class PasswordStoreConsumerHelper
         base::SysNSStringToUTF8(passwordForm.signOnRealm);
   } else {
     passwordCredentialForm.signon_realm = passwordCredentialForm.url.spec();
+  }
+
+  if (passwordForm.dateCreated) {
+    passwordCredentialForm.date_created =
+        base::Time::FromNSDate(passwordForm.dateCreated);
+  } else {
+    passwordCredentialForm.date_created = base::Time::Now();
   }
 
   if (passwordForm.usernameValue && !passwordForm.passwordValue) {

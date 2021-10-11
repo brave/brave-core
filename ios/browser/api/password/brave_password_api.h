@@ -60,6 +60,8 @@ NS_SWIFT_NAME(BravePasswordAPI)
 OBJC_EXPORT
 @interface BravePasswordAPI : NSObject
 
+@property(nonatomic, readonly) bool isAbleToSavePasswords;
+
 // - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer;
 // - (void)removeObserver:(id<PasswordStoreListener>)observer;
 
