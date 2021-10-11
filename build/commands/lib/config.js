@@ -868,20 +868,27 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     }
 
     if (this.use_goma && this.gomaServerHost) {
-      env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
+      if (process.platform === 'win32') {
+        env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc.exe')
+      } else {
+        env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
+      }
       env.GOMA_SERVER_HOST = this.gomaServerHost
       // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
       // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)
       console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
+      if (path.basename(env.CC_WRAPPER) === 'ccache') {
         env.CCACHE_CPP2 = 'yes'
         env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
         env.CCACHE_BASEDIR = this.srcDir
         env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party', 'llvm-build', 'Release+Asserts', 'bin'))
       }
+    }
+
+    if (env.CC_WRAPPER !== undefined) {
+      console.log('using cc wrapper ' + env.CC_WRAPPER)
     }
 
     if (process.platform === 'linux') {
