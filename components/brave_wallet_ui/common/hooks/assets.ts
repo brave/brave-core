@@ -10,7 +10,7 @@ import {
   TokenInfo,
   WalletAccountType
 } from '../../constants/types'
-import { BAT, ETH } from '../../options/asset-options'
+import { ETH } from '../../options/asset-options'
 
 export default function useAssets (
   selectedAccount: WalletAccountType,
@@ -27,15 +27,18 @@ export default function useAssets (
   )
 
   const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
-    const tokens = tokenOptions
-      .filter((token) => token.symbol !== 'BAT')
+    const assets = tokenOptions
       .map((token) => ({
         asset: token,
         assetBalance: '0',
         fiatBalance: '0'
       }))
 
-    return [ETH, BAT, ...tokens]
+    return [
+      ETH,
+      ...assets.filter((asset) => asset.asset.symbol === 'BAT'),
+      ...assets.filter((asset) => asset.asset.symbol !== 'BAT')
+    ]
   }, [tokenOptions])
 
   const userVisibleTokenOptions: TokenInfo[] = React.useMemo(
@@ -54,7 +57,7 @@ export default function useAssets (
       logo:
         token.asset.symbol === 'ETH'
           ? ETH.asset.logo
-          : `chrome://erc-token-images/${token.asset.logo}`
+          : token.asset.logo
     }
   }))
 
