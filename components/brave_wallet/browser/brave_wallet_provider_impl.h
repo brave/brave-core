@@ -23,6 +23,7 @@ class PrefService;
 namespace brave_wallet {
 
 class BraveWalletProviderDelegate;
+class BraveWalletService;
 class EthJsonRpcController;
 class KeyringController;
 
@@ -37,6 +38,7 @@ class BraveWalletProviderImpl final
       mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
       mojo::PendingRemote<mojom::EthTxController> tx_controller,
       KeyringController* keyring_controller,
+      BraveWalletService* brave_wallet_service,
       std::unique_ptr<BraveWalletProviderDelegate> delegate,
       PrefService* prefs);
   ~BraveWalletProviderImpl() override;
@@ -117,11 +119,18 @@ class BraveWalletProviderImpl final
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
 
+  void OnSignMessageRequestProcessed(SignMessageCallback callback,
+                                     const std::string& address,
+                                     std::vector<uint8_t>&& message,
+                                     bool approved);
+
+  int sign_message_id_ = 0;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Remote<mojom::EthTxController> tx_controller_;
   KeyringController* keyring_controller_;
+  BraveWalletService* brave_wallet_service_;
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
   base::flat_map<std::string, AddAndApproveTransactionCallback>
       add_tx_callbacks_;

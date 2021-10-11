@@ -114,14 +114,6 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       bool success,
       const std::string& tx_meta_id,
       const std::string& error_message);
-  void SendResponse(base::Value id,
-                    v8::Global<v8::Context> global_context,
-                    std::unique_ptr<v8::Global<v8::Function>> callback,
-                    v8::Global<v8::Promise::Resolver> promise_resolver,
-                    v8::Isolate* isolate,
-                    std::unique_ptr<base::Value> formed_response,
-                    bool success);
-#if 0
   void OnSignMessage(
                    base::Value id,
                    v8::Global<v8::Context> global_context,
@@ -131,7 +123,13 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                    const std::string& signature,
                    int error,
                    const std::string& error_message);
-#endif
+  void SendResponse(base::Value id,
+                    v8::Global<v8::Context> global_context,
+                    std::unique_ptr<v8::Global<v8::Function>> callback,
+                    v8::Global<v8::Promise::Resolver> promise_resolver,
+                    v8::Isolate* isolate,
+                    std::unique_ptr<base::Value> formed_response,
+                    bool success);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;

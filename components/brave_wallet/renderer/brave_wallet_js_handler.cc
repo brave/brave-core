@@ -198,7 +198,6 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
                std::move(formed_response), success);
 }
 
-#if 0
 void BraveWalletJSHandler::OnSignMessage(
                    base::Value id,
                    v8::Global<v8::Context> global_context,
@@ -224,7 +223,6 @@ void BraveWalletJSHandler::OnSignMessage(
                std::move(global_callback), std::move(promise_resolver), isolate,
                std::move(formed_response), !error);
 }
-#endif
 
 void BraveWalletJSHandler::SendResponse(
     base::Value id,
@@ -433,7 +431,6 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                          std::move(promise_resolver), isolate));
     }
   } else if (method == kEthSign || method == kPersonalSign) {
-#if 0
     std::string address;
     std::string message;
     if (!ParseEthSignParams(normalized_json_request, &address, &message))
@@ -445,7 +442,6 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate));
-#endif
   } else {
     brave_wallet_provider_->Request(
         normalized_json_request, true,
