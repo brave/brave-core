@@ -105,7 +105,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                           bool success,
                           int provider_error,
                           const std::string& error_message);
-  void OnAddUnapprovedTransaction(
+  void OnAddAndApproveTransaction(
       base::Value id,
       v8::Global<v8::Context> global_context,
       std::unique_ptr<v8::Global<v8::Function>> callback,

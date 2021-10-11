@@ -272,25 +272,25 @@ TEST_F(BraveWalletProviderImplUnitTest,
   EXPECT_EQ(callback_is_called, 1);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
-  std::string tx_meta_id;
+  std::string tx_hash;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>()),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_TRUE(success);
-        EXPECT_FALSE(id.empty());
+        EXPECT_FALSE(hash.empty());
         EXPECT_TRUE(error_message.empty());
         callback_called = true;
-        tx_meta_id = id;
+        tx_hash = hash;
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -304,14 +304,14 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
         EXPECT_TRUE(
             base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
         EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(v[0]->id, tx_meta_id);
+        EXPECT_EQ(v[0]->tx_hash, tx_hash);
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
@@ -321,15 +321,15 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
   bool callback_called = false;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          // Bad address
                          "0xbe8", "0x016345785d8a0000", std::vector<uint8_t>()),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -337,20 +337,20 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
   bool callback_called = false;
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>()),
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74d",
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -358,27 +358,27 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
-  std::string tx_meta_id;
+  std::string tx_hash;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           mojom::TxData::New("0x00", "", "0x1",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x1", "0x1", nullptr),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_TRUE(success);
-        EXPECT_FALSE(id.empty());
+        EXPECT_FALSE(hash.empty());
         EXPECT_TRUE(error_message.empty());
         callback_called = true;
-        tx_meta_id = id;
+        tx_hash = hash;
       }));
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -392,14 +392,14 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
         EXPECT_TRUE(
             base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
         EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(v[0]->id, tx_meta_id);
+        EXPECT_EQ(v[0]->tx_hash, tx_hash);
         callback_called = true;
       }));
   browser_task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
@@ -409,7 +409,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
   bool callback_called = false;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           // Can't specify both gas price and max fee per gas
           mojom::TxData::New("0x00", "0x01", "0x00",
@@ -417,10 +417,10 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x0", "0x0", nullptr),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -429,22 +429,22 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,
-       AddUnapproved1559TransactionNoPermission) {
+       AddAndApprove1559TransactionNoPermission) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
   bool callback_called = false;
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           mojom::TxData::New("0x00", "", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x0", "0x0", nullptr),
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74d",
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
