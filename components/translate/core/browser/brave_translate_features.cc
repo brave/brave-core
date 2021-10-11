@@ -10,9 +10,16 @@
 namespace translate {
 
 namespace features {
-const base::Feature kUseBraveTranslateGo {
-  "UseBraveTranslateGo", base::FeatureState::FEATURE_DISABLED_BY_DEFAULT
-};
+const base::Feature kUseBraveTranslateGo{
+    "UseBraveTranslateGo", base::FeatureState::FEATURE_DISABLED_BY_DEFAULT};
+
+const base::FeatureParam<bool> kUpdateLanguageListParam{
+    &kUseBraveTranslateGo, "update-languages", false};
+const base::FeatureParam<bool> kUseTranslateParam{&kUseBraveTranslateGo,
+                                                  "use-switches", true};
+const base::FeatureParam<bool> kDisableTranslateLibraryNetworkRedirectsParam{
+    &kUseBraveTranslateGo, "disable-library-redirects", true};
+
 }  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
@@ -29,6 +36,20 @@ bool IsTranslateExtensionAvailable() {
 #else   // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
   return false;
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+}
+
+bool ShouldUseTranslateSwitches() {
+  return IsBraveTranslateGoAvailable() && features::kUseTranslateParam.Get();
+}
+
+bool ShouldUpdateTranslateList() {
+  return IsBraveTranslateGoAvailable() &&
+         features::kUpdateLanguageListParam.Get();
+}
+
+bool DisableTranslateLibraryNetworkRedirects() {
+  return !IsBraveTranslateGoAvailable() ||
+         features::kDisableTranslateLibraryNetworkRedirectsParam.Get();
 }
 
 }  // namespace translate

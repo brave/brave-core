@@ -67,9 +67,24 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
 
-  // TODO(atuchin): temporary hack to not break translate extension.
-  // |initiator_url| is not more related to script url.
-  if (ctx->initiator_url.scheme_piece() != "https") {
+  if (translate::DisableTranslateLibraryNetworkRedirects())
+    return net::OK;
+
+  // Skip extensions/service-worker/etc requests.
+  if (!ctx->initiator_url.SchemeIsHTTPOrHTTPS())
+    return net::OK;
+
+  const static std::string kTranslateInitiatorHost(
+      GURL(kTranslateInitiatorURL).host());
+  const static std::string kTranslateGen204PatternHost(
+      GURL(kTranslateGen204Pattern).host());
+  const static std::string kTranslateBrandingPngHost(
+      GURL(kTranslateBrandingPNGPattern).host());
+
+  // Fast way to exclude any unrelated requests.
+  if (ctx->request_url.host_piece() != kTranslateInitiatorHost ||
+      ctx->request_url.host_piece() != kTranslateGen204PatternHost ||
+      ctx->request_url.host_piece() != kTranslateBrandingPngHost) {
     return net::OK;
   }
 

@@ -187,12 +187,10 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
 
   if (translate_language_pattern.MatchesURL(request_url)) {
     *new_url = GURL(kBraveTranslateLanguageEndpoint);
-    return translate::IsBraveTranslateGoAvailable() ? net::OK
-                                                    : net::ERR_ABORTED;
+    return translate::ShouldUpdateTranslateList() ? net::OK : net::ERR_ABORTED;
   }
 
   return net::OK;
 }
-
 
 }  // namespace brave

@@ -270,22 +270,17 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     const std::string& target_language,
     translate::TranslateErrors::Type error_type,
     bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  if (!translate::TranslateExtensionIsEnabled(GetProfile()) &&
-      translate::ShouldOfferExtensionInstation(GetProfile())) {
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  if ((!translate::TranslateExtensionIsEnabled(GetProfile()) &&
+       translate::ShouldOfferExtensionInstation(GetProfile())) ||
+      translate::InternalTranslationIsEnabled(GetProfile())) {
     return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
                                             target_language, error_type,
                                             is_user_gesture);
   }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate::InternalTranslationIsEnabled(GetProfile())) {
-    return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
-                                            target_language, error_type,
-                                            is_user_gesture);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) ||
+        // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }
 
