@@ -63,6 +63,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull WalletCoinAdapter.ViewHolder holder, int position) {
         WalletListItemModel walletListItemModel = walletListItemModelList.get(position);
+        // When ViewHolder is re-used, it has the obeservers which are fired when
+        // we modifying checkbox. This may cause unwanted modifying of the model
+        holder.resetObservers();
+
         holder.iconImg.setImageResource(walletListItemModel.getIcon());
         holder.titleText.setText(walletListItemModel.getTitle());
         holder.subTitleText.setText(mType == AdapterType.ACCOUNTS_LIST
@@ -105,6 +109,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
                 holder.assetCheck.setVisibility(View.VISIBLE);
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
@@ -124,6 +129,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                         break;
                                     }
                                 }
+                                onWalletListItemClick.onAssetCheckedChanged(
+                                        walletListItemModel, isChecked);
                             }
                         });
             }
@@ -181,6 +188,11 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             this.text1Text = itemView.findViewById(R.id.text1);
             this.text2Text = itemView.findViewById(R.id.text2);
             this.assetCheck = itemView.findViewById(R.id.assetCheck);
+        }
+
+        public void resetObservers() {
+            itemView.setOnClickListener(null);
+            assetCheck.setOnCheckedChangeListener(null);
         }
     }
 

@@ -32,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.chrome.R;
@@ -43,6 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class EditVisibleAssetsBottomSheetDialogFragment
@@ -51,6 +53,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
     private WalletCoinAdapter.AdapterType mType;
+    private String mChainId;
 
     public static EditVisibleAssetsBottomSheetDialogFragment newInstance(
             WalletCoinAdapter.AdapterType type) {
@@ -70,6 +73,22 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         }
 
         return null;
+    }
+
+    BraveWalletService getBraveWalletService() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletService();
+        } else if (activity instanceof BuySendSwapActivity) {
+            assert false;
+        }
+
+        return null;
+    }
+
+    public void setChainId(String chainId) {
+        assert (chainId != null && !chainId.isEmpty());
+        mChainId = chainId;
     }
 
     @Override
@@ -151,17 +170,32 @@ public class EditVisibleAssetsBottomSheetDialogFragment
 
         ErcTokenRegistry ercTokenRegistry = getErcTokenRegistry();
         if (ercTokenRegistry != null) {
-            if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
+            if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                BraveWalletService braveWalletService = getBraveWalletService();
+                assert braveWalletService != null;
+                assert mChainId != null && !mChainId.isEmpty();
+
+                braveWalletService.getUserAssets(mChainId, (userAssets) -> {
+                    ercTokenRegistry.getAllTokens(
+                            tokens -> { setUpAssetsList(view, tokens, userAssets); });
+                });
+            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
-                ercTokenRegistry.getAllTokens(tokens -> { setUpAssetsList(view, tokens); });
+                ercTokenRegistry.getAllTokens(
+                        tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                ercTokenRegistry.getBuyTokens(tokens -> { setUpAssetsList(view, tokens); });
+                ercTokenRegistry.getBuyTokens(
+                        tokens -> { setUpAssetsList(view, tokens, new ErcToken[0]); });
             }
         }
     }
 
-    private void setUpAssetsList(View view, ErcToken[] tokens) {
+    private void setUpAssetsList(View view, ErcToken[] tokens, ErcToken[] userSelectedTokens) {
+        HashSet<String> selectedTokensSymbols = new HashSet<String>();
+        for (ErcToken userSelectedToken : userSelectedTokens) {
+            selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase());
+        }
+
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -172,12 +206,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         eth.contractAddress = "";
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
+        itemModelEth.setIsUserSelected(selectedTokensSymbols.contains(eth.symbol.toUpperCase()));
         itemModelEth.setErcToken(eth);
         walletListItemModelList.add(itemModelEth);
         for (int i = 0; i < tokens.length; i++) {
             WalletListItemModel itemModel = new WalletListItemModel(
                     R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", "");
             itemModel.setErcToken(tokens[i]);
+
+            boolean isUserSelected = selectedTokensSymbols.contains(tokens[i].symbol.toUpperCase());
+            itemModel.setIsUserSelected(isUserSelected);
             walletListItemModelList.add(itemModel);
         }
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
@@ -233,4 +271,28 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         }
         dismiss();
     }
+
+    @Override
+    public void onAssetCheckedChanged(WalletListItemModel walletListItemModel, boolean isChecked) {
+        if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+            BraveWalletService braveWalletService = getBraveWalletService();
+            assert braveWalletService != null;
+            assert (mChainId != null && !mChainId.isEmpty());
+            if (isChecked) {
+                braveWalletService.addUserAsset(
+                        walletListItemModel.getErcToken(), mChainId, (success) -> {
+                            if (success) {
+                                walletListItemModel.setIsUserSelected(true);
+                            }
+                        });
+            } else {
+                braveWalletService.removeUserAsset(
+                        walletListItemModel.getErcToken().contractAddress, mChainId, (success) -> {
+                            if (success) {
+                                walletListItemModel.setIsUserSelected(false);
+                            }
+                        });
+            }
+        }
+    };
 }
