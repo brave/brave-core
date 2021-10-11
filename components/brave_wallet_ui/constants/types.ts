@@ -744,7 +744,7 @@ export type AmountPresetTypes =
 
 export interface AmountPresetObjectType {
   name: string
-  id: AmountPresetTypes
+  value: AmountPresetTypes
 }
 
 export type ToOrFromType =

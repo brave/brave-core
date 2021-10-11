@@ -109,7 +109,7 @@ function SwapInputComponent (props: Props) {
     }
   }
 
-  const setPresetAmmountValue = (percent: number) => () => {
+  const setPresetAmountValue = (percent: number) => () => {
     if (onSelectPresetAmount) {
       onSelectPresetAmount(percent)
     }
@@ -213,10 +213,10 @@ function SwapInputComponent (props: Props) {
           </Row>
           {componentType === 'fromAmount' &&
             <PresetRow>
-              {AmountPresetOptions().map((preset) =>
+              {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton
-                  key={preset.id}
-                  onClick={setPresetAmmountValue(preset.id)}
+                  key={idx}
+                  onClick={setPresetAmountValue(preset.value)}
                 >
                   {preset.name}
                 </PresetButton>
