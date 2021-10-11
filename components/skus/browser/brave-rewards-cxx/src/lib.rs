@@ -74,7 +74,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("shim.hpp");
+        include!("shim.h");
 
         fn shim_executeRequest(
             req: &HttpRequest,
@@ -86,7 +86,7 @@ mod ffi {
 
         fn shim_purge();
         fn shim_set(key: &str, value: &str);
-        fn shim_get<'a>(key: &str) -> &'a CxxString;
+        fn shim_get(key: &str) -> String;
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
