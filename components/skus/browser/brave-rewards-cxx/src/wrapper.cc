@@ -1,5 +1,4 @@
-#pragma once
-#include "shim.hpp"
+#include "shim.h"
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -930,6 +929,60 @@ std::size_t align_of() {
   return layout::align_of<T>();
 }
 #endif // CXXBRIDGE1_LAYOUT
+
+#ifndef CXXBRIDGE1_RELOCATABLE
+#define CXXBRIDGE1_RELOCATABLE
+namespace detail {
+template <typename... Ts>
+struct make_void {
+  using type = void;
+};
+
+template <typename... Ts>
+using void_t = typename make_void<Ts...>::type;
+
+template <typename Void, template <typename...> class, typename...>
+struct detect : std::false_type {};
+template <template <typename...> class T, typename... A>
+struct detect<void_t<T<A...>>, T, A...> : std::true_type {};
+
+template <template <typename...> class T, typename... A>
+using is_detected = detect<void, T, A...>;
+
+template <typename T>
+using detect_IsRelocatable = typename T::IsRelocatable;
+
+template <typename T>
+struct get_IsRelocatable
+    : std::is_same<typename T::IsRelocatable, std::true_type> {};
+} // namespace detail
+
+template <typename T>
+struct IsRelocatable
+    : std::conditional<
+          detail::is_detected<detail::detect_IsRelocatable, T>::value,
+          detail::get_IsRelocatable<T>,
+          std::integral_constant<
+              bool, std::is_trivially_move_constructible<T>::value &&
+                        std::is_trivially_destructible<T>::value>>::type {};
+#endif // CXXBRIDGE1_RELOCATABLE
+
+template <typename T>
+union ManuallyDrop {
+  T value;
+  ManuallyDrop(T &&value) : value(::std::move(value)) {}
+  ~ManuallyDrop() {}
+};
+
+namespace {
+template <bool> struct deleter_if {
+  template <typename T> void operator()(T *) {}
+};
+
+template <> struct deleter_if<true> {
+  template <typename T> void operator()(T *ptr) { ptr->~T(); }
+};
+} // namespace
 } // namespace cxxbridge1
 } // namespace rust
 
@@ -1022,6 +1075,141 @@ private:
   };
 };
 #endif // CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
-
-::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::rust::String env) noexcept;
 } // namespace brave_rewards
+
+static_assert(
+    ::rust::IsRelocatable<::brave_rewards::RefreshOrderCallback>::value,
+    "type brave_rewards::RefreshOrderCallback should be trivially move constructible and trivially destructible in C++ to be used as an argument of `refresh_order` in Rust");
+
+namespace brave_rewards {
+extern "C" {
+::std::size_t brave_rewards$cxxbridge1$HttpRoundtripContext$operator$sizeof() noexcept;
+::std::size_t brave_rewards$cxxbridge1$HttpRoundtripContext$operator$alignof() noexcept;
+::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$sizeof() noexcept;
+::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$alignof() noexcept;
+
+::brave_rewards::CppSDK *brave_rewards$cxxbridge1$initialize_sdk(::rust::String *env) noexcept;
+
+void brave_rewards$cxxbridge1$CppSDK$refresh_order(const ::brave_rewards::CppSDK &self, ::brave_rewards::RefreshOrderCallback *callback, ::brave_rewards::RefreshOrderCallbackState *callback_state, ::rust::String *order_id) noexcept;
+
+void brave_rewards$cxxbridge1$shim_executeRequest(const ::brave_rewards::HttpRequest &req, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)> done, ::brave_rewards::HttpRoundtripContext *ctx) noexcept {
+  void (*shim_executeRequest$)(const ::brave_rewards::HttpRequest &, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)>, ::rust::Box<::brave_rewards::HttpRoundtripContext>) = ::brave_rewards::shim_executeRequest;
+  shim_executeRequest$(req, done, ::rust::Box<::brave_rewards::HttpRoundtripContext>::from_raw(ctx));
+}
+
+void brave_rewards$cxxbridge1$shim_executeRequest$done$1(::brave_rewards::HttpRoundtripContext *arg0, ::brave_rewards::HttpResponse resp, void *) noexcept;
+
+void brave_rewards$cxxbridge1$shim_executeRequest$done$0(::rust::Box<::brave_rewards::HttpRoundtripContext> arg0, ::brave_rewards::HttpResponse resp, void *extern$) noexcept {
+  brave_rewards$cxxbridge1$shim_executeRequest$done$1(arg0.into_raw(), resp, extern$);
+}
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup(::std::uint64_t delay_ms, ::rust::Fn<void()> done) noexcept {
+  void (*shim_scheduleWakeup$)(::std::uint64_t, ::rust::Fn<void()>) = ::brave_rewards::shim_scheduleWakeup;
+  shim_scheduleWakeup$(delay_ms, done);
+}
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(void *) noexcept;
+
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$0(void *extern$) noexcept {
+  brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(extern$);
+}
+
+void brave_rewards$cxxbridge1$shim_purge() noexcept {
+  void (*shim_purge$)() = ::brave_rewards::shim_purge;
+  shim_purge$();
+}
+
+void brave_rewards$cxxbridge1$shim_set(::rust::Str key, ::rust::Str value) noexcept {
+  void (*shim_set$)(::rust::Str, ::rust::Str) = ::brave_rewards::shim_set;
+  shim_set$(key, value);
+}
+
+void brave_rewards$cxxbridge1$shim_get(::rust::Str key, ::rust::String *return$) noexcept {
+  ::rust::String (*shim_get$)(::rust::Str) = ::brave_rewards::shim_get;
+  new (return$) ::rust::String(shim_get$(key));
+}
+} // extern "C"
+
+::std::size_t HttpRoundtripContext::layout::size() noexcept {
+  return brave_rewards$cxxbridge1$HttpRoundtripContext$operator$sizeof();
+}
+
+::std::size_t HttpRoundtripContext::layout::align() noexcept {
+  return brave_rewards$cxxbridge1$HttpRoundtripContext$operator$alignof();
+}
+
+::std::size_t CppSDK::layout::size() noexcept {
+  return brave_rewards$cxxbridge1$CppSDK$operator$sizeof();
+}
+
+::std::size_t CppSDK::layout::align() noexcept {
+  return brave_rewards$cxxbridge1$CppSDK$operator$alignof();
+}
+
+::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::rust::String env) noexcept {
+  return ::rust::Box<::brave_rewards::CppSDK>::from_raw(brave_rewards$cxxbridge1$initialize_sdk(&env));
+}
+
+void CppSDK::refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept {
+  ::rust::ManuallyDrop<::brave_rewards::RefreshOrderCallback> callback$(::std::move(callback));
+  brave_rewards$cxxbridge1$CppSDK$refresh_order(*this, &callback$.value, callback_state.release(), &order_id);
+}
+} // namespace brave_rewards
+
+extern "C" {
+::brave_rewards::CppSDK *cxxbridge1$box$brave_rewards$CppSDK$alloc() noexcept;
+void cxxbridge1$box$brave_rewards$CppSDK$dealloc(::brave_rewards::CppSDK *) noexcept;
+void cxxbridge1$box$brave_rewards$CppSDK$drop(::rust::Box<::brave_rewards::CppSDK> *ptr) noexcept;
+
+static_assert(::rust::detail::is_complete<::brave_rewards::RefreshOrderCallbackState>::value, "definition of RefreshOrderCallbackState is required");
+static_assert(sizeof(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>) == sizeof(void *), "");
+static_assert(alignof(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>) == alignof(void *), "");
+void cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$null(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> *ptr) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>();
+}
+void cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$raw(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> *ptr, ::brave_rewards::RefreshOrderCallbackState *raw) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>(raw);
+}
+const ::brave_rewards::RefreshOrderCallbackState *cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$get(const ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>& ptr) noexcept {
+  return ptr.get();
+}
+::brave_rewards::RefreshOrderCallbackState *cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$release(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState>& ptr) noexcept {
+  return ptr.release();
+}
+void cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$drop(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> *ptr) noexcept {
+  ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::RefreshOrderCallbackState>::value>{}(ptr);
+}
+
+::brave_rewards::HttpRoundtripContext *cxxbridge1$box$brave_rewards$HttpRoundtripContext$alloc() noexcept;
+void cxxbridge1$box$brave_rewards$HttpRoundtripContext$dealloc(::brave_rewards::HttpRoundtripContext *) noexcept;
+void cxxbridge1$box$brave_rewards$HttpRoundtripContext$drop(::rust::Box<::brave_rewards::HttpRoundtripContext> *ptr) noexcept;
+} // extern "C"
+
+namespace rust {
+inline namespace cxxbridge1 {
+template <>
+::brave_rewards::CppSDK *Box<::brave_rewards::CppSDK>::allocation::alloc() noexcept {
+  return cxxbridge1$box$brave_rewards$CppSDK$alloc();
+}
+template <>
+void Box<::brave_rewards::CppSDK>::allocation::dealloc(::brave_rewards::CppSDK *ptr) noexcept {
+  cxxbridge1$box$brave_rewards$CppSDK$dealloc(ptr);
+}
+template <>
+void Box<::brave_rewards::CppSDK>::drop() noexcept {
+  cxxbridge1$box$brave_rewards$CppSDK$drop(this);
+}
+template <>
+::brave_rewards::HttpRoundtripContext *Box<::brave_rewards::HttpRoundtripContext>::allocation::alloc() noexcept {
+  return cxxbridge1$box$brave_rewards$HttpRoundtripContext$alloc();
+}
+template <>
+void Box<::brave_rewards::HttpRoundtripContext>::allocation::dealloc(::brave_rewards::HttpRoundtripContext *ptr) noexcept {
+  cxxbridge1$box$brave_rewards$HttpRoundtripContext$dealloc(ptr);
+}
+template <>
+void Box<::brave_rewards::HttpRoundtripContext>::drop() noexcept {
+  cxxbridge1$box$brave_rewards$HttpRoundtripContext$drop(this);
+}
+} // namespace cxxbridge1
+} // namespace rust
