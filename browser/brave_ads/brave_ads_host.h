@@ -37,7 +37,7 @@ class BraveAdsHost : public brave_ads::mojom::BraveAdsHost,
                     bool ads_enabled) override;
 
  private:
-  bool ShowRewardsPopup();
+  bool ShowRewardsPopup(brave_rewards::RewardsService* rewards_service);
   void RunCallbacksAndReset(bool result);
 
   Profile* profile_;
