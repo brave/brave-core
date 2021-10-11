@@ -22,20 +22,6 @@ export const ETH: AccountAssetOptionType = {
   fiatBalance: '0'
 }
 
-export const BAT: AccountAssetOptionType = {
-  asset: {
-    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
-    name: 'Basic Attention Token',
-    symbol: 'BAT',
-    logo: `chrome://erc-token-images/bat.svg`,
-    isErc20: true,
-    isErc721: false,
-    decimals: 18
-  },
-  assetBalance: '0',
-  fiatBalance: '0'
-}
-
 export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
   ETH,
   {
@@ -128,11 +114,17 @@ export const NewAssetOptions: TokenInfo[] = [
 export const AccountAssetOptions: AccountAssetOptionType[] = [
   ETH,
   {
-    ...BAT,
     asset: {
-      ...BAT.asset,
-      logo: BATIconUrl
-    }
+      contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+      name: 'Basic Attention Token',
+      symbol: 'BAT',
+      logo: BATIconUrl,
+      isErc20: true,
+      isErc721: false,
+      decimals: 18
+    },
+    assetBalance: '0',
+    fiatBalance: '0'
   },
   {
     asset: {

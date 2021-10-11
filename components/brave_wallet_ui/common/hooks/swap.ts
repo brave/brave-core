@@ -63,7 +63,7 @@ export default function useSwap (
   React.useEffect(() => {
     setFromAsset(swapAssetOptions[0])
     setToAsset(swapAssetOptions[1])
-  }, [selectedNetwork])
+  }, [swapAssetOptions])
 
   React.useEffect(() => {
     if (!fromAsset.asset.isErc20) {
