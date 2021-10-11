@@ -93,6 +93,13 @@ function Accounts (props: Props) {
     onRemoveAccount
   } = props
 
+  const groupById = (accounts: WalletAccountType[], key: string) => {
+    return accounts.reduce((result, obj) => {
+      (result[obj[key]] = result[obj[key]] || []).push(obj)
+      return result
+    }, {})
+  }
+
   const primaryAccounts = React.useMemo(() => {
     return accounts.filter((account) => account.accountType === 'Primary')
   }, [accounts])
@@ -101,8 +108,14 @@ function Accounts (props: Props) {
     return accounts.filter((account) => account.accountType === 'Secondary')
   }, [accounts])
 
-  const hardwareAccounts = React.useMemo(() => {
-    return accounts.filter((account) => account.accountType === 'Trezor' || account.accountType === 'Ledger')
+  const trezorAccounts = React.useMemo(() => {
+    const foundTrezorAccounts = accounts.filter((account) => account.accountType === 'Trezor')
+    return groupById(foundTrezorAccounts, 'deviceId')
+  }, [accounts])
+
+  const ledgerAccounts = React.useMemo(() => {
+    const foundLedgerAccounts = accounts.filter((account) => account.accountType === 'Ledger')
+    return groupById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
@@ -190,9 +203,9 @@ function Accounts (props: Props) {
               />
             )}
           </SecondaryListContainer>
-          {hardwareAccounts.length !== 0 &&
-            <SecondaryListContainer isHardwareWallet={true}>
-              {hardwareAccounts.map((account) =>
+          {Object.keys(trezorAccounts).map(key =>
+            <SecondaryListContainer key={key} isHardwareWallet={true}>
+              {trezorAccounts[key].map((account: WalletAccountType) =>
                 <AccountListItem
                   key={account.id}
                   isHardwareWallet={true}
@@ -202,7 +215,20 @@ function Accounts (props: Props) {
                 />
               )}
             </SecondaryListContainer>
-          }
+          )}
+          {Object.keys(ledgerAccounts).map(key =>
+            <SecondaryListContainer key={key} isHardwareWallet={true}>
+              {ledgerAccounts[key].map((account: WalletAccountType) =>
+                <AccountListItem
+                  key={account.id}
+                  isHardwareWallet={true}
+                  onClick={onSelectAccount}
+                  onRemoveAccount={onRemoveAccount}
+                  account={account}
+                />
+              )}
+            </SecondaryListContainer>
+          )}
           <AddButton
             buttonType='secondary'
             onSubmit={onClickAddAccount}

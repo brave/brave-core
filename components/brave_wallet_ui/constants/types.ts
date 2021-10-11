@@ -7,6 +7,7 @@ export interface WalletAccountType {
   asset: string
   accountType: string
   tokens: AccountAssetOptionType[]
+  deviceId?: string
 }
 
 export interface UserAccountType {
