@@ -33,6 +33,7 @@ interface Props {
   exchangeCurrency: string
   showSummary: boolean
   summaryData: RewardsSummaryData
+  autoContributeEnabled: boolean
   onExternalWalletAction: (action: ExternalWalletAction) => void
   onViewPendingTips?: () => void
   onViewStatement?: () => void
@@ -118,6 +119,7 @@ export function WalletCard (props: Props) {
               </style.summaryActions>
               <RewardsSummary
                 data={props.summaryData}
+                autoContributeEnabled={props.autoContributeEnabled}
                 hideAdEarnings={Boolean(props.externalWallet)}
                 earningsLastMonth={props.earningsLastMonth}
                 nextPaymentDate={props.nextPaymentDate}

@@ -817,6 +817,7 @@ class PageWallet extends React.Component<Props, State> {
       adsData,
       balance,
       balanceReport,
+      enabledContribute,
       externalWalletProviderList,
       ui,
       recoveryKey,
@@ -862,6 +863,7 @@ class PageWallet extends React.Component<Props, State> {
           exchangeCurrency={'USD'}
           showSummary={true}
           summaryData={summaryData}
+          autoContributeEnabled={enabledContribute}
           onExternalWalletAction={this.onExternalWalletAction}
           onViewPendingTips={this.onModalPendingToggle}
           onViewStatement={this.onModalActivityToggle}

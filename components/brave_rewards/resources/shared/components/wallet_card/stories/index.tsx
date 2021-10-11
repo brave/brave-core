@@ -68,6 +68,7 @@ export function Wallet () {
             exchangeCurrency={'USD'}
             showSummary={knobs.boolean('Show Summary', true)}
             summaryData={summaryData}
+            autoContributeEnabled={true}
             onExternalWalletAction={actionLogger('onExternalWalletAction')}
             onViewPendingTips={actionLogger('onViewPendingTips')}
             onViewStatement={actionLogger('onViewStatement')}
