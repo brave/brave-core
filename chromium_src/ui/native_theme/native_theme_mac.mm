@@ -10,7 +10,8 @@ namespace ui {
 bool ShouldOverride(NativeTheme::ColorId color_id) {
   // Always theme for these colors:
   switch (color_id) {
-    // None at the moment
+    case NativeTheme::kColorId_FocusedBorderColor:
+      return true;
     default:
       break;
   }
