@@ -275,6 +275,8 @@ void MaybeBindBraveWalletProvider(
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
+          HostContentSettingsMapFactory::GetForProfile(
+              Profile::FromBrowserContext(frame_host->GetBrowserContext())),
           std::move(rpc_controller), std::move(tx_controller),
           keyring_controller, brave_wallet_service,
 #if defined(OS_ANDROID)

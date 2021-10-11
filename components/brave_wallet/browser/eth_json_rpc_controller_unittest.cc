@@ -133,8 +133,15 @@ class TestEthJsonRpcControllerObserver
     EXPECT_EQ(is_eip1559, expected_is_eip1559_);
   }
 
-  bool is_eip1559_changed_called() { return is_eip1559_changed_called_; }
-  bool chain_changed_called() { return chain_changed_called_; }
+  bool is_eip1559_changed_called() {
+    base::RunLoop().RunUntilIdle();
+    return is_eip1559_changed_called_;
+  }
+
+  bool chain_changed_called() {
+    base::RunLoop().RunUntilIdle();
+    return chain_changed_called_;
+  }
 
   ::mojo::PendingRemote<brave_wallet::mojom::EthJsonRpcControllerObserver>
   GetReceiver() {
@@ -181,7 +188,7 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
 
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
-    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+    SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   }
 
   ~EthJsonRpcControllerUnitTest() override = default;
@@ -325,6 +332,16 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
     ASSERT_TRUE(callback_is_called);
   }
 
+  void SetNetwork(const std::string& chain_id) {
+    base::RunLoop run_loop;
+    rpc_controller_->SetNetwork(
+        chain_id, base::BindLambdaForTesting([&run_loop](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
 
@@ -341,7 +358,8 @@ TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
   brave_wallet::GetAllKnownChains(prefs(), &networks);
   for (const auto& network : networks) {
     bool callback_is_called = false;
-    rpc_controller_->SetNetwork(network->chain_id);
+    SetNetwork(network->chain_id);
+
     EXPECT_EQ(network->chain_id,
               prefs()->GetString(kBraveWalletCurrentChainId));
     const std::string& expected_id = network->chain_id;
@@ -380,7 +398,7 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
   UpdateCustomNetworks(prefs(), &values);
 
   bool callback_is_called = false;
-  rpc_controller_->SetNetwork(chain1.chain_id);
+  SetNetwork(chain1.chain_id);
   const std::string& expected_id = chain1.chain_id;
   rpc_controller_->GetChainId(base::BindLambdaForTesting(
       [&callback_is_called, &expected_id](const std::string& chain_id) {
@@ -477,7 +495,7 @@ TEST_F(EthJsonRpcControllerUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  rpc_controller_->SetNetwork(mojom::kMainnetChainId);
+  SetNetwork(mojom::kMainnetChainId);
   SetUDENSInterceptor(mojom::kMainnetChainId);
   rpc_controller_->EnsGetEthAddr(
       "brantly-test.eth",
@@ -857,7 +875,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  rpc_controller_->SetNetwork(mojom::kMainnetChainId);
+  SetNetwork(mojom::kMainnetChainId);
   SetUDENSInterceptor(mojom::kMainnetChainId);
   rpc_controller_->UnstoppableDomainsGetEthAddr(
       "brad-test.crypto",
@@ -907,9 +925,7 @@ TEST_F(EthJsonRpcControllerUnitTest, GetIsEip1559) {
 TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559NotCalledForKnownChains) {
   TestEthJsonRpcControllerObserver observer(mojom::kMainnetChainId, false);
   rpc_controller_->AddObserver(observer.GetReceiver());
-
-  rpc_controller_->SetNetwork(brave_wallet::mojom::kMainnetChainId);
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(brave_wallet::mojom::kMainnetChainId);
   EXPECT_FALSE(observer.is_eip1559_changed_called());
 }
 
@@ -921,10 +937,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
   // true in the RPC response.
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
   SetIsEip1559Interceptor(true);
-
-  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(mojom::kLocalhostChainId);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_TRUE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -933,10 +946,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
   // is false in the RPC response.
   observer.Reset(mojom::kLocalhostChainId, false);
   SetIsEip1559Interceptor(false);
-
-  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(mojom::kLocalhostChainId);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -946,10 +956,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
   observer.Reset(mojom::kLocalhostChainId, false);
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
   SetIsEip1559Interceptor(false);
-
-  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(mojom::kLocalhostChainId);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -957,10 +964,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559LocalhostChain) {
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(mojom::kLocalhostChainId, false);
   SetErrorInterceptor();
-
-  rpc_controller_->SetNetwork(mojom::kLocalhostChainId);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(mojom::kLocalhostChainId);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -988,10 +992,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
 
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain1.chain_id));
   SetIsEip1559Interceptor(true);
-
-  rpc_controller_->SetNetwork(chain1.chain_id);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(chain1.chain_id);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_TRUE(GetIsEip1559FromPrefs(chain1.chain_id));
@@ -1001,10 +1002,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
   observer.Reset(chain2.chain_id, false);
   EXPECT_TRUE(GetIsEip1559FromPrefs(chain2.chain_id));
   SetIsEip1559Interceptor(false);
-
-  rpc_controller_->SetNetwork(chain2.chain_id);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(chain2.chain_id);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -1014,10 +1012,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
   observer.Reset(chain2.chain_id, false);
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
   SetIsEip1559Interceptor(false);
-
-  rpc_controller_->SetNetwork(chain2.chain_id);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(chain2.chain_id);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -1025,10 +1020,7 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(chain2.chain_id, false);
   SetErrorInterceptor();
-
-  rpc_controller_->SetNetwork(chain2.chain_id);
-
-  base::RunLoop().RunUntilIdle();
+  SetNetwork(chain2.chain_id);
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
