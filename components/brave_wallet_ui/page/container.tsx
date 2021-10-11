@@ -7,6 +7,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
+import BigNumber from 'bignumber.js'
+
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -321,18 +323,21 @@ function Container (props: Props) {
     return formated
   }, [selectedAssetPriceHistory])
 
-  const onSelectPresetFromAmount = (percent: number) => {
-    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
-    const amount = Number(fromAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
-    onSetFromAmount(formatedAmmount)
-  }
+  const onSelectPresetAmountFactory = (sendOrSwap: 'send' | 'swap') => (percent: number) => {
+    const asset = selectedAccount.tokens.find(
+      (token) => (
+        token.asset.contractAddress === fromAsset.asset.contractAddress ||
+        token.asset.symbol === fromAsset.asset.symbol
+      )
+    )
+    const amount = new BigNumber(asset?.assetBalance || '0').times(percent).toString()
+    const formattedAmount = formatBalance(amount.toString(), asset?.asset.decimals ?? 18)
 
-  const onSelectPresetSendAmount = (percent: number) => {
-    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
-    const amount = Number(fromAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
-    setSendAmount(formatedAmmount)
+    if (sendOrSwap === 'send') {
+      setSendAmount(formattedAmount)
+    } else {
+      onSetFromAmount(formattedAmount)
+    }
   }
 
   const onToggleAddModal = () => {
@@ -623,8 +628,8 @@ function Container (props: Props) {
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}
-            onSelectPresetFromAmount={onSelectPresetFromAmount}
-            onSelectPresetSendAmount={onSelectPresetSendAmount}
+            onSelectPresetFromAmount={onSelectPresetAmountFactory('swap')}
+            onSelectPresetSendAmount={onSelectPresetAmountFactory('send')}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSetExchangeRate={onSetExchangeRate}
             onSetSendAmount={onSetSendAmount}
