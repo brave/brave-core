@@ -309,8 +309,8 @@ handler.on(WalletActions.selectAccount.getType(), async (store, payload: WalletA
 handler.on(WalletActions.initialized.getType(), async (store, payload: InitializedPayloadType) => {
   const apiProxy = await getAPIProxy()
   // This can be 0 when the wallet is locked
-  if (payload.accountInfos.length !== 0) {
-    const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.accountInfos[0].address)
+  if (payload.selectedAccount) {
+    const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.selectedAccount)
     store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
   }
 })
