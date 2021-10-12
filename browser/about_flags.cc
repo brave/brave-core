@@ -219,7 +219,8 @@ constexpr char kUseDevUpdaterUrlDescription[] =
     "Use the dev url for the component updater. "
     "This is for internal testing only.";
 
-constexpr char kBraveTranslateGoName[] = "Enable internal translate engine (brave-translate-go)";
+constexpr char kBraveTranslateGoName[] =
+    "Enable internal translate engine (brave-translate-go)";
 constexpr char kBraveTranslateGoDescription[] =
     "Enable internal translate engine, which are build on top of client engine "
     "and brave translation backed. Also disables suggestions to install google "
@@ -317,8 +318,7 @@ constexpr char kBraveTranslateGoDescription[] =
      FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
 #else
 #define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
-#endif // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \

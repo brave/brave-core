@@ -74,11 +74,11 @@ int OnBeforeURLRequest_TranslateRedirectWork(
   if (!ctx->initiator_url.SchemeIsHTTPOrHTTPS())
     return net::OK;
 
-  const static std::string kTranslateInitiatorHost(
+  static const std::string kTranslateInitiatorHost(
       GURL(kTranslateInitiatorURL).host());
-  const static std::string kTranslateGen204PatternHost(
+  static const std::string kTranslateGen204PatternHost(
       GURL(kTranslateGen204Pattern).host());
-  const static std::string kTranslateBrandingPngHost(
+  static const std::string kTranslateBrandingPngHost(
       GURL(kTranslateBrandingPNGPattern).host());
 
   // Fast way to exclude any unrelated requests.
