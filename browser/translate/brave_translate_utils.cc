@@ -7,15 +7,23 @@
 #include "brave/components/translate/core/browser/brave_translate_features.h"
 #include "brave/components/translate/core/browser/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace translate {
 
 bool TranslateExtensionIsEnabled(content::BrowserContext* context) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   return extensions::ExtensionRegistry::Get(context)
       ->enabled_extensions()
       .Contains(google_translate_extension_id);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
 bool ShouldOfferExtensionInstation(content::BrowserContext* context) {
