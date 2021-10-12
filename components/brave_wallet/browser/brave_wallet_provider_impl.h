@@ -78,6 +78,7 @@ class BraveWalletProviderImpl final
                            OnAddEthereumChainRequestCompletedError);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedSuccess);
+  friend class BraveWalletProviderImplUnitTest;
 
   // mojom::EthJsonRpcControllerObserver
   void ChainChangedEvent(const std::string& chain_id) override;

@@ -107,6 +107,8 @@ class BraveWalletService : public KeyedService,
  private:
   void OnDefaultWalletChanged();
 
+  friend class BraveWalletProviderImplUnitTest;
+
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, OnGetImportInfo);
 
