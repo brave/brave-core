@@ -5,7 +5,7 @@ export interface WalletAccountType {
   balance: string
   fiatBalance: string
   asset: string
-  accountType: string
+  accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   tokens: AccountAssetOptionType[]
   deviceId?: string
 }
