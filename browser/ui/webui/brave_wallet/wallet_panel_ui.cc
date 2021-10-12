@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 
+#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -36,6 +37,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
@@ -62,12 +64,16 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                                     true /* Needed for webui browser tests */) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kWalletPanelHost);
-
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->AddLocalizedStrings(brave_wallet::kLocalizedStrings);
   webui::SetupWebUIDataSource(source,
                               base::make_span(kBraveWalletPanelGenerated,
                                               kBraveWalletPanelGeneratedSize),
                               IDR_WALLET_PANEL_HTML);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      std::string("frame-src ") + kUntrustedTrezorURL + ";");
+
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
   brave_wallet::AddERCTokenImageSource(profile);

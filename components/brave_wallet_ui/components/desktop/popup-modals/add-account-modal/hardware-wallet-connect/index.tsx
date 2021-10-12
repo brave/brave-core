@@ -40,7 +40,6 @@ const derivationBatch = 4
 export default function (props: Props) {
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<string>(kLedgerHardwareVendor)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
-  const [isConnected, setIsConnected] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<Array<HardwareWalletAccount>>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
@@ -74,13 +73,10 @@ export default function (props: Props) {
       scheme: scheme
     }).then((result) => {
       setAccounts(result)
-      setIsConnected(true)
     }).catch((error) => {
-      setIsConnecting(false)
       setConnectionError(getErrorMessage(error))
     })
   }
-
   const onConnectHardwareWallet = (hardware: string) => {
     setIsConnecting(true)
     props.onConnectHardwareWallet({
@@ -90,11 +86,9 @@ export default function (props: Props) {
       scheme: selectedDerivationScheme
     }).then((result) => {
       setAccounts([...accounts, ...result])
-      setIsConnected(true)
       setIsConnecting(false)
     }).catch((error) => {
       setConnectionError(getErrorMessage(error))
-      setIsConnected(false)
       setIsConnecting(false)
     })
   }
@@ -108,17 +102,27 @@ export default function (props: Props) {
     return props.getBalance(address)
   }
 
+  const selectVendor = (vendor: string) => {
+    const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
+    setSelectedDerivationScheme(Object.values(derivationPathsEnum)[0] as string)
+    setSelectedHardwareWallet(vendor)
+  }
+
   const onSelectLedger = () => {
-    setSelectedHardwareWallet(kLedgerHardwareVendor)
+    selectVendor(kLedgerHardwareVendor)
   }
 
   const onSelectTrezor = () => {
-    setSelectedHardwareWallet(kTrezorHardwareVendor)
+    selectVendor(kTrezorHardwareVendor)
   }
 
   const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)
 
-  if (isConnected) {
+  if (connectionError !== '') {
+    console.error(connectionError)
+  }
+
+  if (accounts.length > 0) {
     return (
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
