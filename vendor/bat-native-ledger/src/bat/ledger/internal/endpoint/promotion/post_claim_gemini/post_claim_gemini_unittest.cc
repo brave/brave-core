@@ -83,6 +83,22 @@ TEST_F(PostClaimGeminiTest, ServerError400) {
   });
 }
 
+TEST_F(PostClaimGeminiTest, ServerError403) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_FORBIDDEN;
+            response.url = request->url;
+            response.body = "";
+            callback(response);
+          }));
+
+  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
+    EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+  });
+}
+
 TEST_F(PostClaimGeminiTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
@@ -111,7 +127,7 @@ TEST_F(PostClaimGeminiTest, ServerError409) {
           }));
 
   claim_->Request("mock_linking_info", "id", [](const type::Result result) {
-    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
   });
 }
 

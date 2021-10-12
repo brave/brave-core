@@ -505,7 +505,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [] })",
         {}
       },
-      type::Result::BAT_NOT_ALLOWED,
+      type::Result::UPHOLD_BAT_NOT_ALLOWED,
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is blocked at Uphold. (PENDING)
@@ -518,7 +518,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "blocked" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_BLOCKED_USER,
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is pending at Uphold. (PENDING)
@@ -531,7 +531,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "pending" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_PENDING_USER,
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is restricted at Uphold. (PENDING)
@@ -544,7 +544,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "restricted" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_RESTRICTED_USER,
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Access token expired! (VERIFIED)
@@ -583,7 +583,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [] })",
         {}
       },
-      type::Result::BAT_NOT_ALLOWED,
+      type::Result::UPHOLD_BAT_NOT_ALLOWED,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is blocked at Uphold. (VERIFIED)
@@ -596,7 +596,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "blocked" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_BLOCKED_USER,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is pending at Uphold. (VERIFIED)
@@ -609,7 +609,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "pending" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_PENDING_USER,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is restricted at Uphold. (VERIFIED)
@@ -622,7 +622,7 @@ INSTANTIATE_TEST_SUITE_P(
         R"({ "currencies": [ "BAT" ], "status": "restricted" })",
         {}
       },
-      type::Result::LEDGER_ERROR,
+      type::Result::UPHOLD_RESTRICTED_USER,
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Happy path. (VERIFIED)
@@ -1105,7 +1105,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::ALREADY_EXISTS,
+      type::Result::DEVICE_LIMIT_REACHED,
       type::WalletStatus::NOT_CONNECTED
     },
     LinkWalletParamType{  // Mismatched provider accounts.
@@ -1134,7 +1134,7 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {}
       },
-      type::Result::TOO_MANY_RESULTS,
+      type::Result::MISMATCHED_PROVIDER_ACCOUNTS,
       type::WalletStatus::NOT_CONNECTED
     },
     LinkWalletParamType{  // Rewards Link (Claim) Wallet failed.

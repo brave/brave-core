@@ -178,7 +178,7 @@ void Bitflyer::DisconnectWallet(const bool manual) {
 
   if (!manual && !shutting_down) {
     ledger_->ledger_client()->ShowNotification(
-        ledger::notifications::kWalletDisconnected, {}, [](type::Result _) {});
+        ledger::notifications::kWalletDisconnected, {}, [](type::Result) {});
   }
 
   SetWallet(wallet->Clone());

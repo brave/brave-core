@@ -210,72 +210,114 @@ class SettingsPage extends React.Component<Props, State> {
     const { externalWallet, ui } = this.props.rewardsData
     const walletType = externalWallet ? externalWallet.type : ''
 
-    if (ui.modalRedirect === 'show') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-show'}
-          titleText={getLocale('processingRequest')}
-          walletType={walletType}
-        />
-      )
+    switch (ui.modalRedirect) {
+      case 'deviceLimitReachedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-device-limit-reached'}
+            errorText={getLocale('redirectModalDeviceLimitReachedText')}
+            titleText={getLocale('redirectModalDeviceLimitReachedTitle')}
+            learnMore={'https://support.brave.com/hc/en-us/articles/360056508071'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'error':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-error'}
+            errorText={getLocale('redirectModalError')}
+            buttonText={getLocale('processingRequestButton')}
+            titleText={getLocale('processingRequest')}
+            walletType={walletType}
+            displayCloseButton={true}
+            onClick={this.onRedirectError}
+            onClose={this.actions.hideRedirectModal}
+          />
+        )
+      case 'kycRequiredModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-id-verification-required'}
+            titleText={getLocale('redirectModalKYCRequiredTitle')}
+            errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'mismatchedProviderAccountsModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-mismatched-provider-accounts'}
+            errorText={getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))}
+            titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
+            learnMore={'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'show':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-show'}
+            titleText={getLocale('processingRequest')}
+            walletType={walletType}
+          />
+        )
+      case 'upholdBATNotAllowedModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-bat-not-allowed'}
+            errorText={getLocale('redirectModalUpholdBATNotAllowedText')}
+            titleText={getLocale('redirectModalUpholdBATNotAllowedTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdBlockedUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-blocked-user'}
+            errorText={getLocale('redirectModalUpholdBlockedUserText')}
+            titleText={getLocale('redirectModalUpholdBlockedUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdPendingUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-pending-user'}
+            errorText={getLocale('redirectModalUpholdPendingUserText')}
+            titleText={getLocale('redirectModalUpholdPendingUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'upholdRestrictedUserModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-restricted-user'}
+            errorText={getLocale('redirectModalUpholdRestrictedUserText')}
+            titleText={getLocale('redirectModalUpholdRestrictedUserTitle')}
+            learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      default:
+        return null
     }
-
-    if (ui.modalRedirect === 'mismatchedProviderAccountsModal') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-mismatched-provider-accounts'}
-          errorText={getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))}
-          titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
-          buttonText={getLocale('redirectModalClose')}
-          walletType={walletType}
-          onClick={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    if (ui.modalRedirect === 'notAllowed') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-not-allowed'}
-          errorText={getLocale('redirectModalNotAllowed')}
-          titleText={getLocale('redirectModalErrorWallet')}
-          buttonText={getLocale('redirectModalClose')}
-          walletType={walletType}
-          onClick={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    if (ui.modalRedirect === 'batLimit') {
-      // NOTE: The minimum BAT limit error is currently Uphold-specific
-      return (
-        <ModalRedirect
-          id={'redirect-modal-id-verification-required'}
-          titleText={getLocale('redirectModalKYCRequiredTitle')}
-          errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
-          buttonText={getLocale('redirectModalClose')}
-          walletType={walletType}
-          onClick={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    if (ui.modalRedirect === 'error') {
-      return (
-        <ModalRedirect
-          id={'redirect-modal-error'}
-          errorText={getLocale('redirectModalError')}
-          buttonText={getLocale('processingRequestButton')}
-          titleText={getLocale('processingRequest')}
-          walletType={walletType}
-          displayCloseButton={true}
-          onClick={this.onRedirectError}
-          onClose={this.actions.hideRedirectModal}
-        />
-      )
-    }
-
-    return null
   }
 
   renderOnboardingPromo () {

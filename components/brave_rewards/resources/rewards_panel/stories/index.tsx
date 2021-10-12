@@ -98,13 +98,6 @@ function createHost (): Host {
         id: '2',
         timeStamp: Date.now(),
         provider: 'uphold'
-      } as any,
-      {
-        type: 'external-wallet-linking-failed',
-        id: '3',
-        timeStamp: Date.now(),
-        provider: 'uphold',
-        reason: 'mismatched-provider-accounts'
       } as any
     ]
   })

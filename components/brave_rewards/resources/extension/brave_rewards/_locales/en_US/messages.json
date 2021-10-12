@@ -238,10 +238,6 @@
     "message": "Add Funds",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Learn More",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Reconnect",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "You have pending tips due to insufficient funds",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Wallet linking failed",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Your wallet cannot be verified because you've reached the maximum verified device limit.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "It looks like your Brave Rewards wallet has already been verified with another $provider$ account. Please try verifying again using your previous account.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT is not yet supported in your region on Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Your account at Uphold is currently blocked.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Your account at Uphold is still pending.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Your account at Uphold is currently restricted.",
     "description": ""
   },
   "onboardingEarnHeader": {

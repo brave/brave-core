@@ -105,8 +105,6 @@ const cleanData = (state: Rewards.State) => {
     throw new Error('Invalid adsNextPaymentDate')
   }
 
-  state.ui.modalRedirect = 'hide'
-
   return state
 }
 

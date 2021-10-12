@@ -86,6 +86,23 @@ TEST_F(PostClaimBitflyerTest, ServerError400) {
                   });
 }
 
+TEST_F(PostClaimBitflyerTest, ServerError403) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = "";
+            callback(response);
+          }));
+
+  claim_->Request(
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+      });
+}
+
 TEST_F(PostClaimBitflyerTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
@@ -116,7 +133,7 @@ TEST_F(PostClaimBitflyerTest, ServerError409) {
 
   claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
                   [](const type::Result result) {
-                    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+                    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
                   });
 }
 
