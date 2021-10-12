@@ -22,10 +22,10 @@
   window.ethereum.request(
       { method: 'wallet_addEthereumChain', params:data }).then(result => {
         request_finished = true;
-        chain_added_result = (!result.result && !result.error)
+        chain_added_result = result === null
       }).catch(error => {
         request_finished = true;
-        chain_added_result = !(result.error && result.error.code == 4001)
+        chain_added_result = result.code != 4001
       })
 </script></head>
 <body></body>
