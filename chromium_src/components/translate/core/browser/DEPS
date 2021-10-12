@@ -8,13 +8,3 @@ include_rules = [
   "+components/variations",
   "+google_apis/google_api_keys.h",
 ]
-
-# Existing exceptions
-specific_include_rules = {
-  "translate_url_fetcher(\.cc|\.h)": [
-    "+brave/browser/translate/buildflags/buildflags.h",
-  ],
-  "translate_manager(\.cc|\.h)": [
-    "+brave/browser/translate/buildflags/buildflags.h",
-  ],
-}
