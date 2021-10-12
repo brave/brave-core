@@ -13,6 +13,7 @@ struct AccountPicker: View {
   @Binding var account: BraveWallet.AccountInfo
   
   @State private var isPresentingPicker: Bool = false
+  @State private var isPresentingAddAccount: Bool = false
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var avatarSize = 24.0
   
@@ -123,6 +124,18 @@ struct AccountPicker: View {
               .foregroundColor(Color(.braveOrange))
           }
         }
+        ToolbarItemGroup(placement: .primaryAction) {
+          Button(action: { isPresentingAddAccount = true }) {
+            Image(systemName: "plus")
+              .foregroundColor(Color(.braveOrange))
+          }
+        }
+      }
+      .sheet(isPresented: $isPresentingAddAccount) {
+        NavigationView {
+          AddAccountView(keyringStore: keyringStore)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
