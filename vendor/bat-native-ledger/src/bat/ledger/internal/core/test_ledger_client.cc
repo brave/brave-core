@@ -341,6 +341,9 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
     return;
   }
 
+  LOG(INFO) << "Test network result not found for " << request->method << ":"
+            << request->url;
+
   mojom::UrlResponse response;
   response.url = request->url;
   response.status_code = net::HTTP_BAD_REQUEST;

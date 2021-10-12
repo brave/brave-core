@@ -19,6 +19,7 @@ const char kPromotionsClaimed[] = "promotion_claimed";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
 const char kWalletConnected[] = "wallet_connected";
+const char kWalletCorrupted[] = "wallet_corrupted";
 const char kWalletDisconnected[] = "wallet_disconnected";
 const char kWalletRecovered[] = "wallet_recovered";
 const char kWalletStatusChange[] = "wallet_status_change";

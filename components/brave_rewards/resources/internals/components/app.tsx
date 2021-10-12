@@ -49,6 +49,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.getRewardsInternalsInfo()
     this.actions.getBalance()
     this.actions.getExternalWallet()
+    this.actions.getEventLogs()
   }
 
   onTabChange = (tabId: string) => {

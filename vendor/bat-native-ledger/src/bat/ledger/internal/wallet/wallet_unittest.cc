@@ -5,51 +5,85 @@
 
 #include "bat/ledger/internal/wallet/wallet.h"
 
+#include <utility>
 #include <vector>
 
 #include "bat/ledger/internal/core/bat_ledger_test.h"
+#include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
+#include "net/http/http_status_code.h"
 
 namespace ledger {
 
-class WalletTest : public BATLedgerTest {};
+class WalletTest : public BATLedgerTest {
+ protected:
+  mojom::Result CreateWalletIfNecessary() {
+    auto* ledger = GetLedgerImpl();
+
+    auto response = mojom::UrlResponse::New();
+    response->status_code = net::HTTP_CREATED;
+    response->body =
+        "{\"paymentId\": \"37742974-3b80-461a-acfb-937e105e5af4\"}";
+
+    AddNetworkResultForTesting(
+        endpoint::promotion::GetServerUrl("/v3/wallet/brave"),
+        mojom::UrlMethod::POST, std::move(response));
+
+    base::RunLoop run_loop;
+    mojom::Result result;
+    ledger->wallet()->CreateWalletIfNecessary([&result, &run_loop](auto r) {
+      result = r;
+      run_loop.Quit();
+    });
+
+    run_loop.Run();
+    return result;
+  }
+};
 
 TEST_F(WalletTest, GetWallet) {
   auto* ledger = GetLedgerImpl();
+  bool corrupted = false;
 
-  // A wallet is created if none exists
-  ledger->ledger_client()->SetStringState(state::kWalletBrave, "");
-  auto wallet = ledger->wallet()->GetWallet(true);
-  ASSERT_TRUE(wallet);
-  EXPECT_TRUE(wallet->payment_id.empty());
-  EXPECT_TRUE(!wallet->recovery_seed.empty());
+  // When there is no current wallet information, `GetWallet` returns empty and
+  // sets the corrupted flag to false.
+  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  corrupted = true;
+  mojom::BraveWalletPtr wallet = ledger->wallet()->GetWallet(&corrupted);
+  EXPECT_FALSE(wallet);
+  EXPECT_FALSE(corrupted);
 
-  // The created wallet is saved
-  std::vector<uint8_t> recovery_seed = wallet->recovery_seed;
-  wallet = ledger->wallet()->GetWallet(true);
-  ASSERT_TRUE(wallet);
-  EXPECT_EQ(wallet->recovery_seed, recovery_seed);
-
-  // Corrupted wallet data is not overwritten
-  ledger->ledger_client()->SetStringState(state::kWalletBrave, "BAD-DATA");
-  wallet = ledger->wallet()->GetWallet(true);
-  ASSERT_FALSE(wallet);
+  // When there is invalid wallet information, `GetWallet` returns empty, sets
+  // the corrupted flag to true, and does not modify prefs.
+  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  wallet = ledger->wallet()->GetWallet(&corrupted);
+  EXPECT_FALSE(wallet);
+  EXPECT_TRUE(corrupted);
+  EXPECT_EQ(GetTestLedgerClient()->GetStringState(state::kWalletBrave),
+            "BAD-DATA");
 }
 
 TEST_F(WalletTest, CreateWallet) {
   auto* ledger = GetLedgerImpl();
 
-  ledger->ledger_client()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  // Create a wallet when there is no current wallet information.
+  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  mojom::Result result = CreateWalletIfNecessary();
+  EXPECT_EQ(result, mojom::Result::WALLET_CREATED);
+  mojom::BraveWalletPtr wallet = ledger->wallet()->GetWallet();
+  ASSERT_TRUE(wallet);
+  EXPECT_TRUE(!wallet->payment_id.empty());
+  EXPECT_TRUE(!wallet->recovery_seed.empty());
 
-  mojom::Result result;
-  ledger->wallet()->CreateWalletIfNecessary(
-      [&result](mojom::Result r) mutable { result = r; });
-
-  // Corrupted wallet data is not overwritten with a new wallet
-  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-  EXPECT_EQ(ledger->ledger_client()->GetStringState(state::kWalletBrave),
-            "BAD-DATA");
+  // Create a wallet when there is corrupted wallet information.
+  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  result = CreateWalletIfNecessary();
+  EXPECT_EQ(result, mojom::Result::WALLET_CREATED);
+  wallet = ledger->wallet()->GetWallet();
+  ASSERT_TRUE(wallet);
+  EXPECT_TRUE(!wallet->payment_id.empty());
+  EXPECT_TRUE(!wallet->recovery_seed.empty());
 }
 
 }  // namespace ledger
