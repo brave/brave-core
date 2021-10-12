@@ -85,7 +85,7 @@ provideStrings({
 
   // Backup Wallet Intro
   braveWalletBackupIntroTitle: 'Back up your crypto wallet',
-  braveWalletBackupIntroDescription: 'In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Safe it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
+  braveWalletBackupIntroDescription: 'In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.',
   braveWalletBackupIntroTerms: 'I understand that if I lose my recovery words, I will not be able to access my crypto wallet.',
   braveWalletBackupButtonSkip: 'Skip',
   braveWalletBackupButtonCancel: 'Cancel',
