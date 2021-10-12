@@ -11,3 +11,10 @@ export const AccountSettingsNavOptions = (): TopTabNavObjectType[] => [
     name: getLocale('braveWalletAccountSettingsPrivateKey')
   }
 ]
+
+export const HardwareAccountSettingsNavOptions = (): TopTabNavObjectType[] => [
+  {
+    id: 'details',
+    name: getLocale('braveWalletAccountSettingsDetails')
+  }
+]
