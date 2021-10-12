@@ -230,6 +230,12 @@ public class KeyringStore: ObservableObject {
 }
 
 extension KeyringStore: BraveWalletKeyringControllerObserver {
+  public func autoLockMinutesChanged() {
+  }
+  
+  public func selectedAccountChanged() {
+  }
+
   public func keyringCreated() {
     updateKeyringInfo()
   }

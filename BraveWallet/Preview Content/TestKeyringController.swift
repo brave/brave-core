@@ -264,4 +264,15 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     selectedAccount = account
     completion(true)
   }
+  
+  private var autoLockMinutes: Int32 = 5
+  
+  func autoLockMinutes(_ completion: @escaping (Int32) -> Void) {
+    completion(autoLockMinutes)
+  }
+  
+  func setAutoLockMinutes(_ minutes: Int32, completion: @escaping (Bool) -> Void) {
+    autoLockMinutes = minutes
+    completion(true)
+  }
 }

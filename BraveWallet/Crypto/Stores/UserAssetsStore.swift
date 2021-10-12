@@ -101,4 +101,6 @@ extension UserAssetsStore: BraveWalletEthJsonRpcControllerObserver {
   }
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
+  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
 }

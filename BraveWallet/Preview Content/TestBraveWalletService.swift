@@ -62,4 +62,11 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
   func resetEthereumPermission(_ origin: String, account: String, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
+  
+  func add(_ observer: BraveWalletBraveWalletServiceObserver) {
+  }
+  
+  func activeOrigin(_ completion: @escaping (String) -> Void) {
+    completion("")
+  }
 }
