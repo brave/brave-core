@@ -45,6 +45,7 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
   tx_controller_.Bind(std::move(tx_controller));
   tx_controller_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
+  tx_controller_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
@@ -349,10 +350,6 @@ void BraveWalletProviderImpl::Init(
     if (rpc_controller_) {
       rpc_controller_->AddObserver(
           rpc_observer_receiver_.BindNewPipeAndPassRemote());
-    }
-    if (tx_controller_) {
-      tx_controller_->AddObserver(
-          tx_observer_receiver_.BindNewPipeAndPassRemote());
     }
   }
 }
