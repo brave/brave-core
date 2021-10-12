@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import LocalAuthentication
 import BraveUI
+import struct Shared.Strings
 
 struct EnableBiometricsView: View {
   var action: (_ enable: Bool) -> Void
@@ -18,13 +19,13 @@ struct EnableBiometricsView: View {
         .aspectRatio(contentMode: .fit)
         .frame(maxWidth: 250)
         .padding()
-      Text("Unlock Brave Wallet with your Face ID, Touch ID, or passcode.")
+      Text(Strings.Wallet.biometricsSetupTitle)
         .font(.headline)
         .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
         .padding(.bottom)
       Button(action: { action(true) }) {
-        Text("Enable")
+        Text(Strings.Wallet.biometricsSetupEnableButtonTitle)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
     }

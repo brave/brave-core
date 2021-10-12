@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct BackupRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -18,15 +19,15 @@ struct BackupRecoveryPhraseView: View {
       Image(systemName: "exclamationmark.circle")
         .font(.subheadline.weight(.semibold))
         .foregroundColor(.red)
-      Group {
-        Text("WARNING:") // NSLocalizedString
-          .font(.subheadline.weight(.semibold))
-          .foregroundColor(.red) +
-          Text(" Never disclose your backup phrase. Anyone with this phrase can take your funds forever.") // NSLocalizedString
-          .font(.subheadline)
-          .foregroundColor(.secondary)
-      }
-      .fixedSize(horizontal: false, vertical: true)
+      
+      let warningPartOne = Text(Strings.Wallet.backupRecoveryPhraseWarningPartOne)
+        .fontWeight(.semibold)
+        .foregroundColor(.red)
+      let warningPartTwo = Text(Strings.Wallet.backupRecoveryPhraseWarningPartTwo)
+      Text(verbatim: "\(warningPartOne) \(warningPartTwo)")
+        .font(.subheadline)
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .fixedSize(horizontal: false, vertical: true)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding()
@@ -44,9 +45,9 @@ struct BackupRecoveryPhraseView: View {
     ScrollView(.vertical) {
       VStack(spacing: 16) {
         Group {
-          Text("Your recovery phrase") // NSLocalizedString
+          Text(Strings.Wallet.backupRecoveryPhraseTitle)
             .font(.headline)
-          Text("Write down or copy these words in the right order and save them somewhere safe.") // NSLocalizedString
+          Text(Strings.Wallet.backupRecoveryPhraseSubtitle)
             .font(.subheadline)
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -66,17 +67,17 @@ struct BackupRecoveryPhraseView: View {
         }
         .padding(.horizontal)
         Button(action: copyRecoveryPhrase) {
-          Text("Copy")
+          Text(verbatim: "\(Strings.Wallet.copyToPasteboard) \(Image(systemName: "brave.clipboard"))")
             .font(.subheadline.bold())
             .foregroundColor(.primary)
         }
-        Toggle("I have backed up my phrase somewhere safe", isOn: $confirmedPhraseBackup) // NSLocalizedString
+        Toggle(Strings.Wallet.backupRecoveryPhraseDisclaimer, isOn: $confirmedPhraseBackup)
           .fixedSize(horizontal: false, vertical: true)
           .font(.footnote)
           .padding(.vertical, 30)
           .padding(.horizontal, 20)
         NavigationLink(destination: VerifyRecoveryPhraseView(keyringStore: keyringStore)) {
-          Text("Continue") // NSLocalizedString
+          Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .disabled(!confirmedPhraseBackup)
@@ -84,7 +85,7 @@ struct BackupRecoveryPhraseView: View {
           Button(action: {
             keyringStore.markOnboardingCompleted()
           }) {
-            Text("Skip") // NSLocalizedString
+            Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
           }
@@ -98,10 +99,10 @@ struct BackupRecoveryPhraseView: View {
       }
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Recovery Phrase" // NSLocalizedString
+      vc.navigationItem.backButtonTitle = Strings.Wallet.backupRecoveryPhraseBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
@@ -120,7 +121,7 @@ struct BackupRecoveryPhraseView: View {
               Button(action: {
                 presentationMode.dismiss()
               }) {
-                Text("Cancel")
+                Text(Strings.CancelString)
                   .foregroundColor(Color(.braveOrange))
               }
             }

@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import BraveUI
+import struct Shared.Strings
 
 struct AccountPrivateKeyView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -18,7 +19,7 @@ struct AccountPrivateKeyView: View {
   
   var body: some View {
     VStack {
-      Text("\(Image(systemName: "exclamationmark.triangle.fill")) Warning: Never disclose this key. Anyone with your private key can steal any assets held in your account.") // NSLocalizedString
+      Text(verbatim: "\(Image(systemName: "exclamationmark.triangle.fill")) \(Strings.Wallet.accountPrivateKeyDisplayWarning)")
         .font(.subheadline.weight(.medium))
         .foregroundColor(Color(.braveLabel))
         .padding(12)
@@ -38,7 +39,7 @@ struct AccountPrivateKeyView: View {
         Button(action: {
           UIPasteboard.general.string = key
         }) {
-          Text("Copy to Clipboard \(Image("brave.clipboard"))")
+          Text(verbatim: "\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurple))
         }
@@ -54,7 +55,8 @@ struct AccountPrivateKeyView: View {
           isKeyVisible.toggle()
         }
       }) {
-        Text(isKeyVisible ? "Hide Private Key" : "Show Private Key") // NSLocalizedString
+        Text(isKeyVisible ? Strings.Wallet.hidePrivateKeyButtonTitle :
+              Strings.Wallet.showPrivateKeyButtonTitle)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
       .animation(nil, value: isKeyVisible)
@@ -68,7 +70,7 @@ struct AccountPrivateKeyView: View {
       }
     }
     .background(Color(.braveBackground))
-    .navigationTitle("Private Key")
+    .navigationTitle(Strings.Wallet.accountPrivateKey)
     .navigationBarTitleDisplayMode(.inline)
   }
 }

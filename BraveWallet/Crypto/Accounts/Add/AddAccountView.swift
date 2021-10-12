@@ -5,6 +5,7 @@
 
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -21,7 +22,7 @@ struct AddAccountView: View {
   private func addAccount() {
     if privateKey.isEmpty {
       // Add normal account
-      let accountName = name.isEmpty ? "Account \(keyringStore.keyring.accountInfos.filter(\.isPrimary).count + 1)" : name 
+      let accountName = name.isEmpty ? String.localizedStringWithFormat(Strings.Wallet.defaultAccountName, keyringStore.keyring.accountInfos.filter(\.isPrimary).count + 1) : name
       keyringStore.addPrimaryAccount(accountName) { success in
         // TODO: Error state
         if success {
@@ -36,7 +37,8 @@ struct AddAccountView: View {
           failedToImport = true
         }
       }
-      let accountName = name.isEmpty ? "Secondary Account \(keyringStore.keyring.accountInfos.filter(\.isImported).count + 1)" : name // NSLocalizedString
+      let accountName = name.isEmpty ?
+      String.localizedStringWithFormat(Strings.Wallet.defaultSecondaryAccountName, keyringStore.keyring.accountInfos.filter(\.isImported).count + 1) : name
       if isJSONImported {
         keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
       } else {
@@ -88,27 +90,27 @@ struct AddAccountView: View {
     }
     .animation(.default, value: isJSONImported)
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle("Add Account") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.addAccountTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
       trailing: Button(action: addAccount) {
-        Text("Add")
+        Text(Strings.Wallet.addAccountAddButton)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
     )
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
         Button(action: { presentationMode.dismiss() }) {
-          Text("Cancel")
+          Text(Strings.CancelString)
             .foregroundColor(Color(.braveOrange))
         }
       }
     }
     .alert(isPresented: $failedToImport) {
       Alert(
-        title: Text("Failed to import account."), // NSLocalizedString
-        message: Text("Please try again."), // NSLocalizedString
-        dismissButton: .cancel(Text("OK")) // NSLocalizedString
+        title: Text(Strings.Wallet.failedToImportAccountErrorTitle),
+        message: Text(Strings.Wallet.failedToImportAccountErrorMessage),
+        dismissButton: .cancel(Text(Strings.OKString))
       )
     }
   }
@@ -116,7 +118,7 @@ struct AddAccountView: View {
   private var accountNameSection: some View {
     Section(
       header: WalletListHeaderView(
-        title: Text("Account Name") // NSLocalizedString
+        title: Text(Strings.Wallet.accountDetailsNameTitle)
           .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.bravePrimary))
       )
@@ -129,7 +131,7 @@ struct AddAccountView: View {
         }
       }
     ) {
-      TextField("Enter account name", text: $name) // NSLocalizedString
+      TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
@@ -137,12 +139,12 @@ struct AddAccountView: View {
   private var originPasswordSection: some View {
     Section(
       header: WalletListHeaderView(
-        title: Text("Origin Password") // NSLocalizedString
+        title: Text(Strings.Wallet.importAccountOriginPasswordTitle)
           .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.bravePrimary))
       )
     ) {
-      SecureField("Password", text: $originPassword)
+      SecureField(Strings.Wallet.passwordPlaceholder, text: $originPassword)
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
@@ -150,7 +152,7 @@ struct AddAccountView: View {
   private var privateKeySection: some View {
     Section(
       header: WalletListHeaderView(
-        title: Text("You can create a secondary account by importing your private key.") // NSLocalizedString
+        title: Text(Strings.Wallet.importAccountSectionTitle)
           .font(.subheadline.weight(.semibold))
           .foregroundColor(Color(.bravePrimary))
       )
@@ -159,7 +161,7 @@ struct AddAccountView: View {
         .font(.system(.body, design: .monospaced))
         .frame(height: privateKeyFieldHeight)
         .background(
-          Text("Enter, paste, or import your private key string file or JSON.") // NSLocalizedString
+          Text(Strings.Wallet.importAccountPlaceholder)
             .padding(.vertical, 8)
             .padding(.horizontal, 4) // To match the TextEditor's editing insets
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -172,7 +174,7 @@ struct AddAccountView: View {
         }
       Button(action: { isPresentingImport = true }) {
         HStack {
-          Text("Import…") // NSLocalizedString
+          Text(Strings.Wallet.importButtonTitle)
             .foregroundColor(.accentColor)
             .font(.callout)
           if isLoadingFile {

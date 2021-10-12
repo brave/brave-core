@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
+import struct Shared.Strings
 
 struct DateRangeView: View {
   @Binding var selectedRange: BraveWallet.AssetPriceTimeframe
@@ -63,29 +64,27 @@ extension BraveWallet.AssetPriceTimeframe: CaseIterable {
   }
   
   var accessibilityLabel: String {
-    // NSLocalizedString
     switch self {
-    case .live: return "1 Hour"
-    case .oneDay: return "1 Day"
-    case .oneWeek: return "1 Week"
-    case .oneMonth: return "1 Month"
-    case .threeMonths: return "3 Months"
-    case .oneYear: return "1 Year"
-    case .all: return "All"
+    case .live: return Strings.Wallet.dateIntervalHourAccessibilityLabel
+    case .oneDay: return Strings.Wallet.dateIntervalDayAccessibilityLabel
+    case .oneWeek: return Strings.Wallet.dateIntervalWeekAccessibilityLabel
+    case .oneMonth: return Strings.Wallet.dateIntervalMonthAccessibilityLabel
+    case .threeMonths: return Strings.Wallet.dateIntervalThreeMonthsAccessibilityLabel
+    case .oneYear: return Strings.Wallet.dateIntervalYearAccessibilityLabel
+    case .all: return Strings.Wallet.dateIntervalAll
     @unknown default: return ""
     }
   }
   
   var displayString: String {
-    // NSLocalizedString
     switch self {
-    case .live: return "1H"
-    case .oneDay: return "1D"
-    case .oneWeek: return "1W"
-    case .oneMonth: return "1M"
-    case .threeMonths: return "3M"
-    case .oneYear: return "1Y"
-    case .all: return "ALL"
+    case .live: return Strings.Wallet.dateIntervalHour
+    case .oneDay: return Strings.Wallet.dateIntervalDay
+    case .oneWeek: return Strings.Wallet.dateIntervalWeek
+    case .oneMonth: return Strings.Wallet.dateIntervalMonth
+    case .threeMonths: return Strings.Wallet.dateIntervalThreeMonths
+    case .oneYear: return Strings.Wallet.dateIntervalYear
+    case .all: return Strings.Wallet.dateIntervalAll.uppercased()
     @unknown default: return ""
     }
   }

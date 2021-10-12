@@ -5,6 +5,8 @@
 
 import Foundation
 import SwiftUI
+import struct Shared.Strings
+import BraveShared
 
 private struct TokenView: View {
   @ObservedObject var assetStore: AssetStore
@@ -63,7 +65,7 @@ struct EditUserAssetsView: View {
       List {
         Section(
           header: WalletListHeaderView(
-            title: Text("Assets") // NSLocalizedString
+            title: Text(Strings.Wallet.assetsTitle)
           )
             .osAvailabilityModifiers { content in
               if #available(iOS 15.0, *) {
@@ -81,7 +83,7 @@ struct EditUserAssetsView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .animation(.default, value: tokenStores)
-      .navigationTitle("Edit Visible Assets") // NSLocalizedString
+      .navigationTitle(Strings.Wallet.editVisibleAssetsButtonTitle)
       .navigationBarTitleDisplayMode(.inline)
       .filterable(text: $query)
       .toolbar {
@@ -90,7 +92,7 @@ struct EditUserAssetsView: View {
             assetsUpdated()
             presentationMode.dismiss()
           }) {
-            Text("Done") // NSLocalizedString
+            Text(Strings.done)
               .foregroundColor(Color(.braveOrange))
           }
         }

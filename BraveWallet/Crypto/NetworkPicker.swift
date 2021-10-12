@@ -5,6 +5,7 @@
 
 import SwiftUI
 import BraveCore
+import struct Shared.Strings
 
 extension BraveWallet.EthereumChain {
   fileprivate var shortChainName: String {
@@ -18,7 +19,10 @@ struct NetworkPicker: View {
   
   var body: some View {
     Menu {
-      Picker("Selected Network", selection: $selectedNetwork) { // NSLocalizedString
+      Picker(
+        Strings.Wallet.selectedNetworkAccessibilityLabel,
+        selection: $selectedNetwork
+      ) {
         ForEach(networks) {
           Text($0.chainName).tag($0)
         }

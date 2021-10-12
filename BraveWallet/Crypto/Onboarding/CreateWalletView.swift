@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import LocalAuthentication
 import BraveUI
+import struct Shared.Strings
 
 struct CreateWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -17,10 +18,10 @@ struct CreateWalletContainerView: View {
         .background(Color(.braveBackground))
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Create Password" // NSLocalizedString
+      vc.navigationItem.backButtonTitle = Strings.Wallet.createWalletBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
   }
@@ -36,10 +37,9 @@ private struct CreateWalletView: View {
     var errorDescription: String? {
       switch self {
       case .passwordTooShort:
-        return "Password must be 7 or more characters" // NSLocalizedString
+        return Strings.Wallet.passwordDoesNotMeetRequirementsError
       case .inputsDontMatch:
-        // TODO: Get real copy
-        return "Passwords don't match" // NSLocalizedString
+        return Strings.Wallet.passwordsDontMatchError
       }
     }
   }
@@ -98,22 +98,22 @@ private struct CreateWalletView: View {
         Image("graphic-lock")
           .padding(.bottom)
         VStack {
-          Text("Secure your crypto with a password") // NSLocalizedString
+          Text(Strings.Wallet.createWalletTitle)
             .font(.headline)
             .padding(.bottom)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
           VStack {
-            SecureField("Password", text: $password) // NSLocalizedString
+            SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
               .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .passwordTooShort))
-            SecureField("Re-type password", text: $repeatedPassword, onCommit: createWallet) // NSLocalizedString
+            SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword, onCommit: createWallet)
               .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .inputsDontMatch))
           }
           .font(.subheadline)
           .padding(.horizontal, 48)
         }
         Button(action: createWallet) {
-          Text("Continue")
+          Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
       }
@@ -124,9 +124,12 @@ private struct CreateWalletView: View {
         if enabled {
           // Store password in keychain
           if !KeyringStore.storePasswordInKeychain(password) {
-            // TODO: Get real copy
-            let alert = UIAlertController(title: "Failed to enable biometrics", message: "There was an error while trying to enable biometrics. Please try again later", preferredStyle: .alert)
-            alert.addAction(.init(title: "OK", style: .default, handler: nil))
+            let alert = UIAlertController(
+              title: Strings.Wallet.biometricsSetupErrorTitle,
+              message: Strings.Wallet.biometricsSetupErrorMessage,
+              preferredStyle: .alert
+            )
+            alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
             navController?.presentedViewController?.present(alert, animated: true)
             return false
           }

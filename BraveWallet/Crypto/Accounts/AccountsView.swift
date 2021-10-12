@@ -8,6 +8,7 @@ import BraveCore
 import Combine
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct AccountsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -56,7 +57,7 @@ struct AccountsView: View {
       }
       Section(
         header: WalletListHeaderView(
-          title: Text("Primary Crypto Accounts") // NSLocalizedString
+          title: Text(Strings.Wallet.primaryCryptoAccountsTitle)
         )
       ) {
         ForEach(primaryAccounts) { account in
@@ -66,13 +67,13 @@ struct AccountsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(
-          title: Text("Secondary Accounts"), // NSLocalizedString
-          subtitle: Text("Import your external wallet account with a separate seed phrase.") // NSLocalizedString
+          title: Text(Strings.Wallet.secondaryCryptoAccountsTitle),
+          subtitle: Text(Strings.Wallet.secondaryCryptoAccountsSubtitle)
         )
       ) {
         let secondaryAccounts = secondaryAccounts
         if secondaryAccounts.isEmpty {
-          Text("No secondary accounts") // NSLocalizedString
+          Text(Strings.Wallet.noSecondaryAccounts)
             .foregroundColor(Color(.secondaryBraveLabel))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
@@ -86,7 +87,7 @@ struct AccountsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .navigationTitle("Accounts") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.accountsPageTitle)
     .osAvailabilityModifiers { content in
       if #available(iOS 15.0, *) {
         content

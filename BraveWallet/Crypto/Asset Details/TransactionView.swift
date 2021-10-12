@@ -36,10 +36,10 @@ struct TransactionView: View {
         HStack {
           Text(accountName)
             .fontWeight(.semibold)
-          Text("sent \(timeFormatter.localizedString(for: date, relativeTo: Date()))")
+          Text(verbatim: "sent \(timeFormatter.localizedString(for: date, relativeTo: Date()))")
         }
-        Text("0x\(fromAddress.truncatedAddress)")
-        Text("→ 0x\(toAddress.truncatedAddress)")
+        Text(verbatim: "0x\(fromAddress.truncatedAddress)")
+        Text(verbatim: "→ 0x\(toAddress.truncatedAddress)")
       }
       Spacer()
       VStack(alignment: .trailing, spacing: 2) {

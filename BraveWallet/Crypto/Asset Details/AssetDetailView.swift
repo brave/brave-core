@@ -8,6 +8,7 @@ import UIKit
 import SwiftUI
 import BraveCore
 import BraveUI
+import struct Shared.Strings
 
 struct AssetDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -27,7 +28,7 @@ struct AssetDetailView: View {
       ) {
       }
       Section(
-        header: WalletListHeaderView(title: Text("Accounts")) // NSLocalizedString
+        header: WalletListHeaderView(title: Text(Strings.Wallet.accountsPageTitle))
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
               content // padding already applied
@@ -36,23 +37,23 @@ struct AssetDetailView: View {
             }
           },
         footer: Button(action: {}) {
-          Text("Add Account") // NSLocalizedString
+          Text(Strings.Wallet.addAccountTitle)
         }
         .listRowInsets(.zero)
         .buttonStyle(BraveOutlineButtonStyle(size: .small))
         .padding(.vertical, 8)
       ) {
-        Text("No accounts") // NSLocalizedString
+        Text(Strings.Wallet.noAccounts)
       }
       Section(
-        header: WalletListHeaderView(title: Text("Transactions")) // NSLocalizedString
+        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        Text("No transactions")
+        Text(Strings.Wallet.noTransactions)
       }
       Section(
-        header: WalletListHeaderView(title: Text("Info")) // NSLocalizedString
+        header: WalletListHeaderView(title: Text(Strings.Wallet.infoTitle))
       ) {
-        Text("No info") // NSLocalizedString
+        Text(verbatim: "No info") // TODO: Just hide the info section when there isn't any available
       }
     }
     .listStyle(InsetGroupedListStyle())

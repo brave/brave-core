@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -17,28 +18,28 @@ struct BackupWalletView: View {
         Image("graphic-save")
           .padding(.vertical)
         VStack(spacing: 14) {
-          Text("Backup your wallet now!") // NSLocalizedString
+          Text(Strings.Wallet.backupWalletTitle)
             .font(.headline)
             .foregroundColor(.primary)
-          Text("In the next step you will see 12 words that allows you to recover your crypto wallet.") // NSLocalizedString
+          Text(Strings.Wallet.backupWalletSubtitle)
             .font(.subheadline)
             .foregroundColor(.secondary)
         }
         .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
-        Toggle("I understand that if I lose my recovery words, I will not be able to access my crypto wallet.", isOn: $acknowledgedWarning) // NSLocalizedString
+        Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .foregroundColor(.secondary)
           .font(.footnote)
         VStack(spacing: 12) {
           NavigationLink(destination: BackupRecoveryPhraseView(keyringStore: keyringStore)) {
-            Text("Continue") // NSLocalizedString
+            Text(Strings.Wallet.continueButtonTitle)
           }
           .buttonStyle(BraveFilledButtonStyle(size: .normal))
           .disabled(!acknowledgedWarning)
           Button(action: {
             keyringStore.markOnboardingCompleted()
           }) {
-            Text("Skip") // NSLocalizedString
+            Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
           }
@@ -48,10 +49,10 @@ struct BackupWalletView: View {
       .padding(.vertical)
     }
     .navigationBarBackButtonHidden(true)
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Backup Wallet" // NSLocalizedString
+      vc.navigationItem.backButtonTitle = Strings.Wallet.backupWalletBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))

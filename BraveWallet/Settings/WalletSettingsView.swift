@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
+import struct Shared.Strings
 
 public struct WalletSettingsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -18,24 +19,24 @@ public struct WalletSettingsView: View {
     List {
       Section {
         Button(action: { isShowingResetAlert = true }) {
-          Text("Reset") // NSLocalizedString
+          Text(Strings.Wallet.settingsResetButtonTitle)
             .foregroundColor(.red)
         }
         // iOS 15: .role(.destructive)
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .navigationTitle("Wallet") // NSLocalizedString
+    .navigationTitle("Brave Wallet")
     .navigationBarTitleDisplayMode(.inline)
     // TODO: Needs real copy for whole reset prompt
     .alert(isPresented: $isShowingResetAlert) {
       Alert(
-        title: Text("Reset Wallet"), // NSLocalizedString
-        message: Text("Are you sure you want to reset your wallet? If you have not backed up your recovery prhase you will not be able to restore it at a later time."), // NSLocalizedString
-        primaryButton: .destructive(Text("Reset"), action: { // NSLocalizedString
+        title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
+        message: Text(Strings.Wallet.settingsResetWalletAlertMessage),
+        primaryButton: .destructive(Text(Strings.Wallet.settingsResetWalletAlertButtonTitle), action: {
           keyringStore.reset()
         }),
-        secondaryButton: .cancel(Text("No")) // NSLocalizedString
+        secondaryButton: .cancel(Text(Strings.no))
       )
     }
   }

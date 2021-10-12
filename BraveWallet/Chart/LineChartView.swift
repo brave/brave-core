@@ -177,7 +177,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .offset(x: offset)
         } else {
-          Text("00:00")
+          Text(verbatim: "00:00")
             .hidden()
         }
       }

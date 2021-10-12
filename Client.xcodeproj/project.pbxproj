@@ -336,6 +336,7 @@
 		2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */; };
 		27668489270CD9AA00DF45C5 /* EditUserAssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */; };
 		2766848B270CDA3500DF45C5 /* UserAssetsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */; };
+		276684AE270F6F6000DF45C5 /* WalletStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276684AD270F6F6000DF45C5 /* WalletStrings.swift */; };
 		27676D472555F34D00BC955A /* BraveRewardsStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */; };
 		276A790A244660B100AC9446 /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A7909244660B100AC9446 /* SpringButton.swift */; };
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
@@ -1883,6 +1884,7 @@
 		2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableViewModifier.swift; sourceTree = "<group>"; };
 		27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserAssetsView.swift; sourceTree = "<group>"; };
 		2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAssetsStore.swift; sourceTree = "<group>"; };
+		276684AD270F6F6000DF45C5 /* WalletStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletStrings.swift; sourceTree = "<group>"; };
 		27676D462555F34D00BC955A /* BraveRewardsStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsStatusView.swift; sourceTree = "<group>"; };
 		276A7909244660B100AC9446 /* SpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
@@ -3580,6 +3582,7 @@
 				271F689026EBD27E00AA2A50 /* SwapButton.swift */,
 				271F688026EBD27D00AA2A50 /* TabbedPageViewController.swift */,
 				271F688E26EBD27D00AA2A50 /* WalletTableViewHeaderView.swift */,
+				276684AD270F6F6000DF45C5 /* WalletStrings.swift */,
 				271F683726EBD0E400AA2A50 /* BraveWallet.h */,
 				271F683826EBD0E400AA2A50 /* Info.plist */,
 			);
@@ -7340,6 +7343,7 @@
 				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */,
+				276684AE270F6F6000DF45C5 /* WalletStrings.swift in Sources */,
 				271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */,
 				271F68A826EBD27E00AA2A50 /* PortfolioView.swift in Sources */,
 				277190EA2702512900DC81D5 /* TestStores.swift in Sources */,

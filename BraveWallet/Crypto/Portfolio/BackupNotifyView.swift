@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
+import struct Shared.Strings
 
 struct BackupNotifyView: View {
   var action: () -> Void
@@ -18,7 +19,7 @@ struct BackupNotifyView: View {
     ZStack(alignment: .topTrailing) {
       Button(action: action) {
         HStack {
-          Text("Backup your wallet now to protect your crypto portfolio from loss of access.") // NSLocalizedString
+          Text(Strings.Wallet.backupWalletWarningMessage)
             .font(.subheadline.weight(.semibold))
             .foregroundColor(Color(.braveLabel))
             .fixedSize(horizontal: false, vertical: true)
