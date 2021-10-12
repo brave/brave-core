@@ -6,27 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_UNITTEST_UTIL_H_
 
-#include <string>
-
 namespace ads {
 
 struct CreativeAdNotificationInfo;
 
-CreativeAdNotificationInfo GetCreativeAdNotification();
-
-CreativeAdNotificationInfo GetCreativeAdNotification(const std::string& segment,
-                                                     const double ptr,
-                                                     const int priority);
-
-CreativeAdNotificationInfo GetCreativeAdNotification(
-    const std::string& creative_instance_id,
-    const std::string& segment);
-
-CreativeAdNotificationInfo GetCreativeAdNotificationForAdvertiser(
-    const std::string& advertiser_id);
-
-CreativeAdNotificationInfo GetCreativeAdNotificationForSegment(
-    const std::string& segment);
+CreativeAdNotificationInfo BuildCreativeAdNotification();
 
 }  // namespace ads
 

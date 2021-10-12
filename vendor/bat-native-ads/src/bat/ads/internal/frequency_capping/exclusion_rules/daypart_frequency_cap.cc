@@ -33,6 +33,11 @@ DaypartFrequencyCap::DaypartFrequencyCap() = default;
 
 DaypartFrequencyCap::~DaypartFrequencyCap() = default;
 
+std::string DaypartFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
+
 bool DaypartFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::StringPrintf(

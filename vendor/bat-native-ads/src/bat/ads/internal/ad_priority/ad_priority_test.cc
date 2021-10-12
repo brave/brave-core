@@ -73,32 +73,32 @@ class BatAdsAdPriorityTest : public UnitTestBase {
     UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
   }
 
-  CreativeAdNotificationInfo GetCreativeAdNotification() {
-    CreativeAdNotificationInfo creative_ad_notification;
+  CreativeAdNotificationInfo BuildCreativeAdNotification() {
+    CreativeAdNotificationInfo creative_ad;
 
-    creative_ad_notification.creative_instance_id = base::GenerateGUID();
-    creative_ad_notification.creative_set_id = base::GenerateGUID();
-    creative_ad_notification.campaign_id = base::GenerateGUID();
-    creative_ad_notification.start_at = DistantPast();
-    creative_ad_notification.end_at = DistantFuture();
-    creative_ad_notification.daily_cap = 1;
-    creative_ad_notification.advertiser_id = base::GenerateGUID();
-    creative_ad_notification.priority = 1;
-    creative_ad_notification.ptr = 1.0;
-    creative_ad_notification.per_day = 1;
-    creative_ad_notification.per_week = 1;
-    creative_ad_notification.per_month = 1;
-    creative_ad_notification.total_max = 1;
-    creative_ad_notification.value = 1.0;
-    creative_ad_notification.segment = "untargeted";
-    creative_ad_notification.geo_targets = {"US"};
-    creative_ad_notification.target_url = "https://brave.com";
+    creative_ad.creative_instance_id = base::GenerateGUID();
+    creative_ad.creative_set_id = base::GenerateGUID();
+    creative_ad.campaign_id = base::GenerateGUID();
+    creative_ad.start_at = DistantPast();
+    creative_ad.end_at = DistantFuture();
+    creative_ad.daily_cap = 1;
+    creative_ad.advertiser_id = base::GenerateGUID();
+    creative_ad.priority = 1;
+    creative_ad.ptr = 1.0;
+    creative_ad.per_day = 1;
+    creative_ad.per_week = 1;
+    creative_ad.per_month = 1;
+    creative_ad.total_max = 1;
+    creative_ad.value = 1.0;
+    creative_ad.segment = "untargeted";
+    creative_ad.geo_targets = {"US"};
+    creative_ad.target_url = "https://brave.com";
     CreativeDaypartInfo daypart;
-    creative_ad_notification.dayparts = {daypart};
-    creative_ad_notification.title = "Test Ad Title";
-    creative_ad_notification.body = "Test Ad Body";
+    creative_ad.dayparts = {daypart};
+    creative_ad.title = "Test Ad Title";
+    creative_ad.body = "Test Ad Body";
 
-    return creative_ad_notification;
+    return creative_ad;
   }
 
   void ServeAdForIterations(const int iterations) {
@@ -114,8 +114,8 @@ class BatAdsAdPriorityTest : public UnitTestBase {
     }
   }
 
-  void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications,
+  void Save(const CreativeAdNotificationList& creative_ads) {
+    database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
@@ -124,19 +124,17 @@ class BatAdsAdPriorityTest : public UnitTestBase {
 
 TEST_F(BatAdsAdPriorityTest, PrioritizeDeliveryForSingleAd) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-  creative_ad_notification.priority = 3;
-  creative_ad_notifications.push_back(creative_ad_notification);
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  creative_ad.priority = 3;
+  creative_ads.push_back(creative_ad);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_,
-              ShowNotification(DoesMatchCreativeInstanceId(
-                  creative_ad_notification.creative_instance_id)))
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                     creative_ad.creative_instance_id)))
       .Times(1);
 
   ServeAd();
@@ -157,29 +155,25 @@ TEST_F(BatAdsAdPriorityTest, PrioritizeDeliveryForNoAds) {
 
 TEST_F(BatAdsAdPriorityTest, PrioritizeDeliveryForMultipleAds) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_notification_1 =
-      GetCreativeAdNotification();
-  creative_ad_notification_1.priority = 3;
-  creative_ad_notifications.push_back(creative_ad_notification_1);
+  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  creative_ad_1.priority = 3;
+  creative_ads.push_back(creative_ad_1);
 
-  CreativeAdNotificationInfo creative_ad_notification_2 =
-      GetCreativeAdNotification();
-  creative_ad_notification_2.priority = 2;
-  creative_ad_notifications.push_back(creative_ad_notification_2);
+  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  creative_ad_2.priority = 2;
+  creative_ads.push_back(creative_ad_2);
 
-  CreativeAdNotificationInfo creative_ad_notification_3 =
-      GetCreativeAdNotification();
-  creative_ad_notification_3.priority = 4;
-  creative_ad_notifications.push_back(creative_ad_notification_3);
+  CreativeAdNotificationInfo creative_ad_3 = BuildCreativeAdNotification();
+  creative_ad_3.priority = 4;
+  creative_ads.push_back(creative_ad_3);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_,
-              ShowNotification(DoesMatchCreativeInstanceId(
-                  creative_ad_notification_2.creative_instance_id)))
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                     creative_ad_2.creative_instance_id)))
       .Times(1);
 
   ServeAd();

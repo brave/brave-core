@@ -22,6 +22,8 @@ class DailyCapFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   DailyCapFrequencyCap(const DailyCapFrequencyCap&) = delete;
   DailyCapFrequencyCap& operator=(const DailyCapFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
@@ -33,9 +35,6 @@ class DailyCapFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   bool DoesRespectCap(const AdEventList& ad_events,
                       const CreativeAdInfo& creative_ad);
-
-  AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

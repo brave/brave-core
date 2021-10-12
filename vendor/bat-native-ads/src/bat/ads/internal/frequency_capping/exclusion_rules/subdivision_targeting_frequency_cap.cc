@@ -24,25 +24,15 @@ bool DoesAdSupportSubdivisionTargetingCode(
   const std::string country_code =
       locale::GetCountryCode(subdivision_targeting_code);
 
-  const auto iter =
-      std::find_if(creative_ad.geo_targets.begin(),
-                   creative_ad.geo_targets.end(),
-                   [&subdivision_targeting_code,
-                    &country_code](const std::string& geo_target) {
-                     return geo_target == subdivision_targeting_code ||
-                            geo_target == country_code;
-                   });
-
-  if (iter == creative_ad.geo_targets.end()) {
-    return false;
-  }
-
-  return true;
+  return creative_ad.geo_targets.find(subdivision_targeting_code) !=
+             creative_ad.geo_targets.end() ||
+         creative_ad.geo_targets.find(country_code) !=
+             creative_ad.geo_targets.end();
 }
 
 bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = std::find_if(
-      creative_ad.geo_targets.begin(), creative_ad.geo_targets.end(),
+      creative_ad.geo_targets.cbegin(), creative_ad.geo_targets.cend(),
       [](const std::string& geo_target) {
         const std::vector<std::string> components = base::SplitString(
             geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -66,6 +56,11 @@ SubdivisionTargetingFrequencyCap::SubdivisionTargetingFrequencyCap(
 }
 
 SubdivisionTargetingFrequencyCap::~SubdivisionTargetingFrequencyCap() = default;
+
+std::string SubdivisionTargetingFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
 
 bool SubdivisionTargetingFrequencyCap::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
@@ -97,15 +92,13 @@ bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
     return !DoesAdTargetSubdivision(creative_ad);
   }
 
-  const std::string subdivision_targeting_code =
-      subdivision_targeting_->GetAdsSubdivisionTargetingCode();
-
-  if (subdivision_targeting_code.empty()) {
+  const std::string subdivision_code =
+      subdivision_targeting_->GetSubdivisionCode();
+  if (subdivision_code.empty()) {
     return false;
   }
 
-  return DoesAdSupportSubdivisionTargetingCode(creative_ad,
-                                               subdivision_targeting_code);
+  return DoesAdSupportSubdivisionTargetingCode(creative_ad, subdivision_code);
 }
 
 }  // namespace ads

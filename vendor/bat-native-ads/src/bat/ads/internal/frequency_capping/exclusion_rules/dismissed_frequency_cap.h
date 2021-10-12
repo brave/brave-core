@@ -22,6 +22,8 @@ class DismissedFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   DismissedFrequencyCap(const DismissedFrequencyCap&) = delete;
   DismissedFrequencyCap& operator=(const DismissedFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;

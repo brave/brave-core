@@ -44,7 +44,7 @@ bool AdsPerHourFrequencyCap::DoesRespectCap(
   const base::TimeDelta time_constraint =
       base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
-  const uint64_t cap = settings::GetAdsPerHour();
+  const int cap = settings::GetAdsPerHour();
   if (cap == 0) {
     return false;
   }

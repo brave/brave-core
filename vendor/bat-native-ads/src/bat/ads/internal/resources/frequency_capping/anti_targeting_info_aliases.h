@@ -7,13 +7,13 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_FREQUENCY_CAPPING_ANTI_TARGETING_INFO_ALIASES_H_
 
 #include <map>
+#include <set>
 #include <string>
-#include <vector>
 
 namespace ads {
 namespace resource {
 
-using AntiTargetingList = std::vector<std::string>;
+using AntiTargetingList = std::set<std::string>;
 using AntiTargetingMap = std::map<std::string, AntiTargetingList>;
 
 }  // namespace resource

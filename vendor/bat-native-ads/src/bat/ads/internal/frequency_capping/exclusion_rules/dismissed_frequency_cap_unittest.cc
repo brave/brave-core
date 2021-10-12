@@ -36,15 +36,15 @@ class BatAdsDismissedFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsDismissedFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const AdEventList ad_events;
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -65,9 +65,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed,
@@ -77,8 +77,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -110,27 +110,27 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification, ad,
-                                                 ConfirmationType::kDismissed);
+  const AdEventInfo ad_event_1 = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kDismissed);
+  const AdEventInfo ad_event_2 = GenerateAdEvent(
+      AdType::kNewTabPageAd, creative_ad, ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-                                                 ConfirmationType::kDismissed);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(
+      AdType::kPromotedContentAd, creative_ad, ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_3);
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -151,9 +151,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kDismissed,
@@ -162,8 +162,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -174,7 +174,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -195,9 +195,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kDismissed,
@@ -206,8 +206,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -218,7 +218,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -239,9 +239,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kClicked,
@@ -250,8 +250,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -262,7 +262,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -283,9 +283,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kClicked,
@@ -294,8 +294,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -306,7 +306,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -327,9 +327,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kClicked,
@@ -339,8 +339,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -351,7 +351,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -372,9 +372,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kClicked,
@@ -384,8 +384,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -396,7 +396,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -417,9 +417,9 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.campaign_id = kCampaignIds.at(0);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kClicked,
@@ -429,8 +429,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -441,7 +441,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -462,13 +462,13 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad_1;
-  ad_1.creative_instance_id = kCreativeInstanceId;
-  ad_1.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad_1;
+  creative_ad_1.creative_instance_id = kCreativeInstanceId;
+  creative_ad_1.campaign_id = kCampaignIds.at(0);
 
-  CreativeAdInfo ad_2;
-  ad_2.creative_instance_id = kCreativeInstanceId;
-  ad_2.campaign_id = kCampaignIds.at(1);
+  CreativeAdInfo creative_ad_2;
+  creative_ad_2.creative_instance_id = kCreativeInstanceId;
+  creative_ad_2.campaign_id = kCampaignIds.at(1);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kDismissed,
@@ -477,8 +477,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad_2, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad_2, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -489,7 +489,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -498,13 +498,13 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 TEST_F(BatAdsDismissedFrequencyCapTest,
        AllowAdWithDifferentCampaignIdAfter48Hours) {
   // Arrange
-  CreativeAdInfo ad_1;
-  ad_1.creative_instance_id = kCreativeInstanceId;
-  ad_1.campaign_id = kCampaignIds.at(0);
+  CreativeAdInfo creative_ad_1;
+  creative_ad_1.creative_instance_id = kCreativeInstanceId;
+  creative_ad_1.campaign_id = kCampaignIds.at(0);
 
-  CreativeAdInfo ad_2;
-  ad_2.creative_instance_id = kCreativeInstanceId;
-  ad_2.campaign_id = kCampaignIds.at(1);
+  CreativeAdInfo creative_ad_2;
+  creative_ad_2.creative_instance_id = kCreativeInstanceId;
+  creative_ad_2.campaign_id = kCampaignIds.at(1);
 
   const std::vector<ConfirmationType> confirmation_types = {
       ConfirmationType::kViewed, ConfirmationType::kDismissed,
@@ -513,8 +513,8 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
   AdEventList ad_events;
 
   for (const auto& confirmation_type : confirmation_types) {
-    const AdEventInfo ad_event =
-        GenerateAdEvent(AdType::kAdNotification, ad_2, confirmation_type);
+    const AdEventInfo ad_event = GenerateAdEvent(
+        AdType::kAdNotification, creative_ad_2, confirmation_type);
 
     ad_events.push_back(ad_event);
 
@@ -525,7 +525,7 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

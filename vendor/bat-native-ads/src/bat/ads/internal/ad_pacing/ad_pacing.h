@@ -6,6 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_H_
 
+#include <algorithm>
+#include <iterator>
+
 #include "bat/ads/internal/ad_pacing/ad_pacing_util.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 
@@ -17,14 +20,12 @@ T PaceAds(const T& ads) {
     return {};
   }
 
-  T paced_ads = ads;
+  T paced_ads;
 
-  const auto iter = std::remove_if(paced_ads.begin(), paced_ads.end(),
-                                   [&](const CreativeAdInfo& creative_ad) {
-                                     return ShouldPaceAd(creative_ad);
-                                   });
-
-  paced_ads.erase(iter, paced_ads.end());
+  std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(paced_ads),
+               [&](const CreativeAdInfo& creative_ad) {
+                 return !ShouldPaceAd(creative_ad);
+               });
 
   return paced_ads;
 }

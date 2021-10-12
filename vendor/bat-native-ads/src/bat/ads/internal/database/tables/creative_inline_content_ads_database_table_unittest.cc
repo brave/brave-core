@@ -22,8 +22,8 @@ class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
 
   ~BatAdsCreativeInlineContentAdsDatabaseTableTest() override = default;
 
-  void Save(const CreativeInlineContentAdList& creative_inline_content_ads) {
-    database_table_->Save(creative_inline_content_ads,
+  void Save(const CreativeInlineContentAdList& creative_ads) {
+    database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
@@ -33,10 +33,10 @@ class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveEmptyCreativeInlineContentAds) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads = {};
+  CreativeInlineContentAdList creative_ads = {};
 
   // Act
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Assert
 }
@@ -44,7 +44,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveCreativeInlineContentAds) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -69,7 +69,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -93,23 +93,20 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   // Act
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads =
-      creative_inline_content_ads;
+  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll(
-      [&expected_creative_inline_content_ads](
-          const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
-      });
+  database_table_->GetAll([&expected_creative_ads](
+                              const bool success, const SegmentList& segments,
+                              const CreativeInlineContentAdList& creative_ads) {
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+  });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
@@ -117,7 +114,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Arrange
   database_table_->set_batch_size(2);
 
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -142,7 +139,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -166,7 +163,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   CreativeInlineContentAdInfo info_3;
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
@@ -190,29 +187,26 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.dimensions = "200x100";
   info_3.cta_text = "Call to Action Text 3";
   info_3.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_3);
+  creative_ads.push_back(info_3);
 
   // Act
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads =
-      creative_inline_content_ads;
+  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll(
-      [&expected_creative_inline_content_ads](
-          const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
-      });
+  database_table_->GetAll([&expected_creative_ads](
+                              const bool success, const SegmentList& segments,
+                              const CreativeInlineContentAdList& creative_ads) {
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+  });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        DoNotSaveDuplicateCreativeInlineContentAds) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
@@ -237,32 +231,29 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.dimensions = "200x100";
   info.cta_text = "Call to Action Text";
   info.ptr = 1.0;
-  creative_inline_content_ads.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads =
-      creative_inline_content_ads;
+  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll(
-      [&expected_creative_inline_content_ads](
-          const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
-      });
+  database_table_->GetAll([&expected_creative_ads](
+                              const bool success, const SegmentList& segments,
+                              const CreativeInlineContentAdList& creative_ads) {
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+  });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetForSegmentsAndDimensions) {
   // Arrange
 
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -287,7 +278,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -311,30 +302,27 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads =
-      creative_inline_content_ads;
+  const CreativeInlineContentAdList expected_creative_ads = creative_ads;
 
-  database_table_->GetAll(
-      [&expected_creative_inline_content_ads](
-          const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
-      });
+  database_table_->GetAll([&expected_creative_ads](
+                              const bool success, const SegmentList& segments,
+                              const CreativeInlineContentAdList& creative_ads) {
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
+  });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForCreativeInstanceId) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
@@ -359,33 +347,32 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.dimensions = "200x100";
   info.cta_text = "Call to Action Text";
   info.ptr = 1.0;
-  creative_inline_content_ads.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeInlineContentAdInfo expected_creative_inline_content_ad = info;
+  const CreativeInlineContentAdInfo expected_creative_ad = info;
 
   const std::string creative_instance_id =
       "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
-      [&expected_creative_inline_content_ad](
-          const bool success, const std::string& creative_instance_id,
-          const CreativeInlineContentAdInfo& creative_inline_content_ad) {
+      [&expected_creative_ad](const bool success,
+                              const std::string& creative_instance_id,
+                              const CreativeInlineContentAdInfo& creative_ad) {
         ASSERT_TRUE(success);
-        EXPECT_EQ(expected_creative_inline_content_ad,
-                  creative_inline_content_ad);
+        EXPECT_EQ(expected_creative_ad, creative_ad);
       });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForNonExistentCreativeInstanceId) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
@@ -410,9 +397,9 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.dimensions = "200x100";
   info.cta_text = "Call to Action Text";
   info.ptr = 1.0;
-  creative_inline_content_ads.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
@@ -423,7 +410,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   database_table_->GetForCreativeInstanceId(
       creative_instance_id,
       [](const bool success, const std::string& creative_instance_id,
-         const CreativeInlineContentAdInfo& creative_inline_content_ad) {
+         const CreativeInlineContentAdInfo& creative_ad) {
         EXPECT_FALSE(success);
       });
 }
@@ -431,7 +418,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForEmptySegments) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
@@ -456,32 +443,31 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.dimensions = "200x100";
   info.cta_text = "Call to Action Text";
   info.ptr = 1.0;
-  creative_inline_content_ads.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads = {};
+  const CreativeInlineContentAdList expected_creative_ads = {};
 
   const SegmentList segments = {};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_inline_content_ads](
+      [&expected_creative_ads](
           const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
+          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsForNonExistentCategory) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
@@ -506,32 +492,31 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.dimensions = "200x100";
   info.cta_text = "Call to Action Text";
   info.ptr = 1.0;
-  creative_inline_content_ads.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeInlineContentAdList expected_creative_inline_content_ads = {};
+  const CreativeInlineContentAdList expected_creative_ads = {};
 
   const SegmentList segments = {"technology & computing"};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_inline_content_ads](
+      [&expected_creative_ads](
           const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
+          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsFromMultipleSegments) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -556,7 +541,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -580,7 +565,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   CreativeInlineContentAdInfo info_3;
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
@@ -604,35 +589,34 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_3.dimensions = "200x100";
   info_3.cta_text = "Call to Action Text 3";
   info_3.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_3);
+  creative_ads.push_back(info_3);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  CreativeInlineContentAdList expected_creative_inline_content_ads;
-  expected_creative_inline_content_ads.push_back(info_1);
-  expected_creative_inline_content_ads.push_back(info_2);
+  CreativeInlineContentAdList expected_creative_ads;
+  expected_creative_ads.push_back(info_1);
+  expected_creative_ads.push_back(info_2);
 
   const SegmentList segments = {"technology & computing-software",
                                 "food & drink"};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_inline_content_ads](
+      [&expected_creative_ads](
           const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
+          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetNonExpiredCreativeInlineContentAds) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -657,7 +641,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -681,34 +665,33 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
   // Assert
-  CreativeInlineContentAdList expected_creative_inline_content_ads;
-  expected_creative_inline_content_ads.push_back(info_2);
+  CreativeInlineContentAdList expected_creative_ads;
+  expected_creative_ads.push_back(info_2);
 
   const SegmentList segments = {"food & drink"};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_inline_content_ads](
+      [&expected_creative_ads](
           const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
+          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetCreativeInlineContentAdsMatchingCaseInsensitiveSegments) {
   // Arrange
-  CreativeInlineContentAdList creative_inline_content_ads;
+  CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info_1;
@@ -733,7 +716,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_1.dimensions = "200x100";
   info_1.cta_text = "Call to Action Text 1";
   info_1.ptr = 1.0;
-  creative_inline_content_ads.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeInlineContentAdInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -757,26 +740,25 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info_2.dimensions = "200x100";
   info_2.cta_text = "Call to Action Text 2";
   info_2.ptr = 0.9;
-  creative_inline_content_ads.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_inline_content_ads);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  CreativeInlineContentAdList expected_creative_inline_content_ads;
-  expected_creative_inline_content_ads.push_back(info_1);
+  CreativeInlineContentAdList expected_creative_ads;
+  expected_creative_ads.push_back(info_1);
 
   const SegmentList segments = {"FoOd & DrInK"};
 
   database_table_->GetForSegmentsAndDimensions(
       segments, "200x100",
-      [&expected_creative_inline_content_ads](
+      [&expected_creative_ads](
           const bool success, const SegmentList& segments,
-          const CreativeInlineContentAdList& creative_inline_content_ads) {
+          const CreativeInlineContentAdList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_inline_content_ads,
-                                  creative_inline_content_ads));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 

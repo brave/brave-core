@@ -15,6 +15,11 @@ DislikeFrequencyCap::DislikeFrequencyCap() = default;
 
 DislikeFrequencyCap::~DislikeFrequencyCap() = default;
 
+std::string DislikeFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
+
 bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
     last_message_ =
@@ -38,7 +43,7 @@ bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& creative_ad) {
   }
 
   const auto iter = std::find_if(
-      filtered_ads.begin(), filtered_ads.end(),
+      filtered_ads.cbegin(), filtered_ads.cend(),
       [&creative_ad](const FilteredAdInfo& filtered_ad) {
         return filtered_ad.creative_set_id == creative_ad.creative_set_id;
       });

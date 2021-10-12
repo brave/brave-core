@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 
+#include <set>
 #include <string>
 #include <vector>
 
@@ -28,19 +29,19 @@ struct CreativeAdInfo {
   std::string advertiser_id;
   base::Time start_at;
   base::Time end_at;
-  unsigned int daily_cap = 0;
-  unsigned int priority = 0;
+  int daily_cap = 0;
+  int priority = 0;
   double ptr = 0.0;
   bool conversion = false;
-  unsigned int per_day = 0;
-  unsigned int per_week = 0;
-  unsigned int per_month = 0;
-  unsigned int total_max = 0;
+  int per_day = 0;
+  int per_week = 0;
+  int per_month = 0;
+  int total_max = 0;
   double value = 0.0;
   std::string segment;
   std::string split_test_group;
   std::vector<CreativeDaypartInfo> dayparts;
-  std::vector<std::string> geo_targets;
+  std::set<std::string> geo_targets;
   std::string target_url;
 };
 

@@ -22,6 +22,8 @@ class PerHourFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   PerHourFrequencyCap(const PerHourFrequencyCap&) = delete;
   PerHourFrequencyCap& operator=(const PerHourFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
@@ -31,10 +33,8 @@ class PerHourFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   std::string last_message_;
 
-  bool DoesRespectCap(const AdEventList& ad_events);
-
-  AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& creative_ad) const;
+  bool DoesRespectCap(const AdEventList& ad_events,
+                      const CreativeAdInfo& creative_ad);
 };
 
 }  // namespace ads

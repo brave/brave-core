@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_aliases.h"
-
 namespace ads {
 
 namespace ad_targeting {

@@ -5,14 +5,15 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/new_tab_page_ad_uuid_frequency_cap.h"
 
-#include <cstdint>
+#include <algorithm>
+#include <iterator>
 
 #include "base/strings/stringprintf.h"
 
 namespace ads {
 
 namespace {
-const uint64_t kNewTabPageAdUuidFrequencyCap = 1;
+const int kNewTabPageAdUuidFrequencyCap = 1;
 }  // namespace
 
 NewTabPageAdUuidFrequencyCap::NewTabPageAdUuidFrequencyCap(
@@ -21,14 +22,16 @@ NewTabPageAdUuidFrequencyCap::NewTabPageAdUuidFrequencyCap(
 
 NewTabPageAdUuidFrequencyCap::~NewTabPageAdUuidFrequencyCap() = default;
 
-bool NewTabPageAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+std::string NewTabPageAdUuidFrequencyCap::GetUuid(const AdInfo& ad) const {
+  return ad.uuid;
+}
 
-  if (!DoesRespectCap(filtered_ad_events)) {
+bool NewTabPageAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
+  if (!DoesRespectCap(ad_events_, ad)) {
     last_message_ = base::StringPrintf(
-        "uuid %s has exceeded the "
-        "frequency capping for new tab page ad",
+        "uuid %s has exceeded the new tab page ad frequency cap",
         ad.uuid.c_str());
+
     return true;
   }
 
@@ -39,31 +42,20 @@ std::string NewTabPageAdUuidFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool NewTabPageAdUuidFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
-  if (ad_events.size() >= kNewTabPageAdUuidFrequencyCap) {
+bool NewTabPageAdUuidFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
+                                                  const AdInfo& ad) {
+  const int count = std::count_if(
+      ad_events.cbegin(), ad_events.cend(), [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type == AdType::kNewTabPageAd &&
+               ad_event.uuid == ad.uuid &&
+               ad_event.confirmation_type == ConfirmationType::kViewed;
+      });
+
+  if (count >= kNewTabPageAdUuidFrequencyCap) {
     return false;
   }
 
   return true;
-}
-
-AdEventList NewTabPageAdUuidFrequencyCap::FilterAdEvents(
-    const AdEventList& ad_events,
-    const AdInfo& ad) const {
-  AdEventList filtered_ad_events = ad_events;
-
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
-        return ad_event.uuid != ad.uuid ||
-               ad_event.confirmation_type != ConfirmationType::kViewed ||
-               ad_event.type != AdType::kNewTabPageAd;
-      });
-
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
-
-  return filtered_ad_events;
 }
 
 }  // namespace ads

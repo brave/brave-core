@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 
-#include <vector>
+#include <set>
 
 #include "base/json/json_reader.h"
 #include "bat/ads/ads_client.h"
@@ -102,9 +102,9 @@ bool AntiTargeting::FromJson(const std::string& json) {
       return false;
     }
 
-    std::vector<std::string> sites;
+    std::set<std::string> sites;
     for (const auto& site : iter.value().GetList()) {
-      sites.push_back(site.GetString());
+      sites.insert(site.GetString());
     }
 
     anti_targeting.sites.insert({iter.key(), sites});

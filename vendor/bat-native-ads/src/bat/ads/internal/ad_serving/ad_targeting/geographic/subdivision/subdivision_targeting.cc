@@ -24,7 +24,6 @@
 #include "bat/ads/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_targeting {
@@ -51,14 +50,11 @@ bool SubdivisionTargeting::ShouldAllowForLocale(
   }
 
   const std::string country_code = brave_l10n::GetCountryCode(locale);
-
-  const std::string subdivision_targeting_code =
-      GetAdsSubdivisionTargetingCode();
-
   const SupportedSubdivisionCodesSet subdivision_codes =
       kSupportedSubdivisionCodes.at(country_code);
-  if (subdivision_codes.find(subdivision_targeting_code) ==
-      subdivision_codes.end()) {
+
+  const std::string subdivision_code = GetSubdivisionCode();
+  if (subdivision_codes.find(subdivision_code) == subdivision_codes.end()) {
     return false;
   }
 
@@ -66,11 +62,7 @@ bool SubdivisionTargeting::ShouldAllowForLocale(
 }
 
 bool SubdivisionTargeting::IsDisabled() const {
-  const std::string subdivision_targeting_code =
-      AdsClientHelper::Get()->GetStringPref(
-          prefs::kAdsSubdivisionTargetingCode);
-
-  if (subdivision_targeting_code != "DISABLED") {
+  if (GetLazySubdivisionCode() != "DISABLED") {
     return false;
   }
 
@@ -98,12 +90,8 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
   }
 
   if (!ShouldAutoDetect()) {
-    const std::string subdivision_targeting_code =
-        AdsClientHelper::Get()->GetStringPref(
-            prefs::kAdsSubdivisionTargetingCode);
-
     BLOG(1, "Ads subdivision targeting is enabled for "
-                << subdivision_targeting_code);
+                << GetLazySubdivisionCode());
 
     return;
   }
@@ -120,17 +108,49 @@ void SubdivisionTargeting::MaybeFetchForCurrentLocale() {
   MaybeFetchForLocale(locale);
 }
 
-std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
+std::string SubdivisionTargeting::GetSubdivisionCode() const {
   if (ShouldAutoDetect()) {
-    return AdsClientHelper::Get()->GetStringPref(
-        prefs::kAutoDetectedAdsSubdivisionTargetingCode);
+    return GetLazyAutoDetectedSubdivisionCode();
   }
 
-  return AdsClientHelper::Get()->GetStringPref(
-      prefs::kAdsSubdivisionTargetingCode);
+  return GetLazySubdivisionCode();
+}
+
+void SubdivisionTargeting::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAutoDetectedAdsSubdivisionTargetingCode) {
+    auto_detected_subdivision_code_optional_ =
+        AdsClientHelper::Get()->GetStringPref(
+            prefs::kAutoDetectedAdsSubdivisionTargetingCode);
+  }
+
+  if (path == prefs::kAdsSubdivisionTargetingCode) {
+    subdivision_code_optional_ = AdsClientHelper::Get()->GetStringPref(
+        prefs::kAdsSubdivisionTargetingCode);
+
+    MaybeFetchForCurrentLocale();
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+std::string SubdivisionTargeting::GetLazyAutoDetectedSubdivisionCode() const {
+  if (!auto_detected_subdivision_code_optional_) {
+    auto_detected_subdivision_code_optional_ =
+        AdsClientHelper::Get()->GetStringPref(
+            prefs::kAutoDetectedAdsSubdivisionTargetingCode);
+  }
+
+  return auto_detected_subdivision_code_optional_.value();
+}
+
+std::string SubdivisionTargeting::GetLazySubdivisionCode() const {
+  if (!subdivision_code_optional_) {
+    subdivision_code_optional_ = AdsClientHelper::Get()->GetStringPref(
+        prefs::kAdsSubdivisionTargetingCode);
+  }
+
+  return subdivision_code_optional_.value();
+}
 
 bool SubdivisionTargeting::IsSupportedLocale(const std::string& locale) const {
   const std::string country_code = brave_l10n::GetCountryCode(locale);
@@ -151,11 +171,7 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
 }
 
 bool SubdivisionTargeting::ShouldAutoDetect() const {
-  const std::string subdivision_targeting_code =
-      AdsClientHelper::Get()->GetStringPref(
-          prefs::kAdsSubdivisionTargetingCode);
-
-  if (subdivision_targeting_code != "AUTO") {
+  if (GetLazySubdivisionCode() != "AUTO") {
     return false;
   }
 
@@ -201,10 +217,8 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponse& url_response) {
 
   retry_timer_.Stop();
 
-  const std::string subdivision_targeting_code =
-      GetAdsSubdivisionTargetingCode();
-  BLOG(1, "Automatically detected subdivision targeting code as "
-              << subdivision_targeting_code);
+  const std::string subdivision_code = GetSubdivisionCode();
+  BLOG(1, "Automatically detected subdivision code as " << subdivision_code);
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();

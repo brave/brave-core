@@ -17,6 +17,11 @@ MarkedAsInappropriateFrequencyCap::MarkedAsInappropriateFrequencyCap() =
 MarkedAsInappropriateFrequencyCap::~MarkedAsInappropriateFrequencyCap() =
     default;
 
+std::string MarkedAsInappropriateFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
+
 bool MarkedAsInappropriateFrequencyCap::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
@@ -42,7 +47,7 @@ bool MarkedAsInappropriateFrequencyCap::DoesRespectCap(
   }
 
   const auto iter = std::find_if(
-      flagged_ads.begin(), flagged_ads.end(),
+      flagged_ads.cbegin(), flagged_ads.cend(),
       [&creative_ad](const FlaggedAdInfo& flagged_ad) {
         return flagged_ad.creative_set_id == creative_ad.creative_set_id;
       });

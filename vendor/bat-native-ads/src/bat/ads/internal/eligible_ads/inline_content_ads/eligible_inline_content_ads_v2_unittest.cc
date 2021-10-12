@@ -45,12 +45,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  const CreativeInlineContentAdInfo creative_ad_1 =
-      GetCreativeInlineContentAdForSegment("foo-bar1");
+  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeInlineContentAdInfo creative_ad_2 =
-      GetCreativeInlineContentAdForSegment("foo-bar3");
+  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);
@@ -84,12 +84,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  const CreativeInlineContentAdInfo creative_ad_1 =
-      GetCreativeInlineContentAdForSegment("foo");
+  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeInlineContentAdInfo creative_ad_2 =
-      GetCreativeInlineContentAdForSegment("foo-bar");
+  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);

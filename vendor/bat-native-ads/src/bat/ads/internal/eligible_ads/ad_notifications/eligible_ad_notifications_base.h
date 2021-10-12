@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_BASE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_BASE_H_
 
-#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_aliases.h"
-
 #include "bat/ads/ad_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 
 namespace ads {
 
@@ -32,8 +32,9 @@ class EligibleAdsBase {
       resource::AntiTargeting* anti_targeting_resource);
   virtual ~EligibleAdsBase();
 
-  virtual void GetForUserModel(const ad_targeting::UserModelInfo& user_model,
-                               GetEligibleAdsCallback callback) = 0;
+  virtual void GetForUserModel(
+      const ad_targeting::UserModelInfo& user_model,
+      GetEligibleAdsCallback<CreativeAdNotificationList> callback) = 0;
 
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 

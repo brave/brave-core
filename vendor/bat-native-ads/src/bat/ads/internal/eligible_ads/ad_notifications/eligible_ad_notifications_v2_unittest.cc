@@ -45,12 +45,12 @@ TEST_F(BatAdsEligibleAdNotificationsV2Test, GetAds) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  const CreativeAdNotificationInfo creative_ad_1 =
-      GetCreativeAdNotificationForSegment("foo-bar1");
+  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeAdNotificationInfo creative_ad_2 =
-      GetCreativeAdNotificationForSegment("foo-bar3");
+  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);
@@ -82,12 +82,12 @@ TEST_F(BatAdsEligibleAdNotificationsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  const CreativeAdNotificationInfo creative_ad_1 =
-      GetCreativeAdNotificationForSegment("foo");
+  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
-  const CreativeAdNotificationInfo creative_ad_2 =
-      GetCreativeAdNotificationForSegment("foo-bar");
+  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);

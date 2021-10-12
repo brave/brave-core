@@ -21,7 +21,7 @@ class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {
 
   ~BatAdsCreateConfirmationUrlRequestBuilderTest() override = default;
 
-  ConfirmationInfo GetConfirmationForType(const ConfirmationType type) {
+  ConfirmationInfo BuildConfirmationForType(const ConfirmationType type) {
     ConfirmationInfo confirmation =
         BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
                           "546fe7b0-5047-4f28-a11c-81f14edcf0f6", type);
@@ -53,7 +53,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -87,7 +87,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -121,7 +121,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -155,7 +155,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 
@@ -189,7 +189,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 
@@ -223,7 +223,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 
@@ -257,7 +257,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -291,7 +291,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -325,7 +325,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(true, "release");
 
@@ -359,7 +359,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 
@@ -393,7 +393,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 
@@ -427,7 +427,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   SetSysInfo(sys_info);
 
   const ConfirmationInfo confirmation =
-      GetConfirmationForType(ConfirmationType::kViewed);
+      BuildConfirmationForType(ConfirmationType::kViewed);
 
   SetBuildChannel(false, "beta");
 

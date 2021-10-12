@@ -8,12 +8,14 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "bat/ads/internal/ad_events/ad_event_util.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/eligible_ads/ad_predictor_info.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_features.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 
@@ -26,6 +28,30 @@ constexpr size_t kDoesMatchInterestParentSegmentsIndex = 3;
 constexpr size_t AdLastSeenHoursAgoIndex = 4;
 constexpr size_t kAdvertiserLastSeenHoursAgoIndex = 5;
 constexpr size_t kPriorityIndex = 6;
+
+template <typename T>
+CreativeAdPredictorMap<T> GroupCreativeAdsByCreativeInstanceId(
+    const std::vector<T>& creative_ads) {
+  CreativeAdPredictorMap<T> creative_ad_predictors;
+
+  for (const auto& creative_ad : creative_ads) {
+    const auto iter =
+        creative_ad_predictors.find(creative_ad.creative_instance_id);
+    if (iter != creative_ad_predictors.end()) {
+      iter->second.segments.push_back(creative_ad.segment);
+      continue;
+    }
+
+    AdPredictorInfo<T> ad_predictor;
+    ad_predictor.segments = {creative_ad.segment};
+    ad_predictor.creative_ad = creative_ad;
+
+    creative_ad_predictors.insert(
+        {creative_ad.creative_instance_id, ad_predictor});
+  }
+
+  return creative_ad_predictors;
+}
 
 template <typename T>
 AdPredictorInfo<T> ComputePredictorFeatures(
@@ -60,15 +86,22 @@ AdPredictorInfo<T> ComputePredictorFeatures(
 
   const base::Time now = base::Time::Now();
 
-  const absl::optional<base::Time> last_seen_ad =
+  const absl::optional<base::Time> last_seen_ad_at_optional =
       GetLastSeenAdTime(ad_events, ad_predictor.creative_ad);
-  mutable_ad_predictor.ad_last_seen_hours_ago =
-      last_seen_ad ? (now - last_seen_ad.value()).InHours() : 0;
+  if (last_seen_ad_at_optional) {
+    const base::Time last_seen_ad_at = last_seen_ad_at_optional.value();
+    const base::TimeDelta time_delta = now - last_seen_ad_at;
+    mutable_ad_predictor.ad_last_seen_hours_ago = time_delta.InHours();
+  }
 
-  const absl::optional<base::Time> last_seen_advertiser =
+  const absl::optional<base::Time> last_seen_advertiser_at_optional =
       GetLastSeenAdvertiserTime(ad_events, ad_predictor.creative_ad);
-  mutable_ad_predictor.advertiser_last_seen_hours_ago =
-      last_seen_advertiser ? (now - last_seen_advertiser.value()).InHours() : 0;
+  if (last_seen_advertiser_at_optional) {
+    const base::Time last_seen_advertiser_at =
+        last_seen_advertiser_at_optional.value();
+    const base::TimeDelta time_delta = now - last_seen_advertiser_at;
+    mutable_ad_predictor.advertiser_last_seen_hours_ago = time_delta.InHours();
+  }
 
   return mutable_ad_predictor;
 }
@@ -112,23 +145,24 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
 }
 
 template <typename T>
-std::map<std::string, AdPredictorInfo<T>> ComputePredictorFeaturesAndScores(
-    const std::map<std::string, AdPredictorInfo<T>>& ads,
+CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
+    const CreativeAdPredictorMap<T>& creative_ad_predictors,
     const ad_targeting::UserModelInfo& user_model,
     const AdEventList& ad_events) {
-  std::map<std::string, AdPredictorInfo<T>> ads_with_features;
+  CreativeAdPredictorMap<T> creative_ad_predictors_with_features;
 
-  for (auto& ad : ads) {
-    const AdPredictorInfo<T> ad_predictor = ad.second;
-    AdPredictorInfo<T> mutable_ad_predictor =
+  for (const auto& creative_ad_predictor : creative_ad_predictors) {
+    AdPredictorInfo<T> ad_predictor = creative_ad_predictor.second;
+
+    ad_predictor =
         ComputePredictorFeatures(ad_predictor, user_model, ad_events);
-    mutable_ad_predictor.score = ComputePredictorScore(mutable_ad_predictor);
-    ads_with_features.insert(
-        {mutable_ad_predictor.creative_ad.creative_instance_id,
-         mutable_ad_predictor});
+    ad_predictor.score = ComputePredictorScore(ad_predictor);
+
+    creative_ad_predictors_with_features.insert(
+        {ad_predictor.creative_ad.creative_instance_id, ad_predictor});
   }
 
-  return ads_with_features;
+  return creative_ad_predictors_with_features;
 }
 
 }  // namespace ads

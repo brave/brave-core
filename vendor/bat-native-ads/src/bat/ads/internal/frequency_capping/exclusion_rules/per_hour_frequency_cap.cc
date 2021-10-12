@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
 
-#include <cstdint>
-#include <deque>
+#include <algorithm>
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
@@ -16,7 +15,7 @@
 namespace ads {
 
 namespace {
-const uint64_t kPerHourFrequencyCap = 1;
+const int kPerHourFrequencyCap = 1;
 }  // namespace
 
 PerHourFrequencyCap::PerHourFrequencyCap(const AdEventList& ad_events)
@@ -24,13 +23,15 @@ PerHourFrequencyCap::PerHourFrequencyCap(const AdEventList& ad_events)
 
 PerHourFrequencyCap::~PerHourFrequencyCap() = default;
 
-bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
-  const AdEventList filtered_ad_events =
-      FilterAdEvents(ad_events_, creative_ad);
+std::string PerHourFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_instance_id;
+}
 
-  if (!DoesRespectCap(filtered_ad_events)) {
+bool PerHourFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  if (!DoesRespectCap(ad_events_, creative_ad)) {
     last_message_ = base::StringPrintf(
-        "creativeInstanceId %s has exceeded the frequency capping for perHour",
+        "creativeInstanceId %s has exceeded the perHour frequency cap",
         creative_ad.creative_instance_id.c_str());
 
     return true;
@@ -43,34 +44,28 @@ std::string PerHourFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
-  const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
+bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
+                                         const CreativeAdInfo& creative_ad) {
+  const base::Time now = base::Time::Now();
 
   const base::TimeDelta time_constraint =
       base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
-  return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
-                                                       kPerHourFrequencyCap);
-}
-
-AdEventList PerHourFrequencyCap::FilterAdEvents(
-    const AdEventList& ad_events,
-    const CreativeAdInfo& creative_ad) const {
-  AdEventList filtered_ad_events = ad_events;
-
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&creative_ad](const AdEventInfo& ad_event) {
-        return (ad_event.type != AdType::kAdNotification &&
-                ad_event.type != AdType::kInlineContentAd) ||
-               ad_event.creative_instance_id !=
-                   creative_ad.creative_instance_id ||
-               ad_event.confirmation_type != ConfirmationType::kServed;
+  const int count = std::count_if(
+      ad_events.cbegin(), ad_events.cend(),
+      [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
+        return ad_event.confirmation_type == ConfirmationType::kServed &&
+               ad_event.creative_instance_id ==
+                   creative_ad.creative_instance_id &&
+               now - ad_event.created_at < time_constraint &&
+               DoesAdTypeSupportFrequencyCapping(ad_event.type);
       });
 
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
+  if (count >= kPerHourFrequencyCap) {
+    return false;
+  }
 
-  return filtered_ad_events;
+  return true;
 }
 
 }  // namespace ads

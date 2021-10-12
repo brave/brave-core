@@ -37,7 +37,7 @@ bool NewTabPageAdsPerHourFrequencyCap::DoesRespectCap(
   const base::TimeDelta time_constraint =
       base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
-  const uint64_t cap = features::GetMaximumNewTabPageAdsPerHour();
+  const int cap = features::GetMaximumNewTabPageAdsPerHour();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);

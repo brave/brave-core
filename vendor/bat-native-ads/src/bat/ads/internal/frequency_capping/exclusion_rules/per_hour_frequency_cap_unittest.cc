@@ -26,14 +26,14 @@ class BatAdsPerHourFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsPerHourFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
 
   const AdEventList ad_events;
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -41,13 +41,13 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
 
 TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -55,7 +55,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -63,28 +63,28 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
 
 TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1HourForMultipleTypes) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event_1 = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_1);
 
-  const AdEventInfo ad_event_2 =
-      GenerateAdEvent(AdType::kNewTabPageAd, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event_2 = GenerateAdEvent(
+      AdType::kNewTabPageAd, creative_ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = GenerateAdEvent(AdType::kPromotedContentAd, ad,
-                                                 ConfirmationType::kServed);
+  const AdEventInfo ad_event_3 = GenerateAdEvent(
+      AdType::kPromotedContentAd, creative_ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_3);
 
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -92,13 +92,13 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1HourForMultipleTypes) {
 
 TEST_F(BatAdsPerHourFrequencyCapTest, DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
@@ -106,7 +106,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, DoNotAllowTheSameAdWithin1Hour) {
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

@@ -6,12 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EXCLUSION_RULES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EXCLUSION_RULES_H_
 
-#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
+#include "bat/ads/internal/ads/exclusion_rules_base.h"
 
 namespace ads {
-
-struct CreativeAdInfo;
 
 namespace ad_targeting {
 namespace geographic {
@@ -26,23 +23,16 @@ class AntiTargeting;
 namespace inline_content_ads {
 namespace frequency_capping {
 
-class ExclusionRules final {
+class ExclusionRules final : public ExclusionRulesBase {
  public:
   ExclusionRules(
+      const AdEventList& ad_events,
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource,
-      const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
-  ~ExclusionRules();
-
-  bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad) const;
+  ~ExclusionRules() override;
 
  private:
-  ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;
-  resource::AntiTargeting* anti_targeting_resource_;
-  AdEventList ad_events_;
-  BrowsingHistoryList browsing_history_;
-
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
 };

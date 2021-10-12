@@ -26,12 +26,12 @@ class BatAdsMarkedToNoLongerReceiveFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, AllowAd) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.segment = kSegment;
+  CreativeAdInfo creative_ad;
+  creative_ad.segment = kSegment;
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -39,15 +39,15 @@ TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, AllowAd) {
 
 TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest, DoNotAllowAd) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.segment = kSegment;
+  CreativeAdInfo creative_ad;
+  creative_ad.segment = kSegment;
 
-  Client::Get()->ToggleAdOptOutAction(ad.segment,
+  Client::Get()->ToggleAdOptOutAction(creative_ad.segment,
                                       CategoryContentActionType::kNone);
 
   // Act
   MarkedToNoLongerReceiveFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

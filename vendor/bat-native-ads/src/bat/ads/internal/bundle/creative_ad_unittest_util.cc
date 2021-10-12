@@ -11,7 +11,7 @@
 
 namespace ads {
 
-CreativeAdInfo GetCreativeAd() {
+CreativeAdInfo BuildCreativeAd() {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id = base::GenerateGUID();

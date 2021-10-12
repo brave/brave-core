@@ -8,7 +8,6 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
-#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_aliases.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_base.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
@@ -25,8 +24,6 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-struct AdInfo;
-
 namespace ad_notifications {
 
 class EligibleAdsV2 final : public EligibleAdsBase {
@@ -36,20 +33,21 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       resource::AntiTargeting* anti_targeting);
   ~EligibleAdsV2() override;
 
-  void GetForUserModel(const ad_targeting::UserModelInfo& user_model,
-                       GetEligibleAdsCallback callback) override;
+  void GetForUserModel(
+      const ad_targeting::UserModelInfo& user_model,
+      GetEligibleAdsCallback<CreativeAdNotificationList> callback) override;
 
  private:
-  void GetEligibleAds(const ad_targeting::UserModelInfo& user_model,
-                      const AdEventList& ad_events,
-                      const BrowsingHistoryList& browsing_history,
-                      GetEligibleAdsCallback callback) const;
-
-  CreativeAdNotificationList ApplyFrequencyCapping(
-      const CreativeAdNotificationList& creative_ads,
-      const AdInfo& last_served_ad,
+  void GetEligibleAds(
+      const ad_targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history) const;
+      const BrowsingHistoryList& browsing_history,
+      GetEligibleAdsCallback<CreativeAdNotificationList> callback);
+
+  CreativeAdNotificationList FilterCreativeAds(
+      const CreativeAdNotificationList& creative_ads,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history);
 };
 
 }  // namespace ad_notifications

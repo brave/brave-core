@@ -12,7 +12,7 @@ namespace ads {
 
 struct CreativeAdInfo;
 
-CreativeAdInfo GetCreativeAd();
+CreativeAdInfo BuildCreativeAd();
 
 }  // namespace ads
 

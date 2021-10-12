@@ -24,6 +24,8 @@ class MarkedToNoLongerReceiveFrequencyCap final
   MarkedToNoLongerReceiveFrequencyCap& operator=(
       const MarkedToNoLongerReceiveFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;

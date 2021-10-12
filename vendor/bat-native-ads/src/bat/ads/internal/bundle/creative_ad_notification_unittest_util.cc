@@ -11,56 +11,12 @@
 
 namespace ads {
 
-CreativeAdNotificationInfo GetCreativeAdNotification() {
-  const CreativeAdInfo creative_ad = GetCreativeAd();
+CreativeAdNotificationInfo BuildCreativeAdNotification() {
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
   CreativeAdNotificationInfo creative_ad_notification(creative_ad);
 
   creative_ad_notification.title = "Test Ad Title";
   creative_ad_notification.body = "Test Ad Body";
-
-  return creative_ad_notification;
-}
-
-CreativeAdNotificationInfo GetCreativeAdNotification(const std::string& segment,
-                                                     const double ptr,
-                                                     const int priority) {
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-  creative_ad_notification.priority = priority;
-  creative_ad_notification.ptr = ptr;
-  creative_ad_notification.segment = segment;
-
-  return creative_ad_notification;
-}
-
-CreativeAdNotificationInfo GetCreativeAdNotification(
-    const std::string& creative_instance_id,
-    const std::string& segment) {
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-
-  creative_ad_notification.creative_instance_id = creative_instance_id;
-  creative_ad_notification.segment = segment;
-
-  return creative_ad_notification;
-}
-
-CreativeAdNotificationInfo GetCreativeAdNotificationForAdvertiser(
-    const std::string& advertiser_id) {
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-
-  creative_ad_notification.advertiser_id = advertiser_id;
-
-  return creative_ad_notification;
-}
-
-CreativeAdNotificationInfo GetCreativeAdNotificationForSegment(
-    const std::string& segment) {
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-
-  creative_ad_notification.segment = segment;
 
   return creative_ad_notification;
 }

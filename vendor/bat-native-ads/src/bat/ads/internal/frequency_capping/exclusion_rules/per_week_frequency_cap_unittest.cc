@@ -26,15 +26,15 @@ class BatAdsPerWeekFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 2;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 2;
 
   const AdEventList ad_events;
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -42,15 +42,15 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfThereIsNoAdsHistory) {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfZero) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 0;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 0;
 
   const AdEventList ad_events;
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -58,20 +58,20 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfZero) {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 2;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 2;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -79,14 +79,14 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Week) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 2;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 2;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -95,7 +95,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Week) {
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -103,14 +103,14 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Week) {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Week) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 2;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 2;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -119,7 +119,7 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Week) {
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -127,21 +127,21 @@ TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Week) {
 
 TEST_F(BatAdsPerWeekFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_week = 2;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.per_week = 2;
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event =
-      GenerateAdEvent(AdType::kAdNotification, ad, ConfirmationType::kServed);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
 
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
   // Act
   PerWeekFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

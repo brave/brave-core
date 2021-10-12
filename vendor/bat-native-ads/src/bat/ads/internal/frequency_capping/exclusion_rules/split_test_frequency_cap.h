@@ -21,6 +21,8 @@ class SplitTestFrequencyCap : public ExclusionRule<CreativeAdInfo> {
   SplitTestFrequencyCap(const SplitTestFrequencyCap&) = delete;
   SplitTestFrequencyCap& operator=(const SplitTestFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;

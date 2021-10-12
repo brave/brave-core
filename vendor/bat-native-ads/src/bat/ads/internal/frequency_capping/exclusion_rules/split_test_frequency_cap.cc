@@ -30,10 +30,15 @@ SplitTestFrequencyCap::SplitTestFrequencyCap() = default;
 
 SplitTestFrequencyCap::~SplitTestFrequencyCap() = default;
 
+std::string SplitTestFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
+
 bool SplitTestFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not associated with advertiser split "
+        "creativeSetId %s excluded as not associated with an advertiser split "
         "test group",
         creative_ad.creative_set_id.c_str());
 
