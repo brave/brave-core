@@ -4,7 +4,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createAction } from 'redux-act'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
+import {
+  AccountPayloadType,
+  ShowConnectToSitePayload,
+  EthereumChainPayload,
+  EthereumChainRequestPayload,
+  SignMessagePayload,
+  SignMessageProcessedPayload
+} from '../constants/action_types'
 import { SwapErrorResponse, SwapResponse } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
@@ -25,3 +32,5 @@ export const navigateTo = createAction<string>('navigateTo')
 export const setPanelSwapQuote = createAction<SwapResponse>('setPanelSwapQuote')
 export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('setPanelSwapError')
 export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')
+export const signMessage = createAction<SignMessagePayload>('signMessage')
+export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
