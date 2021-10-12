@@ -20,6 +20,7 @@
 namespace ledger {
 
 extern type::Environment _environment;
+extern int gemini_retries;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_interval;  // minutes

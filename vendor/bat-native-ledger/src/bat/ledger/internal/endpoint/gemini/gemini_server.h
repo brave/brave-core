@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/endpoint/gemini/get_transaction/get_transaction_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_account/post_account_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_balance/post_balance_gemini.h"
+#include "bat/ledger/internal/endpoint/gemini/post_cancel_transaction/post_cancel_transaction_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_oauth/post_oauth_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_recipient_id/post_recipient_id_gemini.h"
 #include "bat/ledger/internal/endpoint/gemini/post_transaction/post_transaction_gemini.h"
@@ -32,6 +33,8 @@ class GeminiServer {
 
   gemini::PostBalance* post_balance() const;
 
+  gemini::PostCancelTransaction* post_cancel_transaction() const;
+
   gemini::PostOauth* post_oauth() const;
 
   gemini::PostRecipientId* post_recipient_id() const;
@@ -42,6 +45,7 @@ class GeminiServer {
   std::unique_ptr<gemini::GetTransaction> get_transaction_;
   std::unique_ptr<gemini::PostAccount> post_account_;
   std::unique_ptr<gemini::PostBalance> post_balance_;
+  std::unique_ptr<gemini::PostCancelTransaction> post_cancel_transaction_;
   std::unique_ptr<gemini::PostOauth> post_oauth_;
   std::unique_ptr<gemini::PostRecipientId> post_recipient_id_;
   std::unique_ptr<gemini::PostTransaction> post_transaction_;

@@ -13,6 +13,7 @@ namespace ledger {
 
 type::Environment _environment = type::Environment::PRODUCTION;
 
+int gemini_retries = 3;
 bool is_debug = false;
 bool is_testing = false;
 int reconcile_interval = 0;  // minutes
