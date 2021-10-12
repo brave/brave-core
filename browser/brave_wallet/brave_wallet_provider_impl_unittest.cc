@@ -647,7 +647,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   EXPECT_TRUE(error_message.empty());
 
   // User reject request
-  SignMessage(false, addresses[0], "0x1234", &signature, &error, &error_message);
+  SignMessage(false, addresses[0], "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
   EXPECT_EQ(error_message,
