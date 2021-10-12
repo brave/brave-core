@@ -16,6 +16,8 @@ import PanelTab from './panel-tab'
 import ConnectHardwareWalletPanel from './connect-hardware-wallet-panel'
 import TransactionDetailBox from './transaction-box'
 import EditGas from './edit-gas'
+import SitePermissions from './site-permissions-panel'
+import ConnectedAccountItem from './connected-account-item'
 import { NavButton } from './buttons'
 
 export {
@@ -37,5 +39,7 @@ export {
   PanelTab,
   TransactionDetailBox,
   ConnectHardwareWalletPanel,
-  EditGas
+  EditGas,
+  SitePermissions,
+  ConnectedAccountItem
 }

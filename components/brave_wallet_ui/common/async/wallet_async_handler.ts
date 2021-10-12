@@ -15,7 +15,8 @@ import {
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
   SwapParamsPayloadType,
-  UpdateUnapprovedTransactionGasFieldsType
+  UpdateUnapprovedTransactionGasFieldsType,
+  RemoveSitePermissionPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -208,6 +209,20 @@ async function refreshWalletInfo (store: Store) {
     }
   }))
   store.dispatch(WalletActions.setTransactionList(getTransactions))
+
+  // Get a list of accounts with permissions of the active origin
+  const accounts = state.accounts
+  const origin = state.activeOrigin
+  const getAllPermissions = await Promise.all(accounts.map(async (account) => {
+    const result = await braveWalletService.hasEthereumPermission(origin, account.address)
+    if (result.hasPermission) {
+      return account
+    } else {
+      return
+    }
+  }))
+  const accountsWithPermission: (WalletAccountType | undefined)[] = getAllPermissions.filter((account) => account !== undefined)
+  store.dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
 }
 
 handler.on(WalletActions.initialize.getType(), async (store) => {
@@ -215,7 +230,6 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   const origin = await braveWalletService.getActiveOrigin()
   store.dispatch(WalletActions.activeOriginChanged(origin))
-
   await refreshWalletInfo(store)
 })
 
@@ -633,6 +647,12 @@ export const getERC20Allowance = (contractAddress: string, ownerAddress: string,
     }
   })
 }
+
+handler.on(WalletActions.removeSitePermission.getType(), async (store, payload: RemoveSitePermissionPayloadType) => {
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  await braveWalletService.resetEthereumPermission(payload.origin, payload.account)
+  await refreshWalletInfo(store)
+})
 
 export default handler.middleware
 

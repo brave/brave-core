@@ -6,15 +6,18 @@ import { StyledWrapper, FavIcon, URLText, PanelTitle } from './style'
 
 export interface Props {
   url: string
+  hideTitle?: boolean
 }
 
 function ConnectHeader (props: Props) {
-  const { url } = props
+  const { url, hideTitle } = props
   return (
     <StyledWrapper>
       <FavIcon src={`chrome://favicon/size/64@1x/${url}`} />
       <URLText>{url}</URLText>
-      <PanelTitle>{getLocale('braveWalletConnectWithSiteHeaderTitle')}</PanelTitle>
+      {!hideTitle &&
+        <PanelTitle>{getLocale('braveWalletConnectWithSiteHeaderTitle')}</PanelTitle>
+      }
     </StyledWrapper>
   )
 }

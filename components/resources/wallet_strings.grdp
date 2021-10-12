@@ -232,6 +232,9 @@
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTIONS" desc="Confirm transaction panel transactions label">transactions</message>
     <message name="IDS_BRAVE_WALLET_PANEL_TITLE" desc="Brave Wallet panel title">Brave Wallet</message>
     <message name="IDS_BRAVE_WALLET_PANEL_CONNECTED" desc="Brave Wallet panel connected status">Connected</message>
+    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_TITLE" desc="Site Permissions panel title">Site permissions</message>
+    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_ACCOUNTS" desc="Site Permissions panel accounts connected">accounts connected</message>
+    <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_DISCONNECT" desc="Site Permissions panel disconnect from site">Disconnect</message>
     <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Not connected</message>
     <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
     <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>

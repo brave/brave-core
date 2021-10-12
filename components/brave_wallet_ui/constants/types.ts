@@ -63,6 +63,11 @@ export interface RPCResponseType {
   transactions: RPCTransactionType[]
 }
 
+export interface PanelTitleObjectType {
+  title: string
+  id: PanelTypes
+}
+
 export type PanelTypes =
   | 'main'
   | 'buy'
@@ -79,6 +84,7 @@ export type PanelTypes =
   | 'connectHardwareWallet'
   | 'addEthereumChain'
   | 'approveTransaction'
+  | 'sitePermissions'
 
 export type NavTypes =
   | 'crypto'
@@ -178,12 +184,12 @@ export interface WalletState {
   defaultWallet: DefaultWallet
   activeOrigin: string
   gasEstimates?: GasEstimation
+  connectedAccounts: WalletAccountType[]
 }
 
 export interface PanelState {
   hasInitialized: boolean
-  isConnected: boolean
-  connectedSiteOrigin: string
+  connectToSiteOrigin: string
   selectedPanel: PanelTypes
   panelTitle: string
   tabId: number
@@ -873,3 +879,5 @@ export enum WalletRoutes {
   Backup = '/crypto/backup-wallet',
   CryptoPage = '/crypto/:category/:id?'
 }
+
+export const WalletOrigin = 'chrome://wallet/'

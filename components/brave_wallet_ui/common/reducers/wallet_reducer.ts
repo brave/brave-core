@@ -31,7 +31,8 @@ import {
   TransactionStatusChanged,
   ActiveOriginChanged,
   IsEip1559Changed,
-  InitializedPayloadType
+  InitializedPayloadType,
+  SitePermissionsPayloadType
 } from '../constants/action_types'
 import { convertMojoTimeToJS } from '../../utils/mojo-time'
 import * as WalletActions from '../actions/wallet_actions'
@@ -71,7 +72,8 @@ const defaultState: WalletState = {
   addUserAssetError: false,
   defaultWallet: DefaultWallet.BraveWallet,
   activeOrigin: '',
-  gasEstimates: undefined
+  gasEstimates: undefined,
+  connectedAccounts: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -358,6 +360,13 @@ reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) =
   return {
     ...state,
     gasEstimates: payload
+  }
+})
+
+reducer.on(WalletActions.setSitePermissions, (state: any, payload: SitePermissionsPayloadType) => {
+  return {
+    ...state,
+    connectedAccounts: payload.accounts
   }
 })
 

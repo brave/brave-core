@@ -9,7 +9,8 @@ import {
   SignPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel,
-  ConnectHardwareWalletPanel
+  ConnectHardwareWalletPanel,
+  SitePermissions
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -44,6 +45,7 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
+import { PanelTitles } from '../options/panel-titles'
 import './locale'
 export default {
   title: 'Wallet/Extension/Panels',
@@ -289,7 +291,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
@@ -351,16 +352,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     }
   }
 
-  const toggleConnected = () => {
-    setWalletConnected(!walletConnected)
-  }
-
   const getTitle = (path: PanelTypes) => {
-    if (path === 'networks') {
-      setPanelTitle('Select Network')
-    } else {
-      setPanelTitle(path)
-    }
+    const title = PanelTitles().find((title) => path === title.id)
+    setPanelTitle(title ? title.title : '')
   }
 
   const navigateTo = (path: PanelTypes) => {
@@ -425,6 +419,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will navigate to full wallet restore page')
   }
 
+  const onDisconnectFromOrigin = (origin: string, address: string) => {
+    console.log(`Will disconnect ${address} from ${origin}`)
+  }
+
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
@@ -441,11 +439,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
             <ConnectedPanel
               selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}
-              isConnected={walletConnected}
-              connectAction={toggleConnected}
+              isConnected={true}
               navAction={navigateTo}
               onLockWallet={onLockWallet}
               onOpenSettings={onOpenSettings}
+              activeOrigin=''
             />
           ) : (
             <>
@@ -514,6 +512,13 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         buyAmount={buyAmount}
                         selectedNetwork={selectedNetwork}
                         networkList={[]}
+                      />
+                    }
+                    {selectedPanel === 'sitePermissions' &&
+                      <SitePermissions
+                        siteURL='https://app.uniswap.org'
+                        onDisconnect={onDisconnectFromOrigin}
+                        connectedAccounts={accounts}
                       />
                     }
                   </ScrollContainer>

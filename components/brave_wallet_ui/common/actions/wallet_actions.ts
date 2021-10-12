@@ -17,7 +17,9 @@ import {
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
-  UpdateUnapprovedTransactionGasFieldsType
+  UpdateUnapprovedTransactionGasFieldsType,
+  SitePermissionsPayloadType,
+  RemoveSitePermissionPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -90,3 +92,5 @@ export const refreshGasEstimates = createAction('refreshGasEstimates')
 export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
+export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
+export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')

@@ -10,7 +10,8 @@ import {
   TransactionInfo,
   TokenInfo,
   AccountAssetOptionType,
-  SlippagePresetObjectType
+  SlippagePresetObjectType,
+  WalletAccountType
 } from '../../constants/types'
 
 export type InitializedPayloadType = {
@@ -89,4 +90,13 @@ export type UpdateUnapprovedTransactionGasFieldsType = {
 
 export type DefaultWalletChanged = {
   defaultWallet: DefaultWallet
+}
+
+export type SitePermissionsPayloadType = {
+  accounts: (WalletAccountType | undefined)[]
+}
+
+export type RemoveSitePermissionPayloadType = {
+  origin: string,
+  account: string
 }
