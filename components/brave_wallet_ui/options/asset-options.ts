@@ -45,7 +45,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       logo: `chrome://erc-token-images/usdc.svg`,
       isErc20: true,
       isErc721: false,
-      decimals: 18
+      decimals: 6
     },
     assetBalance: '0',
     fiatBalance: '0'
