@@ -50,6 +50,7 @@ public class BraveClassAdapter {
         chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
         chain = new BraveTabUiFeatureUtilitiesClassAdapter(chain);
+        chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveThemeUtilsClassAdapter(chain);
         chain = new BraveTileViewClassAdapter(chain);
