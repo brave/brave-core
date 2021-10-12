@@ -8,31 +8,32 @@ package org.chromium.chrome.browser.crypto_wallet.model;
 import org.chromium.brave_wallet.mojom.ErcToken;
 
 public class WalletListItemModel {
-    private int icon;
-    private String title;
-    private String subTitle;
-    private String text1;
-    private String text2;
+    private int mIcon;
+    private String mTitle;
+    private String mSubTitle;
+    private String mText1;
+    private String mText2;
     private ErcToken mErcToken;
     private boolean mIsImportedAccount;
+    private boolean mIsUserSelected;
 
     public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
             boolean isImportedAccount) {
-        this.icon = icon;
-        this.title = title;
-        this.subTitle = subTitle;
-        this.text1 = text1;
-        this.text2 = text2;
-        this.mIsImportedAccount = isImportedAccount;
+        mIcon = icon;
+        mTitle = title;
+        mSubTitle = subTitle;
+        mText1 = text1;
+        mText2 = text2;
+        mIsImportedAccount = isImportedAccount;
     }
 
     public WalletListItemModel(
             int icon, String title, String subTitle, String text1, String text2) {
-        this.icon = icon;
-        this.title = title;
-        this.subTitle = subTitle;
-        this.text1 = text1;
-        this.text2 = text2;
+        mIcon = icon;
+        mTitle = title;
+        mSubTitle = subTitle;
+        mText1 = text1;
+        mText2 = text2;
     }
 
     public void setErcToken(ErcToken ercToken) {
@@ -52,22 +53,30 @@ public class WalletListItemModel {
     }
 
     public int getIcon() {
-        return icon;
+        return mIcon;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getSubTitle() {
-        return subTitle;
+        return mSubTitle;
     }
 
     public String getText1() {
-        return text1;
+        return mText1;
     }
 
     public String getText2() {
-        return text2;
+        return mText2;
+    }
+
+    public boolean getIsUserSelected() {
+        return mIsUserSelected;
+    }
+
+    public void setIsUserSelected(boolean isUserSelected) {
+        mIsUserSelected = isUserSelected;
     }
 }

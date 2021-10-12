@@ -174,9 +174,16 @@ public class PortfolioFragment
         setUpCoinList(view);
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
+            // TODO(AlexeyBarabash): get current network from EthJsonRpcController ?
+            String chainName = mSpinner.getSelectedItem().toString();
+            String chainId = Utils.getNetworkConst(getActivity(), chainName);
+
             EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                     EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                             WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
+
+            bottomSheetDialogFragment.setChainId(chainId);
+
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });
