@@ -160,8 +160,8 @@ void BraveBrowserMainParts::PreShutdown() {
 
 void BraveBrowserMainParts::PreProfileInit() {
   ChromeBrowserMainParts::PreProfileInit();
-#if !defined(OS_ANDROID)
   auto* command_line = base::CommandLine::ForCurrentProcess();
+#if !defined(OS_ANDROID)
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
     if (!command_line->HasSwitch(switches::kDisableSync))
@@ -180,9 +180,8 @@ void BraveBrowserMainParts::PreProfileInit() {
     command_line->AppendSwitchASCII(
         translate::switches::kTranslateSecurityOrigin,
         kBraveTranslateOriginURL);
-    command_line->AppendSwitchASCII(
-        translate::switches::kTranslateScriptURL,
-        kBraveTranslateScriptURL);
+    command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
+                                    kBraveTranslateScriptURL);
   }
 }
 

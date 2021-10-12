@@ -1,5 +1,5 @@
-import("//build/buildflag_header.gni")
 import("//brave/components/translate/core/browser/buildflags.gni")
+import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -11,15 +11,11 @@ buildflag_header("buildflags") {
 
 source_set("browser") {
   sources = [
-    "brave_translate_language_filter.cc",
-    "brave_translate_language_filter.h",
     "brave_translate_features.cc",
     "brave_translate_features.h",
+    "brave_translate_language_filter.cc",
+    "brave_translate_language_filter.h",
   ]
-  deps = [
-    "//base",
-  ]
-  public_deps = [
-    ":buildflags",
-  ]
+  deps = [ "//base" ]
+  public_deps = [ ":buildflags" ]
 }
