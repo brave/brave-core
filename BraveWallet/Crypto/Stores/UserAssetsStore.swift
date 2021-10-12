@@ -6,6 +6,19 @@
 import Foundation
 import BraveCore
 
+extension BraveWallet.ERCToken {
+  static let eth: BraveWallet.ERCToken = .init(
+    contractAddress: "",
+    name: "Ethereum",
+    logo: "eth.svg",
+    isErc20: false,
+    isErc721: false,
+    symbol: "ETH",
+    decimals: 18,
+    visible: false
+  )
+}
+
 public class AssetStore: ObservableObject, Equatable {
   @Published var token: BraveWallet.ERCToken
   @Published var isVisible: Bool {
@@ -74,7 +87,8 @@ public class UserAssetsStore: ObservableObject {
   private func updateSelectedAssets(_ chainId: String) {
     walletService.userAssets(chainId) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
-      tokenRegistry.allTokens { allTokens in
+      tokenRegistry.allTokens { registryTokens in
+        let allTokens = registryTokens + [.eth]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
