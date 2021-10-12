@@ -10,7 +10,7 @@ namespace blink {
 void AdjustedSetIsolatedWorldInfo(int32_t world_id,
                                   const blink::WebIsolatedWorldInfo& info) {
   blink::WebIsolatedWorldInfo new_info(info);
-  // Limit all network requst to the security origin.
+  // Limit all network requests to the security origin.
   new_info.content_security_policy =
       "default-src 'self' 'unsafe-eval' 'unsafe-inline'";
   blink::SetIsolatedWorldInfo(world_id, new_info);
