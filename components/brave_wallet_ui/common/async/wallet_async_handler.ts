@@ -553,8 +553,7 @@ export const fetchSwapQuoteFactory = (
         to,
         data,
         value,
-        estimatedGas,
-        gasPrice
+        estimatedGas
       } = quote.response
 
       const params = {
@@ -562,7 +561,6 @@ export const fetchSwapQuoteFactory = (
         to,
         value: toWeiHex(value, 0),
         gas: toWeiHex(estimatedGas, 0),
-        gasPrice: toWeiHex(gasPrice, 0),
         data: hexStrToNumberArray(data)
       }
 

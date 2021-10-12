@@ -92,6 +92,8 @@ export default function useSwap (
       return new BigNumber('0')
     }
 
+    // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
+    // gasPrice as a fee-ceiling for validation of inputs.
     const { gasPrice, gas } = quote
     const gasPriceBN = new BigNumber(gasPrice)
     const gasBN = new BigNumber(gas)
