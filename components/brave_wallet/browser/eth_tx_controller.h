@@ -65,6 +65,12 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void MakeERC20ApproveData(const std::string& to_address,
                             const std::string& amount,
                             MakeERC20ApproveDataCallback) override;
+
+  void MakeERC721TransferFromData(const std::string& from,
+                                  const std::string& to,
+                                  const std::string& token_id,
+                                  MakeERC721TransferFromDataCallback) override;
+
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
 
@@ -141,8 +147,8 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                       AddUnapprovedTransactionCallback callback,
                       mojom::GasEstimation1559Ptr gas_estimation);
 
-  EthJsonRpcController* rpc_controller_;   // NOT OWNED
-  KeyringController* keyring_controller_;  // NOT OWNED
+  EthJsonRpcController* rpc_controller_;          // NOT OWNED
+  KeyringController* keyring_controller_;         // NOT OWNED
   AssetRatioController* asset_ratio_controller_;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
