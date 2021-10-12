@@ -1,20 +1,32 @@
 import * as React from 'react'
-import * as S from './style'
-import StatusIndicator from '../../components/status-indicator'
-import PanelBox from '../../components/panel-box'
-import Toggle from '../../components/toggle'
 import { SettingsAdvancedIcon, CaratStrongRightIcon } from 'brave-ui/components/icons'
-import { ConnectionState } from '../../api/panel_browser_api'
-import { Region } from '../../api/region_interface'
-interface Props {
-  isOn: boolean
-  status: ConnectionState
-  region: Region
-  onToggleClick: () => void
-  onSelectRegionButtonClick: () => void
-}
 
-function MainPanel (props: Props) {
+import * as S from './style'
+import SelectRegionList from '../select-region-list'
+import PanelBox from '../panel-box'
+import Toggle from '../toggle'
+import ErrorPanel from '../error-panel'
+import { useSelector, useDispatch } from '../../state/hooks'
+import * as Actions from '../../state/actions'
+
+function MainPanel () {
+  const dispatch = useDispatch()
+  const currentRegion = useSelector(state => state.currentRegion)
+  const hasError = useSelector(state => state.hasError)
+  const isSelectingRegion = useSelector(state => state.isSelectingRegion)
+
+  const onSelectRegionButtonClick = () => {
+    dispatch(Actions.toggleRegionSelector(true))
+  }
+
+  if (isSelectingRegion) {
+    return(<SelectRegionList />)
+  }
+
+  if (hasError) {
+    return (<ErrorPanel />)
+  }
+
   return (
     <PanelBox>
       <S.PanelContent>
@@ -26,22 +38,12 @@ function MainPanel (props: Props) {
           </S.SettingsButton>
         </S.PanelHeader>
         <S.PanelTitle>Brave Firewall + VPN</S.PanelTitle>
-        <S.ToggleBox>
-          <Toggle
-            isOn={props.isOn}
-            onClick={props.onToggleClick}
-          />
-        </S.ToggleBox>
-        <S.StatusIndicatorBox>
-          <StatusIndicator
-            status={props.status}
-          />
-        </S.StatusIndicatorBox>
+        <Toggle />
         <S.RegionSelectorButton
           type='button'
-          onClick={props.onSelectRegionButtonClick}
+          onClick={onSelectRegionButtonClick}
         >
-          <S.RegionLabel>{props.region.namePretty}</S.RegionLabel>
+          <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
           <CaratStrongRightIcon />
         </S.RegionSelectorButton>
       </S.PanelContent>
