@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveCore
 import BraveUI
+import struct Shared.Strings
 
 struct ShortcutAmountGrid: View {
   enum Amount: Double, CaseIterable {
@@ -90,17 +91,17 @@ struct SwapCryptoView: View {
         ) {
         }
         Section(
-          header: WalletListHeaderView(title: Text("From"))
+          header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoFromTitle))
         ) {
           NavigationLink(destination: EmptyView()) {
             HStack {
               Circle()
                 .frame(width: 26, height: 26)
-              Text("BAT")
+              Text(verbatim: "BAT")
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
               Spacer()
-              Text("1.2832")
+              Text(verbatim: "1.2832")
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
@@ -109,28 +110,28 @@ struct SwapCryptoView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
-          header: WalletListHeaderView(title: Text("Enter amount of BAT to swap")),
+          header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoAmountTitle)),
           footer: ShortcutAmountGrid(action: { amount in
             
           })
           .listRowInsets(.zero)
           .padding(.bottom, 8)
         ) {
-          TextField("Amount in BAT", text: .constant(""))
+          TextField(Strings.Wallet.swapCryptoAmountPlaceholder, text: .constant(""))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
-          header: WalletListHeaderView(title: Text("To"))
+          header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
         ) {
           NavigationLink(destination: EmptyView()) {
             HStack {
               Circle()
                 .frame(width: 26, height: 26)
-              Text("ETH")
+              Text(verbatim: "ETH")
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
               Spacer()
-              Text("0.0000")
+              Text(verbatim: "0.0000")
                 .font(.footnote)
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
@@ -139,15 +140,15 @@ struct SwapCryptoView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
-          header: WalletListHeaderView(title: Text("Amount receiving in ETH (estimated)"))
+          header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoAmountReceivingTitle))
         ) {
-          TextField("Amount in ETH", text: .constant(""))
+          TextField(Strings.Wallet.swapCryptoAmountPlaceholder, text: .constant(""))
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
-          header: Picker("Order Type", selection: $orderType) {
-            Text("Market").tag(OrderType.market)
-            Text("Limit").tag(OrderType.limit)
+          header: Picker(Strings.Wallet.swapOrderTypeLabel, selection: $orderType) {
+            Text(Strings.Wallet.swapMarketOrderType).tag(OrderType.market)
+            Text(Strings.Wallet.swapLimitOrderType).tag(OrderType.limit)
           }
             .pickerStyle(SegmentedPickerStyle())
             .resetListHeaderStyle()
@@ -156,12 +157,12 @@ struct SwapCryptoView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .navigationTitle("Swap")
+      .navigationTitle(Strings.Wallet.swap)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: { }) {
-            Text("Cancel") // NSLocalizedString
+            Text(Strings.CancelString)
               .foregroundColor(Color(.braveOrange))
           }
         }

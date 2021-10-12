@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveCore
+import struct Shared.Strings
 
 private struct TokenView: View {
   var token: BraveWallet.ERCToken
@@ -55,7 +56,7 @@ struct AssetSearchView: View {
       List {
         Section(
           header: WalletListHeaderView(
-            title: Text("Assets") // NSLocalizedString
+            title: Text(Strings.Wallet.assetsTitle)
           )
           .osAvailabilityModifiers { content in
             if #available(iOS 15.0, *) {
@@ -68,17 +69,11 @@ struct AssetSearchView: View {
         ) {
           let tokens = self.tokens
           if tokens.isEmpty {
-            Group {
-              if query.isEmpty {
-                Text("No assets found") // NSLocalizedString
-              } else {
-                Text("No assets found for \"\(query)\" query") // NSLocalizedString
-              }
-            }
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity)
+            Text(Strings.Wallet.assetSearchEmpty)
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .multilineTextAlignment(.center)
+              .frame(maxWidth: .infinity)
           } else {
             ForEach(tokens) { token in
               NavigationLink(
@@ -96,7 +91,7 @@ struct AssetSearchView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .navigationBarTitleDisplayMode(.inline)
-      .navigationTitle("Search") // NSLocalizedString
+      .navigationTitle(Strings.Wallet.searchTitle)
       .listStyle(InsetGroupedListStyle())
       .animation(nil, value: query)
       .filterable(text: $query)

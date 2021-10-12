@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct RestoreWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -19,7 +20,7 @@ struct RestoreWalletContainerView: View {
     .navigationTitle("")
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Restore Wallet" // NSLocalizedString
+      vc.navigationItem.backButtonTitle = Strings.Wallet.restoreWalletBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
   }
@@ -36,13 +37,11 @@ private struct RestoreWalletView: View {
     var errorDescription: String? {
       switch self {
       case .invalidPhrase:
-        // TODO: Get real copy
-        return "Phrase Invalid" // NSLocalizedString
+        return Strings.Wallet.restoreWalletPhraseInvalidError
       case .passwordTooShort:
-        return "Password must be 7 or more characters" // NSLocalizedString
+        return Strings.Wallet.passwordDoesNotMeetRequirementsError
       case .inputsDontMatch:
-        // TODO: Get real copy
-        return "Passwords don't match" // NSLocalizedString
+        return Strings.Wallet.passwordsDontMatchError
       }
     }
   }
@@ -112,10 +111,10 @@ private struct RestoreWalletView: View {
   var body: some View {
     VStack(spacing: 48) {
       VStack(spacing: 14) {
-        Text("Restore Crypto Account") // NSLocalizedString
+        Text(Strings.Wallet.restoreWalletTitle)
           .font(.headline)
           .foregroundColor(.primary)
-        Text("Enter your recovery phrase to restore your Brave Wallet crypto account.") // NSLocalizedString
+        Text(Strings.Wallet.restoreWalletSubtitle)
           .font(.subheadline)
           .foregroundColor(.secondary)
       }
@@ -124,19 +123,19 @@ private struct RestoreWalletView: View {
       VStack(spacing: 10) {
         Group {
           if showingRecoveryPhase {
-            TextField("Enter your recovery phrase", text: $phrase) // NSLocalizedString
+            TextField(Strings.Wallet.restoreWalletPhrasePlaceholder, text: $phrase)
           } else {
-            SecureField("Enter your recovery phrase", text: $phrase) // NSLocalizedString
+            SecureField(Strings.Wallet.restoreWalletPhrasePlaceholder, text: $phrase)
           }
         }
         .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .invalidPhrase))
         if isShowingLegacyWalletToggle {
           HStack {
-            Toggle("Import from legacy Brave Crypto Wallet?", isOn: $isBraveLegacyWallet) // NSLocalizedString
+            Toggle(Strings.Wallet.restoreWalletImportFromLegacyBraveWallet, isOn: $isBraveLegacyWallet)
               .labelsHidden()
               .scaleEffect(0.75)
               .padding(-6)
-            Text("Import from legacy Brave Crypto Wallet?") // NSLocalizedString
+            Text(Strings.Wallet.restoreWalletImportFromLegacyBraveWallet)
               .font(.footnote)
               .onTapGesture {
                 withAnimation {
@@ -147,11 +146,11 @@ private struct RestoreWalletView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         }
         HStack {
-          Toggle("Show Recovery Phase", isOn: $showingRecoveryPhase) // NSLocalizedString
+          Toggle(Strings.Wallet.restoreWalletShowRecoveryPhrase, isOn: $showingRecoveryPhase)
             .labelsHidden()
             .scaleEffect(0.75)
             .padding(-6)
-          Text("Show Recovery Phase") // NSLocalizedString
+          Text(Strings.Wallet.restoreWalletShowRecoveryPhrase)
             .font(.footnote)
             .onTapGesture {
               withAnimation {
@@ -169,17 +168,17 @@ private struct RestoreWalletView: View {
         }
       }
       VStack {
-        Text("New Password") // NSLocalizedString
+        Text(Strings.Wallet.restoreWalletNewPasswordTitle)
           .font(.subheadline.weight(.medium))
-        SecureField("Password", text: $password) // NSLocalizedString
+        SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
           .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .passwordTooShort))
-        SecureField("Re-type password", text: $repeatedPassword) // NSLocalizedString
+        SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword)
           .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .inputsDontMatch))
       }
       .font(.subheadline)
       .padding(.horizontal, 48)
       Button(action: restore) {
-        Text("Restore")
+        Text(Strings.Wallet.restoreWalletButtonTitle)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))
     }

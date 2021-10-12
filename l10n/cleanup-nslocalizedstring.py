@@ -9,7 +9,7 @@ import sys
 import json
 
 blacklisted_parent_directories = ["ThirdParty", "Carthage", "fastlane", "L10nSnapshotTests", "l10n"]
-frameworks = ["BraveShared", "Data", "Shared", "Storage"]
+frameworks = ["BraveShared", "BraveWallet", "Data", "Shared", "Storage"]
 
 def pascal_case(string):
   # Convert full stops, hyphens and underscores to spaces so that words are correctly pascal cased

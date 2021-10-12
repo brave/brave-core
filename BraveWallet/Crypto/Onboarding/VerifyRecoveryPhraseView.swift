@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -40,11 +41,11 @@ struct VerifyRecoveryPhraseView: View {
     ScrollView(.vertical) {
       VStack(spacing: 16) {
         Group {
-          Text("Verify recovery phrase") // NSLocalizedString
+          Text(Strings.Wallet.verifyRecoveryPhraseTitle)
             .font(.headline)
-          Text("Tap the words to put them next to each other in the correct order.") // NSLocalizedString
+          Text(Strings.Wallet.verifyRecoveryPhraseSubtitle)
             .font(.subheadline)
-            .foregroundColor(.secondary)
+            .foregroundColor(Color(.secondaryBraveLabel))
         }
         .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
@@ -80,7 +81,7 @@ struct VerifyRecoveryPhraseView: View {
         }
         .padding()
         Button(action: tappedVerify) {
-          Text("Verify") // NSLocalizedString
+          Text(Strings.Wallet.verifyButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .disabled(!wordsSelectedInCorrectOrder)
@@ -89,7 +90,7 @@ struct VerifyRecoveryPhraseView: View {
           Button(action: {
             keyringStore.markOnboardingCompleted()
           }) {
-            Text("Skip") // NSLocalizedString
+            Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
           }
@@ -104,7 +105,7 @@ struct VerifyRecoveryPhraseView: View {
       }
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
 }
@@ -159,7 +160,7 @@ private struct SelectedWordsBox: View {
     return Group {
       switch entry {
       case .placeholder:
-        Text("Word")
+        Text(verbatim: "Word")
           .padding(8)
           .frame(maxWidth: .infinity)
           .hidden()
@@ -195,10 +196,9 @@ private struct SelectedWordsBox: View {
             .stroke(lineWidth: pixelLength / 2)
         )
     )
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Verify Phrase" // NSLocalizedString
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
   }

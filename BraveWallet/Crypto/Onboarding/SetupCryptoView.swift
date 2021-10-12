@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import Introspect
 import BraveUI
+import struct Shared.Strings
 
 struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -16,10 +17,10 @@ struct SetupCryptoView: View {
       Image("setup-welcome")
         .padding(.bottom)
       VStack(spacing: 14) {
-        Text("DeFi & Secure Crypto Storage") // NSLocalizedString
+        Text(Strings.Wallet.setupCryptoTitle)
           .foregroundColor(.primary)
           .font(.headline)
-        Text("Hold crypto in your custody. Trade assets. View Prices and portfolio performance. Invest, Borrow, and lend with DeFi.")  // NSLocalizedString
+        Text(Strings.Wallet.setupCryptoSubtitle)
           .foregroundColor(.secondary)
           .font(.subheadline)
       }
@@ -27,11 +28,11 @@ struct SetupCryptoView: View {
       .multilineTextAlignment(.center)
       VStack(spacing: 26) {
         NavigationLink(destination: CreateWalletContainerView(keyringStore: keyringStore)) {
-          Text("Setup Crypto") // NSLocalizedString
+          Text(Strings.Wallet.setupCryptoButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
-          Text("Restore") // NSLocalizedString
+          Text(Strings.Wallet.restoreWalletButtonTitle)
             .font(.subheadline.weight(.medium))
             .foregroundColor(Color(.braveLabel))
         }
@@ -40,10 +41,10 @@ struct SetupCryptoView: View {
     .padding()
     .frame(maxHeight: .infinity)
     .accessibilityEmbedInScrollView()
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .introspectViewController { vc in
-      vc.navigationItem.backButtonTitle = "Welcome" // NSLocalizedString
+      vc.navigationItem.backButtonTitle = Strings.Wallet.setupCryptoButtonBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))

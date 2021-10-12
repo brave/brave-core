@@ -9,6 +9,7 @@ import SwiftUI
 import BraveCore
 import PanModal
 import BraveUI
+import struct Shared.Strings
 
 class CryptoPagesViewController: TabbedPageViewController {
   private let walletStore: WalletStore
@@ -61,10 +62,10 @@ class CryptoPagesViewController: TabbedPageViewController {
     
     pages = [
       UIHostingController(rootView: PortfolioView(keyringStore: walletStore.keyringStore, networkStore: walletStore.networkStore, portfolioStore: walletStore.portfolioStore)).then {
-        $0.title = "Portfolio" // NSLocalizedString
+        $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(rootView: AccountsView(keyringStore: walletStore.keyringStore)).then {
-        $0.title = "Accounts" // NSLocalizedString
+        $0.title = Strings.Wallet.accountsPageTitle
       }
     ]
     

@@ -7,6 +7,7 @@ import UIKit
 import SwiftUI
 import BraveCore
 import SnapKit
+import struct Shared.Strings
 
 struct Currency {
   var image: UIImage
@@ -67,7 +68,7 @@ struct PortfolioView: View {
       ) {
       }
       Section(
-        header: WalletListHeaderView(title: Text("Assets"))
+        header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
         ForEach(portfolioStore.userVisibleAssets) { asset in
           PortfolioAssetView(
@@ -79,7 +80,7 @@ struct PortfolioView: View {
           )
         }
         Button(action: { isPresentingEditUserAssets = true }) {
-          Text("Edit Visible Assets")
+          Text(Strings.Wallet.editVisibleAssetsButtonTitle)
             .multilineTextAlignment(.center)
             .font(.footnote.weight(.semibold))
             .foregroundColor(Color(.bravePrimary))
@@ -177,7 +178,7 @@ struct BalanceHeaderView: View {
           .foregroundColor(.green)
         Text(verbatim: "1.3%")
           .foregroundColor(.green)
-        Text(verbatim: "Today") // NSLocalizedString
+        Text(Strings.Wallet.today)
           .foregroundColor(.secondary)
       }
       .font(.subheadline)

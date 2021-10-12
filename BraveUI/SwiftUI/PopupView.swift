@@ -107,13 +107,13 @@ struct PopupPreviews: PreviewProvider {
         VStack {
           Circle()
             .frame(width: 100, height: 100)
-          Text("Title")
+          Text(verbatim: "Title")
             .font(.headline)
-          Text("Subtitle Subtitle Subtitle Subtitle Subtitle")
+          Text(verbatim: "Subtitle Subtitle Subtitle Subtitle Subtitle")
             .font(.subheadline)
             .multilineTextAlignment(.center)
           Button(action: { }) {
-            Text("Test")
+            Text(verbatim: "Test")
           }
           .padding(.top)
           .buttonStyle(BraveFilledButtonStyle(size: .normal))

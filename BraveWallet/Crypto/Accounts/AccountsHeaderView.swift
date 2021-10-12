@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
+import struct Shared.Strings
 
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -17,7 +18,7 @@ struct AccountsHeaderView: View {
         HStack {
           Image("brave.safe")
             .foregroundColor(Color(.braveLabel))
-          Text("Backup") // NSLocalizedString
+          Text(Strings.Wallet.accountBackup)
             .font(.subheadline.weight(.medium))
             .foregroundColor(Color(.braveLighterBlurple))
         }

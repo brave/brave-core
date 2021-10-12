@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
+import struct Shared.Strings
 
 struct BuySendSwapView: View {
   enum Action: CaseIterable {
@@ -14,22 +15,22 @@ struct BuySendSwapView: View {
     var title: String {
       switch self {
       case .buy:
-        return "Buy" // NSLocalizedString
+        return Strings.Wallet.buy
       case .send:
-        return "Send" // NSLocalizedString
+        return Strings.Wallet.send
       case .swap:
-        return "Swap" // NSLocalizedString
+        return Strings.Wallet.swap
       }
     }
     
     var description: String {
       switch self {
       case .buy:
-        return "Buy crypto with Apple Pay, credit or debit card." // NSLocalizedString
+        return Strings.Wallet.buyDescription
       case .send:
-        return "Send crypto or transfer from one account to another." // NSLocalizedString
+        return Strings.Wallet.sendDescription
       case .swap:
-        return "Swap crypto assets with Brave DEX aggregator." // NSLocalizedString
+        return Strings.Wallet.swapDescription
       }
     }
   }

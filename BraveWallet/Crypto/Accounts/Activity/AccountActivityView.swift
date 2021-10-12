@@ -7,6 +7,7 @@ import UIKit
 import BraveCore
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct AccountActivityView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -51,15 +52,15 @@ struct AccountActivityView: View {
         .listRowBackground(Color(.braveGroupedBackground))
       }
       Section(
-        header: WalletListHeaderView(title: Text("Assets")) // NSLocalizedString
+        header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
-        emptyTextView("No Assets") // NSLocalizedString
+        emptyTextView(Strings.Wallet.noAssets)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
-        header: WalletListHeaderView(title: Text("Transactions")) // NSLocalizedString
+        header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
-        emptyTextView("No Transactions") // NSLocalizedString
+        emptyTextView(Strings.Wallet.noTransactions)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
@@ -101,7 +102,7 @@ private struct AccountActivityHeaderView: View {
           HStack {
             Image("brave.qr-code")
               .font(.body)
-            Text("Details") // NSLocalizedString
+            Text(Strings.Wallet.detailsButtonTitle)
               .font(.footnote.weight(.bold))
           }
         }
@@ -109,7 +110,7 @@ private struct AccountActivityHeaderView: View {
           HStack {
             Image("brave.edit")
               .font(.body)
-            Text("Rename") // NSLocalizedString
+            Text(Strings.Wallet.renameButtonTitle)
               .font(.footnote.weight(.bold))
           }
         }

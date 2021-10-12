@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import BraveCore
 import BraveUI
+import struct Shared.Strings
 
 struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -42,7 +43,7 @@ struct AssetDetailHeaderView: View {
   private var deltaText: some View {
     HStack(spacing: 2) {
       Image(systemName: "arrow.up")
-      Text("0.46%")
+      Text(verbatim: "0.46%")
     }
     .foregroundColor(.white)
     .font(.caption2)
@@ -102,16 +103,17 @@ struct AssetDetailHeaderView: View {
             }
           }
         }
-        Text("\(currency.name) Price (\(currency.symbol))")
+        Text(String.localizedStringWithFormat(Strings.Wallet.assetDetailSubtitle,
+                                              currency.name, currency.symbol))
           .font(.footnote)
           .foregroundColor(Color(.secondaryBraveLabel))
         HStack {
-          Text("$1,812.31")
+          Text(verbatim: "$1,812.31")
             .font(.title2.bold())
           deltaText
           Spacer()
         }
-        Text("0.03265 BTC")
+        Text(verbatim: "0.03265 BTC")
           .font(.footnote)
           .foregroundColor(Color(.secondaryBraveLabel))
         LineChartView(data: data, numberOfColumns: 12, selectedDataPoint: $selectedCandle) {
@@ -129,13 +131,13 @@ struct AssetDetailHeaderView: View {
         .padding(.bottom)
       HStack {
         Button(action: { }) {
-          Text("Buy")
+          Text(Strings.Wallet.buy)
         }
         Button(action: { }) {
-          Text("Send")
+          Text(Strings.Wallet.send)
         }
         Button(action: { }) {
-          Text("Swap")
+          Text(Strings.Wallet.swap)
         }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))

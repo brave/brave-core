@@ -5,6 +5,7 @@
 
 import SwiftUI
 import BraveUI
+import struct Shared.Strings
 
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -19,7 +20,7 @@ struct UnlockWalletView: View {
     var errorDescription: String? {
       switch self {
       case .incorrectPassword:
-        return "Incorrect Password" // NSLocalizedString
+        return Strings.Wallet.incorrectPasswordErrorMessage
       }
     }
   }
@@ -47,24 +48,24 @@ struct UnlockWalletView: View {
         Image("graphic-lock")
           .padding(.bottom)
         VStack {
-          Text("Enter your password to unlock")
+          Text(Strings.Wallet.unlockWalletTitle)
             .font(.headline)
             .padding(.bottom)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
-          SecureField("Password", text: $password, onCommit: unlock) // NSLocalizedString
+          SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
             .font(.subheadline)
             .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
             .padding(.horizontal, 48)
         }
         VStack(spacing: 30) {
           Button(action: unlock) {
-            Text("Unlock") // NSLocalizedString
+            Text(Strings.Wallet.unlockWalletButtonTitle)
           }
           .buttonStyle(BraveFilledButtonStyle(size: .normal))
           .disabled(!isPasswordValid)
           NavigationLink(destination: RestoreWalletContainerView(keyringStore: keyringStore)) {
-            Text("Restore") // NSLocalizedString
+            Text(Strings.Wallet.restoreWalletButtonTitle)
               .font(.subheadline.weight(.medium))
           }
           .foregroundColor(Color(.braveLabel))
@@ -74,7 +75,7 @@ struct UnlockWalletView: View {
       .padding()
       .padding(.vertical)
     }
-    .navigationTitle("Crypto") // NSLocalizedString
+    .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
     .onChange(of: password) { _ in
