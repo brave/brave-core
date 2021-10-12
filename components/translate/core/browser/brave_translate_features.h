@@ -28,8 +28,6 @@ bool ShouldUseTranslateSwitches();
 
 bool ShouldUpdateTranslateList();
 
-bool DisableTranslateLibraryNetworkRedirects();
-
 }  // namespace translate
 
 #endif  // BRAVE_COMPONENTS_TRANSLATE_CORE_BROWSER_BRAVE_TRANSLATE_FEATURES_H_
