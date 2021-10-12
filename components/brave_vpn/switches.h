@@ -10,12 +10,12 @@ namespace brave_vpn {
 
 namespace switches {
 
-// Value should be "connection-name:host-name:user-name:password".
-constexpr char kBraveVPNTestCredentials[] = "brave-vpn-test-credentials";
 // Use for simulation instead of calling os platform apis.
 constexpr char kBraveVPNSimulation[] = "brave-vpn-simulate";
 // Use "prod", "staging" or "dev"
 constexpr char kBraveVPNAccountHost[] = "brave-vpn-account-host";
+constexpr char kBraveVPNPaymentsEnv[] = "brave-vpn-payments-env";
+constexpr char kBraveVPNTestMonthlyPass[] = "brave-vpn-test-monthly-pass";
 
 }  // namespace switches
 

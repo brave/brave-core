@@ -12,18 +12,23 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
+#include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_sdk_impl.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class BraveVPNTest : public testing::Test {
+class BraveVPNServiceTest : public testing::Test {
  public:
-  BraveVPNTest() {
+  BraveVPNServiceTest() {
     scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
   }
 
   void SetUp() override {
+    brave_rewards::SkusSdkImpl::RegisterProfilePrefs(pref_service_.registry());
     brave_vpn::prefs::RegisterProfilePrefs(pref_service_.registry());
     service_ = std::make_unique<BraveVpnServiceDesktop>(
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>(),
@@ -178,9 +183,18 @@ class BraveVPNTest : public testing::Test {
       ])";
   }
 
+  std::string GetProfileCredentialData() {
+    return R"(
+        {
+          "eap-username": "brave-user",
+          "eap-password": "brave-pwd"
+        }
+      )";
+  }
+
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
-  TestingPrefServiceSimple pref_service_;
+  sync_preferences::TestingPrefServiceSyncable pref_service_;
   std::unique_ptr<BraveVpnServiceDesktop> service_;
 };
 
@@ -188,7 +202,7 @@ TEST(BraveVPNFeatureTest, FeatureTest) {
   EXPECT_FALSE(brave_vpn::IsBraveVPNEnabled());
 }
 
-TEST_F(BraveVPNTest, RegionDataTest) {
+TEST_F(BraveVPNServiceTest, RegionDataTest) {
   // Test invalid region data.
   service_->OnFetchRegionList(std::string(), true);
   EXPECT_TRUE(service_->regions_.empty());
@@ -216,17 +230,116 @@ TEST_F(BraveVPNTest, RegionDataTest) {
   EXPECT_EQ(service_->regions_[0], service_->device_region_);
 }
 
-TEST_F(BraveVPNTest, HostnamesTest) {
+TEST_F(BraveVPNServiceTest, HostnamesTest) {
   // Set valid hostnames list
+  service_->hostname_.reset();
   service_->OnFetchHostnames("region-a", GetHostnamesData(), true);
-  EXPECT_EQ(5UL, service_->hostnames_["region-a"].size());
+  // Check best one is picked from fetched hostname list.
+  EXPECT_EQ("host-2.brave.com", service_->hostname_->hostname);
 
-  // Set invalid hostnames list
+  // Can't get hostname from invalid hostnames list
+  service_->hostname_.reset();
   service_->OnFetchHostnames("invalid-region-b", "", false);
-  EXPECT_EQ(0UL, service_->hostnames_["invalid-region-b"].size());
+  EXPECT_FALSE(service_->hostname_);
 }
 
-TEST_F(BraveVPNTest, LoadRegionDataFromPrefsTest) {
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, service_->purchased_state_);
+  pref_service_.SetString(brave_rewards::prefs::kSkusVPNCredential, "abcdefg");
+  EXPECT_EQ(PurchasedState::PURCHASED, service_->purchased_state_);
+}
+
+TEST_F(BraveVPNServiceTest, CancelConnectingTest) {
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->cancel_connecting_ = true;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->OnCreated();
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
+
+  // Start disconnect() when connect is done for cancelling.
+  service_->cancel_connecting_ = false;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->Disconnect();
+  EXPECT_TRUE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTING, service_->connection_state_);
+  service_->OnConnected();
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTING, service_->connection_state_);
+
+  service_->cancel_connecting_ = false;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->Disconnect();
+  EXPECT_TRUE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTING, service_->connection_state_);
+
+  service_->cancel_connecting_ = true;
+  service_->CreateVPNConnection();
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
+
+  service_->cancel_connecting_ = true;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->OnFetchHostnames("", "", true);
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
+
+  service_->cancel_connecting_ = true;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->OnGetSubscriberCredential("", true);
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
+
+  service_->cancel_connecting_ = true;
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->OnGetProfileCredentials("", true);
+  EXPECT_FALSE(service_->cancel_connecting_);
+  EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
+}
+
+TEST_F(BraveVPNServiceTest, ConnectionInfoTest) {
+  // Check valid connection info is set when valid hostname and profile
+  // credential are fetched.
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  pref_service_.SetString(brave_rewards::prefs::kSkusVPNCredential, "abcdefg");
+  service_->OnFetchHostnames("region-a", GetHostnamesData(), true);
+  EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
+
+  // To prevent real os vpn entry creation.
+  service_->is_simulation_ = true;
+  service_->OnGetProfileCredentials(GetProfileCredentialData(), true);
+  EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
+  EXPECT_TRUE(service_->connection_info_.IsValid());
+
+  // Check cached connection info is cleared when user set new selected region.
+  service_->connection_state_ = ConnectionState::DISCONNECTED;
+  brave_vpn::mojom::Region region;
+  service_->SetSelectedRegion(region.Clone());
+  EXPECT_FALSE(service_->connection_info_.IsValid());
+}
+
+TEST_F(BraveVPNServiceTest, NeedsConnectTest) {
+  // Check ignore Connect() request while connecting or disconnecting is
+  // in-progress.
+  service_->connection_state_ = ConnectionState::CONNECTING;
+  service_->Connect();
+  EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
+
+  service_->connection_state_ = ConnectionState::DISCONNECTING;
+  service_->Connect();
+  EXPECT_EQ(ConnectionState::DISCONNECTING, service_->connection_state_);
+
+  // Handle connect after disconnect current connection.
+  service_->connection_state_ = ConnectionState::CONNECTED;
+  service_->Connect();
+  EXPECT_TRUE(service_->needs_connect_);
+  EXPECT_EQ(ConnectionState::DISCONNECTING, service_->connection_state_);
+  service_->OnDisconnected();
+  EXPECT_FALSE(service_->needs_connect_);
+  EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
+}
+
+TEST_F(BraveVPNServiceTest, LoadRegionDataFromPrefsTest) {
   // Initially, prefs doesn't have region data.
   EXPECT_EQ(brave_vpn::mojom::Region(), service_->device_region_);
   EXPECT_TRUE(service_->regions_.empty());

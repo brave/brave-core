@@ -92,7 +92,7 @@ void BraveVPNOSConnectionAPISim::OnCreated(const std::string& name,
     return;
 
   for (Observer& obs : observers_)
-    obs.OnCreated(name);
+    obs.OnCreated();
 }
 
 void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
@@ -104,12 +104,12 @@ void BraveVPNOSConnectionAPISim::OnConnected(const std::string& name,
   }
 
   for (Observer& obs : observers_)
-    success ? obs.OnConnected(name) : obs.OnConnectFailed(name);
+    success ? obs.OnConnected() : obs.OnConnectFailed();
 }
 
 void BraveVPNOSConnectionAPISim::OnIsConnecting(const std::string& name) {
   for (Observer& obs : observers_)
-    obs.OnIsConnecting(name);
+    obs.OnIsConnecting();
 }
 
 void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
@@ -118,12 +118,12 @@ void BraveVPNOSConnectionAPISim::OnDisconnected(const std::string& name,
     return;
 
   for (Observer& obs : observers_)
-    obs.OnDisconnected(name);
+    obs.OnDisconnected();
 }
 
 void BraveVPNOSConnectionAPISim::OnIsDisconnecting(const std::string& name) {
   for (Observer& obs : observers_)
-    obs.OnIsDisconnecting(name);
+    obs.OnIsDisconnecting();
 }
 
 void BraveVPNOSConnectionAPISim::OnRemoved(const std::string& name,
@@ -132,7 +132,7 @@ void BraveVPNOSConnectionAPISim::OnRemoved(const std::string& name,
     return;
 
   for (Observer& obs : observers_)
-    obs.OnRemoved(name);
+    obs.OnRemoved();
 }
 
 }  // namespace brave_vpn
