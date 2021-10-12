@@ -5,6 +5,7 @@
 
 import SwiftUI
 import struct Shared.Strings
+import BraveUI
 
 public struct WalletSettingsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -15,8 +16,33 @@ public struct WalletSettingsView: View {
     self.keyringStore = keyringStore
   }
   
+  private var autoLockIntervals: [AutoLockInterval] {
+    var all = AutoLockInterval.allOptions
+    if !all.contains(keyringStore.autoLockInterval) {
+      // Ensure that the users selected interval always appears as an option even if
+      // we remove it from `allOptions`
+      all.append(keyringStore.autoLockInterval)
+    }
+    return all.sorted(by: { $0.value < $1.value })
+  }
+  
   public var body: some View {
-    List {
+    Form {
+      Section(
+        footer: Text(Strings.Wallet.autoLockFooter)
+          .foregroundColor(Color(.secondaryBraveLabel))
+      ) {
+        Picker(selection: $keyringStore.autoLockInterval) {
+          ForEach(autoLockIntervals) { interval in
+            Text(interval.label)
+              .tag(interval)
+          }
+        } label: {
+          Text(Strings.Wallet.autoLockTitle)
+            .padding(.vertical, 4)
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
         Button(action: { isShowingResetAlert = true }) {
           Text(Strings.Wallet.settingsResetButtonTitle)
@@ -24,11 +50,11 @@ public struct WalletSettingsView: View {
         }
         // iOS 15: .role(.destructive)
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle("Brave Wallet")
     .navigationBarTitleDisplayMode(.inline)
-    // TODO: Needs real copy for whole reset prompt
     .alert(isPresented: $isShowingResetAlert) {
       Alert(
         title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
