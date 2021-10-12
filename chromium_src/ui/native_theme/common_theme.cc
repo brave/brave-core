@@ -29,6 +29,7 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
                     : SkColorSetRGB(0x3b, 0x3e, 0x4f);
     case NativeTheme::kColorId_ProminentButtonColor:
     case NativeTheme::kColorId_ProminentButtonFocusedColor:
+    case NativeTheme::kColorId_FocusedBorderColor:
       return kBraveColorBrand;
     case NativeTheme::kColorId_ProminentButtonDisabledColor:
       return gfx::kGoogleGrey800;
