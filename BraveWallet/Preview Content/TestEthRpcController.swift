@@ -75,6 +75,10 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   func setNetwork(_ chainId: String) {
     self.chainId = chainId
   }
+  
+  func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, completion: @escaping (Bool, String) -> Void) {
+    
+  }
 }
 
 extension BraveWallet.EthereumChain {
@@ -86,7 +90,8 @@ extension BraveWallet.EthereumChain {
     rpcUrls: [],
     symbol: "",
     symbolName: "",
-    decimals: 0
+    decimals: 0,
+    isEip1559: false
   )
   static let rinkeby: BraveWallet.EthereumChain = .init(
     chainId: BraveWallet.RinkebyChainId,
@@ -96,7 +101,8 @@ extension BraveWallet.EthereumChain {
     rpcUrls: [],
     symbol: "",
     symbolName: "",
-    decimals: 0
+    decimals: 0,
+    isEip1559: false
   )
   static let ropsten: BraveWallet.EthereumChain = .init(
     chainId: BraveWallet.RopstenChainId,
@@ -106,6 +112,7 @@ extension BraveWallet.EthereumChain {
     rpcUrls: [],
     symbol: "",
     symbolName: "",
-    decimals: 0
+    decimals: 0,
+    isEip1559: false
   )
 }

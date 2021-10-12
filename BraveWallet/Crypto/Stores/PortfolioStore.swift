@@ -138,6 +138,9 @@ public class PortfolioStore: ObservableObject {
 }
 
 extension PortfolioStore: BraveWalletEthJsonRpcControllerObserver {
+  public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  }
+  
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
   }
   
@@ -160,5 +163,9 @@ extension PortfolioStore: BraveWalletKeyringControllerObserver {
   }
   public func unlocked() {
     update()
+  }
+  public func autoLockMinutesChanged() {
+  }
+  public func selectedAccountChanged() {
   }
 }
