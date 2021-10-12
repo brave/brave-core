@@ -17,7 +17,9 @@ source_set("browser") {
     "brave_translate_features.h",
   ]
   deps = [
-    ":buildflags",
     "//base",
+  ]
+  public_deps = [
+    ":buildflags",
   ]
 }

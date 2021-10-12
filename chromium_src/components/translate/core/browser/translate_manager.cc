@@ -5,8 +5,8 @@
 
 #include "components/translate/core/browser/translate_manager.h"
 
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/components/translate/core/browser/brave_translate_language_filter.h"
+#include "brave/components/translate/core/browser/buildflags.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_prefs.h"
 
