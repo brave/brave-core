@@ -43,3 +43,9 @@ export interface HardwareWalletAccount {
   hardwareVendor: string
   deviceId: string
 }
+
+export interface TrezorBridgeAccountsPayload {
+  success: boolean,
+  accounts: HardwareWalletAccount[],
+  error?: string
+}
