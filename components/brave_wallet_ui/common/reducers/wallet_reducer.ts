@@ -351,9 +351,23 @@ reducer.on(WalletActions.activeOriginChanged, (state: any, payload: ActiveOrigin
   }
 })
 
-reducer.on(WalletActions.isEip1559Changed, (state: any, payload: IsEip1559Changed) => {
-  // TODO: update selectedNetwork and the entry in networkList.
-  return state
+reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip1559Changed) => {
+  const selectedNetwork = state.networkList.find(
+    network => network.chainId === payload.chainId
+  ) || state.selectedNetwork
+
+  const updatedNetwork: EthereumChain = {
+    ...selectedNetwork,
+    isEip1559: payload.isEip1559
+  }
+
+  return {
+    ...state,
+    selectedNetwork: updatedNetwork,
+    networkList: state.networkList.map(
+      network => network.chainId === payload.chainId ? updatedNetwork : network
+    )
+  }
 })
 
 reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {

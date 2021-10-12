@@ -22,7 +22,8 @@ import {
   EthereumChain,
   TokenInfo,
   TransactionListInfo,
-  BuySendSwapTypes
+  BuySendSwapTypes,
+  WalletAccountType
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
@@ -367,7 +368,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         asset: selectedAsset ? selectedAsset.symbol : '',
         accountType: 'Primary',
         tokens: []
-      }
+      } as WalletAccountType
     })
     return newList
   }, [selectedAsset, mockRPCResponse])

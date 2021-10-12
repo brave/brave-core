@@ -353,9 +353,8 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store, payloa
 
 handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendTransactionParams) => {
   const apiProxy = await getAPIProxy()
-
   /***
-   * TODO: determine whether to create a legacy or EIP-1559 transaction.
+   * Determine whether to create a legacy or EIP-1559 transaction.
    *
    * isEIP1559 is true IFF:
    *   - network supports EIP-1559
@@ -365,14 +364,36 @@ handler.on(WalletActions.sendTransaction.getType(), async (store, payload: SendT
    *
    * In all other cases, fallback to legacy gas-pricing fields.
    */
-  let isEIP1559 = false
-  if (payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined) {
-    isEIP1559 = true
-  } else if (payload.gasPrice !== undefined) {
-    isEIP1559 = false
-  } else {
-    // check if network and keyring support EIP-1559
-    isEIP1559 = true
+  let isEIP1559
+  switch (true) {
+    // Transaction payload has hardcoded EIP-1559 gas fields.
+    case payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined:
+      isEIP1559 = true
+      break
+
+    // Transaction payload has hardcoded legacy gas fields.
+    case payload.gasPrice !== undefined:
+      isEIP1559 = false
+      break
+
+    // Check if network and keyring support EIP-1559.
+    default:
+      const { selectedAccount, selectedNetwork } = getWalletState(store)
+      let keyringSupportsEIP1559
+      switch (selectedAccount.accountType) {
+        case 'Primary':
+        case 'Secondary':
+        case 'Ledger':
+          keyringSupportsEIP1559 = true
+          break
+        case 'Trezor':
+          keyringSupportsEIP1559 = false
+          break
+        default:
+          keyringSupportsEIP1559 = false
+      }
+
+      isEIP1559 = keyringSupportsEIP1559 && selectedNetwork.isEip1559
   }
 
   const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
