@@ -209,6 +209,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/share/BraveShareDelegateImpl"));
         Assert.assertTrue(classExists(
                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider"));
     }
 
     @Test
@@ -335,6 +339,18 @@ public class BytecodeTest {
                 "setupContentSettingsPreference", false, null));
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getTitleTextColor", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getActionButtonTintList", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
+                "getTitleTextColor", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
+                "getActionButtonTintList", false, null));
     }
 
     @Test
