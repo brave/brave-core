@@ -18,7 +18,6 @@
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
-#include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -28,7 +27,6 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/translate/core/browser/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -88,10 +86,6 @@ void BraveRequestHandler::SetupCallbacks() {
 #endif
 
   callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
-  before_url_request_callbacks_.push_back(callback);
-
-  callback =
-      base::BindRepeating(brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
 #if BUILDFLAG(ENABLE_IPFS)

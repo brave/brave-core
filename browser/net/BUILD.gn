@@ -37,8 +37,6 @@ source_set("net") {
     "brave_stp_util.h",
     "brave_system_request_handler.cc",
     "brave_system_request_handler.h",
-    "brave_translate_redirect_network_delegate_helper.cc",
-    "brave_translate_redirect_network_delegate_helper.h",
     "global_privacy_control_network_delegate_helper.cc",
     "global_privacy_control_network_delegate_helper.h",
     "resource_context_data.cc",
