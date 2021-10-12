@@ -414,15 +414,26 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     std::string from;
     auto tx_data =
         ParseEthSendTransactionParams(normalized_json_request, &from);
-    if (!tx_data)
-      tx_data = mojom::TxData::New();
-
-    brave_wallet_provider_->AddUnapprovedTransaction(
-        std::move(tx_data), from,
-        base::BindOnce(&BraveWalletJSHandler::OnAddUnapprovedTransaction,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
-                       std::move(global_context), std::move(global_callback),
-                       std::move(promise_resolver), isolate));
+    if (tx_data && !tx_data->gas_price.empty()) {
+      brave_wallet_provider_->AddUnapprovedTransaction(
+          std::move(tx_data), from,
+          base::BindOnce(&BraveWalletJSHandler::OnAddUnapprovedTransaction,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                         std::move(global_context), std::move(global_callback),
+                         std::move(promise_resolver), isolate));
+    } else {
+      from.clear();
+      mojom::TxData1559Ptr tx_data_1559 =
+          ParseEthSendTransaction1559Params(normalized_json_request, &from);
+      if (!tx_data_1559)
+        tx_data_1559 = mojom::TxData1559::New();
+      brave_wallet_provider_->AddUnapproved1559Transaction(
+          std::move(tx_data_1559), from,
+          base::BindOnce(&BraveWalletJSHandler::OnAddUnapprovedTransaction,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                         std::move(global_context), std::move(global_callback),
+                         std::move(promise_resolver), isolate));
+    }
   } else if (method == kEthSign || method == kPersonalSign) {
 #if 0
     std::string address;
