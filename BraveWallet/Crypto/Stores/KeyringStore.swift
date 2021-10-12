@@ -7,6 +7,43 @@ import Foundation
 import SwiftUI
 import BraveCore
 import Security
+import struct Shared.Strings
+
+struct AutoLockInterval: Identifiable, Hashable {
+  var value: Int32
+  var label: String
+  
+  init(value: Int32, label: String? = nil) {
+    self.value = value
+    self.label = label ?? Self.formatter.string(
+      from: Measurement<UnitDuration>(value: Double(value), unit: .minutes)
+    )
+  }
+  
+  var id: Int32 {
+    value
+  }
+  
+  static let minute = AutoLockInterval(value: 1)
+  static let fiveMinutes = AutoLockInterval(value: 5)
+  static let tenMinutes = AutoLockInterval(value: 10)
+  static let thirtyMinutes = AutoLockInterval(value: 30)
+  static let never = AutoLockInterval(value: Int32.max, label: Strings.Wallet.autoLockNeverInterval)
+  
+  static let allOptions: [AutoLockInterval] = [
+    .minute,
+    .fiveMinutes,
+    .tenMinutes,
+    .thirtyMinutes,
+    .never
+  ]
+  
+  private static let formatter = MeasurementFormatter().then {
+    $0.locale = Locale.current
+    $0.unitOptions = .providedUnit
+    $0.unitStyle = .long
+  }
+}
 
 /// Defines a single word in a bip32 mnemonic recovery prhase.
 ///
@@ -30,6 +67,12 @@ public class KeyringStore: ObservableObject {
   @Published private(set) var keyring: BraveWallet.KeyringInfo = .init()
   /// Whether or not the user should be viewing the onboarding flow to setup a keyring
   @Published private(set) var isOnboardingVisible: Bool = false
+  /// The number of minutes to wait until the Brave Wallet is automatically locked
+  @Published var autoLockInterval: AutoLockInterval = .minute {
+    didSet {
+      controller.setAutoLockMinutes(autoLockInterval.value) { _ in }
+    }
+  }
   
   private let controller: BraveWalletKeyringController
   
@@ -39,6 +82,9 @@ public class KeyringStore: ObservableObject {
     controller.defaultKeyringInfo { keyringInfo in
       self.keyring = keyringInfo
       self.isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
+    }
+    controller.autoLockMinutes { minutes in
+      self.autoLockInterval = minutes == Int32.max ? .never : .init(value: minutes)
     }
   }
   

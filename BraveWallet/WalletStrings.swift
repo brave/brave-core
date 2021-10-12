@@ -834,5 +834,26 @@ extension Strings {
       value: "Copy Address",
       comment: "The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard"
     )
+    public static let autoLockTitle = NSLocalizedString(
+      "wallet.autoLockTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Automatically Lock After",
+      comment: "The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes"
+    )
+    public static let autoLockFooter = NSLocalizedString(
+      "wallet.autoLockFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "The number of minutes to wait until the Brave Wallet is automatically locked",
+      comment: "The footer beneath the auto-lock title and interval duration"
+    )
+    public static let autoLockNeverInterval = NSLocalizedString(
+      "wallet.autoLockNeverInterval",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Never",
+      comment: "One of the auto-lock interval options. As in to never automatically lock the wallet."
+    )
   }
 }
