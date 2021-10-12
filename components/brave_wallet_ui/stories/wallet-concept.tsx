@@ -39,7 +39,7 @@ import { mockRPCResponse } from './mock-data/rpc-response'
 import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
-import { formatPrices } from '../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { getLocale } from '../../common/locale'
 import {
@@ -336,7 +336,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const asset = assetInfo(account)
     const data = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)
     const value = data ? asset ? Number(asset.balance) * Number(data.usd) : 0 : 0
-    return formatPrices(value)
+    return formatWithCommasAndDecimals(value.toString())
   }
 
   // This returns the balance of a single accounts asset
@@ -414,7 +414,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatPrices(grandTotal)
+    return formatWithCommasAndDecimals(grandTotal.toString())
   }
 
   // This will change once we hit a real api for pricing

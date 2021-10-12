@@ -44,7 +44,7 @@ import {
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
-import { formatPrices } from '../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { convertMojoTimeToJS } from '../utils/mojo-time'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
@@ -302,7 +302,7 @@ function Container (props: Props) {
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatPrices(grandTotal)
+    return formatWithCommasAndDecimals(grandTotal.toString())
   }, [userAssetList])
 
   const onChangeTimeline = (timeline: AssetPriceTimeframe) => {

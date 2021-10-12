@@ -13,7 +13,7 @@ import {
   NameAndIcon,
   AssetIcon
 } from './style'
-import { formatPrices } from '../../../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 export interface Props {
   action?: () => void
   name: string
@@ -35,8 +35,8 @@ const PortfolioAssetItem = (props: Props) => {
             <AssetName>{name}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
-            <FiatBalanceText>${formatPrices(Number(fiatBalance))}</FiatBalanceText>
-            <AssetBalanceText>{Number(assetBalance).toFixed(4)} {symbol}</AssetBalanceText>
+            <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+            <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {symbol}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }
