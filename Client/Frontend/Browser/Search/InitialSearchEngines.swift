@@ -26,6 +26,15 @@ class InitialSearchEngines {
             }
         }
         
+        /// Due to legacy reasons, the search engine name may need to use an old value.
+        /// This is caused because we use 'display name' as a preference key.
+        var legacyName: String? {
+            switch self {
+            case .braveSearch: return "Brave Search beta"
+            default: return nil
+            }
+        }
+        
         func excludedFromOnboarding(for locale: Locale) -> Bool {
             switch self {
             case .braveSearch: return true
