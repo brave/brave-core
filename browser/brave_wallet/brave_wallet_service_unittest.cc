@@ -326,10 +326,11 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens[0], GetEthToken());
   EXPECT_EQ(tokens[1], GetBatToken());
 
-  // Empty vector should be returned before any token is added.
+  // ETH should be returned before any token is added.
   GetUserAssets("0x3", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens, std::vector<mojom::ERCTokenPtr>());
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0], GetEthToken());
 
   // Prepare tokens to add.
   mojom::ERCTokenPtr token1 = GetToken1();
@@ -362,9 +363,10 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 2u);
-  EXPECT_EQ(token1, tokens[0]);
-  EXPECT_EQ(token2, tokens[1]);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
+  EXPECT_EQ(token1, tokens[1]);
+  EXPECT_EQ(token2, tokens[2]);
 
   // Remove token1 from "0x1" and token2 from "0x4" and test GetUserAssets.
   RemoveUserAsset(token1->contract_address, "0x1", &callback_called, &success);
@@ -383,8 +385,29 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(token1, tokens[0]);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
+  EXPECT_EQ(token1, tokens[1]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
+  std::vector<std::string> ids = {
+      mojom::kMainnetChainId, mojom::kRinkebyChainId, mojom::kRopstenChainId,
+      mojom::kGoerliChainId,  mojom::kKovanChainId,   mojom::kLocalhostChainId};
+  for (const auto& id : ids) {
+    bool callback_called = false;
+    std::vector<mojom::ERCTokenPtr> tokens;
+    GetUserAssets(id, &callback_called, &tokens);
+    EXPECT_TRUE(callback_called);
+    if (id == mojom::kMainnetChainId) {
+      EXPECT_EQ(tokens.size(), 2u);
+      EXPECT_EQ(GetEthToken(), tokens[0]);
+      EXPECT_EQ(GetBatToken(), tokens[1]);
+    } else {
+      EXPECT_EQ(tokens.size(), 1u);
+      EXPECT_EQ(GetEthToken(), tokens[0]);
+    }
+  }
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
@@ -454,7 +477,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   // And the address will be converted to checksum address.
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_TRUE(tokens.empty());
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(tokens[0], GetEthToken());
 
   AddUserAsset(token_with_unchecked_address.Clone(), "0x4", &callback_called,
                &success);
@@ -463,8 +487,9 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0], token);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], token);
 }
 
 TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
@@ -498,8 +523,9 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0], token2);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], token2);
 
   // Remove token with invalid contract_address returns false.
   RemoveUserAsset("eth", "0x1", &callback_called, &success);
@@ -512,8 +538,8 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
-  // Returns false when we annot find the list with network_id.
-  RemoveUserAsset(token1->contract_address, "0x3", &callback_called, &success);
+  // Returns false when we cannot find the list with network_id.
+  RemoveUserAsset(token1->contract_address, "0x7", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
@@ -572,8 +598,9 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0], token2);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0], GetEthToken());
+  EXPECT_EQ(tokens[1], token2);
 
   // Invalid contract_address return false.
   SetUserAssetVisible("eth", "0x1", false, &callback_called, &success);
@@ -629,9 +656,11 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
 
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(tokens.size(), 1u);
-  EXPECT_EQ(tokens[0]->contract_address, token2->contract_address);
-  EXPECT_FALSE(tokens[0]->visible);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(tokens[0]->contract_address, GetEthToken()->contract_address);
+  EXPECT_TRUE(tokens[0]->visible);
+  EXPECT_EQ(tokens[1]->contract_address, token2->contract_address);
+  EXPECT_FALSE(tokens[1]->visible);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetChecksumAddress) {
@@ -683,24 +712,17 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultWallet) {
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   bool success = false;
   bool callback_called = false;
-
-  // Add ETH with eth as the contract address will fail.
-  auto invalid_eth = GetEthToken();
-  invalid_eth->contract_address = "eth";
-  AddUserAsset(std::move(invalid_eth), "0x4", &callback_called, &success);
-  EXPECT_TRUE(callback_called);
-  EXPECT_FALSE(success);
-
-  // Add ETH with empty contract address.
-  AddUserAsset(GetEthToken(), "0x4", &callback_called, &success);
-  EXPECT_TRUE(callback_called);
-  EXPECT_TRUE(success);
-
   std::vector<mojom::ERCTokenPtr> tokens;
+
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(GetEthToken(), tokens[0]);
+
+  // Add ETH again will fail.
+  AddUserAsset(GetEthToken(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
 
   // Test setting visibility of ETH.
   SetUserAssetVisible("", "0x4", false, &callback_called, &success);
@@ -720,6 +742,23 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   GetUserAssets("0x4", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(tokens.empty());
+
+  // Add ETH with eth as the contract address will fail.
+  auto invalid_eth = GetEthToken();
+  invalid_eth->contract_address = "eth";
+  AddUserAsset(std::move(invalid_eth), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
+  // Add ETH with empty contract address.
+  AddUserAsset(GetEthToken(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  GetUserAssets("0x4", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
