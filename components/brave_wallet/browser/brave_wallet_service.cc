@@ -69,7 +69,9 @@ constexpr int kRefreshP3AFrequencyHours = 3;
 
 base::CheckedContiguousIterator<base::Value> FindAsset(
     base::Value* user_assets_list,
-    const std::string& contract_address) {
+    const std::string& contract_address,
+    const std::string& token_id,
+    bool is_erc721) {
   DCHECK(user_assets_list && user_assets_list->is_list());
 
   auto iter = std::find_if(
@@ -79,7 +81,14 @@ base::CheckedContiguousIterator<base::Value> FindAsset(
           return false;
         }
         const std::string* address = value.FindStringKey("contract_address");
-        return address && *address == contract_address;
+        bool found = address && *address == contract_address;
+
+        if (found && is_erc721) {
+          const std::string* token_id_ptr = value.FindStringKey("token_id");
+          found = token_id_ptr && *token_id_ptr == token_id;
+        }
+
+        return found;
       });
 
   return iter;
@@ -235,8 +244,6 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
 void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
                                       const std::string& chain_id,
                                       AddUserAssetCallback callback) {
-  DCHECK(token);
-
   absl::optional<std::string> optional_checksum_address =
       GetChecksumAddress(token->contract_address, chain_id);
   if (!optional_checksum_address) {
@@ -256,6 +263,15 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
     return;
   }
 
+  // Verify input token ID for ERC721.
+  if (token->is_erc721) {
+    uint256_t token_id_uint = 0;
+    if (!HexValueToUint256(token->token_id, &token_id_uint)) {
+      std::move(callback).Run(false);
+      return;
+    }
+  }
+
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
   base::DictionaryValue* user_assets_pref = update.Get();
 
@@ -265,7 +281,8 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
         network_id, base::Value(base::Value::Type::LIST));
   }
 
-  auto it = FindAsset(user_assets_list, checksum_address);
+  auto it = FindAsset(user_assets_list, checksum_address, token->token_id,
+                      token->is_erc721);
   if (it != user_assets_list->GetList().end()) {
     std::move(callback).Run(false);
     return;
@@ -312,8 +329,8 @@ void BraveWalletService::RemoveUserAsset(mojom::ERCTokenPtr token,
     return;
   }
 
-  user_assets_list->EraseListIter(
-      FindAsset(user_assets_list, checksum_address));
+  user_assets_list->EraseListIter(FindAsset(user_assets_list, checksum_address,
+                                            token->token_id, token->is_erc721));
   std::move(callback).Run(true);
 }
 
@@ -347,7 +364,8 @@ void BraveWalletService::SetUserAssetVisible(
     return;
   }
 
-  auto it = FindAsset(user_assets_list, checksum_address);
+  auto it = FindAsset(user_assets_list, checksum_address, token->token_id,
+                      token->is_erc721);
   if (it == user_assets_list->GetList().end()) {
     std::move(callback).Run(false);
     return;
@@ -444,7 +462,7 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
   base::DictionaryValue* user_assets_pref = update.Get();
 
   for (auto user_asset_list : user_assets_pref->DictItems()) {
-    auto it = FindAsset(&user_asset_list.second, "eth");
+    auto it = FindAsset(&user_asset_list.second, "eth", "", false);
     if (it == user_asset_list.second.GetList().end())
       continue;
 
