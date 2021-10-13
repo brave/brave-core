@@ -28,7 +28,8 @@ class KeyringController;
 
 class BraveWalletProviderImpl final
     : public mojom::BraveWalletProvider,
-      public mojom::EthJsonRpcControllerObserver {
+      public mojom::EthJsonRpcControllerObserver,
+      public mojom::EthTxControllerObserver {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
@@ -52,14 +53,14 @@ class BraveWalletProviderImpl final
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(const std::string& json_payload,
                         AddEthereumChainCallback callback) override;
-  void AddUnapprovedTransaction(
+  void AddAndApproveTransaction(
       mojom::TxDataPtr tx_data,
       const std::string& from,
-      AddUnapprovedTransactionCallback callback) override;
-  void AddUnapproved1559Transaction(
+      AddAndApproveTransactionCallback callback) override;
+  void AddAndApprove1559Transaction(
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
-      AddUnapproved1559TransactionCallback callback) override;
+      AddAndApprove1559TransactionCallback callback) override;
   void SignMessage(const std::string& address,
                    const std::string& message,
                    SignMessageCallback callback) override;
@@ -83,27 +84,27 @@ class BraveWalletProviderImpl final
   void OnIsEip1559Changed(const std::string& chain_id,
                           bool is_eip1559) override {}
 
+  // mojom::EthTxControllerObserver
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
+  void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+
   void OnAddEthereumChain(const std::string& chain_id, bool accepted);
   void OnChainApprovalResult(const std::string& chain_id,
                              const std::string& error);
   void OnConnectionError();
-  void OnAddUnapprovedTransaction(AddUnapprovedTransactionCallback callback,
+  void OnAddUnapprovedTransaction(AddAndApproveTransactionCallback callback,
                                   bool success,
                                   const std::string& tx_meta_id,
                                   const std::string& error_message);
-  void OnAddUnapproved1559Transaction(
-      AddUnapproved1559TransactionCallback callback,
-      bool success,
-      const std::string& tx_meta_id,
-      const std::string& error_message);
-  void ContinueAddUnapprovedTransaction(
-      AddUnapprovedTransactionCallback callback,
+  void ContinueAddAndApproveTransaction(
+      AddAndApproveTransactionCallback callback,
       mojom::TxDataPtr tx_data,
       const std::string& from,
       bool success,
       const std::vector<std::string>& allowed_accounts);
-  void ContinueAddUnapproved1559Transaction(
-      AddUnapproved1559TransactionCallback callback,
+  void ContinueAddAndApprove1559Transaction(
+      AddAndApproveTransactionCallback callback,
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
       bool success,
@@ -122,7 +123,11 @@ class BraveWalletProviderImpl final
   mojo::Remote<mojom::EthTxController> tx_controller_;
   KeyringController* keyring_controller_;
   base::flat_map<std::string, AddEthereumChainCallback> chain_callbacks_;
-  mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
+  base::flat_map<std::string, AddAndApproveTransactionCallback>
+      add_tx_callbacks_;
+  mojo::Receiver<mojom::EthJsonRpcControllerObserver> rpc_observer_receiver_{
+      this};
+  mojo::Receiver<mojom::EthTxControllerObserver> tx_observer_receiver_{this};
   PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };
