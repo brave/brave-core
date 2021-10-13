@@ -10,6 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 namespace {
 
@@ -95,10 +96,14 @@ SearchEngineTrackerFactory::~SearchEngineTrackerFactory() {}
 
 KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* template_url_service = TemplateURLServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(context));
-  if (template_url_service) {
-    return new SearchEngineTracker(template_url_service);
+  auto* profile = Profile::FromBrowserContext(context);
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  // FIXME(rillian) Since we're a KeyedService, do we need to declare a
+  // dependency on PrefService?
+  auto* user_prefs = profile->GetPrefs();
+  if (template_url_service && user_prefs) {
+    return new SearchEngineTracker(template_url_service, user_prefs);
   }
   return nullptr;
 }
@@ -107,9 +112,16 @@ bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
 
+void SearchEngineTrackerFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(kSwitchSearchEngineP3AStorage);
+}
+
 SearchEngineTracker::SearchEngineTracker(
-    TemplateURLService* template_url_service)
-    : template_url_service_(template_url_service) {
+    TemplateURLService* template_url_service,
+    PrefService* user_prefs)
+    : switch_record_(user_prefs, kSwitchSearchEngineP3AStorage),
+      template_url_service_(template_url_service) {
   observer_.Observe(template_url_service_);
   const TemplateURL* template_url =
       template_url_service_->GetDefaultSearchProvider();
@@ -146,11 +158,17 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
 }
 
 void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
-  auto answer = SearchEngineSwitchP3A::kNoSwitch;
+  // Default to the last recorded switch so when we're called
+  // at start-up we initialize the histogram with whatever we
+  // remember from the previous run.
+  auto last = switch_record_.GetLatest();
+  auto answer = last.value_or(SearchEngineSwitchP3A::kNoSwitch);
 
   if (url.is_valid() && url != previous_search_url_) {
+    // The default url has been switched, record that instead.
     answer = SearchEngineSwitchP3AMapAnswer(url, previous_search_url_);
     previous_search_url_ = url;
+    switch_record_.Add(answer);
   }
 
   UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);

@@ -8,6 +8,7 @@
 
 #include "base/memory/singleton.h"
 #include "base/scoped_observation.h"
+#include "brave/components/weekly_storage/weekly_event_storage.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
@@ -34,6 +35,12 @@ enum class SearchEngineP3A {
   kMaxValue = kBrave,
 };
 
+// Preference name switch events are stored under.
+constexpr char kSwitchSearchEngineP3AStorage[] =
+    "brave.search.p3a_default_switch";
+
+// Note: append-only enumeration! Never remove any existing values, as this enum
+// is used to bucket a UMA histogram, and removing values breaks that.
 enum class SearchEngineSwitchP3A {
   kNoSwitch,
   kBraveToGoogle,
@@ -63,13 +70,17 @@ class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
+
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 };
 
 // Records P3A metrics when default search engine changes.
 class SearchEngineTracker : public KeyedService,
                             public TemplateURLServiceObserver {
  public:
-  explicit SearchEngineTracker(TemplateURLService* template_url_service);
+  SearchEngineTracker(TemplateURLService* template_url_service,
+                      PrefService* user_prefs);
   ~SearchEngineTracker() override;
 
   SearchEngineTracker(const SearchEngineTracker&) = delete;
@@ -87,6 +98,7 @@ class SearchEngineTracker : public KeyedService,
   // Keeping this to check for changes in |OnTemplateURLServiceChanged|.
   GURL default_search_url_;
   GURL previous_search_url_;
+  WeeklyEventStorage<SearchEngineSwitchP3A> switch_record_;
 
   TemplateURLService* template_url_service_;
 };
