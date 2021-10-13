@@ -45,6 +45,7 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
   tx_controller_.Bind(std::move(tx_controller));
   tx_controller_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
+  tx_controller_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
@@ -138,10 +139,10 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
   delegate_->ShowBubble();
 }
 
-void BraveWalletProviderImpl::AddUnapprovedTransaction(
+void BraveWalletProviderImpl::AddAndApproveTransaction(
     mojom::TxDataPtr tx_data,
     const std::string& from,
-    AddUnapprovedTransactionCallback callback) {
+    AddAndApproveTransactionCallback callback) {
   if (!tx_data) {
     std::move(callback).Run(
         false, "",
@@ -150,13 +151,13 @@ void BraveWalletProviderImpl::AddUnapprovedTransaction(
   }
 
   GetAllowedAccounts(
-      base::BindOnce(&BraveWalletProviderImpl::ContinueAddUnapprovedTransaction,
+      base::BindOnce(&BraveWalletProviderImpl::ContinueAddAndApproveTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      std::move(tx_data), from));
 }
 
-void BraveWalletProviderImpl::ContinueAddUnapprovedTransaction(
-    AddUnapprovedTransactionCallback callback,
+void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
+    AddAndApproveTransactionCallback callback,
     mojom::TxDataPtr tx_data,
     const std::string& from,
     bool success,
@@ -175,10 +176,10 @@ void BraveWalletProviderImpl::ContinueAddUnapprovedTransaction(
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BraveWalletProviderImpl::AddUnapproved1559Transaction(
+void BraveWalletProviderImpl::AddAndApprove1559Transaction(
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
-    AddUnapproved1559TransactionCallback callback) {
+    AddAndApprove1559TransactionCallback callback) {
   if (!tx_data) {
     std::move(callback).Run(
         false, "",
@@ -187,13 +188,13 @@ void BraveWalletProviderImpl::AddUnapproved1559Transaction(
   }
 
   GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderImpl::ContinueAddUnapproved1559Transaction,
+      &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
       weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
       from));
 }
 
-void BraveWalletProviderImpl::ContinueAddUnapproved1559Transaction(
-    AddUnapproved1559TransactionCallback callback,
+void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
+    AddAndApprove1559TransactionCallback callback,
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
     bool success,
@@ -208,29 +209,22 @@ void BraveWalletProviderImpl::ContinueAddUnapproved1559Transaction(
 
   tx_controller_->AddUnapproved1559Transaction(
       std::move(tx_data), from,
-      base::BindOnce(&BraveWalletProviderImpl::OnAddUnapproved1559Transaction,
+      base::BindOnce(&BraveWalletProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderImpl::OnAddUnapprovedTransaction(
-    AddUnapprovedTransactionCallback callback,
+    AddAndApproveTransactionCallback callback,
     bool success,
     const std::string& tx_meta_id,
     const std::string& error_message) {
-  std::move(callback).Run(success, tx_meta_id, error_message);
   if (success) {
+    add_tx_callbacks_[tx_meta_id] = std::move(callback);
     delegate_->ShowBubble();
-  }
-}
-
-void BraveWalletProviderImpl::OnAddUnapproved1559Transaction(
-    AddUnapproved1559TransactionCallback callback,
-    bool success,
-    const std::string& tx_meta_id,
-    const std::string& error_message) {
-  std::move(callback).Run(success, tx_meta_id, error_message);
-  if (success) {
-    delegate_->ShowBubble();
+  } else {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
   }
 }
 
@@ -355,7 +349,7 @@ void BraveWalletProviderImpl::Init(
     events_listener_.Bind(std::move(events_listener));
     if (rpc_controller_) {
       rpc_controller_->AddObserver(
-          observer_receiver_.BindNewPipeAndPassRemote());
+          rpc_observer_receiver_.BindNewPipeAndPassRemote());
     }
   }
 }
@@ -370,7 +364,36 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 void BraveWalletProviderImpl::OnConnectionError() {
   rpc_controller_.reset();
   tx_controller_.reset();
-  observer_receiver_.reset();
+  rpc_observer_receiver_.reset();
+  tx_observer_receiver_.reset();
+}
+
+void BraveWalletProviderImpl::OnTransactionStatusChanged(
+    mojom::TransactionInfoPtr tx_info) {
+  auto tx_status = tx_info->tx_status;
+  if (tx_status != mojom::TransactionStatus::Submitted &&
+      tx_status != mojom::TransactionStatus::Rejected &&
+      tx_status != mojom::TransactionStatus::Error)
+    return;
+
+  std::string tx_meta_id = tx_info->id;
+  if (!add_tx_callbacks_.contains(tx_meta_id))
+    return;
+
+  std::string tx_hash = tx_info->tx_hash;
+  if (tx_status == mojom::TransactionStatus::Submitted) {
+    std::move(add_tx_callbacks_[tx_meta_id]).Run(true, tx_hash, "");
+  } else if (tx_status == mojom::TransactionStatus::Rejected) {
+    std::move(add_tx_callbacks_[tx_meta_id])
+        .Run(false, "",
+             l10n_util::GetStringUTF8(
+                 IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED));
+  } else if (tx_status == mojom::TransactionStatus::Error) {
+    std::move(add_tx_callbacks_[tx_meta_id])
+        .Run(false, "",
+             l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
+  }
+  add_tx_callbacks_.erase(tx_meta_id);
 }
 
 }  // namespace brave_wallet

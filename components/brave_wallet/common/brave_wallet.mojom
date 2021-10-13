@@ -18,8 +18,8 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   RequestEthereumPermissions() => (bool success, array<string> accounts);
   AddEthereumChain(string json_payload) => (bool success, int32 error, string message);
-  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
-  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  AddAndApproveTransaction(TxData tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
   // error will be 0 when success
   SignMessage(string address, string message) => (string signature, int32 error, string error_message);
   GetChainId() => (string chain_id);
