@@ -58,13 +58,12 @@ public struct CryptoView: View {
     ZStack {
       switch visibleScreen {
       case .crypto:
-        UIKitController(
-          UINavigationController(
-            rootViewController: CryptoPagesViewController(
-              walletStore: walletStore
-            )
-          )
-        )
+        UIKitNavigationView {
+          CryptoPagesView(walletStore: walletStore)
+            .toolbar {
+              dismissButtonToolbarContents
+            }
+        }
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
       case .unlock:
         UIKitNavigationView {

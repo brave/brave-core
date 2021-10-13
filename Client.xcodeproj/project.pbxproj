@@ -229,7 +229,7 @@
 		271F689426EBD27E00AA2A50 /* PreviewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */; };
 		271F689526EBD27E00AA2A50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */; };
 		271F689626EBD27E00AA2A50 /* SwapCryptoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */; };
-		271F689726EBD27E00AA2A50 /* CryptoPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */; };
+		271F689726EBD27E00AA2A50 /* CryptoPagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685926EBD27D00AA2A50 /* CryptoPagesView.swift */; };
 		271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685B26EBD27D00AA2A50 /* NetworkStore.swift */; };
 		271F689926EBD27E00AA2A50 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685C26EBD27D00AA2A50 /* Address.swift */; };
 		271F689A26EBD27E00AA2A50 /* KeyringStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F685D26EBD27D00AA2A50 /* KeyringStore.swift */; };
@@ -1788,7 +1788,7 @@
 		271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewModifiers.swift; sourceTree = "<group>"; };
 		271F685526EBD27C00AA2A50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwapCryptoView.swift; sourceTree = "<group>"; };
-		271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoPagesViewController.swift; sourceTree = "<group>"; };
+		271F685926EBD27D00AA2A50 /* CryptoPagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoPagesView.swift; sourceTree = "<group>"; };
 		271F685B26EBD27D00AA2A50 /* NetworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkStore.swift; sourceTree = "<group>"; };
 		271F685C26EBD27D00AA2A50 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		271F685D26EBD27D00AA2A50 /* KeyringStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringStore.swift; sourceTree = "<group>"; };
@@ -3610,7 +3610,7 @@
 			isa = PBXGroup;
 			children = (
 				271F685726EBD27D00AA2A50 /* BuySwapSwap */,
-				271F685926EBD27D00AA2A50 /* CryptoPagesViewController.swift */,
+				271F685926EBD27D00AA2A50 /* CryptoPagesView.swift */,
 				271F685A26EBD27D00AA2A50 /* Stores */,
 				271F685E26EBD27D00AA2A50 /* CryptoView.swift */,
 				271F685F26EBD27D00AA2A50 /* NetworkPicker.swift */,
@@ -7379,7 +7379,7 @@
 				27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */,
 				271F68AA26EBD27E00AA2A50 /* TransactionView.swift in Sources */,
 				271F689126EBD27E00AA2A50 /* TestEthRpcController.swift in Sources */,
-				271F689726EBD27E00AA2A50 /* CryptoPagesViewController.swift in Sources */,
+				271F689726EBD27E00AA2A50 /* CryptoPagesView.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,
 				271F689926EBD27E00AA2A50 /* Address.swift in Sources */,

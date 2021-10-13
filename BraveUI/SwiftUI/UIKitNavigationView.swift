@@ -21,6 +21,7 @@ public struct UIKitNavigationView<Content: View>: View {
   
   public var body: some View {
     _UIKitNavigationView(content: content)
+      .ignoresSafeArea()
   }
   
   private struct _UIKitNavigationView<Content: View>: UIViewControllerRepresentable {
