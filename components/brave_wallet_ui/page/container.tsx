@@ -340,14 +340,18 @@ function Container (props: Props) {
     }
   }
 
-  const onToggleAddModal = () => {
-    props.walletPageActions.setShowAddModal(!showAddModal)
+  const onShowAddModal = () => {
+    props.walletPageActions.setShowAddModal(true)
+  }
+
+  const onHideAddModal = () => {
+    props.walletPageActions.setShowAddModal(false)
   }
 
   const onCreateAccount = (name: string) => {
     const created = props.walletPageActions.addAccount({ accountName: name })
     if (created) {
-      onToggleAddModal()
+      onHideAddModal()
     }
   }
 
@@ -473,6 +477,7 @@ function Container (props: Props) {
       hasInitialized &&
       walletLocation !== WalletRoutes.Backup &&
       walletLocation !== WalletRoutes.Accounts &&
+      walletLocation !== WalletRoutes.AddAccountModal &&
       acceptedAccountRoutes.length !== 0 &&
       !acceptedAccountRoutes.includes(walletLocation) &&
       walletLocation !== WalletRoutes.Portfolio &&
@@ -571,7 +576,7 @@ function Container (props: Props) {
                 onImportAccount={onImportAccount}
                 isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
-                onToggleAddModal={onToggleAddModal}
+                onHideAddModal={onHideAddModal}
                 onUpdateAccountName={onUpdateAccountName}
                 fetchFullTokenList={fetchFullTokenList}
                 selectedNetwork={selectedNetwork}
@@ -594,6 +599,7 @@ function Container (props: Props) {
                 addUserAssetError={addUserAssetError}
                 defaultWallet={defaultWallet}
                 onOpenWalletSettings={onOpenWalletSettings}
+                onShowAddModal={onShowAddModal}
               />
             }
           </Route>

@@ -423,6 +423,10 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     console.log(`Will disconnect ${address} from ${origin}`)
   }
 
+  const onAddAccount = () => {
+    console.log('Will Expand to the Accounts Page')
+  }
+
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
@@ -462,6 +466,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     accounts={accounts}
                     onBack={onBack}
                     onSelectAccount={onSelectAccount}
+                    onAddAccount={onAddAccount}
+                    hasAddButton={true}
                   />
                 </SelectContainer>
               }
