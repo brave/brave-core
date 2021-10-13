@@ -235,6 +235,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
 void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
                                       const std::string& chain_id,
                                       AddUserAssetCallback callback) {
+  DCHECK(token);
+
   absl::optional<std::string> optional_checksum_address =
       GetChecksumAddress(token->contract_address, chain_id);
   if (!optional_checksum_address) {
@@ -284,11 +286,11 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
   std::move(callback).Run(true);
 }
 
-void BraveWalletService::RemoveUserAsset(const std::string& contract_address,
+void BraveWalletService::RemoveUserAsset(mojom::ERCTokenPtr token,
                                          const std::string& chain_id,
                                          RemoveUserAssetCallback callback) {
   absl::optional<std::string> optional_checksum_address =
-      GetChecksumAddress(contract_address, chain_id);
+      GetChecksumAddress(token->contract_address, chain_id);
   if (!optional_checksum_address) {
     std::move(callback).Run(false);
     return;
@@ -316,12 +318,14 @@ void BraveWalletService::RemoveUserAsset(const std::string& contract_address,
 }
 
 void BraveWalletService::SetUserAssetVisible(
-    const std::string& contract_address,
+    mojom::ERCTokenPtr token,
     const std::string& chain_id,
     bool visible,
     SetUserAssetVisibleCallback callback) {
+  DCHECK(token);
+
   absl::optional<std::string> optional_checksum_address =
-      GetChecksumAddress(contract_address, chain_id);
+      GetChecksumAddress(token->contract_address, chain_id);
   if (!optional_checksum_address) {
     std::move(callback).Run(false);
     return;

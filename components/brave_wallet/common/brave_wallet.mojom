@@ -398,8 +398,8 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
-  RemoveUserAsset(string contract_address, string chain_id) => (bool success);
-  SetUserAssetVisible(string contract_address, string chain_id, bool visible) => (bool success);
+  RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
+  SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
   IsCryptoWalletsInstalled() => (bool installed);
   IsMetaMaskInstalled() => (bool installed);
   ImportFromCryptoWallets(string password, string newPassword) => (bool success);
