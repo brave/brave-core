@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "Заблокувати міжсайтові трекери";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Блокує завантаження реклами, спливаючих вікон і трекерів";
+"BlockAdsAndTrackingDescription" = "Блокує завантаження реклами, спливаючих вікон і трекерів.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Блокувати всі файли cookie";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Збій установлення параметра. Спробуйте ще раз пізніше.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Вебсайти не зберігатимуть інформацію про ваші попередні відвідування";
+"BlockCookiesDescription" = "Вебсайти не зберігатимуть інформацію про ваші попередні відвідування.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Блокування програм відстеження";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Блокування скриптів";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Блокує JavaScript (може порушити роботу вебсайтів)";
+"BlockScriptsDescription" = "Блокує JavaScript (може порушити роботу вебсайтів).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Додати всі вкладки до закладок";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Папка із закладками";
@@ -355,6 +358,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Тут будуть відображатись завантажені файли.";
 
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Раніше";
+
 /* No comment provided by engineer. */
 "Edit" = "Редагування";
 
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "Способи додавання відбитків пальців";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Заблокувати функцію відбитків пальців";
+"FingerprintingProtection" = "Заблокувати відстеження вебсайтами";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Вебсайтам буде складніше розпізнавати відмінні риси вашого пристрою.";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Нам дуже шкода.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Завдяки Brave Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Brave Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Увімкнути Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Натисніть в будь-якому місці екрана, щоб перейти до Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Тепер ви можете здійснити безкоштовний виклик";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Щоб здійснити безкоштовний виклик, увімкніть Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Продовжуючи, ви приймаєте умови документів %1$@ і %2$@. Вимкнути опцію можна будь-коли в меню «Налаштування».";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель винагород";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені облікові дані";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Збережені вкладки";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Зберегти зображення";

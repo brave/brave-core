@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "Blockera webbplatsspårare";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in";
+"BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blockera alla kakor";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Det gick inte att spara inställningen. Försök igen.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Hindrar webbplatser från att lagra information om dina tidigare besök";
+"BlockCookiesDescription" = "Hindrar webbplatser från att lagra information om dina tidigare besök.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blockeringsvisare";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Blockera skript";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blockerar JavaScript (kan skada webbplatser)";
+"BlockScriptsDescription" = "Blockerar Javascript (kan få webbplatser att sluta fungera).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Bokmärk alla flikar";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmärkesmapp";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Hämtade filer kommer att visas här.";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Tidigare";
 
 /* No comment provided by engineer. */
 "Edit" = "Ändra";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Oj, det här var ju pinsamt.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Med Brave Rewards kan du se sekretessbevarande annonser från Brave Ads-nätverket. Inga spårare. Inga kapacitetssänkningar. Och dina data förblir helt säkra.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Aktivera Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Klicka var som helst på skärmen för att fortsätta till Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Nu kan du starta ett gratis samtal";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Aktivera Brave Rewards för att starta ett gratis samtal";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Genom att klicka godkänner du %1$@ och %2$@. Inaktivera när som helst i Inställningar.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Belöningspanel";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Sparade inloggningar";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Sparade flikar";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Spara bild";

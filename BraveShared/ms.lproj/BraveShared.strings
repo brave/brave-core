@@ -74,10 +74,10 @@
 "Block3rdPartyCookies" = "Sekat kuki pihak ke 3";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Sekat penjejak rentas tapak";
+"BlockAdsAndTracking" = "Sekat Penjejak Rentas Tapak";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Halang iklan, halaman timbul dan penjejak daripada dimuatkan";
+"BlockAdsAndTrackingDescription" = "Menghalang iklan, halaman timbul dan penjejak daripada dimuatkan.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Sekat semua Kuki";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Gagal menetapkan keutamaan. Sila cuba lagi.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Halang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini";
+"BlockCookiesDescription" = "Menghalang laman web daripada menyimpan maklumat tentang lawatan anda sebelum ini.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Pemantau Penyekatan";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Sekat Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Menyekat JavaScript  (mungkin merosakkan tapak)";
+"BlockScriptsDescription" = "Menyekat JavaScript (mungkin merosakkan tapak).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Tandakan Semua Tab";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Penanda Buku";
@@ -293,7 +296,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Buka Tetapan, ketik Aplikasi Penyemak Imbas Lalai, dan pilih Brave.  ";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS %@. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.  ";
+"defaultBrowserCallout.notificationBody" = "Dioptimumkan untuk iOS %@. Jadikan Brave sebagai penyemak imbas lalai anda hari ini.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Penyemk Imbas Web Brave";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Fail-fail yang dimuat turun akan kelihatan di sini.";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Lebih Awal";
 
 /* No comment provided by engineer. */
 "Edit" = "Edit";
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "Kaedah Pencapjarian";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Sekat pencapjarian";
+"FingerprintingProtection" = "Sekat Pencapjarian";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Menjadikannya lebih sukar untuk tapak mengecam ciri tersendiri peranti anda.";
@@ -518,7 +524,7 @@
 "Home" = "Halaman Utama";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Naik taraf sambungan ke HTTPS";
+"HTTPSEverywhere" = "Naik Taraf Sambungan ke HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat berbanding HTTP biasa.";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Aduh, ini memalukan.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, anda boleh melihat iklan yang menjaga privasi daripada rangkaian Brave Ads. Tiada penjejak. Tiada kelewatan. Data anda selamat sepenuhnya.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Hidupkan Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana sahaja di skrin untuk meneruskan ke Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Anda kini boleh memulakan panggilan percuma";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Untuk memulakan panggilan percuma, hidupkan Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Dengan mengklik, anda bersetuju dengan %1$@ dan %2$@. Nyahdayakan bila-bila masa dalam Tetapan.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel Ganjaran";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Log Masuk Disimpan";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Tab Disimpan";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Simpan Imej";

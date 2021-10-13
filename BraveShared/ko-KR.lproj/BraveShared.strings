@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "크로스사이트 트래커 차단";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단";
+"BlockAdsAndTrackingDescription" = "광고, 팝업, 트래커가 로드되지 않도록 차단합니다.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "모든 쿠키 차단";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "환경 설정을 설정하는 데 실패했습니다. 다시 시도하십시오.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단";
+"BlockCookiesDescription" = "웹사이트에 이전 방문에 대한 정보가 저장되지 않도록 차단합니다.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "차단 모니터";
@@ -113,7 +113,10 @@
 "BlockScripts" = "스크립트 차단";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "자바스크립트 차단(사이트가 깨져 보일 수 있음)";
+"BlockScriptsDescription" = "자바스크립트를 차단합니다(사이트가 깨져 보일 수 있음).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "모든 탭 북마크";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "북마크 폴더";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "다운로드한 파일이 여기에 표시됩니다.";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "더 이전";
 
 /* No comment provided by engineer. */
 "Edit" = "편집";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "곤란한 문제가 발생했습니다.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Brave Rewards를 이용하면 Brave Ads 네트워크에서 프라이버시 보장 광고를 볼 수 있습니다. 트래커가 없어 느려지지 않습니다. 그리고 데이터가 완벽히 안전하게 보호됩니다.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Rewards 켜기";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Brave Talk로 계속하려면 화면의 아무데나 클릭하세요.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "무료 통화를 시작할 수 있습니다.";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "무료 통화를 시작하려면 Brave Rewards를 켜세요.";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "클릭하면 %1$@ 및 %2$@에 동의하게 됩니다. 설정에서 언제든지 비활성화할 수 있습니다.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "리워드 패널";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "저장된 로그인 정보";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "탭 저장됨";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "이미지 저장";

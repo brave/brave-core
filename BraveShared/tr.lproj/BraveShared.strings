@@ -74,10 +74,10 @@
 "Block3rdPartyCookies" = "Üçüncü taraf çerezlerini engelle";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Siteler arası izleyicileri engelle";
+"BlockAdsAndTracking" = "Siteler Arası İzleyicileri Engelle";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Reklamların, açılır pencerelerin ve izleyicilerin yüklenmesini engeller";
+"BlockAdsAndTrackingDescription" = "Reklamların, açılır pencerelerin ve izleyicilerin yüklenmesini engeller.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Tüm Çerezleri Engelle";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Tercih ayarlanamadı. Lütfen yeniden deneyin.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller";
+"BlockCookiesDescription" = "Web sitelerinin önceki ziyaretleriniz hakkında bilgi depolamasını engeller.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Engelleme İzleyicisi";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Komut Dosyalarını Engelle";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "JavaScript'i engeller (siteleri bozabilir)";
+"BlockScriptsDescription" = "JavaScript'i engeller (siteleri bozabilir).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Tüm Sekmelere Yer İşareti Ekle";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Yer İşareti Klasörü";
@@ -355,6 +358,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "İndirilen dosyalar burada görünecektir.";
 
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Önceki";
+
 /* No comment provided by engineer. */
 "Edit" = "Düzenle";
 
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "Parmak İzi Yöntemleri";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Parmak izini engelleme";
+"FingerprintingProtection" = "Parmak İzini Engelle";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Sitelerin cihazınızın ayırt edici özelliklerini tanımasını zorlaştırır. ";
@@ -518,7 +524,7 @@
 "Home" = "Ana Sayfa";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Bağlantıları HTTPS'ye yükselt";
+"HTTPSEverywhere" = "Bağlantıları HTTPS'ye Yükselt";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Bazı siteleri düz HTTP yerine güvenli bir HTTPS bağlantısı kullanarak açar.";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Şey, bu utanç verici.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Brave Rewards ile Brave Ads ağından gizlilik korumalı reklamları görüntüleyebilirsiniz. İzleyici yok. Yavaşlama yok. Üstelik verileriniz tamamen güvende kalır.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Rewards'u aç";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Brave Talk'a devam etmek için ekranda herhangi bir yere tıklayın.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Şimdi ücretsiz bir arama başlatabilirsiniz";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Ücretsiz arama başlatmak için Brave Rewards'u açın";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Tıkladığınızda %1$@ ve %2$@ içeriğini kabul etmiş olursunuz. Dilediğiniz zaman Ayarlar bölümünden devre dışı bırakın.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Ödül Paneli";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Kaydedilen Oturumlar";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Kayıtlı Sekmeler";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Resmi Kaydet";

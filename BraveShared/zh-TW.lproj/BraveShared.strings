@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "封鎖跨網站追蹤器";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器";
+"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器。";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "封鎖所有 Cookie";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "無法設定偏好設定，請稍後再試。";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊";
+"BlockCookiesDescription" = "禁止網站儲存您的造訪記錄相關資訊。";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "封鎖監控";
@@ -113,7 +113,10 @@
 "BlockScripts" = "封鎖指令碼";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)";
+"BlockScriptsDescription" = "封鎖 JavaScript (可能會影響網站運作)。";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "為所有分頁加上書籤";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "書籤資料夾";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "下載的檔案將於此顯示。";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "更早";
 
 /* No comment provided by engineer. */
 "Edit" = "編輯";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "哎呀，真抱歉。";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "有了 Brave Rewards，您可以查看來自 Brave Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "開啟 Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "按下畫面上的任何位置以繼續 Brave Talk。";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "您現在可以開始免費通話了";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "如要開始免費通話，請開啟 Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "獎勵對象";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "已儲存的登入資訊";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "已儲存分頁";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "儲存圖片";
