@@ -14,7 +14,6 @@ index d74a53ceef764935f70df7867402bba3815bfc08..5d44af63f9691911593345069d15123b
    ]
  
    deps += feed_deps
-   deps += web_feed_deps
 +  deps += brave_chrome_java_deps
  
    srcjar_deps = [
