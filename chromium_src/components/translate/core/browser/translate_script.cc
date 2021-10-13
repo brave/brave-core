@@ -30,7 +30,6 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
   };
   originalOnLoadCSS = cr.googleTranslate.onLoadCSS;
   cr.googleTranslate.onLoadCSS = function (url) {
-    console.log(url ,' => ', redirectToSecurityOrigin(url));
     originalOnLoadCSS(redirectToSecurityOrigin(url))
   };
   originalOnLoadJavascript = cr.googleTranslate.onLoadJavascript;
