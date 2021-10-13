@@ -5,5 +5,7 @@
 
 #include "brave/common/translate_network_constants.h"
 
-const char kGoogleTranslateElementScriptPattern[] = "https://translate.googleapis.com/translate_a/element.js*"; // NOLINT
-const char kGoogleTranslateLanguagePattern[] = "https://translate.googleapis.com/translate_a/l?client=chrome&*"; // NOLINT
+const char kGoogleTranslateElementScriptPattern[] =
+    "https://translate.googleapis.com/translate_a/element.js*";
+const char kGoogleTranslateLanguagePattern[] =
+    "https://translate.googleapis.com/translate_a/l?client=chrome&*";
