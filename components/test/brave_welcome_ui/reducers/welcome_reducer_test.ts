@@ -161,12 +161,20 @@ describe('welcomeReducer', () => {
       })
 
       describe('when user is in US/Canada/approved regions', () => {
-        it('should NOT filter out the Brave engine', () => {
+        it('should have the Brave engine', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: examplePayload
           })
           expect(result.searchProviders.length).toEqual(2)
+        })
+
+        it('should NOT show onboarding', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: examplePayload
+          })
+          expect(result.hideSearchOnboarding).toEqual(true)
         })
       })
 
@@ -177,20 +185,24 @@ describe('welcomeReducer', () => {
         afterEach(() => {
           countryString = 'US'
         })
-        it('should filter out Brave', () => {
-          const result = welcomeReducer(mockState, {
-            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
-            payload: examplePayload
-          })
-          expect(result.searchProviders.length).toEqual(1)
-        })
 
-        it('should leave Brave if its set as default', () => {
+        it('should show onboarding', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: [
               { name: 'Google', canBeRemoved: true },
-              { name: 'Brave Search beta', canBeRemoved: false }
+              { name: 'Brave Search beta', canBeRemoved: true }
+            ]
+          })
+          expect(result.hideSearchOnboarding).toEqual(false)
+        })
+
+        it('should leave Brave in the list', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              { name: 'Google', canBeRemoved: true },
+              { name: 'Brave Search beta', canBeRemoved: true }
             ]
           })
           expect(result.searchProviders.length).toEqual(2)
