@@ -570,6 +570,9 @@ export interface TransactionInfo {
   txType: TransactionType
   txParams: string[]
   txArgs: string[]
+  createdTime: MojoTime
+  submittedTime: MojoTime
+  confirmedTime: MojoTime
 }
 
 export interface TransactionListInfo {

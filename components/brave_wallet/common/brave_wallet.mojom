@@ -360,6 +360,9 @@ struct TransactionInfo {
   TransactionType tx_type;
   array<string> tx_params;
   array<string> tx_args;
+  mojo_base.mojom.TimeDelta created_time;
+  mojo_base.mojom.TimeDelta submitted_time;
+  mojo_base.mojom.TimeDelta confirmed_time;
 };
 
 interface EthTxControllerObserver {

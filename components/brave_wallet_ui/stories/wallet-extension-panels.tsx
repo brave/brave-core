@@ -112,7 +112,10 @@ export const _ConfirmTransaction = () => {
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
     txParams: ['address', 'ammount'],
-    txType: TransactionType.ERC20Transfer
+    txType: TransactionType.ERC20Transfer,
+    createdTime: { microseconds: 0 },
+    submittedTime: { microseconds: 0 },
+    confirmedTime: { microseconds: 0 }
   }
 
   const onConfirmTransaction = () => {

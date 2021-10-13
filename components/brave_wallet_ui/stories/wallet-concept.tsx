@@ -80,7 +80,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 3,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -102,7 +105,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 4,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -124,7 +130,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 2,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -146,7 +155,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 1,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       }
     ]
   },
@@ -173,7 +185,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 0,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -195,7 +210,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 5,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       }
     ]
   }
