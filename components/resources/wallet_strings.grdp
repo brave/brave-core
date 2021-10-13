@@ -72,6 +72,9 @@
     <message name="IDS_BRAVE_WALLET_SEND" desc="Send tab button">Send</message>
     <message name="IDS_BRAVE_WALLET_SWAP" desc="Swap tab button">Swap</message>
     <message name="IDS_BRAVE_WALLET_BSS_TOOL_TIP" desc="BuySendSwap tool tip description">not supported</message>
+    <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
+    <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
+    <message name="IDS_BRAVE_WALLET_EXPIRES_IN_TITLE" desc="BuySendSwap expires in title">Expires in</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
@@ -172,7 +175,7 @@
     <message name="IDS_BRAVE_WALLET_PRESET25" desc="Swap preset 25% button">25%</message>
     <message name="IDS_BRAVE_WALLET_PRESET50" desc="Swap preset 50% button">50%</message>
     <message name="IDS_BRAVE_WALLET_PRESET75" desc="Swap preset 75% button">75%</message>
-    <message name="IDS_BRAVE_WALLET_PRESET100" desc="Swap preset All button">All</message>
+    <message name="IDS_BRAVE_WALLET_PRESET100" desc="Swap preset All button">100%</message>
     <message name="IDS_BRAVE_WALLET_NETWORK_E_T_H" desc="Network Ethereum title">Ethereum</message>
     <message name="IDS_BRAVE_WALLET_NETWORK_MAIN" desc="Network Main title">Mainnet</message>
     <message name="IDS_BRAVE_WALLET_NETWORK_TEST" desc="Network Test Network title">Test Network</message>

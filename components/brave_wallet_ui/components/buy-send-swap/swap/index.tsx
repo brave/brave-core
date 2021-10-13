@@ -33,6 +33,8 @@ export interface Props {
   toAssetBalance: string
   isSubmitDisabled: boolean
   validationError?: SwapValidationErrorType
+  customSlippageTolerance: string
+  onCustomSlippageToleranceChange: (value: string) => void
   onToggleOrderType: () => void
   onFlipAssets: () => void
   onSubmitSwap: () => void
@@ -59,6 +61,8 @@ function Swap (props: Props) {
     toAssetBalance,
     isSubmitDisabled,
     validationError,
+    customSlippageTolerance,
+    onCustomSlippageToleranceChange,
     onToggleOrderType,
     onInputChange,
     onSelectPresetAmount,
@@ -149,6 +153,8 @@ function Swap (props: Props) {
         onSelectExpiration={onSelectExpiration}
         slippageTolerance={slippageTolerance}
         orderExpiration={orderExpiration}
+        customSlippageTolerance={customSlippageTolerance}
+        onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
       <NavButton
         disabled={isSubmitDisabled}

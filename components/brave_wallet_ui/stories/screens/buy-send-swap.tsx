@@ -43,6 +43,8 @@ export interface Props {
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
   isSwapSubmitDisabled: boolean
+  customSlippageTolerance: string
+  onCustomSlippageToleranceChange: (value: string) => void
   onSubmitBuy: (asset: AccountAssetOptionType) => void
   onSubmitSend: () => void
   onSubmitSwap: () => void
@@ -90,6 +92,8 @@ function BuySendSwap (props: Props) {
     swapAssetOptions,
     swapValidationError,
     isSwapSubmitDisabled,
+    customSlippageTolerance,
+    onCustomSlippageToleranceChange,
     onSubmitBuy,
     onSubmitSend,
     onSubmitSwap,
@@ -159,6 +163,8 @@ function BuySendSwap (props: Props) {
           toAssetBalance={toAssetBalance}
           isSubmitDisabled={isSwapSubmitDisabled}
           validationError={swapValidationError}
+          customSlippageTolerance={customSlippageTolerance}
+          onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
           onSubmitSwap={onSubmitSwap}
           flipSwapAssets={flipSwapAssets}
           onSelectNetwork={onSelectNetwork}

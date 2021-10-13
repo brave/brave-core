@@ -139,6 +139,7 @@ function Container (props: Props) {
     toAmount,
     toAsset,
     swapAssetOptions,
+    customSlippageTolerance,
     onToggleOrderType,
     onSwapQuoteRefresh,
     onSetToAmount,
@@ -148,7 +149,8 @@ function Container (props: Props) {
     onSetExchangeRate,
     onSelectExpiration,
     onSelectSlippageTolerance,
-    onSelectTransactAsset
+    onSelectTransactAsset,
+    onCustomSlippageToleranceChange
   } = useSwap(
     selectedAccount,
     selectedNetwork,
@@ -625,6 +627,8 @@ function Container (props: Props) {
             sendAssetOptions={sendAssetOptions}
             swapAssetOptions={swapAssetOptions}
             isSwapSubmitDisabled={isSwapButtonDisabled}
+            customSlippageTolerance={customSlippageTolerance}
+            onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
             onSetToAddress={onSetToAddress}
             onSelectExpiration={onSelectExpiration}

@@ -54,6 +54,7 @@ export default function useSwap (
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
+  const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
   const [toAmount, setToAmount] = React.useState('')
   const [toAsset, setToAsset] = React.useState<AccountAssetOptionType>(swapAssetOptions[1])
   const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(swapAssetOptions)
@@ -361,8 +362,22 @@ export default function useSwap (
     setOrderExpiration(expiration)
   }
 
+  const onCustomSlippageToleranceChange = (value: string) => {
+    setCustomSlippageTolerance(value)
+    const customSlippage = {
+      id: 4,
+      slippage: Number(value)
+    }
+    const slippage = value ? customSlippage : slippageTolerance
+    onSwapParamsChange(
+      { toOrFrom: 'from', slippageTolerance: slippage },
+      { fromAmount, toAmount }
+    )
+  }
+
   const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
+    setCustomSlippageTolerance('')
     onSwapParamsChange(
       { toOrFrom: 'from', slippageTolerance: slippage },
       { fromAmount, toAmount }
@@ -457,6 +472,8 @@ export default function useSwap (
     toAmount,
     toAsset,
     swapAssetOptions,
+    customSlippageTolerance,
+    onCustomSlippageToleranceChange,
     setFromAsset,
     setSwapToOrFrom,
     onToggleOrderType,

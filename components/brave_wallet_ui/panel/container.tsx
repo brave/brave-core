@@ -140,6 +140,7 @@ function Container (props: Props) {
     swapToOrFrom,
     toAmount,
     toAsset,
+    customSlippageTolerance,
     setFromAsset,
     setSwapToOrFrom,
     onToggleOrderType,
@@ -150,7 +151,8 @@ function Container (props: Props) {
     onSelectSlippageTolerance,
     onSwapInputChange,
     onFilterAssetList,
-    onSelectTransactAsset
+    onSelectTransactAsset,
+    onCustomSlippageToleranceChange
   } = useSwap(
     selectedAccount,
     selectedNetwork,
@@ -669,6 +671,8 @@ function Container (props: Props) {
                 validationError={swapValidationError}
                 fromAssetBalance={fromAssetBalance}
                 toAssetBalance={toAssetBalance}
+                customSlippageTolerance={customSlippageTolerance}
+                onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
                 onToggleOrderType={onToggleOrderType}
                 onSelectExpiration={onSelectExpiration}
                 onSelectSlippageTolerance={onSelectSlippageTolerance}
