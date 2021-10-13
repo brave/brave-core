@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
-index a2f59a9d8d7d2919a861031b42ea7b6f1c91ce85..3c5331dc7a3dfc7bdafaf2ab124e11800bb2c27e 100644
+index 0a8a78967f3c3cc7855fea76f1e60439290920e6..ce9ae45e5a4669fcb063e2ffefab7c45aa7ff2e1 100644
 --- a/extensions/browser/sandboxed_unpacker.cc
 +++ b/extensions/browser/sandboxed_unpacker.cc
 @@ -1006,6 +1006,7 @@ absl::optional<base::Value> SandboxedUnpacker::RewriteManifestFile(

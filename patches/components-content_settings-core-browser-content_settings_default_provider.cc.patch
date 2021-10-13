@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index a37c70357acc537f999812a0db34b647eb447258..aadcddfef3cef186686485f6e62c9a4bb1b70895 100644
+index c0d468902641c7beddadb4a0b60cc844360e9bdb..f885f8ae90988c07abe37ca49f9a33fe03bdb033 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -415,6 +415,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -421,6 +421,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    }
    prefs_->ClearPref(kDeprecatedEnableDRM);
  #endif  // BUILDFLAG(IS_CHROMEOS_ASH) || defined(OS_WIN)
