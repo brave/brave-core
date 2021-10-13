@@ -105,6 +105,9 @@ export type AccountSettingsNavTypes =
   | 'details'
   | 'privateKey'
 
+export type HardwareAccountSettingsNavTypes =
+  | 'details'
+
 export type BuySendSwapTypes =
   | 'buy'
   | 'send'
@@ -126,7 +129,7 @@ export interface BuySendSwapObjectType {
 
 export interface TopTabNavObjectType {
   name: string
-  id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
+  id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes | HardwareAccountSettingsNavTypes
 }
 
 export interface NavObjectType {
