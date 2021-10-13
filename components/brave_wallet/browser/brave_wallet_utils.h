@@ -112,6 +112,8 @@ mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id);
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
+std::vector<std::string> GetAllKnownNetworkIds();
+std::string GetKnownNetworkId(const std::string& chain_id);
 
 }  // namespace brave_wallet
 

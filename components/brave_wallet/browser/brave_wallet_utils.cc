@@ -722,23 +722,43 @@ void GetAllChains(PrefService* prefs,
   GetAllCustomChains(prefs, result);
 }
 
-std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
-  DCHECK(prefs);
+std::vector<std::string> GetAllKnownNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownNetworks) {
+    std::string network_id = GetKnownNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
 
+std::string GetKnownNetworkId(const std::string& chain_id) {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty())
     return subdomain;
-  // Separate check for localhost in known networks as it is predefined
-  // but doesnt have infura subdomain.
-  mojom::EthereumChainPtr known_network = GetKnownChain(prefs, chain_id);
-  if (known_network) {
-    if (known_network->rpc_urls.size())
-      return GURL(known_network->rpc_urls.front()).spec();
+
+  // Separate check for localhost in known networks as it is predefined but
+  // does not have infura subdomain.
+  if (chain_id == mojom::kLocalhostChainId) {
+    for (const auto& network : kKnownNetworks) {
+      if (network.chain_id == chain_id) {
+        return GURL(network.rpc_urls.front()).spec();
+      }
+    }
   }
+
+  return "";
+}
+
+std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
+  DCHECK(prefs);
+
+  std::string id = GetKnownNetworkId(chain_id);
+  if (!id.empty())
+    return id;
 
   std::vector<mojom::EthereumChainPtr> custom_chains;
   GetAllCustomChains(prefs, &custom_chains);
-  std::string id;
   for (const auto& network : custom_chains) {
     if (network->chain_id != chain_id)
       continue;

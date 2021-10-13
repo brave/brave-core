@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -17,11 +19,6 @@
 namespace {
 
 base::Value GetDefaultUserAssets() {
-  // Show ETH and BAT by default for mainnet.
-  base::Value user_assets_pref(base::Value::Type::DICTIONARY);
-  base::Value* user_assets_list =
-      user_assets_pref.SetKey("mainnet", base::Value(base::Value::Type::LIST));
-
   base::Value eth(base::Value::Type::DICTIONARY);
   eth.SetKey("contract_address", base::Value(""));
   eth.SetKey("name", base::Value("Ethereum"));
@@ -30,7 +27,6 @@ base::Value GetDefaultUserAssets() {
   eth.SetKey("is_erc721", base::Value(false));
   eth.SetKey("decimals", base::Value(18));
   eth.SetKey("visible", base::Value(true));
-  user_assets_list->Append(std::move(eth));
 
   base::Value bat(base::Value::Type::DICTIONARY);
   bat.SetKey("contract_address",
@@ -42,7 +38,18 @@ base::Value GetDefaultUserAssets() {
   bat.SetKey("decimals", base::Value(18));
   bat.SetKey("visible", base::Value(true));
   bat.SetKey("logo", base::Value("bat.svg"));
-  user_assets_list->Append(std::move(bat));
+
+  // Show ETH and BAT by default for mainnet, and ETH for other known networks.
+  base::Value user_assets_pref(base::Value::Type::DICTIONARY);
+
+  std::vector<std::string> network_ids = brave_wallet::GetAllKnownNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value* user_assets_list = user_assets_pref.SetKey(
+        network_id, base::Value(base::Value::Type::LIST));
+    user_assets_list->Append(eth.Clone());
+    if (network_id == "mainnet")
+      user_assets_list->Append(bat.Clone());
+  }
 
   return user_assets_pref;
 }
