@@ -106,6 +106,49 @@ TEST(EthCallDataBuilderTest, GetMany) {
             "697066732e72656469726563745f646f6d61696e2e76616c7565000000000000");
 }
 
+TEST(EthCallDataBuilderTest, Get) {
+  std::string data;
+  EXPECT_TRUE(Get("crypto.ETH.address", "brave.crypto", &data));
+  EXPECT_EQ(data,
+            "0x1be5e7ed"
+            "0000000000000000000000000000000000000000000000000000000000000040"
+            // Name hash of brave.crypto.
+            "77252571a99feee8f5e6b2f0c8b705407d395adc00b3c8ebcc7c19b2ea850013"
+            // Count of "crypto.ETH.address"
+            "0000000000000000000000000000000000000000000000000000000000000012"
+            // Encoding of "crypto.ETH.address"
+            "63727970746f2e4554482e616464726573730000000000000000000000000000");
+}
+
 }  // namespace unstoppable_domains
+
+namespace ens {
+
+TEST(EthCallDataBuilderTest, Resolver) {
+  std::string data;
+  EXPECT_TRUE(Resolver("brantly.eth", &data));
+  EXPECT_EQ(data,
+            "0x0178b8bf"
+            // Name hash of brantly.eth.
+            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
+}
+
+TEST(EthCallDataBuilderTest, ContentHash) {
+  std::string data;
+  EXPECT_TRUE(ContentHash("brantly.eth", &data));
+  EXPECT_EQ(data,
+            "0xbc1c58d1"
+            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
+}
+
+TEST(EthCallDataBuilderTest, Addr) {
+  std::string data;
+  EXPECT_TRUE(Addr("brantly.eth", &data));
+  EXPECT_EQ(data,
+            "0x3b3b57de"
+            "43fcd34d8589090581e1d2bdcf5dc17feb05b2006401fb1c3fdded335a465b51");
+}
+
+}  // namespace ens
 
 }  // namespace brave_wallet
