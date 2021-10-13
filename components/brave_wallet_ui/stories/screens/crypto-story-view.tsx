@@ -194,6 +194,10 @@ const CryptoStoryView = (props: Props) => {
     alert('Will Nav to brave://settings/wallet')
   }
 
+  const onRouteBackToAccounts = () => {
+    // Does nothing in storybook
+  }
+
   return (
     <StyledWrapper>
       {!hideNav &&
@@ -306,6 +310,7 @@ const CryptoStoryView = (props: Props) => {
           onImportAccountFromJson={onImportAccountFromJson}
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
+          onRouteBackToAccounts={onRouteBackToAccounts}
         />
       }
     </StyledWrapper>

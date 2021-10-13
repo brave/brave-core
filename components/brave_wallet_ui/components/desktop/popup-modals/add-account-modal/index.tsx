@@ -30,6 +30,7 @@ export interface Props {
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onSetImportError: (hasError: boolean) => void
+  onRouteBackToAccounts: () => void
   hasImportError: boolean
   accounts: WalletAccountType[]
   title: string
@@ -47,7 +48,8 @@ const AddAccountModal = (props: Props) => {
     onAddHardwareAccounts,
     getBalance,
     onImportAccountFromJson,
-    onSetImportError
+    onSetImportError,
+    onRouteBackToAccounts
   } = props
   const suggestedAccountName = `${getLocale('braveWalletAccount')} ${accounts.length + 1}`
   const [tab, setTab] = React.useState<AddAccountNavTypes>('create')
@@ -87,6 +89,7 @@ const AddAccountModal = (props: Props) => {
   const onSubmit = () => {
     if (tab === 'create') {
       onCreateAccount(accountName)
+      onRouteBackToAccounts()
       return
     }
     if (tab === 'import') {
@@ -120,6 +123,7 @@ const AddAccountModal = (props: Props) => {
       setAccountName(suggestedAccountName)
     } else {
       setAccountName('')
+      onRouteBackToAccounts()
     }
     setTab(id)
   }

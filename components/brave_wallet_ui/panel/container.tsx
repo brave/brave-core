@@ -388,6 +388,10 @@ function Container (props: Props) {
     props.walletActions.removeSitePermission({ origin: origin, account: address })
   }
 
+  const onAddAccount = () => {
+    props.walletPanelActions.expandWalletAccounts()
+  }
+
   const isConnectedToSite = React.useMemo((): boolean => {
     if (activeOrigin === WalletOrigin) {
       return true
@@ -540,6 +544,8 @@ function Container (props: Props) {
             accounts={accounts}
             onBack={onReturnToMain}
             onSelectAccount={onSelectAccount}
+            onAddAccount={onAddAccount}
+            hasAddButton={true}
           />
         </SelectContainer>
       </PanelWrapper>

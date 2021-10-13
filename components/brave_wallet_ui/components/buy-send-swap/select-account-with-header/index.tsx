@@ -12,11 +12,13 @@ import {
 export interface Props {
   accounts: UserAccountType[]
   onSelectAccount: (account: UserAccountType) => () => void
+  onAddAccount?: () => void
+  hasAddButton?: boolean
   onBack: () => void
 }
 
 function SelectAccountWithHeader (props: Props) {
-  const { accounts, onSelectAccount, onBack } = props
+  const { accounts, onSelectAccount, onBack, onAddAccount, hasAddButton } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<UserAccountType[]>(accounts)
 
   const filterAccountList = (event: any) => {
@@ -36,7 +38,12 @@ function SelectAccountWithHeader (props: Props) {
 
   return (
     <SelectWrapper>
-      <Header title={getLocale('braveWalletSelectAccount')} onBack={onBack} />
+      <Header
+        title={getLocale('braveWalletSelectAccount')}
+        onBack={onBack}
+        onAddAccount={onAddAccount}
+        hasAddButton={hasAddButton}
+      />
       <SearchBar placeholder={getLocale('braveWalletSearchAccount')} action={filterAccountList} />
       <SelectScrollSearchContainer>
         <SelectAccount
