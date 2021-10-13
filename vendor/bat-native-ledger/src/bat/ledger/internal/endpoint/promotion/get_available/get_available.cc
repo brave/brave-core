@@ -152,6 +152,14 @@ type::Result GetAvailable::ParseBody(
       promotion->status = type::PromotionStatus::OVER;
     }
 
+    promotion->created_at = base::Time::Now().ToDoubleT();
+    if (auto* created_at = item.FindStringKey("createdAt")) {
+      base::Time time;
+      if (base::Time::FromUTCString(created_at->c_str(), &time)) {
+        promotion->created_at = time.ToDoubleT();
+      }
+    }
+
     auto* expires_at = item.FindStringKey("expiresAt");
     if (!expires_at) {
       corrupted_promotions->push_back(promotion->id);

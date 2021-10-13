@@ -100,7 +100,7 @@ function fetchRewardsData () {
 }
 
 chrome.braveRewards.initialized.addListener((result: any | NewTab.RewardsResult) => {
-  rewardsInitData()
+  fetchRewardsData()
 })
 
 chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {

@@ -6,47 +6,17 @@ import * as React from 'react'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { MainButton } from './main_button'
-import { NewTabLink } from '../new_tab_link'
+import { TermsOfService } from '../terms_of_service'
 
 import { CashbackIcon } from './icons/cashback_icon'
 import { CheckCircleIcon } from './icons/check_circle_icon'
 
 import * as style from './brave_talk_opt_in_form.style'
 
-const termsOfServiceURL = 'https://basicattentiontoken.org/user-terms-of-service'
-const privacyPolicyURL = 'https://brave.com/privacy/#rewards'
-
 interface Props {
   showRewardsOnboarding: boolean
   onEnable: () => void
   onTakeTour: () => void
-}
-
-type TosProps = {
-  text: string
-}
-
-function TermsOfService (props: TosProps) {
-  return (
-    <style.terms>
-      {
-        formatMessage(props.text, {
-          tags: {
-            $1: (content) => (
-              <NewTabLink key='terms' href={termsOfServiceURL}>
-                {content}
-              </NewTabLink>
-            ),
-            $3: (content) => (
-              <NewTabLink key='privacy' href={privacyPolicyURL}>
-                {content}
-              </NewTabLink>
-            )
-          }
-        })
-      }
-    </style.terms>
-  )
 }
 
 export function BraveTalkOptInForm (props: Props) {
@@ -100,7 +70,9 @@ export function BraveTalkOptInForm (props: Props) {
             {getString('braveTalkTurnOnRewards')}
           </MainButton>
         </style.enable>
-        <TermsOfService text={getString('braveTalkOptInRewardsTerms')}/>
+        <style.terms>
+          <TermsOfService text={getString('braveTalkOptInRewardsTerms')} />
+        </style.terms>
       </style.root>
     )
   }
@@ -119,7 +91,9 @@ export function BraveTalkOptInForm (props: Props) {
           {getString('braveTalkTurnOnPrivateAds')}
         </MainButton>
       </style.enable>
-      <TermsOfService text={getString('braveTalkOptInAdsTerms')}/>
+      <style.terms>
+        <TermsOfService text={getString('braveTalkOptInAdsTerms')} />
+      </style.terms>
     </style.root>
   )
 }

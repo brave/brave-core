@@ -22,6 +22,7 @@
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -1064,6 +1065,16 @@ BraveRewardsDisconnectWalletFunction::Run() {
 
   rewards_service->DisconnectWallet();
   return RespondNow(NoArguments());
+}
+
+BraveRewardsGetRewardsEnabledFunction::
+    ~BraveRewardsGetRewardsEnabledFunction() = default;
+
+ExtensionFunction::ResponseAction BraveRewardsGetRewardsEnabledFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  bool enabled =
+      profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled);
+  return RespondNow(OneArgument(base::Value(enabled)));
 }
 
 BraveRewardsGetAdsEnabledFunction::

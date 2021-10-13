@@ -80,7 +80,12 @@ export const enable = styled.div`
 export const footer = styled.div`
   width: 320px;
   margin: 10px auto;
+  font-size: 11px;
+  line-height: 16px;
   color: var(--brave-palette-neutral600);
-  font-size: 12px;
-  line-height: 18px;
+
+  a {
+    font-weight: 600;
+    color: var(--brave-color-brandBat);
+  }
 `

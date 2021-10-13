@@ -163,9 +163,7 @@ export function BatTipForm (props: Props) {
       </style.main>
       <style.footer>
         <style.terms>
-          <style.feeNote>
-            {getString('tippingFeeNote')}
-          </style.feeNote>
+          <div>{getString('tippingFeeNote')}</div>
           <TermsOfService />
         </style.terms>
         {

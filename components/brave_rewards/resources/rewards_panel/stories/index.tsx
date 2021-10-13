@@ -46,9 +46,10 @@ function createHost (): Host {
       status: 'pending',
       grantInfo: {
         id: 'grant123',
+        createdAt: Date.now(),
         expiresAt: Date.now() + 120_000,
         amount: 10,
-        source: 'ads'
+        type: 'ads'
       }
     },
     externalWalletProviders: ['uphold', 'gemini'],

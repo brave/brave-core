@@ -66,4 +66,65 @@
   <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
     Your Balance
   </message>
+
+  <message name="IDS_REWARDS_WIDGET_AD_GRANT_TEXT" desc="">
+    You earned <ph name="AMOUNT">$1<ex>1.25 BAT</ex></ph> from viewing Brave Private Ads!
+  </message>
+  <message name="IDS_REWARDS_WIDGET_AD_GRANT_TITLE" desc="">
+    Ad earnings received
+  </message>
+  <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
+    Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_WIDGET_CLAIM_EARNINGS" desc="">
+    Claim earnings
+  </message>
+  <message name="IDS_REWARDS_WIDGET_CLAIM_TOKENS" desc="">
+    Claim tokens
+  </message>
+  <message name="IDS_REWARDS_WIDGET_EARNING" desc="">
+    Earning
+  </message>
+  <message name="IDS_REWARDS_WIDGET_EARNING_INFO_TEXT" desc="">
+    The tokens you earn this month will begin processing on <ph name="DATE">$1<ex>OCT 12</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_EXCHANGE_VALUE_NOTE" desc="">
+    This may vary based on market volatility.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_GIVING" desc="">
+    Giving
+  </message>
+  <message name="IDS_REWARDS_WIDGET_LEARN_MORE" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
+    Earn tokens and give back
+  </message>
+  <message name="IDS_REWARDS_WIDGET_OPT_IN_TEXT" desc="">
+    Earn tokens by viewing Brave Private Ads and support content creators automatically.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_PROGRESS" desc="">
+    Progress
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SETTINGS" desc="">
+    Rewards settings
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_EARNING_TEXT" desc="">
+    You’re earning tokens for viewing this sponsored image.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SPONSORED_IMAGE_OPT_IN_TEXT" desc="">
+    Earn tokens for viewing this image and support content creators.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
+    Start using Rewards
+  </message>
+  <message name="IDS_REWARDS_WIDGET_TOKEN_BALANCE" desc="">
+    Token Balance
+  </message>
+  <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TEXT" desc="">
+    Use your promotional tokens to contribute to creators before they expire!
+  </message>
+  <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
+    Tokens available
+  </message>
 </grit-part>

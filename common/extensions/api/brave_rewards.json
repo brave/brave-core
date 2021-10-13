@@ -47,6 +47,10 @@
                   "type": "integer",
                   "description": "promotion status"
                 },
+                "createdAt": {
+                  "type": "integer",
+                  "description": "when the promotion record was created"
+                },
                 "expiresAt": {
                   "type": "integer",
                   "description": "when promotion expires"
@@ -799,6 +803,23 @@
               {
                 "name": "amount",
                 "type": "number"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getRewardsEnabled",
+        "type": "function",
+        "description": "Gets a value indicating whether the user has opted-in to Rewards",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
               }
             ]
           }

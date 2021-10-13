@@ -43,7 +43,7 @@ export function GrantCaptchaModal (props: Props) {
     })
 
     function getStrings () {
-      switch (grantInfo.source) {
+      switch (grantInfo.type) {
         case 'ads':
           return {
             title: getString('grantCaptchaPassedTitleAds'),

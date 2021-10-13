@@ -61,6 +61,15 @@ export const footer = styled.div`
 
 export const terms = styled.div`
   padding: 0 30px 7px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--brave-palette-neutral600);
+
+  a {
+    font-weight: 600;
+    color: var(--brave-color-brandBat);
+  }
 `
 
 export const minimumAmount = styled.div`
@@ -103,11 +112,4 @@ export const notEnoughFunds = styled.div`
     margin: -1.5px 2px 0 0;
     color: var(--brave-palette-neutral300);
   }
-`
-
-export const feeNote = styled.div`
-  text-align: center;
-  font-size: 11px;
-  line-height: 16px;
-  color: var(--brave-palette-neutral600);
 `

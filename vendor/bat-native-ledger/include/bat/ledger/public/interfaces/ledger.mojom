@@ -371,6 +371,7 @@ struct Promotion {
   uint32 suggestions;
   double approximate_value;
   PromotionStatus status;
+  uint64 created_at;
   uint64 expires_at;
   uint64 claimed_at;
   bool legacy_claimed;
