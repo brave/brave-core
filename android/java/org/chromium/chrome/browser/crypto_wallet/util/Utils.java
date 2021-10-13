@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,12 +15,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.net.Uri;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.core.content.ContextCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.Log;
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -28,12 +35,18 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivit
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
 import java.lang.NumberFormatException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,6 +111,60 @@ public class Utils {
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
             return item.getText().toString();
         }
+    }
+
+    public static void LaunchBackupFilePicker(AsyncInitializationActivity activity,
+            WindowAndroid.IntentCallback callback) {
+        // Check if READ_EXTERNAL_STORAGE permission is granted.
+        String storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        WindowAndroid window = activity.getWindowAndroid();
+        assert window != null;
+        if (!window.hasPermission(storagePermission)) {
+            String[] requestPermissions = new String[]{storagePermission};
+            window.requestPermissions(requestPermissions, (permissions, grantResults) -> {
+                assert permissions.length == 1 && grantResults.length == 1;
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    onFileNotSelected(activity);
+                }
+            });
+        }
+
+        // Create file intent
+        Intent createDocumentIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        createDocumentIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        createDocumentIntent.setType("text/*");
+        createDocumentIntent.putExtra(Intent.EXTRA_TITLE, "wallet-phrase.txt");
+
+        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
+        chooser.putExtra(Intent.EXTRA_INTENT, createDocumentIntent);
+
+        if (!window.showIntent(chooser, callback, null)) {
+            onFileNotSelected(activity);
+        }
+    }
+
+    public static void writeTextToFile(Activity activity, Uri uri, String textToSave) {
+        AssetFileDescriptor assetFileDescriptor;
+        FileOutputStream outputStream;
+        try {
+            assetFileDescriptor = activity.getContentResolver().openAssetFileDescriptor(uri, "wt");
+            if (assetFileDescriptor != null) {
+                outputStream = assetFileDescriptor.createOutputStream();
+                if (outputStream != null) {
+                    outputStream.write(textToSave.getBytes(Charset.forName("UTF-8")));
+                    outputStream.close();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("wallet_Utils", "File URI not found", e);
+        } catch (IOException e) {
+            Log.e("wallet_Utils", "Problem creating output stream from URI", e);
+        }
+        Toast.makeText(activity, R.string.text_has_been_saved, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void onFileNotSelected(Context context) {
+        Toast.makeText(context, R.string.text_file_not_saved, Toast.LENGTH_SHORT).show();
     }
 
     public static boolean shouldShowCryptoOnboarding() {

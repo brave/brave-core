@@ -6,7 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +22,21 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
+public class RecoveryPhraseFragment extends CryptoOnboardingFragment implements WindowAndroid.IntentCallback {
     private List<String> recoveryPhrases;
 
     private KeyringController getKeyringController() {
@@ -59,8 +65,7 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
                 TextView copyButton = view.findViewById(R.id.btn_copy);
                 assert getActivity() != null;
                 copyButton.setOnClickListener(v
-                        -> Utils.saveTextToClipboard(
-                                getActivity(), Utils.getRecoveryPhraseFromList(recoveryPhrases)));
+                            -> Utils.LaunchBackupFilePicker((AsyncInitializationActivity) getActivity(), this));
                 setupRecoveryPhraseRecyclerView(view);
             });
         }
@@ -92,5 +97,16 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
         recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
         recyclerView.setAdapter(recoveryPhraseAdapter);
+    }
+
+    @Override
+    public void onIntentCompleted(int resultCode, Intent results) {
+        if (resultCode != Activity.RESULT_OK || results == null || results.getData() == null) {
+            Utils.onFileNotSelected(getActivity());
+            return;
+        }
+
+        Uri uri = results.getData();
+        Utils.writeTextToFile(getActivity(), uri, Utils.getRecoveryPhraseFromList(recoveryPhrases));
     }
 }
