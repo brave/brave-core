@@ -425,6 +425,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
                              "0x3535353535353535353535353535353535353535",
                              "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxStateManager::TxMeta meta(std::move(tx));
+  base::Time::Exploded x{1981, 3, 0, 1, 2};
+  EXPECT_TRUE(base::Time::FromUTCExploded(x, &meta.confirmed_time));
+  meta.submitted_time = meta.confirmed_time - base::TimeDelta::FromSeconds(3);
+  meta.created_time = meta.confirmed_time - base::TimeDelta::FromMinutes(1);
+
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);
   EXPECT_EQ(ti->id, meta.id);
@@ -443,6 +448,11 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti->tx_data->max_priority_fee_per_gas, "");
   EXPECT_EQ(ti->tx_data->max_fee_per_gas, "");
   EXPECT_FALSE(ti->tx_data->gas_estimation);
+  EXPECT_EQ(meta.created_time.ToJavaTime(), ti->created_time.InMilliseconds());
+  EXPECT_EQ(meta.submitted_time.ToJavaTime(),
+            ti->submitted_time.InMilliseconds());
+  EXPECT_EQ(meta.confirmed_time.ToJavaTime(),
+            ti->confirmed_time.InMilliseconds());
 
   // type 1
   std::unique_ptr<Eip2930Transaction> tx1 =
