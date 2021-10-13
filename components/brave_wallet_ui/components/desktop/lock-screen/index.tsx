@@ -3,7 +3,6 @@ import * as React from 'react'
 import {
   StyledWrapper,
   Title,
-  IconBackground,
   PageIcon,
   InputColumn,
   RestoreButton
@@ -31,9 +30,7 @@ function LockScreen (props: Props) {
 
   return (
     <StyledWrapper>
-      <IconBackground>
-        <PageIcon />
-      </IconBackground>
+      <PageIcon />
       <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <InputColumn>
         <PasswordInput
