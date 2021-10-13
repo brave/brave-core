@@ -625,6 +625,9 @@ Additional details:
   <message name="IDS_POLICY_DLP_CLIPBOARD_BLOCKED_ON_COPY_VM" desc="A toast informing the user that sharing clipboard data to VMs is blocked.">
     Sharing from <ph name="ORIGIN_NAME">$1<ex>corp.google.com</ex></ph> to <ph name="VM_NAME">$2<ex>Linux</ex></ph> has been blocked by administrator policy
   </message>
+  <message name="IDS_POLICY_DLP_CLIPBOARD_BLOCK_TOAST_BUTTON" desc="Dismiss toast button label for disabled paste notification.">
+    View details
+  </message>
   <message name="IDS_POLICY_DLP_ANDROID_APPS" desc="Name shown for ARC in data leak prevention toasts.">
     Android apps
   </message>
@@ -677,13 +680,25 @@ Additional details:
     Capture confidential content on your screen
   </message>
   <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_MESSAGE" desc="The message for notification informing the user that screen capture is not recommended.">
-    Administrator doesn't recommend taking screenshots or recordings due to confidential content on screen
+    Administrator doesn't recommend taking screenshots or recordings due to confidential content on screen.
   </message>
   <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before screen capture.">
     Capture anyway
   </message>
   <message name="IDS_POLICY_DLP_SCREEN_CAPTURE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before screen capture.">
     Cancel
+  </message>
+  <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_TITLE" desc="The title for notification informing the user that there was confidential information revealed during screen recording.">
+    Capture confidential content on your screen
+  </message>
+  <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_MESSAGE" desc="The message for notification informing the user that there was confidential information revealed during screen recording.">
+    Administrator doesn't recommend taking screenshots or recordings due to confidential content captured.
+  </message>
+  <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before saving a screen recording.">
+    Save anyway
+  </message>
+  <message name="IDS_POLICY_DLP_VIDEO_CAPTURE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before saving a screen recording.">
+    Delete recording
   </message>
 
 </grit-part>
