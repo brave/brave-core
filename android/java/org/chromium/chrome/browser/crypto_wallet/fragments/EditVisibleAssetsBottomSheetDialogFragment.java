@@ -54,6 +54,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment
     private WalletCoinAdapter walletCoinAdapter;
     private WalletCoinAdapter.AdapterType mType;
     private String mChainId;
+    private DismissListener mDismissListener;
+    private Boolean mIsAssetsListChanged;
+
+    public interface DismissListener {
+        void onDismiss(Boolean isAssetsListChanged);
+    }
 
     public static EditVisibleAssetsBottomSheetDialogFragment newInstance(
             WalletCoinAdapter.AdapterType type) {
@@ -91,6 +97,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         mChainId = chainId;
     }
 
+    public void setDismissListener(DismissListener dismissListener) {
+        mDismissListener = dismissListener;
+    }
+
     @Override
     public void show(FragmentManager manager, String tag) {
         try {
@@ -119,6 +129,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             }
         });
         return dialog;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mDismissListener != null) {
+            mDismissListener.onDismiss(mIsAssetsListChanged);
+        }
     }
 
     private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
@@ -293,6 +311,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                             }
                         });
             }
+            mIsAssetsListChanged = true;
         }
     };
 }

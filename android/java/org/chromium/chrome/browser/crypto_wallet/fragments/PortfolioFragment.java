@@ -30,6 +30,8 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
@@ -127,6 +129,7 @@ public class PortfolioFragment
         if (ethJsonRpcController != null) {
             ethJsonRpcController.getChainId(chain_id -> {
                 mSpinner.setSelection(getIndexOf(mSpinner, chain_id));
+                setUpCoinList(getView());
                 updatePortfolio();
             });
         }
@@ -155,6 +158,7 @@ public class PortfolioFragment
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
             ethJsonRpcController.setNetwork(Utils.getNetworkConst(getActivity(), item));
+            setUpCoinList(getView());
             updatePortfolio();
         }
     }
@@ -171,10 +175,8 @@ public class PortfolioFragment
         chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
         chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
 
-        setUpCoinList(view);
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
-            // TODO(AlexeyBarabash): get current network from EthJsonRpcController ?
             String chainName = mSpinner.getSelectedItem().toString();
             String chainId = Utils.getNetworkConst(getActivity(), chainName);
 
@@ -183,6 +185,15 @@ public class PortfolioFragment
                             WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
 
             bottomSheetDialogFragment.setChainId(chainId);
+            bottomSheetDialogFragment.setDismissListener(
+                    new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
+                        @Override
+                        public void onDismiss(Boolean isAssetsListChanged) {
+                            if (isAssetsListChanged) {
+                                setUpCoinList(getView());
+                            }
+                        }
+                    });
 
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -190,17 +201,31 @@ public class PortfolioFragment
     }
 
     private void setUpCoinList(View view) {
-        RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "Ethereum", "ETH", "$872.48", "0.31178 ETH"));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-        rvCoins.setAdapter(walletCoinAdapter);
-        rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
+        assert view != null;
+        BraveWalletService braveWalletService = getBraveWalletService();
+        assert braveWalletService != null;
+        String chainName = mSpinner.getSelectedItem().toString();
+        String chainId = Utils.getNetworkConst(getActivity(), chainName);
+        assert chainId != null && !chainId.isEmpty();
+        braveWalletService.getUserAssets(chainId, (userAssets) -> {
+            RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
+            WalletCoinAdapter walletCoinAdapter =
+                    new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+            for (ErcToken userAsset : userAssets) {
+                walletListItemModelList.add(new WalletListItemModel(
+                        // TODO(AlexeyBarabash): pick correct icon
+                        R.drawable.ic_eth, userAsset.name, userAsset.symbol,
+                        // TODO(AlexeyBarabash): actual price will be pull in PR for issue #18339
+                        "$872.48", "0.31178 ETH"));
+            }
+
+            walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+            walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+            walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+            rvCoins.setAdapter(walletCoinAdapter);
+            rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
+        });
     }
 
     @Override
@@ -221,6 +246,17 @@ public class PortfolioFragment
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringController();
+        }
+
+        return null;
+    }
+
+    BraveWalletService getBraveWalletService() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getBraveWalletService();
+        } else {
+            assert false;
         }
 
         return null;
