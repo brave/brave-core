@@ -33,11 +33,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using testing::Return;
-using translate::TranslateDownloadManager;
-using translate::TranslateLanguageList;
-using translate::TranslateManager;
-using translate::TranslatePrefs;
 
+namespace translate {
 namespace {
 
 // Overrides NetworkChangeNotifier, simulating connection type changes
@@ -87,16 +84,17 @@ class MockLanguageModel : public language::LanguageModel {
 
 }  // namespace
 
+namespace testing {
+
 // The constructor of this class is used to register preferences before
 // TranslatePrefs gets created.
 struct ProfilePrefRegistration {
   explicit ProfilePrefRegistration(
       sync_preferences::TestingPrefServiceSyncable* prefs) {
     language::LanguagePrefs::RegisterProfilePrefs(prefs->registry());
-    prefs->SetString(translate::testing::accept_languages_prefs, std::string());
-#if defined(OS_CHROMEOS)
-    prefs->SetString(
-        translate::testing::preferred_languages_prefs, std::string());
+    prefs->SetString(accept_languages_prefs, std::string());
+#if BUILDFLAG(IS_CHROMEOS_ASH)
+    prefs->SetString(preferred_languages_prefs, std::string());
 #endif
     TranslatePrefs::RegisterProfilePrefs(prefs->registry());
     // TODO(groby): Figure out RegisterProfilePrefs() should register this.
@@ -130,7 +128,7 @@ class TranslateManagerTest : public ::testing::Test {
   // Utility function to prepare translate_manager_ for testing.
   void PrepareTranslateManager() {
     TranslateManager::SetIgnoreMissingKeyForTesting(true);
-    translate_manager_ = std::make_unique<translate::TranslateManager>(
+    translate_manager_ = std::make_unique<TranslateManager>(
         &mock_translate_client_, &mock_translate_ranker_,
         &mock_language_model_);
   }
@@ -156,10 +154,9 @@ class TranslateManagerTest : public ::testing::Test {
   TranslateDownloadManager* manager_;
 
   TestNetworkChangeNotifier network_notifier_;
-  translate::testing::MockTranslateDriver driver_;
-  translate::testing::MockTranslateRanker mock_translate_ranker_;
-  ::testing::NiceMock<translate::testing::MockTranslateClient>
-      mock_translate_client_;
+  testing::MockTranslateDriver driver_;
+  testing::MockTranslateRanker mock_translate_ranker_;
+  ::testing::NiceMock<testing::MockTranslateClient> mock_translate_client_;
   MockLanguageModel mock_language_model_;
   std::unique_ptr<TranslateManager> translate_manager_;
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -171,10 +168,8 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
   EXPECT_FALSE(::google_apis::HasAPIKeyConfigured());
 
   TranslateManager::SetIgnoreMissingKeyForTesting(false);
-  translate_manager_.reset(new translate::TranslateManager(
-        &mock_translate_client_,
-        &mock_translate_ranker_,
-        &mock_language_model_));
+  translate_manager_ = std::make_unique<TranslateManager>(
+      &mock_translate_client_, &mock_translate_ranker_, &mock_language_model_);
 
   prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
@@ -193,10 +188,9 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
   EXPECT_TRUE(::google_apis::HasAPIKeyConfigured());
 
   TranslateManager::SetIgnoreMissingKeyForTesting(false);
-  translate_manager_.reset(new translate::TranslateManager(
-        &mock_translate_client_,
-        &mock_translate_ranker_,
-        &mock_language_model_));
+
+  translate_manager_ = std::make_unique<TranslateManager>(
+      &mock_translate_client_, &mock_translate_ranker_, &mock_language_model_);
 
   prefs_.SetBoolean(translate::prefs::kOfferTranslateEnabled, true);
   ON_CALL(mock_translate_client_, IsTranslatableURL(GURL::EmptyGURL()))
@@ -208,3 +202,7 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
 
   ::google_apis::SetAPIKeyForTesting(api_key);
 }
+
+}  // namespace testing
+
+}  // namespace translate
