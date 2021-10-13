@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/website_settings_registry.h b/components/content_settings/core/browser/website_settings_registry.h
-index f717f0c6ad479bfcc533f441f6e377963943525c..645a9cf52c2b1360b716e06da4e79b334ba8a8f4 100644
+index d5160ded5f51bfabf2c11e4a045b243ae6577787..dd84d3c312cc08095e47104a0d8cef22273aecf0 100644
 --- a/components/content_settings/core/browser/website_settings_registry.h
 +++ b/components/content_settings/core/browser/website_settings_registry.h
-@@ -75,6 +75,7 @@ class WebsiteSettingsRegistry {
+@@ -78,6 +78,7 @@ class WebsiteSettingsRegistry {
        WebsiteSettingsInfo::ScopingType scoping_type,
        Platforms platforms,
        WebsiteSettingsInfo::IncognitoBehavior incognito_behavior);

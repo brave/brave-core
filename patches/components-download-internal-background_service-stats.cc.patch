@@ -1,5 +1,5 @@
 diff --git a/components/download/internal/background_service/stats.cc b/components/download/internal/background_service/stats.cc
-index 1607068436243578e0036cf5f3d73653bbaeec77..e9b0d853f54a424f7bd431b9abd8afb31c627fb0 100644
+index 5183d337e4d0f0f2953b1001b5fcba4a86f9f1fd..c0e853fb5606debac01397aa4d63c6b18a267146 100644
 --- a/components/download/internal/background_service/stats.cc
 +++ b/components/download/internal/background_service/stats.cc
 @@ -76,6 +76,7 @@ std::string ClientToHistogramSuffix(DownloadClient client) {

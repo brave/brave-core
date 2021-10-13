@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
-index c9d7f4b391462d7360c83d5fb24760a3fb8c05b0..a8a570b7b20027cdca111108d0b7731f72cdc0d4 100644
+index 2737f423d8586b4b789eb681ebef278af5b1aa35..815dddcaf3e34b0deb58bef0cf4f647470167d20 100644
 --- a/third_party/blink/renderer/bindings/idl_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
-@@ -1145,6 +1145,7 @@ static_idl_files_in_modules = get_path_info(
+@@ -1142,6 +1142,7 @@ static_idl_files_in_modules = get_path_info(
            "//third_party/blink/renderer/modules/xr/xr_webgl_layer_init.idl",
          ],
          "abspath")
 +static_idl_files_in_modules += get_path_info(brave_static_idl_files_in_modules, "abspath")
  
  # Direct Sockets
- if (!is_android) {
+ # This uses target_os rather than current_os (which is what is_android is set

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index e7abada077469486703ada10a756ea82a6783148..71170bd41eb351656bf903afa899c8ce7c41a717 100644
+index 1969bc52b15eaba9ea5570003dd344e55c221a42..640acbe4d1d674ac2f57683f069dea531871a91f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -75,7 +75,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -74,7 +74,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index e7abada077469486703ada10a756ea82a6783148..71170bd41eb351656bf903afa899c8ce
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -110,7 +110,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -109,7 +109,7 @@ export class SettingsPersonalizationOptionsElement extends
  
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index e7abada077469486703ada10a756ea82a6783148..71170bd41eb351656bf903afa899c8ce
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
-@@ -132,7 +132,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -131,7 +131,7 @@ export class SettingsPersonalizationOptionsElement extends
    ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index e7abada077469486703ada10a756ea82a6783148..71170bd41eb351656bf903afa899c8ce
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -164,7 +164,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -163,7 +163,7 @@ export class SettingsPersonalizationOptionsElement extends
          '#driveSuggestControl');
    }
  

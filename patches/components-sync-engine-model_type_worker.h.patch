@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/model_type_worker.h b/components/sync/engine/model_type_worker.h
-index 68da87a8f37996f16a73d046e4dfd9cc3ac8380c..95c177f4826c03dca85318ae2003422481ce10b3 100644
+index b99f8ccc5a1d74ea9e2677736571163c9a6bd063..33ac80bdd92cf673a5819a643f26f03f22289053 100644
 --- a/components/sync/engine/model_type_worker.h
 +++ b/components/sync/engine/model_type_worker.h
-@@ -159,6 +159,7 @@ class ModelTypeWorker : public UpdateHandler,
+@@ -163,6 +163,7 @@ class ModelTypeWorker : public UpdateHandler,
  
    bool IsEncryptionEnabledForTest() const { return encryption_enabled_; }
  
