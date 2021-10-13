@@ -482,6 +482,8 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
           GetEthJsonRequestInfo(input_json, &id, nullptr, nullptr));
     }
 
+    auto global_context(
+        v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
     auto global_callback =
         std::make_unique<v8::Global<v8::Function>>(isolate, callback);
     ProviderErrors code = ProviderErrors::kUnsupportedMethod;
