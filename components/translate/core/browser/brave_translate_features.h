@@ -30,7 +30,7 @@ bool IsTranslateExtensionAvailable();
 
 bool UseBraveTranslateReplay();
 
-bool ShouldUpdateTranslateList();
+bool ShouldUpdateLanguagesList();
 
 }  // namespace translate
 

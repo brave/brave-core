@@ -44,7 +44,7 @@ bool UseBraveTranslateReplay() {
   return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
 }
 
-bool ShouldUpdateTranslateList() {
+bool ShouldUpdateLanguagesList() {
   return IsBraveTranslateGoAvailable() &&
          features::kUpdateLanguageListParam.Get();
 }

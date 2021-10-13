@@ -178,7 +178,7 @@ void BraveBrowserMainParts::PreProfileInit() {
     command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
                                     translate::kBraveTranslateScriptURL);
   }
-  if (!translate::ShouldUpdateTranslateList())
+  if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
 }
 
