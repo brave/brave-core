@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "阻止跨站点跟踪器";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "阻止加载广告、弹出窗口和跟踪器";
+"BlockAdsAndTrackingDescription" = "防止加载广告、弹出窗口和跟踪器。";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "拦截所有 Cookie";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "设置首选项失败。请重试。";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "阻止网站存储有关您以前访问过的信息";
+"BlockCookiesDescription" = "阻止网站存储有关您以前访问过的信息。";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "正在拦截监视器";
@@ -113,7 +113,10 @@
 "BlockScripts" = "拦截脚本";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "阻止 JavaScript（可能会破坏站点）";
+"BlockScriptsDescription" = "阻止 JavaScript（可能会破坏站点）。";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "为所有标签添加书签";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "书签文件夹";
@@ -293,7 +296,7 @@
 "defaultBrowserCallout.introTertiaryText" = "打开设置、点击默认浏览器应用，然后选择 Brave。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "已针对 iOS %@ 进行了优yij化。立即将 Brave 设为您的默认浏览器。";
+"defaultBrowserCallout.notificationBody" = "针对 iOS %@ 进行了优化。立即将 Brave 设为您的默认浏览器。";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave 网页浏览器";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "下载的文件将显示在此处。";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "早于上个月";
 
 /* No comment provided by engineer. */
 "Edit" = "编辑";
@@ -518,7 +524,7 @@
 "Home" = "家庭";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "将连接升级到 HTTPS";
+"HTTPSEverywhere" = "将连接升级为 HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "使用安全的 HTTPS 连接（而不是纯 HTTP）打开某些站点。";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "这很尴尬。";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "开启 Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "点击屏幕上的任意位置即可继续 Brave Talk。";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "您现在可以开始免费通话了";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "奖励面板";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "已保存的登录";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "保存的标签";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "保存图片";

@@ -199,6 +199,9 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Adicionar à Brave Playlist";
 
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Playlist do Brave";
+
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Este vídeo era uma transmissão ao vivo ou o tempo limite dele foi atingido. Reabra o link para atualizar.";
 
@@ -217,7 +220,10 @@
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Mostrar aviso de notificação no menu";
 
-/* Text indicator on the table cell If a video is already downloaded */
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Você pode adicionar itens à sua Playlist do Brave no navegador.";
+
+/* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Nenhum item disponível";
 
 /* Title for download video error alert */
@@ -352,6 +358,21 @@
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Salvando para uso off-line…";
 
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Você pode abrir o item atual em uma nova aba ou compartilhá-lo por meio do menu de compartilhamento do sistema";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Menu da Playlist do Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Abrir em uma aba privada";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Abrir em uma nova aba";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Compartilhar...";
+
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Lamentamos";
 
@@ -366,6 +387,12 @@
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Ver na Brave Playlist";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Adiciona um botão de playlist (semelhante a 4 linhas com um símbolo \"+\") ao lado da barra de endereço no navegador Brave. Esse botão oferece acesso rápido para abrir a playlist ou para adicionar ou remover mídia.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Ativar botão de acesso rápido";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Fechar menu de contexto";
