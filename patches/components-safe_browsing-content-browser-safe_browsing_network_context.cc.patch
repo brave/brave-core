@@ -1,8 +1,8 @@
 diff --git a/components/safe_browsing/content/browser/safe_browsing_network_context.cc b/components/safe_browsing/content/browser/safe_browsing_network_context.cc
-index cf8f06646049f21d7bb5cc0938ef41e73663d6df..28c16a3285b8b955cd2655e1c6e1237d9ee31af6 100644
+index 285ffc7bf8175c8eeb6d54692ea7aff3d4d4af4a..39af1af400b78edb908f6f5b23e89377d5cc1c95 100644
 --- a/components/safe_browsing/content/browser/safe_browsing_network_context.cc
 +++ b/components/safe_browsing/content/browser/safe_browsing_network_context.cc
-@@ -78,8 +78,8 @@ class SafeBrowsingNetworkContext::SharedURLLoaderFactory
+@@ -81,8 +81,8 @@ class SafeBrowsingNetworkContext::SharedURLLoaderFactory
        override {
      DCHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
      GetURLLoaderFactory()->CreateLoaderAndStart(
