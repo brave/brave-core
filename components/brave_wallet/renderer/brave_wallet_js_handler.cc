@@ -199,14 +199,14 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
 }
 
 void BraveWalletJSHandler::OnSignMessage(
-                   base::Value id,
-                   v8::Global<v8::Context> global_context,
-                   std::unique_ptr<v8::Global<v8::Function>> global_callback,
-                   v8::Global<v8::Promise::Resolver> promise_resolver,
-                   v8::Isolate* isolate,
-                   const std::string& signature,
-                   int error,
-                   const std::string& error_message) {
+    base::Value id,
+    v8::Global<v8::Context> global_context,
+    std::unique_ptr<v8::Global<v8::Function>> global_callback,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    const std::string& signature,
+    int error,
+    const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
@@ -433,8 +433,14 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
   } else if (method == kEthSign || method == kPersonalSign) {
     std::string address;
     std::string message;
-    if (!ParseEthSignParams(normalized_json_request, &address, &message))
+    if (method == kPersonalSign &&
+        !ParsePersonalSignParams(normalized_json_request, &address, &message)) {
       return false;
+    } else if (method == kEthSign &&
+               !ParseEthSignParams(normalized_json_request, &address,
+                                   &message)) {
+      return false;
+    }
 
     brave_wallet_provider_->SignMessage(
         address, message,
