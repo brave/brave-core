@@ -20,7 +20,7 @@ public class WalletStore {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioController: BraveWalletAssetRatioController
   private let swapController: BraveWalletSwapController
-  private let tokenRegistry: BraveWalletERCTokenRegistry
+  let tokenRegistry: BraveWalletERCTokenRegistry
   private let transactionController: BraveWalletEthTxController
   
   public init(

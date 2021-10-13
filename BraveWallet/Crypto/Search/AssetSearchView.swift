@@ -37,6 +37,8 @@ struct AssetSearchView: View {
   var keyringStore: KeyringStore
   var networkStore: NetworkStore
   
+  @Environment(\.presentationMode) @Binding private var presentationMode
+  
   @State private var allTokens: [BraveWallet.ERCToken] = []
   @State private var query = ""
   
@@ -95,12 +97,15 @@ struct AssetSearchView: View {
       .listStyle(InsetGroupedListStyle())
       .animation(nil, value: query)
       .filterable(text: $query)
-      .introspectViewController { vc in
-        // TODO: In iOS 15, use `toolbar` & `presentationMode` now that PresentationMode is passed to
-        //       SwiftUI when presented from UIKit
-        vc.navigationItem.leftBarButtonItem = .init(systemItem: .cancel, primaryAction: .init(handler: { [unowned vc] _ in
-          vc.dismiss(animated: true)
-        }))
+      .toolbar {
+        ToolbarItemGroup(placement: .cancellationAction) {
+          Button(action: {
+            presentationMode.dismiss()
+          }) {
+            Text(Strings.CancelString)
+              .foregroundColor(Color(.braveOrange))
+          }
+        }
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
