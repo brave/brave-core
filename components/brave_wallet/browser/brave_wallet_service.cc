@@ -221,6 +221,11 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     }
     tokenPtr->visible = value->GetBool();
 
+    value = token.FindKey("token_id");
+    if (value && value->is_string()) {
+      tokenPtr->token_id = value->GetString();
+    }
+
     result.push_back(std::move(tokenPtr));
   }
 
@@ -265,14 +270,15 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
   }
 
   base::Value value(base::Value::Type::DICTIONARY);
-  value.SetKey("contract_address", base::Value(checksum_address));
-  value.SetKey("name", base::Value(token->name));
-  value.SetKey("symbol", base::Value(token->symbol));
-  value.SetKey("logo", base::Value(token->logo));
-  value.SetKey("is_erc20", base::Value(token->is_erc20));
-  value.SetKey("is_erc721", base::Value(token->is_erc721));
-  value.SetKey("decimals", base::Value(token->decimals));
-  value.SetKey("visible", base::Value(true));
+  value.SetStringKey("contract_address", checksum_address);
+  value.SetStringKey("name", token->name);
+  value.SetStringKey("symbol", token->symbol);
+  value.SetStringKey("logo", token->logo);
+  value.SetBoolKey("is_erc20", token->is_erc20);
+  value.SetBoolKey("is_erc721", token->is_erc721);
+  value.SetIntKey("decimals", token->decimals);
+  value.SetBoolKey("visible", true);
+  value.SetStringKey("token_id", token->token_id);
 
   user_assets_list->Append(std::move(value));
   std::move(callback).Run(true);

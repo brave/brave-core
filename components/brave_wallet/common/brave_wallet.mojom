@@ -182,6 +182,7 @@ struct ERCToken {
   string symbol;
   int32 decimals;
   bool visible = true;
+  string token_id = "";  // Non-empty for ERC721 tokens.
 };
 
 // WebUI-side handler for requests from the browser.
