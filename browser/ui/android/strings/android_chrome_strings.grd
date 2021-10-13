@@ -351,7 +351,7 @@ CHAR_LIMIT guidelines:
         For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave services<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_TITLE" desc="Title for a preference that enables sending usage statistics and crash reports.">
-        Help improve Brave's features and performance
+        Help improve Brave\u2019s features and performance
       </message>
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
         Automatically sends crash reports to Brave
@@ -734,7 +734,7 @@ CHAR_LIMIT guidelines:
         Turn on dark theme when your device's dark theme or Battery Saver is on
       </message>
       <message name="IDS_DARKEN_WEBSITES" desc="Title for the Darken websites option. [CHAR_LIMIT=32]">
-        Darken websites
+        Apply dark theme to sites, when possible
       </message>
 
       <!-- Privacy and security preferences -->
@@ -1220,21 +1220,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
         Captions
       </message>
-      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_TITLE" desc="Title of the preference that allows the user to update the accessibility page zoom feature that applies to the web contents." translateable="false">
-        Page Zoom
-      </message>
-      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_SUMMARY" desc="Summary of the preference that allows the user to update the accessibility page zoom feature that applies to the web contents." translateable="false">
-        Use this setting to increase/decrease the zoom factor for a given page.
-      </message>
-      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_DECREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to decrease page zoom" translateable="false">
-        Decrease zoom
-      </message>
-      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_INCREASE_ZOOM_BUTTON_TEXT" desc="Accessibility label for button to allow user to increase page zoom" translateable="false">
-        Increase zoom
-      </message>
-      <message name="IDS_ACCESSIBILITY_PAGE_ZOOM_FACTOR" desc="Text description of the current page zoom factor set by the user" translateable="false">
-        <ph name="ZOOM_FACTOR">%1$d<ex>100</ex></ph> %%
-      </message>
 
       <!-- Language Settings -->
       <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR_LIMIT=32]">
@@ -1469,6 +1454,17 @@ Your Brave account may have other forms of browsing history like searches and ac
         File might be harmful
       </message>
 
+        <!-- Mixed content download -->
+        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_TITLE" desc="Title of the dialog for asking user to confirm a mixed content download">
+          File can’t be downloaded securely
+        </message>
+        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_CONFIRM_TEXT" desc="Text label for the confirm button on the mixed content download dialog for user to confirm the download.">
+          Keep
+        </message>
+        <message name="IDS_MIXED_CONTENT_DOWNLOAD_DIALOG_DISCARD_TEXT" desc="Text label for the cancel button on the mixed content download dialog for user to confirm the download.">
+          Discard
+        </message>
+
       <!-- Download later -->
       <message name="IDS_DOWNLOAD_LATER_DIALOG_TITLE" desc="Title of the download later dialog that let the user to choose the time to download.">
         Download later instead?
@@ -1561,15 +1557,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
         Files you download in Private mode are still visible to anyone who uses this device.
-      </message>
-      <message name="IDS_DOWNLOAD_SETTINGS_ENABLE_PREFETCH_TITLE" desc="Title for preference that allows the user to enable or disable the prefetching of articles. Please ensure the words 'articles for you' match the 'articles for you' in New Tab Page. ">
-        Download articles for you on Wi-Fi
-      </message>
-      <message name="IDS_DOWNLOAD_SETTINGS_PREFETCH_UNAVAILABLE_DESCRIPTION" desc="Description explaining that the article prefetching feature is disabled because it is unavailable in the user's country.">
-        Not available in your location
-      </message>
-      <message name="IDS_DOWNLOAD_SETTINGS_PREFETCH_MAYBE_UNAVAILABLE_DESCRIPTION" desc="Description explaining that the article prefetching feature is disabled because Brave has not yet determined whether it is available in the user's country.">
-        May not be available in your location
       </message>
       <message name="IDS_RENAME" desc="Label for the option to rename items.">
         Rename
@@ -2071,7 +2058,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         See notification for download status
       </message>
       <message name="IDS_DOWNLOAD_MESSAGE_DOWNLOAD_COMPLETE_DESCRIPTION" desc="Download message description text about downloaded file name and their size.">
-        (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>)\n<ph name="url">%2$s<ex>https://...example.com</ex></ph>
+        (<ph name="megabytes">%1$s<ex>100 MB</ex></ph>) <ph name="url">%2$s<ex>https://...example.com</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_MESSAGE_MULTIPLE_DOWNLOAD_IN_PROGRESS" desc="Download message text describing that chrome is downloading multiple files.">
         {FILE_COUNT, plural,
@@ -2275,7 +2262,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_CONTEXTMENU_READ_LATER" desc="Context sensitive menu item for marking a link to be read later. We're also labeling it *New* to draw attention to it when first released. [CHAR_LIMIT=30]">
-        Read later <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+        Add to reading list <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR_LIMIT=30]">
         Fast page
@@ -2948,9 +2935,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Discover by Brave - off
       </message>
       <message name="IDS_NTP_FOLLOWING" desc="Title in the feed header for user-customized following feed.">Following</message>
-      <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header blue dot for user-customized following feed, which indicates that unread content is available.">
-      Unread stories ready
-      </message>
       <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
         Control your stories and activity here
       </message>
@@ -2960,6 +2944,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed. Please use the branded term for Discover (TC ID 1799975766543019278).">
         Control your stories from the Options for Discover button
       </message>
+      <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header blue dot for user-customized following feed, which indicates that unread content is available.">
+      Unread stories ready
+      </message>
+      <message name="IDS_FEED_OPTIONS_DROPDOWN_DESCRIPTION" desc="Content description for an arrow indicating that the item can be clicked again to open an options drawer">Click to open sort options</message>
+      <message name="IDS_FEED_SORT_PUBLISHER" desc="Chip text on feed header that, when clicked, sorts and groups feed content by source - websites. Use the same word for sites as used in TC ID 5814749351757353073">Site</message>
       <message name="IDS_DISCOVER_NO_CARDS" desc="Message title for the article feed on the New Tab Page. Shown when the user is connected to the internet but no new feed content could be fetched. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">No stories available</message>
       <message name="IDS_DISCOVER_NO_CARDS_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to come back later when new feed content is available. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">Check back later for new stories</message>
       <message name="IDS_DISCOVER_CANT_REFRESH" desc="Message title for the article feed on the New Tab Page. Shown when feed content is not available because there is no internet connection. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278). Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Can't refresh Discover</message>
@@ -3200,6 +3189,21 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR_LIMIT=27]">
         Downloads
       </message>
+      <message name="IDS_MENU_ADD_BOOKMARK" desc="Menu item for adding the current page to 'Bookmarks'. Verb. [CHAR_LIMIT=27]">
+        Bookmark
+      </message>
+      <message name="IDS_MENU_EDIT_BOOKMARK" desc="Menu item for editing the content of the bookmark for the current page. [CHAR_LIMIT=27]">
+        Edit Bookmark
+      </message>
+      <message name="IDS_MENU_ADD_TO_READING_LIST" desc="Menu item for adding the current page to the reading list. [CHAR_LIMIT=27]">
+        Add to reading list
+      </message>
+      <message name="IDS_MENU_DELETE_FROM_READING_LIST" desc="Menu item for removing the current page from the reading list. [CHAR_LIMIT=27]">
+        Delete from reading list
+      </message>
+      <message name="IDS_MENU_EDIT_READING_LIST" desc="Menu item for opening and editing the reading list. Shown only when the current page is already on the reading list. [CHAR_LIMIT=27]">
+        Edit reading list
+      </message>
       <message name="IDS_MENU_FIND_IN_PAGE" desc="Menu item allowing users to find text within the current page. [CHAR_LIMIT=27]">
         Find in page
       </message>
@@ -3233,12 +3237,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE_OFF" desc="Accessibility description for when Request Desktop Site is disabled.">
         Turn on Request desktop site
       </message>
-      <!-- TODO(https://crbug.com/1248537): Update the placeholders. -->
-      <message name="IDS_MENU_AUTO_DARK_WEB_CONTENTS_ON" translateable="false" desc="Accessibility description for when auto darken web content is enabled. [CHAR_LIMIT=27]">
-        Disable Auto-Dark for site
-      </message>
-      <message name="IDS_MENU_AUTO_DARK_WEB_CONTENTS_OFF" translateable="false" desc="Accessibility description for when auto darken web content is disabled. [CHAR_LIMIT=27]">
-        Enable Auto-Dark for site
+      <message name="IDS_MENU_AUTO_DARK_WEB_CONTENTS" desc="Menu item in Brave's overflow/options menu. When Brave's browser UI is set to dark theme and this option is checked, sites will have a dark theme automatically applied as well. [CHAR_LIMIT=24]">
+        Dark theme
       </message>
       <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR_LIMIT=27]">
         Appearance
@@ -3373,6 +3373,21 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_BOOKMARK_MISSING_URL" desc="Error message appearing when a user tries to create a bookmark without a url. [CHAR_LIMIT=32]">
         URL required
       </message>
+      <message name="IDS_BOOKMARKS_SAVE_FLOW_CONTENT_DESCRIPTION" desc="The content description for the bookmark bottom sheet save flow. Read as accessibility string when tapping on the bottom sheet.">
+        Bookmark save flow
+      </message>
+        <message name="IDS_BOOKMARKS_SAVE_FLOW_OPENED_HALF" desc="The accessibility string read when the bookmark bottom sheet save flow is half opened.">
+        Bookmark save flow opened at half height
+      </message>
+      <message name="IDS_BOOKMARKS_SAVE_FLOW_OPENED_FULL" desc="The accessibility string read when the bookmark bottom sheet save flow is fully opened.">
+        Bookmark save flow folders opened at full height
+      </message>
+      <message name="IDS_BOOKMARKS_SAVE_FLOW_CLOSED_DESCRIPTION" desc="The accessibility string read when the bookmark bottom sheet save flow is closed.">
+        Bookmark save flow closed
+      </message>
+      <message name="IDS_BOOKMARK_PAGE_SAVED_LOCATION" desc="App-based message shown after user adds a new bookmark to specify the location of a bookmark. [CHAR_LIMIT=32]">
+        in <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
 
       <!-- Read later strings -->
       <message name="IDS_READING_LIST_TITLE_NEW" desc="The title for the reading list with a new text.">
@@ -3410,7 +3425,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Save this page for later and get a reminder
       </message>
       <message name="IDS_READING_LIST_SAVE_PAGES_FOR_LATER" desc="The text on the reading list in product help bubble to introduce the feature to the user.">
-        Add pages to your Reading List to get a reminder
+        Add pages to your reading list for later
       </message>
       <message name="IDS_READING_LIST_FIND_IN_BOOKMARKS" desc="The text to inform the user to find the reading list in bookmarks UI.">
         Find your reading list in Bookmarks
@@ -4191,6 +4206,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_IDENTITY_DISC_TEXT" desc="The in-product-help text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         Manage your account
       </message>
+      <message name="IDS_IPH_INSTANCE_SWITCHER_TEXT" desc="The in-product-help text prompting the user that app menu has a menu for managing multiple Brave windows with instance switcher.">
+        Got many windows? You can manage them from here
+      </message>
       <message name="IDS_IPH_IDENTITY_DISC_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         To manage your Brave account, tap the "Manage account" button
       </message>
@@ -4744,6 +4762,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Create card
       </message>
 
+      <message name="IDS_SHARING_WEBNOTES_ACCESSIBILITY_DESCRIPTION" desc="Accessibility description for the button in sharing hub for creating card for the highlight text.">
+        Create stylized card with highlight
+      </message>
+
       <message name="IDS_SHARING_SAVE_IMAGE" desc="Label for the button in sharing hub for saving an image to device.">
         Save to device
       </message>
@@ -5042,7 +5064,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Choose an account to sign up for <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
-        To sign up, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with the site.
+        To sign up, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with the site. See <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Privacy Policy<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>Terms of service<ph name="END_LINK2">&lt;/link2&gt;</ph>.
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
@@ -5093,6 +5115,43 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_SUMMARY" desc="Secondary, continued explanation of HTTPS-First Mode in settings.">
         Upgrade navigations to HTTPS and warn you before loading sites that don’t support it
+      </message>
+
+      <!-- Auto-darken web content -->
+      <message name="IDS_AUTO_DARK_MESSAGE_TITLE" desc="Message shown that informs the user auto darkening of website contents has been enabled.">
+        Dark theme for sites is on in Brave
+      </message>
+      <message name="IDS_AUTO_DARK_MESSAGE_BUTTON" desc="The label for the button to enter theme settings.">
+        Open settings
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_TITLE" desc="Title of dialog that asks the user to give feedback on auto dark theming.">
+        Share feedback on dark theme for sites?
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_MESSAGE" desc="Description of dialog that asks the user to give feedback on auto dark theming.">
+        Tell us about your experience. Or <ph name="BEGIN_LINK">&lt;link&gt;</ph>change your settings<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_POSITIVE_BUTTON" desc="The label for the button to give feedback.">
+        Share feedback
+      </message>
+
+      <!-- Profile Management strings -->
+      <message name="IDS_MANAGEMENT" desc="Title of the chrome://management page, which shows whether the account is managed.">
+        Management
+      </message>
+      <message name="IDS_MANAGEMENT_SUBTITLE" desc="The title of the chrome://management page when the browser runs in an environment managed by an unknown organization. (e.g. Employer owned device that has a managed Profile)">
+        Your browser is managed by your administrator
+      </message>
+      <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="The title of the chrome://management page when the browser runs in an environment managed by a known organization. (e.g. Employer owned device enrolled to CBCM)">
+        Your browser is managed by <ph name="DOMAIN">%1$s<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_MANAGEMENT_NOT_MANAGED_SUBTITLE" desc="The title of the chrome://management page when the browser runs in an environment which is not not managed by any organization. (e.g. A personal device bought at a store)">
+        Your browser is not managed
+      </message>
+      <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="The descriptive text on chrome://management page that explains to the user the implications of browsing under a managed environment.">
+        Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
+      </message>
+      <message name="IDS_MANAGEMENT_LEARN_MORE" desc="The learn more link on chrome://management page that provides more information about managed devices.">
+        <ph name="BEGIN_LINK">&lt;a href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
       </message>
     </messages>
   </release>

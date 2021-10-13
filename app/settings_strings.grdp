@@ -481,7 +481,7 @@
     Auto Sign-in
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_AUTOSIGNIN_CHECKBOX_DESC" desc="Text that describes the 'Auto Sign-in' functionality to users.">
-    Automatically sign in to websites using stored credentials. If disabled, you will be asked for confirmation every time before signing in to a website.
+    Automatically sign in to sites and apps using stored credentials. If turned off, you'll be asked for confirmation every time before signing in to a site or app.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_LABEL" desc="Label for a checkbox that allows users to choose whether chrome should check that credentials have been part of a leak.">
     Warn you if passwords are exposed in a data breach
@@ -525,11 +525,20 @@
   <message name="IDS_SETTINGS_PASSWORD_USERNAME_ALREADY_USED" desc="An error message when user tried editing the username to a value which is already used for the same site.">
     You already saved this username for this site
   </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_TITLE" desc="The title for a dialog, which allows a user to add a new password. This dialog includes other details, such as username and website.">
+    Add password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_FOOTNOTE" desc="A footnote for the dialog which allows the user to add a new password.">
+    Make sure you're saving your current password for this site
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_ADD_STORE_OPTION_ACCOUNT" desc="An option of the store picker shown in the add password dialog if saving to the account">
+    Save in your Brave sync chain (<ph name="EMAIL">$1<ex>username@gmail.com</ex></ph>)
+  </message>
   <message name="IDS_SETTINGS_PASSWORD_COPY" desc="Label for a context menu item that allows to copy the selected password into clipboard.">
     Copy password
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_WEBSITE" desc="Label for the website a password is for when editing a password.">
-    Website
+    Site
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_ANDROID_APP" desc="Label for the app a password is for when displaying a credential and the real app display name could not be obtained.">
       App (<ph name="ANDROID_PACKAGE_NAME">$1<ex>com.netflix.mediaclient</ex></ph>)
@@ -1347,11 +1356,11 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WHAT_YOU_SHARE_WITH_GOOGLE" desc="Header of a text column that describes the information a feature shares with Brave.">
     What you share with Brave
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_HEADER" desc="A header shown at the top of the welcome card in the privacy review, explaining to users that they can review their most important privacy and security settings in the privacy review.">
-    Review your current settings for the most critical privacy and security controls
-  </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_START_BUTTON" desc="Text of a button in the welcome card in the privacy review that starts the privacy review.">
-    Let's go
+    Get started
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_DONT_SHOW_AGAIN_CHECKBOX" desc="Text of a checkbox in the welcome card in the privacy review that prevents the welcome card from being shown again in the future.">
+    Don’t show again
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_HEADER" desc="A header shown at the top of the completion card in the privacy review that informs users that they completed the privacy review.">
     Review completed!
@@ -1947,10 +1956,15 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Tab
   </message>
-  <message name="IDS_SETTINGS_SEARCH_ENGINES_SHOW_ALL" desc="Label for button that expands the list of search engines to show all entries">
-    Show all
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_SITES" desc="Label for button that expands the Site Search list of search engines to show all entries">
+    Additional Sites
   </message>
-
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
+    Additional Inactive Sites
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_EXTENSIONS" desc="Label for button that expands the list of extensions to show all entries">
+    Additional Extensions
+  </message>
 
   <!-- Site Settings Page -->
   <message name="IDS_SETTINGS_EXCEPTIONS_EMBEDDED_ON_HOST" desc="Template text for a child row in the content Exceptions page view. Controls the permission setting for the parent page when embedded on the specified site.">
@@ -2531,8 +2545,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_APP_PROTOCOL_HANDLERS" desc="Label for the app protocol handlers (e.g. mailto) in site settings.">
     Apps
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_APPROVED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the approved protocol handlers list registered with the OS, where the user has previously permitted the app to handle the protocol.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_ALLOWED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the allowed protocol handlers list registered with the OS, where the user has previously permitted the app to handle the protocol.">
     Apps listed below can handle protocol links as well. Other apps will ask for permission.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_APP_DISALLOWED_PROTOCOL_HANDLERS_DESCRIPTION" desc="Description of the disallowed protocol handlers list. The user has previously diallowed the launch of these apps.">
+    Apps listed below will never handle protocol links.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_HID_DEVICES_ASK" desc="The ask label for HID devices in site settings.">
     Ask when a site wants to access HID devices
@@ -2990,6 +3007,36 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_MULTIPLE" desc="Text for the dialog that warns about deleting all site data.">
     This will delete any data stored on your device for all the sites shown. Do you want to continue?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a specific origin">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_APP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a specific origin, and that origin also has an installed web app">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph> and its installed app?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph> and all sites under it?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_APP_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites, and one of those sites has an installed web app">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>, all sites under it, and its installed app?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_APP_PLURAL_DIALOG_TITLE" desc="Title of the confirmation dialog when a user selects to remove a group of sites, and multiple of those sites have installed web apps">
+    Clear site data and permissions for <ph name="SITE_NAME">$1<ex>www.example.com</ex></ph>, all sites under it, and installed apps?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_ORIGIN_LOGOUT" desc="Bullet point which indicates that the user will be signed out of the site they are remove">
+    You'll be signed out of this site, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_GROUP_LOGOUT" desc="Bullet point which indicates that the user will be signed out of the group of sites they are removing">
+    You'll be signed out of these sites, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_OFFLINE_DATA" desc="Bullet point which indicates that any offline data will be cleared when the users removes the site">
+    Any offline data will be cleared
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_PERMISSIONS" desc="Bullet point which indicates that the users chosen permissions will be reset when they remove a site">
+    Your chosen permissions will be reset
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_SITE_CONFIRM" desc="Text on the button to confirm removing a site">
+    Clear
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_SITE" desc="Label for the trashcan button to delete all cookies and site data for a specific site (ex: all the cookies set on google.com).">
     Remove <ph name="SITE">$1<ex>google.com</ex></ph>
