@@ -3,14 +3,16 @@ import * as qr from 'qr-image'
 import {
   AccountSettingsNavTypes,
   WalletAccountType,
-  UpdateAccountNamePayloadType
+  UpdateAccountNamePayloadType,
+  TopTabNavObjectType
 } from '../../../../constants/types'
 import {
   PopupModal,
   TopTabNav
 } from '../..'
 import {
-  AccountSettingsNavOptions
+  AccountSettingsNavOptions,
+  HardwareAccountSettingsNavOptions
 } from '../../../../options/account-settings-nav-options'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -141,11 +143,18 @@ const AddAccountModal = (props: Props) => {
     }
   }
 
+  const tabList = React.useMemo((): TopTabNavObjectType[] => {
+    return account.accountType === 'Trezor' ||
+      account.accountType === 'Ledger' ?
+      HardwareAccountSettingsNavOptions()
+      : AccountSettingsNavOptions()
+  }, [account])
+
   return (
     <PopupModal title={title} onClose={onClickClose}>
       {!hideNav &&
         <TopTabNav
-          tabList={AccountSettingsNavOptions()}
+          tabList={tabList}
           onSubmit={changeTab}
           selectedTab={tab}
         />
