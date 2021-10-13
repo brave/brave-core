@@ -19,7 +19,7 @@ struct AccountPrivateKeyView: View {
   
   var body: some View {
     VStack {
-      Text(verbatim: "\(Image(systemName: "exclamationmark.triangle.fill")) \(Strings.Wallet.accountPrivateKeyDisplayWarning)")
+      Text("\(Image(systemName: "exclamationmark.triangle.fill"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)")
         .font(.subheadline.weight(.medium))
         .foregroundColor(Color(.braveLabel))
         .padding(12)
@@ -39,7 +39,7 @@ struct AccountPrivateKeyView: View {
         Button(action: {
           UIPasteboard.general.string = key
         }) {
-          Text(verbatim: "\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurple))
         }
