@@ -1,10 +1,10 @@
 diff --git a/net/dns/resolve_context.h b/net/dns/resolve_context.h
-index 4e57ea62a1c8aca0cdbf318c7078489dee8c725d..2b3c0fc7c081a1f53817d3f4469b5778de407a60 100644
+index fc8618d346f1ff56b1ea4ec057bacd80c0f04150..3a7f836bbb9536c2a8bc1b666a83260773273591 100644
 --- a/net/dns/resolve_context.h
 +++ b/net/dns/resolve_context.h
-@@ -175,6 +175,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
-   // (alternative service info if it supports QUIC, for instance).
-   const IsolationInfo& isolation_info() const { return isolation_info_; }
+@@ -180,6 +180,7 @@ class NET_EXPORT_PRIVATE ResolveContext : public base::CheckedObserver {
+     return weak_ptr_factory_.GetSafeRef();
+   }
  
 +  BRAVE_RESOLVE_CONTEXT_H
   private:
