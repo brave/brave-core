@@ -208,6 +208,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         }
     }
 
+    private ErcToken createEthereumErcToken() {
+        ErcToken eth = new ErcToken();
+        eth.name = "Ethereum";
+        eth.symbol = "ETH";
+        eth.contractAddress = "";
+        eth.logo = "";
+        eth.decimals = 18;
+        return eth;
+    }
+
     private void setUpAssetsList(View view, ErcToken[] tokens, ErcToken[] userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<String>();
         for (ErcToken userSelectedToken : userSelectedTokens) {
@@ -218,10 +228,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         // Add ETH as a first item always
-        ErcToken eth = new ErcToken();
-        eth.name = "Ethereum";
-        eth.symbol = "ETH";
-        eth.contractAddress = "";
+        ErcToken eth = createEthereumErcToken();
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
         itemModelEth.setIsUserSelected(selectedTokensSymbols.contains(eth.symbol.toUpperCase()));
