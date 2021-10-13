@@ -621,7 +621,14 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  const std::string address = "0x1234";
+  SignMessage(absl::nullopt, "0x12345678", "0x1234", &signature, &error,
+              &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  const std::string address = "0x1234567890123456789012345678901234567890";
   SignMessage(absl::nullopt, address, "0x1234", &signature, &error,
               &error_message);
   EXPECT_TRUE(signature.empty());
