@@ -47,12 +47,9 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       // Regions not approved show the card- but without Brave Search
       const showBraveSearch: boolean =
           ['US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
-      const filteredSearchList = payload.filter((item: any) => {
-        return !(item.name && item.name.startsWith('Brave ') && item.canBeRemoved)
-      })
       state = {
         ...state,
-        searchProviders: showBraveSearch ? payload : filteredSearchList,
+        searchProviders: payload,
         hideSearchOnboarding: showBraveSearch
       }
       break
