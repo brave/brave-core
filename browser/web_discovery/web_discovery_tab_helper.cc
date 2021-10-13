@@ -45,8 +45,14 @@ WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* contents)
 
 WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 
-void WebDiscoveryTabHelper::PrimaryPageChanged(content::Page& page) {
-  if (page.GetMainDocument().GetLastCommittedURL() != GURL(kBraveSearchUrl))
+void WebDiscoveryTabHelper::DidFinishLoad(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& validated_url) {
+  // Only care about main frame.
+  if (render_frame_host->GetParent())
+    return;
+
+  if (validated_url != base::StringPiece(kBraveSearchUrl))
     return;
 
   auto* browser = chrome::FindBrowserWithWebContents(web_contents());
