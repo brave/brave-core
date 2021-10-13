@@ -30,12 +30,12 @@ SplitTestFrequencyCap::SplitTestFrequencyCap() = default;
 
 SplitTestFrequencyCap::~SplitTestFrequencyCap() = default;
 
-bool SplitTestFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  if (!DoesRespectCap(ad)) {
+bool SplitTestFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::StringPrintf(
-        "creativeSetId %s excluded as not "
-        "associated with advertiser split test group",
-        ad.creative_set_id.c_str());
+        "creativeSetId %s excluded as not associated with advertiser split "
+        "test group",
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -47,20 +47,21 @@ std::string SplitTestFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool SplitTestFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
+bool SplitTestFrequencyCap::DoesRespectCap(
+    const CreativeAdInfo& creative_ad) const {
   const absl::optional<std::string> split_test_group =
       GetSplitTestGroup(kStudyName);
   if (!split_test_group) {
     // Only respect cap if browser has signed up to a field trial
-    return ad.split_test_group.empty();
+    return creative_ad.split_test_group.empty();
   }
 
-  if (ad.split_test_group.empty()) {
+  if (creative_ad.split_test_group.empty()) {
     // Always respect cap if there is no split testing group in the catalog
     return true;
   }
 
-  if (ad.split_test_group == split_test_group) {
+  if (creative_ad.split_test_group == split_test_group) {
     return true;
   }
 

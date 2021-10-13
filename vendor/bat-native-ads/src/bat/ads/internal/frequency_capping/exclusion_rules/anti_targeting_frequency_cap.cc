@@ -40,11 +40,12 @@ AntiTargetingFrequencyCap::AntiTargetingFrequencyCap(
 
 AntiTargetingFrequencyCap::~AntiTargetingFrequencyCap() = default;
 
-bool AntiTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  if (!DoesRespectCap(ad)) {
+bool AntiTargetingFrequencyCap::ShouldExclude(
+    const CreativeAdInfo& creative_ad) {
+  if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s excluded as previously visited an anti-targeted site",
-        ad.creative_set_id.c_str());
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -56,13 +57,14 @@ std::string AntiTargetingFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool AntiTargetingFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) const {
+bool AntiTargetingFrequencyCap::DoesRespectCap(
+    const CreativeAdInfo& creative_ad) const {
   if (browsing_history_.empty()) {
     return true;
   }
 
   resource::AntiTargetingInfo anti_targeting = anti_targeting_resource_->get();
-  const auto iter = anti_targeting.sites.find(ad.creative_set_id);
+  const auto iter = anti_targeting.sites.find(creative_ad.creative_set_id);
   if (iter == anti_targeting.sites.end()) {
     // Always respect if creative set has no anti-targeting sites
     return true;

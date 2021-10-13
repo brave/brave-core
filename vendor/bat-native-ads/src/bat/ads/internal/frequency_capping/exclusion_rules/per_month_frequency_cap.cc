@@ -19,14 +19,15 @@ PerMonthFrequencyCap::PerMonthFrequencyCap(const AdEventList& ad_events)
 
 PerMonthFrequencyCap::~PerMonthFrequencyCap() = default;
 
-bool PerMonthFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+bool PerMonthFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  const AdEventList filtered_ad_events =
+      FilterAdEvents(ad_events_, creative_ad);
 
-  if (!DoesRespectCap(filtered_ad_events, ad)) {
+  if (!DoesRespectCap(filtered_ad_events, creative_ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s has exceeded the "
         "frequency capping for perMonth",
-        ad.creative_set_id.c_str());
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -39,8 +40,8 @@ std::string PerMonthFrequencyCap::GetLastMessage() const {
 }
 
 bool PerMonthFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
-                                          const CreativeAdInfo& ad) {
-  if (ad.per_month == 0) {
+                                          const CreativeAdInfo& creative_ad) {
+  if (creative_ad.per_month == 0) {
     return true;
   }
 
@@ -50,20 +51,20 @@ bool PerMonthFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
       28 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay));
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
-                                                       ad.per_month);
+                                                       creative_ad.per_month);
 }
 
 AdEventList PerMonthFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& creative_ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
+      [&creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.type != AdType::kAdNotification &&
                 ad_event.type != AdType::kInlineContentAd) ||
-               ad_event.creative_set_id != ad.creative_set_id ||
+               ad_event.creative_set_id != creative_ad.creative_set_id ||
                ad_event.confirmation_type != ConfirmationType::kServed;
       });
 

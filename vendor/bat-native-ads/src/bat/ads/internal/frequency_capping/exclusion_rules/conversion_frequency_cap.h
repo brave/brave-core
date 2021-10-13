@@ -22,7 +22,7 @@ class ConversionFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   ConversionFrequencyCap(const ConversionFrequencyCap&) = delete;
   ConversionFrequencyCap& operator=(const ConversionFrequencyCap&) = delete;
 
-  bool ShouldExclude(const CreativeAdInfo& ad) override;
+  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
 
@@ -31,12 +31,12 @@ class ConversionFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   std::string last_message_;
 
-  bool ShouldAllow(const CreativeAdInfo& ad);
+  bool ShouldAllow(const CreativeAdInfo& creative_ad);
 
   bool DoesRespectCap(const AdEventList& ad_events);
 
   AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& ad) const;
+                             const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

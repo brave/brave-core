@@ -17,19 +17,19 @@
 namespace ads {
 
 TEST(BatAdsEligibleAdsUtilTest,
-     GroupEligibleAdsByCreativeInstanceIdForEmptyAds) {
+     GroupCreativeAdsByCreativeInstanceIdForEmptyAds) {
   // Arrange
   std::vector<CreativeAdNotificationInfo> eligible_ads;
 
   // Act
   const CreativeAdNotificationPredictorMap ads =
-      GroupEligibleAdsByCreativeInstanceId(eligible_ads);
+      GroupCreativeAdsByCreativeInstanceId(eligible_ads);
 
   // Assert
   EXPECT_TRUE(ads.empty());
 }
 
-TEST(BatAdsEligibleAdsUtilTest, GroupEligibleAdsByCreativeInstanceId) {
+TEST(BatAdsEligibleAdsUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   // Arrange
   std::vector<CreativeAdNotificationInfo> eligible_ads;
 
@@ -52,7 +52,7 @@ TEST(BatAdsEligibleAdsUtilTest, GroupEligibleAdsByCreativeInstanceId) {
 
   // Act
   const CreativeAdNotificationPredictorMap ads =
-      GroupEligibleAdsByCreativeInstanceId(eligible_ads);
+      GroupCreativeAdsByCreativeInstanceId(eligible_ads);
 
   // Assert
   ASSERT_EQ(3u, ads.size());

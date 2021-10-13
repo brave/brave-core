@@ -147,7 +147,7 @@ void AdsImpl::OnPrefChanged(const std::string& path) {
 
     MaybeServeAdNotificationsAtRegularIntervals();
   } else if (path == prefs::kAdsPerHour) {
-    ad_notification_serving_->OnAdsPerHourChanged();
+    ad_notification_serving_->OnPrefChanged();
   } else if (path == prefs::kAdsSubdivisionTargetingCode) {
     subdivision_targeting_->MaybeFetchForCurrentLocale();
   }

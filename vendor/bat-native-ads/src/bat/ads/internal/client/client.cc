@@ -455,7 +455,7 @@ const std::map<std::string, bool>& Client::GetSeenAdsForType(
   return client_->seen_ads[type_as_string];
 }
 
-void Client::ResetSeenAdsForType(const CreativeAdList& ads,
+void Client::ResetSeenAdsForType(const CreativeAdList& creative_ads,
                                  const AdType& type) {
   DCHECK(is_initialized_);
 
@@ -463,9 +463,9 @@ void Client::ResetSeenAdsForType(const CreativeAdList& ads,
 
   BLOG(1, "Resetting seen " << type_as_string << "s");
 
-  for (const auto& ad : ads) {
-    const auto iter =
-        client_->seen_ads[type_as_string].find(ad.creative_instance_id);
+  for (const auto& creative_ad : creative_ads) {
+    const auto iter = client_->seen_ads[type_as_string].find(
+        creative_ad.creative_instance_id);
     if (iter != client_->seen_ads[type_as_string].end()) {
       client_->seen_ads[type_as_string].erase(iter);
     }
@@ -491,7 +491,7 @@ const std::map<std::string, bool>& Client::GetSeenAdvertisersForType(
   return client_->seen_advertisers[type_as_string];
 }
 
-void Client::ResetSeenAdvertisersForType(const CreativeAdList& ads,
+void Client::ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
                                          const AdType& type) {
   DCHECK(is_initialized_);
 
@@ -499,9 +499,9 @@ void Client::ResetSeenAdvertisersForType(const CreativeAdList& ads,
 
   BLOG(1, "Resetting seen " << type_as_string << " advertisers");
 
-  for (const auto& ad : ads) {
-    const auto iter =
-        client_->seen_advertisers[type_as_string].find(ad.advertiser_id);
+  for (const auto& creative_ad : creative_ads) {
+    const auto iter = client_->seen_advertisers[type_as_string].find(
+        creative_ad.advertiser_id);
     if (iter != client_->seen_advertisers[type_as_string].end()) {
       client_->seen_advertisers[type_as_string].erase(iter);
     }
@@ -519,18 +519,18 @@ void Client::ResetAllSeenAdvertisersForType(const AdType& type) {
   Save();
 }
 
-void Client::SetServeNextAdAt(const base::Time& time) {
+void Client::SetServeAdAt(const base::Time& time) {
   DCHECK(is_initialized_);
 
-  client_->serve_next_ad_at = time;
+  client_->serve_ad_at = time;
 
   Save();
 }
 
-base::Time Client::GetServeNextAdAt() {
+base::Time Client::GetServeAdAt() {
   DCHECK(is_initialized_);
 
-  return client_->serve_next_ad_at;
+  return client_->serve_ad_at;
 }
 
 void Client::AppendTextClassificationProbabilitiesToHistory(

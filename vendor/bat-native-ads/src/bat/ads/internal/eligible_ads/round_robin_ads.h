@@ -18,12 +18,14 @@ template <typename T>
 T FilterSeenAds(const T& ads, const std::map<std::string, bool>& seen_ads) {
   T unseen_ads = ads;
 
-  const auto iter = std::remove_if(
-      unseen_ads.begin(), unseen_ads.end(), [&seen_ads](CreativeAdInfo& ad) {
-        SplitTestFrequencyCap frequency_cap;
-        return frequency_cap.ShouldExclude(ad) ||
-               seen_ads.find(ad.creative_instance_id) != seen_ads.end();
-      });
+  const auto iter =
+      std::remove_if(unseen_ads.begin(), unseen_ads.end(),
+                     [&seen_ads](const CreativeAdInfo& creative_ad) {
+                       SplitTestFrequencyCap frequency_cap;
+                       return frequency_cap.ShouldExclude(creative_ad) ||
+                              seen_ads.find(creative_ad.creative_instance_id) !=
+                                  seen_ads.end();
+                     });
 
   unseen_ads.erase(iter, unseen_ads.end());
 

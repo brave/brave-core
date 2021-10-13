@@ -29,7 +29,7 @@ struct InlineContentAdInfo;
 
 namespace inline_content_ads {
 
-class EligibleAds;
+class EligibleAdsBase;
 
 class AdServing final {
  public:
@@ -43,13 +43,16 @@ class AdServing final {
 
   void MaybeServeAd(const std::string& dimensions,
                     GetInlineContentAdCallback callback);
-  void MaybeServeAdV1(const std::string& dimensions,
-                      GetInlineContentAdCallback callback);
-  void MaybeServeAdV2(const std::string& dimensions,
-                      GetInlineContentAdCallback callback);
 
  private:
-  std::unique_ptr<EligibleAds> eligible_ads_;
+  std::unique_ptr<EligibleAdsBase> eligible_ads_;
+  bool IsSupported() const;
+
+  bool ServeAd(const InlineContentAdInfo& ad,
+               GetInlineContentAdCallback callback) const;
+  void FailedToServeAd(const std::string& dimensions,
+                       GetInlineContentAdCallback callback);
+  void ServedAd(const InlineContentAdInfo& ad);
 
   base::ObserverList<InlineContentAdServingObserver> observers_;
 

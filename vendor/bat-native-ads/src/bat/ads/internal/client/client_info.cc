@@ -107,7 +107,7 @@ bool ClientInfo::FromJson(const std::string& json) {
 
   if (document.HasMember("nextCheckServeAd")) {
     const double timestamp = document["nextCheckServeAd"].GetDouble();
-    serve_next_ad_at = base::Time::FromDoubleT(timestamp);
+    serve_ad_at = base::Time::FromDoubleT(timestamp);
   }
 
   if (document.HasMember("textClassificationProbabilitiesHistory")) {
@@ -193,7 +193,7 @@ void SaveToJson(JsonWriter* writer, const ClientInfo& state) {
   writer->EndObject();
 
   writer->String("nextCheckServeAd");
-  writer->Double(state.serve_next_ad_at.ToDoubleT());
+  writer->Double(state.serve_ad_at.ToDoubleT());
 
   writer->String("textClassificationProbabilitiesHistory");
   writer->StartArray();

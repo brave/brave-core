@@ -35,7 +35,7 @@ class ExclusionRules final {
       const BrowsingHistoryList& browsing_history);
   ~ExclusionRules();
 
-  bool ShouldExcludeAd(const CreativeAdInfo& ad) const;
+  bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad) const;
 
  private:
   ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting_;

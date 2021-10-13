@@ -3,12 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
-#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
+#ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V1_H_
+#define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V1_H_
+
+#include <string>
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
-#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_aliases.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_aliases.h"
+#include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
 namespace ads {
@@ -24,68 +27,58 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-namespace ad_notifications {
+struct AdInfo;
 
-class EligibleAds final {
+namespace inline_content_ads {
+
+class EligibleAdsV1 final : public EligibleAdsBase {
  public:
-  EligibleAds(
+  EligibleAdsV1(
       ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting);
-  ~EligibleAds();
+  ~EligibleAdsV1() override;
 
-  void SetLastServedAd(const CreativeAdInfo& creative_ad);
-
-  void Get(const ad_targeting::UserModelInfo& user_model,
-           GetEligibleAdsCallback callback);
-
-  void GetV2(const ad_targeting::UserModelInfo& user_model,
-             GetEligibleAdsV2Callback callback);
+  void GetForUserModel(const ad_targeting::UserModelInfo& user_model,
+                       const std::string& dimensions,
+                       GetEligibleAdsCallback callback) override;
 
  private:
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
-
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
-
-  CreativeAdInfo last_served_creative_ad_;
-
   void GetEligibleAds(const ad_targeting::UserModelInfo& user_model,
+                      const std::string& dimensions,
                       const AdEventList& ad_events,
                       const BrowsingHistoryList& browsing_history,
-                      GetEligibleAdsV2Callback callback) const;
-
-  void ChooseAd(const ad_targeting::UserModelInfo& user_model,
-                const AdEventList& ad_events,
-                const CreativeAdNotificationList& eligible_ads,
-                GetEligibleAdsV2Callback callback) const;
+                      GetEligibleAdsCallback callback) const;
 
   void GetForParentChildSegments(const ad_targeting::UserModelInfo& user_model,
+                                 const std::string& dimensions,
                                  const AdEventList& ad_events,
                                  const BrowsingHistoryList& browsing_history,
                                  GetEligibleAdsCallback callback) const;
 
   void GetForParentSegments(const ad_targeting::UserModelInfo& user_model,
+                            const std::string& dimensions,
                             const AdEventList& ad_events,
                             const BrowsingHistoryList& browsing_history,
                             GetEligibleAdsCallback callback) const;
 
-  void GetForUntargeted(const AdEventList& ad_events,
+  void GetForUntargeted(const std::string& dimensions,
+                        const AdEventList& ad_events,
                         const BrowsingHistoryList& browsing_history,
                         GetEligibleAdsCallback callback) const;
 
-  CreativeAdNotificationList FilterIneligibleAds(
-      const CreativeAdNotificationList& ads,
+  CreativeInlineContentAdList FilterCreativeAds(
+      const CreativeInlineContentAdList& creative_ads,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history) const;
 
-  CreativeAdNotificationList ApplyFrequencyCapping(
-      const CreativeAdNotificationList& ads,
-      const CreativeAdInfo& last_served_creative_ad,
+  CreativeInlineContentAdList ApplyFrequencyCapping(
+      const CreativeInlineContentAdList& creative_ads,
+      const AdInfo& last_served_ad,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history) const;
 };
 
-}  // namespace ad_notifications
+}  // namespace inline_content_ads
 }  // namespace ads
 
-#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_H_
+#endif  // BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V1_H_

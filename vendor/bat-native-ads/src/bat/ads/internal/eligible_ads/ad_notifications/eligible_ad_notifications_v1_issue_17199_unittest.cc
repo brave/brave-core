@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
+#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_v1.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_builder_unittest_util.h"
@@ -17,11 +17,11 @@
 
 namespace ads {
 
-class BatAdsEligibleAdNotificationsIssue17199Test : public UnitTestBase {
+class BatAdsEligibleAdNotificationsV1Issue17199Test : public UnitTestBase {
  protected:
-  BatAdsEligibleAdNotificationsIssue17199Test() = default;
+  BatAdsEligibleAdNotificationsV1Issue17199Test() = default;
 
-  ~BatAdsEligibleAdNotificationsIssue17199Test() override = default;
+  ~BatAdsEligibleAdNotificationsV1Issue17199Test() override = default;
 
   void SetUp() override {
     ASSERT_TRUE(CopyFileFromTestPathToTempDir("database_issue_17199.sqlite",
@@ -34,20 +34,19 @@ class BatAdsEligibleAdNotificationsIssue17199Test : public UnitTestBase {
   }
 };
 
-TEST_F(BatAdsEligibleAdNotificationsIssue17199Test, GetEligibleAds) {
+TEST_F(BatAdsEligibleAdNotificationsV1Issue17199Test, GetEligibleAds) {
   // Arrange
   AdvanceClock(TimeFromUTCString("4 July 2021"));
 
   // Act
   ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  ad_notifications::EligibleAds eligible_ads(&subdivision_targeting,
-                                             &anti_targeting_resource);
+  ad_notifications::EligibleAdsV1 eligible_ads(&subdivision_targeting,
+                                               &anti_targeting_resource);
 
-  const SegmentList segments = {"technology & computing-computing"};
-
-  eligible_ads.Get(
-      ad_targeting::BuildUserModel(segments),
+  eligible_ads.GetForUserModel(
+      ad_targeting::BuildUserModel({"technology & computing-computing"}, {},
+                                   {}),
       [](const bool success,
          const CreativeAdNotificationList& creative_ad_notifications) {
         EXPECT_TRUE(success);

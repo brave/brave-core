@@ -14,10 +14,10 @@ struct InlineContentAdInfo;
 struct CreativeInlineContentAdInfo;
 
 InlineContentAdInfo BuildInlineContentAd(
-    const CreativeInlineContentAdInfo& creative_inline_content_ad);
+    const CreativeInlineContentAdInfo& creative_ad);
 
 InlineContentAdInfo BuildInlineContentAd(
-    const CreativeInlineContentAdInfo& creative_inline_content_ad,
+    const CreativeInlineContentAdInfo& creative_ad,
     const std::string& uuid);
 
 }  // namespace ads

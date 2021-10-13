@@ -23,17 +23,17 @@
 namespace ads {
 
 AdEventInfo GenerateAdEvent(const AdType& type,
-                            const CreativeAdInfo& ad,
+                            const CreativeAdInfo& creative_ad,
                             const ConfirmationType& confirmation_type) {
   AdEventInfo ad_event;
 
   ad_event.uuid = base::GenerateGUID();
   ad_event.type = type;
   ad_event.confirmation_type = confirmation_type;
-  ad_event.campaign_id = ad.campaign_id;
-  ad_event.creative_set_id = ad.creative_set_id;
-  ad_event.creative_instance_id = ad.creative_instance_id;
-  ad_event.advertiser_id = ad.advertiser_id;
+  ad_event.campaign_id = creative_ad.campaign_id;
+  ad_event.creative_set_id = creative_ad.creative_set_id;
+  ad_event.creative_instance_id = creative_ad.creative_instance_id;
+  ad_event.advertiser_id = creative_ad.advertiser_id;
   ad_event.created_at = Now();
 
   return ad_event;

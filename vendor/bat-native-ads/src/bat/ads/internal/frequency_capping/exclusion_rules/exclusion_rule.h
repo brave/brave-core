@@ -10,7 +10,7 @@
 
 namespace ads {
 
-template <class T>
+template <typename T>
 class ExclusionRule {
  public:
   virtual ~ExclusionRule() = default;
