@@ -156,6 +156,15 @@ class EthJsonRpcController : public KeyedService,
       base::OnceCallback<void(bool success, bool is_eip1559)>;
   void GetIsEip1559(GetIsEip1559Callback callback);
 
+  void GetERC721OwnerOf(const std::string& contract,
+                        const std::string& token_id,
+                        GetERC721OwnerOfCallback callback) override;
+
+  void GetERC721TokenBalance(const std::string& contract_address,
+                             const std::string& token_id,
+                             const std::string& account_address,
+                             GetERC721TokenBalanceCallback callback) override;
+
  private:
   void FireNetworkChanged();
   void FirePendingRequestCompleted(const std::string& chain_id,
@@ -269,6 +278,17 @@ class EthJsonRpcController : public KeyedService,
 
   FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, IsValidDomain);
   bool IsValidDomain(const std::string& domain);
+
+  void OnGetERC721OwnerOf(
+      GetERC721OwnerOfCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void ContinueGetERC721TokenBalance(const std::string& account_address,
+                                     GetERC721TokenBalanceCallback callback,
+                                     bool success,
+                                     const std::string& owner_address);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;

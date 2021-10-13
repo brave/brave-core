@@ -334,6 +334,10 @@ interface EthJsonRpcController {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
+  GetERC721OwnerOf(string contract, string token_id) => (bool success, string owner_address);
+  // Balance is 0x1 if current selected account is the same as token owner's
+  // address, otherwise balance is 0x0.
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (bool success, string balance);
 };
 
 enum TransactionStatus {
