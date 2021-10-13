@@ -30,7 +30,8 @@ class WebDiscoveryTabHelper
   explicit WebDiscoveryTabHelper(content::WebContents* contents);
 
   // content::WebContentsObserver overrides:
-  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                     const GURL& validated_url) override;
 
   bool NeedVisitCountHandling(PrefService* prefs,
                               TemplateURLService* template_service);
