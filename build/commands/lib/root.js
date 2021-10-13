@@ -1,10 +1,10 @@
 const path = require('path')
 
-let normalizedSrcDir = __dirname
+let normalizedDirName = __dirname
 if (process.platform === 'win32' &&
-    normalizedSrcDir.length >= 2 &&
-    normalizedSrcDir[1] == ':') {
-  normalizedSrcDir = normalizedSrcDir[0].toUpperCase() + normalizedSrcDir.substr(1)
+  normalizedDirName.length >= 2 &&
+  normalizedDirName[1] == ':') {
+  normalizedDirName = normalizedDirName[0].toUpperCase() + normalizedDirName.substr(1)
 }
 
-module.exports = path.resolve(normalizedSrcDir, '..', '..', '..', '..', '..')
+module.exports = path.resolve(normalizedDirName, '..', '..', '..', '..', '..')
