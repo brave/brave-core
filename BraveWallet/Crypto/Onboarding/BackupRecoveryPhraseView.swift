@@ -24,7 +24,7 @@ struct BackupRecoveryPhraseView: View {
         .fontWeight(.semibold)
         .foregroundColor(.red)
       let warningPartTwo = Text(Strings.Wallet.backupRecoveryPhraseWarningPartTwo)
-      Text(verbatim: "\(warningPartOne) \(warningPartTwo)")
+      Text("\(warningPartOne) \(warningPartTwo)")
         .font(.subheadline)
         .foregroundColor(Color(.secondaryBraveLabel))
         .fixedSize(horizontal: false, vertical: true)
@@ -67,7 +67,7 @@ struct BackupRecoveryPhraseView: View {
         }
         .padding(.horizontal)
         Button(action: copyRecoveryPhrase) {
-          Text(verbatim: "\(Strings.Wallet.copyToPasteboard) \(Image(systemName: "brave.clipboard"))")
+          Text("\(Strings.Wallet.copyToPasteboard) \(Image("brave.clipboard"))")
             .font(.subheadline.bold())
             .foregroundColor(.primary)
         }
