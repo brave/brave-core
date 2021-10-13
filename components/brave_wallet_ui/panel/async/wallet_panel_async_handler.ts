@@ -173,6 +173,14 @@ handler.on(PanelActions.expandRestoreWallet.getType(), async (store) => {
   })
 })
 
+handler.on(PanelActions.expandWalletAccounts.getType(), async (store) => {
+  chrome.tabs.create({ url: 'chrome://wallet/crypto/accounts/add-account' }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+})
+
 handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
   chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
     if (chrome.runtime.lastError) {
