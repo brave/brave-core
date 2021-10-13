@@ -10,6 +10,10 @@
 #include "base/metrics/field_trial_params.h"
 
 namespace translate {
+
+extern const char kBraveTranslateOrigin[];
+extern const char kBraveTranslateScriptURL[];
+
 namespace features {
 extern const base::Feature kUseBraveTranslateGo;
 
@@ -24,7 +28,7 @@ bool IsBraveTranslateGoAvailable();
 
 bool IsTranslateExtensionAvailable();
 
-bool ShouldUseTranslateSwitches();
+bool UseBraveTranslateReplay();
 
 bool ShouldUpdateTranslateList();
 

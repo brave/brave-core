@@ -9,14 +9,18 @@
 
 namespace translate {
 
+const char kBraveTranslateOrigin[] = "https://translate-relay.brave.com";
+const char kBraveTranslateScriptURL[] =
+    "https://translate-relay.brave.com/translate_a/element.js";
+
 namespace features {
 const base::Feature kUseBraveTranslateGo{
     "UseBraveTranslateGo", base::FeatureState::FEATURE_DISABLED_BY_DEFAULT};
 
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
-const base::FeatureParam<bool> kUseTranslateParam{&kUseBraveTranslateGo,
-                                                  "use-switches", true};
+const base::FeatureParam<bool> kUseBraveReplayParam{&kUseBraveTranslateGo,
+                                                    "use-brave-replay", true};
 
 }  // namespace features
 
@@ -36,8 +40,8 @@ bool IsTranslateExtensionAvailable() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 }
 
-bool ShouldUseTranslateSwitches() {
-  return IsBraveTranslateGoAvailable() && features::kUseTranslateParam.Get();
+bool UseBraveTranslateReplay() {
+  return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
 }
 
 bool ShouldUpdateTranslateList() {

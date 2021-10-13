@@ -19,6 +19,7 @@
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
+#include "components/translate/core/browser/translate_language_list.h"
 #include "components/translate/core/common/translate_switches.h"
 #include "content/public/browser/render_frame_host.h"
 #include "extensions/buildflags/buildflags.h"
@@ -65,12 +66,6 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
 #endif
-
-namespace {
-const char kBraveTranslateOriginURL[] = "https://translate-relay.brave.com";
-const char kBraveTranslateScriptURL[] =
-    "https://translate-relay.brave.com/translate_a/element.js";
-}  // namespace
 
 void BraveBrowserMainParts::PreBrowserStart() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -176,13 +171,15 @@ void BraveBrowserMainParts::PreProfileInit() {
   // If enable then redirect the most of translate requests to the Brave
   // endpoints. The rest will be redirected in
   // OnBeforeURLRequest_TranslateRedirectWork().
-  if (translate::ShouldUseTranslateSwitches()) {
+  if (translate::UseBraveTranslateReplay()) {
     command_line->AppendSwitchASCII(
         translate::switches::kTranslateSecurityOrigin,
-        kBraveTranslateOriginURL);
+        translate::kBraveTranslateOrigin);
     command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
-                                    kBraveTranslateScriptURL);
+                                    translate::kBraveTranslateScriptURL);
   }
+  if (!translate::ShouldUpdateTranslateList())
+    translate::TranslateLanguageList::DisableUpdate();
 }
 
 void BraveBrowserMainParts::PostProfileInit() {

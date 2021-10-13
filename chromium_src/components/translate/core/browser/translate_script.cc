@@ -15,14 +15,27 @@ namespace {
 
 const char* kRedirectAllRequestsToSecurityOrigin = R"(
   const securityOriginHost = new URL(securityOrigin).host;
+  const redirectToSecurityOrigin = (url) => {
+    new_url = new URL(url);
+    new_url.host = securityOriginHost;
+    return new_url.toString();
+  };
   if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
     XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function(method, url, async = true,
-                                             user = "", password = "") {
-      new_url = new URL(url);
-      new_url.host = securityOriginHost;
-      this.realOpen(method, new_url.toString(), async, user, password);
+    XMLHttpRequest.prototype.open = function (method, url, async = true,
+                                     user = "", password = "") {
+      this.realOpen(method, redirectToSecurityOrigin(url), async, user,
+                    password);
     }
+  };
+  originalOnLoadCSS = cr.googleTranslate.onLoadCSS;
+  cr.googleTranslate.onLoadCSS = function (url) {
+    console.log(url ,' => ', redirectToSecurityOrigin(url));
+    originalOnLoadCSS(redirectToSecurityOrigin(url))
+  };
+  originalOnLoadJavascript = cr.googleTranslate.onLoadJavascript;
+  cr.googleTranslate.onLoadJavascript = function (url) {
+    originalOnLoadJavascript(redirectToSecurityOrigin(url))
   };
 )";
 

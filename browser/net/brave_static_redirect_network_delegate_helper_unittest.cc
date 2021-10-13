@@ -285,8 +285,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(rc, net::OK);
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, DropGoogleTranslateScript) {
   const std::string query_string(
       "?cb=cr.googleTranslate.onTranslateElementLoad&aus=true&"
       "clc=cr.googleTranslate.onLoadCSS&"
@@ -294,25 +293,20 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
   const std::string path_string("/translate_a/element.js");
   const std::string google_host_string("https://translate.googleapis.com");
   const GURL url(google_host_string + path_string + query_string);
-  const GURL expected_url(kBraveTranslateServer + path_string + query_string);
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(rc, net::ERR_ABORTED);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslateLanguage) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest,
+     DropGoogleTranslateLanguage) {
   const GURL url(
       "https://translate.googleapis.com/translate_a/l?"
       "client=chrome&hl=en&key=DUMMY_KEY");
-  const GURL expected_url(kBraveTranslateLanguageEndpoint);
-
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   int rc =
       OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-  EXPECT_EQ(request_info->new_url_spec, expected_url);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(rc, net::ERR_ABORTED);
 }
-#endif

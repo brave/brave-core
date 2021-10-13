@@ -11,8 +11,10 @@ void AdjustedSetIsolatedWorldInfo(int32_t world_id,
                                   const blink::WebIsolatedWorldInfo& info) {
   blink::WebIsolatedWorldInfo new_info(info);
   // Limit all network requests to the security origin.
+  // TODO(moritz): Remove  translate.brave.com from the list when
+  // translate-replay.brave.com stops redirecting to translate.brave.com.
   new_info.content_security_policy =
-      "default-src 'self' 'unsafe-eval' 'unsafe-inline'";
+      "default-src 'self' 'unsafe-eval' 'unsafe-inline' translate.brave.com";
   blink::SetIsolatedWorldInfo(world_id, new_info);
 }
 }  // namespace blink

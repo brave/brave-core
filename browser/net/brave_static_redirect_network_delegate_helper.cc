@@ -87,10 +87,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
   static URLPattern widevine_google_dl_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       kWidevineGoogleDlPrefix);
-  static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
-      kTranslateElementJSPattern);
-  static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
-      kTranslateLanguagePattern);
 
   if (geo_pattern.MatchesURL(request_url)) {
     *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
@@ -177,17 +173,13 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-  if (translate_pattern.MatchesURL(request_url)) {
-    replacements.SetQueryStr(request_url.query_piece());
-    replacements.SetPathStr(request_url.path_piece());
-    *new_url = GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements);
-    return translate::IsBraveTranslateGoAvailable() ? net::OK
-                                                    : net::ERR_ABORTED;
-  }
-
-  if (translate_language_pattern.MatchesURL(request_url)) {
-    *new_url = GURL(kBraveTranslateLanguageEndpoint);
-    return translate::ShouldUpdateTranslateList() ? net::OK : net::ERR_ABORTED;
+  static const URLPattern translate_script_pattern(
+      URLPattern::SCHEME_HTTPS, kGoogleTranslateElementScriptPattern);
+  static const URLPattern translate_language_pattern(
+      URLPattern::SCHEME_HTTPS, kGoogleTranslateLanguagePattern);
+  if (translate_script_pattern.MatchesURL(request_url) ||
+      translate_language_pattern.MatchesURL(request_url)) {
+    return net::ERR_ABORTED;
   }
 
   return net::OK;
