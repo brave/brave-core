@@ -17,9 +17,13 @@
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
+#include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -39,6 +43,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -68,7 +73,10 @@ void ValidateErrorCode(BraveWalletProviderImpl* provider,
 
 class BraveWalletProviderImplUnitTest : public testing::Test {
  public:
-  BraveWalletProviderImplUnitTest() = default;
+  BraveWalletProviderImplUnitTest()
+      : shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {}
 
   void TearDown() override {
     provider_.reset();
@@ -78,14 +86,23 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void SetUp() override {
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);
-    eth_json_rpc_controller_ =
-        brave_wallet::RpcControllerFactory::GetControllerForContext(
-            browser_context());
+    eth_json_rpc_controller_.reset(
+        new EthJsonRpcController(shared_url_loader_factory_, prefs()));
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
-    eth_tx_controller_ =
-        brave_wallet::EthTxControllerFactory::GetControllerForContext(
-            browser_context());
+    asset_ratio_controller_.reset(
+        new AssetRatioController(shared_url_loader_factory_));
+    auto tx_state_manager = std::make_unique<EthTxStateManager>(
+        prefs(), eth_json_rpc_controller()->MakeRemote());
+    auto nonce_tracker = std::make_unique<EthNonceTracker>(
+        tx_state_manager.get(), eth_json_rpc_controller());
+    auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
+        tx_state_manager.get(), eth_json_rpc_controller(), nonce_tracker.get());
+    eth_tx_controller_.reset(new EthTxController(
+        eth_json_rpc_controller(), keyring_controller(),
+        asset_ratio_controller_.get(), std::move(tx_state_manager),
+        std::move(nonce_tracker), std::move(pending_tx_tracker), prefs()));
+
     eth_json_rpc_controller_->SetNetwork("0x1");
     base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
@@ -96,12 +113,20 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         prefs());
   }
 
+  void SetInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, content](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
   ~BraveWalletProviderImplUnitTest() override = default;
 
   content::TestWebContents* web_contents() { return web_contents_.get(); }
-  EthTxController* eth_tx_controller() { return eth_tx_controller_; }
+  EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
   EthJsonRpcController* eth_json_rpc_controller() {
-    return eth_json_rpc_controller_;
+    return eth_json_rpc_controller_.get();
   }
   KeyringController* keyring_controller() { return keyring_controller_; }
   BraveWalletProviderImpl* provider() { return provider_.get(); }
@@ -169,17 +194,44 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return result;
   }
 
+  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
+    std::vector<mojom::TransactionInfoPtr> transaction_infos;
+    base::RunLoop run_loop;
+    eth_tx_controller()->GetAllTransactionInfo(
+        from(), base::BindLambdaForTesting(
+                    [&](std::vector<mojom::TransactionInfoPtr> v) {
+                      transaction_infos = std::move(v);
+                      run_loop.Quit();
+                    }));
+    run_loop.Run();
+    return transaction_infos;
+  }
+
+  bool ApproveTransaction(const std::string& tx_meta_id) {
+    bool success;
+    base::RunLoop run_loop;
+    eth_tx_controller()->ApproveTransaction(
+        tx_meta_id, base::BindLambdaForTesting([&](bool v) {
+          success = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return success;
+  }
+
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
 
  private:
-  EthJsonRpcController* eth_json_rpc_controller_;
+  std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
   KeyringController* keyring_controller_;
-  EthTxController* eth_tx_controller_;
   content::TestWebContentsFactory factory_;
+  std::unique_ptr<EthTxController> eth_tx_controller_;
+  std::unique_ptr<AssetRatioController> asset_ratio_controller_;
   std::unique_ptr<content::TestWebContents> web_contents_;
   std::unique_ptr<BraveWalletProviderImpl> provider_;
   network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
 };
@@ -272,46 +324,53 @@ TEST_F(BraveWalletProviderImplUnitTest,
   EXPECT_EQ(callback_is_called, 1);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransaction) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
-  std::string tx_meta_id;
+  std::string tx_hash;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>()),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_TRUE(success);
-        EXPECT_FALSE(id.empty());
+        EXPECT_FALSE(hash.empty());
         EXPECT_TRUE(error_message.empty());
         callback_called = true;
-        tx_meta_id = id;
+        tx_hash = hash;
       }));
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 1UL);
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
+  EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 
-  // Make sure the transaction info is available
-  callback_called = false;
-  eth_tx_controller()->GetAllTransactionInfo(
-      from(),
-      base::BindLambdaForTesting([&](std::vector<mojom::TransactionInfoPtr> v) {
-        ASSERT_EQ(v.size(), 1UL);
-        EXPECT_TRUE(
-            base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
-        EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(v[0]->id, tx_meta_id);
-        callback_called = true;
-      }));
-  browser_task_environment_.RunUntilIdle();
+  // Set an interceptor and just fake a common repsonse for
+  // eth_getTransactionCount and eth_sendRawTransaction
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
+
+  EXPECT_TRUE(ApproveTransaction(infos[0]->id));
+  base::RunLoop().RunUntilIdle();
+  // OnGetNextNonce
+  base::RunLoop().RunUntilIdle();
+  // OnPublishTransaction
+  base::RunLoop().RunUntilIdle();
+
   EXPECT_TRUE(callback_called);
+  infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 1UL);
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
+  EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
@@ -321,15 +380,15 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
   bool callback_called = false;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          // Bad address
                          "0xbe8", "0x016345785d8a0000", std::vector<uint8_t>()),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -337,20 +396,20 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionError) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
   bool callback_called = false;
-  provider()->AddUnapprovedTransaction(
+  provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", std::vector<uint8_t>()),
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74d",
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -358,48 +417,55 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapprovedTransactionNoPermission) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559Transaction) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
-  std::string tx_meta_id;
+  std::string tx_hash;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           mojom::TxData::New("0x00", "", "0x1",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x1", "0x1", nullptr),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_TRUE(success);
-        EXPECT_FALSE(id.empty());
+        EXPECT_FALSE(hash.empty());
         EXPECT_TRUE(error_message.empty());
         callback_called = true;
-        tx_meta_id = id;
+        tx_hash = hash;
       }));
   browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_called);
+  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 1UL);
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
+  EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 
-  // Make sure the transaction info is available
-  callback_called = false;
-  eth_tx_controller()->GetAllTransactionInfo(
-      from(),
-      base::BindLambdaForTesting([&](std::vector<mojom::TransactionInfoPtr> v) {
-        ASSERT_EQ(v.size(), 1UL);
-        EXPECT_TRUE(
-            base::EqualsCaseInsensitiveASCII(v[0]->from_address, from()));
-        EXPECT_EQ(v[0]->tx_status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(v[0]->id, tx_meta_id);
-        callback_called = true;
-      }));
-  browser_task_environment_.RunUntilIdle();
+  // Set an interceptor and just fake a common repsonse for
+  // eth_getTransactionCount and eth_sendRawTransaction
+  SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
+
+  EXPECT_TRUE(ApproveTransaction(infos[0]->id));
+  base::RunLoop().RunUntilIdle();
+  // OnGetNextNonce
+  base::RunLoop().RunUntilIdle();
+  // OnPublishTransaction
+  base::RunLoop().RunUntilIdle();
+
   EXPECT_TRUE(callback_called);
+  infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 1UL);
+  EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
+  EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
+  EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
@@ -409,7 +475,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
   bool callback_called = false;
   CreateWalletAndAccount();
   NavigateAndAddEthereumPermission();
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           // Can't specify both gas price and max fee per gas
           mojom::TxData::New("0x00", "0x01", "0x00",
@@ -417,10 +483,10 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x0", "0x0", nullptr),
       from(),
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));
@@ -429,22 +495,22 @@ TEST_F(BraveWalletProviderImplUnitTest, AddUnapproved1559TransactionError) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,
-       AddUnapproved1559TransactionNoPermission) {
+       AddAndApprove1559TransactionNoPermission) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();
 
   bool callback_called = false;
-  provider()->AddUnapproved1559Transaction(
+  provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           mojom::TxData::New("0x00", "", "0x00",
                              "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                              "0x00", std::vector<uint8_t>()),
           "0x04", "0x0", "0x0", nullptr),
       "0xbe862ad9abfe6f22bcb087716c7d89a26051f74d",
-      base::BindLambdaForTesting([&](bool success, const std::string& id,
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
                                      const std::string& error_message) {
         EXPECT_FALSE(success);
-        EXPECT_TRUE(id.empty());
+        EXPECT_TRUE(hash.empty());
         EXPECT_FALSE(error_message.empty());
         callback_called = true;
       }));

@@ -172,24 +172,22 @@ void BraveWalletJSHandler::OnAddEthereumChain(
                std::move(formed_response), success);
 }
 
-void BraveWalletJSHandler::OnAddUnapprovedTransaction(
+void BraveWalletJSHandler::OnAddAndApproveTransaction(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool success,
-    const std::string& tx_meta_id,
+    const std::string& tx_hash,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
-  // TODO(bbondy): Should return the transaction hash, or the zero hash
-  // if the transaction is not yet available
   std::unique_ptr<base::Value> formed_response;
   if (success) {
-    formed_response = base::Value::ToUniquePtrValue(base::Value("0x0"));
+    formed_response = base::Value::ToUniquePtrValue(base::Value(tx_hash));
   } else {
     formed_response = GetProviderErrorDictionary(
         brave_wallet::ProviderErrors::kInvalidParams, error_message);
@@ -415,9 +413,9 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     auto tx_data =
         ParseEthSendTransactionParams(normalized_json_request, &from);
     if (tx_data && !tx_data->gas_price.empty()) {
-      brave_wallet_provider_->AddUnapprovedTransaction(
+      brave_wallet_provider_->AddAndApproveTransaction(
           std::move(tx_data), from,
-          base::BindOnce(&BraveWalletJSHandler::OnAddUnapprovedTransaction,
+          base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
                          weak_ptr_factory_.GetWeakPtr(), std::move(id),
                          std::move(global_context), std::move(global_callback),
                          std::move(promise_resolver), isolate));
@@ -427,9 +425,9 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
           ParseEthSendTransaction1559Params(normalized_json_request, &from);
       if (!tx_data_1559)
         tx_data_1559 = mojom::TxData1559::New();
-      brave_wallet_provider_->AddUnapproved1559Transaction(
+      brave_wallet_provider_->AddAndApprove1559Transaction(
           std::move(tx_data_1559), from,
-          base::BindOnce(&BraveWalletJSHandler::OnAddUnapprovedTransaction,
+          base::BindOnce(&BraveWalletJSHandler::OnAddAndApproveTransaction,
                          weak_ptr_factory_.GetWeakPtr(), std::move(id),
                          std::move(global_context), std::move(global_callback),
                          std::move(promise_resolver), isolate));
