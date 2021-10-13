@@ -22,6 +22,7 @@ struct RendererContentSettingRules
   ContentSettingsForOneType autoplay_rules;
   ContentSettingsForOneType fingerprinting_rules;
   ContentSettingsForOneType brave_shields_rules;
+  ContentSettingsForOneType cosmetic_filtering_rules;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_CONTENT_SETTINGS_H_
