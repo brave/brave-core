@@ -163,14 +163,18 @@ void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
   // Default to the last recorded switch so when we're called
   // at start-up we initialize the histogram with whatever we
   // remember from the previous run.
+  auto answer = SearchEngineSwitchP3A::kNoSwitch;
   auto last = switch_record_.GetLatest();
-  auto answer = last.value_or(SearchEngineSwitchP3A::kNoSwitch);
+  if (last) {
+    answer = static_cast<SearchEngineSwitchP3A>(last.value());
+    DCHECK(answer <= SearchEngineSwitchP3A::kMaxValue);
+  }
 
   if (url.is_valid() && url != previous_search_url_) {
     // The default url has been switched, record that instead.
     answer = SearchEngineSwitchP3AMapAnswer(url, previous_search_url_);
     previous_search_url_ = url;
-    switch_record_.Add(answer);
+    switch_record_.Add(static_cast<int>(answer));
   }
 
   UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);
