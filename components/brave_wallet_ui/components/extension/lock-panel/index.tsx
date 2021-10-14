@@ -4,8 +4,7 @@ import {
   StyledWrapper,
   Title,
   Column,
-  PageIcon,
-  IconBackground,
+  PanelIcon,
   RestoreButton
 } from './style'
 import { PasswordInput } from '../../shared'
@@ -31,9 +30,7 @@ function LockPanel (props: Props) {
 
   return (
     <StyledWrapper>
-      <IconBackground>
-        <PageIcon />
-      </IconBackground>
+      <PanelIcon />
       <Title>{getLocale('braveWalletLockScreenTitle')}</Title>
       <Column>
         <PasswordInput
