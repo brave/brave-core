@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -74,6 +75,16 @@ void OnBoolResponse(bool* callback_called,
                     bool expected_response,
                     bool success,
                     bool response) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_success, success);
+}
+
+void OnStringsResponse(bool* callback_called,
+                       bool expected_success,
+                       const std::vector<std::string>& expected_response,
+                       bool success,
+                       const std::vector<std::string>& response) {
   *callback_called = true;
   EXPECT_EQ(expected_response, response);
   EXPECT_EQ(expected_success, success);
@@ -203,14 +214,56 @@ class EthJsonRpcControllerUnitTest : public testing::Test {
     return false;
   }
 
-  void SetRegistrarResponse() {
-    auto localhost_url_spec =
-        brave_wallet::GetNetworkURL(prefs(), mojom::kLocalhostChainId).spec();
+  void SetUDENSInterceptor(const std::string& chain_id) {
+    GURL network_url = brave_wallet::GetNetworkURL(prefs(), chain_id);
+    ASSERT_TRUE(network_url.is_valid());
 
-    url_loader_factory_.AddResponse(
-        localhost_url_spec,
-        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x00000"
-        "0000000000000000000226159d592e2b063810a10ebf6dcbada94ed68b8\"}");
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find(GetFunctionHash("resolver(bytes32)")) !=
+              std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78e"
+                "baba41\"}");
+          } else if (request_string.find(GetFunctionHash(
+                         "contenthash(bytes32)")) != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x0000000000000000000000000000000000000000000000000000000000"
+                "00002000000000000000000000000000000000000000000000000000000000"
+                "00000026e3010170122023e0160eec32d7875c19c5ac7c03bc1f306dc26008"
+                "0d621454bc5f631e7310a70000000000000000000000000000000000000000"
+                "000000000000\"}");
+          } else if (request_string.find(GetFunctionHash("addr(bytes32)")) !=
+                     std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x000000000000000000000000983110309620d911731ac0932219af0609"
+                "1b6744\"}");
+          } else if (request_string.find(GetFunctionHash(
+                         "get(string,uint256)")) != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "\"0x0000000000000000000000000000000000000000000000000000000000"
+                "00002000000000000000000000000000000000000000000000000000000000"
+                "0000002a307838616144343433323141383662313730383739643741323434"
+                "63316538643336306339394464413800000000000000000000000000000000"
+                "000000000000\"}");
+          } else {
+            url_loader_factory_.AddResponse(request.url.spec(), "",
+                                            net::HTTP_REQUEST_TIMEOUT);
+          }
+        }));
   }
 
   void SetInterceptor(const std::string& expected_method,
@@ -378,25 +431,60 @@ TEST_F(EthJsonRpcControllerUnitTest, GetAllNetworks) {
   base::RunLoop().RunUntilIdle();
 }
 
-TEST_F(EthJsonRpcControllerUnitTest, ResolveENSDomain) {
-  rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
-  SetRegistrarResponse();
-  base::RunLoop run;
-  rpc_controller_->EnsProxyReaderGetResolverAddress(
-      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e", "blocktimer.dappstar.eth",
-      base::BindOnce(
-          [](base::OnceClosure done, bool status, const std::string& result) {
-            ASSERT_TRUE(status);
-            EXPECT_EQ(result,
-                      "0x000000000000000000000000000000000000000000000000000000"
-                      "00000000200000000000000000000000000000000000000000000000"
-                      "000000000000000026e3010170122008ab7bf21b73828364305ef6b7"
-                      "c676c1f5a73e18ab4f93beec7e21e0bc84010e000000000000000000"
-                      "0000000000000000000000000000000000");
-            std::move(done).Run();
-          },
-          run.QuitClosure()));
-  run.Run();
+TEST_F(EthJsonRpcControllerUnitTest, EnsResolverGetContentHash) {
+  // Non-support chain should fail.
+  SetUDENSInterceptor(mojom::kLocalhostChainId);
+
+  bool callback_called = false;
+  rpc_controller_->EnsResolverGetContentHash(
+      mojom::kLocalhostChainId, "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetUDENSInterceptor(mojom::kMainnetChainId);
+  rpc_controller_->EnsResolverGetContentHash(
+      mojom::kMainnetChainId, "brantly.eth",
+      base::BindLambdaForTesting([&](bool status, const std::string& result) {
+        callback_called = true;
+        EXPECT_TRUE(status);
+        EXPECT_EQ(
+            ipfs::ContentHashToCIDv1URL(result).spec(),
+            "ipfs://"
+            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->EnsResolverGetContentHash(
+      mojom::kMainnetChainId, "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, EnsGetEthAddr) {
+  // Non-support chain (localhost) should fail.
+  SetUDENSInterceptor(rpc_controller_->GetChainId());
+  bool callback_called = false;
+  rpc_controller_->EnsGetEthAddr(
+      "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->SetNetwork(mojom::kMainnetChainId);
+  SetUDENSInterceptor(mojom::kMainnetChainId);
+  rpc_controller_->EnsGetEthAddr(
+      "brantly.eth",
+      base::BindOnce(&OnStringResponse, &callback_called, true,
+                     "0x983110309620d911731ac0932219af06091b6744"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
@@ -687,55 +775,94 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsProxyReaderGetMany) {
   SetInterceptor(
       "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\": \"0\",\"result\": "
-      "\"0x00000000000000000000000000000000000000000000000000000000000000200000"
-      "000000000000000000000000000000000000000000000000000000000004000000000000"
-      "000000000000000000000000000000000000000000000000008000000000000000000000"
-      "000000000000000000000000000000000000000000a00000000000000000000000000000"
-      "000000000000000000000000000000000100000000000000000000000000000000000000"
-      "000000000000000000000000012000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "00000000002e516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e"
-      "564d374c766a734e3751624472766b610000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "0000000000000000000000000000000000000000000000000000\"}");
+      // offset for array
+      "\"0x0000000000000000000000000000000000000000000000000000000000000020"
+      // count for array
+      "0000000000000000000000000000000000000000000000000000000000000006"
+      // offsets for array elements
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      "0000000000000000000000000000000000000000000000000000000000000120"
+      "0000000000000000000000000000000000000000000000000000000000000180"
+      "00000000000000000000000000000000000000000000000000000000000001a0"
+      "00000000000000000000000000000000000000000000000000000000000001c0"
+      "0000000000000000000000000000000000000000000000000000000000000200"
+      // count for "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"
+      "000000000000000000000000000000000000000000000000000000000000002e"
+      // encoding for "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"
+      "516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d"
+      "374c766a734e3751624472766b61000000000000000000000000000000000000"
+      // count for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+      "000000000000000000000000000000000000000000000000000000000000002e"
+      // encoding for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+      "516d6257717842454b433350387471734b633938786d574e7a727a4474524c4d"
+      "694d504c387742755447734d6e52000000000000000000000000000000000000"
+      // count for empty dns.A
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // count for empty dns.AAAA
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // count for "https://fallback1.test.com"
+      "000000000000000000000000000000000000000000000000000000000000001a"
+      // encoding for "https://fallback1.test.com"
+      "68747470733a2f2f66616c6c6261636b312e746573742e636f6d000000000000"
+      // count for "https://fallback2.test.com"
+      "000000000000000000000000000000000000000000000000000000000000001a"
+      // encoding for "https://fallback2.test.com"
+      "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000\"}");
+
+  std::vector<std::string> expected_values = {
+      "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",
+      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
+      "",
+      "",
+      "https://fallback1.test.com",
+      "https://fallback2.test.com"};
 
   rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
-      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
-      "brave.crypto" /* domain */,
+      mojom::kMainnetChainId, "brave.crypto" /* domain */,
       {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
        "ipfs.redirect_domain.value"} /* keys */,
-      base::BindOnce(
-          &OnStringResponse, &callback_called, true,
-          "0x0000000000000000000000000000000000000000000000000000000000000020"
-          "0000000000000000000000000000000000000000000000000000000000000004"
-          "0000000000000000000000000000000000000000000000000000000000000080"
-          "00000000000000000000000000000000000000000000000000000000000000a0"
-          "0000000000000000000000000000000000000000000000000000000000000100"
-          "0000000000000000000000000000000000000000000000000000000000000120"
-          "0000000000000000000000000000000000000000000000000000000000000000"
-          "000000000000000000000000000000000000000000000000000000000000002e"
-          "516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d"
-          "374c766a734e3751624472766b61000000000000000000000000000000000000"
-          "0000000000000000000000000000000000000000000000000000000000000000"
-          "0000000000000000000000000000000000000000000000000000000000000000"));
+      base::BindOnce(&OnStringsResponse, &callback_called, true,
+                     expected_values));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetErrorInterceptor();
   rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
-      "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5" /* contract_address */,
-      "brave.crypto" /* domain */,
+      mojom::kMainnetChainId, "brave.crypto" /* domain */,
       {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
        "ipfs.redirect_domain.value"} /* keys */,
-      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+      base::BindOnce(&OnStringsResponse, &callback_called, false,
+                     std::vector<std::string>()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   rpc_controller_->UnstoppableDomainsProxyReaderGetMany(
       "", "", std::vector<std::string>(),
+      base::BindOnce(&OnStringsResponse, &callback_called, false,
+                     std::vector<std::string>()));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsGetEthAddr) {
+  // Non-support chain (localhost) should fail.
+  SetUDENSInterceptor(rpc_controller_->GetChainId());
+  bool callback_called = false;
+  rpc_controller_->UnstoppableDomainsGetEthAddr(
+      "brad.crypto",
       base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->SetNetwork(mojom::kMainnetChainId);
+  SetUDENSInterceptor(mojom::kMainnetChainId);
+  rpc_controller_->UnstoppableDomainsGetEthAddr(
+      "brad.crypto",
+      base::BindOnce(&OnStringResponse, &callback_called, true,
+                     "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
