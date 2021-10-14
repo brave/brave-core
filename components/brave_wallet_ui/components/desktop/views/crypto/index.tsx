@@ -40,7 +40,8 @@ export interface Props {
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onToggleAddModal: () => void
+  onShowAddModal: () => void
+  onHideAddModal: () => void
   onSelectNetwork: (network: EthereumChain) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string, hardware: boolean) => void
@@ -93,7 +94,6 @@ const CryptoView = (props: Props) => {
     onUpdateAccountName,
     fetchFullTokenList,
     onSelectNetwork,
-    onToggleAddModal,
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
@@ -103,6 +103,8 @@ const CryptoView = (props: Props) => {
     onSetUserAssetVisible,
     onRemoveUserAsset,
     onOpenWalletSettings,
+    onShowAddModal,
+    onHideAddModal,
     defaultWallet,
     addUserAssetError,
     hasImportError,
@@ -152,9 +154,13 @@ const CryptoView = (props: Props) => {
     }
     if (category === 'accounts') {
       if (id !== undefined) {
-        const account = accounts.find((a) => a.address.toLowerCase() === id.toLowerCase())
-        setSelectedAccount(account)
-        setHideNav(true)
+        if (id === 'add-account') {
+          onShowAddModal()
+        } else {
+          const account = accounts.find((a) => a.address.toLowerCase() === id.toLowerCase())
+          setSelectedAccount(account)
+          setHideNav(true)
+        }
       } else {
         setSelectedAccount(undefined)
         setHideNav(false)
@@ -174,12 +180,17 @@ const CryptoView = (props: Props) => {
     setShowDefaultWalletBanner(false)
   }
 
-  const onClickAddAccount = () => {
-    onToggleAddModal()
+  const onCloseAddModal = () => {
+    history.push(`${WalletRoutes.Accounts}`)
+    onHideAddModal()
   }
 
-  const onCloseAddModal = () => {
-    onToggleAddModal()
+  const onClickAddAccount = () => {
+    history.push(`${WalletRoutes.AddAccountModal}`)
+  }
+
+  const onRouteBack = () => {
+    history.push(`${WalletRoutes.Accounts}`)
   }
 
   const selectAsset = (asset: TokenInfo | undefined) => {
@@ -293,6 +304,7 @@ const CryptoView = (props: Props) => {
           accounts={accounts}
           title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
+          onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}

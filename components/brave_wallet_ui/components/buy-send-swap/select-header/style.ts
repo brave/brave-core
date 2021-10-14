@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import Plus from '../../../assets/svg-icons/plus-icon.svg'
 
 export const Header = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ export const HeaderText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const BackButton = styled.button`
+export const Button = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -42,4 +43,11 @@ export const BackIcon = styled(CaratStrongLeftIcon)`
 export const HeaderSpacing = styled.div`
   width: 16px;
   height: 16px;
+`
+
+export const PlusIcon = styled.div`
+  width: 15px;
+  height: 15px;
+  background: url(${Plus});
+  color: ${(p) => p.theme.color.text02};
 `
