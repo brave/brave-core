@@ -287,6 +287,6 @@ BraveShieldsWebContentsObserver::GetBraveShieldsRemote(
   return brave_shields_remotes_[rfh];
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver);
 
 }  // namespace brave_shields

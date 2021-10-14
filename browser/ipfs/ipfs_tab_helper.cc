@@ -285,6 +285,6 @@ void IPFSTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
   MaybeShowDNSLinkButton(handle->GetResponseHeaders());
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSTabHelper);
 
 }  // namespace ipfs

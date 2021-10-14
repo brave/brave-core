@@ -38,6 +38,6 @@ void GreaselionTabHelper::OnRulesReady(
     greaselion_service->UpdateInstalledExtensions();
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(GreaselionTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(GreaselionTabHelper);
 
 }  // namespace greaselion

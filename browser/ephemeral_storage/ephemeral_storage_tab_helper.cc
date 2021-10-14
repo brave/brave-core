@@ -186,6 +186,6 @@ void EphemeralStorageTabHelper::SetKeepAliveTimeDelayForTesting(
   g_storage_keep_alive_for_testing = time;
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);
 
 }  // namespace ephemeral_storage
