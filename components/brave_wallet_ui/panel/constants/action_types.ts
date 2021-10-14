@@ -24,3 +24,14 @@ export type EthereumChainRequestPayload = {
 export type EthereumChainPayload = {
   chain: EthereumChain
 }
+
+export type SignMessagePayload = {
+  id: number,
+  address: string,
+  message: string
+}
+
+export type SignMessageProcessedPayload = {
+  approved: boolean,
+  id: number
+}

@@ -9,7 +9,14 @@ import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
 import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
-import { AccountPayloadType, ShowConnectToSitePayload, EthereumChainPayload, EthereumChainRequestPayload } from '../constants/action_types'
+import {
+  AccountPayloadType,
+  ShowConnectToSitePayload,
+  EthereumChainPayload,
+  EthereumChainRequestPayload,
+  SignMessagePayload,
+  SignMessageProcessedPayload
+} from '../constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
 
 type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
@@ -44,6 +51,15 @@ async function getPendingChainRequest () {
   }
 }
 
+async function getPendingSignMessageRequest () {
+  const braveWalletService = (await getAPIProxy()).braveWalletService
+  const request = await braveWalletService.getPendingSignMessageRequest()
+  if (request.id !== -1) {
+    return { id: request.id, address: request.address, message: request.message }
+  }
+  return null
+}
+
 handler.on(WalletActions.initialize.getType(), async (store) => {
   const state = getPanelState(store)
   // Sanity check we only initialize once
@@ -68,6 +84,11 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const chain = await getPendingChainRequest()
     if (chain) {
       store.dispatch(PanelActions.addEthereumChain({ chain }))
+      return
+    }
+    const signMessageRequest = await getPendingSignMessageRequest()
+    if (signMessageRequest) {
+      store.dispatch(PanelActions.signMessage(signMessageRequest))
       return
     }
   }
@@ -134,6 +155,19 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
     store.dispatch(PanelActions.addEthereumChain({ chain }))
     return
   }
+  apiProxy.closeUI()
+})
+
+handler.on(PanelActions.signMessage.getType(), async (store, payload: SignMessagePayload) => {
+  store.dispatch(PanelActions.navigateTo('signData'))
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.signMessageProcessed.getType(), async (store, payload: SignMessageProcessedPayload) => {
+  const apiProxy = await getAPIProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
   apiProxy.closeUI()
 })
 

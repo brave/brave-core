@@ -132,6 +132,43 @@ TEST(EthResponseHelperUnitTest, ParseEthSignParams) {
       ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
 }
 
+TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
+  const std::string json(
+      R"({
+        "params": [
+          "0xdeadbeef",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
+  const std::string json_extra_entry(
+      R"({
+        "params": [
+          "0xdeadbeef",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          "12345",
+          null,
+          123
+        ]
+      })");
+  std::string address;
+  std::string message;
+  EXPECT_TRUE(ParsePersonalSignParams(json, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeef");
+
+  EXPECT_TRUE(ParsePersonalSignParams(json_extra_entry, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeef");
+
+  EXPECT_FALSE(ParsePersonalSignParams(json, &address, nullptr));
+  EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, &message));
+  EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, nullptr));
+  EXPECT_FALSE(
+      ParsePersonalSignParams("{\"params\":[{}]}", &address, &message));
+  EXPECT_FALSE(
+      ParseEthSignParams("{\"params\":[\"123\",123]}", &address, &message));
+}
+
 TEST(EthResponseHelperUnitTest, GetEthJsonRequestInfo) {
   // Happy path
   std::string json = R"({
