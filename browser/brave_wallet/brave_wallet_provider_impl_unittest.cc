@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_helpers.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -294,9 +295,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   // current request id will be returned
   int SignMessageRequest(const std::string& address,
                          const std::string& message) {
-    provider()->SignMessage(
-        address, message,
-        base::DoNothing::Once<const std::string&, int, const std::string&>());
+    provider()->SignMessage(address, message, base::DoNothing());
     base::RunLoop().RunUntilIdle();
     return provider()->sign_message_id_ - 1;
   }

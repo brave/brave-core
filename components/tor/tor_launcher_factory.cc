@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/bind_post_task.h"
+#include "base/callback_helpers.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/tor/service_sandbox_type.h"
 #include "brave/components/tor/tor_file_watcher.h"
@@ -211,18 +212,13 @@ void TorLauncherFactory::OnTorControlReady() {
       base::BindOnce(&TorLauncherFactory::GotCircuitEstablished,
                      weak_ptr_factory_.GetWeakPtr())));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::STATUS_GENERAL,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::STREAM,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::NOTICE,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::WARN,
-                      base::DoNothing::Once<bool>());
-  control_->Subscribe(tor::TorControlEvent::ERR, base::DoNothing::Once<bool>());
+                      base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT, base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::STATUS_GENERAL, base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::STREAM, base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::NOTICE, base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::WARN, base::DoNothing());
+  control_->Subscribe(tor::TorControlEvent::ERR, base::DoNothing());
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {

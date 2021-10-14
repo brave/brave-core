@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/callback_helpers.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/task/post_task.h"
 #include "base/threading/thread_task_runner_handle.h"
@@ -65,7 +66,7 @@ void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
 }
 
 void BraveSyncServiceImplDelegate::OnSelfDeviceInfoDeleted() {
-  sync_service_impl_->OnSelfDeviceInfoDeleted(base::DoNothing::Once());
+  sync_service_impl_->OnSelfDeviceInfoDeleted(base::DoNothing());
 }
 
 void BraveSyncServiceImplDelegate::SuspendDeviceObserverForOwnReset() {
