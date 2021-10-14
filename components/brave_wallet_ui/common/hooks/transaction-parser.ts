@@ -5,12 +5,56 @@
 
 import * as React from 'react'
 
-import { AssetPriceInfo, EthereumChain, TokenInfo, TransactionInfo, TransactionType } from '../../constants/types'
-import { formatBalance, formatFiatBalance, formatFiatGasFee, formatGasFee } from '../../utils/format-balances'
+import {
+  AssetPriceInfo,
+  EthereumChain,
+  TokenInfo,
+  TransactionInfo,
+  TransactionStatus,
+  TransactionType,
+  WalletAccountType
+} from '../../constants/types'
+import {
+  formatBalance,
+  formatFiatBalance,
+  formatFiatGasFee,
+  formatGasFee,
+  formatGasFeeFromFiat
+} from '../../utils/format-balances'
 import usePricing from './pricing'
+import useAddressLabels, { SwapExchangeProxy } from './address-labels'
+
+interface ParsedTransactionFees {
+  gasLimit: string
+  gasPrice: string
+  maxPriorityFeePerGas: string
+  maxFeePerGas: string
+  gasFee: string
+  gasFeeFiat: string
+  isEIP1559Transaction: boolean
+}
+
+interface ParsedTransaction extends ParsedTransactionFees {
+  // Common fields
+  hash: string
+  status: TransactionStatus
+  sender: string
+  senderLabel: string
+  recipient: string
+  recipientLabel: string
+  fiatValue: string
+  fiatTotal: string
+  nativeCurrencyTotal: string
+  value: string
+  symbol: string
+
+  // Token approvals
+  approvalTarget?: string
+  approvalTargetLabel?: string
+}
 
 export function useTransactionFeesParser (selectedNetwork: EthereumChain, networkSpotPrice: string) {
-  return React.useCallback((transactionInfo: TransactionInfo) => {
+  return React.useCallback((transactionInfo: TransactionInfo): ParsedTransactionFees => {
     const { txData } = transactionInfo
     const { baseData: { gasLimit, gasPrice }, maxFeePerGas, maxPriorityFeePerGas } = txData
 
@@ -31,8 +75,14 @@ export function useTransactionFeesParser (selectedNetwork: EthereumChain, networ
   }, [selectedNetwork, networkSpotPrice])
 }
 
-export function useTransactionParser (selectedNetwork: EthereumChain, transactionSpotPrices: AssetPriceInfo[], visibleTokens: TokenInfo[]) {
-  const findSpotPrice = usePricing(transactionSpotPrices)
+export function useTransactionParser (
+  selectedNetwork: EthereumChain,
+  accounts: WalletAccountType[],
+  spotPrices: AssetPriceInfo[],
+  visibleTokens: TokenInfo[]
+) {
+  const findSpotPrice = usePricing(spotPrices)
+  const getAddressLabel = useAddressLabels(accounts)
   const parseTransactionFees = useTransactionFeesParser(selectedNetwork, findSpotPrice(selectedNetwork.symbol))
 
   const findToken = React.useCallback((contractAddress: string) => {
@@ -40,16 +90,13 @@ export function useTransactionParser (selectedNetwork: EthereumChain, transactio
   }, [visibleTokens])
 
   return React.useCallback((transactionInfo: TransactionInfo) => {
-    const { txType, txArgs, txData } = transactionInfo
+    const { txArgs, txData } = transactionInfo
     const { baseData } = txData
     const { value, to } = baseData
 
-    switch (txType) {
+    switch (true) {
       // transfer(address recipient, uint256 amount) → bool
-      case TransactionType.ERC20Transfer:
-
-      // approve(address spender, uint256 amount) → bool
-      case TransactionType.ERC20Approve: {
+      case transactionInfo.txType === TransactionType.ERC20Transfer: {
         const [address, amount] = txArgs
         const token = findToken(to)
         const price = findSpotPrice(token?.symbol ?? '')
@@ -60,16 +107,50 @@ export function useTransactionParser (selectedNetwork: EthereumChain, transactio
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
 
         return {
-          sendAmount: formatBalance(amount, token?.decimals ?? 18),
-          sendAmountFiat,
-          sendTo: address,
+          hash: transactionInfo.txHash,
+          status: transactionInfo.txStatus,
+          sender: transactionInfo.fromAddress,
+          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          recipient: address,
+          recipientLabel: getAddressLabel(address),
+          fiatValue: sendAmountFiat,
+          fiatTotal: totalAmountFiat,
+          nativeCurrencyTotal: formatGasFeeFromFiat(sendAmountFiat, findSpotPrice(selectedNetwork.symbol)),
+          value: formatBalance(amount, token?.decimals ?? 18),
           symbol: token?.symbol ?? '',
-          totalAmountFiat,
           ...feeDetails
-        }
+        } as ParsedTransaction
       }
 
-      case TransactionType.ETHSend:
+      // approve(address spender, uint256 amount) → bool
+      case transactionInfo.txType === TransactionType.ERC20Approve: {
+        const [address, amount] = txArgs
+        const token = findToken(to)
+        const feeDetails = parseTransactionFees(transactionInfo)
+        const { gasFeeFiat } = feeDetails
+        const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
+
+        return {
+          hash: transactionInfo.txHash,
+          status: transactionInfo.txStatus,
+          sender: transactionInfo.fromAddress,
+          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          recipient: to,
+          recipientLabel: getAddressLabel(to),
+          fiatValue: (0).toFixed(2),
+          fiatTotal: totalAmountFiat,
+          nativeCurrencyTotal: (0).toFixed(2),
+          value: formatBalance(amount, token?.decimals ?? 18),
+          symbol: token?.symbol ?? '',
+          approvalTarget: address,
+          approvalTargetLabel: getAddressLabel(address),
+          ...feeDetails
+        } as ParsedTransaction
+      }
+
+      // FIXME: swap needs a real parser to figure out the From and To details.
+      case transactionInfo.txData.baseData.to.toLowerCase() === SwapExchangeProxy:
+      case transactionInfo.txType === TransactionType.ETHSend:
       default: {
         const networkPrice = findSpotPrice(selectedNetwork.symbol)
         const sendAmountFiat = formatFiatBalance(value, selectedNetwork.decimals, networkPrice)
@@ -79,14 +160,20 @@ export function useTransactionParser (selectedNetwork: EthereumChain, transactio
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
 
         return {
-          sendAmount: formatBalance(value, selectedNetwork.decimals),
-          sendAmountFiat,
-          sendTo: to,
+          hash: transactionInfo.txHash,
+          status: transactionInfo.txStatus,
+          sender: transactionInfo.fromAddress,
+          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          recipient: to,
+          recipientLabel: getAddressLabel(to),
+          fiatValue: sendAmountFiat,
+          fiatTotal: totalAmountFiat,
+          nativeCurrencyTotal: formatGasFeeFromFiat(sendAmountFiat, findSpotPrice(selectedNetwork.symbol)),
+          value: formatBalance(value, selectedNetwork.decimals),
           symbol: selectedNetwork.symbol,
-          totalAmountFiat,
           ...feeDetails
-        }
+        } as ParsedTransaction
       }
     }
-  }, [selectedNetwork, transactionSpotPrices, findToken])
+  }, [selectedNetwork, spotPrices, findToken])
 }

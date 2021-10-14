@@ -15,6 +15,11 @@ export const formatFiatGasFee = (gasFee: string, price: string) => {
   return (result.isNaN()) ? '0.00' : result.toFixed(2, BigNumber.ROUND_UP)
 }
 
+export const formatGasFeeFromFiat = (gasFee: string, price: string) => {
+  const result = new BigNumber(gasFee).dividedBy(price)
+  return (result.isNaN()) ? '0.00' : result.toFixed(2, BigNumber.ROUND_UP)
+}
+
 export const formatFiatBalance = (balance: string, decimals: number, price: string) => {
   const formattedBalance = formatBalance(balance, decimals)
   const result = new BigNumber(formattedBalance).multipliedBy(price)

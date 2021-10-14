@@ -66,6 +66,7 @@ export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onSelectAsset: (asset: TokenInfo | undefined) => void
+  onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: () => void
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
@@ -98,6 +99,7 @@ const Portfolio = (props: Props) => {
     toggleNav,
     onChangeTimeline,
     onSelectAsset,
+    onSelectAccount,
     onClickAddAccount,
     onSelectNetwork,
     fetchFullTokenList,
@@ -329,10 +331,14 @@ const Portfolio = (props: Props) => {
                 <PortfolioTransactionItem
                   key={transaction.id}
                   selectedNetwork={selectedNetwork}
+                  accounts={accounts}
                   transaction={transaction}
                   account={findAccount(transaction.fromAddress)}
                   transactionSpotPrices={transactionSpotPrices}
                   visibleTokens={userVisibleTokensInfo}
+                  displayAccountName={true}
+                  onSelectAccount={onSelectAccount}
+                  onSelectAsset={onSelectAsset}
                 />
               )}
             </>
