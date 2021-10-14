@@ -8,13 +8,9 @@
 
 #include <list>
 #include <memory>
-#include <utility>
 
 #include "base/time/clock.h"
-#include "base/time/default_clock.h"
 #include "base/time/time.h"
-#include "base/json/values_util.h"
-#include "base/values.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -27,99 +23,39 @@
 // New event values are recorded by calling `Add()` and are forgotten
 // after approximately a week.
 //
-// Parametarized over an `enum class` to get some type checking for the caller.
 // Requires |pref_name| to be already registered.
-template <typename T>
 class WeeklyEventStorage {
  public:
-  WeeklyEventStorage(PrefService* prefs, const char* pref_name)
-      : WeeklyEventStorage(prefs,
-                           pref_name,
-                           std::make_unique<base::DefaultClock>()) {}
+  WeeklyEventStorage(PrefService* prefs, const char* pref_name);
 
   // Accept an explicit clock so tests can manipulate the passage of time.
   WeeklyEventStorage(PrefService* prefs,
                      const char* pref_name,
-                     std::unique_ptr<base::Clock> clock)
-      : prefs_(prefs), pref_name_(pref_name), clock_(std::move(clock)) {
-    DCHECK(prefs);
-    DCHECK(pref_name);
-    DCHECK(clock_);
-    Load();
-  }
+                     std::unique_ptr<base::Clock> clock);
 
-  ~WeeklyEventStorage() = default;
+  ~WeeklyEventStorage();
 
   WeeklyEventStorage(const WeeklyEventStorage&) = delete;
   WeeklyEventStorage& operator=(const WeeklyEventStorage&) = delete;
 
-  void Add(T value) {
-    FilterToWeek();
-    // Round the timestamp to the nearest day to make correlation harder.
-    base::Time day = clock_->Now().LocalMidnight();
-    events_.push_front({day, value});
-    Save();
-  }
-
-  absl::optional<T> GetLatest() {
-    auto result = absl::optional<T>();
-    if (HasEvent()) {
-      // Assume the front is the most recent event.
-      result = events_.front().value;
-    }
-    return result;
-  }
-
-  bool HasEvent() {
-    FilterToWeek();
-    return !events_.empty();
-  }
+  // Add a new event code.
+  void Add(int value);
+  // Return the most recent event, if any.
+  absl::optional<int> GetLatest();
+  // Check if any events are in the record.
+  bool HasEvent();
 
  private:
-  static constexpr size_t kDaysInWeek = 7;
-
   struct Event {
     base::Time day;
-    T value = T(0);
+    int value = 0;
   };
 
-  void FilterToWeek() {
-    if (events_.empty()) {
-      return;
-    }
+  void FilterToWeek();
 
-    // Remove all events older than a week.
-    auto cutoff = clock_->Now() - base::TimeDelta::FromDays(kDaysInWeek);
-    events_.remove_if([cutoff](Event event) { return event.day <= cutoff; });
-  }
-
-  void Load() {
-    DCHECK(events_.empty());
-    const base::ListValue* list = prefs_->GetList(pref_name_);
-    if (!list) {
-      return;
-    }
-    for (auto& it : list->GetList()) {
-      const auto day = base::ValueToTime(it.FindKey("day"));
-      const auto value = it.FindIntKey("value");
-      if (!day || !value) {
-        continue;
-      }
-      events_.push_front({day.value(), static_cast<T>(value.value())});
-    }
-  }
-
-  void Save() {
-    ListPrefUpdate update(prefs_, pref_name_);
-    base::ListValue* list = update.Get();
-    list->ClearList();
-    for (const auto& u : events_) {
-      base::Value value(base::Value::Type::DICTIONARY);
-      value.SetKey("day", base::TimeToValue(u.day));
-      value.SetIntKey("value", static_cast<int>(u.value));
-      list->Append(std::move(value));
-    }
-  }
+  // Serialize event record to/from a pref.
+  void Load();
+  void Save();
 
   PrefService* prefs_ = nullptr;
   const char* pref_name_ = nullptr;
