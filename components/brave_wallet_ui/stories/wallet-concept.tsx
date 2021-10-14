@@ -252,6 +252,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importError, setImportError] = React.useState<boolean>(false)
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
+  const [customTolerance, setCustomTolerance] = React.useState('')
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -567,6 +568,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
+    setCustomTolerance('')
   }
 
   const onSetExchangeRate = (value: string) => {
@@ -651,6 +653,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onRemoveUserAsset = () => {
     alert('Will Remove a Token')
+  }
+
+  const onSetCustomTolerance = (value: string) => {
+    setCustomTolerance(value)
   }
 
   return (
@@ -786,6 +792,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             toAssetBalance={toAssetBalance}
             toAddress={toAddress}
             isSwapSubmitDisabled={false}
+            customSlippageTolerance={customTolerance}
+            onCustomSlippageToleranceChange={onSetCustomTolerance}
             onSubmitBuy={onSubmitBuy}
             onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}

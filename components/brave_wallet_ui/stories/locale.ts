@@ -71,6 +71,9 @@ provideStrings({
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
   braveWalletBssToolTip: 'not supported',
+  braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
+  braveWalletSlippageToleranceTitle: 'Slippage tolerance',
+  braveWalletExpiresInTitle: 'Expires in',
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
@@ -207,7 +210,7 @@ provideStrings({
   braveWalletPreset25: '25%',
   braveWalletPreset50: '50%',
   braveWalletPreset75: '75%',
-  braveWalletPreset100: 'All',
+  braveWalletPreset100: '100%',
 
   // Networks
   braveWalletNetworkETH: 'Ethereum',
