@@ -14,6 +14,10 @@
 
 namespace {
 
+// Preference name switch events are stored under.
+constexpr char kSwitchSearchEngineP3AStorage[] =
+    "brave.search.p3a_default_switch";
+
 // Deduces the search engine from |type|, if nothing is found - from |url|.
 // Not all engines added by Brave are present in |SearchEngineType| enumeration.
 void RecordSearchEngineP3A(const GURL& search_engine_url,
@@ -99,8 +103,6 @@ KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
   auto* profile = Profile::FromBrowserContext(context);
   auto* template_url_service =
       TemplateURLServiceFactory::GetForProfile(profile);
-  // FIXME(rillian) Since we're a KeyedService, do we need to declare a
-  // dependency on PrefService?
   auto* user_prefs = profile->GetPrefs();
   if (template_url_service && user_prefs) {
     return new SearchEngineTracker(template_url_service, user_prefs);

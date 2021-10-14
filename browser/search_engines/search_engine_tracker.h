@@ -35,10 +35,6 @@ enum class SearchEngineP3A {
   kMaxValue = kBrave,
 };
 
-// Preference name switch events are stored under.
-constexpr char kSwitchSearchEngineP3AStorage[] =
-    "brave.search.p3a_default_switch";
-
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum class SearchEngineSwitchP3A {
