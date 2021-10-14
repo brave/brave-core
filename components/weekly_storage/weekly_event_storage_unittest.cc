@@ -20,7 +20,7 @@ constexpr char kPrefName[] = "brave.weekly_event_test";
 
 class WeeklyEventStorageTest : public ::testing::Test {
  public:
-  enum class TestValues {
+  enum TestValues {
     kNull,
     kFoo,
     kBar,
@@ -31,7 +31,7 @@ class WeeklyEventStorageTest : public ::testing::Test {
   WeeklyEventStorageTest() : clock_(new base::SimpleTestClock) {
     pref_service_.registry()->RegisterListPref(kPrefName);
 
-    state_ = std::make_unique<WeeklyEventStorage<TestValues>>(
+    state_ = std::make_unique<WeeklyEventStorage>(
         &pref_service_, kPrefName, std::unique_ptr<base::Clock>(clock_));
     clock_->SetNow(base::Time::Now());
   }
@@ -39,7 +39,7 @@ class WeeklyEventStorageTest : public ::testing::Test {
  protected:
   base::SimpleTestClock* clock_;
   TestingPrefServiceSimple pref_service_;
-  std::unique_ptr<WeeklyEventStorage<TestValues>> state_;
+  std::unique_ptr<WeeklyEventStorage> state_;
 };
 
 TEST_F(WeeklyEventStorageTest, StartsEmpty) {
@@ -109,7 +109,7 @@ TEST_F(WeeklyEventStorageTest, DISABLED_SerializationOrder) {
   state_.reset();
 
   // Create a new one.
-  state_ = std::make_unique<WeeklyEventStorage<TestValues>>(
+  state_ = std::make_unique<WeeklyEventStorage>(
       &pref_service_, kPrefName, std::unique_ptr<base::Clock>(clock_));
 
   // Most recently added event should still be the latest.

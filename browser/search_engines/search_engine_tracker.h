@@ -94,7 +94,7 @@ class SearchEngineTracker : public KeyedService,
   // Keeping this to check for changes in |OnTemplateURLServiceChanged|.
   GURL default_search_url_;
   GURL previous_search_url_;
-  WeeklyEventStorage<SearchEngineSwitchP3A> switch_record_;
+  WeeklyEventStorage switch_record_;
 
   TemplateURLService* template_url_service_;
 };

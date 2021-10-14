@@ -57,8 +57,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
   histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 2);
 }
 
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       SwitchSearchEngineP3A) {
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   // Make sure we're in sync.
   metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
 

@@ -2,6 +2,7 @@ static_library("weekly_storage") {
   sources = [
     "daily_storage.cc",
     "daily_storage.h",
+    "weekly_event_storage.cc",
     "weekly_event_storage.h",
     "weekly_storage.cc",
     "weekly_storage.h",
