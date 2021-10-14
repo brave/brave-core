@@ -95,4 +95,4 @@ bool BraveWaybackMachineTabHelper::ShouldAttachWaybackMachineInfoBar(
   return responses.find(response_code) != responses.end();
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper);

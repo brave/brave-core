@@ -119,6 +119,6 @@ GURL BraveWalletTabHelper::GetApproveBubbleURL() {
 
 #endif  // !defined(OS_ANDROID) && !defined(OS_IOS)
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWalletTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWalletTabHelper);
 
 }  // namespace brave_wallet

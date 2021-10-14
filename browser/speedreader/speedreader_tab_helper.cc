@@ -230,6 +230,6 @@ void SpeedreaderTabHelper::DidStopLoading() {
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);
 
 }  // namespace speedreader
