@@ -2,7 +2,7 @@
 
 ## [1.32](https://github.com/brave/brave-ios/releases/tag/v1.32)
 
-- Updated default search engine to Brave Serach for selected regions on new install. ([#4221](https://github.com/brave/brave-ios/issues/4221))
+- Updated default search engine to "Brave Search" for selected regions on new install. ([#4221](https://github.com/brave/brave-ios/issues/4221))
 - Fixed issue where tabs appear blank and URL is not shown when browser is restarted after visiting certain sites. ([#4301](https://github.com/brave/brave-ios/issues/4301))
 
 ## [1.31.1](https://github.com/brave/brave-ios/releases/tag/v1.31.1)
