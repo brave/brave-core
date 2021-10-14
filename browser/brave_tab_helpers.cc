@@ -22,6 +22,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -60,6 +61,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
@@ -91,6 +96,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderTabHelper::CreateForWebContents(web_contents);
