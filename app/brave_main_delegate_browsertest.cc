@@ -87,13 +87,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillServerCommunication,
+    &blink::features::kAdInterestGroupAPI,
     &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
-    &blink::features::kFledgeInterestGroupAPI,
-    &blink::features::kFledgeInterestGroups,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestCohortAPIOriginTrial,
     &blink::features::kInterestCohortFeaturePolicy,
+    &blink::features::kInterestGroupStorage,
     &blink::features::kNavigatorPluginsFixed,
     &blink::features::kTextFragmentAnchor,
 #if !defined(OS_ANDROID)
