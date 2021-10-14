@@ -506,9 +506,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onInputChange={onInputChange}
                         onSelectPresetAmount={onSelectPresetAmount}
                         onSubmit={onSubmitSend}
+                        addressError=''
                         selectedAsset={selectedAsset}
                         selectedAssetAmount={fromAmount}
                         selectedAssetBalance={selectedAccount.balance.toString()}
+                        toAddressOrUrl={toAddress}
                         toAddress={toAddress}
                       />
                     }
