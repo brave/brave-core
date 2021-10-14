@@ -11,6 +11,8 @@ buildflag_header("buildflags") {
 
 source_set("browser") {
   sources = [
+    "brave_translate_constants.cc",
+    "brave_translate_constants.h",
     "brave_translate_features.cc",
     "brave_translate_features.h",
     "brave_translate_language_filter.cc",

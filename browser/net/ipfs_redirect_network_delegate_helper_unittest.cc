@@ -12,7 +12,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/common/translate_network_constants.h"
 #include "brave/components/ipfs/features.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"

@@ -5,7 +5,9 @@
 
 #include "components/translate/core/browser/translate_script.h"
 
+#include "base/callback.h"
 #include "base/strings/strcat.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/translate/core/browser/brave_translate_features.h"
 
 #define TranslateScript ChromiumTranslateScript
@@ -42,13 +44,17 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
 }  // namespace
 namespace translate {
 
-void TranslateScript::OnScriptFetchComplete(bool success,
-                                            const std::string& data) {
+void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
   if (!IsBraveTranslateGoAvailable()) {
-    ChromiumTranslateScript::OnScriptFetchComplete(false, std::string());
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), false));
     return;
   }
+  ChromiumTranslateScript::Request(std::move(callback), is_incognito);
+}
 
+void TranslateScript::OnScriptFetchComplete(bool success,
+                                            const std::string& data) {
   const std::string new_data =
       base::StrCat({kRedirectAllRequestsToSecurityOrigin, data});
   ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);

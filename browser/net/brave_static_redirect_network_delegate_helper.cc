@@ -12,8 +12,6 @@
 
 #include "base/strings/string_piece_forward.h"
 #include "brave/common/network_constants.h"
-#include "brave/common/translate_network_constants.h"
-#include "brave/components/translate/core/browser/brave_translate_features.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 
@@ -171,15 +169,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     replacements.SetHostStr(kBraveRedirectorProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
-  }
-
-  static const URLPattern translate_script_pattern(
-      URLPattern::SCHEME_HTTPS, kGoogleTranslateElementScriptPattern);
-  static const URLPattern translate_language_pattern(
-      URLPattern::SCHEME_HTTPS, kGoogleTranslateLanguagePattern);
-  if (translate_script_pattern.MatchesURL(request_url) ||
-      translate_language_pattern.MatchesURL(request_url)) {
-    return net::ERR_ABORTED;
   }
 
   return net::OK;

@@ -11,9 +11,6 @@
 
 namespace translate {
 
-extern const char kBraveTranslateOrigin[];
-extern const char kBraveTranslateScriptURL[];
-
 namespace features {
 extern const base::Feature kUseBraveTranslateGo;
 

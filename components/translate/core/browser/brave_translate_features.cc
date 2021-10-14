@@ -9,10 +9,6 @@
 
 namespace translate {
 
-const char kBraveTranslateOrigin[] = "https://translate-relay.brave.com";
-const char kBraveTranslateScriptURL[] =
-    "https://translate-relay.brave.com/translate_a/element.js";
-
 namespace features {
 const base::Feature kUseBraveTranslateGo{
     "UseBraveTranslateGo", base::FeatureState::FEATURE_DISABLED_BY_DEFAULT};
