@@ -272,7 +272,7 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     bool is_user_gesture) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
     BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate::ShouldOfferExtensionInstation(GetProfile()) ||
+  if (translate::ShouldOfferExtensionInstallation(GetProfile()) ||
       translate::IsInternalTranslationEnabled(GetProfile())) {
     return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
                                             target_language, error_type,

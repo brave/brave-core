@@ -12,7 +12,7 @@ namespace translate {
 
 bool IsTranslateExtensionEnabled(content::BrowserContext* context);
 
-bool ShouldOfferExtensionInstation(content::BrowserContext* context);
+bool ShouldOfferExtensionInstallation(content::BrowserContext* context);
 
 bool IsInternalTranslationEnabled(content::BrowserContext* context);
 

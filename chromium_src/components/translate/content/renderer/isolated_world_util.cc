@@ -6,6 +6,7 @@
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 
 namespace blink {
+namespace {
 
 void AdjustedSetIsolatedWorldInfo(int32_t world_id,
                                   const blink::WebIsolatedWorldInfo& info) {
@@ -17,7 +18,10 @@ void AdjustedSetIsolatedWorldInfo(int32_t world_id,
       "default-src 'self' 'unsafe-eval' 'unsafe-inline' translate.brave.com";
   blink::SetIsolatedWorldInfo(world_id, new_info);
 }
+
+}  // namespace
 }  // namespace blink
 
 #define SetIsolatedWorldInfo AdjustedSetIsolatedWorldInfo
 #include "../../../../../../components/translate/content/renderer/isolated_world_util.cc"
+#undef SetIsolatedWorldInfo

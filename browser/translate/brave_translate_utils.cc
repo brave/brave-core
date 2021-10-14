@@ -26,7 +26,7 @@ bool IsTranslateExtensionEnabled(content::BrowserContext* context) {
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 }
 
-bool ShouldOfferExtensionInstation(content::BrowserContext* context) {
+bool ShouldOfferExtensionInstallation(content::BrowserContext* context) {
   if (!IsTranslateExtensionAvailable())
     return false;
   return !IsTranslateExtensionEnabled(context);
