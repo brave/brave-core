@@ -141,6 +141,23 @@ const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kGoerliChainId, "goerli"},
     {brave_wallet::mojom::kKovanChainId, "kovan"}};
 
+const base::flat_map<std::string, std::string>
+    kUnstoppableDomainsProxyReaderContractAddressMap = {
+        {brave_wallet::mojom::kMainnetChainId,
+         "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5"},
+        {brave_wallet::mojom::kRinkebyChainId,
+         "0x3A2e74CF832cbA3d77E72708d55370119E4323a6"}};
+
+const base::flat_map<std::string, std::string> kEnsRegistryContractAddressMap =
+    {{brave_wallet::mojom::kMainnetChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kRopstenChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kRinkebyChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kGoerliChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"}};
+
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
   if (subdomain.empty())
@@ -780,6 +797,19 @@ mojom::DefaultWallet GetDefaultWallet(PrefService* prefs) {
 
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
   prefs->SetInteger(kBraveWalletWeb3Provider, static_cast<int>(default_wallet));
+}
+
+std::string GetUnstoppableDomainsProxyReaderContractAddress(
+    const std::string& chain_id) {
+  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id))
+    return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id);
+  return "";
+}
+
+std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
+  if (kEnsRegistryContractAddressMap.contains(chain_id))
+    return kEnsRegistryContractAddressMap.at(chain_id);
+  return "";
 }
 
 }  // namespace brave_wallet

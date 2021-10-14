@@ -9,8 +9,6 @@
 #include <vector>
 
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/constants.h"
@@ -38,12 +36,9 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::OK;
   }
 
-  auto pending =
-      brave_wallet::RpcControllerFactory::GetForContext(ctx->browser_context);
-
-  mojo::Remote<brave_wallet::mojom::EthJsonRpcController> rpc_controller;
-  rpc_controller.Bind(std::move(pending));
-
+  auto* rpc_controller =
+      brave_wallet::RpcControllerFactory::GetControllerForContext(
+          ctx->browser_context);
   if (!rpc_controller)
     return net::OK;
 
@@ -52,14 +47,9 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
           g_browser_process->local_state())) {
     auto keys = std::vector<std::string>(std::begin(kRecordKeys),
                                          std::end(kRecordKeys));
-    std::string data;
-    if (!brave_wallet::unstoppable_domains::GetMany(
-            keys, ctx->request_url.host(), &data))
-      return net::OK;
-
     rpc_controller->UnstoppableDomainsProxyReaderGetMany(
-        kProxyReaderContractAddress, ctx->request_url.host(), keys,
-        base::BindOnce(&OnBeforeURLRequest_DecentralizedDnsRedirectWork,
+        brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(), keys,
+        base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
                        next_callback, ctx));
 
     return net::ERR_IO_PENDING;
@@ -67,12 +57,8 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
   if (IsENSTLD(ctx->request_url) &&
       IsENSResolveMethodEthereum(g_browser_process->local_state())) {
-    std::string data;
-    if (!brave_wallet::ens::GetResolverAddress(ctx->request_url.host(), &data))
-      return net::OK;
-
-    rpc_controller->EnsProxyReaderGetResolverAddress(
-        kEnsRegistryContractAddress, ctx->request_url.host(),
+    rpc_controller->EnsResolverGetContentHash(
+        brave_wallet::mojom::kMainnetChainId, ctx->request_url.host(),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
 
@@ -86,22 +72,14 @@ void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     bool success,
-    const std::string& result) {
+    const std::string& content_hash) {
   if (!success) {
     if (!next_callback.is_null())
       next_callback.Run();
     return;
   }
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  std::string contenthash;
-  if (offset > result.size() ||
-      !brave_wallet::DecodeString(offset, result, &contenthash)) {
-    if (!next_callback.is_null())
-      next_callback.Run();
-    return;
-  }
 
-  GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(contenthash);
+  GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(content_hash);
   if (ipfs_uri.is_valid()) {
     ctx->new_url_spec = ipfs_uri.spec();
   }
@@ -110,21 +88,13 @@ void OnBeforeURLRequest_EnsRedirectWork(
     next_callback.Run();
 }
 
-void OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
     bool success,
-    const std::string& result) {
-  if (!success) {
-    if (!next_callback.is_null())
-      next_callback.Run();
-    return;
-  }
-
-  std::vector<std::string> output;
-  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
-  if (offset > result.size() ||
-      !brave_wallet::DecodeStringArray(result.substr(offset), &output)) {
+    const std::vector<std::string>& values) {
+  if (!success ||
+      values.size() != static_cast<size_t>(RecordKeys::MAX_RECORD_KEY) + 1) {
     if (!next_callback.is_null())
       next_callback.Run();
     return;
@@ -137,14 +107,14 @@ void OnBeforeURLRequest_DecentralizedDnsRedirectWork(
   //
   // TODO(jocelyn): Do not fallback to the set redirect URL if dns.A or
   // dns.AAAA is not empty once we support the classical DNS records case.
-  std::string ipfs_uri = GetValue(output, RecordKeys::DWEB_IPFS_HASH);
+  std::string ipfs_uri = GetValue(values, RecordKeys::DWEB_IPFS_HASH);
   if (ipfs_uri.empty()) {  // Try legacy value.
-    ipfs_uri = GetValue(output, RecordKeys::IPFS_HTML_VALUE);
+    ipfs_uri = GetValue(values, RecordKeys::IPFS_HTML_VALUE);
   }
 
-  std::string fallback_url = GetValue(output, RecordKeys::BROWSER_REDIRECT_URL);
+  std::string fallback_url = GetValue(values, RecordKeys::BROWSER_REDIRECT_URL);
   if (fallback_url.empty()) {  // Try legacy value.
-    fallback_url = GetValue(output, RecordKeys::IPFS_REDIRECT_DOMAIN_VALUE);
+    fallback_url = GetValue(values, RecordKeys::IPFS_REDIRECT_DOMAIN_VALUE);
   }
 
   if (!ipfs_uri.empty()) {

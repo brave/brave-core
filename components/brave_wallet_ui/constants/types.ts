@@ -589,6 +589,11 @@ export interface SetSelectedAccountReturnInfo {
   success: boolean
 }
 
+export interface GetEthAddrReturnInfo {
+  success: boolean
+  address: string
+}
+
 export interface EthTxController {
   addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
   addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
@@ -614,6 +619,8 @@ export interface EthJsonRpcController {
   getBalance: (address: string) => Promise<GetBalanceReturnInfo>
   getERC20TokenBalance: (contract: string, address: string) => Promise<GetERC20TokenBalanceReturnInfo>
   getERC20TokenAllowance: (contract: string, ownerAddress: string, spenderAddress: string) => Promise<GetERC20TokenAllowanceReturnInfo>
+  ensGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
+  unstoppableDomainsGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
 }
 
 export interface SwapController {
