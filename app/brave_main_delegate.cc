@@ -234,13 +234,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kAdInterestGroupAPI.name,
     blink::features::kComputePressure.name,
     blink::features::kConversionMeasurement.name,
-    blink::features::kFledgeInterestGroupAPI.name,
-    blink::features::kFledgeInterestGroups.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
+    blink::features::kInterestGroupStorage.name,
     blink::features::kNavigatorPluginsFixed.name,
     blink::features::kTextFragmentAnchor.name,
 #if !defined(OS_ANDROID)
