@@ -1,0 +1,35 @@
+<html>
+
+<script>
+  var permissionGranted = false
+  window.ethereum.enable().then(accounts => {
+      permissionGranted = true
+  }).catch(error => {
+      permissionGranted = false
+  })
+
+  function getPermissionGranted() {
+    window.domAutomationController.send(permissionGranted)
+  }
+
+  var signMessageResult
+  function signMessage(address, message) {
+    window.ethereum.request({
+      method: 'eth_sign',
+      params: [address, message]
+    }).then(result => {
+      signMessageResult = result
+    }).catch(error => {
+      signMessageResult = error.message
+    })
+  }
+
+  function getSignMessageResult() {
+    window.domAutomationController.send(signMessageResult)
+  }
+</script>
+
+<body>
+</body>
+</html>
+

@@ -404,6 +404,9 @@ interface BraveWalletService {
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
   ResetEthereumPermission(string origin, string account) => (bool success);
   GetActiveOrigin() => (string origin);
+  GetPendingSignMessageRequest() => (int32 id, string address, string message);
+  // UI to native
+  NotifySignMessageRequestProcessed(bool approved, int32 id);
 };
 
 enum DefaultWallet {

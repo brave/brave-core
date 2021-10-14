@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/containers/queue.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -86,14 +87,27 @@ class BraveWalletService : public KeyedService,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
+  void GetPendingSignMessageRequest(
+      GetPendingSignMessageRequestCallback callback) override;
+  void NotifySignMessageRequestProcessed(bool approved, int id) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const std::string& origin) override;
 
   void RecordWalletUsage(base::Time wallet_last_used);
 
+  struct SignMessageRequest {
+    int id;
+    std::string address;
+    std::string message;
+  };
+  void AddSignMessageRequest(SignMessageRequest&& request,
+                             base::OnceCallback<void(bool)> callback);
+
  private:
   void OnDefaultWalletChanged();
+
+  friend class BraveWalletProviderImplUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, OnGetImportInfo);
@@ -109,6 +123,8 @@ class BraveWalletService : public KeyedService,
                        bool result,
                        BraveWalletServiceDelegate::ImportInfo info);
 
+  base::queue<SignMessageRequest> sign_message_requests_;
+  base::queue<base::OnceCallback<void(bool)>> sign_message_callbacks_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringController* keyring_controller_;

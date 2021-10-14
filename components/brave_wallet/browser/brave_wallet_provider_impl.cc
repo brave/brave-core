@@ -14,7 +14,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -29,10 +31,12 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
     mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
     mojo::PendingRemote<mojom::EthTxController> tx_controller,
     KeyringController* keyring_controller,
+    BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     PrefService* prefs)
     : delegate_(std::move(delegate)),
       keyring_controller_(keyring_controller),
+      brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
       weak_factory_(this) {
   DCHECK(rpc_controller);
@@ -231,7 +235,7 @@ void BraveWalletProviderImpl::OnAddUnapprovedTransaction(
 void BraveWalletProviderImpl::SignMessage(const std::string& address,
                                           const std::string& message,
                                           SignMessageCallback callback) {
-  if (!IsValidHexString(address) || !IsValidHexString(message)) {
+  if (!EthAddress::IsValidAddress(address) || !IsValidHexString(message)) {
     std::move(callback).Run(
         "", static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -245,9 +249,12 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
+  // Convert to checksum address
+  auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(base::BindOnce(
       &BraveWalletProviderImpl::ContinueSignMessage, weak_factory_.GetWeakPtr(),
-      address, std::move(message_bytes), std::move(callback)));
+      checksum_address.ToChecksumAddress(), std::move(message_bytes),
+      std::move(callback)));
 }
 
 void BraveWalletProviderImpl::ContinueSignMessage(
@@ -261,6 +268,27 @@ void BraveWalletProviderImpl::ContinueSignMessage(
         "", static_cast<int>(ProviderErrors::kUnauthorized),
         l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
                                   base::ASCIIToUTF16(address)));
+    return;
+  }
+
+  std::string message_to_request = std::string(message.begin(), message.end());
+  brave_wallet_service_->AddSignMessageRequest(
+      {sign_message_id_++, address, std::move(message_to_request)},
+      base::BindOnce(&BraveWalletProviderImpl::OnSignMessageRequestProcessed,
+                     weak_factory_.GetWeakPtr(), std::move(callback), address,
+                     std::move(message)));
+  delegate_->ShowBubble();
+}
+
+void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
+    SignMessageCallback callback,
+    const std::string& address,
+    std::vector<uint8_t>&& message,
+    bool approved) {
+  if (!approved) {
+    std::move(callback).Run(
+        "", static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     return;
   }
   auto signature_with_err =
