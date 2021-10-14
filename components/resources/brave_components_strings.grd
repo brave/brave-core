@@ -831,7 +831,7 @@
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_TEXT4" desc="">Enter your recovery key or</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESTORE_WARNING" desc="">Backup your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_CONFIRMATION" desc="">Are you sure you want to reset your Rewards Wallet?</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BAT_AMOUNT">$1<ex>5 BAT</ex></ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with <ph name="PROVIDER">$2<ex>Uphold</ex></ph> so you can keep your BAT.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_FUNDS" desc="">Your <ph name="BAT_AMOUNT">$1<ex>5 BAT</ex></ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have <ph name="LINK_BEGIN">$2</ph>verified your wallet<ph name="LINK_END">$3</ph> so you can keep your BAT.</message>
       <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT_NO_FUNDS" desc="">Your Rewards data will be permanently lost if you reset your wallet.</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>

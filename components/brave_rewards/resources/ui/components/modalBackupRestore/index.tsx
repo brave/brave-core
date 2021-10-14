@@ -31,7 +31,6 @@ export interface Props {
   backupKey: string
   activeTabId: number
   showBackupNotice: boolean
-  walletProvider: string
   onTabChange: (newTabId: number) => void
   onClose: () => void
   onCopy?: (key: string) => void
@@ -335,22 +334,34 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
   }
 
   getReset = () => {
-    const parts = getLocale('rewardsResetTextFunds').split(/\$\d/g)
+    const getText = () => {
+      if (this.props.internalFunds <= 0) {
+        return getLocale('rewardsResetTextNoFunds')
+      }
+
+      return formatMessage(getLocale('rewardsResetTextFunds'), {
+        placeholders: {
+          $1: (
+            <b key='amount'>
+              {this.props.internalFunds.toString()} BAT
+            </b>
+          )
+        },
+        tags: {
+          $2: (content) => (
+            <StyledLink key='link' onClick={this.props.onVerify}>
+              {content}
+            </StyledLink>
+          )
+        }
+      })
+    }
+
     return (
       <>
         <StyledTextWrapper>
           <StyledText data-test-id={'reset-text'}>
-            {
-              this.props.internalFunds > 0
-              ? <span>
-                {parts[0]}
-                <b>{this.props.internalFunds.toString()} BAT</b>
-                {parts[1]}
-                {this.props.walletProvider}
-                {parts[2]}
-              </span>
-              : getLocale('rewardsResetTextNoFunds')
-            }
+            {getText()}
           </StyledText>
         </StyledTextWrapper>
         <StyledActionsWrapper>
