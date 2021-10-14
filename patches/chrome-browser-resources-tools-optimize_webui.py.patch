@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/optimize_webui.py b/chrome/browser/resources/tools/optimize_webui.py
-index ddbdbf34e886c52136bf9cc8e344da2a858589ac..84fa404d251d14c1e2231e0ca5b2fb22ec486542 100755
+index 87164da6d36e91db6a4f2e9b7c447ca82d88eb7e..eaacb46d25048bb350d95648c75406189ce66d21 100755
 --- a/chrome/browser/resources/tools/optimize_webui.py
 +++ b/chrome/browser/resources/tools/optimize_webui.py
 @@ -26,6 +26,7 @@ import node_modules
