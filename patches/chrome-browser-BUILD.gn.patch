@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 442c7056f978e4d90fbb68e7c1fc6c3b01885d18..19ff147a72d258f7869ad5099eb849cfa967d050 100644
+index 1c6fa31ab98d23a01fd1cd454c68c57a1c511fbb..9a8c1f9eeb8b93ea2be5e7281b8cbd0b9c6e2a7f 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2512,6 +2512,7 @@ static_library("browser") {
@@ -7,6 +7,6 @@ index 442c7056f978e4d90fbb68e7c1fc6c3b01885d18..19ff147a72d258f7869ad5099eb849cf
      ]
    }
 +  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps defines += brave_chrome_browser_defines
- 
+
    if (is_android) {
      sources += [

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index aeda031a861697fa144d360dfcc2cd262dd7dfb3..9fa54256ea98246ae52c09bc50d489fb9ad82c51 100644
+index 3f1c09f35c07426d014bdb2f634e5f61ac8cba48..ff06fc5074372799223105a7acc07d961f7b1b41 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -346,6 +346,7 @@ void ToolbarView::Init() {
+@@ -342,6 +342,7 @@ void ToolbarView::Init() {
    } else {
      // TODO(crbug.com/932818): Remove this once the
      // |kAutofillEnableToolbarStatusChip| is fully launched.

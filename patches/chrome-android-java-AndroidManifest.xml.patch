@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 9de3983076996312367d8c2f1a8f27b817f8eef1..21a81c4ee10188f327949389ceefa0591f0627a2 100644
+index 902a533d07a958d03e1f5c0e11d866607e248161..9076aae34f5a25537d3cc083177b1884e5bb5ab4 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -59,7 +59,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
- 
+
 +<!--
      <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
- 
+
 @@ -67,18 +69,26 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
@@ -42,11 +42,11 @@ index 9de3983076996312367d8c2f1a8f27b817f8eef1..21a81c4ee10188f327949389ceefa059
 @@ -124,7 +134,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
- 
+
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
- 
+
      {% block extra_uses_permissions %}
      {% endblock %}
 @@ -171,6 +183,7 @@ by a child template that "extends" this file.
@@ -68,7 +68,7 @@ index 9de3983076996312367d8c2f1a8f27b817f8eef1..21a81c4ee10188f327949389ceefa059
 @@ -1205,6 +1219,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
- 
+
 +        {% include "//brave/android/java/AndroidManifest.xml" %}
          {% block extra_application_definitions %}
          {% endblock %}
@@ -79,5 +79,5 @@ index 9de3983076996312367d8c2f1a8f27b817f8eef1..21a81c4ee10188f327949389ceefa059
        <meta-data android:name="com.google.ar.core" android:value="optional" />
 +        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="202940000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
        {% endif %}
- 
+
        <!-- Cast support -->
