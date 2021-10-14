@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
@@ -213,10 +214,9 @@ class EthTxControllerUnitTest : public testing::Test {
                                   run_loop.Quit();
                                 }));
     run_loop.Run();
-    keyring_controller_->CreateWallet(
-        "testing123", base::DoNothing::Once<const std::string&>());
+    keyring_controller_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_controller_->AddAccount("Account 1", base::DoNothing::Once<bool>());
+    keyring_controller_->AddAccount("Account 1", base::DoNothing());
     base::RunLoop().RunUntilIdle();
 
     ASSERT_TRUE(base::HexStringToBytes(
