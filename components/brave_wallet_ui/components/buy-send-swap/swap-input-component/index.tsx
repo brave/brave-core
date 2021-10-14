@@ -4,7 +4,8 @@ import {
   OrderTypes,
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
-  SwapValidationErrorType
+  SwapValidationErrorType,
+  AmountPresetTypes
 } from '../../../constants/types'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
@@ -28,7 +29,9 @@ import {
   Input,
   Row,
   PasteIcon,
-  PasteButton
+  PasteButton,
+  SlippageInput,
+  WarningText
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
@@ -52,6 +55,8 @@ export interface Props {
   slippageTolerance?: SlippagePresetObjectType
   orderExpiration?: ExpirationPresetObjectType
   validationError?: SwapValidationErrorType
+  customSlippageTolerance?: string
+  onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
   onSelectSlippageTolerance?: (slippage: SlippagePresetObjectType) => void
@@ -74,6 +79,8 @@ function SwapInputComponent (props: Props) {
     slippageTolerance,
     orderExpiration,
     validationError,
+    customSlippageTolerance,
+    onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
     onRefresh,
@@ -84,6 +91,8 @@ function SwapInputComponent (props: Props) {
   } = props
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
+  const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
+  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
@@ -110,8 +119,9 @@ function SwapInputComponent (props: Props) {
     }
   }
 
-  const setPresetAmountValue = (percent: number) => () => {
+  const setPresetAmountValue = (percent: AmountPresetTypes) => () => {
     if (onSelectPresetAmount) {
+      setSelectedPreset(percent)
       onSelectPresetAmount(percent)
     }
   }
@@ -136,9 +146,9 @@ function SwapInputComponent (props: Props) {
         }
       case 'selector':
         if (orderType === 'market') {
-          return 'Slippage tolerance'
+          return getLocale('braveWalletSlippageToleranceTitle')
         } else {
-          return 'Expires in'
+          return getLocale('braveWalletExpiresInTitle')
         }
       case 'toAddress':
         return getLocale('braveWalletSwapTo')
@@ -148,6 +158,33 @@ function SwapInputComponent (props: Props) {
   const onInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onInputChange) {
       onInputChange(event.target.value, event.target.name)
+    }
+  }
+
+  React.useMemo(() => {
+    // Show Warning if slippage is to high
+    if (Number(customSlippageTolerance) >= 6) {
+      setShowSlippageWarning(true)
+      return
+    }
+    setShowSlippageWarning(false)
+  }, [customSlippageTolerance])
+
+  const handleCustomSlippageToleranceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onCustomSlippageToleranceChange) {
+      // This will only formate to only allow Numbers and remove multiple . decimals
+      const value = event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
+      // Sets the value to not go higher than 100
+      if (Number(value) > 100) {
+        onCustomSlippageToleranceChange('100')
+        return
+      }
+      // Prevents double 00 before decimal place and formats to 0. if value starts with .
+      if (value === '00' || value === '.') {
+        onCustomSlippageToleranceChange('0.')
+        return
+      }
+      onCustomSlippageToleranceChange(value)
     }
   }
 
@@ -216,6 +253,7 @@ function SwapInputComponent (props: Props) {
             <PresetRow>
               {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton
+                  isSelected={selectedPreset === preset.value}
                   key={idx}
                   onClick={setPresetAmountValue(preset.value)}
                 >
@@ -231,7 +269,7 @@ function SwapInputComponent (props: Props) {
           <Row>
             <SelectText>{getTitle()}</SelectText>
             <AssetButton onClick={toggleExpandSelector}>
-              <SelectValueText>{orderType === 'market' ? `${slippageTolerance?.slippage}%` : `${orderExpiration?.expiration} days`}</SelectValueText>
+              <SelectValueText>{orderType === 'market' ? customSlippageTolerance ? `${customSlippageTolerance}%` : `${slippageTolerance?.slippage}%` : `${orderExpiration?.expiration} days`}</SelectValueText>
               <CaratDownIcon />
             </AssetButton>
           </Row>
@@ -242,11 +280,21 @@ function SwapInputComponent (props: Props) {
                   {SlippagePresetOptions.map((preset) =>
                     <PresetButton
                       key={preset.id}
+                      isSlippage={true}
+                      isSelected={customSlippageTolerance === '' ? slippageTolerance?.slippage === preset.slippage : false}
                       onClick={setPresetSlippageValue(preset)}
                     >
                       {preset.slippage}%
                     </PresetButton>
                   )}
+                  <SlippageInput
+                    value={customSlippageTolerance}
+                    placeholder='%'
+                    type='text'
+                    isSelected={customSlippageTolerance !== ''}
+                    onChange={handleCustomSlippageToleranceChange}
+                    maxLength={4}
+                  />
                 </>
               ) : (
                 <>
@@ -263,6 +311,9 @@ function SwapInputComponent (props: Props) {
             </PresetRow>
           }
         </>
+      }
+      {showSlippageWarning &&
+        <WarningText>{getLocale('braveWalletSlippageToleranceWarning')}</WarningText>
       }
     </BubbleContainer >
   )
