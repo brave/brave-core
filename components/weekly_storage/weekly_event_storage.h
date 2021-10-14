@@ -13,6 +13,7 @@
 #include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "base/time/time.h"
+#include "base/json/values_util.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -32,14 +33,9 @@ template <typename T>
 class WeeklyEventStorage {
  public:
   WeeklyEventStorage(PrefService* prefs, const char* pref_name)
-      : prefs_(prefs),
-        pref_name_(pref_name),
-        clock_(std::make_unique<base::DefaultClock>()) {
-    DCHECK(pref_name);
-    if (prefs) {
-      Load();
-    }
-  }
+      : WeeklyEventStorage(prefs,
+                           pref_name,
+                           std::make_unique<base::DefaultClock>()) {}
 
   // Accept an explicit clock so tests can manipulate the passage of time.
   WeeklyEventStorage(PrefService* prefs,
@@ -48,6 +44,7 @@ class WeeklyEventStorage {
       : prefs_(prefs), pref_name_(pref_name), clock_(std::move(clock)) {
     DCHECK(prefs);
     DCHECK(pref_name);
+    DCHECK(clock_);
     Load();
   }
 
@@ -86,12 +83,6 @@ class WeeklyEventStorage {
     T value = T(0);
   };
 
-  PrefService* prefs_ = nullptr;
-  const char* pref_name_ = nullptr;
-  std::unique_ptr<base::Clock> clock_;
-
-  std::list<Event> events_;
-
   void FilterToWeek() {
     if (events_.empty()) {
       return;
@@ -109,28 +100,32 @@ class WeeklyEventStorage {
       return;
     }
     for (auto& it : list->GetList()) {
-      const base::Value* day = it.FindKey("day");
-      const base::Value* value = it.FindKey("value");
-      if (!day || !value || !day->is_double() || !value->is_double()) {
+      const auto day = base::ValueToTime(it.FindKey("day"));
+      const auto value = it.FindIntKey("value");
+      if (!day || !value) {
         continue;
       }
-      events_.push_front({base::Time::FromDoubleT(day->GetDouble()),
-                          {static_cast<T>(value->GetInt())}});
+      events_.push_front({day.value(), static_cast<T>(value.value())});
     }
   }
 
   void Save() {
     ListPrefUpdate update(prefs_, pref_name_);
     base::ListValue* list = update.Get();
-    // TODO(iefremov): Optimize if needed.
     list->ClearList();
     for (const auto& u : events_) {
-      base::DictionaryValue value;
-      value.SetKey("day", base::Value(u.day.ToDoubleT()));
+      base::Value value(base::Value::Type::DICTIONARY);
+      value.SetKey("day", base::TimeToValue(u.day));
       value.SetIntKey("value", static_cast<int>(u.value));
       list->Append(std::move(value));
     }
   }
+
+  PrefService* prefs_ = nullptr;
+  const char* pref_name_ = nullptr;
+  std::unique_ptr<base::Clock> clock_;
+
+  std::list<Event> events_;
 };
 
 #endif  // BRAVE_COMPONENTS_WEEKLY_STORAGE_WEEKLY_EVENT_STORAGE_H_

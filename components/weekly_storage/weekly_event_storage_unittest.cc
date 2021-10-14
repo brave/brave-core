@@ -106,7 +106,7 @@ TEST_F(WeeklyEventStorageTest, DISABLED_SerializationOrder) {
             absl::optional<TestValues>(TestValues::kBrave));
 
   // Drop the WeeklyEventStorage object.
-  state_.reset(nullptr);
+  state_.reset();
 
   // Create a new one.
   state_ = std::make_unique<WeeklyEventStorage<TestValues>>(
