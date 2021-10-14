@@ -440,13 +440,18 @@ test("brave_unit_tests") {
   }
 
   if (enable_brave_referrals) {
-    sources += [ "//brave/browser/brave_stats/brave_stats_updater_unittest.cc" ]
+    sources += [
+      "//brave/browser/brave_stats/brave_stats_test_util.cc",
+      "//brave/browser/brave_stats/brave_stats_test_util.h",
+      "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
+    ]
 
     deps += [
       # This is only used in the unit test, not the browser test.
       # TODO(keur): Reminder to move this out when we migrate
       # stats browser tests into unit tests.
-      "//brave/components/brave_ads/browser:testutil",
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_rewards/browser",
       "//brave/components/brave_stats/browser",
       "//brave/vendor/bat-native-ads",
     ]

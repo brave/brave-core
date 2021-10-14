@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/browser/test_util.h"
+#include "brave/browser/brave_stats/brave_stats_test_util.h"
 
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
