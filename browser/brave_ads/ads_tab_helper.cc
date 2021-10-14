@@ -258,6 +258,6 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 }
 #endif
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper);
 
 }  // namespace brave_ads

@@ -135,6 +135,6 @@ void PerfPredictorTabHelper::WebContentsDestroyed() {
   VLOG(3) << "Web contents destroyed, savings recorded";
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PerfPredictorTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(PerfPredictorTabHelper);
 
 }  // namespace brave_perf_predictor

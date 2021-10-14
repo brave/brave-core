@@ -53,4 +53,4 @@ void DesktopModeTabHelper::DidStartNavigation(
   need_override_ua_ = entry == nullptr;
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(DesktopModeTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(DesktopModeTabHelper);

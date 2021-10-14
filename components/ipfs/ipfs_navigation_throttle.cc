@@ -64,7 +64,7 @@ class IPFSWebContentsLifetimeHelper
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSWebContentsLifetimeHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(IPFSWebContentsLifetimeHelper);
 
 }  // namespace
 

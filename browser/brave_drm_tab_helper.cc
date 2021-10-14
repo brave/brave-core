@@ -119,4 +119,4 @@ void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveDrmTabHelper);

@@ -27,6 +27,6 @@ DomainBlockTabStorage* DomainBlockTabStorage::GetOrCreate(
   return storage;
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(DomainBlockTabStorage)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(DomainBlockTabStorage);
 
 }  // namespace brave_shields

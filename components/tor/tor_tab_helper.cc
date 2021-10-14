@@ -42,6 +42,6 @@ void TorTabHelper::ReloadTab(content::WebContents* web_contents) {
   web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper);
 
 }  // namespace tor

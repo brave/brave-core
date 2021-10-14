@@ -129,4 +129,4 @@ void WebDiscoveryTabHelper::IncreaseBraveSearchVisitCount(PrefService* prefs) {
   prefs->SetInteger(kBraveSearchVisitCount, visit_count);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);

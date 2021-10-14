@@ -22,6 +22,6 @@ void OnionLocationTabHelper::SetOnionLocation(
 OnionLocationTabHelper::OnionLocationTabHelper(
     content::WebContents* web_contents) {}
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(OnionLocationTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(OnionLocationTabHelper);
 
 }  // namespace tor
