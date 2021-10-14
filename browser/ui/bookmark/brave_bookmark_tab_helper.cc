@@ -74,4 +74,4 @@ bool BraveBookmarkTabHelper::ShouldShowBookmarkBar() {
   return helper->ShouldShowBookmarkBar();
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveBookmarkTabHelper)
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveBookmarkTabHelper);
