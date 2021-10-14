@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "components/metrics/content/subprocess_metrics_provider.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
 
@@ -57,7 +58,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       DISABLED_SwitchSearchEngineP3A) {
+                       SwitchSearchEngineP3A) {
+  // Make sure we're in sync.
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
+
   // Check that the metric is reported on startup.
   // For some reason we record kNoSwitch twice, even through
   // kDefaultSearchEngineMetric is only updated once at this point.
@@ -75,6 +79,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
   TemplateURL ddg_url(*ddg_data);
 
+  service->SetUserSelectedDefaultSearchProvider(&ddg_url);
   // This assumes Brave Search is the default!
   histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
                                        SearchEngineSwitchP3A::kBraveToDDG, 1);
@@ -100,6 +105,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
                                        SearchEngineSwitchP3A::kBraveToOther, 1);
 
   // Check that incognito or TOR profiles do not emit the metric.
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
