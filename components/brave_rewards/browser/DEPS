@@ -25,7 +25,6 @@ specific_include_rules = {
     "+chrome/browser/browser_process_impl.h",
     "+chrome/browser/favicon/favicon_service_factory.h",
     "+chrome/browser/profiles/profile.h",
-    "+chrome/browser/service_sandbox_type.h",
   ],
   "rewards_service_impl.h": [
     "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h",
