@@ -21,6 +21,7 @@ extern const base::Feature kBraveDomainBlock;
 extern const base::Feature kBraveExtensionNetworkBlocking;
 extern const base::Feature kBraveDarkModeBlock;
 extern const base::Feature kCosmeticFilteringSyncLoad;
+extern const base::Feature kBraveShieldsPanelV2;
 }  // namespace features
 }  // namespace brave_shields
 

@@ -17,10 +17,12 @@
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -154,6 +156,7 @@ void BraveActionsContainer::Init() {
   // Just in case the extensions load before this function does (not likely!)
   // make sure separator is at index 0
   AddChildViewAt(brave_button_separator_, 0);
+  AddActionViewForShields();
   // Populate actions
   actions_[brave_extension_id].position_ = 1;
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
@@ -296,9 +299,23 @@ void BraveActionsContainer::UpdateActionState(const std::string& id) {
     actions_[id].view_controller_->UpdateState();
 }
 
+void BraveActionsContainer::AddActionViewForShields() {
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV2)) {
+    shields_action_btn_ =
+        AddChildViewAt(std::make_unique<BraveShieldsActionView>(), 1);
+    shields_action_btn_->SetPreferredSize(GetToolbarActionSize());
+    shields_action_btn_->Init();
+  }
+}
+
 void BraveActionsContainer::Update() {
   // Update state of each action and also determine if there are any buttons to
   // show
+  if (shields_action_btn_) {
+    shields_action_btn_->Update();
+  }
+
   bool can_show = false;
   for (auto const& pair : actions_) {
     if (pair.second.view_controller_)

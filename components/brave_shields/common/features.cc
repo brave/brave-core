@@ -47,5 +47,8 @@ const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
 // load the cosmetic filter rules using sync ipc
 const base::Feature kCosmeticFilteringSyncLoad{
     "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
+// When enabled, a mojom version of the panel will render
+const base::Feature kBraveShieldsPanelV2{"BraveShieldsPanelV2",
+                                         base::FEATURE_DISABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace brave_shields
