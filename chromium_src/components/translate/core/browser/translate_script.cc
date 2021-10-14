@@ -5,6 +5,7 @@
 
 #include "components/translate/core/browser/translate_script.h"
 
+#include "base/strings/strcat.h"
 #include "brave/components/translate/core/browser/brave_translate_features.h"
 
 #define TranslateScript ChromiumTranslateScript
@@ -47,8 +48,9 @@ void TranslateScript::OnScriptFetchComplete(bool success,
     ChromiumTranslateScript::OnScriptFetchComplete(false, std::string());
     return;
   }
-  const std::string new_data = kRedirectAllRequestsToSecurityOrigin + data;
-  DCHECK(!new_data.empty());
+
+  const std::string new_data =
+      base::StrCat({kRedirectAllRequestsToSecurityOrigin, data});
   ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);
 }
 

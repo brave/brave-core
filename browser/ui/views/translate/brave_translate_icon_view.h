@@ -11,9 +11,7 @@
 #include "chrome/browser/ui/views/translate/translate_icon_view.h"
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/translate/core/browser/buildflags.h"
 #include "chrome/common/extensions/webstore_install_result.h"
-#include "extensions/buildflags/buildflags.h"
 
 // The purpose of this subclass is to hide translate icon and translate bubble
 // when Google Translate extension is installed. This subclass also takes care

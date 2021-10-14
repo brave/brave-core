@@ -28,7 +28,7 @@ bool IsBraveTranslateGoAvailable();
 
 bool IsTranslateExtensionAvailable();
 
-bool UseBraveTranslateReplay();
+bool UseBraveTranslateRelay();
 
 bool ShouldUpdateLanguagesList();
 

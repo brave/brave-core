@@ -10,11 +10,11 @@ class BrowserContext;
 }
 namespace translate {
 
-bool TranslateExtensionIsEnabled(content::BrowserContext* context);
+bool IsTranslateExtensionEnabled(content::BrowserContext* context);
 
 bool ShouldOfferExtensionInstation(content::BrowserContext* context);
 
-bool InternalTranslationIsEnabled(content::BrowserContext* context);
+bool IsInternalTranslationEnabled(content::BrowserContext* context);
 
 }  // namespace translate
 

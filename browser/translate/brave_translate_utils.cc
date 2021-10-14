@@ -16,7 +16,7 @@
 
 namespace translate {
 
-bool TranslateExtensionIsEnabled(content::BrowserContext* context) {
+bool IsTranslateExtensionEnabled(content::BrowserContext* context) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   return extensions::ExtensionRegistry::Get(context)
       ->enabled_extensions()
@@ -29,11 +29,11 @@ bool TranslateExtensionIsEnabled(content::BrowserContext* context) {
 bool ShouldOfferExtensionInstation(content::BrowserContext* context) {
   if (!IsTranslateExtensionAvailable())
     return false;
-  return !TranslateExtensionIsEnabled(context);
+  return !IsTranslateExtensionEnabled(context);
 }
 
-bool InternalTranslationIsEnabled(content::BrowserContext* context) {
-  return !TranslateExtensionIsEnabled(context) && IsBraveTranslateGoAvailable();
+bool IsInternalTranslationEnabled(content::BrowserContext* context) {
+  return !IsTranslateExtensionEnabled(context) && IsBraveTranslateGoAvailable();
 }
 
 }  // namespace translate

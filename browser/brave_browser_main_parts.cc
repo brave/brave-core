@@ -171,7 +171,7 @@ void BraveBrowserMainParts::PreProfileInit() {
   // If enable then redirect the most of translate requests to the Brave
   // endpoints. The rest will be redirected in
   // OnBeforeURLRequest_TranslateRedirectWork().
-  if (translate::UseBraveTranslateReplay()) {
+  if (translate::UseBraveTranslateRelay()) {
     command_line->AppendSwitchASCII(
         translate::switches::kTranslateSecurityOrigin,
         translate::kBraveTranslateOrigin);

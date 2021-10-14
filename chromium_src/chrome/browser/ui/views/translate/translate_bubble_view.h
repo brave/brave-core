@@ -20,9 +20,9 @@
                                                                            \
  public:                                                                   \
   virtual int GetTitleBeforeTranslateTitle();
-#define MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW MakeTranslateBubbleView
 
 class BraveTranslateBubbleView;
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.h"
+#undef BRAVE_TRANSLATE_BUBBLE_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_

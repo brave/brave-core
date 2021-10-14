@@ -30,6 +30,9 @@ TranslateBubbleView* TranslateBubbleView::MakeTranslateBubbleView(
   return new TranslateBubbleView(std::forward<Args>(args)...);
 }
 
+#define ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO) || \
     BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
@@ -37,5 +40,12 @@ TranslateBubbleView* TranslateBubbleView::MakeTranslateBubbleView(
   GetTitleBeforeTranslateTitle()
 #define MAKE_TRANSLATE_BUBBLE_VIEW_ MakeTranslateBubbleView
 #endif
+#define MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW MakeTranslateBubbleView
 
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"
+
+#undef MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW
+#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#undef ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE

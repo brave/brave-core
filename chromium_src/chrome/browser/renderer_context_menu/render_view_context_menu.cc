@@ -383,7 +383,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   const bool remove_translate =
-      !translate::InternalTranslationIsEnabled(GetProfile());
+      !translate::IsInternalTranslationEnabled(GetProfile());
 #else
   const bool remove_translate = true;
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)

@@ -20,7 +20,7 @@ const base::Feature kUseBraveTranslateGo{
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
 const base::FeatureParam<bool> kUseBraveReplayParam{&kUseBraveTranslateGo,
-                                                    "use-brave-replay", true};
+                                                    "use-brave-relay", true};
 
 }  // namespace features
 
@@ -40,7 +40,7 @@ bool IsTranslateExtensionAvailable() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 }
 
-bool UseBraveTranslateReplay() {
+bool UseBraveTranslateRelay() {
   return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
 }
 
