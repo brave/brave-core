@@ -255,6 +255,7 @@ const CryptoStoryView = (props: Props) => {
           selectedTimeline={selectedTimeline}
           selectedPortfolioTimeline={selectedPortfolioTimeline}
           onSelectAsset={onSelectAsset}
+          onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
           fetchFullTokenList={fetchFullTokenList}
@@ -289,6 +290,7 @@ const CryptoStoryView = (props: Props) => {
           onViewPrivateKey={onViewPrivateKey}
           goBack={goBack}
           onSelectAccount={onSelectAccount}
+          onSelectAsset={onSelectAsset}
           privateKey={privateKey}
           transactions={transactions}
           selectedNetwork={selectedNetwork}

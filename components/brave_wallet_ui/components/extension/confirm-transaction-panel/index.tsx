@@ -105,7 +105,7 @@ function ConfirmTransactionPanel (props: Props) {
   const siteURL = 'https://app.compound.finance'
 
   const findSpotPrice = usePricing(transactionSpotPrices)
-  const parseTransaction = useTransactionParser(selectedNetwork, transactionSpotPrices, visibleTokens)
+  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
   const transactionDetails = parseTransaction(transactionInfo)
 
   React.useEffect(() => {
@@ -139,12 +139,12 @@ function ConfirmTransactionPanel (props: Props) {
   }
 
   const fromOrb = React.useMemo(() => {
-    return create({ seed: transactionInfo.fromAddress.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionInfo])
+    return create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [transactionDetails])
 
   const toOrb = React.useMemo(() => {
-    return create({ seed: transactionDetails.sendTo.toLowerCase(), size: 8, scale: 10 }).toDataURL()
-  }, [transactionInfo])
+    return create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 10 }).toDataURL()
+  }, [transactionDetails])
 
   const onToggleEditGas = () => {
     setIsEditing(!isEditing)
@@ -172,7 +172,7 @@ function ConfirmTransactionPanel (props: Props) {
             <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
             {transactionInfo.txType === TransactionType.ERC20Approve &&
               <AddressAndOrb>
-                <AddressText>{reduceAddress(transactionDetails.sendTo)}</AddressText>
+                <AddressText>{reduceAddress(transactionDetails.recipient)}</AddressText>
                 <AccountCircle orb={toOrb} />
               </AddressAndOrb>
             }
@@ -194,11 +194,11 @@ function ConfirmTransactionPanel (props: Props) {
               <FromToRow>
                 <AccountNameText>{reduceAccountDisplayName(findAccountName(transactionInfo.fromAddress) ?? '', 11)}</AccountNameText>
                 <ArrowIcon />
-                <AccountNameText>{reduceAddress(transactionDetails.sendTo)}</AccountNameText>
+                <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
               </FromToRow>
               <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
-              <TransactionAmmountBig>{transactionDetails.sendAmount} {transactionDetails.symbol}</TransactionAmmountBig>
-              <TransactionFiatAmountBig>${transactionDetails.sendAmountFiat}</TransactionFiatAmountBig>
+              <TransactionAmmountBig>{transactionDetails.value} {transactionDetails.symbol}</TransactionAmmountBig>
+              <TransactionFiatAmountBig>${transactionDetails.fiatValue}</TransactionFiatAmountBig>
             </>
           )}
           <TabRow>
@@ -245,8 +245,8 @@ function ConfirmTransactionPanel (props: Props) {
                       <TransactionTitle>{getLocale('braveWalletConfirmTransactionTotal')}</TransactionTitle>
                       <SectionRightColumn>
                         <TransactionText>{getLocale('braveWalletConfirmTransactionAmountGas')}</TransactionText>
-                        <GrandTotalText>{transactionDetails.sendAmount} {transactionDetails.symbol} + {transactionDetails.gasFee} {selectedNetwork.symbol}</GrandTotalText>
-                        <TransactionText>${transactionDetails.totalAmountFiat}</TransactionText>
+                        <GrandTotalText>{transactionDetails.value} {transactionDetails.symbol} + {transactionDetails.gasFee} {selectedNetwork.symbol}</GrandTotalText>
+                        <TransactionText>${transactionDetails.fiatTotal}</TransactionText>
                       </SectionRightColumn>
                     </SectionRow>
                   </>
