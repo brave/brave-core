@@ -27,6 +27,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/theme_provider.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/image_view.h"
@@ -182,7 +184,7 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
   footnote_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kCenter);
   footnote->SetBackground(views::CreateThemedSolidBackground(
-      footnote, ui::NativeTheme::kColorId_DialogBackground));
+      footnote, GetColorProvider()->GetColor(ui::kColorDialogBackground)));
 
   const std::u16string setting_text = l10n_util::GetStringUTF16(
       IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART);

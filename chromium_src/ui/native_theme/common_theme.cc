@@ -11,7 +11,6 @@
 
 namespace {
   const SkColor kBraveColorBrand = SkColorSetRGB(0xfb, 0x54, 0x2b);
-  const SkColor kBraveColorOrange300 = SkColorSetRGB(0xFF, 0x97, 0x7D);
 }  // namespace
 
 
@@ -22,31 +21,12 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
                     NativeTheme::ColorScheme color_scheme) {
   if (color_scheme == NativeTheme::ColorScheme::kDefault)
     color_scheme = base_theme->GetDefaultSystemColorScheme();
-  const bool is_dark = (color_scheme == NativeTheme::ColorScheme::kDark);
   switch (color_id) {
-    case NativeTheme::kColorId_ButtonEnabledColor:
-      return is_dark ? SK_ColorWHITE
-                    : SkColorSetRGB(0x3b, 0x3e, 0x4f);
     case NativeTheme::kColorId_ProminentButtonColor:
-    case NativeTheme::kColorId_ProminentButtonFocusedColor:
     case NativeTheme::kColorId_FocusedBorderColor:
       return kBraveColorBrand;
-    case NativeTheme::kColorId_ProminentButtonDisabledColor:
-      return gfx::kGoogleGrey800;
     case NativeTheme::kColorId_TextOnProminentButtonColor:
       return SK_ColorWHITE;
-    case NativeTheme::kColorId_ButtonBorderColor:
-      return SkColorSetRGB(0xc2, 0xc4, 0xcf);
-    case NativeTheme::kColorId_LabelEnabledColor: {
-      SkColor button = GetAuraColor(NativeTheme::kColorId_ButtonEnabledColor,
-          base_theme);
-      return button;
-    }
-    case NativeTheme::kColorId_LinkEnabled:
-    case NativeTheme::kColorId_LinkPressed:
-      return is_dark ? kBraveColorOrange300 : kBraveColorBrand;
-    case NativeTheme::kColorId_TextfieldSelectionBackgroundFocused:
-      return is_dark ? gfx::kGoogleBlue800 : gfx::kGoogleBlue200;
     default:
       break;
   }

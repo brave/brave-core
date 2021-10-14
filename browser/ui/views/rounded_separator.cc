@@ -12,6 +12,8 @@
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/native_theme/native_theme.h"
 
@@ -53,8 +55,7 @@ void RoundedSeparator::GetAccessibleNodeData(ui::AXNodeData* node_data) {
 void RoundedSeparator::OnPaint(gfx::Canvas* canvas) {
   SkColor color = overridden_color_
                       ? *overridden_color_
-                      : GetNativeTheme()->GetSystemColor(
-                            ui::NativeTheme::kColorId_SeparatorColor);
+                      : GetColorProvider()->GetColor(ui::kColorSeparator);
 
   float dsf = canvas->UndoDeviceScaleFactor();
 
