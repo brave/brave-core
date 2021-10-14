@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LockIcon from '../../../assets/svg-icons/graphic-lock-icon.svg'
+import SecureIcon from '../../../assets/svg-icons/onboarding/secure-your-crypto.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -21,22 +21,13 @@ export const Title = styled.span`
   margin-bottom: 12px;
 `
 
-export const IconBackground = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 162px;
-  height: 162px;
-  border-radius: 100%;
-  background-color: ${(p) => p.theme.color.background01};
-  margin-bottom: 24px;
-`
-
-export const PageIcon = styled.div`
-  width: 103px;
-  height: 88px;
-  background: url(${LockIcon});
+export const PanelIcon = styled.div`
+  width: 100px;
+  height: 100px;
+  background: url(${SecureIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-bottom: 10px;
 `
 
 export const Column = styled.div`
