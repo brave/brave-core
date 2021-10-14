@@ -1,8 +1,11 @@
 const path = require('path')
+const fs = require('fs')
 
 let dirName = __dirname
-if (process.platform === 'win32' && dirName.length >= 2 && dirName[1] == ':') {
-  dirName = dirName[0].toUpperCase() + dirName.substr(1)
+
+// Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
+if (process.platform === 'win32') {
+  dirName = fs.realpathSync.native(dirName)
 }
 
 module.exports = path.resolve(dirName, '..', '..', '..', '..', '..')
