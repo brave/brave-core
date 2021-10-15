@@ -106,7 +106,8 @@ function Container (props: Props) {
     selectedPanel,
     networkPayload,
     swapQuote,
-    swapError
+    swapError,
+    signMessageData
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -345,11 +346,17 @@ function Container (props: Props) {
   }
 
   const onCancelSigning = () => {
-    // Logic here to cancel signing
+    props.walletPanelActions.signMessageProcessed({
+      approved: false,
+      id: signMessageData.id
+    })
   }
 
   const onSignData = () => {
-    // Logic here to sign a transaction
+    props.walletPanelActions.signMessageProcessed({
+      approved: true,
+      id: signMessageData.id
+    })
   }
 
   const onApproveAddNetwork = () => {
@@ -489,13 +496,13 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <SignPanel
-            message='Pass Sign Transaction Message Here'
+            message={signMessageData.message}
             onCancel={onCancelSigning}
             onSign={onSignData}
             selectedAccount={selectedAccount}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             // Pass a boolean here if the signing method is risky
-            showWarning={true}
+            showWarning={false}
           />
         </LongWrapper>
       </PanelWrapper>

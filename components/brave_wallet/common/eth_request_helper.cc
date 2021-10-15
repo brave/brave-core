@@ -222,4 +222,27 @@ bool ParseEthSignParams(const std::string& json,
   return true;
 }
 
+bool ParsePersonalSignParams(const std::string& json,
+                             std::string* address,
+                             std::string* message) {
+  if (!address || !message)
+    return false;
+
+  // personal_sign allows extra params
+  auto list = GetParamsList(json);
+  if (!list || list->size() < 2)
+    return false;
+
+  // personal_sign has the reversed order
+  const std::string* message_str = (*list)[0].GetIfString();
+  const std::string* address_str = (*list)[1].GetIfString();
+  if (!address_str || !message_str)
+    return false;
+
+  *address = *address_str;
+  *message = *message_str;
+
+  return true;
+}
+
 }  // namespace brave_wallet

@@ -27,6 +27,9 @@ bool NormalizeEthRequest(const std::string& input_json,
 bool ParseEthSignParams(const std::string& json,
                         std::string* address,
                         std::string* message);
+bool ParsePersonalSignParams(const std::string& json,
+                             std::string* address,
+                             std::string* message);
 
 }  // namespace brave_wallet
 

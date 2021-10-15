@@ -33,7 +33,7 @@ bool EthAddress::operator!=(const EthAddress& other) const {
 // static
 EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
   if (public_key.size() != 64) {
-    LOG(ERROR) << __func__ << ": public key size should be 64 bytes";
+    VLOG(1) << __func__ << ": public key size should be 64 bytes";
     return EthAddress();
   }
 
@@ -47,21 +47,29 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
 
 // static
 EthAddress EthAddress::FromHex(const std::string& input) {
-  if (!IsValidHexString(input)) {
-    LOG(ERROR) << __func__ << ": input is not a valid hex representation";
+  if (!IsValidAddress(input))
     return EthAddress();
-  }
+
   std::vector<uint8_t> bytes;
   if (!base::HexStringToBytes(input.data() + 2, &bytes)) {
-    LOG(ERROR) << __func__ << ": base::HexStringToBytes failed";
-    return EthAddress();
-  }
-  if (bytes.size() != ADDRESS_LEN) {
-    LOG(ERROR) << __func__ << ": input should be 20 bytes long";
+    VLOG(1) << __func__ << ": base::HexStringToBytes failed";
     return EthAddress();
   }
 
   return EthAddress(bytes);
+}
+
+// static
+bool EthAddress::IsValidAddress(const std::string& input) {
+  if (!IsValidHexString(input)) {
+    VLOG(1) << __func__ << ": input is not a valid hex representation";
+    return false;
+  }
+  if (input.size() - 2 != ADDRESS_LEN * 2) {
+    VLOG(1) << __func__ << ": input should be 20 bytes long";
+    return false;
+  }
+  return true;
 }
 
 std::string EthAddress::ToHex() const {

@@ -162,6 +162,12 @@ export interface PriceDataObjectType {
   close: number
 }
 
+export interface SignMessageData {
+  id: number
+  address: string
+  message: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
@@ -200,6 +206,7 @@ export interface PanelState {
   networkPayload: EthereumChain
   swapQuote?: SwapResponse
   swapError?: SwapErrorResponse
+  signMessageData: SignMessageData
 }
 
 export interface PageState {
@@ -711,6 +718,12 @@ export interface GetActiveOriginReturnInfo {
   origin: string
 }
 
+export interface GetPendingSignMessageRequestReturnInfo {
+  id: number
+  address: string
+  message: string
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
@@ -721,6 +734,8 @@ export interface BraveWalletService {
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
   resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
   getActiveOrigin: () => Promise<GetActiveOriginReturnInfo>
+  getPendingSignMessageRequest: () => Promise<GetPendingSignMessageRequestReturnInfo>
+  notifySignMessageRequestProcessed: (approved: boolean, id: number) => Promise<void>
 }
 
 export interface RecoveryObject {

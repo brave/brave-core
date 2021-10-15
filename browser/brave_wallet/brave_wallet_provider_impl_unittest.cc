@@ -9,15 +9,18 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
@@ -46,6 +49,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
@@ -102,12 +106,16 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         eth_json_rpc_controller(), keyring_controller(),
         asset_ratio_controller_.get(), std::move(tx_state_manager),
         std::move(nonce_tracker), std::move(pending_tx_tracker), prefs()));
+    brave_wallet_service_ =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            browser_context());
 
     eth_json_rpc_controller_->SetNetwork("0x1");
     base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
         eth_json_rpc_controller()->MakeRemote(),
         eth_tx_controller()->MakeRemote(), keyring_controller_,
+        brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
         prefs());
@@ -159,7 +167,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         ContentSetting::CONTENT_SETTING_ALLOW);
   }
 
-  void SignMessage(const std::string& address,
+  void SignMessage(absl::optional<bool> user_approved,
+                   const std::string& address,
                    const std::string& message,
                    std::string* signature_out,
                    int* error_out,
@@ -177,7 +186,34 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
           *error_message_out = error_message;
           run_loop.Quit();
         }));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    browser_task_environment_.RunUntilIdle();
+    if (user_approved)
+      brave_wallet_service_->NotifySignMessageRequestProcessed(
+          *user_approved, provider()->sign_message_id_ - 1);
     run_loop.Run();
+  }
+
+  // current request id will be returned
+  int SignMessageRequest(const std::string& address,
+                         const std::string& message) {
+    provider()->SignMessage(
+        address, message,
+        base::DoNothing::Once<const std::string&, int, const std::string&>());
+    base::RunLoop().RunUntilIdle();
+    return provider()->sign_message_id_ - 1;
+  }
+
+  size_t GetSignMessageQueueSize() const {
+    size_t request_queue_size =
+        brave_wallet_service_->sign_message_requests_.size();
+    EXPECT_EQ(brave_wallet_service_->sign_message_callbacks_.size(),
+              request_queue_size);
+    return request_queue_size;
+  }
+
+  BraveWalletService::SignMessageRequest GetSignMessageQueueFront() const {
+    return brave_wallet_service_->sign_message_requests_.front();
   }
 
   std::vector<std::string> GetAddresses() {
@@ -221,6 +257,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
+  BraveWalletService* brave_wallet_service_;
 
  private:
   std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
@@ -265,9 +302,10 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
-  BraveWalletProviderImpl provider_impl(eth_json_rpc_controller()->MakeRemote(),
-                                        eth_tx_controller()->MakeRemote(),
-                                        keyring_controller(), nullptr, prefs());
+  BraveWalletProviderImpl provider_impl(
+      eth_json_rpc_controller()->MakeRemote(),
+      eth_tx_controller()->MakeRemote(), keyring_controller(),
+      brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
@@ -576,14 +614,23 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   std::string signature;
   int error;
   std::string error_message;
-  SignMessage("1234", "0x1234", &signature, &error, &error_message);
+  SignMessage(absl::nullopt, "1234", "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  const std::string address = "0x1234";
-  SignMessage(address, "0x1234", &signature, &error, &error_message);
+  SignMessage(absl::nullopt, "0x12345678", "0x1234", &signature, &error,
+              &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  const std::string address = "0x1234567890123456789012345678901234567890";
+  SignMessage(absl::nullopt, address, "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
   EXPECT_EQ(error_message,
@@ -593,26 +640,78 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   // No permission
   const std::vector<std::string> addresses = GetAddresses();
   ASSERT_FALSE(address.empty());
-  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  SignMessage(absl::nullopt, addresses[0], "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
   EXPECT_EQ(error_message,
             l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
                                       base::ASCIIToUTF16(addresses[0])));
-
   NavigateAndAddEthereumPermission();
-  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  SignMessage(true, addresses[0], "0x1234", &signature, &error, &error_message);
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(error, 0);
   EXPECT_TRUE(error_message.empty());
 
+  // User reject request
+  SignMessage(false, addresses[0], "0x1234", &signature, &error,
+              &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
   keyring_controller()->Lock();
 
-  SignMessage(addresses[0], "0x1234", &signature, &error, &error_message);
+  SignMessage(true, addresses[0], "0x1234", &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
                                IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
+  CreateWalletAndAccount();
+  NavigateAndAddEthereumPermission();
+  const std::vector<std::string> addresses = GetAddresses();
+
+  const std::string message1 = "0xbeef01";
+  const std::string message2 = "0xbeef02";
+  int id1 = SignMessageRequest(addresses[0], message1);
+  int id2 = SignMessageRequest(addresses[0], message2);
+
+  std::vector<uint8_t> message_bytes1;
+  std::vector<uint8_t> message_bytes2;
+  ASSERT_TRUE(base::HexStringToBytes(message1.substr(2), &message_bytes1));
+  ASSERT_TRUE(base::HexStringToBytes(message2.substr(2), &message_bytes2));
+  const std::string message1_in_queue(message_bytes1.begin(),
+                                      message_bytes1.end());
+  const std::string message2_in_queue(message_bytes2.begin(),
+                                      message_bytes2.end());
+
+  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message1_in_queue);
+
+  // wrong order
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message1_in_queue);
+
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  EXPECT_EQ(GetSignMessageQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message2_in_queue);
+
+  // old id
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id1);
+  EXPECT_EQ(GetSignMessageQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message2_in_queue);
+
+  brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
+  EXPECT_EQ(GetSignMessageQueueSize(), 0u);
 }
 
 }  // namespace brave_wallet

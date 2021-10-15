@@ -7,7 +7,11 @@
 import { createReducer } from 'redux-act'
 import { PanelState, SwapErrorResponse, SwapResponse } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
-import { ShowConnectToSitePayload, EthereumChainPayload } from '../constants/action_types'
+import {
+  ShowConnectToSitePayload,
+  EthereumChainPayload,
+  SignMessagePayload
+} from '../constants/action_types'
 import { PanelTitles } from '../../options/panel-titles'
 
 const defaultState: PanelState = {
@@ -23,7 +27,12 @@ const defaultState: PanelState = {
     iconUrls: [], symbol: 'ETH', symbolName: 'Ethereum', decimals: 18, isEip1559: true
   },
   swapQuote: undefined,
-  swapError: undefined
+  swapError: undefined,
+  signMessageData: {
+    id: -1,
+    address: '',
+    message: ''
+  }
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -66,6 +75,13 @@ reducer.on(PanelActions.setPanelSwapError, (state: any, payload?: SwapErrorRespo
   return {
     ...state,
     swapError: payload
+  }
+})
+
+reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload) => {
+  return {
+    ...state,
+    signMessageData: payload
   }
 })
 
