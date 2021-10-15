@@ -37,7 +37,7 @@ base::Value GetDefaultUserAssets() {
   bat.SetKey("is_erc721", base::Value(false));
   bat.SetKey("decimals", base::Value(18));
   bat.SetKey("visible", base::Value(true));
-  bat.SetKey("logo", base::Value("bat.svg"));
+  bat.SetKey("logo", base::Value("bat.png"));
 
   // Show ETH and BAT by default for mainnet, and ETH for other known networks.
   base::Value user_assets_pref(base::Value::Type::DICTIONARY);
