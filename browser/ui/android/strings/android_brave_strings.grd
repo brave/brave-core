@@ -2374,6 +2374,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CRYPTO_WALLET_ERROR_UNKNOWN_ERROR" desc="Error on crypto wallets">
       Unknown error
     </message>
+    <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
+      Private Key
+    </message>
     </messages>
   </release>
 </grit>
