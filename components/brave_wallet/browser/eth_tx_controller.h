@@ -10,6 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -31,7 +32,10 @@ class AssetRatioController;
 class EthJsonRpcController;
 class KeyringController;
 
-class EthTxController : public KeyedService, public mojom::EthTxController {
+class EthTxController : public KeyedService,
+                        public mojom::EthTxController,
+                        public mojom::KeyringControllerObserver,
+                        public EthBlockTracker::Observer {
  public:
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
@@ -100,6 +104,8 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
       const std::string& tx_meta_id);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, TestSubmittedToConfirmed);
+
   void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
@@ -140,6 +146,22 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                       std::unique_ptr<Eip1559Transaction> tx,
                       AddUnapprovedTransactionCallback callback,
                       mojom::GasEstimation1559Ptr gas_estimation);
+  void CheckIfBlockTrackerShouldRun();
+  void UpdatePendingTransactions();
+
+  // KeyringControllerObserver:
+  void KeyringCreated() override;
+  void KeyringRestored() override;
+  void Locked() override;
+  void Unlocked() override;
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+  void AutoLockMinutesChanged() override {}
+  void SelectedAccountChanged() override {}
+
+  // EthBlockTracker::Observer:
+  void OnLatestBlock(uint256_t block_num) override {}
+  void OnNewBlock(uint256_t block_num) override;
 
   EthJsonRpcController* rpc_controller_;   // NOT OWNED
   KeyringController* keyring_controller_;  // NOT OWNED
@@ -147,9 +169,13 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  std::unique_ptr<EthBlockTracker> eth_block_tracker_;
+  bool known_no_pending_tx = false;
 
   mojo::RemoteSet<mojom::EthTxControllerObserver> observers_;
   mojo::ReceiverSet<mojom::EthTxController> receivers_;
+  mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
+      keyring_observer_receiver_{this};
 
   base::WeakPtrFactory<EthTxController> weak_factory_;
 };

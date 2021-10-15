@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -116,12 +117,19 @@ EthTxController::EthTxController(
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
       pending_tx_tracker_(std::move(pending_tx_tracker)),
+      eth_block_tracker_(std::make_unique<EthBlockTracker>(rpc_controller)),
       weak_factory_(this) {
   DCHECK(rpc_controller_);
   DCHECK(keyring_controller_);
+  CheckIfBlockTrackerShouldRun();
+  eth_block_tracker_->AddObserver(this);
+  keyring_controller_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
-EthTxController::~EthTxController() = default;
+EthTxController::~EthTxController() {
+  eth_block_tracker_->RemoveObserver(this);
+}
 
 mojo::PendingRemote<mojom::EthTxController> EthTxController::MakeRemote() {
   mojo::PendingRemote<mojom::EthTxController> remote;
@@ -537,7 +545,7 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
   NotifyTransactionStatusChanged(meta.get());
 
   if (status) {
-    pending_tx_tracker_->UpdatePendingTransactions();
+    UpdatePendingTransactions();
   }
 }
 
@@ -733,6 +741,48 @@ void EthTxController::SetGasFeeAndLimitForUnapprovedTransaction(
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(
     const std::string& tx_meta_id) {
   return tx_state_manager_->GetTx(tx_meta_id);
+}
+
+void EthTxController::CheckIfBlockTrackerShouldRun() {
+  bool locked = keyring_controller_->IsLocked();
+  bool running = eth_block_tracker_->IsRunning();
+  if (!locked && !running) {
+    eth_block_tracker_->Start(
+        base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds));
+  } else if ((locked || known_no_pending_tx) && running) {
+    eth_block_tracker_->Stop();
+  }
+}
+
+void EthTxController::OnNewBlock(uint256_t block_num) {
+  UpdatePendingTransactions();
+}
+
+void EthTxController::UpdatePendingTransactions() {
+  size_t num_pending;
+  if (pending_tx_tracker_->UpdatePendingTransactions(&num_pending)) {
+    known_no_pending_tx = num_pending == 0;
+    if (known_no_pending_tx) {
+      CheckIfBlockTrackerShouldRun();
+    }
+  }
+}
+
+void EthTxController::Locked() {
+  CheckIfBlockTrackerShouldRun();
+}
+
+void EthTxController::Unlocked() {
+  CheckIfBlockTrackerShouldRun();
+  UpdatePendingTransactions();
+}
+
+void EthTxController::KeyringCreated() {
+  UpdatePendingTransactions();
+}
+
+void EthTxController::KeyringRestored() {
+  UpdatePendingTransactions();
 }
 
 }  // namespace brave_wallet
