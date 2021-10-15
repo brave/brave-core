@@ -73,8 +73,8 @@ export interface Props {
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   addUserAssetError: boolean
   selectedNetwork: EthereumChain
   networkList: EthereumChain[]

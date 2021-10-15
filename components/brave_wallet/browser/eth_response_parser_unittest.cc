@@ -138,20 +138,21 @@ TEST(EthResponseParserUnitTest, ParseEthGetTransactionReceiptNullContractAddr) {
   EXPECT_TRUE(receipt.status);
 }
 
-TEST(EthResponseParserUnitTest, ParseEnsAddress) {
+TEST(EthResponseParserUnitTest, ParseAddressResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41\"}";
   std::string addr;
-  EXPECT_TRUE(ParseEnsAddress(json, &addr));
-  EXPECT_EQ(addr, "0x4976fb03c32e5b8cfe2b6ccb31c09ba78ebaba41");
+  EXPECT_TRUE(ParseAddressResult(json, &addr));
+  // Will be converted to checksum address.
+  EXPECT_EQ(addr, "0x4976fb03C32e5B8cfe2b6cCB31c09Ba78EBaBa41");
 
   // Non-expected address size.
   addr = "";
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000004976fb03c32e5b8cfe2b6ccb31c09ba78eba\"}";
-  EXPECT_FALSE(ParseEnsAddress(json, &addr));
+  EXPECT_FALSE(ParseAddressResult(json, &addr));
   EXPECT_TRUE(addr.empty());
 }
 

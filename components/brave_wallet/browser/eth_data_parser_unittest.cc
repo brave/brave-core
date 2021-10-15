@@ -113,6 +113,47 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   ASSERT_EQ(tx_args.size(), 0UL);
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  ASSERT_TRUE(GetTransactionInfoFromData(
+      "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
+      "000000000000000000000000000000000000000000000000000000000f",
+      &tx_type, &tx_params, &tx_args));
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "address");
+  EXPECT_EQ(tx_params[1], "address");
+  EXPECT_EQ(tx_params[2], "uint256");
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0], "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f");
+  EXPECT_EQ(tx_args[1], "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a");
+  EXPECT_EQ(tx_args[2], "0xf");
+
+  // Missing a char for the last param
+  EXPECT_FALSE(GetTransactionInfoFromData(
+      "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
+      "000000000000000000000000000000000000000000000000000000000",
+      &tx_type, &tx_params, &tx_args));
+  // Missing the entire last param
+  EXPECT_FALSE(GetTransactionInfoFromData(
+      "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a",
+      &tx_type, &tx_params, &tx_args));
+  // No params
+  EXPECT_FALSE(
+      GetTransactionInfoFromData("0x23b872dd", &tx_type, &tx_params, &tx_args));
+  // Extra data
+  EXPECT_FALSE(GetTransactionInfoFromData(
+      "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
+      "000000000000000000000000000000000000000000000000000000000f00",
+      &tx_type, &tx_params, &tx_args));
+}
+
 TEST(EthDataParser, GetTransactionInfoFromDataOther) {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;

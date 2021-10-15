@@ -56,8 +56,8 @@ export interface Props {
   transactionSpotPrices: AssetPriceInfo[]
   hasImportError: boolean
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void

@@ -30,6 +30,14 @@ namespace {
 
 const char token_list_json[] = R"(
   {
+   "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+    "name": "USD Coin",
+    "logo": "usdc.png",
+    "erc20": true,
+    "erc721": false,
+    "symbol": "USDC",
+    "decimals": 6
+   },
    "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
      "name": "Crypto Kitties",
      "logo": "CryptoKitties-Kitty-13733.svg",
@@ -116,14 +124,14 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bool callback_called = false;
     mojom::ERCTokenPtr token1;
     GetRegistry()->GetTokenByContract(
-        "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F",
         base::BindLambdaForTesting([&](mojom::ERCTokenPtr token) {
           token1_ = std::move(token);
           callback_called = true;
         }));
     base::RunLoop().RunUntilIdle();
     ASSERT_TRUE(callback_called);
-    ASSERT_EQ(token1_->symbol, "CK");
+    ASSERT_EQ(token1_->symbol, "USDC");
 
     callback_called = false;
     mojom::ERCTokenPtr token2;
@@ -136,6 +144,18 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
     ASSERT_TRUE(callback_called);
     ASSERT_EQ(token2_->symbol, "UNI");
+
+    callback_called = false;
+    mojom::ERCTokenPtr erc721_token;
+    GetRegistry()->GetTokenByContract(
+        "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+        base::BindLambdaForTesting([&](mojom::ERCTokenPtr token) {
+          erc721_token_ = std::move(token);
+          callback_called = true;
+        }));
+    base::RunLoop().RunUntilIdle();
+    ASSERT_TRUE(callback_called);
+    ASSERT_EQ(erc721_token_->symbol, "CK");
 
     eth_token_ = mojom::ERCToken::New();
     eth_token_->contract_address = "";
@@ -159,6 +179,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
   mojom::ERCTokenPtr GetToken1() { return token1_.Clone(); }
   mojom::ERCTokenPtr GetToken2() { return token2_.Clone(); }
+  mojom::ERCTokenPtr GetErc721Token() { return erc721_token_.Clone(); }
   mojom::ERCTokenPtr GetEthToken() { return eth_token_.Clone(); }
   mojom::ERCTokenPtr GetBatToken() { return bat_token_.Clone(); }
 
@@ -191,12 +212,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
-  void RemoveUserAsset(const std::string& contract_address,
+  void RemoveUserAsset(mojom::ERCTokenPtr token,
                        const std::string& chain_id,
                        bool* callback_called,
                        bool* out_success) {
     *callback_called = false;
-    service_->RemoveUserAsset(contract_address, chain_id,
+    service_->RemoveUserAsset(std::move(token), chain_id,
                               base::BindLambdaForTesting([&](bool success) {
                                 *out_success = success;
                                 *callback_called = true;
@@ -204,13 +225,13 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop().RunUntilIdle();
   }
 
-  void SetUserAssetVisible(const std::string& contract_address,
+  void SetUserAssetVisible(mojom::ERCTokenPtr token,
                            const std::string& chain_id,
                            bool visible,
                            bool* callback_called,
                            bool* out_success) {
     *callback_called = false;
-    service_->SetUserAssetVisible(contract_address, chain_id, visible,
+    service_->SetUserAssetVisible(std::move(token), chain_id, visible,
                                   base::BindLambdaForTesting([&](bool success) {
                                     *out_success = success;
                                     *callback_called = true;
@@ -301,6 +322,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
   mojom::ERCTokenPtr token1_;
   mojom::ERCTokenPtr token2_;
+  mojom::ERCTokenPtr erc721_token_;
   mojom::ERCTokenPtr eth_token_;
   mojom::ERCTokenPtr bat_token_;
 };
@@ -369,11 +391,11 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(token2, tokens[2]);
 
   // Remove token1 from "0x1" and token2 from "0x4" and test GetUserAssets.
-  RemoveUserAsset(token1->contract_address, "0x1", &callback_called, &success);
+  RemoveUserAsset(token1.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  RemoveUserAsset(token2->contract_address, "0x4", &callback_called, &success);
+  RemoveUserAsset(token2.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -422,16 +444,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   EXPECT_EQ(tokens[1], GetBatToken());
 
   callback_called = false;
-  mojom::ERCTokenPtr token;
-  GetRegistry()->GetTokenByContract(
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
-      base::BindLambdaForTesting([&](mojom::ERCTokenPtr ercToken) {
-        token = std::move(ercToken);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  ASSERT_EQ(token->symbol, "CK");
+  mojom::ERCTokenPtr token = GetToken1();
 
   // Token with empty contract address with symbol that's not eth will fail.
   auto token_with_empty_contract_address = token.Clone();
@@ -446,12 +459,12 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
-  // Add Crypto Kitties.
+  // Add token.
   AddUserAsset(token.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  // Check Crypto Kitties is added as expected.
+  // Check token is added as expected.
   GetUserAssets("0x1", &callback_called, &tokens);
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(tokens.size(), 3u);
@@ -528,35 +541,40 @@ TEST_F(BraveWalletServiceUnitTest, RemoveUserAsset) {
   EXPECT_EQ(tokens[1], token2);
 
   // Remove token with invalid contract_address returns false.
-  RemoveUserAsset("eth", "0x1", &callback_called, &success);
-  EXPECT_TRUE(callback_called);
-  EXPECT_FALSE(success);
-
-  // Remove token with invalid network_id returns false.
-  RemoveUserAsset(token1->contract_address, "0x123", &callback_called,
+  auto invalid_eth_token = GetEthToken().Clone();
+  invalid_eth_token->contract_address = "eth";
+  RemoveUserAsset(std::move(invalid_eth_token), "0x1", &callback_called,
                   &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
+  // Remove token with invalid network_id returns false.
+  RemoveUserAsset(token1.Clone(), "0x123", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
   // Returns false when we cannot find the list with network_id.
-  RemoveUserAsset(token1->contract_address, "0x7", &callback_called, &success);
+  RemoveUserAsset(token1.Clone(), "0x7", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
   // Remove non-exist token returns true.
-  RemoveUserAsset(token1->contract_address, "0x4", &callback_called, &success);
+  RemoveUserAsset(token1.Clone(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
   // Remove existing token.
-  RemoveUserAsset(token2->contract_address, "0x1", &callback_called, &success);
+  RemoveUserAsset(token2.Clone(), "0x1", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
   // Lowercase address will be converted to checksum address when removing
   // token.
-  RemoveUserAsset(base::ToLowerASCII(GetBatToken()->contract_address), "0x1",
-                  &callback_called, &success);
+  auto BAT_lower_case_addr = GetBatToken();
+  BAT_lower_case_addr->contract_address =
+      base::ToLowerASCII(BAT_lower_case_addr->contract_address);
+  RemoveUserAsset(std::move(BAT_lower_case_addr), "0x1", &callback_called,
+                  &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -603,42 +621,44 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
   EXPECT_EQ(tokens[1], token2);
 
   // Invalid contract_address return false.
-  SetUserAssetVisible("eth", "0x1", false, &callback_called, &success);
+  auto invalid_eth = GetEthToken();
+  invalid_eth->contract_address = "eth";
+  SetUserAssetVisible(std::move(invalid_eth), "0x1", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
   // Invalid chain_id return false.
-  SetUserAssetVisible(token1->contract_address, "0x123", false,
-                      &callback_called, &success);
+  SetUserAssetVisible(token1.Clone(), "0x123", false, &callback_called,
+                      &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
   // List for this network_id is not existed should return false.
-  SetUserAssetVisible(token1->contract_address, "0x3", false, &callback_called,
-                      &success);
+  SetUserAssetVisible(token1.Clone(), "0x3", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
   // No entry with this contract address exists in the list.
-  SetUserAssetVisible(token1->contract_address, "0x4", false, &callback_called,
-                      &success);
+  SetUserAssetVisible(token1.Clone(), "0x4", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_FALSE(success);
 
   // Set visible to false for BAT & token1 in "0x1" and token2 in "0x4".
-  SetUserAssetVisible(token1->contract_address, "0x1", false, &callback_called,
-                      &success);
+  SetUserAssetVisible(token1.Clone(), "0x1", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
   // Lowercase address will be converted to checksum address directly.
-  SetUserAssetVisible(base::ToLowerASCII(GetBatToken()->contract_address),
-                      "0x1", false, &callback_called, &success);
+  auto BAT_lower_case_addr = GetBatToken();
+  BAT_lower_case_addr->contract_address =
+      base::ToLowerASCII(BAT_lower_case_addr->contract_address);
+  SetUserAssetVisible(std::move(BAT_lower_case_addr), "0x1", false,
+                      &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
-  SetUserAssetVisible(token2->contract_address, "0x4", false, &callback_called,
-                      &success);
+  SetUserAssetVisible(token2.Clone(), "0x4", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -725,7 +745,7 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   EXPECT_FALSE(success);
 
   // Test setting visibility of ETH.
-  SetUserAssetVisible("", "0x4", false, &callback_called, &success);
+  SetUserAssetVisible(GetEthToken(), "0x4", false, &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -735,7 +755,7 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   EXPECT_FALSE(tokens[0]->visible);
 
   // Test removing ETH from user asset list.
-  RemoveUserAsset("", "0x4", &callback_called, &success);
+  RemoveUserAsset(GetEthToken(), "0x4", &callback_called, &success);
   EXPECT_TRUE(callback_called);
   EXPECT_TRUE(success);
 
@@ -759,6 +779,68 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(GetEthToken(), tokens[0]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
+  bool success = false;
+  bool callback_called = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
+
+  auto erc721_token_with_empty_token_id = GetErc721Token();
+  auto erc721_token_1 = erc721_token_with_empty_token_id.Clone();
+  erc721_token_1->token_id = "0x1";
+  auto erc721_token_2 = erc721_token_with_empty_token_id.Clone();
+  erc721_token_2->token_id = "0x2";
+
+  // Add ERC721 token without tokenId will fail.
+  AddUserAsset(std::move(erc721_token_with_empty_token_id), "0x4",
+               &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
+  // Add ERC721 token with token_id = 1 should success.
+  AddUserAsset(erc721_token_1.Clone(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  // Add the same token_id should fail.
+  AddUserAsset(erc721_token_1.Clone(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
+  // Add to another chain should success
+  AddUserAsset(erc721_token_1.Clone(), "0x1", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  // Add ERC721 token with token_id = 2 should success.
+  AddUserAsset(erc721_token_2.Clone(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  GetUserAssets("0x4", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
+  EXPECT_EQ(erc721_token_1, tokens[1]);
+  EXPECT_EQ(erc721_token_2, tokens[2]);
+
+  SetUserAssetVisible(erc721_token_1.Clone(), "0x4", false, &callback_called,
+                      &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  RemoveUserAsset(erc721_token_2.Clone(), "0x4", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  auto erc721_token_1_visible_false = erc721_token_1.Clone();
+  erc721_token_1_visible_false->visible = false;
+  GetUserAssets("0x4", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 2u);
+  EXPECT_EQ(GetEthToken(), tokens[0]);
+  EXPECT_EQ(erc721_token_1_visible_false, tokens[1]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {

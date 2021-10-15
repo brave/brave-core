@@ -401,7 +401,15 @@ function Container (props: Props) {
       contractAddress: fromAsset.asset.contractAddress
     })
 
-    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
+    fromAsset.asset.isErc721 && props.walletActions.sendERC721TransferFrom({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: '',
+      contractAddress: fromAsset.asset.contractAddress,
+      tokenId: fromAsset.asset.tokenId ?? ''
+    })
+
+    !fromAsset.asset.isErc721 && !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
       value: toWeiHex(sendAmount, fromAsset.asset.decimals)
@@ -432,8 +440,8 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (contractAddress: string, isVisible: boolean) => {
-    props.walletActions.setUserAssetVisible({ contractAddress, chainId: selectedNetwork.chainId, isVisible })
+  const onSetUserAssetVisible = (token: TokenInfo, isVisible: boolean) => {
+    props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
   const onAddUserAsset = (token: TokenInfo) => {
@@ -446,8 +454,8 @@ function Container (props: Props) {
     })
   }
 
-  const onRemoveUserAsset = (contractAddress: string) => {
-    props.walletActions.removeUserAsset({ contractAddress, chainId: selectedNetwork.chainId })
+  const onRemoveUserAsset = (token: TokenInfo) => {
+    props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 
   const onOpenWalletSettings = () => {
