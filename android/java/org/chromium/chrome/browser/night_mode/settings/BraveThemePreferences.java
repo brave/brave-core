@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.night_mode.ThemeType;
 import org.chromium.chrome.browser.night_mode.WebContentsDarkModeController;
+import org.chromium.chrome.browser.night_mode.WebContentsDarkModeController.AutoDarkSettingsChangeSource;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -69,8 +70,8 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
                         != mWebContentsDarkModeEnabled) {
                     mWebContentsDarkModeEnabled =
                             radioButtonGroupThemePreference.isDarkenWebsitesEnabled();
-                    WebContentsDarkModeController.setGlobalUserSettings(
-                            mWebContentsDarkModeEnabled);
+                    WebContentsDarkModeController.setGlobalUserSettings(mWebContentsDarkModeEnabled,
+                            AutoDarkSettingsChangeSource.THEME_SETTINGS);
                 }
             }
             int theme = (int) newValue;
