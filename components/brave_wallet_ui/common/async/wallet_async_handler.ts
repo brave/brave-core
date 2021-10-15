@@ -186,9 +186,9 @@ async function refreshWalletInfo (store: Store) {
     }))
     const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
-        if (token.isErc721)
+        if (token.isErc721) {
           return ethJsonRpcController.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
-
+        }
         return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))

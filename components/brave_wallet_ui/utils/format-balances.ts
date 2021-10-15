@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 export const formatBalance = (balance: string, decimals: number) => {
-  if (decimals == 0) {
+  if (decimals === 0) {
     const result = new BigNumber(balance)
     return (result.isNaN()) ? '0' : result.toFixed(0)
   }
