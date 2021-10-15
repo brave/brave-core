@@ -831,8 +831,6 @@ class PageWallet extends React.Component<Props, State> {
     const { total } = balance
     const { modalBackup } = ui
 
-    const walletProviderName = utils.getWalletProviderName(externalWallet)
-
     let externalWalletInfo: ExternalWallet | null = null
     const walletStatus = this.getExternalWalletStatus()
     const walletProvider = this.getExternalWalletProvider()
@@ -877,7 +875,6 @@ class PageWallet extends React.Component<Props, State> {
               activeTabId={this.state.activeTabId}
               backupKey={recoveryKey}
               showBackupNotice={this.showBackupNotice()}
-              walletProvider={walletProviderName}
               onTabChange={this.onModalBackupTabChange}
               onClose={this.onModalBackupClose}
               onCopy={this.onModalBackupOnCopy}

@@ -48,7 +48,6 @@ storiesOf('Rewards/Modal', module)
           funds={'55 BAT'}
           activeTabId={store.state.activeTabId}
           showBackupNotice={boolean('Show backup notice?', false)}
-          walletProvider={'Uphold'}
           backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
           error={text('Error', '')}
           onTabChange={onTabChange}
