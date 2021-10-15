@@ -7,7 +7,8 @@ import {
   TransactionListInfo,
   EthereumChain,
   TokenInfo,
-  AssetPriceInfo
+  AssetPriceInfo,
+  TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -155,7 +156,8 @@ function Accounts (props: Props) {
   const transactionList = React.useMemo(() => {
     if (selectedAccount) {
       const foundTransactions = transactions.find((account) => account?.account.address === selectedAccount.address)?.transactions ?? []
-      return foundTransactions
+      return [...foundTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
+        Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
     } else {
       return []
     }

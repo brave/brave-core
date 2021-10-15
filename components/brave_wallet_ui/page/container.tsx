@@ -46,7 +46,7 @@ import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
-import { convertMojoTimeToJS } from '../utils/mojo-time'
+import { convertMojoTimeToJS } from '../utils/datetime-utils'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import {
   HardwareWalletAccount
