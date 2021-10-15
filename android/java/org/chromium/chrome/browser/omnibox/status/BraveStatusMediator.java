@@ -8,8 +8,11 @@ package org.chromium.chrome.browser.omnibox.status;
 import android.content.Context;
 import android.content.res.Resources;
 
+import androidx.annotation.Nullable;
+
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
@@ -30,10 +33,14 @@ public class BraveStatusMediator extends StatusMediator {
             SearchEngineLogoUtils searchEngineLogoUtils,
             OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
             Supplier<Profile> profileSupplier, PageInfoIPHController pageInfoIPHController,
-            WindowAndroid windowAndroid) {
+            WindowAndroid windowAndroid,
+            @Nullable Supplier<MerchantTrustSignalsCoordinator>
+                    merchantTrustSignalsCoordinatorSupplier) {
         super(model, resources, context, urlBarEditingTextStateProvider, isTablet,
                 locationBarDataProvider, permissionDialogController, searchEngineLogoUtils,
-                templateUrlServiceSupplier, profileSupplier, pageInfoIPHController, windowAndroid);
+                templateUrlServiceSupplier, profileSupplier, pageInfoIPHController, windowAndroid,
+
+                merchantTrustSignalsCoordinatorSupplier);
     }
 
     @Override
