@@ -210,7 +210,6 @@ void BindCosmeticFiltersResourcesOnTaskRunner(
       std::move(receiver));
 }
 
-
 void BindCosmeticFiltersResources(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<cosmetic_filters::mojom::CosmeticFiltersResources>
