@@ -10,8 +10,7 @@ import {
   AccountAssetOptionType,
   TokenInfo,
   EthereumChain,
-  TransactionInfo,
-  TransactionType
+  TransactionInfo
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 
@@ -35,6 +34,9 @@ import {
   SelectNetworkDropdown,
   EditVisibleAssetsModal
 } from '../../'
+
+// Hooks
+import { useTransactionParser } from '../../../../common/hooks'
 
 // Styled Components
 import {
@@ -132,6 +134,7 @@ const Portfolio = (props: Props) => {
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
+  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
   const toggleShowNetworkDropdown = () => {
     setShowNetworkDropdown(!showNetworkDropdown)
@@ -227,15 +230,10 @@ const Portfolio = (props: Props) => {
   }, [portfolioHistory, portfolioBalance])
 
   const selectedAssetTransactions = React.useMemo((): TransactionInfo[] => {
-    const list = transactions.map((account) => {
-      return account?.transactions
-    })
-    const combinedList = [].concat.apply([], list)
-    if (selectedAsset?.symbol === selectedNetwork.symbol) {
-      return combinedList.filter((tx: TransactionInfo) => tx.txType === TransactionType.ETHSend || tx.txType === TransactionType.ERC20Approve)
-    } else {
-      return combinedList.filter((tx: TransactionInfo) => tx.txData.baseData.to.toLowerCase() === selectedAsset?.contractAddress.toLowerCase())
-    }
+    return transactions.flatMap((txListInfo) =>
+      (txListInfo?.transactions ?? []).flatMap((tx) =>
+        parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
+    ))
   }, [selectedAsset, transactions])
 
   const findAccount = (address: string): WalletAccountType | undefined => {

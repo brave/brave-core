@@ -34,7 +34,7 @@ import {
   InitializedPayloadType,
   SitePermissionsPayloadType
 } from '../constants/action_types'
-import { convertMojoTimeToJS } from '../../utils/mojo-time'
+import { convertMojoTimeToJS } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
 
