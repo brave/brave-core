@@ -70,6 +70,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
+  onSelectAsset: (token: TokenInfo) => void
   goBack: () => void
 }
 
@@ -84,6 +85,7 @@ function Accounts (props: Props) {
     selectedAccount,
     goBack,
     onSelectAccount,
+    onSelectAsset,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     toggleNav,
@@ -275,8 +277,12 @@ function Accounts (props: Props) {
                   key={transaction?.id}
                   transaction={transaction}
                   account={selectedAccount}
+                  accounts={accounts}
                   transactionSpotPrices={transactionSpotPrices}
                   visibleTokens={userVisibleTokensInfo}
+                  displayAccountName={false}
+                  onSelectAccount={onSelectAccount}
+                  onSelectAsset={onSelectAsset}
                 />
               )}
             </>

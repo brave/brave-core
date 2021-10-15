@@ -303,5 +303,6 @@
     <message name="IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS" desc="Sign message error"><ph name="VALUE">$1<ex>1</ex></ph> is not a valid address</message>
     <message name="IDS_BRAVE_WALLET_UNLOCK_ERROR" desc="Connect hardware wallet panel, error when device unlock failed">Unable to unlock device, try to reconnect</message>
     <message name="IDS_BRAVE_WALLET_UNKNOWN_SCHEME_ERROR" desc="Connect hardware wallet panel, error when requested unsupported scheme for device">Internal error, unknown scheme</message>
+    <message name="IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT" desc="Token approval transaction description">approved</message>
   </if>
 </grit-part>
