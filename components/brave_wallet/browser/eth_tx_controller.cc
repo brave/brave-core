@@ -609,6 +609,41 @@ void EthTxController::MakeERC20ApproveData(
   std::move(callback).Run(true, data_decoded);
 }
 
+void EthTxController::MakeERC721TransferFromData(
+    const std::string& from,
+    const std::string& to,
+    const std::string& token_id,
+    MakeERC721TransferFromDataCallback callback) {
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    VLOG(1) << __FUNCTION__ << ": Could not convert token_id";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::string data;
+  if (!erc721::TransferFrom(from, to, token_id_uint, &data)) {
+    VLOG(1) << __FUNCTION__ << ": Could not make transfer from data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  if (!base::StartsWith(data, "0x")) {
+    VLOG(1) << __FUNCTION__ << ": Invalid format returned from TransferFrom";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::vector<uint8_t> data_decoded;
+  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+    VLOG(1) << __FUNCTION__ << ": Could not decode data";
+    std::move(callback).Run(false, std::vector<uint8_t>());
+    return;
+  }
+
+  std::move(callback).Run(true, data_decoded);
+}
+
 void EthTxController::AddObserver(
     ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) {
   observers_.Add(std::move(observer));

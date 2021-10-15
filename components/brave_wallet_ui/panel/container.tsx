@@ -242,7 +242,15 @@ function Container (props: Props) {
       contractAddress: fromAsset.asset.contractAddress
     })
 
-    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
+    fromAsset.asset.isErc721 && props.walletActions.sendERC721TransferFrom({
+      from: selectedAccount.address,
+      to: toAddress,
+      value: '',
+      contractAddress: fromAsset.asset.contractAddress,
+      tokenId: fromAsset.asset.tokenId ?? ''
+    })
+
+    !fromAsset.asset.isErc721 && !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
       value: toWeiHex(sendAmount, fromAsset.asset.decimals)

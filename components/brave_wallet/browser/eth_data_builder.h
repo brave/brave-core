@@ -19,7 +19,7 @@ namespace erc20 {
 bool Transfer(const std::string& to_address,
               uint256_t amount,
               std::string* data);
-// Returns the balance of an  address
+// Returns the balance of an address
 bool BalanceOf(const std::string& address, std::string* data);
 // Approves the use of funds to an address
 bool Approve(const std::string& spender_address,
@@ -30,6 +30,19 @@ bool Allowance(const std::string& owner_address,
                std::string* data);
 
 }  // namespace erc20
+
+namespace erc721 {
+
+// Transfer ownership of an NFT.
+bool TransferFrom(const std::string& from,
+                  const std::string& to,
+                  uint256_t token_id,
+                  std::string* data);
+
+// Find the owner of an NFT.
+bool OwnerOf(uint256_t token_id, std::string* data);
+
+}  // namespace erc721
 
 namespace unstoppable_domains {
 

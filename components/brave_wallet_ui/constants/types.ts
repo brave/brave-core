@@ -406,6 +406,7 @@ export interface TokenInfo {
   decimals: number
   visible?: boolean
   logo?: string
+  tokenId?: string
 }
 
 export interface GetTokenByContractReturnInfo {
@@ -428,7 +429,7 @@ export interface GetETHBalancesPriceReturnInfo {
   balances: GetBalanceReturnInfo[]
 }
 
-export interface GetERC20TokenBalanceReturnInfo {
+export interface GetERCTokenBalanceReturnInfo {
   success: boolean
   balance: string
 }
@@ -439,7 +440,7 @@ export interface GetERC20TokenAllowanceReturnInfo {
 }
 
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
-  balances: GetERC20TokenBalanceReturnInfo[][]
+  balances: GetERCTokenBalanceReturnInfo[][]
   prices: GetPriceReturnInfo
 }
 
@@ -468,6 +469,11 @@ export interface SendTransactionParams extends BaseTransactionParams {
 
 export interface ER20TransferParams extends BaseTransactionParams {
   contractAddress: string
+}
+
+export interface ERC721TransferFromParams extends BaseTransactionParams {
+  contractAddress: string
+  tokenId: string
 }
 
 export interface ApproveERC20Params {
@@ -568,6 +574,11 @@ export interface MakeERC20ApproveDataReturnInfo {
   data: number[]
 }
 
+export interface MakeERC721TransferFromDataReturnInfo {
+  success: boolean
+  data: number[]
+}
+
 export interface TransactionInfo {
   id: string
   fromAddress: string
@@ -613,6 +624,7 @@ export interface EthTxController {
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
   makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
+  makeERC721TransferFromData: (from: string, to: string, tokenId: string) => Promise<MakeERC721TransferFromDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
   approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
   processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
@@ -627,7 +639,8 @@ export interface EthJsonRpcController {
   getChainId: () => Promise<GetChainIdReturnInfo>
   getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
   getBalance: (address: string) => Promise<GetBalanceReturnInfo>
-  getERC20TokenBalance: (contract: string, address: string) => Promise<GetERC20TokenBalanceReturnInfo>
+  getERC721TokenBalance: (contractAddress: string, tokenId: string, accountAddress: string) => Promise<GetERCTokenBalanceReturnInfo>
+  getERC20TokenBalance: (contract: string, address: string) => Promise<GetERCTokenBalanceReturnInfo>
   getERC20TokenAllowance: (contract: string, ownerAddress: string, spenderAddress: string) => Promise<GetERC20TokenAllowanceReturnInfo>
   ensGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
   unstoppableDomainsGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
@@ -727,8 +740,8 @@ export interface GetPendingSignMessageRequestReturnInfo {
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
-  removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
-  setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
+  removeUserAsset: (token: TokenInfo, chainId: string) => Promise<RemoveUserAssetReturnInfo>
+  setUserAssetVisible: (token: TokenInfo, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
   getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>

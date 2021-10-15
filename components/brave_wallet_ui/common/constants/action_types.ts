@@ -55,12 +55,12 @@ export type AddUserAssetPayloadType = {
 }
 
 export type RemoveUserAssetPayloadType = {
-  contractAddress: string
+  token: TokenInfo
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  contractAddress: string
+  token: TokenInfo
   chainId: string
   isVisible: boolean
 }

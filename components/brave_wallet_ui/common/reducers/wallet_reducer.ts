@@ -198,6 +198,9 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
       if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
         assetBalance = account.balance
         fiatBalance = account.fiatBalance
+      } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
+        assetBalance = info.balance
+        fiatBalance = '0'  // TODO: support estimated market value.
       } else if (info.success) {
         assetBalance = info.balance
         fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))

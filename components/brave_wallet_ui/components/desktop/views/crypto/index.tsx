@@ -50,8 +50,8 @@ export interface Props {
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (hasError: boolean) => void
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   onOpenWalletSettings: () => void
   addUserAssetError: boolean
   hasImportError: boolean
