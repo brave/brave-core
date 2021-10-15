@@ -45,7 +45,8 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="26dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/account_value_text"
@@ -85,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="16dp"
             android:inputType="text"
             android:background="@drawable/rounded_wallet_edittext"
             android:importantForAutofill="no"
@@ -107,6 +108,9 @@
             android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
             android:background="@drawable/rounded_wallet_edittext"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:text="@string/private_key"
             android:textColor="@color/wallet_text_color"
             app:drawableEndCompat="@drawable/ic_arrow_forward"

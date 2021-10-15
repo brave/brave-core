@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.MenuItem;
@@ -64,6 +65,17 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         EditText accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText(mName);
         accountNameText.setEnabled(false);
+
+        TextView privateKeyText = findViewById(R.id.account_private_key_text);
+        privateKeyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountPrivateKeyActivityIntent = new Intent(
+                        AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
+                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                startActivity(accountPrivateKeyActivityIntent);
+            }
+        });
 
         onInitialLayoutInflationComplete();
     }

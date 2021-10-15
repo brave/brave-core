@@ -2377,6 +2377,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
       Private Key
     </message>
+    <message name="IDS_SHOW_PRIVATE_KEY" desc="Wallet account private key text">
+      Show Private Key
+    </message>
     </messages>
   </release>
 </grit>
