@@ -98,6 +98,7 @@ static_library("browser") {
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/component_updater",
+    "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",

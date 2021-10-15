@@ -227,7 +227,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
             if (mEthJsonRpcController != null) {
-                mEthJsonRpcController.setNetwork(Utils.getNetworkConst(this, item));
+                mEthJsonRpcController.setNetwork(Utils.getNetworkConst(this, item), (success) -> {
+                    if (!success) {
+                        Log.e(TAG, "Could not set network");
+                    }
+                });
             }
             Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             updateBalance(mCustomAccountAdapter.getTitleAtPosition(

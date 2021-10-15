@@ -11,6 +11,7 @@ import "url/mojom/url.mojom";
 
 interface EventsListener {
   ChainChangedEvent(string chain_id);
+  AccountsChangedEvent(array<string> accounts);
 };
 
 interface BraveWalletProvider {
@@ -318,7 +319,7 @@ interface EthJsonRpcController {
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   GetPendingChainRequests() => (array<EthereumChain> networks);
-  SetNetwork(string chain_id);
+  SetNetwork(string chain_id) => (bool success);
   GetAllNetworks() => (array<EthereumChain> networks);
   GetChainId() => (string chain_id);
   GetBlockTrackerUrl() => (string block_tracker_url);

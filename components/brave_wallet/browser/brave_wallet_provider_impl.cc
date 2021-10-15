@@ -22,19 +22,22 @@
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
+    HostContentSettingsMap* host_content_settings_map,
     mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
     mojo::PendingRemote<mojom::EthTxController> tx_controller,
     KeyringController* keyring_controller,
     BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     PrefService* prefs)
-    : delegate_(std::move(delegate)),
+    : host_content_settings_map_(host_content_settings_map),
+      delegate_(std::move(delegate)),
       keyring_controller_(keyring_controller),
       brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
@@ -44,15 +47,27 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
   DCHECK(rpc_controller_);
   rpc_controller_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
+  rpc_controller_->AddObserver(
+      rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
   DCHECK(tx_controller);
   tx_controller_.Bind(std::move(tx_controller));
   tx_controller_.set_disconnect_handler(base::BindOnce(
       &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
   tx_controller_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
+
+  keyring_controller_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
+  host_content_settings_map_->AddObserver(this);
+
+  // Get the current so we can compare for changed events
+  if (delegate_)
+    UpdateKnownAccounts();
 }
 
-BraveWalletProviderImpl::~BraveWalletProviderImpl() {}
+BraveWalletProviderImpl::~BraveWalletProviderImpl() {
+  host_content_settings_map_->RemoveObserver(this);
+}
 
 void BraveWalletProviderImpl::AddEthereumChain(
     const std::string& json_payload,
@@ -365,6 +380,27 @@ void BraveWalletProviderImpl::OnGetAllowedAccounts(
   std::move(callback).Run(success, accounts);
 }
 
+void BraveWalletProviderImpl::UpdateKnownAccounts() {
+  GetAllowedAccounts(
+      base::BindOnce(&BraveWalletProviderImpl::OnUpdateKnownAccounts,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveWalletProviderImpl::OnUpdateKnownAccounts(
+    bool success,
+    const std::vector<std::string>& allowed_accounts) {
+  if (!success) {
+    return;
+  }
+  bool accounts_changed = allowed_accounts != known_allowed_accounts;
+  known_allowed_accounts = allowed_accounts;
+  if (!first_known_accounts_check && events_listener_.is_bound() &&
+      accounts_changed) {
+    events_listener_->AccountsChangedEvent(known_allowed_accounts);
+  }
+  first_known_accounts_check = false;
+}
+
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
   if (rpc_controller_) {
     rpc_controller_->GetChainId(std::move(callback));
@@ -375,10 +411,6 @@ void BraveWalletProviderImpl::Init(
     ::mojo::PendingRemote<mojom::EventsListener> events_listener) {
   if (!events_listener_.is_bound()) {
     events_listener_.Bind(std::move(events_listener));
-    if (rpc_controller_) {
-      rpc_controller_->AddObserver(
-          rpc_observer_receiver_.BindNewPipeAndPassRemote());
-    }
   }
 }
 
@@ -394,6 +426,7 @@ void BraveWalletProviderImpl::OnConnectionError() {
   tx_controller_.reset();
   rpc_observer_receiver_.reset();
   tx_observer_receiver_.reset();
+  keyring_observer_receiver_.reset();
 }
 
 void BraveWalletProviderImpl::OnTransactionStatusChanged(
@@ -422,6 +455,19 @@ void BraveWalletProviderImpl::OnTransactionStatusChanged(
              l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
   }
   add_tx_callbacks_.erase(tx_meta_id);
+}
+
+void BraveWalletProviderImpl::SelectedAccountChanged() {
+  UpdateKnownAccounts();
+}
+
+void BraveWalletProviderImpl::OnContentSettingChanged(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    ContentSettingsType content_type) {
+  if (content_type == ContentSettingsType::BRAVE_ETHEREUM) {
+    UpdateKnownAccounts();
+  }
 }
 
 }  // namespace brave_wallet

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/bind.h"
 #include "base/environment.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -66,7 +67,12 @@ EthJsonRpcController::EthJsonRpcController(
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
+  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
+             base::BindOnce([](bool success) {
+               if (!success)
+                 LOG(ERROR)
+                     << "Could not set netowrk from EthJsonRpcController()";
+             }));
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -188,10 +194,13 @@ void EthJsonRpcController::AddEthereumChainRequestCompleted(
   add_chain_pending_requests_.erase(chain_id);
 }
 
-void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
+void EthJsonRpcController::SetNetwork(const std::string& chain_id,
+                                      SetNetworkCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
-  if (!network_url.is_valid())
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(false);
     return;
+  }
 
   chain_id_ = chain_id;
   network_url_ = network_url;
@@ -199,6 +208,7 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
 
   FireNetworkChanged();
   MaybeUpdateIsEip1559(chain_id);
+  std::move(callback).Run(true);
 }
 
 void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
