@@ -353,6 +353,7 @@ enum TransactionType {
   ETHSend,
   ERC20Transfer,
   ERC20Approve,
+  ERC721TransferFrom,
   Other
 };
 
