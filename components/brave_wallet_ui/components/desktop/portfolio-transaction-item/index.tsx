@@ -33,7 +33,9 @@ import {
   StatusRow,
   StyledWrapper,
   ToCircle,
-  TransactionDetailRow, TransactionFeeTooltipBody, TransactionFeeTooltipTitle
+  TransactionDetailRow,
+  TransactionFeeTooltipBody,
+  TransactionFeeTooltipTitle
 } from './style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
 
@@ -177,8 +179,7 @@ const PortfolioTransactionItem = (props: Props) => {
         return (
           <DetailRow>
             <DetailTextDark>
-              {displayAccountName ? text : toProperCase(text)}{` `}
-              {transactionDetails.value}{` `}
+              {toProperCase(text)} {transactionDetails.value}{` `}
               <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
                 {transactionDetails.symbol}
               </AddressOrAsset> -{` `}
@@ -195,17 +196,10 @@ const PortfolioTransactionItem = (props: Props) => {
         return (
           <DetailRow>
             <DetailTextDark>
-              {displayAccountName && (
-                <AddressOrAsset onClick={onAddressClick(transactionDetails.sender)}>
-                  {transactionDetails.senderLabel}
-                </AddressOrAsset>
-              )}
-              {displayAccountName && ` `}
+              {transactionDetails.value}{` `}
               <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
                 {transactionDetails.symbol}
               </AddressOrAsset>
-              {` `}
-              ({transactionDetails.value})
             </DetailTextDark>
             <ArrowIcon />
             <DetailTextDark>
@@ -255,7 +249,8 @@ const PortfolioTransactionItem = (props: Props) => {
             <DetailTextDark>
               {transactionIntentLocale}
             </DetailTextDark>
-            <DetailTextDarkBold>{/*We need to return a Transaction Time Stamp to display date info here*/}</DetailTextDarkBold>
+            <DetailTextLight>-</DetailTextLight>
+            <DetailTextDarkBold>{transactionDetails.relativeDate}</DetailTextDarkBold>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>
