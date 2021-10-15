@@ -65,6 +65,9 @@ export const statusIndicator = styled.div`
   border: 1px solid var(--brave-palette-neutral200);
   border-radius: 48px;
   padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 
   .icon {
     color: var(--brave-palette-grey200);
@@ -72,7 +75,6 @@ export const statusIndicator = styled.div`
     width: auto;
     vertical-align: middle;
     margin-bottom: 1px;
-    margin-right: 4px;
 
     .brave-theme-dark & {
       color: #343A40;
@@ -188,6 +190,7 @@ export const refreshStatus = styled.div`
     color: var(--brave-color-brandBatInteracting);
     font-weight: 600;
     cursor: pointer;
+    text-align: left;
 
     &:hover {
       text-decoration: underline;
@@ -239,6 +242,7 @@ export const contribution = styled.div`
 
 export const autoContribution = styled.div`
   display: flex;
+  align-items: center;
 
   > * {
     flex: 1 1 auto;

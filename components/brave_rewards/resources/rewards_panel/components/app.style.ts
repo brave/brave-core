@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 
 export const root = styled.div`
-  width: 400px;
+  width: 403px;
   background: #fafcff;
   padding: 13px;
   font-family: var(--brave-font-heading);
