@@ -61,7 +61,6 @@ source_set("extensions") {
     ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/brave_ads",
     "//brave/browser/component_updater",
     "//brave/browser/profiles",
     "//brave/browser/webcompat_reporter",

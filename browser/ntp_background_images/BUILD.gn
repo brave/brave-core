@@ -7,7 +7,6 @@ source_set("ntp_background_images") {
   deps = [
     "//base",
     "//brave/browser:browser_process",
-    "//brave/browser/brave_ads",
     "//brave/browser/profiles:util",
     "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",

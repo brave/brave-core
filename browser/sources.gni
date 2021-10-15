@@ -6,6 +6,7 @@
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
+import("//brave/browser/brave_ads/sources.gni")
 import("//brave/browser/brave_rewards/sources.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_stats/sources.gni")
@@ -94,7 +95,6 @@ brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
-  "//brave/browser/brave_ads",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/gcm_driver",
@@ -354,6 +354,7 @@ brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_binance_sources
 brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
+brave_chrome_browser_sources += brave_browser_brave_ads_sources
 brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
 brave_chrome_browser_sources += brave_browser_brave_stats_updater_sources
@@ -379,6 +380,7 @@ brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_binance_deps
 brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
+brave_chrome_browser_deps += brave_browser_brave_ads_deps
 brave_chrome_browser_deps += brave_browser_brave_rewards_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
 brave_chrome_browser_deps += brave_browser_brave_stats_updater_deps

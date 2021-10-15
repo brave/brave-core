@@ -31,7 +31,6 @@ source_set("profiles") {
 
   deps = [
     "//base",
-    "//brave/browser/brave_ads",
     "//brave/browser/gcm_driver",
     "//brave/common",
     "//brave/common:pref_names",

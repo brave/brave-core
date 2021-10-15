@@ -450,7 +450,6 @@ test("brave_unit_tests") {
       # This is only used in the unit test, not the browser test.
       # TODO(keur): Reminder to move this out when we migrate
       # stats browser tests into unit tests.
-      "//brave/browser/brave_ads",
       "//brave/components/brave_rewards/browser",
       "//brave/components/brave_stats/browser",
       "//brave/vendor/bat-native-ads",
@@ -712,7 +711,6 @@ if (!is_android) {
 
     deps = [
       "//brave/browser/autoplay:browser_tests",
-      "//brave/browser/brave_ads",
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/browsing_data:browser_tests",
       "//brave/browser/farbling:browser_tests",
@@ -985,7 +983,6 @@ if (!is_android) {
       ":test_support",
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
-      "//brave/browser/brave_ads",
       "//brave/browser/ethereum_remote_client/buildflags",
       "//brave/browser/metrics/buildflags",
       "//brave/browser/net",
