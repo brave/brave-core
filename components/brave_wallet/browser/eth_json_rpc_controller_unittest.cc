@@ -480,7 +480,7 @@ TEST_F(EthJsonRpcControllerUnitTest, EnsGetEthAddr) {
   rpc_controller_->SetNetwork(mojom::kMainnetChainId);
   SetUDENSInterceptor(mojom::kMainnetChainId);
   rpc_controller_->EnsGetEthAddr(
-      "brantly.eth",
+      "brantly-test.eth",
       base::BindOnce(&OnStringResponse, &callback_called, true,
                      "0x983110309620d911731ac0932219af06091b6744"));
   base::RunLoop().RunUntilIdle();
@@ -860,9 +860,22 @@ TEST_F(EthJsonRpcControllerUnitTest, UnstoppableDomainsGetEthAddr) {
   rpc_controller_->SetNetwork(mojom::kMainnetChainId);
   SetUDENSInterceptor(mojom::kMainnetChainId);
   rpc_controller_->UnstoppableDomainsGetEthAddr(
-      "brad.crypto",
+      "brad-test.crypto",
       base::BindOnce(&OnStringResponse, &callback_called, true,
                      "0x8aaD44321A86b170879d7A244c1e8d360c99DdA8"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Return false if getting empty address result for non-exist domains.
+  callback_called = false;
+  SetInterceptor(
+      "eth_call", "",
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x0000000000000000000000000000000000000000000000000000000000000020"
+      "0000000000000000000000000000000000000000000000000000000000000000\"}");
+  rpc_controller_->UnstoppableDomainsGetEthAddr(
+      "non-exist.crypto",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -1019,6 +1032,40 @@ TEST_F(EthJsonRpcControllerUnitTest, UpdateIsEip1559CustomChain) {
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetEthAddrInvalidDomain) {
+  const std::vector<std::string> invalid_domains = {"", ".eth", "-brave.eth",
+                                                    "brave-.eth", "b.eth"};
+
+  for (const auto& domain : invalid_domains) {
+    bool callback_called = false;
+    rpc_controller_->EnsGetEthAddr(
+        domain, base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+
+    callback_called = false;
+    rpc_controller_->UnstoppableDomainsGetEthAddr(
+        domain, base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, IsValidDomain) {
+  std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
+                                            "brave-test.test-dev.eth"};
+  for (const auto& domain : valid_domains)
+    EXPECT_TRUE(rpc_controller_->IsValidDomain(domain))
+        << domain << " should be valid";
+
+  std::vector<std::string> invalid_domains = {
+      "",      ".eth",    "-brave.eth",      "brave-.eth",     "brave.e-th",
+      "b.eth", "brave.e", "-brave.test.eth", "brave-.test.eth"};
+  for (const auto& domain : invalid_domains)
+    EXPECT_FALSE(rpc_controller_->IsValidDomain(domain))
+        << domain << " should be invalid";
 }
 
 }  // namespace brave_wallet
