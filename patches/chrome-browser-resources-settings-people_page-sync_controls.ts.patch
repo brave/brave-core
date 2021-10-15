@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
+index fd0a4a70851297d75026ed16c731873930a34009..ef4ad0a4dc2ed037d402843a88ddde42a9ef16bd 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.ts
++++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
+@@ -113,7 +113,7 @@ class SettingsSyncControlsElement extends SettingsSyncControlsElementBase {
+ 
+     const router = Router.getInstance();
+     if (router.getCurrentRoute() ===
+-        (router.getRoutes() as {SYNC_ADVANCED: Route}).SYNC_ADVANCED) {
++        (router.getRoutes() as {BRAVE_SYNC_SETUP: Route}).BRAVE_SYNC_SETUP) {
+       this.browserProxy_.didNavigateToSyncPage();
+     }
+   }
