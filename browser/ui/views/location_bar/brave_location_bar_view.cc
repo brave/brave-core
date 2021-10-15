@@ -27,9 +27,9 @@
 #include "content/public/browser/navigation_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/gfx/skia_util.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_TOR)
