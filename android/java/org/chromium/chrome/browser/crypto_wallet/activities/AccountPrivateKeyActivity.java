@@ -5,30 +5,28 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
-import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
-import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
-import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
-import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountPrivateKeyActivity
-        extends AsyncInitializationActivity implements OnWalletListItemClick {
+        extends AsyncInitializationActivity implements ConnectionErrorHandler {
+    private KeyringController mKeyringController;
     private String mAddress;
     @Override
     protected void triggerLayoutInflation() {
@@ -43,6 +41,25 @@ public class AccountPrivateKeyActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.private_key));
 
+        EditText privateKeyText = findViewById(R.id.private_key_text);
+        TextView copyToClipboardText = findViewById(R.id.copy_to_clipboard_text);
+        copyToClipboardText.setOnClickListener(v
+                -> Utils.saveTextToClipboard(
+                        AccountPrivateKeyActivity.this, privateKeyText.getText().toString()));
+
+        if (mKeyringController != null)
+            mKeyringController.getPrivateKeyForDefaultKeyringAccount(
+                    mAddress, (result, privateKey) -> {
+                        if (result) {
+                            privateKeyText.setText(privateKey);
+                        }
+                    });
+
+        Button showPrivateKeyBtn = findViewById(R.id.btn_show_private_key);
+        showPrivateKeyBtn.setOnClickListener(v
+                -> privateKeyText.setTransformationMethod(
+                        HideReturnsTransformationMethod.getInstance()));
+
         onInitialLayoutInflationComplete();
     }
 
@@ -54,6 +71,20 @@ public class AccountPrivateKeyActivity
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringController = null;
+        InitKeyringController();
+    }
+
+    private void InitKeyringController() {
+        if (mKeyringController != null) {
+            return;
+        }
+
+        mKeyringController = KeyringControllerFactory.getInstance().getKeyringController(this);
     }
 
     @Override
