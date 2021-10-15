@@ -267,6 +267,9 @@ class EthJsonRpcController : public KeyedService,
                        const GURL& network_url,
                        RequestCallback callback);
 
+  FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, IsValidDomain);
+  bool IsValidDomain(const std::string& domain);
+
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;
   std::string chain_id_;

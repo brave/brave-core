@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/environment.h"
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
@@ -20,9 +21,17 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
+
+// The domain name should be a-z | A-Z | 0-9 and hyphen(-).
+// The domain name should not start or end with hyphen (-).
+// The domain name can be a subdomain.
+// TLD & TLD-1 must be at least two characters.
+constexpr char kDomainPattern[] =
+    "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("eth_json_rpc_controller", R"(
@@ -594,6 +603,11 @@ void EthJsonRpcController::OnEnsResolverGetContentHash(
 
 void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
                                          EnsGetEthAddrCallback callback) {
+  if (!IsValidDomain(domain)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
   auto internal_callback = base::BindOnce(
       &EthJsonRpcController::ContinueEnsGetEthAddr,
       weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
@@ -696,6 +710,11 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
 void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
     const std::string& domain,
     UnstoppableDomainsGetEthAddrCallback callback) {
+  if (!IsValidDomain(domain)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
   const std::string contract_address =
       GetUnstoppableDomainsProxyReaderContractAddress(chain_id_);
   if (contract_address.empty()) {
@@ -727,7 +746,8 @@ void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
   }
 
   std::string address;
-  if (!ParseUnstoppableDomainsProxyReaderGet(body, &address)) {
+  if (!ParseUnstoppableDomainsProxyReaderGet(body, &address) ||
+      address.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
@@ -833,6 +853,11 @@ void EthJsonRpcController::OnGetIsEip1559(
 
   const std::string* base_fee = result.FindStringKey("baseFeePerGas");
   std::move(callback).Run(true, base_fee && !base_fee->empty());
+}
+
+bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
+  return re2::RE2::FullMatch(domain, kDomainPattern);
 }
 
 }  // namespace brave_wallet
