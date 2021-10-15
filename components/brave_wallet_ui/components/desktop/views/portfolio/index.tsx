@@ -230,10 +230,13 @@ const Portfolio = (props: Props) => {
   }, [portfolioHistory, portfolioBalance])
 
   const selectedAssetTransactions = React.useMemo((): TransactionInfo[] => {
-    return transactions.flatMap((txListInfo) =>
+    const filteredTransactions = transactions.flatMap((txListInfo) =>
       (txListInfo?.transactions ?? []).flatMap((tx) =>
         parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
     ))
+
+    return [...filteredTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
+      Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
   }, [selectedAsset, transactions])
 
   const findAccount = (address: string): WalletAccountType | undefined => {
