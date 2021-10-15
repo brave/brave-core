@@ -33,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -75,6 +76,62 @@ void ValidateErrorCode(BraveWalletProviderImpl* provider,
 
 }  // namespace
 
+class TestEventsListener : public brave_wallet::mojom::EventsListener {
+ public:
+  TestEventsListener() {}
+
+  void ChainChangedEvent(const std::string& chain_id) override {
+    chain_id_ = chain_id;
+    chain_changed_fired_ = true;
+  }
+
+  void AccountsChangedEvent(const std::vector<std::string>& accounts) override {
+    accounts_ = accounts;
+    accounts_changed_fired_ = true;
+  }
+
+  bool ChainChangedFired() const {
+    base::RunLoop().RunUntilIdle();
+    return chain_changed_fired_;
+  }
+
+  bool AccountsChangedFired() const {
+    base::RunLoop().RunUntilIdle();
+    return accounts_changed_fired_;
+  }
+
+  std::string GetChainId() const {
+    base::RunLoop().RunUntilIdle();
+    return chain_id_;
+  }
+
+  std::vector<std::string> GetAccounts() const {
+    base::RunLoop().RunUntilIdle();
+    return accounts_;
+  }
+
+  mojo::PendingRemote<brave_wallet::mojom::EventsListener> GetReceiver() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+
+  void Reset() {
+    chain_id_.clear();
+    accounts_.clear();
+    chain_changed_fired_ = false;
+    accounts_changed_fired_ = false;
+    EXPECT_FALSE(ChainChangedFired());
+    EXPECT_FALSE(AccountsChangedFired());
+  }
+
+  bool chain_changed_fired_ = false;
+  bool accounts_changed_fired_ = false;
+  std::vector<std::string> accounts_;
+  std::string chain_id_;
+
+ private:
+  mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
+};
+
 class BraveWalletProviderImplUnitTest : public testing::Test {
  public:
   BraveWalletProviderImplUnitTest()
@@ -110,15 +167,17 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
 
-    eth_json_rpc_controller_->SetNetwork("0x1");
-    base::RunLoop().RunUntilIdle();
     provider_ = std::make_unique<BraveWalletProviderImpl>(
-        eth_json_rpc_controller()->MakeRemote(),
+        host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
         eth_tx_controller()->MakeRemote(), keyring_controller_,
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetMainFrame()),
         prefs());
+
+    observer_.reset(new TestEventsListener());
+    provider_->Init(observer_->GetReceiver());
+    SetNetwork("0x1");
   }
 
   void SetInterceptor(const std::string& content) {
@@ -127,6 +186,47 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
         }));
+  }
+
+  void SetNetwork(const std::string& chain_id) {
+    base::RunLoop run_loop;
+    eth_json_rpc_controller_->SetNetwork(
+        chain_id, base::BindLambdaForTesting([&run_loop](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void CreateWallet() {
+    base::RunLoop run_loop;
+    keyring_controller_->CreateWallet(
+        "brave",
+        base::BindLambdaForTesting([&run_loop](const std::string& mnemonic) {
+          EXPECT_FALSE(mnemonic.empty());
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void AddAccount() {
+    base::RunLoop run_loop;
+    keyring_controller_->AddAccount(
+        "New Account", base::BindLambdaForTesting([&run_loop](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void SetSelectedAccount(const std::string& address) {
+    base::RunLoop run_loop;
+    keyring_controller_->SetSelectedAccount(
+        address, base::BindLambdaForTesting([&](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   ~BraveWalletProviderImplUnitTest() override = default;
@@ -138,8 +238,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   }
   KeyringController* keyring_controller() { return keyring_controller_; }
   BraveWalletProviderImpl* provider() { return provider_.get(); }
-  std::string from() {
-    return keyring_controller()->default_keyring_->GetAddress(0);
+  std::string from(size_t from_index = 0) {
+    return keyring_controller()->default_keyring_->GetAddress(from_index);
   }
 
   content::BrowserContext* browser_context() { return &profile_; }
@@ -147,24 +247,21 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   HostContentSettingsMap* host_content_settings_map() {
     return HostContentSettingsMapFactory::GetForProfile(&profile_);
   }
-  void CreateWalletAndAccount() {
-    keyring_controller()->CreateWallet(
-        "testing123", base::DoNothing::Once<const std::string&>());
-    base::RunLoop().RunUntilIdle();
-    keyring_controller()->AddAccount("Account 2",
-                                     base::DoNothing::Once<bool>());
-    base::RunLoop().RunUntilIdle();
-  }
 
-  void NavigateAndAddEthereumPermission() {
-    GURL url("https://brave.com");
-    web_contents()->NavigateAndCommit(url);
+  void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
+
+  void AddEthereumPermission(const GURL& url, size_t from_index = 0) {
     GURL sub_request_origin;
-    ASSERT_TRUE(
-        brave_wallet::GetSubRequestOrigin(url, from(), &sub_request_origin));
+    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(url, from(from_index),
+                                                  &sub_request_origin));
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
+  }
+
+  void ResetEthereumPermission(const GURL& url, size_t from_index = 0) {
+    permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
+        browser_context(), url.spec(), from(from_index));
   }
 
   void SignMessage(absl::optional<bool> user_approved,
@@ -258,6 +355,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   BraveWalletService* brave_wallet_service_;
+  std::unique_ptr<TestEventsListener> observer_;
 
  private:
   std::unique_ptr<EthJsonRpcController> eth_json_rpc_controller_;
@@ -303,7 +401,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(
-      eth_json_rpc_controller()->MakeRemote(),
+      host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
       eth_tx_controller()->MakeRemote(), keyring_controller(),
       brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
@@ -367,8 +465,11 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
@@ -416,8 +517,11 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
                          // Bad address
@@ -460,8 +564,11 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
   browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           mojom::TxData::New("0x00", "", "0x1",
@@ -511,8 +618,11 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
   bool callback_called = false;
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
           // Can't specify both gas price and max fee per gas
@@ -560,8 +670,11 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissions) {
   bool new_setup_callback_called = false;
   BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   bool permission_callback_called = false;
   provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
       [&](bool success, const std::vector<std::string>& allowed_accounts) {
@@ -581,7 +694,8 @@ TEST_F(BraveWalletProviderImplUnitTest,
   BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
   bool permission_callback_called = false;
-  CreateWalletAndAccount();
+  CreateWallet();
+  AddAccount();
   provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
       [&](bool success, const std::vector<std::string>& allowed_accounts) {
         EXPECT_FALSE(success);
@@ -597,20 +711,20 @@ TEST_F(BraveWalletProviderImplUnitTest, RequestEthereumPermissionsNoWallet) {
   bool new_setup_callback_called = false;
   BraveWalletProviderDelegateImpl::SetCallbackForNewSetupNeededForTesting(
       base::BindLambdaForTesting([&]() { new_setup_callback_called = true; }));
-  bool permission_callback_called = false;
+  base::RunLoop run_loop;
   provider()->RequestEthereumPermissions(base::BindLambdaForTesting(
       [&](bool success, const std::vector<std::string>& allowed_accounts) {
         EXPECT_FALSE(success);
         EXPECT_TRUE(allowed_accounts.empty());
-        permission_callback_called = true;
+        run_loop.Quit();
       }));
-  browser_task_environment_.RunUntilIdle();
-  EXPECT_TRUE(permission_callback_called);
+  run_loop.Run();
   EXPECT_TRUE(new_setup_callback_called);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
-  CreateWalletAndAccount();
+  CreateWallet();
+  AddAccount();
   std::string signature;
   int error;
   std::string error_message;
@@ -647,8 +761,11 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(error_message,
             l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
                                       base::ASCIIToUTF16(addresses[0])));
-  NavigateAndAddEthereumPermission();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   SignMessage(true, addresses[0], "0x1234", &signature, &error, &error_message);
+
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(error, 0);
   EXPECT_TRUE(error_message.empty());
@@ -671,8 +788,11 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
-  CreateWalletAndAccount();
-  NavigateAndAddEthereumPermission();
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
   const std::vector<std::string> addresses = GetAddresses();
 
   const std::string message1 = "0xbeef01";
@@ -712,6 +832,64 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, id2);
   EXPECT_EQ(GetSignMessageQueueSize(), 0u);
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, ChainChangedEvent) {
+  EXPECT_FALSE(observer_->ChainChangedFired());
+  SetNetwork(mojom::kRinkebyChainId);
+  EXPECT_TRUE(observer_->ChainChangedFired());
+  EXPECT_EQ(mojom::kRinkebyChainId, observer_->GetChainId());
+
+  // Works a second time
+  observer_->Reset();
+  SetNetwork(mojom::kMainnetChainId);
+  EXPECT_TRUE(observer_->ChainChangedFired());
+  EXPECT_EQ(mojom::kMainnetChainId, observer_->GetChainId());
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  EXPECT_FALSE(observer_->AccountsChangedFired());
+  AddEthereumPermission(url);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
+  observer_->Reset();
+
+  // Resetting the permission changes the accounts again
+  ResetEthereumPermission(url);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>(), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Multiple accounts can be returned
+  AddEthereumPermission(url, 0);
+  AddEthereumPermission(url, 1);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ((std::vector<std::string>{from(0), from(1)}),
+            observer_->GetAccounts());
+  observer_->Reset();
+
+  // Changing the selected account re-orders things
+  SetSelectedAccount(from(1));
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ((std::vector<std::string>{from(1), from(0)}),
+            observer_->GetAccounts());
+  observer_->Reset();
+
+  // Resetting with multiple accounts works
+  ResetEthereumPermission(url, 1);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ((std::vector<std::string>{from(0)}), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Does not fire for a different origin that has no permissions
+  Navigate(GURL("https://bravesoftware.com"));
+  AddEthereumPermission(url, 1);
+  SetSelectedAccount(from(0));
+  EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
 }  // namespace brave_wallet

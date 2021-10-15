@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/bind.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -48,6 +49,14 @@ class EthTxStateManagerUnitTest : public testing::Test {
     profile_ = builder.Build();
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, GetPrefs()));
+  }
+
+  void SetNetwork(const std::string& chain_id) {
+    base::RunLoop run_loop;
+    rpc_controller_->SetNetwork(
+        chain_id,
+        base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
+    run_loop.Run();
   }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
@@ -339,13 +348,13 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   meta.id = "001";
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_->SetNetwork("0x3");
+  SetNetwork("0x3");
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);
   tx_state_manager.AddOrUpdateTx(meta);
 
-  rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+  SetNetwork(brave_wallet::mojom::kLocalhostChainId);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager.GetTx("001"), nullptr);

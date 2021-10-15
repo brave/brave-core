@@ -206,7 +206,13 @@ class EthTxControllerUnitTest : public testing::Test {
         asset_ratio_controller_.get(), std::move(tx_state_manager),
         std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
 
-    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+    base::RunLoop run_loop;
+    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                base::BindLambdaForTesting([&](bool success) {
+                                  EXPECT_TRUE(success);
+                                  run_loop.Quit();
+                                }));
+    run_loop.Run();
     keyring_controller_->CreateWallet(
         "testing123", base::DoNothing::Once<const std::string&>());
     base::RunLoop().RunUntilIdle();
