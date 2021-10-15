@@ -465,6 +465,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     int frame_tree_node_id,
     content::NavigationUIData* navigation_data,
     bool is_main_frame,
+    network::mojom::WebSandboxFlags sandbox_flags,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const absl::optional<url::Origin>& initiating_origin,
@@ -509,8 +510,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
-      is_main_frame, page_transition, has_user_gesture, initiating_origin,
-      out_factory);
+      is_main_frame, sandbox_flags, page_transition, has_user_gesture,
+      initiating_origin, out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
