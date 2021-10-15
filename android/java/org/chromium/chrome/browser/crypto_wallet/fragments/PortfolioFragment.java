@@ -157,7 +157,12 @@ public class PortfolioFragment
         String item = parent.getItemAtPosition(position).toString();
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
-            ethJsonRpcController.setNetwork(Utils.getNetworkConst(getActivity(), item));
+            ethJsonRpcController.setNetwork(
+                    Utils.getNetworkConst(getActivity(), item), (success) -> {
+                        if (!success) {
+                            Log.e(TAG, "Could not set network");
+                        }
+                    });
             setUpCoinList(getView());
             updatePortfolio();
         }
