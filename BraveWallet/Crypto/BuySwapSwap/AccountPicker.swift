@@ -10,7 +10,6 @@ import struct Shared.Strings
 struct AccountPicker: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  @Binding var account: BraveWallet.AccountInfo
   
   @State private var isPresentingPicker: Bool = false
   @State private var isPresentingAddAccount: Bool = false
@@ -40,14 +39,14 @@ struct AccountPicker: View {
   
   private var accountView: some View {
     HStack {
-      Blockie(address: account.address)
+      Blockie(address: keyringStore.selectedAccount.address)
         .frame(width: avatarSize, height: avatarSize)
       VStack(alignment: .leading, spacing: 2) {
-        Text(account.name)
+        Text(keyringStore.selectedAccount.name)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
           .multilineTextAlignment(.leading)
-        Text(account.address.truncatedAddress)
+        Text(keyringStore.selectedAccount.address.truncatedAddress)
           .foregroundColor(Color(.braveLabel))
           .multilineTextAlignment(.leading)
       }
@@ -60,7 +59,7 @@ struct AccountPicker: View {
   }
   
   private func copyAddress() {
-    UIPasteboard.general.string = account.address
+    UIPasteboard.general.string = keyringStore.selectedAccount.address
   }
   
   private var menuContents: some View {
@@ -106,7 +105,7 @@ struct AccountPicker: View {
         ) {
           ForEach(keyringStore.keyring.accountInfos) { account in
             Button(action: {
-              self.account = account
+              keyringStore.selectedAccount = account
               isPresentingPicker = false
             }) {
               AccountView(address: account.address, name: account.name)
@@ -147,8 +146,7 @@ struct AccountPicker_Previews: PreviewProvider {
   static var previews: some View {
     AccountPicker(
       keyringStore: .previewStoreWithWalletCreated,
-      networkStore: .previewStore,
-      account: .constant(.previewAccount)
+      networkStore: .previewStore
     )
     .padding()
     .previewLayout(.sizeThatFits)

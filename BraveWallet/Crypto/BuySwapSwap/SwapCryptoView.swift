@@ -81,8 +81,7 @@ struct SwapCryptoView: View {
         Section(
           header: AccountPicker(
             keyringStore: keyringStore,
-            networkStore: ethNetworkStore,
-            account: .constant(keyringStore.keyring.accountInfos.first!)
+            networkStore: ethNetworkStore
           )
             .listRowBackground(Color.clear)
             .resetListHeaderStyle()

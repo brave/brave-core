@@ -73,15 +73,21 @@ public class KeyringStore: ObservableObject {
       controller.setAutoLockMinutes(autoLockInterval.value) { _ in }
     }
   }
+  /// The users selected account when buying/sending/swapping currencies
+  @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
+    didSet {
+      controller.setSelectedAccount(selectedAccount.address) { _ in }
+    }
+  }
   
   private let controller: BraveWalletKeyringController
   
   public init(keyringController: BraveWalletKeyringController) {
     controller = keyringController
     controller.add(self)
-    controller.defaultKeyringInfo { keyringInfo in
-      self.keyring = keyringInfo
-      self.isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
+    updateKeyringInfo()
+    controller.defaultKeyringInfo { [self] keyringInfo in
+      isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
     }
     controller.autoLockMinutes { minutes in
       self.autoLockInterval = minutes == Int32.max ? .never : .init(value: minutes)
@@ -89,8 +95,14 @@ public class KeyringStore: ObservableObject {
   }
   
   private func updateKeyringInfo() {
-    controller.defaultKeyringInfo { keyringInfo in
-      self.keyring = keyringInfo
+    controller.defaultKeyringInfo { [self] keyringInfo in
+      keyring = keyringInfo
+      if (!keyring.accountInfos.isEmpty) {
+        controller.selectedAccount { accountAddress in
+          selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
+            keyringInfo.accountInfos.first!
+        }
+      }
     }
   }
   
@@ -280,6 +292,7 @@ extension KeyringStore: BraveWalletKeyringControllerObserver {
   }
   
   public func selectedAccountChanged() {
+    updateKeyringInfo()
   }
 
   public func keyringCreated() {
