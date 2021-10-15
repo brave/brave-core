@@ -21,6 +21,7 @@ import {
   formatGasFee,
   formatGasFeeFromFiat
 } from '../../utils/format-balances'
+import { convertMojoTimeToJS, formatDateAsRelative } from '../../utils/datetime-utils'
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
 
@@ -37,6 +38,7 @@ interface ParsedTransactionFees {
 interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
+  relativeDate: string
   status: TransactionStatus
   sender: string
   senderLabel: string
@@ -108,6 +110,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          relativeDate: formatDateAsRelative(convertMojoTimeToJS(transactionInfo.createdTime)),
           status: transactionInfo.txStatus,
           sender: transactionInfo.fromAddress,
           senderLabel: getAddressLabel(transactionInfo.fromAddress),
@@ -132,6 +135,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          relativeDate: formatDateAsRelative(convertMojoTimeToJS(transactionInfo.createdTime)),
           status: transactionInfo.txStatus,
           sender: transactionInfo.fromAddress,
           senderLabel: getAddressLabel(transactionInfo.fromAddress),
@@ -161,6 +165,7 @@ export function useTransactionParser (
 
         return {
           hash: transactionInfo.txHash,
+          relativeDate: formatDateAsRelative(convertMojoTimeToJS(transactionInfo.createdTime)),
           status: transactionInfo.txStatus,
           sender: transactionInfo.fromAddress,
           senderLabel: getAddressLabel(transactionInfo.fromAddress),
