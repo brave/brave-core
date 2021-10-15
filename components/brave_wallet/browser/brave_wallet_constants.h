@@ -39,15 +39,14 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
       true, false, "BUSD", 18, true, ""},
      {"0xc00e94Cb662C3520282E6f5717214004A7f26888", "Compound", "comp.png",
       true, false, "Comp", 18, true, ""},
-     {"0xD533a949740bb3306d119CC777fa900bA034cd52", "Curve", "", true, false,
-      "CRV", 18, true, ""},
+     {"0xD533a949740bb3306d119CC777fa900bA034cd52", "Curve", "curve.png", true,
+      false, "CRV", 18, true, ""},
      {"0xc00e94Cb662C3520282E6f5717214004A7f26888", "Gemini Dollar", "gusd.png",
       true, false, "GUSD", 2, true, ""},
      {"0x514910771AF9Ca656af840dff83E8264EcF986CA", "Chainlink",
       "chainlink.png", true, false, "LINK", 18, true, ""},
      {"0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2", "Maker", "mkr.png", true,
       false, "MKR", 18, true, ""},
-     {"", "Paxos Standard", "", true, false, "PAX", 0, true, ""},
      {"0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F", "Synthetix",
       "synthetix.png", true, false, "SNX", 18, true, ""},
      {"0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828", "UMA", "UMA.png", true,
@@ -62,8 +61,8 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
       "wbtc.png", true, false, "WBTC", 8, true, ""},
      {"0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e", "Year.Finance", "yfi.png",
       true, false, "YFI", 18, true, ""},
-     {"", "Palm DAI", "", true, false, "PDAI", 0, true, ""},
-     {"", "Matic USDC", "", true, false, "MUSDC", 0, true, ""}});
+     {"0x9043d4d51C9d2e31e3F169de4551E416970c27Ef", "Palm DAI", "pdai.png",
+      true, false, "PDAI", 18, true}});
 
 const char kWalletBaseDirectory[] = "BraveWallet";
 const char kImageSourceHost[] = "erc-token-images";

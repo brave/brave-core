@@ -502,6 +502,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             toSection.setVisibility(View.GONE);
             // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
+            arrowDown.setVisibility(View.GONE);
             toleranceSection.setVisibility(View.GONE);
             btnBuySendSwap.setText(getText(R.string.buy_wallet));
             radioPerPercent.setVisibility(View.GONE);
