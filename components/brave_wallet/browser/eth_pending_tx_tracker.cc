@@ -26,10 +26,10 @@ EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
       weak_factory_(this) {}
 EthPendingTxTracker::~EthPendingTxTracker() = default;
 
-void EthPendingTxTracker::UpdatePendingTransactions() {
+bool EthPendingTxTracker::UpdatePendingTransactions(size_t* num_pending) {
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
   if (!nonce_lock->Try())
-    return;
+    return false;
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
@@ -46,6 +46,8 @@ void EthPendingTxTracker::UpdatePendingTransactions() {
   }
 
   nonce_lock->Release();
+  *num_pending = pending_transactions.size();
+  return true;
 }
 
 void EthPendingTxTracker::ResubmitPendingTransactions() {
