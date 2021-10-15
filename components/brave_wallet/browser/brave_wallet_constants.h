@@ -439,6 +439,9 @@ const char kSwapBaseAPIURL[] = "https://api.0x.org/";
 const char kBuyTokenPercentageFee[] = "0.00875";
 const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 
+// Unstoppable domains record key for ethereum address.
+constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

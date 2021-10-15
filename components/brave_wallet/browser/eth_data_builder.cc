@@ -107,19 +107,46 @@ bool GetMany(const std::vector<std::string>& keys,
   return true;
 }
 
+bool Get(const std::string& key, const std::string& domain, std::string* data) {
+  const std::string function_hash = GetFunctionHash("get(string,uint256)");
+
+  std::string offset_for_key;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_key)) {
+    return false;
+  }
+
+  std::string tokenID = Namehash(domain);
+
+  std::string encoded_key;
+  if (!EncodeString(key, &encoded_key)) {
+    return false;
+  }
+
+  std::vector<std::string> hex_strings = {function_hash, offset_for_key,
+                                          tokenID, encoded_key};
+  return ConcatHexStrings(hex_strings, data);
+}
+
 }  // namespace unstoppable_domains
 
 namespace ens {
 
-bool GetResolverAddress(const std::string& domain, std::string* data) {
+bool Resolver(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("resolver(bytes32)");
   std::string tokenID = Namehash(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
-bool GetContentHashAddress(const std::string& domain, std::string* data) {
+bool ContentHash(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
+  std::string tokenID = Namehash(domain);
+  std::vector<std::string> hex_strings = {function_hash, tokenID};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+bool Addr(const std::string& domain, std::string* data) {
+  const std::string function_hash = GetFunctionHash("addr(bytes32)");
   std::string tokenID = Namehash(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
