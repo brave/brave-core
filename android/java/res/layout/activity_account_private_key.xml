@@ -20,6 +20,8 @@
             android:layout_marginBottom="24dp"
             android:gravity="center_vertical" />
 
+        <include layout="@layout/wallet_backup_banner"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

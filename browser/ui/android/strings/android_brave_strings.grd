@@ -2380,6 +2380,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SHOW_PRIVATE_KEY" desc="Wallet account private key text">
       Show Private Key
     </message>
+    <message name="IDS_HIDE_PRIVATE_KEY" desc="Wallet account private key text">
+      Hide Private Key
+    </message>
+    <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
+      Warning: Never disclose this key. Anyone with private key can steal any assets held in your account.
+    </message>
     </messages>
   </release>
 </grit>

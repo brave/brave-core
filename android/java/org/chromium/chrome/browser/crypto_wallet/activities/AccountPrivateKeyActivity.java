@@ -6,9 +6,13 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +32,7 @@ public class AccountPrivateKeyActivity
         extends AsyncInitializationActivity implements ConnectionErrorHandler {
     private KeyringController mKeyringController;
     private String mAddress;
+    private boolean mIsPrivateKeyShown;
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_private_key);
@@ -47,6 +52,38 @@ public class AccountPrivateKeyActivity
                 -> Utils.saveTextToClipboard(
                         AccountPrivateKeyActivity.this, privateKeyText.getText().toString()));
 
+        LinearLayout bannerLayout = findViewById(R.id.wallet_backup_banner);
+        bannerLayout.setVisibility(View.VISIBLE);
+
+        TextView warningText = findViewById(R.id.warning_text);
+        warningText.setText(getResources().getString(R.string.private_key_warning_text));
+
+        ImageView bannerBtn = findViewById(R.id.backup_banner_close);
+        bannerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bannerLayout.setVisibility(View.GONE);
+            }
+        });
+
+        Button showPrivateKeyBtn = findViewById(R.id.btn_show_private_key);
+        showPrivateKeyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mIsPrivateKeyShown) {
+                    privateKeyText.setTransformationMethod(
+                            HideReturnsTransformationMethod.getInstance());
+                    showPrivateKeyBtn.setText(getResources().getString(R.string.hide_private_key));
+                } else {
+                    privateKeyText.setTransformationMethod(
+                            PasswordTransformationMethod.getInstance());
+                    showPrivateKeyBtn.setText(getResources().getString(R.string.show_private_key));
+                }
+                mIsPrivateKeyShown = !mIsPrivateKeyShown;
+            }
+        });
+
+        InitKeyringController();
         if (mKeyringController != null)
             mKeyringController.getPrivateKeyForDefaultKeyringAccount(
                     mAddress, (result, privateKey) -> {
@@ -54,11 +91,6 @@ public class AccountPrivateKeyActivity
                             privateKeyText.setText(privateKey);
                         }
                     });
-
-        Button showPrivateKeyBtn = findViewById(R.id.btn_show_private_key);
-        showPrivateKeyBtn.setOnClickListener(v
-                -> privateKeyText.setTransformationMethod(
-                        HideReturnsTransformationMethod.getInstance()));
 
         onInitialLayoutInflationComplete();
     }
