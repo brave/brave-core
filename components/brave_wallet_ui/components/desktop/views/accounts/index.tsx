@@ -131,7 +131,11 @@ function Accounts (props: Props) {
   }
 
   const onClickSettings = () => {
-    alert('Will Nav to Brave Browser Settings')
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 
   const onChangeTab = (id: AccountSettingsNavTypes) => {
