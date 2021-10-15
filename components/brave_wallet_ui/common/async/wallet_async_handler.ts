@@ -336,13 +336,13 @@ handler.on(WalletActions.addUserAsset.getType(), async (store, payload: AddUserA
 
 handler.on(WalletActions.removeUserAsset.getType(), async (store, payload: RemoveUserAssetPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  await braveWalletService.removeUserAsset(payload.contractAddress, payload.chainId)
+  await braveWalletService.removeUserAsset(payload.token, payload.chainId)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.setUserAssetVisible.getType(), async (store, payload: SetUserAssetVisiblePayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  await braveWalletService.setUserAssetVisible(payload.contractAddress, payload.chainId, payload.isVisible)
+  await braveWalletService.setUserAssetVisible(payload.token, payload.chainId, payload.isVisible)
   await refreshWalletInfo(store)
 })
 

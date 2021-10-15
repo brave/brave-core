@@ -432,8 +432,8 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (contractAddress: string, isVisible: boolean) => {
-    props.walletActions.setUserAssetVisible({ contractAddress, chainId: selectedNetwork.chainId, isVisible })
+  const onSetUserAssetVisible = (token: TokenInfo, isVisible: boolean) => {
+    props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
   const onAddUserAsset = (token: TokenInfo) => {
@@ -446,8 +446,8 @@ function Container (props: Props) {
     })
   }
 
-  const onRemoveUserAsset = (contractAddress: string) => {
-    props.walletActions.removeUserAsset({ contractAddress, chainId: selectedNetwork.chainId })
+  const onRemoveUserAsset = (token: TokenInfo) => {
+    props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 
   const onOpenWalletSettings = () => {

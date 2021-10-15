@@ -32,8 +32,8 @@ import {
 export interface Props {
   onClose: () => void
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   addUserAssetError: boolean
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
@@ -167,9 +167,9 @@ const EditVisibleAssetsModal = (props: Props) => {
     const isUserToken = userVisibleTokensInfo.includes(token)
     if (isUserToken) {
       if (isCustom) {
-        selected ? onSetUserAssetVisible(token.contractAddress, true) : onSetUserAssetVisible(token.contractAddress, false)
+        selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
       } else {
-        selected ? onAddUserAsset(token) : onRemoveUserAsset(token.contractAddress)
+        selected ? onAddUserAsset(token) : onRemoveUserAsset(token)
       }
     } else {
       onAddUserAsset(token)
@@ -193,7 +193,7 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   const onRemoveAsset = (token: TokenInfo) => {
     setIsLoading(true)
-    onRemoveUserAsset(token.contractAddress)
+    onRemoveUserAsset(token)
   }
 
   const isDisabled = React.useMemo(() => {

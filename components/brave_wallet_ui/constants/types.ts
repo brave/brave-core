@@ -727,8 +727,8 @@ export interface GetPendingSignMessageRequestReturnInfo {
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
-  removeUserAsset: (contractAddress: string, chainId: string) => Promise<RemoveUserAssetReturnInfo>
-  setUserAssetVisible: (contractAddress: string, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
+  removeUserAsset: (token: TokenInfo, chainId: string) => Promise<RemoveUserAssetReturnInfo>
+  setUserAssetVisible: (token: TokenInfo, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
   getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
   setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
