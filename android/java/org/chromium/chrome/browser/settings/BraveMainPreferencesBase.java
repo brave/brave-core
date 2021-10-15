@@ -131,6 +131,7 @@ public class BraveMainPreferencesBase
         // removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
+        removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
 
         updateSearchEnginePreference();
 
@@ -173,9 +174,10 @@ public class BraveMainPreferencesBase
 
         if (BraveVpnPrefUtils.shouldShowCallout() && !BraveVpnPrefUtils.isSubscriptionPurchase()
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            findPreference(PREF_BRAVE_VPN_CALLOUT).setOrder(firstSectionOrder);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+            VpnCalloutPreference vpnCalloutPreference = new VpnCalloutPreference(getActivity());
+            vpnCalloutPreference.setKey(PREF_BRAVE_VPN_CALLOUT);
+            vpnCalloutPreference.setOrder(firstSectionOrder);
+            getPreferenceScreen().addPreference(vpnCalloutPreference);
         }
 
         findPreference(PREF_FEATURES_SECTION).setOrder(++firstSectionOrder);
