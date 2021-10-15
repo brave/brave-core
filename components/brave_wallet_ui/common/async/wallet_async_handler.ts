@@ -29,6 +29,7 @@ import {
   TransactionInfo,
   WalletAccountType,
   ER20TransferParams,
+  ERC721TransferFromParams,
   SwapErrorResponse,
   SwapResponse,
   TokenInfo,
@@ -185,6 +186,9 @@ async function refreshWalletInfo (store: Store) {
     }))
     const getERCTokenBalanceReturnInfos = await Promise.all(state.accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
+        if (token.isErc721)
+          return ethJsonRpcController.getERC721TokenBalance(token.contractAddress, token.tokenId ?? '', account.address)
+
         return ethJsonRpcController.getERC20TokenBalance(token.contractAddress, account.address)
       }))
     }))
@@ -451,6 +455,26 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store, payload: ER2
   const { data, success } = await apiProxy.ethTxController.makeERC20TransferData(payload.to, payload.value)
   if (!success) {
     console.log('Failed making ERC20 transfer data, to: ', payload.to, ', value: ', payload.value)
+    return
+  }
+
+  await store.dispatch(WalletActions.sendTransaction({
+    from: payload.from,
+    to: payload.contractAddress,
+    value: '0x0',
+    gas: payload.gas,
+    gasPrice: payload.gasPrice,
+    maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
+    maxFeePerGas: payload.maxFeePerGas,
+    data
+  }))
+})
+
+handler.on(WalletActions.sendERC721TransferFrom.getType(), async (store, payload: ERC721TransferFromParams) => {
+  const apiProxy = await getAPIProxy()
+  const { data, success } = await apiProxy.ethTxController.makeERC721TransferFromData(payload.from, payload.to, payload.tokenId)
+  if (!success) {
+    console.log('Failed making ERC721 transferFrom data, from: ', payload.from, ', to: ', payload.to, ', tokenId: ', payload.tokenId)
     return
   }
 

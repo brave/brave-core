@@ -1,6 +1,11 @@
 import BigNumber from 'bignumber.js'
 
 export const formatBalance = (balance: string, decimals: number) => {
+  if (decimals == 0) {
+    const result = new BigNumber(balance)
+    return (result.isNaN()) ? '0' : result.toFixed(0)
+  }
+
   const result = new BigNumber(balance).dividedBy(10 ** decimals)
   return (result.isNaN()) ? '0.0000' : result.toFixed(4, BigNumber.ROUND_UP)
 }
