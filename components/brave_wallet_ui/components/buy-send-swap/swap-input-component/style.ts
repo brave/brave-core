@@ -273,4 +273,12 @@ export const WarningText = styled.span`
   letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.errorText};
+  word-break: break-word;
+`
+
+export const AddressConfirmationText = styled.span`
+  font-family: Poppins;
+  letter-spacing: 0.01em;
+  font-size: 12px;
+  color: ${(p) => p.theme.color.text02};
 `

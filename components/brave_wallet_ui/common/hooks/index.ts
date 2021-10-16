@@ -7,6 +7,7 @@ import useSwap from './swap'
 import useAssets from './assets'
 import useTimeout from './timeout'
 import useBalance from './balance'
+import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
 import useAddressLabels from './address-labels'
 import usePricing from './pricing'
@@ -19,5 +20,6 @@ export {
   useTransactionParser,
   useTransactionFeesParser,
   usePricing,
-  useAddressLabels
+  useAddressLabels,
+  useSend
 }

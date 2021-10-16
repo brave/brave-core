@@ -74,6 +74,7 @@ provideStrings({
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
   braveWalletSlippageToleranceTitle: 'Slippage tolerance',
   braveWalletExpiresInTitle: 'Expires in',
+  braveWalletSendPlaceholder: '0x address or url',
 
   // Buttons
   braveWalletButtonContinue: 'Continue',
@@ -364,5 +365,10 @@ provideStrings({
   braveWalletEditGasBaseFee: 'Current base fee',
   braveWalletEditGasGwei: 'Gwei',
   braveWalletEditGasSetCustom: 'Set custom',
-  braveWalletEditGasSetSuggested: 'Set suggested'
+  braveWalletEditGasSetSuggested: 'Set suggested',
+
+  // Send Input Errors
+  braveWalletNotValidEthAddress: 'Not a valid ETH address',
+  braveWalletNotValidAddress: 'Not a valid address',
+  braveWalletNotDomain: 'Domain is not registered'
 })

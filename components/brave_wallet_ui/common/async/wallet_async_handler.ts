@@ -88,6 +88,18 @@ async function findHardwareAccountInfo (address: string) {
   return null
 }
 
+export async function findENSAddress (address: string) {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.ethJsonRpcController.ensGetEthAddr(address)
+  return result
+}
+
+export async function findUnstoppableDomainAddress (address: string) {
+  const apiProxy = await getAPIProxy()
+  const result = await apiProxy.ethJsonRpcController.unstoppableDomainsGetEthAddr(address)
+  return result
+}
+
 async function refreshWalletInfo (store: Store) {
   const apiProxy = await getAPIProxy()
   const walletHandler = apiProxy.walletHandler
