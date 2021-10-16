@@ -65,6 +65,16 @@ void ViewCounterModel::RegisterPageView() {
   }
 }
 
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+void ViewCounterModel::RegisterPageViewBackgroundImagesOnly() {
+  DCHECK_NE(-1, total_image_count_);
+
+  // Increase background image index
+  current_wallpaper_image_index_++;
+  current_wallpaper_image_index_ %= total_image_count_;
+}
+#endif
+
 void ViewCounterModel::Reset(bool use_initial_count) {
   count_to_branded_wallpaper_ =
       use_initial_count ? kInitialCountToBrandedWallpaper
