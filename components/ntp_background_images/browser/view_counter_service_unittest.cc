@@ -178,7 +178,13 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
        BINotActiveWithNTPBackgoundOptionOptedOut) {
   EnableNTPBGImagesPref(false);
   service_->bi_images_data_ = GetDemoBackgroundWallpaper();
+#if defined(OS_ANDROID)
+  // On android, |kNewTabPageShowBackgroundImage| prefs is not used for
+  // controlling bg option. So view counter can give data.
+  EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
+#else
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
+#endif
 }
 #endif
 
