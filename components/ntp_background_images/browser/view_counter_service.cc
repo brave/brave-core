@@ -267,9 +267,9 @@ void ViewCounterService::RegisterPageView() {
     model_.RegisterPageView();
   } else {
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-      if (IsBackgroundWallpaperActive()) {
-          model_.RegisterPageViewBackgroundImagesOnly();
-      }
+    if (IsBackgroundWallpaperActive()) {
+      model_.RegisterPageViewBackgroundImagesOnly();
+    }
 #endif
   }
 }
