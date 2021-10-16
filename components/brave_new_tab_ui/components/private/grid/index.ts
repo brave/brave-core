@@ -2,7 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+interface Props {
+  isStandalonePrivatePage?: boolean
+}
 
 export const Grid = styled('section')<{}>`
   box-sizing: border-box;
@@ -85,7 +89,7 @@ export const Grid3Columns = styled('section')<{}>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
-  grid-template-columns: 10% 45% 45%;
+  grid-template-columns: 75px 297px 297px;
   grid-template-areas:
     "header header header"
     "image content1 content2";
@@ -93,7 +97,7 @@ export const Grid3Columns = styled('section')<{}>`
   grid-auto-rows: auto;
   grid-gap: 20px 20px;
   padding: 0;
-  justify-items: center;
+  justify-content: center;
 
   > *:first-child {
     grid-area: header;
@@ -113,7 +117,6 @@ export const Grid3Columns = styled('section')<{}>`
 
   @media screen and (max-width: 1170px) {
     grid-template-columns: 460px;
-    justify-content: center;
     grid-template-areas:
     "header"
     "content1"
@@ -130,17 +133,20 @@ export const Grid3Columns = styled('section')<{}>`
   }
 `
 
-export const HeaderGrid = styled('section')<{}>`
+export const HeaderGrid = styled('section')<Props>`
   box-sizing: border-box;
   display: grid;
   height: 100%;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "image"
-    "content";
+  grid-template-columns: ${p => p.isStandalonePrivatePage ? '1fr' : 'auto 1fr'};
+  ${p => !p.isStandalonePrivatePage && 'grid-template-areas: "image content"'};
+  ${p => p.isStandalonePrivatePage && css`
+    grid-template-areas:
+      "image"
+      "content";
+  `}
 
   grid-auto-rows: auto;
-  grid-gap: 50px;
+  grid-gap: ${p => p.isStandalonePrivatePage ? '10px' : '50px'};
   padding: 0 50px;
   align-items: center;
 
