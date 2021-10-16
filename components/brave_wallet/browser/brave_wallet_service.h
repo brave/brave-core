@@ -60,10 +60,10 @@ class BraveWalletService : public KeyedService,
   void AddUserAsset(mojom::ERCTokenPtr token,
                     const std::string& chain_id,
                     AddUserAssetCallback callback) override;
-  void RemoveUserAsset(const std::string& contract_address,
+  void RemoveUserAsset(mojom::ERCTokenPtr token,
                        const std::string& chain_id,
                        RemoveUserAssetCallback callback) override;
-  void SetUserAssetVisible(const std::string& contract_address,
+  void SetUserAssetVisible(mojom::ERCTokenPtr token,
                            const std::string& chain_id,
                            bool visible,
                            SetUserAssetVisibleCallback callback) override;

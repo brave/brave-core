@@ -78,6 +78,48 @@ bool Allowance(const std::string& owner_address,
 
 }  // namespace erc20
 
+namespace erc721 {
+
+bool TransferFrom(const std::string& from,
+                  const std::string& to,
+                  uint256_t token_id,
+                  std::string* data) {
+  const std::string function_hash =
+      GetFunctionHash("transferFrom(address,address,uint256)");
+
+  std::string padded_from;
+  if (!brave_wallet::PadHexEncodedParameter(from, &padded_from)) {
+    return false;
+  }
+
+  std::string padded_to;
+  if (!brave_wallet::PadHexEncodedParameter(to, &padded_to)) {
+    return false;
+  }
+
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  std::vector<std::string> hex_strings = {function_hash, padded_from, padded_to,
+                                          padded_token_id};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+bool OwnerOf(uint256_t token_id, std::string* data) {
+  const std::string function_hash = GetFunctionHash("ownerOf(uint256)");
+
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
+}
+
+}  // namespace erc721
+
 namespace unstoppable_domains {
 
 bool GetMany(const std::vector<std::string>& keys,

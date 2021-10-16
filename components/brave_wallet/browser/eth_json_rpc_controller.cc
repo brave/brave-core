@@ -11,6 +11,7 @@
 #include "base/environment.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
@@ -542,7 +543,8 @@ void EthJsonRpcController::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!ParseEnsAddress(body, &resolver_address) || resolver_address.empty()) {
+  if (!ParseAddressResult(body, &resolver_address) ||
+      resolver_address.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
@@ -659,7 +661,7 @@ void EthJsonRpcController::OnEnsGetEthAddr(
   }
 
   std::string address;
-  if (!ParseEnsAddress(body, &address) || address.empty()) {
+  if (!ParseAddressResult(body, &address) || address.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
@@ -868,6 +870,79 @@ void EthJsonRpcController::OnGetIsEip1559(
 bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
   static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
   return re2::RE2::FullMatch(domain, kDomainPattern);
+}
+
+void EthJsonRpcController::GetERC721OwnerOf(const std::string& contract,
+                                            const std::string& token_id,
+                                            GetERC721OwnerOfCallback callback) {
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!erc721::OwnerOf(token_id_uint, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC721OwnerOf,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetERC721OwnerOf(
+    GetERC721OwnerOfCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseAddressResult(body, &address) || address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
+}
+
+void EthJsonRpcController::GetERC721TokenBalance(
+    const std::string& contract_address,
+    const std::string& token_id,
+    const std::string& account_address,
+    GetERC721TokenBalanceCallback callback) {
+  const auto eth_account_address = EthAddress::FromHex(account_address);
+  if (eth_account_address.IsEmpty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::ContinueGetERC721TokenBalance,
+      weak_ptr_factory_.GetWeakPtr(), eth_account_address.ToChecksumAddress(),
+      std::move(callback));
+  GetERC721OwnerOf(contract_address, token_id, std::move(internal_callback));
+}
+
+void EthJsonRpcController::ContinueGetERC721TokenBalance(
+    const std::string& account_address,
+    GetERC721TokenBalanceCallback callback,
+    bool success,
+    const std::string& owner_address) {
+  if (!success || owner_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  bool is_owner = owner_address == account_address;
+  std::move(callback).Run(true, is_owner ? "0x1" : "0x0");
 }
 
 }  // namespace brave_wallet

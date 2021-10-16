@@ -312,7 +312,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                         });
             } else {
                 braveWalletService.removeUserAsset(
-                        walletListItemModel.getErcToken().contractAddress, mChainId, (success) -> {
+                        walletListItemModel.getErcToken(), mChainId, (success) -> {
                             if (success) {
                                 walletListItemModel.setIsUserSelected(false);
                             }

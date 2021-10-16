@@ -500,7 +500,7 @@ TEST_F(EthJsonRpcControllerUnitTest, EnsGetEthAddr) {
   rpc_controller_->EnsGetEthAddr(
       "brantly-test.eth",
       base::BindOnce(&OnStringResponse, &callback_called, true,
-                     "0x983110309620d911731ac0932219af06091b6744"));
+                     "0x983110309620D911731Ac0932219af06091b6744"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
@@ -1058,6 +1058,111 @@ TEST_F(EthJsonRpcControllerUnitTest, IsValidDomain) {
   for (const auto& domain : invalid_domains)
     EXPECT_FALSE(rpc_controller_->IsValidDomain(domain))
         << domain << " should be invalid";
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetERC721OwnerOf) {
+  bool callback_called = false;
+  rpc_controller_->GetERC721OwnerOf(
+      "", "0x1",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetInterceptor(
+      "eth_call", "",
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x000000000000000000000000983110309620d911731ac0932219af0609"
+      "1b6744\"}");
+
+  callback_called = false;
+  rpc_controller_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      base::BindOnce(
+          &OnStringResponse, &callback_called, true,
+          "0x983110309620D911731Ac0932219af06091b6744"));  // checksum address
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetErrorInterceptor();
+  rpc_controller_->GetERC721OwnerOf(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthJsonRpcControllerUnitTest, GetERC721Balance) {
+  bool callback_called = false;
+
+  // Invalid inputs.
+  rpc_controller_->GetERC721TokenBalance(
+      "", "0x1", "0x983110309620D911731Ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "",
+      "0x983110309620D911731Ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1", "",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetInterceptor(
+      "eth_call", "",
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x000000000000000000000000983110309620d911731ac0932219af0609"
+      "1b6744\"}");
+
+  // Owner gets balance 0x1.
+  callback_called = false;
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620D911731Ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called, true, "0x1"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Non-checksum address can get the same balance.
+  callback_called = false;
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620d911731ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called, true, "0x1"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Non-owner gets balance 0x0.
+  callback_called = false;
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620d911731ac0932219af06091b7811",
+      base::BindOnce(&OnStringResponse, &callback_called, true, "0x0"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  SetErrorInterceptor();
+  rpc_controller_->GetERC721TokenBalance(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x1",
+      "0x983110309620d911731ac0932219af06091b6744",
+      base::BindOnce(&OnStringResponse, &callback_called, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  // namespace brave_wallet

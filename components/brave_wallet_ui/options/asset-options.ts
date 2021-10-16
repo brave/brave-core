@@ -29,7 +29,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
       name: 'DAI Stablecoin',
       symbol: 'DAI',
-      logo: `chrome://erc-token-images/dai.svg`,
+      logo: `chrome://erc-token-images/dai.png`,
       isErc20: true,
       isErc721: false,
       decimals: 18
@@ -42,7 +42,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
       name: 'USD Coin',
       symbol: 'USDC',
-      logo: `chrome://erc-token-images/usdc.svg`,
+      logo: `chrome://erc-token-images/usdc.png`,
       isErc20: true,
       isErc721: false,
       decimals: 6

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -50,6 +51,33 @@ TEST(EthCallDataBuilderTest, Allowance) {
 }
 
 }  // namespace erc20
+
+namespace erc721 {
+
+TEST(EthCallDataBuilderTest, TransferFrom) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
+  TransferFrom("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+               "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", token_id, &data);
+  ASSERT_EQ(
+      data,
+      "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
+      "000000000000000000000000000000000000000000000000000000000f");
+}
+
+TEST(EthCallDataBuilderTest, OwnerOf) {
+  std::string data;
+  uint256_t token_id;
+  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
+  OwnerOf(token_id, &data);
+  ASSERT_EQ(data,
+            "0x6352211e00000000000000000000000000000000000000000000000000000000"
+            "0000000f");
+}
+
+}  // namespace erc721
 
 namespace unstoppable_domains {
 

@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 
 namespace {
 
@@ -56,6 +57,29 @@ bool ParseResult(const std::string& json, base::Value* result) {
 
   *result = result_v->Clone();
 
+  return true;
+}
+
+bool ParseAddressResult(const std::string& json, std::string* address) {
+  DCHECK(address);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
+  if (result.size() != 66) {
+    return false;
+  }
+
+  size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
+  *address = "0x" + result.substr(offset);
+
+  auto eth_addr = EthAddress::FromHex("0x" + result.substr(offset));
+  if (eth_addr.IsEmpty())
+    return false;
+
+  *address = eth_addr.ToChecksumAddress();
   return true;
 }
 
@@ -166,23 +190,6 @@ bool ParseEthEstimateGas(const std::string& json, std::string* result) {
 
 bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
-}
-
-bool ParseEnsAddress(const std::string& json, std::string* address) {
-  DCHECK(address);
-
-  std::string result;
-  if (!ParseSingleStringResult(json, &result))
-    return false;
-
-  // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
-  if (result.size() != 66) {
-    return false;
-  }
-
-  size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
-  *address = "0x" + result.substr(offset);
-  return true;
 }
 
 bool ParseEnsResolverContentHash(const std::string& json,
