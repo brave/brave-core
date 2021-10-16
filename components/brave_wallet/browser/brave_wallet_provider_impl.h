@@ -15,9 +15,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class HostContentSettingsMap;
 class PrefService;
 
 namespace brave_wallet {
@@ -30,11 +32,14 @@ class KeyringController;
 class BraveWalletProviderImpl final
     : public mojom::BraveWalletProvider,
       public mojom::EthJsonRpcControllerObserver,
-      public mojom::EthTxControllerObserver {
+      public mojom::EthTxControllerObserver,
+      public brave_wallet::mojom::KeyringControllerObserver,
+      public content_settings::Observer {
  public:
   BraveWalletProviderImpl(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
+      HostContentSettingsMap* host_content_settings_map,
       mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
       mojo::PendingRemote<mojom::EthTxController> tx_controller,
       KeyringController* keyring_controller,
@@ -119,13 +124,32 @@ class BraveWalletProviderImpl final
                            const std::vector<std::string>& allowed_accounts);
   bool CheckAccountAllowed(const std::string& account,
                            const std::vector<std::string>& allowed_accounts);
+  void UpdateKnownAccounts();
+  void OnUpdateKnownAccounts(bool success,
+                             const std::vector<std::string>& allowed_accounts);
+
+  // content_settings::Observer:
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type) override;
 
   void OnSignMessageRequestProcessed(SignMessageCallback callback,
                                      const std::string& address,
                                      std::vector<uint8_t>&& message,
                                      bool approved);
 
+  // KeyringControllerObserver
+  void KeyringCreated() override {}
+  void KeyringRestored() override {}
+  void Locked() override {}
+  void Unlocked() override {}
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+  void AutoLockMinutesChanged() override {}
+  void SelectedAccountChanged() override;
+
   int sign_message_id_ = 0;
+  HostContentSettingsMap* host_content_settings_map_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
@@ -138,6 +162,10 @@ class BraveWalletProviderImpl final
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> rpc_observer_receiver_{
       this};
   mojo::Receiver<mojom::EthTxControllerObserver> tx_observer_receiver_{this};
+  mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
+      keyring_observer_receiver_{this};
+  std::vector<std::string> known_allowed_accounts;
+  bool first_known_accounts_check = true;
   PrefService* prefs_ = nullptr;
   base::WeakPtrFactory<BraveWalletProviderImpl> weak_factory_;
 };

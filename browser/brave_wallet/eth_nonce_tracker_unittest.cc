@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
@@ -82,7 +81,12 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  controller.SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+  base::RunLoop run_loop;
+  controller.SetNetwork(
+      brave_wallet::mojom::kLocalhostChainId,
+      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
+  run_loop.Run();
+
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
@@ -167,7 +171,11 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
 
 TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  controller.SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+  base::RunLoop run_loop;
+  controller.SetNetwork(
+      brave_wallet::mojom::kLocalhostChainId,
+      base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
+  run_loop.Run();
   EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 

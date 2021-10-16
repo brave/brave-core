@@ -652,8 +652,13 @@ void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
   chain_id_ = chain_id;
 }
 
-void BraveWalletJSHandler::AccountsChangedEvent(const std::string& accounts) {
-  // FireEvent(kAccountsChangedEvent, accounts);
+void BraveWalletJSHandler::AccountsChangedEvent(
+    const std::vector<std::string>& accounts) {
+  base::ListValue event_args;
+  for (const std::string& account : accounts) {
+    event_args.Append(base::Value(account));
+  }
+  FireEvent(kAccountsChangedEvent, std::move(event_args));
 }
 
 }  // namespace brave_wallet

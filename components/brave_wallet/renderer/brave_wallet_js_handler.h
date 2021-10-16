@@ -32,8 +32,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void ConnectEvent();
   void OnGetChainId(const std::string& chain_id);
   void DisconnectEvent(const std::string& message);
-  void AccountsChangedEvent(const std::string& accounts);
-
+  void AccountsChangedEvent(const std::vector<std::string>& accounts) override;
   void ChainChangedEvent(const std::string& chain_id) override;
 
  private:
