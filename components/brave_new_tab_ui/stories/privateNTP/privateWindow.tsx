@@ -9,6 +9,7 @@ import {
   Grid3Columns,
   HeaderGrid,
   ControlBox,
+  ControlText,
   HeaderBox,
   IconText,
   Title,
@@ -51,14 +52,14 @@ export default class PrivateTab extends React.PureComponent<{}, {}> {
       <>
         <Grid3Columns>
           <HeaderBox>
-            <HeaderGrid>
-              <PrivateImage src={privateWindowImg} />
-              <Title>{locale.headerTitle}</Title>
+            <HeaderGrid isStandalonePrivatePage={true}>
+              <PrivateImage src={privateWindowImg} isStandalonePrivatePage={true} />
+              <Title isStandalonePrivatePage={true}>{locale.headerTitle}</Title>
             </HeaderGrid>
           </HeaderBox>
           <PrivacyEyeImage src={privacyEyeImg} />
-          <Text>{locale.headerText1}</Text>
-          <Text>{locale.headerText2} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank'>{locale.headerButton}</Link></Text>
+          <Text isStandalonePrivatePage={true}>{locale.headerText1}</Text>
+          <Text isStandalonePrivatePage={true}>{locale.headerText2} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank' isStandalonePrivatePage={true}>{locale.headerButton}</Link></Text>
         </Grid3Columns>
         {
           this.showAlternativePrivateSearchEngineToggle ?
@@ -66,7 +67,7 @@ export default class PrivateTab extends React.PureComponent<{}, {}> {
             <ToggleGroup>
               <IconText>
                 <DuckDuckGoImage />
-                <Text>{locale.boxDdgButton}</Text>
+                <ControlText>{locale.boxDdgButton}</ControlText>
               </IconText>
               <Toggle
                 id='duckduckgo'
