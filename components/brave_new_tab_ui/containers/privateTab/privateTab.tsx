@@ -10,6 +10,7 @@ import {
   HeaderGrid,
   ControlBox,
   HeaderBox,
+  ControlText,
   IconText,
   Title,
   Text,
@@ -62,22 +63,22 @@ export default class PrivateTab extends React.PureComponent<Props, {}> {
       <>
         <Grid3Columns>
           <HeaderBox>
-            <HeaderGrid>
-              <PrivateImage src={privateWindowImg} />
-              <Title>{getLocale('headerTitle')}</Title>
+            <HeaderGrid isStandalonePrivatePage={true}>
+              <PrivateImage src={privateWindowImg} isStandalonePrivatePage={true} />
+              <Title isStandalonePrivatePage={true}>{getLocale('headerTitle')}</Title>
             </HeaderGrid>
           </HeaderBox>
           <PrivacyEyeImage src={privacyEyeImg} />
-          <Text>{getLocale('headerText1')}</Text>
-          <Text>{getLocale('headerText2')} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank'>{getLocale('headerButton')}</Link></Text>
+          <Text isStandalonePrivatePage={true}>{getLocale('headerText1')}</Text>
+          <Text isStandalonePrivatePage={true}>{getLocale('headerText2')} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank' isStandalonePrivatePage={true}>{getLocale('headerButton')}</Link></Text>
         </Grid3Columns>
         {
           this.showAlternativePrivateSearchEngineToggle ?
           <ControlBox>
             <ToggleGroup>
               <IconText>
-                <DuckDuckGoImage />
-                <Text>{getLocale('boxDdgButton')}</Text>
+                <DuckDuckGoImage isStandalonePrivatePage={true} />
+                <ControlText>{getLocale('boxDdgButton')}</ControlText>
               </IconText>
               <Toggle
                 id='duckduckgo'
