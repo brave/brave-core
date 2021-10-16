@@ -62,7 +62,7 @@ static base::NoDestructor<std::vector<mojom::ERCToken>> kBuyTokens(
      {"0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e", "Year.Finance", "yfi.png",
       true, false, "YFI", 18, true, ""},
      {"0x9043d4d51C9d2e31e3F169de4551E416970c27Ef", "Palm DAI", "pdai.png",
-      true, false, "PDAI", 18, true}});
+      true, false, "PDAI", 18, true, ""}});
 
 const char kWalletBaseDirectory[] = "BraveWallet";
 const char kImageSourceHost[] = "erc-token-images";
