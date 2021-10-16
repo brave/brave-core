@@ -12,6 +12,7 @@ import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
 import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
 
 // Styled Components
 import {
@@ -31,7 +32,8 @@ import {
   PasteIcon,
   PasteButton,
   SlippageInput,
-  WarningText
+  WarningText,
+  AddressConfirmationText
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
@@ -49,6 +51,8 @@ export interface Props {
   selectedAssetBalance?: string
   selectedAsset?: AccountAssetOptionType
   selectedAssetInputAmount?: string
+  addressError?: string
+  toAddressOrUrl?: string
   toAddress?: string
   inputName?: string
   orderType?: OrderTypes
@@ -74,6 +78,8 @@ function SwapInputComponent (props: Props) {
     componentType,
     selectedAssetInputAmount,
     inputName,
+    addressError,
+    toAddressOrUrl,
     toAddress,
     orderType,
     slippageTolerance,
@@ -225,8 +231,8 @@ function SwapInputComponent (props: Props) {
             <Input
               componentType={componentType}
               type={componentType === 'toAddress' ? 'text' : 'number'}
-              placeholder={componentType === 'toAddress' ? '0x address or url' : '0'}
-              value={componentType === 'toAddress' ? toAddress : selectedAssetInputAmount}
+              placeholder={componentType === 'toAddress' ? getLocale('braveWalletSendPlaceholder') : '0'}
+              value={componentType === 'toAddress' ? toAddressOrUrl : selectedAssetInputAmount}
               name={inputName}
               onChange={onInputChanged}
               spellCheck={false}
@@ -314,6 +320,12 @@ function SwapInputComponent (props: Props) {
       }
       {showSlippageWarning &&
         <WarningText>{getLocale('braveWalletSlippageToleranceWarning')}</WarningText>
+      }
+      {componentType === 'toAddress' && addressError &&
+        <WarningText>{addressError}</WarningText>
+      }
+      {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
+        <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
       }
     </BubbleContainer >
   )

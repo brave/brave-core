@@ -38,7 +38,9 @@ export interface Props {
   toAmount: string
   fromAssetBalance: string
   toAssetBalance: string
+  toAddressOrUrl: string
   toAddress: string
+  addressError: string
   buyAssetOptions: AccountAssetOptionType[]
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
@@ -59,7 +61,7 @@ export interface Props {
   onSetBuyAmount: (value: string) => void
   onSetSendAmount: (value: string) => void
   onSetFromAmount: (value: string) => void
-  onSetToAddress: (value: string) => void
+  onSetToAddressOrUrl: (value: string) => void
   onSetToAmount: (value: string) => void
   onSelectPresetFromAmount: (percent: number) => void
   onSelectPresetSendAmount: (percent: number) => void
@@ -84,9 +86,11 @@ function BuySendSwap (props: Props) {
     sendAmount,
     fromAmount,
     toAmount,
+    addressError,
     fromAssetBalance,
     toAssetBalance,
     toAddress,
+    toAddressOrUrl,
     buyAssetOptions,
     sendAssetOptions,
     swapAssetOptions,
@@ -108,7 +112,7 @@ function BuySendSwap (props: Props) {
     onSetBuyAmount,
     onSetSendAmount,
     onSetFromAmount,
-    onSetToAddress,
+    onSetToAddressOrUrl,
     onSetToAmount,
     onSelectPresetFromAmount,
     onSelectPresetSendAmount,
@@ -183,17 +187,19 @@ function BuySendSwap (props: Props) {
       }
       {selectedTab === 'send' &&
         <Send
+          addressError={addressError}
           accounts={accounts}
           networkList={networkList}
           selectedAssetAmount={sendAmount}
           selectedAssetBalance={fromAssetBalance}
+          toAddressOrUrl={toAddressOrUrl}
           toAddress={toAddress}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}
           onSelectPresetAmount={onSelectPresetSendAmount}
           onSelectAsset={onSelectAsset}
           onSetSendAmount={onSetSendAmount}
-          onSetToAddress={onSetToAddress}
+          onSetToAddressOrUrl={onSetToAddressOrUrl}
           onSubmit={onSubmitSend}
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}

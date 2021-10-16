@@ -16,7 +16,9 @@ export interface Props {
   selectedAsset: AccountAssetOptionType
   selectedAssetAmount: string
   selectedAssetBalance: string
+  toAddressOrUrl: string
   toAddress: string
+  addressError: string
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeSendView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -28,7 +30,9 @@ function Send (props: Props) {
     selectedAsset,
     selectedAssetAmount,
     selectedAssetBalance,
+    toAddressOrUrl,
     toAddress,
+    addressError,
     onInputChange,
     onSelectPresetAmount,
     onSubmit,
@@ -59,12 +63,14 @@ function Send (props: Props) {
       <SwapInputComponent
         componentType='toAddress'
         onInputChange={onInputChange}
+        toAddressOrUrl={toAddressOrUrl}
+        addressError={addressError}
         toAddress={toAddress}
         inputName='address'
         onPaste={onPasteFromClipboard}
       />
       <NavButton
-        disabled={false}
+        disabled={addressError !== '' || toAddressOrUrl === ''}
         buttonType='primary'
         text={getLocale('braveWalletSend')}
         onSubmit={onSubmit}
