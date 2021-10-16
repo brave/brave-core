@@ -35,13 +35,18 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
 export type ReadFeedItemPayload = {
   item: BraveToday.FeedItem,
   isPromoted?: boolean,
+  promotedUUID?: string,
   openInNewTab?: boolean
 }
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 
 export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
 
-export const promotedItemViewed = createAction<BraveToday.PromotedArticle>('promotedItemViewed')
+export type PromotedItemViewedPayload = {
+  item: BraveToday.PromotedArticle
+  uuid: string
+}
+export const promotedItemViewed = createAction<PromotedItemViewedPayload>('promotedItemViewed')
 
 export type VisitDisplayAdPayload = {
   ad: BraveToday.DisplayAd
