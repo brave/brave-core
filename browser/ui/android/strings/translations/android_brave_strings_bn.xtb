@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">সাইটগুলির পছন্দের ডেস্কটপ সংস্করণ</translation>
 <translation id="1842747674580016420">Brave-এ ভিডিও প্লেব্যাক</translation>
 <translation id="5368992950177874750">যদি সক্ষম করা থাকে তবে ভিডিওগুলি সংশ্লিষ্ট অ্যাপের পরিবর্তে Brave প্লে করা হবে</translation>
+<translation id="410351446219883937">স্বতঃচালানো</translation>
+<translation id="7445411102860286510">সাইটগুলিকে মিউট করে রাখা ভিডিও স্বতঃবাজানোর মঞ্জুরি দেয় (প্রস্তাবিত)</translation>
+<translation id="7837721118676387834">একটি নির্দিষ্ট সাইটের জন্য মিউট করে রাখা ভিডিওগুলি স্বতঃবাজানোর অনুমতি দেয়।</translation>
 <translation id="181905442828471321">Brave শিল্ডস গ্লোবাল ডিফল্ট</translation>
 <translation id="2675679258824361492">অন্যান্য গোপনীয়তার সেটিংস</translation>
 <translation id="8026334261755873520">ব্রাউজ করা ডেটা সাফ করুন</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">নভেম্বর</translation>
 <translation id="4254029385847607686">ডিসেম্বর</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
@@ -466,6 +470,17 @@
 <translation id="3769645103175790584">আপনি ব্রাউজ করার সময় দুর্দান্ত সামগ্রীর জন্য টোকেন এবং পুরষ্কার প্রদানকারীদের উপার্জন করুন।<ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">দ্রুত ভ্রমণ</translation>
 <translation id="1080013038789678738">I’m In!</translation>
+<translation id="8037420924417098685">একটি বিনামূল্যে কল শুরু করতে Brave Rewards চালু করুন</translation>
+<translation id="8961724619078500274">Brave Rewards-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপনগুলো দেখার জন্য টোকেন অর্জন করেন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।</translation>
+<translation id="7307847920988946894">পুরষ্কারগুলির বোতাম চালু করুন</translation>
+<translation id="1186139901474936180">ট্যাপ করে আপনি <ph name="TERMS_OF_SERVICE"/> ও <ph name="PRIVACY_POLICY"/>-এর সাথে সম্মত হন। যে কোনও সময়ে সেটিংসে অক্ষম করুন।</translation>
+<translation id="6128511569382736135">একটি বিনামূল্যে কল শুরু করতে Brave ব্যক্তিগত বিজ্ঞাপন সক্ষম করুন</translation>
+<translation id="7930006085154756245">Brave ব্যক্তিগত বিজ্ঞাপন-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপন দেখার জন্য টোকেন উপার্জন করুন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।</translation>
+<translation id="4992617448154987397">Brave ব্যক্তিগত বিজ্ঞাপনগুলো চালু করুন</translation>
+<translation id="7314030474505546826">বিজ্ঞাপনগুলো চালু করে আপনি <ph name="TERMS_OF_SERVICE"/> এবং <ph name="PRIVACY_POLICY"/> এর সাথে সম্মত হন।</translation>
+<translation id="3415016869273103668">আপনি এখন বিনামূল্যে কল শুরু করতে পারেন</translation>
+<translation id="6712250553966900750">Brave টক চালিয়ে যেতে স্ক্রিনের যেকোনো জায়গায় ট্যাপ করুন।</translation>
+<translation id="626339649633171286">Brave Rewards সম্পর্কে আরও জানতে চান? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">আপনি রূপান্তর করেছেন <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">আপনার নেটওয়ার্ক সংযোগ পরীক্ষা করুন।</translation>
 <translation id="7889432931837317731">সম্ভব হলে স্বয়ংক্রিয়ভাবে খুলুন</translation>
@@ -528,6 +543,7 @@
 <translation id="7408247683131762445">সতর্কতা: কখনও আপনার ব্যাকআপ বাক্যাংশ প্রকাশ করবেন না। এই বাক্যাংশ কারোর কাছে থাকলে সে আপনার ফান্ড চিরকালের জন্য নিয়ে নিতে পারবেন।</translation>
 <translation id="939275786514736244">আমি অন্য কোনও নিরাপদ স্থানে আমার বাক্যাংশ ব্যাকআপ করেছি</translation>
 <translation id="6896758677409633944">অনুলিপি</translation>
+<translation id="2604744480284798833">আপনার ক্রিপ্টো পোর্টফোলিওকে অ্যাক্সেসের ক্ষতি থেকে রক্ষা করতে এখনই আপনার ওয়ালেটটির ব্যাকআপ নিন।</translation>
 <translation id="1202920745614909195">Apple Pay, ক্রেডিট বা ডেবিট কার্ড দিয়ে ক্রিপ্টো ক্রয় করুন।</translation>
 <translation id="841880029259839903">ক্রিপ্টো পাঠান বা একটি অ্যাকাউন্ট থেকে অন্য অ্যাকাউন্টে ট্রান্সফার করুন।</translation>
 <translation id="8982246458261383692">Brave DEX অ্যাগ্রিগেটর দিয়ে ক্রিপ্টো সম্পদগুলি সোয়াপ করুন।</translation>
@@ -536,7 +552,7 @@
 <translation id="4450951602553063001">পাসওয়ার্ড আবার লিখুন</translation>
 <translation id="1783870616707290226">পাসওয়ার্ড অবশ্যই 7 বা তার বেশি ক্যারেক্টারের হতে হবে</translation>
 <translation id="7383102760859258982">পুনরায়-টাইপ করা পাসওয়ার্ড মেলেনি</translation>
-<translation id="1538774398124896437">লাইভ</translation>
+<translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
@@ -546,6 +562,7 @@
 <translation id="8892168913673237979">সব সেট হয়েছে!</translation>
 <translation id="8331501996028380732">ক্রিপ্টো ক্রয়, কেনাবেচা করুন, বা ধরে রাখুন। আপনার একটি বিদ্যমান ক্রিপ্টো অ্যাকাউন্ট থাকলে আপনি এখন সেটি যোগ করতে পারেন।</translation>
 <translation id="2267753748892043616">অ্যাকাউন্ট যোগ করুন</translation>
+<translation id="2632612428525029752">অ্যাকাউন্ট আপডেট করুন</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">আঙ্গুলের ছাপ দিয়ে আনলক করা সক্ষম করবেন?</translation>
 <translation id="5493402808936397665">আপনার পাসওয়ার্ড না লিখে দ্রুত আপনার ওয়ালেট আনলক করতে বায়োমেট্রিক্স সক্রিয় করুন।</translation>
@@ -565,7 +582,7 @@
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="745115390910697838">বাক্যাংশ মেলেনি. অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2360588547830602174">অ্যাকাউন্ট পুনরুদ্ধার ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
-<translation id="990936698620790924">ETH-এ মার্কেট প্রাইস</translation>
+<translation id="6392640873800632439"><ph name="ASSET"/>-এ বাজার দর</translation>
 <translation id="5593852897152820572">ETH-এ মূল্য</translation>
 <translation id="6748108480210050150">থেকে</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -593,10 +610,107 @@
 <translation id="569068482611873351">ইম্পোর্ট করুন...</translation>
 <translation id="1940465339426637378">সম্পদ</translation>
 <translation id="4522570452068850558">বিস্তারিত বিবরণগুলি</translation>
-<translation id="9065203028668620118">সম্পাদনা</translation>
 <translation id="3995184924764722477">অ্যাকাউন্টের বিশদ</translation>
 <translation id="8967036623785635603">দৃশ্যমান সংস্থানগুলি সম্পাদনা করুন</translation>
 <translation id="5050890334032852465">অ্যাকাউন্ট ওয়াচলিস্ট সংরক্ষণ করুন</translation>
 <translation id="7755766175599167100">সার্চ টোকেনগুলি</translation>
 <translation id="3835223348537121988">ব্যালেন্স:</translation>
+<translation id="4449475351935531438">Brave ফায়ারওয়াল + VPN</translation>
+<translation id="719977489961414786">আপনার সংযোগ রক্ষা করতে এবং সর্বত্র আক্রমণকারী ট্র্যাকারগুলিকে ব্লক করতে একটি VPNএ আপগ্রেড করুন।</translation>
+<translation id="3435896845095436175">সক্ষম করুন</translation>
+<translation id="8814357473522731680">দ্বারা চালিত</translation>
+<translation id="5596139545583924414">বিজ্ঞাপন &amp; সমস্ত অ্যাপ জুড়ে ট্র্যাকার ব্লক করুন</translation>
+<translation id="8272917646984397798">সমস্ত সংযোগকে সুরক্ষিত করে</translation>
+<translation id="1751947227857853925">দ্রুত এবং 100 Mbps অবধি সীমাহীন</translation>
+<translation id="1400240082805528049">24/7 সহায়তা</translation>
+<translation id="5051030058817632680">অনাকাঙ্ক্ষিত নেটওয়ার্ক সংযোগ ব্লক করে</translation>
+<translation id="3510283489391432976">আপনার জিও/দেশের অবস্থান নির্বাচন করুন</translation>
+<translation id="4390800080658195654">আপনাকে অনলাইনে বেনামে রাখে</translation>
+<translation id="639981156979733813">100 Mbps পর্যন্ত গতি সমর্থন করে</translation>
+<translation id="8396607116169935837">IKEv2 নিরাপদ এনক্রিপ্ট করা VPN টানেল ব্যবহার করে</translation>
+<translation id="1571230671455380494">আমরা কখনও আপনার তথ্য শেয়ার বা বিক্রি করি না</translation>
+<translation id="276866628038850725">সমস্ত প্ল্যান সহ বিনামূল্যে একটি 7 দিনের ট্রায়াল!</translation>
+<translation id="7280825497485894053">মাসিক সাবস্ক্রিপশন</translation>
+<translation id="3001303523417455986">বাত্সরিক সাবস্ক্রিপশন</translation>
+<translation id="6748319398471481216">মাসিক রিনিউ হয়</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / মাস।</translation>
+<translation id="1163809943099641131">এক বছর</translation>
+<translation id="6277055349883621705">বার্ষিক পুনর্নবীকরণ 16% সংরক্ষণ করুন</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / বছর</translation>
+<translation id="4487678670820292781">$119.88</translation>
+<translation id="5867778679088331977">7 দিনের জন্য বিনামূল্যে ব্যবহার করে দেখুন। 7 দিন পরে, আপনার কাছে প্ল্যানের মূল্য নেওয়া হবে। সমস্ত সাবস্ক্রিপশন স্বয়ংক্রিয়ভাবে পুনর্নবীকরণ করা হয় তবে পুনর্নবীকরণের আগে বাতিল করা যেতে পারে।</translation>
+<translation id="6053992191006521518">বিনামূল্যে ব্যবহার করে দেখুন</translation>
+<translation id="721747358270435486">VPN ইনস্টল করুন</translation>
+<translation id="836074276610740314">VPN প্রোফাইল ইনস্টল করুন</translation>
+<translation id="8021842065465097929">Brave এখন একটি VPN প্রোফাইল ইনস্টল করবে।</translation>
+<translation id="229286271464650057">এই প্রোফাইলটি VPNকে স্বয়ংক্রিয়ভাবে আপনার ডিভাইস জুড়ে ট্রাফিক সংযুক্ত করতে এবং সুরক্ষিত করতে দেয় — প্রতিটি অ্যাপে, সব সময়। এই VPN সংযোগটি এনক্রিপ্ট করা হবে এবং বিজ্ঞাপন এবং ট্র্যাকারগুলিকে ব্লক কর গার্ডিয়ানের বুদ্ধিমান ফায়ারওয়ালের মাধ্যমে রুট করা হবে।</translation>
+<translation id="9073255657908892407">প্রযুক্তিগত সহায়তার সাথে যোগাযোগ করুন</translation>
+<translation id="1139934321138152517">VPN এখন সক্ষম আছে</translation>
+<translation id="7678718921266217759">কিছু প্রসঙ্গ...</translation>
+<translation id="7267573208549764106">আপনার আগের VPN বিচ্ছিন্ন ছিল। VPN-এ পুনরায় সংযোগ করতে, আপনাকে সংযোগের অনুরোধ গ্রহণ করতে হবে।
+
+আপনি যদি এই অনুরোধ গ্রহণ না করেন, VPN পুনরায় সংযোগ করবে না এবং আপনার ইন্টারনেট সংযোগ সুরক্ষিত হবে না।</translation>
+<translation id="2429299231491852747">সংযোগের অনুরোধ স্বীকার করুন</translation>
+<translation id="3428909627460825679">Vpn প্রোফাইল তৈরি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="8584119457978684056">কেনার টোকেন যাচাইকরণ ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="8905950042180169719">পটভূমিতে VPN চলছে</translation>
+<translation id="8681480718817027245">সাবস্ক্রিপশন</translation>
+<translation id="7805768142964895445">স্থিতি</translation>
+<translation id="5747552184818312860">মেয়াদ শেষ হবে</translation>
+<translation id="1656814355341174523">সাবস্ক্রিপশন পরিচালনা করুন</translation>
+<translation id="1919008675977575793">সার্ভার</translation>
+<translation id="4812684235631257312">হোস্ট</translation>
+<translation id="5646376287012673985">লোকেশন</translation>
+<translation id="8375573361134671513">কনফিগারেশন পুনরায় সেট করুন</translation>
+<translation id="850405162932416400">VPN সহায়তা</translation>
+<translation id="1330148827129583049">Vpn প্রোফাইল তৈরি করা হয়নি। একটি নতুন প্রোফাইল তৈরি করা হচ্ছে।</translation>
+<translation id="6772117549627334582">সার্ভারের লোকেশন পেতে ব্যর্থ। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</translation>
+<translation id="5863914199331127413">VPN হোস্টনাম</translation>
+<translation id="5499653136178260315">সাবস্ক্রিপশনের ধরণ</translation>
+<translation id="4741058112780154119">অ্যাপের সংস্করণ</translation>
+<translation id="7286066816862208787">অ্যাপের প্রাপ্তিস্বীকার</translation>
+<translation id="2552966063069741410">সময় জোন</translation>
+<translation id="4395361077929528480">নেটওয়ার্কের ধরণ</translation>
+<translation id="755448900483975096">সেলুলার ক্যারিয়ার</translation>
+<translation id="1279441577056010362">ইমেল করতে চালিয়ে যান</translation>
+<translation id="2553687444159335134">গার্ডিয়ান টিমের সাহায্যে সহায়তা প্রদান করা হয়েছে।\n\nআপনি যে তথ্যটি আমাদের সাথে শেয়ার করতে স্বাচ্ছন্দ্যবোধ করেন তা অনুগ্রহ করে নির্বাচন করুন।\n\nআপনি প্রাথমিকভাবে আমাদের সাথে যত বেশি তথ্য শেয়ার করবেন আমাদের সাপোর্ট স্টাফদের জন্য আপনার সমাধান করা তত সহজ হবে</translation>
+<translation id="7999094850625689785">আপনার সিস্টেম টাইমজোনের উপর ভিত্তি করে আপনার কাছে সবচেয়ে কাছাকাছি একটি সার্ভার অঞ্চল স্বয়ংক্রিয়ভাবে নির্বাচিত হবে। দ্রুত ইন্টারনেটের গতি নিশ্চিত করার জন্য এটি সুপারিশ করা হয়।</translation>
+<translation id="8018707825009059641">অন্যান্য বিষয়</translation>
+<translation id="6687228121145903051">VPN-এর সাথে সংযোগ করা যাচ্ছে না (অন্যান্য ত্রুটি)</translation>
+<translation id="9184988385244077767">সংযুক্ত থাকাকালীন ইন্টারনেট নেই</translation>
+<translation id="21570240866965662">ধীর সংযোগ</translation>
+<translation id="1219475260382643267">ওয়েবসাইট কাজ করে না</translation>
+<translation id="7138678301420049075">অন্যান্য</translation>
+<translation id="4827315939627587219">VPN কনফিগারেশন রিসেট করুন</translation>
+<translation id="6883280223123252086">আপনি কি vpn কনফিগারেশন পুনরায় সেট করতে চান?</translation>
+<translation id="604124094241169006">স্বয়ংক্রিয়</translation>
+<translation id="7475580600756356589">আপনার সার্ভারের সাথে সংযুক্ত হচ্ছে। একটু সময় নেওয়া উচিত...</translation>
+<translation id="1342728075788541348">আপনার সার্ভার থেকে সংযোগ বিচ্ছিন্ন করা হচ্ছে। একটু সময় নেওয়া উচিত...</translation>
+<translation id="669072536454692117">সাবস্ক্রিপশন সফলভাবে উপযোগ করা হয়েছে</translation>
+<translation id="1187506504156101449">ক্রয়ের স্বীকৃতি দিতে ব্যর্থ :</translation>
+<translation id="8420522105268941892">আপনি ইতিমধ্যে সাবস্ক্রিপশনে সাবস্ক্রাইব করেছেন। সাবস্ক্রিপশন পুনরুদ্ধার করার চেষ্টা করুন।</translation>
+<translation id="74771564105268111">ত্রুটি!!\nএকজন ব্যবহারকারীর কারণে কেনার প্রবাহটি বাতিল করা হচ্ছে।</translation>
+<translation id="3851978668258201962">ত্রুটি!!\nকেনা ব্যর্থ হয়েছে..</translation>
+<translation id="6452181791372256707">প্রত্যাখ্যান</translation>
+<translation id="8030852056903932865">অনুমোদন করুন</translation>
+<translation id="1597199892790541240">গ্যাস ফী</translation>
+<translation id="1634828734222219955">মোট</translation>
+<translation id="7995708795274219641">অর্থরাশি + গ্যাস</translation>
+<translation id="1950052789869821983">লেনদেন</translation>
+<translation id="6122742277607781713">পোর্টফোলিও</translation>
+<translation id="2805756323405976993">অ্যাপ্স</translation>
+<translation id="6083912983861746409">গ্যাসের দাম(গোয়েই)</translation>
+<translation id="2499079593046817044">গ্যাসের সীমা(গোয়েই)</translation>
+<translation id="6389441740143786465">শেয়ারিং হাব নিষ্ক্রিয় করুন</translation>
+<translation id="9065203028668620118">সম্পাদনা</translation>
+<translation id="473775607612524610">আপডেট করুন</translation>
+<translation id="479795390141144417">অ্যাকাউন্ট আপডেট ব্যর্থ হয়েছে।</translation>
+<translation id="8084782383392198011">অ্যাকাউন্টের নাম খালি রাখা যাবে না।</translation>
+<translation id="5045550434625856497">ভুল পাসওয়ার্ড</translation>
+<translation id="1367951781824006909">একটি ফাইল বেছে নিন</translation>
+<translation id="8648684608605749476">ছদ্মবেশী মোডে থার্ড-পার্টি কুকি ব্লক করুন</translation>
+<translation id="1118876217803190221">অপর্যান্ত ব্যালেন্স</translation>
+<translation id="275990379543116961">গ্যাসের পক্ষে ফান্ড অপর্যাপ্ত</translation>
+<translation id="3292453499915466604">অপর্যাপ্ত তারল্য</translation>
+<translation id="3380365263193509176">অজানা ত্রুটি</translation>
 </translationbundle>

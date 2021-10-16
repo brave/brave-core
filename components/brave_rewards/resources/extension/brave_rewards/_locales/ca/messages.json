@@ -19,6 +19,26 @@
     "message": "Actualitza l'estat",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Qualsevol propina que doneu quedarà pendent a la vostra cartera i es tornarà a provar automàticament durant 90 dies. $link_begin$Saber-ne més$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Aquest creador encara no està registrat.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Actualment, aquest creador no està configurat per rebre propines de la vostra cartera.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ a $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ arribaran en $days$",
+    "message": "El pagament de $amount$ començarà a processar-se en $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Omet",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Per iniciar una trucada gratuïta, activeu Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Amb Brave Rewards guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Activeu les recompenses",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Si feu clic, esteu acceptant els $tos_link_begin$Termes del servei$tos_link_end$ i la $pp_link_begin$Política de privacitat$pp_link_end$. Podeu desactivar l'opció en qualsevol moment a Configuració.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Per iniciar una trucada gratuïta, activeu Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Amb Brave Private Ads guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Activeu Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Si activeu Brave Ads, esteu acceptant els $tos_link_begin$Termes del servei$tos_link_end$ i la $pp_link_begin$Política de privacitat$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Ara podeu iniciar una trucada gratuïta",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Feu clic a qualsevol lloc de la pantalla per continuar cap a Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Voleu saber més sobre Brave Rewards? $tour_link_begin$Feu una visita ràpida$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

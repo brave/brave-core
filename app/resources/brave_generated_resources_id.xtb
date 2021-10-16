@@ -190,10 +190,10 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5655621391922317800">Dompet Kripto</translation>
 <translation id="1696548911367097044">Ekstensi Dompet Kripto yang Ditanggalkan</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Penyedia Ethereum untuk menggunakan Dapps</translation>
-<translation id="5913089932885076110">Muat Crypto Wallets saat memulai</translation>
-<translation id="757886143331967039">Muat ekstensi Dompet Kripto yang ditanggalkan pada saat mulai</translation>
+<translation id="9131889008937672866">Dompet mata uang kripto bawaan</translation>
 <translation id="1834467296210148203">Tampilkan ikon Brave Wallet pada bilah alat</translation>
+<translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
+<translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="5927916530277631319">Metode untuk menelusuri Unstoppable Domains</translation>
 <translation id="5248318250177143470">Metode untuk menelusuri Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1251574393468476924">Ukuran tembolok IPFS maksimum (GB)</translation>
 <translation id="2503497578400410320">Batas atas lunak untuk ukuran penyimpanan data repositori IPFS.</translation>
 <translation id="7703184801853248830">Alamat gateway tidak sah</translation>
+<translation id="7690058578502751948">Hanya gerbang IPFS yang valid dengan isolasi Asal aktif yang dapat digunakan di Brave</translation>
 <translation id="585868419599255817">Gateway publik IPFS fallback</translation>
 <translation id="207763736230883589">Otomatis kembali ke gateway IPFS publik jika nodus lokal Anda tidak dapat dijangkau.</translation>
 <translation id="4107552920076294723">Alihkan sumber daya IPFS ke gateway IPFS yang dikonfigurasi</translation>
@@ -300,6 +301,10 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1391855377994926460">Terus menelusuri web dengan lebih cepat - hingga 6x lebih cepat pada situs berita utama.</translation>
 <translation id="9218430445555521422">Setel sebagai default</translation>
 <translation id="3479552764303398839">Jangan sekarang</translation>
+<translation id="732814027519296280">Ingin membuat Brave Search menjadi lebih baik?</translation>
+<translation id="2677865600861971449">Ikut serta dalam Proyek Penemuan Web untuk secara anonim menyumbangkan sejumlah penelusuran &amp; penjelajahan data, dan meningkatkan hasil Brave Search untuk semua. Menjaga privasi. Dan sangat mudah. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Aktifkan</translation>
+<translation id="780301667611848630">Lain kali</translation>
 <translation id="5039804452771397117">Izinkan</translation>
 <translation id="7053983685419859001">Blokir</translation>
 <translation id="7815301689257843278">Kirimkan laporan kegagalan secara otomatis sehingga Brave dapat mencegah masalah ini agar tidak terjadi lagi?</translation>
@@ -309,6 +314,8 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6873781976650514089">pengaturan ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5600566490506283344">Notifikasi Brave Ad</translation>
+<translation id="4174337572777167894">Proyek Penemuan Web</translation>
+<translation id="8659271182272561965">Meyumbangkan sejumlah penelusuran anonim &amp; penjelajahan data untuk memperbaiki Brave Search.</translation>
 <translation id="1516554614404600536">Tips Brave</translation>
 <translation id="4877147287319222750">Tambah ke Bilah sisi</translation>
 <translation id="4233010476457917696">Tampilkan bilah sisi</translation>

@@ -19,6 +19,26 @@
     "message": "Atnaujinti būseną",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Visi siųsti arbatpinigiai bus sulaikyti jūsų piniginėje automatiškai kartojant arbatpinigių siuntimą 90 dienų. $link_begin$Sužinokite daugiau$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Šis kūrėjas dar neužsiregistravęs.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Šis kūrėjas dar nėra sukonfigūruotas gauti arbatpinigių iš jūsų piniginės.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ iš $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ gaunama po $days$",
+    "message": "$amount$ išmoka bus pradėta apdoroti po $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Atsisakyti",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Norėdami pradėti nemokamą skambutį, įjunkite „Brave Rewards“",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Naudojant „Brave Rewards“ suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Įjungti atlygio funkciją",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Spustelėdami sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$. Išjungti galite bet kada, apsilankę srityje „Nustatymai“.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Norėdami pradėti nemokamą skambutį, įjunkite privatumo nepažeidžiančias „Brave“ reklamas",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Naudojant privatumo nepažeidžiančias „Brave“ reklamas suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Įjungti privatumo nepažeidžiančias „Brave“ reklamas",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Įjungdami reklamas, sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Dabar galite pradėti nemokamą pokalbį",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Spustelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Norite apie „Brave Rewards“ sužinoti daugiau? $tour_link_begin$Peržiūrėkite trumpą apžvalgą$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

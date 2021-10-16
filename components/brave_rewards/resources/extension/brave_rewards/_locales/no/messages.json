@@ -19,6 +19,26 @@
     "message": "Oppdater status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "All tipsen du tjener opp, blir liggende i lommeboken din, og prøver på nytt i 90 dager. $link_begin$Finn ut mer$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Denne skaperen er ikke registrert ennå.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Denne skaperen er per nå ikke satt opp for å motta tips fra lommeboken din.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ på $platform$",
     "placeholders": {
@@ -31,7 +51,7 @@
     }
   },
   "attention": {
-    "message": "Obs",
+    "message": "Obs!",
     "description": ""
   },
   "sendTip": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ kommer inn om $days$",
+    "message": "Utbetaling på $amount$ blir behandlet om $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Lukk",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Slå på Brave-belønninger for å starte et gratis anrop",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Med Brave Rewards tjener du opp tokener ved å se på private annonser (dataene dine er trygge). Tokenene kan konverteres til kontanter, kavekort … eller tips til favoritt-nettstedene dine. Ingen sporing – ingen treghet.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Slå på Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Ved å klikke på dette godtar du $tos_link_begin$Tjenestevilkårene$tos_link_end$ og $pp_link_begin$Personvernerklæringen$pp_link_end$. Du kan deaktivere dette når som helst i Innstillingene.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Slå på Brave Private Ads for å starte et gratis anrop",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Bed Brave Private Ads tjener du opp tokener for å se på private annonser (dataene dine er trygge). Konverter tokenene til kontanter, gavekort … eller tips til nettsidene du liker aller best. Ingen sporing – ingen treghet i systemet.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Slå på Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ved å slå på Ads samtykker du i $tos_link_begin$Tjenestevilkårene$tos_link_end$ og $pp_link_begin$Personvernerklæringen$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Du kan nå starte et gratis anrop",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klikk hvor som helst på skjermen for å fortsette til Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vil du finne ut mer om Brave-belønninger? $tour_link_begin$Få en kjapp gjennomgang$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

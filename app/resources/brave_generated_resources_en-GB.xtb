@@ -190,10 +190,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="1696548911367097044">Deprecated Crypto Wallets extension</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum provider for using Dapps</translation>
-<translation id="5913089932885076110">Load Crypto Wallets on start-up</translation>
-<translation id="757886143331967039">Load deprecated Crypto Wallets extension on startup</translation>
+<translation id="9131889008937672866">Default cryptocurrency wallet</translation>
 <translation id="1834467296210148203">Show Brave wallet icon on toolbar</translation>
+<translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
+<translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
 <translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1251574393468476924">Maximum IPFS cache size (GB)</translation>
 <translation id="2503497578400410320">A soft upper limit for the size of the IPFS repository's datastore.</translation>
 <translation id="7703184801853248830">Invalid gateway address</translation>
+<translation id="7690058578502751948">Only a valid IPFS gateway with Origin isolation enabled can be used in Brave</translation>
 <translation id="585868419599255817">IPFS public gateway fallback</translation>
 <translation id="207763736230883589">Automatically fall back to public IPFS gateway if your local node cannot be reached.</translation>
 <translation id="4107552920076294723">Redirect IPFS resources to the configured IPFS gateway</translation>
@@ -300,6 +301,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1391855377994926460">Keep browsing the web faster - up to 6x faster on major news sites.</translation>
 <translation id="9218430445555521422">Set as default</translation>
 <translation id="3479552764303398839">Not now</translation>
+<translation id="732814027519296280">Want to make Brave Search even better?</translation>
+<translation id="2677865600861971449">Opt in to the Web Discovery Project to anonymously contribute some search &amp; browsing data, and improve Brave Search results for all. Privacy-preserving. And zero effort. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Turn on</translation>
+<translation id="780301667611848630">No, thanks</translation>
 <translation id="5039804452771397117">Allow</translation>
 <translation id="7053983685419859001">Block</translation>
 <translation id="7815301689257843278">Send crash reports automatically so Brave can prevent this issue from happening again?</translation>
@@ -309,6 +314,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6873781976650514089">this setting</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="5600566490506283344">Brave ad notification</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribute some anonymous search &amp; browsing data to refine Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Add to sidebar</translation>
 <translation id="4233010476457917696">Show sidebar</translation>

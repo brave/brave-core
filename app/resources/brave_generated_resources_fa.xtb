@@ -190,10 +190,10 @@
 <translation id="5655621391922317800">کیف پول‌های رمزنگاری</translation>
 <translation id="1696548911367097044">افزونه منسوخ Crypto Wallets</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">ارائه‌دهنده Ethereum برای استفاده از Dapps</translation>
-<translation id="5913089932885076110">بارگیری «کیف پول‌های رمزگذاری‌شده» در شروع به کار</translation>
-<translation id="757886143331967039">بار کردن افزونه منسوخ Crypto Wallets رمزگذاری‌شده هنگام شروع به کار</translation>
+<translation id="9131889008937672866">کیف پول پیش‌فرض رمزارز</translation>
 <translation id="1834467296210148203">نمایش آیکون «کیف پول Brave» در نوار ابزار</translation>
+<translation id="8239147115686034860">کیف پول Brave به‌طور خودکار قفل شود</translation>
+<translation id="414639769490080648">تعداد دقایقی که باید منتظر بمانید تا کیف پول Brave به‌طور خودکار قفل شود</translation>
 <translation id="6864914031231797928">مجاز کردن ورود به سیستم Google برای افزونه‌ها</translation>
 <translation id="5927916530277631319">روش تحلیل دامنه‌های توقف‌ناپذیر</translation>
 <translation id="5248318250177143470">روشی برای تحلیل «سرویس نام اتریوم» (ENS)</translation>
@@ -232,6 +232,7 @@
 <translation id="1251574393468476924">حداکثر اندازه حافظه پنهان IPFS (گیگابایت)</translation>
 <translation id="2503497578400410320">حداکثر مجاز نرم برای اندازه محل ذخیره‌سازی داده مخزن IPFS.</translation>
 <translation id="7703184801853248830">نشانی دروازه نامعتبر است</translation>
+<translation id="7690058578502751948">فقط یک گذرگاه IPFS معتبر با جداسازی Origin فعال می‌تواند در Brave استفاده شود</translation>
 <translation id="585868419599255817">بازگشت دروازه عمومی IPFS</translation>
 <translation id="207763736230883589">اگر دسترسی به گره محلی ممکن نیست، به‌طور خودکار به دروازه IPFS عمومی برگردانده می‌شوید.</translation>
 <translation id="4107552920076294723">منابع IPFS را به دروازه IPFS پیکربندی‌شده هدایت کنید</translation>
@@ -300,6 +301,10 @@
 <translation id="1391855377994926460">همچنان وب را سریع‌تر - تا 6 برابر سریع‌تر در سایت‌های خبری اصلی - مرور کنید.</translation>
 <translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
+<translation id="732814027519296280">می‌خواهید جستجوی Brave را حتی بهتر از این کنید؟</translation>
+<translation id="2677865600861971449">برای مشارکت ناشناس در ارائه برخی داده‌های جستجو و مرور، و بهبود نتایج جستجوی Brave برای همه، در «پروژه کشف وب» شرکت کنید. حفظ حریم خصوصی. بدون هیچ دردسری. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">روشن کردن</translation>
+<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="7815301689257843278">آیا گزارش‌های خرابی به‌طور خودکار ارسال شود تا Brave بتواند از برور مجدد این مشکل جلوگیری کند؟</translation>
@@ -309,6 +314,8 @@
 <translation id="6873781976650514089">این تنظیم</translation>
 <translation id="6040143037577758943">بستن</translation>
 <translation id="5600566490506283344">اعلان آگهی Brave</translation>
+<translation id="4174337572777167894">پروژه کشف وب</translation>
+<translation id="8659271182272561965">در جستجوی ناشناس مشارکت کنید تا داده‌های جستجو و مرور را برای جستجوی Brave پالایش کنید.</translation>
 <translation id="1516554614404600536">نکته‌ابزار Brave</translation>
 <translation id="4877147287319222750">افزودن به نوار جانبی</translation>
 <translation id="4233010476457917696">نمایش نوار جانبی</translation>

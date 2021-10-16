@@ -190,10 +190,10 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5655621391922317800">Crypto novčanici</translation>
 <translation id="1696548911367097044">Zastarelo proširenje kripto novčanika</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum provajder za korišćenje Dapps-a</translation>
-<translation id="5913089932885076110">Učitajte kripto novčanike pri pokretanju</translation>
-<translation id="757886143331967039">Učitajte pri pokretanju zastarelo proširenje kripto novčanika</translation>
+<translation id="9131889008937672866">Standardan novčanik za kriptovalutu</translation>
 <translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
+<translation id="8239147115686034860">Automatsko zaključavanje za Brave Wallet</translation>
+<translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave Wallet automatski zaključa</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="5927916530277631319">Metod za razrešavanje Unstoppable Domains</translation>
 <translation id="5248318250177143470">Metod za razrešavanje Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1251574393468476924">Maksimalna veličina keša IPFS-a (GB)</translation>
 <translation id="2503497578400410320">Okvirno ograničenje za veličinu IPFS-ovog spremišta za skladištenje podataka.</translation>
 <translation id="7703184801853248830">Nevažeća adresa mrežnog prolaza</translation>
+<translation id="7690058578502751948">Samo važeći IPFS mrežni prolaz sa omogućenom Origin izolacijom može da se koristi u Brave pregledaču</translation>
 <translation id="585868419599255817">Vraćanje na IPFS javni mrežni prolaz</translation>
 <translation id="207763736230883589">Automatski se vratite na javni IPFS mrežni prolaz ako nije moguće doći do vašeg lokalnog čvorišta.</translation>
 <translation id="4107552920076294723">Preusmeri IPFS resurse na konfigurisani IPFS mrežni prolaz</translation>
@@ -300,6 +301,10 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1391855377994926460">Nastavite brže pregledavati mrežu – do 6 puta brže na velikim novinskim stranicama.</translation>
 <translation id="9218430445555521422">Подеси као подразумеван</translation>
 <translation id="3479552764303398839">Не сада</translation>
+<translation id="732814027519296280">Želite li da Brave pretragu učinite još boljom?</translation>
+<translation id="2677865600861971449">Pridružite se projektu istraživanja veba kako biste anonimno priložili neke podatke o pretrazi &amp; pregledanju, i tako poboljšali rezultate Brave pretrage za sve korisnike. Zaštita privatnosti. Bez imalo napora. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Укључи</translation>
+<translation id="780301667611848630">Не, хвала</translation>
 <translation id="5039804452771397117">Дозволи</translation>
 <translation id="7053983685419859001">Блокирај</translation>
 <translation id="7815301689257843278">Da li želite da automatski šaljete izveštaje o padu programa tako da Brave može sprečiti da se ovaj problem ponovo pojavi?</translation>
@@ -309,6 +314,8 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6873781976650514089">ovo podešavanje</translation>
 <translation id="6040143037577758943">Затвори</translation>
 <translation id="5600566490506283344">Brave Ad obaveštenje</translation>
+<translation id="4174337572777167894">Projekat istraživanja veba</translation>
+<translation id="8659271182272561965">Anonimno priložite neke podatke o pretrazi &amp; pregledanju kako biste unapredili Brave pretragu.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Dodaj bočnoj traci</translation>
 <translation id="4233010476457917696">Prikazati bočnu traku</translation>

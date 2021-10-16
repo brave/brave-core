@@ -119,13 +119,13 @@
 <translation id="1807246157184219062">Светлая</translation>
 <translation id="1810845389119482123">Першапачатковая наладка сінхранізацыі не завершана</translation>
 <translation id="1829244130665387512">Пошук на старонцы</translation>
-<translation id="1830550083491357902">Уваход не выкананы</translation>
 <translation id="4056661250746096955">Дазвольце Brave Пошуку выкарыстаць бягучую старонку для паляпшэння перакладу</translation>
 <translation id="1856325424225101786">Скінуць налады лёгкага рэжыму?</translation>
 <translation id="5817715962196959877">Brave цяпер спампоўвае файлы хутчэй</translation>
 <translation id="5173820533850252773">Brave састарэў</translation>
 <translation id="1883903952484604915">Мае файлы</translation>
 <translation id="189358972401248634">Іншыя мовы</translation>
+<translation id="1910950723001426294">Спіс варыянтаў абагульвання закрыты.</translation>
 <translation id="1918175104945982129">Дыялогавае акно для дачы згоды на выкарыстанне Памочніка для галасавога пошуку адкрыта на палову экрана</translation>
 <translation id="7021823858304886493">Дазволіць уваход ва ўліковы запіс Brave</translation>
 <translation id="1922362554271624559">Прапанаваныя мовы</translation>
@@ -145,6 +145,7 @@
 <translation id="1986685561493779662">Такая назва ўжо існуе</translation>
 <translation id="1987739130650180037"><ph name="MESSAGE"/>, кнопка "<ph name="LINK_NAME"/>"</translation>
 <translation id="2000419248597011803">Адпраўляе вашай стандартнай пошукавай сістэме некаторыя файлы cookie, а таксама пошукавыя запыты, уведзеныя ў адрасным радку і полі пошуку</translation>
+<translation id="6968892567705775281">Дадаваць кантэкст у пошукавыя запыты Brave?</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# файл}one{# файл}few{# файлы}many{# файлаў}other{# файла}}</translation>
 <translation id="2021896219286479412">Кіраванне сайтам на ўвесь экран</translation>
 <translation id="2038563949887743358">Уключыць запытванне версіі для настольнага камп'ютара</translation>
@@ -193,6 +194,7 @@
 <translation id="781982477617612877">Для праверкі пароляў увайдзіце ва Уліковы запіс Brave</translation>
 <translation id="2278052315791335171">Пры выдаленні гэтага пароля ўліковы запіс на сайце <ph name="SITE"/> не выдаліцца</translation>
 <translation id="2286841657746966508">Адрас для выстаўлення рахункаў</translation>
+<translation id="228704530595896923">Спіс варыянтаў абагульвання.</translation>
 <translation id="230115972905494466">Сумяшчальныя прылады не знойдзены</translation>
 <translation id="230155349749732438">Для выкарыстання гэтай налады трэба ўключыць параметр <ph name="BEGIN_LINK"/>Паскорыць пошук і прагляд<ph name="END_LINK"/></translation>
 <translation id="2318045970523081853">Націсніце, каб зрабіць выклік</translation>
@@ -215,6 +217,7 @@
 <translation id="2369533728426058518">адкрыць укладкі</translation>
 <translation id="2386938421315164605">Хавайце і рабіце бачнымі тэмы</translation>
 <translation id="2387895666653383613">Маштаб тэксту</translation>
+<translation id="2390510615457643724">Спампаваць файл "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>) зноў?</translation>
 <translation id="2394602618534698961">Спампаваныя вамі файлы з'явяцца тут</translation>
 <translation id="801672626447970525">Гэта функцыя будзе ўключацца пры ўваходзе ва Уліковы запіс Brave</translation>
 <translation id="2410754283952462441">Выберыце ўліковы запіс</translation>
@@ -240,6 +243,7 @@
 <translation id="2517472476991765520">Пошук</translation>
 <translation id="7340390500800578919">У спрошчаным рэжыме Brave загружае старонкі хутчэй і зніжае выкарыстанне трафіка максімум на 60 працэнтаў. Каб аптымізаваць старонкі, якія вы наведваеце, Brave адпраўляе даныя пра ваш інтэрнэт-трафік у Brave. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="284843628681142937">Адпраўка URL-адрасоў наведаных вамі старонак у Brave</translation>
+<translation id="2527209463677295330">Дадаючы больш тэксту са старонкі, можна атрымліваць лепшыя вынікі</translation>
 <translation id="8737444348664175738">Адбылося пераключэнне на ўкладкі ў рэжыме інкогніта</translation>
 <translation id="2527779675047087889">Схаваць змесціва буфера абмену</translation>
 <translation id="2532336938189706096">Прагляд вэб-змесціва</translation>
@@ -308,19 +312,23 @@
 <translation id="6355102470683871794">Сховішча Brave <ph name="APP_NAME"/></translation>
 <translation id="2932222164150889403">Мова ўводу з клавіятуры не зменіцца</translation>
 <translation id="2942036813789421260">Укладка перадпрагляду закрыта</translation>
+<translation id="4700262879698141140">Brave абнаўляецца, каб мець магчымасць падключацца да іншых прылад</translation>
 <translation id="2956410042958133412">Гэтым уліковым запісам кіруюць бацькі <ph name="PARENT_NAME_1"/> і <ph name="PARENT_NAME_2"/>.</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> непрачытаная старонка}one{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрачытаная старонка}few{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрачытаныя старонкі}many{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрачытаных старонак}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрачытанай старонкі}}</translation>
 <translation id="2961210776189273067">Форма звароту</translation>
 <translation id="2979448359891869301">Не ўдаецца зрабіць большы здымак экрана. Паўтарыце спробу, калі памяць тэлефона будзе менш загружанай.</translation>
 <translation id="2979639724566107830">Адкрыць у новым акне</translation>
 <translation id="2981364137500752533">Вы можаце адкрываць не больш за 5 вокнаў.</translation>
+<translation id="5948666439178419683">Дадаваць кантэкст у пошукавыя запыты Brave</translation>
 <translation id="2987620471460279764">Тэкст, абагулены з іншай прылады</translation>
 <translation id="2989523299700148168">Нядаўнія</translation>
 <translation id="2992473221983447149">Апісанні відарысаў</translation>
 <translation id="2996291259634659425">Стварыць фразу-пароль</translation>
 <translation id="2996809686854298943">Патрабуецца URL-адрас</translation>
 <translation id="3006881078666935414">Няма даных аб выкарыстанні</translation>
+<translation id="301080557829842765">Дапаможнік па прыватнасці</translation>
 <translation id="3016635187733453316">Праверце, ці падключана прылада да інтэрнэту</translation>
+<translation id="3026955690410463085">Абагуліць разам са спасылкай</translation>
 <translation id="3029704984691124060">Фразы-паролі не супадаюць</translation>
 <translation id="3031225630520268969">Дыялогавае акно для дачы згоды на выкарыстанне Памочніка для галасавога пошуку</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Даведка<ph name="END_LINK"/></translation>
@@ -350,6 +358,7 @@
 <translation id="3220943972464248773">Каб сінхранізаваць паролі, пацвердзіце сваю асобу</translation>
 <translation id="9047551989591319903">Brave як ключ бяспекі</translation>
 <translation id="3232754137068452469">Вэб-праграма</translation>
+<translation id="3234978181857588512">Захаваць на прыладзе</translation>
 <translation id="3236059992281584593">Засталася 1 хвіліна</translation>
 <translation id="3244271242291266297">ММ</translation>
 <translation id="3250563604907490871">Апісанні відарысаў стануць даступнымі пры падключэнні да Wi-Fi</translation>
@@ -370,7 +379,6 @@
 <translation id="3295530008794733555">Больш хуткая загрузка вэб-старонак і эканомія трафіка.</translation>
 <translation id="3297344142967351106">Галасавая дапамога</translation>
 <translation id="3303414029551471755">Перайсці да спампоўкі змесціва?</translation>
-<translation id="333367884906698540">Пасля завяршэння аперацыі Bluetooth зноў выключыцца</translation>
 <translation id="3334729583274622784">Змяніць пашырэнне файла?</translation>
 <translation id="3341058695485821946">Глядзіце, колькі трафіка вы сэканомілі</translation>
 <translation id="3341262203274374114">Адпісацца не ўдалося. Нешта пайшло не так.</translation>
@@ -447,6 +455,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="3810838688059735925">Відэа</translation>
 <translation id="3810973564298564668">Кіраваць</translation>
 <translation id="3819178904835489326">Выдалена спамповак: <ph name="NUMBER_OF_DOWNLOADS"/></translation>
+<translation id="3819183753496523827">Вы па-за сеткай. Праверце падключэнне да інтэрнэту і паўтарыце спробу.</translation>
 <translation id="8810805383611013660">Адкрыць ва ўкладцы інкогніта</translation>
 <translation id="3856096718352044181">Праверце, ці сапраўдны гэта аператар, або паўтарыце спробу</translation>
 <translation id="3858860766373142691">Назва</translation>
@@ -493,8 +502,10 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="4108998448622696017">Выяўляе небяспечныя падзеі і папярэджвае пра іх.</translation>
 <translation id="4116038641877404294">Спампуйце старонкі, каб праглядаць іх па-за сеткай</translation>
 <translation id="4135200667068010335">Спіс прылад, з якімі можна абагуліць укладку, закрыты.</translation>
+<translation id="4137746084635924146">Бягучая мова прылады</translation>
 <translation id="4159350418181625094">Даведайцеся больш пра работу ў Brave</translation>
 <translation id="4149994727733219643">Спрошчаны выгляд для вэб-старонак</translation>
+<translation id="4162867837470729563">Спіс варыянтаў абагульвання разгорнуты на ўвесь экран.</translation>
 <translation id="4165986682804962316">Налады сайта</translation>
 <translation id="4170011742729630528">Сэрвіс недаступны. Паўтарыце спробу пазней.</translation>
 <translation id="4179980317383591987">Выкарыстана: <ph name="AMOUNT"/></translation>
@@ -522,6 +533,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="4335835283689002019">"Бяспечны прагляд" выключаны</translation>
 <translation id="4351244548802238354">Закрыць дыялогавае акно</translation>
 <translation id="4378154925671717803">Тэлефон</translation>
+<translation id="438319986296050901">Абагуліць толькі картку</translation>
 <translation id="4384468725000734951">Выкарыстоўваецца пошукавая сістэма Sogou</translation>
 <translation id="4402611456429872546"><ph name="LANG"/> – ідзе спампоўванне…</translation>
 <translation id="4404568932422911380">Няма закладак</translation>
@@ -585,6 +597,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="4738836084190194332">Апошняя сінхранізацыя: <ph name="WHEN"/></translation>
 <translation id="4742970037960872810">Выдаліць вылучэнне</translation>
 <translation id="4749960740855309258">Адкрыць новую ўкладку</translation>
+<translation id="4758061975920522644">Абагуліць толькі відарыс</translation>
 <translation id="4759238208242260848">Спампоўкі</translation>
 <translation id="4763480195061959176">відэа</translation>
 <translation id="4763829664323285145">{FILE_COUNT,plural, =1{1 спампоўка завершана.}one{# спампоўка завершана.}few{# спампоўкі завершана.}many{# спамповак завершана.}other{# спампоўкі завершана.}}</translation>
@@ -604,7 +617,6 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="4850886885716139402">Праглядзець</translation>
 <translation id="4860895144060829044">Выклік</translation>
 <translation id="4864369630010738180">Уваход...</translation>
-<translation id="4865987431642283918">Стандартная мова прылады</translation>
 <translation id="5131234170665854056">Не ўдалося ўсталяваць модуль "<ph name="MODULE"/>" для Brave</translation>
 <translation id="4875775213178255010">Рэкамендацыі змесціва</translation>
 <translation id="8448127664493413656">Увайсці ў рэжым інкогніта</translation>
@@ -613,6 +625,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="4881695831933465202">Адкрыць</translation>
 <translation id="488187801263602086">Перайменаваць файл</translation>
 <translation id="1248710015876067820">Недапушчальная колькасць версій Brave.</translation>
+<translation id="4905823827770127520">Дадаць спасылку на старонку</translation>
 <translation id="3217997482476578430">Рэкамендацыі ад Brave</translation>
 <translation id="4910889077668685004">Плацежныя праграмы</translation>
 <translation id="4912413785358399818">Перамясціць укладку</translation>
@@ -685,7 +698,6 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="5324858694974489420">Налады бацькоўскага кантролю</translation>
 <translation id="5342314432463739672">Запыты дазволаў</translation>
 <translation id="5355191726083956201">Палепшаная абарона ўключана</translation>
-<translation id="5357811892247919462">Атрымана ўкладка</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> адкрытая ўкладка. Націсніце, каб пераключыцца паміж укладкамі.}one{<ph name="OPEN_TABS_MANY"/> адкрытая ўкладка. Націсніце, каб пераключыцца паміж укладкамі.}few{<ph name="OPEN_TABS_MANY"/> адкрытыя ўкладкі. Націсніце, каб пераключыцца паміж укладкамі.}many{<ph name="OPEN_TABS_MANY"/> адкрытых укладак. Націсніце, каб пераключыцца паміж укладкамі.}other{<ph name="OPEN_TABS_MANY"/> адкрытай укладкі. Націсніце, каб пераключыцца паміж укладкамі.}}</translation>
 <translation id="1271180036744122948">Шукаць праз "Аб'ектыў" <ph name="BEGIN_NEW"/>Навінка<ph name="END_NEW"/></translation>
 <translation id="5403644198645076998">Дазваляць толькі пэўныя сайты</translation>
@@ -696,6 +708,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="543338862236136125">Змяніць пароль</translation>
 <translation id="5433691172869980887">Імя карыстальніка скапіравана</translation>
 <translation id="543509235395288790">Спампоўваюцца файлы ў колькасці <ph name="COUNT"/> (<ph name="MEGABYTES"/>).</translation>
+<translation id="5438292632479953702">Спампаваць яшчэ раз</translation>
 <translation id="5441466871879044658">Перакласці на гэту мову</translation>
 <translation id="5441522332038954058">Перайсці да адраснага радка</translation>
 <translation id="544776284582297024">Каб праглядаць некалькі старонак адначасова, націсніце кнопку "Адкрыць укладкі"</translation>
@@ -725,7 +738,6 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="6157610782452852023">Памочнік Brave можа выконваць для вас дзеянні на розных вэб-сайтах</translation>
 <translation id="5620163320393916465">Няма захаваных пароляў</translation>
 <translation id="5620928963363755975">Знаходзьце файлы і старонкі ў папцы "Спампоўкі" з дапамогай кнопкі "Дадатковыя параметры"</translation>
-<translation id="562168087174703495">Не ўдалося стварыць спасылку на вылучаны тэкст. Абагульце спасылку на старонку.</translation>
 <translation id="562289928968387744">Кіраваць рэакцыямі</translation>
 <translation id="5626134646977739690">Назва:</translation>
 <translation id="5628604359369369630">Непрачытана – Даступна па-за сеткай</translation>
@@ -747,6 +759,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="5748802427693696783">Пераключана на стандартныя ўкладкі</translation>
 <translation id="3088191967551450609">Для спампоўвання файлаў Brave патрабуецца доступ да сховішча.</translation>
 <translation id="5749237766298580851">Выключана <ph name="SEPARATOR"/> Не рэкамендуецца</translation>
+<translation id="5752232708629533680">Абагуліць толькі файл GIF</translation>
 <translation id="5754350196967618083">Не ўдаецца абнавіць рэкамендацыі</translation>
 <translation id="5763514718066511291">Дакраніцеся, каб скапіраваць URL-адрас гэтай праграмы</translation>
 <translation id="5765780083710877561">Апісанне:</translation>
@@ -792,6 +805,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7760665516427405230">Каб абагуліць гэту старонку і мець да яе доступ з іншай прылады, уключыце сінхранізацыю ў наладах Brave</translation>
 <translation id="5964869237734432770">Не атр. апісанні відарысаў</translation>
 <translation id="5979084224081478209">Праверыць паролі</translation>
+<translation id="5995726099713306770">Спампаваць старонку зноў?</translation>
 <translation id="6456271171669383967">Пакінуць Brave</translation>
 <translation id="6000203700195075278">Падпісацца зноў</translation>
 <translation id="6005538289190791541">Прапанаваны пароль</translation>
@@ -807,6 +821,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="604996488070107836">Не ўдалося спампаваць файл "<ph name="FILE_NAME"/>" з-за невядомай памылкі.</translation>
 <translation id="605721222689873409">ГГ</translation>
 <translation id="6059830886158432458">Кіруйце паказам артыкулаў і гісторыяй дзеянняў тут</translation>
+<translation id="6069177176307973611">Праглядзець налады прыватнасці і бяспекі</translation>
 <translation id="6085886413119427067">Вызначае, як устанаўліваць бяспечнае падключэнне да вэб-сайтаў</translation>
 <translation id="60923314841986378">Засталося <ph name="HOURS"/> гадз</translation>
 <translation id="6108923351542677676">Ідзе наладка…</translation>
@@ -837,6 +852,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="6277522088822131679">Узнікла праблема з друкам старонкі. Паўтарыце спробу.</translation>
 <translation id="6278428485366576908">Тэма</translation>
 <translation id="7766792282581704663">Выкарыстоўваючы Brave, вы згаджаецеся з <ph name="BEGIN_LINK1"/>Умовамі выкарыстання Brave<ph name="END_LINK1"/> і <ph name="BEGIN_LINK2"/>Дадатковымі ўмовамі выкарыстання Brave і Chrome OS<ph name="END_LINK2"/>.</translation>
+<translation id="7918815962568992845">Вы можаце адпраўляць укладкі на свае прылады, на якіх выкананы ўваход у адзін і той жа Уліковы запіс Brave</translation>
 <translation id="6297765934698848803">Арганізацыя, якая кіруе вашай прыладай, выключыла камеру.</translation>
 <translation id="6301525844455696527">Не забудзьце прачытаць</translation>
 <translation id="6303969859164067831">Выйсці і выключыць сінхранізацыю</translation>
@@ -877,11 +893,11 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="6459045781120991510">Апытанні</translation>
 <translation id="6461962085415701688">Не ўдалося адкрыць файл</translation>
 <translation id="9055113864158719823">Вы можаце бачыць сайты, якія наведвалі ў Brave, і задаваць для іх таймеры.\n\nBrave атрымлівае інфармацыю пра сайты, для якіх вы задалі таймеры, і працягласць іх наведвання. Гэта інфармацыя выкарыстоўваецца для паляпшэння якасці лічбавага камфорту.</translation>
+<translation id="6473086018775716761">Спіс варыянтаў абагульвання разгорнуты на палову экрана.</translation>
 <translation id="6475951671322991020">Спампаваць відэа</translation>
 <translation id="6477928892249167417">Гэтыя сайты могуць быць важнымі для вас:</translation>
 <translation id="6482749332252372425">Не ўдалося спампаваць файл <ph name="FILE_NAME"/> з-за недахопу месца ў сховішчы.</translation>
 <translation id="6489610539826642779">Спіс на прагляд <ph name="BEGIN_NEW"/>Новае<ph name="END_NEW"/></translation>
-<translation id="6490496612063106490">Спасылка на вылучаны тэкст</translation>
 <translation id="6496823230996795692">Каб выкарыстаць <ph name="APP_NAME"/> першы раз, падключыцеся да інтэрнэту.</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Файл спампаваны}one{Завершана # спампоўка}few{Завершана # спампоўкі}many{Завершана # спамповак}other{Завершана # спампоўкі}}</translation>
 <translation id="3960299545138990065">Перазапусціце Brave</translation>
@@ -928,6 +944,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="670498945988402717">Праверка праводзілася ўчора</translation>
 <translation id="6710213216561001401">Назад</translation>
 <translation id="671481426037969117">Спрацаваў таймер праграмы "<ph name="FQDN"/>". Заўтра ён зноў будзе запушчаны.</translation>
+<translation id="6715020873764921614">Усё роўна спампаваць файл "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>)?</translation>
 <translation id="6738516213925468394">Даныя былі зашыфраваны з дапамогай <ph name="BEGIN_LINK"/>фразы-пароля для сінхранізацыі<ph name="END_LINK"/> <ph name="TIME"/>. Увядзіце яе, каб пачаць сінхранізацыю.</translation>
 <translation id="6738867403308150051">Ідзе спампоўка…</translation>
 <translation id="6751521182688001123">Хуткае адкрыццё новай укладкі. Каб змяніць функцыю гэтай кнопкі, націсніце на яе і ўтрымлівайце.</translation>
@@ -974,6 +991,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7027549951530753705">Адноўлена: <ph name="ITEM_TITLE"/></translation>
 <translation id="7029390216614421513">Змясціце QR-код або штрыхкод у гэтай рамцы.</translation>
 <translation id="7029809446516969842">Паролі</translation>
+<translation id="7038956721828960940">chrome_image_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="7054588988317389591">Атрымліваць апісанні відарысаў?</translation>
 <translation id="7055152154916055070">Перанакіраванне заблакіравана:</translation>
 <translation id="7063006564040364415">Не ўдалося падключыцца да сервера сінхранізацыі.</translation>
@@ -982,6 +1000,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7077143737582773186">SD-карта</translation>
 <translation id="2374582967527009647">Адпраўляе URL-адрасы на праверку ў Бяспечны прагляд. Таксама адпраўляе невялікія прыклады старонак, спамповак, дзеянняў пашырэнняў і інфармацыі пра сістэму, каб дапамагчы выяўляць новыя пагрозы. Часова звязвае гэтыя даныя з Уліковым запісам Brave, у які вы ўвайшлі, каб абараніць вас у праграмах Brave.</translation>
 <translation id="8208853227947884571">Brave не патрабуе абнаўлення</translation>
+<translation id="7093803425429738190">Дадаць эмоцыю</translation>
 <translation id="7106762743910369165">Вашым браўзерам кіруе арганізацыя</translation>
 <translation id="1968157943459987269">Ачышчае гісторыю і гісторыю аўтазапаўнення ў адрасным радку. На сайце <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> размешчаны іншыя формы запісу гісторыі прагляду сайтаў для вашага Уліковага запісу Brave.</translation>
 <translation id="7138678301420049075">Іншыя</translation>
@@ -1021,6 +1040,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Абагуліць 1 выбраны элемент}one{Абагуліць # выбраны элемент}few{Абагуліць # выбраныя элементы}many{Абагуліць # выбраных элементаў}other{Абагуліць # выбранага элемента}}</translation>
 <translation id="7359002509206457351">Доступ да спосабаў аплаты</translation>
 <translation id="7375125077091615385">Тып:</translation>
+<translation id="7376560087009844242">Дадаючы больш тэксту са старонкі, пры выкарыстанні функцыі "Пошук дотыкам" можна атрымліваць лепшыя вынікі. Змяніць параметры заўсёды можна ў <ph name="BEGIN_LINK"/>наладах<ph name="END_LINK"/>.</translation>
 <translation id="4541178433047068373">Калі падключэнне сайта небяспечнае, Brave паведаміць вам аб гэтым.</translation>
 <translation id="7396940094317457632"><ph name="FILE_NAME"/>.</translation>
 <translation id="7400418766976504921">URL-адрас</translation>
@@ -1034,6 +1054,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7444811645081526538">Іншыя катэгорыі</translation>
 <translation id="3699067418237091329">Будзе выкананы выхад з большасці сайтаў. З Уліковага запісу Brave вы не выйдзеце.</translation>
 <translation id="7454641608352164238">Не хапае месца</translation>
+<translation id="7474822150871987353">Даведайцеся больш пра тэмы на вэб-сайтах, не пакідаючы старонку. Выберыце для пошуку адно або некалькі слоў на старонцы.</translation>
 <translation id="7475192538862203634">Калі вы часта бачыце такое паведамленне, паспрабуйце выкарыстаць <ph name="BEGIN_LINK"/>гэтыя прапановы<ph name="END_LINK"/>.</translation>
 <translation id="7475688122056506577">SD-карта не знойдзена. Некаторыя файлы могуць адсутнічаць.</translation>
 <translation id="7479104141328977413">Кіраванне ўкладкамі</translation>
@@ -1109,6 +1130,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="7853202427316060426">Дзеянні</translation>
 <translation id="7857691613771368249">Пытацца, калі захоўваць файлы</translation>
 <translation id="7859988229622350291">Ніколі не перакладаць з наступных моў:</translation>
+<translation id="78707286264420418">Каб браўзер <ph name="PRODUCT_NAME"/> мог падключыцца да прылады, трэба ўключыць дазвол "Прылады паблізу" ў праграме "Налады"</translation>
 <translation id="7875915731392087153">Стварыць ліст электроннай пошты</translation>
 <translation id="7876243839304621966">Выдаліць усе</translation>
 <translation id="7879130110979560610">{READING_LIST_REMINDER_NOTIFICATION_SUBTITLE,plural, =1{У вас <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_ONE"/> непрачытаная старонка}one{У вас <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> непрачытаная старонка}few{У вас <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> непрачытаныя старонкі}many{У вас <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> непрачытаных старонак}other{У вас <ph name="READING_LIST_REMINDER_NOTIFICATION_SUBTITLE_MANY"/> непрачытанай старонкі}}</translation>
@@ -1169,6 +1191,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="8186512483418048923">Засталося файлаў: <ph name="FILES"/></translation>
 <translation id="8189750580333936930">Privacy Sandbox</translation>
 <translation id="8190358571722158785">Застаўся 1 дзень</translation>
+<translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Вашы прылады<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8200772114523450471">Узнавіць</translation>
 <translation id="8209050860603202033">Адкрыць відарыс</translation>
 <translation id="8216351761227087153">Глядзець</translation>
@@ -1197,14 +1220,17 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="8393700583063109961">Адправіць паведамленне</translation>
 <translation id="8410695015584479363">Адсочваць цэны</translation>
 <translation id="8413126021676339697">Паказаць усю гісторыю</translation>
+<translation id="8419244640277402268">Дадаваць</translation>
 <translation id="5735840612282428689">Старонка адпраўлена. Каб праглядзець яе, адкрыйце Brave на <ph name="DEVICE_TYPE"/></translation>
 <translation id="8427875596167638501">Укладка перадпрагляду адкрыта напалову</translation>
 <translation id="8428213095426709021">Налады</translation>
+<translation id="8430824733382774043">Абагуліць толькі здымак экрана</translation>
 <translation id="8438566539970814960">Паскорыць пошук і прагляд</translation>
 <translation id="8439974325294139057"><ph name="LANG"/> – мова гатовая да выкарыстання, перазапусціце <ph name="APP_NAME"/>.</translation>
 <translation id="8442258441309440798">Няма новых артыкулаў</translation>
 <translation id="4058091506841967397">Немагчыма абнавіць Brave</translation>
 <translation id="8445448999790540984">Не ўдалося экспартаваць паролі</translation>
+<translation id="8446884382197647889">Даведацца больш</translation>
 <translation id="8453310803815879010">Пачаць гульню з дыназаўрам</translation>
 <translation id="8461694314515752532">Зашыфраваць сінхранізаваныя даныя з дапамогай фразы-пароля.</translation>
 <translation id="8466613982764129868">Праверце, ці прылада "<ph name="TARGET_DEVICE_NAME"/>" падключана да інтэрнэту</translation>
@@ -1256,11 +1282,11 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="8683081248374354009">Скінуць параметры групы</translation>
 <translation id="869891660844655955">Тэрмін дзеяння</translation>
 <translation id="8699120352855309748">Не прапаноўваць перакладаць з гэтых моў</translation>
-<translation id="8712637175834984815">Зразумела</translation>
 <translation id="8725066075913043281">Паўтарыць спробу</translation>
 <translation id="8730621377337864115">Гатова</translation>
 <translation id="8746155870861185046">Абагуліць вылучанае змесціва</translation>
 <translation id="8748850008226585750">Змесціва схавана</translation>
+<translation id="8766529642647037772">Стварыць такую ж вылучаную спасылку, як гэта?</translation>
 <translation id="8773160212632396039">Запыт апрацоўваецца</translation>
 <translation id="8788265440806329501">Гісторыя навігацыі закрыта</translation>
 <translation id="8788968922598763114">Адкрыць апошнюю закрытую ўкладку</translation>
@@ -1291,6 +1317,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="8942627711005830162">Адкрыць у іншым акне</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> – не ўдалося спампаваць гэты моўны пакет. Паўтарыце спробу пазней.</translation>
 <translation id="3257320067425202300">Brave сэканоміў вам <ph name="MEGABYTES"/> МБ</translation>
+<translation id="8955719471735800169">Наверх</translation>
 <translation id="8965591936373831584">у стане чакання</translation>
 <translation id="2703361981471284696">{TAB_COUNT,plural, =1{Будуць закрыты ўкладкі: <ph name="INCOGNITO_TAB_COUNT"/> у рэжыме інкогніта і яшчэ <ph name="TAB_COUNT_ONE"/>}one{Будуць закрыты ўкладкі: <ph name="INCOGNITO_TAB_COUNT"/> у рэжыме інкогніта і яшчэ <ph name="TAB_COUNT_MANY"/>}few{Будуць закрыты ўкладкі: <ph name="INCOGNITO_TAB_COUNT"/> у рэжыме інкогніта і яшчэ <ph name="TAB_COUNT_MANY"/>}many{Будуць закрыты ўкладкі: <ph name="INCOGNITO_TAB_COUNT"/> у рэжыме інкогніта і яшчэ <ph name="TAB_COUNT_MANY"/>}other{Будуць закрыты ўкладкі: <ph name="INCOGNITO_TAB_COUNT"/> у рэжыме інкогніта і яшчэ <ph name="TAB_COUNT_MANY"/>}}</translation>
 <translation id="8970887620466824814">Нешта пайшло не так.</translation>
@@ -1325,6 +1352,7 @@ Privacy Sandbox падтрымлівае адкрытасць інтэрнэту
 <translation id="9137013805542155359">Паказаць арыгінал</translation>
 <translation id="9148126808321036104">Увайсці зноў</translation>
 <translation id="9155898266292537608">Запусціць пошук таксама можна, коратка націснуўшы на слова</translation>
+<translation id="9158770349521403363">Абагуліць толькі змесціва</translation>
 <translation id="9169507124922466868">Гісторыя навігацыі адкрыта напалову</translation>
 <translation id="9199368092038462496">{NUM_MINS,plural, =1{Праверка праводзілася хвіліну таму}one{Праверка праводзілася # хвіліну таму}few{Праверка праводзілася # хвіліны таму}many{Праверка праводзілася # хвілін таму}other{Праверка праводзілася # хвіліны таму}}</translation>
 <translation id="9204836675896933765">Застаўся 1 файл</translation>

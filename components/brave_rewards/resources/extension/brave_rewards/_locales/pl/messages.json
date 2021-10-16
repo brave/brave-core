@@ -19,6 +19,26 @@
     "message": "Odśwież status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Wszystkie napiwki pozostaną w Twoim portfelu jako oczekujące i będą automatycznie ponawiane przez 90 dni. $link_begin$Dowiedz się więcej$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Ten twórca nie jest jeszcze zarejestrowany.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Ten twórca nie jest obecnie skonfigurowany do otrzymywania napiwków z portfela.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ na $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ – otrzymasz za $days$",
+    "message": "przetwarzanie wypłaty w wysokości $amount$ rozpocznie się za $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Zamknij",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Aby rozpocząć bezpłatne połączenie, włącz Brave Revards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Włącz nagrody",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Klikając, wyrażasz zgodę na $tos_link_begin$Warunki świadczenia usług$tos_link_end$ oraz $pp_link_begin$Politykę prywatności$pp_link_end$. W każdej chwili możesz to wyłączyć w Ustawieniach.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Aby rozpocząć bezpłatne połączenie, włącz Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads nagradza Cię tokenami za oglądanie prywatnych reklam (Twoje dane są bezpieczne). Tokeny możesz wymieniać na gotówkę, karty podarunkowe, a nawet napiwki dla ulubionych stron internetowych. Bez śledzenia i bez spowolnionego działania.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Włącz Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Włączając Ads, wyrażasz zgodę na $tos_link_begin$Warunki świadczenia usług$tos_link_end$ oraz $pp_link_begin$Politykę prywatności$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Teraz możesz rozpocząć bezpłatne połączenie",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Kliknij dowolne miejsce ekranu, aby kontynuować rozmowę Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Chcesz dowiedzieć się więcej o Brave Rewards? $tour_link_begin$Zobacz krótkie wprowadzenie$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

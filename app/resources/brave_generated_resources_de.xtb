@@ -190,10 +190,10 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5655621391922317800">Krypto-Wallets</translation>
 <translation id="1696548911367097044">Veraltete Krypto-Wallets-Erweiterung</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum-Anbieter zur Nutzung von Dapps</translation>
-<translation id="5913089932885076110">Crypto Wallets bei Start laden</translation>
-<translation id="757886143331967039">Beim Start die veraltete Krypto-Wallets-Erweiterung laden</translation>
+<translation id="9131889008937672866">Standard-Kryptowährungs-Wallet</translation>
 <translation id="1834467296210148203">Brave-Wallet-Symbol in der Werkzeugleiste anzeigen</translation>
+<translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
+<translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="6864914031231797928">Google-Anmeldung bei Erweiterungen erlauben</translation>
 <translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
 <translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1251574393468476924">Maximale IPFS-Cache-Größe (GB)</translation>
 <translation id="2503497578400410320">Eine flexible Obergrenze für die Größe des Datenspeichers des IPFS-Repositorys.</translation>
 <translation id="7703184801853248830">Ungültige Gateway-Adresse</translation>
+<translation id="7690058578502751948">In Brave kann nur ein gültiges IPFS-Gateway mit aktivierter Origin-Isolation verwendet werden</translation>
 <translation id="585868419599255817">Öffentliches IPFS-Gateway Fallback</translation>
 <translation id="207763736230883589">Automatisch auf den öffentlichen IPFS-Gateway zurückfallen, wenn Ihr lokaler Knoten nicht erreicht werden kann.</translation>
 <translation id="4107552920076294723">IPFS-Ressourcen zu dem konfigurierten IPFS-Gateway umleiten</translation>
@@ -300,6 +301,10 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1391855377994926460">Surfen Sie schneller im Internet - bis zu 6x schneller auf wichtigen Nachrichtenwebsites.</translation>
 <translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
+<translation id="732814027519296280">Möchten Sie Brave Search noch besser machen?</translation>
+<translation id="2677865600861971449">Melden Sie sich beim Web Discovery Project an, um einige anonyme Suchanfragen und Durchsuchungen von Daten zu tätigen und Brave Search für alle Nutzer zu verbessern. Ihre Privatsphäre wird bewahrt und Sie haben keinerlei Aufwand. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Aktivieren</translation>
+<translation id="780301667611848630">Kein Interesse</translation>
 <translation id="5039804452771397117">Zulassen</translation>
 <translation id="7053983685419859001">Blockieren</translation>
 <translation id="7815301689257843278">Absturzberichte automatisch senden, damit Brave verhindern kann, dass dieses Problem erneut auftritt?</translation>
@@ -309,6 +314,8 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6873781976650514089">diese Einstellung</translation>
 <translation id="6040143037577758943">Schließen</translation>
 <translation id="5600566490506283344">Brave-Werbebenachrichtigung</translation>
+<translation id="4174337572777167894">Web Discovery-Projekt</translation>
+<translation id="8659271182272561965">Tätigen Sie einige anonyme Suchanfragen und Durchsuchungen von Daten, um Brave Search zu verfeinern.</translation>
 <translation id="1516554614404600536">Brave-Tooltipp</translation>
 <translation id="4877147287319222750">Zur Seitenleiste hinzufügen</translation>
 <translation id="4233010476457917696">Seitenleiste anzeigen</translation>

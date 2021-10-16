@@ -15,6 +15,7 @@
 <translation id="7419046106786626209">Brave-ийн үйлдлийн систем нь таны датаг синхрончлох боломжгүй байна. Учир нь таны домайнд Синх хийх боломжгүй.</translation>
 <translation id="5147525139567260139">Brave-н таб хуваалцах</translation>
 <translation id="1530633922026945685">Орчин тойрны тань 3D газрын зургийг үүсгэхийн тулд таны камерт хандах зөвшөөрөл Brave-д шаардлагатай</translation>
+<translation id="4828904843379324771">Таныг Brave-г хаах үед энэ нь таны зочилсон хуудаснаас күүки болон сайтын өгөгдлийг автоматаар арилгана</translation>
 <translation id="5616153642055197778">Brave-ийн шинэ, илүү аюулгүй хувилбар боломжтой байна.</translation>
 <translation id="6797402139308059782">Brave-ыг арын орчинд ажиллуулах</translation>
 <translation id="5875673934455379806">Brave-ыг дахин суулгах</translation>
@@ -33,6 +34,7 @@
 <translation id="9095263438435683933">Та эндээс Android утсандаа дугаар илгээхийн тулд хоёр төхөөрөмжийн аль алинаас нь Brave-д нэвтэрнэ үү.</translation>
 <translation id="3813272600615358652">Энэ өргөтгөл нь таныг Brave эхлүүлэх үед хуудас дээр харуулах зүйлийг өөрчилсөн.</translation>
 <translation id="2576129394594491151">"<ph name="EXTENSION_NAME"/>" өргөтгөл нь таныг Brave эхлүүлэх үед хуудасны харуулах зүйлийг өөрчилсөн.</translation>
+<translation id="1248225940185478633">Brave-д энэ сайтад зориулж камер болон микрофоны зөвшөөрөл шаардлагатай</translation>
 <translation id="6078442581074612226">Brave-д</translation>
 <translation id="2485422356828889247">Устгах</translation>
 <translation id="9026991721384951619">Таны бүртгэлийн мэдээлэл хэтэрхий хуучирсан байгаа учраас Chrome OS-аас таны өгөгдлийг sync хийж чадсангүй.</translation>
@@ -52,6 +54,8 @@
 <translation id="777113543093865885">Brave-аас устгах ...</translation>
 <translation id="2885378588091291677">Асуудлын менежер</translation>
 <translation id="2176825726964012531">Brave-ын тухай</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Хамгийн сүүлийн нэг сануулагч: суулгаснаар <ph name="BEGIN_BOLD"/>таны хатуу дискийг бүхэлд нь устгана<ph name="END_BOLD"/>. Та аливаа чухал өгөгдлөө хуулбарласан эсэхээ шалгана уу.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Суулгаж эхэлмэгц үүнийг цуцлах боломжгүй.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave-г шинэчилсэн байна</translation>
 <translation id="2953892977076487219">Brave нууц үгсийг засахаар оролдож байна.</translation>
 <translation id="8755404239607088219">Brave таны нууц үгсийг шалгах боломжгүй байна. Дараа дахин оролдоно уу.</translation>
@@ -78,7 +82,6 @@
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> Brave-н профайлууд хооронд сэлгэх боломжтой</translation>
 <translation id="8703492925273919597">Brave-н бүх цонхыг хаасны дараагаар дахин хандана уу.</translation>
 <translation id="1384923383737428730">Таны компьютер дээр аюултай программ хангамж байна. Brave таны хөтчийн ажиллагааг дахин хэвийн болгохын тулд үүнийг устгах, таны тохиргоог сэргээх болон өргөтгөлүүдийг идэвхгүй болгох боломжтой.</translation>
-<translation id="2409866122341731384">Хатуу дискийг устгаж, Chrome OS-г суулгах</translation>
 <translation id="7029305463989165490"><ph name="ORIGIN"/>-с Android утсандаа дугаар илгээхийн тулд хоёр төхөөрөмжийнхөө аль алинаас нь Brave-д нэвтэрнэ үү.</translation>
 <translation id="4304059894777924102">Brave таны нууц үгсийг шалгах боломжгүй байна. Интернэт холболтоо шалгаж үзнэ үү.</translation>
 <translation id="1807774211756215222">Холбоосыг шинэ Brave болон табад нээх</translation>
@@ -142,6 +145,7 @@
 <translation id="4331809312908958774">Brave-н үйлдлийн систем</translation>
 <translation id="79947657522496226">Brave үйлдлийн системийг <ph name="BEGIN_LINK_LINUX_OSS"/>Linux-н хөгжүүлэлтийн орчин <ph name="END_LINK_LINUX_OSS"/> болох нэмэлт <ph name="BEGIN_LINK_CROS_OSS"/>нээлттэй эх кодын программ хангамж<ph name="END_LINK_CROS_OSS"/>-аар боломжтой болгосон.</translation>
 <translation id="7207456302801184289">Brave-д тавтай морил</translation>
+<translation id="8054200348483755053">Эдгээр зүйл хортой программ агуулж байгааг Brave олж мэдлээ:</translation>
 <translation id="5895138241574237353">Дахин асаах</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Сүлжээнд нэвтрэх</translation>
 <translation id="3598551856834560515">Синкийг эхлүүлэхийн тулд Brave-г шинэчлэх</translation>
@@ -156,18 +160,10 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> аюултай тул үүнийг Brave блок хийсэн.</translation>
 <translation id="7006260220514217183">Аюулгүй үзэх онцлог унтраалттай байна. Brave түүнийг асаахыг зөвлөж байна.</translation>
 <translation id="4060970194201477024">Та энд Brave-н профайлууд хооронд сэлгэх боломжтой</translation>
-<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Бид Chrome OS-г суулгахад бэлэн боллоо! Таныг үргэлжлүүлмэгц:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Файл, өгөгдөл болон таны одоогийн үйлдлийн системийг устгана.
-          <ph name="LIST_ITEM"/>Chrome OS-г суулгана.
-          <ph name="LIST_ITEM"/>Суулгаж дуусмагц таны төхөөрөмжийг унтраана.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Хамгийн сүүлийн сануулга: суулгаснаар таны хатуу дискийг бүхэлд нь устгана. Танд аливаа хуулбарлах шаардлагатай өгөгдөл байгаа эсэхийг шалгана уу.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Суулгаж эхэлмэгц үүнийг цуцлах боломжгүй болно.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Та Brave-д өөрийн <ph name="TARGET_DEVICE_NAME"/>-с нэвтэрсэн эсэхээ шалгаад, дахин илгээхээр оролдоно уу.</translation>
 <translation id="8320964054148936490">Энэ компьютерт Brave-ийн хамгийн сүүлийн үеийн хувилбар байна. Хэрэв программ ажиллахгүй байвал Brave-ийг устгаад, дахин суурьлуулж үзнэ үү.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave-г одоо дахин ажиллуулна}=1{Brave-г 1 секундийн дотор дахин ажиллуулна}other{Brave-г # секундийн дотор дахин ажиллуулна}}</translation>
+<translation id="5980269616827212166">Файл татахын тулд Brave-д хадгалах санд хандах зөвшөөрөл шаардлагатай</translation>
 <translation id="5019879183386042809">Brave-ыг анхдагч веб хөтөч болгох</translation>
 <translation id="428541510811554120">Brave нь шинэчлэлтийг шалгах боломжгүй байна. Интернэт холболтоо шалгаж үзнэ үү.</translation>
 <translation id="7445061995866044926">Brave-с гарах уу?</translation>
@@ -182,14 +178,15 @@
 <translation id="2644798301485385923">Chrome OS Систем</translation>
 <translation id="1684121725014454063">Brave профайлд тавтай морилно уу</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave 1 секундийн дараа дахин эхэлнэ}other{Brave # секундийн дараа дахин эхэлнэ}}</translation>
-<translation id="664235759707825982">Chrome OS-г суулгахад бэлэн боллоо</translation>
 <translation id="2675662665675552980">Энэ нь мөн таныг Brave-ыг эхлүүлж байх үед гарч ирсэн хуудсыг хянадаг.</translation>
 <translation id="5590013613412457132">Brave-ийг устгах</translation>
 <translation id="8646609321956191980">Профайл тус бүр Brave-н өөрийн мэдээллийг агуулах бөгөөд үүнд хавчуурга, түүх, нууц үг болон бусад мэдээлэл багтана</translation>
 <translation id="2312399718665761438">Зөв бичгийн алдааг засахын тулд Brave таны текстийн талбарт бичсэн текстийг Brave-д илгээдэг</translation>
 <translation id="3507835409099344374">Brave-н мэдэгдлийн тохиргоо руу очих</translation>
 <translation id="9156965752763025780">Таныг Brave дахин эхлүүлэхэд өөрчлөлт идэвхжинэ.</translation>
+<translation id="245693535809364497">Таны эргэн тойрны 3D газрын зургийг үүсгэхийн тулд Brave-д камерын зөвшөөрөл шаардлагатай</translation>
 <translation id="6676384891291319759">Интернэтэд нэвтрэх</translation>
+<translation id="1257247502847251159">Brave-д энэ сайтад зориулж микрофоны зөвшөөрөл шаардлагатай</translation>
 <translation id="1489465648257900784">Таны профайлыг ашиглах боломжгүй байна. Учир нь энэ Brave-ийн шинэ хувилбараас ирсэн байна.
 
 Зарим функц ажиллахгүй байж болно. профайлын өөр зааварчилгааг тодорхойлж өгөх эсвэл Brave-ийн шинэ хувилбарыг ашиглана уу.</translation>
@@ -201,6 +198,7 @@
 <translation id="8211837073776713955">Хэрэв таны нууц үг алдагдсан байвал Brave танд мэдэгдэнэ</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave-д хуулсан)</translation>
+<translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>" хортой программ агуулж байгааг Brave олж мэдлээ</translation>
 <translation id="2301993384336631869">Brave нь шинэчлэгдсэн байгаа хэдий ч та үүнийг доод тал нь 30 хоногийн турш ашиглаагүй байна.</translation>
 <translation id="8828443087767259398">Үргэлжлүүлэн хослуулахын тулд Brave-д Bluetooth-н 
  хандалт шаардлагатай. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -208,6 +206,7 @@
 <translation id="3335606533094650083">Энэ сайтыг ашиглахын тулд Brave-д таны микрофонд хандах зөвшөөрөл шаардлагатай</translation>
 <translation id="1705567146636171298">Brave-г шинэчлэх</translation>
 <translation id="5499063270485366718">Хэрэв зурагт хэрэгтэй тайлбар байхгүй бол Brave танд тайлбар өгөхөөр оролдох болно. Тайлбар үүсгэхийн тулд зургийг Brave-д илгээнэ.</translation>
+<translation id="1008530050039597147">Brave-д энэ сайтад зориулж камерын зөвшөөрөл шаардлагатай</translation>
 <translation id="1197672524850678392">Brave-г эхлүүлж чадсангүй. Дахин оролдоно уу.</translation>
 <translation id="3405035915691517126">Brave таны нууц үгсийг шалгах боломжгүй байна. 24 цагийн дараа дахин оролдоно уу.</translation>
 <translation id="5516268345616100622">Бодлогын менежер - Brave</translation>
@@ -247,6 +246,7 @@
 <translation id="6915252145142862992">Энэ нь Brave-н хоёр дахь суулгалт тул таны өгөгдмөл хөтчөөр сонгох боломжгүй.</translation>
 <translation id="7685904775439037072">Brave-д хандалт олгосны дараа веб сайтууд таны хандалтыг асуух боломжтой болно.</translation>
 <translation id="828406390101464081">Дараах бүртгэлүүд Brave-н ямар ч профайлд нэвтрээгүй байна. Хэрэв та бүртгэлийг өөр профайлд ашиглахыг хүсвэл эхлээд тухайн профайлыг хасна уу.</translation>
+<translation id="2061155704815580583">Brave-д энэ сайтад зориулж байршлын зөвшөөрөл шаардлагатай</translation>
 <translation id="9067428552314418522">Энэ файл аюултай тул Brave блоклосон байна.</translation>
 <translation id="8207657266087451193">Хэрэв зурагт хэрэгтэй тайлбар байхгүй бол Brave танд тайлбар өгөхөөр оролдох болно. Тайлбар үүсгэхийн тулд зургийг Brave-д илгээнэ. Та үүнийг хүссэн үедээ тохиргоонд унтрааж болно.</translation>
 <translation id="8622246347342688645">Та нэвтрээгүй байгаа тул Brave таны нууц үгсийг шалгах боломжгүй байна</translation>

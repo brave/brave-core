@@ -19,6 +19,26 @@
     "message": "ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "ನೀವು ಮಾಡುವ ಯಾವುದೇ ಟಿಪ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಬಾಕಿ ಆಗಿಯೇ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ. $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "ಈ ರಚನೆಕಾರರು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡಿಲ್ಲ.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಟಿಪ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ ನಲ್ಲಿ $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$days$ ದಿನಗಳಲ್ಲಿ $amount$ ಆಗಮಿಸುತ್ತಿದೆ",
+    "message": "$amount$ ಪೇಔಟ್ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆ $days$ ದಿನಗಳಲ್ಲಿ ಆರಂಭವಾಗುತ್ತದೆ",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "ವಜಾಗೊಳಿಸಿ",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave Rewards ಆನ್ ಮಾಡಿ",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards ಮೂಲಕ, ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಆನ್ ಮಾಡಿ",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ. ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಎಂಬಲ್ಲಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಮೂಲಕ, ನೀವು ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewards ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? $tour_link_begin$ತ್ವರಿತ ಪ್ರಯಾಣ ಕೈಗೊಳ್ಳಿ$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -19,6 +19,26 @@
     "message": "Ανανέωση Κατάστασης",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Αν στείλετε κάποιο φιλοδώρημα, αυτό θα παραμείνει στο πορτοφόλι σας και η αποστολή θα επαναλαμβάνεται αυτόματα επί 90 ημέρες. $link_begin$Μάθε περισσότερα$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Αυτός ο δημιουργός δεν έχει εγγραφεί ακόμα.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Αυτός ο δημιουργός δεν έχει ρυθμιστεί προς το παρόν για να λαμβάνει φιλοδωρήματα από το πορτοφόλι σας.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ στο $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "Το ποσό $amount$ φτάνει σε $days$",
+    "message": "$amount$ η επεξεργασία της πληρωμής αρχίζει σε $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Παράβλεψη",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Για να ξεκινήσετε μια δωρεάν κλήση, ενεργοποιήστε τις Ανταμοιβές Brave",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Με τις Ανταμοιβές Brave, κερδίζετε μάρκες για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα διακριτικά σε μετρητά, δωροκάρτες… ή ακόμα και συμβουλές στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Ενεργοποιήστε τις Ανταμοιβές",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Κάνοντας κλικ, συμφωνείτε με τους $tos_link_begin$Όρους Υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$. Μπορείτε να απενεργοποιήσετε αυτήν την επιλογή στις Ρυθμίσεις.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Για να ξεκινήσετε μια δωρεάν κλήση, ενεργοποιήστε τις Ιδιωτικές διαφημίσεις Brave",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Με τις Ιδιωτικές διαφημίσεις Brave, κερδίζετε μάρκες για την προβολή ιδιωτικών διαφημίσεων (τα δεδομένα σας είναι ασφαλή). Μετατρέψτε αυτά τα διακριτικά σε μετρητά, δωροκάρτες… ή ακόμα και συμβουλές στους ιστότοπους που αγαπάτε. Χωρίς εντοπισμό. Χωρίς καθυστερήσεις.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Ενεργοποίηση Ιδιωτικών διαφημίσεων Brave",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ενεργοποιώντας τις Διαφημίσεις, συμφωνείτε με τους $tos_link_begin$Όρους Υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Μπορείτε να ξεκινήσετε μια δωρεάν κλήση τώρα",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Κάντε κλικ οπουδήποτε στην οθόνη για να συνεχίσετε στο Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Θέλετε να μάθετε περισσότερα για τις  Ανταμοιβές Brave; $tour_link_begin$Κάντε μια γρήγορη περιήγηση$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

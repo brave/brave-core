@@ -190,10 +190,10 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5655621391922317800">Kripto maki</translation>
 <translation id="1696548911367097044">Novecojis Crypto Wallets paplašinājums</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum nodrošinātājs Dapps lietošanai</translation>
-<translation id="5913089932885076110">Ielādēt kripto makus startēšanas brīdī</translation>
-<translation id="757886143331967039">Ielādēt novecojušu Crypto Wallets paplašinājumu startējot</translation>
+<translation id="9131889008937672866">Noklusējuma kriptovalūtas maks</translation>
 <translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>
+<translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
+<translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
 <translation id="6864914031231797928">Atļaut Google pieteikšanos paplašinājumiem</translation>
 <translation id="5927916530277631319">Neapturamo domēnu atrisināšanas metode</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/> par DNS protokolā HTTPS un Ethereum konfidencialitātes apsvērumiem.</translation>
@@ -234,6 +234,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1251574393468476924">Maksimālais IPFS kešatmiņas lielums (GB)</translation>
 <translation id="2503497578400410320">Elastīgs IPFS repozitorija datu krātuves lieluma augšējais limits.</translation>
 <translation id="7703184801853248830">Nederīga vārtejas adrese</translation>
+<translation id="7690058578502751948">Brave var izmantot tikai derīgu IPFS vārteju ar iespējotu avota izolāciju.</translation>
 <translation id="585868419599255817">IPFS publiskās vārtejas izmantošana</translation>
 <translation id="207763736230883589">Automātiski izmantot IPFS publisko vārteju, ja vietējam mezglam piekļūt nav iespējams.</translation>
 <translation id="4107552920076294723">Novirzīt IPFS resursus uz konfigurēto IPFS vārteju</translation>
@@ -302,6 +303,10 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1391855377994926460">Turpiniet pārlūkot tīmekli ātrāk – līdz pat 6 reizes ātrāk lielākajās ziņu vietnēs.</translation>
 <translation id="9218430445555521422">Iestatīt kā noklusējumu</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
+<translation id="732814027519296280">Vai vēlaties vēl vairāk uzlabot Brave meklēšanu?</translation>
+<translation id="2677865600861971449">Izvēlieties Tīmekļa atklāšanas projektu, lai anonīmi sniegtu dažus meklēšanas un pārlūkošanas datus, kā arī uzlabotu Brave meklēšanas rezultātus visiem. Ievērojot privātumu. Un bez piepūles. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Ieslēgt</translation>
+<translation id="780301667611848630">Nē, paldies</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="7815301689257843278">Vai avārijas atskaites nosūtīt automātiski, lai Brave varētu novērst šīs problēmas atkārtošanos?</translation>
@@ -311,6 +316,8 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6873781976650514089">šis iestatījums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
 <translation id="5600566490506283344">Brave Ad paziņojums</translation>
+<translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
+<translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Pievienot sānjoslai</translation>
 <translation id="4233010476457917696">Rādīt sānjoslu</translation>

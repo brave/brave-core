@@ -190,9 +190,6 @@
 <translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
 <translation id="1696548911367097044">ส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้ว</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">ผู้ให้บริการ Ethereum สำหรับใช้งาน Dapps</translation>
-<translation id="5913089932885076110">โหลด Crypto Wallets เมื่อเริ่มต้น</translation>
-<translation id="757886143331967039">โหลดส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้วเมื่อเริ่มต้นระบบ</translation>
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
@@ -301,6 +298,8 @@
 <translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 <translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="5860491529813859533">เปิด</translation>
+<translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="5039804452771397117">อนุญาต</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>

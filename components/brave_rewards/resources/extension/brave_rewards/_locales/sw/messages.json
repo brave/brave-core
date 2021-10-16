@@ -19,6 +19,26 @@
     "message": "Zimua Hali",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Bahshishi yoyote unayotoa itasalia katika pochi yako na kujaribu tena kiotomatiki kwa siku 90. $link_begin$Pata maelezo zaidi$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Muundaji bado hajajisajili.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Muundaji hutu kwa sasa hajawekwa ili kupokea bahshishi kutoka kwenye pochi yako.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ kwenye $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ kuwasili baada ya $days$",
+    "message": "Malipo ya $amount$ yanaanza kuchakatwa baada ya $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Ondoa",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Ili kuanza simu ya bila malipo, washa Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Ukiwa na Brave Rewards, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Fungua Tuzo",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Kwa kubofya, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$. Lemaza wakati wowote katika Mipangilio.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Ili kuanza simu ya bila malipo, wezesha Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Ukiwa na Brave Private Ads, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Washa Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Kwa kuwasha Ads, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Sasa unaweza kuanza simu ya bila malipo",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Gusa popote kwenye skrini ili uende kwenye Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Unataka maelezo zaidi kuhusu Brave Rewards? $tour_link_begin$Angalia mwongozo wa haraka$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

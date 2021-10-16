@@ -5,6 +5,7 @@
 <translation id="1008557486741366299">後で</translation>
 <translation id="100957008357583611">位置情報を使用しますか？</translation>
 <translation id="1010200102790553230">後でページを読み込む</translation>
+<translation id="1011206368273183593">ファイルを準備しています</translation>
 <translation id="1015730422737071372">詳細を報告する</translation>
 <translation id="1019413721762100891">オフ</translation>
 <translation id="1021110881106174305">利用可能なカード</translation>
@@ -27,6 +28,7 @@
 <translation id="1068672505746868501"><ph name="SOURCE_LANGUAGE"/>のページを翻訳しない</translation>
 <translation id="1070901266639972381">夜間</translation>
 <translation id="1074497978438210769">保護されていない通信</translation>
+<translation id="4531684717123912090">Brave でのダウンロードを管理</translation>
 <translation id="1080116354587839789">ウィンドウ幅に合わせる</translation>
 <translation id="1086953900555227778">Index-5x8</translation>
 <translation id="1088860948719068836">名義人名の追加</translation>
@@ -84,7 +86,10 @@
     &lt;li&gt;ウェブサイトの所有者に問い合わせます。&lt;/li&gt;
     &lt;/ol&gt;</translation>
 <translation id="1257286744552378071">組織が管理していないサイトでパスワードを入力しました。アカウントを保護するには、他のアプリやサイトでパスワードを再使用しないでください。</translation>
+<translation id="1257553931232494454">ズームレベル</translation>
+<translation id="8101828947363663989"><ph name="MANAGE_CHROME_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Brave の設定を管理します</translation>
 <translation id="1263231323834454256">リーディング リスト</translation>
+<translation id="1269096320618100013">[ユーザー補助設定を管理] ボタンです。Enter キーを押すと Chrome OS の設定でユーザー補助ツールをカスタマイズします</translation>
 <translation id="53564677632020212">Brave サイトで新しいサイトをすばやく作成します</translation>
 <translation id="1270502636509132238">受け取り方法</translation>
 <translation id="1281476433249504884">スタッカー 1</translation>
@@ -141,6 +146,7 @@
 <translation id="1428729058023778569">この警告は、サイトが HTTPS に対応していない場合に表示されます。<ph name="BEGIN_LEARN_MORE_LINK"/>詳細<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="1436185428532214179">デバイスのファイルやフォルダの編集を要求できる</translation>
+<translation id="1439627443299342313">[このページを共有] ボタンです。Enter キーを押すと、リンクの共有、QR コードの作成、キャストなどを行ってこのページを共有します</translation>
 <translation id="1442386063175183758">右観音折り</translation>
 <translation id="1442987760062738829">パンチ</translation>
 <translation id="1447067628680007684">（x86_64）</translation>
@@ -186,6 +192,7 @@
       &lt;p&gt;&lt;strong&gt;設定&lt;/strong&gt;アプリの [&lt;strong&gt;全般&lt;/strong&gt;] セクションで日時を調整してください。&lt;/p&gt;</translation>
 <translation id="1567040042588613346">このポリシーは想定どおり動作していますが、同じ値が設定されている別のポリシーが優先されています。</translation>
 <translation id="1569487616857761740">有効期限の入力</translation>
+<translation id="1017004253394863898">Brave 広告の設定を管理します</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583294866416602487">Plex</translation>
 <translation id="1583429793053364125">このウェブページの表示中に問題が発生しました。</translation>
@@ -207,9 +214,11 @@
 <translation id="9108890623444393630">[Brave のパスワードを変更] ボタンです。Enter キーを押すと、Brave アカウントのパスワードを変更します</translation>
 <translation id="1644574205037202324">履歴</translation>
 <translation id="1645368109819982629">サポートされていないプロトコルです</translation>
+<translation id="1995056549836388472">Brave の設定を管理します</translation>
 <translation id="1652415888492971589">JIS B8</translation>
 <translation id="3848846802033604519">ページを見やすくするため、Brave によって簡易表示されています。Brave による元のページの取得は、保護された接続を介して行われました。</translation>
 <translation id="1656489000284462475">受け取り</translation>
+<translation id="1658918301167915956">Bluetooth デバイス</translation>
 <translation id="1662550410081243962">お支払い方法の保存と入力</translation>
 <translation id="1838576226863399477">Brave に保存されているクレジット カードと住所です。[<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] で管理できます。</translation>
 <translation id="1671391448414634642">今後、<ph name="SOURCE_LANGUAGE"/>のページは<ph name="TARGET_LANGUAGE"/>に翻訳されます。</translation>
@@ -220,12 +229,14 @@
 <translation id="1697532407822776718">設定が完了しました。</translation>
 <translation id="1699570257714336246">情報が不足しています</translation>
 <translation id="1703835215927279855">Letter</translation>
+<translation id="1706625117072057435">ズームレベル</translation>
 <translation id="1706954506755087368">{1,plural, =1{このサーバーが <ph name="DOMAIN"/> であることを確認できませんでした。セキュリティ証明書はおそらく明日以降に利用できるようになります。原因として、設定が不適切であるか、悪意のあるユーザーが接続を妨害していることが考えられます。}other{このサーバーが <ph name="DOMAIN"/> であることを確認できませんでした。セキュリティ証明書はおそらく # 日後から利用できるようになります。原因として、設定が不適切であるか、悪意のあるユーザーが接続を妨害していることが考えられます。}}</translation>
 <translation id="1710259589646384581">OS</translation>
 <translation id="1711234383449478798"><ph name="POLICY_NAME"/> が <ph name="VALUE"/> に設定されていないため無視されました。</translation>
 <translation id="1712552549805331520"><ph name="URL"/> から、ローカルのパソコンにデータを永続的に保存する許可を求められています</translation>
 <translation id="1713628304598226412">トレイ 2</translation>
 <translation id="1715874602234207">F</translation>
+<translation id="1717218214683051432">モーション センサー</translation>
 <translation id="1717494416764505390">用紙受け 3</translation>
 <translation id="1718029547804390981">ドキュメントのサイズが大きすぎるため注釈を追加できません</translation>
 <translation id="1721424275792716183">* 必須欄です</translation>
@@ -233,6 +244,7 @@
 <translation id="1727741090716970331">有効なカード番号の追加</translation>
 <translation id="1728677426644403582">ウェブページのソースを表示しています</translation>
 <translation id="173080396488393970">この種類のカードはご利用いただけません</translation>
+<translation id="1733064249834771892">フォント</translation>
 <translation id="1734864079702812349">AMEX</translation>
 <translation id="1734878702283171397">システム管理者にお問い合わせください。</translation>
 <translation id="1736420071277903564">パソコン</translation>
@@ -259,6 +271,7 @@
 <translation id="1807246157184219062">明</translation>
 <translation id="1807528111851433570">開始シート</translation>
 <translation id="1812527064848182527">横向き</translation>
+<translation id="182139138257690338">自動ダウンロード</translation>
 <translation id="1821930232296380041">無効なリクエストまたはリクエスト パラメータです</translation>
 <translation id="1822540298136254167">アクセスしたウェブサイトと閲覧時間</translation>
 <translation id="1826516787628120939">確認中</translation>
@@ -303,6 +316,7 @@
 <translation id="2342444980304536062">Brave の設定ですべてのサイトに保存されている権限とデータを管理する</translation>
 <translation id="2025115093177348061">拡張現実（AR）</translation>
 <translation id="2025186561304664664">プロキシは自動設定になっています。</translation>
+<translation id="2025891858974379949">安全でないコンテンツ</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>プロキシとファイアウォールを確認する<ph name="END_LINK"/></translation>
 <translation id="2042213636306070719">トレイ 7</translation>
 <translation id="3163988908275223348">Brave アカウントに保存したパスワードを使用するには、ログインしてください</translation>
@@ -334,11 +348,10 @@
 <translation id="2119867082804433120">パンチ（右下）</translation>
 <translation id="2122719317867821810">このポリシーは想定どおり動作していますが、競合する値が設定されている別のポリシーによってオーバーライドされています。</translation>
 <translation id="2126374524350484896">PDF 変換アプリケーション:</translation>
-<translation id="2129079103035905234">モーション センサー</translation>
 <translation id="2130448033692577677">DnsOverHttpsMode ポリシーが設定されていないため、指定したテンプレートを適用できない可能性があります。</translation>
 <translation id="213826338245044447">モバイルのブックマーク</translation>
 <translation id="214556005048008348">支払いをキャンセル</translation>
-<translation id="2147827593068025794">バックグラウンド同期</translation>
+<translation id="214581181351097783"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、リンクの共有、QR コードの作成、キャストなどを行ってこのページを共有します</translation>
 <translation id="2148613324460538318">カードを追加</translation>
 <translation id="2149968176347646218">接続は安全ではありません</translation>
 <translation id="2154054054215849342">お使いのドメインでは同期機能をご利用いただけません</translation>
@@ -383,16 +396,17 @@
 <translation id="2293443924986248631">オンにすると、サイトは Cookie を使用してあなたをウェブ上でトラッキングできなくなります。一部サイトの機能が使用できなくなる可能性もあります。</translation>
 <translation id="6148139222908395733">アクセスしたページの URL は分析のため Brave Cloud または第三者に送信されます。たとえば、安全でないウェブサイトを検出するためにスキャンされる場合があります。</translation>
 <translation id="2297722699537546652">B5（封筒）</translation>
+<translation id="2297822946037605517">このページを共有</translation>
 <translation id="2144551375735610273">Cookie を管理するボタンです。Enter キーを押して、Brave の設定で Cookie の設定を管理します</translation>
 <translation id="2300306941146563769">アップロードされていません</translation>
 <translation id="2310021320168182093">長2（封筒）</translation>
 <translation id="2316887270356262533">最大で 1 MB を解放します。サイトによっては、次回アクセスする際に読み込みに時間がかかる可能性があります。</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> にはユーザー名とパスワードが必要です。</translation>
 <translation id="2328651992442742497">許可（デフォルト）</translation>
+<translation id="2329182534073751090">ウィンドウの配置</translation>
 <translation id="2330137317877982892">「<ph name="CREDIT_CARD"/>」の有効期限は <ph name="EXPIRATION_DATE_ABBR"/> です</translation>
 <translation id="2337852623177822836">管理者が指定する設定</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> がペア設定を要求しています</translation>
-<translation id="2344028582131185878">自動ダウンロード</translation>
 <translation id="2346319942568447007">コピーした画像</translation>
 <translation id="2354001756790975382">その他のブックマーク</translation>
 <translation id="2354430244986887761"><ph name="SITE"/> では最近、Brave セーフ ブラウジングにより<ph name="BEGIN_LINK"/>有害なアプリが検出<ph name="END_LINK"/>されました。</translation>
@@ -406,6 +420,7 @@
 <translation id="2367567093518048410">レベル</translation>
 <translation id="3759641402938286697">確認後、Brave アカウントのカード情報がこのサイトと共有されます。CVC は Plex アカウントの詳細で確認できます。</translation>
 <translation id="2380886658946992094">Legal</translation>
+<translation id="5475992123321966556">Brave の設定でユーザー補助ツールをカスタマイズします</translation>
 <translation id="2384307209577226199">企業のデフォルト</translation>
 <translation id="5244533701344680487">Brave の設定で Brave を更新する</translation>
 <translation id="2386255080630008482">サーバーの証明書は取り消されています。</translation>
@@ -423,6 +438,7 @@
 <translation id="2465402087343596252">Architecture-E</translation>
 <translation id="2465655957518002998">配達方法を選択</translation>
 <translation id="2465688316154986572">ステープル</translation>
+<translation id="4058615531773510267">Brave でダウンロードしたファイルを管理します</translation>
 <translation id="6412121772078350683"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押して、Brave の設定でセーフ ブラウジングなどを管理します</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>ネットワーク診断ツールを実行する<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1～N の順</translation>
@@ -449,6 +465,7 @@
 <translation id="2539524384386349900">検出</translation>
 <translation id="2540701853218677861">デバイスのログインとログアウトの履歴（タイムスタンプと失敗した試行を含む）</translation>
 <translation id="2544644783021658368">1 つのドキュメント</translation>
+<translation id="2546283357679194313">Cookie とサイトデータ</translation>
 <translation id="254947805923345898">ポリシーの値が無効です。</translation>
 <translation id="255002559098805027"><ph name="HOST_NAME"/> から無効な応答が送信されました。</translation>
 <translation id="2552295903035773204">今後、画面ロックを使用してカードを確認する</translation>
@@ -458,6 +475,7 @@
 <translation id="2586657967955657006">クリップボード</translation>
 <translation id="2587730715158995865">公開元: <ph name="ARTICLE_PUBLISHER"/>。この記事と他 <ph name="OTHER_ARTICLE_COUNT"/> 件の記事を読むことができます。</translation>
 <translation id="2587841377698384444">Directory API ID:</translation>
+<translation id="8933635548957089845">[ユーザー補助設定を管理] ボタンです。Enter キーを押すと Brave の設定でユーザー補助ツールをカスタマイズします</translation>
 <translation id="2594318783181750337">高速ウェブビュー:</translation>
 <translation id="2595719060046994702">このデバイスとアカウントは、会社またはその他の組織によって管理されていません。</translation>
 <translation id="2597378329261239068">このドキュメントはパスワードで保護されています。パスワードを入力してください。</translation>
@@ -474,6 +492,7 @@
 <translation id="9078005688100552065"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、Brave の設定で閲覧履歴、Cookie、キャッシュなどを削除します</translation>
 <translation id="2650446666397867134">ファイルへのアクセスが拒否されました</translation>
 <translation id="2653659639078652383">送信</translation>
+<translation id="2659491813326907275">Chrome OS の設定でユーザー補助ツールをカスタマイズします</translation>
 <translation id="2660779039299703961">イベント</translation>
 <translation id="2664887757054927933">{COUNT,plural, =0{なし}=1{<ph name="DOMAIN_LIST"/> のパスワード 1 件}=2{<ph name="DOMAIN_LIST"/> のパスワード 2 件}other{<ph name="DOMAIN_LIST"/> のパスワード # 件}}</translation>
 <translation id="2666092431469916601">一番上</translation>
@@ -508,7 +527,6 @@
 <translation id="277133753123645258">配送方法</translation>
 <translation id="277499241957683684">デバイス レコードがありません</translation>
 <translation id="2775884851269838147">最初の印刷ページ</translation>
-<translation id="2778854133681684171">次回このデバイスを使用して、このお支払い方法で購入する際に本人確認をすばやく行えるようになります。</translation>
 <translation id="5152275065296016556">Brave Pay</translation>
 <translation id="2784949926578158345">接続がリセットされました。</translation>
 <translation id="2792012897584536778">このデバイスの管理者が設定したセキュリティ証明書により、アクセス先のウェブサイトのコンテンツを管理者が把握できるようになっている可能性があります。</translation>
@@ -546,6 +564,7 @@
 <translation id="2934466151127459956">Government-Letter</translation>
 <translation id="2941952326391522266">このサーバーが <ph name="DOMAIN"/> であることを確認できませんでした。このサーバーのセキュリティ証明書は <ph name="DOMAIN2"/> から発行されています。原因としては、不適切な設定や、悪意のあるユーザーによる接続妨害が考えられます。</translation>
 <translation id="2943895734390379394">アップロード時刻:</translation>
+<translation id="2948017612172418360">[サイト内検索を管理] ボタンです。Enter キーを押すとサイト内検索とデフォルトの検索エンジンを管理します</translation>
 <translation id="2948083400971632585">接続用に設定されたプロキシは、設定ページで無効にできます。</translation>
 <translation id="3955566820843143766">マシンが Brave ブラウザ クラウド管理に登録されていないため、無視されました。</translation>
 <translation id="2951588413176968965">自分の用紙受け</translation>
@@ -565,6 +584,7 @@
 <translation id="3005723025932146533">保存済みのコピーを表示</translation>
 <translation id="3008447029300691911"><ph name="CREDIT_CARD"/> の CVC を入力します。確認を行うと、カードの詳細がこのサイトと共有されます。</translation>
 <translation id="3010559122411665027">リスト エントリ「<ph name="ENTRY_INDEX"/>」: <ph name="ERROR"/></translation>
+<translation id="3013291976881901233">MIDI デバイス</translation>
 <translation id="301521992641321250">自動ブロックされました</translation>
 <translation id="3016780570757425217">ユーザーの現在地の認識</translation>
 <translation id="3017086357773116182"><ph name="REMOVE_SUGGESTION_SUFFIX"/> です。Tab キー、Enter キーの順に押すと、候補を削除します。</translation>
@@ -572,6 +592,7 @@
 <translation id="3024663005179499861">ポリシー タイプが間違っています</translation>
 <translation id="3037605927509011580">エラー</translation>
 <translation id="3041612393474885105">証明書情報</translation>
+<translation id="3079963700041543483">[Brave 履歴を表示] ボタンです。Enter キーを押すと Brave の設定で閲覧履歴を表示、管理します</translation>
 <translation id="3060227939791841287">C9（封筒）</translation>
 <translation id="4836986635834556421"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、Brave の設定で安全確認を実行します</translation>
 <translation id="3061707000357573562">サービスへのパッチの適用</translation>
@@ -628,6 +649,7 @@
 <translation id="3252266817569339921">フランス語</translation>
 <translation id="3257954757204451555">この情報の背後にいるのは誰ですか？</translation>
 <translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、Brave カレンダーで新しいイベントをすばやく作成します</translation>
+<translation id="3893393287627341086">[Brave の設定を管理] ボタンです。Enter キーを押すと Brave の設定に移動します</translation>
 <translation id="3266793032086590337">値（競合）</translation>
 <translation id="3268451620468152448">開いているタブ</translation>
 <translation id="3270847123878663523">順序変更の取り消し（&amp;U）</translation>
@@ -641,7 +663,9 @@
 <translation id="3293642807462928945"><ph name="POLICY_NAME"/> ポリシーの詳細</translation>
 <translation id="5894665462526421022">Brave の設定でパスワードを表示、管理する</translation>
 <translation id="3303855915957856445">一致する結果は見つかりませんでした</translation>
+<translation id="3304073249511302126">Bluetooth のスキャン</translation>
 <translation id="3308006649705061278">組織単位（OU）</translation>
+<translation id="3308738399950580893">広告</translation>
 <translation id="3320021301628644560">請求先住所を追加</translation>
 <translation id="3324983252691184275">クリムゾン</translation>
 <translation id="3329013043687509092">彩度</translation>
@@ -662,7 +686,6 @@
 <translation id="3371076217486966826"><ph name="URL"/> が次の許可を求めています。
       • 周囲の 3D マップの作成とカメラ位置の追跡
       • カメラの使用</translation>
-<translation id="3372389303668969359">Windows Hello を使用すると、次回このデバイスを使用してこのお支払い方法で購入する際に本人確認をすばやく行えるようになります。</translation>
 <translation id="337363190475750230">プロビジョニングが解除されました</translation>
 <translation id="3377144306166885718">このサーバーは TLS の廃止されたバージョンを使用しています。</translation>
 <translation id="3377188786107721145">ポリシー解析エラーです</translation>
@@ -672,6 +695,7 @@
 <translation id="3381668585148405088">購入の確認</translation>
 <translation id="3387261909427947069">お支払い方法</translation>
 <translation id="3391030046425686457">配送先住所</translation>
+<translation id="3391482648489541560">ファイルの編集</translation>
 <translation id="3395827396354264108">受け取り方法</translation>
 <translation id="3399952811970034796">配達先住所</translation>
 <translation id="3402261774528610252">このサイトの読み込みで、TLS 1.0 または TLS 1.1 の接続が使用されました。これらの TLS バージョンのサポートは終了し、今後無効となる予定です。無効になると、このサイトは読み込めなくなります。サーバーで TLS 1.2 以降を有効にする必要があります。</translation>
@@ -680,6 +704,7 @@
 <translation id="25726459489263481">アップロードまたは添付したファイルは分析のため Brave Cloud または第三者に送信されます。たとえば、機密データやマルウェアがないかスキャンされます。</translation>
 <translation id="3422248202833853650">メモリを解放するために、他のプログラムを終了してみてください。</translation>
 <translation id="3422472998109090673"><ph name="HOST_NAME"/> は現在アクセスできません。</translation>
+<translation id="3422654661304792373">テーマを使用してブラウザのデザインをカスタマイズします</translation>
 <translation id="3423742043356668186">システムの指定</translation>
 <translation id="3427092606871434483">許可（デフォルト）</translation>
 <translation id="3427342743765426898">編集のやり直し（&amp;R）</translation>
@@ -721,6 +746,7 @@
 <translation id="3566021033012934673">この接続ではプライバシーが保護されません</translation>
 <translation id="3567778190852720481">企業アカウントでは登録できません（企業アカウントは利用できません）。</translation>
 <translation id="3574305903863751447"><ph name="COUNTRY"/> <ph name="STATE"/> <ph name="CITY"/></translation>
+<translation id="3575121482199441727">このサイトの通知を許可</translation>
 <translation id="3576616784287504635"><ph name="SITE"/> に埋め込まれているページの内容</translation>
 <translation id="230476913390177517">このページの準備が整いましたらお知らせします。&lt;a&gt;キャンセル&lt;/a&gt;</translation>
 <translation id="3582930987043644930">名前を追加</translation>
@@ -772,6 +798,7 @@
 <translation id="373042150751172459">B4（封筒）</translation>
 <translation id="3736520371357197498">危険なプログラムが削除されるより前に<ph name="BEGIN_LINK"/>この安全でないサイトにアクセスする<ph name="END_LINK"/>場合は、セキュリティ上のリスクについてご承知おきください。</translation>
 <translation id="3738166223076830879">お使いのブラウザは管理者によって管理されています。</translation>
+<translation id="3744111561329211289">バックグラウンド同期</translation>
 <translation id="4098534208927606680">確認後、Brave アカウントのカード情報がこのサイトと共有されます。</translation>
 <translation id="3748148204939282805"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> では、悪意のあるユーザーによって、ソフトウェアのインストールや個人情報（パスワード、電話番号、クレジット カードなど）の入力といった危険な操作を行うよう誘導される可能性があります。<ph name="BEGIN_LEARN_MORE_LINK"/>詳細<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3754210790023674521">ピクチャー イン ピクチャーを終了</translation>
@@ -783,6 +810,7 @@
 <translation id="3765588406864124894">用紙受け 9</translation>
 <translation id="3767485424735936570">このコンテンツの <ph name="VM_NAME"/> へのコピーと貼り付けは、管理者のポリシーで推奨されていません</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、Brave Keep で新しいメモをすばやく作成します</translation>
+<translation id="7898994499976006343">[Brave でのダウンロードを管理] ボタンです。Enter キーを押すと、Brave でダウンロードしたファイルを管理します</translation>
 <translation id="5141491707451394486">このカードを Brave アカウントとこのデバイスに保存しますか？</translation>
 <translation id="3780694243617746492">排紙トレイ</translation>
 <translation id="3781428340399460090">ホットピンク</translation>
@@ -806,7 +834,6 @@
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> によって、機能を追加する拡張機能がインストールされました。この拡張機能では、ユーザーデータの一部にアクセスする場合があります。</translation>
 <translation id="3832522519263485449">多穴パンチ（左）</translation>
 <translation id="3835233591525155343">デバイスのアクティブ状態</translation>
-<translation id="3841184659773414994">ファイル ハンドラ</translation>
 <translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、新しい Brave ドキュメントをすばやく作成します</translation>
 <translation id="385051799172605136">戻る</translation>
 <translation id="3858027520442213535">日時を更新</translation>
@@ -846,6 +873,7 @@
 <translation id="3987940399970879459">1 MB 未満</translation>
 <translation id="3990250421422698716">ジョグ オフセット</translation>
 <translation id="3996311196211510766">サイト <ph name="ORIGIN"/> では、サイトへのすべてのリクエストにオリジン ポリシーの適用を求めていますが、このポリシーは現在適用することができません。</translation>
+<translation id="4010758435855888356">ストレージへのアクセスを許可しますか？</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{{COUNT} ページの PDF ドキュメント}other{{COUNT} ページの PDF ドキュメント}}</translation>
 <translation id="4023431997072828269">このフォームは安全ではない接続を使用して送信されているため、情報が他人に読み取られる可能性があります。</translation>
 <translation id="4030383055268325496">追加の取り消し（&amp;U）</translation>
@@ -864,6 +892,7 @@
 <translation id="8049340108547416244">[イベントを作成] ボタンです。Enter キーを押すと、Brave カレンダーで新しいイベントをすばやく作成します</translation>
 <translation id="4088981014127559358">1 面の画像の Y 軸移動</translation>
 <translation id="4098354747657067197">偽のサイトにアクセスしようとしています</translation>
+<translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Brave のフォントサイズと書体をカスタマイズします</translation>
 <translation id="4101413244023615925">テキストとグラフィック</translation>
 <translation id="4103249731201008433">デバイスのシリアル番号が無効です</translation>
 <translation id="1823668038006695695">[サイトを作成] ボタンです。Enter キーを押すと、Brave サイトで新しいサイトをすばやく作成します</translation>
@@ -881,6 +910,7 @@
 <translation id="413544239732274901">詳細</translation>
 <translation id="4142935452406587478">トレイ 10</translation>
 <translation id="4148925816941278100">American Express</translation>
+<translation id="4149889845221342198"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、テーマを使用してブラウザのデザインをカスタマイズします</translation>
 <translation id="4151403195736952345">全体の既定値を使用（検出）</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{1 ページ}other{{COUNT} ページ}}</translation>
 <translation id="4154664944169082762">指紋</translation>
@@ -919,6 +949,7 @@
 <translation id="4275830172053184480">デバイスの再起動</translation>
 <translation id="4277028893293644418">パスワードを再設定</translation>
 <translation id="4278390842282768270">許可</translation>
+<translation id="4286047936834273847">サイト内検索とデフォルトの検索エンジンを管理します</translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{このカードを Brave アカウントに保存しました}other{これらのカードを Brave アカウントに保存しました}}</translation>
 <translation id="4287885627794386150">試用版を使用できますが有効になっていません</translation>
 <translation id="4297502707443874121"><ph name="THUMBNAIL_PAGE"/> ページのサムネイル</translation>
@@ -928,6 +959,7 @@
 <translation id="4302965934281694568">長3（封筒）</translation>
 <translation id="4305666528087210886">ファイルにアクセスできませんでした</translation>
 <translation id="4306529830550717874">住所を保存しますか？</translation>
+<translation id="4306812610847412719">クリップボード</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">ブロック（デフォルト）</translation>
 <translation id="4314815835985389558">同期の管理</translation>
@@ -947,16 +979,20 @@
 <translation id="4356973930735388585">このサイトを利用すると、悪意のあるユーザーによって、危険なプログラム（写真、パスワード、メッセージ、クレジット カード番号などの情報を盗み取るか削除するプログラム）がお使いのパソコンにインストールされる可能性があります。</translation>
 <translation id="4358059973562876591">DnsOverHttpsMode ポリシーに問題があるため、指定したテンプレートを適用できない可能性があります。</translation>
 <translation id="4358461427845829800">お支払い方法を管理...</translation>
+<translation id="4363178190432472170">スマートフォンを探します</translation>
 <translation id="4367563149485757821">Number-12（封筒）</translation>
+<translation id="437040971055499437">セキュリティ イベントの発生</translation>
 <translation id="437058704415269440">アカウント残高</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
 <translation id="4372948949327679948"><ph name="VALUE_TYPE"/> 値が想定されます。</translation>
 <translation id="4377125064752653719"><ph name="DOMAIN"/> にアクセスしようとしましたが、サーバーから提示された証明書は発行元により取り消されています。これは、サーバーから提示されたセキュリティ認証情報が信頼できないことを示しており、悪意のあるユーザーと通信しようとしている可能性があります。</translation>
 <translation id="4378154925671717803">電話</translation>
+<translation id="4389652395741935834">リンクの共有、QR コードの作成、キャストなどを行ってこのページを共有します</translation>
 <translation id="4390472908992056574">ブリム</translation>
 <translation id="4406883609789734330">自動字幕起こし</translation>
 <translation id="4406896451731180161">検索結果</translation>
 <translation id="4408413947728134509">Cookie <ph name="NUM_COOKIES"/></translation>
+<translation id="4414515549596849729">Cookie とサイトデータ</translation>
 <translation id="4415426530740016218">受け取り場所の住所</translation>
 <translation id="443121186588148776">シリアルポート</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> でログイン証明書が承認されなかったか、ログイン証明書が提示されていない可能性があります。</translation>
@@ -965,6 +1001,7 @@
 <translation id="4434045419905280838">ポップアップとリダイレクト</translation>
 <translation id="4435702339979719576">ポストカード</translation>
 <translation id="443673843213245140">プロキシの使用は無効ですが、プロキシの設定が明示的に指定されています。</translation>
+<translation id="2796056610310156100">[Brave のテーマを管理] ボタンです。Enter キーを押すとテーマを使用してブラウザのデザインをカスタマイズします</translation>
 <translation id="4450893287417543264">次回から表示しない</translation>
 <translation id="4451135742916150903">HID デバイスへの接続を要求できる</translation>
 <translation id="4460315069258617173">このサイトのタブを開いている間のみ許可</translation>
@@ -978,6 +1015,7 @@
 <translation id="3966104135245031874">Brave アカウントで同期パスワードを暗号化する</translation>
 <translation id="3614771894046523359">これらの機能はデフォルトで無効になっています。Brave の今後のバージョンではご利用いただけません。</translation>
 <translation id="4493480324863638523">URL が無効です。標準のスキームを使用した URL を指定してください（例: http://example.com、https://example.com）。</translation>
+<translation id="4500587658229086076">安全でないコンテンツ</translation>
 <translation id="4503882053543859973">Architecture-D</translation>
 <translation id="4506176782989081258">検証エラー: <ph name="VALIDATION_ERROR"/></translation>
 <translation id="4506599922270137252">システム管理者に問い合わせる</translation>
@@ -991,6 +1029,7 @@
 <translation id="4522570452068850558">詳細</translation>
 <translation id="4524138615196389145">今後 WebAuthn を使用して、カードの確認をより迅速に行います</translation>
 <translation id="4524805452350978254">カードを管理</translation>
+<translation id="4541810033354695636">拡張現実</translation>
 <translation id="4542971377163063093">トレイ 6</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4558551763791394412">拡張機能を無効にしてみてください。</translation>
@@ -1041,6 +1080,7 @@
 <translation id="4744514002166662487">プレゼンテーションを作成</translation>
 <translation id="4744603770635761495">実行ファイルのパス</translation>
 <translation id="4750917950439032686">お客様がこのサイトに送信した情報（パスワード、クレジット カード番号など）が第三者に見られることはありません。</translation>
+<translation id="4751476147751820511">モーション センサーまたは光センサー</translation>
 <translation id="4754461935447132332">セキュアでないサイトでは許可されていません</translation>
 <translation id="4756388243121344051">履歴(&amp;H)</translation>
 <translation id="4758311279753947758">連絡先情報を追加</translation>
@@ -1067,10 +1107,12 @@
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押すと、新しい Brave スプレッドシートをすばやく作成します</translation>
 <translation id="4825507807291741242">パワフル</translation>
 <translation id="4838327282952368871">ドリーミー</translation>
+<translation id="246176083348620700">Brave 履歴を表示</translation>
 <translation id="484462545196658690">自動</translation>
 <translation id="4849865131988503897">正確性チェック</translation>
 <translation id="4850886885716139402">表示</translation>
 <translation id="485316830061041779">ドイツ語</translation>
+<translation id="4853901935952445031">このサイトでは、2022 年 2 月以降、U2F API を使用できなくなります。このサイトの所有者の方は、Web Authentication API を使用するように変更を行っていただく必要があります。</translation>
 <translation id="4854362297993841467">この配達方法はご利用いただけません。別の方法を選択してください。</translation>
 <translation id="3418609161696289726">Brave Keep で新しいメモをすばやく作成します</translation>
 <translation id="4876188919622883022">簡易表示</translation>
@@ -1109,6 +1151,7 @@
 <translation id="4989809363548539747">このプラグインはサポートされていません</translation>
 <translation id="4995216769782533993">このサイトでカード情報を共有するには、セキュリティ コードを確認してください</translation>
 <translation id="4995474875135717171">更新日時:</translation>
+<translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、サイト内検索とデフォルトの検索エンジンを管理します</translation>
 <translation id="3676215163710610678">有効にすると、Brave ではこのデバイスにカードのコピーが保存されます。これにより、フォームにすばやく入力できるようになります。</translation>
 <translation id="5011561501798487822">検出された言語</translation>
 <translation id="5015510746216210676">マシン名:</translation>
@@ -1144,9 +1187,11 @@
 <translation id="5097501891273180634">A2</translation>
 <translation id="5108881358339761672">サイトは安全ではありません</translation>
 <translation id="5112422516732747637">A5</translation>
+<translation id="5114987907971894280">バーチャル リアリティ</translation>
 <translation id="5115216390227830982">European-Edp</translation>
 <translation id="5115232566827194440">制限付き管理対象ゲスト セッションのオーバーライド</translation>
 <translation id="5115563688576182185">（64 ビット）</translation>
+<translation id="5116898824332672776"><ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Chrome OS の設定でユーザー補助ツールをカスタマイズします。</translation>
 <translation id="5123063207673082822">週末</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">カードの確認</translation>
@@ -1154,7 +1199,6 @@
 <translation id="5135404736266831032">住所を管理...</translation>
 <translation id="5138014172396933048">仮想カードは現在ご利用いただけません。銀行にお問い合わせください</translation>
 <translation id="5138227688689900538">一部を表示</translation>
-<translation id="514010763713772514">次回の確認が簡単になります</translation>
 <translation id="5145883236150621069">ポリシー応答内にエラー コードがあります</translation>
 <translation id="5146995429444047494"><ph name="ORIGIN"/> の通知をブロックしました</translation>
 <translation id="5148809049217731050">上向き</translation>
@@ -1187,6 +1231,7 @@
 <translation id="5254043433801397071">印刷コンテンツの最適化</translation>
 <translation id="5254958791078852567">E1</translation>
 <translation id="5261548214279761072">お支払いの完了</translation>
+<translation id="6419595334958289908">Brave でのプライバシーを管理します</translation>
 <translation id="5266128565379329178">製本（上綴じ）</translation>
 <translation id="5269225904387178860">4 穴パンチ（下）</translation>
 <translation id="5269999699920406580">システム全体に適用される機能は所有者（<ph name="OWNER_EMAIL"/>）のみが設定できます</translation>
@@ -1221,6 +1266,7 @@
 <translation id="534295439873310000">NFC デバイス</translation>
 <translation id="5344579389779391559">このページでは課金される恐れがあります</translation>
 <translation id="5355557959165512791"><ph name="SITE"/> は証明書が失効しているため、現在アクセスできません。通常、ネットワーク エラーやネットワークへの攻撃は一時的なものです。しばらくするとページにアクセスできるようになります。</translation>
+<translation id="3338395521045980933">Brave のフォントをカスタマイズ</translation>
 <translation id="536296301121032821">ポリシー設定を保存できませんでした</translation>
 <translation id="5363309033720083897">管理者が許可したシリアルポート</translation>
 <translation id="5371425731340848620">カードを更新</translation>
@@ -1299,6 +1345,7 @@
 <translation id="563324245173044180">不正の可能性があるコンテンツがブロックされました。</translation>
 <translation id="5644090287519800334">1 面の画像の X 軸移動</translation>
 <translation id="5645854190134202180">2 番目のシフト</translation>
+<translation id="5649053991847567735">自動ダウンロード</translation>
 <translation id="5654927323611874862">アップロード済みのクラッシュ レポート ID:</translation>
 <translation id="5659593005791499971">メール</translation>
 <translation id="5663614846592581799">9x11（封筒）</translation>
@@ -1310,7 +1357,6 @@
 <translation id="5689199277474810259">JSON にエクスポート</translation>
 <translation id="5689516760719285838">位置情報</translation>
 <translation id="569000877158168851">DnsOverHttpsTemplates の値は関連するものでないため、使用されません。ただし、DnsOverHttpsMode ポリシーが「<ph name="SECURE_DNS_MODE_AUTOMATIC"/>」または「<ph name="SECURE_DNS_MODE_SECURE"/>」に設定されている場合は除きます。</translation>
-<translation id="5694206146481922091">保護されたお支払い認証情報の登録シートが開いています</translation>
 <translation id="5695542892312572833">Windows Hello を使用して本人確認し、購入手続きを完了しますか？</translation>
 <translation id="5701381305118179107">中央揃え</translation>
 <translation id="570530837424789914">管理...</translation>
@@ -1323,12 +1369,12 @@
 <translation id="5576538372759072019">{NUM_CARDS,plural, =1{Brave アカウントにカードを保存}other{Brave アカウントにカードを保存}}</translation>
 <translation id="5745733273847572235">位置情報を要求できる</translation>
 <translation id="5745980000221562234">{NUM_CARDS,plural, =1{このカードの仮想番号を使用}other{カードを選択してください}}</translation>
+<translation id="7325578009484607279">Brave のテーマを管理</translation>
 <translation id="5759751709240058861">カメラの使用と移動</translation>
 <translation id="5763042198335101085">有効なメールアドレスを入力してください</translation>
 <translation id="5765072501007116331">配達方法と要件を確認するには、住所を選択してください</translation>
 <translation id="57689295674415555">仮想カード番号が入力されない場合</translation>
 <translation id="5776313857861697733">優先度</translation>
-<translation id="5778550464785688721">MIDI デバイスのフル コントロール</translation>
 <translation id="5781136890105823427">テスト機能を有効にしました</translation>
 <translation id="578305955206182703">アンバー</translation>
 <translation id="57838592816432529">ミュート</translation>
@@ -1339,10 +1385,12 @@
 <translation id="5803412860119678065"><ph name="CARD_DETAIL"/> を入力しますか？</translation>
 <translation id="5804241973901381774">権限</translation>
 <translation id="5810442152076338065"><ph name="DOMAIN"/> への接続は古い暗号スイートにより暗号化されています。</translation>
+<translation id="7295730649911402188">セキュリティ イベントが Brave によって報告されると、そのイベントに関するデータが管理者に送信されます。送信されるデータには、Brave でアクセスしたページの URL、ファイルの名前やメタデータ、ウェブベースのアプリケーション、デバイス、Brave へのログインに使用したユーザー名が含まれる可能性があります。</translation>
 <translation id="5813119285467412249">追加のやり直し（&amp;R）</translation>
 <translation id="5817918615728894473">ペア設定</translation>
 <translation id="5824687817967109979">{NUM_CARDS,plural, =1{お支払いの際はこのカードに請求が行われますが、カード番号はこのサイトと共有されません。追加のセキュリティとして、一時 CVC コードが生成されます。}other{お支払いの際は選択したカードに請求が行われますが、カード番号はこのサイトと共有されません。追加のセキュリティとして、一時 CVC コードが生成されます。}}</translation>
 <translation id="5826507051599432481">一般名（CN）</translation>
+<translation id="5830698870816298009">カメラの使用と移動</translation>
 <translation id="5838278095973806738">このサイトでは機密情報（パスワード、クレジット カードなど）を入力しないでください。悪意のあるユーザーに情報が盗まれる恐れがあります。</translation>
 <translation id="5851548754964597211">タブ リスト</translation>
 <translation id="5855253129151731373">このサイトのホスト名は <ph name="LOOKALIKE_DOMAIN"/> と似ているようです。不正なユーザーがドメイン名のごく一部を一目ではわからないように改変してサイトを偽装する場合があります。
@@ -1419,6 +1467,7 @@
 <translation id="6060009363608157444">無効な DnsOverHttps モードです。</translation>
 <translation id="6064217302520318294">画面ロック</translation>
 <translation id="6080696365213338172">管理者が提供する証明書を使用してコンテンツにアクセスしています。<ph name="DOMAIN"/> に提供するデータは管理者によって傍受される可能性があります。</translation>
+<translation id="8416632546053774839"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Brave でのプライバシーを管理します</translation>
 <translation id="6094273045989040137">注釈を追加</translation>
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">サイトを作成</translation>
@@ -1442,7 +1491,6 @@
 <translation id="619448280891863779">画面上にウィンドウを開いて配置するよう要求できる</translation>
 <translation id="6196640612572343990">サードパーティの Cookie をブロックする</translation>
 <translation id="6203231073485539293">インターネット接続を確認してください</translation>
-<translation id="6211666000885129820">保護されたお支払い認証情報の登録シート</translation>
 <translation id="8385639954311581596">Brave からアドレスを削除してもよろしいですか？</translation>
 <translation id="622039917539443112">巻き折り</translation>
 <translation id="6221345481584921695"><ph name="BEGIN_LINK"/> では最近、Brave セーフ ブラウジングにより、<ph name="END_LINK"/>不正なソフトウェアが検出されました<ph name="SITE"/>。通常は安全なウェブサイトであっても、不正なソフトウェアに感染している場合があります。今回の悪意のあるコンテンツは、不正なソフトウェアの既知の配布元である「<ph name="SUBRESOURCE_HOST"/>」からもたらされました。</translation>
@@ -1450,6 +1498,7 @@
 <translation id="4765229189146046954">Brave Pay ロゴ</translation>
 <translation id="6241121617266208201">候補を非表示にする</translation>
 <translation id="624499991300733384">印刷コンポジター サービス</translation>
+<translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Brave でダウンロードしたファイルを管理します</translation>
 <translation id="6254436959401408446">メモリが不足しているため、このページを開けません</translation>
 <translation id="625755898061068298">このサイトに関するセキュリティ警告を無効にするように指定されています。</translation>
 <translation id="6259156558325130047">順序変更のやり直し（&amp;R）</translation>
@@ -1469,6 +1518,7 @@
 <translation id="5880900081429361525">Brave の Brave アシスタントを停止しています</translation>
 <translation id="6305205051461490394"><ph name="URL"/> にアクセスできません。</translation>
 <translation id="6312113039770857350">ウェブページへのアクセス不可</translation>
+<translation id="63172326633386613">ユーザー補助設定を管理</translation>
 <translation id="6321917430147971392">DNS 設定を確認してください</translation>
 <translation id="6322182122604171028">Windows Hello を使用できませんでした</translation>
 <translation id="6328639280570009161">ネットワーク予測を無効にしてみてください</translation>
@@ -1515,12 +1565,15 @@
 <translation id="6456955391422100996">広告を削除しました。</translation>
 <translation id="6457206614190510200">中綴じ</translation>
 <translation id="6458606150257356946">このまま貼り付け</translation>
+<translation id="6464094930452079790">画像</translation>
 <translation id="6465306955648956876">パスワードを管理...</translation>
 <translation id="6468485451923838994">フォント</translation>
 <translation id="647261751007945333">デバイス ポリシー</translation>
 <translation id="6476284679642588870">お支払い方法を管理</translation>
 <translation id="6489534406876378309">クラッシュのアップロードを開始</translation>
+<translation id="5620223546958961077"><ph name="MANAGE_CHROME_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Brave の設定でユーザー補助ツールをカスタマイズします</translation>
 <translation id="6493924760403974580">このアプリではこのサイズのみがサポートされています。</translation>
+<translation id="6494750904506170417">ポップアップとリダイレクト</translation>
 <translation id="6499038740797743453">パスワードを再設定しますか？</translation>
 <translation id="6502991525169604759">変更前のバージョン</translation>
 <translation id="3960299545138990065">Brave を再起動する</translation>
@@ -1543,9 +1596,9 @@
 <translation id="6591833882275308647">ご使用の <ph name="DEVICE_TYPE"/> は管理されていません</translation>
 <translation id="7150996650768688560">サイトの設定を管理するボタンです。Enter キーを押して、Brave の設定ですべてのサイトに保存されている権限とデータを管理します</translation>
 <translation id="6596325263575161958">暗号化オプション</translation>
-<translation id="6604181099783169992">モーション センサーまたは光センサー</translation>
 <translation id="6609880536175561541">Prc7（封筒）</translation>
 <translation id="6615297766614333076">スタッカー 2</translation>
+<translation id="6623589891453322342">ファイル ハンドラ</translation>
 <translation id="6624427990725312378">連絡先情報</translation>
 <translation id="6626291197371920147">有効なカード番号を追加</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> 検索</translation>
@@ -1561,6 +1614,7 @@
 <translation id="6651270836885078973">管理者:</translation>
 <translation id="6652101503459149953">Windows Hello を使用</translation>
 <translation id="6657585470893396449">パスワード</translation>
+<translation id="6660413144148052430">現在地情報</translation>
 <translation id="666259744093848177">（x86_64 翻訳）</translation>
 <translation id="6665553082534466207">3 穴パンチ（右）</translation>
 <translation id="6685834062052613830">ログアウトして設定を完了してください</translation>
@@ -1578,6 +1632,7 @@
 <translation id="6716672519412350405"><ph name="URL"/> が周囲の 3D マップの作成とカメラ位置の追跡を求めています</translation>
 <translation id="6718612893943028815">カメラを使用しますか？</translation>
 <translation id="6721678857435001674">セキュリティ キーのメーカーとモデルの読み取り</translation>
+<translation id="6732087373923685049">カメラ</translation>
 <translation id="6738516213925468394">データは <ph name="TIME"/>に<ph name="BEGIN_LINK"/>同期パスフレーズ<ph name="END_LINK"/>で暗号化されました。同期を開始するには、同期パスフレーズを入力してください。</translation>
 <translation id="674375294223700098">不明なサーバー証明書エラー</translation>
 <translation id="6744009308914054259">接続するまでの間、[ダウンロード] に移動してオフラインで記事を読むことができます。</translation>
@@ -1594,8 +1649,11 @@
 <translation id="6794951432696553238">今後 Windows Hello を使用して、カードの確認をより迅速に行います</translation>
 <translation id="681021252041861472">必須項目</translation>
 <translation id="6810899417690483278">カスタム ID</translation>
+<translation id="6817217109584391709">JavaScript</translation>
+<translation id="6820143000046097424">シリアルポート</translation>
 <translation id="6825578344716086703"><ph name="DOMAIN"/> にアクセスしようとしましたが、脆弱な署名アルゴリズム（SHA-1 など）を使用して署名された証明書がサーバーから提示されました。このセキュリティ認証情報は偽装されたものである可能性があり、アクセスしようとしたサーバーとは別のサーバーが応答している可能性があります（悪意のあるユーザーと通信している可能性があります）。</translation>
 <translation id="6826993739343257035">AR を許可しますか？</translation>
+<translation id="4607634726018694567">[Brave のフォントをカスタマイズ] ボタンです。Enter キーを押すと Brave のフォントサイズと書体をカスタマイズします</translation>
 <translation id="6831043979455480757">翻訳</translation>
 <translation id="6839929833149231406">地区</translation>
 <translation id="6846340164947227603">仮想カード番号を使用...</translation>
@@ -1607,6 +1665,7 @@
 <translation id="6884662655240309489">サイズ 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
 <translation id="7265969755975834932">ページを見やすくするため、Brave によって簡易表示されています。Brave による元のページの取得は、保護されていない接続を介して行われました。</translation>
+<translation id="6890443033788248019">位置情報の使用を許可しますか？</translation>
 <translation id="6891596781022320156">ポリシーレベルがサポートされていません。</translation>
 <translation id="6895143722905299846">仮想番号:</translation>
 <translation id="6895330447102777224">カードを確認しました</translation>
@@ -1632,6 +1691,7 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="6965978654500191972">デバイス</translation>
 <translation id="696703987787944103">知覚的</translation>
+<translation id="6968269510885595029">セキュリティ キーを使用する</translation>
 <translation id="6970216967273061347">地区</translation>
 <translation id="8485851762575764192">スライドで新しい Brave プレゼンテーションをすばやく作成します</translation>
 <translation id="6972629891077993081">HID デバイス</translation>
@@ -1649,6 +1709,7 @@
 <translation id="7012363358306927923">中国銀聯</translation>
 <translation id="7014741021609395734">ズームレベル</translation>
 <translation id="7016992613359344582">料金の請求は 1 回限りの場合も繰り返し行われる場合もあり、課金されたかどうかわからないこともあります。</translation>
+<translation id="7024588353896425985">ファイル ハンドラ</translation>
 <translation id="7029809446516969842">パスワード</translation>
 <translation id="7030436163253143341">証明書が無効です</translation>
 <translation id="7031646650991750659">インストールした Google Play アプリ</translation>
@@ -1660,7 +1721,6 @@
 <translation id="5320462991730735481">Brave の設定で住所を追加、管理する</translation>
 <translation id="7064851114919012435">連絡先情報</translation>
 <translation id="70705239631109039">接続は完全には保護されていません</translation>
-<translation id="7072826695771387770">安全でないイベントが発生した</translation>
 <translation id="7075452647191940183">リクエストが大きすぎます</translation>
 <translation id="7079718277001814089">このサイトには不正なソフトウェアが含まれています</translation>
 <translation id="7081308185095828845">この機能はお使いのデバイスではご利用いただけません</translation>
@@ -1703,9 +1763,11 @@
 <translation id="7220786058474068424">処理しています</translation>
 <translation id="7221855153210829124">通知の表示</translation>
 <translation id="3619365259205518877">偽のサイトでパスワードを入力しました。<ph name="WEBSITE_1"/>、<ph name="WEBSITE_2"/>、<ph name="WEBSITE_3"/> のほか、このパスワードを使用しているサイトで、保存したパスワードを今すぐ確認することをおすすめします。</translation>
+<translation id="7231476387708735839">サイト内検索を管理</translation>
 <translation id="7233592378249864828">確認シートの印刷</translation>
 <translation id="7238585580608191973">SHA-256 指紋</translation>
 <translation id="7240120331469437312">証明書のサブジェクトの代替名</translation>
+<translation id="7240121456710944377"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。スマートフォンを探します</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>、<ph name="SIGNIN_DATA"/></translation>
 <translation id="724691107663265825">アクセス先のサイトで不正なソフトウェアを検出しました</translation>
 <translation id="724975217298816891">カードの詳細を更新するには <ph name="CREDIT_CARD"/> の有効期限と CVC を入力します。確認を行うと、カードの詳細がこのサイトと共有されます。</translation>
@@ -1721,6 +1783,7 @@
 <translation id="7300012071106347854">コバルトブルー</translation>
 <translation id="7304030187361489308">高め</translation>
 <translation id="7305756307268530424">低速から開始</translation>
+<translation id="7308436126008021607">バックグラウンド同期</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">接続に関するヘルプ</translation>
 <translation id="7323804146520582233">「<ph name="SECTION"/>」セクションを非表示にする</translation>
@@ -1740,10 +1803,11 @@
 <translation id="7359588939039777303">広告がブロックされました。</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab キー、Enter キーの順に押して、Brave の設定で住所を追加、管理します</translation>
 <translation id="7365849542400970216">デバイスのアクティブ状態を知らせますか？</translation>
+<translation id="7366362069757178916">支払いハンドラ</translation>
 <translation id="7372973238305370288">検索結果</translation>
+<translation id="7374461526650987610">プロトコル ハンドラ</translation>
 <translation id="3898257577441589237">この問題は、あなたまたは他のユーザーがデバイスにインストールした証明書が原因で発生します。該当の証明書は、ネットワークの監視と傍受に使われることが確認されており、Brave では信頼されていません。学校や会社のネットワークなどで合法的に監視されているケースもありますが、ユーザーが監視を止められないとしても監視の事実を把握できるように、Brave ではこのメッセージを表示しています。監視の対象は、ブラウザ、またはウェブにアクセスするアプリケーションです。</translation>
 <translation id="7375818412732305729">ファイルが添付された</translation>
-<translation id="5859172549848239531">セキュリティ イベントが Brave Enterprise Connectors によって報告されると、そのイベントに関するデータが管理者に送信されます。送信されるデータには、Brave でアクセスしたページの URL、ファイルの名前やメタデータ、デバイスと Brave へのログインに使用したユーザー名が含まれる可能性があります。</translation>
 <translation id="7377249249140280793"><ph name="RELATIVE_DATE"/> - <ph name="FULL_DATE"/></translation>
 <translation id="7378594059915113390">メディアの操作</translation>
 <translation id="7378627244592794276">いいえ</translation>
@@ -1768,6 +1832,7 @@
 <translation id="7410471291937727359">ラブリー</translation>
 <translation id="7416351320495623771">パスワードを管理…</translation>
 <translation id="7419106976560586862">プロフィール パス</translation>
+<translation id="7421067045979951561">プロトコル ハンドラ</translation>
 <translation id="7437289804838430631">連絡先情報を追加</translation>
 <translation id="7440140511386898319">オフラインで利用できるコンテンツ</translation>
 <translation id="7441627299479586546">ポリシーの対象が間違っています</translation>
@@ -1841,6 +1906,7 @@
 <translation id="7669271284792375604">このサイトを利用すると、悪意のあるユーザーによって、閲覧時のエクスペリエンスを損なうプログラム（ホームページを改ざんする、アクセス先のサイトに追加の広告を表示するなどのプログラム）をインストールするよう誘導される可能性があります。</translation>
 <translation id="7673278391011283842">用紙受け 6</translation>
 <translation id="7676643023259824263">クリップボードにあるテキスト<ph name="TEXT"/>を検索します</translation>
+<translation id="4628681623692678085">Brave の設定で閲覧履歴を表示、管理します</translation>
 <translation id="7682287625158474539">発送先</translation>
 <translation id="7687186412095877299">保存したお支払い方法を使ってお支払いフォームに入力する</translation>
 <translation id="7687305263118037187">再試行のタイムアウト</translation>
@@ -1859,10 +1925,12 @@
 <translation id="773466115871691567"><ph name="SOURCE_LANGUAGE"/>のページを常に翻訳する</translation>
 <translation id="7740996059027112821">標準</translation>
 <translation id="774634243536837715">危険なコンテンツがブロックされました。</translation>
+<translation id="921286857694606205">Brave のフォントサイズと書体をカスタマイズします</translation>
 <translation id="7752995774971033316">管理されていません</translation>
 <translation id="7757555340166475417">Dai-Pa-Kai</translation>
 <translation id="7758069387465995638">ファイアウォールまたはウイルス対策ソフトウェアによって接続がブロックされた可能性があります。</translation>
 <translation id="776110834126722255">廃止</translation>
+<translation id="7761159795823346334">カメラの使用を許可しますか？</translation>
 <translation id="7761701407923456692">サーバーの証明書が URL と一致しません。</translation>
 <translation id="7763386264682878361">Payment Manifest Parser</translation>
 <translation id="7764225426217299476">住所を追加</translation>
@@ -1891,6 +1959,7 @@
 <translation id="7865448901209910068">最高速度</translation>
 <translation id="7971990257511863579">Brave アカウントのパスワードを変更します</translation>
 <translation id="1012292338579042608">偽のサイトでパスワードを入力しました。<ph name="WEBSITE_1"/>、<ph name="WEBSITE_2"/> のほか、このパスワードを使用しているサイトで、保存したパスワードを今すぐ確認することをおすすめします。</translation>
+<translation id="7877007680666472091">保護されたコンテンツ ID</translation>
 <translation id="7878562273885520351">パスワードが不正使用される可能性があります</translation>
 <translation id="7880146494886811634">住所を保存</translation>
 <translation id="7882421473871500483">茶</translation>
@@ -1958,7 +2027,6 @@
 <translation id="8086971161893892807">下書き</translation>
 <translation id="8088680233425245692">記事を表示できませんでした。</translation>
 <translation id="808894953321890993">パスワードの変更</translation>
-<translation id="8090329638663751802">Touch ID を使用すると、次回このデバイスを使用してこのお支払い方法で購入する際にすばやく本人確認を行えるようになります。</translation>
 <translation id="8090403583893450254">サイズ 20</translation>
 <translation id="8091372947890762290">サーバーで有効化が保留になっています</translation>
 <translation id="8092774999298748321">ディープ パープル</translation>
@@ -2007,6 +2075,7 @@
 <translation id="8265992338205884890">参照可能なデータ</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> としてログイン</translation>
 <translation id="8269242089528251720">個別のドキュメント（丁合いあり）</translation>
+<translation id="8270242299912238708">PDF ドキュメント</translation>
 <translation id="8275952078857499577">このサイトを翻訳するか尋ねない</translation>
 <translation id="8277900682056760511">支払いハンドラのシートが開いています</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
@@ -2016,6 +2085,7 @@
 <translation id="8288807391153049143">証明書を表示</translation>
 <translation id="8289355894181816810">確認方法がわからない場合は、ネットワーク管理者までお問い合わせください。</translation>
 <translation id="8293206222192510085">ブックマークの追加</translation>
+<translation id="829335040383910391">音声</translation>
 <translation id="8294431847097064396">ソース</translation>
 <translation id="8298115750975731693">ご利用の Wi-Fi（<ph name="WIFI_NAME"/>）では、<ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> へのアクセスが必要な可能性があります。</translation>
 <translation id="8299269255470343364">日本語</translation>
@@ -2025,6 +2095,7 @@
 <translation id="8307888238279532626">インストールしたアプリと使用頻度</translation>
 <translation id="8390490312179389407">不審なページ（Brave により判定）</translation>
 <translation id="831997045666694187">夕方</translation>
+<translation id="8321476692217554900">通知</translation>
 <translation id="8332188693563227489"><ph name="HOST_NAME"/> へのアクセスが拒否されました</translation>
 <translation id="833262891116910667">ハイライト表示</translation>
 <translation id="8339163506404995330"><ph name="LANGUAGE"/>のページは翻訳されません</translation>
@@ -2038,10 +2109,12 @@
 <translation id="8368476060205742148">Google Play 開発者サービス</translation>
 <translation id="8371889962595521444">カスタムルート証明書</translation>
 <translation id="8374636051559112948">各サイズに対応</translation>
+<translation id="8380167699614421159">このサイトでは煩わしい広告や誤解を招く広告が表示されます</translation>
 <translation id="8380941800586852976">危険</translation>
 <translation id="8381674639488873545">料金の請求は 1 回限りの場合も繰り返し行われる場合もあり、課金されたかどうかわからないこともあります。<ph name="BEGIN_LINK"/>理解したうえで表示する<ph name="END_LINK"/></translation>
 <translation id="8390725133630534698"><ph name="ORIGIN_NAME"/> から <ph name="VM_NAME"/> への貼り付けは管理者が設定したポリシーによってブロックされています</translation>
 <translation id="15931837016421186">Brave の設定で同期する情報を管理する</translation>
+<translation id="8409413588194360210">支払いハンドラ</translation>
 <translation id="8412145213513410671">障害数（<ph name="CRASH_COUNT"/>）</translation>
 <translation id="8412392972487953978">同じパスフレーズを 2 回入力する必要があります。</translation>
 <translation id="8416694386774425977">ネットワーク設定が無効なためインポートできませんでした。
@@ -2058,6 +2131,7 @@
 <translation id="8457125768502047971">無期限</translation>
 <translation id="8461694314515752532">同期データを同期パスフレーズで暗号化する</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 件のクレジット カード}other{# 件のクレジット カード}}</translation>
+<translation id="1778834943115423771"><ph name="MANAGE_GOOGLE_AD_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Brave 広告の設定を管理します</translation>
 <translation id="8473863474539038330">住所やその他の情報</translation>
 <translation id="8474910779563686872">デベロッパーの詳細を表示</translation>
 <translation id="8479754468255770962">ステープル（左下）</translation>
@@ -2073,6 +2147,7 @@
 <translation id="1426902392270366682">Brave には Brave アカウントの保護とパスワードの変更をサポートする機能があります。</translation>
 <translation id="1215802963054007211">Brave の設定で閲覧履歴、Cookie、キャッシュなどを消去する</translation>
 <translation id="8533619373899488139">&lt;strong&gt;chrome://policy&lt;/strong&gt; で、ブロックされた URL のリストとシステム管理者が設定した他のポリシーを確認できます。</translation>
+<translation id="8539500321752640291">2 つのアイテムの使用を許可しますか？</translation>
 <translation id="8541158209346794904">Bluetooth デバイス</translation>
 <translation id="8542014550340843547">3 か所のステープル（下）</translation>
 <translation id="8543181531796978784"><ph name="BEGIN_ERROR_LINK"/>検出の問題をご報告<ph name="END_ERROR_LINK"/>ください。<ph name="BEGIN_LINK"/>安全でないこのサイトにアクセス<ph name="END_LINK"/>する場合は、セキュリティ上のリスクがあることをご承知おきください。</translation>
@@ -2089,11 +2164,13 @@
 <translation id="8600271352425265729">今回のみ</translation>
 <translation id="860043288473659153">カード名義人</translation>
 <translation id="8606726445206553943">MIDI デバイスの使用</translation>
+<translation id="8617269623452051934">デバイスのアクティブ状態</translation>
 <translation id="861775596732816396">サイズ 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">一致するパスワードがありません。保存したパスワードをすべて表示します。</translation>
 <translation id="8625384913736129811">このカード情報をこのデバイスに保存する</translation>
 <translation id="8627040765059109009">画面キャプチャが再開されました</translation>
+<translation id="865032292777205197">モーション センサー</translation>
 <translation id="8663226718884576429">ご注文の概要、<ph name="TOTAL_LABEL"/>、その他の詳細</translation>
 <translation id="8666678546361132282">英語</translation>
 <translation id="867224526087042813">署名</translation>
@@ -2134,6 +2211,7 @@
 <translation id="877985182522063539">A4</translation>
 <translation id="8790007591277257123">削除のやり直し（&amp;R）</translation>
 <translation id="5304100303568917877"><ph name="ORG_NAME"/> アカウントにアクセスできなくなったり、個人情報が盗まれたりする可能性があります。今すぐパスワードを変更することをおすすめします。</translation>
+<translation id="8792626944327216835">マイク</translation>
 <translation id="9156291179464624174"><ph name="ENROLLMENT_DOMAIN"/> により、お使いのブラウザで Brave Enterprise Connectors が有効化されています。これらのコネクタには、一部のユーザーデータへのアクセスが許可されます。</translation>
 <translation id="8798099450830957504">既定</translation>
 <translation id="8805819170075074995">リスト項目「<ph name="LANGUAGE_ID"/>」: SpellcheckLanguage ポリシーにも含まれているため、この項目は無視されます。</translation>
@@ -2177,6 +2255,7 @@
 <translation id="8978053250194585037"><ph name="SITE"/> では最近、Brave セーフ ブラウジングにより、<ph name="BEGIN_LINK"/>フィッシング行為が検出されました<ph name="END_LINK"/>。フィッシング サイトは、他のウェブサイトになりすましてユーザーを欺こうとするサイトです。</translation>
 <translation id="5889706513445719653">Brave Pay のお支払い方法と住所</translation>
 <translation id="8983369100812962543">アプリのサイズ変更を許可できるようになりました</translation>
+<translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/> です。Tab、Enter キーの順に押すと、Brave の閲覧履歴を表示します</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
 <translation id="899688752321268742"><ph name="URL"/> がこのデバイスのアクティブ状態の検出を求めています</translation>
@@ -2193,6 +2272,7 @@
 <translation id="9025348182339809926">（無効）</translation>
 <translation id="9030265603405983977">モノクロ</translation>
 <translation id="9035022520814077154">セキュリティ エラー</translation>
+<translation id="9036306139374661733">マイクの使用を許可しますか？</translation>
 <translation id="9038649477754266430">予測サービスを使用してページをより迅速に読み込む</translation>
 <translation id="9039213469156557790">加えて、このページには安全でない他のリソースが含まれています。このリソースは送信中に他のユーザーから見られる可能性があります。また、悪意のあるユーザーによって改変されページの動作が変わる可能性もあります。</translation>
 <translation id="9044359186343685026">Touch ID を使用</translation>
@@ -2247,7 +2327,6 @@
 <translation id="9199905725844810519">印刷はブロックされています</translation>
 <translation id="9205078245616868884">データは同期パスフレーズで暗号化されます。同期を開始するには、同期パスフレーズを入力してください。</translation>
 <translation id="9207861905230894330">記事を追加できませんでした。</translation>
-<translation id="9211470216863457665">保護されたお支払い認証情報の登録シートは閉じています</translation>
 <translation id="9213433120051936369">デザインをカスタマイズする</translation>
 <translation id="2206050430829841793">アプリケーションが原因で、Brave からこのサイトに安全に接続することができません</translation>
 <translation id="9219103736887031265">画像</translation>
@@ -2273,6 +2352,7 @@
 <translation id="987264212798334818">全般</translation>
 <translation id="988159990683914416">Developer Build</translation>
 <translation id="989988560359834682">住所の編集</translation>
+<translation id="991413375315957741">モーション センサーまたは光センサー</translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>
 <translation id="992256792861109788">ピンク</translation>
 <translation id="992432478773561401">「<ph name="SOFTWARE_NAME"/>」がパソコンまたはネットワークに正しくインストールされていません。 
@@ -2282,6 +2362,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Brave Pay から</translation>
+<translation id="34950557859710859">Brave の設定を管理</translation>
 <translation id="8820817407110198400">ブックマーク</translation>
 <translation id="8362995731815961365">このサイトは、このパソコンを設定したユーザーによってブロックされています。</translation>
 <translation id="4075123085690634698">ページを新しいプライベートウィンドウで開く（⇧⌘N）</translation>
@@ -2293,6 +2374,22 @@
 <translation id="8794378783472961468">あらゆる場所に記録が一切残らないわけではありません。プライベートモードを使っても、雇用主、インターネット サービス プロバイダ、訪問先のウェブサイトに閲覧内容が知られる可能性はあります。</translation>
 <translation id="5673623523506565506">プライベートに閲覧できるようになりました。また、このデバイスを使用する他のプロフィールにあなたのアクティビティは表示されません。ただし、ダウンロードとブックマークは保存されます。</translation>
 <translation id="3812568169637430422">プライベートに閲覧できるようになりました。また、このデバイスを使用する他のプロフィールにあなたのアクティビティは表示されません。ただし、ダウンロードとブックマーク、リーディングリストは保存されます。</translation>
+<translation id="5186185447130319458">プライベート</translation>
+<translation id="3683567996395248272">プライベートがしてくれること</translation>
+<translation id="4912243263991194586">すべてのプライベートタブを閉じると、Brave は以下をクリアします。
+       <ph name="BEGIN_LIST"/>
+         <ph name="LIST_ITEM"/>このデバイスのブラウジングアクティビティ<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>このデバイスの検索履歴<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>フォームに入力された情報<ph name="END_LIST_ITEM"/>
+       <ph name="END_LIST"/></translation>
+<translation id="137199123615682137">プライベートがしてくれないこと</translation>
+<translation id="6101678912379763265">プライベートでもオンライン上で自分が見えなくなるわけではありません。
+       <ph name="BEGIN_LIST"/>
+         <ph name="LIST_ITEM"/>アクセスすると、サイトにはそれがわかります<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>雇用主や学校はブラウジングアクティビティを追跡できます<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>インターネットサービスプロバイダーはウェブトラフィックを監視する場合があります<ph name="END_LIST_ITEM"/>
+       <ph name="END_LIST"/></translation>
+<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>プライベートについてさらに詳しく<ph name="END_LINK"/></translation>
 <translation id="5549245478906381817">プライベートウィンドウを開く</translation>
 <translation id="5497977785983089120">新しいプライベートウィンドウを開いてブラウジングする</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>は、[Tab]、 [Enter] と順番にクリックすると、新しいプライベートウィンドウを開き、プライベートにブラウズすることが可能です</translation>
@@ -2303,7 +2400,6 @@
 <translation id="5299725681393421941">プライベートウィンドウボタンを閉じる、Enterを押して現在の非公開プロフィールのすべてのプライベートウィンドウを閉じます</translation>
 <translation id="1090109565956608696">プライベートでは許可されていません</translation>
 <translation id="6934396344327597525">外部アプリケーションを経由したお支払いの処理に進むため、プライベートモードを解除します。続行しますか？</translation>
-<translation id="3743402671861150530">プライベートモードを終了した後、サインイン情報はこのデバイスに保存されます。</translation>
 <translation id="7948746210201997548">{NUM_DAYS, plural,
      =0 {このコントロールがオンでステータスがアクティブになっている場合、Braveはあなたの最近の閲覧アクティビティがどのプロファイルグループ（「コホート」）に最も近いかを判断します。広告主はこのグループに向けて広告を選択することができ、デバイス上でのあなたの閲覧アクティビティのプライバシーは保護されます。グループは毎日更新されます。}
      =1 {このコントロールがオンでステータスがアクティブになっている場合、Braveはあなたの最近の閲覧アクティビティがどのプロファイルグループ（「コホート」）に最も近いかを判断します。広告主はこのグループに向けて広告を選択することができ、デバイス上でのあなたの閲覧アクティビティのプライバシーは保護されます。グループは毎日更新されます。}

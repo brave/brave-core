@@ -58,6 +58,7 @@
 <translation id="1059484610606223931">Protokol Pengangkutan Hiperteks (HTTPS)</translation>
 <translation id="1059944192885972544"><ph name="NUM"/> Tab untuk '<ph name="SEARCH_TEXT"/>' Ditemukan</translation>
 <translation id="1060292118287751956">Menentukan kekerapan skrin dikemas kini</translation>
+<translation id="1061130374843955397">Selamat datang ke <ph name="DEVICE_TYPE"/> anda</translation>
 <translation id="1061904396131502319">Masa rehat hampir tiba</translation>
 <translation id="1066613507389053689">Kemaskinian OS Brave diperlukan</translation>
 <translation id="1067048845568873861">Dibuat</translation>
@@ -162,6 +163,7 @@
 <translation id="1166583374608765787">Semak kemaskinian nama</translation>
 <translation id="1166596238782048887"><ph name="TAB_TITLE"/> milik meja <ph name="DESK_TITLE"/></translation>
 <translation id="1168020859489941584">Dibuka dalam <ph name="TIME_REMAINING"/>...</translation>
+<translation id="1169435433292653700"><ph name="FILE_NAME"/> mengandungi data sensitif atau berbahaya. Pentadbir anda berkata: "<ph name="CUSTOM_MESSAGE"/>"</translation>
 <translation id="1170288591054440704">Tanya apabila tapak mahu menggunakan fon yang terpasang pada peranti anda</translation>
 <translation id="1171135284592304528">Serlahkan objek dengan fokus papan kekunci apabila objek berubah</translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> mahu menyambung ke peranti HID</translation>
@@ -191,6 +193,7 @@
 <translation id="1195447618553298278">Ralat tidak diketahui.</translation>
 <translation id="1195558154361252544">Pemberitahuan disekat secara automatik untuk semua tapak kecuali tapak yang anda benarkan</translation>
 <translation id="1197088940767939838">Oren</translation>
+<translation id="1197935538609051549">Nyahaktifkan</translation>
 <translation id="1197979282329025000">Ralat berlaku semasa mendapatkan semula keupayaan pencetak untuk pencetak <ph name="PRINTER_NAME"/>. Pencetak ini tidak boleh didaftarkan dengan <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="119944043368869598">Kosongkan semua</translation>
 <translation id="1199814941632954229">Sijil sedang diperuntukkan untuk profil sijil ini</translation>
@@ -210,6 +213,7 @@
 <translation id="1218015446623563536">Padamkan Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Perkhidmatan lokasi Brave menggunakan sumber seperti Wi-Fi, rangkaian mudah alih dan penderia untuk menganggarkan lokasi peranti ini.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Anda boleh mematikan Lokasi dengan mematikan tetapan Lokasi utama pada peranti ini. Anda juga boleh mematikan penggunaan Wi-Fi, rangkaian mudah alih dan penderia untuk lokasi dalam tetapan lokasi.<ph name="END_PARAGRAPH2"/></translation>
+<translation id="1703988271738455429">Tidak dapat memuat turun fail pertuturan <ph name="LANGUAGE"/>. Muat turun akan cuba dilakukan kemudian. Buat masa sekarang, pertuturan dihantar kepada Brave untuk diproses.</translation>
 <translation id="122082903575839559">Algoritma Tandatangan Sijil</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Dengan Penyulitan RSA</translation>
 <translation id="1221825588892235038">Pemilihan sahaja</translation>
@@ -243,7 +247,6 @@
 <translation id="125220115284141797">Lalai</translation>
 <translation id="1252987234827889034">Ralat profil berlaku</translation>
 <translation id="1254593899333212300">Sambungan Internet Langsung</translation>
-<translation id="1257553931232494454">tahap zum</translation>
 <translation id="1258491128795710625">Perkara Baharu</translation>
 <translation id="1259152067760398571">Semakan keselamatan dijalankan semalam</translation>
 <translation id="1260451001046713751">Sentiasa benarkan tetingkap timbul daripada <ph name="HOST"/></translation>
@@ -257,6 +260,7 @@
 <translation id="126710816202626562">Bahasa terjemahan:</translation>
 <translation id="126768002343224824">16x</translation>
 <translation id="1272079795634619415">Berhenti</translation>
+<translation id="1272508081857842302">Membuka <ph name="BEGIN_LINK"/>pautan yang disokong<ph name="END_LINK"/></translation>
 <translation id="1272978324304772054">Akaun pengguna ini tidak tergolong dalam domain tempat peranti anda didaftarkan. Jika anda ingin mendaftar untuk domain yang berbeza, anda perlu melalui pemulihan peranti terlebih dahulu.</translation>
 <translation id="1273780413309681229">Jalankan semula panduan persediaan</translation>
 <translation id="1274997165432133392">Kuki dan data tapak yang lain</translation>
@@ -329,7 +333,6 @@
 <translation id="1354045473509304750">Teruskan membenarkan <ph name="HOST"/> menggunakan dan mengalihkan kamera anda</translation>
 <translation id="1355088139103479645">Padamkan semua data?</translation>
 <translation id="1355466263109342573"><ph name="PLUGIN_NAME"/> disekat</translation>
-<translation id="3984064884859276726">Klik kanan dan pilih “Cari sebahagian daripada halaman ini dengan Brave Lens” untuk mencari di mana-mana kawasan laman untuk mengetahui lebih lanjut tentang kandungan visual yang anda lihat semasa anda menyemak imbas dan membeli-belah di web.</translation>
 <translation id="1358741672408003399">Ejaan dan Tatabahasa</translation>
 <translation id="1359923111303110318">Peranti anda boleh dibuka kunci dengan Smart Lock. Tekan Enter untuk membuka kunci.</translation>
 <translation id="1361164813881551742">Tambahkan Secara Manual</translation>
@@ -426,7 +429,6 @@
 <translation id="145432137617179457">Bahasa semak ejaan</translation>
 <translation id="1455119378540982311">Saiz tetingkap pratetapan</translation>
 <translation id="1459693405370120464">Cuaca</translation>
-<translation id="1459967076783105826">Enjin carian ditambah oleh sambungan</translation>
 <translation id="146000042969587795">Bingkai ini disekat kerana ia mengandungi beberapa kandungan selamat.</translation>
 <translation id="146219525117638703">Keadaan ONC</translation>
 <translation id="146220085323579959">Internet terputus. Sila periksa sambungan internet anda dan cuba lagi.</translation>
@@ -461,7 +463,6 @@
 <translation id="1486096554574027028">Cari kata laluan</translation>
 <translation id="1487335504823219454">Hidup - tetapan tersuai</translation>
 <translation id="1489664337021920575">Buat pilihan lain</translation>
-<translation id="1490491397986065675">Pentadbir anda berkata "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1492417797159476138">Anda telah pun menyimpan nama pengguna ini untuk tapak ini</translation>
 <translation id="1493892686965953381">Menunggu untuk <ph name="LOAD_STATE_PARAMETER"/>...</translation>
 <translation id="1494349716233667318">Laman boleh meminta untuk menggunakan fon yang dipasang pada peranti anda</translation>
@@ -474,10 +475,8 @@
 <translation id="1507170440449692343">Halaman ini telah disekat daripada mengakses kamera anda.</translation>
 <translation id="1507246803636407672">&amp;Buang</translation>
 <translation id="1508491105858779599">Letakkan jari anda pada penderia cap jari untuk membuka kunci peranti.</translation>
-<translation id="1508575541972276599">Versi semasa ialah Debian 9 (Stretch)</translation>
 <translation id="1509163368529404530">&amp;Pulihkan kumpulan</translation>
 <translation id="1509281256533087115">Akses mana-mana <ph name="DEVICE_NAME_AND_VENDOR"/> melalui USB</translation>
-<translation id="1509960214886564027">Ciri pada banyak tapak mungkin rosak</translation>
 <translation id="1510238584712386396">Pelancar</translation>
 <translation id="1510785804673676069">Jika anda menggunakan pelayan proksi, semak tetapan proksi anda atau
         hubungi pentadbir rangkaian anda untuk memastikan pelayan proksi
@@ -570,6 +569,8 @@
 <translation id="1601560923496285236">Gunakan</translation>
 <translation id="1602085790802918092">Memulakan mesin maya</translation>
 <translation id="1604432177629086300">Tidak dapat mencetak. Semak pencetak dan cuba lagi.</translation>
+<translation id="1605744057217831567">Lihat semua data laman dan kebenaran</translation>
+<translation id="1606077700029460857">Tukar tetapan tetikus</translation>
 <translation id="1607139524282324606">Kosongkan masukan</translation>
 <translation id="1607499585984539560">Pengguna tiada kena-mengena dengan domain</translation>
 <translation id="1608626060424371292">Alih keluar pengguna ini</translation>
@@ -685,7 +686,6 @@
     dasar privasi kami. Dengan menyerahkan maklum balas ini,
     anda bersetuju bahawa Brave boleh menggunakan maklum balas yang anda berikan untuk memperbaik
     sebarang produk atau perkhidmatan Brave.</translation>
-<translation id="1706625117072057435">Tahap zum</translation>
 <translation id="1708338024780164500">(Tidak Aktif)</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (Natif)</translation>
@@ -694,10 +694,11 @@
 <translation id="1709972045049031556">Tidak dapat berkongsi</translation>
 <translation id="1711935594505774770">Tindakan ini akan mengosongkan semua data dan kuki yang disimpan oleh <ph name="SITE_GROUP_NAME"/>, mana-mana tapak di bawah kumpulan ini dan apl yang dipasang</translation>
 <translation id="1714644264617423774">Dayakan ciri kebolehaksesan untuk menjadikan peranti anda lebih mudah digunakan. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
-<translation id="1717218214683051432">Penderia gerakan</translation>
 <translation id="1718835860248848330">Jam terakhir</translation>
 <translation id="1719312230114180055">Nota: Cap jari anda mungkin kurang selamat berbanding kata laluan atau PIN yang kukuh.</translation>
 <translation id="1720318856472900922">Pengesahan Pelayan TLS WWW</translation>
+<translation id="1720941539803966190">Tutup tutorial</translation>
+<translation id="172123215662733643">Cari imej dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1721312023322545264">Anda memerlukan kebenaran daripada <ph name="NAME"/> untuk melawat tapak ini</translation>
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> anda diurus<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="1723824996674794290">&amp;Tetingkap baharu</translation>
@@ -706,7 +707,6 @@
 <translation id="1729533290416704613">Sambungan turut mengawal halaman yang ditunjukkan apabila anda membuat carian dari Kotak Omni.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Untuk mengalih keluar apl, pergi ke Tetapan &gt; Gedung Google Play &gt; Urus pilihan Android &gt; Apl atau Pengurus aplikasi. Kemudian, ketik apl yang ingin dinyahpasang (anda mungkin perlu meleret ke kanan atau ke kiri untuk mencari apl). Kemudian, ketik Nyahpasang atau Lumpuhkan.<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">Menghantar permintaan...</translation>
-<translation id="1733064249834771892">fon</translation>
 <translation id="5958351589333270173">Sulitkan data yang disegerakkan dengan <ph name="BEGIN_LINK"/>ungkapan laluan penyegerakan<ph name="END_LINK"/> anda sendiri. Penyulitan ini tidak termasuk kaedah pembayaran dan alamat daripada Brave Pay.</translation>
 <translation id="1734212868489994726">Biru muda</translation>
 <translation id="1734230530703461088">Gagal memuatkan sambungan dalam had masa. Sila hubungi pentadbir anda.</translation>
@@ -724,6 +724,7 @@
 <translation id="1744108098763830590">halaman latar belakang</translation>
 <translation id="1745732479023874451">Urus kenalan</translation>
 <translation id="1901235742643584247">Anda boleh menyimpan kata laluan ini dalam Akaun Brave anda atau pada peranti ini sahaja</translation>
+<translation id="1750048572964661931">Tetapkan PIN atau kata laluan pada Bravebook ini untuk melindungi akses kepada apl telefon anda.</translation>
 <translation id="1750172676754093297">Kekunci keselamatan anda tidak boleh menyimpan cap jari</translation>
 <translation id="1751249301761991853">Peribadi</translation>
 <translation id="1751262127955453661"><ph name="ORIGIN"/> akan dapat mengedit fail dalam <ph name="FOLDERNAME"/> sehinggalah anda menutup semua tab bagi tapak ini</translation>
@@ -771,11 +772,11 @@
 <translation id="1790194216133135334">Hantar pautan ke <ph name="DEVICE_NAME"/></translation>
 <translation id="1790976235243700817">Alih keluar akses</translation>
 <translation id="1792619191750875668">Paparan lanjutan</translation>
+<translation id="1793625608969726781">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Komputer, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="1794051631868188691">Jangan tunjukkan <ph name="MERCHANT"/></translation>
 <translation id="1794791083288629568">Hantar maklum balas untuk membantu kami menyelesaikan isu ini.</translation>
 <translation id="1795214765651529549">Gunakan Klasik</translation>
 <translation id="1796588414813960292">Ciri yang memerlukan bunyi tidak akan berfungsi</translation>
-<translation id="1799071797295057738">Sambungan "<ph name="EXTENSION_NAME"/>" telah dilumpuhkan secara automatik.</translation>
 <translation id="1801418420130173017">Lumpuhkan tema gelap</translation>
 <translation id="1802624026913571222">Tidur apabila penutup ditutup</translation>
 <translation id="1802687198411089702">Halaman tidak bertindak balas. Anda boleh menunggu atau keluar.</translation>
@@ -803,7 +804,6 @@
 <translation id="1818913467757368489">Muat naik log sedang berlangsung.</translation>
 <translation id="1819721979226826163">Ketik Pemberitahuan apl &gt; Perkhidmatan Google Play.</translation>
 <translation id="1820028137326691631">Masukkan kata laluan yang disediakan oleh pentadbir</translation>
-<translation id="182139138257690338">muat turun automatik</translation>
 <translation id="3707821975049107110">Sudah menjadi pengguna Brave? Log masuk</translation>
 <translation id="18245044880483936">Data sandaran tidak dikira dalam kuota storan Drive anak anda.</translation>
 <translation id="1825565032302550710">Port mestilah antara 1024 hingga 65535</translation>
@@ -843,7 +843,6 @@
 <translation id="1862311223300693744">Adakah anda mempunyai sebarang VPN, proksi, tembok api khas atau perisian NAS yang
     dipasang?</translation>
 <translation id="1863182668524159459">Tiada port siri ditemui</translation>
-<translation id="1863316578636157783">"<ph name="EXTENSION_NAME"/>" telah dilumpuhkan kerana mengandungi perisian hasad</translation>
 <translation id="1864111464094315414">Log masuk</translation>
 <translation id="1864400682872660285">Dingin</translation>
 <translation id="1864454756846565995">Peranti USB-C (port belakang)</translation>
@@ -892,12 +891,10 @@
 <translation id="1906828677882361942">Jangan benarkan mana-mana tapak mengakses port siri</translation>
 <translation id="1908591798274282246">Buka Semula Kumpulan yang Ditutup</translation>
 <translation id="1909880997794698664">Adakah anda pasti mahu peranti ini menggunakan mod kios secara kekal?</translation>
-<translation id="1910721550319506122">Selamat datang!</translation>
 <translation id="1915073950770830761">canary</translation>
 <translation id="1915307458270490472">Tamatkan panggilan</translation>
 <translation id="1916502483199172559">Avatar merah lalai</translation>
 <translation id="1918141783557917887">&amp;Lebih kecil</translation>
-<translation id="1919345977826869612">Iklan</translation>
 <translation id="1920390473494685033">Kenalan</translation>
 <translation id="1921050530041573580">Gandingkan telefon anda dengan Messages</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
@@ -990,9 +987,7 @@
 <translation id="2020225359413970060">Imbas fail</translation>
 <translation id="2023167225947895179">PIN mungkin mudah untuk diteka</translation>
 <translation id="202352106777823113">Muat turun mengambil masa terlalu lama dan telah diberhentikan oleh rangkaian.</translation>
-<translation id="2025115093177348061">Realiti tambahan</translation>
 <translation id="2025632980034333559"><ph name="APP_NAME"/> telah mengalami nahas. Klik belon ini untuk memuatkan semula sambungan.</translation>
-<translation id="2025891858974379949">Kandungan tidak selamat</translation>
 <translation id="2028449514182362831">Ciri yang memerlukan penderia gerakan tidak akan berfungsi</translation>
 <translation id="202918510990975568">Masukkan kata laluan anda untuk mengkonfigurasikan keselamatan dan log masuk</translation>
 <translation id="2030455719695904263">Pad jejak</translation>
@@ -1054,7 +1049,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2090165459409185032">Untuk memulihkan maklumat akaun anda, pergi ke: google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">Menyambung secara automatik apabila anda log masuk</translation>
 <translation id="2090876986345970080">Tetapan keselamatan sistem</translation>
-<translation id="2091887806945687916">Bunyi</translation>
 <translation id="2096715839409389970">Padamkan kuki pihak ketiga</translation>
 <translation id="2098805196501063469">Semak kata laluan yang tinggal</translation>
 <translation id="2099172618127234427">Anda mendayakan ciri penyahpepijatan OS Brave yang akan menetapkan daemon sshd dan mendayakan pengebutan dari pemacu USB.</translation>
@@ -1135,7 +1129,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> dan 1 lagi suis</translation>
 <translation id="2165177462441582039">Pilih tempoh serlahan dipaparkan pada setiap item</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="2167276631610992935">JavaScript</translation>
 <translation id="2169062631698640254">Log masuk juga</translation>
 <translation id="2170054054876170358">Pastikan telefon anda berada berdekatan, dibuka kunci dan Bluetooth serta Wi-Fi dihidupkan.</translation>
 <translation id="2173302385160625112">Periksa sambungan Internet anda</translation>
@@ -1148,6 +1141,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2179416702468739594">Mencari profil yang tersedia. Tindakan ini boleh menyebabkan rangkaian mudah alih anda terputus sambungan selama beberapa minit.</translation>
 <translation id="2180620921879609685">Sekat kandungan pada mana-mana halaman</translation>
 <translation id="2182058453334755893">Disalin ke Papan Keratan Anda</translation>
+<translation id="2183027945672030611">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Pengawal permainan, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8098574385249290065">Benarkan Brave memilih masa tapak boleh memainkan bunyi (disyorkan)</translation>
 <translation id="2186711480981247270">Halaman yang dikongsi daripada peranti lain</translation>
 <translation id="2187675480456493911">Disegerakkan dengan peranti lain dalam akaun anda. Tetapan yang diubah suai oleh pengguna lain tidak akan disegerakkan. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
@@ -1176,7 +1170,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2214018885812055163">Folder kongsi</translation>
 <translation id="2214884991347062907">Kata laluan salah, cuba lagi</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 garisan tidak ditunjukkan&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> garisan tidak ditunjukkan&gt;}}</translation>
-<translation id="2215727959747642672">Pengeditan fail</translation>
 <translation id="2218019600945559112">Tetikus dan pad sentuh</translation>
 <translation id="2749608811030566578">Ralat berlaku semasa Brave mengalih keluar perisian yang berbahaya</translation>
 <translation id="2218515861914035131">Tampalkan sebagai teks kosong</translation>
@@ -1189,6 +1182,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2224551243087462610">Edit nama folder</translation>
 <translation id="2225864335125757863">Tukar kata laluan ini dengan segera untuk memastikan keselamatan akaun anda:</translation>
 <translation id="2226449515541314767">Tapak ini telah disekat daripada mengawal sepenuhnya peranti MIDI.</translation>
+<translation id="2226826835915474236">Pintasan tidak aktif</translation>
 <translation id="2226907662744526012">Buka kunci secara automatik setelah PIN dimasukkan</translation>
 <translation id="2227179592712503583">Alih keluar cadangan</translation>
 <translation id="2229161054156947610">Tinggal lebih 1 jam</translation>
@@ -1261,11 +1255,11 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2299941608784654630">Sertakan semua fail log yang dikumpulkan oleh debugd sebagai arkib yang berasingan.</translation>
 <translation id="2300214399009193026">PCIe</translation>
 <translation id="2300383962156589922">Sesuaikan dan kawal <ph name="APP_NAME"/></translation>
-<translation id="2300578660547687840">Pintasan papan kekunci untuk kata kunci carian</translation>
 <translation id="2301382460326681002">Direktori akar sambungan adalah tidak sah.</translation>
 <translation id="2301402091755573488">Tab Dikongsi</translation>
 <translation id="23030561267973084">"<ph name="EXTENSION_NAME"/>" telah meminta kebenaran tambahan.</translation>
 <translation id="23055578400314116">Pilih nama pengguna</translation>
+<translation id="2306366691914573029">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Jenis peranti tidak diketahui</translation>
 <translation id="2307462900900812319">Konfigurasikan rangkaian</translation>
 <translation id="2307553512430195144">Jika anda bersetuju, dengan Voice Match, Brave Assistant akan menunggu dalam mod tunggu sedia untuk mengesan “Ok Brave” dan boleh mengecam <ph name="SUPERVISED_USER_NAME"/> yang bercakap.
     <ph name="BR"/>
@@ -1276,6 +1270,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
     Jika nanti anda memutuskan bahawa Voice Match tidak sesuai untuk anak anda, hanya alih keluar ciri itu dalam Tetapan Assistant mereka. Untuk melihat atau memadamkan klip audio yang dirakam oleh anak anda semasa persediaan Voice Match, pergi ke <ph name="VOICE_MATCH_SETTINGS_URL"/> daripada akaun anak anda.
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
+<translation id="2307630946657910723">Cari sebahagian daripada halaman ini dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="230927227160767054">Halaman ini mahu memasang pengendali perkhidmatan.</translation>
 <translation id="2309620859903500144">Tapak ini telah disekat daripada mengakses penderia gerakan atau cahaya anda.</translation>
 <translation id="2312219318583366810">URL halaman</translation>
@@ -1297,7 +1292,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2326931316514688470">&amp;Muat semula apl</translation>
 <translation id="2327492829706409234">Dayakan apl</translation>
 <translation id="2328561734797404498">Sila mulakan semula peranti anda untuk menggunakan <ph name="APP_NAME"/>.</translation>
-<translation id="2329182534073751090">peletakan tetingkap</translation>
 <translation id="2329597144923131178">Log masuk untuk mendapatkan penanda halaman, sejarah, kata laluan dan tetapan lain pada semua peranti anda.</translation>
 <translation id="2332131598580221120">Lihat di gedung</translation>
 <translation id="2332192922827071008">Buka Pilihan</translation>
@@ -1343,6 +1337,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2364498172489649528">Lulus</translation>
 <translation id="2365507699358342471">Tapak ini dapat melihat teks dan imej yang disalin ke papan keratan.</translation>
 <translation id="2367972762794486313">Paparkan apl</translation>
+<translation id="236939127352773362">Apabila peranti sedang dikongsi berdekatan</translation>
 <translation id="2371076942591664043">Buka apabila &amp;selesai</translation>
 <translation id="2373666622366160481">Muatkan mengikut kertas</translation>
 <translation id="2375406435414127095">Sambung ke telefon anda</translation>
@@ -1368,6 +1363,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2406153734066939945">Padamkan profil dan data profil ini?</translation>
 <translation id="2408018932941436077">Menyimpan kad</translation>
 <translation id="2408955596600435184">Masukkan PIN anda</translation>
+<translation id="2410079346590497630">Butiran binaan</translation>
 <translation id="2410754283952462441">Pilih akaun</translation>
 <translation id="241082044617551207">Pemalam tidak diketahui</translation>
 <translation id="2412593942846481727">Kemas kini tersedia</translation>
@@ -1505,7 +1501,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2541706104884128042">Waktu tidur baharu ditetapkan</translation>
 <translation id="2542050502251273923">Menetapkan tahap penyahpepijatan pengurus sambungan rangkaian dan perkhidmatan lain yang menggunakan ff_debug.</translation>
 <translation id="2544352060595557290">Tab Ini</translation>
-<translation id="2546283357679194313">Kuki dan data tapak</translation>
 <translation id="2546302722632337735">Jangan benarkan laman menggunakan pengecam untuk memainkan kandungan yang dilindungi</translation>
 <translation id="2548347166720081527"><ph name="PERMISSION"/> dibenarkan</translation>
 <translation id="2548545707296594436">Tetapkan semula cache profil eSIM</translation>
@@ -1551,6 +1546,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2606568927909309675">Membuat sari kata untuk audio dan video bahasa Inggeris secara automatik. Audio dan sari kata tidak sekali-kali dihantar keluar daripada peranti anda.</translation>
 <translation id="2607101320794533334">Maklumat Penting Subjek Awam</translation>
 <translation id="2609896558069604090">Buat Pintasan...</translation>
+<translation id="2609902589050805912">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Peranti audio</translation>
 <translation id="2609980095400624569">Tidak dapat mewujudkan sambungan</translation>
 <translation id="2610157865375787051">Tidur</translation>
 <translation id="2610260699262139870">Saiz S&amp;ebenar</translation>
@@ -1617,6 +1613,7 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2673135533890720193">Baca sejarah penyemakan anda</translation>
 <translation id="2674764818721168631">Mati</translation>
 <translation id="2678063897982469759">Dayakan semula</translation>
+<translation id="2678676117809690850">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Telefon, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="268053382412112343">Se&amp;jarah</translation>
 <translation id="2681124317993121768">Profil tetamu tidak disokong</translation>
 <translation id="2682498795777673382">Kemas kini daripada ibu atau bapa anda</translation>
@@ -1715,6 +1712,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="2773288106548584039">Sokongan Penyemak Imbas Lama</translation>
 <translation id="2773802008104670137">Fail jenis ini boleh merosakkan komputer anda.</translation>
 <translation id="2775104091073479743">Edit Cap Jari</translation>
+<translation id="2776560192867872731">Tukar nama peranti untuk <ph name="DEVICE_NAME"/></translation>
 <translation id="5152275065296016556">Brave Pay</translation>
 <translation id="2782104745158847185">Ralat semasa memasang aplikasi Linux</translation>
 <translation id="2783298271312924866">Sudah dimuat turun</translation>
@@ -1811,15 +1809,16 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="287205682142673348">Kiriman semula port</translation>
 <translation id="287286579981869940">Tambahkan <ph name="PROVIDER_NAME"/>...</translation>
 <translation id="2872961005593481000">Mematikan</translation>
+<translation id="2872966656309879564">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Komputer</translation>
 <translation id="2874939134665556319">Lagu sebelumnya</translation>
 <translation id="4156865452842056672">(Halaman ralat Brave)</translation>
 <translation id="2876336351874743617">Jari 2</translation>
 <translation id="2876369937070532032">Menghantar URL sesetengah halaman yang anda lawati kepada Brave, apabila keselamatan anda terancam</translation>
+<translation id="2876556152483133018">Carian laman</translation>
 <translation id="2877467134191447552">Anda boleh menambah akaun tambahan anda untuk mengakses laman web dan apl.</translation>
 <translation id="2878782256107578644">Pengimbasan sedang dijalankan, buka sekarang?</translation>
 <translation id="2878889940310164513">Tambah Selular...</translation>
 <translation id="288042212351694283">Mengakses peranti Universal 2nd Factor anda</translation>
-<translation id="2880660355386638022">Peletakan tetingkap</translation>
 <translation id="2881076733170862447">Apabila Anda Mengklik Sambungan</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> akan dimulakan semula dan ditetapkan semula buat sementara waktu</translation>
 <translation id="2885378588091291677">Pengurus Tugas</translation>
@@ -1833,6 +1832,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="2894757982205307093">Tab baharu dalam kumpulan</translation>
 <translation id="289695669188700754">ID Kekunci: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870">Adakah anda pasti anda mahu buka tab <ph name="TAB_COUNT"/>?</translation>
+<translation id="2900477968385519153">Cari di Skrin Anda dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="290105521672621980">Fail menggunakan ciri tidak disokong</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> tidak dapat berkomunikasi dengan pencetak ini. Pastikan pencetak dipalamkan dan cuba lagi.</translation>
 <translation id="2902312830803030883">Lagi tindakan</translation>
@@ -1949,7 +1949,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="3012804260437125868">Sambungan selamat tapak yang sama sahaja</translation>
 <translation id="3012917896646559015">Sila hubungi pengeluar perkakasan anda dengan segera untuk menghantar komputer anda ke kemudahan membaiki.</translation>
-<translation id="3013291976881901233">Peranti MIDI</translation>
 <translation id="301525898020410885">Bahasa ditetapkan oleh Organisasi anda</translation>
 <translation id="3015639418649705390">Lancarkan semula sekarang</translation>
 <translation id="3016381065346027039">Tiada masukan log</translation>
@@ -1988,8 +1987,10 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3053013834507634016">Penggunaan Penting Sijil</translation>
 <translation id="3053273573829329829">Dayakan PIN pengguna</translation>
 <translation id="3054766768827382232">Tindakan melumpuhkan perlindungan akses data boleh menjadikan peranti persisian anda berfungsi dengan lebih baik, tetapi mungkin mendedahkan data peribadi anda melalui penggunaan yang tidak dibenarkan.</translation>
+<translation id="3055087258198109191">Untuk menggunakan enjin carian lain selain yang lalai, taip pintasan enjin carian tersebut diikuti dengan pintasan papan kekunci pilihan anda. Anda juga boleh menukar enjin carian lalai anda di sini.</translation>
 <translation id="3055590424724986000">Dengan penyedia pilihan anda</translation>
 <translation id="3058498974290601450">Anda boleh mematikan penyegerakan pada bila-bila masa dalam tetapan</translation>
+<translation id="3058517085907878899">Namakan peranti</translation>
 <translation id="3060379269883947824">Dayakan pilih untuk bercakap</translation>
 <translation id="3060952009917586498">Tukar bahasa peranti. Bahasa semasa ialah <ph name="LANGUAGE"/>.</translation>
 <translation id="3060987956645097882">Kami tidak dapat mewujudkan sambungan dengan telefon anda. Pastikan telefon anda berada berdekatan, dibuka kunci dan Bluetooth serta Wi-Fi dihidupkan.</translation>
@@ -2000,6 +2001,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3067198360141518313">Jalankan pemalam ini</translation>
 <translation id="3071624960923923138">Anda boleh klik di sini untuk membuka tab baharu</translation>
 <translation id="3072775339180057696">Benarkan tapak melihat <ph name="FILE_NAME"/>?</translation>
+<translation id="3074799113165994093">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Telefon</translation>
 <translation id="3075874217500066906">Mula semula perlu dilakukan untuk memulakan proses Powerwash. Selepas memulakan semula, anda akan diminta mengesahkan bahawa anda ingin meneruskan.</translation>
 <translation id="3076909148546628648"><ph name="DOWNLOAD_RECEIVED"/>/<ph name="DOWNLOAD_TOTAL"/></translation>
 <translation id="3076966043108928831">Simpan pada peranti ini sahaja</translation>
@@ -2041,6 +2043,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3117791853215125017">{COUNT,plural, =1{Gagal menghantar <ph name="ATTACHMENTS"/> kepada <ph name="DEVICE_NAME"/>}other{Gagal menghantar <ph name="ATTACHMENTS"/> kepada <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> Bantuan</translation>
 <translation id="3118654181216384296">Cuba mulakan Linux sekali lagi dalam seketika.</translation>
+<translation id="3119689272338239690">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Jenis peranti tidak diketahui, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3119948370277171654">Apakah kandungan/URL yang anda hantar?</translation>
 <translation id="3120430004221004537">Penyulitan tidak mencukupi untuk pengendalian yang dinyatakan pada: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3122464029669770682">CPU</translation>
@@ -2100,6 +2103,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3183143381919926261">Rangkaian data mudah alih</translation>
 <translation id="3183944777708523606">Susunan monitor</translation>
 <translation id="3184536091884214176">Sediakan atau urus pencetak CUPS. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
+<translation id="3185014249447200271">{NUM_APPS,plural, =1{Apl ini disekat}other{Sesetengah apl disekat}}</translation>
 <translation id="3188257591659621405">Fail saya</translation>
 <translation id="3188465121994729530">Purata Pergerakan</translation>
 <translation id="3189187154924005138">Kursor besar</translation>
@@ -2121,7 +2125,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Nota:<ph name="END_BOLD"/>Suara yang serupa atau rakaman suara mungkin dapat mengakses hasil persendirian <ph name="SUPERVISED_USER_NAME"/>.</translation>
 <translation id="3216825226035747725">Pentadbir G Suite for Education menentukan perkhidmatan Brave yang boleh diakses oleh pengguna mereka semasa log masuk ke akaun G Suite for Education. Ini mungkin termasuk sesetengah ciri atau perkhidmatan yang sebelum ini tidak dapat diakses oleh anak anda menggunakan akaun yang diawasi ini. Pentadbir sekolah dikehendaki memberikan atau memperoleh persetujuan untuk penggunaan perkhidmatan tersebut oleh pengguna bawah umur mereka.</translation>
 <translation id="3217843140356091325">Buat pintasan?</translation>
-<translation id="321799795901478485">Zip Archiver</translation>
 <translation id="321834671654278338">Penyahpasang Linux</translation>
 <translation id="3220586366024592812">Proses penyambung <ph name="CLOUD_PRINT_NAME"/> telah mengalami nahas. Mulakan semula?</translation>
 <translation id="3220943972464248773">Untuk menyegerakkan kata laluan anda, sahkan orang itu ialah anda</translation>
@@ -2201,7 +2204,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3305661444342691068">Buka PDF dalam Pratonton</translation>
 <translation id="3308116878371095290">Halaman ini dihalang daripada menetapkan kuki.</translation>
 <translation id="3308134619352333507">Sembunyikan Butang</translation>
-<translation id="3308738399950580893">iklan</translation>
+<translation id="863285194606682292">Laman yang anda lawati masih dapat mengingati maklumat anda sehingga anda menutup Brave</translation>
 <translation id="3308852433423051161">Memuatkan Brave Assistant...</translation>
 <translation id="3309330461362844500">ID Profil Sijil</translation>
 <translation id="3311445899360743395">Data yang berkaitan dengan apl ini mungkin dialih keluar daripada peranti ini.</translation>
@@ -2267,10 +2270,11 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3388788256054548012">Fail ini disulitkan. Minta pemilik menyahsulitkan fail ini.</translation>
 <translation id="3390013585654699824">Butiran apl</translation>
 <translation id="3390741581549395454">Apl dan fail Linux telah berjaya disandarkan. Peningkatan akan bermula tidak lama lagi.</translation>
-<translation id="3391482648489541560">pengeditan fail</translation>
 <translation id="3391512812407811893">Percubaan Kotak Pasir Privasi</translation>
 <translation id="339178315942519818">Lihat pemberitahuan daripada apl sembang pada <ph name="DEVICE_TYPE"/> anda</translation>
+<translation id="404326254653176440">Analisis Dokumen Brave</translation>
 <translation id="3394850431319394743">Dibenarkan menggunakan pengecam untuk memainkan kandungan yang dilindungi</translation>
+<translation id="1815398427402703506">Klik kanan dan pilih “Cari imej dengan Brave Lens” untuk mencari di mana-mana kawasan laman untuk mengetahui lebih lanjut tentang kandungan visual yang anda lihat semasa anda menyemak imbas dan membeli-belah di web.</translation>
 <translation id="3396800784455899911">Dengan mengklik butang "Terima dan teruskan", anda bersetuju membenarkan pemprosesan yang dihuraikan di atas untuk perkhidmatan Brave ini.</translation>
 <translation id="339722927132407568">Pegun</translation>
 <translation id="3399432415385675819">Pemberitahuan akan dilumpuhkan</translation>
@@ -2281,11 +2285,11 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
 <translation id="3404065873681873169">Tiada kata laluan disimpan untuk tapak ini</translation>
 <translation id="3404249063913988450">Dayakan penyelamat skrin</translation>
+<translation id="3404805962764077228">Akses apl telefon anda terus daripada <ph name="DEVICE_TYPE"/> anda buat sementara waktu</translation>
 <translation id="3405664148539009465">Sesuaikan fon</translation>
 <translation id="3405763860805964263">...</translation>
 <translation id="3406290648907941085">Dibenarkan untuk menggunakan peranti dan data realiti maya</translation>
 <translation id="3406396172897554194">Cari mengikut bahasa atau nama masukan</translation>
-<translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Sambungan ini mungkin berbahaya}other{Sambungan ini mungkin berbahaya}}</translation>
 <translation id="3409785640040772790">Peta</translation>
 <translation id="3410832398355316179">Semua fail dan data setempat yang berkaitan dengan pengguna ini akan dipadamkan secara kekal selepas pengguna ini dialih keluar. <ph name="USER_EMAIL"/> masih dapat log masuk nanti.</translation>
 <translation id="3412265149091626468">Lompat ke Pemilihan</translation>
@@ -2311,6 +2315,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3432227430032737297">Alih Keluar Semua Yang Ditunjukkan</translation>
 <translation id="3432762828853624962">Pekerja Kongsi</translation>
 <translation id="3433621910545056227">Op! Sistem gagal mewujudkan kunci atribut masa pemasangan peranti.</translation>
+<translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3434272557872943250">Jika tetapan Aktiviti Web &amp; Apl tambahan dihidupkan untuk anak anda, data ini mungkin disimpan pada Akaun Bravenya. Ketahui lebih lanjut tentang tetapan ini dan cara melaraskan tetapan ini melalui families.google.com.</translation>
 <translation id="3435541101098866721">Tambah telefon baharu</translation>
 <translation id="3435688026795609344">"<ph name="EXTENSION_NAME"/>" meminta <ph name="CODE_TYPE"/> anda</translation>
@@ -2386,6 +2391,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3908743412684152579">Tetapan Brave Assistant</translation>
 <translation id="3496213124478423963">Zum Keluar</translation>
 <translation id="3496238553815913323"><ph name="LANGUAGE"/> (tidak dipilih)</translation>
+<translation id="3496689104192986836">Tahap bateri <ph name="PERCENTAGE"/>%</translation>
 <translation id="3497501929010263034">Peranti USB daripada <ph name="VENDOR_NAME"/> (produk <ph name="PRODUCT_ID"/>)</translation>
 <translation id="3497560059572256875">Kongsi Coretan</translation>
 <translation id="3498215018399854026">Kami tidak dapat menghubungi ibu bapa anda pada masa ini. Sila cuba lagi.</translation>
@@ -2533,6 +2539,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3660234220361471169">Tidak Dipercayai</translation>
 <translation id="3664511988987167893">Ikon Sambungan</translation>
 <translation id="2334029754052191847">Brave mengesan bahawa sesetengah tetapan anda telah terganggu oleh program lain dan menetapkannya semula kepada tetapan lalainya yang asal.</translation>
+<translation id="3665919494326051362">Versi semasa ialah <ph name="CURRENT_VERSION"/></translation>
 <translation id="8545590844135745781">Untuk mendiagnosis isu Bluetooth dengan lebih berkesan, Braver boleh menyertakan log Bluetooth tambahan dengan laporan maklum balas mereka. Apabila pilihan ini ditandai, laporan anda akan merangkumi log btsnoop dan HCI daripada sesi semasa anda, yang telah dibersihkan untuk mengalih keluar sebanyak mungkin PII. Akses kepada log ini akan dihadkan kepada pengurus kumpulan produk OS Brave dalam Listnr. Log akan dihapuskan selepas 90 hari.</translation>
 <translation id="3670113805793654926">Peranti daripada mana-mana vendor</translation>
 <translation id="3670229581627177274">Hidupkan Bluetooth</translation>
@@ -2548,6 +2555,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3682824389861648626">Ambang pergerakan</translation>
 <translation id="3683524264665795342"><ph name="APP_NAME"/> Permintaan Perkongsian Skrin</translation>
 <translation id="3685598397738512288">Pilihan USB Linux</translation>
+<translation id="3686786761304157917">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Papan kekunci, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="368789413795732264">Terdapat ralat semasa mencuba untuk menulis fail: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="3688507211863392146">Tulis pada fail dan folder yang anda buka dalam aplikasi</translation>
 <translation id="3688526734140524629">Tukar saluran</translation>
@@ -2610,7 +2618,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3742055079367172538">Tangkapan skrin diambil</translation>
 <translation id="3742235229730461951">Reka letak papan kekunci Korea</translation>
 <translation id="3742666961763734085">Tidak dapat menemui unit organisasi dengan nama itu. Sila cuba lagi.</translation>
-<translation id="3744111561329211289">Penyegerakan latar belakang</translation>
 <translation id="3747077776423672805">Untuk mengalih keluar apl, pergi ke Tetapan &gt; Gedung Google Play &gt; Urus pilihan Android &gt; Apl atau Pengurus aplikasi. Kemudian, ketik apl yang ingin dinyahpasang (anda mungkin perlu meleret ke kanan atau ke kiri untuk mencari apl). Kemudian, ketik Nyahpasang atau Lumpuhkan.</translation>
 <translation id="3747220812138541072">Tunjukkan cadangan penulisan sebaris yang dipaparkan semasa anda menaip</translation>
 <translation id="3748706263662799310">Laporkan pepijat</translation>
@@ -2645,9 +2652,9 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3778740492972734840">&amp;Alat pembangun</translation>
 <translation id="3778868487658107119">Tanya soalan dan berikannya tugas. Peranti ini ialah Brave peribadi anda yang sentiasa bersedia untuk membantu.</translation>
 <translation id="3781742599892759500">Akses mikrofon Linux</translation>
+<translation id="3782488227140539029">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Kamera video, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3782795641773236652">Belum ada suis atau kekunci yang telah diuntukkan</translation>
 <translation id="378312418865624974">Baca pengecam unik untuk komputer ini</translation>
-<translation id="3784372983762739446">Peranti Bluetooth</translation>
 <translation id="3784472333786002075">Kuki ialah fail yang dibuat oleh tapak web. Terdapat dua jenis kuki: Kuki pihak pertama dibuat oleh tapak yang anda lawati. Tapak ini ditunjukkan pada bar alamat. Kuki pihak ketiga dibuat oleh tapak lain. Tapak ini memiliki sebahagian daripada kandungan seperti iklan atau imej yang anda lihat pada tapak web yang anda lawati.</translation>
 <translation id="3785308913036335955">Paparkan Pintasan Apl</translation>
 <translation id="3785727820640310185">Kata laluan disimpan untuk tapak ini</translation>
@@ -2657,7 +2664,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3789841737615482174">Pasang</translation>
 <translation id="379082410132524484">Kad anda telah tamat tempoh</translation>
 <translation id="3792890930871100565">Putuskan sambungan pencetak</translation>
-<translation id="3793395331556663376">Terlalu banyak sistem fail dibuka.</translation>
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{Brave tidak menemukan perisian berbahaya pada komputer anda • Disemak sehari yang lalu}other{Brave tidak menemukan perisian berbahaya pada komputer anda • Disemak {NUM_DAYS} hari yang lalu}}</translation>
 <translation id="2513920013190289972">Untuk menggunakan Kongsi Berdekatan, pastikan kedua-dua peranti dibuka kunci, berada rapat di antara satu sama lain dan Bluetooth telah dihidupkan. Jika anda membuat perkongsian dengan Bravebook yang tiada dalam kenalan anda, pastikan Keterlihatan berdekatan dihidupkan (buka ruang status dengan memilih masa, kemudian hidupkan Keterlihatan berdekatan). <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">Mati</translation>
@@ -2704,7 +2710,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="383161972796689579">Pemilik peranti ini telah melumpuhkan pengguna baharu daripada ditambah</translation>
 <translation id="3834728400518755610">Perubahan dalam tetapan mikrofon memerlukan Linux dimatikan. Matikan Linux untuk meneruskan.</translation>
 <translation id="3834775135533257713">Tidak dapat menambahkan aplikasi "<ph name="TO_INSTALL_APP_NAME"/>" kerana bercanggah dengan "<ph name="INSTALLED_APP_NAME"/>".</translation>
-<translation id="3835233591525155343">Penggunaan peranti anda</translation>
 <translation id="3835522725882634757">Oh, tidak! Pelayan ini menghantar data <ph name="PRODUCT_NAME"/> tidak dapat difahami. Sila <ph name="BEGIN_LINK"/>laporkan pepijat<ph name="END_LINK"/>, dan sertakan <ph name="BEGIN2_LINK"/>penyenaraian kasar<ph name="END2_LINK"/>.</translation>
 <translation id="383669374481694771">Ini merupakan maklumat umum tentang peranti ini dan cara anda menggunakan peranti ini (seperti aras bateri, aktiviti sistem dan apl serta ralat). Data ini akan digunakan untuk menambah baik Android dan sesetengah maklumat teragregat juga dapat membantu apl Brave dan rakan kongsi, seperti pembangun Android, memperbaik apl dan produk mereka.</translation>
 <translation id="3838085852053358637">Gagal memuatkan sambungan</translation>
@@ -2747,9 +2752,11 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3873423927483480833">Tunjukkan PIN</translation>
 <translation id="3873915545594852654">Masalah berkaitan ARC++ telah berlaku.</translation>
 <translation id="3412613348266550587">Hidupkan Brave Assistant</translation>
+<translation id="3875815154304214043"><ph name="APP_NAME"/> ditetapkan untuk dibuka dalam tab penyemak imbas baharu, pautan yang disokong juga akan dibuka dalam penyemak imbas. <ph name="BEGIN_LINK_LEARN_MORE"/>Ketahui lebih lanjut<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256">Tetapan Kongsi Berdekatan untuk peranti <ph name="USER_NAME"/>, berkongsi menggunakan akaun <ph name="USER_EMAIL"/>.</translation>
 <translation id="3879748587602334249">Pengurus muat turun</translation>
 <translation id="3882165008614329320">Video sedia ada daripada kamera atau fail</translation>
+<translation id="3883306461188700142">Menaip menggunakan suara anda. Tekan Carian + D, kemudian mula bercakap.</translation>
 <translation id="3884152383786131369">Kandungan web yang tersedia dalam berbilang bahasa akan menggunakan bahasa pertama yang disokong daripada senarai ini. Pilihan ini disegerakkan dengan tetapan penyemak imbas anda. <ph name="BEGIN_LINK_LEARN_MORE"/>Ketahui lebih lanjut<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">Kemaskinian diurus oleh pentadbir anda</translation>
 <translation id="3886446263141354045">Permintaan anda untuk mengakses tapak ini telah dihantar kepada <ph name="NAME"/>.</translation>
@@ -2795,7 +2802,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3920909973552939961">Tidak dibenarkan untuk memasang pengendali pembayaran</translation>
 <translation id="3923184630988645767">Penggunaan data</translation>
 <translation id="3923676227229836009">Halaman ini dibenarkan melihat fail</translation>
-<translation id="3923943745177274752">Selamat datang ke <ph name="DEVICE_TYPE"/></translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7575176983371565462">Menghantar URL kepada Penyemakan Imbas Selamat untuk semakan. Turut menghantar sedikit contoh halaman, muat turun, aktiviti sambungan dan maklumat sistem untuk membantu penemuan ancaman baharu. Memautkan data ini pada Akaun Brave anda secara sementara apabila anda log masuk, untuk melindungi anda merentas apl Brave.</translation>
 <translation id="3925573269917483990">Kamera:</translation>
@@ -2824,10 +2830,10 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="3943582379552582368">&amp;Kembali</translation>
 <translation id="3943857333388298514">Tampal</translation>
 <translation id="3945513714196326460">Cuba nama yang lebih pendek</translation>
+<translation id="3948027458879361203">Tukar nama hos</translation>
 <translation id="3948116654032448504">&amp;Cari Imej di <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3948507072814225786"><ph name="ORIGIN"/> boleh mengedit fail dalam folder berikut</translation>
 <translation id="394984172568887996">Diimport Daripada IE</translation>
-<translation id="3949981384795585075">{NUM_APPS,plural, =1{Apl ini mungkin berbahaya}other{Apl ini mungkin berbahaya}}</translation>
 <translation id="3950820424414687140">Log masuk</translation>
 <translation id="3953834000574892725">Akaun saya</translation>
 <translation id="3954354850384043518">Sedang berlangsung</translation>
@@ -2882,6 +2888,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4002329649066944389">Urus pengecualian khusus tapak</translation>
 <translation id="4002440992267487163">Persediaan PIN</translation>
 <translation id="4005817994523282006">Kaedah pengesanan zon waktu</translation>
+<translation id="400645326027787740">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Pengawal permainan</translation>
 <translation id="4007856537951125667">Sembunyikan pintasan</translation>
 <translation id="4008291085758151621">Maklumat tapak tidak tersedia dalam VR</translation>
 <translation id="4010917659463429001">Untuk mendapatkan penanda halaman anda pada peranti mudah alih, <ph name="GET_IOS_APP_LINK"/>.</translation>
@@ -2931,6 +2938,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4066207411788646768">Sila periksa sambungan anda untuk melihat pencetak yang tersedia dalam rangkaian anda</translation>
 <translation id="4068776064906523561">Cap jari disimpan</translation>
 <translation id="407173827865827707">Apabila diklik</translation>
+<translation id="5493571544288146030">Kata laluan akan disimpan dalam Brave sync chain anda, <ph name="ACCOUNT"/>. Anda tidak perlu mengingat kata laluan ini.</translation>
 <translation id="4074900173531346617">Sijil Penandatangan E-mel</translation>
 <translation id="407520071244661467">Skala</translation>
 <translation id="407543464472585404">Profil <ph name="NAME"/> dipautkan kepada <ph name="EMAIL"/></translation>
@@ -3049,9 +3057,9 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4217571870635786043">Pengimlakan</translation>
 <translation id="4219558185499589032">Box</translation>
 <translation id="4220648711404560261">Ralat berlaku semasa pengaktifan.</translation>
-<translation id="4222772810963087151">Butiran Binaan</translation>
 <translation id="4225020013797061859">Tekan suis atau kekunci untuk menguntukkan "<ph name="ACTION"/>"</translation>
 <translation id="4225397296022057997">Di semua tapak</translation>
+<translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Sambungan ini tidak dibenarkan}other{Sesetengah sambungan tidak dibenarkan}}</translation>
 <translation id="4231095370974836764">Pasang apl dan permainan daripada Google Play pada <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">Konfigurasikan Kerberos</translation>
 <translation id="4235965441080806197">Batalkan log masuk</translation>
@@ -3091,11 +3099,11 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4268670020635416342">Tambah nama atau label seperti Kerja, Peribadi atau Anak-anak</translation>
 <translation id="4270393598798225102">Versi <ph name="NUMBER"/></translation>
 <translation id="4272765551319099134">Halaman ini tidak dapat dicapai</translation>
+<translation id="4274604968379621964">Simpan kumpulan</translation>
 <translation id="4274667386947315930">Data log masuk</translation>
 <translation id="4274673989874969668">Laman boleh terus menjalankan penyegerakan untuk menyelesaikan tugas, seperti memuat naik foto atau menghantar mesej sembang selepas anda meninggalkan laman itu.</translation>
 <translation id="4275291496240508082">Bunyi permulaan</translation>
 <translation id="4275830172053184480">Mulakan semula peranti anda</translation>
-<translation id="4278101229438943600">Assistant anda bersedia</translation>
 <translation id="4278390842282768270">Dibenarkan</translation>
 <translation id="4279129444466079448">Anda boleh memasang sehingga <ph name="PROFILE_LIMIT"/> profil eSIM pada peranti ini. Untuk menambah profil lain, alih keluar profil yang sedia ada dahulu.</translation>
 <translation id="4281844954008187215">Syarat Perkhidmatan</translation>
@@ -3121,7 +3129,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4305402730127028764">Salin ke <ph name="DEVICE_NAME"/></translation>
 <translation id="4305817255990598646">Tukar</translation>
 <translation id="4306119971288449206">Apl mesti disampaikan dengan jenis kandungan "<ph name="CONTENT_TYPE"/>"</translation>
-<translation id="4306812610847412719">papan keratan</translation>
 <translation id="4307992518367153382">Asas</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/>K (<ph name="NUM_KILOBYTES_LIVE"/>K langsung)</translation>
 <translation id="4310139701823742692">Format fail salah. Semak fail PPD dan cuba lagi.</translation>
@@ -3169,6 +3176,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4364567974334641491"><ph name="APP_NAME"/> berkongsi tetingkap.</translation>
 <translation id="4364830672918311045">Paparkan pemberitahuan</translation>
 <translation id="4366138410738374926">Pencetakan dimulakan</translation>
+<translation id="4369121877634339065">Seret mana-mana imej untuk mencari</translation>
 <translation id="4370975561335139969">E-mel dan kata laluan yang anda masukkan tidak padan</translation>
 <translation id="4371452868325715552">Tidak dapat menyambung kepada pelayan. Sila periksa sambungan rangkaian anda, kemudian cuba lagi. Jika anda masih menghadapi masalah, cuba mulakan semula Bravebook anda. Kod ralat: <ph name="ERROR_CODE"/>.</translation>
 <translation id="4373966964907728675">Menghantar desktop</translation>
@@ -3185,6 +3193,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, +1 akaun lagi}other{<ph name="EMAIL"/>, +<ph name="EXTRA_ACCOUNTS"/> lagi akaun}}</translation>
 <translation id="4384312707950789900">Tambahkan pada pilihan</translation>
 <translation id="4384652540891215547">Aktifkan sambungan</translation>
+<translation id="4384886290276344300">Tukar tetapan papan kekunci</translation>
 <translation id="438503109373656455">Saratoga</translation>
 <translation id="4385146930797718821">Tangkapan skrin disalin ke papan keratan</translation>
 <translation id="4385905942116811558">Mencari peranti Bluetooth dan USB</translation>
@@ -3214,13 +3223,13 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4412698727486357573">Pusat bantuan</translation>
 <translation id="4413088271097062326">Aplikasi manakah yang ingin anda gunakan?</translation>
 <translation id="44141919652824029">Benarkan "<ph name="APP_NAME"/>" mendapatkan senarai peranti anda yang ada USB?</translation>
-<translation id="4414515549596849729">kuki dan data laman</translation>
 <translation id="4415213869328311284">Anda sudah bersedia untuk menggunakan <ph name="DEVICE_TYPE"/> anda.</translation>
 <translation id="4415245286584082850">Tiada peranti ditemui. Buka artikel pusat bantuan dalam tab baharu.</translation>
-<translation id="5749788945734786627">Urus Akaun Brave anda</translation>
+<translation id="5749788945734786627">Urus Brave sync chain anda</translation>
 <translation id="4415748029120993980">Lengkung eliptik SECG secp384r1 (alias NIST P-384)</translation>
 <translation id="4416450511678320850">Tiada apl tersedia untuk kandungan ini`</translation>
 <translation id="4416582610654027550">Taip URL yang sah</translation>
+<translation id="4417162649853416189">Seret Imej untuk Mencari dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="4419409365248380979">Sentiasa benarkan <ph name="HOST"/> untuk menetapkan kuki</translation>
 <translation id="4421932782753506458">Gebu</translation>
 <translation id="4423376891418188461">Pulihkan Tetapan</translation>
@@ -3231,7 +3240,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4430019312045809116">Kelantangan</translation>
 <translation id="4430369329743628066">Penanda halaman ditambahkan</translation>
 <translation id="4432621511648257259">Kata laluan salah</translation>
-<translation id="4434045419905280838">Tetingkap timbul dan ubah hala</translation>
 <translation id="443454694385851356">Lama (tidak selamat)</translation>
 <translation id="443475966875174318">Kemas kini atau alih keluar aplikasi yang tidak serasi</translation>
 <translation id="4438043733494739848">Lutsinar</translation>
@@ -3289,7 +3297,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="831589464260346213">PC dan Bravecast menggunakan rangkaian Wi-Fi yang berlainan (contohnya 2.4GHz
     lwn. 5GHz)</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> telah ranap</translation>
-<translation id="4500587658229086076">kandungan tidak selamat</translation>
 <translation id="450099669180426158">Ikon tanda seru</translation>
 <translation id="4501530680793980440">Sahkan Pengalihan Keluar</translation>
 <translation id="4502423230170890588">Alih keluar daripada peranti ini</translation>
@@ -3335,7 +3342,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4541123282641193691">Tidak dapat mengesahkan akaun anda. Sila cuba lagi atau mulakan semula Bravebook anda.</translation>
 <translation id="4541662893742891060">Tidak dapat menyambung kepada profil ini. Untuk mendapatkan sokongan teknikal, sila hubungi pembawa anda.</translation>
 <translation id="4541706525461326392">Mengalih keluar profil. Proses ini mungkin mengambil masa beberapa minit.</translation>
-<translation id="4541810033354695636">realiti tambahan</translation>
 <translation id="4542520061254486227">Baca data anda di <ph name="WEBSITE_1"/> dan <ph name="WEBSITE_2"/></translation>
 <translation id="4543778593405494224">Pengurus sijil</translation>
 <translation id="4544174279960331769">Avatar biru lalai</translation>
@@ -3350,6 +3356,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4551763574344810652">Tekan <ph name="MODIFIER_KEY_DESCRIPTION"/> untuk buat asal</translation>
 <translation id="3158042476798161624">Anda perlu memulakan semula Bravebook anda untuk menukar bahasa peranti. <ph name="BEGIN_LINK_LEARN_MORE"/>Ketahui lebih lanjut<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4553898717331438468">Mulakan semula persediaan</translation>
+<translation id="4554491709904933912">Seret imej untuk mencari dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="4554591392113183336">Sambungan luar ialah versi yang sama atau lebih rendah berbanding yang sedia ada.</translation>
 <translation id="4555769855065597957">Bayang</translation>
 <translation id="4808253054156608144">Untuk menyimpan kata laluan pada Akaun Brave anda, log masuk dan aktifkan penyegerakan.</translation>
@@ -3466,9 +3473,9 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4666472247053585787">Lihat pemberitahuan daripada telefon pada <ph name="DEVICE_TYPE"/> anda</translation>
 <translation id="4666911709726371538">Lagi apl</translation>
 <translation id="4668721319092543482">Klik untuk mendayakan <ph name="PLUGIN_NAME"/></translation>
-<translation id="4670064810192446073">Realiti maya</translation>
 <translation id="46733273239502219">Data luar talian dalam apl yang dipasang juga akan dipadamkan</translation>
 <translation id="4673442866648850031">Buka alatan stilus apabila stilus dialih keluar</translation>
+<translation id="4675828034887792601">Buat pintasan untuk laman carian dan urus enjin carian anda</translation>
 <translation id="4676595058027112862">Hab Telefon, Ketahui Lebih Lanjut</translation>
 <translation id="4677772697204437347">Memori GPU</translation>
 <translation id="467823995058589466">Kamera dimatikan</translation>
@@ -3495,7 +3502,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4699172675775169585">Imej dan fail dicache</translation>
 <translation id="4699357559218762027">(dilancarkan secara automatik)</translation>
 <translation id="4701025263201366865">Log masuk ibu atau bapa</translation>
-<translation id="208996166923556768">Seret untuk mencari imej dengan Brave Lens</translation>
 <translation id="4708794300267213770">Tunjukkan kunci skrin apabila bangun tidur</translation>
 <translation id="4708849949179781599">Keluar dari <ph name="PRODUCT_NAME"/></translation>
 <translation id="4711638718396952945">Pulihkan tetapan</translation>
@@ -3527,7 +3533,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4748783296226936791">Laman biasanya menyambung kepada peranti HID untuk ciri yang menggunakan papan kekunci yang tidak biasa digunakan, pengawal permainan dan peranti lain</translation>
 <translation id="4750394297954878236">Cadangan</translation>
 <translation id="475088594373173692">Pengguna pertama</translation>
-<translation id="4751476147751820511">Penderia gerakan atau cahaya</translation>
 <translation id="4756378406049221019">Berhenti/Muat Semula</translation>
 <translation id="4756388243121344051">&amp;Sejarah</translation>
 <translation id="4759238208242260848">Muat turun</translation>
@@ -3549,6 +3554,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4779136857077979611">Onigiri</translation>
 <translation id="4779766576531456629">Namakan semula rangkaian Selular eSIM</translation>
 <translation id="4780321648949301421">Simpan Halaman Sebagai...</translation>
+<translation id="2950478706313064709">Untuk melakukan carian dalam laman atau bahagian tertentu Brave, anda boleh menaip pintasan di sini dalam bar alamat, kemudian menekan kekunci Tab atau Ruang.</translation>
 <translation id="4785719467058219317">Anda menggunakan kunci keselamatan yang tidak berdaftar dengan tapak web ini</translation>
 <translation id="4788092183367008521">Sila semak sambungan rangkaian dan cuba lagi.</translation>
 <translation id="4791000909649665275"><ph name="NUMBER"/> foto</translation>
@@ -3575,6 +3581,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4813136279048157860">Imej Saya</translation>
 <translation id="4813512666221746211">Ralat rangkaian</translation>
 <translation id="4814378367953456825">Masukkan nama untuk cap jari ini</translation>
+<translation id="4816097470512964351"><ph name="DEVICE"/>, Butiran</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{1 penanda halaman dipadamkan}other{{COUNT} penanda halaman dipadamkan}}</translation>
 <translation id="8655084398729487585">Pemberitahuan Brave Assistant</translation>
 <translation id="4820236583224459650">Tetapkan sebagai tiket aktif</translation>
@@ -3613,7 +3620,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="485088796993065002">Tapak mungkin memainkan bunyi untuk memberikan audio untuk muzik, video dan media lain</translation>
 <translation id="4853020600495124913">Buka dalam tetingkap &amp;baharu</translation>
 <translation id="4854317507773910281">Pilih akaun ibu/bapa untuk kelulusan</translation>
-<translation id="485480310608090163">Lagi tetapan dan kebenaran</translation>
 <translation id="4856478137399998590">Perkhidmatan data mudah alih anda diaktifkan dan sedia untuk digunakan</translation>
 <translation id="4858792381671956233">Anda telah bertanya kepada ibu bapa anda sama ada OK untuk melawat tapak ini</translation>
 <translation id="4858913220355269194">Fritz</translation>
@@ -3623,6 +3629,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4864805589453749318">Pilih ibu/bapa yang memberikan kebenaran untuk menambah akaun sekolah.</translation>
 <translation id="486635084936119914">Buka jenis fail tertentu secara automatik selepas memuat turun</translation>
 <translation id="4868281708609571334">Ajar Brave Assistant untuk mengecam suara <ph name="SUPERVISED_USER_NAME"/></translation>
+<translation id="4868284252360267853">Dialog ini tidak difokuskan pada masa ini. Tekan Command-Shift-Option A untuk fokus pada dialog ini.</translation>
 <translation id="48704129375571883">Tambah ciri tambahan</translation>
 <translation id="4870758487381879312">Masukkan kata laluan yang disediakan oleh pentadbir untuk mendapatkan maklumat konfigurasi</translation>
 <translation id="4870903493621965035">Tiada peranti digandingkan</translation>
@@ -3648,6 +3655,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4884987973312178454">6x</translation>
 <translation id="4887424188275796356">Buka Dengan Pemapar Sistem</translation>
 <translation id="488785315393301722">Tunjukkan Butiran</translation>
+<translation id="4889450157778777235">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Kamera video</translation>
 <translation id="4890773143211625964">Tunjukkan pilihan terperinci pencetak</translation>
 <translation id="4891089016822695758">Forum beta</translation>
 <translation id="4892229439761351791">Tapak boleh menggunakan Bluetooth</translation>
@@ -3731,7 +3739,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="4972737347717125191">Tapak boleh meminta untuk menggunakan peranti dan data realiti maya</translation>
 <translation id="4973307593867026061">Tambah pencetak</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Redam tapak}other{Redam tapak}}</translation>
-<translation id="4976009197147810135">Pisah menegak</translation>
 <translation id="4977942889532008999">Sahkan Akses</translation>
 <translation id="4980805016576257426">Sambungan ini mengandungi perisian hasad.</translation>
 <translation id="6298472828264321822">Untuk mengosongkan data semakan imbas daripada semua peranti tersegerak dan Akaun Brave anda, <ph name="BEGIN_LINK"/>log masuk<ph name="END_LINK"/>.</translation>
@@ -3759,7 +3766,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5009463889040999939">Menamakan semula profil. Proses ini mungkin mengambil masa beberapa minit.</translation>
 <translation id="5010043101506446253">Pihak berkuasa sijil</translation>
 <translation id="5015344424288992913">Menyelesaikan proksi...</translation>
-<translation id="5017633213534173756">Ingat</translation>
 <translation id="5017643436812738274">Anda boleh menukar halaman dengan kursor teks. Tekan Ctrl+Search+7 untuk mematikannya.</translation>
 <translation id="5017828934289857214">Ingatkan Saya Kemudian</translation>
 <translation id="5018207570537526145">Buka tapak web sambungan</translation>
@@ -3783,6 +3789,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="1246634473640425087">Lihat dan urus kata laluan yang disimpan dalam Akaun Brave anda</translation>
 <translation id="5039804452771397117">Benarkan</translation>
 <translation id="5040823038948176460">Tetapan kandungan tambahan</translation>
+<translation id="5043440033854483429">Nama boleh menggunakan huruf, nombor dan tanda sempang (-), serta mestilah antara 1 hingga 15 aksara (terangkum).</translation>
 <translation id="5043913660911154449">Anda juga boleh menentukan PPD pencetak anda <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5045550434625856497">Kata laluan tidak sah</translation>
 <translation id="504561833207953641">Membuka sesi penyemak imbas yang sedia ada.</translation>
@@ -3843,7 +3850,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5112577000029535889">&amp;Alat Pembangun</translation>
 <translation id="5113739826273394829">Jika anda mengklik ikon ini, anda akan mengunci <ph name="DEVICE_TYPE"/> ini secara manual. Lain kali, anda perlu menaip kata laluan untuk masuk.</translation>
 <translation id="51143538739122961">Masukkan kunci keselamatan anda dan sentuh kunci itu</translation>
-<translation id="5114987907971894280">realiti maya</translation>
 <translation id="5115309401544567011">Sila palamkan <ph name="DEVICE_TYPE"/> anda pada sumber kuasa.</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="5116628073786783676">Si&amp;mpan Audio Sebagai...</translation>
@@ -3884,6 +3890,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5157635116769074044">Pin halaman ini pada Skrin Mula...</translation>
 <translation id="5159094275429367735">Sediakan Crostini</translation>
 <translation id="5159419673777902220">Ibu bapa anda telah melumpuhkan kebenaran sambungan</translation>
+<translation id="5159643365935452998">Semak pengosongan data automatik</translation>
 <translation id="5160634252433617617">Papan kekunci fizikal</translation>
 <translation id="5160857336552977725">Log masuk ke <ph name="DEVICE_TYPE"/> anda</translation>
 <translation id="5161251470972801814">Peranti USB daripada <ph name="VENDOR_NAME"/></translation>
@@ -3938,7 +3945,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="521582610500777512">Foto telah dibuang</translation>
 <translation id="5222403284441421673">Sekatan untuk muat turun tidak selamat</translation>
 <translation id="5222676887888702881">Log keluar</translation>
-<translation id="52232769093306234">Gagal membungkus.</translation>
 <translation id="5225324770654022472">Paparkan pintasan apl</translation>
 <translation id="52254442782792731">Tetapan keterlihatan semasa masih belum ditetapkan</translation>
 <translation id="5225463052809312700">Hidupkan kamera</translation>
@@ -3955,7 +3961,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="523505283826916779">Tetapan kebolehcapaian</translation>
 <translation id="5235750401727657667">Gantikan halaman yang anda lihat semasa membuka tab baharu</translation>
 <translation id="6465706586789214771">Alihkan kata laluan tersebut ke Akaun Brave anda untuk digunakan pada semua peranti anda dengan mudah</translation>
-<translation id="5238278114306905396">Apl "<ph name="EXTENSION_NAME"/>" telah dialih keluar secara automatik.</translation>
 <translation id="5242724311594467048">Dayakan "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="5243522832766285132">Sila cuba lagi dalam beberapa ketika</translation>
 <translation id="5244474230056479698">Menyegerak ke <ph name="EMAIL"/></translation>
@@ -4030,6 +4035,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="989239400026154074">Brave mengesyorkan Brave</translation>
 <translation id="5319712128756744240">Gandingkan peranti baharu</translation>
 <translation id="5320135788267874712">Nama peranti baharu</translation>
+<translation id="532043380734099846">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Tetikus, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="532247166573571973">Pelayan mungkin tidak dapat dihubungi. Cuba sebentar lagi.</translation>
 <translation id="5324300749339591280">Senarai apl</translation>
 <translation id="5324780743567488672">Tetapkan zon waktu secara automatik menggunakan lokasi anda</translation>
@@ -4048,7 +4054,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5338503421962489998">Storan setempat</translation>
 <translation id="5340638867532133571">Benarkan tapak untuk memasang pengendali pembayaran (disyorkan)</translation>
 <translation id="5341793073192892252">Kuki berikut telah disekat (kuki pihak ketiga disekat tanpa pengecualian)</translation>
-<translation id="5341980496415249280">Sila tunggu, membungkus...</translation>
 <translation id="5342091991439452114">PIN mestilah sekurang-kurangnya <ph name="MINIMUM"/> digit</translation>
 <translation id="5344036115151554031">Memulihkan Linux</translation>
 <translation id="5345916423802287046">Mulakan apl apabila anda log masuk</translation>
@@ -4056,6 +4061,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="535123479159372765">Teks disalin daripada peranti lain</translation>
 <translation id="5352033265844765294">Pengecopan Masa</translation>
 <translation id="6368144843345980623">Eksport Kata Laluan Daripada Brave</translation>
+<translation id="5354531123814675522">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Tablet, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="5355099869024327351">Benarkan Assistant untuk menunjukkan pemberitahuan kepada anda</translation>
 <translation id="5355191726083956201">Perlindungan Dipertingkat dihidupkan</translation>
 <translation id="5355926466126177564">Sambungan "<ph name="EXTENSION_NAME"/>" telah menukar halaman yang ditunjukkan apabila anda membuat carian daripada Kotak Omni.</translation>
@@ -4115,6 +4121,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5427278936122846523">Sentiasa Terjemahkan</translation>
 <translation id="5427459444770871191">Putar &amp;Ikut Arah Jam</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Kemas kini tersedia)</translation>
+<translation id="5429373054983029602">Cari di skrin anda dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="542948651837270806">Kemas kini untuk perisian tegar Modul Platform Dipercayai perlu dipasang. Lihat <ph name="TPM_FIRMWARE_UPDATE_LINK"/></translation>
 <translation id="5430931332414098647">Penambatan Segera</translation>
 <translation id="5431318178759467895">Warna</translation>
@@ -4181,10 +4188,12 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="5495466433285976480">Tindakan ini akan mengalih keluar semua pengguna, fail dan data setempat serta tetapan lain selepas mula semula anda yang seterusnya. Semua pengguna perlu log masuk sekali lagi.</translation>
 <translation id="5495597166260341369">Biarkan paparan hidup</translation>
+<translation id="549580971452855947">Seret untuk mencari imej dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="5496587651328244253">Atur</translation>
 <translation id="5496730470963166430">Tidak dibenarkan untuk menghantar tetingkap timbul atau menggunakan ubah hala</translation>
 <translation id="5497251278400702716">Fail ini</translation>
 <translation id="5498967291577176373">Tulis dengan lebih pantas dengan cadangan sebaris untuk nama, alamat atau nombor telefon anda</translation>
+<translation id="5499211612787418966">Dialog ini tidak difokuskan pada masa ini. Tekan Alt-Shift A untuk fokus pada dialog ini.</translation>
 <translation id="5499313591153584299">Fail ini mungkin berbahaya bagi komputer anda.</translation>
 <translation id="5499453227627332024">Peningkatan tersedia untuk Linux Container anda. Anda juga boleh membuat peningkatan kemudian daripada apl Tetapan.</translation>
 <translation id="549957179819296104">Ikon baharu</translation>
@@ -4224,6 +4233,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5534304873398226603">Buang foto atau video</translation>
 <translation id="5535941515421698170">Turut mengalih keluar data sedia ada anda daripada peranti ini</translation>
 <translation id="5539221284352502426">Kata laluan yang anda masukkan telah ditolak oleh pelayan. Sebab yang mungkin termasuk: Kata laluan terlalu pendek. Kata laluan mesti merangkumi nombor atau simbol. Kata laluan mesti berbeza daripada kata laluan yang sebelumnya.</translation>
+<translation id="5539467723438368868">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Tablet</translation>
 <translation id="5541694225089836610">Tindakan dilumpuhkan oleh pentadbir anda</translation>
 <translation id="5542132724887566711">Profil</translation>
 <translation id="5542750926112347543">Kuki daripada <ph name="DOMAIN"/> disekat</translation>
@@ -4231,6 +4241,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5543983818738093899">Memeriksa status...</translation>
 <translation id="554517701842997186">Pemapar</translation>
 <translation id="5545335608717746497">{NUM_TABS,plural, =1{Tambahkan tab pada kumpulan}other{Tambahkan tab pada kumpulan}}</translation>
+<translation id="5545693483061321551">Laman tidak boleh menggunakan kuki anda untuk melihat aktiviti penyemakan imbas anda merentas beberapa laman yang berlainan, contohnya, untuk memeribadikan iklan. Ciri pada sesetengah laman mungkin tidak berfungsi.</translation>
 <translation id="5546865291508181392">Cari</translation>
 <translation id="5548075230008247516">Semua item dinyahpilih, anda telah keluar daripada mod pemilihan.</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" dan 1 Tab Lain}other{"<ph name="TAB_TITLE"/>" dan # Tab Lain}}</translation>
@@ -4283,8 +4294,10 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5601503069213153581">PIN</translation>
 <translation id="5601823921345337195">Tidak dibenarkan untuk menyambung kepada peranti MIDI</translation>
 <translation id="5602765853043467355">Kosongkan penanda halaman, sejarah, kata laluan dan pelbagai lagi daripada peranti ini</translation>
+<translation id="5604884720628869833">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Papan kekunci</translation>
 <translation id="5605623530403479164">Enjin carian lain</translation>
 <translation id="5605758115928394442">Pemberitahuan telah dihantar ke telefon anda untuk mengesahkan orang itu ialah anda.</translation>
+<translation id="5606849116180480101">{NUM_EXTENSIONS,plural, =1{Sambungan ini disekat}other{Sambungan ini disekat}}</translation>
 <translation id="560834977503641186">Penyegerakan Wi-Fi, Ketahui Lebih Lanjut</translation>
 <translation id="5608580678041221894">Ketik kekunci berikut untuk melaras atau mengalihkan kawasan pemangkasan</translation>
 <translation id="5609231933459083978">Apl kelihatan tidak sah.</translation>
@@ -4326,7 +4339,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5646376287012673985">Lokasi</translation>
 <translation id="5646558797914161501">Ahli perniagaan</translation>
 <translation id="5648166631817621825">7 hari lalu</translation>
-<translation id="5649053991847567735">Muat turun automatik</translation>
 <translation id="5651308944918885595">Kebolehtemuan Kongsi Berdekatan</translation>
 <translation id="5653154844073528838">Anda mempunyai <ph name="PRINTER_COUNT"/> pencetak yang disimpan.</translation>
 <translation id="4196805003686694274">Hantar Maklum Balas kepada Brave</translation>
@@ -4380,12 +4392,12 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5711010025974903573">Log perkhidmatan</translation>
 <translation id="5711983031544731014">Tidak dapat membuka kunci. Masukkan kata laluan anda.</translation>
 <translation id="5712153969432126546">Kadangkala laman menerbitkan PDF, seperti dokumen, kontrak dan borang</translation>
+<translation id="5713158217420111469">Disambungkan kepada <ph name="DEVICE"/></translation>
 <translation id="5715711091495208045">Broker Pemalam: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719603411793408026">Enjin carian lalai</translation>
 <translation id="5719854774000914513">Tapak boleh meminta untuk menyambung kepada peranti HID</translation>
 <translation id="572155275267014074">Tetapan Android</translation>
 <translation id="5722086096420375088">Hijau dan putih</translation>
-<translation id="5722930212736070253">Oh, Tidak! Zip Archiver telah mengalami ralat.</translation>
 <translation id="572328651809341494">Tab terbaharu</translation>
 <translation id="5723508132121499792">Tiada apl latar belakang dijalankan</translation>
 <translation id="5727728807527375859">Sambungan, apl dan tema boleh membahayakan komputer anda. Adakah anda pasti anda mahu meneruskan?</translation>
@@ -4445,7 +4457,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7397305826909094212">Hentikan semua Apl Brave</translation>
 <translation id="5797521893972859201">Kosongkan sejarah, termasuk item dalam kotak carian</translation>
 <translation id="5798079537501238810">Laman boleh memasang pengendali pembayaran</translation>
-<translation id="579907812742603813">kandungan yang dilindungi</translation>
 <translation id="579915268381781820">Kunci keselamatan anda telah dialih keluar.</translation>
 <translation id="5799478978078236781">Dapatkan petua, tawaran dan kemaskinian <ph name="DEVICE_TYPE"/>, serta kongsikan maklum balas.</translation>
 <translation id="5799508265798272974">Mesin Maya Linux: <ph name="LINUX_VM_NAME"/></translation>
@@ -4462,6 +4473,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="8750665647536322704">Alihkan kata laluan daripada peranti ini kepada Akaun Brave anda?</translation>
 <translation id="5817918615728894473">Gandingkan</translation>
 <translation id="5821565227679781414">Cipta Pintasan</translation>
+<translation id="7216958605064248952">Untuk melakukan carian dalam laman atau bahagian tertentu Brave, anda boleh menggunakan pintasan di sini. Sebagai contoh, untuk mencari dalam Gmail sahaja, taip "@gmail", kemudian tekan kekunci Tab atau Ruang.</translation>
 <translation id="5825412242012995131">Hidup (Disyorkan)</translation>
 <translation id="5826395379250998812">Sambungkan <ph name="DEVICE_TYPE"/> anda dengan telefon anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5826993284769733527">Separa lut sinar</translation>
@@ -4614,7 +4626,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="5984222099446776634">Dilawati Baru-baru Ini</translation>
 <translation id="5985458664595100876">Format URL tidak sah. Format yang disokong ialah \\server\share dan smb://server/share.</translation>
 <translation id="598810097218913399">Alih keluar penguntukan</translation>
-<translation id="5989136665954016134">Membuka pautan yang disokong</translation>
 <translation id="5990266201903445068">Wi-Fi sahaja</translation>
 <translation id="5990386583461751448">Diterjemahkan</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Untuk memastikan anda boleh terus melayari web, minta pentadbir anda mengalih keluar aplikasi ini.}other{Untuk memastikan anda boleh terus melayari web, minta pentadbir anda mengalih keluar aplikasi ini.}}</translation>
@@ -4677,7 +4688,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="931766611660157151">Tab Brave baru-baru ini</translation>
 <translation id="6059347142391822629">Tekan suis anda apabila fokus berada pada butang Selesai untuk menutup panduan.</translation>
 <translation id="6059652578941944813">Hierarki Sijil</translation>
-<translation id="6059925163896151826">Peranti USB</translation>
 <translation id="6061882183774845124">Hantar pautan ke peranti anda</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Nota:<ph name="END_BOLD"/>Suara yang serupa atau rakaman suara mungkin dapat mengakses hasil persendirian <ph name="SUPERVISED_USER_NAME"/>. Untuk menjimatkan bateri, dalam tetapan Assistant <ph name="SUPERVISED_USER_NAME"/>, anda boleh memilih untuk menghidupkan “Ok Brave” hanya semasa peranti ini disambungkan kepada sumber kuasa.</translation>
 <translation id="6064217302520318294">Kunci skrin</translation>
@@ -4735,6 +4745,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="8589850327914845460">Tetapkan enjin carian lalai anda untuk penyemak imbas Brave dan Pelancar <ph name="DEVICE_TYPE"/></translation>
 <translation id="6113942107547980621">Untuk menggunakan Smart Lock, beralih kepada profil pengguna utama pada telefon anda</translation>
 <translation id="6116921718742659598">Tukar tetapan bahasa dan input</translation>
+<translation id="6119927814891883061">Namakan peranti kepada <ph name="DEVICE_NAME"/></translation>
 <translation id="6120205520491252677">Pin halaman ini pada skrin Mula...</translation>
 <translation id="6122081475643980456">Sambungan Internet anda sedang dikawal</translation>
 <translation id="6122093587541546701">E-mel (pilihan):</translation>
@@ -4952,6 +4963,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6344576354370880196">Pencetak yang disimpan</translation>
 <translation id="6345418402353744910">Nama pengguna dan kata laluan anda diperlukan untuk proksi <ph name="PROXY"/> agar pentadbir dapat mengkonfigurasikan rangkaian anda</translation>
 <translation id="6345878117466430440">Tandai sebagai dibaca</translation>
+<translation id="6347010704471250799">Tunjukkan pemberitahuan</translation>
 <translation id="6349101878882523185">Pasang <ph name="APP_NAME"/></translation>
 <translation id="6354918092619878358">Lengkung eliptik SECG secp256r1 (alias ANSI X9.62 prime256v1, NIST P-256)</translation>
 <translation id="6355789186038748882">Penyemak imbas percubaan (kualiti alfa)! Sesetengah ciri tiada atau tidak lengkap. Laporkan isu pada: Bantuan &gt; "Laporkan isu...".</translation>
@@ -4972,6 +4984,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6374469231428023295">Cuba Lagi</translation>
 <translation id="6377268785556383139">1 hasil carian untuk '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="6380143666419481200">Terima dan teruskan</translation>
+<translation id="638418309848716977">Pautan yang disokong</translation>
 <translation id="6384275966486438344">Ubah tetapan carian anda kepada: <ph name="SEARCH_HOST"/></translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{Kumpulan tidak bernama – 1 tab}other{Kumpulan tidak bernama – # tab}}</translation>
 <translation id="6385149369087767061">Sambung kepada Internet, kemudian cuba lagi</translation>
@@ -5007,6 +5020,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6418160186546245112">Berbalik kepada versi <ph name="IDS_SHORT_PRODUCT_NAME"/> yang dipasang sebelum ini</translation>
 <translation id="6418481728190846787">Mengalih keluar akses bagi semua apl secara kekal</translation>
 <translation id="6418511932144861495">Pasang kemas kini genting</translation>
+<translation id="6419524191360800346">Peningkatan kepada Debian 11 (Bullseye) tersedia</translation>
 <translation id="6419546358665792306">Muatkan sambungan dinyahpek</translation>
 <translation id="6419843101460769608">Jangan benarkan mana-mana tapak mengakses peranti Bluetooth</translation>
 <translation id="642469772702851743">Peranti ini (SN: <ph name="SERIAL_NUMBER"/>) telah dikunci oleh pemiliknya.</translation>
@@ -5020,6 +5034,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6434309073475700221">Buang</translation>
 <translation id="6434325376267409267">Peranti anda perlu dikemas kini sebelum anda boleh menggunakan <ph name="APP_NAME"/>.</translation>
 <translation id="3041204028661633854">Untuk mendapatkan respons yang lebih disesuaikan dengan anda, benarkan Brave Assistant mengakses tangkapan skrin bagi paparan skrin anda apabila anda mengemukakan soalan. Assistant juga mungkin menggunakan maklumat tentang lagu atau video yang sedang dimainkan.</translation>
+<translation id="6436778875248895551">Sambungan "<ph name="EXTENSION_NAME"/>" disekat oleh pentadbir anda</translation>
 <translation id="6438234780621650381">Tetapkan semula tetapan</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> - Audio sedang dimainkan</translation>
 <translation id="6442187272350399447">Hebat</translation>
@@ -5031,6 +5046,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6447210166804596538">Semak kawalan privasi dan keselamatan yang paling penting di satu tempat</translation>
 <translation id="6447842834002726250">Kuki</translation>
 <translation id="6450876761651513209">Ubah tetapan berkaitan privasi anda</translation>
+<translation id="6451344358166983408">Laman atau halaman</translation>
 <translation id="6451591602925140504">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/> dan 1 tab lain}other{<ph name="PAGE_TITLE"/> dan # tab lain}}</translation>
 <translation id="6451689256222386810">Jika anda terlupa ungkapan laluan atau ingin menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<ph name="END_LINK"/>.</translation>
 <translation id="6452181791372256707">Tolak</translation>
@@ -5048,7 +5064,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6460601847208524483">Cari Seterusnya</translation>
 <translation id="6461170143930046705">Mencari rangkaian...</translation>
 <translation id="6463795194797719782">&amp;Edit</translation>
-<translation id="6464094930452079790">imej</translation>
 <translation id="6464825623202322042">Peranti ini</translation>
 <translation id="6465841119675156448">Tanpa Internet</translation>
 <translation id="6466258437571594570">Laman akan disekat daripada mengganggu anda apabila laman itu meminta untuk menghantar pemberitahuan</translation>
@@ -5074,7 +5089,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6491376743066338510">Pengesahan gagal</translation>
 <translation id="6494327278868541139">Paparkan butiran perlindungan dipertingkatkan</translation>
 <translation id="6494445798847293442">Bukan Pihak Berkuasa Pensijilan</translation>
-<translation id="6494750904506170417">tetingkap timbul dan ubah hala</translation>
 <translation id="6494974875566443634">Penyesuaian</translation>
 <translation id="6497457470714179223">{NUM_FILES,plural, =0{Data ini mengandungi kandungan sensitif atau berbahaya}=1{Fail ini mengandungi kandungan sensitif atau berbahaya}other{Fail ini mengandungi kandungan sensitif atau berbahaya}}</translation>
 <translation id="6497789971060331894">Penatalan terbalik tetikus</translation>
@@ -5115,7 +5129,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6532663472409656417">Perusahaan Didaftarkan</translation>
 <translation id="6535331821390304775">Sentiasa benarkan <ph name="ORIGIN"/> membuka pautan jenis ini dalam apl yang berkaitan</translation>
 <translation id="653659894138286600">Imbas dokumen dan imej</translation>
-<translation id="5552185729949202575">Seret imej untuk mencari dengan Brave Lens</translation>
 <translation id="6537613839935722475">Nama boleh menggunakan huruf, nombor dan tanda sempang (-)</translation>
 <translation id="6537880577641744343">Commander</translation>
 <translation id="6538098297809675636">Ralat berlaku semasa mengesan kod</translation>
@@ -5124,7 +5137,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6540672086173674880">Brave mungkin menggunakan sejarah penyemakan imbas anda untuk memperibadikan Carian dan perkhidmatan Brave yang lain. Anda boleh menukar tetapan ini pada bila-bila masa di myaccount.google.com/activitycontrols/search</translation>
 <translation id="6541638731489116978">Tapak ini telah disekat daripada mengakses penderia gerakan anda.</translation>
 <translation id="6545665334409411530">Kadar pengulangan</translation>
-<translation id="6545864417968258051">Pengimbasan Bluetooth</translation>
 <translation id="6545867563032584178">Mikrofon dimatikan dalam Pilihan Sistem Mac</translation>
 <translation id="6547354035488017500">Kosongkan sekurang-kurangnya 512 MB ruang, jika tidak peranti anda akan menjadi tidak responsif. Untuk mengosongkan ruang, padamkan fail daripada storan peranti.</translation>
 <translation id="654871471440386944">Hidupkan semak imbas karet?</translation>
@@ -5169,10 +5181,12 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6593881952206664229">Media berhak cipta mungkin tidak dimainkan</translation>
 <translation id="6594011207075825276">Mencari peranti bersiri...</translation>
 <translation id="6595187330192059106">Sentiasa sekat <ph name="HOST"/> daripada mengawal sepenuhnya peranti MIDI.</translation>
+<translation id="6595792813574514527">Seret untuk Mencari Imej dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6596325263575161958">Pilihan penyulitan</translation>
 <translation id="6596816719288285829">Alamat IP</translation>
 <translation id="6597017209724497268">Sampel</translation>
 <translation id="6597148444736186483">Untuk log keluar daripada akaun utama pada peranti ini, klik paparan masa pada skrin anda. Dalam menu yang dipaparkan, klik "Log keluar".</translation>
+<translation id="6597331566371766302">Sambungan berikut disekat oleh pentadbir anda:</translation>
 <translation id="6601395831301182804">Adakah anda mahu mengaktifkan BraveVox, pembaca skrin terbina dalam untuk OS Brave? Jika ya, tekan bar ruang.</translation>
 <translation id="6601612474695404578">Sesetengah tapak menggunakan kuki pihak ketiga untuk memuatkan halaman tapak itu. Jika tapak tidak berfungsi, anda boleh cuba membenarkan kuki.</translation>
 <translation id="6602937173026466876">Akses pencetak anda</translation>
@@ -5181,8 +5195,8 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6606671997164410857">Nampaknya anda telah pun menyediakan Brave Assistant pada peranti lain. Dapatkan pelbagai lagi manfaat daripada Assistant anda dengan menghidupkan Konteks skrin pada peranti ini.</translation>
 <translation id="6607831829715835317">Lagi al&amp;at</translation>
 <translation id="6607890859198268021"><ph name="USER_EMAIL"/> sudah diurus oleh <ph name="DOMAIN"/>. Untuk menggunakan kawalan ibu bapa dengan Akaun Brave yang berbeza, log keluar selepas persediaan, kemudian pilih "Tambah orang" pada skrin log masuk.</translation>
+<translation id="6610002944194042868">Pilihan Terjemahan</translation>
 <translation id="6611972847767394631">Cari tab anda di sini</translation>
-<translation id="6612358246767739896">Kandungan yang dilindungi</translation>
 <translation id="6615455863669487791">Tunjukkan kepada saya</translation>
 <translation id="6618097958368085618">Simpan Juga</translation>
 <translation id="6618744767048954150">Berjalan</translation>
@@ -5192,7 +5206,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6619801788773578757">Tambahkan aplikasi kios</translation>
 <translation id="6619990499523117484">Sahkan PIN anda</translation>
 <translation id="6622980291894852883">Terus menyekat imej</translation>
-<translation id="6623589891453322342">pengendali fail</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/> mengandungi kandungan sensitif atau berbahaya. Minta pemilik membetulkan fail ini.</translation>
 <translation id="6624687053722465643">Manis</translation>
 <translation id="6628328486509726751">Dimuat naik <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5213,7 +5226,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6647838571840953560">Pada masa ini di <ph name="CHANNEL_NAME"/></translation>
 <translation id="6648911618876616409">Kemas kini genting sudah sedia untuk dipasang. Log masuk untuk bermula.</translation>
 <translation id="6649018507441623493">Tunggu sebentar...</translation>
-<translation id="6649563841575838401">Format arkib tidak disokong atau fail rosak.</translation>
 <translation id="3733807065376082271">Kata laluan anda untuk <ph name="WEBSITE"/> yang disimpan pada peranti ini dan dalam Akaun Brave anda. Yang mana satu mahu anda padamkan?</translation>
 <translation id="665061930738760572">Buka dalam &amp;Tetingkap Baharu</translation>
 <translation id="6651237644330755633">Percayakan sijil ini untuk mengenal pasti tapak web</translation>
@@ -5225,7 +5237,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
 <translation id="6659213950629089752">Halaman ini telah dizum oleh pelanjutan "<ph name="NAME"/>"</translation>
 <translation id="6659594942844771486">Tab</translation>
-<translation id="6660413144148052430">lokasi</translation>
 <translation id="666099631117081440">Pelayan cetakan</translation>
 <translation id="6662931079349804328">Dasar perusahaan berubah. Butang percubaan dialih keluar daripada bar alat.</translation>
 <translation id="6663190258859265334">Lakukan Powerwash pada <ph name="DEVICE_TYPE"/> anda dan kembali kepada versi sebelumnya.</translation>
@@ -5233,6 +5244,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6664774537677393800">Kesilapan telah berlaku semasa membuka profil anda. Sila log keluar dan log masuk sekali lagi.</translation>
 <translation id="666731172850799929">Buka dalam <ph name="APP_NAME"/></translation>
 <translation id="6670142487971298264"><ph name="APP_NAME"/> kini tersedia</translation>
+<translation id="7256334756499709483">Sesetengah sambungan boleh menambahkan enjin carian pada Brave</translation>
 <translation id="6671320560732140690">{COUNT,plural, =1{satu alamat}other{# alamat}}</translation>
 <translation id="6671497123040790595">Menyediakan pengurusan oleh <ph name="MANAGER"/></translation>
 <translation id="6673391612973410118"><ph name="PRINTER_MAKE_OR_MODEL"/> (USB)</translation>
@@ -5280,6 +5292,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6721972322305477112">&amp;Fail</translation>
 <translation id="672208878794563299">Laman ini akan meminta kebenaran lagi lain kali.</translation>
 <translation id="6723661294526996303">Import penanda halaman dan tetapan...</translation>
+<translation id="6723839827191551955">Kawal media yang anda hantar</translation>
 <translation id="6723839937902243910">Kuasa</translation>
 <translation id="6725073593266469338">Perkhidmatan UI</translation>
 <translation id="6725206449694821596">Protokol Cetakan Internet (IPP)</translation>
@@ -5287,7 +5300,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="672609503628871915">Lihat apa yang baharu</translation>
 <translation id="67269783048918309">Hantar data penggunaan dan diagnostik. Pada masa ini, peranti ini menghantar data diagnostik dan penggunaan peranti serta apl kepada Brave secara automatik. Data ini tidak akan digunakan untuk mengenal pasti anak anda dan akan membantu peningkatan kestabilan sistem dan apl serta pelbagai lagi. Sesetengah data agregat juga akan membantu apl dan rakan kongsi Brave, seperti pembangun Android. <ph name="BEGIN_LINK1"/>Tetapan<ph name="END_LINK1"/> ini dikuatkuasakan oleh pemilik. Jika tetapan Aktiviti Web &amp; Apl tambahan dihidupkan untuk anak anda, data ini mungkin disimpan ke akaun Bravenya. <ph name="BEGIN_LINK2"/>Ketahui Lebih Lanjut<ph name="END_LINK2"/></translation>
 <translation id="6727969043791803658">Disambungkan, bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
-<translation id="6732087373923685049">kamera</translation>
 <translation id="6735304988756581115">Tunjukkan kuki dan data tapak yang lain...</translation>
 <translation id="6736243959894955139">Alamat</translation>
 <translation id="6737663862851963468">Alih keluar tiket Kerberos</translation>
@@ -5299,14 +5311,13 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6745592621698551453">Kemas kini sekarang</translation>
 <translation id="6746124502594467657">Alihkan ke bawah</translation>
 <translation id="674632704103926902">Dayakan penyeretan ketik</translation>
-<translation id="8422091548140284430">Cari pada Skrin Anda dengan Brave Lens</translation>
 <translation id="6748465660675848252">Anda boleh meneruskan, tetapi hanya data disegerakkan dan tetapan anda yang akan dipulihkan. Semua data tempatan akan hilang.</translation>
-<translation id="6749006854028927059">Tapak tidak boleh menggunakan kuki anda untuk melihat aktiviti penyemakan imbas anda pada tapak lain, contohnya, untuk memperibadikan iklan. Ciri pada sesetengah tapak mungkin rosak.</translation>
 <translation id="6750757184909117990">Lumpuhkan Selular</translation>
 <translation id="6750946710563435348">Gunakan nama pengguna lain</translation>
 <translation id="6757101664402245801">URL disalin</translation>
 <translation id="6758056191028427665">Beritahu kami tentang prestasi kami.</translation>
 <translation id="6759193508432371551">Tetapan semula kilang</translation>
+<translation id="676158322851696513">"<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="6762833852331690540">Hidupkan</translation>
 <translation id="855635339720317397">Kaedah pembayaran anda pada Brave Pay</translation>
 <translation id="6767566652486411142">Pilih Bahasa Lain...</translation>
@@ -5331,7 +5342,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6787839852456839824">Pintasan papan kekunci</translation>
 <translation id="6788210894632713004">Sambungan dinyahpek</translation>
 <translation id="6789592661892473991">Pisah Mendatar</translation>
-<translation id="678982761784843853">ID kandungan yang dilindungi</translation>
 <translation id="6790428901817661496">Mainkan</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> telah ditambahkan dari jauh</translation>
 <translation id="6793604637258913070">Serlahkan karet teks apabila dipaparkan atau bergerak</translation>
@@ -5369,7 +5379,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6817174620439930047">Tanya apabila tapak mahu menggunakan mesej eksklusif sistem untuk mengakses peranti MIDI (disyorkan)</translation>
 <translation id="6818198425579322765">Bahasa Halaman yang Hendak Diterjemahkan</translation>
 <translation id="6818802132960437751">Perlindungan virus terbina dalam</translation>
-<translation id="6820143000046097424">port bersiri</translation>
 <translation id="682123305478866682">Hantar desktop</translation>
 <translation id="6823174134746916417">Ketik-untuk-klik pad sentuh</translation>
 <translation id="6824564591481349393">Salin &amp;Alamat E-mel</translation>
@@ -5408,6 +5417,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6853388645642883916">Pengemaskinian tidur</translation>
 <translation id="68541483639528434">Tutup tab lain</translation>
 <translation id="6855892664589459354">Sandaran dan pemulihan Crostini</translation>
+<translation id="6856210255562079267">Tidak dapat membuka Apl</translation>
 <translation id="6856348640027512653">Tidak dibenarkan untuk menggunakan peranti atau data realiti maya</translation>
 <translation id="6856623341093082836">Sediakan dan laras ketepatan skrin sentuh anda</translation>
 <translation id="6856850379840757744">Apabila dihidupkan, semua pemberitahuan akan disenyapkan</translation>
@@ -5480,6 +5490,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6941937518557314510">Sila log masuk ke <ph name="TOKEN_NAME"/> untuk mengesahkan <ph name="HOST_NAME"/> dengan sijil anda.</translation>
 <translation id="6943060957016121200">Dayakan Penambatan Segera</translation>
 <translation id="6943176775188458830">Batalkan pencetakan</translation>
+<translation id="6943939122536910181">Diputuskan sambungan daripada <ph name="DEVICE"/></translation>
 <translation id="6945221475159498467">Pilih</translation>
 <translation id="694592694773692225">Ubah hala disekat pada halaman ini.</translation>
 <translation id="6949434160682548041">Kata laluan (pilihan)</translation>
@@ -5503,7 +5514,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="6970480684834282392">Jenis pemula</translation>
 <translation id="6970856801391541997">Cetak Halaman Tertentu</translation>
 <translation id="6972180789171089114">Audio/Video</translation>
-<translation id="6972629891077993081">Peranti HID</translation>
 <translation id="6972754398087986839">Bermula</translation>
 <translation id="6972887130317925583">Berjaya menukar kata laluan yang terjejas. Semak kata laluan anda pada bila-bila masa dalam <ph name="SETTINGS"/>.</translation>
 <translation id="697312151395002334">Dibenarkan untuk menghantar tetingkap timbul dan menggunakan ubah hala</translation>
@@ -5549,6 +5559,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7005496624875927304">Kebenaran tambahan</translation>
 <translation id="7005812687360380971">Gagal</translation>
 <translation id="7005848115657603926">Julat halaman tidak sah, gunakan <ph name="EXAMPLE_PAGE_RANGE"/></translation>
+<translation id="7006438259896942210">Akaun ini (<ph name="USER_EMAIL_ADDRESS"/>) diurus oleh <ph name="PROFILE_NAME"/></translation>
 <translation id="700651317925502808">Tetapkan semula tetapan?</translation>
 <translation id="7006634003215061422">Jidar bawah</translation>
 <translation id="7007648447224463482">Buka semua dalam tetingkap baharu</translation>
@@ -5564,7 +5575,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7019805045859631636">Cepat</translation>
 <translation id="7022562585984256452">Halaman utama anda telah ditetapkan.</translation>
 <translation id="7023206482239788111">Kotak Pasir Privasi memelihara kehebatan web terbuka dengan mencipta cara yang lebih baik untuk melaksanakan perkhidmatan tersebut—tanpa menjejaskan laman, dan dalam masa yang sama menghalang anda daripada dijejak secara curi-curi di seluruh web.</translation>
-<translation id="7024588353896425985">Pengendali fail</translation>
 <translation id="7025082428878635038">Memperkenalkan cara baharu untuk menavigasi dengan gerak isyarat</translation>
 <translation id="7025190659207909717">Pengurusan perkhidmatan data mudah alih</translation>
 <translation id="7025895441903756761">Keselamatan dan Privasi</translation>
@@ -5620,7 +5630,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="1439926347196400598">Benarkan Brave merakam audio?</translation>
 <translation id="7086672505018440886">Sertakan fail log Brave dalam arkib.</translation>
 <translation id="7088434364990739311">Semakan kemas kini gagal dimulakan (kod ralat <ph name="ERROR"/>).</translation>
-<translation id="7088561041432335295">Zip Archiver - Buka dan muatkan fail ZIP dalam apl Fail.</translation>
 <translation id="7088674813905715446">Peranti ini telah diletakkan dalam keadaan nyahperuntukkan oleh pentadbir. Untuk mendayakannya agar dapat didaftarkan, minta pentadbir meletakkan peranti dalam keadaan belum selesai.</translation>
 <translation id="7093220653036489319">Jawapan segera</translation>
 <translation id="7093416310351037609">Untuk keselamatan data, organisasi anda menghendaki semua muat turun yang layak disimpan pada akaun <ph name="WEB_DRIVE"/> organisasi anda.</translation>
@@ -5701,6 +5710,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7196020411877309443">Mengapakah halaman ini yang saya lihat?</translation>
 <translation id="7196913789568937443">Buat sandaran ke Google Drive. Pulihkan data atau tukar peranti anda dengan mudah pada bila-bila masa. Sandaran anda merangkumi data apl. Sandaran anda dimuat naik ke Brave dan disulitkan dengan menggunakan kata laluan Akaun Brave anda. <ph name="BEGIN_LINK1"/>Ketahui Lebih Lanjut<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Dapatkan Brave Search dan ciri pintar Brave setiap kali anda menyemak imbas</translation>
+<translation id="719791532916917144">Pintasan papan kekunci</translation>
 <translation id="7198503619164954386">Anda mesti menggunakan peranti yang didaftarkan bawah perusahaan</translation>
 <translation id="7199158086730159431">Dapatkan B&amp;antuan</translation>
 <translation id="7200083590239651963">Pilih konfigurasi</translation>
@@ -5731,6 +5741,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7230222852462421043">&amp;Pulihkan Tetingkap</translation>
 <translation id="7230787553283372882">Sesuaikan saiz teks anda</translation>
 <translation id="7232750842195536390">Penamaan semula gagal</translation>
+<translation id="723343421145275488">Cari Imej dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="7234010996000898150">Membatakan pemulihan Linux</translation>
 <translation id="7235716375204803342">Mengambil aktiviti...</translation>
 <translation id="7235737137505019098">Kunci keselamatan anda tiada ruang yang mencukupi untuk menambahkan sebarang akaun lagi.</translation>
@@ -5747,6 +5758,7 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7250616558727237648">Peranti yang anda pilih untuk berkongsi fail tidak memberikan respons. Sila cuba lagi.</translation>
 <translation id="725109152065019550">Maaf, pentadbir anda telah melumpuhkan storan luar pada akaun anda.</translation>
 <translation id="7251346854160851420">Kertas dinding lalai</translation>
+<translation id="7251635775446614726">Pentadbir anda berkata: "<ph name="CUSTOM_MESSAGE"/>"</translation>
 <translation id="7251979364707973467"><ph name="WEBSITE"/> telah mengeluarkan kunci keselamatan anda dan ingin mengetahui nombor ID kunci tersebut. Laman ini akan mengetahui dengan tepat kunci keselamatan yang anda gunakan.</translation>
 <translation id="7253521419891527137">&amp;Ketahui Lebih Lanjut</translation>
 <translation id="7254951428499890870">Adakah anda pasti anda mahu melancarkan "<ph name="APP_NAME"/>" dalam mod diagnostik?</translation>
@@ -5797,7 +5809,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="730515362922783851">Bertukar data dengan mana-mana peranti pada rangkaian tempatan atau internet</translation>
 <translation id="7306521477691455105">Buka tetapan untuk menyambungkan <ph name="USB_DEVICE_NAME"/> kepada <ph name="USB_VM_NAME"/></translation>
 <translation id="7307129035224081534">Dijeda</translation>
-<translation id="7308436126008021607">penyegerakan latar belakang</translation>
 <translation id="7308643132139167865">Bahasa laman web</translation>
 <translation id="7310598146671372464">Gagal log masuk. Pelayan tidak menyokong jenis penyulitan Kerberos yang dinyatakan. Sila hubungi pentadbir anda.</translation>
 <translation id="7320213904474460808">Kembali ke rangkaian secara lalai</translation>
@@ -5844,7 +5855,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7364796246159120393">Pilih Fail</translation>
 <translation id="7365076891350562061">Saiz monitor</translation>
 <translation id="7366316827772164604">Mengimbas untuk mengesan peranti berdekatan…</translation>
-<translation id="7366362069757178916">Pengendali pembayaran</translation>
 <translation id="7366415735885268578">Tambahkan tapak</translation>
 <translation id="7366909168761621528">Data penyemakan imbas</translation>
 <translation id="7367714965999718019">Penjana Kod QR</translation>
@@ -5854,7 +5864,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7371490947952970241">Anda boleh mematikan Lokasi dengan mematikan tetapan Lokasi utama pada peranti ini. Anda juga boleh mematikan penggunaan Wi-Fi, rangkaian mudah alih dan penderia untuk lokasi dalam tetapan lokasi.</translation>
 <translation id="7371917887111892735">Tab mengecil kepada lebar tab tersemat</translation>
 <translation id="7374376573160927383">Urus peranti USB</translation>
-<translation id="7374461526650987610">Pengendali protokol</translation>
 <translation id="7375235221357833624">{0,plural, =1{Kemas kini peranti dalam masa sejam}other{Kemas kini peranti dalam masa # jam}}</translation>
 <translation id="7376543451826039186">Penyemakan imbas yang lebih cepat: Sebagai contoh, memuatkan kandungan lanjut tertentu secara proaktif berdasarkan halaman semasa</translation>
 <translation id="7376553024552204454">Serlahkan kursor tetikus semasa kursor bergerak</translation>
@@ -5899,7 +5908,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7416362041876611053">Ralat rangkaian tidak diketahui</translation>
 <translation id="741906494724992817">Apl ini tidak memerlukan kebenaran khas.</translation>
 <translation id="7419565702166471774">Sentiasa gunakan sambungan selamat</translation>
-<translation id="7421067045979951561">pengendali protokol</translation>
 <translation id="742130257665691897">Penanda halaman dialih keluar</translation>
 <translation id="7421925624202799674">&amp;Lihat Sumber Halaman</translation>
 <translation id="7422192691352527311">Keutamaan...</translation>
@@ -5998,7 +6006,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="751523031290522286"><ph name="APP_NAME"/> disekat oleh pentadbir. Minta kebenaran untuk menggunakan apl ini daripada pentadbir.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> dijeda</translation>
 <translation id="7517063221058203587">{0,plural, =1{Kemas kini peranti dalam masa 1 minit}other{Kemas kini peranti dalam masa # minit}}</translation>
-<translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Sebut "Ok Brave".</translation>
 <translation id="7523585675576642403">Namakan Semula Profil</translation>
 <translation id="7525067979554623046">Cipta</translation>
@@ -6063,7 +6070,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7582582252461552277">Lebih suka rangkaian ini</translation>
 <translation id="7582844466922312471">Data Mudah Alih</translation>
 <translation id="7583948862126372804">Kiraan</translation>
-<translation id="813677607648456893">Tidak dapat memuat turun fail pertuturan. Pengimlakan akan terus berfungsi dengan menghantar suara anda kepada Brave.</translation>
 <translation id="8201192017531062522">Brave akan terus berjalan semasa Apl Brave terbuka.</translation>
 <translation id="7589461650300748890">Wah, di sana. Berhati-hati.</translation>
 <translation id="7593653750169415785">Disekat secara automatik kerana anda telah menolak pemberitahuan beberapa kali</translation>
@@ -6112,7 +6118,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7636422033092045734">Memandangkan anda mempunyai lebih banyak suis untuk dinavigasi, autoimbas telah dimatikan. Navigasi ke butang Selesai dan tekan suis Pilih untuk menutup panduan.</translation>
 <translation id="7636919061354591437">Pasang pada Peranti ini</translation>
 <translation id="7637593984496473097">Ruang cakera tidak mencukupi</translation>
-<translation id="7638605456503525968">Port siri</translation>
 <translation id="7639914187072011620">Gagal mengambil URL ubah hala SAML daripada pelayan</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> melog masuk anda secara automatik ke tapak web yang layak menggunakan kata laluan yang disimpan.</translation>
 <translation id="7641513591566880111">Nama profil baharu</translation>
@@ -6178,9 +6183,9 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7691698019618282776">Peningkatan Crostini</translation>
 <translation id="7696063401938172191">Pada '<ph name="PHONE_NAME"/>' anda:</translation>
 <translation id="7697166915480294040">Butiran disembunyikan semasa anda berkongsi skrin anda</translation>
+<translation id="7698507637739331665">Sesetengah item disekat</translation>
 <translation id="7701040980221191251">Tiada</translation>
 <translation id="7701869757853594372">Pemegang USER</translation>
-<translation id="7701928712056789451">Item ini mungkin berbahaya</translation>
 <translation id="7702574632857388784">Alih keluar <ph name="FILE_NAME"/> daripada senarai</translation>
 <translation id="7702907602086592255">Domain</translation>
 <translation id="7704305437604973648">Tugas</translation>
@@ -6350,14 +6355,13 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7853747251428735">Lagi Al&amp;atan</translation>
 <translation id="7855678561139483478">Alihkan tab ke tetingkap baharu</translation>
 <translation id="7857093393627376423">Cadangan teks</translation>
-<translation id="2088677651005944758">Cari sebahagian daripada halaman ini dengan Brave Lens</translation>
 <translation id="7857949311770343000">Adakah ini halaman tab baharu yang anda jangkakan?</translation>
 <translation id="7858328180167661092"><ph name="APP_NAME"/> (Windows)</translation>
 <translation id="786073089922909430">Perkhidmatan: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7861215335140947162">&amp;Muat turun</translation>
 <translation id="2614143654677404775">Bahasa Akaun Brave</translation>
 <translation id="7864539943188674973">Lumpuhkan Bluetooth</translation>
-<translation id="7019964108096075053">Cari Sebahagian daripada Halaman Ini dengan Brave Lens</translation>
+<translation id="7865127013871431856">Pilihan Translate</translation>
 <translation id="7869143217755017858">Lumpuhkan mod gelap</translation>
 <translation id="786957569166715433"><ph name="DEVICE_NAME"/> - Digandingkan</translation>
 <translation id="7870730066603611552">Semak pilihan penyegerakan selepas persediaan</translation>
@@ -6438,7 +6442,6 @@ dan Ctrl+Alt+Kurangkan kecerahan untuk zum keluar.</translation>
 <translation id="7946586320617670168">Tempat asal mestilah selamat</translation>
 <translation id="794676567536738329">Sahkan Kebenaran</translation>
 <translation id="7947962633355574091">S&amp;alin Alamat Video</translation>
-<translation id="7949924743070109245"><ph name="FILE_NAME"/> mengandungi data sensitif atau berbahaya. Pentadbir anda berkata "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1618464105329025698">Untuk menambahkan atau mengurus kaedah pembayaran Brave Pay, lawati <ph name="BEGIN_LINK"/>Akaun Brave<ph name="END_LINK"/> anda</translation>
 <translation id="7952708427581814389">Tapak boleh meminta untuk melihat teks dan imej pada papan keratan anda</translation>
 <translation id="795282463722894016">Pemulihan selesai</translation>
@@ -6515,6 +6518,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="8028803902702117856">Memuat turun <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">Saiz</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> - Kebenaran diminta, tekan ⌘ + Pilihan + Anak panah ke atas untuk memberikan respons</translation>
+<translation id="8030169304546394654">Diputuskan sambungan</translation>
 <translation id="8030852056903932865">Luluskan</translation>
 <translation id="8032244173881942855">Tidak dapat menghantar tab.</translation>
 <translation id="8033827949643255796">dipilih</translation>
@@ -6588,6 +6592,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> sedang menggunakan tetapan proksi daripada sambungan</translation>
 <translation id="8097959162767603171">Pentadbir anda mesti menerima syarat perkhidmatan dalam senarai peranti Brave Konsol pentadbiran terlebih dahulu.</translation>
 <translation id="8098616321286360457">Sambungan rangkaian diperlukan</translation>
+<translation id="8099495042588009598">Lagi kebenaran</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> dipilih. Tekan Cari dan Ruang untuk menyahpilih.</translation>
 <translation id="810185532889603849">Warna tersuai</translation>
 <translation id="8101987792947961127">Powerwash diperlukan pada but semula seterusnya</translation>
@@ -6601,7 +6606,6 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="8110489095782891123">Memuat turun senarai kenalan...</translation>
 <translation id="8113476325385351118">Teruskan menyekat tapak ini daripada mengawal sepenuhnya peranti MIDI</translation>
 <translation id="2972318514147518075">Navigasi ke laman utama, ke halaman sebelumnya dan bertukar apl dengan menggunakan butang dalam mod tablet. Dihidupkan apabila BraveVox atau Klik automatik didayakan.</translation>
-<translation id="8114875720387900039">Pisah mendatar</translation>
 <translation id="8115139559594092084">Daripada Google Drive anda</translation>
 <translation id="8116972784401310538">&amp;Pengurus penanda halaman</translation>
 <translation id="8117752106453549166">Linux sedang dikonfigurasi oleh pentabdir anda. Konfigurasi memerlukan masa beberapa minit.</translation>
@@ -6640,6 +6644,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="8149564499626272569">Sahkan melalui telefon anda dengan kabel USB</translation>
 <translation id="8151638057146502721">Konfigurasi</translation>
 <translation id="8154790740888707867">Tiada fail</translation>
+<translation id="8154912474061769055">Ciri pada banyak laman mungkin tidak berfungsi</translation>
 <translation id="815491593104042026">Op! Pengesahan gagal kerana telah dikonfigurasikan untuk menggunakan URL tidak selamat (<ph name="BLOCKED_URL"/>). Sila hubungi pentadbir anda.</translation>
 <translation id="8155676038687609779">{COUNT,plural, =0{Tiada kata laluan yang terjejas dijumpai}=1{{COUNT} kata laluan yang terjejas}other{{COUNT} kata laluan yang terjejas}}</translation>
 <translation id="8157248655669507702">Dayakan data mudah alih untuk memasang profil eSIM</translation>
@@ -6675,6 +6680,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="8184318863960255706">Maklumat lanjut</translation>
 <translation id="8184472985242519288">Seragam</translation>
 <translation id="8186609076106987817">Pelayan tidak dapat mencari fail.</translation>
+<translation id="8186704951085064172">Cari Sebahagian daripada Halaman Ini dengan <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="8188389033983459049">Semak tetapan peranti anda dan hidupkannya untuk meneruskan</translation>
 <translation id="8189306097519446565">Akaun sekolah</translation>
 <translation id="8189750580333936930">Kotak Pasir Privasi</translation>
@@ -6683,6 +6689,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="819137301779081601">Tekan suis baharu untuk memulakan penguntukan
 Tekan suis yang telah diuntukkan untuk mengalih keluar penguntukan</translation>
 <translation id="8192944472786724289"><ph name="APP_NAME"/> mahu berkongsi kandungan skrin anda.</translation>
+<translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Peranti anda<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195027750202970175">Saiz pada cakera</translation>
 <translation id="8198323535106903877">Kami akan memasang <ph name="NUMBER_OF_APPS"/> apl itu untuk anda</translation>
 <translation id="8198456017687137612">Menghantar tab</translation>
@@ -6716,7 +6723,6 @@ Tekan suis yang telah diuntukkan untuk mengalih keluar penguntukan</translation>
 <translation id="8235418492073272647">Halaman dikongsi daripada <ph name="DEVICE_NAME"/></translation>
 <translation id="8236911020904880539">keluar</translation>
 <translation id="8236917170563564587">Kongsi tab ini</translation>
-<translation id="8237471930911823556"><ph name="APP_NAME"/> ditetapkan untuk dibuka dalam tab penyemak imbas baharu, pautan yang disokong juga akan dibuka dalam penyemak imbas.</translation>
 <translation id="8237647586961940482">Merah jambu gelap dan merah</translation>
 <translation id="8239032431519548577">Pendaftaran perusahaan selesai</translation>
 <translation id="8239932336306009582">Tidak dibenarkan untuk menghantar pemberitahuan</translation>
@@ -6755,7 +6761,6 @@ Tekan suis yang telah diuntukkan untuk mengalih keluar penguntukan</translation>
     <ph name="BEGIN_PARAGRAPH3"/>Pemilik boleh mengawal ciri ini daripada Tetapan &gt; Terperinci &gt; Hantar data diagnostik dan penggunaan kepada Brave secara automatik.<ph name="END_PARAGRAPH3"/>
     <ph name="BEGIN_PARAGRAPH4"/>Jika tetapan Aktiviti Web &amp; Apl tambahan dihidupkan untuk anak anda, data ini mungkin disimpan pada Akaun Brave mereka. Ketahui lebih lanjut tentang tetapan ini dan cara menyelaraskan tetapan ini pada families.google.com.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="826905130698769948">Sijil pelanggan tidak sah</translation>
-<translation id="8270242299912238708">Dokumen PDF</translation>
 <translation id="827097179112817503">Paparkan butang laman utama</translation>
 <translation id="8271268254812352141">Dapatkan takrif, terjemahan atau penukaran unit apabila anda mengklik kanan atau menyentuh &amp; menahan teks. Sesuaikan bahasa terjemahan dalam <ph name="LINK_BEGIN"/>Bahasa laman web<ph name="LINK_END"/>.</translation>
 <translation id="8271379370373330993">Ibu bapa, beberapa langkah yang seterusnya adalah untuk anda. Anda boleh menyerahkan <ph name="DEVICE_TYPE"/> ini semula kepada anak anda selepas persediaan akaun selesai.</translation>
@@ -6776,7 +6781,6 @@ Tekan suis yang telah diuntukkan untuk mengalih keluar penguntukan</translation>
 <translation id="8288032458496410887">Nyahpasang <ph name="APP"/>...</translation>
 <translation id="8289128870594824098">Saiz cakera</translation>
 <translation id="8293206222192510085">Tambah Penanda Halaman</translation>
-<translation id="829335040383910391">bunyi</translation>
 <translation id="8294431847097064396">Sumber</translation>
 <translation id="8298429963694909221">Kini anda boleh menerima pemberitahuan daripada telefon pada <ph name="DEVICE_TYPE"/> anda. Tindakan mengetepikan pemberitahuan pada <ph name="DEVICE_TYPE"/> anda akan mengetepikan pemberitahuan tersebut pada telefon anda juga. Pastikan telefon anda berada berdekatan dan Bluetooth serta Wi-Fi dihidupkan.</translation>
 <translation id="8299319456683969623">Anda kini di luar talian.</translation>
@@ -6796,7 +6800,6 @@ Tekan suis yang telah diuntukkan untuk mengalih keluar penguntukan</translation>
 <translation id="8316618172731049784">Hantar ke <ph name="DEVICE_NAME"/></translation>
 <translation id="8317671367883557781">Tambahkan sambungan rangkaian</translation>
 <translation id="8319414634934645341">Penggunaan Penting Dilanjutkan</translation>
-<translation id="8321476692217554900">pemberitahuan</translation>
 <translation id="8321492415476219409">Tetapkan suis: Sebelumnya</translation>
 <translation id="8321837372750396788"><ph name="DEVICE_TYPE"/> ini akan diurus oleh <ph name="MANAGER"/>.</translation>
 <translation id="8322814362483282060">Halaman ini telah disekat daripada mengakses mikrofon anda.</translation>
@@ -6866,7 +6869,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8404893580027489425">Penderia cap jari terletak di sisi sebelah kanan <ph name="DEVICE_TYPE"/> anda. Sentuh dengan lembut menggunakan mana-mana jari.</translation>
 <translation id="8405046151008197676">Dapatkan sorotan daripada kemas kini terbaharu</translation>
 <translation id="8407199357649073301">Tahap Log:</translation>
-<translation id="8409413588194360210">pengendali pembayaran</translation>
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8412136526970428322"><ph name="PERMISSION"/> dan <ph name="COUNT"/> lagi dibenarkan</translation>
 <translation id="8413385045638830869">Tanya dahulu (disyorkan)</translation>
@@ -6879,6 +6881,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8425213833346101688">Tukar</translation>
 <translation id="8425492902634685834">Pin ke Bar Tugas</translation>
 <translation id="8425768983279799676">Anda boleh menggunakan PIN anda untuk membuka kunci peranti anda.</translation>
+<translation id="8426111352542548860">Simpan Kumpulan</translation>
 <translation id="8426713856918551002">Mendayakan</translation>
 <translation id="8427213022735114808">Pengimlakan menghantar suara anda kepada Brave untuk membolehkan penaipan suara dalam mana-mana medan teks.</translation>
 <translation id="8427292751741042100">dibenam pada mana-mana hos</translation>
@@ -6904,7 +6907,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8456761643544401578">Mod gelap automatik</translation>
 <translation id="845702320058262034">Tidak dapat bersambung. Pastikan Bluetooth telefon anda dihidupkan.</translation>
 <translation id="8457451314607652708">Import penanda halaman</translation>
+<translation id="8458341576712814616">Pintasan</translation>
 <translation id="8458627787104127436">Buka semua (<ph name="URL_COUNT"/>) dalam tetingkap baharu</translation>
+<translation id="8460932807646981183">Urus enjin carian dan carian laman</translation>
 <translation id="84613761564611563">UI yang dikonfigurasi rangkaian diminta, sila tunggu...</translation>
 <translation id="8461914792118322307">Proksi</translation>
 <translation id="8463215747450521436">Pengguna diselia ini mungkin telah dipadamkan atau dilumpuhkan oleh pengurus. Sila hubungi pengurus jika anda ingin meneruskan log masuk sebagai pengguna ini.</translation>
@@ -6923,6 +6928,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2015014930243978107">Program lain pada komputer anda menambah sambungan yang boleh mengubah cara Brave berfungsi.</translation>
 <translation id="8477241577829954800">Menggantikan</translation>
 <translation id="8477384620836102176">&amp;Umum</translation>
+<translation id="8479109005219657634">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Peranti audio, Tahap bateri <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8479176401914456949">Kod tidak sah. Sila cuba lagi.</translation>
 <translation id="8480082892550707549">Walaupun anda pernah memuat turun fail daripada tapak ini sebelum ini, tapak ini mungkin tidak selamat buat sementara waktu (digodam). Cuba muat turun fail ini kemudian.</translation>
 <translation id="8480869669560681089">Peranti tidak diketahui daripada <ph name="VENDOR_NAME"/></translation>
@@ -6936,6 +6942,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8492822722330266509">Tapak boleh menghantar tetingkap timbul dan menggunakan ubah hala</translation>
 <translation id="7438697671019881004">Maklum Balas Brave Cast</translation>
 <translation id="8493236660459102203">Mikrofon:</translation>
+<translation id="84959976576210191">Dalam bar alamat, masukkan pintasan bagi laman tempat anda ingin melakukan carian, seperti "@gmail". Kemudian, tekan pintasan papan kekunci pilihan anda dan masukkan istilah carian anda.</translation>
 <translation id="8496717697661868878">Jalankan Pemalam Ini</translation>
 <translation id="8497219075884839166">Windows Utilities</translation>
 <translation id="8498214519255567734">Memudahkan anda melihat skrin atau membaca dalam cahaya malap</translation>
@@ -6959,6 +6966,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4483547786985740455">Simpan kad ke Akaun Brave anda</translation>
 <translation id="8525306231823319788">Skrin penuh</translation>
 <translation id="8526666462501866815">Membatalkan peningkatan Linux</translation>
+<translation id="8526813720153458066">SSH</translation>
 <translation id="8528074251912154910">Tambah bahasa</translation>
 <translation id="8528962588711550376">Melog masuk.</translation>
 <translation id="8529925957403338845">Sambungan Penambatan Segera gagal dilakukan</translation>
@@ -7024,7 +7032,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8613164732773110792">Aksara huruf kecil, angka, garis bawah atau sempang sahaja</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> terlalu besar untuk semakan keselamatan. Anda boleh membuka fail sehingga 50 MB.</translation>
 <translation id="8616441548384109662">Tambahkan <ph name="CONTACT_NAME"/> pada kenalan anda</translation>
-<translation id="8617269623452051934">penggunaan peranti anda</translation>
 <translation id="8617748779076050570">ID sambungan selamat: <ph name="CONNECTION_ID"/></translation>
 <translation id="8619803522055190423">Letak bayang</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
@@ -7064,7 +7071,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8648252583955599667"><ph name="GET_HELP_LINK"/> atau <ph name="RE_SCAN_LINK"/></translation>
 <translation id="8648408795949963811">Suhu warna Cahaya Malam</translation>
 <translation id="8648544143274677280"><ph name="SITE_NAME"/> ingin: <ph name="FIRST_PERMISSION"/>, <ph name="SECOND_PERMISSION"/> dan pelbagai lagi</translation>
-<translation id="865032292777205197">penderia gerakan</translation>
 <translation id="8650543407998814195">Walaupun anda tidak dapat mengakses profil lama anda lagi, anda masih boleh mengalih keluar profil tersebut.</translation>
 <translation id="8651585100578802546">Paksa Muatkan Semula Halaman Ini</translation>
 <translation id="8652400352452647993">Ralat sambungan pek</translation>
@@ -7073,7 +7079,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8655972064210167941">Log masuk gagal kerana kata laluan anda tidak dapat disahkan. Sila hubungi pentadbir anda atau cuba lagi.</translation>
 <translation id="8657393004602556571">Adakah anda ingin membuang maklum balas?</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> berkongsi skrin dan audio anda dengan <ph name="TAB_NAME"/>.</translation>
-<translation id="8660073998956001352">Enjin carian anda</translation>
 <translation id="8662671328352114214">Sertai rangkaian <ph name="TYPE"/></translation>
 <translation id="8662811608048051533">Mengelog anda keluar daripada kebanyakan tapak.</translation>
 <translation id="8662911384982557515">Tukar halaman utama anda kepada: <ph name="HOME_PAGE"/></translation>
@@ -7142,7 +7147,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8725066075913043281">Cuba lagi</translation>
 <translation id="8725178340343806893">Kegemaran/Penanda halaman</translation>
 <translation id="8726206820263995930">Ralat semasa mengambil tetapan dasar dari pelayan: <ph name="CLIENT_ERROR"/>.</translation>
-<translation id="8727154974495727220">Apabila <ph name="DEVICE_TYPE"/> anda selesai disediakan, tekan butang Assistant atau sebut "Ok Brave" untuk mendapatkan bantuan pada bila-bila masa. Pergi ke tetapan Assistant untuk membuat perubahan.</translation>
 <translation id="8729133765463465108">Gunakan kamera untuk mengimbas Kod QR</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="8731629443331803108"><ph name="SITE_NAME"/> ingin: <ph name="PERMISSION"/></translation>
@@ -7209,7 +7213,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8786824282808281903">Apabila anak anda melihat ikon ini, cap jari boleh digunakan untuk pengenalan atau meluluskan pembelian.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Kumpulan Tidak Bernama – 1 Tab}other{Kumpulan Tidak Bernama – # Tab}}</translation>
 <translation id="8791534160414513928">Hantar permintaan 'Jangan Kesan' dengan trafik penyemakan imbas anda</translation>
-<translation id="8792626944327216835">mikrofon</translation>
 <translation id="879413103056696865">Semasa tempat liputan dihidupkan, <ph name="PHONE_NAME"/> anda akan:</translation>
 <translation id="8795916974678578410">Tetingkap Baharu</translation>
 <translation id="8797459392481275117">Jangan Sekali-kali Terjemahkan Tapak Ini</translation>
@@ -7232,7 +7235,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8814190375133053267">Wi-Fi</translation>
 <translation id="8814319344131658221">Bahasa untuk semakan ejaan adalah berdasarkan pilihan bahasa anda</translation>
 <translation id="8814644416678422095">Pemacu keras</translation>
-<translation id="8814687660896548945">Sila tunggu, arkib sedang diimbas…</translation>
 <translation id="881782782501875829">Tambahkan nombor port</translation>
 <translation id="881799181680267069">Sembunyikan Yang Lain</translation>
 <translation id="8818152010000655963">Kertas dinding</translation>
@@ -7333,7 +7335,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8907787635362884532">Penerbit: <ph name="APP_ORIGIN"/></translation>
 <translation id="568229640676399500">Brave boleh menyemak komputer anda untuk mengesan perisian berbahaya</translation>
 <translation id="8909298138148012791"><ph name="APP_NAME"/> telah dinyahpasang</translation>
-<translation id="3499452739340047976">Seret untuk Mencari Imej dengan Brave Lens</translation>
 <translation id="8909833622202089127">Tapak sedang menjejak lokasi anda</translation>
 <translation id="5849608398437058285">Perubahan kepada penanda halaman, sejarah, kata laluan dan tetapan anda yang lain tidak akan disegerakkan ke Akaun Brave anda lagi. Namun begitu, data anda yang sedia ada akan terus disimpan dalam Akaun Brave anda dan boleh diurus di <ph name="BEGIN_LINK"/>Papan Pemuka Brave<ph name="END_LINK"/>.</translation>
 <translation id="8910987510378294980">Sembunyikan senarai peranti</translation>
@@ -7383,7 +7384,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8966809848145604011">Profil Lain</translation>
 <translation id="8966870118594285808">Buka semula tab jika anda menutup tab itu secara tidak sengaja</translation>
 <translation id="8967427617812342790">Tambahkan pada senarai bacaan</translation>
-<translation id="8967866634928501045">Tekan Alt Shift A untuk memaparkan</translation>
 <translation id="8968766641738584599">Simpan kad</translation>
 <translation id="89720367119469899">Lepas</translation>
 <translation id="8842834450537919370">Sila semak dengan pentadbir rangkaian anda bagi memastikan bahawa tembok api tidak menyekat muat turun dari pelayan Brave.</translation>
@@ -7393,6 +7393,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="897525204902889653">Perkhidmatan Kuarantin</translation>
 <translation id="8975396729541388937">Nyahlanggan pada bila-bila masa dengan mengklik pautan dalam e-mel yang anda terima.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" dan 1 tab lain}other{"<ph name="TAB_TITLE"/>" dan # tab lain}}</translation>
+<translation id="8977175149983066223">Peranti <ph name="DEVICE_INDEX"/> daripada <ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, Tetikus</translation>
 <translation id="8977811652087512276">Kata laluan salah atau fail rosak</translation>
 <translation id="8978154919215542464">Hidup - segerakkan semuanya</translation>
 <translation id="897939795688207351">Di <ph name="ORIGIN"/></translation>
@@ -7439,6 +7440,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9023909777842748145">Tindakan mematikan ciri ini tidak menjejaskan keupayaan peranti anda menghantar maklumat yang diperlukan untuk perkhidmatan penting seperti kemas kini sistem dan keselamatan.</translation>
 <translation id="9024127637873500333">&amp;Buka dalam Tab Baharu</translation>
 <translation id="9024158959543687197">Ralat melekapkan perkongsian. Semak URL perkongsian fail dan cuba lagi.</translation>
+<translation id="9024692527554990034">Anda boleh menggunakan pintasan dalam bar alamat untuk melakukan carian dalam laman tertentu dengan pantas atau menggunakan enjin carian lain</translation>
 <translation id="9026731007018893674">muat turun</translation>
 <translation id="9026852570893462412">Proses ini mungkin mengambil masa beberapa minit. Memuat turun mesin maya.</translation>
 <translation id="9027459031423301635">Buka Pautan dalam Tab &amp;Baharu</translation>
@@ -7462,6 +7464,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9042893549633094279">Privasi dan keselamatan</translation>
 <translation id="904451693890288097">Sila masukkan kekunci laluan untuk "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="9044646465488564462">Gagal bersambung ke rangkaian: <ph name="DETAILS"/></translation>
+<translation id="9045160989383249058">Senarai bacaan anda telah dialihkan ke panel sisi baharu. Cuba di sini.</translation>
 <translation id="4534361985432360439">Menghantar alamat web halaman yang cuba anda capai kepada Brave</translation>
 <translation id="9048745018038487540">Pilih semua fon</translation>
 <translation id="9050666287014529139">Frasa laluan</translation>
@@ -7472,7 +7475,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="9055636786322918818">Kuat kuasakan penyulitan RC4. Penggunaan pilihan ini akan meningkatkan risiko anda, kerana sifer RC4 tidak selamat.</translation>
 <translation id="9056810968620647706">Tiada padanan dijumpai.</translation>
 <translation id="9057354806206861646">Kemas kini jadual</translation>
-<translation id="7483910542760516650">Seret Imej untuk Mencari dengan Brave Lens</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">Ralat daripada baris <ph name="ERROR_LINE_START"/> hingga <ph name="ERROR_LINE_END"/></translation>
 <translation id="9063800855227801443">Tidak dapat menangkap kandungan sulit</translation>
@@ -7484,6 +7486,7 @@ Anda boleh menguntukkan berbilang suis kepada tindakan ini</translation>
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         Ketahui tentang data yang dikumpulkan oleh Brave dan tujuan pengumpulan ini di <ph name="BEGIN_LINK2"/>policies.google.com<ph name="END_LINK2"/>.</translation>
+<translation id="9066777626153702300">Laman tidak aktif</translation>
 <translation id="9066782832737749352">Teks kepada Pertuturan</translation>
 <translation id="9068878141610261315">Jenis fail tidak disokong</translation>
 <translation id="9070342919388027491">Tab dialihkan ke kiri</translation>
@@ -7539,7 +7542,6 @@ Anda boleh menguntukkan berbilang suis kepada tindakan ini</translation>
 <translation id="9121814364785106365">Buka sebagai tab dipin</translation>
 <translation id="9122176249172999202"><ph name="IDS_SHORT_PRODUCT_NAME"/> dijeda</translation>
 <translation id="9124003689441359348">Kata laluan yang disimpan akan kelihatan di sini</translation>
-<translation id="7100587578659372059">Beritahu saya apabila Brave sudah selesai mencari perisian berbahaya</translation>
 <translation id="9126149354162942022">Warna kursor</translation>
 <translation id="9128317794749765148">Persediaan tidak dapat diselesaikan</translation>
 <translation id="9128335130883257666">Buka halaman tetapan untuk <ph name="INPUT_METHOD_NAME"/></translation>
@@ -7619,7 +7621,7 @@ Anda boleh menguntukkan berbilang suis kepada tindakan ini</translation>
 <translation id="9215293857209265904">"<ph name="EXTENSION_NAME"/>" ditambah</translation>
 <translation id="9215742531438648683">Nyahpasang Gedung Google Play</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
-<translation id="9219103736887031265">Imej</translation>
+<translation id="9218842937876577955"><ph name="APP_NAME"/> (apl tidak disokong)</translation>
 <translation id="9220525904950070496">Alih keluar akaun</translation>
 <translation id="9220820413868316583">Angkat kemudian cuba lagi.</translation>
 <translation id="923467487918828349">Tunjukkan Semua</translation>
@@ -7687,7 +7689,6 @@ Anda boleh menguntukkan berbilang suis kepada tindakan ini</translation>
 <translation id="987897973846887088">Tiada imej tersedia</translation>
 <translation id="988320949174893488">Tersentak-sentak Sekali-sekala</translation>
 <translation id="988978206646512040">Ungkapan laluan yang dikosongkan tidak dibenarkan</translation>
-<translation id="991413375315957741">penderia gerakan atau cahaya</translation>
 <translation id="992032470292211616">Sambungan, apl dan tema boleh mengancam peranti anda. Adakah anda pasti mahu meneruskan?</translation>
 <translation id="992256792861109788">Merah Jambu</translation>
 <translation id="992592832486024913">Lumpuhkan BraveVox (maklum balas dituturkan)</translation>
@@ -7771,7 +7772,7 @@ Anda boleh menguntukkan berbilang suis kepada tindakan ini</translation>
 <translation id="383007806262310953">Tunjukkan bar penanda halaman</translation>
 <translation id="7100095060831768635">Pengiklan dapat mengetahui apabila beribu-ribu pengguna berkongsi minat yang serupa—seperti orang ramai di konsert—dan memilih iklan untuk orang ramai, dan bukannya profil individu.</translation>
 <translation id="8648684608605749476">Sekat kuki pihak ketiga dalam Inkognito</translation>
-<translation id="2470565056986576858">Semasa dalam Peribadi, tapak tidak dapat menggunakan kuki anda untuk melihat aktiviti penyemakan imbas anda merentasi tapak berbeza, sebagai contoh, untuk memperibadikan iklan. Ciri di sesetengah tapak mungkin rosak.</translation>
+<translation id="255999604394332437">Semasa dalam Peribadi, laman tidak dapat menggunakan kuki anda untuk melihat aktiviti penyemakan imbas anda merentasi laman berbeza, sebagai contoh, untuk memperibadikan iklan. Ciri di sesetengah laman mungkin tidak berfungsi.</translation>
 <translation id="6105125042109106861">Kuki pihak ketiga disekat dalam mod Inkognito</translation>
 <translation id="6710473112951410470">Sesi Peribadi semasa sahaja</translation>
 <translation id="8148807910118761153">Tetapan tersuai ini akan dialih keluar apabla anda menutp semua tetingkap Peribadi anda</translation>

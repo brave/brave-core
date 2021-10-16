@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Chrome OS tidak dapat menyinkronkan data Anda karena Sinkronisasi tidak tersedia untuk domain Anda.</translation>
 <translation id="5147525139567260139">Bagikan tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan izin untuk mengakses kamera guna membuat peta 3D untuk area di sekeliling Anda.</translation>
+<translation id="4828904843379324771">Jika Anda menutup Brave, browser akan otomatis menghapus cookie dan data situs dari halaman yang dibuka</translation>
 <translation id="5616153642055197778">Tersedia versi Brave yang baru dan lebih aman.</translation>
 <translation id="6797402139308059782">Jalankan Brave di latar belakang</translation>
 <translation id="5875673934455379806">Instal ulang Brave</translation>
@@ -30,6 +31,7 @@
 <translation id="9095263438435683933">Untuk mengirimkan nomor dari sini ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
 <translation id="3813272600615358652">Ekstensi ini telah mengubah apa yang ditampilkan oleh halaman saat Anda memulai Brave.</translation>
 <translation id="2576129394594491151">Ekstensi "<ph name="EXTENSION_NAME"/>" telah mengubah apa yang ditampilkan oleh halaman saat Anda memulai Brave.</translation>
+<translation id="1248225940185478633">Brave memerlukan izin mikrofon dan kamera untuk situs ini</translation>
 <translation id="6078442581074612226">Di Brave</translation>
 <translation id="2485422356828889247">Uninstal</translation>
 <translation id="9026991721384951619">Chrome OS tidak dapat menyinkronkan data karena detail ID masuk Anda belum diperbarui.</translation>
@@ -49,6 +51,8 @@
 <translation id="777113543093865885">Buang dari Brave...</translation>
 <translation id="2885378588091291677">Pengelola Tugas</translation>
 <translation id="2176825726964012531">Tentang &amp;Brave</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Pengingat terakhir: penginstalan <ph name="BEGIN_BOLD"/>akan menghapus seluruh data di hard drive<ph name="END_BOLD"/>. Pastikan Anda telah mencadangkan semua data penting.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Penginstalan tidak dapat dibatalkan setelah dimulai.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave sudah diperbarui</translation>
 <translation id="2953892977076487219">Brave mencoba mengedit sandi.</translation>
 <translation id="8755404239607088219">Brave tidak dapat memeriksa sandi Anda. Coba lagi nanti.</translation>
@@ -77,7 +81,6 @@
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> dapat membuat berpindah-pindah profil Brave</translation>
 <translation id="8703492925273919597">Tutup semua jendela Brave dan coba lagi.</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
-<translation id="2409866122341731384">Hapus Hard Drive &amp; Instal Chrome OS</translation>
 <translation id="7029305463989165490">Untuk mengirimkan nomor dari <ph name="ORIGIN"/> ke ponsel Android Anda, login ke Brave di kedua perangkat.</translation>
 <translation id="4304059894777924102">Brave tidak dapat memeriksa sandi Anda. Coba periksa koneksi internet Anda.</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
@@ -140,6 +143,7 @@
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="79947657522496226">Chrome OS terwujud karena adanya <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> tambahan, seperti <ph name="BEGIN_LINK_LINUX_OSS"/>lingkungan pengembangan Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
+<translation id="8054200348483755053">Brave menemukan bahwa item berikut berisi malware:</translation>
 <translation id="5895138241574237353">Mulai Ulang</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Login Jaringan</translation>
 <translation id="3598551856834560515">Perbarui Brave untuk memulai sinkronisasi</translation>
@@ -154,18 +158,10 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya.</translation>
 <translation id="7006260220514217183">Safe Browsing nonaktif. Brave merekomendasikan untuk mengaktifkannya.</translation>
 <translation id="4060970194201477024">Anda dapat berpindah-pindah profil Brave di sini</translation>
-<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Kami siap menginstal Chrome OS. Setelah Anda melanjutkan:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>File, data, dan sistem operasi saat ini akan dihapus.
-          <ph name="LIST_ITEM"/>Chrome OS akan diinstal.
-          <ph name="LIST_ITEM"/>Perangkat Anda akan dimatikan setelah proses penginstalan selesai.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Pengingat terakhir: penginstalan akan menghapus seluruh data di hard drive. Pastikan Anda telah mencadangkan semua data penting.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Penginstalan tidak dapat dibatalkan setelah dimulai.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Pastikan Anda login ke Brave di <ph name="TARGET_DEVICE_NAME"/> Anda, lalu coba kirimkan lagi.</translation>
 <translation id="8320964054148936490">Komputer ini sudah memiliki versi Brave yang lebih baru. Jika software tidak bekerja, harap coba uninstal Brave, lalu cobalah kembali.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave akan diluncurkan ulang sekarang}=1{Brave akan diluncurkan ulang dalam 1 detik}other{Brave akan diluncurkan ulang dalam # detik}}</translation>
+<translation id="5980269616827212166">Brave memerlukan izin akses penyimpanan untuk mendownload file</translation>
 <translation id="5019879183386042809">Jadikan Brave browser default</translation>
 <translation id="428541510811554120">Brave tidak dapat memeriksa update. Coba periksa koneksi internet Anda.</translation>
 <translation id="7445061995866044926">Keluar dari Brave?</translation>
@@ -180,14 +176,15 @@
 <translation id="2644798301485385923">Sistem Chrome OS</translation>
 <translation id="1684121725014454063">Selamat datang di profil Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulai ulang dalam 1 detik}other{Brave akan dimulai ulang dalam # detik}}</translation>
-<translation id="664235759707825982">Siap menginstal Chrome OS</translation>
 <translation id="2675662665675552980">Juga mengontrol halaman apa yang ditampilkan saat Anda memulai Brave.</translation>
 <translation id="5590013613412457132">Uninstal Brave</translation>
 <translation id="8646609321956191980">Setiap profil memiliki info Brave tersendiri, seperti bookmark, histori, sandi, dan lainnya</translation>
 <translation id="2312399718665761438">Untuk memperbaiki kesalahan ejaan, Brave mengirimkan teks yang Anda ketik di kolom teks ke Brave</translation>
 <translation id="3507835409099344374">Buka setelan notifikasi Brave</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
+<translation id="245693535809364497">Brave memerlukan izin kamera untuk membuat peta 3D area sekitar Anda</translation>
 <translation id="6676384891291319759">Akses Internet</translation>
+<translation id="1257247502847251159">Brave memerlukan izin mikrofon untuk situs ini</translation>
 <translation id="1489465648257900784">Profil Anda tidak dapat digunakan karena berasal dari Brave versi yang lebih baru.
 
 Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda atau gunakan versi Brave yang lebih baru.</translation>
@@ -199,6 +196,7 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="8211837073776713955">Brave akan memberi tahu jika sandi Anda disusupi</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
+<translation id="3028928628792374067">Brave menemukan bahwa "<ph name="EXTENSION_NAME"/>" berisi malware</translation>
 <translation id="2301993384336631869">Brave telah diperbarui, tetapi Anda belum menggunakannya selama setidaknya 30 hari.</translation>
 <translation id="8828443087767259398">Brave memerlukan akses Bluetooth untuk melanjutkan 
  penyambungan. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -206,6 +204,7 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="3335606533094650083">Brave memerlukan izin akses ke mikrofon untuk situs ini</translation>
 <translation id="1705567146636171298">Perbarui Brave</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave.</translation>
+<translation id="1008530050039597147">Brave memerlukan izin kamera untuk situs ini</translation>
 <translation id="1197672524850678392">Tidak dapat meluncurkan Brave. Harap coba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat memeriksa sandi Anda. Coba lagi setelah 24 jam.</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
@@ -247,6 +246,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan Brave sekunder, dan tidak dapat digunakan sebagai browser default.</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
 <translation id="828406390101464081">Akun berikut tidak login ke profil Brave mana pun. Jika Anda ingin menggunakan akun di profil lain, hapus profil tersebut terlebih dahulu.</translation>
+<translation id="2061155704815580583">Brave memerlukan izin akses lokasi untuk situs ini</translation>
 <translation id="9067428552314418522">File ini berbahaya, jadi Brave telah memblokirnya.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="8622246347342688645">Brave tidak dapat memeriksa sandi karena Anda tidak login</translation>
