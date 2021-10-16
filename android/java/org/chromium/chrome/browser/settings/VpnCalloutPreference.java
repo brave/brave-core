@@ -27,6 +27,11 @@ import org.chromium.chrome.browser.vpn.BraveVpnUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class VpnCalloutPreference extends Preference {
+    public VpnCalloutPreference(Context context) {
+        super(context);
+        setLayoutResource(R.layout.vpn_settings_callout_modal_layout);
+    }
+
     public VpnCalloutPreference(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
