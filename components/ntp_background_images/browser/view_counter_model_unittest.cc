@@ -94,6 +94,25 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
     model.RegisterPageView();
   }
 }
+
+// Test for background images only case (SI not active)
+TEST(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
+  ViewCounterModel model;
+  model.set_total_image_count(kTestImageCount);
+
+  EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
+
+  int expected_wallpaper_index;
+  const int kTestPageViewCount = 30;
+  for (int i = 0; i < kTestPageViewCount; ++i) {
+    expected_wallpaper_index = i % model.total_image_count_;
+    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    model.RegisterPageViewBackgroundImagesOnly();
+  }
+
+  // Check branded wallpaper didn't count
+  EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
+}
 #endif
 
 TEST(ViewCounterModelTest, NTPSuperReferralTest) {

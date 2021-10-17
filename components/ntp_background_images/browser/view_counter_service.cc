@@ -265,6 +265,12 @@ void ViewCounterService::RegisterPageView() {
   // or the user opt-in status changing.
   if (IsBrandedWallpaperActive()) {
     model_.RegisterPageView();
+  } else {
+#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+    if (IsBackgroundWallpaperActive()) {
+      model_.RegisterPageViewBackgroundImagesOnly();
+    }
+#endif
   }
 }
 
@@ -314,7 +320,7 @@ bool ViewCounterService::IsBackgroundWallpaperActive() const {
     return false;
 #endif
 
-  return !!GetCurrentBrandedWallpaperData();
+  return !!GetCurrentWallpaperData();
 }
 #endif
 
