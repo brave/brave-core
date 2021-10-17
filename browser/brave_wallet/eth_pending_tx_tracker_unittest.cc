@@ -189,7 +189,9 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
             "\"status\": \"0x1\"}}");
       }));
 
-  pending_tx_tracker.UpdatePendingTransactions();
+  size_t num_pending;
+  EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(&num_pending));
+  EXPECT_EQ(3UL, num_pending);
   WaitForResponse();
   auto meta_from_state = tx_state_manager.GetTx("001");
   ASSERT_NE(meta_from_state, nullptr);
