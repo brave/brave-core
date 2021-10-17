@@ -20,13 +20,11 @@ EthBlockTracker::EthBlockTracker(EthJsonRpcController* rpc_controller)
 EthBlockTracker::~EthBlockTracker() = default;
 
 void EthBlockTracker::Start(base::TimeDelta interval) {
-  timer_.Start(
-      FROM_HERE, interval,
-      base::BindRepeating(
-          &EthBlockTracker::SendGetBlockNumber, weak_factory_.GetWeakPtr(),
-          base::Passed(base::BindOnce(&EthBlockTracker::OnGetBlockNumber,
-                                      weak_factory_.GetWeakPtr()))));
+  timer_.Start(FROM_HERE, interval,
+               base::BindRepeating(&EthBlockTracker::GetBlockNumber,
+                                   weak_factory_.GetWeakPtr()));
 }
+
 void EthBlockTracker::Stop() {
   timer_.Stop();
 }
@@ -53,9 +51,18 @@ void EthBlockTracker::SendGetBlockNumber(
   rpc_controller_->GetBlockNumber(std::move(callback));
 }
 
+void EthBlockTracker::GetBlockNumber() {
+  rpc_controller_->GetBlockNumber(base::BindOnce(
+      &EthBlockTracker::OnGetBlockNumber, weak_factory_.GetWeakPtr()));
+}
+
 void EthBlockTracker::OnGetBlockNumber(bool status, uint256_t block_num) {
   if (status) {
-    current_block_ = block_num;
+    if (current_block_ != block_num) {
+      current_block_ = block_num;
+      for (auto& observer : observers_)
+        observer.OnNewBlock(block_num);
+    }
     for (auto& observer : observers_)
       observer.OnLatestBlock(block_num);
 

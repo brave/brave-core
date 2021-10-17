@@ -460,6 +460,7 @@ const char kRopstenFeeRecipient[] =
 const char kSwapBaseAPIURL[] = "https://api.0x.org/";
 const char kBuyTokenPercentageFee[] = "0.00875";
 const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+const int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 
 // Unstoppable domains record key for ethereum address.
 constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
