@@ -194,7 +194,7 @@ public class PortfolioFragment
                     new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                         @Override
                         public void onDismiss(Boolean isAssetsListChanged) {
-                            if (isAssetsListChanged) {
+                            if (isAssetsListChanged != null && isAssetsListChanged) {
                                 setUpCoinList(getView());
                             }
                         }

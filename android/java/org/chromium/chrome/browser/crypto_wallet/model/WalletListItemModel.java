@@ -9,6 +9,7 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 
 public class WalletListItemModel {
     private int mIcon;
+    private String mIconPath;
     private String mTitle;
     private String mSubTitle;
     private String mText1;
@@ -34,6 +35,14 @@ public class WalletListItemModel {
         mSubTitle = subTitle;
         mText1 = text1;
         mText2 = text2;
+    }
+
+    public void setIconPath(String iconPath) {
+        mIconPath = iconPath;
+    }
+
+    public String getIconPath() {
+        return mIconPath;
     }
 
     public void setErcToken(ErcToken ercToken) {

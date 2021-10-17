@@ -7,6 +7,11 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +30,13 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.ViewHolder> {
     public enum AdapterType {
@@ -46,9 +55,13 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     private OnWalletListItemClick onWalletListItemClick;
     private int walletListItemType;
     private AdapterType mType;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
 
     public WalletCoinAdapter(AdapterType type) {
         mType = type;
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -67,7 +80,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         // we modifying checkbox. This may cause unwanted modifying of the model
         holder.resetObservers();
 
-        holder.iconImg.setImageResource(walletListItemModel.getIcon());
         holder.titleText.setText(walletListItemModel.getTitle());
         holder.subTitleText.setText(mType == AdapterType.ACCOUNTS_LIST
                         ? Utils.stripAccountAddress(walletListItemModel.getSubTitle())
@@ -134,6 +146,41 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                             }
                         });
             }
+            final ImageView iconImg = holder.iconImg;
+            final String iconPath = walletListItemModel.getIconPath();
+            final int iconId = walletListItemModel.getIcon();
+            mExecutor.execute(() -> {
+                InputStream inputStream = null;
+                try {
+                    Bitmap logoBitmap = null;
+                    if (iconPath == null) {
+                        mHandler.post(() -> { iconImg.setImageResource(iconId); });
+                        return;
+                    } else {
+                        Uri logoFileUri = Uri.parse(iconPath);
+                        inputStream = context.getContentResolver().openInputStream(logoFileUri);
+                        logoBitmap =
+                                Utils.resizeBitmap(BitmapFactory.decodeStream(inputStream), 110);
+                        inputStream.close();
+                    }
+                    final Bitmap bitmap = logoBitmap;
+                    mHandler.post(() -> { iconImg.setImageBitmap(bitmap); });
+                } catch (IOException exc) {
+                    org.chromium.base.Log.e("WCA", exc.getMessage());
+                } catch (IllegalArgumentException exc) {
+                    org.chromium.base.Log.e("WCA", exc.getMessage());
+                } finally {
+                    try {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                    } catch (IOException exception) {
+                        org.chromium.base.Log.e("WCA", exception.getMessage());
+                    }
+                }
+            });
+        } else {
+            holder.iconImg.setImageResource(walletListItemModel.getIcon());
         }
     }
 
