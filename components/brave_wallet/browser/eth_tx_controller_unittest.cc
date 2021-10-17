@@ -229,6 +229,8 @@ class EthTxControllerUnitTest : public testing::Test {
     return keyring_controller_->default_keyring_->GetAddress(0);
   }
 
+  EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
+
   void SetErrorInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
@@ -1140,6 +1142,90 @@ TEST_F(EthTxControllerUnitTest,
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
+  EthAddress addr1 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EthAddress addr2 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  base::RunLoop().RunUntilIdle();
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  meta.from = addr1;
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  meta.id = "002";
+  meta.from = addr2;
+  meta.tx->set_nonce(uint256_t(4));
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        LOG(ERROR) << "Header value is: " << header_value;
+        if (header_value == "eth_blockNumber") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc":"2.0",
+              "result":"0x65a8db",
+              "id":1
+            })");
+        } else if (header_value == "eth_getTransactionReceipt") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "id":1,
+              "result": {
+                "transactionHash": "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+                "transactionIndex":  "0x1",
+                "blockNumber": "0xb",
+                "blockHash": "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
+                "cumulativeGasUsed": "0x33bc",
+                "gasUsed": "0x4dc",
+                "contractAddress": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
+                "logs": [],
+                "logsBloom": "0x00...0",
+                "status": "0x1"
+              }
+            })");
+        }
+      }));
+
+  // Nothing is triggered after 10s
+  task_environment_.FastForwardBy(
+      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds - 1));
+  auto tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  auto tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(1));
+  tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+  tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+
+  // If the keyring is locked, nothing should update
+  meta.id = "001";
+  meta.from = addr1;
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  meta.id = "002";
+  meta.from = addr2;
+  meta.tx->set_nonce(uint256_t(4));
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  keyring_controller_->Lock();
+  task_environment_.FastForwardBy(
+      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds + 1));
+  tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
 }
 
 }  //  namespace brave_wallet
