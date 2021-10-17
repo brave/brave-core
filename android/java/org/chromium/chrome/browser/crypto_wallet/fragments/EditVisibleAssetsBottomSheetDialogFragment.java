@@ -36,6 +36,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.ErcTokenRegistry;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -234,10 +235,16 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         itemModelEth.setIsUserSelected(selectedTokensSymbols.contains(eth.symbol.toUpperCase()));
         itemModelEth.setErcToken(eth);
         walletListItemModelList.add(itemModelEth);
+        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         for (int i = 0; i < tokens.length; i++) {
+            if (tokens[i].symbol.equals("ETH")) {
+                // We have added ETH already
+                continue;
+            }
             WalletListItemModel itemModel = new WalletListItemModel(
                     R.drawable.ic_eth, tokens[i].name, tokens[i].symbol, "", "");
             itemModel.setErcToken(tokens[i]);
+            itemModel.setIconPath("file://" + tokensPath + "/" + tokens[i].logo);
 
             boolean isUserSelected = selectedTokensSymbols.contains(tokens[i].symbol.toUpperCase());
             itemModel.setIsUserSelected(isUserSelected);

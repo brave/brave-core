@@ -42,6 +42,10 @@ public class ERCTokenRegistryFactory {
         return ercTokenRegistry;
     }
 
+    public String getTokensIconsLocation() {
+        return ERCTokenRegistryFactoryJni.get().getTokensIconsLocation();
+    }
+
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
@@ -49,5 +53,6 @@ public class ERCTokenRegistryFactory {
     @NativeMethods
     interface Natives {
         int getInterfaceToERCTokenRegistry();
+        String getTokensIconsLocation();
     }
 }
