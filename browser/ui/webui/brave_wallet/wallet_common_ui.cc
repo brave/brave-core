@@ -23,16 +23,10 @@ void AddERCTokenImageSource(Profile* profile) {
       profile, std::make_unique<FaviconSource>(
                    profile, chrome::FaviconUrlFormat::kFavicon2));
 
-  absl::optional<base::Version> version =
-      brave_wallet::GetLastInstalledWalletVersion();
-  if (version) {
-    base::FilePath path = profile->GetPath().DirName();
-    path = path.AppendASCII(brave_wallet::kWalletBaseDirectory);
-    path = path.AppendASCII(version->GetString());
-    path = path.AppendASCII("images");
-    content::URLDataSource::Add(
-        profile, std::make_unique<brave_wallet::ERCTokenImagesSource>(path));
-  }
+  base::FilePath path = profile->GetPath().DirName();
+  path = path.AppendASCII(brave_wallet::kWalletBaseDirectory);
+  content::URLDataSource::Add(
+      profile, std::make_unique<brave_wallet::ERCTokenImagesSource>(path));
 }
 
 }  // namespace brave_wallet
