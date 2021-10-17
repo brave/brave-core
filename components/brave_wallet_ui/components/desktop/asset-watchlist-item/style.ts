@@ -54,7 +54,6 @@ export const BalanceColumn = styled.div`
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
   height: '40px',
-  borderRadius: '100%',
   marginRight: '8px'
 })
 
