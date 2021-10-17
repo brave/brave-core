@@ -25,7 +25,10 @@ class EthBlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
+    // Fires for each latest block check
     virtual void OnLatestBlock(uint256_t block_num) = 0;
+    // Only fires when there is a new block
+    virtual void OnNewBlock(uint256_t block_num) = 0;
   };
 
   // If timer is already running, it will be replaced with new interval
@@ -44,6 +47,7 @@ class EthBlockTracker {
  private:
   void SendGetBlockNumber(
       base::OnceCallback<void(bool status, uint256_t block_num)>);
+  void GetBlockNumber();
   void OnGetBlockNumber(bool status, uint256_t block_num);
 
   uint256_t current_block_ = 0;
