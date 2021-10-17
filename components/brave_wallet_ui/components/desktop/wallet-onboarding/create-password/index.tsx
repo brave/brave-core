@@ -49,6 +49,7 @@ function OnboardingCreatePassword (props: Props) {
           placeholder={getLocale('braveWalletCreatePasswordInput')}
           onChange={onPasswordChanged}
           error={getLocale('braveWalletCreatePasswordError')}
+          onKeyDown={handleKeyDown}
           hasError={hasPasswordError}
           autoFocus={true}
         />

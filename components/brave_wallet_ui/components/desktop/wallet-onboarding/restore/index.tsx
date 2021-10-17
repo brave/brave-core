@@ -156,6 +156,7 @@ function OnboardingRestore (props: Props) {
               onChange={handlePasswordChanged}
               hasError={checkPassword}
               error={getLocale('braveWalletCreatePasswordError')}
+              onKeyDown={handleKeyDown}
             />
             <PasswordInput
               placeholder={getLocale('braveWalletConfirmPasswordInput')}
