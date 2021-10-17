@@ -1651,27 +1651,28 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
                   ->FindPath("hardware.device1.account_metas.0x111"));
 
   bool callback_called = false;
-  controller.GetHardwareAccounts(base::BindLambdaForTesting(
-      [&](std::vector<mojom::AccountInfoPtr> accounts) {
-        EXPECT_EQ(accounts.size(), size_t(3));
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        const auto& accounts = keyring_info->account_infos;
+        EXPECT_EQ(accounts.size(), 4u);
 
-        EXPECT_EQ(accounts[0]->address, "0x111");
-        EXPECT_EQ(accounts[0]->name, "name 1");
-        EXPECT_EQ(accounts[0]->is_imported, false);
-        ASSERT_TRUE(accounts[0]->hardware);
-        EXPECT_EQ(accounts[0]->hardware->device_id, "device1");
-
-        EXPECT_EQ(accounts[1]->address, "0x264");
-        EXPECT_EQ(accounts[1]->name, "name 2");
+        EXPECT_EQ(accounts[1]->address, "0x111");
+        EXPECT_EQ(accounts[1]->name, "name 1");
         EXPECT_EQ(accounts[1]->is_imported, false);
         ASSERT_TRUE(accounts[1]->hardware);
         EXPECT_EQ(accounts[1]->hardware->device_id, "device1");
 
-        EXPECT_EQ(accounts[2]->address, "0xEA0");
-        EXPECT_EQ(accounts[2]->name, "name 3");
+        EXPECT_EQ(accounts[2]->address, "0x264");
+        EXPECT_EQ(accounts[2]->name, "name 2");
         EXPECT_EQ(accounts[2]->is_imported, false);
         ASSERT_TRUE(accounts[2]->hardware);
-        EXPECT_EQ(accounts[2]->hardware->device_id, "device2");
+        EXPECT_EQ(accounts[2]->hardware->device_id, "device1");
+
+        EXPECT_EQ(accounts[3]->address, "0xEA0");
+        EXPECT_EQ(accounts[3]->name, "name 3");
+        EXPECT_EQ(accounts[3]->is_imported, false);
+        ASSERT_TRUE(accounts[3]->hardware);
+        EXPECT_EQ(accounts[3]->hardware->device_id, "device2");
 
         callback_called = true;
       }));
@@ -1703,15 +1704,16 @@ TEST_F(KeyringControllerUnitTest, HardwareAccounts) {
   observer.Reset();
 
   callback_called = false;
-  controller.GetHardwareAccounts(base::BindLambdaForTesting(
-      [&](std::vector<mojom::AccountInfoPtr> accounts) {
-        EXPECT_EQ(accounts.size(), size_t(1));
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        const auto& accounts = keyring_info->account_infos;
+        EXPECT_EQ(accounts.size(), size_t(2));
 
-        EXPECT_EQ(accounts[0]->address, "0xEA0");
-        EXPECT_EQ(accounts[0]->name, "name 3");
-        EXPECT_EQ(accounts[0]->is_imported, false);
-        ASSERT_TRUE(accounts[0]->hardware);
-        EXPECT_EQ(accounts[0]->hardware->device_id, "device2");
+        EXPECT_EQ(accounts[1]->address, "0xEA0");
+        EXPECT_EQ(accounts[1]->name, "name 3");
+        EXPECT_EQ(accounts[1]->is_imported, false);
+        ASSERT_TRUE(accounts[1]->hardware);
+        EXPECT_EQ(accounts[1]->hardware->device_id, "device2");
 
         callback_called = true;
       }));

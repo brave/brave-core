@@ -79,8 +79,11 @@ async function getTokenPriceHistory (store: Store) {
 
 async function findHardwareAccountInfo (address: string) {
   const apiProxy = await getAPIProxy()
-  const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
-  for (const account of hardwareAccounts.accounts) {
+  const result = await apiProxy.walletHandler.getWalletInfo()
+  for (const account of result.accountInfos) {
+    if (!account.hardware) {
+      continue
+    }
     if (account.address.toLowerCase() === address) {
       return account
     }
@@ -106,8 +109,6 @@ async function refreshWalletInfo (store: Store) {
   const ethJsonRpcController = apiProxy.ethJsonRpcController
   const assetPriceController = apiProxy.assetRatioController
   const result = await walletHandler.getWalletInfo()
-  const hardwareAccounts = await apiProxy.keyringController.getHardwareAccounts()
-  result.accountInfos = [...result.accountInfos, ...hardwareAccounts.accounts]
 
   // Get/Set selectedAccount
   if (result.isWalletCreated) {
