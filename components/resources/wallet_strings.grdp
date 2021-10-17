@@ -77,6 +77,7 @@
     <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
     <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
     <message name="IDS_BRAVE_WALLET_EXPIRES_IN_TITLE" desc="BuySendSwap expires in title">Expires in</message>
+    <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">0x address or url</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_CONTINUE" desc="General Continue button">Continue</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_COPY" desc="General Copy button">Copy</message>
     <message name="IDS_BRAVE_WALLET_BUTTON_VERIFY" desc="General Verify button">Verify</message>
@@ -291,6 +292,9 @@
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_GWEI" desc="Edit gas panel gwei label">Gwei</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM" desc="Edit gas panel set custom button">Set custom</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED" desc="Edit gas panel set suggested button">Set suggested</message>
+    <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
+    <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
+    <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="VALUE">$1</ph> is not registered</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE" desc="Swap CTA text for insufficient balance">Insufficient balance</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE" desc="Swap CTA text for insufficient ETH balance">Insufficient funds for gas</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>

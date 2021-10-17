@@ -52,10 +52,16 @@ import {
   HardwareWalletAccount
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
-import { onConnectHardwareWallet, getBalance, getERC20Allowance } from '../common/async/wallet_async_handler'
+import {
+  onConnectHardwareWallet,
+  getBalance,
+  getERC20Allowance,
+  findENSAddress,
+  findUnstoppableDomainAddress
+} from '../common/async/wallet_async_handler'
 
-import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useSwap, useAssets, useTimeout, useBalance } from '../common/hooks'
+import { formatBalance } from '../utils/format-balances'
+import { useSwap, useAssets, useTimeout, useBalance, useSend } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
@@ -110,9 +116,7 @@ function Container (props: Props) {
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
 
   const notifyUserInteraction = () => {
@@ -162,6 +166,24 @@ function Container (props: Props) {
     swapError
   )
 
+  const {
+    onSetSendAmount,
+    onSetToAddressOrUrl,
+    onSubmitSend,
+    sendAmount,
+    toAddressOrUrl,
+    toAddress,
+    addressError
+  } = useSend(
+    findENSAddress,
+    findUnstoppableDomainAddress,
+    selectedAccount,
+    fromAsset,
+    props.walletActions.sendERC20Transfer,
+    props.walletActions.sendTransaction,
+    props.walletActions.sendERC721TransferFrom
+  )
+
   const getSelectedAccountBalance = useBalance(selectedAccount)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
 
@@ -173,16 +195,8 @@ function Container (props: Props) {
     }
   }, [walletLocation])
 
-  const onSetToAddress = (value: string) => {
-    setToAddress(value)
-  }
-
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
-  }
-
-  const onSetSendAmount = (value: string) => {
-    setSendAmount(value)
   }
 
   const onSelectAccount = (account: WalletAccountType) => {
@@ -336,7 +350,7 @@ function Container (props: Props) {
     const formattedAmount = formatBalance(amount.toString(), asset?.asset.decimals ?? 18)
 
     if (sendOrSwap === 'send') {
-      setSendAmount(formattedAmount)
+      onSetSendAmount(formattedAmount)
     } else {
       onSetFromAmount(formattedAmount)
     }
@@ -391,29 +405,6 @@ function Container (props: Props) {
   const onUpdateAccountName = (payload: UpdateAccountNamePayloadType): { success: boolean } => {
     const result = props.walletPageActions.updateAccountName(payload)
     return result ? { success: true } : { success: false }
-  }
-
-  const onSubmitSend = () => {
-    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
-      contractAddress: fromAsset.asset.contractAddress
-    })
-
-    fromAsset.asset.isErc721 && props.walletActions.sendERC721TransferFrom({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: '',
-      contractAddress: fromAsset.asset.contractAddress,
-      tokenId: fromAsset.asset.tokenId ?? ''
-    })
-
-    !fromAsset.asset.isErc721 && !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
-    })
   }
 
   const fetchFullTokenList = () => {
@@ -632,10 +623,12 @@ function Container (props: Props) {
             fromAmount={fromAmount}
             fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
+            addressError={addressError}
             toAssetBalance='0'
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             swapValidationError={swapValidationError}
+            toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}
@@ -644,7 +637,7 @@ function Container (props: Props) {
             customSlippageTolerance={customSlippageTolerance}
             onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
-            onSetToAddress={onSetToAddress}
+            onSetToAddressOrUrl={onSetToAddressOrUrl}
             onSelectExpiration={onSelectExpiration}
             onSelectPresetFromAmount={onSelectPresetAmountFactory('swap')}
             onSelectPresetSendAmount={onSelectPresetAmountFactory('send')}

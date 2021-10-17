@@ -57,9 +57,9 @@ import LockPanel from '../components/extension/lock-panel'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
-import { getERC20Allowance } from '../common/async/wallet_async_handler'
-import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useAssets, useBalance, useSwap } from '../common/hooks'
+import { getERC20Allowance, findENSAddress, findUnstoppableDomainAddress } from '../common/async/wallet_async_handler'
+import { formatBalance } from '../utils/format-balances'
+import { useAssets, useBalance, useSwap, useSend } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -118,8 +118,6 @@ function Container (props: Props) {
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [toAddress, setToAddress] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
@@ -163,6 +161,24 @@ function Container (props: Props) {
     props.walletActions.approveERC20Allowance,
     swapQuote,
     swapError
+  )
+
+  const {
+    onSetSendAmount,
+    onSetToAddressOrUrl,
+    onSubmitSend,
+    sendAmount,
+    toAddressOrUrl,
+    toAddress,
+    addressError
+  } = useSend(
+    findENSAddress,
+    findUnstoppableDomainAddress,
+    selectedAccount,
+    fromAsset,
+    props.walletActions.sendERC20Transfer,
+    props.walletActions.sendTransaction,
+    props.walletActions.sendERC721TransferFrom
   )
 
   React.useMemo(() => {
@@ -222,39 +238,16 @@ function Container (props: Props) {
 
   const onInputChange = (value: string, name: string) => {
     if (name === 'address') {
-      setToAddress(value)
+      onSetToAddressOrUrl(value)
     } else {
-      setSendAmount(value)
+      onSetSendAmount(value)
     }
   }
 
   const onSelectPresetSendAmount = (percent: number) => {
     const amount = Number(fromAsset.assetBalance) * percent
     const formatedAmmount = formatBalance(amount.toString(), fromAsset.asset.decimals)
-    setSendAmount(formatedAmmount)
-  }
-
-  const onSubmitSend = () => {
-    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
-      contractAddress: fromAsset.asset.contractAddress
-    })
-
-    fromAsset.asset.isErc721 && props.walletActions.sendERC721TransferFrom({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: '',
-      contractAddress: fromAsset.asset.contractAddress,
-      tokenId: fromAsset.asset.tokenId ?? ''
-    })
-
-    !fromAsset.asset.isErc721 && !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
-    })
+    onSetSendAmount(formatedAmmount)
   }
 
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
@@ -634,6 +627,8 @@ function Container (props: Props) {
                 selectedAsset={fromAsset}
                 selectedAssetAmount={sendAmount}
                 selectedAssetBalance={fromAssetBalance}
+                addressError={addressError}
+                toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
               />
             </SendWrapper>
