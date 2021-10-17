@@ -330,3 +330,57 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBad) {
   std::string result = "";
   EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), result);
 }
+
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, ResolvedIPFSLinkBackward) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  if (!helper)
+    return;
+  auto* storage_partition =
+      active_contents()->GetBrowserContext()->GetDefaultStoragePartition();
+  std::unique_ptr<FakeIPFSHostResolver> resolver(
+      new FakeIPFSHostResolver(storage_partition->GetNetworkContext()));
+  FakeIPFSHostResolver* resolver_raw = resolver.get();
+  helper->SetResolverForTesting(std::move(resolver));
+  std::string ipfs_path = "/ipfs/bafybeiemx/";
+  SetXIpfsPathHeader(ipfs_path);
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectDNSLink, true);
+  prefs->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+
+  GURL test_url = embedded_test_server()->GetURL("/empty.html?query#ref");
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+
+  GURL expected_first("http://a.com/ipfs/bafybeiemx/empty.html?query#ref");
+  GURL::Replacements first_replacements;
+  first_replacements.SetPortStr(gateway_url.port_piece());
+  EXPECT_EQ(active_contents()->GetVisibleURL().spec(),
+            expected_first.ReplaceComponents(first_replacements));
+
+  GURL another_test_url =
+      embedded_test_server()->GetURL("/another.html?query#ref");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), another_test_url));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  ASSERT_FALSE(resolver_raw->resolve_called());
+
+  GURL expected_second("http://a.com/ipfs/bafybeiemx/another.html?query#ref");
+  GURL::Replacements second_replacements;
+  second_replacements.SetPortStr(gateway_url.port_piece());
+  EXPECT_EQ(active_contents()->GetVisibleURL().spec(),
+            expected_second.ReplaceComponents(second_replacements));
+
+  active_contents()->GetController().GoBack();
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+  EXPECT_EQ(active_contents()->GetVisibleURL(),
+            expected_first.ReplaceComponents(first_replacements));
+}
