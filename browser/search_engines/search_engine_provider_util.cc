@@ -20,6 +20,11 @@ bool UseAlternativeSearchEngineProviderEnabled(Profile* profile) {
       kUseAlternativeSearchEngineProvider);
 }
 
+bool ShowAlternativeSearchEngineProviderToggleEnabled(Profile* profile) {
+  return profile->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      kShowAlternativeSearchEngineProviderToggle);
+}
+
 void ToggleUseAlternativeSearchEngineProvider(Profile* profile) {
   if (brave::IsRegionForQwant(profile))
     return;
@@ -27,6 +32,14 @@ void ToggleUseAlternativeSearchEngineProvider(Profile* profile) {
   profile->GetOriginalProfile()->GetPrefs()->SetBoolean(
       kUseAlternativeSearchEngineProvider,
       !UseAlternativeSearchEngineProviderEnabled(profile));
+}
+
+void SetShowAlternativeSearchEngineProviderToggle(Profile* profile) {
+  if (brave::IsRegionForQwant(profile))
+    return;
+
+  profile->GetOriginalProfile()->GetPrefs()->SetBoolean(
+      kShowAlternativeSearchEngineProviderToggle, true);
 }
 
 bool IsRegionForQwant(Profile* profile) {

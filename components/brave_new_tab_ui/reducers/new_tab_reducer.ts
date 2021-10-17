@@ -101,7 +101,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       const privateTabData = payload as PrivateTabData
       state = {
         ...state,
-        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine
+        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine,
+        showAlternativePrivateSearchEngineToggle: privateTabData.showAlternativePrivateSearchEngineToggle
       }
       break
 

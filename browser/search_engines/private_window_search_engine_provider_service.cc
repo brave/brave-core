@@ -5,6 +5,7 @@
 
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/default_search_manager.h"
@@ -15,6 +16,10 @@ PrivateWindowSearchEngineProviderService::
 PrivateWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsIncognitoProfile());
+
+  if (brave::UseAlternativeSearchEngineProviderEnabled(otr_profile)) {
+    brave::SetShowAlternativeSearchEngineProviderToggle(otr_profile);
+  }
 
   const bool use_extension_provider = ShouldUseExtensionSearchProvider();
   otr_profile->GetPrefs()->SetBoolean(prefs::kDefaultSearchProviderByExtension,
