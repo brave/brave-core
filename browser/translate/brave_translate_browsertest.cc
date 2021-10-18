@@ -276,11 +276,13 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   WaitUntilPageTranslated();
 
   const char kTestURL[] = "https://translate.google.com/something.svg";
+  const char kTestSvg[] = R"(
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"></svg>
+  )";
 
   EXPECT_CALL(backend_request_, Call("/something.svg"))
-      .WillRepeatedly(
-          Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "image/svg+xml",
-                                 R"(<svg width="300" height="300"></svg>)")));
+      .WillRepeatedly(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
+                                             "image/svg+xml", kTestSvg)));
 
   const auto do_xhr_and_get_final_url =
       base::StringPrintf(kXhrPromiseTemplate, "responseURL", kTestURL);
