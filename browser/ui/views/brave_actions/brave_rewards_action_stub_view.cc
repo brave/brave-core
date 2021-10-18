@@ -16,9 +16,11 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -68,6 +70,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
       [](views::View* host) { return GetToolbarInkDropBaseColor(host); },
       this));
 
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_UI_BRAVE_REWARDS));
   SetHasInkDropActionOnClick(true);
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
