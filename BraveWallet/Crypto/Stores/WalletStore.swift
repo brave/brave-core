@@ -12,6 +12,7 @@ public class WalletStore {
   public let keyringStore: KeyringStore
   public let networkStore: NetworkStore
   public let portfolioStore: PortfolioStore
+  public let buyTokenStore: BuyTokenStore
   
   // MARK: -
   
@@ -49,5 +50,6 @@ public class WalletStore {
       assetRatioController: assetRatioController,
       tokenRegistry: tokenRegistry
     )
+    self.buyTokenStore = .init(tokenRegistry: tokenRegistry)
   }
 }

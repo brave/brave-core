@@ -41,6 +41,12 @@ extension KeyringStore {
   }
 }
 
+extension BuyTokenStore {
+  static var previewStore: BuyTokenStore {
+    .init(tokenRegistry: TestTokenRegistry())
+  }
+}
+
 class TestAssetRatioController: BraveWalletAssetRatioController {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),

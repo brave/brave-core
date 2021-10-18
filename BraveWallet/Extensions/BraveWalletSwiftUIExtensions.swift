@@ -28,7 +28,7 @@ extension BraveWallet.EthereumChain: Identifiable {
 
 extension BraveWallet.ERCToken: Identifiable {
   public var id: String {
-    isETH ? "eth" : contractAddress
+    symbol.lowercased()
   }
   /// Whether or not this ERCToken is actually ETH
   public var isETH: Bool {

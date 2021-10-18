@@ -143,7 +143,15 @@ private class CryptoPagesViewController: TabbedPageViewController {
         guard let self = self else { return }
         switch action {
         case .buy:
-          break
+          let controller = UIHostingController(
+            rootView: BuyTokenView(
+              keyringStore: self.walletStore.keyringStore,
+              networkStore: self.walletStore.networkStore,
+              buyTokenStore: self.walletStore.buyTokenStore)
+          )
+          self.dismiss(animated: true) {
+            self.present(controller, animated: true)
+          }
         case .send:
           break
         case .swap:
