@@ -413,7 +413,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/appmenu/BraveTabbedAppMenuPropertiesDelegate",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, AppMenuDelegate.class,
-                OneshotSupplier.class, ObservableSupplier.class,
+                OneshotSupplier.class, OneshotSupplier.class, ObservableSupplier.class,
                 WebFeedSnackbarController.FeedLauncher.class, ModalDialogManager.class,
                 SnackbarManager.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
@@ -446,7 +446,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
                 Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
                 TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                ObservableSupplier.class));
+                OneshotSupplier.class, ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
@@ -473,7 +473,7 @@ public class BytecodeTest {
                         UrlBarEditingTextStateProvider.class, boolean.class,
                         LocationBarDataProvider.class, PermissionDialogController.class,
                         SearchEngineLogoUtils.class, OneshotSupplier.class, Supplier.class,
-                        PageInfoIPHController.class, WindowAndroid.class));
+                        PageInfoIPHController.class, WindowAndroid.class, Supplier.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/ntp/NewTabPage",
                 "org/chromium/chrome/browser/ntp/BraveNewTabPage", Activity.class,
                 BrowserControlsStateProvider.class, Supplier.class, SnackbarManager.class,
