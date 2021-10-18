@@ -45,7 +45,7 @@ export const SelectedPhraseContainer = styled.div<Partial<StyleProps>>`
   justify-content: ${(p) => p.error ? 'center' : 'flex-start'};
   flex-direction: row;
   flex-wrap: wrap;
-  width: 418px;
+  width: 466px;
   min-height: 112px;
   margin-bottom: 40px;
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
@@ -99,7 +99,7 @@ export const SelectedBubble = styled.button`
   justify-content: center;
   flex-direction: column;
   background-color: ${(p) => p.theme.color.background01};
-  width: 94px;
+  width: 106px;
   margin-right: 8px;
   margin-bottom: 8px;
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
