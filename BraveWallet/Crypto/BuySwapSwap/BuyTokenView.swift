@@ -35,8 +35,9 @@ struct BuyTokenView: View {
         ) {
           NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore)) {
             HStack {
-              Circle()
-                .frame(width: 26, height: 26)
+              if let token = buyTokenStore.selectedBuyToken {
+                AssetIconView(token: token, length: 26)
+              }
               Text(buyTokenStore.selectedBuyToken?.symbol ?? "BAT")
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))

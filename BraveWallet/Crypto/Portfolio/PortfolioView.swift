@@ -72,7 +72,7 @@ struct PortfolioView: View {
       ) {
         ForEach(portfolioStore.userVisibleAssets) { asset in
           PortfolioAssetView(
-            image: .init(),
+            image: AssetIconView(token: asset.token),
             title: asset.token.name,
             symbol: asset.token.symbol,
             amount: asset.balance,

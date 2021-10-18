@@ -75,7 +75,7 @@ struct AssetDetailHeaderView: View {
               }
             }
             HStack {
-              Circle().frame(width: 40, height: 40)
+              Circle().frame(width: 40, height: 40) // TODO: Swap this with an AssetIconView
               Text(currency.name)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.title3.weight(.semibold))
@@ -84,7 +84,7 @@ struct AssetDetailHeaderView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         } else {
           HStack {
-            Circle().frame(width: 40, height: 40)
+            Circle().frame(width: 40, height: 40) // TODO: Swap this with an AssetIconView
             Text(currency.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))

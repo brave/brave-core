@@ -10,7 +10,7 @@ extension BraveWallet.ERCToken {
   static let eth: BraveWallet.ERCToken = .init(
     contractAddress: "",
     name: "Ethereum",
-    logo: "eth.svg",
+    logo: "",
     isErc20: false,
     isErc721: false,
     symbol: "ETH",

@@ -12,12 +12,7 @@ private struct TokenView: View {
   
   var body: some View {
     HStack(spacing: 8) {
-      Circle()
-        .frame(width: 40, height: 40)
-        .overlay(
-          Image(uiImage: .init())
-        )
-        .clipShape(Circle())
+      AssetIconView(token: token)
       VStack(alignment: .leading) {
         Text(token.name)
           .fontWeight(.semibold)

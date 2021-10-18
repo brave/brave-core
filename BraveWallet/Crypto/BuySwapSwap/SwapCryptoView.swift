@@ -94,7 +94,7 @@ struct SwapCryptoView: View {
         ) {
           NavigationLink(destination: EmptyView()) {
             HStack {
-              Circle()
+              Circle() // TODO: Replace with AssetIconView when we have a selected token
                 .frame(width: 26, height: 26)
               Text(verbatim: "BAT")
                 .font(.title3.weight(.semibold))
