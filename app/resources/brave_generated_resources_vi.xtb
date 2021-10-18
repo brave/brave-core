@@ -190,10 +190,10 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5655621391922317800">Ví Điện tử</translation>
 <translation id="1696548911367097044">Phần mở rộng Không dùng đến của Ví tiền Crypto</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Nhà cung cấp Ethereum để sử dụng Dapps</translation>
-<translation id="5913089932885076110">Tải Ví Tiền điện tử lúc khởi động</translation>
-<translation id="757886143331967039">Tải phần mở rộng không dùng đến của Ví tiền Crypto khi khởi động</translation>
+<translation id="9131889008937672866">Ví tiền mã hóa mặc định</translation>
 <translation id="1834467296210148203">Hiển thị biểu tượng Ví Brave trên thanh công cụ</translation>
+<translation id="8239147115686034860">Tự động khóa Ví Brave</translation>
+<translation id="414639769490080648">Số phút phải chờ cho đến khi Ví Brave được tự động khóa lại</translation>
 <translation id="6864914031231797928">Cho phép đăng nhập bằng Google cho các tiện ích mở rộng</translation>
 <translation id="5927916530277631319">Phương thức phân giải tên miền Unstoppable Domains</translation>
 <translation id="5248318250177143470">Phương thức phân giải tên miền ENS (Dịch vụ Cung cấp Tên miền Ethereum)</translation>
@@ -232,6 +232,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1251574393468476924">Kích thước bộ nhớ đệm tối đa của IPFS (GB)</translation>
 <translation id="2503497578400410320">Giới hạn mềm cận trên về kích thước kho dữ liệu của kho lưu trữ IPFS.</translation>
 <translation id="7703184801853248830">Địa chỉ cổng mạng không hợp lệ</translation>
+<translation id="7690058578502751948">Chỉ có một cổng IPFS hợp lệ với cô lập gốc được bật mới có thể sử dụng trong Brave</translation>
 <translation id="585868419599255817">Dự phòng cổng công khai IPFS</translation>
 <translation id="207763736230883589">Tự động quay trở lại cổng mạng IPFS công khai nếu không thể truy cập vào nút cục bộ của bạn.</translation>
 <translation id="4107552920076294723">Chuyển hướng tài nguyên IPFS đến cổng IPFS đã cấu hình</translation>
@@ -300,6 +301,10 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1391855377994926460">Hãy tiếp tục duyệt web nhanh hơn - nhanh hơn đến 6 lần trên những trang tin tức lớn.</translation>
 <translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
+<translation id="732814027519296280">Muốn làm cho Tìm kiếm Brave còn tốt hơn nữa?</translation>
+<translation id="2677865600861971449">Hãy tham gia Dự án Khám phá Web để đóng góp ẩn danh một số dữ liệu tìm kiếm &amp; duyệt web, và cải thiện kết quả của Tìm kiếm Brave cho tất cả mọi người. Và không mất công sức. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Bật</translation>
+<translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="5039804452771397117">Cho phép</translation>
 <translation id="7053983685419859001">Chặn</translation>
 <translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
@@ -309,6 +314,8 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6873781976650514089">cài đặt này</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
+<translation id="4174337572777167894">Dự án Khám phá Web</translation>
+<translation id="8659271182272561965">Đóng góp một số dữ liệu tìm kiếm &amp; duyệt web ẩn danh để tinh chỉnh Tìm kiếm Brave.</translation>
 <translation id="1516554614404600536">Brave Chú giải công cụ</translation>
 <translation id="4877147287319222750">Thêm vào Thanh bên</translation>
 <translation id="4233010476457917696">Hiển thị thanh bên</translation>

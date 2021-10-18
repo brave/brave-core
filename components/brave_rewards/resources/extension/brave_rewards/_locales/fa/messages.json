@@ -19,6 +19,26 @@
     "message": "تازه‌سازی وضعیت",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "هر انعامی که می‌دهید در کیف پول شما دست نخورده باقی می‌ماند و 90 روز دیگر به‌طور خودکار دوباره انجام می‌شود.$link_begin$بیشتر بدانید$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "این ایجادکننده هنوز ثبت‌نام نکرده است.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "این ایجادکننده درحال‌حاضر پیکربندی نشده است که از کیف پول شما انعام دریافت کند.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ در $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ ظرف $days$ دریافت می‌شود",
+    "message": "پردازش مبلغ پرداختی $amount$ ظرف $days$ شروع می‌شود",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "لغو کردن",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "برای شروع تماس رایگان، Brave Rewards را روشن کنید",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "با Brave Rewards، برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید  (داده‌های شما ایمن هستند). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان  انعام دهید. ردیابی در کار نیست. بدون افت سرعت.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "روشن کردن «پاداش‌ها»",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "کلیک کردن به منزله موافقت شما با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ است. هر زمان که بخواهید می‌توانید آن را در «تنظیمات» غیرفعال کنید.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "برای شروع تماس رایگان، Brave Private Ads را فعال کنید",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "با Brave Private Ads، شما برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید  (اطلاعات شما ایمن است). آن توکن‌ها را به پول نقد، کارت هدیه یا... تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان انعام دهید. ردیابی در کار نیست. بدون افت سرعت.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "روشن کردن Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "روشن کردن آگهی‌ها به‌منزله موافقت شما با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ است.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "اکنون می‌توانید تماس رایگان برقرار کنید",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "برای رفتن به Brave Talk در ادامه، روی نقطه‌ای دلخواه از صفحه کلیک کنید.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "می‌خواهید درباره Brave Rewards اطلاعات بیشتری کسب کنید؟$tour_link_begin$گشتی سریع بزنید$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

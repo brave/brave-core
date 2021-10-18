@@ -19,6 +19,26 @@
     "message": "Durumu Yenile",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Verdiğiniz her bahşiş cüzdanınızda beklemede kalır ve 90 gün boyunca otomatik olarak tekrar denenir. $link_begin$Daha fazla bilgi edinin$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Bu oluşturucu henüz kaydolmamış.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Bu oluşturucu henüz cüzdanınızdan bahşiş alabilmek üzere yapılandırılmamış.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$ üzerinde $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$days$ gün içinde gelecek tutar: $amount$",
+    "message": "$amount$ tutarlı ödemenin işlenmeye başlamasına kalan süre: $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Ücretsiz bir arama başlatmak için, Brave Rewards'u açın",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Rewards'ı Etkinleştir",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Tıklayarak $tos_link_begin$Kullanım Koşulları$tos_link_end$'nı ve $pp_link_begin$Gizlilik İlkesi$pp_link_end$'ni kabul etmiş olursunuz. Ayarlar bölümünden istediğiniz zaman devre dışı bırakabilirsiniz.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Ücretsiz bir arama başlatmak için, Brave Private Ads'i etkinleştirin",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads'i Aç",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ads'i açarak, $tos_link_begin$Kullanım Koşulları$tos_link_end$'nı  ve $pp_link_begin$Gizlilik İlkesi$pp_link_end$'ni kabul etmiş olursunuz.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Şimdi ücretsiz bir arama başlatabilirsiniz",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave Talk'a devam etmek için ekranın herhangi bir yerine tıklayın.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewards hakkında daha fazla bilgi edinmek mi istiyorsunuz? $tour_link_begin$Hızlandırılmış tura katılın$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

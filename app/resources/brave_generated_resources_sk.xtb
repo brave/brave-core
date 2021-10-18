@@ -190,10 +190,10 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5655621391922317800">Krypto peňaženky</translation>
 <translation id="1696548911367097044">Zastarané rozšírenie kryptopeňaženiek</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Poskytovateľ Ethereum na používanie Dapps</translation>
-<translation id="5913089932885076110">Načítať Crypto Wallets pri štarte</translation>
-<translation id="757886143331967039">Načítať pri spustení zastarané rozšírenie kryptopeňaženiek</translation>
+<translation id="9131889008937672866">Predvolená peňaženka kryptomeny</translation>
 <translation id="1834467296210148203">Zobraziť ikonu Brave Wallet na paneli s nástrojmi</translation>
+<translation id="8239147115686034860">Automaticky uzamknúť peňaženku Brave</translation>
+<translation id="414639769490080648">Počet minút čakania do automatického uzamknutia peňaženky Brave</translation>
 <translation id="6864914031231797928">Povoliť prihlasovanie Google pre rozšírenia</translation>
 <translation id="5927916530277631319">Metóda riešenia nezastaviteľných domén</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> informácie o DNS cez HTTPS a podmienky ochrany osobných údajov Ethereum.</translation>
@@ -234,6 +234,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1251574393468476924">Maximálna veľkosť vyrovnávacej pamäti (GB)</translation>
 <translation id="2503497578400410320">Mäkký horný limit pre veľkosť úložiska údajov IPFS.</translation>
 <translation id="7703184801853248830">Neplatná adresa brány</translation>
+<translation id="7690058578502751948">V Brave je možné používať iba platnú bránu IPFS s povolenou pôvodnou izoláciou</translation>
 <translation id="585868419599255817">Návrat na verejnú bránu IPFS</translation>
 <translation id="207763736230883589">Ak sa nemôžete dostať k miestnemu uzlu, automaticky sa vráťte na verejnú bránu IPFS.</translation>
 <translation id="4107552920076294723">Presmerujte prostriedky IPFS na nakonfigurovanú bránu IPFS</translation>
@@ -302,6 +303,10 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1391855377994926460">Prehľadávajte web rýchlejšie – až 6× rýchlejšie na hlavných spravodajských webových lokalitách.</translation>
 <translation id="9218430445555521422">Nastaviť ako predvolený</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
+<translation id="732814027519296280">Chcete vyhľadávanie Brave ešte vylepšiť?</translation>
+<translation id="2677865600861971449">Prihláste sa k projektu Web Discovery a prispejte anonymne nejakýmí údajmi vyhľadávania a prezerania a zlepšite tak výsledky vyhľadávania Brave pre všetkých. S ochranou súkromia. A nulovou námahou. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Zapnúť</translation>
+<translation id="780301667611848630">Nie, ďakujem</translation>
 <translation id="5039804452771397117">Povoliť</translation>
 <translation id="7053983685419859001">Blokovať</translation>
 <translation id="7815301689257843278">Odosielať správy o zlyhaní automaticky, aby mohol prehladač Brave zabrániť tomu, aby sa tento problém opakoval?</translation>
@@ -311,6 +316,8 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6873781976650514089">toto nastavenie</translation>
 <translation id="6040143037577758943">Zavrieť</translation>
 <translation id="5600566490506283344">Upozornenie na reklamu Brave</translation>
+<translation id="4174337572777167894">Project Web Discovery</translation>
+<translation id="8659271182272561965">Prispejte nejakýmí údajmi anonymného vyhľadávania a prezerania a upresnite tak vyhľadávanie Brave.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
 <translation id="4877147287319222750">Pridať na bočný panel</translation>
 <translation id="4233010476457917696">Zobraziť bočný panel</translation>

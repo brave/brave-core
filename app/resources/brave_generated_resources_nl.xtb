@@ -191,10 +191,10 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="1696548911367097044">Verouderde Crypto Wallets extensie</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum-provider voor het gebruik van Dapps</translation>
-<translation id="5913089932885076110">Laad Crypto Wallets bij het opstarten</translation>
-<translation id="757886143331967039">Laad de verouderde Crypto Wallets extensie bij het opstarten</translation>
+<translation id="9131889008937672866">Standaard cryptovalutawallet</translation>
 <translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
+<translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
+<translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
@@ -233,6 +233,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1251574393468476924">Maximale grootte IPFS cache (GB)</translation>
 <translation id="2503497578400410320">Een zachte bovengrens voor de grootte van de data opslag van de IPFS repository.</translation>
 <translation id="7703184801853248830">Ongeldig gateway-adres</translation>
+<translation id="7690058578502751948">Alleen een geldige IPFS-gateway waarbij de herkomstisolatie is ingeschakeld kan in Brave worden gebruikt</translation>
 <translation id="585868419599255817">Terugvallen op de publieke IPFS-poort</translation>
 <translation id="207763736230883589">Val automatisch terug naar de openbare IPFS-gateway als uw lokale knooppunt niet kan worden bereikt.</translation>
 <translation id="4107552920076294723">IPFS-bronnen omleiden naar de geconfigureerde IPFS-gateway</translation>
@@ -301,6 +302,10 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1391855377994926460">Sneller online browsen - tot wel 6 keer sneller op populaire nieuwswebsites.</translation>
 <translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
+<translation id="732814027519296280">Wil je Brave Search nog meer verbeteren?</translation>
+<translation id="2677865600861971449">Meld je aan voor het Web Discovery Project om anoniem wat zoek- en browsegegevens bij te dragen om Brave Search-resultaten voor iedereen te verbeteren. Je privacy wordt beschermd. Geen enkele moeite. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Inschakelen</translation>
+<translation id="780301667611848630">Nee, bedankt</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="7053983685419859001">Blokkeren</translation>
 <translation id="7815301689257843278">Automatisch foutrapport verzenden zodat Brave kan voorkomen dat de fout opnieuw optreedt?</translation>
@@ -310,6 +315,8 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6873781976650514089">deze instelling</translation>
 <translation id="6040143037577758943">Sluit</translation>
 <translation id="5600566490506283344">Brave-advertentiemelding</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Draag wat anonieme zoek- en browsegegevens bij om Brave Search te verfijnen.</translation>
 <translation id="1516554614404600536">Tooltip van Brave</translation>
 <translation id="4877147287319222750">Toevoegen aan zijbalk</translation>
 <translation id="4233010476457917696">Zijbalk weergeven</translation>

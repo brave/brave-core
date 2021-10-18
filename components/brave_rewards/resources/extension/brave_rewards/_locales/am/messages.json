@@ -19,6 +19,26 @@
     "message": "ኩነትን አድስ",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "የሚያካሄዱት የጉርሻ ክፍያ በዋሌትዎ ውስጥ ይቆያል እናም በ90 ቀናት ውስጥ በራስ ሰር ዳግም ይሞክራል። $link_begin$ ተጨማሪ ይወቁ $link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "ይህ የፈጠራ ባለቤት እስካሁን አልተመዘገበም።",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "ይህ የፈጠራ ባለቤት አሁን ከእርስዎ ዋሌት ጉርሻ ለመቀበል አልተዋቀረም።",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "በ$platform$ ላይ $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$በ$days$ ቀን ይደርሳል",
+    "message": "$amount$ክፍያ ከ$days$በኋላ መካሄድ ይጀምራል",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "አሰናብት",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Rewardsን ያብሩ",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "ከBrave Rewards ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም። ",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "ሽልማቶችን አብራ",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "ጠቅ በማድረግ፣ ከ$tos_link_begin$የአገልግሎት ሁኔታዎች$tos_link_end$እና $pp_link_begin$ የግላዊነት ፖሊሲ $pp_link_end$ጋር ይስማማሉ። ",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Private ማስታወቂያዎችን ያስጀምሩ",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "በBrave Private ማስታወቂያዎች፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም። ",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "የBrave Private ማስታወቂያዎችን ያብሩ",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "ማስታወቂያዎችን በማብራት፣ ከ$tos_link_begin$የአገልግሎት ሁኔታዎች$tos_link_end$እና $pp_link_begin$ የግላዊነት ፖሊሲ $pp_link_end$ጋር ይስማማሉ። ",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "አሁን ነጻ የስልክ ጥሪ መጀመር ይችላሉ",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": " Brave Talkን ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቀ ያድርጉ።",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "ስለ Brave Rewards የበለጠ ማወቅ ይፈልጋሉ? $tour_link_begin$ፈጣን ጉብኝት ያድርጉ $tour_link_end$።",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

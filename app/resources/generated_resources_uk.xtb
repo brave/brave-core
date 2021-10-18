@@ -58,6 +58,7 @@
 <translation id="1059484610606223931">Hypertext Transport Protocol Secure (HTTPS)</translation>
 <translation id="1059944192885972544">Знайдено стільки вкладок за запитом "<ph name="SEARCH_TEXT"/>": <ph name="NUM"/></translation>
 <translation id="1060292118287751956">Визначає частоту оновлення екрана</translation>
+<translation id="1061130374843955397">Вас вітає пристрій <ph name="DEVICE_TYPE"/></translation>
 <translation id="1061904396131502319">Невдовзі час зробити перерву</translation>
 <translation id="1066613507389053689">Оновіть ОС Brave</translation>
 <translation id="1067048845568873861">Створено</translation>
@@ -162,6 +163,7 @@
 <translation id="1166583374608765787">Перевірте змінену назву</translation>
 <translation id="1166596238782048887">"<ph name="TAB_TITLE"/>" – це вкладка з робочого столу "<ph name="DESK_TITLE"/>"</translation>
 <translation id="1168020859489941584">Відкриття через <ph name="TIME_REMAINING"/>...</translation>
+<translation id="1169435433292653700">Файл "<ph name="FILE_NAME"/>" містить конфіденційні або небезпечні дані. Повідомлення від адміністратора: "<ph name="CUSTOM_MESSAGE"/>"</translation>
 <translation id="1170288591054440704">Запитувати, коли сайт хоче використовувати шрифти, установлені на пристрої</translation>
 <translation id="1171135284592304528">Виділяти вибраний на клавіатурі об’єкт, коли він змінюється</translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> хоче під'єднатися до пристрою HID</translation>
@@ -194,6 +196,7 @@
 <translation id="1195447618553298278">Невідома помилка.</translation>
 <translation id="1195558154361252544">Сповіщення автоматично заблоковано для всіх сайтів, крім тих, які ви дозволили</translation>
 <translation id="1197088940767939838">Оранжевий</translation>
+<translation id="1197935538609051549">Вимкнути</translation>
 <translation id="1197979282329025000">Під час отримання характеристик принтера для принтера <ph name="PRINTER_NAME"/> сталася помилка. Цей принтер неможливо зареєструвати в <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="119944043368869598">Очистити все</translation>
 <translation id="1199814941632954229">Надаються сертифікати для цих сертифікованих профілів</translation>
@@ -213,6 +216,7 @@
 <translation id="1218015446623563536">Видалення Linux</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Служба локації Brave використовує такі джерела, як Wi-Fi, мобільні мережі та датчики, щоб визначати місцезнаходження цього пристрою.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Щоб вимкнути її, дезактивуйте основну функцію "Доступ до моїх геоданих". Ви також можете вимкнути визначення місцезнаходження за допомогою Wi-Fi, мобільних мереж і датчиків у налаштуваннях функції "Доступ до моїх геоданих".<ph name="END_PARAGRAPH2"/></translation>
+<translation id="1703988271738455429">Не вдалося завантажити файли живих субтитрів для такої мови: <ph name="LANGUAGE"/>. Спроба завантаження повториться пізніше. Наразі мовлення буде надіслано на сервери Brave для обробки.</translation>
 <translation id="122082903575839559">Алгоритм підпису сертифіката</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 із шифруванням RSA</translation>
 <translation id="1221825588892235038">Лише виділений фрагмент</translation>
@@ -246,7 +250,6 @@
 <translation id="125220115284141797">За умовчанням</translation>
 <translation id="1252987234827889034">Сталася помилка профілю</translation>
 <translation id="1254593899333212300">Пряме з'єднання з Інтернетом</translation>
-<translation id="1257553931232494454">рівні масштабування</translation>
 <translation id="1258491128795710625">Що нового</translation>
 <translation id="1259152067760398571">Перевірку безпеки виконано вчора</translation>
 <translation id="1260451001046713751">Завжди дозволяти спливаючі вікна та переспрямування з хосту <ph name="HOST"/></translation>
@@ -260,6 +263,7 @@
 <translation id="126710816202626562">Мова перекладу:</translation>
 <translation id="126768002343224824">16x</translation>
 <translation id="1272079795634619415">Зупинити</translation>
+<translation id="1272508081857842302">Відкривати <ph name="BEGIN_LINK"/>підтримувані посилання<ph name="END_LINK"/></translation>
 <translation id="1272978324304772054">Цей обліковий запис користувача не належить домену, в якому зареєстровано пристрій. Якщо ви хочете зареєструватися в іншому домені, спершу потрібно виконати процедуру відновлення пристрою.</translation>
 <translation id="1273780413309681229">Знову відкрити посібник із налаштування</translation>
 <translation id="1274997165432133392">Файли cookie та інші дані із сайтів</translation>
@@ -332,7 +336,6 @@
 <translation id="1354045473509304750">Надалі дозволяти сайту <ph name="HOST"/> використовувати й переміщувати камеру</translation>
 <translation id="1355088139103479645">Видалити всі дані?</translation>
 <translation id="1355466263109342573">Плагін <ph name="PLUGIN_NAME"/> заблоковано</translation>
-<translation id="3984064884859276726">Натисніть правою кнопкою миші й виберіть параметр "Шукати на сторінці за допомогою Brave Об’єктива", щоб дізнаватися більше про візуальний контент у будь-яких частинах сайту під час веб-перегляду чи онлайн-покупок.</translation>
 <translation id="1358741672408003399">Правопис і граматика</translation>
 <translation id="1359923111303110318">Ваш пристрій можна розблоковувати за допомогою Smart Lock. Натисніть клавішу Enter, щоб розблокувати.</translation>
 <translation id="1361164813881551742">Додати вручну</translation>
@@ -429,7 +432,6 @@
 <translation id="145432137617179457">Мови перевірки орфографії</translation>
 <translation id="1455119378540982311">Стандартні розміри вікон</translation>
 <translation id="1459693405370120464">Погода</translation>
-<translation id="1459967076783105826">Пошукові системи, додані розширеннями</translation>
 <translation id="146000042969587795">Цей фрейм було заблоковано, тому що він містить незахищений вмест.</translation>
 <translation id="146219525117638703">Стан ONC</translation>
 <translation id="146220085323579959">З’єднання з Інтернетом розірвано. Перевірте з’єднання з Інтернетом і повторіть спробу.</translation>
@@ -464,7 +466,6 @@
 <translation id="1486096554574027028">Пошук паролів</translation>
 <translation id="1487335504823219454">Спеціальні налаштування ввімкнено</translation>
 <translation id="1489664337021920575">Вибрати інший варіант</translation>
-<translation id="1490491397986065675">Адміністратор каже: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1492417797159476138">Ви вже зберегли це ім'я користувача для цього сайту</translation>
 <translation id="1493892686965953381">Очікування <ph name="LOAD_STATE_PARAMETER"/>...</translation>
 <translation id="1494349716233667318">Сайти можуть запитувати дозвіл на використання шрифтів, установлених на пристрої</translation>
@@ -477,10 +478,8 @@
 <translation id="1507170440449692343">Доступ цієї сторінки до вашої камери заблоковано.</translation>
 <translation id="1507246803636407672">&amp;Відхилити</translation>
 <translation id="1508491105858779599">Щоб розблокувати пристрій, прикладіть палець до сканера відбитків пальців.</translation>
-<translation id="1508575541972276599">Поточна версія: Debian 9 (Stretch)</translation>
 <translation id="1509163368529404530">&amp;Відновити групу</translation>
 <translation id="1509281256533087115">Отримувати доступ до будь-якого пристрою <ph name="DEVICE_NAME_AND_VENDOR"/> через USB</translation>
-<translation id="1509960214886564027">Функції на багатьох сайтах можуть не працювати</translation>
 <translation id="1510238584712386396">Панель запуску</translation>
 <translation id="1510785804673676069">Якщо ви використовуєте проксі-сервер, перевірте його налаштування
         чи зверніться до адміністратора мережі, щоб переконатися, що
@@ -573,6 +572,8 @@
 <translation id="1601560923496285236">Застосувати</translation>
 <translation id="1602085790802918092">Запуск віртуальної машини</translation>
 <translation id="1604432177629086300">Не вдається роздрукувати. Перевірте принтер і повторіть спробу.</translation>
+<translation id="1605744057217831567">Переглянути всі дані сайтів і дозволи</translation>
+<translation id="1606077700029460857">Змінити налаштування миші</translation>
 <translation id="1607139524282324606">Очистити введені дані</translation>
 <translation id="1607499585984539560">Користувач не зв’язаний із цим доменом</translation>
 <translation id="1608626060424371292">Вилучити цього користувача</translation>
@@ -688,7 +689,6 @@
     конфіденційності. Надсилаючи відгук, Ви дозволяєте нам
     використовувати його, щоб покращувати будь-які
     продукти чи сервіси Brave.</translation>
-<translation id="1706625117072057435">Рівні масштабування</translation>
 <translation id="1708338024780164500">(Неактивне)</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ідентифікатор: <ph name="ID_PH"/>)</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/>x<ph name="HEIGHT"/> (оригінальна)</translation>
@@ -697,10 +697,11 @@
 <translation id="1709972045049031556">Не вдалося надіслати</translation>
 <translation id="1711935594505774770">Буде видалено всі дані й файли cookie, збережені сайтом <ph name="SITE_GROUP_NAME"/>, сайтами його групи та встановленими ним додатками</translation>
 <translation id="1714644264617423774">Увімкніть функції доступності, щоб полегшити користування своїм пристроєм. <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
-<translation id="1717218214683051432">Датчики руху</translation>
 <translation id="1718835860248848330">Остання година</translation>
 <translation id="1719312230114180055">Примітка. Відбиток пальця може бути менш надійним, ніж пароль чи PIN-код.</translation>
 <translation id="1720318856472900922">Автентифікація сервера TLS WWW</translation>
+<translation id="1720941539803966190">Закрити навчальний посібник</translation>
+<translation id="172123215662733643">Шукати зображення за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="1721312023322545264">Вам потрібен дозвіл адміністратора <ph name="NAME"/>, щоб перейти на цей сайт</translation>
 <translation id="1722460139690167654">Вашим пристроєм <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/><ph name="END_LINK"/> керує домен <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="1723824996674794290">&amp;Нове вікно</translation>
@@ -709,7 +710,6 @@
 <translation id="1729533290416704613">Розширення також змінило сторінку, яка відкривається під час пошуку в універсальному вікні пошуку.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Щоб видалити додатки, перейдіть у меню "Налаштування" &gt; "Google Play" &gt; "Змінити налаштування Android" &gt; "Додатки" або "Менеджер додатків". Торкніться додатка (якщо потрібно, проведіть пальцем праворуч або ліворуч, щоб знайти його) і натисніть "Видалити" або "Вимкнути".<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">...</translation>
-<translation id="1733064249834771892">шрифти</translation>
 <translation id="5958351589333270173">Шифрувати синхронізовані дані за допомогою <ph name="BEGIN_LINK"/>парольної фрази<ph name="END_LINK"/>. Це не стосується способів оплати й адрес із Brave Pay.</translation>
 <translation id="1734212868489994726">Блакитний</translation>
 <translation id="1734230530703461088">Не вдалося завантажити розширення впродовж визначеного часу. Зв'яжіться з адміністратором.</translation>
@@ -727,6 +727,7 @@
 <translation id="1744108098763830590">фонова сторінка</translation>
 <translation id="1745732479023874451">Керувати контактами</translation>
 <translation id="1901235742643584247">Ви можете зберегти цей пароль в обліковому записі Brave або лише на цьому пристрої</translation>
+<translation id="1750048572964661931">Щоб захистити доступ до додатків на телефоні, установіть PIN-код або пароль на цьому пристрої Bravebook.</translation>
 <translation id="1750172676754093297">На вашому ключі безпеки не можна зберігати відбитки пальців</translation>
 <translation id="1751249301761991853">Персоналізація</translation>
 <translation id="1751262127955453661"><ph name="ORIGIN"/> зможе змінювати файли в папці "<ph name="FOLDERNAME"/>", поки ви не закриєте всі вкладки для цього сайту</translation>
@@ -774,11 +775,11 @@
 <translation id="1790194216133135334">Надіслати посилання на пристрій "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="1790976235243700817">Скасувати доступ</translation>
 <translation id="1792619191750875668">Розширений дисплей</translation>
+<translation id="1793625608969726781">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", комп’ютер, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="1794051631868188691">Ніколи не показувати продавця <ph name="MERCHANT"/></translation>
 <translation id="1794791083288629568">Надіслати відгук, щоб допомогти нам вирішити цю проблему.</translation>
 <translation id="1795214765651529549">Вибрати класичну тему</translation>
 <translation id="1796588414813960292">Функції, яким потрібен звук, не працюватимуть</translation>
-<translation id="1799071797295057738">Розширення "<ph name="EXTENSION_NAME"/>" автоматично вимкнено.</translation>
 <translation id="1801418420130173017">Вимкнути темну тему</translation>
 <translation id="1802624026913571222">Переходити в режим сну, коли кришка закрита</translation>
 <translation id="1802687198411089702">Сторінка не відповідає. Зачекайте або закрийте її.</translation>
@@ -806,7 +807,6 @@
 <translation id="1818913467757368489">Завантажується журнал.</translation>
 <translation id="1819721979226826163">Торкніться меню "Сповіщення додатків" &gt; "Сервіси Google Play".</translation>
 <translation id="1820028137326691631">Введіть наданий адміністратором пароль</translation>
-<translation id="182139138257690338">автоматичні завантаження</translation>
 <translation id="3707821975049107110">Уже користуєтеся Brave? Увійдіть в обліковий запис</translation>
 <translation id="18245044880483936">Резервні копії даних не займають простір на Диску вашої дитини.</translation>
 <translation id="1825565032302550710">Укажіть порт зі значенням від 1024 до 65535</translation>
@@ -846,7 +846,6 @@
 <translation id="1862311223300693744">Чи встановлено на Вашому пристрої таке програмне забезпечення, як VPN-клієнт, проксі-сервер, брандмауер
     або NAS?</translation>
 <translation id="1863182668524159459">Немає послідовних портів</translation>
-<translation id="1863316578636157783">Розширення "<ph name="EXTENSION_NAME"/>" вимкнено, оскільки воно містить зловмисне програмне забезпечення</translation>
 <translation id="1864111464094315414">Вхід</translation>
 <translation id="1864400682872660285">Холод</translation>
 <translation id="1864454756846565995">Пристрій із портом USB типу C (на задній панелі)</translation>
@@ -895,12 +894,10 @@
 <translation id="1906828677882361942">Заборонити всім сайтам доступ до послідовних портів</translation>
 <translation id="1908591798274282246">Знову відкрити закриту групу</translation>
 <translation id="1909880997794698664">Справді назавжди перевести цей пристрій у режим термінала?</translation>
-<translation id="1910721550319506122">Вітаємо!</translation>
 <translation id="1915073950770830761">Canary</translation>
 <translation id="1915307458270490472">Закрити</translation>
 <translation id="1916502483199172559">Стандартний червоний аватар</translation>
 <translation id="1918141783557917887">&amp;Малий</translation>
-<translation id="1919345977826869612">Оголошення</translation>
 <translation id="1920390473494685033">Контакти</translation>
 <translation id="1921050530041573580">Підключіть телефон до Повідомлень</translation>
 <translation id="1921584744613111023">Роздільна здатність: <ph name="DPI"/></translation>
@@ -993,9 +990,7 @@
 <translation id="2020225359413970060">Сканувати файл</translation>
 <translation id="2023167225947895179">PIN-код легко вгадати</translation>
 <translation id="202352106777823113">Завантаження тривало задовго, тому було припинене мережею.</translation>
-<translation id="2025115093177348061">Доповнена реальність</translation>
 <translation id="2025632980034333559">Відбулося аварійне завершення роботи розширення <ph name="APP_NAME"/>. Натисніть цю спливаючу підказку, щоб перезавантажити розширення.</translation>
-<translation id="2025891858974379949">Незахищений контент</translation>
 <translation id="2028449514182362831">Функції, яким потрібні датчики руху, не працюватимуть</translation>
 <translation id="202918510990975568">Введіть пароль, щоб налаштувати параметри безпеки та входу</translation>
 <translation id="2030455719695904263">Сенсорна панель</translation>
@@ -1057,7 +1052,6 @@
 <translation id="2090165459409185032">Щоб відновити дані облікового запису, перейдіть на сторінку google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">Мережа автоматично підключатиметься, коли ви входитимете в обліковий запис</translation>
 <translation id="2090876986345970080">Налаштування безпеки системи</translation>
-<translation id="2091887806945687916">Сигнал</translation>
 <translation id="2096715839409389970">Очистити файли cookie третіх сторін</translation>
 <translation id="2098805196501063469">Перевірити решту паролів</translation>
 <translation id="2099172618127234427">Ви ввімкнути функції налагодження ОС Brave, які встановлять демон SSHD та ввімкнуть завантаження з носіїв USB.</translation>
@@ -1138,7 +1132,6 @@
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> і ще 1 перемикач</translation>
 <translation id="2165177462441582039">Виберіть тривалість виділення кожного елемента</translation>
 <translation id="2166369534954157698">абвгґдеєжзиіїйклмнопрстуфхцчшщьюя</translation>
-<translation id="2167276631610992935">JavaScript</translation>
 <translation id="2169062631698640254">Усе одно ввійти</translation>
 <translation id="2170054054876170358">Переконайтеся, що ваш телефон поблизу й розблокований, а Bluetooth і Wi-Fi увімкнено.</translation>
 <translation id="2173302385160625112">Перевірте інтернет-з’єднання</translation>
@@ -1151,6 +1144,7 @@
 <translation id="2179416702468739594">Пошук доступних профілів. Можливо, пристрій на кілька хвилин від’єднається від мобільної мережі.</translation>
 <translation id="2180620921879609685">Блокувати контент на всіх сторінках</translation>
 <translation id="2182058453334755893">Скопійовано в буфер обміну</translation>
+<translation id="2183027945672030611">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", ігровий контролер, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8098574385249290065">Дозволити Brave вибирати, коли відтворювати звук на сайтах (рекомендується)</translation>
 <translation id="2186711480981247270">Сторінка, надіслана з іншого пристрою</translation>
 <translation id="2187675480456493911">Мережу синхронізовано з іншими пристроями у вашому обліковому записі. Налаштування, які змінюють інші користувачі, не синхронізуватимуться. <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
@@ -1179,7 +1173,6 @@
 <translation id="2214018885812055163">Спільні папки</translation>
 <translation id="2214884991347062907">Неправильний пароль, повторіть спробу</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;Не показано 1 рядок&gt;}one{&lt;Не показано <ph name="NUMBER_OF_LINES"/> рядок&gt;}few{&lt;Не показано <ph name="NUMBER_OF_LINES"/> рядки&gt;}many{&lt;Не показано <ph name="NUMBER_OF_LINES"/> рядків&gt;}other{&lt;Не показано <ph name="NUMBER_OF_LINES"/> рядка&gt;}}</translation>
-<translation id="2215727959747642672">Редагування файлу</translation>
 <translation id="2218019600945559112">Миша та сенсорна панель</translation>
 <translation id="2749608811030566578">Коли Brave видаляв шкідливі програми, сталася помилка</translation>
 <translation id="2218515861914035131">Вставити як звичайний текст</translation>
@@ -1192,6 +1185,7 @@
 <translation id="2224551243087462610">Редагувати ім’я папки</translation>
 <translation id="2225864335125757863">Щоб захистити обліковий запис, негайно змініть ці паролі:</translation>
 <translation id="2226449515541314767">Цьому сайту заборонено повністю контролювати пристрої MIDI.</translation>
+<translation id="2226826835915474236">Неактивні команди</translation>
 <translation id="2226907662744526012">Розблоковувати автоматично, коли хтось вводить PIN-код</translation>
 <translation id="2227179592712503583">Видалити пропозицію</translation>
 <translation id="2229161054156947610">Залишилося більше 1 год.</translation>
@@ -1264,11 +1258,11 @@
 <translation id="2299941608784654630">Включити всі файли журналу, зібрані під час налагодження, як окремий архів.</translation>
 <translation id="2300214399009193026">PCIe</translation>
 <translation id="2300383962156589922">Налаштування та керування <ph name="APP_NAME"/></translation>
-<translation id="2300578660547687840">Комбінації клавіш для ключових слів для пошукової мережі</translation>
 <translation id="2301382460326681002">Кореневий каталог розширення недійсний.</translation>
 <translation id="2301402091755573488">Спільна вкладка</translation>
 <translation id="23030561267973084">"<ph name="EXTENSION_NAME"/>" запитує додаткові дозволи.</translation>
 <translation id="23055578400314116">Виберіть ім'я користувача</translation>
+<translation id="2306366691914573029">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", невідомий тип</translation>
 <translation id="2307462900900812319">Установити параметри мережі</translation>
 <translation id="2307553512430195144">Якщо ви погодитеся, Brave Асистент виявлятиме фразу "Ok Brave" у режимі очікування. За допомогою Voice Match він розпізнаватиме, що говорить саме <ph name="SUPERVISED_USER_NAME"/>.
     <ph name="BR"/>
@@ -1279,6 +1273,7 @@
     Якщо згодом ви вирішите, що функція Voice Match дитині не потрібна, просто вимкніть її в налаштуваннях Асистента. Щоб переглянути або видалити аудіозаписи, які дитина додає під час налаштування Voice Match, перейдіть на сторінку <ph name="VOICE_MATCH_SETTINGS_URL"/> із її облікового запису.
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
+<translation id="2307630946657910723">Шукати на сторінці за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="230927227160767054">Ця сторінка хоче встановити обробника служби.</translation>
 <translation id="2309620859903500144">Доступ цього сайту до датчиків руху чи світла заблоковано.</translation>
 <translation id="2312219318583366810">URL-адреса сторінки</translation>
@@ -1300,7 +1295,6 @@
 <translation id="2326931316514688470">&amp;Перезавантажити додаток</translation>
 <translation id="2327492829706409234">Увімкнути програму</translation>
 <translation id="2328561734797404498">Щоб скористатися додатком <ph name="APP_NAME"/>, потрібно перезапустити пристрій.</translation>
-<translation id="2329182534073751090">розміщення вікон</translation>
 <translation id="2329597144923131178">Увійдіть, щоб мати доступ до закладок, історії, паролів та інших налаштувань на всіх своїх пристроях.</translation>
 <translation id="2332131598580221120">Переглянути в магазині</translation>
 <translation id="2332192922827071008">Відкрити налаштування</translation>
@@ -1346,6 +1340,7 @@
 <translation id="2364498172489649528">Виконано</translation>
 <translation id="2365507699358342471">Цей сайт може переглядати тексти й зображення в буфері обміну.</translation>
 <translation id="2367972762794486313">Показати програми</translation>
+<translation id="236939127352773362">Коли пристрої поблизу передають дані</translation>
 <translation id="2371076942591664043">Відкрити коли &amp;виконано</translation>
 <translation id="2373666622366160481">За розміром паперу</translation>
 <translation id="2375406435414127095">Підключіться до телефона</translation>
@@ -1371,6 +1366,7 @@
 <translation id="2406153734066939945">Видалити профіль і його дані?</translation>
 <translation id="2408018932941436077">Зберігання картки</translation>
 <translation id="2408955596600435184">Введіть PIN-код</translation>
+<translation id="2410079346590497630">Дані складання</translation>
 <translation id="2410754283952462441">Виберіть обліковий запис</translation>
 <translation id="241082044617551207">Невідомий плагін</translation>
 <translation id="2412593942846481727">Доступне оновлення</translation>
@@ -1508,7 +1504,6 @@
 <translation id="2541706104884128042">Налаштовано новий час сну</translation>
 <translation id="2542050502251273923">Налаштовує рівень налагодження менеджера й інших сервісів з'єднання з мережею за допомогою ff_debug.</translation>
 <translation id="2544352060595557290">Цю вкладку</translation>
-<translation id="2546283357679194313">Файли cookie та дані із сайтів</translation>
 <translation id="2546302722632337735">Не дозволяти сайтам використовувати ідентифікатори, щоб відтворювати захищений контент</translation>
 <translation id="2548347166720081527">Дозволено: <ph name="PERMISSION"/></translation>
 <translation id="2548545707296594436">Скинути кеш профілю eSIM-карти</translation>
@@ -1554,6 +1549,7 @@
 <translation id="2606568927909309675">Автоматично створює субтитри для аудіо та відео англійською мовою. Аудіозаписи й субтитри залишаються на вашому пристрої.</translation>
 <translation id="2607101320794533334">Інформація про відкритий ключ суб'єкта</translation>
 <translation id="2609896558069604090">Створення ярликів...</translation>
+<translation id="2609902589050805912">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", аудіопристрій</translation>
 <translation id="2609980095400624569">Не вдалося підключитися</translation>
 <translation id="2610157865375787051">Сон</translation>
 <translation id="2610260699262139870">Ді&amp;йсний розмір</translation>
@@ -1620,6 +1616,7 @@
 <translation id="2673135533890720193">Переглядати історію веб-перегляду</translation>
 <translation id="2674764818721168631">Вимкнено</translation>
 <translation id="2678063897982469759">Знову ввімкнути</translation>
+<translation id="2678676117809690850">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", телефон, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="268053382412112343">Іс&amp;торія</translation>
 <translation id="2681124317993121768">Гостьові профілі не підтримуються</translation>
 <translation id="2682498795777673382">Батьки змінили налаштування</translation>
@@ -1718,6 +1715,7 @@
 <translation id="2773288106548584039">Підтримка застарілих веб-переглядачів</translation>
 <translation id="2773802008104670137">Цей файл може пошкодити ваш комп’ютер.</translation>
 <translation id="2775104091073479743">Редагувати відбитки пальців</translation>
+<translation id="2776560192867872731">Змінити назву пристрою "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="5152275065296016556">Brave Pay</translation>
 <translation id="2782104745158847185">Не вдалося встановити додаток Linux</translation>
 <translation id="2783298271312924866">Завантажено</translation>
@@ -1814,15 +1812,16 @@
 <translation id="287205682142673348">Переадресація порту</translation>
 <translation id="287286579981869940">Додати <ph name="PROVIDER_NAME"/>…</translation>
 <translation id="2872961005593481000">Завершити роботу</translation>
+<translation id="2872966656309879564">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", комп’ютер</translation>
 <translation id="2874939134665556319">Попередня композиція</translation>
 <translation id="4156865452842056672">(сторінки Brave із повідомленням про помилку)</translation>
 <translation id="2876336351874743617">Палець 2</translation>
 <translation id="2876369937070532032">Надсилає в Brave URL-адреси деяких відвіданих сторінок, коли ваша безпека під загрозою</translation>
+<translation id="2876556152483133018">Пошук на сайтах</translation>
 <translation id="2877467134191447552">Ви можете додати інші облікові записи для доступу до веб-сайтів і додатків.</translation>
 <translation id="2878782256107578644">Триває сканування. Відкрити зараз?</translation>
 <translation id="2878889940310164513">Додати мобільну мережу…</translation>
 <translation id="288042212351694283">Доступ до ваших пристроїв Universal 2nd Factor</translation>
-<translation id="2880660355386638022">Розміщення вікон</translation>
 <translation id="2881076733170862447">Коли ви натискаєте розширення</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> за мить перезапуститься та скине налаштування</translation>
 <translation id="2885378588091291677">Диспетчер завдань</translation>
@@ -1836,6 +1835,7 @@
 <translation id="2894757982205307093">Нова вкладка в групі</translation>
 <translation id="289695669188700754">Ідентифікатор ключа: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870">Ви дійсно бажаєте відкрити <ph name="TAB_COUNT"/> вкладки?</translation>
+<translation id="2900477968385519153">Пошук об’єктів на екрані за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="290105521672621980">Файл використовує непідтримувані функції</translation>
 <translation id="2902127500170292085">Розширення <ph name="EXTENSION_NAME"/> не може зв’язатися з цим принтером. Перевірте, чи принтер підключено, і повторіть спробу.</translation>
 <translation id="2902312830803030883">Додаткові дії</translation>
@@ -1952,7 +1952,6 @@
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="3012804260437125868">Лише для захищених з’єднань із тим самим сайтом</translation>
 <translation id="3012917896646559015">Негайно зв’яжіться з виробником свого апаратного забезпечення, щоб надіслати свій комп’ютер на ремонт.</translation>
-<translation id="3013291976881901233">Пристрої MIDI</translation>
 <translation id="301525898020410885">Мову вибирає ваша організація</translation>
 <translation id="3015639418649705390">Перезапустити зараз</translation>
 <translation id="3016381065346027039">Немає записів журналу</translation>
@@ -1991,8 +1990,10 @@
 <translation id="3053013834507634016">Використання ключа сертифіката</translation>
 <translation id="3053273573829329829">Увімкнути PIN-код користувача</translation>
 <translation id="3054766768827382232">Це може покращити роботу периферійних пристроїв, але водночас підвищити ризик несанкціонованого використання ваших персональних даних.</translation>
+<translation id="3055087258198109191">Щоб скористатись іншою пошуковою системою, а не стандартною, введіть команду для неї, а потім натисніть вибрану комбінацію клавіш. На цій сторінці також можна змінити пошукову систему за умовчанням.</translation>
 <translation id="3055590424724986000">Через вибраного вами постачальника</translation>
 <translation id="3058498974290601450">Ви можете будь-коли ввімкнути синхронізацію в налаштуваннях</translation>
+<translation id="3058517085907878899">Назвати пристрій</translation>
 <translation id="3060379269883947824">Увімкнути службу Читання з екрана</translation>
 <translation id="3060952009917586498">Змінити мову пристрою. Поточна мова: <ph name="LANGUAGE"/>.</translation>
 <translation id="3060987956645097882">Не вдалося підключитися до телефона. Переконайтеся, що ваш телефон поблизу й розблокований, а Bluetooth і Wi-Fi увімкнено.</translation>
@@ -2003,6 +2004,7 @@
 <translation id="3067198360141518313">Запустити цей плагін</translation>
 <translation id="3071624960923923138">Натисніть тут, щоб відкрити нову вкладку</translation>
 <translation id="3072775339180057696">Дозволити сайту переглядати файл "<ph name="FILE_NAME"/>"?</translation>
+<translation id="3074799113165994093">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", телефон</translation>
 <translation id="3075874217500066906">Щоб почати виконання Powerwash, потрібно перезавантажити пристрій. Після цього вам буде запропоновано підтвердити виконання Powerwash.</translation>
 <translation id="3076909148546628648"><ph name="DOWNLOAD_RECEIVED"/>/<ph name="DOWNLOAD_TOTAL"/></translation>
 <translation id="3076966043108928831">Зберегти лише на цьому пристрої</translation>
@@ -2044,6 +2046,7 @@
 <translation id="3117791853215125017">{COUNT,plural, =1{Не вдалося надіслати <ph name="ATTACHMENTS"/> на пристрій <ph name="DEVICE_NAME"/>}one{Не вдалося надіслати <ph name="ATTACHMENTS"/> на пристрій <ph name="DEVICE_NAME"/>}few{Не вдалося надіслати <ph name="ATTACHMENTS"/> на пристрій <ph name="DEVICE_NAME"/>}many{Не вдалося надіслати <ph name="ATTACHMENTS"/> на пристрій <ph name="DEVICE_NAME"/>}other{Не вдалося надіслати <ph name="ATTACHMENTS"/> на пристрій <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="3118319026408854581">Довідка <ph name="PRODUCT_NAME"/></translation>
 <translation id="3118654181216384296">Спробуйте запустити Linux ще раз через кілька хвилин.</translation>
+<translation id="3119689272338239690">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", невідомий тип, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3119948370277171654">Укажіть тип контенту, який Ви транслювали, або URL-адресу.</translation>
 <translation id="3120430004221004537">Недостатнє шифрування для цієї операції на пристрої <ph name="DEVICE_NAME"/>.</translation>
 <translation id="3122464029669770682">ЦП</translation>
@@ -2103,6 +2106,7 @@
 <translation id="3183143381919926261">Мережі мобільного Інтернету</translation>
 <translation id="3183944777708523606">Налаштування екранів</translation>
 <translation id="3184536091884214176">Налаштувати принтери CUPS та керувати ними. <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
+<translation id="3185014249447200271">{NUM_APPS,plural, =1{Цей додаток заблоковано}one{Деякі додатки заблоковано}few{Деякі додатки заблоковано}many{Деякі додатки заблоковано}other{Деякі додатки заблоковано}}</translation>
 <translation id="3188257591659621405">Мої файли</translation>
 <translation id="3188465121994729530">Середня швидкість переміщення курсора</translation>
 <translation id="3189187154924005138">Великий курсор</translation>
@@ -2124,7 +2128,6 @@
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Примітка<ph name="END_BOLD"/>: хтось зі схожим голосом або записом голосу також може отримати доступ до персональних результатів користувача <ph name="SUPERVISED_USER_NAME"/>.</translation>
 <translation id="3216825226035747725">Адміністратори визначають, до яких сервісів Brave користувачі мають доступ, коли входять в обліковий запис G Suite for Education. Це, зокрема, функції та сервіси, до яких ваша дитина раніше не мала доступу через контрольований обліковий запис. Адміністратори навчальних закладів зобов'язані надавати або отримувати згоду на використання сервісів неповнолітніми.</translation>
 <translation id="3217843140356091325">Створити комбінацію клавіш?</translation>
-<translation id="321799795901478485">Zip Archiver</translation>
 <translation id="321834671654278338">Файл видалення Linux</translation>
 <translation id="3220586366024592812">Відбулося аварійне завершення процесу для функції підключення  <ph name="CLOUD_PRINT_NAME"/>. Перезапустити?</translation>
 <translation id="3220943972464248773">Щоб синхронізувати паролі, підтвердьте свою особу</translation>
@@ -2204,7 +2207,7 @@
 <translation id="3305661444342691068">Відкрити файл PDF у вікні попереднього перегляду</translation>
 <translation id="3308116878371095290">Цій сторінці було відмовлено в збереженні файлів cookie.</translation>
 <translation id="3308134619352333507">Кнопка "Сховати"</translation>
-<translation id="3308738399950580893">оголошення</translation>
+<translation id="863285194606682292">Ваші дані можуть зберігатися на відвіданих сайтах, доки ви не закриєте Brave</translation>
 <translation id="3308852433423051161">Завантажується Brave Асистент…</translation>
 <translation id="3309330461362844500">Ідентифікатор профілю сертифіката</translation>
 <translation id="3311445899360743395">Дані, пов'язані з цим додатком, може бути видалено з пристрою.</translation>
@@ -2270,10 +2273,11 @@
 <translation id="3388788256054548012">Цей файл зашифровано. Попросіть власника файлу розшифрувати його.</translation>
 <translation id="3390013585654699824">Дані про додаток</translation>
 <translation id="3390741581549395454">Створено резервні копії додатків і файлів Linux. Оновлення почнеться незабаром.</translation>
-<translation id="3391482648489541560">редагування файлів</translation>
 <translation id="3391512812407811893">Пробні версії Privacy Sandbox</translation>
 <translation id="339178315942519818">Переглядайте сповіщення з додатків для спілкування на пристрої <ph name="DEVICE_TYPE"/></translation>
+<translation id="404326254653176440">Аналіз документів у Brave</translation>
 <translation id="3394850431319394743">Дозволено використовувати ідентифікатори, щоб відтворювати захищений контент</translation>
+<translation id="1815398427402703506">Натисніть правою кнопкою миші й виберіть параметр "Шукати зображення за допомогою Brave Об’єктива", щоб дізнаватися більше про візуальний контент у будь-яких частинах сайту під час веб-перегляду чи онлайн-покупок.</translation>
 <translation id="3396800784455899911">Натиснувши кнопку "Прийняти та продовжити", ви дозволяєте цим сервісам Brave обробляти ваші дані, як описано вище.</translation>
 <translation id="339722927132407568">Зависає</translation>
 <translation id="3399432415385675819">Сповіщення будуть вимкнені</translation>
@@ -2284,11 +2288,11 @@
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
 <translation id="3404065873681873169">Немає збережених паролів для цього сайту</translation>
 <translation id="3404249063913988450">Активувати заставку</translation>
+<translation id="3404805962764077228">Тимчасово транслювати додатки з телефона на пристрої <ph name="DEVICE_TYPE"/></translation>
 <translation id="3405664148539009465">Налаштувати шрифти</translation>
 <translation id="3405763860805964263">…</translation>
 <translation id="3406290648907941085">Дозволено використовувати пристрої та дані віртуальної реальності</translation>
 <translation id="3406396172897554194">Шукати за мовою чи назвою методу введення</translation>
-<translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Це розширення може бути небезпечним}one{Ці розширення можуть бути небезпечними}few{Ці розширення можуть бути небезпечними}many{Ці розширення можуть бути небезпечними}other{Ці розширення можуть бути небезпечними}}</translation>
 <translation id="3409785640040772790">Карти</translation>
 <translation id="3410832398355316179">Якщо видалити цього користувача, усі зв’язані з ним файли та локальні дані буде видалено назавжди. <ph name="USER_EMAIL"/> усе одно зможе ввійти в обліковий запис.</translation>
 <translation id="3412265149091626468">Перейти до виділення</translation>
@@ -2314,6 +2318,7 @@
 <translation id="3432227430032737297">Вилучити всі показані</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="3433621910545056227">На жаль, системі не вдалося заблокувати атрибути часу встановлення на пристрої.</translation>
+<translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3434272557872943250">Якщо ввімкнено також запис Історії додатків і веб-пошуку, ці дані зберігаються в обліковому записі Brave дитини. Докладніше про це налаштування читайте на сторінці families.google.com.</translation>
 <translation id="3435541101098866721">Додати новий телефон</translation>
 <translation id="3435688026795609344">Розширення "<ph name="EXTENSION_NAME"/>" просить надати ваш <ph name="CODE_TYPE"/></translation>
@@ -2389,6 +2394,7 @@
 <translation id="3908743412684152579">Налаштування Brave Асистента</translation>
 <translation id="3496213124478423963">Зменшити</translation>
 <translation id="3496238553815913323"><ph name="LANGUAGE"/> (не вибрано)</translation>
+<translation id="3496689104192986836">Рівень заряду акумулятора – <ph name="PERCENTAGE"/>%</translation>
 <translation id="3497501929010263034">Пристрій USB від <ph name="VENDOR_NAME"/> (продукт <ph name="PRODUCT_ID"/>)</translation>
 <translation id="3497560059572256875">Поділитися дудлом</translation>
 <translation id="3498215018399854026">Не вдалося зв’язатися з одним із ваших батьків. Повторіть спробу.</translation>
@@ -2536,6 +2542,7 @@
 <translation id="3660234220361471169">Ненадійні</translation>
 <translation id="3664511988987167893">Значок розширення</translation>
 <translation id="2334029754052191847">Brave виявив, що інша програма пошкодила деякі ваші налаштування, і відновив початкові налаштування за умовчанням.</translation>
+<translation id="3665919494326051362">Поточна версія: <ph name="CURRENT_VERSION"/></translation>
 <translation id="8545590844135745781">Щоб краще виявляти проблеми з Bluetooth, працівники компанії Brave можуть включати у звіти додаткові журнали Bluetooth. Якщо цю опцію вибрано, ваш звіт міститиме журнали btsnoop і HCI із поточного сеансу з мінімальною кількістю ідентифікаційних даних. Доступ до цих журналів матимуть лише адміністратори групи продуктів ОС Brave в Listnr. Журнали буде видалено назавжди через 90 днів.</translation>
 <translation id="3670113805793654926">Пристрої від усіх постачальників</translation>
 <translation id="3670229581627177274">Увімкніть Bluetooth</translation>
@@ -2551,6 +2558,7 @@
 <translation id="3682824389861648626">Мінімальна кількість рухів</translation>
 <translation id="3683524264665795342">Запит на спільний доступ до екрана від програми <ph name="APP_NAME"/></translation>
 <translation id="3685598397738512288">Налаштування USB в Linux</translation>
+<translation id="3686786761304157917">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", клавіатура, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="368789413795732264">Під час спроби запису файлу сталася помилка: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="3688507211863392146">Записувати у файли та папки, які ви відкриваєте в програмі</translation>
 <translation id="3688526734140524629">Змінити версію</translation>
@@ -2613,7 +2621,6 @@
 <translation id="3742055079367172538">Знімок екрана зроблено</translation>
 <translation id="3742235229730461951">Корейська розкладка клавіатури</translation>
 <translation id="3742666961763734085">Не вдається знайти організаційний підрозділ із такою назвою. Повторіть спробу.</translation>
-<translation id="3744111561329211289">Фонова синхронізація</translation>
 <translation id="3747077776423672805">Щоб видалити додатки, перейдіть у меню "Налаштування" &gt; "Google Play" &gt; "Змінити налаштування Android" &gt; "Додатки" або "Менеджер додатків". Торкніться додатка (якщо потрібно, проведіть пальцем праворуч або ліворуч, щоб знайти його) і натисніть "Видалити" або "Вимкнути".</translation>
 <translation id="3747220812138541072">Показувати вбудовані підказки під час введення тексту</translation>
 <translation id="3748706263662799310">Повідомити про помилку</translation>
@@ -2648,9 +2655,9 @@
 <translation id="3778740492972734840">&amp;Інструменти розробника</translation>
 <translation id="3778868487658107119">Ставте запитання. Давайте завдання. Ваш персональний Brave Асистент завжди готовий допомогти.</translation>
 <translation id="3781742599892759500">Доступ до мікрофона в Linux</translation>
+<translation id="3782488227140539029">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", відеокамера, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3782795641773236652">Для цієї дії ще не призначено перемикачів чи клавіш</translation>
 <translation id="378312418865624974">Читати унікальний ідентифікатор для цього комп’ютера</translation>
-<translation id="3784372983762739446">Пристрої Bluetooth</translation>
 <translation id="3784472333786002075">Файли cookie – це файли, створені веб-сайтами. Їх є два види. Основні файли cookie створюються сайтом, який ви відвідуєте. Цей сайт указується в адресному рядку. Сторонні файли cookie створюються іншими сайтами. Ці сайти показують власний контент, як-от оголошення чи зображення, на веб-сторінці, яку ви відвідуєте.</translation>
 <translation id="3785308913036335955">Показувати ярлики додатків</translation>
 <translation id="3785727820640310185">Збережені паролі для цього сайту</translation>
@@ -2660,7 +2667,6 @@
 <translation id="3789841737615482174">Установити</translation>
 <translation id="379082410132524484">Ваша картка недійсна</translation>
 <translation id="3792890930871100565">Від’єднати принтери</translation>
-<translation id="3793395331556663376">Відкрито забагато файлових систем.</translation>
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено 1 день тому}one{Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено {NUM_DAYS} день тому}few{Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено {NUM_DAYS} дні тому}many{Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено {NUM_DAYS} днів тому}other{Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено {NUM_DAYS} дня тому}}</translation>
 <translation id="2513920013190289972">Щоб скористатися функцією "Передавання поблизу", переконайтеся, що обидва пристрої розблоковані, розташовані поруч і на них увімкнено Bluetooth. Якщо ви хочете надіслати файли на комп'ютер Bravebook, якого немає у ваших контактах, відкрийте на ньому панель стану, натиснувши час, і ввімкніть "Видимість поблизу". <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">Вимкнено</translation>
@@ -2707,7 +2713,6 @@
 <translation id="383161972796689579">Власник цього пристрою вимкнув можливість додавати нових користувачів</translation>
 <translation id="3834728400518755610">Щоб зміни в доступах до мікрофона почали діяти, потрібно завершити роботу Linux. Зробіть це, щоб продовжити.</translation>
 <translation id="3834775135533257713">Не вдалося додати додаток <ph name="TO_INSTALL_APP_NAME"/> через конфлікт із додатком <ph name="INSTALLED_APP_NAME"/>.</translation>
-<translation id="3835233591525155343">Дані про активний стан пристрою</translation>
 <translation id="3835522725882634757">Сервер надсилає дані, які <ph name="PRODUCT_NAME"/> не може зрозуміти. <ph name="BEGIN_LINK"/>Повідомте про помилку<ph name="END_LINK"/>, включивши <ph name="BEGIN2_LINK"/>необроблений список файлів<ph name="END2_LINK"/>.</translation>
 <translation id="383669374481694771">Це загальна інформація про цей пристрій і його використання (як-от дані про рівень заряду акумулятора, систему, історію додатків та помилки). Ці відомості використовуватимуться, щоб покращити Android, а деякі зведені дані корисні для додатків і партнерів Brave, як-от розробників Android.</translation>
 <translation id="3838085852053358637">Не вдалося завантажити розширення</translation>
@@ -2750,9 +2755,11 @@
 <translation id="3873423927483480833">Показати PIN-коди</translation>
 <translation id="3873915545594852654">Виникла проблема з ARC++.</translation>
 <translation id="3412613348266550587">Увімкнути Brave Асистента</translation>
+<translation id="3875815154304214043">Відповідно до налаштувань, додаток <ph name="APP_NAME"/> має відкриватися в новій вкладці веб-переглядача. Підтримувані посилання також відкриватимуться у веб-переглядачі. <ph name="BEGIN_LINK_LEARN_MORE"/>Докладніше<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256">Налаштування функції "Передавання поблизу" для пристрою користувача <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>).</translation>
 <translation id="3879748587602334249">Менеджер завантажень</translation>
 <translation id="3882165008614329320">Наявні відео з камери або файлу</translation>
+<translation id="3883306461188700142">Вводьте текст голосом. Натисніть клавішу пошуку + D, а тоді почніть говорити.</translation>
 <translation id="3884152383786131369">Для веб-контенту, доступного багатьма мовами, використовуватиметься перший доступний варіант зі списку нижче. Ці параметри синхронізуються з налаштуваннями веб-переглядача. <ph name="BEGIN_LINK_LEARN_MORE"/>Докладніше<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">Оновленнями керує адміністратор</translation>
 <translation id="3886446263141354045">Запит на доступ до цього сайту надіслано користувачу <ph name="NAME"/></translation>
@@ -2798,7 +2805,6 @@
 <translation id="3920909973552939961">Заборонено встановлювати обробники платежів</translation>
 <translation id="3923184630988645767">Використання трафіку</translation>
 <translation id="3923676227229836009">Ця сторінка може переглядати файли</translation>
-<translation id="3923943745177274752">Вітаємо в додатку <ph name="DEVICE_TYPE"/></translation>
 <translation id="3924145049010392604">Meta</translation>
 <translation id="7575176983371565462">Надсилає URL-адреси в Безпечний перегляд на перевірку. Також надсилає невеликі зразки сторінок, завантаження, дані про активність розширень та інформацію про систему, щоб виявляти нові загрози. Тимчасово зв'язує ці дані з обліковим записом Brave, у який ви ввійшли, щоб захищати вас у всіх додатках Brave.</translation>
 <translation id="3925573269917483990">Камера:</translation>
@@ -2827,10 +2833,10 @@
 <translation id="3943582379552582368">&amp;Назад</translation>
 <translation id="3943857333388298514">Вставити</translation>
 <translation id="3945513714196326460">Введіть коротшу назву</translation>
+<translation id="3948027458879361203">Змінити ім’я хосту</translation>
 <translation id="3948116654032448504">Шукати зображення в <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3948507072814225786">Сайт <ph name="ORIGIN"/> може змінювати файли в указаних нижче папках</translation>
 <translation id="394984172568887996">Імпортовано із IE</translation>
-<translation id="3949981384795585075">{NUM_APPS,plural, =1{Цей додаток може бути небезпечним}one{Ці додатки можуть бути небезпечними}few{Ці додатки можуть бути небезпечними}many{Ці додатки можуть бути небезпечними}other{Ці додатки можуть бути небезпечними}}</translation>
 <translation id="3950820424414687140">Вхід</translation>
 <translation id="3953834000574892725">Мої облікові записи</translation>
 <translation id="3954354850384043518">Завантаження триває</translation>
@@ -2885,6 +2891,7 @@
 <translation id="4002329649066944389">Як керувати винятками для певних сайтів</translation>
 <translation id="4002440992267487163">Налаштування PIN-коду</translation>
 <translation id="4005817994523282006">Спосіб визначення часового поясу</translation>
+<translation id="400645326027787740">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", ігровий контролер</translation>
 <translation id="4007856537951125667">Сховати ярлики</translation>
 <translation id="4008291085758151621">Інформація про сайт недоступна у VR-режимі</translation>
 <translation id="4010917659463429001">Щоб мати доступ до закладок на мобільному пристрої, потрібно <ph name="GET_IOS_APP_LINK"/>.</translation>
@@ -2934,6 +2941,7 @@
 <translation id="4066207411788646768">Перевірте з'єднання, щоб побачити доступні принтери в мережі</translation>
 <translation id="4068776064906523561">Збережені відбитки пальців</translation>
 <translation id="407173827865827707">Після натискання</translation>
+<translation id="5493571544288146030">Пароль буде збережено в обліковому записі Brave, <ph name="ACCOUNT"/>. Вам не доведеться його запам’ятовувати.</translation>
 <translation id="4074900173531346617">Сертифікат підписувача електронної пошти</translation>
 <translation id="407520071244661467">Масштаб</translation>
 <translation id="407543464472585404">Профіль користувача <ph name="NAME"/> зв'язано з електронною адресою <ph name="EMAIL"/></translation>
@@ -3052,9 +3060,9 @@
 <translation id="4217571870635786043">Диктування</translation>
 <translation id="4219558185499589032">Box</translation>
 <translation id="4220648711404560261">Під час активації сталася помилка.</translation>
-<translation id="4222772810963087151">Дані складання</translation>
 <translation id="4225020013797061859">Щоб призначити дію "<ph name="ACTION"/>", натисніть перемикач або клавішу</translation>
 <translation id="4225397296022057997">На всіх сайтах</translation>
+<translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Це розширення заборонено}one{Деякі розширення заборонено}few{Деякі розширення заборонено}many{Деякі розширення заборонено}other{Деякі розширення заборонено}}</translation>
 <translation id="4231095370974836764">Установлюйте додатки й ігри з Google Play на пристрої <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">Налаштувати Kerberos</translation>
 <translation id="4235965441080806197">Скасувати вхід</translation>
@@ -3094,11 +3102,11 @@
 <translation id="4268670020635416342">Укажіть назву профілю, як-от "Робочий", "Особистий" або "Для дітей"</translation>
 <translation id="4270393598798225102">Версія <ph name="NUMBER"/></translation>
 <translation id="4272765551319099134">Немає зв’язку зі сторінкою</translation>
+<translation id="4274604968379621964">Зберегти групу</translation>
 <translation id="4274667386947315930">Дані для входу</translation>
 <translation id="4274673989874969668">Коли ви закриваєте сайт, він зазвичай продовжує синхронізацію, щоб завершити завдання (наприклад, завантажити фото чи надіслати повідомлення в чаті)</translation>
 <translation id="4275291496240508082">Звук під час запуску</translation>
 <translation id="4275830172053184480">Перезапустіть пристрій</translation>
-<translation id="4278101229438943600">Ваш Асистент готовий</translation>
 <translation id="4278390842282768270">Дозволено</translation>
 <translation id="4279129444466079448">Максимальна кількість профілів eSIM-карти на цьому пристрої – <ph name="PROFILE_LIMIT"/>. Щоб додати новий, видаліть якийсь із наявних.</translation>
 <translation id="4281844954008187215">Умови використання</translation>
@@ -3124,7 +3132,6 @@
 <translation id="4305402730127028764">Копіювати на пристрій <ph name="DEVICE_NAME"/></translation>
 <translation id="4305817255990598646">Перейти</translation>
 <translation id="4306119971288449206">Додатки мають наповнюватися вмістом типу "<ph name="CONTENT_TYPE"/>"</translation>
-<translation id="4306812610847412719">буфер обміну</translation>
 <translation id="4307992518367153382">Основні</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/> КБ (<ph name="NUM_KILOBYTES_LIVE"/> КБ у реальному часі)</translation>
 <translation id="4310139701823742692">Неправильний формат файлу. Перевірте файл PPD та повторіть спробу.</translation>
@@ -3172,6 +3179,7 @@
 <translation id="4364567974334641491"><ph name="APP_NAME"/> транслює вікно.</translation>
 <translation id="4364830672918311045">Показувати сповіщення</translation>
 <translation id="4366138410738374926">Початок друку</translation>
+<translation id="4369121877634339065">Перетягніть зображення на екран, щоб шукати</translation>
 <translation id="4370975561335139969">Введені електронна адреса та пароль не збігаються</translation>
 <translation id="4371452868325715552">Не вдалося підключитися до сервера. Перевірте з’єднання з мережею та повторіть спробу. Якщо проблема не зникла, перезапустіть Bravebook. Код помилки: <ph name="ERROR_CODE"/>.</translation>
 <translation id="4373966964907728675">Трансляція робочого стола</translation>
@@ -3188,6 +3196,7 @@
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/> і ще 1 обліковий запис}one{<ph name="EMAIL"/> і ще <ph name="EXTRA_ACCOUNTS"/> обліковий запис}few{<ph name="EMAIL"/> і ще <ph name="EXTRA_ACCOUNTS"/> облікові записи}many{<ph name="EMAIL"/> і ще <ph name="EXTRA_ACCOUNTS"/> облікових записів}other{<ph name="EMAIL"/> і ще <ph name="EXTRA_ACCOUNTS"/> облікового запису}}</translation>
 <translation id="4384312707950789900">Додати до рекомендованих</translation>
 <translation id="4384652540891215547">Активувати розширення</translation>
+<translation id="4384886290276344300">Змінити налаштування клавіатури</translation>
 <translation id="438503109373656455">Жокей</translation>
 <translation id="4385146930797718821">Знімок екрана скопійовано в буфер</translation>
 <translation id="4385905942116811558">Пошук пристроїв із Bluetooth і USB</translation>
@@ -3217,13 +3226,13 @@
 <translation id="4412698727486357573">Довідковий центр</translation>
 <translation id="4413088271097062326">Який додаток використовувати?</translation>
 <translation id="44141919652824029">Дозволити додатку <ph name="APP_NAME"/> отримувати список підключених пристроїв USB?</translation>
-<translation id="4414515549596849729">файли cookie та дані із сайтів</translation>
 <translation id="4415213869328311284">Тепер ви можете користуватися пристроєм <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="4415245286584082850">Пристроїв не знайдено. Відкрийте довідкову статтю в новій вкладці.</translation>
 <translation id="5749788945734786627">Керувати обліковим записом Brave</translation>
 <translation id="4415748029120993980">Еліптична крива SECG secp384r1 (також відома як NIST P-384)</translation>
 <translation id="4416450511678320850">Немає доступних додатків</translation>
 <translation id="4416582610654027550">Введіть дійсну URL-адресу</translation>
+<translation id="4417162649853416189">Перетягувати на екрані зображення для пошуку за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="4419409365248380979">Завжди дозволяти хосту <ph name="HOST"/> створювати файли cookie</translation>
 <translation id="4421932782753506458">Киця</translation>
 <translation id="4423376891418188461">Відновити налаштування</translation>
@@ -3234,7 +3243,6 @@
 <translation id="4430019312045809116">Гучність</translation>
 <translation id="4430369329743628066">Закладку додано</translation>
 <translation id="4432621511648257259">Неправильний пароль</translation>
-<translation id="4434045419905280838">Спливаючі вікна й переадресація</translation>
 <translation id="443454694385851356">Застарілий (небезпечно)</translation>
 <translation id="443475966875174318">Оновити або видалити несумісні додатки</translation>
 <translation id="4438043733494739848">Прозоро</translation>
@@ -3292,7 +3300,6 @@
 <translation id="831589464260346213">ПК і Bravecast підключено до різних мереж Wi-Fi (наприклад, 2,4 ГГц
     і 5 ГГц)</translation>
 <translation id="4500114933761911433">Плагін <ph name="PLUGIN_NAME"/> аварійно завершив роботу</translation>
-<translation id="4500587658229086076">незахищений контент</translation>
 <translation id="450099669180426158">Значок знака оклику</translation>
 <translation id="4501530680793980440">Підтвердити видалення</translation>
 <translation id="4502423230170890588">Видалити з цього пристрою</translation>
@@ -3338,7 +3345,6 @@
 <translation id="4541123282641193691">Не вдалося підтвердити ваш обліковий запис. Повторіть спробу або перезапустіть Bravebook.</translation>
 <translation id="4541662893742891060">Не вдається підключитися до цього профілю. Щоб отримати технічну підтримку, зв'яжіться з оператором.</translation>
 <translation id="4541706525461326392">Триває видалення профілю. Це може зайняти кілька хвилин.</translation>
-<translation id="4541810033354695636">доповнена реальність</translation>
 <translation id="4542520061254486227">Переглядати ваші дані на веб-сайтах <ph name="WEBSITE_1"/> і <ph name="WEBSITE_2"/></translation>
 <translation id="4543778593405494224">Менеджер сертифікатів</translation>
 <translation id="4544174279960331769">Стандартний синій аватар</translation>
@@ -3353,6 +3359,7 @@
 <translation id="4551763574344810652">Щоб відмінити, натисніть <ph name="MODIFIER_KEY_DESCRIPTION"/></translation>
 <translation id="3158042476798161624">Щоб змінити мову пристрою, потрібно перезапустити Bravebook. <ph name="BEGIN_LINK_LEARN_MORE"/>Докладніше<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4553898717331438468">Почати налаштування заново</translation>
+<translation id="4554491709904933912">Перетягувати на екрані зображення для пошуку за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="4554591392113183336">Зовнішнє розширення має таку саму або нижчу версію порівняно з наявним.</translation>
 <translation id="4555769855065597957">Shadow</translation>
 <translation id="4808253054156608144">Щоб зберігати паролі в обліковому записі Brave, увійдіть у нього й увімкніть синхронізацію.</translation>
@@ -3469,9 +3476,9 @@
 <translation id="4666472247053585787">Переглядайте сповіщення з телефона на пристрої <ph name="DEVICE_TYPE"/></translation>
 <translation id="4666911709726371538">Більше додатків</translation>
 <translation id="4668721319092543482">Натисніть, щоб увімкнути плагін <ph name="PLUGIN_NAME"/></translation>
-<translation id="4670064810192446073">Віртуальна реальність</translation>
 <translation id="46733273239502219">Офлайн-дані в установлених додатках також буде видалено</translation>
 <translation id="4673442866648850031">Відкривати інструменти стилуса, коли стилус витягнуто</translation>
+<translation id="4675828034887792601">Створити команди для пошуку на веб-сайтах і керування пошуковою системою</translation>
 <translation id="4676595058027112862">Докладніше про функцію "Керування телефоном"</translation>
 <translation id="4677772697204437347">Пам’ять GPU</translation>
 <translation id="467823995058589466">Камеру вимкнено</translation>
@@ -3498,7 +3505,6 @@
 <translation id="4699172675775169585">Кешовані зображення та файли</translation>
 <translation id="4699357559218762027">(автозапуск)</translation>
 <translation id="4701025263201366865">Вхід для батьків</translation>
-<translation id="208996166923556768">Перетягувати зображення для пошуку через Brave Об’єктив</translation>
 <translation id="4708794300267213770">Показувати заблокований екран, коли пристрій виходить із режиму сну</translation>
 <translation id="4708849949179781599">Вийти з <ph name="PRODUCT_NAME"/></translation>
 <translation id="4711638718396952945">Відновити налаштування</translation>
@@ -3530,7 +3536,6 @@
 <translation id="4748783296226936791">Сайти зазвичай підключаються до пристроїв HID для роботи функцій, які використовують нестандартні клавіатури, ігрові контролери й інші пристрої</translation>
 <translation id="4750394297954878236">Пропозиції</translation>
 <translation id="475088594373173692">Перший користувач</translation>
-<translation id="4751476147751820511">Датчики руху та світла</translation>
 <translation id="4756378406049221019">Зупинити/оновити</translation>
 <translation id="4756388243121344051">&amp;Історія</translation>
 <translation id="4759238208242260848">Завантаження</translation>
@@ -3552,6 +3557,7 @@
 <translation id="4779136857077979611">Оніґірі</translation>
 <translation id="4779766576531456629">Перейменувати мобільну мережу eSIM-карти</translation>
 <translation id="4780321648949301421">Зберегти сторінку як...</translation>
+<translation id="2950478706313064709">Щоб знайти щось на певному сайті або в розділі Brave, ви можете вводити вказані тут команди в адресному рядку, а тоді натискати Tab або пробіл.</translation>
 <translation id="4785719467058219317">Ви використовуєте ключ безпеки, не зареєстрований на цьому веб-сайті</translation>
 <translation id="4788092183367008521">Перевірте з’єднання з мережею та повторіть спробу.</translation>
 <translation id="4791000909649665275"><ph name="NUMBER"/> фото</translation>
@@ -3571,13 +3577,14 @@
 <translation id="7371415421968781750">Веб-переглядач Brave не виявив шкідливого програмного забезпечення на вашому комп'ютері • Перевірено щойно</translation>
 <translation id="4808667324955055115">Спливаючі вікна заблоковано:</translation>
 <translation id="4809079943450490359">Вказівки адміністратора вашого пристрою:</translation>
-<translation id="480990236307250886">Відкрити домашню сторінку</translation>
+<translation id="480990236307250886">Перейти на головну сторінку</translation>
 <translation id="4809927044794281115">Світла тема</translation>
 <translation id="4811212958317149293">Автосканування клавіатури в режимі кнопкового доступу</translation>
 <translation id="4811503964269049987">Додати вибрану вкладку в групу</translation>
 <translation id="4813136279048157860">Мої зображення</translation>
 <translation id="4813512666221746211">Помилка мережі</translation>
 <translation id="4814378367953456825">Введіть назву цього відбитка пальця</translation>
+<translation id="4816097470512964351">"<ph name="DEVICE"/>", дeталі</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{Видалено 1 закладку}one{Видалено {COUNT} закладку}few{Видалено {COUNT} закладки}many{Видалено {COUNT} закладок}other{Видалено {COUNT} закладки}}</translation>
 <translation id="8655084398729487585">Сповіщення Brave Асистента</translation>
 <translation id="4820236583224459650">Зробити активним квитком</translation>
@@ -3616,7 +3623,6 @@
 <translation id="485088796993065002">Сайти можуть відтворювати звук, щоб транслювати аудіо з музики, відео й іншого медіаконтенту</translation>
 <translation id="4853020600495124913">Відкрити в &amp;новому вікні</translation>
 <translation id="4854317507773910281">Вибери батьківський обліковий запис, який має надати дозвіл</translation>
-<translation id="485480310608090163">Додаткові налаштування та дозволи</translation>
 <translation id="4856478137399998590">Службу пересилання мобільних даних активовано. Нею можна користуватися</translation>
 <translation id="4858792381671956233">Ви надіслали батькам запит на перегляд цього сайту</translation>
 <translation id="4858913220355269194">Футбол</translation>
@@ -3626,6 +3632,7 @@
 <translation id="4864805589453749318">Вибери, хто з батьків дозволяє додати обліковий запис навчального закладу.</translation>
 <translation id="486635084936119914">Автоматично відкривати певні типи файлів після завантаження</translation>
 <translation id="4868281708609571334"><ph name="SUPERVISED_USER_NAME"/> може навчити Brave Асистента розпізнавати свій голос</translation>
+<translation id="4868284252360267853">Це вікно не виділено. Щоб виділити його, натисніть Command + Shift + Option + A.</translation>
 <translation id="48704129375571883">Додати більше функцій</translation>
 <translation id="4870758487381879312">Введіть наданий адміністратором пароль, щоб отримати інформацію про налаштування</translation>
 <translation id="4870903493621965035">Немає підключених пристроїв</translation>
@@ -3651,6 +3658,7 @@
 <translation id="4884987973312178454">6x</translation>
 <translation id="4887424188275796356">Відкрити за допомогою системного переглядача</translation>
 <translation id="488785315393301722">Показати деталі</translation>
+<translation id="4889450157778777235">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", відеокамера</translation>
 <translation id="4890773143211625964">Показати розширені налаштування принтера</translation>
 <translation id="4891089016822695758">Форум бета-версії</translation>
 <translation id="4892229439761351791">Сайт може використовувати Bluetooth</translation>
@@ -3734,7 +3742,6 @@
 <translation id="4972737347717125191">Сайти можуть запитувати дозвіл на використання пристроїв і даних віртуальної реальності</translation>
 <translation id="4973307593867026061">Додати принтери</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Вимкнути звук на сайті}one{Вимкнути звук на сайтах}few{Вимкнути звук на сайтах}many{Вимкнути звук на сайтах}other{Вимкнути звук на сайтах}}</translation>
-<translation id="4976009197147810135">Розділити вертикально</translation>
 <translation id="4977942889532008999">Підтвердити доступ</translation>
 <translation id="4980805016576257426">Це розширення містить зловмисне програмне забезпечення.</translation>
 <translation id="6298472828264321822">Щоб очистити дані веб-перегляду на всіх синхронізованих пристроях і в обліковому записі Brave, <ph name="BEGIN_LINK"/>увійдіть в обліковий запис<ph name="END_LINK"/>.</translation>
@@ -3762,7 +3769,6 @@
 <translation id="5009463889040999939">Триває перейменування профілю. Це може зайняти кілька хвилин.</translation>
 <translation id="5010043101506446253">Центр сертифікації</translation>
 <translation id="5015344424288992913">-...</translation>
-<translation id="5017633213534173756">Запам’ятати</translation>
 <translation id="5017643436812738274">Ви можете оглядати сторінки за допомогою текстового курсора. Щоб вимкнути цей режим, натисніть Ctrl + Search + 7.</translation>
 <translation id="5017828934289857214">Нагадати пізніше</translation>
 <translation id="5018207570537526145">Відкрити веб-сайт розширення</translation>
@@ -3786,6 +3792,7 @@
 <translation id="1246634473640425087">Переглядайте збережені паролі й керуйте ними в обліковому записі Brave</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="5040823038948176460">Додаткові налаштування контенту</translation>
+<translation id="5043440033854483429">Назва може складатися з літер, цифр і дефісів (-), але не більше ніж 15 (мінімум – 1 символ).</translation>
 <translation id="5043913660911154449">Або виберіть файл PPD принтера <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
 <translation id="5045550434625856497">Неправильний пароль</translation>
 <translation id="504561833207953641">Відкривається в наявному сеансі веб-переглядача.</translation>
@@ -3846,7 +3853,6 @@
 <translation id="5112577000029535889">&amp;Інструменти розробника</translation>
 <translation id="5113739826273394829">Натиснувши цей значок, ви вручну заблокуєте цей пристрій <ph name="DEVICE_TYPE"/>. Під час наступного входу потрібно буде ввести пароль.</translation>
 <translation id="51143538739122961">Вставте ключ безпеки й торкніться його</translation>
-<translation id="5114987907971894280">віртуальна реальність</translation>
 <translation id="5115309401544567011">Підключіть пристрій <ph name="DEVICE_TYPE"/> до джерела живлення.</translation>
 <translation id="5115338116365931134">Система єдиного входу (SSO)</translation>
 <translation id="5116628073786783676">Збере&amp;гти аудіо як...</translation>
@@ -3887,6 +3893,7 @@
 <translation id="5157635116769074044">Закріпити цю сторінку на екрані запуску…</translation>
 <translation id="5159094275429367735">Налаштувати Crostini</translation>
 <translation id="5159419673777902220">Хтось із батьків вимкнув дозволи розширення</translation>
+<translation id="5159643365935452998">Перегляньте параметри автоматичного видалення даних</translation>
 <translation id="5160634252433617617">Фізична клавіатура</translation>
 <translation id="5160857336552977725">Увійдіть в обліковий запис на пристрої <ph name="DEVICE_TYPE"/></translation>
 <translation id="5161251470972801814">Пристрої USB від постачальника "<ph name="VENDOR_NAME"/>"</translation>
@@ -3941,7 +3948,6 @@
 <translation id="521582610500777512">Фотографію відхилено</translation>
 <translation id="5222403284441421673">Незахищене завантаження заблоковано</translation>
 <translation id="5222676887888702881">Вийти</translation>
-<translation id="52232769093306234">Помилка пакування.</translation>
 <translation id="5225324770654022472">Показувати ярлики додатків</translation>
 <translation id="52254442782792731">Видимість наразі не налаштовано</translation>
 <translation id="5225463052809312700">Увімкнути камеру</translation>
@@ -3958,7 +3964,6 @@
 <translation id="523505283826916779">Налаштування доступності</translation>
 <translation id="5235750401727657667">Відкривати нову вкладку на місці поточної сторінки</translation>
 <translation id="6465706586789214771">Щоб користуватися паролями на всіх своїх пристроях, перенесіть їх в обліковий запис Brave</translation>
-<translation id="5238278114306905396">Програму "<ph name="EXTENSION_NAME"/>" автоматично вилучено.</translation>
 <translation id="5242724311594467048">Увімкнути розширення "<ph name="EXTENSION_NAME"/>"?</translation>
 <translation id="5243522832766285132">Повторіть спробу через кілька хвилин</translation>
 <translation id="5244474230056479698">Синхронізація з обліковим записом <ph name="EMAIL"/></translation>
@@ -4033,6 +4038,7 @@
 <translation id="989239400026154074">Brave рекомендує Brave</translation>
 <translation id="5319712128756744240">Підключити новий пристрій</translation>
 <translation id="5320135788267874712">Нова назва пристрою</translation>
+<translation id="532043380734099846">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", миша, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="532247166573571973">Можливо, сервер недоступний. Спробуйте пізніше.</translation>
 <translation id="5324300749339591280">Список додатків</translation>
 <translation id="5324780743567488672">Автоматично визначати часовий пояс на основі ваших геоданих</translation>
@@ -4051,7 +4057,6 @@
 <translation id="5338503421962489998">Локальна пам’ять</translation>
 <translation id="5340638867532133571">Дозволити сайтам встановлювати обробники платежів (рекомендується)</translation>
 <translation id="5341793073192892252">Заблоковані файли cookie (сторонні файли cookie блокуються без винятку)</translation>
-<translation id="5341980496415249280">Пакування. Зачекайте…</translation>
 <translation id="5342091991439452114">Мінімальна кількість цифр у PIN-коді: <ph name="MINIMUM"/></translation>
 <translation id="5344036115151554031">Відновлення Linux</translation>
 <translation id="5345916423802287046">Запускати додаток, коли ви входите в обліковий запис</translation>
@@ -4059,6 +4064,7 @@
 <translation id="535123479159372765">Текст скопійовано з іншого пристрою</translation>
 <translation id="5352033265844765294">Встановлення позначки часу</translation>
 <translation id="6368144843345980623">Експортувати паролі з Brave</translation>
+<translation id="5354531123814675522">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", планшет, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="5355099869024327351">Дозволити Асистенту показувати сповіщення</translation>
 <translation id="5355191726083956201">Покращений захист увімкнено</translation>
 <translation id="5355926466126177564">Розширення "<ph name="EXTENSION_NAME"/>" змінило сторінку, яка відкривається під час пошуку в універсальному вікні пошуку.</translation>
@@ -4118,6 +4124,7 @@
 <translation id="5427278936122846523">Завжди перекладати</translation>
 <translation id="5427459444770871191">Повернути &amp;за годинниковою стрілкою</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (оновлення доступне)</translation>
+<translation id="5429373054983029602">Пошук об’єктів на екрані за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="542948651837270806">Потрібно встановити оновлення мікропрограми Trusted Platform Module. <ph name="TPM_FIRMWARE_UPDATE_LINK"/>: переглянути</translation>
 <translation id="5430931332414098647">Миттєва точка доступу</translation>
 <translation id="5431318178759467895">Колір</translation>
@@ -4184,10 +4191,12 @@
 <translation id="5494920125229734069">Вибрати все</translation>
 <translation id="5495466433285976480">Це вилучить усіх користувачів, файли, дані й інші налаштування після наступного перезапуску. Усім користувачам потрібно буде знову ввійти.</translation>
 <translation id="5495597166260341369">Залишати дисплей увімкненим</translation>
+<translation id="549580971452855947">Перетягнути зображення для пошуку за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="5496587651328244253">Упорядкувати</translation>
 <translation id="5496730470963166430">Заборонено показувати спливаючі вікна чи використовувати переспрямування</translation>
 <translation id="5497251278400702716">Цей файл</translation>
 <translation id="5498967291577176373">Пишіть швидше з вбудованими підказками щодо імені, адреси або номеру телефону</translation>
+<translation id="5499211612787418966">Це вікно не виділено. Щоб виділити його, натисніть Alt + Shift + A.</translation>
 <translation id="5499313591153584299">Цей файл може зашкодити вашому комп’ютеру.</translation>
 <translation id="5499453227627332024">Доступне оновлення для Linux Container. Ви також можете оновити систему пізніше в додатку Налаштування.</translation>
 <translation id="549957179819296104">Новий значок</translation>
@@ -4227,6 +4236,7 @@
 <translation id="5534304873398226603">Відхилити фото або відео</translation>
 <translation id="5535941515421698170">Також вилучити всі дані з цього пристрою</translation>
 <translation id="5539221284352502426">Сервер відхилив введений вами пароль. Можливі причини: пароль закороткий; пароль має містити цифри або символи; пароль має відрізнятися від попередніх.</translation>
+<translation id="5539467723438368868">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", планшет</translation>
 <translation id="5541694225089836610">Адміністратор вимкнув цю дію</translation>
 <translation id="5542132724887566711">Профіль</translation>
 <translation id="5542750926112347543">Файли cookie із сайту <ph name="DOMAIN"/> заблоковано</translation>
@@ -4234,6 +4244,7 @@
 <translation id="5543983818738093899">Перевірка статусу…</translation>
 <translation id="554517701842997186">Засіб обробки відео</translation>
 <translation id="5545335608717746497">{NUM_TABS,plural, =1{Додати вкладку в групу}one{Додати вкладки в групу}few{Додати вкладки в групу}many{Додати вкладки в групу}other{Додати вкладки в групу}}</translation>
+<translation id="5545693483061321551">Сайти не можуть використовувати файли cookie для перегляду ваших дій у веб-переглядачі, зокрема, щоб персоналізувати рекламу. Функції на деяких сайтах можуть не працювати.</translation>
 <translation id="5546865291508181392">Знайти</translation>
 <translation id="5548075230008247516">Скасовано вибір усіх елементів. Ви вийшли з режиму вибору.</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" і ще 1 вкладка}one{"<ph name="TAB_TITLE"/>" і ще # вкладка}few{"<ph name="TAB_TITLE"/>" і ще # вкладки}many{"<ph name="TAB_TITLE"/>" і ще # вкладок}other{"<ph name="TAB_TITLE"/>" і ще # вкладки}}</translation>
@@ -4286,8 +4297,10 @@
 <translation id="5601503069213153581">PIN-код</translation>
 <translation id="5601823921345337195">Заборонено підключатися до пристроїв MIDI</translation>
 <translation id="5602765853043467355">Видалити закладки, історію, паролі тощо з цього пристрою</translation>
+<translation id="5604884720628869833">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", клавіатура</translation>
 <translation id="5605623530403479164">Інші пошукові системи</translation>
 <translation id="5605758115928394442">Ми надіслали сповіщення на ваш телефон, щоб підтвердити вашу особу.</translation>
+<translation id="5606849116180480101">{NUM_EXTENSIONS,plural, =1{Це розширення заблоковано}one{Ці розширення заблоковано}few{Ці розширення заблоковано}many{Ці розширення заблоковано}other{Ці розширення заблоковано}}</translation>
 <translation id="560834977503641186">Докладніше про синхронізацію Wi-Fi</translation>
 <translation id="5608580678041221894">Торкніться наведених нижче клавіш, щоб змінити чи перемістити область обрізування</translation>
 <translation id="5609231933459083978">Схоже, додаток недійсний.</translation>
@@ -4329,7 +4342,6 @@
 <translation id="5646376287012673985">Місцезнаходження</translation>
 <translation id="5646558797914161501">Бізнесмен</translation>
 <translation id="5648166631817621825">Останні 7 днів</translation>
-<translation id="5649053991847567735">Автоматичні завантаження</translation>
 <translation id="5651308944918885595">Видимість для функції "Передавання поблизу"</translation>
 <translation id="5653154844073528838">Збережених принтерів: <ph name="PRINTER_COUNT"/>.</translation>
 <translation id="4196805003686694274">Надіслати відгук у Brave</translation>
@@ -4383,12 +4395,12 @@
 <translation id="5711010025974903573">Журнали технічного обслуговування</translation>
 <translation id="5711983031544731014">Не вдалося розблокувати. Введіть пароль.</translation>
 <translation id="5712153969432126546">Сайти іноді публікують файли PDF, як-от документи, договори та форми</translation>
+<translation id="5713158217420111469">Підключено до пристрою "<ph name="DEVICE"/>"</translation>
 <translation id="5715711091495208045">Посередник для плагінів: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719603411793408026">Пошукові системи за умовчанням</translation>
 <translation id="5719854774000914513">Сайти можуть запитувати дозвіл на підключення до пристроїв HID</translation>
 <translation id="572155275267014074">Налаштування Android</translation>
 <translation id="5722086096420375088">Зелено-білий</translation>
-<translation id="5722930212736070253">От халепа! У Zip Archiver сталася помилка.</translation>
 <translation id="572328651809341494">Останні вкладки</translation>
 <translation id="5723508132121499792">Не запущено жодну фонову програму</translation>
 <translation id="5727728807527375859">Розширення, служби та теми можуть зашкодити вашому комп'ютеру. Дійсно продовжити?</translation>
@@ -4448,7 +4460,6 @@
 <translation id="7397305826909094212">Вийти з усіх додатків Brave</translation>
 <translation id="5797521893972859201">Буде очищено історію, зокрема в полі пошуку</translation>
 <translation id="5798079537501238810">Сайти можуть установлювати обробники платежів</translation>
-<translation id="579907812742603813">захищений контент</translation>
 <translation id="579915268381781820">Ключ безпеки вилучено.</translation>
 <translation id="5799478978078236781">Отримуйте поради, пропозиції й оновлення для пристрою <ph name="DEVICE_TYPE"/>, а також надсилайте відгуки.</translation>
 <translation id="5799508265798272974">Віртуальна машина Linux: <ph name="LINUX_VM_NAME"/></translation>
@@ -4465,6 +4476,7 @@
 <translation id="8750665647536322704">Перенести паролі з цього пристрою у ваш обліковий запис Brave?</translation>
 <translation id="5817918615728894473">Підключити</translation>
 <translation id="5821565227679781414">Створити ярлик</translation>
+<translation id="7216958605064248952">Щоб шукати щось на певному сайті або в розділі Brave, ви можете використовувати команди. Наприклад, щоб шукати лише в Gmail, введіть "@gmail", а тоді натисніть Tab або пробіл.</translation>
 <translation id="5825412242012995131">Увімкнено (рекомендовано)</translation>
 <translation id="5826395379250998812">Під'єднайте <ph name="DEVICE_TYPE"/> до телефона. <ph name="LINK_BEGIN"/>Докладніше<ph name="LINK_END"/></translation>
 <translation id="5826993284769733527">Напівпрозоро</translation>
@@ -4617,7 +4629,6 @@
 <translation id="5984222099446776634">Нещодавно відвідані</translation>
 <translation id="5985458664595100876">Недійсний формат URL-адреси. Підтримувані формати: \\server\share і smb://server/share.</translation>
 <translation id="598810097218913399">Видалити призначення</translation>
-<translation id="5989136665954016134">Відкривати підтримувані посилання</translation>
 <translation id="5990266201903445068">Лише через Wi-Fi</translation>
 <translation id="5990386583461751448">Перекладено</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Щоб мати можливість переглядати веб-сторінки, попросіть адміністратора видалити цей додаток.}one{Щоб мати можливість переглядати веб-сторінки, попросіть адміністратора видалити ці додатки.}few{Щоб мати можливість переглядати веб-сторінки, попросіть адміністратора видалити ці додатки.}many{Щоб мати можливість переглядати веб-сторінки, попросіть адміністратора видалити ці додатки.}other{Щоб мати можливість переглядати веб-сторінки, попросіть адміністратора видалити ці додатки.}}</translation>
@@ -4680,7 +4691,6 @@
 <translation id="931766611660157151">Останні вкладки Brave</translation>
 <translation id="6059347142391822629">Щоб закрити посібник, натисніть перемикач, коли буде виділено кнопку "Готово".</translation>
 <translation id="6059652578941944813">Ієрархія сертифіката</translation>
-<translation id="6059925163896151826">Пристрої USB</translation>
 <translation id="6061882183774845124">Надіслати посилання на пристрої</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Примітка<ph name="END_BOLD"/>: хтось зі схожим голосом або записом голосу також може отримати доступ до персональних результатів користувача <ph name="SUPERVISED_USER_NAME"/>. Щоб заощадити заряд акумулятора, можете вибрати в налаштуваннях Асистента в обліковому записі користувача <ph name="SUPERVISED_USER_NAME"/>, щоб команда "Ok Brave" працювала, лише коли цей пристрій підключено до джерела живлення.</translation>
 <translation id="6064217302520318294">Блокування екрана</translation>
@@ -4738,6 +4748,7 @@
 <translation id="8589850327914845460">Налаштуйте пошукову систему за умовчанням для веб-переглядача Brave і Панелі запуску <ph name="DEVICE_TYPE"/></translation>
 <translation id="6113942107547980621">Щоб користуватися Smart Lock, перейдіть у профіль основного користувача на телефоні</translation>
 <translation id="6116921718742659598">Змінити налаштування мови та введення</translation>
+<translation id="6119927814891883061">Зберегти назву "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="6120205520491252677">Закріпити цю сторінку на екрані запуску...</translation>
 <translation id="6122081475643980456">Ваше з’єднання з Інтернетом контролюється</translation>
 <translation id="6122093587541546701">Електронна адреса (необов’язково):</translation>
@@ -4955,6 +4966,7 @@
 <translation id="6344576354370880196">Збережені принтери</translation>
 <translation id="6345418402353744910">Укажіть своє ім'я користувача та пароль для проксі <ph name="PROXY"/>, щоб адміністратор міг налаштувати вашу мережу</translation>
 <translation id="6345878117466430440">Позначити як прочитане</translation>
+<translation id="6347010704471250799">Показувати сповіщення</translation>
 <translation id="6349101878882523185">Установіть додаток <ph name="APP_NAME"/></translation>
 <translation id="6354918092619878358">Еліптична крива SECG secp256r1 (також відома як ANSI X9.62 prime256v1, NIST P-256)</translation>
 <translation id="6355789186038748882">Експериментальний веб-переглядач (альфа-версія). Деякі функції відсутні або неповні. Щоб повідомити про проблему, натисніть "Довідка" &gt; "Повідомити про проблему…".</translation>
@@ -4975,6 +4987,7 @@
 <translation id="6374469231428023295">Повторити спробу</translation>
 <translation id="6377268785556383139">1 результат для запиту "<ph name="SEARCH_TEXT"/>"</translation>
 <translation id="6380143666419481200">Прийняти та продовжити</translation>
+<translation id="638418309848716977">Підтримувані посилання</translation>
 <translation id="6384275966486438344">Використовувати пошукову систему <ph name="SEARCH_HOST"/></translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{Група без назви – 1 вкладка}one{Група без назви – # вкладка}few{Група без назви – # вкладки}many{Група без назви – # вкладок}other{Група без назви – # вкладки}}</translation>
 <translation id="6385149369087767061">Підключіть пристрій до Інтернету й повторіть спробу.</translation>
@@ -5010,6 +5023,7 @@
 <translation id="6418160186546245112">Повернення до попередньої встановленої версії <ph name="IDS_SHORT_PRODUCT_NAME"/></translation>
 <translation id="6418481728190846787">Назавжди видалити доступ для всіх програм</translation>
 <translation id="6418511932144861495">Установіть важливе оновлення</translation>
+<translation id="6419524191360800346">Доступне оновлення Debian 11 (Bullseye)</translation>
 <translation id="6419546358665792306">Завантажити розпаковане розширення</translation>
 <translation id="6419843101460769608">Заборонити всім сайтам доступ до пристроїв Bluetooth</translation>
 <translation id="642469772702851743">Власник заблокував цей пристрій (серійний номер <ph name="SERIAL_NUMBER"/>).</translation>
@@ -5023,6 +5037,7 @@
 <translation id="6434309073475700221">Відхилити</translation>
 <translation id="6434325376267409267">Щоб користуватися додатком <ph name="APP_NAME"/>, потрібно оновити пристрій.</translation>
 <translation id="3041204028661633854">Щоб отримувати більш персоналізовані відповіді на запитання, надайте Brave Асистенту доступ до знімків інформації на екрані, а також до даних про пісні або відео, які ви відтворюєте.</translation>
+<translation id="6436778875248895551">Адміністратор заблокував розширення "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="6438234780621650381">Скинути налаштування</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> – відтворюється аудіо</translation>
 <translation id="6442187272350399447">Фантастика!</translation>
@@ -5032,8 +5047,9 @@
 <translation id="6445450263907939268">Якщо ви не хочете цих змін, можна відновити попередні налаштування.</translation>
 <translation id="6446213738085045933">Створити ярлик на робочому столі</translation>
 <translation id="6447210166804596538">Найважливіші елементи керування конфіденційністю та безпекою на одній сторінці</translation>
-<translation id="6447842834002726250">Cookie-файли</translation>
+<translation id="6447842834002726250">Файли cookie</translation>
 <translation id="6450876761651513209">Змінювати налаштування конфіденційності</translation>
+<translation id="6451344358166983408">Сайт або сторінка</translation>
 <translation id="6451591602925140504">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/> і ще одна вкладка}one{<ph name="PAGE_TITLE"/> і ще # вкладка}few{<ph name="PAGE_TITLE"/> і ще # вкладки}many{<ph name="PAGE_TITLE"/> і ще # вкладок}other{<ph name="PAGE_TITLE"/> і ще # вкладки}}</translation>
 <translation id="6451689256222386810">Якщо ви забули парольну фразу або хочете змінити це налаштування, <ph name="BEGIN_LINK"/>скиньте синхронізацію<ph name="END_LINK"/>.</translation>
 <translation id="6452181791372256707">Відхилити</translation>
@@ -5051,7 +5067,6 @@
 <translation id="6460601847208524483">Знайти наступне</translation>
 <translation id="6461170143930046705">Пошук мереж…</translation>
 <translation id="6463795194797719782">&amp;Редагувати</translation>
-<translation id="6464094930452079790">зображення</translation>
 <translation id="6464825623202322042">Цей пристрій</translation>
 <translation id="6465841119675156448">Без Інтернету</translation>
 <translation id="6466258437571594570">Сайти не можуть просити дозвіл надсилати сповіщення</translation>
@@ -5077,7 +5092,6 @@
 <translation id="6491376743066338510">Не авторизовано</translation>
 <translation id="6494327278868541139">Показати детальний опис покращеного захисту</translation>
 <translation id="6494445798847293442">Не є Центром сертифікації</translation>
-<translation id="6494750904506170417">спливаючі вікна й переспрямування</translation>
 <translation id="6494974875566443634">Налаштування</translation>
 <translation id="6497457470714179223">{NUM_FILES,plural, =0{Ці дані містять конфіденційний або небезпечний контент}=1{Цей файл містить конфіденційний або небезпечний контент}one{Ці файли містять конфіденційний або небезпечний контент}few{Ці файли містять конфіденційний або небезпечний контент}many{Ці файли містять конфіденційний або небезпечний контент}other{Ці файли містять конфіденційний або небезпечний контент}}</translation>
 <translation id="6497789971060331894">Зворотне прокручування мишею</translation>
@@ -5118,7 +5132,6 @@
 <translation id="6532663472409656417">Зареєстровано підприємством</translation>
 <translation id="6535331821390304775">Завжди дозволяти сайту <ph name="ORIGIN"/> відкривати посилання цього типу у зв'язаному додатку</translation>
 <translation id="653659894138286600">Сканувати документи та зображення</translation>
-<translation id="5552185729949202575">Перетягувати на екрані зображення для пошуку через Brave Об’єктив</translation>
 <translation id="6537613839935722475">Назва може містити літери, цифри та дефіси (-)</translation>
 <translation id="6537880577641744343">Командир</translation>
 <translation id="6538098297809675636">Помилка виявлення коду</translation>
@@ -5127,7 +5140,6 @@
 <translation id="6540672086173674880">Brave може використовувати вашу історію веб-перегляду для персоналізації Пошуку й інших сервісів. Це налаштування можна змінити на сторінці myaccount.google.com/activitycontrols/search</translation>
 <translation id="6541638731489116978">Цьому сайту заборонено доступ до датчиків руху.</translation>
 <translation id="6545665334409411530">Частота повторів</translation>
-<translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
 <translation id="6545867563032584178">Мікрофон вимкнено в параметрах системи Mac</translation>
 <translation id="6547354035488017500">Звільніть принаймні 512 МБ пам’яті, інакше пристрій перестане відповідати. Щоб звільнити місце, видаліть файли з пам’яті пристрою.</translation>
 <translation id="654871471440386944">Увімкнути клавішну навігацію?</translation>
@@ -5172,10 +5184,12 @@
 <translation id="6593881952206664229">Медіаконтент, захищений авторським правом, може не відтворюватися</translation>
 <translation id="6594011207075825276">Пошук пристроїв із послідовними портами…</translation>
 <translation id="6595187330192059106">Завжди блокувати сайту <ph name="HOST"/> доступ до повного контролю над пристроями MIDI.</translation>
+<translation id="6595792813574514527">Перетягнути зображення для пошуку за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="6596325263575161958">Параметри шифрування</translation>
 <translation id="6596816719288285829">ІР-адреса</translation>
 <translation id="6597017209724497268">Зразки</translation>
 <translation id="6597148444736186483">Щоб вийти з основного облікового запису на цьому пристрої, натисніть час на екрані. У меню, що з'явиться, натисніть "Вийти".</translation>
+<translation id="6597331566371766302">Адміністратор заблокував такі розширення:</translation>
 <translation id="6601395831301182804">Активувати BraveVox, вбудовану програму зчитування з екрана для ОС Brave? Щоб зробити це, натисніть пробіл.</translation>
 <translation id="6601612474695404578">Деякі сайти використовують файли cookie третіх сторін для завантаження сторінок. Якщо сайт не працює, дозвольте файли cookie.</translation>
 <translation id="6602937173026466876">Доступ до принтерів</translation>
@@ -5184,8 +5198,8 @@
 <translation id="6606671997164410857">Схоже, ви вже налаштували Brave Асистента на іншому пристрої. Отримайте ще більше функцій, увімкнувши екранний контекст на цьому пристрої.</translation>
 <translation id="6607831829715835317">Інші інстру&amp;менти</translation>
 <translation id="6607890859198268021">Обліковим записом <ph name="USER_EMAIL"/> уже керує домен <ph name="DOMAIN"/>. Щоб увімкнути батьківський контроль для іншого облікового запису Brave, після налаштування вийдіть, а тоді виберіть "Додати користувача" на екрані входу.</translation>
+<translation id="6610002944194042868">Параметри перекладу</translation>
 <translation id="6611972847767394631">Знайдіть свої вкладки тут</translation>
-<translation id="6612358246767739896">Захищений контент</translation>
 <translation id="6615455863669487791">Показати</translation>
 <translation id="6618097958368085618">Усе одно завантажити</translation>
 <translation id="6618744767048954150">Виконується</translation>
@@ -5195,7 +5209,6 @@
 <translation id="6619801788773578757">Додати додаток для терміналів</translation>
 <translation id="6619990499523117484">Підтвердьте PIN-код</translation>
 <translation id="6622980291894852883">Продовжити блокування зображень</translation>
-<translation id="6623589891453322342">обробники файлів</translation>
 <translation id="6624535038674360844">Файл "<ph name="FILE_NAME"/>" містить конфіденційний або небезпечний контент. Попросіть його власника вирішити цю проблему.</translation>
 <translation id="6624687053722465643">Смакота</translation>
 <translation id="6628328486509726751">Завантажено: <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5216,7 +5229,6 @@
 <translation id="6647838571840953560">Зараз на каналі <ph name="CHANNEL_NAME"/></translation>
 <translation id="6648911618876616409">Доступне важливе оновлення. Увійдіть, щоб установити його.</translation>
 <translation id="6649018507441623493">Зачекайте…</translation>
-<translation id="6649563841575838401">Формат архіву не підтримується або файл пошкоджено.</translation>
 <translation id="3733807065376082271">Ваш пароль для сайту <ph name="WEBSITE"/> збережено на цьому пристрої та в обліковому записі Brave. Звідки його видалити?</translation>
 <translation id="665061930738760572">Відкрити в &amp;новому вікні</translation>
 <translation id="6651237644330755633">Довіряти цьому сертифікату для ідентифікації веб-сайтів</translation>
@@ -5228,7 +5240,6 @@
 <translation id="6657585470893396449">Пароль</translation>
 <translation id="6659213950629089752">Цю сторінку масштабовано розширенням "<ph name="NAME"/>"</translation>
 <translation id="6659594942844771486">Вкладка</translation>
-<translation id="6660413144148052430">геодані</translation>
 <translation id="666099631117081440">Сервери друку</translation>
 <translation id="6662931079349804328">Корпоративне правило змінено. Кнопку експериментів вилучено з панелі інструментів.</translation>
 <translation id="6663190258859265334">Виконайте Powerwash на пристрої <ph name="DEVICE_TYPE"/> і поверніться до попередньої версії.</translation>
@@ -5236,6 +5247,7 @@
 <translation id="6664774537677393800">Не вдалося відкрити профіль. Вийдіть і знову ввійдіть.</translation>
 <translation id="666731172850799929">Відкрити в програмі <ph name="APP_NAME"/></translation>
 <translation id="6670142487971298264">Додаток <ph name="APP_NAME"/> уже доступний</translation>
+<translation id="7256334756499709483">Деякі розширення можуть додавати пошукові системи в Brave</translation>
 <translation id="6671320560732140690">{COUNT,plural, =1{адресу}one{# адресу}few{# адреси}many{# адрес}other{# адреси}}</translation>
 <translation id="6671497123040790595"><ph name="MANAGER"/> налаштовує керування</translation>
 <translation id="6673391612973410118"><ph name="PRINTER_MAKE_OR_MODEL"/> (USB)</translation>
@@ -5283,6 +5295,7 @@
 <translation id="6721972322305477112">&amp;Файл</translation>
 <translation id="672208878794563299">Наступного разу цей сайт знову запитуватиме дозвіл.</translation>
 <translation id="6723661294526996303">Імпорт закладок і налаштувань...</translation>
+<translation id="6723839827191551955">Керуйте медіаконтентом, який транслюєте</translation>
 <translation id="6723839937902243910">Заряд</translation>
 <translation id="6725073593266469338">Сервіс інтерфейсу</translation>
 <translation id="6725206449694821596">Протокол друку через Інтернет (IPP)</translation>
@@ -5290,7 +5303,6 @@
 <translation id="672609503628871915">Докладніше про нові функції</translation>
 <translation id="67269783048918309">Надсилати дані про використання й діагностику. Цей пристрій наразі автоматично надсилає в Brave дані про діагностику та використання пристрою і додатків. Ця інформація не використовуватиметься для встановлення особи вашої дитини, а допоможе покращити стабільність системи, додатків тощо. Деякі зведені дані також корисні для додатків і партнерів Brave, як-от розробників Android. Це <ph name="BEGIN_LINK1"/>налаштування<ph name="END_LINK1"/> застосовує власник. Якщо ввімкнено додаткову Історію додатків і веб-пошуку, ці дані зберігаються в обліковому записі Brave дитини. <ph name="BEGIN_LINK2"/>Докладніше<ph name="END_LINK2"/></translation>
 <translation id="6727969043791803658">Під'єднано, акумулятор заряджено на <ph name="BATTERY_PERCENTAGE"/>%</translation>
-<translation id="6732087373923685049">камера</translation>
 <translation id="6735304988756581115">Показати файли cookie та інші дані із сайтів...</translation>
 <translation id="6736243959894955139">Адреса</translation>
 <translation id="6737663862851963468">Видалити квиток Kerberos</translation>
@@ -5302,14 +5314,13 @@
 <translation id="6745592621698551453">Оновити зараз</translation>
 <translation id="6746124502594467657">Вниз</translation>
 <translation id="674632704103926902">Увімкнути перетягування дотиком</translation>
-<translation id="8422091548140284430">Пошук об’єктів на екрані через Brave Об’єктив</translation>
 <translation id="6748465660675848252">Ви можете продовжити, однак буде відновлено лише синхронізовані дані та налаштування. Усі локальні дані буде втрачено.</translation>
-<translation id="6749006854028927059">Сайти не можуть використовувати файли cookie для перегляду ваших дій у веб-переглядачі, зокрема, щоб персоналізувати рекламу. Функції на деяких сайтах можуть не працювати.</translation>
 <translation id="6750757184909117990">Вимкнути мобільну мережу</translation>
 <translation id="6750946710563435348">Використати інше ім'я користувача</translation>
 <translation id="6757101664402245801">URL-адресу скопійовано</translation>
 <translation id="6758056191028427665">Поділіться з нами своїми враженнями.</translation>
 <translation id="6759193508432371551">Відновлення заводських налаштувань</translation>
+<translation id="676158322851696513">"<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="6762833852331690540">Увімкнено</translation>
 <translation id="855635339720317397">Ваші способи оплати в Brave Pay</translation>
 <translation id="6767566652486411142">Вибрати іншу мову…</translation>
@@ -5334,7 +5345,6 @@
 <translation id="6787839852456839824">Комбінації клавіш</translation>
 <translation id="6788210894632713004">розширення</translation>
 <translation id="6789592661892473991">Розділити горизонтально</translation>
-<translation id="678982761784843853">Ідентифікатори захищеного контенту</translation>
 <translation id="6790428901817661496">Відтворити</translation>
 <translation id="6790497603648687708">Розширення <ph name="EXTENSION_NAME"/> додано віддалено</translation>
 <translation id="6793604637258913070">Виділяти місце введення тексту, коли воно з’являється або рухається</translation>
@@ -5372,7 +5382,6 @@
 <translation id="6817174620439930047">Запитувати, коли сайт хоче використовувати виключні повідомлення системи, щоб отримувати доступ до пристроїв MIDI (рекомендується)</translation>
 <translation id="6818198425579322765">Мова сторінки для перекладу</translation>
 <translation id="6818802132960437751">Вбудований захист від вірусів</translation>
-<translation id="6820143000046097424">послідовні порти</translation>
 <translation id="682123305478866682">Транслювати робочий стіл</translation>
 <translation id="6823174134746916417">Функція "Торкнутися, щоб натиснути" на сенсорній панелі</translation>
 <translation id="6824564591481349393">Копіювати &amp;адресу електронної пошти</translation>
@@ -5411,6 +5420,7 @@
 <translation id="6853388645642883916">Оновлення в режимі сну</translation>
 <translation id="68541483639528434">Закрити інші вкладки</translation>
 <translation id="6855892664589459354">Резервне копіювання й відновлення Crostini</translation>
+<translation id="6856210255562079267">Не вдалося відкрити додаток</translation>
 <translation id="6856348640027512653">Заборонено використовувати пристрої або дані віртуальної реальності</translation>
 <translation id="6856623341093082836">Налаштуйте й відкоригуйте точність сенсорного екрана</translation>
 <translation id="6856850379840757744">Коли це налаштування ввімкнено, усі сповіщення заглушуються</translation>
@@ -5483,6 +5493,7 @@
 <translation id="6941937518557314510">Увійдіть у <ph name="TOKEN_NAME"/>, щоб пройти автентифікацію на <ph name="HOST_NAME"/>, використовуючи свій сертифікат.</translation>
 <translation id="6943060957016121200">Увімкнути миттєву точку доступу</translation>
 <translation id="6943176775188458830">Скасувати друк</translation>
+<translation id="6943939122536910181">Відключено від пристрою "<ph name="DEVICE"/>"</translation>
 <translation id="6945221475159498467">Вибрати</translation>
 <translation id="694592694773692225">Переспрямування заблоковано на цій сторінці.</translation>
 <translation id="6949434160682548041">Пароль (необов’язково)</translation>
@@ -5506,7 +5517,6 @@
 <translation id="6970480684834282392">Тип запуску</translation>
 <translation id="6970856801391541997">Друкувати певні сторінки</translation>
 <translation id="6972180789171089114">Звук і відео</translation>
-<translation id="6972629891077993081">Пристрої HID</translation>
 <translation id="6972754398087986839">Почати</translation>
 <translation id="6972887130317925583">Зламаний пароль змінено. Ви можете будь-коли перевірити свої паролі в <ph name="SETTINGS"/>.</translation>
 <translation id="697312151395002334">Дозволено показувати спливаючі вікна та використовувати переспрямування</translation>
@@ -5552,6 +5562,7 @@
 <translation id="7005496624875927304">Додаткові дозволи</translation>
 <translation id="7005812687360380971">Помилка</translation>
 <translation id="7005848115657603926">Недійсний діапазон сторінок, використовуйте <ph name="EXAMPLE_PAGE_RANGE"/></translation>
+<translation id="7006438259896942210">Цим обліковим записом (<ph name="USER_EMAIL_ADDRESS"/>) керує адміністратор профілю <ph name="PROFILE_NAME"/></translation>
 <translation id="700651317925502808">Скинути налаштування?</translation>
 <translation id="7006634003215061422">Нижнє поле</translation>
 <translation id="7007648447224463482">Відкривати в новому вікні</translation>
@@ -5567,7 +5578,6 @@
 <translation id="7019805045859631636">Швидка</translation>
 <translation id="7022562585984256452">Вашу домашню сторінку налаштовано.</translation>
 <translation id="7023206482239788111">Privacy Sandbox підтримує існування відкритої мережі, пропонуючи кращі способи надання цих сервісів – ці технології не порушують роботу сайтів і не дають комусь таємно відстежувати ваші дії в Інтернеті.</translation>
-<translation id="7024588353896425985">Обробники файлів</translation>
 <translation id="7025082428878635038">Новий спосіб навігації жестами</translation>
 <translation id="7025190659207909717">Керування службою пересилання мобільних даних</translation>
 <translation id="7025895441903756761">Безпека та конфіденційність</translation>
@@ -5623,7 +5633,6 @@
 <translation id="1439926347196400598">Дозволити Brave записувати аудіо?</translation>
 <translation id="7086672505018440886">Включити в архів файли журналу Brave.</translation>
 <translation id="7088434364990739311">Не вдалося запустити перевірку наявності оновлень (код помилки: <ph name="ERROR"/>).</translation>
-<translation id="7088561041432335295">Zip Archiver – відкривайте та пакуйте ZIP-файли в додатку Файли.</translation>
 <translation id="7088674813905715446">Адміністратор активував на цьому пристрої стан деініціалізації. Щоб увімкнути його для реєстрації, попросіть адміністратора перевести пристрій у стан очікування.</translation>
 <translation id="7093220653036489319">Швидкі відповіді</translation>
 <translation id="7093416310351037609">З міркувань захисту даних адміністратор вашої організації вимагає, щоб дозволені завантажені файли зберігалися в обліковому записі організації в сервісі <ph name="WEB_DRIVE"/>.</translation>
@@ -5704,6 +5713,7 @@
 <translation id="7196020411877309443">Чому відображається це повідомлення?</translation>
 <translation id="7196913789568937443">Створення резервних копій на Brave Диску. Легко відновлюйте дані та переносьте їх на інші пристрої. Резервна копія містить дані додатків. Ваші резервні копії завантажуються в Brave і шифруються за допомогою пароля облікового запису Brave. <ph name="BEGIN_LINK1"/>Докладніше<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Отримуйте результати пошуку й розумні функції від Brave під час перегляду сторінок</translation>
+<translation id="719791532916917144">Комбінація клавіш</translation>
 <translation id="7198503619164954386">Потрібно використовувати пристрій, зареєстрований підприємством</translation>
 <translation id="7199158086730159431">Довідка</translation>
 <translation id="7200083590239651963">Виберіть налаштування</translation>
@@ -5734,6 +5744,7 @@
 <translation id="7230222852462421043">&amp;Відновити вікно</translation>
 <translation id="7230787553283372882">Налаштувати розмір тексту</translation>
 <translation id="7232750842195536390">Не вдалося перейменувати</translation>
+<translation id="723343421145275488">Шукати зображення за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="7234010996000898150">Скасовується відновлення Linux</translation>
 <translation id="7235716375204803342">Завантаження дій…</translation>
 <translation id="7235737137505019098">На вашому ключі безпеки замало місця, щоб створити ще один обліковий запис.</translation>
@@ -5750,6 +5761,7 @@
 <translation id="7250616558727237648">Пристрій, на який ви надсилаєте файл, не відповів. Повторіть спробу.</translation>
 <translation id="725109152065019550">На жаль, адміністратор вимкнув зовнішню пам’ять у вашому обліковому записі.</translation>
 <translation id="7251346854160851420">Фоновий малюнок за умовчанням</translation>
+<translation id="7251635775446614726">Повідомлення від адміністратора: "<ph name="CUSTOM_MESSAGE"/>"</translation>
 <translation id="7251979364707973467">Веб-сайт <ph name="WEBSITE"/> видав ваш ключ безпеки й запитує його ідентифікатор, щоб знати, який саме ключ ви використовуєте.</translation>
 <translation id="7253521419891527137">&amp;Докладніше</translation>
 <translation id="7254951428499890870">Справді запустити додаток "<ph name="APP_NAME"/>" у режимі діагностики?</translation>
@@ -5800,7 +5812,6 @@
 <translation id="730515362922783851">Обмінюватися даними з будь-яким пристроєм у локальній мережі чи Інтернеті</translation>
 <translation id="7306521477691455105">Щоб підключити пристрій <ph name="USB_DEVICE_NAME"/> до машини <ph name="USB_VM_NAME"/>, відкрийте налаштування</translation>
 <translation id="7307129035224081534">Призупинено</translation>
-<translation id="7308436126008021607">фонова синхронізація</translation>
 <translation id="7308643132139167865">Мови веб-сайтів</translation>
 <translation id="7310598146671372464">Не вдалося ввійти. Сервер не підтримує вказані типи шифрування Kerberos. Зв’яжіться з адміністратором.</translation>
 <translation id="7320213904474460808">Мережа за умовчанням</translation>
@@ -5847,7 +5858,6 @@
 <translation id="7364796246159120393">Вибрати файл</translation>
 <translation id="7365076891350562061">Розмір монітора</translation>
 <translation id="7366316827772164604">Пошук пристроїв поруч…</translation>
-<translation id="7366362069757178916">Обробники платежів</translation>
 <translation id="7366415735885268578">Додати сайт</translation>
 <translation id="7366909168761621528">Дані веб-перегляду</translation>
 <translation id="7367714965999718019">Генератор QR-коду</translation>
@@ -5857,7 +5867,6 @@
 <translation id="7371490947952970241">Ви можете дезактивувати визначення місцезнаходження, вимкнувши на пристрої функцію "Доступ до моїх геоданих". У налаштуваннях цієї функції також можна вимкнути визначення місцезнаходження за допомогою Wi-Fi, мобільних мереж і датчиків.</translation>
 <translation id="7371917887111892735">Вкладки зменшуються до закріпленої ширини</translation>
 <translation id="7374376573160927383">Керувати пристроями USB</translation>
-<translation id="7374461526650987610">Обробники протоколів</translation>
 <translation id="7375235221357833624">{0,plural, =1{Оновіть пристрій протягом години}one{Оновіть пристрій протягом # години}few{Оновіть пристрій протягом # годин}many{Оновіть пристрій протягом # годин}other{Оновіть пристрій протягом # години}}</translation>
 <translation id="7376543451826039186">Швидший веб-перегляд: наприклад, активне завантаження певного контенту на основі даних про поточну сторінку</translation>
 <translation id="7376553024552204454">Підсвічувати курсор миші під час руху</translation>
@@ -5902,7 +5911,6 @@
 <translation id="7416362041876611053">Невідома помилка мережі.</translation>
 <translation id="741906494724992817">Цьому додатку не потрібні спеціальні дозволи.</translation>
 <translation id="7419565702166471774">Завжди використовувати надійні з’єднання</translation>
-<translation id="7421067045979951561">обробники протоколів</translation>
 <translation id="742130257665691897">Закладки видалено</translation>
 <translation id="7421925624202799674">&amp;Переглянути джерело сторінки</translation>
 <translation id="7422192691352527311">Налаштування...</translation>
@@ -6001,7 +6009,6 @@
 <translation id="751523031290522286">Додаток <ph name="APP_NAME"/> заблоковано адміністратором. Попросіть у нього дозвіл використовувати цей додаток.</translation>
 <translation id="7516981202574715431">Додаток <ph name="APP_NAME"/> призупинено</translation>
 <translation id="7517063221058203587">{0,plural, =1{Оновіть пристрій протягом 1 хвилини}one{Оновіть пристрій протягом # хвилини}few{Оновіть пристрій протягом # хвилин}many{Оновіть пристрій протягом # хвилин}other{Оновіть пристрій протягом # хвилини}}</translation>
-<translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Скажіть "Ok Brave"</translation>
 <translation id="7523585675576642403">Перейменувати профіль</translation>
 <translation id="7525067979554623046">Створити</translation>
@@ -6066,7 +6073,6 @@
 <translation id="7582582252461552277">Віддавати перевагу цій мережі</translation>
 <translation id="7582844466922312471">Мобільний трафік</translation>
 <translation id="7583948862126372804">Кількість</translation>
-<translation id="813677607648456893">Не вдалося завантажити файли живих субтитрів. Функція диктування працюватиме далі – голос надсилатиметься в Brave.</translation>
 <translation id="8201192017531062522">Brave працюватиме, доки будуть відкриті додатки Brave.</translation>
 <translation id="7589461650300748890">Обережно!</translation>
 <translation id="7593653750169415785">Автоматично заблоковано, оскільки ви кілька разів відхилили сповіщення</translation>
@@ -6115,7 +6121,6 @@
 <translation id="7636422033092045734">Тепер є більше доступних перемикачів, тож автоматичне сканування вимкнено. Перейдіть до кнопки "Готово" й натисніть перемикач "Вибрати", щоб закрити цей посібник.</translation>
 <translation id="7636919061354591437">Установити на цьому пристрої</translation>
 <translation id="7637593984496473097">Недостатньо місця на диску</translation>
-<translation id="7638605456503525968">Послідовні порти</translation>
 <translation id="7639914187072011620">Не вдалось отримати із сервера переспрямування SAML</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> зберігає ваші паролі й автоматично входить в облікові записи на сайтах.</translation>
 <translation id="7641513591566880111">Нова назва профілю</translation>
@@ -6181,9 +6186,9 @@
 <translation id="7691698019618282776">Оновлення Crostini</translation>
 <translation id="7696063401938172191">На телефоні <ph name="PHONE_NAME"/>:</translation>
 <translation id="7697166915480294040">Доки ви показуєте свій екран, деталі приховуються</translation>
+<translation id="7698507637739331665">Деякі елементи заблоковано</translation>
 <translation id="7701040980221191251">Немає</translation>
 <translation id="7701869757853594372">Обробка КОРИСТУВАЧА</translation>
-<translation id="7701928712056789451">Ці елементи можуть бути небезпечними</translation>
 <translation id="7702574632857388784">Видалити файл "<ph name="FILE_NAME"/>" зі списку</translation>
 <translation id="7702907602086592255">Домен</translation>
 <translation id="7704305437604973648">Завдання</translation>
@@ -6353,14 +6358,13 @@
 <translation id="7853747251428735">Інші інструменти</translation>
 <translation id="7855678561139483478">Перемістити вкладку в нове вікно</translation>
 <translation id="7857093393627376423">Підказки тексту</translation>
-<translation id="2088677651005944758">Шукати на сторінці за допомогою Brave Об’єктива</translation>
 <translation id="7857949311770343000">Це сторінка нової вкладки, яку ви очікували?</translation>
 <translation id="7858328180167661092"><ph name="APP_NAME"/> (Windows)</translation>
 <translation id="786073089922909430">Сервіс: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7861215335140947162">&amp;Завантаження</translation>
 <translation id="2614143654677404775">Мова облікового запису Brave</translation>
 <translation id="7864539943188674973">Вимкнути Bluetooth</translation>
-<translation id="7019964108096075053">Шукати на сторінці за допомогою Brave Об’єктива</translation>
+<translation id="7865127013871431856">Параметри перекладу</translation>
 <translation id="7869143217755017858">Вимкнути темний режим</translation>
 <translation id="786957569166715433"><ph name="DEVICE_NAME"/>: підключено</translation>
 <translation id="7870730066603611552">Після налаштування перевірте параметри синхронізації</translation>
@@ -6441,7 +6445,6 @@
 <translation id="7946586320617670168">Походження має бути безпечним</translation>
 <translation id="794676567536738329">Підтвердити дозволи</translation>
 <translation id="7947962633355574091">Копіювати адресу відео</translation>
-<translation id="7949924743070109245">Файл "<ph name="FILE_NAME"/>" містить конфіденційні або небезпечні дані. Адміністратор каже: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1618464105329025698">Щоб додати способи оплати Brave Pay або керувати ними, перейдіть в <ph name="BEGIN_LINK"/>обліковий запис Brave<ph name="END_LINK"/></translation>
 <translation id="7952708427581814389">Сайти можуть запитувати дозвіл на перегляд тексту й зображень у буфері обміну</translation>
 <translation id="795282463722894016">Відновлення завершено</translation>
@@ -6518,6 +6521,7 @@
 <translation id="8028803902702117856">Завантаження <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">Розмір</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> – Потрібен дозвіл. Натисніть клавіші ⌘ + Option + стрілку вгору, щоб відповісти</translation>
+<translation id="8030169304546394654">Роз'єднано</translation>
 <translation id="8030852056903932865">Дозволити</translation>
 <translation id="8032244173881942855">Не вдається транслювати вкладку.</translation>
 <translation id="8033827949643255796">виділено</translation>
@@ -6591,6 +6595,7 @@
 <translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> використовує налаштування проксі-сервера розширення</translation>
 <translation id="8097959162767603171">Адміністратор має прийняти Умови використання в списку пристроїв Brave на консолі адміністратора.</translation>
 <translation id="8098616321286360457">Потрібне з'єднання з мережею</translation>
+<translation id="8099495042588009598">Інші дозволи</translation>
 <translation id="810068641062493918">Вибрана мова: <ph name="LANGUAGE"/>. Щоб скасувати вибір, натисніть комбінацію клавіш Search і пробіл.</translation>
 <translation id="810185532889603849">Спеціальний колір</translation>
 <translation id="8101987792947961127">Під час наступного перезавантаження потрібно виконати Powerwash</translation>
@@ -6604,7 +6609,6 @@
 <translation id="8110489095782891123">Завантаження списку контактів…</translation>
 <translation id="8113476325385351118">Надалі блокувати цьому сайту доступ до повного контролю над пристроями MIDI</translation>
 <translation id="2972318514147518075">Переходьте на головну сторінку й назад і перемикайте додатки за допомогою кнопок у режимі планшета. Цей параметр увімкнений, коли активовано BraveVox або автоматичні кліки.</translation>
-<translation id="8114875720387900039">Розділити горизонтально</translation>
 <translation id="8115139559594092084">З вашого Brave Диска</translation>
 <translation id="8116972784401310538">&amp;Диспетчер закладок</translation>
 <translation id="8117752106453549166">Адміністратор налаштовує Linux. Зачекайте кілька хвилин.</translation>
@@ -6643,6 +6647,7 @@
 <translation id="8149564499626272569">Підтвердити через телефон із кабелем USB</translation>
 <translation id="8151638057146502721">Налаштувати</translation>
 <translation id="8154790740888707867">Немає файлу</translation>
+<translation id="8154912474061769055">Функції на багатьох сайтах можуть не працювати</translation>
 <translation id="815491593104042026">Помилка. Не вдалося отримати дозвіл, оскільки вас було переспрямовано на незахищену URL-адресу (<ph name="BLOCKED_URL"/>). Зверніться до свого адміністратора.</translation>
 <translation id="8155676038687609779">{COUNT,plural, =0{Немає зламаних паролів}=1{{COUNT} зламаний пароль}one{{COUNT} зламаний пароль}few{{COUNT} зламані паролі}many{{COUNT} зламаних паролів}other{{COUNT} зламаного пароля}}</translation>
 <translation id="8157248655669507702">Щоб установити профіль eSIM-карти, увімкніть мобільний Інтернет</translation>
@@ -6678,6 +6683,7 @@
 <translation id="8184318863960255706">Докладніше</translation>
 <translation id="8184472985242519288">Однорідний текст</translation>
 <translation id="8186609076106987817">Серверу не вдалося знайти файл.</translation>
+<translation id="8186704951085064172">Шукати на сторінці за допомогою технології <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="8188389033983459049">Щоб продовжити, перегляньте налаштування пристрою й увімкніть Bluetooth</translation>
 <translation id="8189306097519446565">Облікові записи закладів освіти</translation>
 <translation id="8189750580333936930">Privacy Sandbox</translation>
@@ -6686,6 +6692,7 @@
 <translation id="819137301779081601">Щоб додати для цієї дії новий перемикач, натисніть його
 Щоб видалити для цієї дії вже призначений перемикач, натисніть його</translation>
 <translation id="8192944472786724289"><ph name="APP_NAME"/> хоче показувати вміст вашого екрана.</translation>
+<translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Ваші пристрої<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195027750202970175">Розмір на диску</translation>
 <translation id="8198323535106903877">Ми встановимо для вас стільки додатків: <ph name="NUMBER_OF_APPS"/></translation>
 <translation id="8198456017687137612">Трансляція вкладки</translation>
@@ -6719,7 +6726,6 @@
 <translation id="8235418492073272647">Сторінка, надіслана з пристрою "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="8236911020904880539">вийти</translation>
 <translation id="8236917170563564587">Натомість поділитися цією вкладкою</translation>
-<translation id="8237471930911823556">Відповідно до налаштувань, додаток <ph name="APP_NAME"/> має відкриватися в новій вкладці веб-переглядача. Підтримувані посилання також відкриватимуться у веб-переглядачі.</translation>
 <translation id="8237647586961940482">Темно-рожевий і червоний</translation>
 <translation id="8239032431519548577">Підприємство зареєстровано</translation>
 <translation id="8239932336306009582">Заборонено надсилати сповіщення</translation>
@@ -6758,7 +6764,6 @@
     <ph name="BEGIN_PARAGRAPH3"/>Власник може керувати цією функцією в меню "Налаштування" &gt; "Розширені" &gt; "Автоматично надсилати в Brave дані про діагностику та використання".<ph name="END_PARAGRAPH3"/>
     <ph name="BEGIN_PARAGRAPH4"/>Якщо ввімкнено Історію додатків і веб-пошуку, ці дані зберігаються в обліковому записі Brave дитини. Дізнайтеся більше про ці налаштування, а також про те, як їх змінювати, на сторінці families.google.com.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="826905130698769948">Недійсний сертифікат клієнта</translation>
-<translation id="8270242299912238708">Документи PDF</translation>
 <translation id="827097179112817503">Показати кнопку "Домашня сторінка"</translation>
 <translation id="8271268254812352141">Щоб дізнатися визначення тексту, перекласти його або конвертувати в іншу одиницю, натисніть його правою кнопкою миші або натисніть і втримуйте. Налаштувати мови перекладу можна в розділі <ph name="LINK_BEGIN"/>Мови веб-сайтів<ph name="LINK_END"/>.</translation>
 <translation id="8271379370373330993">Батьки, наступні кілька кроків маєте виконати ви. Ви зможете віддати дитині <ph name="DEVICE_TYPE"/>, коли налаштуєте обліковий запис.</translation>
@@ -6779,7 +6784,6 @@
 <translation id="8288032458496410887">Видалити додаток <ph name="APP"/>…</translation>
 <translation id="8289128870594824098">Розмір диска</translation>
 <translation id="8293206222192510085">Додати закладку</translation>
-<translation id="829335040383910391">звук</translation>
 <translation id="8294431847097064396">Джерело</translation>
 <translation id="8298429963694909221">Тепер на <ph name="DEVICE_TYPE"/> надходитимуть сповіщення з вашого телефона. Закриваючи сповіщення, що надійшло на <ph name="DEVICE_TYPE"/>, ви також закриєте його на телефоні. Переконайтеся, що ваш телефон поблизу, а Bluetooth і Wi-Fi увімкнено.</translation>
 <translation id="8299319456683969623">Зараз ви не в мережі.</translation>
@@ -6799,7 +6803,6 @@
 <translation id="8316618172731049784">Надіслати на пристрій "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="8317671367883557781">Додати з’єднання з мережею</translation>
 <translation id="8319414634934645341">Використання розширеного ключа</translation>
-<translation id="8321476692217554900">сповіщення</translation>
 <translation id="8321492415476219409">Призначити перемикач для дії "Назад"</translation>
 <translation id="8321837372750396788">Цим пристроєм <ph name="DEVICE_TYPE"/> керуватиме <ph name="MANAGER"/>.</translation>
 <translation id="8322814362483282060">Доступ цієї сторінки до вашого мікрофона заблоковано.</translation>
@@ -6868,7 +6871,6 @@
 <translation id="8404893580027489425">Сканер відбитків пальців розташовано на правому боці пристрою <ph name="DEVICE_TYPE"/>. Злегка торкніться його будь-яким пальцем.</translation>
 <translation id="8405046151008197676">Отримайте інформацію про останнє оновлення</translation>
 <translation id="8407199357649073301">Рівень журналу:</translation>
-<translation id="8409413588194360210">обробники платежів</translation>
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8412136526970428322">Дозволено: <ph name="PERMISSION"/> і ще <ph name="COUNT"/></translation>
 <translation id="8413385045638830869">Спершу запитувати (рекомендується)</translation>
@@ -6881,6 +6883,7 @@
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="8425492902634685834">Закріпити на панелі завдань</translation>
 <translation id="8425768983279799676">Пристрій можна розблоковувати PIN-кодом.</translation>
+<translation id="8426111352542548860">Зберегти групу</translation>
 <translation id="8426713856918551002">Увімкнення</translation>
 <translation id="8427213022735114808">Диктування надсилає зразок вашого голосу в Brave, щоб дозволити голосовий ввід у будь-якому текстовому полі.</translation>
 <translation id="8427292751741042100">вбудовано на будь-якому хості</translation>
@@ -6906,7 +6909,9 @@
 <translation id="8456761643544401578">Автоматичний темний режим</translation>
 <translation id="845702320058262034">Не вдається під’єднатися. Переконайтеся, що на телефоні ввімкнено Bluetooth.</translation>
 <translation id="8457451314607652708">Імпортувати закладки</translation>
+<translation id="8458341576712814616">Команда</translation>
 <translation id="8458627787104127436">Відкрити всі (<ph name="URL_COUNT"/>) у новому вікні</translation>
+<translation id="8460932807646981183">Керувати пошуковими системами та пошуком на сайтах</translation>
 <translation id="84613761564611563">Надсилається запит на отримання інтерфейсу конфігурації мережі. Зачекайте…</translation>
 <translation id="8461914792118322307">Проксі-сервер</translation>
 <translation id="8463215747450521436">Можливо, адміністратор, який керує цим користувачем, видалив або заблокував його. Зв’яжіться з адміністратором, якщо хочете й надалі входити як цей користувач.</translation>
@@ -6925,6 +6930,7 @@
 <translation id="2015014930243978107">Інша програма на вашому комп’ютері додала розширення, яке може змінити роботу Brave.</translation>
 <translation id="8477241577829954800">Заміщено</translation>
 <translation id="8477384620836102176">&amp;Загальне</translation>
+<translation id="8479109005219657634">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", аудіопристрій, рівень заряду акумулятора – <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8479176401914456949">Недійсний код. Повторіть спробу.</translation>
 <translation id="8480082892550707549">Навіть якщо ви раніше завантажували файли з цього сайту, він може бути тимчасово ненадійним (зламаним). Спробуйте завантажити цей файл пізніше.</translation>
 <translation id="8480869669560681089">Невідомий пристрій від постачальника <ph name="VENDOR_NAME"/></translation>
@@ -6938,6 +6944,7 @@
 <translation id="8492822722330266509">Сайти можуть показувати спливаючі вікна та використовувати переспрямування</translation>
 <translation id="7438697671019881004">Відгук про Brave Cast</translation>
 <translation id="8493236660459102203">Мікрофон:</translation>
+<translation id="84959976576210191">В адресному рядку введіть команду для веб-сайту, на якому потрібно шукати, наприклад "@gmail". Потім натисніть вибрану комбінацію клавіш і введіть пошуковий термін.</translation>
 <translation id="8496717697661868878">Запустити цей плагін</translation>
 <translation id="8497219075884839166">Службові програми Windows</translation>
 <translation id="8498214519255567734">У цьому режимі зручніше переглядати або читати вміст на екрані в умовах тьмяного освітлення</translation>
@@ -6961,6 +6968,7 @@
 <translation id="4483547786985740455">Збережіть картки в обліковому записі Brave</translation>
 <translation id="8525306231823319788">На весь екран</translation>
 <translation id="8526666462501866815">Оновлення Linux скасовується</translation>
+<translation id="8526813720153458066">SSH</translation>
 <translation id="8528074251912154910">Додати мови</translation>
 <translation id="8528962588711550376">Виконується вхід.</translation>
 <translation id="8529925957403338845">Не вдалося під’єднатися в миттєвому режимі модема</translation>
@@ -7026,7 +7034,6 @@
 <translation id="8613164732773110792">Лише малі літери, цифри, символи підкреслення або тире</translation>
 <translation id="8613786722548417558">Не вдається перевірити безпеку файлу "<ph name="FILE_NAME"/>", оскільки він завеликий. Ви можете відкривати файли розміром до 50 МБ.</translation>
 <translation id="8616441548384109662">Додати новий контакт: <ph name="CONTACT_NAME"/></translation>
-<translation id="8617269623452051934">дані про активний стан пристрою</translation>
 <translation id="8617748779076050570">Ідентифікатор безпечного з'єднання: <ph name="CONNECTION_ID"/></translation>
 <translation id="8619803522055190423">Додати тінь</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
@@ -7066,7 +7073,6 @@
 <translation id="8648252583955599667"><ph name="GET_HELP_LINK"/> або <ph name="RE_SCAN_LINK"/></translation>
 <translation id="8648408795949963811">Температура кольору нічного екрана</translation>
 <translation id="8648544143274677280">Сайту <ph name="SITE_NAME"/> потрібен дозвіл, щоб <ph name="FIRST_PERMISSION"/>, <ph name="SECOND_PERMISSION"/> та інше</translation>
-<translation id="865032292777205197">датчики руху</translation>
 <translation id="8650543407998814195">Хоча у вас більше немає доступу до старого профілю, ви можете видалити його.</translation>
 <translation id="8651585100578802546">Примусово перезавантажити цю сторінку</translation>
 <translation id="8652400352452647993">Помилка пакування розширення</translation>
@@ -7075,7 +7081,6 @@
 <translation id="8655972064210167941">Помилка входу. Не вдалося підтвердити ваш пароль. Зв’яжіться з адміністратором або повторіть спробу.</translation>
 <translation id="8657393004602556571">Не надсилати відгук?</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> транслює ваш екран і аудіо на вкладку <ph name="TAB_NAME"/>.</translation>
-<translation id="8660073998956001352">Ваші пошукові системи</translation>
 <translation id="8662671328352114214">Під’єднатися до мережі <ph name="TYPE"/></translation>
 <translation id="8662811608048051533">Ви вийдете з більшості сайтів.</translation>
 <translation id="8662911384982557515">Зробити <ph name="HOME_PAGE"/> домашньою сторінкою</translation>
@@ -7144,7 +7149,6 @@
 <translation id="8725066075913043281">Повторити спробу</translation>
 <translation id="8725178340343806893">Улюблені/Закладки</translation>
 <translation id="8726206820263995930">Помилка під час отримання налаштувань політики із сервера: <ph name="CLIENT_ERROR"/>.</translation>
-<translation id="8727154974495727220">Налаштувавши <ph name="DEVICE_TYPE"/>, натисніть кнопку виклику Асистента чи скажіть "Ok Brave", щоб отримати допомогу. Щоб внести зміни, перейдіть у налаштування Асистента.</translation>
 <translation id="8729133765463465108">Зісканувати QR-код за допомогою камери</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="8731629443331803108">Сайту <ph name="SITE_NAME"/> потрібен дозвіл, щоб <ph name="PERMISSION"/></translation>
@@ -7214,7 +7218,6 @@
 <translation id="8786824282808281903">Коли відображається цей значок, дитина може використовувати відбиток пальця для підтвердження особи або схвалення покупок.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Група без назви – 1 вкладка}one{Група без назви – # вкладка}few{Група без назви – # вкладки}many{Група без назви – # вкладок}other{Група без назви – # вкладки}}</translation>
 <translation id="8791534160414513928">Надсилати запит "Не відстежувати" разом із трафіком веб-перегляду</translation>
-<translation id="8792626944327216835">мікрофон</translation>
 <translation id="879413103056696865">Коли ввімкнено точку доступу, пристрій <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Нове вікно</translation>
 <translation id="8797459392481275117">Ніколи не перекладати цей сайт</translation>
@@ -7237,7 +7240,6 @@
 <translation id="8814190375133053267">Wi-Fi</translation>
 <translation id="8814319344131658221">Мови, доступні для перевірки орфографії, залежать від ваших налаштувань мови</translation>
 <translation id="8814644416678422095">Жорсткий диск</translation>
-<translation id="8814687660896548945">Сканування архіву. Зачекайте…</translation>
 <translation id="881782782501875829">Додати номер порту</translation>
 <translation id="881799181680267069">Сховати інші</translation>
 <translation id="8818152010000655963">Фоновий малюнок</translation>
@@ -7338,7 +7340,6 @@
 <translation id="8907787635362884532">Видавець: <ph name="APP_ORIGIN"/></translation>
 <translation id="568229640676399500">Brave може перевірити, чи встановлено на вашому комп'ютері шкідливе програмне забезпечення</translation>
 <translation id="8909298138148012791">Додаток <ph name="APP_NAME"/> видалено</translation>
-<translation id="3499452739340047976">Перетягувати зображення для пошуку через Brave Об’єктив</translation>
 <translation id="8909833622202089127">Сайт відстежує місцезнаходження</translation>
 <translation id="5849608398437058285">Зміни в закладках, історії, паролях та інших налаштуваннях більше не синхронізуватимуться з вашим обліковим записом Brave. Дані, які зберігаються в обліковому записі Brave, не буде видалено. Ними можна керувати на <ph name="BEGIN_LINK"/>Інформаційній панелі Brave<ph name="END_LINK"/>.</translation>
 <translation id="8910987510378294980">Сховати список пристроїв</translation>
@@ -7388,7 +7389,6 @@
 <translation id="8966809848145604011">Інші профілі</translation>
 <translation id="8966870118594285808">Відкрийте вкладку знову, якщо ви випадково закрили її</translation>
 <translation id="8967427617812342790">Додати в список читання</translation>
-<translation id="8967866634928501045">Натисніть Alt + Shift + A, щоб показати</translation>
 <translation id="8968766641738584599">Зберегти картку</translation>
 <translation id="89720367119469899">Escape</translation>
 <translation id="8842834450537919370">Зверніться до адміністратора мережі, щоб переконатися, що брандмауер не блокує завантаження із серверів Brave.</translation>
@@ -7398,6 +7398,7 @@
 <translation id="897525204902889653">Сервіс для карантину</translation>
 <translation id="8975396729541388937">Ви можете будь-коли скасувати підписку, натиснувши відповідне посилання в одному з отриманих листів.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" і ще 1 вкладка}one{"<ph name="TAB_TITLE"/>" і ще # вкладка}few{"<ph name="TAB_TITLE"/>" і ще # вкладки}many{"<ph name="TAB_TITLE"/>" і ще # вкладок}other{"<ph name="TAB_TITLE"/>" і ще # вкладки}}</translation>
+<translation id="8977175149983066223">Пристрій <ph name="DEVICE_INDEX"/> з <ph name="DEVICE_COUNT"/>, "<ph name="DEVICE_NAME"/>", миша</translation>
 <translation id="8977811652087512276">Неправильний пароль або пошкоджений файл</translation>
 <translation id="8978154919215542464">Увімкнено – синхронізувати все</translation>
 <translation id="897939795688207351">На сайті <ph name="ORIGIN"/></translation>
@@ -7444,6 +7445,7 @@
 <translation id="9023909777842748145">Якщо вимкнути цю функцію, пристрій усе одно зможе надсилати інформацію, потрібну для отримання важливих послуг, як-от оновлень системи та засобів безпеки.</translation>
 <translation id="9024127637873500333">&amp;Відкрити в новій вкладці</translation>
 <translation id="9024158959543687197">Помилка підключення спільного доступу. Перевірте URL-адресу файлу та повторіть спробу.</translation>
+<translation id="9024692527554990034">Щоб швидко знайти щось на певному сайті або перейти в іншу пошукову систему, ви можете вводити в адресному рядку відповідні команди</translation>
 <translation id="9026731007018893674">завантаження</translation>
 <translation id="9026852570893462412">Це може тривати кілька хвилин. Завантажується віртуальна машина.</translation>
 <translation id="9027459031423301635">Відкрити посилання в новій &amp;вкладці</translation>
@@ -7467,6 +7469,7 @@
 <translation id="9042893549633094279">Конфіденційність і безпека</translation>
 <translation id="904451693890288097">Введіть ключ для пристрою "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="9044646465488564462">Помилка під’єднання до мережі: <ph name="DETAILS"/></translation>
+<translation id="9045160989383249058">Список читання переміщено на нову бічну панель. Перегляньте його там.</translation>
 <translation id="4534361985432360439">Надсилає в Brave веб-адресу сторінки, яку ви намагаєтеся відкрити</translation>
 <translation id="9048745018038487540">Вибрати всі шрифти</translation>
 <translation id="9050666287014529139">Парольна фраза</translation>
@@ -7477,7 +7480,6 @@
 <translation id="9055636786322918818">Застосовує шифрування RC4. Використання цієї опції підвищує ризик, оскільки шифри RC4 ненадійні.</translation>
 <translation id="9056810968620647706">Збігів не знайдено.</translation>
 <translation id="9057354806206861646">Оновити розклад</translation>
-<translation id="7483910542760516650">Перетягувати на екрані зображення для пошуку через Brave Об’єктив</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">Помилка в рядках <ph name="ERROR_LINE_START"/>–<ph name="ERROR_LINE_END"/></translation>
 <translation id="9063800855227801443">Не вдається зробити знімок конфіденційного контенту</translation>
@@ -7489,6 +7491,7 @@
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         Докладну інформацію про те, які дані збирає Brave і чому, наведено на сайті <ph name="BEGIN_LINK2"/>policies.google.com<ph name="END_LINK2"/>.</translation>
+<translation id="9066777626153702300">Неактивні сайти</translation>
 <translation id="9066782832737749352">Синтез мовлення</translation>
 <translation id="9068878141610261315">Непідтримуваний тип файлу</translation>
 <translation id="9070342919388027491">Вкладку переміщено ліворуч</translation>
@@ -7544,7 +7547,6 @@
 <translation id="9121814364785106365">Відкрити як закріплену вкладку</translation>
 <translation id="9122176249172999202"><ph name="IDS_SHORT_PRODUCT_NAME"/>: призупинено</translation>
 <translation id="9124003689441359348">Тут відображатимуться збережені паролі</translation>
-<translation id="7100587578659372059">Сповістити мене, коли Brave завершить пошук шкідливого програмного забезпечення</translation>
 <translation id="9126149354162942022">Колір курсора</translation>
 <translation id="9128317794749765148">Не вдалося завершити встановлення</translation>
 <translation id="9128335130883257666">Відкрити сторінку налаштувань методу введення "<ph name="INPUT_METHOD_NAME"/>"</translation>
@@ -7624,7 +7626,7 @@
 <translation id="9215293857209265904">Додано розширення "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="9215742531438648683">Видалити Play Маркет</translation>
 <translation id="9218430445555521422">Установити за умовчанням</translation>
-<translation id="9219103736887031265">Зображення</translation>
+<translation id="9218842937876577955"><ph name="APP_NAME"/> (додаток не підтримується)</translation>
 <translation id="9220525904950070496">Видалення облікового запису</translation>
 <translation id="9220820413868316583">Підніміть палець, а потім повторіть спробу.</translation>
 <translation id="923467487918828349">Показати всі</translation>
@@ -7692,7 +7694,6 @@
 <translation id="987897973846887088">Немає зображень</translation>
 <translation id="988320949174893488">Час від часу зупиняється</translation>
 <translation id="988978206646512040">Потрібно вказати парольну фразу</translation>
-<translation id="991413375315957741">датчики руху та світла</translation>
 <translation id="992032470292211616">Розширення, служби й теми можуть зашкодити вашому пристрою. Справді продовжити?</translation>
 <translation id="992256792861109788">Рожевий</translation>
 <translation id="992592832486024913">Вимкнути BraveVox (голосові підказки)</translation>
@@ -7776,7 +7777,7 @@
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="7100095060831768635">Рекламодавці можуть дізнаватись про однакові зацікавлення, властиві тисячам людей, і підбирати рекламу для великої групи людей замість того, щоб створювати індивідуальні профілі.</translation>
 <translation id="8648684608605749476">Блокувати файли cookie третіх сторін в анонімному режимі</translation>
-<translation id="2470565056986576858">У режимі приватного перегляду сайти не можуть використовувати файли cookie для відстеження ваших дій у вебпереглядачі, зокрема, щоб персоналізувати рекламу. Функції на деяких сайтах можуть не працювати.</translation>
+<translation id="255999604394332437">У приватному режимі сайти не можуть використовувати файли cookie для перегляду ваших дій у вебпереглядачі, зокрема для персоналізації реклами. Певні функції на деяких сайтах можуть не працювати.</translation>
 <translation id="6105125042109106861">Файли cookie третіх сторін блокуються в режимі анонімного перегляду</translation>
 <translation id="6710473112951410470">Тільки поточна приватна сесія</translation>
 <translation id="8148807910118761153">Ці користувацькі налаштування буде видалено, коли ви закриєте всі анонімні вікна.</translation>

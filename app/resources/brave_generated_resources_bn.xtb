@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
 <translation id="1696548911367097044">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">ড্যাপস ব্যবহারের জন্য ইথেরিয়াম সরবরাহকারী</translation>
-<translation id="5913089932885076110">শুরু করার সময়ে ক্রিপ্টো ওয়ালেটগুলি লোড করুন</translation>
-<translation id="757886143331967039">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন স্টার্টআপ-এ লোড করুন</translation>
+<translation id="9131889008937672866">ডিফল্ট ক্রিপ্টোকারেন্সি ওয়ালেট</translation>
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
+<translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
+<translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
@@ -233,6 +233,7 @@
 <translation id="1251574393468476924">সর্বোচ্চ IPFS ক্যাশ সাইজ (GB)</translation>
 <translation id="2503497578400410320">IPFS ভাণ্ডারের ডেটাস্টোর-এর নমনীয় ঊর্ধ্বসীমা।</translation>
 <translation id="7703184801853248830">অবৈধ গেটওয়ে ঠিকানা</translation>
+<translation id="7690058578502751948">Brave-এ শুধুমাত্র উত্স আইসোলেসন সহ একটি বৈধ IPFS গেটওয়ে সক্ষম আছে</translation>
 <translation id="585868419599255817">IPFS পাবলিক গেটওয়ে ফলব্যাক</translation>
 <translation id="207763736230883589">আপনার স্থানীয় নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
 <translation id="4107552920076294723">কনফিগার করা  IPFS গেটওয়েতে  IPFS সংস্থানগুলি পুনর্নির্দেশ করুন</translation>
@@ -301,6 +302,10 @@
 <translation id="1391855377994926460">আরো দ্রুত ওয়েব ব্রাউজ করুন - মুখ্য সংবাদের সাইটগুলিতে 6x পর্যন্ত দ্রুত ব্রাউজ করুন।</translation>
 <translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
+<translation id="732814027519296280">Brave অনুসন্ধানকে আরও উন্নত করতে চান?</translation>
+<translation id="2677865600861971449">বেনামে কিছু অনুসন্ধান &amp; ব্রাউজিং ডেটায় অবদান রাখতে ওয়েব আবিষ্কার প্রোজেক্টের সুবিধা নিন এবং সকলের জন্য Brave অনুসন্ধান উন্নত করুন। গোপনীয়্তা-রক্ষণ। এবং শূন্য প্রয়াস। <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">চালু করুন</translation>
+<translation id="780301667611848630">না থাক</translation>
 <translation id="5039804452771397117">অনুমতি দিন</translation>
 <translation id="7053983685419859001">ব্লক করুন</translation>
 <translation id="7815301689257843278">ক্র্যাশ রিপোর্ট স্বয়ংক্রিয়ভাবে পাঠান যাতে এই Brave এই সমস্যাটি আবার না হওয়া আটকাতে পারে?</translation>
@@ -310,6 +315,8 @@
 <translation id="6873781976650514089">এই সেটিংটি</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
 <translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
+<translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
+<translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
 <translation id="4877147287319222750">সাইডবারে যোগ করুন</translation>
 <translation id="4233010476457917696">সাইডবার দেখান</translation>

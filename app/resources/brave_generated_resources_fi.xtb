@@ -81,6 +81,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7895302206188277628">Linkitetty sisältö</translation>
 <translation id="3654831858282189202">Julkaise IPNS-avaimella</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Tuo valittu teksti IPFS:ään</translation>
 <translation id="6925604404524625582">Tuo ja kopioi linkki IPFS-tilannekuvaan</translation>
 <translation id="1434416574322382019">Uusi Tor-yksityisikkuna</translation>
 <translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
@@ -190,12 +191,13 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5655621391922317800">Kryptokukkarot</translation>
 <translation id="1696548911367097044">Vanhentunut Crypto Wallets -laajennus</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum-tarjoaja Dappsin käyttämiseen</translation>
-<translation id="5913089932885076110">Lataa Crypto Wallets käynnistyksen yhteydessä</translation>
-<translation id="757886143331967039">Lataa vanhentunut kryptovaluuttalaajennus käynnistyksen yhteydessä</translation>
+<translation id="9131889008937672866">Oletusarvoinen kryptovaluuttalompakko</translation>
 <translation id="1834467296210148203">Näytä Brave-lompakon kuvake työkalupalkissa</translation>
+<translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
+<translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
 <translation id="6864914031231797928">Salli laajennuksille Google-kirjautuminen</translation>
 <translation id="5927916530277631319">Pysäyttämättömien verkkotunnusten käsittelytapa</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/> DNS:n ja HTTPS-protokollan sekä Ethereumin tietosuojanäkökohdista.</translation>
 <translation id="5248318250177143470">ENS-palvelun (Ethereum Name Service) selvityskeino</translation>
 <translation id="7024553202001112871">Määritä IPNS-avaimesi</translation>
 <translation id="951216659045543447">Allekirjoita sisältö vastaavalla yksityisellä avaimella ja julkaise se IPNS:ssä</translation>
@@ -209,6 +211,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="6476061084931271248">Ota muutokset käyttöön käynnistämällä solmu uudelleen</translation>
 <translation id="3754226427671882382">Käynnistä solmu uudelleen</translation>
 <translation id="949667118776341807">Kierrä</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tämä nimi ei ole kelvollinen</translation>
 <translation id="6758961763875471084">Muokkaa vertaiskäyttäjien luetteloa</translation>
 <translation id="1295874070797049002">Vie avain</translation>
@@ -226,12 +229,14 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="1327977588028644528">Yhdyskäytävä</translation>
 <translation id="80225669816651290">Paikallinen solmu</translation>
 <translation id="4927734062756955434">Julkisen IPFS-portin osoite</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Lue lisää<ph name="END_LINK_MPL"/> paikallisen IPFS-noodin ja -yhdyskäytävän tietosuojanäkökohdista.</translation>
 <translation id="8425213833346101688">Vaihda</translation>
 <translation id="557281710253742286">Määritä IPFS-portti</translation>
 <translation id="8571837315037233299">Portin osoite</translation>
 <translation id="1251574393468476924">Korkein sallittu IPFS-välimuistin koko (Gt)</translation>
 <translation id="2503497578400410320">IPFS-tallennustilan pehmeä yläraja.</translation>
 <translation id="7703184801853248830">Virheellinen porttiosoite</translation>
+<translation id="7690058578502751948">Bravessa voidaan käyttää vain kelvollista IPFS -yhdyskäytävää, jonka kohdalla Origin-eristys on käytössä</translation>
 <translation id="585868419599255817">Julkiseen IPFS-porttiin palaaminen</translation>
 <translation id="207763736230883589">Palaa julkiseen IPFS-porttiin, jos paikalliseen noodiisi ei saada yhteyttä.</translation>
 <translation id="4107552920076294723">Ohjaa IPFS-resurssit annettuun IPFS-porttiin</translation>
@@ -300,6 +305,10 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="1391855377994926460">Jatka verkon selailua nopeammin – jopa 6x nopeammin suosituilla uutissivustoilla.</translation>
 <translation id="9218430445555521422">Aseta oletusselaimeksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
+<translation id="732814027519296280">Haluatko tehdä Brave Search -palvelusta entistä paremman?</translation>
+<translation id="2677865600861971449">Osallistu Web Discovery Projectiin anonyymisti haku- ja selaustietojen antamiseksi ja Brave Search -hakutuloksien parantamiseksi. Privacy-preserving. Se ei vaadi mitään vaivaa. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Ota käyttöön</translation>
+<translation id="780301667611848630">Ei kiitos</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="7053983685419859001">Estä</translation>
 <translation id="7815301689257843278">Lähetä kaatumisraportit automaattisesti niin, että Brave voi estää tämän ongelman ilmenemisen uudelleen?</translation>
@@ -309,6 +318,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="6873781976650514089">tämä asetus</translation>
 <translation id="6040143037577758943">Sulje</translation>
 <translation id="5600566490506283344">Brave Ad -ilmoitus</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Osallistu Web Discovery Projectiin antaaksesi haku- ja selaustietoja Brave Search -palvelun parantamiseksi.</translation>
 <translation id="1516554614404600536">Brave-työkaluvihje</translation>
 <translation id="4877147287319222750">Lisää sivupalkkiin</translation>
 <translation id="4233010476457917696">Näytä sivupalkki</translation>

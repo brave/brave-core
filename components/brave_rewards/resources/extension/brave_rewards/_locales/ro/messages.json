@@ -19,6 +19,26 @@
     "message": "Reîmprospătați starea",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Orice contribuție faceți va rămâne în așteptare în portofelul dvs. și se va reîncerca automat timp de 90 de zile. $link_begin$Aflați mai multe$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Acest creator nu este înregistrat încă",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Acest creator nu este configurat în prezent pentru a primi contribuții din portofelul dvs",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ pe $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ ajung în $days$",
+    "message": "Procesarea plății de $amount$ începe în $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Închide",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Pentru a iniția un apel gratuit, activați Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Activare Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Dacă dați clic, acceptați $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$. Puteți dezactiva opțiunea în orice moment în Setări.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Pentru a iniția un apel gratuit, activați Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Activați Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Prin activarea Brave Ads, acceptați $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Acum puteți iniția un apel gratuit",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Dați clic în orice loc pe ecran pentru a continua la Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Doriți să aflați mai multe despre Brave Rewards? $tour_link_begin$Faceți un tur rapid$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

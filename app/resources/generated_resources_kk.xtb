@@ -58,6 +58,7 @@
 <translation id="1059484610606223931">Hypertext Transport Protocol (HTTPS)</translation>
 <translation id="1059944192885972544">"<ph name="SEARCH_TEXT"/>" үшін <ph name="NUM"/> қойынды табылды.</translation>
 <translation id="1060292118287751956">Экранның жаңару жиілігін анықтайды.</translation>
+<translation id="1061130374843955397"><ph name="DEVICE_TYPE"/> құрылғысына қош келдіңіз!</translation>
 <translation id="1061904396131502319">Үзіліс уақыты келіп қалды</translation>
 <translation id="1066613507389053689">Chrome OS жаңартуы қажет</translation>
 <translation id="1067048845568873861">Жасалған</translation>
@@ -160,6 +161,7 @@
 <translation id="1166583374608765787">Өзгертілген атауды қарау</translation>
 <translation id="1166596238782048887">"<ph name="TAB_TITLE"/>" қойындысы "<ph name="DESK_TITLE"/>" үстеліне тиесілі.</translation>
 <translation id="1168020859489941584"><ph name="TIME_REMAINING"/> ішінде ашылады…</translation>
+<translation id="1169435433292653700"><ph name="FILE_NAME"/> файлында құпия немесе қауіпті деректер болуы мүмкін. Әкімші хабары: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1170288591054440704">Сайт құрылғыңызда орнатылған қаріптерді пайдаланғысы келгенде сұрау</translation>
 <translation id="1171135284592304528">Нысан өзгерген кезде оны пернетақта арқылы бөлектеу</translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> веб-сайты HID құрылғысына жалғанғысы келеді.</translation>
@@ -189,6 +191,7 @@
 <translation id="1195447618553298278">Белгісіз қате.</translation>
 <translation id="1195558154361252544">Сіз рұқсат еткеннен басқа сайттар үшін хабарландырулар автоматты түрде бөгелді.</translation>
 <translation id="1197088940767939838">Қызғылт сары</translation>
+<translation id="1197935538609051549">Өшіріп қою</translation>
 <translation id="1197979282329025000"><ph name="PRINTER_NAME"/> принтеріне арналған принтер қабілеттерін алу кезінде қате орын алды. Бұл принтерді <ph name="CLOUD_PRINT_NAME"/> арқылы тіркеу мүмкін емес.</translation>
 <translation id="119944043368869598">Барлығын өшіру</translation>
 <translation id="1199814941632954229">Осы сертификат профильдеріне сертификаттар берілуде</translation>
@@ -208,6 +211,7 @@
 <translation id="1218015446623563536">Linux жою</translation>
 <translation id="1218839827383191197"><ph name="BEGIN_PARAGRAPH1"/>Brave орынды анықтау қызметі Wi‑Fi, мобильдік желілер және сенсорлар сияқты дереккөздерді пайдаланып, құрылғының орнын болжайды.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Құрылғыдағы негізгі геодерек параметрін өшіру арқылы орналасқан жердің анықталуын өшіруге болады. Сонымен қатар Wi‑Fi мен мобильдік желілердің және сенсорлардың орынды анықтау үшін қолданылуын геодерек параметрлерінен өшіре аласыз.<ph name="END_PARAGRAPH2"/></translation>
+<translation id="1703988271738455429">Тіл файлдары (<ph name="LANGUAGE"/>) жүктеп алынбады. Жүктеп алу кейінірек қайталанады. Әзірше сөз жазбасы өңдеу мақсатында Brave-ға жіберіледі.</translation>
 <translation id="122082903575839559">Сертификат қолтаңбасының алгоритмі</translation>
 <translation id="1221024147024329929">RSA шифрлауы бар PKCS #1 MD2</translation>
 <translation id="1221825588892235038">Тек таңдау</translation>
@@ -241,7 +245,6 @@
 <translation id="125220115284141797">Әдепкі</translation>
 <translation id="1252987234827889034">Профиль қатесі кетті</translation>
 <translation id="1254593899333212300">Тікелей интернет қосылысы</translation>
-<translation id="1257553931232494454">масштабтау деңгейлері</translation>
 <translation id="1258491128795710625">Жаңалықтар</translation>
 <translation id="1259152067760398571">Қауіпсіздік шарасы кеше қолданылды.</translation>
 <translation id="1260451001046713751">Қалқымалы терезелердің шығуына және <ph name="HOST"/> хостынан бағыттауға әрқашан рұқсат беру</translation>
@@ -255,6 +258,7 @@
 <translation id="126710816202626562">Аударма тілі:</translation>
 <translation id="126768002343224824">16x</translation>
 <translation id="1272079795634619415">Тоқтату</translation>
+<translation id="1272508081857842302"><ph name="BEGIN_LINK"/>Қолдау көрсету сілтемелерін<ph name="END_LINK"/> ашу</translation>
 <translation id="1272978324304772054">Бұл пайдаланушы аккаунты құрылғы тіркелген доменге жатпайды. Басқа доменге тіркегіңіз келсе, алдымен құрылғыны қалпына келтіруіңіз керек.</translation>
 <translation id="1273780413309681229">Реттеу нұсқаулығын қайта іске қосу</translation>
 <translation id="1274997165432133392">Cookie файлдары және басқа сайт деректері</translation>
@@ -327,7 +331,6 @@
 <translation id="1354045473509304750"><ph name="HOST"/> сайтына камераны пайдалануға және жылжытуға рұқсат ету</translation>
 <translation id="1355088139103479645">Барлық деректер жойылсын ба?</translation>
 <translation id="1355466263109342573"><ph name="PLUGIN_NAME"/> бөгелген</translation>
-<translation id="3984064884859276726">Интернетте сауда жасап не жай ғана шарлай отырып, көріп тұрған мазмұн туралы көбірек білу үшін сайттың кез келген аумағынан іздеңіз. Ол үшін тінтуірдің оң жақ түймесін басып, "Бет бөлігін Brave Lens арқылы іздеу" опциясын таңдаңыз.</translation>
 <translation id="1358741672408003399">Емле және грамматика</translation>
 <translation id="1359923111303110318">Құрылғыңыздың құлпын Smart Lock арқылы ашуға болады. Құлпын ашу үшін Enter пернесін басыңыз.</translation>
 <translation id="1361164813881551742">Қолмен енгізу</translation>
@@ -423,7 +426,6 @@
 <translation id="145432137617179457">Емлесі тексерілетін тілдер</translation>
 <translation id="1455119378540982311">Терезе өлшемдерін алдын ала орнату</translation>
 <translation id="1459693405370120464">Ауа райы</translation>
-<translation id="1459967076783105826">Кеңейтімдер арқылы қосылған іздеу жүйелері</translation>
 <translation id="146000042969587795">Бұл жақтауға тыйым салынды, себебі ол кейбір қауіпті мазмұнды қамтиды.</translation>
 <translation id="146219525117638703">ONC күйі</translation>
 <translation id="146220085323579959">Интернет ажыратылды. Интернет байланысын тексеріп, әрекетті қайталаңыз.</translation>
@@ -438,7 +440,7 @@
 <translation id="1470084204649225129">{NUM_TABS,plural, =1{Жаңа топқа қойынды қосу}other{Жаңа топқа қойындылар қосу}}</translation>
 <translation id="1470350905258700113">Осы құрылғыны пайдалану</translation>
 <translation id="1470946456740188591">Перне арқылы қозғалу функциясын қосу немесе өшіру үшін Ctrl+Search+7 пернелер тіркесімін пайдаланыңыз.</translation>
-<translation id="1472675084647422956">Толығырақ көрсету</translation>
+<translation id="1472675084647422956">Толық көрсету</translation>
 <translation id="1474785664565228650">Микрофонның параметріне өзгеріс енгізілгендіктен, Parallels Desktop қайта іске қосылуы қажет. Жалғастыру үшін Parallels Desktop қолданбасын қайта іске қосыңыз.</translation>
 <translation id="1475502736924165259">Файлда басқа ешбір санатқа сәйкес келмейтін сертификаттар бар</translation>
 <translation id="1476088332184200792">Құрылғыға көшіру</translation>
@@ -458,7 +460,6 @@
 <translation id="1486096554574027028">Құпия сөздерді іздеу</translation>
 <translation id="1487335504823219454">Қосу – пайдаланушылық параметрлер</translation>
 <translation id="1489664337021920575">Басқа опция қолданып көріңіз</translation>
-<translation id="1490491397986065675">Әкімші хабары: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1492417797159476138">Бұл сайт үшін осы пайдаланушы аты сақтап қойылған.</translation>
 <translation id="1493892686965953381"><ph name="LOAD_STATE_PARAMETER"/> күту…</translation>
 <translation id="1494349716233667318">Сайттар құрылғыңызда орнатылған қаріптерді пайдалануға рұқсат сұрай алады</translation>
@@ -471,13 +472,11 @@
 <translation id="1507170440449692343">Бұл бетке камераны пайдалануға тыйым салынған.</translation>
 <translation id="1507246803636407672">&amp;Алып тастау</translation>
 <translation id="1508491105858779599">Құрылғы құлпын ашу үшін саусақ ізін оқу сканеріне саусағыңызды қойыңыз.</translation>
-<translation id="1508575541972276599">Қазіргі нұсқасы: Debian 9 (Stretch)</translation>
 <translation id="1509163368529404530">&amp;Топты қалпына келтіру</translation>
 <translation id="1509281256533087115">USB арқылы <ph name="DEVICE_NAME_AND_VENDOR"/> кез келгеніне өту</translation>
-<translation id="1509960214886564027">Көптеген сайттағы функциялар дұрыс жұмыс істемеуі мүмкін.</translation>
 <translation id="1510238584712386396">Іске қосу құрылғысы</translation>
 <translation id="1510785804673676069">Прокси-серверді пайдаланып жатсаңыз, прокси-сервер жұмыс істеп жатқанын тексеру үшін прокси параметрлеріңізді тексеріңіз немесе желі әкімшісіне хабарласыңыз. Прокси-серверін пайдаланбасаңыз, <ph name="LINK_START"/>прокси параметрлерін<ph name="LINK_END"/> реттеңіз.</translation>
-<translation id="1511997356770098059">Бұл қауіпсіздік кілтінде есептік жазбаға кіру деректері сақталмайды.</translation>
+<translation id="1511997356770098059">Бұл қауіпсіздік кілтінде аккаунтқа кіру деректері сақталмайды.</translation>
 <translation id="1512210426710821809">Бұны қайтарудың жалғыз жолы — <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> қайта орнату</translation>
 <translation id="1512642802859169995"><ph name="FILE_NAME"/> файлы шифрланған. Иесінен шифрдан шығаруын сұраңыз.</translation>
 <translation id="151501797353681931">Safari браузерінен импортталған</translation>
@@ -565,6 +564,8 @@
 <translation id="1601560923496285236">Қолдану</translation>
 <translation id="1602085790802918092">Виртуалдық құрылғы іске қосылуда</translation>
 <translation id="1604432177629086300">Басып шығарылмады. Принтерді тексеріп, қайталап көріңіз.</translation>
+<translation id="1605744057217831567">Барлық сайт дерегі мен рұқсаттарды көру</translation>
+<translation id="1606077700029460857">Тінтуір параметрлерін өзгерту</translation>
 <translation id="1607139524282324606">Жазбаны өшіру</translation>
 <translation id="1607499585984539560">Пайдаланушы доменмен байланыстырылмаған.</translation>
 <translation id="1608626060424371292">Бұл пайдаланушыны алып тастау</translation>
@@ -673,7 +674,6 @@
 <translation id="1704970325597567340">Қауіпсіздік шарасы <ph name="DATE"/> күні қолданылды.</translation>
 <translation id="1706586824377653884">Әкімші енгізген</translation>
 <translation id="2330259386430751078">Brave нұсқасы, операциялық жүйе нұсқасы, Cast параметрлері, экран көшірмесін көрсету статистикалары және байланыс арнасының диагностикалық журналдары жоғарыда қоса берілетін кез келген ақпаратпен бірге жіберіледі. Бұл пікір ақауларды тексеріп, функцияны жақсарту үшін пайдаланылады. Қандай да бір әдейі не байқаусызда жіберілген жеке ақпарат құпиялылық саясаттарына сай қорғалады. Осы пікірді жібере отырып, Brave-дың қандай да бір өнімін не қызметін жақсарту үшін берген пікіріңізді пайдалануына келісім бересіз.</translation>
-<translation id="1706625117072057435">Масштабтау деңгейлері</translation>
 <translation id="1708338024780164500">(Белсенді емес)</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ИДЕНТИФИКАТОР: <ph name="ID_PH"/>)</translation>
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (жергілікті)</translation>
@@ -682,10 +682,11 @@
 <translation id="1709972045049031556">Бөлісу мүмкін емес</translation>
 <translation id="1711935594505774770"><ph name="SITE_GROUP_NAME"/> сайттар тобында, қатысты сайттарда және орнатылған қолданбаларда сақталған деректер мен cookie файлдарының барлығы өшіріледі.</translation>
 <translation id="1714644264617423774">Құрылғыңызды пайдалануды жеңілдету үшін арнайы мүмкіндіктерді қосу. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
-<translation id="1717218214683051432">Қозғалыс датчиктері</translation>
 <translation id="1718835860248848330">Соңғы сағат</translation>
 <translation id="1719312230114180055">Ескертпе: саусақ ізінің қауіпсіздік деңгейі күрделі өрнек не PIN кодына қарағанда төменірек болуы мүмкін.</translation>
 <translation id="1720318856472900922">TLS WWW сервер аутентификациясы</translation>
+<translation id="1720941539803966190">Оқулықты жабу</translation>
+<translation id="172123215662733643"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы суреттерді іздеу</translation>
 <translation id="1721312023322545264">Бұл сайтқа кіру үшін <ph name="NAME"/> сізге рұқсат беруі керек</translation>
 <translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> құрылғыңызды <ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> басқарады.</translation>
 <translation id="1723824996674794290">&amp;Жаңа терезе</translation>
@@ -694,7 +695,6 @@
 <translation id="1729533290416704613">Сонымен қатар ол Omnibox жүйесінен іздегенде қайсы бет көрсетілуін бақылайды.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Қолданбаларды өшіру үшін "Параметрлер &gt; Google Play Store &gt; Android параметрлерін басқару &gt; Қолданбалар немесе қолданба реттеушісі" тармағына өтіңіз. Одан кейін жойылатын қолданбаны (қолданбаны табу үшін саусақпен оңға немесе солға сырғыту керек), одан кейін "Жою" немесе "Өшіру" опциясын түртіңіз.<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1731911755844941020">Сұрау жіберілуде…</translation>
-<translation id="1733064249834771892">қаріптер</translation>
 <translation id="5958351589333270173">Синхрондалған деректерді өзіңіздің <ph name="BEGIN_LINK"/>синхрондау құпия фразаңызбен<ph name="END_LINK"/> шифрлау. Brave Pay қызметіндегі төлеу әдістері және мекенжайлар құпия фразамен шифрланбайды.</translation>
 <translation id="1734212868489994726">Ашық көк</translation>
 <translation id="1734230530703461088">Уақыт шегінде кеңейтімдер жүктелмеді. Әкімшіге хабарласыңыз.</translation>
@@ -712,6 +712,7 @@
 <translation id="1744108098763830590">фондық бет</translation>
 <translation id="1745732479023874451">Контактілерді басқару</translation>
 <translation id="1901235742643584247">Бұл құпия сөзді Brave аккаунтыңызда немесе тек осы құрылғыда сақтай аласыз.</translation>
+<translation id="1750048572964661931">Осы Bravebook құрылғысына PIN кодын немесе құпия сөзді орнатып, телефоныңыздағы қолданбаларды пайдалану рұқсатын басқарыңыз.</translation>
 <translation id="1750172676754093297">Қауіпсіздік кілті саусақ іздерін сақтай алмайды.</translation>
 <translation id="1751249301761991853">Жеке</translation>
 <translation id="1751262127955453661"><ph name="ORIGIN"/> сайтының барлық қойындысы жабылғанға дейін, ол <ph name="FOLDERNAME"/> қалтасындағы файлдарды өзгерте алады.</translation>
@@ -759,11 +760,11 @@
 <translation id="1790194216133135334">Сілтемені <ph name="DEVICE_NAME"/> құрылғысына жіберу</translation>
 <translation id="1790976235243700817">Кіру рұқсатын өшіру</translation>
 <translation id="1792619191750875668">Кеңейтілген дисплей</translation>
+<translation id="1793625608969726781"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, компьютер, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="1794051631868188691"><ph name="MERCHANT"/> ешқашан көрсетілмесін</translation>
 <translation id="1794791083288629568">Бұл мәселені шешуімізге көмектесу үшін пікір жіберіңіз.</translation>
 <translation id="1795214765651529549">Классикалық тақырыпты пайдалану</translation>
 <translation id="1796588414813960292">Дыбысты қажет ететін функциялар жұмыс істемейді.</translation>
-<translation id="1799071797295057738">"<ph name="EXTENSION_NAME"/>" кеңейтімі автоматты түрде өшірілген.</translation>
 <translation id="1801418420130173017">Қараңғы тақырыпты өшіру</translation>
 <translation id="1802624026913571222">Қақпағы жабылғанда, ұйқы режиміне өту</translation>
 <translation id="1802687198411089702">Бет жауап бермеуде. Оны күтуге не жабуға болады.</translation>
@@ -792,7 +793,6 @@
 <translation id="7206817092936005164">Барлығын инкогнито терезесінде ашу</translation>
 <translation id="1819721979226826163">"Қолданба туралы хабарландырулар &gt; Google Play Services" түймесін түртіңіз.</translation>
 <translation id="1820028137326691631">Әкімші берген құпия сөзді енгізу</translation>
-<translation id="182139138257690338">автоматты жүктеулер</translation>
 <translation id="3707821975049107110">Brave браузерін бұрыннан пайдаланып жүрсіз бе? Аккаунтқа кіріңіз.</translation>
 <translation id="18245044880483936">Сақтық көшірме деректері балаңыздың Drive жадынан орын алмайды.</translation>
 <translation id="1825565032302550710">Порт 1024 және 65535 аралығында болуы керек.</translation>
@@ -831,7 +831,6 @@
 <translation id="1861262398884155592">Бұл қалта бос</translation>
 <translation id="1862311223300693744">Арнайы VPN, прокси, брандмауэр немесе NAS бағдарламалық құралы орнатылған ба?</translation>
 <translation id="1863182668524159459">Сериялық порттар табылмады.</translation>
-<translation id="1863316578636157783">Құрамында зиянды бағдарламасы болғандықтан, "<ph name="EXTENSION_NAME"/>" өшірілді.</translation>
 <translation id="1864111464094315414">Кіру</translation>
 <translation id="1864400682872660285">Салқындатқыш</translation>
 <translation id="1864454756846565995">USB-C құрылғысы (артқы ұяшық)</translation>
@@ -853,7 +852,7 @@
 <translation id="1877520246462554164">Аутентификациялау таңбалауышы алынбады. Жүйеден шығыңыз, әрекетті қайталау үшін қайтадан кіріңіз.</translation>
 <translation id="1877860345998737529">Әрекет тағайындауын қосу</translation>
 <translation id="1878155070920054810">Жаңарту аяқталып үлгермей, Bravebook құрылғысының батареясы таусылып қалған сияқты. Үзіліс болмауы үшін, оны дұрыс зарядтау қажет.</translation>
-<translation id="1879000426787380528">Келесі есептік жазбаға кіру:</translation>
+<translation id="1879000426787380528">Келесі аккаунтқа кіру:</translation>
 <translation id="18802377548000045">қойындылар үлкен ен өлшеміне дейін кішірейеді</translation>
 <translation id="1880905663253319515">"<ph name="CERTIFICATE_NAME"/>" сертификатын жою керек пе?</translation>
 <translation id="188114911237521550">Қараңғы режимді өшіру</translation>
@@ -880,12 +879,10 @@
 <translation id="1906828677882361942">Ешқандай сайтқа сериялық порттарды пайдалануға рұқсат етпеу</translation>
 <translation id="1908591798274282246">Жабылған топты қайта ашу</translation>
 <translation id="1909880997794698664">Бұл құрылғыны толық экран режимінде біржола сақтау керек пе?</translation>
-<translation id="1910721550319506122">Қош келдіңіз!</translation>
 <translation id="1915073950770830761">canary</translation>
 <translation id="1915307458270490472">Жабу</translation>
 <translation id="1916502483199172559">Әдепкі қызыл түсті аватар</translation>
 <translation id="1918141783557917887">&amp;Кішірек</translation>
-<translation id="1919345977826869612">Жарнамалар</translation>
 <translation id="1920390473494685033">Контактілер</translation>
 <translation id="1921050530041573580">Телефоныңызды Messages қолданбасымен жұптаңыз</translation>
 <translation id="1921584744613111023"><ph name="DPI"/> dpi</translation>
@@ -978,9 +975,7 @@
 <translation id="2020225359413970060">Файлды сканерлеу</translation>
 <translation id="2023167225947895179">PIN коды табуға оңай болуы мүмкін</translation>
 <translation id="202352106777823113">Жүктеу тым ұзаққа созылғандықтан, желі оны тоқтатты.</translation>
-<translation id="2025115093177348061">Толықтырылған шындық</translation>
 <translation id="2025632980034333559"><ph name="APP_NAME"/> бұзылған. Кеңейтімді қайта жүктеу үшін осы қалқымалы хабарды басыңыз.</translation>
-<translation id="2025891858974379949">Қорғалмаған мазмұн</translation>
 <translation id="2028449514182362831">Қозғалыс датчиктерін қажет ететін функциялар істемейді.</translation>
 <translation id="202918510990975568">Қауіпсіздік және жүйеге кіру параметрлерін конфигурациялау үшін құпия сөзді енгізіңіз.</translation>
 <translation id="2030455719695904263">Сенсорлық тақта</translation>
@@ -990,7 +985,7 @@
 <translation id="203574396658008164">Құлып экранынан жазба жазуды қосу</translation>
 <translation id="2037445849770872822">Осы Brave аккаунты үшін қадағалау параметрлері реттелді. Басқа да ата-ана бақылауы параметрлерін реттеу үшін "Жалғастыру" түймесін таңдаңыз.
 
-Не болмаса шығып кетіңіз. Сонда осы есептік жазбаға енгізілген өзгерістер осы құрылғыда пайда болады.
+Не болмаса шығып кетіңіз. Сонда осы аккаунтқа енгізілген өзгерістер осы құрылғыда пайда болады.
 
 Құрылғыңызға Family Link қолданбасын орнату арқылы аккаунтыңыздың параметрлерін басқара аласыз.  Нұсқауларды электрондық пошта арқылы жібереміз.</translation>
 <translation id="2040460856718599782">Сізді аутентификациялау кезінде бірдеңе дұрыс болмады. Есептік деректеріңізді қайта тексеріп, әрекетті қайталап көріңіз.</translation>
@@ -1043,7 +1038,6 @@
 <translation id="2090165459409185032">Аккаунт ақпаратын қалпына келтіру үшін мына сілтемеге өтіңіз: google.com/accounts/recovery</translation>
 <translation id="2090507354966565596">Кірген кезде автоматты түрде қосылады.</translation>
 <translation id="2090876986345970080">Жүйелік қауіпсіздік параметрі</translation>
-<translation id="2091887806945687916">Дыбыс</translation>
 <translation id="2096715839409389970">Бөгде сайттардың cookie файлдарын тазалау</translation>
 <translation id="2098805196501063469">Қалған құпия сөздерді тексеру</translation>
 <translation id="2099172618127234427">Сіз Chrome OS жөндеу мүмкіндіктерін қосқалы жатырсыз. Олар sshd демонын орнатып, USB дискілерінен жүктеу мүмкіндігін береді.</translation>
@@ -1124,7 +1118,6 @@
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> және тағы 1 ауыстырғыш</translation>
 <translation id="2165177462441582039">Әр элемент қанша уақыт бөлектеліп тұруы керектігін таңдаңыз</translation>
 <translation id="2166369534954157698">аәбвгғдеёжзийкқлмнңоөпрстуұүфхһцчшщъыіьэюя</translation>
-<translation id="2167276631610992935">JavaScript</translation>
 <translation id="2169062631698640254">Бәрібір кіру</translation>
 <translation id="2170054054876170358">Телефоныңыз жаныңызда, құлпы ашық және Bluetooth бен Wi-Fi қосылып тұруы керек.</translation>
 <translation id="2173302385160625112">Интернет байланысын тексеріңіз</translation>
@@ -1137,6 +1130,7 @@
 <translation id="2179416702468739594">Қолжетімді профильдер ізделуде. Осыған байланысты мобильдік желі бірнеше минут өшуі мүмкін.</translation>
 <translation id="2180620921879609685">Барлық беттегі мазмұнды бөгеу</translation>
 <translation id="2182058453334755893">Буферге көшірілді</translation>
+<translation id="2183027945672030611"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, ойын контроллері, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8098574385249290065">Brave браузерінде сайттардың дыбысты автоматты ойнатуына тыйым салу (ұсынылады)</translation>
 <translation id="2186711480981247270">Басқа құрылғыдан бөлісілген бет</translation>
 <translation id="2187675480456493911">Аккаунтыңыздағы басқа құрылғылармен синхрондалған. Басқа пайдаланушылар өзгерткен параметрлер синхрондалмайды. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
@@ -1165,7 +1159,6 @@
 <translation id="2214018885812055163">Бөлісілген қалталар</translation>
 <translation id="2214884991347062907">Құпия сөз дұрыс емес. Әрекетті қайталаңыз.</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 жол көрсетілмей тұр&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> жол көрсетілмей тұр&gt;}}</translation>
-<translation id="2215727959747642672">Файлды өңдеу</translation>
 <translation id="2218019600945559112">Тінтуір мен сенсорлық тақта</translation>
 <translation id="2749608811030566578">Brave браузері зиянды бағдарламалық жасақтаманы өшіріп жатқанда, қате шықты</translation>
 <translation id="2218515861914035131">Қарапайым мәтін ретінде қою</translation>
@@ -1178,6 +1171,7 @@
 <translation id="2224551243087462610">Қалта атауын өзгерту</translation>
 <translation id="2225864335125757863">Аккаунтыңыздың қауіпсіздігін сақтау үшін мына құпия сөздерді дереу өзгертіңіз:</translation>
 <translation id="2226449515541314767">Бұл сайтқа MIDI құрылғыларын толық бақылауға тыйым салынған.</translation>
+<translation id="2226826835915474236">Өшірулі таңбашалар</translation>
 <translation id="2226907662744526012">PIN коды енгізілген соң, құлыпты автоматты түрде ашу</translation>
 <translation id="2227179592712503583">Ұсынысты өшіру</translation>
 <translation id="2229161054156947610">1 сағаттан артық қалды</translation>
@@ -1248,11 +1242,11 @@
 <translation id="2299941608784654630">debugd арқылы жиналған барлық журнал файлдарын бөлек мұрағат ретінде қамту.</translation>
 <translation id="2300214399009193026">PCIe</translation>
 <translation id="2300383962156589922"><ph name="APP_NAME"/> қолданбасын реттеу және басқару</translation>
-<translation id="2300578660547687840">Кілтсөздерді іздеуге арналған перне тіркесімдері</translation>
 <translation id="2301382460326681002">Кеңейтімнің түбір каталогы жарамсыз.</translation>
 <translation id="2301402091755573488">Бөліскен қойынды</translation>
 <translation id="23030561267973084">"<ph name="EXTENSION_NAME"/>" қосымша рұқсат сұрады.</translation>
 <translation id="23055578400314116">Пайдаланушы атын таңдаңыз.</translation>
+<translation id="2306366691914573029"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, белгісіз құрылғы түрі</translation>
 <translation id="2307462900900812319">Желіні реттеу</translation>
 <translation id="2307553512430195144">Келіссеңіз, Brave Assistant күту режимінде "Ok Brave" пәрменін күтеді және баланың (<ph name="SUPERVISED_USER_NAME"/>) сөйлегенін Voice Match арқылы тани алады.
     <ph name="BR"/>
@@ -1263,6 +1257,7 @@
     Егер Voice Match функциясы балаңызға керек болмаса, оны Assistant параметрлерінен өшіре салыңыз. Voice Match реттеген кезде сақталған жазбаларды көру немесе жою үшін балаңыздың аккаунтынан <ph name="VOICE_MATCH_SETTINGS_URL"/> бетіне өтіңіз.
     <ph name="BR"/>
     <ph name="FOOTER_MESSAGE"/></translation>
+<translation id="2307630946657910723"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы бет бөлігін іздеу</translation>
 <translation id="230927227160767054">Бұл бет қызмет өңдегішін орнатпақ.</translation>
 <translation id="2309620859903500144">Бұл сайттың қозғалыс не жарық датчиктеріңізге кіруіне тыйым салынды.</translation>
 <translation id="2312219318583366810">Беттің URL сілтемесі</translation>
@@ -1284,7 +1279,6 @@
 <translation id="2326931316514688470">Қолданбаны &amp;қайта жүктеу</translation>
 <translation id="2327492829706409234">Қолданбаны қосу</translation>
 <translation id="2328561734797404498"><ph name="APP_NAME"/> пайдалану үшін құрылғыңызды қайта қосыңыз.</translation>
-<translation id="2329182534073751090">терезені орналастыру</translation>
 <translation id="2329597144923131178">Барлық құрылғыларда бетбелгілеріңізді, журналыңызды, құпия сөздеріңізді және басқа параметрлеріңізді алу үшін кіріңіз.</translation>
 <translation id="2332131598580221120">Дүкенде көру</translation>
 <translation id="2332192922827071008">Жеке параметрлерді ашу</translation>
@@ -1330,6 +1324,7 @@
 <translation id="2364498172489649528">Сынақтан өтті</translation>
 <translation id="2365507699358342471">Бұл сайтта буферге көшірілген мәтін мен кескіндерді ашуға болады.</translation>
 <translation id="2367972762794486313">Қолданбаларды көрсету</translation>
+<translation id="236939127352773362">Маңайда құрылғылар мазмұн бөлісіп жатқанда</translation>
 <translation id="2371076942591664043">&amp;Дайын болғанда ашу</translation>
 <translation id="2373666622366160481">Қағаз өлшеміне сәйкестендіру</translation>
 <translation id="2375406435414127095">Телефоныңызға жалғаңыз</translation>
@@ -1355,6 +1350,7 @@
 <translation id="2406153734066939945">Бұл профиль және оның деректері жойылсын ба?</translation>
 <translation id="2408018932941436077">Карта сақталуда</translation>
 <translation id="2408955596600435184">PIN кодын енгізіңіз</translation>
+<translation id="2410079346590497630">Құрама туралы мәліметтер</translation>
 <translation id="2410754283952462441">Аккаунт таңдау</translation>
 <translation id="241082044617551207">Белгісіз плагин</translation>
 <translation id="2412593942846481727">Жаңартылған нұсқа қолжетімді</translation>
@@ -1492,7 +1488,6 @@
 <translation id="2541706104884128042">Жаңа ұйықтау уақыты орнатылды.</translation>
 <translation id="2542050502251273923">ff_debug арқылы желі байланысы менеджерін және басқа да қызметтердің түзету деңгейін орнатады.</translation>
 <translation id="2544352060595557290">Осы қойынды</translation>
-<translation id="2546283357679194313">Cookie файлдары және торап деректері</translation>
 <translation id="2546302722632337735">Қорғалған мазмұнды ойнату үшін сайттарға идентификаторларды пайдалануға рұқсат етілмейді.</translation>
 <translation id="2548347166720081527"><ph name="PERMISSION"/> пайдалануға рұқсат берілді.</translation>
 <translation id="2548545707296594436">eSIM профилі кэшін бастапқы күйге қайтару</translation>
@@ -1538,6 +1533,7 @@
 <translation id="2606568927909309675">Ағылшын тіліндегі аудио мен бейне үшін субтитрлерді автоматты түрде жасайды. Аудиолар мен cубтитрлер құрылғыда қалады.</translation>
 <translation id="2607101320794533334">Субъектінің ашық кілті туралы ақпарат</translation>
 <translation id="2609896558069604090">Таңбашаларды жасау…</translation>
+<translation id="2609902589050805912"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, аудио құрылғы</translation>
 <translation id="2609980095400624569">Байланыс орнатылмады</translation>
 <translation id="2610157865375787051">Ұйқы</translation>
 <translation id="2610260699262139870">Н&amp;ақты өлшемі</translation>
@@ -1604,6 +1600,7 @@
 <translation id="2673135533890720193">Шолу журналыңызды оқу</translation>
 <translation id="2674764818721168631">Өшірулі</translation>
 <translation id="2678063897982469759">Қайта қосу</translation>
+<translation id="2678676117809690850"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, телефон, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="268053382412112343">Жу&amp;рнал</translation>
 <translation id="2681124317993121768">Қонақ профильдеріне қолдау көрсетілмейді.</translation>
 <translation id="2682498795777673382">Ата-анаңыз өзгерту енгізді</translation>
@@ -1701,6 +1698,7 @@
 <translation id="2773288106548584039">Бұрынғы браузерді қолдау</translation>
 <translation id="2773802008104670137">Мұндай файл түрі компьютерге зиян келтіруі мүмкін.</translation>
 <translation id="2775104091073479743">Саусақ іздерін өңдеу</translation>
+<translation id="2776560192867872731">Құрылғы атауын <ph name="DEVICE_NAME"/> деп өзгерту</translation>
 <translation id="5152275065296016556">Brave Pay</translation>
 <translation id="2782104745158847185">Linux қолданбасын орнату кезінде қате кетті</translation>
 <translation id="2783298271312924866">Жүктелген</translation>
@@ -1797,15 +1795,16 @@
 <translation id="287205682142673348">Портты бағыттау</translation>
 <translation id="287286579981869940"><ph name="PROVIDER_NAME"/> қосу…</translation>
 <translation id="2872961005593481000">Өшіру</translation>
+<translation id="2872966656309879564"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, компьютер</translation>
 <translation id="2874939134665556319">Алдыңғы аудиотрек</translation>
 <translation id="4156865452842056672">(Brave қате беттері)</translation>
 <translation id="2876336351874743617">2-ші саусақ</translation>
 <translation id="2876369937070532032">Қауіп төніп тұрғанда, сіз кірген кейбір беттердің URL сілтемелерін Brave-ға жібереді.</translation>
+<translation id="2876556152483133018">Сайттан іздеу</translation>
 <translation id="2877467134191447552">Веб-сайттарға кіріп, қолданбаларды пайдалану үшін қосымша аккаунттар қосуыңызға болады.</translation>
 <translation id="2878782256107578644">Тексеріліп жатыр. Дәл қазір ашу керек пе?</translation>
 <translation id="2878889940310164513">Ұялы байланыс желісін қосу...</translation>
 <translation id="288042212351694283">Әмбебап 2-ші фактор құрылғыларыңызға кіру</translation>
-<translation id="2880660355386638022">Терезені орналастыру</translation>
 <translation id="2881076733170862447">Кеңейтім басылғанда</translation>
 <translation id="2882943222317434580"><ph name="IDS_SHORT_PRODUCT_NAME"/> қазір қайта іске қосылып, қайта орнатылады</translation>
 <translation id="2885378588091291677">Тапсырмалар реттегіші</translation>
@@ -1820,6 +1819,7 @@
 <translation id="289695669188700754">Кілт индентификаторы: <ph name="KEY_ID"/></translation>
 <translation id="8148807910118761153">Сіз барлық инкогнито терезесін жапқан кезде, бұл арнаулы параметр өз күшін жояды.</translation>
 <translation id="2897878306272793870"><ph name="TAB_COUNT"/> қойындыны ашқыңыз келе ме?</translation>
+<translation id="2900477968385519153"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы экраннан іздеу</translation>
 <translation id="290105521672621980">Файл қолдау көрсетілмеген мүмкіндіктерді пайдаланады</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> бұл принтермен байланыса алмады. Принтер жалғанғанын тескеріп, әрекетті қайталап көріңіз.</translation>
 <translation id="2902312830803030883">Қосымша әрекеттер</translation>
@@ -1936,7 +1936,6 @@
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="3012804260437125868">Бір сайтпен қауіпсіз байланысқанда ғана</translation>
 <translation id="3012917896646559015">Компьютеріңізді жөндеу қызметіне жіберу үшін жабдығыңыз өндірушісіне дереу хабарласыңыз.</translation>
-<translation id="3013291976881901233">MIDI құрылғылары</translation>
 <translation id="301525898020410885">Тілді ұйымыңыз орнатады</translation>
 <translation id="3015639418649705390">Қазір қайта іске қосу</translation>
 <translation id="3016381065346027039">Журналда ешқандай жазба жоқ.</translation>
@@ -1975,8 +1974,10 @@
 <translation id="3053013834507634016">Сертификат кілті қолданысы</translation>
 <translation id="3053273573829329829">Пайдаланушы PIN кодын қосу</translation>
 <translation id="3054766768827382232">Өшіру кезінде перифериялық құрылғыларыңыздың жұмысы жақсаруы мүмкін, алайда рұқсатсыз пайдалану салдарынан жеке деректеріңіз жария болуы ықтимал.</translation>
+<translation id="3055087258198109191">Әдепкіден басқа іздеу жүйесін пайдалану үшін, қалаған перне тіркесімі арқылы таңбашаны енгізіңіз. Сонымен қатар әдепкі іздеу жүйесін осы жерде өзгерте аласыз.</translation>
 <translation id="3055590424724986000">Таңдалған провайдерді пайдалану</translation>
 <translation id="3058498974290601450">Синхрондау функциясын кез келген уақытта "Параметрлер" бөлімінен қоса аласыз.</translation>
+<translation id="3058517085907878899">Құрылғы атауы</translation>
 <translation id="3060379269883947824">Select to Speak функциясын қосу</translation>
 <translation id="3060952009917586498">Құрылғы тілін өзгертіңіз. Қазір <ph name="LANGUAGE"/> тілі қолданылып жатыр.</translation>
 <translation id="3060987956645097882">Телефоныңызбен байланыс орнату мүмкін болмады. Телефоныңыз жаныңызда, құлпы ашық және Bluetooth бен Wi-Fi қосылып тұруы керек.</translation>
@@ -1987,6 +1988,7 @@
 <translation id="3067198360141518313">Бұл плагинді іске қосу</translation>
 <translation id="3071624960923923138">Жаңа қойынды ашу үшін осы жерді басуыңызға болады</translation>
 <translation id="3072775339180057696">Сайтқа <ph name="FILE_NAME"/> файлын қарауға рұқсат етілсін бе?</translation>
+<translation id="3074799113165994093"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, телефон</translation>
 <translation id="3075874217500066906">Powerwash процесін бастау үшін қайта іске қосу қажет. Құрылғы қайта іске қосылғаннан кейін, сізден жалғастыруды растау сұралады.</translation>
 <translation id="3076909148546628648"><ph name="DOWNLOAD_RECEIVED"/>/<ph name="DOWNLOAD_TOTAL"/></translation>
 <translation id="3076966043108928831">Тек осы құрылғыда сақтау</translation>
@@ -2028,6 +2030,7 @@
 <translation id="3117791853215125017">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> құрылғысына <ph name="ATTACHMENTS"/> жіберілмеді.}other{<ph name="DEVICE_NAME"/> құрылғысына <ph name="ATTACHMENTS"/> жіберілмеді.}}</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> Анықтама</translation>
 <translation id="3118654181216384296">Linux жүйесін бірнеше минуттан кейін қайта қосып көріңіз.</translation>
+<translation id="3119689272338239690"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, белгісіз құрылғы, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3119948370277171654">Қандай мазмұн/URL трансляцияланып жатқан еді?</translation>
 <translation id="3120430004221004537">Берілген операция үшін келесі құрылғыда шифрлану жеткіліксіз: "<ph name="DEVICE_NAME"/>".</translation>
 <translation id="3122464029669770682">Орталық процессор</translation>
@@ -2087,6 +2090,7 @@
 <translation id="3183143381919926261">Мобильдік интернет желілері</translation>
 <translation id="3183944777708523606">Мониторды реттеу</translation>
 <translation id="3184536091884214176">CUPS принтерлерін реттеу және басқару. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
+<translation id="3185014249447200271">{NUM_APPS,plural, =1{Бұл қолданба бөгелді}other{Кейбір қолданба бөгелді}}</translation>
 <translation id="3188257591659621405">Файлдарым</translation>
 <translation id="3188465121994729530">Орташа мәнді жылжыту</translation>
 <translation id="3189187154924005138">Үлкен көрсеткі</translation>
@@ -2108,7 +2112,6 @@
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Ескертпе:<ph name="END_BOLD"/> кез келген адам ұқсас дауыс немесе жазба арқылы баланың (<ph name="SUPERVISED_USER_NAME"/>) жеке нәтижелерін пайдалануы мүмкін.</translation>
 <translation id="3216825226035747725">G Suite for Education әкімшілері G Suite for Education аккаунтына кірген кезде пайдаланушылардың қандай Brave қызметтерін қолдана алатынын анықтайды. Оған балаңыз алдында осы қадағаланатын аккаунтпен кіре алмаған кейбір функциялар мен қызметтер жатуы мүмкін. Мектеп әкімшілерінен кәмелетке толмаған пайдаланушылардың қызметті қолдануына қатысты келісім беруі не алуы талап етіледі.</translation>
 <translation id="3217843140356091325">Таңбаша жасалсын ба?</translation>
-<translation id="321799795901478485">Zip Archiver</translation>
 <translation id="321834671654278338">Linux қолданбасын жою бағдарламасы</translation>
 <translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> қосқышының процесі жаңылысты. Қайта іске қосасыз ба?</translation>
 <translation id="3220943972464248773">Құпия сөздеріңізді синхрондау үшін жеке басыңызды растаңыз.</translation>
@@ -2188,7 +2191,7 @@
 <translation id="3305661444342691068">PDF файлын алдын ала қарау қолданбасында ашу</translation>
 <translation id="3308116878371095290">Бұл бетке cookie файлдарын орнатуға тыйым салынды.</translation>
 <translation id="3308134619352333507">Түймені жасыру</translation>
-<translation id="3308738399950580893">жарнамалар</translation>
+<translation id="863285194606682292">Кірген сайттар ақпаратыңызды Brave жабылғанша есте сақтап тұрады.</translation>
 <translation id="3308852433423051161">Brave Assistant жүктелуде…</translation>
 <translation id="3309330461362844500">Сертификат профилінің идентификаторы</translation>
 <translation id="3311445899360743395">Бұл қолданбамен байланыстырылған деректер бұл құрылғыдан өшірілуі мүмкін.</translation>
@@ -2254,10 +2257,11 @@
 <translation id="3388788256054548012">Бұл файл шифрланған. Иесінен шифрдан шығаруын сұраңыз.</translation>
 <translation id="3390013585654699824">Қолданба мәліметтері</translation>
 <translation id="3390741581549395454">Linux қолданбалары мен файлдарының сақтық көшірмесі жасалды. Жаңа нұсқа орнату көп ұзамай басталады.</translation>
-<translation id="3391482648489541560">файлды өңдеу</translation>
 <translation id="3391512812407811893">Privacy Sandbox сынақ мерзімдері</translation>
 <translation id="339178315942519818">Чат қолданбаларының хабарландыруларын <ph name="DEVICE_TYPE"/> құрылғысынан көріңіз.</translation>
+<translation id="404326254653176440">Brave құжат талдау процесі</translation>
 <translation id="3394850431319394743">Қорғалған мазмұнды ойнату үшін идентификаторларды пайдалануға рұқсат етілді.</translation>
+<translation id="1815398427402703506">Интернетте сауда жасап не жай ғана шарлай отырып, көріп тұрған мазмұн туралы көбірек білу үшін сайттың кез келген аумағынан іздеңіз. Ол үшін тінтуірдің оң жақ түймесін басып, "Brave Lens арқылы кескіндер іздеу" опциясын таңдаңыз.</translation>
 <translation id="3396800784455899911">"Қабылдау және жалғастыру" түймесін басып, аталған Brave қызметтеріне қатысты жоғарыда сипатталған өңдеулерге келісесіз.</translation>
 <translation id="339722927132407568">Қатып қалады</translation>
 <translation id="3399432415385675819">Хабарландырулар өшіріледі</translation>
@@ -2268,11 +2272,11 @@
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
 <translation id="3404065873681873169">Бұл сайт үшін ешқандай құпия сөз сақталмаған</translation>
 <translation id="3404249063913988450">Скринсейверді қосу</translation>
+<translation id="3404805962764077228">Тікелей <ph name="DEVICE_TYPE"/> құрылғысында телефон қолданбаларын уақытша пайдалану</translation>
 <translation id="3405664148539009465">Қаріптерді реттеу</translation>
 <translation id="3405763860805964263">...</translation>
 <translation id="3406290648907941085">Виртуалды шындық құрылғыларын мен деректерін пайдалануға рұқсаты барлар</translation>
 <translation id="3406396172897554194">Тілді немесе енгізу әдісін көрсетіңіз</translation>
-<translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Бұл кеңейтім қауіпті болуы мүмкін}other{Бұл кеңейтімдер қауіпті болуы мүмкін}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">Бұл пайдаланушы өшірілгеннен кейін, оған қатысты барлық файлдар және жергілікті деректер біржола жойылады. <ph name="USER_EMAIL"/> кейінірек те кіре алады.</translation>
 <translation id="3412265149091626468">Таңдауға өту</translation>
@@ -2298,6 +2302,7 @@
 <translation id="3432227430032737297">Барлық көрсетілгендерді өшіру</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="3433621910545056227">Жүйенің құрылғы орнату уақытының атрибуттары құлпын орнатуы сәтсіз аяқталды.</translation>
+<translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3434272557872943250">Егер "Интернет пен қолданбаларды пайдаланудың қосымша тарихы" параметрі қосулы болса, бұл деректер балаңыздың Brave аккаунтына сақталуы мүмкін. Бұл параметрлер және оларды қалай реттеу керектігі туралы ақпаратты families.google.com сайтынан біле аласыз.</translation>
 <translation id="3435541101098866721">Жаңа телефон қосу</translation>
 <translation id="3435688026795609344">"<ph name="EXTENSION_NAME"/>" кеңейтімі <ph name="CODE_TYPE"/> кодын сұрауда</translation>
@@ -2373,6 +2378,7 @@
 <translation id="3908743412684152579">Brave Assistant параметрлері</translation>
 <translation id="3496213124478423963">Кішірейту</translation>
 <translation id="3496238553815913323"><ph name="LANGUAGE"/> (таңдалмады)</translation>
+<translation id="3496689104192986836">Батарея деңгейі: <ph name="PERCENTAGE"/>%</translation>
 <translation id="3497501929010263034"><ph name="VENDOR_NAME"/> ұсынған USB құрылғысы (<ph name="PRODUCT_ID"/> өнімі)</translation>
 <translation id="3497560059572256875">Дудлды бөлісу</translation>
 <translation id="3498215018399854026">Қазір ата-анаңызбен байланысу мүмкін емес. Әрекетті қайталаңыз.</translation>
@@ -2520,6 +2526,7 @@
 <translation id="3660234220361471169">Сенімсіз</translation>
 <translation id="3664511988987167893">Кеңейтім белгішесі</translation>
 <translation id="2334029754052191847">Brave кейбір параметрлеріңізді басқа бағдарлама бүлдіргенін анықтап, бастапқы әдепкі параметрлеріне қайтарды.</translation>
+<translation id="3665919494326051362">Ағымдағы нұсқасы: <ph name="CURRENT_VERSION"/></translation>
 <translation id="8545590844135745781">Bluetooth ақауларын жақсырақ анықтау үшін Brave қызметкерлері пікір есептеріне қосымша Bluetooth журналдарын енгізе алады. Бұл опция таңдалса, есебіңіз жеке ақпараттарды барынша өшіре отырып, өңделген сеанстағы btsnoop және HCI журналдарын қамтиды. Журналдарға тек қана Listnr ішіндегі Chrome OS өнім тобының басқарушылары кіре алады. Журналдар 90 күннен кейін өшіріледі.</translation>
 <translation id="3670113805793654926">Басқа жеткізушінің құрылғылары</translation>
 <translation id="3670229581627177274">Bluetooth функциясын қосу</translation>
@@ -2535,6 +2542,7 @@
 <translation id="3682824389861648626">Қозғалыс шегі</translation>
 <translation id="3683524264665795342"><ph name="APP_NAME"/> экран бөлісу сұрауы</translation>
 <translation id="3685598397738512288">Linux жүйесіндегі USB параметрлері</translation>
+<translation id="3686786761304157917"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, пернетақта, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="368789413795732264">Файлды жазуға әрекет ету кезінде қате орын алды: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="3688507211863392146">Қолданбада ашатын файлдарға және қалталарға жазу</translation>
 <translation id="3688526734140524629">Арнаны өзгерту</translation>
@@ -2569,7 +2577,7 @@
 <translation id="3712050472459130149">Аккаунтты жаңарту қажет.</translation>
 <translation id="3712897371525859903">Бетті &amp;былайша сақтау…</translation>
 <translation id="371300529209814631">Артқа/Алға</translation>
-<translation id="3713047097299026954">Бұл қауіпсіздік кілтінде есептік жазбаға кіру деректері жоқ.</translation>
+<translation id="3713047097299026954">Бұл қауіпсіздік кілтінде аккаунтқа кіру деректері жоқ.</translation>
 <translation id="3714195043138862580">Бұл демо құрылғысының инициализациясынан бас тартылды.</translation>
 <translation id="3714633008798122362">веб-күнтізбе</translation>
 <translation id="3719826155360621982">Негізгі бет</translation>
@@ -2597,7 +2605,6 @@
 <translation id="3742055079367172538">Скриншот түсірілді</translation>
 <translation id="3742235229730461951">Корей пернетақтасының орналасуы</translation>
 <translation id="3742666961763734085">Мұндай атаулы ұйым бірлігі табылмады. Әрекетті қайталаңыз.</translation>
-<translation id="3744111561329211289">Фондық синхрондау</translation>
 <translation id="3747077776423672805">Қолданбаларды өшіру үшін "Параметрлер &gt; Google Play Store &gt; Android параметрлерін басқару &gt; Қолданбалар немесе қолданба реттеушісі" тармағына өтіңіз. Одан кейін өшірілетін қолданбаны (қолданбаны табу үшін оңға немесе солға сырғыту керек) және "Жою" немесе "Өшіру" опциясын түртіңіз.</translation>
 <translation id="3747220812138541072">Мәтін теру кезінде арнайы мәтіндік ұсыныстарды көрсету</translation>
 <translation id="3748706263662799310">Қате туралы хабарлау</translation>
@@ -2632,9 +2639,9 @@
 <translation id="3778740492972734840">&amp;Әзірлеуші құралдары</translation>
 <translation id="3778868487658107119">Оған сұрақтар қойыңыз. Тапсырмалар беріңіз. Ол – әрқашан көмекке дайын жеке Brave қызметіңіз.</translation>
 <translation id="3781742599892759500">Linux жүйесінде микрофонды пайдалану</translation>
+<translation id="3782488227140539029"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, бейнекамера, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="3782795641773236652">Әлі ешқандай ауыстырғыш не перне тағайындалмаған.</translation>
 <translation id="378312418865624974">Осы компьютерге арналған бірегей идентификаторды оқу</translation>
-<translation id="3784372983762739446">Bluetooth құрылғылары</translation>
 <translation id="3784472333786002075">Cookie файлдары веб-сайттарда жасалады. Олардың екі түрі бар: сіз кірген сайт жасаған меншікті cookie файлдары. Сайт мекенжай жолағында көрсетіледі. Үшінші тараптың cookie файлдары басқа сайттарда жасалады. Бұл сайттарда сіз кірген сайттың мазмұны (мысалы, жарнамалар немесе суреттер) болады.</translation>
 <translation id="3785308913036335955">Қолданбалар таңбашасын көрсету</translation>
 <translation id="3785727820640310185">Бұл сайтқа арналған құпия сөздер сақталды</translation>
@@ -2644,7 +2651,6 @@
 <translation id="3789841737615482174">Орнату</translation>
 <translation id="379082410132524484">Картаңыздың мерзімі біткен</translation>
 <translation id="3792890930871100565">Принтерлерді ажырату</translation>
-<translation id="3793395331556663376">Тым көп файл жүйесі ашылды.</translation>
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{Brave браузері компьютеріңізден ешқандай зиянды бағдарламалық құрал таппады. • 1 күн бұрын тексерілді.}other{Brave браузері компьютеріңізден ешқандай зиянды бағдарламалық құрал таппады. • {NUM_DAYS} күн бұрын тексерілді.}}</translation>
 <translation id="2513920013190289972">Nearby Share функциясын пайдалану үшін екі құрылғының да құлпы ашық, бір-біріне жақын және Bluetooth функциялары қосулы екеніне көз жеткізіңіз. Егер контактілеріңізде жоқ Bravebook құрылғысымен бөлісетін болсаңыз, Nearby көрсетілуі қосулы екеніне көз жеткізіңіз (ол үшін уақытты таңдау арқылы күй аумағын ашып, Nearby көрсетілуі функциясын қосыңыз). <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">Өшірулі</translation>
@@ -2691,7 +2697,6 @@
 <translation id="383161972796689579">Бұл құрылғының иесі жаңа пайдаланушыларды қосу мүмкіндігін өшірді</translation>
 <translation id="3834728400518755610">Микрофонның параметріне өзгеріс енгізілгендіктен, Linux жүйесін өшіру қажет. Жалғастыру үшін Linux жүйесін өшіріңіз.</translation>
 <translation id="3834775135533257713">"<ph name="TO_INSTALL_APP_NAME"/>" қолданбасы қосылмады, себебі ол "<ph name="INSTALLED_APP_NAME"/>" қолданбасымен қайшы.</translation>
-<translation id="3835233591525155343">Құрылғыны пайдалануыңыз</translation>
 <translation id="3835522725882634757">Бұл сервер <ph name="PRODUCT_NAME"/> түсінбейтін деректерді жіберуде. <ph name="BEGIN_LINK"/>Қате туралы хабарлап<ph name="END_LINK"/>, есепке <ph name="BEGIN2_LINK"/>өңделмеген дерек тізімін енгізіңіз<ph name="END2_LINK"/>.</translation>
 <translation id="383669374481694771">Бұл – осы құрылғы мен оны пайдалану (мысалы, батарея зарядының деңгейі, жүйе мен қолданбаларды пайдалану тарихы, қателер) туралы жалпы ақпарат. Мәлімет Android жүйесін жақсарту үшін пайдаланылады, ал кейбір ақпарат Brave қолданбаларына және Android әзірлеушілері сияқты серіктестерге көмектеседі әрі олардың қолданбалары мен өнімдерін жақсарта түседі.</translation>
 <translation id="3838085852053358637">Кеңейтім жүктелмеді</translation>
@@ -2735,9 +2740,11 @@
 <translation id="3873423927483480833">PIN кодтарын көрсету</translation>
 <translation id="3873915545594852654">ARC++ ақауы орын алды.</translation>
 <translation id="3412613348266550587">Brave Assistant қолданбасын қосу</translation>
+<translation id="3875815154304214043"><ph name="APP_NAME"/> жаңа браузер қойындысында ашылуға орнатылған, қолдау көрсету сілтемелері де браузерде ашылады. <ph name="BEGIN_LINK_LEARN_MORE"/>Толығырақ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256"><ph name="USER_NAME"/> құрылғысына арналған Nearby Share параметрлері (<ph name="USER_EMAIL"/> аккаунтының атынан бөлісуде).</translation>
 <translation id="3879748587602334249">Жүктеп алу менеджері</translation>
 <translation id="3882165008614329320">Камерадан немесе файлдан алынған бейне</translation>
+<translation id="3883306461188700142">Дауысыңызбен мәтін теріңіз. Іздеу + D түймесін басып, сөйлей бастаңыз.</translation>
 <translation id="3884152383786131369">Бірнеше тілдегі веб-мазмұн осы тізімдегі бірінші тілді пайдаланады. Бұл параметрлер браузер параметрлерімен синхрондалады. <ph name="BEGIN_LINK_LEARN_MORE"/>Толығырақ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">Жаңартуларды әкімшіңіз басқарады.</translation>
 <translation id="3886446263141354045">Бұл сайтқа кіру сұрауыңыз <ph name="NAME"/> деген контактіге жіберілді</translation>
@@ -2784,9 +2791,8 @@
 <translation id="3920909973552939961">Төлем өңдегіштерін орнатуға рұқсаты жоқтар</translation>
 <translation id="3923184630988645767">Деректер трафигі</translation>
 <translation id="3923676227229836009">Бұл бетке файлдарды көруге рұқсат етілген.</translation>
-<translation id="3923943745177274752"><ph name="DEVICE_TYPE"/> құрылғысына қош келдіңіз!</translation>
 <translation id="3924145049010392604">Мета</translation>
-<translation id="7575176983371565462">Оларды тексеру үшін URL сілтемелерін "Қауіпсіз шолу" функциясына жібереді. Сонымен қатар жаңа қауіптерді анықтауға көмектесу үшін беттердің шағын үлгісін, жүктеп алынған файлдарды, кеңейтім әрекетін және жүйе туралы ақпаратты жібереді. Brave қолданбаларында сізді қорғау үшін, есептік жазбаға кірген кезде, деректердің сілтемелерін уақытша байланыстырады.</translation>
+<translation id="7575176983371565462">Оларды тексеру үшін URL сілтемелерін "Қауіпсіз шолу" функциясына жібереді. Сонымен қатар жаңа қауіптерді анықтауға көмектесу үшін беттердің шағын үлгісін, жүктеп алынған файлдарды, кеңейтім әрекетін және жүйе туралы ақпаратты жібереді. Brave қолданбаларында сізді қорғау үшін, аккаунтқа кірген кезде, деректердің сілтемелерін уақытша байланыстырады.</translation>
 <translation id="3925573269917483990">Камера:</translation>
 <translation id="3926002189479431949">Smart Lock телефоны өзгертілді</translation>
 <translation id="3927932062596804919">Тыйым салу</translation>
@@ -2813,10 +2819,10 @@
 <translation id="3943582379552582368">&amp;Артқа</translation>
 <translation id="3943857333388298514">Қою</translation>
 <translation id="3945513714196326460">Атты қысқартыңыз.</translation>
+<translation id="3948027458879361203">Хост атауын өзгерту</translation>
 <translation id="3948116654032448504">Кескінді <ph name="SEARCH_ENGINE"/> арқылы &amp;іздеу</translation>
 <translation id="3948507072814225786"><ph name="ORIGIN"/> мына қалталардағы файлдарды өңдей алады.</translation>
 <translation id="394984172568887996">IE браузерінен импортталған</translation>
-<translation id="3949981384795585075">{NUM_APPS,plural, =1{Бұл қолданба қауіпті болуы мүмкін}other{Бұл қолданбалар қауіпті болуы мүмкін}}</translation>
 <translation id="3950820424414687140">Кіру</translation>
 <translation id="3953834000574892725">Аккаунттарым</translation>
 <translation id="3954354850384043518">Орындалуда</translation>
@@ -2871,6 +2877,7 @@
 <translation id="4002329649066944389">Сайттың арнайы ерекшеліктерін басқару</translation>
 <translation id="4002440992267487163">PIN кодын орнату</translation>
 <translation id="4005817994523282006">Уақыт белдеуін анықтау әдісі</translation>
+<translation id="400645326027787740"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, ойын контроллері</translation>
 <translation id="4007856537951125667">Таңбашаларды жасыру</translation>
 <translation id="4008291085758151621">Сайт ақпараты VR режимінде қолжетімді емес</translation>
 <translation id="4010917659463429001">Мобильдік құрылғыда бетбелгілерді алу үшін <ph name="GET_IOS_APP_LINK"/>.</translation>
@@ -2920,6 +2927,7 @@
 <translation id="4066207411788646768">Желідегі қолжетімді принтерлерді көру үшін байланысты тексеріңіз.</translation>
 <translation id="4068776064906523561">Сақталған саусақ іздері</translation>
 <translation id="407173827865827707">Түрту арқылы</translation>
+<translation id="5493571544288146030">Құпия сөз Brave аккаунтында (<ph name="ACCOUNT"/>) сақталады. Оны еске сақтаудың қажеті жоқ.</translation>
 <translation id="4074900173531346617">Электрондық пошта қол қоюшы сертификаты</translation>
 <translation id="407520071244661467">Масштаб</translation>
 <translation id="407543464472585404"><ph name="NAME"/> профилі <ph name="EMAIL"/> поштасына байланыстырылған.</translation>
@@ -3004,7 +3012,7 @@
 <translation id="4163560723127662357">Белгісіз пернетақта</translation>
 <translation id="4165942112764990069"><ph name="USER_EMAIL"/> электрондық мекенжайы расталған ұйымға тиесілі емес. Әкімшіңізге хабарласыңыз. Егер әкімші болсаңыз, g.co/BraveEnterpriseAccount бетіне өту арқылы ұйымыңызды реттей аласыз.</translation>
 <translation id="4167686856635546851">Сайттар әдетте бейне ойындар немесе веб-формалар сияқты интерактивті функцияларды көрсету үшін JavaScript қолданады</translation>
-<translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> қатысты кейбір параметрлер сізбен бөлісілуде. Бұл параметрлер бірнеше рет кіру мүмкіндігін пайдалану кезінде ғана есептік жазбаға әсер етеді.</translation>
+<translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> аккаунтына қатысты кейбір параметрлер сізбен бөлісілді. Бұл параметрлер бірнеше рет кіру кезінде ғана аккаунтқа әсер етеді.</translation>
 <translation id="4169535189173047238">Рұқсат бермеу</translation>
 <translation id="4170314459383239649">Шыққан кезде тазалау</translation>
 <translation id="4175137578744761569">Ашық күлгін және ақ</translation>
@@ -3038,9 +3046,9 @@
 <translation id="4217571870635786043">Мәтінді дауыспен енгізу</translation>
 <translation id="4219558185499589032">Box</translation>
 <translation id="4220648711404560261">Іске қосу кезінде қате шықты.</translation>
-<translation id="4222772810963087151">Құрама туралы мәліметтер</translation>
 <translation id="4225020013797061859">"<ph name="ACTION"/>" әрекетін тағайындау үшін ауыстырғышты немесе пернені басыңыз.</translation>
 <translation id="4225397296022057997">Барлық сайттарда</translation>
+<translation id="4228209296591583948">{NUM_EXTENSIONS,plural, =1{Бұл кеңейтімге рұқсат берілмеді}other{Кейбір кеңейтімге рұқсат берілмеді}}</translation>
 <translation id="4231095370974836764">Google Play дүкеніндегі қолданбалар мен ойындарды <ph name="DEVICE_TYPE"/> құрылғысына орнатыңыз. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
 <translation id="4232375817808480934">Kerberos билетін конфигурациялау</translation>
 <translation id="4235965441080806197">Жүйеге кіруден бас тарту</translation>
@@ -3080,11 +3088,11 @@
 <translation id="4268670020635416342">Атау не белгі қосыңыз, мысалы, Жұмыс, Жеке немесе Балалар</translation>
 <translation id="4270393598798225102"><ph name="NUMBER"/> нұсқасы</translation>
 <translation id="4272765551319099134">Бұл бет қолжетімді емес.</translation>
+<translation id="4274604968379621964">Топты сақтау</translation>
 <translation id="4274667386947315930">Кіру деректері</translation>
 <translation id="4274673989874969668">Сайттан шығып кетсеңіз де, ол фотосуреттерді жүктеп салу немесе чат хабарын жіберу сияқты тапсырмаларды аяқтау үшін синхрондауды тоқтатпауы мүмкін.</translation>
 <translation id="4275291496240508082">Іске қосу кезіндегі дыбыс</translation>
 <translation id="4275830172053184480">Құрылғыңызды қайта іске қосу</translation>
-<translation id="4278101229438943600">Assistant қызметі дайын</translation>
 <translation id="4278390842282768270">Рұқсат етілген</translation>
 <translation id="4279129444466079448">Бұл құрылғыда <ph name="PROFILE_LIMIT"/> eSIM профиліне дейін орната аласыз. Басқа профиль қосу үшін алдымен бұрыннан бар профильді өшіріңіз.</translation>
 <translation id="4281844954008187215">Қызмет көрсету шарттары</translation>
@@ -3102,7 +3110,7 @@
 <translation id="4290791284969893584">Бетті жапқан соң, басталған тапсырмалар аяқталмауы мүмкін.</translation>
 <translation id="4295072614469448764">Қолданба терминалда қолжетімді. Сонымен қатар Launcher қолданбасында белгіше болуы мүмкін.</translation>
 <translation id="4295839147292213505">Компьютеріңізден мәтіндік хабарлар жібере, интернет байланысын бөлісе, сөйлесу туралы хабарландыруға жауап бере және телефон арқылы <ph name="DEVICE_TYPE"/> құрылғысының құлпын аша аласыз.<ph name="FOOTNOTE_POINTER"/> <ph name="LINK_BEGIN"/>Толығырақ ақпарат<ph name="LINK_END"/></translation>
-<translation id="4295979599050707005"><ph name="USER_EMAIL"/> аккаунтыңызды веб-сайттармен, қолданбалармен, Brave және Google Play кеңейтімдерімен пайдалануға болатынын растау үшін есептік жазбаға қайта кіріңіз. Сонымен қатар осы аккаунтты өшіре аласыз. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
+<translation id="4295979599050707005"><ph name="USER_EMAIL"/> аккаунтыңызды веб-сайттармен, қолданбалармен, Brave және Google Play кеңейтімдерімен пайдалануға болатынын растау үшін аккаунтқа қайта кіріңіз. Сонымен қатар осы аккаунтты өшіре аласыз. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
 <translation id="4297219207642690536">Қайта қосу және бастапқы күйге қайтару</translation>
 <translation id="4297813521149011456">Дисплейді айналдыру</translation>
 <translation id="5786139852593193364">Жаңа инкогнито терезесі</translation>
@@ -3111,7 +3119,6 @@
 <translation id="4305402730127028764"><ph name="DEVICE_NAME"/> құрылғысына көшіру</translation>
 <translation id="4305817255990598646">Ауысу</translation>
 <translation id="4306119971288449206">Қолданбаларға "<ph name="CONTENT_TYPE"/>" мазмұнымен қызмет көрсетілуі керек</translation>
-<translation id="4306812610847412719">буфер</translation>
 <translation id="4307992518367153382">Негізгілер</translation>
 <translation id="4309420042698375243"><ph name="NUM_KILOBYTES"/> KБ (<ph name="NUM_KILOBYTES_LIVE"/> KБ белсенді)</translation>
 <translation id="4310139701823742692">Файлдың форматы дұрыс емес. PPD файлын тексеріп, әрекетті қайталап көріңіз.</translation>
@@ -3159,6 +3166,7 @@
 <translation id="4364567974334641491"><ph name="APP_NAME"/> терезені бөлісуде.</translation>
 <translation id="4364830672918311045">Дисплей хабарландырулары</translation>
 <translation id="4366138410738374926">Басып шығару басталды</translation>
+<translation id="4369121877634339065">Іздеу үшін кез келген суретті сүйреңіз.</translation>
 <translation id="4370975561335139969">Сіз енгізген электрондық пошта және құпия сөз сәйкес емес</translation>
 <translation id="4371452868325715552">Серверге қосылмады. Желі байланысын тексеріп, қайталап көріңіз. Егер мәселе шешілмесе, Bravebook-ті өшіріп қосыңыз. Қате коды: <ph name="ERROR_CODE"/>.</translation>
 <translation id="4373966964907728675">Жұмыс үстелі трансляциялануда</translation>
@@ -3175,6 +3183,7 @@
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, тағы 1 аккаунт}other{<ph name="EMAIL"/>, тағы <ph name="EXTRA_ACCOUNTS"/> аккаунт}}</translation>
 <translation id="4384312707950789900">Таңдаулы желілерге қосу</translation>
 <translation id="4384652540891215547">Кеңейтімді белсендіру</translation>
+<translation id="4384886290276344300">Пернетақта параметрлерін өзгерту</translation>
 <translation id="438503109373656455">Saratoga</translation>
 <translation id="4385146930797718821">Скриншот буферге көшірілді</translation>
 <translation id="4385905942116811558">Bluetooth және USB құрылғылары ізделуде</translation>
@@ -3204,13 +3213,13 @@
 <translation id="4412698727486357573">Анықтама орталығы</translation>
 <translation id="4413088271097062326">Қай қолданбаны пайдаланғыңыз келеді?</translation>
 <translation id="44141919652824029">"<ph name="APP_NAME"/>" қолданбасына тіркелген USB құрылғыларыңыздың тізімін алуға рұқсат берілсін бе?</translation>
-<translation id="4414515549596849729">cookie файлдары және сайт деректері</translation>
 <translation id="4415213869328311284"><ph name="DEVICE_TYPE"/> құрылғысын пайдалануды бастай беруіңізге болады.</translation>
 <translation id="4415245286584082850">Ешқандай құрылғы табылмады. Жаңа қойындыда "Анықтамалық орталық" бөлімін ашу.</translation>
 <translation id="5749788945734786627">Brave аккаунтын басқару</translation>
 <translation id="4415748029120993980">SECG эллипстік қисық сызығы, secp384r1 (aka NIST P-384)</translation>
 <translation id="4416450511678320850">Бұл мазмұн үшін қолжетімді қолданба жоқ</translation>
 <translation id="4416582610654027550">URL сілтемесін дұрыс теріңіз</translation>
+<translation id="4417162649853416189"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы іздеу үшін суреттерді сүйреу</translation>
 <translation id="4419409365248380979">Әрқашан <ph name="HOST"/> хостына cookie файлдарын орнату рұқсатын беру</translation>
 <translation id="4421932782753506458">Fluffy</translation>
 <translation id="4423376891418188461">Параметрлерді қалпына келтіру</translation>
@@ -3221,7 +3230,6 @@
 <translation id="4430019312045809116">Дыбыс деңгейі</translation>
 <translation id="4430369329743628066">Бетбелгі қосылды</translation>
 <translation id="4432621511648257259">Құпия сөз қате</translation>
-<translation id="4434045419905280838">Қалқымалы терезе және бағыттау</translation>
 <translation id="443454694385851356">Бұрынғы (қауіпті)</translation>
 <translation id="443475966875174318">Үйлеспейтін қолданбаларды жаңарту немесе өшіру</translation>
 <translation id="4438043733494739848">Тұнық</translation>
@@ -3234,7 +3242,7 @@
 <translation id="4444304522807523469">USB арқылы немесе жергілікті желіде тіркелген құжат сканерлеріне кіру</translation>
 <translation id="4444512841222467874">Орын босатылмаса, пайдаланушылар мен деректер автоматты түрде өшірілуі мүмкін.</translation>
 <translation id="4446933390699670756">Айнадағы бейнесі</translation>
-<translation id="4449948729197510913">Пайдаланушы атыңыз ұйымның корпоративтік аккаунтына тиесілі. Құрылғыларды есептік жазбаға тіркеу үшін алдымен Әкімші консолінде доменді иелену құқығын растаңыз. Растау үшін аккаунтта басқару артықшылығыңыз болуы керек.</translation>
+<translation id="4449948729197510913">Пайдаланушы атыңыз ұйымның корпоративтік аккаунтына тиесілі. Құрылғыларды аккаунтқа тіркеу үшін алдымен Әкімші консолінде доменді иелену құқығын растаңыз. Растау үшін аккаунтта басқару артықшылығыңыз болуы керек.</translation>
 <translation id="4449996769074858870">Бұл қойындыда аудио ойнауда.</translation>
 <translation id="4450274068924249931">Экран пайдаланылмай тұрғанда, фотосуреттерді, уақытты, ауа райын және медиа ақпаратты көрсетеді. Скринсейверді қоссаңыз, дисплей зарядтау кезінде жанып тұрады.</translation>
 <translation id="4450974146388585462">Диагностикалау</translation>
@@ -3278,7 +3286,6 @@
 <translation id="4495419450179050807">Бұл бетте көрсетпеу</translation>
 <translation id="831589464260346213">Әртүрлі Wi-Fi желілеріндегі ДК және Bravecast (мысалы, 2,4 ГГц және 5 ГГц)</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> бұзылды</translation>
-<translation id="4500587658229086076">қорғалмаған мазмұн</translation>
 <translation id="450099669180426158">Леп белгі белгішесі</translation>
 <translation id="4501530680793980440">Жоюды растау</translation>
 <translation id="4502423230170890588">Осы құрылғыдан өшіру</translation>
@@ -3324,7 +3331,6 @@
 <translation id="4541123282641193691">Аккаунтыңыз расталмады. Әрекетті қайталаңыз немесе Bravebook құрылғыңызды қайта жүктеңіз.</translation>
 <translation id="4541662893742891060">Бұл профильге қосылу мүмкін емес. Техникалық қолдау керек болса, операторға хабарласыңыз.</translation>
 <translation id="4541706525461326392">Профиль өшірілуде. Бұл бірнеше минутқа созылуы мүмкін.</translation>
-<translation id="4541810033354695636">толықтырылған шындық</translation>
 <translation id="4542520061254486227"><ph name="WEBSITE_1"/> және <ph name="WEBSITE_2"/> веб-сайттарындағы деректеріңізді оқу</translation>
 <translation id="7100095060831768635">Жарнама берушілер мыңдаған пайдаланушының бірдей қызығушылық танытқан нәрселерін (мысалы, концертке жиналған халық) анықтап, жарнамаларды жекелеген адамдарға емес, белгілі бір топқа таңдай алады.</translation>
 <translation id="4543778593405494224">Сертификат басқарушысы</translation>
@@ -3340,6 +3346,7 @@
 <translation id="4551763574344810652">Қайтару үшін <ph name="MODIFIER_KEY_DESCRIPTION"/> пернелерін басыңыз.</translation>
 <translation id="3158042476798161624">Құрылғының тілін өзгерту үшін Bravebook құрылғысын өшіріп, қосуыңыз керек. <ph name="BEGIN_LINK_LEARN_MORE"/>Толығырақ<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4553898717331438468">Реттеуді басынан бастау</translation>
+<translation id="4554491709904933912"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы іздеу үшін суреттерді сүйреу</translation>
 <translation id="4554591392113183336">Сыртқы кеңейтім бар нұсқамен бірдей немесе онымен салыстырғанда төменірек нұсқа болып табылады.</translation>
 <translation id="4555769855065597957">Көлеңке</translation>
 <translation id="4808253054156608144">Құпия сөздерді Brave аккаунтыңызға сақтау үшін оған кіріп, синхрондауды қосыңыз.</translation>
@@ -3457,9 +3464,9 @@
 <translation id="4666472247053585787">Телефонға келген хабарландыруларды <ph name="DEVICE_TYPE"/> құрылғысынан көру</translation>
 <translation id="4666911709726371538">Басқа қолданбалар</translation>
 <translation id="4668721319092543482"><ph name="PLUGIN_NAME"/> плагинін қосу үшін оны басыңыз</translation>
-<translation id="4670064810192446073">Виртуалды шындық</translation>
 <translation id="46733273239502219">Орнатылған қолданбалардағы офлайн деректер де өшіріледі.</translation>
 <translation id="4673442866648850031">Стилус өшірілгеннен кейін, стилус құралдарын ашу</translation>
+<translation id="4675828034887792601">Сайттар іздеуге және іздеу жүйесін басқаруға арналған таңбашалар жасауға болады.</translation>
 <translation id="4676595058027112862">Phone Hub, толығырақ</translation>
 <translation id="4677772697204437347">GPU жады</translation>
 <translation id="467823995058589466">Камера өшірілген.</translation>
@@ -3486,7 +3493,6 @@
 <translation id="4699172675775169585">Кэштелген кескіндер мен файлдар</translation>
 <translation id="4699357559218762027">(автоматты іске қосу)</translation>
 <translation id="4701025263201366865">Ата-ананың жүйеге кіруі</translation>
-<translation id="208996166923556768">Brave Lens арқылы кескіндер іздеу үшін сүйреу</translation>
 <translation id="4708794300267213770">Ұйқы режимінен шығарғанда құлып экранын көрсету</translation>
 <translation id="4708849949179781599"><ph name="PRODUCT_NAME"/> жүйесінен шығу</translation>
 <translation id="4711638718396952945">Параметрлерді қалпына келтіру</translation>
@@ -3518,7 +3524,6 @@
 <translation id="4748783296226936791">Сайттар әдетте стандартты емес пернетақталарды, ойын контроллерлері мен басқа да құрылғыларды пайдаланатын функциялар үшін HID құрылғыларына қосылады.</translation>
 <translation id="4750394297954878236">Ұсыныстар</translation>
 <translation id="475088594373173692">Алғашқы пайдаланушы</translation>
-<translation id="4751476147751820511">Қозғалыс не жарық датчиктері</translation>
 <translation id="4756378406049221019">Тоқтату/Қайта жүктеу</translation>
 <translation id="4756388243121344051">&amp;Тарих</translation>
 <translation id="4759238208242260848">Жүктеп алынғандар</translation>
@@ -3540,6 +3545,7 @@
 <translation id="4779136857077979611">Онигири</translation>
 <translation id="4779766576531456629">eSIM ұялы байланыс желісінің атауын өзгерту</translation>
 <translation id="4780321648949301421">Бетті басқаша сақтау…</translation>
+<translation id="2950478706313064709">Белгілі бір сайтты немесе Brave-ның бөлігін іздеу үшін, мекенжай жолағына таңбаша енгізіп, Tab немесе бос орын пернесін басыңыз.</translation>
 <translation id="4785719467058219317">Веб-сайтта тіркелмеген қауіпсіздік кілтін пайдаланып жатырсыз.</translation>
 <translation id="4788092183367008521">Желі байланысын тексеріп, әрекетті қайталаңыз.</translation>
 <translation id="4791000909649665275"><ph name="NUMBER"/> фотосурет</translation>
@@ -3566,6 +3572,7 @@
 <translation id="4813136279048157860">Суреттерім</translation>
 <translation id="4813512666221746211">Желі қатесі</translation>
 <translation id="4814378367953456825">Осы саусақ ізінің атауын енгізіңіз.</translation>
+<translation id="4816097470512964351"><ph name="DEVICE"/>, мәліметтер</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{1 бетбелгі жойылды.}other{{COUNT} бетбелгі жойылды.}}</translation>
 <translation id="8655084398729487585">Brave Assistant хабарландырулары</translation>
 <translation id="4820236583224459650">Белсенді билет ретінде орнату</translation>
@@ -3605,7 +3612,6 @@
 <translation id="485088796993065002">Музыкаға, бейнеге және басқа мультимедиаға арналған дыбысты сайттар қамтамасыз етуі мүмкін.</translation>
 <translation id="4853020600495124913">&amp;Жаңа терезеде ашу</translation>
 <translation id="4854317507773910281">Мақұлдау үшін ата-атаның аккаунтын таңдаңыз</translation>
-<translation id="485480310608090163">Басқа параметрлер мен рұқсаттар</translation>
 <translation id="4856478137399998590">Мобильді деректеріңіз қызметі белсендірілді және пайдалануға дайын</translation>
 <translation id="4858792381671956233">Ата-анаңыздан осы сайтқа кіру рұқсатын сұрадыңыз</translation>
 <translation id="4858913220355269194">Fritz</translation>
@@ -3615,6 +3621,7 @@
 <translation id="4864805589453749318">Оқу аккаунтын енгізуге рұқсат беретін ата-ананы таңдаңыз.</translation>
 <translation id="486635084936119914">Белгілі бір файл түрлерін жүктеп алғаннан кейін автоматты түрде ашу</translation>
 <translation id="4868281708609571334">Brave Assistant-ке <ph name="SUPERVISED_USER_NAME"/> дауысын тануды үйрету</translation>
+<translation id="4868284252360267853">Бұл диалогтік терезе әзірше ерекшеленбеген. Осы диалогтік терезені ерекшелеу үшін Command-Shift-Option A тіркесімін басыңыз.</translation>
 <translation id="48704129375571883">Қосымша мүмкіндіктерді қосу</translation>
 <translation id="4870758487381879312">Конфигурация туралы ақпарат алу үшін әкімші берген құпия сөзді енгізіңіз</translation>
 <translation id="4870903493621965035">Ешқандай құрылғы жұпталмаған</translation>
@@ -3640,6 +3647,7 @@
 <translation id="4884987973312178454">6x</translation>
 <translation id="4887424188275796356">Жүйе көру құралымен ашу</translation>
 <translation id="488785315393301722">Мәліметтерді көрсету</translation>
+<translation id="4889450157778777235"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, бейнекамера</translation>
 <translation id="4890773143211625964">Қосымша принтер опцияларын көрсету</translation>
 <translation id="4891089016822695758">Бета форумы</translation>
 <translation id="4892229439761351791">Сайт Bluetooth функциясын пайдалана алады</translation>
@@ -3724,7 +3732,6 @@
 <translation id="4972737347717125191">Сайттар виртуалды шындық құрылғыларын және деректерді пайдалануға рұқсат сұрай алады.</translation>
 <translation id="4973307593867026061">Принтерлерді қосу</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Сайттың дыбысын өшіру}other{Сайттардың дыбысын өшіру}}</translation>
-<translation id="4976009197147810135">Тігінен бөлу</translation>
 <translation id="4977942889532008999">Кіру рұқсатын растау</translation>
 <translation id="4980805016576257426">Бұл кеңейтімде зиянды бағдарлама бар.</translation>
 <translation id="6298472828264321822">Барлық синхрондалған құрылғылардан және Brave аккаунтынан браузерді пайдалану деректерін өшіру үшін, <ph name="BEGIN_LINK"/>жүйеге кіріңіз<ph name="END_LINK"/>.</translation>
@@ -3752,7 +3759,6 @@
 <translation id="5009463889040999939">Профильдің аты өзгертілуде. Бұл бірнеше минутқа созылуы мүмкін.</translation>
 <translation id="5010043101506446253">Сертификат органы</translation>
 <translation id="5015344424288992913">Прокси анықталуда…</translation>
-<translation id="5017633213534173756">Есте сақтау</translation>
 <translation id="5017643436812738274">Мәтін курсорымен бір беттен екінші бетке өте аласыз. Өшіру үшін Ctrl+Search+7 пернелер тіркесімін басыңыз.</translation>
 <translation id="5017828934289857214">Кейінірек еске салу</translation>
 <translation id="5018207570537526145">Кеңейтім вебсайтын ашу</translation>
@@ -3776,6 +3782,7 @@
 <translation id="1246634473640425087">Brave аккаунтыңызда сақталған құпия сөздерді көру және басқару</translation>
 <translation id="5039804452771397117">Рұқсат беру</translation>
 <translation id="5040823038948176460">Қосымша мазмұн параметрлері</translation>
+<translation id="5043440033854483429">Атау әріптерден, сандардан және сызықшадан (-) тұруы мүмкін және ұзындығы 1-15 таңба аралығында болуы тиіс.</translation>
 <translation id="5043913660911154449">Немесе принтер үшін PPD файлын көрсетіңіз <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
 <translation id="5045550434625856497">Құпия сөз дұрыс емес</translation>
 <translation id="504561833207953641">Бұрыннан бар браузер сеансында ашылуда.</translation>
@@ -3838,7 +3845,6 @@
 <translation id="5112577000029535889">&amp;Әзірлеуші құралдары</translation>
 <translation id="5113739826273394829">Бұл белгішені бассаңыз, <ph name="DEVICE_TYPE"/> құрылғысын қолмен құлыптайсыз. Келесіде кіру үшін құпия сөзіңізді теру қажет.</translation>
 <translation id="51143538739122961">Қауіпсіздік кілтін енгізіп, оны түртіңіз.</translation>
-<translation id="5114987907971894280">виртуалды шындық</translation>
 <translation id="5115309401544567011"><ph name="DEVICE_TYPE"/> құрылғысын қуат көзіне қосыңыз.</translation>
 <translation id="5115338116365931134">SSO</translation>
 <translation id="5116628073786783676">Аудионы басқаша с&amp;ақтау…</translation>
@@ -3879,6 +3885,7 @@
 <translation id="5157635116769074044">Бұл бетті бастау экранына бекіту…</translation>
 <translation id="5159094275429367735">Crostini жүйесін реттеу</translation>
 <translation id="5159419673777902220">Ата-анаңыз кеңейтім рұқсаттарын өшірді.</translation>
+<translation id="5159643365935452998">Деректерді автоматты түрде тазартуды тексеру</translation>
 <translation id="5160634252433617617">Пернетақта</translation>
 <translation id="5160857336552977725"><ph name="DEVICE_TYPE"/> құрылғыңызға кіріңіз</translation>
 <translation id="5161251470972801814"><ph name="VENDOR_NAME"/> ұсынған USB құрылғылары</translation>
@@ -3930,12 +3937,10 @@
 <translation id="5213114823401215820">Жабылған топты қайта ашу</translation>
 <translation id="5213481667492808996">"<ph name="NAME"/>" деректер қызметі пайдалануға дайын</translation>
 <translation id="5213891612754844763">Прокси-сервер параметрлерін көрсету</translation>
-<translation id="2470565056986576858">Инкогнито режимінде сайттар түрлі сайттардағы браузерді қолдану мәліметін көру үшін (мысалы, жарнамаларды жеке қажеттіліктерге бейімдеу мақсатында) cookie файлдарын пайдалана алмайды. Кейбір сайттағы функциялар дұрыс жұмыс істемеуі мүмкін.</translation>
 <translation id="5215502535566372932">Елді таңдаңыз</translation>
 <translation id="521582610500777512">Фотосурет алып тасталды</translation>
 <translation id="5222403284441421673">Қорғалмаған жүктеп алу әрекеті бөгелді</translation>
 <translation id="5222676887888702881">Шығу</translation>
-<translation id="52232769093306234">Қысу сәтсіз болды.</translation>
 <translation id="5225324770654022472">Қолданбалар таңбашасын көрсету</translation>
 <translation id="52254442782792731">Ағымдағы көрсетілу параметрі әрі реттелмеген.</translation>
 <translation id="5225463052809312700">Камераны қосу</translation>
@@ -3952,7 +3957,6 @@
 <translation id="523505283826916779">Арнайы мүмкіндіктер параметрлері</translation>
 <translation id="5235750401727657667">Жаңа қойынды ашылған кезде шығатын бетті ауыстыру</translation>
 <translation id="6465706586789214771">Оларды барлық құрылғыларыңызда оңай пайдалану үшін Brave аккаунтыңызға көшіруіңізге болады.</translation>
-<translation id="5238278114306905396">"<ph name="EXTENSION_NAME"/>" қолданбасы автоматты түрде жойылды.</translation>
 <translation id="5242724311594467048">"<ph name="EXTENSION_NAME"/>" қосасыз ба?</translation>
 <translation id="5243522832766285132">Бірнеше минуттан кейін қайталап көріңіз</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/> электрондық поштасымен синхрондау</translation>
@@ -4027,6 +4031,7 @@
 <translation id="989239400026154074">Brave қызметі Brave браузерін ұсынады</translation>
 <translation id="5319712128756744240">Жаңа құрылғымен жұптау</translation>
 <translation id="5320135788267874712">Жаңа құрылғы атауы</translation>
+<translation id="532043380734099846"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, тінтуір, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="532247166573571973">Сервер қолжетімді емес. Әрекетті кейінірек қайталаңыз.</translation>
 <translation id="5324300749339591280">Қолданбалар тізімі</translation>
 <translation id="5324780743567488672">Орныңызды пайдаланып, уақыт белдеуін автоматты орнату</translation>
@@ -4046,7 +4051,6 @@
 <translation id="5338503421962489998">Жергілікті сақтау орны</translation>
 <translation id="5340638867532133571">Сайттарға төлем өңдегіштерін орнатуға рұқсат ету (ұсынылады)</translation>
 <translation id="5341793073192892252">Мына cookie файлдарына тыйым салынды (үшінші тараптың cookie файлдарына түбегейлі тыйым салынады)</translation>
-<translation id="5341980496415249280">Күте тұрыңыз, қысылуда...</translation>
 <translation id="5342091991439452114">PIN коды кемінде <ph name="MINIMUM"/> таңбадан құралуы керек</translation>
 <translation id="5344036115151554031">Linux қалпына келтірілуде</translation>
 <translation id="5345916423802287046">Аккаунтқа кірген кезде, қолданбаны іске қосу</translation>
@@ -4054,6 +4058,7 @@
 <translation id="535123479159372765">Мәтін басқа құрылғыдан көшірілді</translation>
 <translation id="5352033265844765294">Уақыт белгілеу</translation>
 <translation id="6368144843345980623">Құпия сөздердерді Brave жүйесінен экспорттау</translation>
+<translation id="5354531123814675522"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, планшет, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="5355099869024327351">Assistant қолданбасына хабарландыруларды көрсетуге рұқсат беріңіз</translation>
 <translation id="5355191726083956201">Жақсартылған қорғаныс қосулы.</translation>
 <translation id="5355926466126177564">«<ph name="EXTENSION_NAME"/>» кеңейтімі Omnibox ішінен іздеген кезде көрсетілетін бетті өзгертті.</translation>
@@ -4113,6 +4118,7 @@
 <translation id="5427278936122846523">Әрқашан аудару</translation>
 <translation id="5427459444770871191">&amp;Сағат тілімен бұру</translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Жаңарту қолжетімді)</translation>
+<translation id="5429373054983029602"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы экраннан іздеу</translation>
 <translation id="542948651837270806">Trusted Platform Module микробағдарламасының жаңа нұсқасы орнатылуы тиіс. <ph name="TPM_FIRMWARE_UPDATE_LINK"/> сілтемесін қараңыз.</translation>
 <translation id="5430931332414098647">Жылдам тетеринг</translation>
 <translation id="5431318178759467895">Түс</translation>
@@ -4179,10 +4185,12 @@
 <translation id="5494920125229734069">Барлығын таңдау</translation>
 <translation id="5495466433285976480">Келесі жолы қайта іске қосқаннан кейін, барлық жергілікті пайдаланушылар, файлдар, деректер және басқа параметрлер жойылады. Барлық пайдаланушылар жүйеге қайта кіруі керек болады.</translation>
 <translation id="5495597166260341369">Дисплейді қосулы қалдыру</translation>
+<translation id="549580971452855947"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы суреттерді іздеу үшін сүйреу</translation>
 <translation id="5496587651328244253">Ұйымдастыру</translation>
 <translation id="5496730470963166430">Қалқымалы терезелерді жіберу мен бағытты ауыстыру функцияларын пайдалануға рұқсаты жоқтар</translation>
 <translation id="5497251278400702716">Осы файл</translation>
 <translation id="5498967291577176373">Аты-жөніңізді, мекенжайыңызды не телефон нөміріңізді ендірілген ұсыныстармен жылдамырақ жазыңыз.</translation>
+<translation id="5499211612787418966">Бұл диалогтік терезе әзірше ерекшеленбеген. Осы диалогтік терезені ерекшелеу үшін Alt-Shift тіркесімін басыңыз.</translation>
 <translation id="5499313591153584299">Бұл файл компьютеріңізге зиянды болуы мүмкін.</translation>
 <translation id="5499453227627332024">Linux контейнері үшін жаңа нұсқа қолжетімді. Жаңа нұсқаны "Параметрлер" қолданбасы арқылы кейінірек орнатуыңызға болады.</translation>
 <translation id="549957179819296104">Жаңа белгіше</translation>
@@ -4214,7 +4222,7 @@
 <translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Кеңейтім әкімшіңіздің тарапынан орнатылды.}other{# кеңейтім әкімшіңіздің тарапынан орнатылды.}}</translation>
 <translation id="5523558474028191231">Атауда әріптерді, сандарды және арнайы таңбаларды пайдалана аласыз және ол <ph name="MAX_CHARACTER_COUNT"/> таңбадан аспауы керек.</translation>
 <translation id="5526701598901867718">Барлығы (қауіпті)</translation>
-<translation id="5526745900034778153">Синхрондауды жалғастыру үшін есептік жазбаға қайта кіріңіз</translation>
+<translation id="5526745900034778153">Синхрондауды жалғастыру үшін аккаунтқа қайта кіріңіз</translation>
 <translation id="5527463195266282916">Кеңейтімнің ескі нұсқасын орнатуға әрекет жасалды.</translation>
 <translation id="5527474464531963247">Басқа желіні таңдауыңызға да болады.</translation>
 <translation id="5532223876348815659">Ғаламдық</translation>
@@ -4222,6 +4230,7 @@
 <translation id="5534304873398226603">Фотосурет не бейне жойылсын ба?</translation>
 <translation id="5535941515421698170">Сондай-ақ бұл құрылғыдағы деректерді өшіріңіз</translation>
 <translation id="5539221284352502426">Енгізген құпия сөзіңізді сервер қабылдамады. Себептері: Құпия сөз тым қысқа.  Құпия сөзде сандар немесе таңбалар болуы керек. Құпия сөз алдыңғы құпия сөздерден басқа болуы керек.</translation>
+<translation id="5539467723438368868"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, планшет</translation>
 <translation id="5541694225089836610">Әрекетті сіздің әкімшіңіз өшірді.</translation>
 <translation id="5542132724887566711">Профиль</translation>
 <translation id="5542750926112347543"><ph name="DOMAIN"/> cookie файлдары бөгелді</translation>
@@ -4229,6 +4238,7 @@
 <translation id="5543983818738093899">Күйі тексерілуде…</translation>
 <translation id="554517701842997186">Рендеринг құралы</translation>
 <translation id="5545335608717746497">{NUM_TABS,plural, =1{Топқа қойынды қосу}other{Топқа қойындылар қосу}}</translation>
+<translation id="5545693483061321551">Сайттар браузерді қолдану мәліметін көру (мысалы, жарнамаларды жекелендіру) үшін cookie файлдарын пайдалана алмайды. Кейбір сайттың функциялары жұмыс істемеуі мүмкін.</translation>
 <translation id="5546865291508181392">Табу</translation>
 <translation id="5548075230008247516">Барлық таңдалған элементтер алынып тасталды, таңдау режимі өшірілді.</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" және тағы 1 қойынды}other{"<ph name="TAB_TITLE"/>" және тағы # қойынды}}</translation>
@@ -4281,8 +4291,10 @@
 <translation id="5601503069213153581">PIN</translation>
 <translation id="5601823921345337195">MIDI құрылғыларына қосылуға рұқсаты жоқтар</translation>
 <translation id="5602765853043467355">Осы құрылғыдан алынған бетбелгілерді, тарихты, құпия сөздерді, т.б. өшіру</translation>
+<translation id="5604884720628869833"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, пернетақта</translation>
 <translation id="5605623530403479164">Басқа іздеу жүйелері</translation>
 <translation id="5605758115928394442">Жеке басыңызды растау үшін телефоныңызға хабарландыру жіберілді.</translation>
+<translation id="5606849116180480101">{NUM_EXTENSIONS,plural, =1{Бұл кеңейтім бөгелді}other{Бұл кеңейтімдер бөгелді}}</translation>
 <translation id="560834977503641186">Wi-Fi деректерін синхрондау, толығырақ</translation>
 <translation id="5608580678041221894">Қию аймағын реттеу не жылжыту үшін келесі пернелерді түртіңіз</translation>
 <translation id="5609231933459083978">Қолданба жарамсыз.</translation>
@@ -4324,7 +4336,6 @@
 <translation id="5646376287012673985">Орын</translation>
 <translation id="5646558797914161501">Бизнесмен</translation>
 <translation id="5648166631817621825">Соңғы 7 күн</translation>
-<translation id="5649053991847567735">Автоматты жүктеулер</translation>
 <translation id="5651308944918885595">Nearby Share функциясының көріну мүмкіндігі</translation>
 <translation id="5653154844073528838"><ph name="PRINTER_COUNT"/> принтер сақталған.</translation>
 <translation id="4196805003686694274">Brave-ға пікір жіберу</translation>
@@ -4340,7 +4351,7 @@
 <translation id="5671641761787789573">Кескіндер бөгелді</translation>
 <translation id="5671658447180261823"><ph name="SUGGESTION_NAME"/> ұсынысын өшіру</translation>
 <translation id="567587836466137939">Бұл құрылғыға бағдарламалық құрал мен қауіпсіздік жүйесінің автоматты жаңартулары <ph name="MONTH_AND_YEAR"/> дейін жіберіледі. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
-<translation id="567643736130151854">Бетбелгілерді, құпия сөздерді және құрылғыдағы басқа мәліметтерді алу үшін есептік жазбаға кіріп, синхрондауды іске қосыңыз</translation>
+<translation id="567643736130151854">Бетбелгілерді, құпия сөздерді және құрылғыдағы басқа мәліметтерді алу үшін аккаунтқа кіріп, синхрондауды іске қосыңыз</translation>
 <translation id="567740581294087470">Қандай пікір білдіресіз?</translation>
 <translation id="5677503058916217575">Бет тілі:</translation>
 <translation id="5677928146339483299">Тыйым салынған</translation>
@@ -4379,12 +4390,12 @@
 <translation id="5711010025974903573">Қызметтік журналдар</translation>
 <translation id="5711983031544731014">Құлпын ашу мүмкін емес. Құпия сөзіңізді енгізіңіз.</translation>
 <translation id="5712153969432126546">Сайттар кейде PDF-терді (мысалы, құжаттар, келісімшарттар және үлгілер) жариялайды.</translation>
+<translation id="5713158217420111469"><ph name="DEVICE"/> құрылғысына жалғанған</translation>
 <translation id="5715711091495208045">Плагин делдалы: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719603411793408026">Әдепкі іздеу жүйелері</translation>
 <translation id="5719854774000914513">Сайттар HID құрылғыларына қосылуға рұқсат сұрайды</translation>
 <translation id="572155275267014074">Android параметрлері</translation>
 <translation id="5722086096420375088">Жасыл және ақ</translation>
-<translation id="5722930212736070253">Қап! Zip Archiver жұмысында қате шықты.</translation>
 <translation id="572328651809341494">Соңғы қойындылар</translation>
 <translation id="5723508132121499792">Фонда орындалып жатқан қолданбалар жоқ</translation>
 <translation id="5727728807527375859">Кеңейтімдер, қолданбалар және тақырыптар компьютеріңізді зақымдауы мүмкін. Жалғастыру қажет пе?</translation>
@@ -4423,7 +4434,7 @@
 <translation id="5774295353725270860">Файлдар қолданбасын ашу</translation>
 <translation id="577624874850706961">Cookie файлдарын іздеу</translation>
 <translation id="6676231621615806698">Brave браузерін ашу</translation>
-<translation id="5778491106820461378">Кірген Brave аккаунттарыңызды <ph name="LINK_BEGIN"/>Параметрлерден<ph name="LINK_END"/> басқара аласыз. Веб-сайттар мен қолданбаларға берген рұқсаттар барлық есептік жазбаға қолданылуы мүмкін. Егер сайттар мен қолданбалардың аккаунтыңыз туралы ақпаратты пайдаланғанын қаламасаңыз, <ph name="DEVICE_TYPE"/> құрылғысына қонақ ретінде кіре аласыз.</translation>
+<translation id="5778491106820461378">Кірген Brave аккаунттарыңызды <ph name="LINK_BEGIN"/>Параметрлерден<ph name="LINK_END"/> басқара аласыз. Веб-сайттар мен қолданбаларға берген рұқсаттар барлық аккаунтқа қолданылуы мүмкін. Егер сайттар мен қолданбалардың аккаунтыңыз туралы ақпаратты пайдаланғанын қаламасаңыз, <ph name="DEVICE_TYPE"/> құрылғысына қонақ ретінде кіре аласыз.</translation>
 <translation id="5780011244986845107">Сіз таңдаған қалтада құпия файлдар бар. "<ph name="APP_NAME"/>" қолданбасына қалтадағы деректерді тұрақты оқу мүмкіндігін бергіңіз келе ме?</translation>
 <translation id="5780973441651030252">Өңдеу басымдығы</translation>
 <translation id="5781092003150880845"><ph name="ACCOUNT_FULL_NAME"/> атты пайдаланушының аккаунтымен синхрондау</translation>
@@ -4444,7 +4455,6 @@
 <translation id="7397305826909094212">Барлық Brave қолданбаларынан шығу</translation>
 <translation id="5797521893972859201">Тарих және іздеу өрісіндегі дерек өшіріледі.</translation>
 <translation id="5798079537501238810">Сайттар төлем өңдегіштерін орната алады.</translation>
-<translation id="579907812742603813">қорғалған мазмұн</translation>
 <translation id="579915268381781820">Қауіпсіздік кілтіңіз өшірілді.</translation>
 <translation id="5799478978078236781"><ph name="DEVICE_TYPE"/> құрылғысына қатысты кеңестерді, ұсыныстарды және жаңалықтарды алыңыз және пікірлер қалдырыңыз.</translation>
 <translation id="5799508265798272974">Linux виртуалды машинасы: <ph name="LINUX_VM_NAME"/></translation>
@@ -4461,6 +4471,7 @@
 <translation id="8750665647536322704">Құпия сөздерді осы құрылғыдан Brave аккаунтыңызға көшіру керек пе?</translation>
 <translation id="5817918615728894473">Жұптау</translation>
 <translation id="5821565227679781414">Таңбаша жасау</translation>
+<translation id="7216958605064248952">Белгілі бір сайтты немесе Brave-ның бөлігін іздеу үшін, осында таңбашалар пайдалана аласыз. Мысалы, тек Gmail іздеу үшін "@gmail" деп теріп, Tab немесе бос орын пернесін басыңыз.</translation>
 <translation id="5825412242012995131">Қосу (ұсынылады)</translation>
 <translation id="5826395379250998812"><ph name="DEVICE_TYPE"/> құрылғысын телефонға жалғаңыз. <ph name="LINK_BEGIN"/>Толығырақ<ph name="LINK_END"/></translation>
 <translation id="5826993284769733527">Жартылай тұнық</translation>
@@ -4614,7 +4625,6 @@
 <translation id="5984222099446776634">Соңғы кірілген</translation>
 <translation id="5985458664595100876">URL сілтемесінің форматы дұрыс емес. Олар \\server\share және smb://server/share форматында болуы керек.</translation>
 <translation id="598810097218913399">Тағайындауды өшіру</translation>
-<translation id="5989136665954016134">Қолдау көрсетілген сілтемелерді ашу</translation>
 <translation id="5990266201903445068">Тек Wi-Fi</translation>
 <translation id="5990386583461751448">Аударылды</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Браузерді әрі қарай пайдалана беру үшін әкімшіден осы қолданбаны өшіріп тастауын сұраңыз.}other{Браузерді пайдалана беру үшін әкімшіден осы қолданбаларды өшіріп тастауын сұраңыз.}}</translation>
@@ -4677,7 +4687,6 @@
 <translation id="931766611660157151">Соңғы Brave қойындылары</translation>
 <translation id="6059347142391822629">Көмекшіні жабу үшін "Дайын" түймесі ерекшеленіп тұрғанда, қосқышты басыңыз.</translation>
 <translation id="6059652578941944813">Сертификат иерархиясы</translation>
-<translation id="6059925163896151826">USB құрылғылары</translation>
 <translation id="6061882183774845124">Құрылғыларға сілтеме жіберу</translation>
 <translation id="6063847492705284550"><ph name="BEGIN_BOLD"/>Ескертпе:<ph name="END_BOLD"/> кез келген адам ұқсас дауыс немесе жазба арқылы баланың (<ph name="SUPERVISED_USER_NAME"/>) жеке нәтижелерін пайдалануы мүмкін. Батарея зарядын үнемдеу үшін баланың (<ph name="SUPERVISED_USER_NAME"/>) Assistant параметрлерінен "Ok Brave" пәрменінің осы құрылғы қуат көзіне жалғанғанда ғана қосылуын таңдауға болады.</translation>
 <translation id="6064217302520318294">Экран құлпы</translation>
@@ -4735,6 +4744,7 @@
 <translation id="8589850327914845460">Brave браузеріне және <ph name="DEVICE_TYPE"/> Launcher-ге әдепкі іздеу жүйесін орнатыңыз.</translation>
 <translation id="6113942107547980621">Smart Lock функциясын пайдалану үшін телефоныңыздағы негізгі пайдаланушы профиліне ауысыңыз.</translation>
 <translation id="6116921718742659598">Тіл және енгізу параметрлерін өзгерту</translation>
+<translation id="6119927814891883061">Құрылғыны <ph name="DEVICE_NAME"/> деп атау</translation>
 <translation id="6120205520491252677">Бұл бетті "Іске қосу" экранына бекіту…</translation>
 <translation id="6122081475643980456">Интернет байланысыңыз бақылануда</translation>
 <translation id="6122093587541546701">Электрондық пошта (міндетті емес):</translation>
@@ -4952,6 +4962,7 @@
 <translation id="6344576354370880196">Сақталған принтерлер</translation>
 <translation id="6345418402353744910"><ph name="PROXY"/> прокси-серверіне пайдаланушы аты мен құпиясөзіңізді енгізуіңіз керек, сонда әкімші желіні конфигурациялай алады.</translation>
 <translation id="6345878117466430440">Оқылды деп белгілеу</translation>
+<translation id="6347010704471250799">Хабарландыруды көрсету</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> қолданбасын орнату</translation>
 <translation id="6354918092619878358">SECG эллипстік қисық сызығы secp256r1 (aka ANSI X9.62 prime256v1, NIST P-256)</translation>
 <translation id="6355789186038748882">Бұл — эксперименттік (альфа нұсқасы) браузер. Оның кейбір функциялары жоқ немесе шектелген болуы мүмкін. Ақауларды "Анықтама &gt; Ақау туралы хабарлау" бөліміне өтіп хабарлай аласыз.</translation>
@@ -4972,6 +4983,7 @@
 <translation id="6374469231428023295">Әрекетті қайталау</translation>
 <translation id="6377268785556383139">"<ph name="SEARCH_TEXT"/>" сұрауы бойынша 1 нәтиже шықты</translation>
 <translation id="6380143666419481200">Қабылдау және жалғастыру</translation>
+<translation id="638418309848716977">Қолдау көрсету сілтемелері</translation>
 <translation id="6384275966486438344">Іздеу параметрлерін өзгерту: <ph name="SEARCH_HOST"/></translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{Атауы жоқ топ – 1 қойынды}other{Атауы жоқ топ – # қойынды}}</translation>
 <translation id="6385149369087767061">Интернетке қосылып, әрекетті қайталап көріңіз.</translation>
@@ -5007,6 +5019,7 @@
 <translation id="6418160186546245112">Бұрын орнатылған <ph name="IDS_SHORT_PRODUCT_NAME"/> нұсқасына қайтарылды</translation>
 <translation id="6418481728190846787">Барлық қолданба үшін кіру құқығын біржола жою</translation>
 <translation id="6418511932144861495">Маңызды жаңартылған нұсқаны орнату</translation>
+<translation id="6419524191360800346">Debian 11 (Bullseye) нұсқасын орнатуға болады.</translation>
 <translation id="6419546358665792306">Ашылмаған кеңейтімді жүктеу</translation>
 <translation id="6419843101460769608">Ешқандай сайтқа Bluetooth құрылғыларын пайдалануға рұқсат етпеу</translation>
 <translation id="642469772702851743">Бұл құрылғыны (сериялық нөмірі: <ph name="SERIAL_NUMBER"/>) иесі құлыптады.</translation>
@@ -5020,6 +5033,7 @@
 <translation id="6434309073475700221">Тоқтату</translation>
 <translation id="6434325376267409267"><ph name="APP_NAME"/> пайдаланылмас бұрын, құрылғы жаңартылуы керек.</translation>
 <translation id="3041204028661633854">Сұрақ қойғанда, өзіңізге қатысты жауаптар алу үшін Brave Assistant-ке экранда көрсетілген ақпаратты пайдалануға рұқсат етіңіз. Assistant ойнап тұрған әндер немесе бейнелер туралы ақпаратты да пайдалануы мүмкін.</translation>
+<translation id="6436778875248895551">Әкімші "<ph name="EXTENSION_NAME"/>" кеңейтімін бөгеген.</translation>
 <translation id="6438234780621650381">Параметрлерді қалпына келтіру</translation>
 <translation id="6438992844451964465"><ph name="WINDOW_TITLE"/> – аудиомазмұн ойнату</translation>
 <translation id="6442187272350399447">Керемет</translation>
@@ -5031,6 +5045,7 @@
 <translation id="6447210166804596538">Ең маңызды құпиялылық пен қауіпсіздікті басқару элементтерін бір жерден көріңіз.</translation>
 <translation id="6447842834002726250">Cookie файлдары</translation>
 <translation id="6450876761651513209">Құпиялылыққа қатысты параметрлерді өзгерту</translation>
+<translation id="6451344358166983408">Сайт немесе бет</translation>
 <translation id="6451591602925140504">{NUM_PAGES,plural, =0{<ph name="PAGE_TITLE"/>}=1{<ph name="PAGE_TITLE"/> және тағы 1 қойынды}other{<ph name="PAGE_TITLE"/> және тағы # қойынды}}</translation>
 <translation id="6451689256222386810">Егер құпия фразаны ұмытып қалсаңыз немесе оны өзгерткіңіз келсе, <ph name="BEGIN_LINK"/>синхрондауды бастапқы күйіне қайтарыңыз<ph name="END_LINK"/>.</translation>
 <translation id="6452181791372256707">Қабылдамау</translation>
@@ -5048,7 +5063,6 @@
 <translation id="6460601847208524483">Келесіні табу</translation>
 <translation id="6461170143930046705">Маңайдағы желілер ізделуде…</translation>
 <translation id="6463795194797719782">&amp;Өзгерту</translation>
-<translation id="6464094930452079790">суреттер</translation>
 <translation id="6464825623202322042">Осы құрылғы</translation>
 <translation id="6465841119675156448">Интернетсіз</translation>
 <translation id="6466258437571594570">Сайттар хабарландырулар жіберуді сұрау кезінде мазаламайтындай етіп бөгеледі.</translation>
@@ -5074,7 +5088,6 @@
 <translation id="6491376743066338510">Авторизация сәтсіз</translation>
 <translation id="6494327278868541139">Жақсартылған қорғаныс туралы мәліметтерді көрсету</translation>
 <translation id="6494445798847293442">Сертификат беру органы емес</translation>
-<translation id="6494750904506170417">қалқымалы терезелер және бағыттаулар</translation>
 <translation id="6494974875566443634">Бейімдеу</translation>
 <translation id="6497457470714179223">{NUM_FILES,plural, =0{Бұл деректерде құпия не қауіпті мазмұн бар.}=1{Бұл файлда құпия не қауіпті мазмұн бар.}other{Бұл файлдарда құпия не қауіпті мазмұн бар.}}</translation>
 <translation id="6497789971060331894">Тінтуірмен кері айналдыру</translation>
@@ -5110,12 +5123,11 @@
 <translation id="6531282281159901044">Қауіпті файлды сақтау</translation>
 <translation id="6532101170117367231">Google Drive жадына сақтау</translation>
 <translation id="6532106788206463496">Өзгертулерді сақтау</translation>
-<translation id="6532206849875187177">Қауіпсіздік және есептік жазбаға кіру</translation>
+<translation id="6532206849875187177">Қауіпсіздік және аккаунтқа кіру</translation>
 <translation id="6532527800157340614">Кіру токенін алу мүмкін болмағандықтан, жүйеге кіре алмадыңыз. Желі байланысын тексеріп, қайталап көріңіз.</translation>
 <translation id="6532663472409656417">Кәсіпорында тіркелген</translation>
 <translation id="6535331821390304775"><ph name="ORIGIN"/> бетіне осындай сілтемелерді байланыстырылған қолданбада әрдайым ашуға рұқсат етілсін</translation>
 <translation id="653659894138286600">Құжаттар мен суреттерді сканерлеу</translation>
-<translation id="5552185729949202575">Brave Lens арқылы іздеу үшін кескіндерді сүйреу</translation>
 <translation id="6537613839935722475">Атауда әріптерді, сандарды және сызықшаларды (-) пайдалануға болады.</translation>
 <translation id="6537880577641744343">Commander</translation>
 <translation id="6538098297809675636">Кодты анықтау кезінде қате шықты</translation>
@@ -5124,7 +5136,6 @@
 <translation id="6540672086173674880">Search және басқа да Brave қызметтерін жекелендіру үшін браузерді қолдану тарихы пайдаланылуы мүмкін. Мұны кез келген уақытта myaccount.google.com/activitycontrols/search бетінен өзгерте аласыз.</translation>
 <translation id="6541638731489116978">Бұл сайттың қозғалыс датчиктеріңізді пайдалануына тыйым салынды.</translation>
 <translation id="6545665334409411530">Қайталау жиілігі</translation>
-<translation id="6545864417968258051">Bluetooth құрылғыларын іздеу</translation>
 <translation id="6545867563032584178">Микрофон Mac жүйесінің параметрлерінде өшірілген.</translation>
 <translation id="6547354035488017500">Кемінде 512 MБ орын босатпасаңыз, құрылғы жауап бермейтін болады. Бұл үшін файлдарды құрылғының жадынан жойыңыз.</translation>
 <translation id="654871471440386944">Пернелер арқылы навигациялау қосылсын ба?</translation>
@@ -5169,10 +5180,12 @@
 <translation id="6593881952206664229">Авторлық құқықпен қорғалған медиафайлдар ойнатылмауы мүмкін.</translation>
 <translation id="6594011207075825276">Сериялық құрылғылар ізделуде...</translation>
 <translation id="6595187330192059106"><ph name="HOST"/> сайтының MIDI құрылғыларын толық басқаруына әрқашан тыйым салу</translation>
+<translation id="6595792813574514527"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы суреттерді іздеу үшін сүйреу</translation>
 <translation id="6596325263575161958">Шифрлау опциялары</translation>
 <translation id="6596816719288285829">IP мекенжайы</translation>
 <translation id="6597017209724497268">Үлгілер</translation>
 <translation id="6597148444736186483">Құрылғыдағы негізгі аккаунттан шығу үшін экрандағы сағатты басыңыз. Мәзірдегі "Шығу" опциясын таңдаңыз.</translation>
+<translation id="6597331566371766302">Әкімші келесі кеңейтімдерді бөгеген:</translation>
 <translation id="6601395831301182804">Chrome OS-ке арналған ендірілген BraveVox экранды оқу құралын іске қосқыңыз келе ме? Іске қосқыңыз келсе, бос орын түймесін басыңыз.</translation>
 <translation id="6601612474695404578">Кейбір сайттар беттерін жүктеу үшін үшінші тараптың cookie файлдарын пайдаланады. Сайт жұмыс істемесе, cookie файлдарына рұқсат берсеңіз болады.</translation>
 <translation id="6602937173026466876">Принтерлерді пайдалану</translation>
@@ -5180,10 +5193,10 @@
 <translation id="6605847144724004692">Бірде-бір пайдаланушы баға бермеген.</translation>
 <translation id="6606671997164410857">Brave Assistant қызметін басқа құрылғыда реттеп қойған сияқтысыз. Assistant-тің басқа да мүмкіндіктерін пайдалану үшін құрылғыдағы Экран контексін іске қосыңыз.</translation>
 <translation id="6607831829715835317">Қосымша құралд&amp;ар</translation>
-<translation id="6607890859198268021"><ph name="USER_EMAIL"/> электрондық мекенжайын <ph name="DOMAIN"/> домені басқарып жатыр. Ата-ана бақылауын басқа Brave аккаунтымен пайдалану үшін реттеуден кейін аккаунттан шығып, есептік жазбаға кіру терезесінен "Адамды қосу" опциясын таңдаңыз.</translation>
-<translation id="5298187053819934487">Сіз инкогнито режимінен шыққаннан кейін де, есептік жазбаға кіру деректері осы құрылғыда сақталады. Кейінірек құрылғыңызбен бұл веб-сайтқа қайта кіре аласыз.</translation>
+<translation id="6607890859198268021"><ph name="USER_EMAIL"/> электрондық мекенжайын <ph name="DOMAIN"/> домені басқарып жатыр. Ата-ана бақылауын басқа Brave аккаунтымен пайдалану үшін реттеуден кейін аккаунттан шығып, аккаунтқа кіру терезесінен "Адамды қосу" опциясын таңдаңыз.</translation>
+<translation id="5298187053819934487">Сіз инкогнито режимінен шыққаннан кейін де, аккаунтқа кіру деректері осы құрылғыда сақталады. Кейінірек құрылғыңызбен бұл веб-сайтқа қайта кіре аласыз.</translation>
+<translation id="6610002944194042868">Аудару опциялары</translation>
 <translation id="6611972847767394631">Қойындыларыңыз осы жерде</translation>
-<translation id="6612358246767739896">Қорғалған мазмұн</translation>
 <translation id="6615455863669487791">Маған көрсету</translation>
 <translation id="6618097958368085618">Сақтала берсін</translation>
 <translation id="6618744767048954150">Жұмыс істеп тұр</translation>
@@ -5193,7 +5206,6 @@
 <translation id="6619801788773578757">Киоск қолданбасын қосу</translation>
 <translation id="6619990499523117484">PIN кодын растаңыз</translation>
 <translation id="6622980291894852883">Кескін бөгеуді жалғастыру</translation>
-<translation id="6623589891453322342">файл өңдегіштер</translation>
 <translation id="6624535038674360844"><ph name="FILE_NAME"/> файлында құпия не қауіпті мазмұн бар. Иесінен бұл мәселені шешуін сұраңыз.</translation>
 <translation id="6624687053722465643">Тәтті</translation>
 <translation id="6628328486509726751">Жүктеп салынған <ph name="WEBRTC_LOG_UPLOAD_TIME"/></translation>
@@ -5212,9 +5224,8 @@
 <translation id="6645437135153136856">Таңдалған Google Cloud Print құрылғысына бұдан былай қолдау көрсетілмейді. <ph name="BR"/> Принтерді компьютердің жүйелік параметрлерінен реттеп көріңіз.</translation>
 <translation id="6647228709620733774">Netscape сертификат беру ұйымының қайтарып алу URL мекенжайы</translation>
 <translation id="6647838571840953560">Қолданылып жатқан арна: <ph name="CHANNEL_NAME"/></translation>
-<translation id="6648911618876616409">Маңызды жаңартылған нұсқа қолжетімді. Бастау үшін есептік жазбаға кіріңіз.</translation>
+<translation id="6648911618876616409">Маңызды жаңартылған нұсқа қолжетімді. Бастау үшін аккаунтқа кіріңіз.</translation>
 <translation id="6649018507441623493">Сәл күте тұрыңыз...</translation>
-<translation id="6649563841575838401">Мұрағат пішіміне қолдау көрсетілмейді немесе файл бүлінген.</translation>
 <translation id="3733807065376082271"><ph name="WEBSITE"/> сайтының құпия сөзі осы құрылғыда және Brave аккаунтында сақталған. Қайсысын жойғыңыз келеді?</translation>
 <translation id="665061930738760572">&amp;Жаңа терезеде ашу</translation>
 <translation id="6651237644330755633">Вебсайттарды анықтауда осы сертификатқа сену</translation>
@@ -5226,7 +5237,6 @@
 <translation id="6657585470893396449">Құпия сөз</translation>
 <translation id="6659213950629089752">Бұл бет "<ph name="NAME"/>" кеңейтімі арқылы масштабталды</translation>
 <translation id="6659594942844771486">Қойынды</translation>
-<translation id="6660413144148052430">орын</translation>
 <translation id="666099631117081440">Баспа серверлері</translation>
 <translation id="6662931079349804328">Корпоративтік саясат өзгертілді. "Эксперименттер" түймесі құралдар тақтасынан өшірілді.</translation>
 <translation id="6663190258859265334"><ph name="DEVICE_TYPE"/> құрылғыңызда Powerwash функциясын іске қосып, алдыңғы нұсқаға қайтыңыз.</translation>
@@ -5234,6 +5244,7 @@
 <translation id="6664774537677393800">Профильді ашу кезінде бірдеңе дұрыс болмады. Жүйеден шығып, қайта кіріңіз.</translation>
 <translation id="666731172850799929"><ph name="APP_NAME"/> арқылы ашу</translation>
 <translation id="6670142487971298264"><ph name="APP_NAME"/> қазір қолжетімді.</translation>
+<translation id="7256334756499709483">Кейбір кеңейтімдер Brave-ға іздеу жүйелерін қоса алады.</translation>
 <translation id="6671320560732140690">{COUNT,plural, =1{мекенжай}other{# мекенжай}}</translation>
 <translation id="6671497123040790595">Басқару құралы <ph name="MANAGER"/> арқылы реттелуде</translation>
 <translation id="6673391612973410118"><ph name="PRINTER_MAKE_OR_MODEL"/> (USB)</translation>
@@ -5281,6 +5292,7 @@
 <translation id="6721972322305477112">&amp;Файл</translation>
 <translation id="672208878794563299">Бұл сайт келесіде тағы сұрайды.</translation>
 <translation id="6723661294526996303">Бетбелгілер мен параметрлерді импорттау...</translation>
+<translation id="6723839827191551955">Трансляцияланатын медиамазмұнды басқарыңыз</translation>
 <translation id="6723839937902243910">Күш</translation>
 <translation id="6725073593266469338">Пайдаланушы интерфейсі қызметі</translation>
 <translation id="6725206449694821596">Internet Printing Protocol (IPP)</translation>
@@ -5288,7 +5300,6 @@
 <translation id="672609503628871915">Жаңалықтарды қарау</translation>
 <translation id="67269783048918309">Пайдаланылуы және диагностикасы туралы деректерді жіберу. Бұл құрылғыдан Brave-ға диагностика, құрылғы мен қолданбаны пайдалану деректері автоматты түрде жіберіліп тұрады. Бұл деректер баланың жеке басын анықтауға пайдаланылмайды. Олар жүйе мен қолданбаның тұрақты жұмыс істеуіне және басқа да жақсартулар енгізуге көмектеседі. Кейбір жиынтық деректер Brave қолданбаларын жетілдіруге және Android әзірлеушілері сияқты серіктестердің жұмысына көмектеседі. Бұл <ph name="BEGIN_LINK1"/>параметрді<ph name="END_LINK1"/> иесі орнатқан. Егер "Интернет пен қолданбаларды пайдаланудың қосымша тарихы" параметрі қосулы болса, бұл деректер балаңыздың Brave аккаунтына сақталуы мүмкін. <ph name="BEGIN_LINK2"/>Толығырақ<ph name="END_LINK2"/></translation>
 <translation id="6727969043791803658">Жалғанды, батарея заряды: <ph name="BATTERY_PERCENTAGE"/>%</translation>
-<translation id="6732087373923685049">камера</translation>
 <translation id="6735304988756581115">Cookie файлдары мен басқа сайт деректерін көрсету…</translation>
 <translation id="6736243959894955139">Мекенжай</translation>
 <translation id="6737663862851963468">Kerberos билетін өшіру</translation>
@@ -5300,14 +5311,13 @@
 <translation id="6745592621698551453">Қазір жаңарту</translation>
 <translation id="6746124502594467657">Төмен қарай жылжыту</translation>
 <translation id="674632704103926902">Түртіп сүйреуді қосу</translation>
-<translation id="8422091548140284430">Экраныңыздан Brave Lens арқылы іздеу</translation>
 <translation id="6748465660675848252">Жалғастыруыңызға болады, бірақ тек синхрондалған деректер мен параметрлер қалпына келтіріледі. Барлық жергілікті деректер жойылады.</translation>
-<translation id="6749006854028927059">Сайттар түрлі сайттардағы браузерді қолдану мәліметін көру үшін (мысалы, жарнамаларды жекелендіру мақсатында) cookie файлдарын пайдалана алмайды. Кейбір сайттарда функциялар дұрыс жұмыс істемеуі мүмкін.</translation>
 <translation id="6750757184909117990">Ұялы байланыс желісін өшіру</translation>
 <translation id="6750946710563435348">Басқа пайдаланушы атын қолдану</translation>
 <translation id="6757101664402245801">URL мекенжайы көшірілді</translation>
 <translation id="6758056191028427665">Қал-жағдайыңызды айтып беріңіз.</translation>
 <translation id="6759193508432371551">Зауыттық параметрлерге қайта орнату</translation>
+<translation id="676158322851696513">"<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="6762833852331690540">Қосулы</translation>
 <translation id="855635339720317397">Brave Pay қызметіндегі төлеу әдістеріңіз</translation>
 <translation id="6767566652486411142">Басқа тіл таңдау...</translation>
@@ -5332,7 +5342,6 @@
 <translation id="6787839852456839824">Пернелер тіркесімі</translation>
 <translation id="6788210894632713004">Пакеттен шығарылған кеңейтім</translation>
 <translation id="6789592661892473991">Көлденеңінен бөлу</translation>
-<translation id="678982761784843853">Қорғалған мазмұн идентификаторлары</translation>
 <translation id="6790428901817661496">Ойнату</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> қашықтан қосылды</translation>
 <translation id="6793604637258913070">Шыққанда не жылжығанда, курсорды бөлектеу</translation>
@@ -5371,7 +5380,6 @@
 <translation id="6817174620439930047">Сайт MIDI құрылғыларына кіру үшін жүйенің айрықша хабарларын пайдаланғысы келетіні сұралсын (ұсынылады)</translation>
 <translation id="6818198425579322765">Беттің аударма тілі</translation>
 <translation id="6818802132960437751">Ендірілген вирустан қорғау жүйесі</translation>
-<translation id="6820143000046097424">сериялық порттар</translation>
 <translation id="682123305478866682">Жұмыс үстелін тарату</translation>
 <translation id="6823174134746916417">Сенсорлық тақтаны басу үшін түрту</translation>
 <translation id="6824564591481349393">&amp;Электрондық пошта мекенжайын көшіру</translation>
@@ -5410,6 +5418,7 @@
 <translation id="6853388645642883916">Жаңарту құралы ұйқы режимінде</translation>
 <translation id="68541483639528434">Басқа қойындыларды жабу</translation>
 <translation id="6855892664589459354">Crostini қолданбалары мен файлдарының сақтық көшірмесін жасау және оларды қалпына келтіру</translation>
+<translation id="6856210255562079267">Қолданбаны ашу мүмкін емес</translation>
 <translation id="6856348640027512653">Виртуалды шындық құрылғыларын немесе деректерді пайдалануға рұқсаты жоқтар</translation>
 <translation id="6856623341093082836">Сенсорлық экран дәлдігін орнату және реттеу</translation>
 <translation id="6856850379840757744">Іске қосылса, барлық хабарландыру үнсіз болады.</translation>
@@ -5483,6 +5492,7 @@
 <translation id="6941937518557314510"><ph name="TOKEN_NAME"/> хостына сертификатыңыз арқылы аутентификациялау үшін <ph name="HOST_NAME"/> таңбалауышына кіріңіз.</translation>
 <translation id="6943060957016121200">Жылдам тетерингті қосу</translation>
 <translation id="6943176775188458830">Басып шығарудан бас тарту</translation>
+<translation id="6943939122536910181"><ph name="DEVICE"/> құрылғысынан ажыратылды</translation>
 <translation id="6945221475159498467">Таңдау</translation>
 <translation id="694592694773692225">Бұл бетте бағыттауға тыйым салынған.</translation>
 <translation id="6949434160682548041">Құпия сөз (міндетті емес)</translation>
@@ -5506,7 +5516,6 @@
 <translation id="6970480684834282392">Іске қосу түрі</translation>
 <translation id="6970856801391541997">Арнайы беттерді басып шығару</translation>
 <translation id="6972180789171089114">Аудиомазмұн/Бейне</translation>
-<translation id="6972629891077993081">HID құрылғылары</translation>
 <translation id="6972754398087986839">Іске кірісу</translation>
 <translation id="6972887130317925583">Ұрланған құпия сөз өзгертілді. Құпия сөздеріңізді <ph name="SETTINGS"/> бөлімінен кез келген кезде тексере аласыз.</translation>
 <translation id="697312151395002334">Қалқымалы терезелерді жіберу мен бағытты ауыстыру функцияларын пайдалануға рұқсаты барлар</translation>
@@ -5553,6 +5562,7 @@
 <translation id="7005496624875927304">Қосымша рұқсаттар</translation>
 <translation id="7005812687360380971">Орындалмады</translation>
 <translation id="7005848115657603926">Жарамсыз бет ауқымы, <ph name="EXAMPLE_PAGE_RANGE"/> пайдаланыңыз</translation>
+<translation id="7006438259896942210">Бұл аккаунтты (<ph name="USER_EMAIL_ADDRESS"/>) <ph name="PROFILE_NAME"/> басқарады.</translation>
 <translation id="700651317925502808">Параметрлер бастапқы күйге қайтарылсын ба?</translation>
 <translation id="7006634003215061422">Астыңғы шегі</translation>
 <translation id="7007648447224463482">Барлығын жаңа терезеде ашу</translation>
@@ -5568,7 +5578,6 @@
 <translation id="7019805045859631636">Жылдам</translation>
 <translation id="7022562585984256452">Негізгі бетіңіз орнатылды.</translation>
 <translation id="7023206482239788111">Privacy Sandbox сайттардың жұмысын бұзбай, интернетте жасырын бақылаудың алдын алып, осы қызметтерді ұсынудың бұдан да жақсырақ жолдарын көрсету арқылы ашық интернет мүмкіндігін сақтап қалады.</translation>
-<translation id="7024588353896425985">Файл өңдегіштер</translation>
 <translation id="7025082428878635038">Қимылдар арқылы навигациялаудың жаңа әдісін ұсынамыз</translation>
 <translation id="7025190659207909717">Мобильді деректер қызметін басқару</translation>
 <translation id="7025895441903756761">Қауіпсіздік және құпиялылық</translation>
@@ -5626,7 +5635,6 @@
 <translation id="1439926347196400598">Brave браузеріне дыбыс жазуға рұқсат берілсін бе?</translation>
 <translation id="7086672505018440886">Мұрағатта Brave журнал файлдарын қамту.</translation>
 <translation id="7088434364990739311">Жаңарту тексеруін іске қосу сәтсіз аяқталды (<ph name="ERROR"/> қате коды).</translation>
-<translation id="7088561041432335295">Zip Archiver - "Файлдар" қолдабасында ZIP файлдарын ашу және бумалау.</translation>
 <translation id="7088674813905715446">Бұл құрылғыны әкімші "жойылған" күйіне қойды. Тіркеу үшін оны қайта қосу мақсатында әкімшіңізден құрылғыңызды күту күйіне қоюын сұраңыз.</translation>
 <translation id="7093220653036489319">Жылдам жауаптар</translation>
 <translation id="7093416310351037609">Деректің қауіпсіздігі үшін ұйым барлық жүктеп алынған файлдың өзінің <ph name="WEB_DRIVE"/> аккаунтына сақталуын талап етеді.</translation>
@@ -5707,6 +5715,7 @@
 <translation id="7196020411877309443">Бұны неліктен көріп тұрмын?</translation>
 <translation id="7196913789568937443">Google Drive дискісіне сақтық көшірме жасау. Деректерді оңай қалпына келтіріп, кез келген уақытта бір құрылғыдан екіншісіне ауыса аласыз. Сақтық көшірмеде қолданба туралы деректер қамтылады. Сақтық көшірмелер Brave-ға жүктеп салынады және Brave аккаунтыңыздың құпия сөзі арқылы шифрланады. <ph name="BEGIN_LINK1"/>Толығырақ<ph name="END_LINK1"/></translation>
 <translation id="96037229054033864">Браузерді пайдаланған сайын Brave Search және Brave Smarts қызметтерін көру</translation>
+<translation id="719791532916917144">Перне тіркесімі</translation>
 <translation id="7198503619164954386">Компанияда тіркелген құрылғыны пайдалануыңыз керек.</translation>
 <translation id="7199158086730159431">К&amp;өмек алу</translation>
 <translation id="7200083590239651963">Конфигурацияны таңдау</translation>
@@ -5733,10 +5742,11 @@
 <translation id="7222232353993864120">Электрондық пошта мекенжайы</translation>
 <translation id="7225179976675429563">Желі түрі жоқ</translation>
 <translation id="7228479291753472782">Вебсайттардың геолокация, микрофон, камера, т.б. сияқты функцияларды пайдалануын реттейтін параметрлерді басқару.</translation>
-<translation id="7228523857728654909">Экран құлпы және есептік жазбаға кіру</translation>
+<translation id="7228523857728654909">Экран құлпы және аккаунтқа кіру</translation>
 <translation id="7230222852462421043">&amp;Терезені қалпына келтіру</translation>
 <translation id="7230787553283372882">Мәтін өлшемін реттеу</translation>
 <translation id="7232750842195536390">Аты өзгертілмеді</translation>
+<translation id="723343421145275488"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы суреттерді іздеу</translation>
 <translation id="7234010996000898150">Linux контейнерін қалпына келтіруден бас тартылуда</translation>
 <translation id="7235716375204803342">Әрекеттер журналы алынуда...</translation>
 <translation id="7235737137505019098">Басқа аккаунттар үшін қауіпсіздік кілтіндегі орын жеткіліксіз.</translation>
@@ -5749,10 +5759,11 @@
 <translation id="7243784282103630670">Linux жүйесін жаңарту кезінде қате пайда болды. Контейнер сақтық көшірмеңіз арқылы қалпына келтіріледі.</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (оңтайлы)</translation>
 <translation id="7246230585855757313">Қауіпсіздік кілтін қайта енгізіп, қайталап көріңіз.</translation>
-<translation id="7249777306773517303">Бұл құрылғыны <ph name="DOMAIN"/> басқарады және сізден есептік жазбаға әрдайым кіріп отыру талап етіледі.</translation>
+<translation id="7249777306773517303">Бұл құрылғыны <ph name="DOMAIN"/> басқарады және сізден аккаунтқа әрдайым кіріп отыру талап етіледі.</translation>
 <translation id="7250616558727237648">Бөлісіп отырған құрылғы жауап бермеді. Әрекетті қайталап көріңіз.</translation>
 <translation id="725109152065019550">Кешіріңіз, әкімшіңіз аккаунтыңызда сыртқы жадты өшірді.</translation>
 <translation id="7251346854160851420">Әдепкі тұсқағаз</translation>
+<translation id="7251635775446614726">Әкімші хабары: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="7251979364707973467"><ph name="WEBSITE"/> Қауіпсіздік кілтіңізді шығарды оның идентификатор нөмірін білгісі келеді. Сайт сіздің нақты қандай қауіпсіздік кілтін пайдаланып жатқаныңызды білетін болады.</translation>
 <translation id="7253521419891527137">&amp;Қосымша ақпарат</translation>
 <translation id="7254951428499890870">"<ph name="APP_NAME"/>" қолданбасын диагностикалық режимде іске қосу қажет пе?</translation>
@@ -5803,7 +5814,6 @@
 <translation id="730515362922783851">Жергілікті желідегі кез келген құрылғы немесе интернет арқылы деректерді айырбастау</translation>
 <translation id="7306521477691455105"><ph name="USB_DEVICE_NAME"/> құрылғысын <ph name="USB_VM_NAME"/> құрылғысына қосу үшін параметрлерді ашыңыз.</translation>
 <translation id="7307129035224081534">Кідіртілді</translation>
-<translation id="7308436126008021607">фондық синхрондау</translation>
 <translation id="7308643132139167865">Веб-сайт тілдері</translation>
 <translation id="7310598146671372464">Аккаунтқа кіру мүмкін болмады. Бұл серверде Kerberos шифрлау түрлері істемейді. Әкімшіңізге хабарласыңыз.</translation>
 <translation id="7320213904474460808">Желіні әдепкісінше таңдау</translation>
@@ -5850,7 +5860,6 @@
 <translation id="7364796246159120393">Файл таңдау</translation>
 <translation id="7365076891350562061">Монитор өлшемі</translation>
 <translation id="7366316827772164604">Маңайдағы құрылғылар ізделуде…</translation>
-<translation id="7366362069757178916">Төлем өңдегіштері</translation>
 <translation id="7366415735885268578">Сайтты енгізу</translation>
 <translation id="7366909168761621528">Шолу деректері</translation>
 <translation id="7367714965999718019">QR кодының генераторы</translation>
@@ -5860,7 +5869,6 @@
 <translation id="7371490947952970241">Құрылғыдағы негізгі геодерек параметрін өшіру арқылы орналасқан жердің анықталуын өшіруге болады. Сонымен қатар Wi‑Fi мен мобильдік желілердің және сенсорлардың орынды анықтау үшін қолданылуын геодерек параметрлерінен өшіре аласыз.</translation>
 <translation id="7371917887111892735">қойындылар бекітілген қойынды еніне дейін кішірейеді</translation>
 <translation id="7374376573160927383">USB құрылғыларын басқару</translation>
-<translation id="7374461526650987610">Протокол өңдегіштері</translation>
 <translation id="7375235221357833624">{0,plural, =1{Құрылғыны 1 сағат ішінде жаңарту керек}other{Құрылғыны # сағат ішінде жаңарту керек}}</translation>
 <translation id="7376543451826039186">Браузер жылдам болады: мысалы, қазіргі бет негізінде белгілі бір мазмұнды алдын ала жүктейді.</translation>
 <translation id="7376553024552204454">Тінтуір курсорын қозғалыс барысында бөлектеу</translation>
@@ -5905,7 +5913,6 @@
 <translation id="7416362041876611053">Белгісіз желі қатесі.</translation>
 <translation id="741906494724992817">Бұл қолданба арнайы рұқсаттарды қажет етпейді.</translation>
 <translation id="7419565702166471774">Әрдайым қауіпсіз байланысты пайдалану</translation>
-<translation id="7421067045979951561">протокол өңдегіштері</translation>
 <translation id="742130257665691897">Бетбелгілер өшірілді</translation>
 <translation id="7421925624202799674">&amp;Бет дереккөзін көру</translation>
 <translation id="7422192691352527311">Реттеулер…</translation>
@@ -6004,7 +6011,6 @@
 <translation id="751523031290522286"><ph name="APP_NAME"/> қолданбасын әкімші бөгеген. Қолданбаны пайдалану үшін әкімшіден рұқсат сұраңыз.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> кідіртілді</translation>
 <translation id="7517063221058203587">{0,plural, =1{Құрылғыны 1 минутта жаңарту керек}other{Құрылғыны # минутта жаңарту керек}}</translation>
-<translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">"Ok Brave" деп айтыңыз</translation>
 <translation id="7523585675576642403">Профильдің атын өзгерту</translation>
 <translation id="7525067979554623046">Жасау</translation>
@@ -6050,7 +6056,7 @@
 <translation id="7561196759112975576">Әрқашан</translation>
 <translation id="756445078718366910">Браузер терезесін ашу</translation>
 <translation id="7564847347806291057">Процесті аяқтау</translation>
-<translation id="756503097602602175">Кірген Brave аккаунттарыңызды <ph name="LINK_BEGIN"/>Параметрлерден<ph name="LINK_END"/> басқара аласыз. Веб-сайттар мен қолданбаларға берген рұқсаттар барлық есептік жазбаға қолданылуы мүмкін. Егер сайттар мен қолданбалардың аккаунтыңыз туралы ақпаратты пайдаланғанын қаламасаңыз, <ph name="DEVICE_TYPE"/> құрылғысына қонақ ретінде кіре аласыз немесе интернетті <ph name="LINK_2_BEGIN"/>инкогнито терезесінде<ph name="LINK_2_END"/> пайдалана аласыз.</translation>
+<translation id="756503097602602175">Кірген Brave аккаунттарыңызды <ph name="LINK_BEGIN"/>Параметрлерден<ph name="LINK_END"/> басқара аласыз. Веб-сайттар мен қолданбаларға берген рұқсаттар барлық аккаунтқа қолданылуы мүмкін. Егер сайттар мен қолданбалардың аккаунтыңыз туралы ақпаратты пайдаланғанын қаламасаңыз, <ph name="DEVICE_TYPE"/> құрылғысына қонақ ретінде кіре аласыз немесе интернетті <ph name="LINK_2_BEGIN"/>инкогнито терезесінде<ph name="LINK_2_END"/> пайдалана аласыз.</translation>
 <translation id="7566118625369982896">Play дүкеніндегі қолданба сілтемелерін басқару</translation>
 <translation id="7814200940910057384">Brave деректері өшірілді</translation>
 <translation id="756876171895853918">Аватарды реттеу</translation>
@@ -6061,7 +6067,7 @@
 <translation id="7573594921350120855">Сайттар бейне камераңызды әдетте бейнечат сияқты функциялар үшін қолданады.</translation>
 <translation id="7574650250151586813">Мәтін теру үшін Daydream Keyboard қолданбасын жаңартыңыз.</translation>
 <translation id="7576690715254076113">Реттеп шығару</translation>
-<translation id="7576976045740938453">Демо режиміндегі есептік жазбаға қатысты ақау орын алды.</translation>
+<translation id="7576976045740938453">Демо режиміндегі аккаунтқа қатысты ақау орын алды.</translation>
 <translation id="7578137152457315135">Саусақ ізі параметрлері</translation>
 <translation id="7578692661782707876">Растау кодыңызды енгізіңіз.</translation>
 <translation id="7580671184200851182">Бір аудиожазбаны барлық динамиктерден ойнату (моноаудио)</translation>
@@ -6070,12 +6076,11 @@
 <translation id="7582582252461552277">Осы желіні таңдау</translation>
 <translation id="7582844466922312471">Ұялы деректер</translation>
 <translation id="7583948862126372804">Саны</translation>
-<translation id="813677607648456893">Дауысты тану файлдары жүктеп алынбады. Бұдан былай мәтінді дауыспен енгізу кезінде дауысыңыз Brave-ға жіберілетін болады.</translation>
 <translation id="8201192017531062522">Brave қолданбалары ашық болғанда, Brave жұмысын жалғастырады.</translation>
 <translation id="7589461650300748890">Байқаңыз!</translation>
 <translation id="7593653750169415785">Хабарландыруларды бірнеше рет қабылдамағандықтан, автоматты түрде бөгелді.</translation>
 <translation id="7594725637786616550">Powerwash функциясы <ph name="DEVICE_TYPE"/> құрылғыңызды бастапқы күйіне қайта орнатуға арналған.</translation>
-<translation id="7595453277607160340">Android қолданбаларын пайдалану үшін және <ph name="DEVICE_TYPE"/> дұрыс жұмыс істеуі үшін, есептік жазбаға қайта кіріңіз де, жаңартыңыз.</translation>
+<translation id="7595453277607160340">Android қолданбаларын пайдалану үшін және <ph name="DEVICE_TYPE"/> дұрыс жұмыс істеуі үшін, аккаунтқа қайта кіріңіз де, жаңартыңыз.</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (қате коды <ph name="ERROR_CODE"/>).</translation>
 <translation id="7598466960084663009">Компьютерді қайта іске қосу</translation>
 <translation id="7599527631045201165">Құрылғының атауы тым ұзын. Қысқасын енгізіп, қайта көріңіз.</translation>
@@ -6119,7 +6124,6 @@
 <translation id="7636422033092045734">Навигацияға арналған ауыстырғыштар саны көбейгендіктен, автоматты сканерлеу өшірілді. Нұсқаулықты жабу үшін "Дайын" тармағын таңдап, "Ауыстырғышты таңдау" түймесін басыңыз.</translation>
 <translation id="7636919061354591437">Осы құрылғыда орнату</translation>
 <translation id="7637593984496473097">Дискіде орын жеткіліксіз.</translation>
-<translation id="7638605456503525968">Сериялық порттар</translation>
 <translation id="7639914187072011620">Серверден SAML стандартының бағыты ауысатын URL мекенжайы алынбады.</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> сақталған құпия сөздермен тиісті сайттарға автоматты түрде кіргізеді.</translation>
 <translation id="7641513591566880111">Жаңа профиль атауы</translation>
@@ -6186,9 +6190,9 @@
 <translation id="7691698019618282776">Crostini жүйесін жаңарту</translation>
 <translation id="7696063401938172191">"<ph name="PHONE_NAME"/>" телефонында:</translation>
 <translation id="7697166915480294040">Экраныңызды бөлісіп жатқанда, мәліметтер жасырын тұрады.</translation>
+<translation id="7698507637739331665">Кейбір элемент бөгелді</translation>
 <translation id="7701040980221191251">Жоқ</translation>
 <translation id="7701869757853594372">USER өңдегіштері</translation>
-<translation id="7701928712056789451">Бұл элементтер қауіпті болуы мүмкін</translation>
 <translation id="7702574632857388784"><ph name="FILE_NAME"/> файлын тізімнен өшіру</translation>
 <translation id="7702907602086592255">Домен</translation>
 <translation id="7704305437604973648">Тапсырма</translation>
@@ -6358,14 +6362,13 @@
 <translation id="7853747251428735">Қосымша құрал&amp;дар</translation>
 <translation id="7855678561139483478">Қойындыны жаңа терезеден ашу</translation>
 <translation id="7857093393627376423">Мәтіндік ұсыныстар</translation>
-<translation id="2088677651005944758">Бет бөлігін Brave Lens арқылы іздеу</translation>
 <translation id="7857949311770343000">Бұл сіз күткен жаңа қойынды беті ме?</translation>
 <translation id="7858328180167661092"><ph name="APP_NAME"/> (Windows)</translation>
 <translation id="786073089922909430">Қызмет: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7861215335140947162">&amp;Жүктеулер</translation>
 <translation id="2614143654677404775">Brave аккаунтының тілі</translation>
 <translation id="7864539943188674973">Bluetooth өшіру</translation>
-<translation id="7019964108096075053">Бет бөлігін Brave Lens арқылы іздеу</translation>
+<translation id="7865127013871431856">Аудару опциялары</translation>
 <translation id="7869143217755017858">Қараңғы режимді өшіру</translation>
 <translation id="786957569166715433"><ph name="DEVICE_NAME"/> – жұпталды</translation>
 <translation id="7870730066603611552">Сеанс басталғаннан кейін, синхрондау опцияларын қарап шығу</translation>
@@ -6445,7 +6448,6 @@
 <translation id="7946586320617670168">Дереккөз қауіпсіз болуы қажет</translation>
 <translation id="794676567536738329">Рұқсаттарды растау</translation>
 <translation id="7947962633355574091">Бейне мекенжайын к&amp;өшіру</translation>
-<translation id="7949924743070109245"><ph name="FILE_NAME"/> файлында құпия немесе қауіпті деректер болуы мүмкін. Әкімші хабары: "<ph name="CUSTOM_MESSAGE"/>".</translation>
 <translation id="1618464105329025698">Brave Pay төлеу әдістерін енгізу немесе басқару үшін <ph name="BEGIN_LINK"/>Brave аккаунты<ph name="END_LINK"/> бетіне кіріңіз.</translation>
 <translation id="7952708427581814389">Сайттар буфердегі мәтін мен кескіндерді көруге рұқсат сұрай алады.</translation>
 <translation id="795282463722894016">Қалпына келтірілді</translation>
@@ -6521,6 +6523,7 @@
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> (<ph name="SIZE"/>) жүктеп алынуда</translation>
 <translation id="8028993641010258682">Көлемі</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> – рұқсат сұралды, жауап беру үшін ⌘ + Option + жоғарыға бағыттауыш перне тіркесімін басыңыз.</translation>
+<translation id="8030169304546394654">Ажыратылған</translation>
 <translation id="8030852056903932865">Растау</translation>
 <translation id="8032244173881942855">Қойындыны трансляциялау мүмкін емес.</translation>
 <translation id="8033827949643255796">таңдалды</translation>
@@ -6595,6 +6598,7 @@
 <translation id="809792523045608178"><ph name="IDS_SHORT_PRODUCT_NAME"/> кеңейтімдегі прокси параметрлерді пайдаланып жатыр.</translation>
 <translation id="8097959162767603171">Әкімші алдымен әкімші консоліндегі Brave құрылғылары тізімінде берілген Қызмет көрсету шарттарын қабылдауы керек.</translation>
 <translation id="8098616321286360457">Желі байланысы қажет</translation>
+<translation id="8099495042588009598">Қосымша рұқсаттар</translation>
 <translation id="810068641062493918"><ph name="LANGUAGE"/> таңдалды. Құсбелгісін алып тастау үшін іздеу және бос орын пернелерін бірге басыңыз.</translation>
 <translation id="810185532889603849">Арнаулы түс</translation>
 <translation id="8101987792947961127">Келесі қайта жүктеу кезінде Powerwash қажет</translation>
@@ -6608,7 +6612,6 @@
 <translation id="8110489095782891123">Контактілер тізімі жүктеп алынуда…</translation>
 <translation id="8113476325385351118">Осы сайтқа MIDI құрылғыларын толық басқаруға тыйым салу</translation>
 <translation id="2972318514147518075">Планшет режимінде түймелердің көмегімен негізгі экранға, артқа өтіңіз және қолданбалар арасында ауысыңыз. Мұны, BraveVox немесе "Автоматты түрде басу" функциясы қосулы кезде, пайдалануға болады.</translation>
-<translation id="8114875720387900039">Көлденеңінен бөлу</translation>
 <translation id="8115139559594092084">Google Drive дискісінен</translation>
 <translation id="8116972784401310538">&amp;Бетбелгілер реттегіші</translation>
 <translation id="8117752106453549166">Әкімші Linux жүйесін конфигурациялап жатыр. Конфигурациялау бірнеше минутқа созылады.</translation>
@@ -6647,6 +6650,7 @@
 <translation id="8149564499626272569">USB кабелімен қосылған телефоныңыз арқылы растау</translation>
 <translation id="8151638057146502721">Конфигурациялау</translation>
 <translation id="8154790740888707867">Файл жоқ</translation>
+<translation id="8154912474061769055">Көптеген сайттың функциялары жұмыс істемеуі мүмкін.</translation>
 <translation id="815491593104042026">Аутентификация сәтсіз аяқталды, себебі ол қауіпсіз емес URL (<ph name="BLOCKED_URL"/>) пайдалануға конфигурацияланған. Әкімшіңізге хабарласыңыз.</translation>
 <translation id="8155676038687609779">{COUNT,plural, =0{Ешқандай құпия сөз ұрланбаған.}=1{{COUNT} құпия сөз ұрланды.}other{{COUNT} құпия сөз ұрланды.}}</translation>
 <translation id="8157248655669507702">eSIM профилін орнату үшін мобильдік интернетті қосыңыз.</translation>
@@ -6682,6 +6686,7 @@
 <translation id="8184318863960255706">Қосымша ақпарат</translation>
 <translation id="8184472985242519288">Бірыңғай</translation>
 <translation id="8186609076106987817">Сервер файлды таба алмады.</translation>
+<translation id="8186704951085064172"><ph name="VISUAL_SEARCH_PROVIDER"/> арқылы бет бөлігін іздеу</translation>
 <translation id="8188389033983459049">Құрылғы параметрлерін тексеріңіз және жалғастыру үшін оны іске қосыңыз</translation>
 <translation id="8189306097519446565">Мектеп аккаунттары</translation>
 <translation id="8189750580333936930">Privacy Sandbox</translation>
@@ -6690,6 +6695,7 @@
 <translation id="819137301779081601">Тағайындауды іске қосу үшін жаңа ауыстырғышты басыңыз.
 Тағайындауды өшіру үшін тағайындалған ауыстырғышты басыңыз.</translation>
 <translation id="8192944472786724289"><ph name="APP_NAME"/> қолданбасы экраныңыздағы мазмұнды бөліскісі келеді.</translation>
+<translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Құрылғыларыңыз<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
 <translation id="8195027750202970175">Дискідегі көлемі</translation>
 <translation id="8198323535106903877">Біз <ph name="NUMBER_OF_APPS"/> қолданбаны өзіміз орнатып береміз</translation>
 <translation id="8198456017687137612">Қойынды трансляциялануда</translation>
@@ -6723,7 +6729,6 @@
 <translation id="8235418492073272647">Бұл бетті <ph name="DEVICE_NAME"/> бөлісті.</translation>
 <translation id="8236911020904880539">шығу</translation>
 <translation id="8236917170563564587">Орнына осы қойындыны бөлісу</translation>
-<translation id="8237471930911823556"><ph name="APP_NAME"/> жаңа браузер қойындысында ашылуға орнатылған, қолдау көрсету сілтемелері де браузерде ашылады.</translation>
 <translation id="8237647586961940482">Қою қызғылт және қызыл</translation>
 <translation id="8239032431519548577">Кәсіпорын тіркелді</translation>
 <translation id="8239932336306009582">Хабарландыру жіберуге рұқсат жоқ</translation>
@@ -6762,7 +6767,6 @@
     <ph name="BEGIN_PARAGRAPH3"/>Иесі функцияны "Параметрлер &gt; Кеңейтілген &gt; Диагностикалық және пайдалану деректерін Brave қызметіне автоматты жіберу" тармағы арқылы басқара алады.<ph name="END_PARAGRAPH3"/>
     <ph name="BEGIN_PARAGRAPH4"/>Балаңыз үшін қосымша "Интернет пен қолданбаларды пайдалану тарихы" параметрі қосулы болса, бұл деректер оның Brave аккаунтына сақталуы мүмкін. Бұл параметрлер және оларды қалай реттеу керектігі туралы ақпаратты families.google.com сайтынан біле аласыз.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="826905130698769948">Клиент сертификаты дұрыс емес.</translation>
-<translation id="8270242299912238708">PDF форматындағы құжаттар</translation>
 <translation id="827097179112817503">Басты түймесін көрсету</translation>
 <translation id="8271268254812352141">Тінтуірдің оң жақ түймесін басып немесе мәтінді басып тұрып, мәтіннің анықтамасын, аудармасын көруге немесе өлшем бірліктерін ауыстыруға болады. Аударма тілдерін <ph name="LINK_BEGIN"/>веб-сайт тілдері<ph name="LINK_END"/> бөлімінде реттейсіз.</translation>
 <translation id="8271379370373330993">Ата-ана, келесі қадамдарды сіз орындауыңыз керек. Аккаунтты реттеп болғасын, <ph name="DEVICE_TYPE"/> құрылғысын балаға қайтара аласыз.</translation>
@@ -6783,7 +6787,6 @@
 <translation id="8288032458496410887"><ph name="APP"/> жойылуда...</translation>
 <translation id="8289128870594824098">Диск көлемі</translation>
 <translation id="8293206222192510085">Бетбелгі қосу</translation>
-<translation id="829335040383910391">дыбыс</translation>
 <translation id="8294431847097064396">Дереккөз</translation>
 <translation id="8298429963694909221">Енді телефоныңызға келген хабарландырулар <ph name="DEVICE_TYPE"/> құрылғысына да келеді. Хабарландыруларды <ph name="DEVICE_TYPE"/> құрылғысында қабылдамасаңыз, телефоннан да қабылданбайды. Телефоныңыз жаныңызда болуы және Bluetooth бен Wi-Fi қосылып тұруы керек.</translation>
 <translation id="8299319456683969623">Қазір желіден тыссыз.</translation>
@@ -6803,7 +6806,6 @@
 <translation id="8316618172731049784"><ph name="DEVICE_NAME"/> құрылғысына жіберу</translation>
 <translation id="8317671367883557781">Желі байланысын енгізу</translation>
 <translation id="8319414634934645341">Кеңейтілген кілтті пайдалану</translation>
-<translation id="8321476692217554900">хабарландырулар</translation>
 <translation id="8321492415476219409">Ауыстырғышты тағайындау: Алдыңғы</translation>
 <translation id="8321837372750396788">Бұл <ph name="DEVICE_TYPE"/> құрылғысын <ph name="MANAGER"/> домені басқарады.</translation>
 <translation id="8322814362483282060">Бұл беттің микрофонды пайдалану мүмкіндігі шектелді.</translation>
@@ -6825,6 +6827,7 @@
 <translation id="8342221978608739536">Қолданып көрмедім</translation>
 <translation id="8342861492835240085">Жинақ таңдау</translation>
 <translation id="8347227221149377169">Баспа жұмыстары</translation>
+<translation id="255999604394332437">Инкогнито режимінде болғанда, сайттар браузерді қолдану мәліметін көру (мысалы, жарнамаларды жекелендіру) үшін cookie файлдарын пайдалана алмайды. Кейбір сайттың функциялары жұмыс істемеуі мүмкін.</translation>
 <translation id="8350789879725387295">Қондырғыдағы стилус құралдары</translation>
 <translation id="8351316842353540018">a11y опцияларын әрқашан көрсету</translation>
 <translation id="8351419472474436977">Бұл кеңейтім прокси параметрлерін бақылауға алды, яғни сіздің онлайн орындайтын кез келген әрекетіңізді өзгерте, бұза немесе ұстап қала алады. Ондай бақылаудың жасалуын қаламасаңыз, кеңейтімді өшіргеніңіз жөн болар.</translation>
@@ -6872,7 +6875,6 @@
 <translation id="8404893580027489425">Саусақ ізін оқу сканері <ph name="DEVICE_TYPE"/> құрылғысының оң жағында орналасқан. Оны кез келген саусақпен түртіңіз.</translation>
 <translation id="8405046151008197676">Ең соңғы нұсқаға қатысты негізгі ақпарат алыңыз.</translation>
 <translation id="8407199357649073301">Журнал деңгейі:</translation>
-<translation id="8409413588194360210">төлем өңдегіштері</translation>
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8412136526970428322"><ph name="PERMISSION"/> және тағы <ph name="COUNT"/> рұқсат етілді.</translation>
 <translation id="8413385045638830869">Алдымен сұрау (ең дұрысы)</translation>
@@ -6885,6 +6887,7 @@
 <translation id="8425213833346101688">Өзгерту</translation>
 <translation id="8425492902634685834">Құралдар тақтасына бекіту</translation>
 <translation id="8425768983279799676">Құрылғының құлпын ашу үшін PIN кодыңызды пайдалануыңызға болады.</translation>
+<translation id="8426111352542548860">Топты сақтау</translation>
 <translation id="8426713856918551002">Қосылуда</translation>
 <translation id="8427213022735114808">Дауыспен теруге рұқсат ету үшін мәтінді дауыспен енгізу функциясы даусыңызды Brave жүйесіне жібереді.</translation>
 <translation id="8427292751741042100">кез келген хоста ендірілген</translation>
@@ -6910,7 +6913,9 @@
 <translation id="8456761643544401578">Автоматты қараңғы режим</translation>
 <translation id="845702320058262034">Қосылу мүмкін емес. Телефоныңыздағы Bluetooth қосылып тұрғанына көз жеткізіңіз.</translation>
 <translation id="8457451314607652708">Бетбелгілерді импорттау</translation>
+<translation id="8458341576712814616">Таңбаша</translation>
 <translation id="8458627787104127436">Барлығын (<ph name="URL_COUNT"/>) жаңа терезеде ашу</translation>
+<translation id="8460932807646981183">Іздеу жүйелерін және сайттан іздеуді басқару</translation>
 <translation id="84613761564611563">Желіні конфигурациялау интерфейсін алу сұралды, күте тұрыңыз…</translation>
 <translation id="8461914792118322307">Прокси</translation>
 <translation id="8463215747450521436">Бұл бақылаудағы пайдаланушыны басқарушы жойған немесе ажыратқан болуы мүмкін. Осы пайдаланушы ретінде кіргіңіз келсе, басқарушыға хабарласыңыз.</translation>
@@ -6929,6 +6934,7 @@
 <translation id="2015014930243978107">Компьютеріңіздегі басқа бір бағдарлама кеңейтім қосты, ол Brave жұмысын өзгертуі мүмкін.</translation>
 <translation id="8477241577829954800">Алмастырылған</translation>
 <translation id="8477384620836102176">&amp;Жалпы</translation>
+<translation id="8479109005219657634"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, аудио құрылғы, батарея деңгейі: <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="8479176401914456949">Код жарамсыз. Қайталап көріңіз.</translation>
 <translation id="8480082892550707549">Файлдарды бұрын осы сайттан жүктеп алған болсаңыз да, сайт уақытша қауіпті (бұзылған) болуы мүмкін. Файлды кейінірек жүктеп көріңіз.</translation>
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> белгісіз құрылғысы</translation>
@@ -6942,6 +6948,7 @@
 <translation id="8492822722330266509">Сайттар қалқымалы терезелерді жібереді және бағытты ауыстыру функцияларын пайдаланады.</translation>
 <translation id="7438697671019881004">Brave Cast туралы пікір</translation>
 <translation id="8493236660459102203">Микрофон:</translation>
+<translation id="84959976576210191">Мекенжай жолағына іздегіңіз келген сайттың "@gmail" сияқты таңбашасын енгізіңіз. Кейін қалаған перне тіркесімін басып, ізделетін сөзді енгізіңіз.</translation>
 <translation id="8496717697661868878">Бұл плагинді іске қосу</translation>
 <translation id="8497219075884839166">Windows утилиталары</translation>
 <translation id="8498214519255567734">Күңгірт жарық жағдайында экранға қарауды немесе одан оқуды оңайлатады</translation>
@@ -6965,6 +6972,7 @@
 <translation id="4483547786985740455">Карталарды Brave аккаунтына сақтау</translation>
 <translation id="8525306231823319788">Толық экран</translation>
 <translation id="8526666462501866815">Linux жүйесінің жаңа нұсқасын орнатудан бас тарту</translation>
+<translation id="8526813720153458066">SSH</translation>
 <translation id="8528074251912154910">Тілдерді қосу</translation>
 <translation id="8528962588711550376">Кіріп жатырсыз.</translation>
 <translation id="8529925957403338845">Жылдам тетеринг байланысы орнатылмады</translation>
@@ -7030,7 +7038,6 @@
 <translation id="8613164732773110792">Тек кіші әріптерді, цифрларды, астыңғы сызықтарды немесе сызықшаларды пайдалануға болады.</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> файлы қауіпсіздік тексерісін жасауға тым үлкен. Көлемі 50 MБ дейін файлдарды аша аласыз.</translation>
 <translation id="8616441548384109662"><ph name="CONTACT_NAME"/> атты контактіні контактілер тізіміне қосу</translation>
-<translation id="8617269623452051934">құрылғыны пайдалануыңыз</translation>
 <translation id="8617748779076050570">Қауіпсіз байланыс коды: <ph name="CONNECTION_ID"/></translation>
 <translation id="8619803522055190423">"Көлеңке түсіру" әсері</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
@@ -7070,7 +7077,6 @@
 <translation id="8648252583955599667"><ph name="GET_HELP_LINK"/> немесе <ph name="RE_SCAN_LINK"/></translation>
 <translation id="8648408795949963811">"Түнгі жарық" түс температурасы</translation>
 <translation id="8648544143274677280"><ph name="SITE_NAME"/> сайтына келесі рұқсаттар қажет: <ph name="FIRST_PERMISSION"/>, <ph name="SECOND_PERMISSION"/>, т.б.</translation>
-<translation id="865032292777205197">қозғалыс датчиктері</translation>
 <translation id="8650543407998814195">Ескі профиліңізге кіре алмасаңыз да, оны өшіруге болады.</translation>
 <translation id="8651585100578802546">Бұл бетті күштеп қайта жүктеу</translation>
 <translation id="8652400352452647993">Пакет кеңейтімі қатесі</translation>
@@ -7079,7 +7085,6 @@
 <translation id="8655972064210167941">Кірілмеді, себебі құпия сөзіңіз расталмады. Әкімшіңізге хабарласыңыз немесе әрекетті қайталаңыз.</translation>
 <translation id="8657393004602556571">Пікірді жою керек пе?</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> қолданбасы <ph name="TAB_NAME"/> сайтымен экранды және аудионы бөлісуде.</translation>
-<translation id="8660073998956001352">Іздеу жүйелеріңіз</translation>
 <translation id="8662671328352114214"><ph name="TYPE"/> желісіне қосылу</translation>
 <translation id="8662811608048051533">Көп сайттардан шығарады.</translation>
 <translation id="8662911384982557515">Негізгі бетті келесіге өзгерту: <ph name="HOME_PAGE"/></translation>
@@ -7148,7 +7153,6 @@
 <translation id="8725066075913043281">Әрекетті қайталау</translation>
 <translation id="8725178340343806893">Таңдаулылар/Бетбелгілер</translation>
 <translation id="8726206820263995930">Серверден саясат параметрлерін алу кезіндегі қате: <ph name="CLIENT_ERROR"/>.</translation>
-<translation id="8727154974495727220"><ph name="DEVICE_TYPE"/> құрылғысы реттелгеннен кейін, "Assistant" түймесін басып немесе "Ok Brave" деп, кез келген уақытта анықтама ала аласыз. Өзгертулер енгізу үшін Assistant параметрлеріне өтіңіз.</translation>
 <translation id="8729133765463465108">QR кодын сканерлеу үшін камераны пайдалану</translation>
 <translation id="8730621377337864115">Дайын</translation>
 <translation id="8731629443331803108"><ph name="SITE_NAME"/> сайтына келесі рұқсаттар қажет: <ph name="PERMISSION"/></translation>
@@ -7215,7 +7219,6 @@
 <translation id="8786824282808281903">Балаңыз осы белгішені көрген кезде, саусақ ізі жеке басты анықтау немесе сатып алуларды мақұлдау үшін пайдаланылады.</translation>
 <translation id="8787575090331305835">{NUM_TABS,plural, =1{Атауы жоқ топ – 1 қойынды}other{Атауы жоқ топ – # қойынды}}</translation>
 <translation id="8791534160414513928">Шолу трафигіңіз арқылы "Бақыламау" сұрауын жіберу</translation>
-<translation id="8792626944327216835">микрофон</translation>
 <translation id="879413103056696865">Хотспот қосулы кезде, <ph name="PHONE_NAME"/>:</translation>
 <translation id="8795916974678578410">Жаңа терезе</translation>
 <translation id="8797459392481275117">Бұл сайт ешқашан аударылмасын</translation>
@@ -7238,7 +7241,6 @@
 <translation id="8814190375133053267">Wi-Fi</translation>
 <translation id="8814319344131658221">Емлесі тексерілетін тілдер тізімі тіл параметріне байланысты жасалады.</translation>
 <translation id="8814644416678422095">Қатты диск</translation>
-<translation id="8814687660896548945">Күте тұрыңыз, мұрағат сканерленуде...</translation>
 <translation id="881782782501875829">Порт нөмірін енгізу</translation>
 <translation id="881799181680267069">Басқаларды жасыру</translation>
 <translation id="8818152010000655963">Тұсқағаз</translation>
@@ -7340,7 +7342,6 @@
 <translation id="8907787635362884532">Жариялаушы: <ph name="APP_ORIGIN"/></translation>
 <translation id="568229640676399500">Brave компьютерде зиянды бағдарламалық құралдың бар-жоғын тексере алады.</translation>
 <translation id="8909298138148012791"><ph name="APP_NAME"/> жойылды.</translation>
-<translation id="3499452739340047976">Brave Lens арқылы кескіндер іздеу үшін сүйреу</translation>
 <translation id="8909833622202089127">Сайт орналасқан жеріңізді бақылауда</translation>
 <translation id="5849608398437058285">Бетбелгілерге, тарихқа, құпия сөздерге және басқа параметрлерге енгізілген өзгертулер бұдан әрі Brave аккаунтымен синхрондалмайды. Алайда бұрыннан бар деректер Brave аккаунтында сақталады және <ph name="BEGIN_LINK"/>Brave бақылау тақтасында<ph name="END_LINK"/> басқарылады.</translation>
 <translation id="8910987510378294980">Құрылғылар тізімін жасыру</translation>
@@ -7391,7 +7392,6 @@
 <translation id="8966809848145604011">Басқа профильдер</translation>
 <translation id="8966870118594285808">Қойындыны абайсызда жапқан болсаңыз, оны қайта ашыңыз</translation>
 <translation id="8967427617812342790">Оқу тізіміне қосу</translation>
-<translation id="8967866634928501045">Көрсету үшін "Alt"+"Shift"+"A" пернелерін басыңыз</translation>
 <translation id="8968766641738584599">Картаны сақтау</translation>
 <translation id="89720367119469899">Шығу</translation>
 <translation id="8842834450537919370">Әкімшіге хабарласып, брандмауэр Brave серверлерінен келген жүктеулерді бөгемейтінін тексеріңіз.</translation>
@@ -7401,6 +7401,7 @@
 <translation id="897525204902889653">Карантин қызметі</translation>
 <translation id="8975396729541388937">Электрондық хаттардағы жазылымнан бас тарту сілтемесін басып, жазылымды кез келген уақытта тоқтатыңыз.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" және тағы 1 қойынды}other{"<ph name="TAB_TITLE"/>" және тағы # қойынды}}</translation>
+<translation id="8977175149983066223"><ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/> құрылғы, <ph name="DEVICE_NAME"/>, тінтуір</translation>
 <translation id="8977811652087512276">Құпия сөз дұрыс емес немесе файл бүлінген</translation>
 <translation id="8978154919215542464">Қосулы – барлығын синхрондау</translation>
 <translation id="897939795688207351"><ph name="ORIGIN"/> сайтында</translation>
@@ -7447,6 +7448,7 @@
 <translation id="9023909777842748145">Бұл функцияның өшірілуі құрылғының маңызды қызметтерге (мысалы, жүйелік жаңарту және қауіпсіздік) қажетті ақпаратты жіберу мүмкіндігіне әсер етпейді.</translation>
 <translation id="9024127637873500333">&amp;Жаңа қойындыда ашу</translation>
 <translation id="9024158959543687197">Ортақ файлды орнату кезінде қате шықты. Ортақ қалтаның URL сілтемесін тексеріп, қайта орнатып көріңіз.</translation>
+<translation id="9024692527554990034">Белгілі бір сайтта жылдам іздеу немесе басқа іздеу жүйесіне өту үшін мекенжай жолағында таңбашалар пайдалана аласыз.</translation>
 <translation id="9026731007018893674">жүктеу</translation>
 <translation id="9026852570893462412">Бұл процесс бірнеше минутқа созылуы мүмкін. Виртуалды құрылғы жүктелуде.</translation>
 <translation id="9027459031423301635">Сілтемені жаңа &amp;қойындыда ашу</translation>
@@ -7470,6 +7472,7 @@
 <translation id="9042893549633094279">Құпиялық және қауіпсіздік</translation>
 <translation id="904451693890288097">"<ph name="DEVICE_NAME"/>" үшін ортақ кілтті енгізіңіз:</translation>
 <translation id="9044646465488564462">Желіге қосылу сәтсіз аяқталды: <ph name="DETAILS"/></translation>
+<translation id="9045160989383249058">Оқу тізімі жаңа бүйірлік панельге жылжытылды. Осы жерден көріңіз.</translation>
 <translation id="4534361985432360439">Ашқалы жатқан беттің веб-мекенжайын Brave компаниясына жібереді</translation>
 <translation id="9048745018038487540">Барлық қаріпті таңдау</translation>
 <translation id="9050666287014529139">Құпия фраза</translation>
@@ -7480,7 +7483,6 @@
 <translation id="9055636786322918818">RC4 шифрлауын күшіне енгізу. RC4 шифрлары қауіпті болғандықтан, бұл параметрді пайдалану қауіпті арттырады.</translation>
 <translation id="9056810968620647706">Сәйкестіктер табылмады.</translation>
 <translation id="9057354806206861646">Кестені жаңарту</translation>
-<translation id="7483910542760516650">Brave Lens арқылы іздеу үшін кескіндерді сүйреу</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933"><ph name="ERROR_LINE_START"/> - <ph name="ERROR_LINE_END"/> аралығындағы жолдарда қате шықты</translation>
 <translation id="9063800855227801443">Құпия мазмұнды түсіру мүмкін емес</translation>
@@ -7492,6 +7494,7 @@
         <ph name="BREAK"/>
         <ph name="BREAK"/>
         Brave қандай деректі жинайтыны және оларды не үшін жинайтыны <ph name="BEGIN_LINK2"/>policies.google.com<ph name="END_LINK2"/> бетінде толығырақ түсіндіріледі.</translation>
+<translation id="9066777626153702300">Өшірулі сайттар</translation>
 <translation id="9066782832737749352">Мәтінді сөзге айналдыру</translation>
 <translation id="9068878141610261315">Бұл файл түрі қолданылмайды.</translation>
 <translation id="9070342919388027491">Қойынды сол жаққа жылжытылды.</translation>
@@ -7549,7 +7552,6 @@
 <translation id="9121814364785106365">Бекітілген қойынды ретінде ашу</translation>
 <translation id="9122176249172999202"><ph name="IDS_SHORT_PRODUCT_NAME"/> кідіртілді</translation>
 <translation id="9124003689441359348">Сақталған құпия сөздер мына жерге шығады</translation>
-<translation id="7100587578659372059">Brave компьютерде зиянды бағдарламалық құралдарды іздеп болғасын маған хабарландыру келсін.</translation>
 <translation id="9126149354162942022">Көрсеткі түсі</translation>
 <translation id="9128317794749765148">Реттеу аяқталмады</translation>
 <translation id="9128335130883257666"><ph name="INPUT_METHOD_NAME"/> енгізу әдісіне арналған параметрлер бетін ашу</translation>
@@ -7629,7 +7631,7 @@
 <translation id="9215293857209265904">"<ph name="EXTENSION_NAME"/>" қосылды</translation>
 <translation id="9215742531438648683">Google Play Store қолданбасын жою</translation>
 <translation id="9218430445555521422">Әдепкі ретінде орнату</translation>
-<translation id="9219103736887031265">Кескіндер</translation>
+<translation id="9218842937876577955"><ph name="APP_NAME"/> (қолдау көрсетілмейтін қолданба)</translation>
 <translation id="9220525904950070496">Аккаунтты жою</translation>
 <translation id="9220820413868316583">Саусағыңызды көтеріп, қайта басып көріңіз.</translation>
 <translation id="923467487918828349">Барлығын көрсету</translation>
@@ -7697,7 +7699,6 @@
 <translation id="987897973846887088">Суреттер қолжетімді емес</translation>
 <translation id="988320949174893488">Кейде кідіріп қалады</translation>
 <translation id="988978206646512040">Құпия фраза бос болмауы керек</translation>
-<translation id="991413375315957741">қозғалыс не жарық датчиктері</translation>
 <translation id="992032470292211616">Кеңейтімдер, қолданбалар және тақырыптар құрылғыңызды зақымдауы мүмкін. Жалғастыру қажет пе?</translation>
 <translation id="992256792861109788">Қызғылт</translation>
 <translation id="992592832486024913">BraveVox өшіру (дыбыстық көмек)</translation>
