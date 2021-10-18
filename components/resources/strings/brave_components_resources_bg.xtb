@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Прегледан</translation>
 <translation id="3113653894794167793">За съжаление възникна проблем при обработката на заявката ви, опитайте отново.</translation>
 <translation id="8832187864682447273">Трябва ви проверен портфейл, за да влезете в</translation>
-<translation id="2607420597216860026">Опитайте отново, след като сте завършили ИД проверката в <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Опитайте отново, след като сте завършили ИД проверката в <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Хмм, изглежда, че вашият портфейл Brave Rewards вече е потвърден с друг акаунт за <ph name="PROVIDER"/>. Опитайте да го потвърдите отново, като използвате предишния си акаунт.</translation>
 <translation id="5111921830714291902">Грешка: друг акаунт</translation>
 <translation id="1737873393693460829">С включването на [[title]] вие се съгласявате с <ph name="BEGIN_LINK1"/>Условията за ползване<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политиката за поверителност<ph name="END_LINK2"/>.</translation>

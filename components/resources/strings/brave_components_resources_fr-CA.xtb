@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Vu</translation>
 <translation id="3113653894794167793">Désolés, un problème est survenu lors du traitement de votre demande. Veuillez réessayer.</translation>
 <translation id="8832187864682447273">Il vous faut un portefeuille validé pour vous connecter</translation>
-<translation id="2607420597216860026">Veuillez réessayer après avoir terminé la vérification d'identifiant sur <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Veuillez réessayer après avoir terminé la vérification d'identifiant sur <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, votre portefeuille Brave Rewards semble avoir déjà été vérifié par un autre compte <ph name="PROVIDER"/>. Essayez de le vérifier à nouveau avec votre ancien compte.</translation>
 <translation id="5111921830714291902">Erreur : Autre compte</translation>
 <translation id="1737873393693460829">En activant [[title]], vous acceptez les <ph name="BEGIN_LINK1"/>conditions d'utilisation<ph name="END_LINK1"/> et la <ph name="BEGIN_LINK2"/>politique de confidentialité<ph name="END_LINK2"/>.</translation>

@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Visualizado</translation>
 <translation id="3113653894794167793">Sinto muito, ocorreu um problema ao processar sua solicitação. Tente novamente.</translation>
 <translation id="8832187864682447273">É necessário ter uma carteira verificada para fazer login</translation>
-<translation id="2607420597216860026">Tente novamente depois de concluir a verificação de ID no <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Tente novamente depois de concluir a verificação de ID no <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Parece que sua carteira do Brave Rewards já foi verificada com outra conta do <ph name="PROVIDER"/>. Tente verificar novamente usando sua conta anterior.</translation>
 <translation id="5111921830714291902">Erro: conta diferente</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], você concorda com os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e com a <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>

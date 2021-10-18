@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Ogledano</translation>
 <translation id="3113653894794167793">Žal je prišlo do težave pri obdelavi vaše zahteve. Poskusite znova.</translation>
 <translation id="8832187864682447273">Za prijavo potrebujete preverjeno denarnico</translation>
-<translation id="2607420597216860026">Poskusite znova, ko dokončate preverjanje osebnega dokumenta na <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Poskusite znova, ko dokončate preverjanje osebnega dokumenta na <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, izgleda, da je bila vaša denarnica Brave Rewards že preverjena pri drugem <ph name="PROVIDER"/> account. Poskusite znova preveriti s svojim prejšnjim računom.</translation>
 <translation id="5111921830714291902">Napaka: Drugi račun</translation>
 <translation id="1737873393693460829">Če vklopite [[title]], se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>

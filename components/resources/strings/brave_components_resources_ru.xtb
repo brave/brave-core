@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Просмотрено</translation>
 <translation id="3113653894794167793">К сожалению, при обработке вашего запроса возникла проблема. Пожалуйста, попробуйте еще раз.</translation>
 <translation id="8832187864682447273">Чтобы войти, нужно подтвердить кошелек</translation>
-<translation id="2607420597216860026">Повторите попытку после подтверждения идентификатора в <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Повторите попытку после подтверждения идентификатора в <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Кажется, кошелек Brave Rewards был подтвержден с помощью другого аккаунта <ph name="PROVIDER"/>. Войдите в аккаунт, который использовали в тот раз.</translation>
 <translation id="5111921830714291902">Ошибка: неверный аккаунт</translation>
 <translation id="1737873393693460829">Включая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>

@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Visualizzati</translation>
 <translation id="3113653894794167793">Spiacenti, si è verificato un problema durante l'elaborazione della tua richiesta, riprova.</translation>
 <translation id="8832187864682447273">Hai bisogno di un portafoglio verificato per accedere</translation>
-<translation id="2607420597216860026">Riprova dopo aver completato la verifica dell’ID su <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Riprova dopo aver completato la verifica dell’ID su <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">A quanto pare il tuo portafoglio Brave Rewards è già stato verificato con un altro account <ph name="PROVIDER"/>. Prova a verificarlo di nuovo utilizzando il tuo account precedente.</translation>
 <translation id="5111921830714291902">Errore: account diverso</translation>
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>

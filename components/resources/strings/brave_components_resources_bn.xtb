@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">দেখা হয়েছে</translation>
 <translation id="3113653894794167793">দুঃখিত, আপনার অনুরোধটি সম্পাদনে একটা সমস্যা ছিলো, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="8832187864682447273">লগ ইন করতে আপনার একটি যাচাইকৃত ওয়ালেট লাগবে</translation>
-<translation id="2607420597216860026"><ph name="CUSTODIAN"/>-এ আপনি ID যাচাইকরণ সম্পূর্ণ করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/>-এ আপনি ID যাচাইকরণ সম্পূর্ণ করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="1501075228659004450">হুম, মনে হচ্ছে আপনার Brave Rewards ওয়ালেট ইতিমধ্যেই যাচাই করা হয়েছে অন্য একটি <ph name="PROVIDER"/> অ্যাকাউন্টের সাথে। আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।</translation>
 <translation id="5111921830714291902">ত্রুটি: ভিন্ন অ্যাকাউন্ট</translation>
 <translation id="1737873393693460829">[[title]] চালু করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>

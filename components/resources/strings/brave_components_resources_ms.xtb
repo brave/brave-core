@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Dilihat</translation>
 <translation id="3113653894794167793">Maaf terdapat masalah semasa memproses permintaan anda, sila cuba lagi.</translation>
 <translation id="8832187864682447273">Anda memerlukan dompet yang disahkan untuk log masuk</translation>
-<translation id="2607420597216860026">Sila cuba lagi setelah anda melengkapkan pengesahan ID di <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Sila cuba lagi setelah anda melengkapkan pengesahan ID di <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, nampaknya dompet Brave Rewards anda telah disahkan menggunakan akaun <ph name="PROVIDER"/> lain. Sila cuba mengesahkan sekali lagi menggunakan akaun anda yang sebelum ini.</translation>
 <translation id="5111921830714291902">Ralat: Akaun berbeza</translation>
 <translation id="1737873393693460829">Dengan menekan buka pada [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>

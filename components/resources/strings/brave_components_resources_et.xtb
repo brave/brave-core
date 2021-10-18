@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Vaadatud</translation>
 <translation id="3113653894794167793">Kahjuks ilmnes teie päringu töötlemisel probleem, proovige uuesti.</translation>
 <translation id="8832187864682447273">Sisselogimiseks vajate kinnitatud rahakotti.</translation>
-<translation id="2607420597216860026">Proovige uuesti, kui olete läbinud <ph name="CUSTODIAN"/> isikusamasuse kontrolli.</translation>
+<translation id="2607420597216860026">Proovige uuesti, kui olete läbinud <ph name="PROVIDER"/> isikusamasuse kontrolli.</translation>
 <translation id="1501075228659004450">Hmm, paistab, et teie Brave Rewardsi rahakott on juba kinnitatud muu <ph name="PROVIDER"/> kontoga. Proovige uuesti kinnitada oma eelmise konto abil.</translation>
 <translation id="5111921830714291902">Tõrge: erinev konto</translation>
 <translation id="1737873393693460829">Lülitades sisse funktsiooni [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>

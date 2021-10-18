@@ -244,7 +244,7 @@
 <translation id="6805660603861526473">Vist</translation>
 <translation id="3113653894794167793">Beklager, men det var problemer med å behandle forespørselen din. Prøv igjen.</translation>
 <translation id="8832187864682447273">Du trenger en bekreftet lommebok for å logge på</translation>
-<translation id="2607420597216860026">Prøv igjen etter at du har fullført ID-verifiseringen på <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Prøv igjen etter at du har fullført ID-verifiseringen på <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, det ser ut som at Brave Rewards-lommeboken din allerede er verifisert for en annen <ph name="PROVIDER"/>-konto. Prøv å verifisere igjen med den forrige kontoen din.</translation>
 <translation id="5111921830714291902">Feil: Annen konto</translation>
 <translation id="1737873393693460829">Ved å skru på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>

@@ -247,7 +247,7 @@
 <translation id="6805660603861526473">देखा गया</translation>
 <translation id="3113653894794167793">क्षमा करें, आपके अनुरोध को संसाधित करने में समस्या थी, कृपया पुनः प्रयास करें।</translation>
 <translation id="8832187864682447273">लॉग इन करने के लिए आपको एक वेरिफ़ाइड वॉलेट की आवश्यकता है</translation>
-<translation id="2607420597216860026">कृपया ID वेरिफ़ाई पूरा करने के बाद <ph name="CUSTODIAN"/> पर दोबारा कोशिश करें</translation>
+<translation id="2607420597216860026">कृपया ID वेरिफ़ाई पूरा करने के बाद <ph name="PROVIDER"/> पर दोबारा कोशिश करें</translation>
 <translation id="1501075228659004450">हम्म, ऐसा लगता है कि आपका Brave Reward वॉलेट पहले से ही दूसरे के साथ वेरिफ़ाई किया जा चूका है <ph name="PROVIDER"/> अकाउंट. कृपया अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.</translation>
 <translation id="5111921830714291902">एरर: अलग अकाउंट</translation>
 <translation id="1737873393693460829">[[title]] को चालू करके, आप <ph name="BEGIN_LINK1"/> सेवा की शर्तें <ph name="END_LINK1"/> से सहमत होते हैं। और <ph name="BEGIN_LINK2"/> गोपनीयता नीति <ph name="END_LINK2"/>।</translation>

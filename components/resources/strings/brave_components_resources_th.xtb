@@ -247,7 +247,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6805660603861526473">ดูแล้ว</translation>
 <translation id="3113653894794167793">ขออภัย เกิดปัญหาในการดำเนินการตามคำขอ โปรดลองอีกครั้ง</translation>
 <translation id="8832187864682447273">คุณต้องมีวอลเล็ทที่ผ่านการยืนยันแล้วเพื่อเข้าสู่ระบบ</translation>
-<translation id="2607420597216860026">โปรดลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="CUSTODIAN"/> แล้ว</translation>
+<translation id="2607420597216860026">โปรดลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="PROVIDER"/> แล้ว</translation>
 <translation id="1501075228659004450">ดูเหมือนว่ากระเป๋าเงิน Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชีผู้ใช้ <ph name="PROVIDER"/> อีกบัญชีหนึ่ง กรุณายืนยันอีกครั้งโดยใช้บัญชีก่อนหน้าของคุณ</translation>
 <translation id="5111921830714291902">ข้อผิดพลาด: บัญชีแตกต่างกัน</translation>
 <translation id="1737873393693460829">เมื่อเปิด [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>

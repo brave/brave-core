@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Angesehen</translation>
 <translation id="3113653894794167793">Entschuldigung, bei der Bearbeitung Ihrer Anfrage ist ein Problem aufgetreten. Bitte versuchen Sie es bitte erneut.</translation>
 <translation id="8832187864682447273">Sie benötigen eine verifizierte Wallet, um sich anzumelden</translation>
-<translation id="2607420597216860026">Bitte versuchen Sie es erneut, nachdem Sie die ID-Verifizierung für <ph name="CUSTODIAN"/> abgeschlossen haben.</translation>
+<translation id="2607420597216860026">Bitte versuchen Sie es erneut, nachdem Sie die ID-Verifizierung für <ph name="PROVIDER"/> abgeschlossen haben.</translation>
 <translation id="1501075228659004450">Hmm, anscheinend wurde Ihre Brave Rewards-Wallet bereits mit einem anderen <ph name="PROVIDER"/>-Konto verifiziert. Bitte versuchen Sie es erneut mit Ihrem vorherigen Konto.</translation>
 <translation id="5111921830714291902">Fehler: Anderes Konto</translation>
 <translation id="1737873393693460829">Durch Aktivieren von [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>

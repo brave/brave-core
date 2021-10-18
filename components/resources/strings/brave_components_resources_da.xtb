@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Set</translation>
 <translation id="3113653894794167793">Beklager, der opstod et problem under behandlingen af din anmodning, prøv igen.</translation>
 <translation id="8832187864682447273">Du skal have en bekræftet wallet, før du kan logge ind</translation>
-<translation id="2607420597216860026">Prøv igen, når du har udført ID-validering på <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Prøv igen, når du har udført ID-validering på <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, det ser ud til, at din Brave Rewards-wallet allerede er blevet verificeret med en anden <ph name="PROVIDER"/>-konto. Prøv at validere igen ved at bruge din forrige konto.</translation>
 <translation id="5111921830714291902">Fejl: En anden konto</translation>
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>

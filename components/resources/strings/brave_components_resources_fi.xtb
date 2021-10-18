@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Katsottu</translation>
 <translation id="3113653894794167793">Pyyntösi käsittelyn yhteydessä ilmeni häiriö; ole hyvä ja yritä uudelleen.</translation>
 <translation id="8832187864682447273">Tarvitset todennetun lompakon kirjautuaksesi sisään</translation>
-<translation id="2607420597216860026">Yritä uudelleen, kun olet todentanut tunnuksen henkilölle <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Yritä uudelleen, kun olet todentanut tunnuksen henkilölle <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
 <translation id="5111921830714291902">Virhe: Eri tili</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>

@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">조회됨</translation>
 <translation id="3113653894794167793">죄송하지만 요청을 처리하는 중에 문제가 발생했습니다. 다시 시도하시기 바랍니다.</translation>
 <translation id="8832187864682447273">로그인하려면 월렛을 확인해야 합니다.</translation>
-<translation id="2607420597216860026"><ph name="CUSTODIAN"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
 <translation id="1501075228659004450">다른 <ph name="PROVIDER"/> 계정에서 이미 확인을 완료한 Brave Rewards 월렛인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.</translation>
 <translation id="5111921830714291902">오류: 다른 계정</translation>
 <translation id="1737873393693460829">[[title]] 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>

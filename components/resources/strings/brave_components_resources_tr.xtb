@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Görüldü</translation>
 <translation id="3113653894794167793">Üzgünüz, isteğinizi işlemekle ilgili bir sorun oluştu, lütfen tekrar deneyin.</translation>
 <translation id="8832187864682447273">Oturum açmak için doğrulanmış bir cüzdana ihtiyacınız var</translation>
-<translation id="2607420597216860026">Lütfen <ph name="CUSTODIAN"/> üzerinde kimlik doğrulamayı tamamladıktan sonra tekrar deneyin.</translation>
+<translation id="2607420597216860026">Lütfen <ph name="PROVIDER"/> üzerinde kimlik doğrulamayı tamamladıktan sonra tekrar deneyin.</translation>
 <translation id="1501075228659004450">Brave Rewards cüzdanınız halihazırda başka bir <ph name="PROVIDER"/> hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.</translation>
 <translation id="5111921830714291902">Hata: Farklı hesap</translation>
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>

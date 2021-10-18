@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Prikazano</translation>
 <translation id="3113653894794167793">Žao nam je, došlo je do problema prilikom obrade vašeg zahteva, pokušajte ponovo.</translation>
 <translation id="8832187864682447273">Za prijavu vam je potreban verifikovan novčanik</translation>
-<translation id="2607420597216860026">Pokušajte ponovo nakon što ste završili ID verifikaciju na <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Pokušajte ponovo nakon što ste završili ID verifikaciju na <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, izgleda da je vaš Brave Rewards novčanik već verifikovan pomoću drugog <ph name="PROVIDER"/> naloga. Pokušajte da ga ponovo verifikujete koristeći svoj prethodni nalog.</translation>
 <translation id="5111921830714291902">Greška: Drugačiji nalog</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]], prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politiku privatnosti<ph name="END_LINK2"/>.</translation>

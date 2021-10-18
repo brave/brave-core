@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Dilihat</translation>
 <translation id="3113653894794167793">Maaf ada masalah dalam memroses permintaan Anda. Silakan coba lagi.</translation>
 <translation id="8832187864682447273">Anda memerlukan dompet yang terverifikasi untuk masuk</translation>
-<translation id="2607420597216860026">Silakan mencoba lagi setelah Anda menyelesaikan verifikasi ID di <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Silakan mencoba lagi setelah Anda menyelesaikan verifikasi ID di <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, sepertinya dompet Brave Rewards Anda telah diverifikasi dengan akun <ph name="PROVIDER"/> lain. Silakan coba memverifikasi kembali dengan menggunakan akun Anda yang sebelumnya.</translation>
 <translation id="5111921830714291902">Kesalahan: Akun berbeda</translation>
 <translation id="1737873393693460829">Dengan mengaktifkan [[title]], Anda setuju dengan <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>

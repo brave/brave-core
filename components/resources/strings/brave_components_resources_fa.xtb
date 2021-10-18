@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">مشاهده شده</translation>
 <translation id="3113653894794167793">متأسفیم، مشکلی در پردازش درخواستتان وجود داشت، لطفاً دوباره امتحان کنید.</translation>
 <translation id="8832187864682447273">برای ورود به سیستم به یک کیف پول تأییدشده نیاز دارید</translation>
-<translation id="2607420597216860026">لطفاً پس از تکمیل تأیید شناسه در <ph name="CUSTODIAN"/>، دوباره امتحان کنید.</translation>
+<translation id="2607420597216860026">لطفاً پس از تکمیل تأیید شناسه در <ph name="PROVIDER"/>، دوباره امتحان کنید.</translation>
 <translation id="1501075228659004450">هوم، به نظر می‌رسد کیف پول Brave Rewards شما قبلاً با یک حساب <ph name="PROVIDER"/> دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود دوباره تأیید کنید.</translation>
 <translation id="5111921830714291902">خطا: حساب متفاوت</translation>
 <translation id="1737873393693460829">با روشن کردن [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>

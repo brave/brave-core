@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">已瀏覽</translation>
 <translation id="3113653894794167793">抱歉，處理您的要求時出現了問題，請再試一次。</translation>
 <translation id="8832187864682447273">您需要先驗證錢包才能登入</translation>
-<translation id="2607420597216860026">請先到 <ph name="CUSTODIAN"/> 完成 ID 驗證，並再試一次。</translation>
+<translation id="2607420597216860026">請先到 <ph name="PROVIDER"/> 完成 ID 驗證，並再試一次。</translation>
 <translation id="1501075228659004450">嗯，看來您的 Brave Rewards 錢包已使用其他 <ph name="PROVIDER"/> 帳號驗證。請嘗試使用您先前的帳號驗證。</translation>
 <translation id="5111921830714291902">錯誤：不同的帳號</translation>
 <translation id="1737873393693460829">開啟 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>

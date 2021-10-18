@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">تمت مشاهدته</translation>
 <translation id="3113653894794167793">عذراً، كانت هناك مشكلة في معالجة طلبك، يرجى المحاولة مرة أخرى.</translation>
 <translation id="8832187864682447273">أنت بحاجة إلى محفظة تم التحقق منها لتسجيل الدخول</translation>
-<translation id="2607420597216860026">يرجى المحاولة مرة أخرى بعد إكمال التحقق من الهوية على <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">يرجى المحاولة مرة أخرى بعد إكمال التحقق من الهوية على <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">حسنًا، يبدو أنه تم التحقق من محفظة Brave Rewards الخاصة بك بالفعل باستخدام اسم <ph name="PROVIDER"/>. يُرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.</translation>
 <translation id="5111921830714291902">خطأ: حساب مختلف</translation>
 <translation id="1737873393693460829">بتفعيل [[title]]، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>

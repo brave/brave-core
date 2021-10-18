@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Pregledano</translation>
 <translation id="3113653894794167793">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
 <translation id="8832187864682447273">Za prijavu vam treba potvrđen novčanik</translation>
-<translation id="2607420597216860026">Pokušajte ponovno nakon što obavite potvrđivanje identifikacijske oznake putem usluge <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Pokušajte ponovno nakon što obavite potvrđivanje identifikacijske oznake putem usluge <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, čini se da se vaš novčanik za uslugu Brave Rewards već potvrdio za drugi račun <ph name="PROVIDER"/>. Pokušajte ponovno potvrditi upotrebom svog prethodnog računa.</translation>
 <translation id="5111921830714291902">Pogreška: drugi račun</translation>
 <translation id="1737873393693460829">Uključivanjem [[title]] pristajete na <ph name="BEGIN_LINK1"/>uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>pravilnik o privatnosti<ph name="END_LINK2"/>.</translation>

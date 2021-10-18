@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Visto</translation>
 <translation id="3113653894794167793">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
 <translation id="8832187864682447273">Necesitas una billetera verificada para iniciar sesión</translation>
-<translation id="2607420597216860026">Vuelve a intentarlo tras verificar tu ID en <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Vuelve a intentarlo tras verificar tu ID en <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Parece que tu billetera de Brave Rewards ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
 <translation id="5111921830714291902">Error: cuenta diferente</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>

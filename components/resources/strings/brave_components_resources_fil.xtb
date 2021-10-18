@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Natingnan</translation>
 <translation id="3113653894794167793">Pasensya na, nagkaproblema sa pagpoproseso sa iyong kahilingan, pakisubukan ulit.</translation>
 <translation id="8832187864682447273">Kailangan mo ng na-verify na wallet para mag-log in</translation>
-<translation id="2607420597216860026">Pakisubukan ulit pagkatapos mong kumpletuhin ang pag-verify ng ID sa <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Pakisubukan ulit pagkatapos mong kumpletuhin ang pag-verify ng ID sa <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, mukhang na-verify na ang iyong Brave Rewards wallet gamit ang ibang <ph name="PROVIDER"/> account. Pakisubukang mag-verify ulit gamit ang iyong nakaraang account.</translation>
 <translation id="5111921830714291902">Error: Ibang account</translation>
 <translation id="1737873393693460829">Sa pamamagitan ng pag-on sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>

@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Viewed</translation>
 <translation id="3113653894794167793">Sorry there was a problem processing your request, please try again.</translation>
 <translation id="8832187864682447273">You need a verified wallet to log in</translation>
-<translation id="2607420597216860026">Please try again after you have completed ID verification on <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Please try again after you have completed ID verification on <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, it looks like your Brave Rewards wallet has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
 <translation id="5111921830714291902">Error: Different account</translation>
 <translation id="1737873393693460829">By turning on [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>

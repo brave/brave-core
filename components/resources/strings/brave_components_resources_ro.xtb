@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Vizualizat</translation>
 <translation id="3113653894794167793">Ne pare rău, a survenit o eroare la prelucrarea solicitării dvs., încercați din nou.</translation>
 <translation id="8832187864682447273">Pentru autentificare, aveți nevoie de un portofel confirmat</translation>
-<translation id="2607420597216860026">Încercați din nou după confirmarea identității în <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Încercați din nou după confirmarea identității în <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont <ph name="PROVIDER"/>. Încercați să realizați confirmarea din nou utilizând celălalt cont.</translation>
 <translation id="5111921830714291902">Eroare: alt cont</translation>
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>

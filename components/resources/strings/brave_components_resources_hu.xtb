@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Megtekintett</translation>
 <translation id="3113653894794167793">Sajnáljuk, hiba történt a kérésed teljesítése során, próbáld újra.</translation>
 <translation id="8832187864682447273">A bejelentkezéshez hitelesített pénztárcára van szüksége</translation>
-<translation id="2607420597216860026">Próbálja meg újra, miután elvégezte az azonosító-hitelesítést itt: <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Próbálja meg újra, miután elvégezte az azonosító-hitelesítést itt: <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, úgy tűnik, hogy a Brave Jutalmak pénztárcáját már egy másik <ph name="PROVIDER"/> fióknál ellenőrizték. Próbálja meg újra ellenőrizni a korábbi fiókjával.</translation>
 <translation id="5111921830714291902">Hiba: eltérő fiók</translation>
 <translation id="1737873393693460829">A(z) [[title]] bekapcsolásával elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>.</translation>

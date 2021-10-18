@@ -249,7 +249,7 @@
 <translation id="6805660603861526473">表示済み</translation>
 <translation id="3113653894794167793">すみません、リクエストの処理中に問題が発生しました。再試行してください。</translation>
 <translation id="8832187864682447273">ログインするには認証済みのウォレットが必要です</translation>
-<translation id="2607420597216860026"><ph name="CUSTODIAN"/>でID認証を完了してからもう一度お試しください。</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/>でID認証を完了してからもう一度お試しください。</translation>
 <translation id="1501075228659004450">このBrave Rewardsウォレットは、すでに他の<ph name="PROVIDER"/>アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。</translation>
 <translation id="5111921830714291902">エラー: 異なるアカウント</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>

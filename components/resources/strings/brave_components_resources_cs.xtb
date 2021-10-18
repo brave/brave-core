@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Zobrazeno</translation>
 <translation id="3113653894794167793">Je nám líto, ale při zpracování vašeho požadavku došlo k potížím, zkuste to prosím znovu.</translation>
 <translation id="8832187864682447273">K přihlášení potřebujete mít ověřenou peněženku.</translation>
-<translation id="2607420597216860026">Po dokončení ověření ID na <ph name="CUSTODIAN"/> to zkuste znovu.</translation>
+<translation id="2607420597216860026">Po dokončení ověření ID na <ph name="PROVIDER"/> to zkuste znovu.</translation>
 <translation id="1501075228659004450">Hmm, zdá se, že vaše peněženka odměn Brave Rewards už byla ověřená jiným účtem <ph name="PROVIDER"/>. Zkuste ověření provést znova pomocí předchozího účtu.</translation>
 <translation id="5111921830714291902">Chyba: Jiný účet</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadřujete souhlas s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Zásadami ochrany osobních údajů<ph name="END_LINK2"/>.</translation>

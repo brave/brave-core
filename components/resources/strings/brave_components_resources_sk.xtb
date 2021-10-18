@@ -246,7 +246,7 @@
 <translation id="6805660603861526473">Zobrazené</translation>
 <translation id="3113653894794167793">Je nám ľúto, ale pri spracovaní vašej žiadosti sa vyskytol problém, skúste to znova.</translation>
 <translation id="8832187864682447273">Na prihlásenie potrebujete overenú peňaženku</translation>
-<translation id="2607420597216860026">Skúste to znova po dokončení overenia ID na <ph name="CUSTODIAN"/>.</translation>
+<translation id="2607420597216860026">Skúste to znova po dokončení overenia ID na <ph name="PROVIDER"/>.</translation>
 <translation id="1501075228659004450">Hmm, zdá sa, že vaša peňaženka odmien Brave Rewards už bola overená iným účtom <ph name="PROVIDER"/>. Skúste overenie vykonať znova pomocou predošlého účtu.</translation>
 <translation id="5111921830714291902">Chyba: Iný účet</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
