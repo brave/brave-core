@@ -243,16 +243,16 @@ CreativeAdNotificationList EligibleAds::FilterIneligibleAds(
 
   CreativeAdNotificationList eligible_ads = ads;
 
+  eligible_ads = ApplyFrequencyCapping(
+      eligible_ads,
+      ShouldCapLastServedAd(ads) ? last_served_creative_ad_ : CreativeAdInfo(),
+      ad_events, browsing_history);
+
   eligible_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
       eligible_ads, AdType::kAdNotification);
 
   eligible_ads =
       FilterSeenAdsAndRoundRobinIfNeeded(eligible_ads, AdType::kAdNotification);
-
-  eligible_ads = ApplyFrequencyCapping(
-      eligible_ads,
-      ShouldCapLastServedAd(ads) ? last_served_creative_ad_ : CreativeAdInfo(),
-      ad_events, browsing_history);
 
   eligible_ads = PaceAds(eligible_ads);
 
