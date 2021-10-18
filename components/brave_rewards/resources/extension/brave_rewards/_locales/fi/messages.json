@@ -19,6 +19,26 @@
     "message": "Päivitä tila",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Kaikki antamasi tipit jäävät lompakkoosi odottamaan. Niiden lähettämistä yritetään automaattisesti uudelleen 90 päivän ajan. $link_begin$Lue lisää$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Tämä luoja ei ole vielä rekisteröitynyt.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Tämä luoja ei ole määrittänyt mahdollisuutta vastaanottaa tippejä lompakostasi.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ alustalla $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ saapuu $days$",
+    "message": "$amount$ maksun käsittely aloitetaan $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Piilota",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Ota Rewards käyttöön",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Napsauttamalla hyväksyt $tos_link_begin$palveluehdot$tos_link_end$ ja $pp_link_begin$tietosuojakäytännön$pp_link_end$. Poista käytöstä milloin tahansa asetuksissa.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi… voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Ota Brave Private Ads käyttöön",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ottamalla Adsin käyttöön hyväksyt $tos_link_begin$palveluehdot$tos_link_end$ ja $pp_link_begin$tietosuojakäytännön$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Voit nyt aloittaa ilmaisen puhelun",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Haluatko lisää tietoja Brave Rewardsista? $tour_link_begin$Tutustu ohjelmaan$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -19,6 +19,26 @@
     "message": "Obnoviť stav",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Akýkoľvek príspevok, ktorý zadáte, zostane čakajúci vo vašej peňaženke a bude sa opakovať automaticky počas 90 dní. $link_begin$Ďalšie informácie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Tento tvorca ešte nie je zaregistrovaný.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Tento tvorca momentálne nie je nakonfigurovaný, aby prijímal príspevky z vašej peňaženky.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ na $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ príde do $days$",
+    "message": "Výplata $amount$ sa začne spracovávať o $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Zatvoriť",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Ak chcete začať bezplatný hovor, zapnite Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Pomocou Brave Rewards zarábate tokeny za prezeranie súkromných reklám (vaše údaje sú v bezpečí). Premeňte tokeny na hotovosť, darčekové karty… alebo dokonca prispievajte webovým stránkam, ktoré máte radi. Bez sledovania. Bez spomalenia.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Zapnúť odmeny",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Kliknutím vyjadrujete súhlas so $tos_link_begin$Zmluvnými podmienkami$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobných údajov$pp_link_end$. V nastaveniach to môžete kedykoľvek vypnúť.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Ak chcete začať bezplatný hovor, povoľte Brave Private Ads.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Pomocou Brave Private Ads zarábate tokeny za prezeranie súkromných reklám (vaše údaje sú v bezpečí). Premeňte tokeny na hotovosť, darčekové karty… alebo dokonca prispievajte webovým stránkam, ktoré máte radi. Bez sledovania. Bez spomalenia.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Zapnúť Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Zapnutím funkcie Ads vyjadrujete súhlas so $tos_link_begin$Zmluvnými podmienkami$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobných údajov$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Teraz môžete začať bezplatný hovor",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Kliknite kamkoľvek na obrazovke a pokračujte na Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Chcete sa o Brave Rewards dozvedieť viac? $tour_link_begin$Urobte si rýchlu prehliadku$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

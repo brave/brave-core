@@ -19,6 +19,26 @@
     "message": "Uppdatera status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "All dricks som du lämnar kommer att förbli väntande i din plånbok och försökas igen automatiskt inom 90 dagar. $link_begin$Läs mer$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Denna skapare har inte registrerat sig ännu.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Denna skapare är för närvarande inte konfigurerad för att ta emot dricks från din plånbok.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ på $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ anländer om $days$",
+    "message": "$amount$ utbetalningen börjar bearbetas inom $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Ta bort permanent",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "För att starta ett kostnadsfritt samtal, starta Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Med Brave Rewards tjänar du tokens för att se privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Aktivera Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Genom att klicka godkänner du $tos_link_begin$Villkoren$tos_link_end$ och $pp_link_begin$Integritetspolicy$pp_link_end$. Inaktivera när som helst i Inställningar.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "För att starta ett kostnadsfritt samtal, aktivera Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Med Brave Private Ads tjänar du tokens för att visa privata annonser (din data är säker). Gör dessa tokens till kontanter, presentkort... eller till och med tipsa de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Aktivera Brave privata annonser",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Genom att aktivera annonser godkänner du $tos_link_begin$Villkoren$tos_link_end$ och $pp_link_begin$Integritetspolicy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Du kan nu starta ett kostnadsfritt samtal",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klicka var som helst på skärmen för att fortsätta till Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vill du lära dig mer om Brave Rewards? $tour_link_begin$Ta en snabb rundtur$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

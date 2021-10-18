@@ -15,6 +15,7 @@
 <translation id="7419046106786626209">Chrome OS-ը չկարողացավ համաժամացնել ձեր տվյալները, քանի որ Sync-ը մատչելի չէ ձեր տիրույթի համար:</translation>
 <translation id="5147525139567260139">Կիսվեք Brave-ի ներդիրով</translation>
 <translation id="1530633922026945685">Brave-ին անհրաժեշտ է տեսախցիկն օգտագործելու թույլտվություն՝ ձեր շրջակայքի եռաչափ քարտեզը ստեղծելու համար։</translation>
+<translation id="4828904843379324771">Երբ դուք փակում եք Brave-ը, բոլոր քուքիներն ու ձեր այցելած կայքերի տվյալներն ավտոմատ ջնջվում են</translation>
 <translation id="5616153642055197778">Մատչելի է Brave-ի նոր, ավելի ապահով տարբերակ:</translation>
 <translation id="6797402139308059782">Թույլ տալ Brave-ին աշխատել հետնաշերտում</translation>
 <translation id="5875673934455379806">Նորից տեղադրել Brave-ը</translation>
@@ -33,6 +34,7 @@
 <translation id="9095263438435683933">Հեռախոսահամարն այստեղից ձեր Android հեռախոսին ուղարկելու համար երկու սարքերի Brave դիտարկիչներում մտեք հաշիվ։</translation>
 <translation id="3813272600615358652">Այս ընդլայնումը փոխել է Brave-ի մեկնարկի ժամանակ ցուցադրվող էջը:</translation>
 <translation id="2576129394594491151">«<ph name="EXTENSION_NAME"/>» ընդլայնումը փոխել է Brave-ի մեկնարկի ժամանակ ցուցադրվող էջը:</translation>
+<translation id="1248225940185478633">Այս կայքի համար Brave-ին անհրաժեշտ է խոսափողն ու տեսախցիկն օգտագործելու թույլտվություն</translation>
 <translation id="6078442581074612226">Brave-ի մեջ</translation>
 <translation id="2485422356828889247">Ապատեղադրել</translation>
 <translation id="9026991721384951619">Chrome OS-ին չհաջողվեց համաժամացնել ձեր տվյալները, քանի որ ձեր հաշվի տվյալները հնացել են:</translation>
@@ -52,6 +54,8 @@
 <translation id="777113543093865885">Հեռացնել Brave-ից...</translation>
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">&amp;Brave-ի մասին</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Վերջին հիշեցում․ տեղադրման արդյունքում <ph name="BEGIN_BOLD"/>ձեր կոշտ սկավառակում առկա բոլոր տվյալները կջնջվեն<ph name="END_BOLD"/>։ Համոզվեք, որ պահուստավորել եք ձեզ անհրաժեշտ տվյալները։<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Հենց որ տեղադրումը սկսվի, այն հնարավոր չի լինի չեղարկել։<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave-ը թարմացված է</translation>
 <translation id="2953892977076487219">Brave-ը փորձում է փոխել գաղտնաբառերը:</translation>
 <translation id="8755404239607088219">Brave-ը չի կարող ստուգել ձեր գաղտնաբառերը։ Փորձեք ավելի ուշ։</translation>
@@ -80,7 +84,6 @@
 <translation id="2024972335338126423">Brave-ի այլ պրոֆիլի կարող եք անցնել <ph name="SHORTCUT"/> ստեղների համադրության միջոցով</translation>
 <translation id="8703492925273919597">Փակեք Brave-ի բոլոր պատուհանները և կրկին փորձեք:</translation>
 <translation id="1384923383737428730">Ձեր համակարգչում վնասաբեր ծրագիր է հայտնաբերվել։ Ձեր դիտարկիչի կայուն աշխատանքը վերականգնելու համար Brave-ը կարող է ջնջել ծրագիրը և վերականգնել ձեր կարգավորումները։</translation>
-<translation id="2409866122341731384">Ջնջել բոլոր տվյալները կոշտ սկավառակից և տեղադրել Chrome OS-ը</translation>
 <translation id="7029305463989165490">Հեռախոսահամարը <ph name="ORIGIN"/> կայքից ձեր Android հեռախոսին ուղարկելու համար երկու սարքերի Brave դիտարկիչներում մտեք հաշիվ։</translation>
 <translation id="4304059894777924102">Brave-ը չի կարող ստուգել ձեր գաղտնաբառերը։ Ստուգեք ինտերնետ կապը։</translation>
 <translation id="1807774211756215222">Բացել հղումը Brave-ի նոր &amp;ներդիրում</translation>
@@ -144,6 +147,7 @@
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="79947657522496226">Chrome OS-ը ստեղծվել է <ph name="BEGIN_LINK_CROS_OSS"/>բաց կոդով ծրագրակազմի<ph name="END_LINK_CROS_OSS"/> հիման վրա, ինչպիսին է <ph name="BEGIN_LINK_LINUX_OSS"/>Լինուքսի մշակման միջավայրը<ph name="END_LINK_LINUX_OSS"/>։</translation>
 <translation id="7207456302801184289">Բարի գալուստ Brave</translation>
+<translation id="8054200348483755053">Brave-ը այս տարրերում վնասագիր է հայտնաբերել՝</translation>
 <translation id="5895138241574237353">Վերագործարկել</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Ցանցի մուտք</translation>
 <translation id="3598551856834560515">Թարմացրեք Brave-ը՝ համաժամացումը սկսելու համար</translation>
@@ -158,18 +162,10 @@
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> ֆայլը վտանգավոր է, և Brave-ն արգելափակել է այն։</translation>
 <translation id="7006260220514217183">Անվտանգ դիտարկումն անջատված է։ Brave-ը խորհուրդ է տալիս միացնել այն։</translation>
 <translation id="4060970194201477024">Այստեղ կարող եք անցնել Brave-ի այլ պրոֆիլի</translation>
-<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Մենք պատրաստ ենք տեղադրելու Chrome OS-ը։ Երբ գործարկեք այն՝
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Ֆայլերը, տվյալները և ձեր ընթացիկ օպերացիոն համակարգը կջնջվեն։
-          <ph name="LIST_ITEM"/>Կտեղադրվի Chrome OS համակարգը։
-          <ph name="LIST_ITEM"/>Տեղադրման ավարտից հետո ձեր սարքը կվերգործարկվի։
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Եվս մեկ վերջին հիշեցում. տեղադրման արդյունքում ձեր կոշտ սկավառակում առկա բոլոր տվյալները կջնջվեն։ Համոզվեք, որ պահուստավորել եք ձեզ անհրաժեշտ տվյալները։<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Հենց որ տեղադրումը սկսվի, այն հնարավոր չի լինի չեղարկել։<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Համոզվեք, որ մուտք եք գործել հաշիվ <ph name="TARGET_DEVICE_NAME"/> սարքի Brave դիտարկիչում և փորձեք նորից ուղարկել։</translation>
 <translation id="8320964054148936490">Այս համակարգչում արդեն տեղադրված է Brave-ի ավելի նոր տարբերակը: Եթե ծրագրակազմը չի աշխատում, ապատեղադրեք Brave-ը և նորից փորձեք:</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave-ը հիմա կվերագործարկվի}=1{Brave-ը կվերագործարկվի 1 վայրկյանից}one{Brave-ը կվերագործարկվի # վայրկյանից}other{Brave-ը կվերագործարկվի # վայրկյանից}}</translation>
+<translation id="5980269616827212166">Ֆայլեր ներբեռնելու համար Brave-ին անհրաժեշտ է հիշողությունն օգտագործելու թույլտվություն</translation>
 <translation id="5019879183386042809">Դարձնել Brave-ը կանխադրված դիտարկիչ</translation>
 <translation id="428541510811554120">Brave-ը չի կարող ստուգել թարմացումների առկայությունը։ Ստուգեք ինտերնետ կապը։</translation>
 <translation id="7445061995866044926">Դուրս գա՞լ Brave-ից:</translation>
@@ -184,14 +180,15 @@
 <translation id="2644798301485385923">Chrome OS համակարգ</translation>
 <translation id="1684121725014454063">Բարի գալուստ Brave պրոֆիլներ</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave-ը կվերագործարկվի 1 վայրկյանից}one{Brave-ը կվերագործարկվի # վայրկյանից}other{Brave-ը կվերագործարկվի # վայրկյանից}}</translation>
-<translation id="664235759707825982">Chrome OS-ը պատրաստ է տեղադրման</translation>
 <translation id="2675662665675552980">Այն նաև վերահսկում է, թե որ էջը ցուցադրվի Brave-ը մեկնարկելիս:</translation>
 <translation id="5590013613412457132">Ապատեղադրել Brave-ը</translation>
 <translation id="8646609321956191980">Յուրաքանչյուր պրոֆիլում առանձին պահվում են Brave-ի օգտատերերի տվյալները, օրինակ՝ էջանիշները, պատմությունը, գաղտնաբառերը և այլն</translation>
 <translation id="2312399718665761438">Ուղղագրական սխալները շտկելու համար Brave-ը Brave-ին է ուղարկում տեքստային դաշտերում ձեր մուտքագրած տեքստը</translation>
 <translation id="3507835409099344374">Անցնել Brave-ի ծանուցումների կարգավորումներ</translation>
 <translation id="9156965752763025780">Փոփոխություններն ուժի մեջ կմտնեն Brave-ը հաջորդ անգամ գործարկելիս:</translation>
+<translation id="245693535809364497">Ձեր շրջակայքի եռաչափ քարտեզը ստեղծելու համար Brave-ին անհրաժեշտ է տեսախցիկն օգտագործելու թույլտվություն</translation>
 <translation id="6676384891291319759">Մտնել համացանց</translation>
+<translation id="1257247502847251159">Այս կայքի համար Brave-ին անհրաժեշտ է խոսափողն օգտագործելու թույլտվություն</translation>
 <translation id="1489465648257900784">Դուք չեք կարող օգտագործել ձեր պրոֆիլը, քանի որ այն Brave-ի նոր տարբերակից է:
 
 Որոշ գործառույթներ մատչելի չեն լինի: Հատկորոշեք այլ պրոֆիլի գրացուցակ կամ օգտվեք Brave-ի ավելի նոր տարբերակից:</translation>
@@ -203,12 +200,14 @@
 <translation id="8211837073776713955">Brave-ը ձեզ տեղյակ կպահի, եթե ձեր գաղտնաբառերի անվտագությանը սպառնալիք լինի</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (պատճենվել է Brave-ում)</translation>
+<translation id="3028928628792374067">Brave-ը «<ph name="EXTENSION_NAME"/>» ընդլայնման մեջ վնասագիր է հայտնաբերել</translation>
 <translation id="2301993384336631869">Brave-ը թարմացվել է, սակայն դուք չեք օգտագործել այն առնվազն 30 օր:</translation>
 <translation id="8828443087767259398">Զուգակցումը շարունակելու համար Brave-ին հասանելի դարձրեք Bluetooth-ը։ <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Թույլ գաղտնաբառերը հեշտ է գուշակել։ Թույլատրեք Brave-ին <ph name="BEGIN_LINK"/>գաղտնաբառեր ստեղծել և պահել ձեզ համար<ph name="END_LINK"/>։</translation>
 <translation id="3335606533094650083">Brave-ին այս կայքի համար անհրաժեշտ է ձեր խոսափողն օգտագործելու թույլտվություն</translation>
 <translation id="1705567146636171298">Թարմացնել Brave-ը</translation>
 <translation id="5499063270485366718">Եթե պատկերն օգտակար նկարագրություն չունի, Brave-ը կփորձի նոր նկարագրություն տրամադրել: Պատկերներն ուղարկվում են Brave-ին՝ նկարագրություններ ստեղծելու համար։</translation>
+<translation id="1008530050039597147">Այս կայքի համար Brave-ին անհրաժեշտ է տեսախցիկն օգտագործելու թույլտվություն</translation>
 <translation id="1197672524850678392">Չհաջողվեց գործարկել Brave-ը։ Նորից փորձեք։</translation>
 <translation id="3405035915691517126">Brave-ը չի կարող ստուգել ձեր գաղտնաբառերը։ 24 ժամ հետո նորից փորձեք։</translation>
 <translation id="5516268345616100622">Խնդիրների կառավարիչ - Brave</translation>
@@ -250,6 +249,7 @@ Brave-ին չհաջողվեց վերականգնել ձեր կարգավորու
 <translation id="6915252145142862992">Սա Brave-ի երկրորդային տեղադրումն է: Այն չի կարող դառնալ ձեր կանխադրված դիտարկիչը:</translation>
 <translation id="7685904775439037072">Երբ Brave-ը հասանելիություն ստանա, կայքերը կկարողանան ձեզնից հասանելիություն խնդրել։</translation>
 <translation id="828406390101464081">Հետևյալ հաշիվներով ոչ մի Brave պրոֆիլ մուտք չի կատարվել։ Հաշիվը մեկ այլ պրոֆիլում օգտագործելու համար նախ հեռացրեք այս պրոֆիլը։</translation>
+<translation id="2061155704815580583">Այս կայքի համար Brave-ին անհրաժեշտ է տեղորոշումն օգտագործելու թույլտվություն</translation>
 <translation id="9067428552314418522">Այս ֆայլը վտանգավոր է, և Brave-ն արգելափակել է այն։</translation>
 <translation id="8207657266087451193">Եթե պատկերն օգտակար նկարագրություն չունի, Brave-ը կփորձի նոր նկարագրություն տրամադրել: Պատկերներն ուղարկվում են Brave-ին՝ նկարագրություններ ստեղծելու համար։ Ցանկացած պահի կարգավորումներում կարող եք անջատել սա:</translation>
 <translation id="8622246347342688645">Brave-ը չի կարող ստուգել ձեր գաղտնաբառերը, քանի որ դուք հաշիվ չեք մտել։</translation>

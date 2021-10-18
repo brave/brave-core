@@ -19,6 +19,26 @@
     "message": "刷新状态",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "您打赏的赏金会保留在您的钱包，将在 90 天内自动重试。$link_begin$了解更多$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "此创作者尚未注册。",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "此创作者尚未配置，无法接收来自您的钱包的打赏。",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$ 上的 $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ 即将在 $days$ 内到账",
+    "message": "$amount$ 支付将在 $days$内开始处理",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "关闭",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "要开始免费通话，请打开 Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "使用 Brave Rewards，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "开启奖励",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "单击即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。可以随时在“设置”中将其禁用。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "要开始免费通话，启用 Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "使用 Brave Private Ads，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "开启 Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "开启广告即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "你现在可以开始免费通话",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "点击屏幕上的任何地方继续 Brave Talk",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "想要了解 Brave Rewards 的更多详细信息？$tour_link_begin$快速导览$tour_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

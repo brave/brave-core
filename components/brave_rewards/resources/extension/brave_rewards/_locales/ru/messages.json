@@ -19,6 +19,26 @@
     "message": "Обновить статус",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Вознаграждения останутся в вашем кошельке, но попытки отправить платеж будут выполняться автоматически в течение 90 дней. $link_begin$Подробнее…$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Этот автор еще не зарегистрирован в программе",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Этот автор еще не настроил свой аккаунт для получения платежей из вашего кошелька.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ на платформе $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "Через $days$ ваш кошелек пополнится на $amount$ ",
+    "message": "Обработка выплаты в размере $amount$ начнется через $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Чтобы начать бесплатный звонок, включите Brave Rewards.",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Включить Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Продолжая, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$. Функцию можно в любой момент отключить в настройках.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Чтобы начать бесплатный звонок, включите Brave Private Ads.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Включите Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Включая Brave Ads, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Теперь вы можете начать бесплатный звонок.",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Чтобы перейти в Brave Talk, нажмите на любое место экрана.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Хотите узнать больше о Brave Rewards? Посмотрите $tour_link_begin$краткий обзор$tour_link_end$ этой программы.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

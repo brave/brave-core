@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שסנכרון אינו זמין עבור הדומיין שלך.</translation>
 <translation id="5147525139567260139">‏שיתוף כרטיסיית Brave</translation>
 <translation id="1530633922026945685">‏Brave זקוק להרשאת גישה למצלמה כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
+<translation id="4828904843379324771">‏אחרי שסוגרים את Brave, קובצי ה-cookie והנתונים מהדפים שבהם ביקרת יימחקו באופן אוטומטי</translation>
 <translation id="5616153642055197778">‏גרסה חדשה ובטוחה יותר של Brave זמינה כעת.</translation>
 <translation id="6797402139308059782">‏התרה ל-Brave לפעול ברקע</translation>
 <translation id="5875673934455379806">‏התקנת Brave מחדש</translation>
@@ -30,6 +31,7 @@
 <translation id="9095263438435683933">‏כדי לשלוח מספר מכאן לטלפון Android, יש להיכנס ל-Brave בשני המכשירים.</translation>
 <translation id="3813272600615358652">‏התוסף שינה את הדף שמוצג כשמפעילים את Brave.</translation>
 <translation id="2576129394594491151">‏התוסף "<ph name="EXTENSION_NAME"/>" שינה את הדף שמוצג כשמפעילים את Brave.</translation>
+<translation id="1248225940185478633">‏נדרשות הרשאות גישה למצלמה ולמיקרופון ב-Brave עבור האתר הזה</translation>
 <translation id="6078442581074612226">‏ב-Brave</translation>
 <translation id="2485422356828889247">הסרת התקנה</translation>
 <translation id="9026991721384951619">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך מפני שפרטי הכניסה של חשבונך אינם מעודכנים.</translation>
@@ -49,6 +51,8 @@
 <translation id="777113543093865885">‏הסרה מ-Brave...</translation>
 <translation id="2885378588091291677">מנהל המשימות</translation>
 <translation id="2176825726964012531">‏מידע על &amp;Brave‏</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>תזכורת אחרונה: ההתקנה <ph name="BEGIN_BOLD"/>תגרום למחיקה של כל הכונן הקשיח<ph name="END_BOLD"/>. חשוב לוודא שגיבית את הנתונים שחשובים לך.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>אין אפשרות לבטל את ההתקנה לאחר שהחלה.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">‏Brave‏ מעודכן</translation>
 <translation id="2953892977076487219">‏Brave מנסה לערוך את הסיסמאות.</translation>
 <translation id="8755404239607088219">‏Brave לא יכול לבדוק את הסיסמאות שלך. כדאי לנסות שוב מאוחר יותר.</translation>
@@ -75,7 +79,6 @@
 <translation id="2024972335338126423">‏ניתן לעבור בין פרופילים של Brave באמצעות <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">‏יש לסגור את כל חלונות Brave ולנסות שוב.</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
-<translation id="2409866122341731384">‏מחיקת הכונן הקשיח והתקנת מערכת ההפעלה Brave</translation>
 <translation id="7029305463989165490">‏כדי לשלוח מספר מ-<ph name="ORIGIN"/> לטלפון Android שלך, צריך להיכנס אל Brave בשני המכשירים.</translation>
 <translation id="4304059894777924102">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לבדוק את החיבור לאינטרנט.</translation>
 <translation id="1807774211756215222">‏פתיחת הקישור ב&amp;כרטיסיית Brave חדשה</translation>
@@ -138,6 +141,7 @@
 <translation id="4331809312908958774">‏מערכת ההפעלה של Brave</translation>
 <translation id="79947657522496226">‏השימוש ב-Chrome OS מתאפשר בזכות <ph name="BEGIN_LINK_CROS_OSS"/>תוכנות קוד פתוח<ph name="END_LINK_CROS_OSS"/> נוספות כמו <ph name="BEGIN_LINK_LINUX_OSS"/>סביבת הפיתוח של Linux<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
+<translation id="8054200348483755053">‏מערכת Brave גילתה שהפריטים האלה מכילים תוכנה זדונית:</translation>
 <translation id="5895138241574237353">הפעלה מחדש</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – כניסה לרשת</translation>
 <translation id="3598551856834560515">‏יש לעדכן את Brave כדי להתחיל את הסנכרון</translation>
@@ -152,18 +156,10 @@
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
 <translation id="7006260220514217183">‏הגלישה הבטוחה כבויה. ההמלצה של Brave היא להפעיל אותה.</translation>
 <translation id="4060970194201477024">‏כאן ניתן לעבור בין פרופילים של Brave</translation>
-<translation id="2417565246123344595">‏<ph name="BEGIN_PARAGRAPH1"/>הכל מוכן להתקנת מערכת ההפעלה Brave! לאחר ההתקדמות בתהליך ההתקנה:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>הקבצים, הנתונים ומערכת ההפעלה שלך יימחקו.
-          <ph name="LIST_ITEM"/>תושלם ההתקנה של מערכת ההפעלה Brave.
-          <ph name="LIST_ITEM"/>המכשיר ייכבה לאחר השלמת ההתקנה.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>תזכורת בפעם האחרונה: ההתקנה תוביל למחיקת הכונן הקשיח במלואו. חשוב לוודא שגיבית את הנתונים שחשובים לך.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>אין אפשרות לבטל את ההתקנה לאחר שהחלה.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">‏יש לוודא שנכנסת ל-Brave ב-<ph name="TARGET_DEVICE_NAME"/> שלך ולשלוח שוב.</translation>
 <translation id="8320964054148936490">‏במחשב זה קיימת כבר גרסה מתקדמת יותר של Brave. אם התוכנה אינה פועלת, יש להסיר את ההתקנה של Brave ולנסות שוב.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave יופעל מחדש עכשיו}=1{‏Brave יופעל מחדש בעוד שנייה אחת}two{‏Brave יופעל מחדש בעוד # שניות}many{‏Brave יופעל מחדש בעוד # שניות}other{‏Brave יופעל מחדש בעוד # שניות}}</translation>
+<translation id="5980269616827212166">‏נדרשת הרשאת גישה לאחסון ב-Brave כדי להוריד קבצים</translation>
 <translation id="5019879183386042809">‏יש להפוך את Brave לדפדפן ברירת המחדל</translation>
 <translation id="428541510811554120">‏Brave לא יכול לחפש עדכונים. יש לבדוק את החיבור לאינטרנט.</translation>
 <translation id="7445061995866044926">‏האם לצאת מ-Brave?</translation>
@@ -178,14 +174,15 @@
 <translation id="2644798301485385923">‏מערכת Chrome OS</translation>
 <translation id="1684121725014454063">‏ברוך בואך לפרופילים של Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave יבצע אתחול בעוד שנייה אחת}two{‏Brave יבצע אתחול בעוד # שניות}many{‏Brave יבצע אתחול בעוד # שניות}other{‏Brave יבצע אתחול בעוד # שניות}}</translation>
-<translation id="664235759707825982">‏הכל מוכן להתקנת מערכת ההפעלה Brave</translation>
 <translation id="2675662665675552980">‏הגדרה זו גם קובעת איזה דף מוצג כשמפעילים את Brave.</translation>
 <translation id="5590013613412457132">‏הסרה של התקנת Brave</translation>
 <translation id="8646609321956191980">‏בכל פרופיל מאוחסנים נתוני Brave משלו כמו סימניות, היסטוריה, סיסמאות ועוד</translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave כדי לתקן שגיאות כתיב</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
+<translation id="245693535809364497">‏נדרשת הרשאת גישה למצלמה ב-Brave כדי ליצור מפה תלת-ממדית של הסביבה שלך</translation>
 <translation id="6676384891291319759">גישה אל האינטרנט</translation>
+<translation id="1257247502847251159">‏נדרשת הרשאת גישה למיקרופון ב-Brave עבור האתר הזה</translation>
 <translation id="1489465648257900784">‏לא ניתן להשתמש בפרופיל שלך משום שהוא מגיע מגרסה חדשה יותר של Brave.
 
 ייתכן שחלק מהתכונות לא יהיו זמינות. יש לציין ספריית פרופיל אחרת או להשתמש בגרסה חדשה יותר של Brave.</translation>
@@ -197,6 +194,7 @@
 <translation id="8211837073776713955">‏Brave מודיע לך אם הסיסמאות שלך נמצאות בסיכון</translation>
 <translation id="7830723774663008396">‏Brave‏ - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">‏Brave Pay (‏הועתק ל-Brave)</translation>
+<translation id="3028928628792374067">‏הפריט "<ph name="EXTENSION_NAME"/>" שנמצא ב-Brave מכיל תוכנה זדונית</translation>
 <translation id="2301993384336631869">‏Brave עודכן, אך לא השתמשת בו לפחות 30 ימים.</translation>
 <translation id="8828443087767259398">‏ל-Brave נדרשת גישה ל-Bluetooth כדי להמשיך 
  את ההתאמה. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -204,6 +202,7 @@
 <translation id="3335606533094650083">‏Brave זקוק להרשאת גישה למיקרופון בשביל האתר הזה</translation>
 <translation id="1705567146636171298">‏יש לעדכן את Brave‏</translation>
 <translation id="5499063270485366718">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave.</translation>
+<translation id="1008530050039597147">‏נדרשת הרשאת גישה למצלמה ב-Brave עבור האתר הזה</translation>
 <translation id="1197672524850678392">‏לא ניתן היה להפעיל את Brave. יש לנסות שוב.</translation>
 <translation id="3405035915691517126">‏Brave לא יכול לבדוק את הסיסמאות שלך. יש לנסות שוב בעוד 24 שעות.</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
@@ -245,6 +244,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="6915252145142862992">‏זוהי התקנה משנית של Brave, ולא ניתן להפוך אותו לדפדפן ברירת המחדל שלך.</translation>
 <translation id="7685904775439037072">‏אחרי מתן גישה ל-Brave, אתרים יוכלו לבקש ממך גישה.</translation>
 <translation id="828406390101464081">‏החשבונות הבאים לא נכנסו לאף פרופיל Brave. אם ברצונך להשתמש בחשבון בפרופיל אחר, תחילה עליך להסיר את אותו פרופיל.</translation>
+<translation id="2061155704815580583">‏נדרשת הרשאת מיקום ב-Brave עבור האתר הזה</translation>
 <translation id="9067428552314418522">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן.</translation>
 <translation id="8207657266087451193">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave. אפשר להשבית את האפשרות הזו בכל זמן דרך ההגדרות.</translation>
 <translation id="8622246347342688645">‏Brave לא יכול לבדוק את הסיסמאות שלך כי לא נכנסת לחשבון</translation>

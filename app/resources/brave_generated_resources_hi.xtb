@@ -221,10 +221,10 @@ Binance
 <translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
 <translation id="1696548911367097044">डेप्रीकेटेड Crypto Wallets एक्सटेंशन</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dapps का उपयोग करने के लिए एथेरियम प्रदाता</translation>
-<translation id="5913089932885076110">शुरुआत में क्रिप्टो वॉलेट लोड करें</translation>
-<translation id="757886143331967039">स्टार्टअप पर डेप्रीकेटेड क्रिप्टो वॉलेट के एक्सटेंशन लोड करें</translation>
+<translation id="9131889008937672866">डिफ़ॉल्ट क्रिप्टोक्यूरेंसी वॉलेट</translation>
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
+<translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
+<translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
@@ -256,6 +256,7 @@ Binance
 <translation id="1251574393468476924">IPFS कैच का अधिकतम आकार (GB)</translation>
 <translation id="2503497578400410320">IPFS रिपॉजिटरी के डेटास्टोर के आकार के लिए एक नरम ऊपरी सीमा।</translation>
 <translation id="7703184801853248830">अमान्य गेटवे पता</translation>
+<translation id="7690058578502751948">Brave में केवल एक वैध IPFS गेटवे का उपयोग किया जा सकता है जिसमें मूल अलगाव सक्षम है.</translation>
 <translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
 <translation id="207763736230883589">यदि आपके स्थानीय नोड तक नहीं पहुँच सकता है, तो स्वचालित रूप से सार्वजनिक IPFS गेटवे पर वापस जाए।</translation>
 <translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
@@ -324,6 +325,10 @@ Binance
 <translation id="1391855377994926460">वेब तेज़ी से ब्राउज़ करना जारी रखें - प्रमुख समाचार साइटों पर 6 गुना तेज़ी से.</translation>
 <translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
+<translation id="732814027519296280">Brave Search को और भी बेहतर बनाना चाहते हैं?</translation>
+<translation id="2677865600861971449">गुमनाम रूप से कुछ खोज &amp; ब्राउज़िंग डेटा, और सभी के लिए Brave Search  परिणामों में सुधार करें. गोपनीयता-संरक्षण. और बिना किसी कोशिश. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">चालू करें</translation>
+<translation id="780301667611848630">नहीं, रहने दें</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="7053983685419859001">ब्लॉक करें</translation>
 <translation id="7815301689257843278">क्रैश रिपोर्ट अपने आप भेजें ताकि Brave इस समस्या को दोबारा न होने दे?</translation>
@@ -333,6 +338,8 @@ Binance
 <translation id="6873781976650514089">यह सेटिंग</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
+<translation id="4174337572777167894">वेब डिस्कवरी प्रोजेक्ट</translation>
+<translation id="8659271182272561965">कुछ अनाम सर्च में योगदान करें &amp; Brave Search को बेहतर बनाने के लिए ब्राउज़िंग डेटा.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">साइडबार में जोड़ें</translation>
 <translation id="4233010476457917696">साइडबार दिखाएं</translation>

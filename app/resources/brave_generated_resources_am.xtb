@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">Crypto ዋሌቶች</translation>
 <translation id="1696548911367097044">የተበላሸ የCrypto ዋሌቶች ቅጥያ</translation>
 <translation id="1085027414516521238">ሜታ ጭንብል</translation>
-<translation id="7090046810227878892">Dapps ን ለመጠቀም የ Ethereum አቅራቢ</translation>
-<translation id="5913089932885076110">የ Crypto ዋሌቶችን መነሻ ላይ ጫን</translation>
-<translation id="757886143331967039">ጅምር ላይ የተበላሸ የCrypto ዋሌቶች ቅጥያ ጫን</translation>
+<translation id="9131889008937672866">ነባር የክሪፕቶከረንሲ ዋሌት</translation>
 <translation id="1834467296210148203">የመሳሪያ አሞሌ ላይ የብሬቭን ቦርሳ አዶን አሳይ</translation>
+<translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
+<translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="5927916530277631319">የማይቆሙ ጎራዎችን የመፍታት ዘዴ</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> ስለ DNS over HTTPS እና Ethereum ግላዊነትን በተመለከተ ታሳቢ የሚደረጉ ጉዳዮች።</translation>
@@ -211,6 +211,7 @@
 <translation id="6476061084931271248">ለውጦችን ለመተግበር መሳሪያዎን ዳግም ያስጀምሩ።</translation>
 <translation id="3754226427671882382">እንደገና ማስጅመሪያ ኖድ</translation>
 <translation id="949667118776341807">ያሽከርክሩ</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">ይህ ስም ትክክለኛ አይደለም</translation>
 <translation id="6758961763875471084">የአቻ ዝርዝርን ያስተካክሉ</translation>
 <translation id="1295874070797049002">ቁልፉን ይላኩ</translation>
@@ -235,6 +236,7 @@
 <translation id="1251574393468476924">ከፍተኛ የIPFS መሸጎጫ መጠን (ጊባ)</translation>
 <translation id="2503497578400410320">የሶፍት የላይኛው ወሰን ለIPFS ማከማቻ የውሂብ መደብር መጠን</translation>
 <translation id="7703184801853248830">ልክ ያልሆነ የአግባቢ ፍኖት አድራሻ</translation>
+<translation id="7690058578502751948">በBrave ውስጥ ጥቅም ላይ መዋል የሚችለው ትክክለኛ IPFS መግቢያ ከመነሻ ማግለል ጋር ብቻ ነው።</translation>
 <translation id="585868419599255817">የ IPFS የህዝብ መግቢያ ማምለጫ</translation>
 <translation id="207763736230883589">የአከባቢዎ አንጓ መገኘት ካልቻለ በራስ-ሰር አሠራር ወደ ህዝብ IPFS አግባቢ ፍኖት ይመለሳሉ።</translation>
 <translation id="4107552920076294723">የ IPFS ሀብቶችን ወደተዋቀረው የIPFS አግባቢ ፍኖት ይቀይሩ</translation>
@@ -303,6 +305,10 @@
 <translation id="1391855377994926460">ድረ-ገጹን በፍጥነት ማሰስዎን ይቀጥሉ - በዋና ዋና የዜና ጣቢያዎች እስከ 6x የበለጠ ፍጥነት ያለው።</translation>
 <translation id="9218430445555521422">እንደወረደ አዘጋጀው</translation>
 <translation id="3479552764303398839">አሁን አይደለም</translation>
+<translation id="732814027519296280">Brave Searchን በይበልጥ ማሻሻል ይፈልጋሉ?</translation>
+<translation id="2677865600861971449">ስም አልባ በሆነ መንገድ &amp; የአሰሳ ውሂብ ኣስተዋጾ ለማድረግ እና ለሁሉም Brave Searchን ለማሻሻል ወደ Web Discovery Project ለመግባት ይምረጡ። ግላዊነት ይጠበቃል፣ እናም ያለምንም ስራ። <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">አብራ</translation>
+<translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
 <translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="7815301689257843278">Brave ይህ ችግር እንደገና እንዳይከሰት እንዲከላከል የብልሽት ሪፖርቶችን በራስ -ሰር ይላኩ?</translation>
@@ -312,6 +318,8 @@
 <translation id="6873781976650514089">ይህ ቅንብር</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
 <translation id="5600566490506283344">የ Brave Ad ማስታወቂያ</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
 <translation id="1516554614404600536">Brave  መሣሪያ ጠቃሚ ምክር</translation>
 <translation id="4877147287319222750">ወደ Sidebar ያክሉ</translation>
 <translation id="4233010476457917696">የጎን አሞሌን አሳይ</translation>

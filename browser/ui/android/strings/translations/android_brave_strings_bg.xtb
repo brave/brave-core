@@ -48,6 +48,9 @@
 <translation id="4479934682648362332">Предпочитам настолната версия на сайтовете</translation>
 <translation id="1842747674580016420">Възпроизвеждане на видео в Brave</translation>
 <translation id="5368992950177874750">Ако са активирани, видеоклиповете ще се възпроизвеждат в Brave, вместо в съответното приложение</translation>
+<translation id="410351446219883937">Автоматично възпроизвеждане</translation>
+<translation id="7445411102860286510">Разрешаване на сайтовете автоматично да възпроизвеждат видеоклипове със заглушен звук (препоръчително)</translation>
+<translation id="7837721118676387834">Разрешаване на автоматичното възпроизвеждане на видеоклипове със заглушен звук за конкретен сайт.</translation>
 <translation id="181905442828471321">Глобални настройки по подразбиране на щитовете на Brave</translation>
 <translation id="2675679258824361492">Други настройки за поверителност</translation>
 <translation id="8026334261755873520">Изчистване на данните за сърфирането</translation>
@@ -114,6 +117,7 @@
 <translation id="8280223431922155812">НОЕМВРИ</translation>
 <translation id="4254029385847607686">ДЕКЕМВРИ</translation>
 <translation id="3780605330121608425">Вашето портмоне</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">Щатски долари</translation>
 <translation id="1165667598801520610">Добавяне на средства</translation>
@@ -466,6 +470,17 @@
 <translation id="3769645103175790584">Печелете токени и възнаграждавайте създателите за страхотното съдържание, докато сърфирате. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Бърза обиколка</translation>
 <translation id="1080013038789678738">Ще участвам!</translation>
+<translation id="8037420924417098685">За да започнете безплатно обаждане, активирайте Brave Rewards</translation>
+<translation id="8961724619078500274">С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
+<translation id="7307847920988946894">Включете Rewards</translation>
+<translation id="1186139901474936180">Чрез докосването вие се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>. Дезактивирайте по всяко време в настройките.</translation>
+<translation id="6128511569382736135">За да започнете безплатно обаждане, активирайте Brave Private Ads</translation>
+<translation id="7930006085154756245">С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
+<translation id="4992617448154987397">Включете Brave Private Ads</translation>
+<translation id="7314030474505546826">Включвайки рекламите, вие се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
+<translation id="6712250553966900750">Натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
+<translation id="626339649633171286">Искате ли да научите повече за Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Превърнахте <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Проверете вашата мрежова връзка.</translation>
 <translation id="7889432931837317731">Автоматично отваряне, когато е възможно</translation>
@@ -528,6 +543,7 @@
 <translation id="7408247683131762445">ПРЕДУПРЕЖДЕНИЕ: никога не разкривайте резервната си фраза. Всеки с тази фраза може да вземе средствата ви завинаги.</translation>
 <translation id="939275786514736244">Архивирах фразата си на сигурно място</translation>
 <translation id="6896758677409633944">Копиране</translation>
+<translation id="2604744480284798833">Архивирайте портфейла си сега, за да защитите криптопортфолиото от загуба на достъп.</translation>
 <translation id="1202920745614909195">Купувайте криптовалути с Apple Pay, кредитна или дебитна карта.</translation>
 <translation id="841880029259839903">Изпращайте или прехвърляйте криптовалути от един акаунт в друг.</translation>
 <translation id="8982246458261383692">Разменяйте криптоактиви с агрегатор DEX на Brave.</translation>
@@ -536,7 +552,7 @@
 <translation id="4450951602553063001">Въведете паролата отново</translation>
 <translation id="1783870616707290226">Паролата трябва да бъде с дължина 7 или повече знака</translation>
 <translation id="7383102760859258982">Въведената повторно парола не съвпада</translation>
-<translation id="1538774398124896437">На живо</translation>
+<translation id="3188963375823360044">1 час</translation>
 <translation id="8163269366661594721">1 ДЕН</translation>
 <translation id="7640956400175663828">1 СЕДМИЦА</translation>
 <translation id="9100647964747998533">1 МЕСЕЦ</translation>
@@ -546,6 +562,7 @@
 <translation id="8892168913673237979">Всичко е настроено!</translation>
 <translation id="8331501996028380732">Купуивайте, търгувайте или управлявайте криптовалута. Ако имате съществуващ криптоакаунт, може да го добавите сега.</translation>
 <translation id="2267753748892043616">Добавяне на акаунт</translation>
+<translation id="2632612428525029752">Актуализиране на акаунт</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Активиране на отключването с пръстов отпечатък?</translation>
 <translation id="5493402808936397665">Активирайте биометричните данни, за да отключите бързо портфейла си, без да въвеждате паролата.</translation>
@@ -565,7 +582,7 @@
 <translation id="1144810021918451336">Не ви предпазва от опасни уебсайтове, изтегляния и разширения.</translation>
 <translation id="745115390910697838">Фразата не съвпада, опитайте отново.</translation>
 <translation id="2360588547830602174">Неуспешно възстановяване на акаунта. Опитайте отново.</translation>
-<translation id="990936698620790924">Пазарна цена в ETH</translation>
+<translation id="6392640873800632439">Пазарна цена в <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Цена в ETH</translation>
 <translation id="6748108480210050150">От</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -593,10 +610,107 @@
 <translation id="569068482611873351">Импортиране...</translation>
 <translation id="1940465339426637378">Активи</translation>
 <translation id="4522570452068850558">Подробности</translation>
-<translation id="9065203028668620118">Редактиране</translation>
 <translation id="3995184924764722477">Детайли за акаунта</translation>
 <translation id="8967036623785635603">Редактиране на видимите активи</translation>
 <translation id="5050890334032852465">Запазване на списъка за наблюдение на акаунта</translation>
 <translation id="7755766175599167100">Търсене на маркери</translation>
 <translation id="3835223348537121988">Баланс:</translation>
+<translation id="4449475351935531438">Защитна стена на Brave + VPN</translation>
+<translation id="719977489961414786">Надстройте до VPN, за да защитите връзката си и да блокирате нападателните тракери навсякъде.</translation>
+<translation id="3435896845095436175">Активиране</translation>
+<translation id="8814357473522731680">Предоставено от</translation>
+<translation id="5596139545583924414">Блокиране на реклами и тракери във всички приложения</translation>
+<translation id="8272917646984397798">Защитава всички връзки</translation>
+<translation id="1751947227857853925">Бързи и неограничени до 100 Mbps</translation>
+<translation id="1400240082805528049">Поддръжка 24/7</translation>
+<translation id="5051030058817632680">Блокиране на нежелани мрежови връзки</translation>
+<translation id="3510283489391432976">Изберете вашето географско местоположение или държава</translation>
+<translation id="4390800080658195654">Поддържа ви анонимни онлайн</translation>
+<translation id="639981156979733813">Поддържа скорости до 100 Mbps</translation>
+<translation id="8396607116169935837">Използва защитен и шифрован VPN tunnel от IKEv2</translation>
+<translation id="1571230671455380494">Не споделяме или продаваме вашата информация</translation>
+<translation id="276866628038850725">Всички планове включват безплатен 7-дневен пробен период!</translation>
+<translation id="7280825497485894053">Месечен абонамент</translation>
+<translation id="3001303523417455986">Годишен абонамент</translation>
+<translation id="6748319398471481216">Месечно подновяване</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /месечно.</translation>
+<translation id="1163809943099641131">Една година</translation>
+<translation id="6277055349883621705">Годишното подновяване спестява 16%</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /годишно.</translation>
+<translation id="4487678670820292781">119,88 щ.д.</translation>
+<translation id="5867778679088331977">Опитайте безплатно за 7 дни. След 7 дни ще бъдете таксувани за цената на плана. Всички абонаменти се подновяват автоматично, но могат да бъдат отказани преди подновяването.</translation>
+<translation id="6053992191006521518">Опитайте БЕЗПЛАТНО</translation>
+<translation id="721747358270435486">Инсталиране на VPN</translation>
+<translation id="836074276610740314">Инсталиране на профил за VPN</translation>
+<translation id="8021842065465097929">Brave сега ще инсталира профил за VPN.</translation>
+<translation id="229286271464650057">Този профил позволява на VPN да се свързва автоматично и да защитава трафика на вашето устройство във всяко приложение през цялото време. VPN връзката ще бъде шифрована и насочена през интелигентната защитна стена на Guardian, за да блокира реклами и тракери.</translation>
+<translation id="9073255657908892407">Свързване с техническата поддръжка</translation>
+<translation id="1139934321138152517">VPN вече е активирана</translation>
+<translation id="7678718921266217759">Малко контекст...</translation>
+<translation id="7267573208549764106">Предишната ви VPN връзка е прекъсната. За да се свържете отново с VPN, трябва да приемете заявката за връзка.
+
+Ако не я приемете, VPN няма да се свърже отново и вашата интернет връзка няма да бъде защитена.</translation>
+<translation id="2429299231491852747">Приемане на заявката за връзка</translation>
+<translation id="3428909627460825679">Създаването на профил за VPN е неуспешно. Опитайте отново.</translation>
+<translation id="8584119457978684056">Проверката на покупката на жетони е неуспешна. Опитайте отново.</translation>
+<translation id="8905950042180169719">VPN се изпълнява на заден план</translation>
+<translation id="8681480718817027245">Абонамент</translation>
+<translation id="7805768142964895445">Състояние</translation>
+<translation id="5747552184818312860">Изтича на</translation>
+<translation id="1656814355341174523">Управление на абонамент</translation>
+<translation id="1919008675977575793">Сървър</translation>
+<translation id="4812684235631257312">Хост</translation>
+<translation id="5646376287012673985">Местоположение</translation>
+<translation id="8375573361134671513">Нулиране на конфигурацията</translation>
+<translation id="850405162932416400">Поддръжка на VPN</translation>
+<translation id="1330148827129583049">Не е създаден профил за VPN. Създаване на нов профил.</translation>
+<translation id="6772117549627334582">Неуспешно получаване на местоположението на сървъра. Опитайте отново по-късно.</translation>
+<translation id="5863914199331127413">Име на хоста на VPN</translation>
+<translation id="5499653136178260315">Тип абонамент</translation>
+<translation id="4741058112780154119">Версия на приложението</translation>
+<translation id="7286066816862208787">Получаване на приложението</translation>
+<translation id="2552966063069741410">Часова зона</translation>
+<translation id="4395361077929528480">Тип мрежа</translation>
+<translation id="755448900483975096">Мобилен оператор</translation>
+<translation id="1279441577056010362">Продължаване към имейла</translation>
+<translation id="2553687444159335134">Поддръжката е предоставена с помощта на екипа на Guardian.\n\nИзберете информацията, която ще споделите с нас.\n\nКолкото повече информация първоначално споделите с нас, толкова по-лесно ще е нашият екип по поддържката да разреши вашия</translation>
+<translation id="7999094850625689785">Регионът на сървъра, който е най-близо до вас, ще бъде автоматично избран в зависимост от часовата зона на системата ви. Препоръчва се за осигуряване на бързи скорости на интернет.</translation>
+<translation id="8018707825009059641">Други проблеми</translation>
+<translation id="6687228121145903051">Неуспешно свързване с VPN (друга грешка)</translation>
+<translation id="9184988385244077767">Няма връзка с интернет</translation>
+<translation id="21570240866965662">Връзката е бавна</translation>
+<translation id="1219475260382643267">Уебсайтът не работи</translation>
+<translation id="7138678301420049075">Друго</translation>
+<translation id="4827315939627587219">Нулиране на конфигурацията на VPN</translation>
+<translation id="6883280223123252086">Наистина ли искате да нулирате конфигурацията на VPN?</translation>
+<translation id="604124094241169006">Автоматично</translation>
+<translation id="7475580600756356589">Свързване със сървъра. Трябва да отнеме само минута...</translation>
+<translation id="1342728075788541348">Прекъсване на връзката със сървъра. Трябва да отнеме само минута...</translation>
+<translation id="669072536454692117">Абонаментът е използван успешно</translation>
+<translation id="1187506504156101449">Неуспешно потвърждаване на покупката:</translation>
+<translation id="8420522105268941892">Вече сте абонирани за абонамента. Опитайте да го възстановите.</translation>
+<translation id="74771564105268111">ГРЕШКА!!\Възникнала в резултат от отмяната на потока за покупки от потребителя.</translation>
+<translation id="3851978668258201962">ГРЕШКА!!\nНеуспешно закупуване..</translation>
+<translation id="6452181791372256707">Отхвърляне</translation>
+<translation id="8030852056903932865">Одобри</translation>
+<translation id="1597199892790541240">Такса за газ</translation>
+<translation id="1634828734222219955">Общо</translation>
+<translation id="7995708795274219641">Количество + газ</translation>
+<translation id="1950052789869821983">Трансакция</translation>
+<translation id="6122742277607781713">Портфолио</translation>
+<translation id="2805756323405976993">Приложения</translation>
+<translation id="6083912983861746409">Цена на газа (GWEI)</translation>
+<translation id="2499079593046817044">Ограничение на газа (GWEI)</translation>
+<translation id="6389441740143786465">Дезактивиране на платформата за споделяне</translation>
+<translation id="9065203028668620118">Редактиране</translation>
+<translation id="473775607612524610">Актуализиране</translation>
+<translation id="479795390141144417">Неуспешно актуализиране на акаунта.</translation>
+<translation id="8084782383392198011">Името на акаунта не може да бъде празно.</translation>
+<translation id="5045550434625856497">Грешна парола</translation>
+<translation id="1367951781824006909">Избор на файл</translation>
+<translation id="8648684608605749476">Блокиране на „бисквитките“ на трети страни в режим „инкогнито“</translation>
+<translation id="1118876217803190221">Недостатъчно салдо</translation>
+<translation id="275990379543116961">Недостатъчни средства за газ</translation>
+<translation id="3292453499915466604">Недостатъчно средства</translation>
+<translation id="3380365263193509176">Неизвестна грешка</translation>
 </translationbundle>

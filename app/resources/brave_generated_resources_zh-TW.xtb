@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">加密錢包</translation>
 <translation id="1696548911367097044">不推薦使用的加密錢包擴充</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">用於使用去中央化應用程式 (Dapp) 的乙太坊提供者</translation>
-<translation id="5913089932885076110">啟動時載入加密錢包</translation>
-<translation id="757886143331967039">在啟動時載入不推薦使用的加密錢包擴充</translation>
+<translation id="9131889008937672866">預設加密幣錢包</translation>
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
+<translation id="8239147115686034860">自動鎖定 Brave Wallet</translation>
+<translation id="414639769490080648">Brave Wallet 自動鎖定前等待的分鐘數</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>關於基於 HTTPS 的 DNS  與以太坊隱私注意事項。</translation>
@@ -236,6 +236,7 @@
 <translation id="1251574393468476924">IPFS 快取大小上限 (GB)</translation>
 <translation id="2503497578400410320">IPFS 儲存庫 datastore 大小的軟上限。</translation>
 <translation id="7703184801853248830">無效的閘道器位址</translation>
+<translation id="7690058578502751948">僅啟用了 Origin 隔離的有效 IPFS 閘道可用於 Brave</translation>
 <translation id="585868419599255817">IPFS 公開閘道器汰退</translation>
 <translation id="207763736230883589">若無法連接您的本地節點，則自動返回公用 IPFS 閘道器。</translation>
 <translation id="4107552920076294723">將 IPFS 資源重新導向到已設定的 IPFS 閘道器</translation>
@@ -304,6 +305,10 @@
 <translation id="1391855377994926460">保持更快的瀏覽網路速度，在主要新聞網站上的瀏覽速度是六倍快。</translation>
 <translation id="9218430445555521422">設定為預設瀏覽器</translation>
 <translation id="3479552764303398839">現在不要</translation>
+<translation id="732814027519296280">想改進 Brave Search 嗎？</translation>
+<translation id="2677865600861971449">選擇加入 Web 發現專案，匿名貢獻一些搜尋與瀏覽資料，改進所有使用者的 Brave Search 結果。保護隱私。無需操作。<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">啟用</translation>
+<translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="5039804452771397117">允許</translation>
 <translation id="7053983685419859001">封鎖</translation>
 <translation id="7815301689257843278">是否自動傳送當機報告，協助 Brave 防止這個問題再度發生？</translation>
@@ -313,6 +318,8 @@
 <translation id="6873781976650514089">這項設定</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5600566490506283344">Brave 廣告通知</translation>
+<translation id="4174337572777167894">Web 發現專案</translation>
+<translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave Search。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
 <translation id="4233010476457917696">顯示側邊欄</translation>

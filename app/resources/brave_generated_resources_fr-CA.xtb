@@ -190,10 +190,10 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5655621391922317800">Portefeuilles cryptographiques</translation>
 <translation id="1696548911367097044">Extension Crypto Wallets obsolète</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Fournisseur d'Ethereum pour l'utilisation de Dapps</translation>
-<translation id="5913089932885076110">Charger Crypto Wallets au démarrage</translation>
-<translation id="757886143331967039">Charger l'extension Crypto Wallets obsolète au démarrage</translation>
+<translation id="9131889008937672866">Portefeuille de cryptomonnaies par défaut</translation>
 <translation id="1834467296210148203">Afficher l'icône Portefeuille Brave dans la barre d'outils</translation>
+<translation id="8239147115686034860">Verrouiller automatiquement le portefeuille Brave</translation>
+<translation id="414639769490080648">Le nombre de minutes à attendre avant que le portefeuille Brave soit automatiquement verrouillé</translation>
 <translation id="6864914031231797928">Autoriser la connexion à Google pour les extensions</translation>
 <translation id="5927916530277631319">Méthode pour résoudre Unstoppable Domains</translation>
 <translation id="5248318250177143470">Méthode pour résoudre Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1251574393468476924">Taille maximal du cache IPFS (Go)</translation>
 <translation id="2503497578400410320">Une limite supérieure souple pour la taille du magasin de données du référentiel IPFS.</translation>
 <translation id="7703184801853248830">Adresse de passerelle non valide</translation>
+<translation id="7690058578502751948">Seule une passerelle IPFS valide avec l'isolation de l'origine activée peut être utilisée dans Brave</translation>
 <translation id="585868419599255817">Repli vers la passerelle publique IPFS</translation>
 <translation id="207763736230883589">Revenez automatiquement à la passerelle IPFS publique si votre nœud local ne peut pas être atteint.</translation>
 <translation id="4107552920076294723">Rediriger les ressources IPFS vers la passerelle IPFS configurée</translation>
@@ -300,6 +301,10 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1391855377994926460">Continuez à naviguer sur Internet encore plus rapidement. Les principaux sites d'actualité chargent jusqu'à 6 fois plus vite.</translation>
 <translation id="9218430445555521422">Définir par défaut</translation>
 <translation id="3479552764303398839">Pas maintenant</translation>
+<translation id="732814027519296280">Vous voulez améliorer davantage Brave Search?</translation>
+<translation id="2677865600861971449">Participez au projet Web Discovery pour fournir anonymement des données de recherche et de navigation, et améliorer les résultats de Brave Search pour tous. Vie privée préservée. Aucun effort requis. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Activer</translation>
+<translation id="780301667611848630">Non merci</translation>
 <translation id="5039804452771397117">Autoriser</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="7815301689257843278">Envoyer automatiquement les rapports de plantage pour que Brave puisse empêcher la répétition de ce problème?</translation>
@@ -309,6 +314,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6873781976650514089">ce paramètre</translation>
 <translation id="6040143037577758943">Fermer</translation>
 <translation id="5600566490506283344">Notification d'annonce Brave</translation>
+<translation id="4174337572777167894">Projet Web Discovery</translation>
+<translation id="8659271182272561965">Fournissez des données de recherche et de navigation anonymes pour affiner Brave Search.</translation>
 <translation id="1516554614404600536">Infobulle Brave</translation>
 <translation id="4877147287319222750">Ajouter à la barre latérale</translation>
 <translation id="4233010476457917696">Afficher la barre latérale</translation>

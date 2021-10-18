@@ -19,6 +19,26 @@
     "message": "Atualizar Estado",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Qualquer gratificação que dê permanecerá pendente na sua carteira e voltará a tentar automaticamente durante 90 dias. $link_begin$Saber mais$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Este criador ainda não está registado.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Atualmente, este criador não está configurado para receber gratificações da sua carteira.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ em $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ a chegar dentro de $days$",
+    "message": "Pagamento de $amount$ inicia o processamento em $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Ignorar",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Para iniciar uma chamada gratuita, ative as Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Com as Brave Rewards, ganha tokens para ver anúncios privados (os seus dados estão seguros). Transforme esses tokens em dinheiro, cartões presente... ou dê gratificações aos sítios web que adora. Sem registo. Sem demoras.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Ativar recompensas",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Ao clicar, concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e com a $pp_link_begin$Política de Privacidade$pp_link_end$. Desative a qualquer momento nas Definições.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Para iniciar uma chamada gratuita, ative os Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Com os Brave Private Ads, ganha tokens para ver anúncios privados (os seus dados estão seguros). Transforme esses tokens em dinheiro, cartões presente... ou dê gratificações aos sítios web que adora. Sem registo. Sem demoras.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Ativar os Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ao ativar os Ads (anúncios), concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e com a $pp_link_begin$Política de Privacidade$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Pode agora iniciar uma chamada gratuita",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Clique em qualquer parte do ecrã para continuar a Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Pretende a saber mais sobre as Brave Rewards? $tour_link_begin$Faça uma rápida visita$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

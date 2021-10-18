@@ -19,6 +19,26 @@
     "message": "Osveži status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Vsak prispevek, ki ga boste dali, bo ostal v čakanju v denarnici in bo samodejno ponovno poskusil čez 90 dni. $link_begin$Več o tem$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Ta ustvarjalec še ni registriran.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Ta ustvarjalec trenutno ni nastavljen za prejemanje prispevkov iz vaše denarnice.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ na $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ bo tu čez $days$",
+    "message": "$amount$ bo obdelan čez $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Opusti",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Če želite začeti brezplačen klic, vklopite Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Z nagradami Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Vklopite storitev Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "S klikom se strinjate s $tos_link_begin$Pogoji storitve$tos_link_end$ in $pp_link_begin$Politiko zasebnosti. $pp_link_end$. To lahko kadarkoli onemogočite v nastavitvah.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Če želite začeti brezplačen klic, omogočite Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvarjajte te žetone v gotovino, darilne kartice... ali jih dajte kot prispevek za spletna mesta, ki jih imate radi. Brez sledenja. Brez upočasnitev.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Vklopi zasebne oglase Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Če omogočite oglase Ads, se strinjate s $tos_link_begin$Pogoji storitve $tos_link_end$ in $pp_link_begin$Politiko zasebnosti$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Zdaj lahko brezplačno kličete",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Za nadaljevanje k Brave Talk kliknite kjerkoli na zaslonu.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vas za nima več o Brave Rewards? $tour_link_begin$Pojdite na hiter ogled$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -81,6 +81,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7895302206188277628">Contingut vinculat</translation>
 <translation id="3654831858282189202">Publica amb clau IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importa el text seleccionat a IPFS</translation>
 <translation id="6925604404524625582">Importa i copia l'enllaç a la captura d'IPFS</translation>
 <translation id="1434416574322382019">Nova finestra privada amb Tor</translation>
 <translation id="4703780849509456860">Obre l'enllaç a una finestra privada amb Tor</translation>
@@ -190,12 +191,13 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5655621391922317800">Moneders Crypto</translation>
 <translation id="1696548911367097044">Extensió obsoleta de Crypto Wallets</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Proveïdor d'Ethereum per utilitzar Dapps</translation>
-<translation id="5913089932885076110">Carregueu Moneders Crypto a l'inici</translation>
-<translation id="757886143331967039">Carregar l'extensió Crypto Wallets obsoleta a l'inici</translation>
+<translation id="9131889008937672866">Cartera de criptomoneda predeterminada</translation>
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
+<translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
+<translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="5927916530277631319">Mètode per resoldre Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saber-ne més<ph name="END_LINK"/> sobre DNS sobre HTTPS i les consideracions de privacitat d'Ethereum.</translation>
 <translation id="5248318250177143470">Mètode per resoldre el servei de noms Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Configura les teves claus IPNS</translation>
 <translation id="951216659045543447">Signa contingut mitjançant la clau privada corresponent i publica'l a IPNS</translation>
@@ -209,6 +211,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6476061084931271248">Reinicia el node per aplicar els canvis</translation>
 <translation id="3754226427671882382">Reinicia el node</translation>
 <translation id="949667118776341807">Gira</translation>
+<translation id="1381002020878144739">ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Aquest nom no és vàlid</translation>
 <translation id="6758961763875471084">Modifica la llista de parells</translation>
 <translation id="1295874070797049002">Exporta la clau</translation>
@@ -226,12 +229,14 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1327977588028644528">Passarel·la</translation>
 <translation id="80225669816651290">Node local</translation>
 <translation id="4927734062756955434">Adreça d'entrada IPFS pública</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saber-ne més<ph name="END_LINK_MPL"/> sobre el node local d'IPFS i les consideracions de privacitat de passarel·la.</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="557281710253742286">Configureu l'entrada IPFS</translation>
 <translation id="8571837315037233299">Adreça d'entrada</translation>
 <translation id="1251574393468476924">Mida màxima de memòria cau IPFS (GB)</translation>
 <translation id="2503497578400410320">Un límit superior suau per a la mida del magatzem de dades del repositori IPFS.</translation>
 <translation id="7703184801853248830">Direcció d'entrada no vàlida</translation>
+<translation id="7690058578502751948">A Brave només es pot utilitzar una passarel·la IPFS vàlida amb l’aïllament d’origen activat</translation>
 <translation id="585868419599255817">Tornar a la passarel·la pública IPFS</translation>
 <translation id="207763736230883589">Retirar-se automàticament a una entrada IPFS pública si el vostre node local no està disponible.</translation>
 <translation id="4107552920076294723">Redirigiu els recursos IPFS a l'entrada IPFS configurada</translation>
@@ -300,6 +305,10 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1391855377994926460">Exploreu la web amb més rapidesa, fins a 6 vegades més ràpid en les pàgines web de notícies principals.</translation>
 <translation id="9218430445555521422">Estableix com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
+<translation id="732814027519296280">Voleu millorar el cercador de Brave encara més?</translation>
+<translation id="2677865600861971449">Apunteu-vos al projecte Web Discovery per aportar dades de cerca i navegació de forma anònima i perfeccionar els resultats de Brave Search per a tothom. Manté la vostra privadesa i no requereix cap esforç. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Activa</translation>
+<translation id="780301667611848630">No, gràcies</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
 <translation id="7815301689257843278">Enviar automàticament els informes d'errors per tal que Brave eviti que el problema es torni a produir?</translation>
@@ -309,6 +318,8 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="6873781976650514089">aquesta configuració</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="5600566490506283344">Notificació de Brave Ad</translation>
+<translation id="4174337572777167894">Projecte Web Discovery</translation>
+<translation id="8659271182272561965">Aporteu dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
 <translation id="1516554614404600536">Descripció emergent de Brave</translation>
 <translation id="4877147287319222750">Afegeix a la barra lateral</translation>
 <translation id="4233010476457917696">Mostra la barra lateral</translation>

@@ -190,10 +190,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5655621391922317800">Kryptoplånböcker</translation>
 <translation id="1696548911367097044">Föråldrat Crypto Wallets-tillägg</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum-leverantör för användning av Dapps</translation>
-<translation id="5913089932885076110">Ladda Crypto Wallets vid start</translation>
-<translation id="757886143331967039">Ladda föråldrat Crypto Wallets-tillägg vid start</translation>
+<translation id="9131889008937672866">Standardplånbok för kryptovaluta</translation>
 <translation id="1834467296210148203">Visa Brave Wallet-ikon i verktygsfältet</translation>
+<translation id="8239147115686034860">Lås automatiskt Brave Wallet</translation>
+<translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="5927916530277631319">Metod för att lösa ostoppbara domäner</translation>
 <translation id="5248318250177143470">Metod för att lösa Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1251574393468476924">Maximal IPFS-cachestorlek (GB)</translation>
 <translation id="2503497578400410320">En mjuk övre gräns för storleken på IPFS-katalogens datalager.</translation>
 <translation id="7703184801853248830">Ogiltig gateway-adress</translation>
+<translation id="7690058578502751948">Endast en giltig IPFS-gateway med Origin-isolering aktiverad kan användas i Brave</translation>
 <translation id="585868419599255817">IPFS public gateway fallback</translation>
 <translation id="207763736230883589">Återgår automatiskt till publik IPFS gateway om din lokala nod inte kan nås.</translation>
 <translation id="4107552920076294723">Omdirigera IPFS-resurser till konfigurerad IPFS gateway</translation>
@@ -300,6 +301,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1391855377994926460">Fortsätt surfa snabbare på webben – upp till sex gånger snabbare på större nyhetssajter.</translation>
 <translation id="9218430445555521422">Använd som standard</translation>
 <translation id="3479552764303398839">Inte nu</translation>
+<translation id="732814027519296280">Vill du göra Brave Search ännu bättre?</translation>
+<translation id="2677865600861971449">Registrera dig till Web Discovery Project för att anonymt bidra med sök&amp; surfdata och förbättra Brave Search-resultat för alla. Sekretessbevarande. Och noll ansträngning. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Aktivera</translation>
+<translation id="780301667611848630">Nej tack</translation>
 <translation id="5039804452771397117">Tillåt</translation>
 <translation id="7053983685419859001">Blockera</translation>
 <translation id="7815301689257843278">Vill du skicka kraschrapporter automatiskt så att Brave kan förhindra att problemet händer igen?</translation>
@@ -309,6 +314,8 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6873781976650514089">den här inställningen</translation>
 <translation id="6040143037577758943">Stäng</translation>
 <translation id="5600566490506283344">Brave-annonsavisering</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
 <translation id="1516554614404600536">Brave-knappbeskrivning</translation>
 <translation id="4877147287319222750">Lägg till i sidofält</translation>
 <translation id="4233010476457917696">Visa sidofält</translation>

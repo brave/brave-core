@@ -190,10 +190,10 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5655621391922317800">Krypto peněženky</translation>
 <translation id="1696548911367097044">Rozšíření pro zastaralé krypto peněženky</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Poskytovatel Etherea pro používání Dapps</translation>
-<translation id="5913089932885076110">Načíst Kryptopeněženky při zapnutí</translation>
-<translation id="757886143331967039">Načíst rozšíření pro zastaralé krypto peněženky při spuštění</translation>
+<translation id="9131889008937672866">Výchozí kryptopeněženka</translation>
 <translation id="1834467296210148203">Zobrazit ikonu peněženky Brave na liště nástrojů</translation>
+<translation id="8239147115686034860">Automatické zamykání peněženky Brave Wallet</translation>
+<translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Googlu</translation>
 <translation id="5927916530277631319">Způsob řešení služby Unstoppable Domains</translation>
 <translation id="5248318250177143470">Způsob řešení služby ENS (Ethereum Name Service)</translation>
@@ -232,6 +232,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1251574393468476924">Maximální velikost mezipaměti IPFS (GB)</translation>
 <translation id="2503497578400410320">Mírný horní limit pro velikost úložiště dat protokolu IPFS.</translation>
 <translation id="7703184801853248830">Neplatná adresa brány</translation>
+<translation id="7690058578502751948">V systému Brave lze použít pouze platnou bránu IPFS s povolenou izolací Origin.</translation>
 <translation id="585868419599255817">Náhradní připojení pomocí veřejné brány IPFS</translation>
 <translation id="207763736230883589">Automaticky přejít zpět na veřejnou bránu IPFS, pokud nelze dosáhnout místního uzlu.</translation>
 <translation id="4107552920076294723">Přesměrujte prostředky IPFS na nakonfigurovanou bránu IPFS</translation>
@@ -300,6 +301,10 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="1391855377994926460">Procházejte web tak rychle i nadále – na hlavních zpravodajských webech až 6krát rychleji.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
+<translation id="732814027519296280">Chcete pomoci vyhledávači Brave Search se ještě více zdokonalit?</translation>
+<translation id="2677865600861971449">Přihlaste se k projektu Web Discovery a anonymně přispějte některými údaji o vyhledávání a procházení a pomozte tak zlepšit výsledky vyhledávání Brave Search pro všechny. Zachování soukromí. A nulové nároky. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Zapnout</translation>
+<translation id="780301667611848630">Ne, děkuji</translation>
 <translation id="5039804452771397117">Povolit</translation>
 <translation id="7053983685419859001">Blokovat</translation>
 <translation id="7815301689257843278">Chcete automaticky odesílat hlášení o výpadcích, aby služba Brave mohla zabránit opakování tohoto problému?</translation>
@@ -309,6 +314,8 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="6873781976650514089">Toto nastavení</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="5600566490506283344">Upozornění na reklamu Brave</translation>
+<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="8659271182272561965">Přispějte anonymními údaji o vyhledávání a prohlížení ke zdokonalení služby Brave Search.</translation>
 <translation id="1516554614404600536">Popis Brave</translation>
 <translation id="4877147287319222750">Přidat na postranní panel</translation>
 <translation id="4233010476457917696">Zobrazit postranní lištu</translation>

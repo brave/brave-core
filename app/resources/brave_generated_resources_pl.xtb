@@ -190,10 +190,10 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="5655621391922317800">Portfele kryptowalut</translation>
 <translation id="1696548911367097044">Stare rozszerzenie portfeli kryptowaluty</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dostawca Ethereum do korzystania z Dapps</translation>
-<translation id="5913089932885076110">Wczytuj portfele kryptowalut podczas uruchamiania</translation>
-<translation id="757886143331967039">Wczytaj stare rozszerzenie portfeli kryptowaluty podczas uruchomienia</translation>
+<translation id="9131889008937672866">Domyślny portfel kryptowalutowy</translation>
 <translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
+<translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
+<translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
 <translation id="6864914031231797928">Zezwól na logowanie Google w przypadku rozszerzeń</translation>
 <translation id="5927916530277631319">Metoda rozwiązywania Unstoppable Domains</translation>
 <translation id="5248318250177143470">Metoda rozwiązywania Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1251574393468476924">Maksymalny rozmiar pamięci podręcznej IPFS (GB)</translation>
 <translation id="2503497578400410320">Miękki górny limit wielkości magazynu danych repozytorium IPFS.</translation>
 <translation id="7703184801853248830">Nieważny adres wejścia</translation>
+<translation id="7690058578502751948">W Brave można korzystać tylko z prawidłowej bramy IPFS z włączonym izolowaniem Origin</translation>
 <translation id="585868419599255817">Powrót do publicznej bramki IPFS</translation>
 <translation id="207763736230883589">Automatycznie cofnij do publicznego wejścia IPFS jeśli Twój lokalny węzeł nie będzie mógł zostać osiągnięty.</translation>
 <translation id="4107552920076294723">Przekieruj zasoby IPFS do skonfigurowanego wejścia IPFS</translation>
@@ -300,6 +301,10 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1391855377994926460">Przeglądaj sieć szybciej - do sześciu razy szybciej na największych portalach informacyjnych.</translation>
 <translation id="9218430445555521422">Ustaw jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
+<translation id="732814027519296280">Czy chcesz sprawić, że wyszukiwarka Brave stanie się jeszcze lepsza?</translation>
+<translation id="2677865600861971449">Weź udział w projekcie Web Discovery i udostępniaj anonimowo wybrane dane wyszukiwania i przeglądania, aby pomóc usprawnić wyszukiwarkę Brave dla wszyskich użytkowników — całkowicie anonimowo i bez żadnego wysiłku. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Włącz</translation>
+<translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="7053983685419859001">Blokuj</translation>
 <translation id="7815301689257843278">Czy automatycznie wysyłać raporty o awariach, aby przeglądarka Brave mogła zapobiec ponownemu wystąpieniu tego problemu?</translation>
@@ -309,6 +314,8 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="6873781976650514089">to ustawienie</translation>
 <translation id="6040143037577758943">Zamknij</translation>
 <translation id="5600566490506283344">Powiadomienie Brave Ad</translation>
+<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="8659271182272561965">Przekaż anonimowo niektóre dane wyszukiwania i przeglądania, aby pomóc w doskonaleniu wyszukiwarki Brave.</translation>
 <translation id="1516554614404600536">Tooltip Brave</translation>
 <translation id="4877147287319222750">Dodaj do paska bocznego</translation>
 <translation id="4233010476457917696">Pokaż pasek boczny</translation>
