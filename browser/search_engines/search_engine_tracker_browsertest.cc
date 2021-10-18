@@ -80,6 +80,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
 
   service->SetUserSelectedDefaultSearchProvider(&ddg_url);
   // This assumes Brave Search is the default!
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
   histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
                                        SearchEngineSwitchP3A::kBraveToDDG, 1);
 
@@ -90,6 +91,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   TemplateURL brave_url(*brave_data);
 
   service->SetUserSelectedDefaultSearchProvider(&brave_url);
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
   histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
                                        SearchEngineSwitchP3A::kDDGToBrave, 1);
 
@@ -100,15 +102,18 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   TemplateURL bing_url(*bing_data);
 
   service->SetUserSelectedDefaultSearchProvider(&bing_url);
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
   histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
                                        SearchEngineSwitchP3A::kBraveToOther, 1);
 
   // Check that incognito or TOR profiles do not emit the metric.
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
+  metrics::SubprocessMetricsProvider::MergeHistogramDeltasForTesting();
   histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
 }
