@@ -16,12 +16,7 @@ private struct TokenView: View {
       assetStore.isVisible.toggle()
     }) {
       HStack(spacing: 8) {
-        Circle()
-          .frame(width: 40, height: 40)
-          .overlay(
-            Image(uiImage: .init())
-          )
-          .clipShape(Circle())
+        AssetIconView(token: assetStore.token)
         VStack(alignment: .leading) {
           Text(assetStore.token.name)
             .fontWeight(.semibold)

@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct PortfolioAssetView: View {
-  var image: UIImage
+  var image: AssetIconView
   var title: String
   var symbol: String
   var amount: String
@@ -14,12 +14,7 @@ struct PortfolioAssetView: View {
   
   var body: some View {
     HStack {
-      Circle()
-        .frame(width: 40, height: 40)
-        .overlay(
-          Image(uiImage: image)
-        )
-        .clipShape(Circle())
+      image
       VStack(alignment: .leading) {
         Text(title)
           .font(.footnote)
@@ -46,7 +41,7 @@ struct PortfolioAssetView: View {
 struct PortfolioAssetView_Previews: PreviewProvider {
   static var previews: some View {
     PortfolioAssetView(
-      image: .init(),
+      image: AssetIconView(token: .eth),
       title: "Basic Attention Token",
       symbol: "BAT",
       amount: "$10,402.22",

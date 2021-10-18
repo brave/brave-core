@@ -328,6 +328,7 @@
 		275965E224EEC4EA0051A827 /* FeedFillStrategyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275965E124EEC4EA0051A827 /* FeedFillStrategyTests.swift */; };
 		2760056625D1FFF500D47A75 /* AddFeedToBraveNewsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760056525D1FFF500D47A75 /* AddFeedToBraveNewsActivity.swift */; };
 		2760D2BF215ACCE20068E131 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760D2BE215ACCE20068E131 /* BundleExtensions.swift */; };
+		2762FF30271A054A001EF41D /* AssetIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2762FF2F271A054A001EF41D /* AssetIconView.swift */; };
 		2765825D2171263A00754B2F /* UserReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2765825C2171263A00754B2F /* UserReferralProgram.swift */; };
 		276582692171266900754B2F /* ReferralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582652171266900754B2F /* ReferralData.swift */; };
 		2765826A2171266900754B2F /* UrpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582662171266900754B2F /* UrpService.swift */; };
@@ -1880,6 +1881,7 @@
 		275965E124EEC4EA0051A827 /* FeedFillStrategyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategyTests.swift; sourceTree = "<group>"; };
 		2760056525D1FFF500D47A75 /* AddFeedToBraveNewsActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeedToBraveNewsActivity.swift; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
+		2762FF2F271A054A001EF41D /* AssetIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetIconView.swift; sourceTree = "<group>"; };
 		2765825C2171263A00754B2F /* UserReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgram.swift; sourceTree = "<group>"; };
 		276582652171266900754B2F /* ReferralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralData.swift; sourceTree = "<group>"; };
 		276582662171266900754B2F /* UrpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpService.swift; sourceTree = "<group>"; };
@@ -3629,6 +3631,7 @@
 				271F687226EBD27D00AA2A50 /* BuySendSwapView.swift */,
 				271F687326EBD27D00AA2A50 /* Asset Details */,
 				271F687726EBD27D00AA2A50 /* Onboarding */,
+				2762FF2F271A054A001EF41D /* AssetIconView.swift */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -7402,6 +7405,7 @@
 				271F68A526EBD27E00AA2A50 /* UnlockWalletView.swift in Sources */,
 				271F689226EBD27E00AA2A50 /* TestKeyringController.swift in Sources */,
 				271F68BE26EBD27E00AA2A50 /* LineChartView.swift in Sources */,
+				2762FF30271A054A001EF41D /* AssetIconView.swift in Sources */,
 				271F68B426EBD27E00AA2A50 /* CreateWalletView.swift in Sources */,
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
