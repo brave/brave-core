@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">輸入您的復原金鑰或</translation>
 <translation id="1209382772199769572">請在更換錢包前備份，否則您會失去目前錢包內的資金 [[funds]]。</translation>
 <translation id="5423214929210538027">您確定要重置您的 Rewards Wallet 嗎？</translation>
-<translation id="4749947664556704604">如重設錢包，您的<ph name="BAT_AMOUNT"/>與其他獎勵資料將會永遠消失。請確認您已與<ph name="PROVIDER"/>認證過您的錢包；如此才可保留您的 BAT。</translation>
 <translation id="2028613172174411919">如果您重設您的錢包，您的 Rewards 資料將永遠遺失。</translation>
 <translation id="4914597931214386232">代幣經費已領</translation>
 <translation id="3494964159182650590">Rewards 摘要</translation>

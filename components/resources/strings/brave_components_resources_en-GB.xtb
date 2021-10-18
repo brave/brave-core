@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">Enter your recovery key or</translation>
 <translation id="1209382772199769572">Backup your wallet before replacing. Or you will lose the fund, [[funds]], in your current wallet.</translation>
 <translation id="5423214929210538027">Are you sure you want to reset your Rewards Wallet?</translation>
-<translation id="4749947664556704604">Your <ph name="BAT_AMOUNT"/> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with <ph name="PROVIDER"/> so you can keep your BAT.</translation>
 <translation id="2028613172174411919">Your Rewards data will be permanently lost if you reset your wallet.</translation>
 <translation id="4914597931214386232">Token Grants Claimed</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>

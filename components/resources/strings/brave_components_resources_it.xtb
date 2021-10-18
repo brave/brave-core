@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">Inserisci la tua chiave di ripristino o</translation>
 <translation id="1209382772199769572">Prima di sostituire il portafoglio esegui un backup, altrimenti perderai il denaro presente nel portafoglio, [[funds]].</translation>
 <translation id="5423214929210538027">Sei sicuro di voler resettare il tuo portafoglio delle ricompense?</translation>
-<translation id="4749947664556704604">I tuoi <ph name="BAT_AMOUNT"/> e altri dati relativi alle ricompense saranno definitivamente persi se ripristini il portafoglio. Assicurati di aver verificato il tuo portafoglio con <ph name="PROVIDER"/> in modo da poter conservare i tuoi BAT.</translation>
 <translation id="2028613172174411919">Se ripristini il tuo portafoglio, i dati delle tue ricompense verranno persi in modo permanente.</translation>
 <translation id="4914597931214386232">Contributi in Token Riscossi</translation>
 <translation id="3494964159182650590">Riepilogo ricompense</translation>

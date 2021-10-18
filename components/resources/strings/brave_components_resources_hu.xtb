@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">Adja meg helyreállítási kódját, vagy</translation>
 <translation id="1209382772199769572">Készítsen biztonsági másolatot pénztárcájáról, mielőtt kicserélné. Ellenkező esetben elveszíti a következő pénzalapot a jelenlegi pénztárcájából: [[funds]].</translation>
 <translation id="5423214929210538027">Biztosan újraállítja Reward pénztárcáját?</translation>
-<translation id="4749947664556704604">A(z) <ph name="BAT_AMOUNT"/> és más Rewards adataid végleg elvesznek, ha újraállítod a pénztárcádat. Győződj meg róla, hogy ellenőrizted <ph name="PROVIDER"/> pénztárcádat, hogy megtarthasd BAT-odat.</translation>
 <translation id="2028613172174411919">A Rewards adatai végleg elvesznek a pénztárca újraállításakor.</translation>
 <translation id="4914597931214386232">Beváltott zseton adományok</translation>
 <translation id="3494964159182650590">Jutalmak összefoglalója</translation>

@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">Skriv in din återställningsnyckel eller</translation>
 <translation id="1209382772199769572">Säkerhetskopiera din plånbok innan du ersätter den. Annars kommer du att förlora medlen, [[funds]], i din nuvarande plånbok.</translation>
 <translation id="5423214929210538027">Är du säker på att du vill nollställa din Rewards-plånbok?</translation>
-<translation id="4749947664556704604">Dina <ph name="BAT_AMOUNT"/> och andra Rewards-data försvinner permanent om du återställer din plånbok. Se till att du har verifierat din plånbok med <ph name="PROVIDER"/> så att du kan behålla dina BAT.</translation>
 <translation id="2028613172174411919">Dina Rewards-data kommer att gå förlorade permanent om du nollställer plånboken.</translation>
 <translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>

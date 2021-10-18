@@ -533,7 +533,6 @@
 <translation id="3267911153934785912">回復キーを入力</translation>
 <translation id="1209382772199769572">現在使用中のウォレット内の資金[[funds]]が失われないよう、変更する前にウォレットをバックアップしてください。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
-<translation id="4749947664556704604">ウォレットをリセットすると、<ph name="BAT_AMOUNT"/>およびその他のRewardsデータは永久に失われます。BATを保持できるように、<ph name="PROVIDER"/>でウォレットを検証したことを確認してください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
 <translation id="4914597931214386232">取得済のトークン付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>

@@ -530,7 +530,6 @@
 <translation id="3267911153934785912">输入恢复密钥或</translation>
 <translation id="1209382772199769572">请在更换钱包之前先备份，否则，您会失去您的当前钱包中的这笔资金 [[funds]]。</translation>
 <translation id="5423214929210538027">您确定要重置您的奖励钱包吗？</translation>
-<translation id="4749947664556704604">如果重置您的钱包，您的 <ph name="BAT_AMOUNT"/> 和其他奖励数据会永久丢失。请确保您已使用 <ph name="PROVIDER"/> 验证了您的钱包。这样您就可以保留您的 BAT 了。</translation>
 <translation id="2028613172174411919">如果您重置钱包，则将永久失去您的奖励数据。</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
