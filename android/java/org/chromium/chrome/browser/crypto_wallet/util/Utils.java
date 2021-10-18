@@ -124,7 +124,7 @@ public class Utils {
             window.requestPermissions(requestPermissions, (permissions, grantResults) -> {
                 assert permissions.length == 1 && grantResults.length == 1;
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    onFileNotSelected(activity);
+                    onFileNotSelected();
                 }
             });
         }
@@ -139,15 +139,16 @@ public class Utils {
         chooser.putExtra(Intent.EXTRA_INTENT, createDocumentIntent);
 
         if (!window.showIntent(chooser, callback, null)) {
-            onFileNotSelected(activity);
+            onFileNotSelected();
         }
     }
 
-    public static void writeTextToFile(Activity activity, Uri uri, String textToSave) {
+    public static void writeTextToFile(Uri uri, String textToSave) {
         AssetFileDescriptor assetFileDescriptor;
+        Context context = ContextUtils.getApplicationContext();
         FileOutputStream outputStream;
         try {
-            assetFileDescriptor = activity.getContentResolver().openAssetFileDescriptor(uri, "wt");
+            assetFileDescriptor = context.getContentResolver().openAssetFileDescriptor(uri, "wt");
             if (assetFileDescriptor != null) {
                 outputStream = assetFileDescriptor.createOutputStream();
                 if (outputStream != null) {
@@ -160,11 +161,14 @@ public class Utils {
         } catch (IOException e) {
             Log.e("wallet_Utils", "Problem creating output stream from URI", e);
         }
-        Toast.makeText(activity, R.string.text_has_been_saved, Toast.LENGTH_SHORT).show();
     }
 
-    public static void onFileNotSelected(Context context) {
-        Toast.makeText(context, R.string.text_file_not_saved, Toast.LENGTH_SHORT).show();
+    public static void onFileSaved() {
+        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_has_been_saved, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void onFileNotSelected() {
+        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_file_not_saved, Toast.LENGTH_SHORT).show();
     }
 
     public static boolean shouldShowCryptoOnboarding() {

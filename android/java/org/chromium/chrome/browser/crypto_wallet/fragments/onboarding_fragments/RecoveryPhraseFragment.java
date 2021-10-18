@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +26,7 @@ import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.RecoveryPhraseSaveCopyBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class RecoveryPhraseFragment extends CryptoOnboardingFragment implements WindowAndroid.IntentCallback {
+public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
     private List<String> recoveryPhrases;
 
     private KeyringController getKeyringController() {
@@ -64,8 +64,12 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment implements 
                 setupRecoveryPhraseRecyclerView(view);
                 TextView copyButton = view.findViewById(R.id.btn_copy);
                 assert getActivity() != null;
-                copyButton.setOnClickListener(v
-                            -> Utils.LaunchBackupFilePicker((AsyncInitializationActivity) getActivity(), this));
+                copyButton.setOnClickListener(v -> {
+                    RecoveryPhraseSaveCopyBottomSheetDialogFragment recoveryPhraseSaveCopyBottomSheetDialogFragment =
+                            RecoveryPhraseSaveCopyBottomSheetDialogFragment.newInstance(Utils.getRecoveryPhraseFromList(recoveryPhrases));
+                    recoveryPhraseSaveCopyBottomSheetDialogFragment.show(
+                            ((FragmentActivity) getActivity()).getSupportFragmentManager(), RecoveryPhraseSaveCopyBottomSheetDialogFragment.TAG_FRAGMENT);
+                });
                 setupRecoveryPhraseRecyclerView(view);
             });
         }
@@ -97,16 +101,5 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment implements 
         RecoveryPhraseAdapter recoveryPhraseAdapter = new RecoveryPhraseAdapter();
         recoveryPhraseAdapter.setRecoveryPhraseList(recoveryPhrases);
         recyclerView.setAdapter(recoveryPhraseAdapter);
-    }
-
-    @Override
-    public void onIntentCompleted(int resultCode, Intent results) {
-        if (resultCode != Activity.RESULT_OK || results == null || results.getData() == null) {
-            Utils.onFileNotSelected(getActivity());
-            return;
-        }
-
-        Uri uri = results.getData();
-        Utils.writeTextToFile(getActivity(), uri, Utils.getRecoveryPhraseFromList(recoveryPhrases));
     }
 }
