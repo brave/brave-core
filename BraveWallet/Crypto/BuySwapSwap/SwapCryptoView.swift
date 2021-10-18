@@ -70,6 +70,8 @@ struct SwapCryptoView: View {
   @State private var toQuantity: String = ""
   @State private var orderType: OrderType = .market
   
+  @Environment(\.presentationMode) @Binding private var presentationMode
+  
   enum OrderType {
     case market
     case limit
@@ -160,7 +162,9 @@ struct SwapCryptoView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { }) {
+          Button(action: {
+            presentationMode.dismiss()
+          }) {
             Text(Strings.CancelString)
               .foregroundColor(Color(.braveOrange))
           }
