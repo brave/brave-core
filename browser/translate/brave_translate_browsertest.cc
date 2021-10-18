@@ -259,7 +259,6 @@ class BraveTranslateBrowserGoogleRedirectTest
         network::switches::kHostResolverRules,
         "MAP translate-relay.brave.com:443 " + host_port +
             ", MAP translate.google.com:443 " + host_port);
-    ;
   }
 };
 
