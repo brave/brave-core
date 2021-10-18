@@ -57,6 +57,7 @@ SegmentList GetSegments(const Catalog& catalog) {
     for (const auto& catalog_creative_set : catalog_creative_sets) {
       CatalogSegmentList catalog_segments = catalog_creative_set.segments;
       for (const auto& catalog_segment : catalog_segments) {
+        DCHECK(!catalog_segment.name.empty());
         segments.push_back(catalog_segment.name);
       }
     }
@@ -80,7 +81,11 @@ SegmentList GetParentSegments(const SegmentList& segments) {
   SegmentList parent_segments;
 
   for (const auto& segment : segments) {
+    DCHECK(!segment.empty());
+
     const std::string parent_segment = GetParentSegment(segment);
+    DCHECK(!parent_segment.empty());
+
     parent_segments.push_back(parent_segment);
   }
 
