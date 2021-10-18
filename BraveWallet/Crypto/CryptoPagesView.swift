@@ -16,9 +16,10 @@ struct CryptoPagesView: View {
   
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
+  @State private var buySendSwapDestination: BuySendSwapDestination?
   
   var body: some View {
-    _CryptoPagesView(walletStore: walletStore)
+    _CryptoPagesView(walletStore: walletStore, buySendSwapDestination: $buySendSwapDestination)
       .ignoresSafeArea()
       .navigationTitle(Strings.Wallet.cryptoTitle)
       .navigationBarTitleDisplayMode(.inline)
@@ -47,6 +48,23 @@ struct CryptoPagesView: View {
         }
         .hidden()
       )
+      .sheet(item: $buySendSwapDestination) { action in
+        switch action {
+        case .buy:
+          BuyTokenView(
+            keyringStore: self.walletStore.keyringStore,
+            networkStore: self.walletStore.networkStore,
+            buyTokenStore: self.walletStore.buyTokenStore
+          )
+        case .send:
+          EmptyView()
+        case .swap:
+          SwapCryptoView(
+            keyringStore: walletStore.keyringStore,
+            ethNetworkStore: walletStore.networkStore
+          )
+        }
+      }
       .sheet(isPresented: $isShowingSearch) {
         AssetSearchView(
           tokenRegistry: walletStore.tokenRegistry,
@@ -84,9 +102,10 @@ struct CryptoPagesView: View {
   
   struct _CryptoPagesView: UIViewControllerRepresentable {
     var walletStore: WalletStore
+    @Binding var buySendSwapDestination: BuySendSwapDestination?
     
     func makeUIViewController(context: Context) -> some UIViewController {
-      CryptoPagesViewController(walletStore: walletStore)
+      CryptoPagesViewController(walletStore: walletStore, buySendSwapDestination: _buySendSwapDestination)
     }
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
@@ -96,9 +115,11 @@ struct CryptoPagesView: View {
 private class CryptoPagesViewController: TabbedPageViewController {
   private let walletStore: WalletStore
   private let swapButton = SwapButton()
+  @Binding private var buySendSwapDestination: BuySendSwapDestination?
   
-  init(walletStore: WalletStore) {
+  init(walletStore: WalletStore, buySendSwapDestination: Binding<BuySendSwapDestination?>) {
     self.walletStore = walletStore
+    self._buySendSwapDestination = buySendSwapDestination
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -139,32 +160,10 @@ private class CryptoPagesViewController: TabbedPageViewController {
   
   @objc private func tappedSwapButton() {
     let controller = FixedHeightHostingPanModalController(
-      rootView: BuySendSwapView(action: { [weak self] action in
-        guard let self = self else { return }
-        switch action {
-        case .buy:
-          let controller = UIHostingController(
-            rootView: BuyTokenView(
-              keyringStore: self.walletStore.keyringStore,
-              networkStore: self.walletStore.networkStore,
-              buyTokenStore: self.walletStore.buyTokenStore)
-          )
-          self.dismiss(animated: true) {
-            self.present(controller, animated: true)
-          }
-        case .send:
-          break
-        case .swap:
-          let controller = UIHostingController(
-            rootView: SwapCryptoView(
-              keyringStore: self.walletStore.keyringStore,
-              ethNetworkStore: self.walletStore.networkStore
-            )
-          )
-          self.dismiss(animated: true) {
-            self.present(controller, animated: true)
-          }
-        }
+      rootView: BuySendSwapView(action: { [weak self] destination in
+        self?.dismiss(animated: true, completion: {
+          self?.buySendSwapDestination = destination
+        })
       })
     )
     presentPanModal(

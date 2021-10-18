@@ -87,7 +87,6 @@ struct AccountsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .navigationTitle(Strings.Wallet.accountsPageTitle)
     .osAvailabilityModifiers { content in
       if #available(iOS 15.0, *) {
         content

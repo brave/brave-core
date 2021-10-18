@@ -7,53 +7,25 @@ import SwiftUI
 import struct Shared.Strings
 
 struct BuySendSwapView: View {
-  enum Action: CaseIterable {
-    case buy
-    case send
-    case swap
-    
-    var title: String {
-      switch self {
-      case .buy:
-        return Strings.Wallet.buy
-      case .send:
-        return Strings.Wallet.send
-      case .swap:
-        return Strings.Wallet.swap
-      }
-    }
-    
-    var description: String {
-      switch self {
-      case .buy:
-        return Strings.Wallet.buyDescription
-      case .send:
-        return Strings.Wallet.sendDescription
-      case .swap:
-        return Strings.Wallet.swapDescription
-      }
-    }
-  }
-  
-  var action: (Action) -> Void
+  var action: (BuySendSwapDestination) -> Void
   
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      ForEach(Action.allCases, id: \.self) { action in
+      ForEach(BuySendSwapDestination.allCases, id: \.self) { action in
         Button(action: { self.action(action) }) {
           VStack(alignment: .leading, spacing: 3) {
-            Text(action.title)
+            Text(action.localizedTitle)
               .foregroundColor(Color(.bravePrimary))
               .font(.headline)
               .multilineTextAlignment(.leading)
-            Text(action.description)
+            Text(action.localizedDescription)
               .foregroundColor(Color(.braveLabel))
               .font(.footnote)
               .multilineTextAlignment(.leading)
           }
           .padding([.leading, .trailing], 20)
         }
-        if action != Action.allCases.last {
+        if action != BuySendSwapDestination.allCases.last {
           Divider()
             .padding(.leading, 20)
         }
