@@ -1052,4 +1052,28 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="2359865110462963929">BAT ยังไม่รองรับในภูมิภาคของคุณ โปรดดูข่าวสารจาก<ph name="BEGIN_LINK"/>ที่นี่<ph name="END_LINK"/></translation>
+<translation id="2564425876266960486">เกิดข้อผิดพลาดขณะสร้างบัตร BAT ของ Brave Browser</translation>
+<translation id="8429332714958713413">คุณต้องมีวอลเล็ทที่ผ่านการยืนยันแล้วเพื่อเข้าสู่ระบบ</translation>
+<translation id="5881716477679854586">โปรดลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="CUSTODIAN"/> แล้ว</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> ที่จะถึงใน <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">หากคุณรีเซ็ตวอลเล็ท จำนวนเงิน <ph name="BAT_AMOUNT"/> ของคุณและข้อมูลรางวัลอื่นๆ จะหายไปโดยถาวร โปรดตรวจสอบให้แน่ใจว่าคุณยืนยันวอลเล็ทผ่านทาง <ph name="PROVIDER"/> แล้ว เพื่อให้เงิน BAT ของคุณไม่หายไป</translation>
+<translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
+<translation id="3903419925307046908">รับโทเค็นเพื่อนำไปตอบแทน</translation>
+<translation id="671838195432136371">Gemini ช่วยให้คุณเทรด จัดเก็บ และได้รับ 3.49% APY* ของ BAT ของคุณได้อย่างง่ายดาย ผู้ใช้ Gemini หน้าใหม่ที่เชื่อมโยงจะได้รับฟรี 5 BAT!</translation>
+<translation id="9136976526700181750">* รับ APY จาก Gemini 15 สิงหาคม 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับ Brave Rewards</translation>
+<translation id="7443190393462029180">เมื่อคลิกเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับ <ph name="TOS_LINK_BEGIN"/>ข้อกำหนดในการให้บริการ<ph name="TOS_LINK_END"/> และ <ph name="PP_LINK_BEGIN"/>นโยบายความเป็นส่วนตัว<ph name="PP_LINK_END"/></translation>
+<translation id="8344084848798035850">ประมาณการรายได้จนถึงปัจจุบันในเดือนนี้</translation>
+<translation id="5235444069025581717">ทิปและเงินบริจาคในเดือนนี้</translation>
+<translation id="1210965535849006928">ขอรับ Rewards</translation>
+<translation id="4609518959946843710">รับรางวัลจากการดูภาพพื้นหลังที่ได้รับการสนับสนุนนี้</translation>
+<translation id="5311968438376723685">เปิดโฆษณาส่วนตัวของ Brave เพื่อรับส่วนแบ่งของคุณ คุณยังสามารถเลือกที่จะ <ph name="LINK_BEGIN"/>ซ่อนภาพที่ได้รับการสนับสนุน<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">เยี่ยมไปเลย</translation>
+<translation id="764235488372037377">ของรางวัลจากโฆษณาจะปรากฏที่นี่</translation>
+<translation id="7091215606170476659">คุณมียอด UGP จาก Brave</translation>
+<translation id="6759185676704303656">คุณจะได้รับเงินจากการดูรูปพื้นหลังนี้</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับรูปที่ได้รับการสนับสนุนใน Brave Rewards</translation>
+<translation id="6113004497629356998">ซ่อนรูปที่ได้รับการสนับสนุน</translation>
+<translation id="8511604585939286108">เมื่อคลิก [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>
 </translationbundle>

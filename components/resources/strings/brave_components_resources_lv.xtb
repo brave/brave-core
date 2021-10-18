@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="2359865110462963929">BAT pašlaik netiek atbalstīts jūsu reģionā. Lūdzu, skatiet jaunāko informāciju <ph name="BEGIN_LINK"/>šeit<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Kļūda, veidojot Brave pārlūka BAT karti</translation>
+<translation id="8429332714958713413">Lai pieteiktos, ir nepieciešams verificēts maks</translation>
+<translation id="5881716477679854586">Lūdzu, mēģiniet vēlreiz, kad esat pabeidzis <ph name="CUSTODIAN"/> ID verifikāciju.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> pēc <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Ja atiestatīsiet savu maku, jūsu <ph name="BAT_AMOUNT"/> un citi Rewards dati tiks neatgriezeniski zaudēti. Lūdzu, pārliecinieties, vai jūsu maks ir verificēts ar <ph name="PROVIDER"/>, lai saglabātu jūsu BAT.</translation>
+<translation id="244362569344671266">Nopelniet žetonus, apskatot Brave privātās reklāmas, un automātiski atbalstiet satura veidotājus.</translation>
+<translation id="3903419925307046908">Pelnīt žetonus un atdot atpakaļ</translation>
+<translation id="671838195432136371">Gemini ļauj ērti tirgoties, uzglabāt un nopelnīt 3,49 % APY* par BAT. Jaunie Gemini lietotāji, kuri izveidojuši saiti, saņem 5 bezmaksas BAT!</translation>
+<translation id="9136976526700181750">* Gemini pelna APY no 2021. gada 15. augusta</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/> par Brave Rewards</translation>
+<translation id="7443190393462029180">Noklikšķinot uz Sākt izmantot Brave Rewards, jūs piekrītat <ph name="TOS_LINK_BEGIN"/>pakalpojumu sniegšanas noteikumiem<ph name="TOS_LINK_END"/> un <ph name="PP_LINK_BEGIN"/>konfidencialitātes politikai<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Aptuvenā peļņa šomēnes līdz šīm</translation>
+<translation id="5235444069025581717">Dzeramnauda un ziedojumi šomēnes</translation>
+<translation id="1210965535849006928">Pieprasīt savas balvas</translation>
+<translation id="4609518959946843710">Nopelniet balvas, aplūkojot šo sponsorēto fona attēlu.</translation>
+<translation id="5311968438376723685">Ieslēdziet Brave reklāmas, lai pieprasītu savu daļu. Jūs arī varat izvēlēties <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Tieši tā!</translation>
+<translation id="764235488372037377">Ir pieejamas Jūsu balvas no reklāmām</translation>
+<translation id="7091215606170476659">Jums pieejams UGP piešķīrums no Brave.</translation>
+<translation id="6759185676704303656">Jūs nopelnāt, aplūkojot šo fona attēlu.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/> par Brave Rewards pakalpojumā sponsorētajiem attēliem.</translation>
+<translation id="6113004497629356998">Paslēpt sponsorētos attēlus</translation>
+<translation id="8511604585939286108">Nokllikšķinot uz [[title]], jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
 </translationbundle>

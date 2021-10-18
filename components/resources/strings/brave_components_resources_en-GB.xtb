@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="2359865110462963929">BAT is not currently supported in your region. Please refer <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
+<translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
+<translation id="8429332714958713413">You need a verified wallet to log in</translation>
+<translation id="5881716477679854586">Please try again after you have completed ID verification on <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> arriving in <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Your <ph name="BAT_AMOUNT"/> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with <ph name="PROVIDER"/> so you can keep your BAT.</translation>
+<translation id="244362569344671266">Earn tokens by viewing Brave Private Ads and support content creators automatically.</translation>
+<translation id="3903419925307046908">Earn tokens and give back</translation>
+<translation id="671838195432136371">Gemini lets you easily trade, store, and earn 3.49% APY* on your BAT. New Gemini users who link receive 5 free BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY as of Aug 15th 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about Brave Rewards</translation>
+<translation id="7443190393462029180">By clicking Start using Brave Rewards, you agree to the <ph name="TOS_LINK_BEGIN"/>Terms of Service<ph name="TOS_LINK_END"/> and <ph name="PP_LINK_BEGIN"/>Privacy Policy<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Estimated earnings so far this month</translation>
+<translation id="5235444069025581717">Tips and contributions this month</translation>
+<translation id="1210965535849006928">Claim my Rewards</translation>
+<translation id="4609518959946843710">Earn rewards for viewing this sponsored background image.</translation>
+<translation id="5311968438376723685">Turn on Brave Private Ads to claim your share. You can also choose to <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Way to Go!</translation>
+<translation id="764235488372037377">Your rewards from Ads are here</translation>
+<translation id="7091215606170476659">You have a UGP grant from Brave.</translation>
+<translation id="6759185676704303656">You’re getting paid to view this background image.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about sponsored images in Brave Rewards.</translation>
+<translation id="6113004497629356998">Hide sponsored images</translation>
+<translation id="8511604585939286108">By clicking [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 </translationbundle>

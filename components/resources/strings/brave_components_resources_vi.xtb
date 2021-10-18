@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Ẩn số dư của bạn khỏi màn hình</translation>
 <translation id="4548946945059463969">Tiết lộ số dư của bạn trên màn hình</translation>
 <translation id="242959166945779492">Bạn không có bất kỳ số dư nào trong tài khoản của mình. Hãy truy cập FTX để mua.</translation>
+<translation id="2359865110462963929">BAT hiện không được hỗ trợ tại vùng của bạn. Vui lòng tham khảo <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> để biết các cập nhật.</translation>
+<translation id="2564425876266960486">Đã xảy ra lỗi khi tạo thẻ BAT trên Trình duyệt Brave</translation>
+<translation id="8429332714958713413">Bạn cần một ví đã được xác minh để đăng nhập</translation>
+<translation id="5881716477679854586">Vui lòng thử lại sau khi bạn đã hoàn tất xác minh mã trên <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> sẽ đến sau <ph name="DAYS"/></translation>
+<translation id="8683358891240311475"><ph name="BAT_AMOUNT"/> và những dữ liệu Phần thưởng khác của bạn sẽ bị mất vĩnh viễn nếu bạn thiết lập lại ví của mình. Vui lòng đảm bảo rằng bạn đã xác thực ví với <ph name="PROVIDER"/> để có thể tiếp tục giữ BAT của mình.</translation>
+<translation id="244362569344671266">Kiếm token bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung.</translation>
+<translation id="3903419925307046908">Kiếm token và báo đáp</translation>
+<translation id="671838195432136371">Gemini cho phép bạn dễ dàng giao dịch, lưu trữ và kiếm 3,49% APY* trên BAT của mình. Người dùng Gemini mới có liên kết sẽ nhận được 5 BAT miễn phí!</translation>
+<translation id="9136976526700181750">* Gemini Kiếm APY kể từ ngày 15 tháng 8 năm 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về Phần thưởng Brave</translation>
+<translation id="7443190393462029180">Với việc nhấp vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với <ph name="TOS_LINK_BEGIN"/>Điều khoản Dịch vụ<ph name="TOS_LINK_END"/> và <ph name="PP_LINK_BEGIN"/>Chính sách Quyền riêng tư<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Doanh thu ước tính đến nay cho tháng này</translation>
+<translation id="5235444069025581717">Tiền thưởng thêm và khoản đóng góp tháng này</translation>
+<translation id="1210965535849006928">Nhận Phần thưởng của tôi</translation>
+<translation id="4609518959946843710">Kiếm phần thưởng khi xem hình nền được tài trợ này.</translation>
+<translation id="5311968438376723685">Bật Brave Private Ads để nhận phần thưởng của bạn. Bạn cũng có thể chọn <ph name="LINK_BEGIN"/>ẩn hình ảnh được tài trợ<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Bạn thật xuất sắc!</translation>
+<translation id="764235488372037377">Đã có phần thưởng từ Brave Ads dành cho bạn</translation>
+<translation id="7091215606170476659">Bạn nhận được khoản tài trợ UGP từ Brave.</translation>
+<translation id="6759185676704303656">Bạn được trả tiền khi xem hình nền này.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về hình được tài trợ trong Phần thưởng Brave.</translation>
+<translation id="6113004497629356998">Ẩn hình được tài trợ</translation>
+<translation id="8511604585939286108">Với việc nhấp vào [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
 </translationbundle>

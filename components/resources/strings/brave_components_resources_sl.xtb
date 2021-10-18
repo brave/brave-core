@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Skrijte svoje stanje pred prikazom</translation>
 <translation id="4548946945059463969">Razkrijte svoje stanje na zaslonu</translation>
 <translation id="242959166945779492">Na vašem računu ni nobenih sredstev. Obiščite FTX, če jih želite kupiti.</translation>
+<translation id="2359865110462963929">BAT v vaši regiji trenutno ni podprt. Za posodobitve glejte <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Napaka pri ustvarjanju kartice BAT brskalnika Brave</translation>
+<translation id="8429332714958713413">Za prijavo potrebujete preverjeno denarnico</translation>
+<translation id="5881716477679854586">Poskusite znova, ko dokončate preverjanje osebnega dokumenta na <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> prispe čez <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Vaših <ph name="BAT_AMOUNT"/> in drugi podatki o nagradah bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste preverili svojo denarnico z <ph name="PROVIDER"/>, da boste lahko obdržali BAT.</translation>
+<translation id="244362569344671266">Prejmite žetone z ogledom oglasov Brave Ads in samodejno podprite ustvarjalce vsebin.</translation>
+<translation id="3903419925307046908">Prejmite žetone in vračajte</translation>
+<translation id="671838195432136371">Gemini vam omogoča enostavno trgovanje, shranjevanje in zaslužek 3,49 % APY* na vašem BAT-u. Novi uporabniki Gemini, ki se povežejo, prejmejo 5 brezplačnih BAT-ov!</translation>
+<translation id="9136976526700181750">* Zaslužek Gemini APY, z dne 15. avgusta 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Več<ph name="LINK_END"/> o nagradah Brave Rewards</translation>
+<translation id="7443190393462029180">S klikom na Začni uporabljati Brave Rewards se strinjate s <ph name="TOS_LINK_BEGIN"/>Pogoji storitve<ph name="TOS_LINK_END"/> in <ph name="PP_LINK_BEGIN"/>Politiko zasebnosti<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Predvideni zaslužek do zdaj v tem mesecu</translation>
+<translation id="5235444069025581717">Nasveti in prispevki ta mesec</translation>
+<translation id="1210965535849006928">Zahtevaj moje nagrade</translation>
+<translation id="4609518959946843710">Prislužite si nagrade za ogled te sponzorirane slike v ozadju.</translation>
+<translation id="5311968438376723685">Če želite zahtevati svoj delež, vklopite zasebne oglase Brave. Lahko se tudi odločite, <ph name="LINK_BEGIN"/>da sponzorske strani ostanejo skrite<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Odlično!</translation>
+<translation id="764235488372037377">Vaše nagrade od oglasov so tukaj</translation>
+<translation id="7091215606170476659">Čakajo vas sredstva UGP od Brave.</translation>
+<translation id="6759185676704303656">Za ogled te sponzorirane slike ozadja prejmete plačilo.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Več<ph name="LINK_END"/> o sponzoriranih slikah v storitvi Brave Rewards.</translation>
+<translation id="6113004497629356998">Skrij sponzorirano sliko</translation>
+<translation id="8511604585939286108">S klikom na [[title]] se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti <ph name="END_LINK2"/>.</translation>
 </translationbundle>

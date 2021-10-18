@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Skryť vaše zostatky na displeji</translation>
 <translation id="4548946945059463969">Ukázať vaše zostatky na obrazovke</translation>
 <translation id="242959166945779492">Na svojom účte nemáte žiadne zostatky. Navštívte FTX a niektoré si zakúpte.</translation>
+<translation id="2359865110462963929">BAT vo vašej oblasti momentálne nie je podporovaná. Pozrite si <ph name="BEGIN_LINK"/>tu<ph name="END_LINK"/> aktualizácie.</translation>
+<translation id="2564425876266960486">Pri vytváraní BAT karty Brave Browsera sa vyskytla chyba</translation>
+<translation id="8429332714958713413">Na prihlásenie potrebujete overenú peňaženku</translation>
+<translation id="5881716477679854586">Skúste to znova po dokončení overenia ID na <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> príde do <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Vaše <ph name="BAT_AMOUNT"/> a ďalšie dáta Odmien sa natrvalo stratia, ak resetujete peňaženku. Uistite sa, že ste svoju peňaženku overili pomocou <ph name="PROVIDER"/>, aby ste si mohli ponechať BAT.</translation>
+<translation id="244362569344671266">Zarábajte žetóny zobrazením súkromných reklám Brave a automaticky podporujte tvorcov obsahu.</translation>
+<translation id="3903419925307046908">Zarobte žetóny a vráťte ich späť</translation>
+<translation id="671838195432136371">Gemini vám umožní jednoducho obchodovať, ukladať a zarábať 3,49 % APY* cez svoj BAT. Noví používatelia Gemini, ktorí pristúpia k prepojeniu, získajú 5 jednotiek BAT zdarma!</translation>
+<translation id="9136976526700181750">* Zárobok APY cez Gemini k 15. augustu 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Zistite viac<ph name="LINK_END"/>o Odmenách Brave</translation>
+<translation id="7443190393462029180">Kliknutím na Začať používať Brave Rewards vyjadrujete súhlas s <ph name="TOS_LINK_BEGIN"/>Podmienkami poskytovania služby<ph name="TOS_LINK_END"/> a <ph name="PP_LINK_BEGIN"/>Pravidlami ochrany osobných údajov<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Odhadované príjmy doteraz tento mesiac</translation>
+<translation id="5235444069025581717">Dary a príspevky tento mesiac</translation>
+<translation id="1210965535849006928">Uplatniť moje Odmeny</translation>
+<translation id="4609518959946843710">Zarábajte odmeny za prezeranie tohto sponzorovaného obrázka na pozadí.</translation>
+<translation id="5311968438376723685">Zapnite si v Brave súkromné reklamy a získajte svoj podiel. Tiež sa môžete rozhodnúť <ph name="LINK_BEGIN"/>skryť sponzorované obrázky<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Len tak ďalej!</translation>
+<translation id="764235488372037377">Vaše odmeny za reklamy sú tu</translation>
+<translation id="7091215606170476659">Máte grant UGP od Brave.</translation>
+<translation id="6759185676704303656">Dostanete zaplatené za zobrazenie tohto obrázka na pozadí.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Zistite viac<ph name="LINK_END"/>o sponzorovaných obrázkoch v Odmenách Brave.</translation>
+<translation id="6113004497629356998">Skryť sponzorované obrázky</translation>
+<translation id="8511604585939286108">Kliknutím na [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
 </translationbundle>

@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="2359865110462963929">BAT no està disponible actualment a la vostra regió. Si us plau, Consulteu <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> per a actualitzacions.</translation>
+<translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
+<translation id="8429332714958713413">Necessites una cartera verificada per iniciar sessió.</translation>
+<translation id="5881716477679854586">Torna a intentar-ho després de completar la verificació d'ID a <ph name="CUSTODIAN"/></translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> que arriben a <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Les dades dels teus <ph name="BAT_AMOUNT"/> i les altres recompenses es perdran per sempre si restableixes la teva cartera. Assegura't d'haver verificat la teva cartera amb <ph name="PROVIDER"/> per poder conservar els teus BAT.</translation>
+<translation id="244362569344671266">Guanyeu fitxes mirant anuncis Privats de Brave i doneu suport als creadors de contingut de manera automàtica.</translation>
+<translation id="3903419925307046908">Guanyeu tokens i retorneu-los</translation>
+<translation id="671838195432136371">Gemini et permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49 % en els teus BAT fàcilment. Els nous usuaris de Gemini que s'hi enllacin rebran 5 BAT de franc!</translation>
+<translation id="9136976526700181750">* Taxa de rendiment anual de Gemini a partir del 15 d'agost del 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre les Recompenses de Brave.</translation>
+<translation id="7443190393462029180">En fer clic a Inicia mitjançant Brave Rewards, accepteu les <ph name="TOS_LINK_BEGIN"/>Condicions del servei<ph name="TOS_LINK_END"/> i la <ph name="PP_LINK_BEGIN"/>Política de privacitat<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Guanys estimats d'aquest mes fins ara</translation>
+<translation id="5235444069025581717">Propines i contribucions d'aquest mes</translation>
+<translation id="1210965535849006928">Rebre les meves Recompenses</translation>
+<translation id="4609518959946843710">Guanya premis per veure aquesta imatge de fons patrocinada.</translation>
+<translation id="5311968438376723685">Activa els Anuncis Privats de Brave per demanar la teva part. També pots escollir <ph name="LINK_BEGIN"/>amaga imatges patrocinades<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Ben fet!</translation>
+<translation id="764235488372037377">Les teves recompenses dels anuncis són aquí</translation>
+<translation id="7091215606170476659">Has rebut una subvenció UGP de Brave.</translation>
+<translation id="6759185676704303656">Esteu cobrant per veure aquesta imatge de fons.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre imatges patrocinades a Recompenses de Brave.</translation>
+<translation id="6113004497629356998">Amaga imatges patrocinades</translation>
+<translation id="8511604585939286108">En fer clic a [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
 </translationbundle>

@@ -1050,4 +1050,29 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="2359865110462963929">현재 사용자의 지역에서는 BAT가 지원되지 않습니다. 업데이트는 <ph name="BEGIN_LINK"/>여기<ph name="END_LINK"/>에서 확인하세요.</translation>
+<translation id="2564425876266960486">Brave Browser BAT 카드 생성 오류</translation>
+<translation id="8429332714958713413">로그인하려면 월렛을 확인해야 합니다.</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/>에서 ID 확인을 완료하고 다시 시도하세요.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> 도착 예정, <ph name="DAYS"/> 후</translation>
+<translation id="8683358891240311475">지갑을 초기화할 경우 <ph name="BAT_AMOUNT"/> 및 기타 보상 데이터가 영구적으로 잃게됩니다. BAT을 보관할 수 있도록 <ph name="PROVIDER"/>를 통해 지갑을 인증하였는지 확인해주세요.</translation>
+<translation id="244362569344671266">Brave Private Ads를 보고 토큰을 얻고 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
+<translation id="3903419925307046908">토큰을 획득하고 돌려주기</translation>
+<translation id="671838195432136371">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 연결된 신규 Gemini 사용자는 5 BAT가 무료로 적립됩니다!</translation>
+<translation id="9136976526700181750">* 2021년 8월 15일 기준 Gemini 수익 APY</translation>
+<translation id="4360054110030715117">Brave 상금에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
+<translation id="7443190393462029180">Brave Rewards 사용 시작을 클릭하면 <ph name="TOS_LINK_BEGIN"/>서비스 약관<ph name="TOS_LINK_END"/> 및 <ph name="PP_LINK_BEGIN"/>개인 정보 보호 정책<ph name="PP_LINK_END"/>에 동의하게 됩니다.</translation>
+<translation id="8344084848798035850">이번 달까지의 예상 수익</translation>
+<translation id="5235444069025581717">이번 달 팁과 기부</translation>
+<translation id="1210965535849006928">내 리워드 청구</translation>
+<translation id="4609518959946843710">협찬된 배경 이미지 보기에 대한 리워드를 받으세요.</translation>
+<translation id="5311968438376723685">Brave 개인 광고를 켜서 사용자의 몫을 청구하세요. <ph name="LINK_BEGIN"/>
+협찬된 이미지 숨기기<ph name="LINK_END"/>를 선택할 수도 있습니다.</translation>
+<translation id="8568666589217601917">정말 멋지네요!</translation>
+<translation id="764235488372037377">광고에서 받은 리워드가 여기 있습니다</translation>
+<translation id="7091215606170476659">Brave (브레이브)로부터 UGP 보조금이 있습니다.</translation>
+<translation id="6759185676704303656">이 배경 이미지를 보고 있는 동안 상금이 지급됩니다.</translation>
+<translation id="1749232564087138444">Brave 상금의 스폰서 이미지에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
+<translation id="6113004497629356998">스폰서 이미지 숨기기</translation>
+<translation id="8511604585939286108">[[title]]를 클릭하면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 </translationbundle>

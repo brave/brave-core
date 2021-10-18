@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Ficha masalio yako ili yasionekane</translation>
 <translation id="4548946945059463969">Tambua masalio yako kwenye skrini</translation>
 <translation id="242959166945779492">Huna salio lolote katika akaunti yako. Tembelea FTX ili ununue kadhaa.</translation>
+<translation id="2359865110462963929">BAT haitumiki kwa sasa katika eneo lako. Tafadhali rejelea <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> kwa taarifa.</translation>
+<translation id="2564425876266960486">Hitilafu wakati wa kuunda kadi ya Brave Browser BAT</translation>
+<translation id="8429332714958713413">Unahitaji pochi iliyothibitishwa ili kuingia</translation>
+<translation id="5881716477679854586">Tafadhali jaribu tena baada ya kukamilisha uthibitishaji wa kitambulisho kwenye <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> itawasili baada ya <ph name="DAYS"/></translation>
+<translation id="8683358891240311475"><ph name="BAT_AMOUNT"/> yako na data nyingine za Zawadi zitapotea kabisa ukibadilisha mipangilio ya pochi yako. Tafadhali hakikisha kuwa umethibitisha pochi yako na <ph name="PROVIDER"/> ili uhifadhi BAT yako.</translation>
+<translation id="244362569344671266">Pata tokeni kwa kutazama Matangazo ya Faragha ya Brave na uwafadhili waundaji wako wa maudhui kiotomatiki.</translation>
+<translation id="3903419925307046908">Pata tokeni na utoe shukrani</translation>
+<translation id="671838195432136371">Gemini hukuruhusu kufanya biashara, kuhifadhi na kupata 3.49% APY* kwa urahisi kwenye BAT yako. Watumiaji wapya wa Gemini wanaounganisha wanapokea BAT 5 bila malipo!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY kuanzia tarehe 15 Agosti, 2021</translation>
+<translation id="4360054110030715117">Brave Rewards<ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/> kuhusu Brave Rewards</translation>
+<translation id="7443190393462029180">Kwa kubofya Anza kutumia Zawadi za Brave, unakubali <ph name="TOS_LINK_BEGIN"/>Sheria na Masharti<ph name="TOS_LINK_END"/> na <ph name="PP_LINK_BEGIN"/>Sera ya Faragha<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Mapato yanayokadiriwa kufikia sasa mwezi huu</translation>
+<translation id="5235444069025581717">Vidokezo na michango mwezi huu</translation>
+<translation id="1210965535849006928">Dai Zawadi zangu</translation>
+<translation id="4609518959946843710">Pata tuzo kwa kutazama picha hii ya mandharinyuma iliyofadhiliwa.</translation>
+<translation id="5311968438376723685">Washa Matangazo ya Kibinafsi ya Ushujaa ili kudai sehemu yako. Unaweza pia kuchagua <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Ndiyo Inayofaa!</translation>
+<translation id="764235488372037377">Zawadi zako kutoka kwenye Matangazo zipo hapa!</translation>
+<translation id="7091215606170476659">Una ruzuku ya UGP kutoka Brave.</translation>
+<translation id="6759185676704303656">Unalipwa ili kutazama picha hii ya mandharinyuma.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/> kuhusu picha zinazodhaminiwa katika Brave Rewards.</translation>
+<translation id="6113004497629356998">Ficha picha zinazodhaminiwa</translation>
+<translation id="8511604585939286108">Kwa kubofya [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
 </translationbundle>

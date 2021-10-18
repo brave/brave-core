@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="2359865110462963929">BAT understøttes i øjeblikket ikke i din region. Se venligst <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> for updates.</translation>
+<translation id="2564425876266960486">Fejl ved oprettelse af Brave Browser BAT-kort</translation>
+<translation id="8429332714958713413">Du skal have en bekræftet wallet, før du kan logge ind</translation>
+<translation id="5881716477679854586">Prøv igen, når du har udført ID-validering på <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> kommer om <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Dine <ph name="BAT_AMOUNT"/> og andre belønningsdata vil gå tabt permanent, hvis du nulstiller din wallet. Sørg for, at du har verificeret din wallet hos <ph name="PROVIDER"/> så du kan beholde dine BAT.</translation>
+<translation id="244362569344671266">Optjen tokens ved at se private Brave-annoncer og støtte indholdsskabere automatisk.</translation>
+<translation id="3903419925307046908">Optjen tokens og giv feedback</translation>
+<translation id="671838195432136371">Med Gemini kan du nemt handle, opbevare og tjene 3,49 % APY* på dine BAT. Nye Gemini-brugere får 5 BAT gratis!</translation>
+<translation id="9136976526700181750">* Gemini optjener APY fra 15. aug. 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/> om Brave Rewards</translation>
+<translation id="7443190393462029180">Når du klikker på Begynd at bruge Brave Rewards, accepterer du vores <ph name="TOS_LINK_BEGIN"/>Servicevilkår<ph name="TOS_LINK_END"/> og <ph name="PP_LINK_BEGIN"/>Privatlivspolitik<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Estimeret optjening for denne måned</translation>
+<translation id="5235444069025581717">Tips og bidrag i denne måned</translation>
+<translation id="1210965535849006928">Bed om din belønninger</translation>
+<translation id="4609518959946843710">Optjen belønninger for at se dette sponsorerede baggrundsbillede.</translation>
+<translation id="5311968438376723685">Aktivér Brave Private Ads for at gøre krav på din andel. Du kan også vælge at <ph name="LINK_BEGIN"/>skjul sponsorerede billeder<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Sådan!</translation>
+<translation id="764235488372037377">Dine belønninger fra reklamer er her</translation>
+<translation id="7091215606170476659">Du har en UGP bevilling fra Brave</translation>
+<translation id="6759185676704303656">Du bliver betalt for at se dette baggrundsbillede.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/> om sponsorerede billeder i Brave Rewards.</translation>
+<translation id="6113004497629356998">Skjul sponserede billeder</translation>
+<translation id="8511604585939286108">Ved at klikke på [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
 </translationbundle>

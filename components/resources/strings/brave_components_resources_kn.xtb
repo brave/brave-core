@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು ಪ್ರದರ್ಶನಗೊಳ್ಳದಂತೆ ಮರೆಮಾಡಿ</translation>
 <translation id="4548946945059463969">ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್‌ಗಳನ್ನು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="242959166945779492">ನಿಮ್ಮ ಖಾತೆಯಲ್ಲಿ ನೀವು ಯಾವುದೇ ಬ್ಯಾಲೆನ್ಸ್ ಹೊಂದಿಲ್ಲ. ಖರೀದಿ ಮಾಡಲು FTX ಗೆ ಭೇಟಿ ನೀಡಿ.</translation>
+<translation id="2359865110462963929">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಪ್ರಸ್ತುತ BAT ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ನವೀಕರಣಗಳಿಗಾಗಿ ದಯವಿಟ್ಟು <ph name="BEGIN_LINK"/>ಇಲ್ಲಿ<ph name="END_LINK"/> ಉಲ್ಲೇಖಿಸಿ.</translation>
+<translation id="2564425876266960486">Brave ಬ್ರೌಸರ್ BAT ಕಾರ್ಡ್ ರಚಿಸುವಲ್ಲಿ ದೋಷ</translation>
+<translation id="8429332714958713413">ಲಾಗ್ ಇನ್ ಮಾಡಲು ನೀವು ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ವ್ಯಾಲೆಟ್ ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/> ನಲ್ಲಿರುವ ID ಪರಿಶೀಲನೆಯನ್ನು ನೀವು ಪೂರ್ಣಗೊಳಿಸಿದ ನಂತರ ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> <ph name="DAYS"/> ಬರಲಿದೆ</translation>
+<translation id="8683358891240311475">ನೀವು ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿದರೇ ನಿಮ್ಮ <ph name="BAT_AMOUNT"/> ಮತ್ತು ಇತರೆ ರಿವಾರ್ಡ್‌ಗಳ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ. ದಯವಿಟ್ಟು <ph name="PROVIDER"/> ಜೊತೆಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿದ್ದೀರೆಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ, ಇದರಿಂದ ನೀವು ನಿಮ್ಮ BAT ಇರಿಸಿಕೊಳ್ಳಬಹುದು.</translation>
+<translation id="244362569344671266">Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ ಮತ್ತು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬೆಂಬಲಿಸಿ.</translation>
+<translation id="3903419925307046908">ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ ಮತ್ತು ಮರಳಿ ನೀಡಿ</translation>
+<translation id="671838195432136371">Gemini ನಿಮಗೆ ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಣೆ ಮಾಡಲು ಮತ್ತು 3.49% APY* ಗಳಿಸಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಲಿಂಕ್ ಮಾಡುವ ಹೊಸ Gemini ಬಳಕೆದಾರರು 5 ಉಚಿತ BAT ಸ್ವೀಕರಿಸುತ್ತಾರೆ!</translation>
+<translation id="9136976526700181750">* ಆಗಸ್ಟ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini ಗಳಿಕೆ APY</translation>
+<translation id="4360054110030715117">Brave Rewards ಕುರಿತು <ph name="LINK_BEGIN"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
+<translation id="7443190393462029180">Brave Rewards ಬಳಸುವುದನ್ನು ಆರಂಭಿಸು ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="TOS_LINK_BEGIN"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="TOS_LINK_END"/> ಮತ್ತು <ph name="PP_LINK_BEGIN"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="PP_LINK_END"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
+<translation id="8344084848798035850">ಈ ತಿಂಗಳು ಇಲ್ಲಿಯವರೆಗಿನ ಅಂದಾಜು ಗಳಿಕೆ</translation>
+<translation id="5235444069025581717">ಈ ತಿಂಗಳಿನ ಒಟ್ಟು ಸಲಹೆಗಳು ಮತ್ತು ಪಾಯಿಂಟ್‌ಗಳು</translation>
+<translation id="1210965535849006928">ಮೈ ರಿವಾರ್ಡ್‌ಗಳು ಅನ್ನು ಕ್ಲೇಮ್ ಮಾಡಿಕೊಳ್ಳಿ</translation>
+<translation id="4609518959946843710">ಈ ಪ್ರಾಯೋಜಿತ ಹಿನ್ನೆಲೆ ಚಿತ್ರವನ್ನು ವೀಕ್ಷಿಸಲು ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ.</translation>
+<translation id="5311968438376723685">ನಿಮ್ಮ ಪಾಲನ್ನು ಕ್ಲೇಮ್ ಮಾಡಲು Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಆನ್ ಮಾಡಿ. <ph name="LINK_BEGIN"/>ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ಮರೆಮಾಡಲು<ph name="LINK_END"/> ಸಹ ನೀವು ಆರಿಸಿಕೊಳ್ಳಬಹುದು.</translation>
+<translation id="8568666589217601917">ಮುಂದುವರಿಯಿರಿ!</translation>
+<translation id="764235488372037377">ಜಾಹೀರಾತುಗಳಿಂದ ಗಳಿಸಿದ ನಿಮ್ಮ ಬಹುಮಾನಗಳು ಇಲ್ಲಿವೆ</translation>
+<translation id="7091215606170476659">ನೀವು Brave ನಿಂದ UGP ಗ್ರ್ಯಾಂಟ್ ಅನ್ನು ಹೊಂದಿದ್ದೀರಿ.</translation>
+<translation id="6759185676704303656">ಈ ಹಿನ್ನೆಲೆ ಚಿತ್ರವನ್ನು ವೀಕ್ಷಿಸಲು ನೀವು ಪಾವತಿ ಪಡೆಯುತ್ತೀರಿ.</translation>
+<translation id="1749232564087138444">Brave Rewards <ph name="LINK_BEGIN"/>ನಲ್ಲಿ ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳ ಕುರಿತು<ph name="LINK_END"/> ಹೆಚ್ಚು ತಿಳಿಯಿರಿ.</translation>
+<translation id="6113004497629356998">ಪ್ರಾಯೋಜಿತ ಚಿತ್ರಗಳನ್ನು ಮರೆಮಾಡಿ</translation>
+<translation id="8511604585939286108">[[title]] ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 </translationbundle>

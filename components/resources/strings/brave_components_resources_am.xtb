@@ -1052,4 +1052,28 @@
 <translation id="6973157709854838218">ሂሳቦን ከማሳያ ይደብቁ</translation>
 <translation id="4548946945059463969">ቀሪ ሂሳብዎን በማያ ገጽ ላይ ያሳዩ</translation>
 <translation id="242959166945779492">በመለያዎ ውስጥ ምንም ቀሪ ሂሳቦች የሉዎትም። የተወሰኑትን ለመግዛት FTX ን ይጎብኙ።</translation>
+<translation id="2359865110462963929">BAT በአሁኑ ወቅት በእርሶ ክልል ውስጥ አይደገፍም። እባክዎ ለዝመናዎች <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> ን ያጣቅሱ።</translation>
+<translation id="2564425876266960486">የBrave አሳሽ BAT ካርድን በመፍጠር ላይ ስህተት</translation>
+<translation id="8429332714958713413">በመለያ ለመግባት የተረጋገጠ ዋሌት ያስፈልግዎታል</translation>
+<translation id="5881716477679854586">የመታወቂያ ማረጋገጫን በ <ph name="CUSTODIAN"/> ላይ ካጠናቀቁ በኋላ እባክዎ እንደገና ይሞክሩ።</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> arriving in <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">የእርስዎን ዋሌት እንደገና ካስጀመሩ የእርስዎ <ph name="BAT_AMOUNT"/> እና ሌሎች የሽልማቶች ውሂብ እስከመጨረሻው ይጠፋሉ። የእርስዎን BAT መጠበቅ እንዲችሉ እባክዎ ዋሌትዎን በ <ph name="PROVIDER"/> ማረጋገጥዎን ያረጋግጡ።</translation>
+<translation id="244362569344671266">Brave የግል ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።</translation>
+<translation id="3903419925307046908">ቶከኖችን ያግኙ እና መልሰው ይስጡ</translation>
+<translation id="671838195432136371">ጄሚኒ በቀላሉ እንዲገበያዩ፣ እንዲያስቀምጡ ፣ እና በ እርሶ BAT 3.49% APY* እንዲያገኙ ያስችልዎታል። ያያያዙ ኣዳዲስ የ ጄሚኒ ተጠቃሚዎች 5 ነጻ BAT ያገኛሉ።</translation>
+<translation id="9136976526700181750">ጄሚኒ ከ ኦገስት 15, 2021 ጀምሮ APY ያገኛል።</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>ስለ Brave ወሮታዎች<ph name="LINK_END"/> ተጨማሪ መረጃ ያግኙ</translation>
+<translation id="7443190393462029180">Brave Rewards መጠቀም ጀምር የሚለውን ጠቅ በማድረግ፣ እርስዎ ለ <ph name="TOS_LINK_BEGIN"/>የአገልግሎት ውሎች<ph name="TOS_LINK_END"/> እና <ph name="PP_LINK_BEGIN"/>የግላዊነት ፖሊሲ<ph name="PP_LINK_END"/>፤ ተስማምተዋል።</translation>
+<translation id="8344084848798035850">እስካሁን በዚህ ወር የተገኘ ግምታዊ ገቢ</translation>
+<translation id="5235444069025581717">የዚህ ወር ጉርሻዎችና መዋጮዎች</translation>
+<translation id="1210965535849006928">ሽልማቶቼን ተቀበል</translation>
+<translation id="4609518959946843710">ይህንን ስፖንሰር የተደረገ የበስተጀርባ ምስል በመመልከትዎ ሽልማቶችን ያግኙ።</translation>
+<translation id="5311968438376723685">ድርሻዎን ለመጠየቅ የ Brave ማስታወቂያዎች ያብሩ። ስፖንሰር የተደረጉ ምስሎችን ለመደበቅም <ph name="LINK_BEGIN"/>ሊመርጡ ይችላሉ<ph name="LINK_END"/>።</translation>
+<translation id="8568666589217601917">ገና ነው!</translation>
+<translation id="764235488372037377">ከማስታወቂያ የሚያገኟቸው ሽልማቶች</translation>
+<translation id="7091215606170476659">ከ Brave የመጣ UGP አለዎት።</translation>
+<translation id="6759185676704303656">እርስ’ዎ ይህን የዳራ ምስል ለማየት ክፍያ እያገኙ ነው።</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>ስፖንሰር ስለተደረጉ ምስሎች<ph name="LINK_END"/> በ Brave ወሮታዎች ውስጥ ተጨማሪ መረጃ ያግኙ።</translation>
+<translation id="6113004497629356998">ስፖንሰር የተደረጉ ምስሎችን ደብቅ</translation>
+<translation id="8511604585939286108">[[title]] 'ን ጠቅ በማድረግ፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>የግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
 </translationbundle>

@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Nu afișați soldurile</translation>
 <translation id="4548946945059463969">Afișați soldurile pe ecran</translation>
 <translation id="242959166945779492">Nu aveți niciun sold în contul dvs. Accesați FTX pentru a achiziționa.</translation>
+<translation id="2359865110462963929">BAT nu este acceptat deocamdată în regiunea ta. Te rugăm să consulți <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> pentru actualizări.</translation>
+<translation id="2564425876266960486">A avut loc o eroare la crearea cardului BAT Brave Browser</translation>
+<translation id="8429332714958713413">Pentru autentificare, aveți nevoie de un portofel confirmat</translation>
+<translation id="5881716477679854586">Încercați din nou după confirmarea identității în <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> ajung în <ph name="DAYS"/></translation>
+<translation id="8683358891240311475"><ph name="BAT_AMOUNT"/> și alte date privind Recompensele se vor pierde permanent dacă resetați portofelul. Asigurați-vă că v-ați verificat portofelul cu <ph name="PROVIDER"/>, ca să vă puteți păstra BAT.</translation>
+<translation id="244362569344671266">Câștigați tokenuri vizualizând reclame private Brave și susțineți automat creatorii de conținut.</translation>
+<translation id="3903419925307046908">Câștigi tokeni și ești generos la rândul tău</translation>
+<translation id="671838195432136371">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Utilizatorii noi care își conectează contul primesc gratuit 5 BAT!</translation>
+<translation id="9136976526700181750">* Randament oferit de Gemini începând cu 15 august 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre Brave Rewards</translation>
+<translation id="7443190393462029180">Dacă dați clic pe Începeți să folosiți Brave Rewards, sunteți de acord cu <ph name="TOS_LINK_BEGIN"/>;Termenii de utilizare<ph name="TOS_LINK_END"/> și <ph name="PP_LINK_BEGIN"/>Politica de confidențialitate<ph name="PP_LINK_END"/></translation>
+<translation id="8344084848798035850">Câștigurile estimate deocamdată pentru luna aceasta</translation>
+<translation id="5235444069025581717">Bacșișuri și contribuții luna aceasta</translation>
+<translation id="1210965535849006928">Îmi revendic Recompensele</translation>
+<translation id="4609518959946843710">Câștigați recompense pentru vizualizarea acestei imagini de fundal sponsorizate.</translation>
+<translation id="5311968438376723685">Activați Brave Private Ads pentru a vă revendica partea. Puteți și să alegeți să <ph name="LINK_BEGIN"/>ascundeți imaginile sponsorizate<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Bravo!</translation>
+<translation id="764235488372037377">Recompensele dvs. din Reclame sunt aici</translation>
+<translation id="7091215606170476659">Aveți un grant UGP de la Brave.</translation>
+<translation id="6759185676704303656">Sunteți plătit pentru a vizualiza această imagine de fundal.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre imaginile sponsorizate în Brave Rewards.</translation>
+<translation id="6113004497629356998">Ascunde imaginile sponsorizate</translation>
+<translation id="8511604585939286108">Printr-un clic pe [[title]], accceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
 </translationbundle>

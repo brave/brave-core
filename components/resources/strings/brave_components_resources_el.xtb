@@ -1053,4 +1053,28 @@
 <translation id="6973157709854838218">Κρύψτε τα υπόλοιπά σας από την οθόνη</translation>
 <translation id="4548946945059463969">Εμφανίστε τα υπόλοιπά σας στην οθόνη</translation>
 <translation id="242959166945779492">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφτείτε το FTX για να αγοράσετε.</translation>
+<translation id="2359865110462963929">Το BAT δεν υποστηρίζεται προς το παρόν στην περιοχή σας. Παρακαλούμε αναφερθείτε <ph name="BEGIN_LINK"/>εδώ<ph name="END_LINK"/> για ενημερώσεις.</translation>
+<translation id="2564425876266960486">Σφάλμα κατά τη δημιουργία της κάρτας Brave Browser BAT</translation>
+<translation id="8429332714958713413">Χρειάζεστε επαληθευμένο πορτοφόλι για να συνδεθείτε</translation>
+<translation id="5881716477679854586">Δοκιμάστε ξανά, αφού ολοκληρώσετε την επαλήθευση αναγνωριστικού στο <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> θα φτάσουν σε <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Τα <ph name="BAT_AMOUNT"/> και οι άλλες ανταμοιβές θα χαθούν οριστικά εάν επαναφέρετε το πορτοφόλι σας. Βεβαιωθείτε ότι έχετε επαληθεύσει το πορτοφόλι σας με το <ph name="PROVIDER"/>, ώστε να μπορείτε να διατηρήσετε τα ΤΒΠ σας.</translation>
+<translation id="244362569344671266">Κερδίστε μάρκες προβάλλοντας τις ιδιωτικές διαφημίσεις Brave και υποστηρίξτε αυτόματα τους δημιουργούς περιεχομένου.</translation>
+<translation id="3903419925307046908">Κερδίστε token και ανταμείψτε</translation>
+<translation id="671838195432136371">Με το Gemini μπορείτε εύκολα να ανταλλάξετε, να αποθηκεύσετε και να κερδίσετε APY 3,49%* επί των BAT σας. Οι νέοι χρήστες Gemini που συνδέονται, λαμβάνουν 5 δωρεάν BAT!</translation>
+<translation id="9136976526700181750">*APY του Gemini Earn στις 15 Αυγούστου 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/> για τις Ανταμοιβές Brave.</translation>
+<translation id="7443190393462029180">Κάνοντας κλικ στο κουμπί Έναρξη χρήσης του Brave Rewards, συμφωνείτε με τους <ph name="TOS_LINK_BEGIN"/>Όρους υπηρεσίας<ph name="TOS_LINK_END"/> και με την <ph name="PP_LINK_BEGIN"/>Πολιτική απορρήτου<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Εκτιμώμενα κέρδη μέχρι στιγμής αυτό το μήνα</translation>
+<translation id="5235444069025581717">Φιλοδωρήματα και συνεισφορές αυτό το μήνα</translation>
+<translation id="1210965535849006928">Απόκτηση των Ανταμοιβών μου</translation>
+<translation id="4609518959946843710">Κερδίστε ανταμοιβές για την προβολή αυτής της επιχορηγούμενης  εικόνας φόντου.</translation>
+<translation id="5311968438376723685">Ενεργοποιήστε τις Ιδιωτικές Διαφημίσεις Brave για να διεκδικήσετε το μερίδιό σας. Μπορείτε επίσης να επιλέξετε να <ph name="LINK_BEGIN"/>αποκρύψετε τις επιχορηγούμενες εικόνες<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Συγχαρητήρια!</translation>
+<translation id="764235488372037377">Οι ανταμοιβές σας από τις Διαφημίσεις είναι εδώ</translation>
+<translation id="7091215606170476659">Έχετε μια επιχορήγηση UGP από το Brave.</translation>
+<translation id="6759185676704303656">Πληρώνεστε για να δείτε αυτήν την εικόνα φόντου.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/> για τις επιχορηγούμενες εικόνες στις Ανταμοιβές Brave.</translation>
+<translation id="6113004497629356998">Απόκρυψη επιχορηγούμενων εικόνων</translation>
+<translation id="8511604585939286108">Πατώντας [[title]], συμφωνείτε με τους <ph name="BEGIN_LINK1"/>Όρους Υπηρεσίας<ph name="END_LINK1"/> και την <ph name="BEGIN_LINK2"/>Πολιτική Απορρήτου<ph name="END_LINK2"/>.</translation>
 </translationbundle>

@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Uw saldo verbergen</translation>
 <translation id="4548946945059463969">Uw saldo tonen</translation>
 <translation id="242959166945779492">Je hebt geen saldo in je account. Ga naar FTX om saldo toe te voegen.</translation>
+<translation id="2359865110462963929">BAT wordt momenteel niet ondersteund in uw regio. Zie <ph name="BEGIN_LINK"/>hier<ph name="END_LINK"/> voor updates.</translation>
+<translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
+<translation id="8429332714958713413">Er is een geverifieerde wallet vereist om in te loggen</translation>
+<translation id="5881716477679854586">Probeer het opnieuw nadat je de ID-verificatie hebt doorlopen voor <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> wordt over <ph name="DAYS"/> toegevoegd</translation>
+<translation id="8683358891240311475">Uw <ph name="BAT_AMOUNT"/> en andere Rewards gegevens gaan permanent verloren als u uw wallet opnieuw instelt. Zorg ervoor dat u uw wallet heeft geverifieerd met <ph name="PROVIDER"/> zodat u uw BAT kunt houden</translation>
+<translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
+<translation id="3903419925307046908">Verdien tokens en geef terug</translation>
+<translation id="671838195432136371">Met Gemini kun je gemakkelijk handelen, winst maken en 3,49% APY* op je BAT verdienen. Nieuwe Gemini-gebruikers die gekoppeld worden, ontvangen 5 gratis BAT!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY vanaf 15 augustus 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over Brave Rewards</translation>
+<translation id="7443190393462029180">Door te tikken op 'Starten met het gebruik van Brave Rewards', ga je akkoord met de <ph name="TOS_LINK_BEGIN"/>servicevoorwaarden<ph name="TOS_LINK_END"/> en het <ph name="PP_LINK_BEGIN"/>privacybeleid<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Geschatte inkomsten tot nu toe deze maand</translation>
+<translation id="5235444069025581717">Fooien en bijdragen deze maand</translation>
+<translation id="1210965535849006928">Claim mijn beloningen</translation>
+<translation id="4609518959946843710">Ontvang een beloning voor het bekijken van deze gesponsorde achtergrondafbeelding.</translation>
+<translation id="5311968438376723685">Schakel Brave Privéadvertenties in om uw aandeel te claimen. U kunt er ook voor kiezen om <ph name="LINK_BEGIN"/>gesponsorde afbeeldingen te verbergen<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Goed gedaan!</translation>
+<translation id="764235488372037377">Uw beloningen uit advertenties zijn hier</translation>
+<translation id="7091215606170476659">U heeft een UGP-beurs van Brave.</translation>
+<translation id="6759185676704303656">Je wordt betaald om deze achtergrondafbeelding te bekijken.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over gesponsorde afbeeldingen in Brave Rewards.</translation>
+<translation id="6113004497629356998">Verberg gesponsorde afbeeldingen</translation>
+<translation id="8511604585939286108">Door te klikken op [[title]], ga je akkoord met de <ph name="BEGIN_LINK1"/>Gebruiksvoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
 </translationbundle>

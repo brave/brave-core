@@ -1052,4 +1052,28 @@
 <translation id="6973157709854838218">הסתר יתרות בתצוגה</translation>
 <translation id="4548946945059463969">הציגו את היתרות על המסך</translation>
 <translation id="242959166945779492">אין לך יתרות בחשבון. בקר ב-FTX לרכישת יתרה.</translation>
+<translation id="2359865110462963929">BAT אינו נתמך כרגע באזור שלך. נא לפנות ל-<ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> לקבלת עדכונים.</translation>
+<translation id="2564425876266960486">אירעה שגיאה ביצירת כרטיס BAT של דפדפן Brave</translation>
+<translation id="8429332714958713413">אתה זקוק לארנק מאומת על מנת להיכנס</translation>
+<translation id="5881716477679854586">נסה שנית לאחר שתסיים את אימות הזיהוי ב-<ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> מגיע בעוד <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">ה- <ph name="BAT_AMOUNT"/> שלך ונתוני זכיות אחרות יאבדו לצמיתות אם תאפס/י את הארנק שלך. נא לוודא שאימתת את הארנק שלך מול <ph name="PROVIDER"/> כדי שתוכל/י לשמור את ה-BAT שלך.</translation>
+<translation id="244362569344671266">הרוויחו טוקנים על ידי צפייה בפרסומות Brave פרטיות ותמכו ביוצרי תוכן באופן אוטומטי.</translation>
+<translation id="3903419925307046908">הרוויחו טוקנים ותנו בחזרה</translation>
+<translation id="671838195432136371">Gemini מאפשרת לך להחליף, לאחסן ולהרוויח 3.49% APY* ב- BAT שלך. משתמשי Gemini חדשים המבתעים קישור מקבלים 5 BAT בחינם!</translation>
+<translation id="9136976526700181750">* Gemini מרוויחה APY מתאריך 15 באוגוסט 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> אודות Brave Rewards</translation>
+<translation id="7443190393462029180">הלחיצה על 'התחל להשתמש ב-Brave Rewards מהווה הסכמה ל <ph name="TOS_LINK_BEGIN"/>תנאי השירות<ph name="TOS_LINK_END"/> ול<ph name="PP_LINK_BEGIN"/>מדיניות הפרטיות<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">רווחים משוערים עד כה לחודש זה</translation>
+<translation id="5235444069025581717">טיפים ותרומות לחודש זה</translation>
+<translation id="1210965535849006928">תבע את התגמולים שלי</translation>
+<translation id="4609518959946843710">זכו בפרסים על צפייה בתמונת רקע ממומנת זו.</translation>
+<translation id="5311968438376723685">יש להפעיל את Brave Private Ads כדי לדרוש את חלקך. באפשרותך גם לבחור ב-<ph name="LINK_BEGIN"/> הסתר תמונות ממומנות ו-<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">כל הכבוד!</translation>
+<translation id="764235488372037377">התגמולים שלך ממודעות פרסומת הגיעו</translation>
+<translation id="7091215606170476659">יש לך מענק UGP מאת Brave.</translation>
+<translation id="6759185676704303656">הנכם #8217; מקבלים תשלום עבור צפייה בתמונת רקע זו.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> על אודות תמונות ממומנות ב-Brave Rewards.</translation>
+<translation id="6113004497629356998">הסתר תמונות ממומנות</translation>
+<translation id="8511604585939286108">על ידי לחיצה על [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
 </translationbundle>

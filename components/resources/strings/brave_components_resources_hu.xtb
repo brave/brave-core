@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="2359865110462963929">A BAT jelenleg nem támogatott az Ön régiójában. Kérjük, olvassa el <ph name="BEGIN_LINK"/>ezt<ph name="END_LINK"/> for updates.</translation>
+<translation id="2564425876266960486">Hiba a Brave böngésző BAT-kártya létrehozásakor</translation>
+<translation id="8429332714958713413">A bejelentkezéshez hitelesített pénztárcára van szüksége</translation>
+<translation id="5881716477679854586">Próbálja meg újra, miután elvégezte az azonosító-hitelesítést itt: <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> érkezik ennyi idő múlva: <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">A(z) <ph name="BAT_AMOUNT"/> és más Rewards adataid végleg elvesznek, ha újraállítod a pénztárcádat. Győződj meg róla, hogy ellenőrizted <ph name="PROVIDER"/> pénztárcádat, hogy megtarthasd BAT-odat.</translation>
+<translation id="244362569344671266">Szerezzen tokeneket Brave privát hirdetések nézésével, és támogassa automatikusan a tartalomkészítőket.</translation>
+<translation id="3903419925307046908">Szerezz tokeneket és adj vissza</translation>
+<translation id="671838195432136371">A Geminivel könnyedén kereskedhet, tárolhat és szerezhet BAT-ot 3,49% APY* haszonnal. Az újonnan kapcsolódó Gemini-felhasználók 5 BAT-ot kapnak ingyen!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY 2021. aug. 15-től</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/> a Brave Rewards-ról</translation>
+<translation id="7443190393462029180">A Brave Rewards használata gombra kattintva elfogadod a <ph name="TOS_LINK_BEGIN"/>Szolgáltatási feltételeket<ph name="TOS_LINK_END"/> és az <ph name="PP_LINK_BEGIN"/>Adatvédelmi szabályzatot<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Becsült kereset eddig a hónapban</translation>
+<translation id="5235444069025581717">Borravalók és hozzájárulások ebben a hónapban</translation>
+<translation id="1210965535849006928">Jutalmaim igénylése</translation>
+<translation id="4609518959946843710">Szerezz jutalmakat a támogatott háttérkép megtekintésével.</translation>
+<translation id="5311968438376723685">Kapcsold be a Brave privát hirdetéseket, hogy igényeld a részedet. Választhatod a to <ph name="LINK_BEGIN"/>támogatott képek elrejtését is<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Csak így tovább!</translation>
+<translation id="764235488372037377">Ads jutalmai itt találhatók</translation>
+<translation id="7091215606170476659">UGP jóváírása van a Brave-től</translation>
+<translation id="6759185676704303656">FIzetnek neked’ennek a háttérképnek a megtekintéséért.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/> a Brave Rewards-on található szponzorált képekről.</translation>
+<translation id="6113004497629356998">Szponzorált képek elrejtése</translation>
+<translation id="8511604585939286108">Ide kattintva elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>: [[title]].</translation>
 </translationbundle>
