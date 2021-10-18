@@ -70,8 +70,8 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
                         != mWebContentsDarkModeEnabled) {
                     mWebContentsDarkModeEnabled =
                             radioButtonGroupThemePreference.isDarkenWebsitesEnabled();
-                    WebContentsDarkModeController.setGlobalUserSettings(mWebContentsDarkModeEnabled,
-                            AutoDarkSettingsChangeSource.THEME_SETTINGS);
+                    WebContentsDarkModeController.setGlobalUserSettings(
+                            mWebContentsDarkModeEnabled);
                 }
             }
             int theme = (int) newValue;
