@@ -21,12 +21,21 @@ extern const base::FeatureParam<bool>
 
 }  // namespace features
 
+// The translate engine can work the folowing ways:
+// 1. IsBraveTranslateGoAvailable() == true: Show a bubble to suggest a user
+// installation of Google translate extension.
+// 2. IsTranslateExtensionAvailable() == true: The internal translation engine
+// is used instead of the old bubble.
+// 3. The other: no translation is available.
 bool IsBraveTranslateGoAvailable();
-
 bool IsTranslateExtensionAvailable();
 
+// True if the translate urls in native code is redirected to
+// translate-relay.brave.com. True by default, use false only for local testing.
 bool UseBraveTranslateRelay();
 
+// True if the supported language list can be updated from the backend. False by
+// default.
 bool ShouldUpdateLanguagesList();
 
 }  // namespace translate
