@@ -198,4 +198,8 @@ absl::optional<base::Version> GetLastInstalledWalletVersion() {
   return last_installed_wallet_version;
 }
 
+void SetLastInstalledWalletVersionForTest(const base::Version& version) {
+  last_installed_wallet_version = version;
+}
+
 }  // namespace brave_wallet

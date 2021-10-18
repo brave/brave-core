@@ -14,6 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -46,9 +47,22 @@ void ERCTokenImagesSource::StartDataRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   const std::string path = URLDataSource::URLToRequestPath(url);
+
+  absl::optional<base::Version> version =
+      brave_wallet::GetLastInstalledWalletVersion();
+  if (!version) {
+    scoped_refptr<base::RefCountedMemory> bytes;
+    std::move(callback).Run(std::move(bytes));
+    return;
+  }
+
+  base::FilePath images_path(base_path_);
+  images_path = images_path.AppendASCII(version->GetString());
+  images_path = images_path.AppendASCII("images");
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileToString, base_path_.AppendASCII(path)),
+      base::BindOnce(&ReadFileToString, images_path.AppendASCII(path)),
       base::BindOnce(&ERCTokenImagesSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
