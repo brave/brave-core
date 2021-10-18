@@ -218,6 +218,14 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         }));
     run_loop.Run();
   }
+  void AddHardwareAccount(const std::string& address) {
+    std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
+    hw_accounts.push_back(mojom::HardwareWalletAccount::New(
+        address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
+
+    keyring_controller_->AddHardwareAccounts(std::move(hw_accounts));
+    browser_task_environment_.RunUntilIdle();
+  }
 
   void Unlock() {
     base::RunLoop run_loop;
@@ -277,6 +285,39 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void ResetEthereumPermission(const GURL& url, size_t from_index = 0) {
     permissions::BraveEthereumPermissionContext::ResetEthereumPermission(
         browser_context(), url.spec(), from(from_index));
+  }
+
+  void SignHardwareMessage(bool user_approved,
+                           const std::string& address,
+                           const std::string& message,
+                           const std::string& hardware_signature,
+                           const std::string& error_in,
+                           std::string* signature_out,
+                           int* error_out,
+                           std::string* error_message_out) {
+    if (!signature_out || !error_out || !error_message_out)
+      return;
+
+    base::RunLoop run_loop;
+    std::vector<std::string> allowed_accounts;
+    allowed_accounts.push_back(address);
+    std::vector<uint8_t> message_bytes;
+    ASSERT_TRUE(base::HexStringToBytes(message.substr(2), &message_bytes));
+    provider()->ContinueSignMessage(
+        address, std::move(message_bytes),
+        base::BindLambdaForTesting([&](const std::string& signature, int error,
+                                       const std::string& error_message) {
+          *signature_out = signature;
+          *error_out = error;
+          *error_message_out = error_message;
+          run_loop.Quit();
+        }),
+        user_approved, allowed_accounts);
+    browser_task_environment_.RunUntilIdle();
+    brave_wallet_service_->NotifyHardwareSignMessageRequestProcessed(
+        user_approved, provider()->sign_message_id_ - 1, hardware_signature,
+        error_in);
+    run_loop.Run();
   }
 
   void SignMessage(absl::optional<bool> user_approved,
@@ -970,6 +1011,43 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   AddEthereumPermission(url, 1);
   SetSelectedAccount(from(0));
   EXPECT_FALSE(observer_->AccountsChangedFired());
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SignHardwareMessage) {
+  CreateWallet();
+  std::string address = "0x111";
+  AddHardwareAccount(address);
+  std::string signature;
+  std::string expected_signature = "0xExpectedSignature";
+  int error;
+  std::string error_message;
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url);
+
+  // success
+  SignHardwareMessage(true, address, "0x1234", expected_signature, "",
+                      &signature, &error, &error_message);
+  EXPECT_FALSE(signature.empty());
+  EXPECT_EQ(signature, expected_signature);
+  EXPECT_EQ(error, 0);
+  EXPECT_TRUE(error_message.empty());
+
+  // forwarding errors from javascript
+  std::string expected_error = "error text";
+  SignHardwareMessage(false, address, "0x1234", expected_signature,
+                      expected_error, &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
+  EXPECT_EQ(error_message, expected_error);
+
+  // user rejected request
+  SignHardwareMessage(false, address, "0x1234", expected_signature, "",
+                      &signature, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
 }  // namespace brave_wallet

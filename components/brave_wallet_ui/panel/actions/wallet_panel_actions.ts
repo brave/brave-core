@@ -12,7 +12,7 @@ import {
   SignMessagePayload,
   SignMessageProcessedPayload
 } from '../constants/action_types'
-import { SwapErrorResponse, SwapResponse } from '../../constants/types'
+import { SwapErrorResponse, SwapResponse, SignMessageData } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -34,3 +34,5 @@ export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('se
 export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')
 export const signMessage = createAction<SignMessagePayload>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
+export const signHardwareMessage = createAction<SignMessageData>('signHardwareMessage')
+export const signHardwareMessageProcessed = createAction<SignMessageProcessedPayload>('signHardwareMessageProcessed')

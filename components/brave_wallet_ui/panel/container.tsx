@@ -352,18 +352,38 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
+  const isHardwareAccount = (address: string) => {
+    for (const account of accounts) {
+      if (account.deviceId && account.address === address) {
+        return true
+      }
+    }
+    return false
+  }
+
   const onCancelSigning = () => {
-    props.walletPanelActions.signMessageProcessed({
-      approved: false,
-      id: signMessageData.id
-    })
+    if (isHardwareAccount(signMessageData.address)) {
+      props.walletPanelActions.signHardwareMessageProcessed({
+        approved: false,
+        id: signMessageData.id
+      })
+    } else {
+      props.walletPanelActions.signMessageProcessed({
+        approved: false,
+        id: signMessageData.id
+      })
+    }
   }
 
   const onSignData = () => {
-    props.walletPanelActions.signMessageProcessed({
-      approved: true,
-      id: signMessageData.id
-    })
+    if (isHardwareAccount(signMessageData.address)) {
+      props.walletPanelActions.signHardwareMessage(signMessageData)
+    } else {
+      props.walletPanelActions.signMessageProcessed({
+        approved: true,
+        id: signMessageData.id
+      })
+    }
   }
 
   const onApproveAddNetwork = () => {

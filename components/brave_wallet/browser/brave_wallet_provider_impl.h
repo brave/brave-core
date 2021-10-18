@@ -142,6 +142,12 @@ class BraveWalletProviderImpl final
                                      const std::string& address,
                                      std::vector<uint8_t>&& message,
                                      bool approved);
+  void OnHardwareSignMessageRequestProcessed(SignMessageCallback callback,
+                                             const std::string& address,
+                                             std::vector<uint8_t>&& message,
+                                             bool approved,
+                                             const std::string& signature,
+                                             const std::string& error);
 
   // KeyringControllerObserver
   void KeyringCreated() override {}

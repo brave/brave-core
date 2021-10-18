@@ -142,7 +142,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
       SetDefaultKeyringImportedAccountNameCallback callback) override;
 
   bool IsDefaultKeyringCreated();
-
+  bool IsHardwareAccount(const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -214,7 +214,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
   void OnAutoLockFired();
-  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync();
+  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
 
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(

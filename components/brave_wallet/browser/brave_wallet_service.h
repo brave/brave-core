@@ -37,6 +37,10 @@ class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public BraveWalletServiceDelegate::Observer {
  public:
+  using SignMessageRequestCallback = base::OnceCallback<void(bool)>;
+  using SignHardwareMessageRequestCallback =
+      base::OnceCallback<void(bool, const std::string&, const std::string&)>;
+
   explicit BraveWalletService(
       std::unique_ptr<BraveWalletServiceDelegate> delegate,
       KeyringController* keyring_controller,
@@ -90,6 +94,11 @@ class BraveWalletService : public KeyedService,
   void GetPendingSignMessageRequest(
       GetPendingSignMessageRequestCallback callback) override;
   void NotifySignMessageRequestProcessed(bool approved, int id) override;
+  void NotifyHardwareSignMessageRequestProcessed(
+      bool approved,
+      int id,
+      const std::string& signature,
+      const std::string& error) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const std::string& origin) override;
@@ -102,7 +111,10 @@ class BraveWalletService : public KeyedService,
     std::string message;
   };
   void AddSignMessageRequest(SignMessageRequest&& request,
-                             base::OnceCallback<void(bool)> callback);
+                             SignMessageRequestCallback callback);
+  void AddHardwareSignMessageRequest(
+      SignMessageRequest&& request,
+      SignHardwareMessageRequestCallback callback);
 
  private:
   void OnDefaultWalletChanged();
@@ -124,7 +136,9 @@ class BraveWalletService : public KeyedService,
                        BraveWalletServiceDelegate::ImportInfo info);
 
   base::queue<SignMessageRequest> sign_message_requests_;
-  base::queue<base::OnceCallback<void(bool)>> sign_message_callbacks_;
+  base::queue<SignMessageRequestCallback> sign_message_callbacks_;
+  base::queue<SignHardwareMessageRequestCallback>
+      sign_hardware_message_callbacks_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringController* keyring_controller_;

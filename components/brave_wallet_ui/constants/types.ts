@@ -23,6 +23,12 @@ export interface AssetOptionType {
   logo: string
 }
 
+export interface SignatureVRS {
+  v: number,
+  r: string,
+  s: string
+}
+
 export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number
@@ -753,6 +759,7 @@ export interface BraveWalletService {
   getActiveOrigin: () => Promise<GetActiveOriginReturnInfo>
   getPendingSignMessageRequest: () => Promise<GetPendingSignMessageRequestReturnInfo>
   notifySignMessageRequestProcessed: (approved: boolean, id: number) => Promise<void>
+  notifyHardwareSignMessageRequestProcessed: (approved: boolean, id: number, signature: string, error: string) => Promise<void>
 }
 
 export interface RecoveryObject {

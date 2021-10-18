@@ -366,7 +366,8 @@ handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, p
 
 handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const apiProxy = await getAPIProxy()
-  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
+  const result = await apiProxy.walletHandler.getWalletInfo()
+  const hardwareAccount = findHardwareAccountInfo(result.accountInfos, txInfo.fromAddress)
   if (hardwareAccount && hardwareAccount.hardware) {
     const { success, message } = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
     if (success) {

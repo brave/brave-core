@@ -306,11 +306,20 @@ void BraveWalletProviderImpl::ContinueSignMessage(
   }
 
   std::string message_to_request = std::string(message.begin(), message.end());
-  brave_wallet_service_->AddSignMessageRequest(
-      {sign_message_id_++, address, std::move(message_to_request)},
-      base::BindOnce(&BraveWalletProviderImpl::OnSignMessageRequestProcessed,
-                     weak_factory_.GetWeakPtr(), std::move(callback), address,
-                     std::move(message)));
+  if (keyring_controller_->IsHardwareAccount(address)) {
+    brave_wallet_service_->AddHardwareSignMessageRequest(
+        {sign_message_id_++, address, std::move(message_to_request)},
+        base::BindOnce(
+            &BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed,
+            weak_factory_.GetWeakPtr(), std::move(callback), address,
+            std::move(message)));
+  } else {
+    brave_wallet_service_->AddSignMessageRequest(
+        {sign_message_id_++, address, std::move(message_to_request)},
+        base::BindOnce(&BraveWalletProviderImpl::OnSignMessageRequestProcessed,
+                       weak_factory_.GetWeakPtr(), std::move(callback), address,
+                       std::move(message)));
+  }
   delegate_->ShowBubble();
 }
 
@@ -325,6 +334,7 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     return;
   }
+
   auto signature_with_err =
       keyring_controller_->SignMessageByDefaultKeyring(address, message);
   if (!signature_with_err.signature)
@@ -333,6 +343,28 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
                             signature_with_err.error_message);
   else
     std::move(callback).Run(ToHex(*signature_with_err.signature), 0, "");
+}
+
+void BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed(
+    SignMessageCallback callback,
+    const std::string& address,
+    std::vector<uint8_t>&& message,
+    bool approved,
+    const std::string& signature,
+    const std::string& error) {
+  if (!approved) {
+    int error_code =
+        static_cast<int>(error.empty() ? ProviderErrors::kUserRejectedRequest
+                                       : ProviderErrors::kInternalError);
+    auto error_message =
+        error.empty()
+            ? l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST)
+            : error;
+    std::move(callback).Run("", error_code, error_message);
+    return;
+  }
+
+  std::move(callback).Run(signature, 0, "");
 }
 
 bool BraveWalletProviderImpl::CheckAccountAllowed(
