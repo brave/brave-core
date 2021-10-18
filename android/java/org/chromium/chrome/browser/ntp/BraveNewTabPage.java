@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
@@ -77,7 +79,8 @@ public class BraveNewTabPage extends NewTabPage {
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
                 /* FeedLaunchReliabilityLoggingState */ null,
-                FeedSwipeRefreshLayout.create(activity), /* overScrollDisabled= */ false,
-                /* viewportView= */ null);
+                FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
+                /* overScrollDisabled= */ false,
+                /* viewportView= */ null, new BookmarkBridge(profile));
     }
 }
