@@ -900,6 +900,10 @@
 		7BA8D1C71BA037F500C8AE9E /* OpenInHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA8D1C61BA037F500C8AE9E /* OpenInHelper.swift */; };
 		7BBFEE741BB405D900A305AA /* TabManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BBFEE731BB405D900A305AA /* TabManagerTests.swift */; };
 		7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BEFC67F1BFF68C30059C952 /* QuickActions.swift */; };
+		7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758907271A172C00B643C3 /* BuyTokenView.swift */; };
+		7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758914271A17AF00B643C3 /* BuyTokenStore.swift */; };
+		7D758917271A182800B643C3 /* TokenList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758916271A182800B643C3 /* TokenList.swift */; };
+		7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758918271A184D00B643C3 /* BuyTokenSearchView.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
 		A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* ClientPreferences.swift */; };
 		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
@@ -2720,6 +2724,10 @@
 		7BA8D1C61BA037F500C8AE9E /* OpenInHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenInHelper.swift; sourceTree = "<group>"; };
 		7BBFEE731BB405D900A305AA /* TabManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabManagerTests.swift; sourceTree = "<group>"; };
 		7BEFC67F1BFF68C30059C952 /* QuickActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickActions.swift; sourceTree = "<group>"; };
+		7D758907271A172C00B643C3 /* BuyTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenView.swift; sourceTree = "<group>"; };
+		7D758914271A17AF00B643C3 /* BuyTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStore.swift; sourceTree = "<group>"; };
+		7D758916271A182800B643C3 /* TokenList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenList.swift; sourceTree = "<group>"; };
+		7D758918271A184D00B643C3 /* BuyTokenSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenSearchView.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* ClientPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferences.swift; sourceTree = "<group>"; };
 		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
@@ -3630,6 +3638,7 @@
 			children = (
 				271F685826EBD27D00AA2A50 /* SwapCryptoView.swift */,
 				2729E7D226F502AC00200648 /* AccountPicker.swift */,
+				7D758907271A172C00B643C3 /* BuyTokenView.swift */,
 			);
 			path = BuySwapSwap;
 			sourceTree = "<group>";
@@ -3643,6 +3652,7 @@
 				271F685D26EBD27D00AA2A50 /* KeyringStore.swift */,
 				27DDE88526FD2BC400A70C3A /* PortfolioStore.swift */,
 				2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */,
+				7D758914271A17AF00B643C3 /* BuyTokenStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -3651,6 +3661,8 @@
 			isa = PBXGroup;
 			children = (
 				271F686126EBD27D00AA2A50 /* AssetSearchView.swift */,
+				7D758916271A182800B643C3 /* TokenList.swift */,
+				7D758918271A184D00B643C3 /* BuyTokenSearchView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -7360,6 +7372,7 @@
 				271F68B526EBD27E00AA2A50 /* TabbedPageViewController.swift in Sources */,
 				271F68AF26EBD27E00AA2A50 /* SetupCryptoView.swift in Sources */,
 				27DDE88826FD2D8B00A70C3A /* WalletStore.swift in Sources */,
+				7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */,
 				271F689C26EBD27E00AA2A50 /* NetworkPicker.swift in Sources */,
 				271F68A626EBD27E00AA2A50 /* PortfolioAssetView.swift in Sources */,
 				271F68A226EBD27E00AA2A50 /* AddAccountView.swift in Sources */,
@@ -7375,11 +7388,13 @@
 				271F68A026EBD27E00AA2A50 /* AccountDetailsView.swift in Sources */,
 				271F68B026EBD27E00AA2A50 /* BackupRecoveryPhraseView.swift in Sources */,
 				271F68A926EBD27E00AA2A50 /* BuySendSwapView.swift in Sources */,
+				7D758917271A182800B643C3 /* TokenList.swift in Sources */,
 				271F68C226EBD27E00AA2A50 /* SwapButton.swift in Sources */,
 				27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */,
 				271F68AA26EBD27E00AA2A50 /* TransactionView.swift in Sources */,
 				271F689126EBD27E00AA2A50 /* TestEthRpcController.swift in Sources */,
 				271F689726EBD27E00AA2A50 /* CryptoPagesView.swift in Sources */,
+				7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,
 				271F689926EBD27E00AA2A50 /* Address.swift in Sources */,
@@ -7390,6 +7405,7 @@
 				271F68B426EBD27E00AA2A50 /* CreateWalletView.swift in Sources */,
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
+				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
