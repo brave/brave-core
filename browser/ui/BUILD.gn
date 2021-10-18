@@ -482,6 +482,7 @@ source_set("ui") {
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
       "//brave/components/resources:static_resources",
+      "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
       "//components/sessions",
       "//extensions/browser",
