@@ -1051,4 +1051,29 @@
 <translation id="6973157709854838218">Sembunyikan baki anda dari paparan</translation>
 <translation id="4548946945059463969">Dedahkan baki anda di skrin</translation>
 <translation id="242959166945779492">Anda tidak mempunyai sebarang baki dalam akaun anda. Lawati FTX untuk membeli sedikit.</translation>
+<translation id="2359865110462963929">BAT tidak disokong buat masa ini di kawasan anda. Sila rujuk <ph name="BEGIN_LINK"/>di sini<ph name="END_LINK"/> untuk makluman terkini.</translation>
+<translation id="2564425876266960486">Ralat mencipta kad BAT Pelayar Berani</translation>
+<translation id="8429332714958713413">Anda memerlukan dompet yang disahkan untuk log masuk</translation>
+<translation id="5881716477679854586">Sila cuba lagi setelah anda melengkapkan pengesahan ID di <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> akan tiba dalam <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Data Ganjaran anda <ph name="BAT_AMOUNT"/> dan yang lain akan hilang secara kekal jika anda menetapkan semula dompet anda. Sila pastikan anda telah mengesahkan dompet anda dengan <ph name="PROVIDER"/> supaya anda boleh mengekalkan BAT anda.</translation>
+<translation id="244362569344671266">Dapatkan token dengan melihat Iklan Peribadi Brave dan sokong pencipta kandungan secara automatik.</translation>
+<translation id="3903419925307046908">Peroleh token dan berikan balik</translation>
+<translation id="671838195432136371">Gemini membolehkan anda memperdagangkan, menyimpan, dan memperoleh 3.49% APY * dengan mudah pada BAT anda. Pengguna Gemini baharu yang membuat pautan menerima 5 BAT percuma!</translation>
+<translation id="9136976526700181750">Gemini Earn APY setakat 15 Ogos 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Ketahui Lebih Lanjut<ph name="LINK_END"/> mengenai Brave Rewards</translation>
+<translation id="7443190393462029180">Dengan mengklik Mula menggunakan Brave Rewards, anda bersetuju dengan <ph name="TOS_LINK_BEGIN"/>Terma Perkhidmatan<ph name="TOS_LINK_END"/> dan <ph name="PP_LINK_BEGIN"/>Dasar Privasi<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Anggaran pendapatan setakat bulan ini</translation>
+<translation id="5235444069025581717">Petua dan sumbangan bulan ini</translation>
+<translation id="1210965535849006928">Tuntut Ganjaran saya</translation>
+<translation id="4609518959946843710">Dapatkan ganjaran dengan melihat imej latar belakang tajaan ini.</translation>
+<translation id="5311968438376723685">Hidupkan Iklan Brave Peribadi untuk menuntut bahagian anda.
+Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Syabas!</translation>
+<translation id="764235488372037377">Ganjaran anda daripada Iklan ada di sini</translation>
+<translation id="7091215606170476659">Anda mempunyai geran UGP daripada Brave.</translation>
+<translation id="6759185676704303656">Anda mendapat bayaran kerana melihat imej latar belakang ini.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Ketahui Lebih Lanjut<ph name="LINK_END"/> mengenai imej tajaan di Brave Rewards.</translation>
+<translation id="6113004497629356998">Sembunyikan imej tajaan</translation>
+<translation id="8511604585939286108">Dengan mengklik [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
 </translationbundle>

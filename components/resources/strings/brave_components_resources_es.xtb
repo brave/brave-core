@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Ocultar tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostrar tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes saldo disponible en tu cuenta. Pásate por FTX para adquirir fondos.</translation>
+<translation id="2359865110462963929">Actualmente, BAT no se admite en tu región. Consulta <ph name="BEGIN_LINK"/>aquí<ph name="END_LINK"/> para las actualizaciones.</translation>
+<translation id="2564425876266960486">Error al crear tarjeta BAT de Brave Browser</translation>
+<translation id="8429332714958713413">Necesitas una cartera verificada para iniciar sesión</translation>
+<translation id="5881716477679854586">Vuelve a intentarlo tras verificar tu ID en <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> dentro de <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Sus <ph name="BAT_AMOUNT"/> y otros datos de las recompensas se perderán permanentemente si reinicia su cartera. Asegúrese de haber verificado su cartera con <ph name="PROVIDER"/> para que pueda mantener su BAT.</translation>
+<translation id="244362569344671266">Gane tokens por ver Brave Ads privados y apoye a los creadores de contenido automáticamente.</translation>
+<translation id="3903419925307046908">Gana y restituye vales</translation>
+<translation id="671838195432136371">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. Los nuevos usuarios de Gemini que vinculen su cuenta reciben 5 BAT gratis.</translation>
+<translation id="9136976526700181750">* Rendimiento porcentual anual de Gemini en vigor desde el 15 de agosto de 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/> sobre Brave Rewards</translation>
+<translation id="7443190393462029180">Al hacer clic en Empezar a utilizar Brave Rewards, aceptas los <ph name="TOS_LINK_BEGIN"/>Términos de Servicio<ph name="TOS_LINK_END"/> y la <ph name="PP_LINK_BEGIN"/>Política de privacidad<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Ganancias estimadas en el mes actual</translation>
+<translation id="5235444069025581717">Propinas y contribuciones en el mes actual</translation>
+<translation id="1210965535849006928">Reclamar mis recompensas</translation>
+<translation id="4609518959946843710">Gana recompensas por visualizar esta imagen de fondo patrocinada.</translation>
+<translation id="5311968438376723685">Activa Brave Private Ads para reclamar tu parte. También puedes escoger <ph name="LINK_BEGIN"/>ocultar las imágenes patrocinadas<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">¡Así se hace!</translation>
+<translation id="764235488372037377">Tus recompensas de anuncios están aquí</translation>
+<translation id="7091215606170476659">Tienes una concesión UGP de Brave.</translation>
+<translation id="6759185676704303656">Recibes pagos por visualizar esta imagen de fondo.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saber más<ph name="LINK_END"/> sobre las imágenes patrocinadas en Brave Rewards.</translation>
+<translation id="6113004497629356998">Ocultar imágenes patrocinadas</translation>
+<translation id="8511604585939286108">Al hacer clic en [[title]], aceptas las <ph name="BEGIN_LINK1"/>Condiciones de uso<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>Política de privacidad<ph name="END_LINK2"/>.</translation>
 </translationbundle>

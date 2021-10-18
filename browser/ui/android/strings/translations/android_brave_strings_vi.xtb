@@ -375,12 +375,12 @@ tháng này...</translation>
 <translation id="7427567994475794038">Hãy bật Báo cáo Quyền riêng tư để xem số lượng trình theo dõi &amp; quảng cáo đã bị chặn trong 3 giờ qua.</translation>
 <translation id="2053891538879944400">Bạn đã tiết kiệm <ph name="DATA"/> <ph name="DATA_TEXT"/> dữ liệu bằng trình duyệt Brave.</translation>
 <translation id="8640064498452534195">Bật Báo cáo Quyền riêng tư để xem lượng dữ liệu mà bạn đã tiết kiệm được.</translation>
-<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.&#128267;</translation>
+<translation id="2252497442547961651">Trình duyệt Brave có mức sử dụng pin trung bình ít hơn 40%.🔋</translation>
 <translation id="1945330434665345785">Tuần trước, bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.</translation>
 <translation id="2883868922264431515">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các trang web yêu thích của bạn.</translation>
-<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.&#128293;</translation>
-<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.&#128267;</translation>
-<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Tuyệt! Bạn đã chặn 250 trình theo dõi &amp; quảng cáo bằng trình duyệt Brave.🔥</translation>
+<translation id="9199047775708635708">Tuyệt! Bạn đã tiết kiệm được 10MB với trình duyệt Brave.🔋</translation>
+<translation id="1880168210969863408">Tuyệt! Bạn đã tiết kiệm được 10 Phút thời gian tải với trình duyệt Brave.💨💨</translation>
 <translation id="7408493389591475748">Bắt đầu duyệt web để xem báo cáo quyền riêng tư</translation>
 <translation id="9080777565335515917">Đặt Brave làm trình duyệt mặc định của bạn để duyệt web an toàn và bảo mật.</translation>
 <translation id="1390943217516275883">Cho phép Brave hiển thị số liệu thống kê về quyền riêng tư của bạn</translation>
@@ -710,4 +710,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="275990379543116961">Không đủ tiền mua xăng</translation>
 <translation id="3292453499915466604">Thanh khoản không đủ</translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
+<translation id="1538774398124896437">Trực tiếp</translation>
+<translation id="990936698620790924">Giá thị trường tính bằng ETH</translation>
 </translationbundle>

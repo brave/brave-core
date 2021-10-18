@@ -377,12 +377,12 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -712,4 +712,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="275990379543116961">Otillräckliga medel för gas</translation>
 <translation id="3292453499915466604">Otillräcklig likviditet</translation>
 <translation id="3380365263193509176">Okänt fel</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="990936698620790924">Marknadspris i ETH</translation>
 </translationbundle>

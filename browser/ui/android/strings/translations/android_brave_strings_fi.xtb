@@ -379,12 +379,12 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
 <translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.&#128267;</translation>
+<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
-<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.&#128293;</translation>
-<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.&#128267;</translation>
-<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.🔥</translation>
+<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.🔋</translation>
+<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.💨💨</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="1390943217516275883">Sallii Braven näyttää yksityisyystilastosi</translation>
@@ -714,4 +714,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="275990379543116961">Riittämättömät varat Gas-tokeniin</translation>
 <translation id="3292453499915466604">Riittämätön likviditeetti</translation>
 <translation id="3380365263193509176">Tuntematon virhe</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="990936698620790924">Markkinahinta Ethereumeissa</translation>
 </translationbundle>

@@ -1052,4 +1052,28 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="2359865110462963929">BAT pole sinu piirkonnas praegu saadaval. Uuenduste vaatamiseks mine lingile <ph name="BEGIN_LINK"/>siia<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Brave’i veebilehitseja BAT kaardi loomisel ilmnes viga</translation>
+<translation id="8429332714958713413">Sisselogimiseks vajate kinnitatud rahakotti.</translation>
+<translation id="5881716477679854586">Proovige uuesti, kui olete läbinud <ph name="CUSTODIAN"/> isikusamasuse kontrolli.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> saabub <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Teie <ph name="BAT_AMOUNT"/> ja muud preemiate andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veenduge, et oleksite rahakoti <ph name="PROVIDER"/> kinnitanud, et BAT-id säiliksid.</translation>
+<translation id="244362569344671266">Brave'i erareklaamide vaatamisega saate teenida tokeneid ja toetada automaatselt sisuloojaid.</translation>
+<translation id="3903419925307046908">Teenige ja andke tokeneid</translation>
+<translation id="671838195432136371">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Uued Gemini kasutajad saavad sidumise eest 5 tasuta BAT-i!</translation>
+<translation id="9136976526700181750">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. august 2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi kohta</translation>
+<translation id="7443190393462029180">Klõpsates valikul „Alusta Brave Rewardsi kasutamist“, nõustute <ph name="TOS_LINK_BEGIN"/>teenusetingimuste<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>privaatsuspõhimõtetega<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Selle kuu eeldatav senine tulu</translation>
+<translation id="5235444069025581717">Preemiad ja panused sellel kuul</translation>
+<translation id="1210965535849006928">Hangi my preemiad</translation>
+<translation id="4609518959946843710">Saage selle esiletõstetud taustapildi vaatamise eest tasu.</translation>
+<translation id="5311968438376723685">Oma osa saamiseks lülitage sisse Brave Private Ads. Saate ka <ph name="LINK_BEGIN"/>peita sponsoreeritud kujutised<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Väga tubli!</translation>
+<translation id="764235488372037377">Teie preemiad reklaamide vaatamise eest on siin</translation>
+<translation id="7091215606170476659">Teid ootab Brave’ilt UGP preemia.</translation>
+<translation id="6759185676704303656">Saate selle taustapildi vaatamise eest raha.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi esiletõstetud piltide kohta.</translation>
+<translation id="6113004497629356998">Peida esiletõstetavad pildid</translation>
+<translation id="8511604585939286108">Klõpsates pealkirjal [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
 </translationbundle>

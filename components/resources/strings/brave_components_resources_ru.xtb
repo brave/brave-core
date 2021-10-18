@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Скрыть средства с экрана</translation>
 <translation id="4548946945059463969">Показать средства на экране</translation>
 <translation id="242959166945779492">На вашем счету нет средств. Чтобы приобрести валюту, посетите биржу FTX.</translation>
+<translation id="2359865110462963929">В данный момент BAT не поддерживается в вашем регионе. Пожалуйста, следите за обновлениями <ph name="BEGIN_LINK"/>здесь<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Ошибка при создании карты BAT браузера Brave</translation>
+<translation id="8429332714958713413">Чтобы войти, нужно подтвердить кошелек</translation>
+<translation id="5881716477679854586">Повторите попытку после подтверждения идентификатора в <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059">Поступление: <ph name="AMOUNT"/> через <ph name="DAYS"/>.</translation>
+<translation id="8683358891240311475">Ваши <ph name="BAT_AMOUNT"/> и другие данные о наградах будут навсегда потеряны, если вы сбросите свой кошелек. Убедитесь, что вы подтвердили свой кошелек с <ph name="PROVIDER"/>, чтобы сохранить свои BAT.</translation>
+<translation id="244362569344671266">Зарабатывайте жетоны, просматривая Brave Private Ads, и поддерживайте создателей контента автоматически.</translation>
+<translation id="3903419925307046908">Зарабатывайте токены и жертвуйте</translation>
+<translation id="671838195432136371">Gemini позволяет легко продавать, хранить баллы BAT и зарабатывать с них 3,49 % годовых (APY*). Новые пользователи Gemini, привязавшие Brave Rewards, получат 5 баллов BAT бесплатно.</translation>
+<translation id="9136976526700181750">* Годовой процентный доход (APY) в Gemini Earn на 15.08.2021</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о Brave Rewards</translation>
+<translation id="7443190393462029180">Нажав «Начать использовать Brave Rewards», вы соглашаетесь с <ph name="TOS_LINK_BEGIN"/>Условиями использования<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политикой конфиденциальности<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Предполагаемый доход за месяц на текущий момент</translation>
+<translation id="5235444069025581717">Чаевые и взносы за этот месяц</translation>
+<translation id="1210965535849006928">Затребовать мое Вознаграждение</translation>
+<translation id="4609518959946843710">Зарабатывайте награды, просматривая это спонсорское фоновое изображение.</translation>
+<translation id="5311968438376723685">Включите приватную рекламу Brave, чтобы получить свою долю. Вы также можете <ph name="LINK_BEGIN"/>скрыть спонсорские изображения<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Поехали!</translation>
+<translation id="764235488372037377">Ваше вознаграждение за просмотр рекламы</translation>
+<translation id="7091215606170476659">Вы получили бонус UGP от Brave.</translation>
+<translation id="6759185676704303656">Вам платят за просмотр этого фонового изображения.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о рекламных изображениях в Brave Rewards.</translation>
+<translation id="6113004497629356998">Скрыть рекламные изображения</translation>
+<translation id="8511604585939286108">Нажимая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>
 </translationbundle>

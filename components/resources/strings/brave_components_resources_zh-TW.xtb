@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="2359865110462963929">您所在地區目前不支援 BAT。請查閱<ph name="BEGIN_LINK"/>這裡<ph name="END_LINK"/>以取得最新消息。</translation>
+<translation id="2564425876266960486">建立 Brave 瀏覽器 BAT 卡時發生錯誤</translation>
+<translation id="8429332714958713413">您需要先驗證錢包才能登入</translation>
+<translation id="5881716477679854586">請先到 <ph name="CUSTODIAN"/> 完成 ID 驗證，並再試一次。</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> 抵達 <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">如重設錢包，您的<ph name="BAT_AMOUNT"/>與其他獎勵資料將會永遠消失。請確認您已與<ph name="PROVIDER"/>認證過您的錢包；如此才可保留您的 BAT。</translation>
+<translation id="244362569344671266">透過檢視 Brave 的私人廣告來賺取代幣，並自動支持內容創作者。</translation>
+<translation id="3903419925307046908">賺取代幣並回饋</translation>
+<translation id="671838195432136371">Gemini 可讓您輕鬆交易、儲存與賺取 3.49% APY* 的 BAT。連結新的 Gemini 使用者將可領取 5 個免費 BAT！</translation>
+<translation id="9136976526700181750">* Gemini 自 2021 年 8 月 15 日起賺取 APY</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards</translation>
+<translation id="7443190393462029180">點擊「開始使用 Brave Rewards」即表示您同意《<ph name="TOS_LINK_BEGIN"/>服務條款<ph name="TOS_LINK_END"/>》與《<ph name="PP_LINK_BEGIN"/>隱私權政策<ph name="PP_LINK_END"/>》。</translation>
+<translation id="8344084848798035850">本月到目前為止的估計收入</translation>
+<translation id="5235444069025581717">本月小費與貢獻</translation>
+<translation id="1210965535849006928">領取我的獎勵</translation>
+<translation id="4609518959946843710">檢視這張贊助的背景圖片來賺取獎勵。</translation>
+<translation id="5311968438376723685">開啟 Brave Private Ads 來賺取您的收入。您可以選擇<ph name="LINK_BEGIN"/>隱藏贊助圖片<ph name="LINK_END"/>。</translation>
+<translation id="8568666589217601917">該走了！</translation>
+<translation id="764235488372037377">您從廣告得來的獎勵在此</translation>
+<translation id="7091215606170476659">您有從 Brave 而來的 UGP 經費。</translation>
+<translation id="6759185676704303656">您在透過檢視這張背景影像來賺錢。</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards 的贊助影像。</translation>
+<translation id="6113004497629356998">隱藏贊助影像</translation>
+<translation id="8511604585939286108">按一下 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
 </translationbundle>

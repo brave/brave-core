@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">ডিস্প্লে থেকে আপনার ব্যালান্স লুকিয়ে রাখুন</translation>
 <translation id="4548946945059463969">আপনার ব্যালান্সগুলি স্ক্রিনে দেখান</translation>
 <translation id="242959166945779492">আপনার অ্যাকাউন্টে কোনো ব্যালেন্স নেই। কিছু কিনতে FTX ভিজিট করুন।</translation>
+<translation id="2359865110462963929">বর্তমানে আপনার অঞ্চলে BAT সমর্থিত নয়। আপডেটগুলির জন্য অনুগ্রহ করে <ph name="BEGIN_LINK"/>এখানে<ph name="END_LINK"/> দেখুন।</translation>
+<translation id="2564425876266960486">Brave ব্রাউজার BAT কার্ড তৈরি করতে ত্রুটি</translation>
+<translation id="8429332714958713413">লগ ইন করতে আপনার একটি যাচাইকৃত ওয়ালেট লাগবে</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/>-এ আপনি ID যাচাইকরণ সম্পূর্ণ করার পরে অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> <ph name="DAYS"/> মধ্যে ঢুকছে</translation>
+<translation id="8683358891240311475">যদি আপনি আপনার ওয়ালেট রিসেট করেন তাহলে আপনার <ph name="BAT_AMOUNT"/> এবং অন্যান্য পুরস্কারের ডেটা স্থায়ীভাবে হারিয়ে যাবে। অনুগ্রহ করে নিশ্চিত করুন যে আপনি নিজের ওয়ালেটটি <ph name="PROVIDER"/> এর সাথে যাচাই করেছেন যাতে আপনি আপনার BAT রাখতে পারেন।</translation>
+<translation id="244362569344671266">Brave Private Ads দেখে টোকেন উপার্জন করুন এবং স্বয়ংক্রিয়ভাবে সামগ্রী নির্মাতাদের সমর্থন করুন।</translation>
+<translation id="3903419925307046908">টোকেন উপার্জন করুন এবং ফেরত দিন</translation>
+<translation id="671838195432136371">Gemini আপনাকে সহজেই বাণিজ্য করতে, সঞ্চয় করতে এবং 3.49% APY* উপার্জন করতে দেয় আপনার BAT এ। নতুন Gemini ব্যবহারকারী যারা লিঙ্ক করেন তারা বিনামূল্যে 5 BAT পান!</translation>
+<translation id="9136976526700181750">* আগস্ট 15, 2021 এর হিসাবে Gemini আর্ন APY</translation>
+<translation id="4360054110030715117">Brave Rewards সম্পর্কে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
+<translation id="7443190393462029180">Brave Rewards ব্যবহার করা শুরু করুন-এ ক্লিক করে, আপনি <ph name="TOS_LINK_BEGIN"/>পরিষেবার শর্তাবলী<ph name="TOS_LINK_END"/> এবং <ph name="PP_LINK_BEGIN"/>গোপনীয়তা নীতি<ph name="PP_LINK_END"/>তে সম্মত হচ্ছেন।</translation>
+<translation id="8344084848798035850">এই মাসে এখন পর্যন্ত আনুমানিক উপার্জন</translation>
+<translation id="5235444069025581717">এই মাসে টিপ এবং অনুদানসমূহ</translation>
+<translation id="1210965535849006928">আমার পুরষ্কারগুলি দাবি করুন</translation>
+<translation id="4609518959946843710">এই স্পনসর করা ব্যাকগ্রাউন্ড চিত্রটি দেখার জন্য পুরষ্কার অর্জন করুন।</translation>
+<translation id="5311968438376723685">আপনার ভাগ দাবি করার জন্য Brave ব্যক্তিগত বিজ্ঞাপনগুলি চালু করুন। আপনি চয়ন করতে পারেন <ph name="LINK_BEGIN"/>স্পনসর করা চিত্রগুলি লুকান<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">যাওয়ার পথে!</translation>
+<translation id="764235488372037377">বিজ্ঞাপন থেকে অর্জিত আপনার পুরষ্কারগুলি এখানে রয়েছে</translation>
+<translation id="7091215606170476659">Brave এর থেকে আপনার একটি UGP অনুদান রয়েছে৷</translation>
+<translation id="6759185676704303656">এই ব্যাকগ্রাউন্ডের ছবিটি দেখার জন্য আপনাকে টাকা দেওয়া হচ্ছে।</translation>
+<translation id="1749232564087138444">Brave Rewards এ স্পন্সর করা ছবিগুলি সম্পর্কে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/>।</translation>
+<translation id="6113004497629356998">স্পন্সর করা ছবিগুলি লুকান</translation>
+<translation id="8511604585939286108">[[title]] এ ক্লিক করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
 </translationbundle>

@@ -374,12 +374,12 @@
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
-<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.&#128267;</translation>
+<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.&#128293;</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.&#128267;</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
+<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
+<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -709,4 +709,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="275990379543116961">Unzureichende Mittel für Gas</translation>
 <translation id="3292453499915466604">Unzureichende Liquidität</translation>
 <translation id="3380365263193509176">Unbekannter Fehler</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="990936698620790924">Marktpreis in ETH</translation>
 </translationbundle>

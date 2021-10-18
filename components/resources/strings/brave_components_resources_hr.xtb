@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="2359865110462963929">BAT se trenutačno ne podržava u vašoj regiji. Pogledajte <ph name="BEGIN_LINK"/>ovdje<ph name="END_LINK"/> za ažuriranja.</translation>
+<translation id="2564425876266960486">Greška stvaranja kartice BAT preglednika BAT</translation>
+<translation id="8429332714958713413">Za prijavu vam treba potvrđen novčanik</translation>
+<translation id="5881716477679854586">Pokušajte ponovno nakon što obavite potvrđivanje identifikacijske oznake putem usluge <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> stiže za <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Vaš <ph name="BAT_AMOUNT"/> i ostali podatci za značajku Rewards trajno se gube ako ponovno postavite svoj novčanik. Pobrinite se da ste potvrdili svoj novčanik s pružateljem usluge <ph name="PROVIDER"/> da možete zadržati BAT.</translation>
+<translation id="244362569344671266">Zaradite tokene pregledavanjem privatnih oglasa preglednika Brave i automatski dajte podršku autorima sadržaja.</translation>
+<translation id="3903419925307046908">Zaradite tokene i odužite se</translation>
+<translation id="671838195432136371">Putem usluge Gemini možete jednostavno trgovati, pohranjivati i zarađivati 3,49 % APY* svog BAT-a. Novi korisnici usluge Gemini koji se povežu dobivaju 5 besplatnih BAT-a!</translation>
+<translation id="9136976526700181750">*Usluga Gemini Earn APY dostupna od 15. kolovoza 2021.</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/> o Brave Rewards</translation>
+<translation id="7443190393462029180">Ako kliknete na Počni upotrebljavati uslugu Brave Rewards, pristajete na <ph name="TOS_LINK_BEGIN"/>Uvjete pružanja usluge<ph name="TOS_LINK_END"/> i <ph name="PP_LINK_BEGIN"/>Pravilnik o zaštiti privatnosti<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Trenutačno procijenjena zarada ovog mjeseca</translation>
+<translation id="5235444069025581717">Napojnice i doprinosi ovog mjeseca</translation>
+<translation id="1210965535849006928">Zatraži moje nagrade</translation>
+<translation id="4609518959946843710">Zaradite pregledavanjem ove sponzorirane pozadinske slike.</translation>
+<translation id="5311968438376723685">Uključite značajku Brave Ads da biste zatražili svoj udio. Možete također odabrati i <ph name="LINK_BEGIN"/>skrivanje sponzoriranih slika<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Tako treba!</translation>
+<translation id="764235488372037377">Ovdje su vaše nagrade od oglasa</translation>
+<translation id="7091215606170476659">Imate odobrenje UGP od preglednika Brave.</translation>
+<translation id="6759185676704303656">Zaradite pregledavanjem ove pozadinske slike.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/>o sponzoriranim slikama u značajki Brave Rewards.</translation>
+<translation id="6113004497629356998">Sakrij sponzorirane slike</translation>
+<translation id="8511604585939286108">Klikom na [[title]] pristajete na <ph name="BEGIN_LINK1"/>uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>pravilnik o privatnosti<ph name="END_LINK2"/>.</translation>
 </translationbundle>

@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="2359865110462963929">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
+<translation id="8429332714958713413">Norint prisijungti jums reikia patvirtintos piniginės</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/> baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> gaunama po <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Jei iš naujo nustatysite piniginę, jūsų <ph name="BAT_AMOUNT"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami <ph name="PROVIDER"/>, kad neprarastumėte BAT.</translation>
+<translation id="244362569344671266">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias „Brave“ reklamas ir automatiškai paremkite turinio kūrėjus.</translation>
+<translation id="3903419925307046908">Gaukite žetonų ir pasidalykite jais</translation>
+<translation id="671838195432136371">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY* nuo turimų BAT. Nauji „Gemini“ naudotojai, kurie susies, nemokamai gaus 5 BAT!</translation>
+<translation id="9136976526700181750">* „Gemini“ uždirbamas APY 2021 m. rugpjūčio 15 d. duomenimis</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/> apie „Brave Rewards“</translation>
+<translation id="7443190393462029180">Spustelėdami „Pradėti naudotis „Brave Rewards“, sutinkate su <ph name="TOS_LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>privatumo politika<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Apytikslis šio mėnesio uždarbis</translation>
+<translation id="5235444069025581717">Šio mėnesio arbatpinigiai ir indėliai</translation>
+<translation id="1210965535849006928">Atsiimti „Rewards“</translation>
+<translation id="4609518959946843710">Gaukite atlygį už šio remiamo foninio vaizdo peržiūrą.</translation>
+<translation id="5311968438376723685">Įjunkite „Brave Private Ads“ ir gaukite savo dalį. Taip pat galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Puiku!</translation>
+<translation id="764235488372037377">Savo atlygius už reklamą rasite čia</translation>
+<translation id="7091215606170476659">Jūsų laukia UGP išmoka iš „Brave“.</translation>
+<translation id="6759185676704303656">Gaunate užmokestį už šio foninio vaizdo peržiūrą.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie per „Brave Rewards“ remiamus vaizdus.</translation>
+<translation id="6113004497629356998">Slėpti remiamus vaizdus</translation>
+<translation id="8511604585939286108">Spustelėdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 </translationbundle>

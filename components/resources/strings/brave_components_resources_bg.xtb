@@ -1054,4 +1054,28 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="2359865110462963929">BAT в момента не се поддържа във вашия регион. Вижте <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> за актуализации.</translation>
+<translation id="2564425876266960486">Грешка при създаването на BAT карта на Brave Browser</translation>
+<translation id="8429332714958713413">Трябва ви проверен портфейл, за да влезете в</translation>
+<translation id="5881716477679854586">Опитайте отново, след като сте завършили ИД проверката в <ph name="CUSTODIAN"/>.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> пристигат след <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Вашият <ph name="BAT_AMOUNT"/> и други данни за награди ще бъдат загубени завинаги, ако нулирате портфейла си. Уверете се, че сте потвърдили портфейла си в <ph name="PROVIDER"/>, за да можете да запазите своите BAT.</translation>
+<translation id="244362569344671266">Печелете токени, като гледате частни реклами с Brave и автоматично подкрепяте създателите на съдържание.</translation>
+<translation id="3903419925307046908">Печелете токени и се отплатете</translation>
+<translation id="671838195432136371">Gemini ви позволява лесно да търгувате, съхранявате и печелите 3,49% APY* за BAT. Новите потребители на Gemini, които се свържат, получават 5 безплатни BAT!</translation>
+<translation id="9136976526700181750">* Спечелете APY в Gemini от 15 август 2021 г.</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Научете повече <ph name="LINK_END"/> за Brave Rewards</translation>
+<translation id="7443190393462029180">Щраквайки върху „Започнете да използвате Brave Rewards“, вие приемате <ph name="TOS_LINK_BEGIN"/>Условията за ползване<ph name="TOS_LINK_END"/> и <ph name="PP_LINK_BEGIN"/>Политиката за поверителност<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Прогнозна печалба към момента за този месец</translation>
+<translation id="5235444069025581717">Бакшиши и принос този месец</translation>
+<translation id="1210965535849006928">Поискайте моите Награди</translation>
+<translation id="4609518959946843710">Печелете награди за гледане на това спонсорирано фоново изображение.</translation>
+<translation id="5311968438376723685">Включете Brave Private Ads, за да заявите своя дял. Можете също да изберете да <ph name="LINK_BEGIN"/>скривате спонсорирани изображения<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Браво!</translation>
+<translation id="764235488372037377">Вашите награди от реклами са тук</translation>
+<translation id="7091215606170476659">Имате UGP безвъзмездна помощ от Brave.</translation>
+<translation id="6759185676704303656">Вие получавате плащане, за да видите това фоново изображение.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/> за спонсорираните изображения в Brave Rewards.</translation>
+<translation id="6113004497629356998">Скриване на спонсорирани изображения</translation>
+<translation id="8511604585939286108">С кликването върху [[title]], Вие се съгласявате с <ph name="BEGIN_LINK1"/>Условията за ползване<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политиката за поверителност<ph name="END_LINK2"/>.</translation>
 </translationbundle>

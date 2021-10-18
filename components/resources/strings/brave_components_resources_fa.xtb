@@ -1051,4 +1051,28 @@
 <translation id="6973157709854838218">پنهان کردن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="4548946945059463969">نشان دادن موجودی‌های ارزی شما در صفحه‌نمایش</translation>
 <translation id="242959166945779492">هیچ موجودی در حسابتان ندارید. برای خرید مقداری ارز، به FTX بروید.</translation>
+<translation id="2359865110462963929">BAT در حال حاضر در منطقه شما پشتیبانی نمی‌شود لطفاً برای به‌روزرسانی به <ph name="BEGIN_LINK"/>اینجا<ph name="END_LINK"/> مراجعه کنید.</translation>
+<translation id="2564425876266960486">خطا در ایجاد کارت Brave Browser BAT</translation>
+<translation id="8429332714958713413">برای ورود به سیستم به یک کیف پول تأییدشده نیاز دارید</translation>
+<translation id="5881716477679854586">لطفاً پس از تکمیل تأیید شناسه در <ph name="CUSTODIAN"/>، دوباره امتحان کنید.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> ظرف <ph name="DAYS"/> ارائه می‌شود</translation>
+<translation id="8683358891240311475">اگر کیف پول خود را بازنشانی کنید، داده‌های <ph name="BAT_AMOUNT"/> و پاداش‌های دیگر شما به‌طور دائمی از بین خواهد رفت. لطفاً مطمئن شوید که کیف پول خود را با <ph name="PROVIDER"/> تأیید کرده‌اید تا بتوانید BAT خود را حفظ کنید.</translation>
+<translation id="244362569344671266">با مشاهده «آگهی‌های خصوصی Brave»، توکن کسب کنید و به‌طور خودکار از سازندگان محتوا پشتیبانی کنید.</translation>
+<translation id="3903419925307046908">کسب توکن و برگرداندن</translation>
+<translation id="671838195432136371">Gemini به شما این امکان را می‌دهد تا به‌راحتی در BAT خود معامله کنید، ذخیره کنید و 3.49٪ APY* به دست بیاورید. کاربران جدید Gemini که مرتبط کنند، 5 BAT رایگان دریافت می‌کنند!</translation>
+<translation id="9136976526700181750">* Gemini Earn APY از تاریخ 15 اوت 2021</translation>
+<translation id="4360054110030715117">درباره Brave Rewards، ‏<ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
+<translation id="7443190393462029180">با کلیک کردن روی «شروع استفاده از Brave Rewards»، با <ph name="TOS_LINK_BEGIN"/>شرایط خدمات<ph name="TOS_LINK_END"/> و <ph name="PP_LINK_BEGIN"/>خط‌مشی رازداری<ph name="PP_LINK_END"/> موافقت کنید.</translation>
+<translation id="8344084848798035850">درآمد تخمینی این ماه تاکنون</translation>
+<translation id="5235444069025581717">انعام و کمک‌های این ماه</translation>
+<translation id="1210965535849006928">مطالبه پاداش‌های من</translation>
+<translation id="4609518959946843710">برای بازدید از این تصویر پس‌زمینه دارای حامی مالی، پاداش دریافت کنید.</translation>
+<translation id="5311968438376723685">برای مطالبه سهم خود، «آگهی‌های خصوصی Brave» را روشن کنید. همچنین می‌توانید <ph name="LINK_BEGIN"/>پنهان کردن تصاویر دارای حامی مالی<ph name="LINK_END"/> را انتخاب کنید.</translation>
+<translation id="8568666589217601917">کارتان عالی بود!</translation>
+<translation id="764235488372037377">پاداش‌های شما از «آگهی‌ها» اینجا است</translation>
+<translation id="7091215606170476659">شما دارای هدیه UGP از Brave هستید.</translation>
+<translation id="6759185676704303656">برای مشاهده این تصویر پس‌زمینه پول دریافت می‌کنید.</translation>
+<translation id="1749232564087138444">درباره تصاویر حمایت‌شده در Brave Rewards،‏ <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
+<translation id="6113004497629356998">پنهان کردن تصاویر حمایت‌شده</translation>
+<translation id="8511604585939286108">با کلیک کردن روی [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
 </translationbundle>
