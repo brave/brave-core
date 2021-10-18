@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 
 public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_CALLOUT = "brave_vpn_callout";
@@ -164,5 +165,12 @@ public class BraveVpnPrefUtils {
 
     public static String getSubscriberCredential() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL, "");
+    }
+
+    public static void setPrefModel(BraveVpnPrefModel braveVpnPrefModel) {
+        setHostname(braveVpnPrefModel.getHostname());
+        setPurchaseToken(braveVpnPrefModel.getPurchaseToken());
+        setProductId(braveVpnPrefModel.getProductId());
+        setSubscriberCredential(braveVpnPrefModel.getSubscriberCredential());
     }
 }

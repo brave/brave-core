@@ -16,6 +16,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
+import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnApiResponseUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -30,10 +31,7 @@ import java.util.TimeZone;
 public abstract class BraveVpnParentActivity
         extends AsyncInitializationActivity implements BraveVpnObserver {
     public boolean mIsVerification;
-    private String mSubscriberCredential = "";
-    private String mHostname = "";
-    private String mPurchaseToken = "";
-    private String mProductId = "";
+    private BraveVpnPrefModel mBraveVpnPrefModel;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
     abstract void showProgress();
@@ -50,18 +48,21 @@ public abstract class BraveVpnParentActivity
 
     protected void verifySubscription() {
         showProgress();
+        mBraveVpnPrefModel = new BraveVpnPrefModel();
         List<Purchase> purchases = InAppPurchaseWrapper.getInstance().queryPurchases();
         if (purchases != null && purchases.size() == 1) {
             Purchase purchase = purchases.get(0);
-            mPurchaseToken = purchase.getPurchaseToken();
-            mProductId = purchase.getSkus().get(0).toString();
+            mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
+            mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
             if (mIsVerification) {
-                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(mPurchaseToken, mProductId,
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             } else {
                 BraveVpnNativeWorker.getInstance().getSubscriberCredential(
-                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, mProductId,
-                        BraveVpnUtils.IAP_ANDROID_PARAM_TEXT, mPurchaseToken, getPackageName());
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, mBraveVpnPrefModel.getProductId(),
+                        BraveVpnUtils.IAP_ANDROID_PARAM_TEXT, mBraveVpnPrefModel.getPurchaseToken(),
+                        getPackageName());
             }
         } else {
             if (!mIsVerification) {
@@ -74,11 +75,11 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onVerifyPurchaseToken(String jsonResponse, boolean isSuccess) {
-        if (isSuccess) {
+        if (isSuccess && mBraveVpnPrefModel != null) {
             Long purchaseExpiry = BraveVpnUtils.getPurchaseExpiryDate(jsonResponse);
             if (purchaseExpiry > 0 && purchaseExpiry >= System.currentTimeMillis()) {
-                BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
-                BraveVpnPrefUtils.setProductId(mProductId);
+                BraveVpnPrefUtils.setPurchaseToken(mBraveVpnPrefModel.getPurchaseToken());
+                BraveVpnPrefUtils.setProductId(mBraveVpnPrefModel.getProductId());
                 BraveVpnPrefUtils.setPurchaseExpiry(purchaseExpiry);
                 BraveVpnPrefUtils.setSubscriptionPurchase(true);
                 if (mIsVerification) {
@@ -101,88 +102,31 @@ public abstract class BraveVpnParentActivity
                     BraveVpnUtils.openBraveVpnPlansActivity(BraveVpnParentActivity.this);
                 }
             }
-            mPurchaseToken = "";
-            mProductId = "";
         }
     };
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
-        if (isSuccess) {
-            InAppPurchaseWrapper.getInstance().processPurchases(BraveVpnParentActivity.this,
-                    InAppPurchaseWrapper.getInstance().queryPurchases());
-            this.mSubscriberCredential = subscriberCredential;
-            BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
-        } else {
-            Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_SHORT)
-                    .show();
-            Log.e("BraveVPN", "BraveVpnParentActivity -> onGetSubscriberCredential : failed");
-            hideProgress();
-        }
+        mBraveVpnPrefModel.setSubscriberCredential(subscriberCredential);
+        BraveVpnApiResponseUtils.handleOnGetSubscriberCredential(
+                BraveVpnParentActivity.this, isSuccess);
     };
 
     @Override
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
-        if (isSuccess) {
-            String region = BraveVpnUtils.getRegionForTimeZone(
-                    jsonTimezones, TimeZone.getDefault().getID());
-            String serverRegion = BraveVpnPrefUtils.getServerRegion();
-            BraveVpnNativeWorker.getInstance().getHostnamesForRegion(
-                    serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC) ? region
-                                                                                    : serverRegion);
-        } else {
-            Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_SHORT)
-                    .show();
-            Log.e("BraveVPN", "BraveVpnParentActivity -> onGetTimezonesForRegions : failed");
-            hideProgress();
-        }
+        BraveVpnApiResponseUtils.handleOnGetTimezonesForRegions(
+                BraveVpnParentActivity.this, jsonTimezones, isSuccess);
     }
 
     @Override
     public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        if (isSuccess) {
-            mHostname = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
-            BraveVpnNativeWorker.getInstance().getProfileCredentials(
-                    mSubscriberCredential, mHostname);
-        } else {
-            Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_SHORT)
-                    .show();
-            Log.e("BraveVPN", "BraveVpnParentActivity -> onGetHostnamesForRegion : failed");
-            hideProgress();
-        }
+        mBraveVpnPrefModel.setHostname(BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
+                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonHostNames, isSuccess));
     }
 
     @Override
     public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
-        if (isSuccess) {
-            BraveVpnProfileCredentials braveVpnProfileCredentials =
-                    BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
-            BraveVpnPrefUtils.setHostname(mHostname);
-            if (BraveVpnProfileUtils.getInstance().isVPNConnected(BraveVpnParentActivity.this)) {
-                BraveVpnProfileUtils.getInstance().stopVpn(BraveVpnParentActivity.this);
-            }
-            try {
-                BraveVpnProfileUtils.getInstance().createVpnProfile(BraveVpnParentActivity.this,
-                        mHostname, braveVpnProfileCredentials.getUsername(),
-                        braveVpnProfileCredentials.getPassword());
-                BraveVpnPrefUtils.setPurchaseToken(mPurchaseToken);
-                BraveVpnPrefUtils.setProductId(mProductId);
-                BraveVpnPrefUtils.setSubscriberCredential(mSubscriberCredential);
-            } catch (Exception securityException) {
-                BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
-                finish();
-            }
-            mPurchaseToken = "";
-            mProductId = "";
-        } else {
-            Toast.makeText(BraveVpnParentActivity.this, R.string.vpn_profile_creation_failed,
-                         Toast.LENGTH_SHORT)
-                    .show();
-            Log.e("BraveVPN", "BraveVpnParentActivity -> jsonProfileCredentials : failed");
-            hideProgress();
-        }
+        BraveVpnApiResponseUtils.handleOnGetProfileCredentials(
+                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonProfileCredentials, isSuccess);
     }
 }
