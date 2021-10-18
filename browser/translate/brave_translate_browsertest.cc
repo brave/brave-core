@@ -307,11 +307,15 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
 
   const auto load_image = base::StringPrintf(kLoadImageTemplate, kTestURL);
 
-  // Check that an request that are not held by redirections will blocked by
-  // CSP in translate world.
+  // Check that the image is loaded in the main world correctly.
   EXPECT_EQ(true, content::EvalJs(
                       browser()->tab_strip_model()->GetActiveWebContents(),
                       load_image));
+  ::testing::Mock::VerifyAndClearExpectations(&backend_request_);
+
+  // Check that an image request will blocked by CSP in translate world (because
+  // that are not held by js redirections).
+  EXPECT_CALL(backend_request_, Call(_)).Times(0);
   EXPECT_EQ(false, EvalTranslateJs(load_image));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
