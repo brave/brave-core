@@ -9,8 +9,9 @@
 #include "brave/components/translate/core/browser/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
+#include "ui/views/controls/image_view.h"
 
-int TranslateBubbleView::GetTitleBeforeTranslateTitle() {
+int ChromiumTranslateBubbleView::GetTitleBeforeTranslateTitle() {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE;
 #else
@@ -20,14 +21,18 @@ int TranslateBubbleView::GetTitleBeforeTranslateTitle() {
 
 // static
 template <typename... Args>
-TranslateBubbleView* TranslateBubbleView::MakeTranslateBubbleView(
-    Args&&... args) {
+ChromiumTranslateBubbleView*
+ChromiumTranslateBubbleView::MakeTranslateBubbleView(Args&&... args) {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
   if (translate::IsTranslateExtensionAvailable()) {
     return new BraveTranslateBubbleView(std::forward<Args>(args)...);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
   return new TranslateBubbleView(std::forward<Args>(args)...);
+}
+
+std::unique_ptr<views::ImageView> TranslateBubbleView::CreateTranslateIcon() {
+  return std::make_unique<views::ImageView>();
 }
 
 #define ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
@@ -41,9 +46,11 @@ TranslateBubbleView* TranslateBubbleView::MakeTranslateBubbleView(
 #define MAKE_TRANSLATE_BUBBLE_VIEW_ MakeTranslateBubbleView
 #endif
 #define MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW MakeTranslateBubbleView
+#define TranslateBubbleView ChromiumTranslateBubbleView
 
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"
 
+#undef TranslateBubbleView
 #undef MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW
 #undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
 #define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
