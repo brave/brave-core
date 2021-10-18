@@ -7,6 +7,7 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/translate/core/browser/brave_translate_features.h"
@@ -345,12 +346,10 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
                 IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE));
 
   // Check the we don't download the translate scripts
-  MockFunction<void(bool)> mock_callback;
-  EXPECT_CALL(mock_callback, Call(false));
+  base::MockCallback<TranslateScript::RequestCallback> mock_callback;
+  EXPECT_CALL(mock_callback, Run(false));
   TranslateDownloadManager::GetInstance()->script()->Request(
-      base::BindOnce(&MockFunction<void(bool)>::Call,
-                     base::Unretained(&mock_callback)),
-      false);
+      mock_callback.Get(), false);
 
   // The resulting callback must be postted immediately, so simply use
   // RunUtilIdle() to wait for it.
