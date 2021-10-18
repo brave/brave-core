@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
 
     private String mAddress;
     private String mName;
+    private boolean mIsImported;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -44,6 +46,7 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         if (getIntent() != null) {
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
+            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,6 +67,20 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         EditText accountNameText = findViewById(R.id.account_name_text);
         accountNameText.setText(mName);
         accountNameText.setEnabled(false);
+
+        TextView privateKeyText = findViewById(R.id.account_private_key_text);
+        if (mIsImported) {
+            privateKeyText.setVisibility(View.GONE);
+        }
+        privateKeyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountPrivateKeyActivityIntent = new Intent(
+                        AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
+                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                startActivity(accountPrivateKeyActivityIntent);
+            }
+        });
 
         onInitialLayoutInflationComplete();
     }

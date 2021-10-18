@@ -275,6 +275,7 @@ if (brave_wallet_enabled) {
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailsWithQrActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountPrivateKeyActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AddAccountActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AssetDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletActivity.java",
