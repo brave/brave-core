@@ -19,6 +19,26 @@
     "message": "स्टेटस रिफ्रेश करें",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "आपके द्वारा दी गई कोई भी टिप आपके वॉलेट में पेंडिंग रहेगी और 90 दिनों के लिएअपने आप डॉबर कोशिश करती रहेगी.$link_begin$और अधिक जानें$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "इस क्रिएटर ने अभी तक साइन अप नहीं किया है.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "यह क्रिएटर इस समय आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$ पर $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$days$दिनों में $amount$ आ रहा है",
+    "message": "$amount$पेआउट $days$प्रोसेस किया जाएगा",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "खारिज करें",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "रिवॉर्ड शुरू करें",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "$tos_link_begin$क्लिक करके, आप सेवा की शर्तों $tos_link_end$और$pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं. सेटिंग्स में किसी भी समय बंद करें.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "फ़्री कॉल शुरू करने के लिए,  Brave Private Ads चालू करें",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, उपहार कार्ड... या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads को शुरू करें.",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": " Ads चालू करके आप $tos_link_begin$सेवा की शर्तों$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "अब आप फ़्री कॉल  शुरू कर सकते हैं",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewards के बारे में अधिक जानना चाहते हैं?$tour_link_begin$एक झलक झटपट देखें$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

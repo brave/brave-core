@@ -100,7 +100,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="7924918279836988121">Serviço Ledger do BAT</translation>
 <translation id="4472575034687746823">Primeiros passos</translation>
 <translation id="3400357268283240774">Configurações adicionais</translation>
-<translation id="6303294677342628402">Proteções</translation>
+<translation id="6303294677342628402">Escudos</translation>
 <translation id="7133511168130368997">Bloqueia trackers e anúncios que o seguem por toda a internet.</translation>
 <translation id="2761825942249694703">Estas são as configurações padrão do  Shields. Elas aplicam-se a todos os sites, a não ser que você altere algo no painel do Shields em um site específico. Alterar isso não afetará suas atuais configurações por site.</translation>
 <translation id="1485394570478670912">Isso bloqueará a maioria dos anúncios em sites, mas não os Brave Private Ads, que são controlados nas</translation>
@@ -191,12 +191,13 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5655621391922317800">Carteiras Cripto</translation>
 <translation id="1696548911367097044">Extensão Crypto Wallets descontinuada</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Provedor Ethereum para usar Dapps</translation>
-<translation id="5913089932885076110">Abrir o Crypto Wallets ao iniciar</translation>
-<translation id="757886143331967039">Carregar extensão descontinuada Crypto Wallets na inicialização</translation>
+<translation id="9131889008937672866">Carteira de criptomoedas padrão</translation>
 <translation id="1834467296210148203">Mostrar ícone da Brave Wallet na barra de ferramentas</translation>
+<translation id="8239147115686034860">Bloquear automaticamente a Carteira Brave</translation>
+<translation id="414639769490080648">O número de minutos a aguardar até o bloqueio automático da Carteira Brave</translation>
 <translation id="6864914031231797928">Permitir a autenticação do Google para as extensões</translation>
 <translation id="5927916530277631319">Método para lidar com Domínios Imparáveis</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> de DNS sobre HTTPS e sobre configurações de privacidade Ethereum.</translation>
 <translation id="5248318250177143470">Método para lidar com o Serviço de Nome Ethereum (ENS)</translation>
 <translation id="7024553202001112871">Configure suas chaves do IPNS</translation>
 <translation id="951216659045543447">Assine conteúdo usando a chave privada correspondente e publique-o no IPNS</translation>
@@ -210,6 +211,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6476061084931271248">Reinicie o nó para aplicar as alterações</translation>
 <translation id="3754226427671882382">Reiniciar nó</translation>
 <translation id="949667118776341807">Girar</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Este nome não é válido</translation>
 <translation id="6758961763875471084">Modificar a lista de pares</translation>
 <translation id="1295874070797049002">Exportar chave</translation>
@@ -227,12 +229,14 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nó local</translation>
 <translation id="4927734062756955434">Endereço de gateway público de IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local IPFS e considerações de privacidade do gateway.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway de IPFS</translation>
 <translation id="8571837315037233299">Endereço de gateway</translation>
 <translation id="1251574393468476924">Tamanho máximo do cache do IPFS (GB)</translation>
 <translation id="2503497578400410320">Um limite superior flexível para o tamanho do banco de dados do repositório do IPFS.</translation>
 <translation id="7703184801853248830">Endereço de gateway inválido</translation>
+<translation id="7690058578502751948">No Brave, somente um gateway IPFS válido com isolamento de origem ativado pode ser usado</translation>
 <translation id="585868419599255817">Envio por gateway público para o IPFS</translation>
 <translation id="207763736230883589">Recorre automaticamente ao gateway público de IPFS caso não seja possível contatar seu seu nó local.</translation>
 <translation id="4107552920076294723">Redireciona recursos de IPFS para o gateway configurado de IPFS</translation>
@@ -301,6 +305,10 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1391855377994926460">Continue navegando mais rápido na web (até 6 vezes mais rápido nos principais sites de notícias).</translation>
 <translation id="9218430445555521422">Definir como padrão</translation>
 <translation id="3479552764303398839">Não agora</translation>
+<translation id="732814027519296280">Quer melhorar ainda mais a Pesquisa Brave?</translation>
+<translation id="2677865600861971449">Opte por participar do Projeto de descoberta da web para contribuir anonimamente com alguns dados de pesquisa e navegação e melhorar os resultados da Pesquisa Brave para todos. Preserve sua privacidade sem esforço. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Ativar</translation>
+<translation id="780301667611848630">Não</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="7815301689257843278">Enviar relatórios de falhas automaticamente para que o Brave possa impedir que esse problema volte a ocorrer?</translation>
@@ -310,6 +318,8 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6873781976650514089">esta configuração</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5600566490506283344">Notificação de anúncio do Brave</translation>
+<translation id="4174337572777167894">Projeto de descoberta da web</translation>
+<translation id="8659271182272561965">Contribua com alguns dados anônimos de pesquisa e navegação para refinar a Pesquisa Brave.</translation>
 <translation id="1516554614404600536">Dica do Brave</translation>
 <translation id="4877147287319222750">Adicionar à Barra Lateral</translation>
 <translation id="4233010476457917696">Mostrar barra lateral</translation>

@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">‏سیستم‌عامل Brave قادر به همگام‌سازی داده‌های شما نبود زیرا همگام‌سازی برای دامنه شما قابل دسترسی نیست.</translation>
 <translation id="5147525139567260139">‏هم‌رسانی برگه Brave</translation>
 <translation id="1530633922026945685">‏Brave برای ایجاد نقشه سه‌بعدی محیط شما باید اجازه دسترسی به دوربین داشته باشد</translation>
+<translation id="4828904843379324771">‏وقتی Brave را می‌بندید، به‌طور خودکار کوکی‌ها و داده‌های سایت از صفحاتی را که بازدید کرده‌اید پاک می‌کند</translation>
 <translation id="5616153642055197778">‏نسخه جدید و امن‌تری از Brave موجود است.</translation>
 <translation id="6797402139308059782">‏اجازه به Brave برای اجرا در پس‌زمینه</translation>
 <translation id="5875673934455379806">‏نصب مجدد Brave</translation>
@@ -30,6 +31,7 @@
 <translation id="9095263438435683933">‏برای ارسال شماره از اینجا به تلفن Android خود، در هر دو دستگاه به سیستم Brave وارد شوید.</translation>
 <translation id="3813272600615358652">‏این افزونه، صفحه‌ای را تغییر داده است که هنگام راه‌اندازی Brave نشان داده می‌شود.</translation>
 <translation id="2576129394594491151">‏افزونه «<ph name="EXTENSION_NAME"/>»، صفحه‌ای را تغییر داده است که هنگام راه‌اندازی Brave نشان داده می‌شود.</translation>
+<translation id="1248225940185478633">‏Brave برای این سایت به اجازه دوربین و میکروفون نیاز دارد</translation>
 <translation id="6078442581074612226">‏در Brave</translation>
 <translation id="2485422356828889247">حذف نصب</translation>
 <translation id="9026991721384951619">‏سیستم‌عامل Brave قادر به همگام‌سازی داده‌های شما نبود زیرا جزئیات ورود به حساب شما به‌روز نیست.</translation>
@@ -49,6 +51,8 @@
 <translation id="777113543093865885">‏حذف از Brave...</translation>
 <translation id="2885378588091291677">مدیر فعالیت‌ها</translation>
 <translation id="2176825726964012531">‏درباره &amp;Brave</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>آخرین یادآوری: درصورت نصب کردن، <ph name="BEGIN_BOLD"/> کل داده‌های دیسک سخت پاک خواهد شد<ph name="END_BOLD"/>. لطفاً مطمئن شوید همه داده‌های مهم‌تان را پشتیبان‌گیری کرده باشید.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>وقتی نصب شروع شود، نمی‌توان آن را لغو کرد.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">‏Brave به‌روز است</translation>
 <translation id="2953892977076487219">‏Brave می‌خواهد گذرواژه‌ها را ویرایش کند.</translation>
 <translation id="8755404239607088219">‏Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند. بعداً دوباره امتحان کنید.</translation>
@@ -76,7 +80,6 @@
 <translation id="2024972335338126423">‏با <ph name="SHORTCUT"/> می‌توانید بین نمایه‌های Brave جابه‌جا شوید</translation>
 <translation id="8703492925273919597">‏لطفاً همه پنجره‌های Brave را ببندید و دوباره سعی کنید.</translation>
 <translation id="1384923383737428730">‏نرم‌افزار مضری در رایانه‌تان وجود دارد. Brave می‌تواند آن را بردارد، تنظیمات را بازیابی کند و افزونه‌ها را غیرفعال کند تا عملکرد مرورگرتان دوباره عادی شود.</translation>
-<translation id="2409866122341731384">‏پاک کردن دیسک سخت و نصب کردن Chrome OS</translation>
 <translation id="7029305463989165490">‏برای ارسال شماره از <ph name="ORIGIN"/> به تلفن Android خود، در هر دو دستگاه به سیستم Brave وارد شوید.</translation>
 <translation id="4304059894777924102">‏Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند. اتصال اینترنت را بررسی کنید.</translation>
 <translation id="1807774211756215222">‏باز کردن پیوند در &amp;برگه جدید Brave</translation>
@@ -139,6 +142,7 @@
 <translation id="4331809312908958774">‏سیستم‌عامل Brave </translation>
 <translation id="79947657522496226">‏ساخت Chrome OS به‌وسیله <ph name="BEGIN_LINK_CROS_OSS"/>نرم‌افزار متن‌باز<ph name="END_LINK_CROS_OSS"/> دیگری که <ph name="BEGIN_LINK_LINUX_OSS"/>محیط توسعه نرم‌افزار Linux<ph name="END_LINK_LINUX_OSS"/> است، امکان‌پذیر شده است.</translation>
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
+<translation id="8054200348483755053">‏Brave متوجه شده است که این موارد حاوی بدافزار هستند:</translation>
 <translation id="5895138241574237353">راه‌اندازی مجدد</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - ورود به سیستم شبکه</translation>
 <translation id="3598551856834560515">‏به‌روزرسانی Brave برای شروع همگام‌سازی</translation>
@@ -153,18 +157,10 @@
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> خطرناک است، بنابراین Brave آن را مسدود کرده است.</translation>
 <translation id="7006260220514217183">‏«مرور ایمن» خاموش است. Brave توصیه می‌کند آن را روشن کنید.</translation>
 <translation id="4060970194201477024">‏می‌توانید در اینجا بین نمایه‌های Brave جابه‌جا شوید</translation>
-<translation id="2417565246123344595">‏<ph name="BEGIN_PARAGRAPH1"/>آماده‌ایم Chrome OS را نصب کنیم! اگر ادامه دهید:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>فایل‌ها، داده‌ها، و سیستم‌عامل کنونی پاک خواهد شد.
-          <ph name="LIST_ITEM"/>Chrome OS نصب خواهد شد.
-          <ph name="LIST_ITEM"/>وقتی نصب تکمیل شود، دستگاهتان خاموش خواهد شد.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>آخرین یادآوری: درصورت نصب کردن، کل دیسک سخت پاک خواهد شد. لطفاً مطمئن شوید همه داده‌های مهمتان را پشتیبان‌گیری کرده باشید.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>وقتی نصب شروع شود، نمی‌توان آن را لغو کرد.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">‏مطمئن شوید در <ph name="TARGET_DEVICE_NAME"/> به سیستم Brave وارد شده باشید و سپس دوباره ارسال کنید.</translation>
 <translation id="8320964054148936490">‏این رایانه در حال حاضر دارای یک نسخه جدیدتر از Brave است. درصورتی‌که نرم‌افزار کار نمی‌کند، لطفاً Brave را حذف نصب کنید و دوباره سعی کنید.</translation>
 <translation id="3574823187131579180">{0,plural, =0{‏Brave هم‌اکنون راه‌اندازی مجدد می‌شود}=1{‏Brave ‏۱ ثانیه دیگر راه‌اندازی مجدد می‌شود}one{‏Brave ‏# ثانیه دیگر راه‌اندازی مجدد می‌شود}other{‏Brave ‏# ثانیه دیگر راه‌اندازی مجدد می‌شود}}</translation>
+<translation id="5980269616827212166">‏Brave برای بارگیری فایل‌ها به اجازه دسترسی به فضای ذخیره‌سازی نیاز دارد</translation>
 <translation id="5019879183386042809">‏Brave  مرورگر پیش‌فرض شود</translation>
 <translation id="428541510811554120">‏Brave نمی‌تواند به‌روزرسانی‌ها را بررسی کند. اتصال اینترنت را بررسی کنید.</translation>
 <translation id="7445061995866044926">‏از Brave خارج می‌شوید؟</translation>
@@ -179,14 +175,15 @@
 <translation id="2644798301485385923">‏سیستم سیستم‌عامل Brave</translation>
 <translation id="1684121725014454063">‏به نمایه‌های Brave خوش‌آمدید</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave بعد از ۱ ثانیه بازراه‌اندازی می‌شود}one{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}other{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}}</translation>
-<translation id="664235759707825982">‏آماده برای نصب Chrome OS</translation>
 <translation id="2675662665675552980">‏این برنامه همچنین صفحه‌ای را که هنگام راه‌اندازی Brave نشان داده می‌شود، کنترل می‌کند.</translation>
 <translation id="5590013613412457132">‏حذف نصب Brave </translation>
 <translation id="8646609321956191980">‏هرکدام از نمایه‌ها دارای اطلاعات Brave مختص خودش است (مثلاً نشانک‌ها، سابقه، گذرواژه‌ها، و غیره)</translation>
 <translation id="2312399718665761438">‏برای رفع خطاهای املائی، Brave نوشتاری را که در فیلد نوشتار تایپ می‌کنید، برای Brave ارسال می‌کند</translation>
 <translation id="3507835409099344374">‏رفتن به تنظیمات اعلان Brave</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
+<translation id="245693535809364497">‏Brave برای ایجاد نقشه سه‌بعدی از محیط اطراف شما به اجازه دوربین نیاز دارد</translation>
 <translation id="6676384891291319759">دسترسی به اینترنت</translation>
+<translation id="1257247502847251159">‏Brave برای این سایت به اجازه میکروفون نیاز دارد</translation>
 <translation id="1489465648257900784">‏از نمایهٔ شما نمی‌توان استفاده کرد زیرا دارای نسخه جدیدتری از Brave است.
 
 برخی از ویژگی‌ها ممکن است موجود نباشند. لطفاً یک فهرست راهنمای نمایه دیگری را مشخص کنید یا از نسخه جدیدتری از Brave استفاده کنید.</translation>
@@ -198,6 +195,7 @@
 <translation id="8211837073776713955">‏Brave می‌تواند، اگر گذرواژه‌هایتان در معرض خطر باشد، مطلعتان کند</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">‏Brave Pay (در Brave کپی شد)</translation>
+<translation id="3028928628792374067">‏Brave متوجه شده است که «<ph name="EXTENSION_NAME"/>» حاوی بدافزار است</translation>
 <translation id="2301993384336631869">‏Brave به‌روز شده است اما حداقل ۳۰ روز از آن استفاده نکرده‌اید.</translation>
 <translation id="8828443087767259398">‏Brave باید برای ادامه مرتبط‌سازی به بلوتوث
 دسترسی داشته باشد. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -205,6 +203,7 @@
 <translation id="3335606533094650083">‏Brave برای این سایت به مجوز دسترسی به میکروفون نیاز دارد</translation>
 <translation id="1705567146636171298">‏به‌روزرسانی Brave</translation>
 <translation id="5499063270485366718">‏اگر تصویری توضیح مفیدی نداشته باشد، Brave توضیحی برای شما ارائه خواهد کرد. برای ایجاد توضیحات، تصاویر به Brave ارسال می‌شود.</translation>
+<translation id="1008530050039597147">‏Brave برای این سایت به اجازه دوربین نیاز دارد</translation>
 <translation id="1197672524850678392">‏Brave راه‌اندازی نشد. دوباره امتحان کنید.</translation>
 <translation id="3405035915691517126">‏Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند. بعد از ۲۴ ساعت دوباره امتحان کنید.</translation>
 <translation id="5516268345616100622">‏مدیر فعالیت‌ها - Brave</translation>
@@ -245,6 +244,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="6915252145142862992">‏این نصب ثانویه Brave است و نمی‌تواند مرورگر پیش‌فرضتان شود.</translation>
 <translation id="7685904775439037072">‏وقتی Brave دسترسی داشته باشد، وب‌سایت‌ها می‌توانند مجوز دسترسی درخواست کنند.</translation>
 <translation id="828406390101464081">‏حساب‌های زیر به سیستم هیچ‌کدام از نمایه‌های Brave وارد نشده‌اند. اگر می‌خواهید از حسابی در نمایه‌ای دیگر استفاده کنید،ابتدا آن نمایه را بردارید.</translation>
+<translation id="2061155704815580583">‏Brave برای این سایت به اجازه مکان نیاز دارد</translation>
 <translation id="9067428552314418522">‏این فایل خطرناک است، بنابراین Brave آن را مسدود کرده است.</translation>
 <translation id="8207657266087451193">‏اگر تصویری توضیح مفیدی نداشته باشد، Brave توضیحی برای شما ارائه خواهد کرد. برای ایجاد توضیحات، تصاویر به Brave ارسال می‌شود. هروقت خواستید می‌توانید این گزینه را در تنظیمات خاموش کنید.</translation>
 <translation id="8622246347342688645">‏چون به سیستم وارد نشده‌اید، Brave نمی‌تواند گذرواژه‌هایتان را بررسی کند</translation>

@@ -190,10 +190,10 @@
 <translation id="5655621391922317800">암호화폐 월렛</translation>
 <translation id="1696548911367097044">더 이상 사용하지 않는 Crypto 월렛 확장 프로그램</translation>
 <translation id="1085027414516521238">메타마스크</translation>
-<translation id="7090046810227878892">Dapps 사용을 위한 이더리움 공급자</translation>
-<translation id="5913089932885076110">시작 시 암호 지갑 로드</translation>
-<translation id="757886143331967039">시작 시 더 이상 사용하지 않는 Crypto 월렛 확장 프로그램을 로드</translation>
+<translation id="9131889008937672866">기본 암호화폐 월렛</translation>
 <translation id="1834467296210148203">툴바에 Brave 월렛 아이콘 표시</translation>
+<translation id="8239147115686034860">Brave 월렛 자동 잠금</translation>
+<translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
 <translation id="5927916530277631319">Unstoppable Domains 해석 방법</translation>
 <translation id="5248318250177143470">Ethereum Name Service(ENS) 해석 방법</translation>
@@ -232,6 +232,7 @@
 <translation id="1251574393468476924">최대 IPFS 캐시 사이즈(GB)</translation>
 <translation id="2503497578400410320">IPFS 저장소의 데이터 저장 크기에 대한 소프트 상한.</translation>
 <translation id="7703184801853248830">유효하지 않은 게이트웨이 주소</translation>
+<translation id="7690058578502751948">원본 격리가 활성화된 유효한 IPFS 게이트웨이만 Brave에서 사용 가능</translation>
 <translation id="585868419599255817">IPFS 공용 게이트웨이 대체</translation>
 <translation id="207763736230883589">로컬 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
 <translation id="4107552920076294723">IPFS 리소스를 설정된 IPFS 게이트웨이로 리다이렉트</translation>
@@ -300,6 +301,10 @@
 <translation id="1391855377994926460">더욱 빠른 웹 브라우징 - 주요 뉴스 사이트 속도가 최대 6배 빨라집니다.</translation>
 <translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="3479552764303398839">나중에</translation>
+<translation id="732814027519296280">Brave Search 개선에 도움을 주고 싶으십니까?</translation>
+<translation id="2677865600861971449">웹 디스커버리 프로젝트에 참여하면 검색 및 인터넷 사용 기록 데이터 일부를 익명으로 보내 모두를 위해 Brave Search 결과 개선에 힘을 보탤 수 있습니다. 프라이버시는 철저히 보호되며, 번거롭지 않습니다. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">사용</translation>
+<translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="5039804452771397117">허용</translation>
 <translation id="7053983685419859001">차단</translation>
 <translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
@@ -309,6 +314,8 @@
 <translation id="6873781976650514089">이 설정</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="5600566490506283344">Brave 광고 알림</translation>
+<translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
+<translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
 <translation id="4877147287319222750">사이드바에 추가</translation>
 <translation id="4233010476457917696">사이드바 표시</translation>

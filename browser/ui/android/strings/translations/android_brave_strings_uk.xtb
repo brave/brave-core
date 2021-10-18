@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">Віддавати перевагу настільній версії сайтів</translation>
 <translation id="1842747674580016420">Відтворення відео у Brave</translation>
 <translation id="5368992950177874750">Якщо увімкнено, відео будуть відтворюватись у Brave, а не у відповідному застосунку</translation>
+<translation id="410351446219883937">Автовідтворення</translation>
+<translation id="7445411102860286510">Дозволити сайтам автоматично відтворювати відео з вимкненим звуком (рекомендується)</translation>
+<translation id="7837721118676387834">Дозволити автоматичне відтворення відео з вимкненим звуком для певних сайтів.</translation>
 <translation id="181905442828471321">Налаштування глобальних щитів Brave за замовчуванням</translation>
 <translation id="2675679258824361492">Інші налаштування конфіденційності</translation>
 <translation id="8026334261755873520">Очистити історію</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">ЛИСТОПАД</translation>
 <translation id="4254029385847607686">ГРУДЕНЬ</translation>
 <translation id="3780605330121608425">Ваш гаманець</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">Долари США</translation>
 <translation id="1165667598801520610">Додати кошти</translation>
@@ -463,6 +467,17 @@
 <translation id="3769645103175790584">Заробляйте токени та винагороджуйте творців контенту за чудову роботу, переглядаючи Інтернет-сторінки. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Швидкий огляд</translation>
 <translation id="1080013038789678738">Я "за"!</translation>
+<translation id="8037420924417098685">Увімкніть Brave Rewards, щоб розпочати безкоштовний виклик</translation>
+<translation id="8961724619078500274">За програмою Brave Rewards ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.</translation>
+<translation id="7307847920988946894">Увімкнути Винагороди</translation>
+<translation id="1186139901474936180">Натискаючи тут, ви погоджуєтеся з умовами документів <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>. Згоду можна скасувати в будь-який час у налаштуваннях.</translation>
+<translation id="6128511569382736135">Увімкніть Brave Private Ads, щоб розпочати безкоштовний виклик.</translation>
+<translation id="7930006085154756245">За допомогою Brave Private Ads ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.</translation>
+<translation id="4992617448154987397">Увімкнути Brave Private Ads</translation>
+<translation id="7314030474505546826">Увімкнувши Ads, ви погоджуєтеся з умовами документів <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Тепер ви можете розпочати безкоштовний виклик</translation>
+<translation id="6712250553966900750">Торкніться в будь-якому місці екрана, щоб продовжити користуватися Brave Talk.</translation>
+<translation id="626339649633171286">Хочете дізнатися більше про Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ви конвертували <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Будь ласка, перевірте підключення до мережі.</translation>
 <translation id="7889432931837317731">Автоматично відкривати, коли це можливо</translation>
@@ -525,6 +540,7 @@
 <translation id="7408247683131762445">ЗАСТЕРЕЖЕННЯ. Нікому не розголошуйте вашу відновлювальну фразу. Будь-хто із цією фразою зможе заволодіти вашими коштами.</translation>
 <translation id="939275786514736244">Я скопіював відновлювальну фразу до безпечного місця</translation>
 <translation id="6896758677409633944">Скопіювати</translation>
+<translation id="2604744480284798833">Створіть резервну копію гаманця зараз, щоб захистити портфель від втрати доступу.</translation>
 <translation id="1202920745614909195">Купуйте криптовалюту за допомогою Apple Pay, кредитної або дебетової картки.</translation>
 <translation id="841880029259839903">Надсилайте криптовалюту або перераховуйте з одного рахунку на інший.</translation>
 <translation id="8982246458261383692">Обмінюйте криптоактиви за допомогою агрегатора Brave DEX.</translation>
@@ -533,7 +549,7 @@
 <translation id="4450951602553063001">Ще раз уведіть пароль</translation>
 <translation id="1783870616707290226">Пароль має складатися принаймні із 7 символів</translation>
 <translation id="7383102760859258982">Повторно набраний пароль не співпав</translation>
-<translation id="1538774398124896437">У прямому ефірі</translation>
+<translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1 день</translation>
 <translation id="7640956400175663828">1 тиждень</translation>
 <translation id="9100647964747998533">1 місяць</translation>
@@ -543,6 +559,7 @@
 <translation id="8892168913673237979">Усе готово!</translation>
 <translation id="8331501996028380732">Купуйте, продавайте або зберігайте криптовалюту. Якщо у вас уже є криптовалютний рахунок, ви можете додати його зараз.</translation>
 <translation id="2267753748892043616">Додати обліковий запис</translation>
+<translation id="2632612428525029752">Оновити обліковий запис</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Увімкнути розблокування відбитком пальця?</translation>
 <translation id="5493402808936397665">Увімкніть біометричні дані, щоб швидко розблокувати гаманець без уведення пароля.</translation>
@@ -562,7 +579,7 @@
 <translation id="1144810021918451336">Не захищає від небезпечних сайтів, завантажень та розширень.</translation>
 <translation id="745115390910697838">Фраза не співпала. Будь ласка, спробуйте ще раз.</translation>
 <translation id="2360588547830602174">Не вдалося відновити обліковий запис. Спробуйте пізніше.</translation>
-<translation id="990936698620790924">Ринкова ціна в ETH</translation>
+<translation id="6392640873800632439">Ринкова ціна в <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Ціна в ETH</translation>
 <translation id="6748108480210050150">Від</translation>
 <translation id="3318280255740629162">25 %</translation>
@@ -590,10 +607,107 @@
 <translation id="569068482611873351">Імпорт…</translation>
 <translation id="1940465339426637378">Файли</translation>
 <translation id="4522570452068850558">Подробиці</translation>
-<translation id="9065203028668620118">Редагувати</translation>
 <translation id="3995184924764722477">Деталі облікового запису</translation>
 <translation id="8967036623785635603">Редагування видимих ​​активів</translation>
 <translation id="5050890334032852465">Зберегти журнал перегляду акаунту</translation>
 <translation id="7755766175599167100">Пошук токенів</translation>
 <translation id="3835223348537121988">Баланс:</translation>
+<translation id="4449475351935531438">Брандмауер Brave + VPN</translation>
+<translation id="719977489961414786">Оновіть VPN, щоб захистити своє під’єднання та скрізь заблокувати нав’язливих відстежувачів.</translation>
+<translation id="3435896845095436175">Увімкнути</translation>
+<translation id="8814357473522731680">Надано</translation>
+<translation id="5596139545583924414">Блокувати рекламу й відстежувачів у всіх додатках</translation>
+<translation id="8272917646984397798">Захищає всі під’єднання</translation>
+<translation id="1751947227857853925">Швидко й без обмежень зі швидкістю до 100 МБ/с</translation>
+<translation id="1400240082805528049">Підтримка 24/7</translation>
+<translation id="5051030058817632680">Блокує небажані мережеві під’єднання</translation>
+<translation id="3510283489391432976">Виберіть свій географічний регіон / розташування країни</translation>
+<translation id="4390800080658195654">Підтримка вашої анонімності</translation>
+<translation id="639981156979733813">Підтримує швидкість до 100 МБ/с</translation>
+<translation id="8396607116169935837">Використовує VPN-тунель, захищений шифруванням IKEv2</translation>
+<translation id="1571230671455380494">Ми ніколи не розповсюджуємо та не продаємо ваші відомості</translation>
+<translation id="276866628038850725">Усі тарифні плани передбачають безкоштовний 7-денний пробний період!</translation>
+<translation id="7280825497485894053">Щомісячна підписка</translation>
+<translation id="3001303523417455986">Щорічна підписка</translation>
+<translation id="6748319398471481216">Поновлюється щомісяця</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/міс.</translation>
+<translation id="1163809943099641131">Один рік</translation>
+<translation id="6277055349883621705">Щорічне оновлення дає можливість зекономити 16 %</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / р.</translation>
+<translation id="4487678670820292781">119,88 долара США</translation>
+<translation id="5867778679088331977">Спробуйте безкоштовно протягом 7 днів. Через 7 днів з вас почне стягуватися плата відповідно до тарифного плану. Усі підписки автоматично поновлюються, але їх можна скасувати до поновлення.</translation>
+<translation id="6053992191006521518">Спробуйте БЕЗКОШТОВНО</translation>
+<translation id="721747358270435486">Установити VPN</translation>
+<translation id="836074276610740314">Установити профіль VPN</translation>
+<translation id="8021842065465097929">Brave зараз установить профіль VPN.</translation>
+<translation id="229286271464650057">Цей профіль дає можливість автоматично під’єднувати VPN і постійно захищати трафік через ваш пристрій — у кожному додатку. Це під’єднання VPN буде зашифровано та направлено через інтелектуальний брандмауер Guardian для блокування реклами та відстежувачів.</translation>
+<translation id="9073255657908892407">Зверніться до служби технічної підтримки</translation>
+<translation id="1139934321138152517">VPN наразі ввімкнено</translation>
+<translation id="7678718921266217759">Певний контекст…</translation>
+<translation id="7267573208549764106">Попереднє під’єднання VPN було розірвано. Щоб знову під’єднатися до VPN, слід прийняти запит на під’єднання.
+
+Якщо ви не приймете цей запит, VPN не під’єднається знову, а ваше під’єднання до Інтернету не буде захищено.</translation>
+<translation id="2429299231491852747">Прийняти запит на під’єднання</translation>
+<translation id="3428909627460825679">Помилка під час створення профілю VPN. Спробуйте ще раз.</translation>
+<translation id="8584119457978684056">Помилка під час перевірки покупки токена. Спробуйте ще раз.</translation>
+<translation id="8905950042180169719">VPN працює у фоновому режимі</translation>
+<translation id="8681480718817027245">Підписка</translation>
+<translation id="7805768142964895445">Статус</translation>
+<translation id="5747552184818312860">Діє до</translation>
+<translation id="1656814355341174523">Керування підпискою</translation>
+<translation id="1919008675977575793">Сервер</translation>
+<translation id="4812684235631257312">Хост</translation>
+<translation id="5646376287012673985">Місцезнаходження</translation>
+<translation id="8375573361134671513">Скинути конфігурацію</translation>
+<translation id="850405162932416400">Підтримка VPN</translation>
+<translation id="1330148827129583049">Профіль VPN не створено. Створюється новий профіль.</translation>
+<translation id="6772117549627334582">Не вдалось отримати розташування сервера. Спробуйте ще раз.</translation>
+<translation id="5863914199331127413">Ім’я хосту VPN</translation>
+<translation id="5499653136178260315">Тип підписки</translation>
+<translation id="4741058112780154119">Версія додатка</translation>
+<translation id="7286066816862208787">Квитанція з додатка</translation>
+<translation id="2552966063069741410">Часовий пояс</translation>
+<translation id="4395361077929528480">Тип мережі</translation>
+<translation id="755448900483975096">Оператор мобільного зв’язку</translation>
+<translation id="1279441577056010362">Перейти до електронної пошти</translation>
+<translation id="2553687444159335134">Підтримку надає команда Guardian.\n\nВиберіть інформацію, якою вам зручно поділитися з нами.\n\nЩо більше інформації ви надасте нам спочатку, то легше буде співробітникам служби підтримки вирішити вашу</translation>
+<translation id="7999094850625689785">Найближчий до вас регіон сервера буде вибрано автоматично залежно від часового поясу, встановленого на вашій системі. Це рекомендується для забезпечення високої швидкості Інтернету.</translation>
+<translation id="8018707825009059641">Інші проблеми</translation>
+<translation id="6687228121145903051">Не вдається під’єднатися до VPN (інша помилка)</translation>
+<translation id="9184988385244077767">Немає доступу до Інтернету під час під’єднання</translation>
+<translation id="21570240866965662">Повільний зв’язок</translation>
+<translation id="1219475260382643267">Вебсайт не працює</translation>
+<translation id="7138678301420049075">Інше</translation>
+<translation id="4827315939627587219">Скинути конфігурацію VPN</translation>
+<translation id="6883280223123252086">Ви дійсно хочете скинути конфігурацію VPN?</translation>
+<translation id="604124094241169006">Автоматично</translation>
+<translation id="7475580600756356589">Під’єднання до вашого сервера. Це має тривати кілька секунд…</translation>
+<translation id="1342728075788541348">Від’єднання від вашого сервера. На це знадобиться лише хвилька…</translation>
+<translation id="669072536454692117">Підписку використано</translation>
+<translation id="1187506504156101449">Не вдалося підтвердити покупку:</translation>
+<translation id="8420522105268941892">Ви вже маєте цю підписку. Спробуйте відновити підписку.</translation>
+<translation id="74771564105268111">ПОМИЛКА!!\nВиникла через те, що користувач скасував процес покупки.</translation>
+<translation id="3851978668258201962">ПОМИЛКА!!\nНе вдалося виконати покупку.</translation>
+<translation id="6452181791372256707">Відхилити</translation>
+<translation id="8030852056903932865">Затвердити</translation>
+<translation id="1597199892790541240">Комісія за газ</translation>
+<translation id="1634828734222219955">Усього</translation>
+<translation id="7995708795274219641">Сума + газ</translation>
+<translation id="1950052789869821983">Транзакція</translation>
+<translation id="6122742277607781713">Портфель</translation>
+<translation id="2805756323405976993">Додатки</translation>
+<translation id="6083912983861746409">Ціна на пальне (GWEI)</translation>
+<translation id="2499079593046817044">Ліміт пального (GWEI)</translation>
+<translation id="6389441740143786465">Вимкнути центр спільного доступу</translation>
+<translation id="9065203028668620118">Редагувати</translation>
+<translation id="473775607612524610">Оновити</translation>
+<translation id="479795390141144417">Помилка оновлення облікового запису.</translation>
+<translation id="8084782383392198011">Назва облікового запису не може бути порожньою.</translation>
+<translation id="5045550434625856497">Неправильний пароль</translation>
+<translation id="1367951781824006909">Вибрати файл</translation>
+<translation id="8648684608605749476">Блокувати файли cookie третіх сторін в анонімному режимі</translation>
+<translation id="1118876217803190221">Недостатній баланс</translation>
+<translation id="275990379543116961">Недостатньо коштів на пальне.</translation>
+<translation id="3292453499915466604">Недостатня ліквідність</translation>
+<translation id="3380365263193509176">Невідома помилка</translation>
 </translationbundle>

@@ -190,10 +190,10 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="1696548911367097044">Extensión de carteras de criptomonedas obsoleta</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Proveedor Ethereum para utilizar Dapps</translation>
-<translation id="5913089932885076110">Cargar Crypto Wallets en el inicio</translation>
-<translation id="757886143331967039">Cargar la extensión Crypto Wallets obsoleta al iniciar</translation>
+<translation id="9131889008937672866">Monedero de criptomonedas predeterminado</translation>
 <translation id="1834467296210148203">Mostrar icono de Brave Wallet en la barra de herramientas</translation>
+<translation id="8239147115686034860">Bloquear automáticamente Brave Wallet</translation>
+<translation id="414639769490080648">La cantidad de minutos que debes esperar para que Brave Wallet se bloquee automáticamente</translation>
 <translation id="6864914031231797928">Permitir el inicio de sesión con Google para conseguir extensiones</translation>
 <translation id="5927916530277631319">Método para resolver los Unstoppable Domains</translation>
 <translation id="5248318250177143470">Método para resolver el servicio de nombres de Ethereum (ENS)</translation>
@@ -232,6 +232,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="1251574393468476924">Tamaño máximo de la caché IPFS (GB)</translation>
 <translation id="2503497578400410320">Un límite superior moderado para el tamaño del almacén de datos del repositorio IPFS.</translation>
 <translation id="7703184801853248830">Dirección incorrecta de la puerta de enlace</translation>
+<translation id="7690058578502751948">Solo se puede usar una puerta de enlace a IPFS válida con el aislamiento de origen habilitado en Brave</translation>
 <translation id="585868419599255817">Alternativa de la puerta de enlace pública IPFS</translation>
 <translation id="207763736230883589">Vuelve de forma automática a la puerta de enlace IPFS pública si no se puede acceder al nodo local.</translation>
 <translation id="4107552920076294723">Redirige los recursos IPFS a la puerta de enlace configurada</translation>
@@ -300,6 +301,10 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="1391855377994926460">Sigue navegando más rápido por Internet. La velocidad puede llegar a multiplicarse por seis en los portales de noticias más importantes.</translation>
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
+<translation id="732814027519296280">¿Quieres que Brave Search sea aún mejor?</translation>
+<translation id="2677865600861971449">Participa en Web Discovery Project para contribuir de forma anónima con algunos datos de búsqueda y navegación, y que Brave Search dé mejores resultados a todos los usuarios. Tu privacidad estará protegida. Y sin esfuerzos. <ph name="LEARN_MORE_TEXT"/><ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Activar</translation>
+<translation id="780301667611848630">No, gracias</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="7815301689257843278">¿Enviar informes de errores automáticamente para que Brave pueda evitar que se repita este problema?</translation>
@@ -309,6 +314,8 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="6873781976650514089">este ajuste</translation>
 <translation id="6040143037577758943">Cerrar</translation>
 <translation id="5600566490506283344">Notificación de publicidad de Brave</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribuye con algunos datos de búsqueda y navegación anónimos para mejorar Brave Search.</translation>
 <translation id="1516554614404600536">Información sobre las herramientas de Brave</translation>
 <translation id="4877147287319222750">Añadir a la barra lateral</translation>
 <translation id="4233010476457917696">Mostrar barra lateral</translation>

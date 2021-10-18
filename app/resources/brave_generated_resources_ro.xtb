@@ -190,10 +190,10 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5655621391922317800">Portofele cripto</translation>
 <translation id="1696548911367097044">Extensia portofelelor crypto este perimată</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Furnizor Ethereum pentru utilizarea Dapps</translation>
-<translation id="5913089932885076110">Încărcare Crypto Wallets la pornire</translation>
-<translation id="757886143331967039">Încărcați extensia portofelelor crypto perimată la pornire</translation>
+<translation id="9131889008937672866">Portofelul implicit pentru criptomonede</translation>
 <translation id="1834467296210148203">Afișați pictograma Brave Wallet în bara de instrumente</translation>
+<translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
+<translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="6864914031231797928">Permite conectarea cu contul Google pentru extensii</translation>
 <translation id="5927916530277631319">Metodă pentru a rezolva domeniile Unstoppable</translation>
 <translation id="5248318250177143470">Metodă pentru a rezolva Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1251574393468476924">Dimensiunea maximă a memoriei cache IPFS (GB)</translation>
 <translation id="2503497578400410320">O limită superioară lejeră pentru dimensiunea spațiului de stocare date a depozitului IPFS.</translation>
 <translation id="7703184801853248830">Adresă de ieșire nevalidă</translation>
+<translation id="7690058578502751948">În Brave, se poate utiliza numai un gateway IPFS valid, cu izolarea originii activată</translation>
 <translation id="585868419599255817">Conectare la portalul public IPFS</translation>
 <translation id="207763736230883589">Revino automat la poarta de ieșire IPFS publică dacă nodul local nu poate fi contactat.</translation>
 <translation id="4107552920076294723">Redirecționează resursele IPFS către poarta de ieșire IPFS configurată</translation>
@@ -300,6 +301,10 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1391855377994926460">Navigați pe web mai rapid - de 6x mai rapid pe principalele site-uri de știri.</translation>
 <translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
+<translation id="732814027519296280">Doriți să îmbunătățiți și mai mult căutarea Brave?</translation>
+<translation id="2677865600861971449">Înscrieți-vă să participați la Web Discovery Project și contribuiți în mod anonim cu date privind căutările și navigarea, pentru a îmbunătăți rezultatele căutării Brave pentru toată lumea. Confidențialitatea este protejată și nu e nevoie de niciun efort din partea dvs.!  <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Activează</translation>
+<translation id="780301667611848630">Nu, mulțumesc</translation>
 <translation id="5039804452771397117">Permite</translation>
 <translation id="7053983685419859001">Blochează</translation>
 <translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
@@ -309,6 +314,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6873781976650514089">această setare</translation>
 <translation id="6040143037577758943">Închide</translation>
 <translation id="5600566490506283344">Notificare Brave Ad</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribuiți cu date anonime privind căutarea și navigarea, pentru a îmbunătăți căutarea Brave.</translation>
 <translation id="1516554614404600536">Sfat Brave</translation>
 <translation id="4877147287319222750">Adăugați în bara laterală</translation>
 <translation id="4233010476457917696">Afișați bara laterală</translation>

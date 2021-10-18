@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Не удалось синхронизировать данные, поскольку сервис Sync недоступен в вашем домене.</translation>
 <translation id="5147525139567260139">Откройте доступ к вкладке Brave</translation>
 <translation id="1530633922026945685">Brave запрашивает доступ к камере, чтобы создавать 3D-карты места, в котором вы находитесь.</translation>
+<translation id="4828904843379324771">Когда вы закрываете Brave, браузер автоматически удаляет файлы cookie и данные тех сайтов, которые вы посетили.</translation>
 <translation id="5616153642055197778">Доступна новая, еще более быстрая версия Brave.</translation>
 <translation id="6797402139308059782">Разрешить Brave работать в фоновом режиме</translation>
 <translation id="5875673934455379806">Переустановить Brave</translation>
@@ -30,6 +31,7 @@
 <translation id="9095263438435683933">Чтобы отправить номер на телефон Android, войдите в Brave на обоих устройствах.</translation>
 <translation id="3813272600615358652">Расширение изменило стартовую страницу Brave.</translation>
 <translation id="2576129394594491151">Расширение "<ph name="EXTENSION_NAME"/>" изменило стартовую страницу Brave.</translation>
+<translation id="1248225940185478633">Браузер Brave запрашивает доступ к камере и микрофону для этого сайта.</translation>
 <translation id="6078442581074612226">В Brave</translation>
 <translation id="2485422356828889247">Удалить</translation>
 <translation id="9026991721384951619">Не удалось выполнить синхронизацию, так как учетные данные устарели.</translation>
@@ -49,6 +51,8 @@
 <translation id="777113543093865885">Удалить из Brave</translation>
 <translation id="2885378588091291677">Диспетчер задач</translation>
 <translation id="2176825726964012531">О &amp;Brave</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Ещё раз обращаем ваше внимание на то, что установка приведет к <ph name="BEGIN_BOLD"/>удалению всей информации с жесткого диска<ph name="END_BOLD"/>. Убедитесь, что вы сохранили резервные копии нужных данных.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Установку нельзя будет отменить.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Вы используете последнюю версию Brave</translation>
 <translation id="2953892977076487219">Brave пытается изменить пароли</translation>
 <translation id="8755404239607088219">Не удается запустить проверку паролей в Brave. Повторите попытку позже.</translation>
@@ -75,7 +79,6 @@
 <translation id="2024972335338126423">Переключиться на другой профиль Brave можно с помощью сочетания клавиш <ph name="SHORTCUT"/></translation>
 <translation id="8703492925273919597">Закройте все окна Brave и повторите попытку снова.</translation>
 <translation id="1384923383737428730">На компьютере обнаружено вредоносное ПО. Brave может удалить его, восстановить настройки и отключить расширения. Это вернет браузер в обычное состояние.</translation>
-<translation id="2409866122341731384">Удалить все данные с жесткого диска и установить Chrome OS</translation>
 <translation id="7029305463989165490">Чтобы отправить номер с сайта <ph name="ORIGIN"/> на свой телефон Android, войдите в Brave на обоих устройствах.</translation>
 <translation id="4304059894777924102">Не удается запустить проверку паролей в Brave. Проверьте подключение к Интернету.</translation>
 <translation id="1807774211756215222">Открыть ссылку в новой вкладке браузера Brave</translation>
@@ -138,6 +141,7 @@
 <translation id="4331809312908958774">Chrome OS</translation>
 <translation id="79947657522496226">Chrome OS, как и <ph name="BEGIN_LINK_LINUX_OSS"/>среда разработки Linux<ph name="END_LINK_LINUX_OSS"/>, работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave</translation>
+<translation id="8054200348483755053">Браузер Brave обнаружил, что эти объекты содержат вредоносное ПО:</translation>
 <translation id="5895138241574237353">Перезапустить</translation>
 <translation id="5903106910045431592">"<ph name="PAGE_TITLE"/>" – вход в сеть</translation>
 <translation id="3598551856834560515">Чтобы начать синхронизацию, обновите Brave</translation>
@@ -152,18 +156,10 @@
 <translation id="4168372721886011198">Brave заблокировал файл <ph name="FILE_NAME"/> как опасный.</translation>
 <translation id="7006260220514217183">Безопасный просмотр отключен. Brave рекомендует включить его.</translation>
 <translation id="4060970194201477024">Здесь можно переключиться на другой профиль Brave</translation>
-<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Вы можете приступить к установке Chrome OS. Когда вы запустите ее, произойдет следующее:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Файлы, данные и текущая операционная система будут удалены.
-          <ph name="LIST_ITEM"/>Будет установлена система Chrome OS.
-          <ph name="LIST_ITEM"/>По окончании установки устройство будет выключено.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Ещё раз обращаем ваше внимание на то, что при установке с жесткого диска будет удалена вся информация. Убедитесь, что вы сохранили резервные копии нужных данных.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Установку нельзя будет отменить.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Убедитесь, что вы вошли в Brave на устройстве <ph name="TARGET_DEVICE_NAME"/>, и попробуйте повторить отправку.</translation>
 <translation id="8320964054148936490">На этом компьютере установлена актуальная версия Brave. Если программа не работает, удалите Brave и повторите попытку.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave перезапускается}=1{Brave перезапустится через 1 секунду}one{Brave перезапустится через # секунду}few{Brave перезапустится через # секунды}many{Brave перезапустится через # секунд}other{Brave перезапустится через # секунды}}</translation>
+<translation id="5980269616827212166">Для скачивания файлов браузеру Brave требуется доступ к хранилищу.</translation>
 <translation id="5019879183386042809">Назначить Brave браузером по умолчанию</translation>
 <translation id="428541510811554120">Не удалось проверить наличие обновлений в Brave. Проверьте подключение к Интернету.</translation>
 <translation id="7445061995866044926">Выйти из Brave?</translation>
@@ -178,14 +174,15 @@
 <translation id="2644798301485385923">Chrome OS</translation>
 <translation id="1684121725014454063">Представляем профили Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave перезапустится через 1 секунду}one{Brave перезапустится через # секунду}few{Brave перезапустится через # секунды}many{Brave перезапустится через # секунд}other{Brave перезапустится через # секунды}}</translation>
-<translation id="664235759707825982">Устройство готово к установке Chrome OS</translation>
 <translation id="2675662665675552980">Кроме того, расширение изменило стартовую страницу Brave.</translation>
 <translation id="5590013613412457132">Удаление Brave</translation>
 <translation id="8646609321956191980">В каждом профиле отдельно хранятся данные пользователей Brave, такие как закладки, история просмотров и пароли.</translation>
 <translation id="2312399718665761438">Для проверки правописания Brave отправляет введенный вами текст в Brave.</translation>
 <translation id="3507835409099344374">Открыть настройки уведомлений Brave</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
+<translation id="245693535809364497">Для создания 3D-карты места, в котором вы находитесь, браузеру Brave требуется доступ к камере.</translation>
 <translation id="6676384891291319759">Доступ в Интернет</translation>
+<translation id="1257247502847251159">Браузер Brave запрашивает доступ к микрофону для этого сайта.</translation>
 <translation id="1489465648257900784">Ваш профиль не может использоваться, поскольку он от более новой версии Brave.
 
 Некоторые возможности могут быть недоступны. Укажите другой каталог профиля либо используйте более новую версию Brave.</translation>
@@ -197,12 +194,14 @@
 <translation id="8211837073776713955">Brave сообщит вам, если возникнет проблема с безопасностью ваших паролей.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (скопирована в Brave)</translation>
+<translation id="3028928628792374067">Браузер Brave обнаружил, что расширение "<ph name="EXTENSION_NAME"/>" содержит вредоносное ПО.</translation>
 <translation id="2301993384336631869">Brave был обновлен, однако вы не использовали его в течение последних 30 дней.</translation>
 <translation id="8828443087767259398">Чтобы продолжить подключение, предоставьте браузеру Brave доступ к Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="6418340404893954563">Простые пароли легко подобрать. Разрешите Brave <ph name="BEGIN_LINK"/>создавать и хранить надежные пароли для вас<ph name="END_LINK"/>.</translation>
 <translation id="3335606533094650083">Для этого сайта Brave запрашивает доступ к микрофону.</translation>
 <translation id="1705567146636171298">Обновить Brave</translation>
 <translation id="5499063270485366718">Если у изображения нет понятного описания, Brave попытается его найти. Для создания описаний изображения отправляются в Brave.</translation>
+<translation id="1008530050039597147">Браузер Brave запрашивает доступ к камере для этого сайта.</translation>
 <translation id="1197672524850678392">Не удалось запустить Brave. Повторите попытку.</translation>
 <translation id="3405035915691517126">Не удается проверить пароли в Brave. Повторите попытку через 24 часа.</translation>
 <translation id="5516268345616100622">Диспетчер задач – Brave</translation>
@@ -241,6 +240,7 @@
 <translation id="6915252145142862992">Это дополнительная установка Brave. Его нельзя сделать браузером по умолчанию.</translation>
 <translation id="7685904775439037072">Когда вы предоставите доступ Brave, веб-сайты также смогут запрашивать у вас доступ.</translation>
 <translation id="828406390101464081">Со следующими аккаунтами не выполнен вход ни в один профиль Brave. Чтобы использовать аккаунт в другом профиле, сначала удалите этот профиль.</translation>
+<translation id="2061155704815580583">Браузер Brave запрашивает доступ к данным о местоположении для этого сайта.</translation>
 <translation id="9067428552314418522">Brave заблокировал этот файл как опасный.</translation>
 <translation id="8207657266087451193">Если у изображения нет понятного описания, Brave попытается его найти. Для создания описаний изображения отправляются в Brave. Эту функцию можно отключить в настройках в любое время.</translation>
 <translation id="8622246347342688645">Не удается запустить проверку паролей в Brave, поскольку вы не вошли в аккаунт.</translation>
