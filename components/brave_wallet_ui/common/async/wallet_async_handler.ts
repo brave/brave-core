@@ -547,6 +547,15 @@ handler.on(WalletActions.rejectTransaction.getType(), async (store, txInfo: Tran
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.rejectAllTransactions.getType(), async (store) => {
+  const state = getWalletState(store)
+  const apiProxy = await getAPIProxy()
+  state.pendingTransactions.forEach(async (transaction) => {
+    await apiProxy.ethTxController.rejectTransaction(transaction.id)
+  })
+  await refreshWalletInfo(store)
+})
+
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
     const apiProxy = await getAPIProxy()

@@ -5,6 +5,7 @@ interface StyleProps {
   orb: string
   isDetails: boolean
   isApprove: boolean
+  needsMargin: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -243,4 +244,34 @@ export const FavIcon = styled.img`
   border-radius: 5px;
   background-color: ${(p) => p.theme.palette.grey200};
   margin-bottom: 7px;
+`
+
+export const QueueStepRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
+export const QueueStepText = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  color: ${(p) => p.theme.color.text02};
+  font-weight: 600;
+  margin-right: 9px;
+`
+
+export const QueueStepButton = styled.button<Partial<StyleProps>>`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  color: ${(p) => p.theme.color.interactive05};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: ${(p) => p.needsMargin ? '12px' : '0px'};
 `
