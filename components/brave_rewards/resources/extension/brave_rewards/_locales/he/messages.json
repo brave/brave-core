@@ -19,6 +19,26 @@
     "message": "רענן סטטוס",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "כל טיפ שתתן ישאר בהמתנה בארנקך ויעשה נסיון חוזר במהלך 90 יום. $link_begin$למידע נוסף$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "היוצר הזה עדיין לא נרשם.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "יוצר זה אינו מוגדר כרגע לקבל טיפים מהארנק שלך.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ ב-$platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ יגיע בעוד $days$",
+    "message": "$amount$ עיבוד תשלום מתחיל בעוד$days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "סגור",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "להתחלת שיחה שיחה בחינם, הפעל את Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "עם Brave Rewards אתה מרוויח נקודות לצפייה במודעות פרטיות (הנתונים שלך מאובטחים). תוכל להפוך את הנקודות האלה למזומן, לכרטיסי מתנה או אפילו לתת כטיפ לאתרים שאתה אוהב. אין מעקב. אין הורדות איטיות.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "הפעל את Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "על ידי המשך, אתה מסכים $tos_link_begin$לתנאי השירות$tos_link_end$ $pp_link_begin$ומדיניות הפרטיות$pp_link_end$. ניתן לבטל בכל עת דרך תפריט הגדרות.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "כדי להתחיל שיחה בחינם, יש להפעיל מודעות פרטיות של Brave",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "עם Brave Rewards אתה מרוויח נקודות לצפייה במודעות פרטיות (הנתונים שלך מאובטחים). תוכל להפוך את הנקודות האלה למזומן, לכרטיסי מתנה או אפילו לתת כטיפ לאתרים שאתה אוהב. אין מעקב. אין הורדות איטיות.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "הפעל את Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "על ידי המשך, אתה מסכים $tos_link_begin$לתנאי השירות$tos_link_end$ $pp_link_begin$ומדיניות הפרטיות$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "כעת תוכל להתחיל שיחה בחינם",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "רוצה ללמוד עוד על Brave Rewards? $tour_link_begin$קח סיור מהיר$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

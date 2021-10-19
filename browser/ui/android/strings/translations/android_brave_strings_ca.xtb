@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Evita que els rastrejadors &amp; i els anuncis es carreguin i es mostrin a les pàgines web</translation>
 <translation id="1680858055899097121">No segueixis les pestanyes entre sessions de navegació</translation>
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
+<translation id="5254037869598726291">La informació anonimitzada P3A ajuda a Brave a estimar l'ús general, i assegurar que millorem característiques populars.</translation>
 <translation id="4272190451231642425">Envia informes d'error automàticament</translation>
 <translation id="2239766974964486304">Els informes d'error ajuden a Brave a millorar l'estabilitat del producte per a tots els usuaris.</translation>
 <translation id="7977176350719484850">Data estimada\ndesada</translation>
@@ -47,6 +48,9 @@
 <translation id="4479934682648362332">Prefereix la versió d'escriptori de llocs</translation>
 <translation id="1842747674580016420">Reproducció de vídeo a Brave</translation>
 <translation id="5368992950177874750">Si estan activats, els vídeos es reprodueixen a Brave en comptes de fer-ho a l'aplicació corresponent</translation>
+<translation id="410351446219883937">Reproducció automàtica</translation>
+<translation id="7445411102860286510">Permet que els llocs web reprodueixin automàticament vídeos silenciats (opció recomanada)</translation>
+<translation id="7837721118676387834">Permet la reproducció automàtica de vídeos silenciats d'un lloc web concret.</translation>
 <translation id="181905442828471321">Valors predeterminats globals de les proteccions de Brave</translation>
 <translation id="2675679258824361492">Altres configuracions de privacitat</translation>
 <translation id="8026334261755873520">Esborra les dades de navegació</translation>
@@ -113,6 +117,7 @@
 <translation id="8280223431922155812">NOVEMBRE</translation>
 <translation id="4254029385847607686">DESEMBRE</translation>
 <translation id="3780605330121608425">La teva cartera</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">Dòlars dels Estats Units</translation>
 <translation id="1165667598801520610">Afegeix Fons</translation>
@@ -328,6 +333,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="5617673581653540121">La vostra connexió està ara xifrada.</translation>
 <translation id="4055107796760496928">Si està disponible, Brave us actualitza automàticament a una connexió segura.</translation>
 <translation id="8869714780588464835">Comparteix les notícies</translation>
+<translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
 <translation id="5372054974373489308">S'han bloquejat 1.000 rastrejadors &amp; anuncis!</translation>
 <translation id="2338952568654182692">S'han bloquejat 5.000 rastrejadors &amp; anuncis!</translation>
 <translation id="5289711064670408815">S'han bloquejat 10.000 rastrejadors &amp; anuncis!</translation>
@@ -373,12 +379,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7427567994475794038">Activeu els informes de privadesa per veure quants rastrejadors &amp;amp anuncis s'han bloquejat en les darreres 3 hores.</translation>
 <translation id="2053891538879944400">Heu desat <ph name="DATA"/> <ph name="DATA_TEXT"/> dades amb el navegador Brave.</translation>
 <translation id="8640064498452534195">Activeu els Informes de privadesa per veure quantes dades heu salvat.</translation>
-<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.&#128267;</translation>
+<translation id="2252497442547961651">El navegador Brave consumeix de mitjana un 40% menys de bateria.🔋</translation>
 <translation id="1945330434665345785">Heu bloquejat <ph name="COUNT"/> rastrejadors &amp; anuncis amb navegador Brave la setmana passada.</translation>
 <translation id="2883868922264431515">Guanyeu tokens visualitzant anuncis que respectin la privadesa i donin suport als vostres llocs web preferits.</translation>
-<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.&#128293;</translation>
-<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.&#128267;</translation>
-<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Genial! Heu bloquejat 250 seguidors i anuncis amb el navegador Brave.🔥</translation>
+<translation id="9199047775708635708">Genial! Heu estalviat 10 MB amb el navegador Brave.🔋</translation>
+<translation id="1880168210969863408">Genial! Heu estalviat 10 minuts de temps de càrrega amb el navegador Brave.💨💨</translation>
 <translation id="7408493389591475748">Comenceu a navegar per veure els informes de privadesa</translation>
 <translation id="9080777565335515917">Definiu Brave com a navegador predeterminat per a una navegació privada i segura.</translation>
 <translation id="1390943217516275883">Permet a Brave mostrar les teves estadístiques de privadesa</translation>
@@ -466,6 +472,17 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="3769645103175790584">Guanyeu fitxes i recompenseu els creadors per al bon contingut mentre navegueu. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Recorregut ràpid</translation>
 <translation id="1080013038789678738">’M'hi apunto!</translation>
+<translation id="8037420924417098685">Per iniciar una trucada gratuïta, activeu Brave Rewards</translation>
+<translation id="8961724619078500274">Amb Brave Rewards guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
+<translation id="7307847920988946894">Activeu les recompenses</translation>
+<translation id="1186139901474936180">Si el toqueu, esteu acceptant els <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>. Desactiveu-lo en qualsevol moment a Configuració.</translation>
+<translation id="6128511569382736135">Per iniciar una trucada gratuïta, activeu Brave Private Ads</translation>
+<translation id="7930006085154756245">Amb Brave Private Ads guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
+<translation id="4992617448154987397">Activeu Brave Private Ads</translation>
+<translation id="7314030474505546826">Si activeu Brave Ads, esteu acceptant els <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Ara podeu iniciar una trucada gratuïta</translation>
+<translation id="6712250553966900750">Toqueu a qualsevol lloc de la pantalla per continuar cap a Brave Talk.</translation>
+<translation id="626339649633171286">Voleu saber més sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Heu convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Si us plau, comproveu la connexió a la xarxa.</translation>
 <translation id="7889432931837317731">Obrir de automàticament quan sigui possible</translation>
@@ -528,6 +545,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7408247683131762445">ADVERTÈNCIA: no reveleu mai la frase de seguretat. Qualsevol que obtingui aquesta frase podrà obtenir sempre més els vostres fons.</translation>
 <translation id="939275786514736244">He fet una còpia de seguretat de la meva frase en algun lloc segur</translation>
 <translation id="6896758677409633944">Còpiar</translation>
+<translation id="2604744480284798833">Feu una còpia de seguretat de la vostra cartera ara per protegir-la de la pèrdua d'accés.</translation>
 <translation id="1202920745614909195">Compreu criptomonedes amb Apple Pay, targeta de crèdit o dèbit.</translation>
 <translation id="841880029259839903">Envieu criptomonedes o transferiu-les d'un compte a un altre.</translation>
 <translation id="8982246458261383692">Intercanvieu els actius en criptomonedes amb l'agregador DEX de Brave.</translation>
@@ -536,7 +554,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="4450951602553063001">Torna a introduir la contrasenya</translation>
 <translation id="1783870616707290226">La contrasenya ha de tenir com a mínim 7 caràcters</translation>
 <translation id="7383102760859258982">La contrasenya que s'ha tornat a introduir no coincideix</translation>
-<translation id="1538774398124896437">En directe</translation>
+<translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
@@ -546,6 +564,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="8892168913673237979">Ja està tot a punt!</translation>
 <translation id="8331501996028380732">Compreu, comercialitzeu o conserveu criptomonedes. Si ja teniu un compte de criptomonedes existent, el podeu afegir ara.</translation>
 <translation id="2267753748892043616">Afegeix compte</translation>
+<translation id="2632612428525029752">Actualitzeu el compte</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Voleu permetre el desbloqueig de la identificació per empremta dactilar?</translation>
 <translation id="5493402808936397665">Permeteu que la biometria desbloquegi ràpidament la vostra cartera sense introduir la contrasenya.</translation>
@@ -565,7 +584,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="745115390910697838">Les frases no coincideixen. Torneu-ho a intentar.</translation>
 <translation id="2360588547830602174">S'ha produït un error en la recuperació del compte. Torneu-ho a intentar.</translation>
-<translation id="990936698620790924">Preu de mercat en ETH</translation>
+<translation id="6392640873800632439">Preu de mercat en <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Preu en ETH</translation>
 <translation id="6748108480210050150">Des de</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -593,10 +612,109 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="569068482611873351">Importa...</translation>
 <translation id="1940465339426637378">Actius</translation>
 <translation id="4522570452068850558">Detalls</translation>
-<translation id="9065203028668620118">Edita</translation>
 <translation id="3995184924764722477">Detalls del Compte</translation>
 <translation id="8967036623785635603">Edita actius visibles</translation>
 <translation id="5050890334032852465">Guarda la llista de seguiment del compte</translation>
 <translation id="7755766175599167100">Cerca criptovalors</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="4449475351935531438">Tallafoc + VPN de Brave</translation>
+<translation id="719977489961414786">Actualitzeu a una VPN per protegir la vostra connexió i bloquejar els rastrejadors invasius arreu.</translation>
+<translation id="3435896845095436175">Activa</translation>
+<translation id="8814357473522731680">Impulsat per</translation>
+<translation id="5596139545583924414">Bloquegeu els anuncis i els rastrejadors a totes les aplicacions</translation>
+<translation id="8272917646984397798">Protegeix totes les connexions</translation>
+<translation id="1751947227857853925">Ràpid i il·limitat fins a 100 Mbps</translation>
+<translation id="1400240082805528049">Suport 24/7</translation>
+<translation id="5051030058817632680">Bloqueja les connexions de xarxa no desitjades</translation>
+<translation id="3510283489391432976">Trieu la vostra ubicació geogràfica/el vostre país</translation>
+<translation id="4390800080658195654">Manté el vostre anonimat en línia</translation>
+<translation id="639981156979733813">Admet velocitats de fins a 100 Mbps</translation>
+<translation id="8396607116169935837">Utilitzeu el túnel VPN encriptat segur IKEv2</translation>
+<translation id="1571230671455380494">No compartim ni venem la vostra informació mai</translation>
+<translation id="276866628038850725">Tots els plans inclouen una prova gratuïta de 7 dies!</translation>
+<translation id="7280825497485894053">Subscripció mensual</translation>
+<translation id="3001303523417455986">Subscripció anual</translation>
+<translation id="6748319398471481216">Es renova mensualment</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /mes.</translation>
+<translation id="1163809943099641131">Un any</translation>
+<translation id="6277055349883621705">Renoveu-la anualment per estalviar-vos un 16 %</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
+<translation id="4487678670820292781">119,88 $</translation>
+<translation id="5867778679088331977">Proveu-lo de franc durant 7 dies. Després de 7 dies, se us cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
+<translation id="6053992191006521518">Proveu-lo GRATIS</translation>
+<translation id="721747358270435486">Instal·leu la VPN</translation>
+<translation id="836074276610740314">Instal·leu el perfil de VPN</translation>
+<translation id="8021842065465097929">Ara, Brave instal·larà un perfil de VPN.</translation>
+<translation id="229286271464650057">Aquest perfil permet a la VPN connectar-se automàticament i protegir el trànsit del dispositiu a totes les aplicacions en tot moment. Aquesta connexió VPN s'encriptarà i s’encaminarà a través del tallafoc intel·ligent de Guardian per bloquejar anuncis i rastrejadors.</translation>
+<translation id="9073255657908892407">Poseu-vos en contacte amb Suport tècnic</translation>
+<translation id="1139934321138152517">Ara la VPN està activada</translation>
+<translation id="7678718921266217759">Una mica de context...</translation>
+<translation id="7267573208549764106">La vostra connexió VPN anterior s'ha desconnectat. Per tornar a connectar-vos a la VPN, heu d'acceptar la sol·licitud de connexió.
+
+Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra connexió a Internet no estarà protegida.</translation>
+<translation id="2429299231491852747">Accepteu la sol·licitud de connexió</translation>
+<translation id="3428909627460825679">S'ha produït un error en crear el perfil de VPN. Torneu-ho a provar.</translation>
+<translation id="8584119457978684056">S'ha produït un error en verificar el criptovalor de compra. Torneu-ho a provar.</translation>
+<translation id="8905950042180169719">La VPN s'està executant en segon pla</translation>
+<translation id="8681480718817027245">Subscripció</translation>
+<translation id="7805768142964895445">Estat</translation>
+<translation id="5747552184818312860">Data de caducitat</translation>
+<translation id="1656814355341174523">Gestioneu la subscripció</translation>
+<translation id="1919008675977575793">Servidor</translation>
+<translation id="4812684235631257312">Amfitrió</translation>
+<translation id="5646376287012673985">Ubicació</translation>
+<translation id="8375573361134671513">Restableix la configuració</translation>
+<translation id="850405162932416400">Suport de VPN</translation>
+<translation id="1330148827129583049">No s'ha creat el perfil de VPN. Creant un perfil nou.</translation>
+<translation id="6772117549627334582">S'ha produït un error en obtenir la ubicació del servidor. Torneu-ho a provar més tard.</translation>
+<translation id="5863914199331127413">Nom de l'amfitrió VPN</translation>
+<translation id="5499653136178260315">Tipus de subscripció</translation>
+<translation id="4741058112780154119">Versió de l'aplicació</translation>
+<translation id="7286066816862208787">Rebut de l'aplicació</translation>
+<translation id="2552966063069741410">Fus horari</translation>
+<translation id="4395361077929528480">Tipus de xarxa</translation>
+<translation id="755448900483975096">Operador de telefonia mòbil</translation>
+<translation id="1279441577056010362">Continueu cap al correu electrònic</translation>
+<translation id="2553687444159335134">Suport proporcionat amb l’ajut de l’equip de Guardian.\n\nSeleccioneu la informació que vulgueu compartir amb nosaltres.\n\nCom més informació compartiu inicialment amb nosaltres, més fàcil serà per al nostre personal de suport ajudar-vos a resoldre el vostre</translation>
+<translation id="7999094850625689785">Se seleccionarà automàticament la regió del servidor que tingueu més a prop, segons la zona horària del vostre sistema. Es recomana això per garantir velocitats ràpides d'Internet.</translation>
+<translation id="8018707825009059641">Altres problemes</translation>
+<translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
+<translation id="9184988385244077767">No hi havia Internet en connectar-se</translation>
+<translation id="21570240866965662">Connexió lenta</translation>
+<translation id="1219475260382643267">El lloc web no funciona</translation>
+<translation id="7138678301420049075">Altres</translation>
+<translation id="4827315939627587219">Restabliu la configuració de VPN</translation>
+<translation id="6883280223123252086">Esteu segurs que voleu restablir la configuració de VPN?</translation>
+<translation id="604124094241169006">Automàtic</translation>
+<translation id="7475580600756356589">S'està connectant al vostre servidor. Només hauria de trigar un moment...</translation>
+<translation id="1342728075788541348">S'està desconnectant del vostre servidor. Només hauria de trigar un moment...</translation>
+<translation id="669072536454692117">La subscripció s'ha consumit correctament</translation>
+<translation id="1187506504156101449">No ha estat possible reconèixer la compra:</translation>
+<translation id="8420522105268941892">Ja esteu subscrits a la subscripció. Proveu de restaurar la subscripció.</translation>
+<translation id="74771564105268111">ERROR!!\nCausat per un usuari que ha cancel·lat el flux de compra.</translation>
+<translation id="3851978668258201962">ERROR!!\nS'ha produït un error en la compra...</translation>
+<translation id="6452181791372256707">Rebutja</translation>
+<translation id="8030852056903932865">Aprovar</translation>
+<translation id="1597199892790541240">Preu del gas</translation>
+<translation id="1634828734222219955">Total</translation>
+<translation id="7995708795274219641">Quantitat + gas</translation>
+<translation id="1950052789869821983">Transacció</translation>
+<translation id="6122742277607781713">Cartera</translation>
+<translation id="2805756323405976993">Aplicacions</translation>
+<translation id="6083912983861746409">Preu del gas (gwei)</translation>
+<translation id="2499079593046817044">Límit de gas (gwei)</translation>
+<translation id="6389441740143786465">Desactiveu el Sharing Hub</translation>
+<translation id="9065203028668620118">Edita</translation>
+<translation id="473775607612524610">Actualitza</translation>
+<translation id="479795390141144417">S'ha produït un error en actualitzar el compte.</translation>
+<translation id="8084782383392198011">Nom del compte no pot estar buit.</translation>
+<translation id="5045550434625856497">Contrasenya incorrecta</translation>
+<translation id="1367951781824006909">Trieu un fitxer</translation>
+<translation id="8648684608605749476">Bloqueja les galetes de tercers en mode d'incògnit</translation>
+<translation id="1118876217803190221">Balanç insuficient</translation>
+<translation id="275990379543116961">Fons insuficients per a gas</translation>
+<translation id="3292453499915466604">Liquiditat insuficient</translation>
+<translation id="3380365263193509176">Error desconegut</translation>
+<translation id="1538774398124896437">En directe</translation>
+<translation id="990936698620790924">Preu de mercat en ETH</translation>
 </translationbundle>

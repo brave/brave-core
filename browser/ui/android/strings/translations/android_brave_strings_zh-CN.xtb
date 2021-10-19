@@ -48,6 +48,9 @@
 <translation id="4479934682648362332">优先访问桌面版网站</translation>
 <translation id="1842747674580016420">在 Brave 总进行视频播放</translation>
 <translation id="5368992950177874750">如果启用，视频会在 Brave 上而不是与其相应的应用上播放</translation>
+<translation id="410351446219883937">自动播放</translation>
+<translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
+<translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
 <translation id="181905442828471321">Brave Shields 全局默认值</translation>
 <translation id="2675679258824361492">其他隐私设置</translation>
 <translation id="8026334261755873520">清除浏览数据</translation>
@@ -114,6 +117,7 @@
 <translation id="8280223431922155812">十一月</translation>
 <translation id="4254029385847607686">十二月</translation>
 <translation id="3780605330121608425">您的钱包</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">美元</translation>
 <translation id="1165667598801520610">添加资金</translation>
@@ -371,12 +375,12 @@
 <translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
 <translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
 <translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
-<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。&#128267;</translation>
+<translation id="2252497442547961651">Brave 的浏览器平均节省 40% 的电池。🔋</translation>
 <translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
 <translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
-<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。&#128293;</translation>
-<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。&#128267;</translation>
-<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。🔥</translation>
+<translation id="9199047775708635708">太好了！您已经用 Brave 浏览器节省了 10MB 。🔋</translation>
+<translation id="1880168210969863408">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。💨💨</translation>
 <translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
 <translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
 <translation id="1390943217516275883">允许 Brave 展示你的隐私统计数据</translation>
@@ -463,6 +467,17 @@
 <translation id="3769645103175790584">浏览时赚取代币并奖励创作者，以便能够获得精彩的内容。<ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">快速导览</translation>
 <translation id="1080013038789678738">我’要参与！</translation>
+<translation id="8037420924417098685">要开始免费通话，请开启 Brave Rewards</translation>
+<translation id="8961724619078500274">使用 Brave Rewards，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="7307847920988946894">开启奖励</translation>
+<translation id="1186139901474936180">轻击即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。您可随时在“设置”中将其禁用。</translation>
+<translation id="6128511569382736135">要开始免费通话，请启用 Brave Private Ads</translation>
+<translation id="7930006085154756245">使用 Brave Private Ads，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡，或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="4992617448154987397">开启 Brave Private Ads</translation>
+<translation id="7314030474505546826">开启 Ads 即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
+<translation id="3415016869273103668">你现在可以开始免费通话</translation>
+<translation id="6712250553966900750">点击屏幕上的任意位置，继续使用 Brave Talk。</translation>
+<translation id="626339649633171286">想要了解 Brave Rewards 更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
 <translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
 <translation id="392587271502873865">请检查您的网络连接。</translation>
 <translation id="7889432931837317731">可能时自动打开</translation>
@@ -525,6 +540,7 @@
 <translation id="7408247683131762445">警告：切勿向他人透露您的备份密语。任何人一旦持有该密语，即可取走您的资金。</translation>
 <translation id="939275786514736244">我已将我的密语备份到某个安全位置</translation>
 <translation id="6896758677409633944">复制</translation>
+<translation id="2604744480284798833">立即备份您的钱包，以保护您的加密货币投资组合，并确保您不会失去访问权限。</translation>
 <translation id="1202920745614909195">使用 Apple Pay、信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
 <translation id="8982246458261383692">使用 Brave DEX 聚合器交易加密资产。</translation>
@@ -533,7 +549,7 @@
 <translation id="4450951602553063001">重新输入密码</translation>
 <translation id="1783870616707290226">密码必须为 7 个或更多字符</translation>
 <translation id="7383102760859258982">重新输入的密码不匹配</translation>
-<translation id="1538774398124896437">直播</translation>
+<translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1 天</translation>
 <translation id="7640956400175663828">1 周</translation>
 <translation id="9100647964747998533">1 个月</translation>
@@ -543,6 +559,7 @@
 <translation id="8892168913673237979">设置完成！</translation>
 <translation id="8331501996028380732">购买、交易或持有加密货币。如果您已有加密货币账户，可以在此添加。</translation>
 <translation id="2267753748892043616">添加账户</translation>
+<translation id="2632612428525029752">更新账户</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">启用指纹解锁功能？</translation>
 <translation id="5493402808936397665">启用生物识别，无需输入密码即可快速解锁您的钱包。</translation>
@@ -562,7 +579,7 @@
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
 <translation id="745115390910697838">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
-<translation id="990936698620790924">市场价格 (ETH)</translation>
+<translation id="6392640873800632439"><ph name="ASSET"/>市场价格</translation>
 <translation id="5593852897152820572">以 ETH 计算的价格</translation>
 <translation id="6748108480210050150">来自</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -590,10 +607,109 @@
 <translation id="569068482611873351">导入...</translation>
 <translation id="1940465339426637378">资产</translation>
 <translation id="4522570452068850558">详细信息</translation>
-<translation id="9065203028668620118">编辑</translation>
 <translation id="3995184924764722477">账户详情</translation>
 <translation id="8967036623785635603">编辑可见资产</translation>
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
 <translation id="3835223348537121988">余额：</translation>
+<translation id="4449475351935531438">Brave 防火墙 + VPN</translation>
+<translation id="719977489961414786">升级到 VPN 来保护您的连接，并阻止无处不在的入侵跟踪器。</translation>
+<translation id="3435896845095436175">启用</translation>
+<translation id="8814357473522731680">技术支持：</translation>
+<translation id="5596139545583924414">拦截所有应用的广告和跟踪器</translation>
+<translation id="8272917646984397798">保护所有连接</translation>
+<translation id="1751947227857853925">高速和无限流量，高达 100 Mbps</translation>
+<translation id="1400240082805528049">24/7 支持</translation>
+<translation id="5051030058817632680">阻止不需要的网络连接</translation>
+<translation id="3510283489391432976">选择地理/国家位置</translation>
+<translation id="4390800080658195654">保持在网上匿名</translation>
+<translation id="639981156979733813">支持最快 100 Mbps 的速度</translation>
+<translation id="8396607116169935837">采用 IKEv2 安全加密的 VPN 通道</translation>
+<translation id="1571230671455380494">我们从不分享或出售您的信息</translation>
+<translation id="276866628038850725">所有计划都包括 7 天免费试用期！</translation>
+<translation id="7280825497485894053">月度订阅</translation>
+<translation id="3001303523417455986">年度订阅</translation>
+<translation id="6748319398471481216">每月续订</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/月</translation>
+<translation id="1163809943099641131">一年</translation>
+<translation id="6277055349883621705">每年续订节省 16%</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
+<translation id="4487678670820292781">$119.88</translation>
+<translation id="5867778679088331977">免费试用 7 天。7 天后，您将被收取套餐价格。所有订阅都会自动续订，但在续订之前可以取消。</translation>
+<translation id="6053992191006521518">免费试用</translation>
+<translation id="721747358270435486">安装 VPN</translation>
+<translation id="836074276610740314">安装 VPN 配置文件</translation>
+<translation id="8021842065465097929">Brave 将安装一个 VPN 配置文件。</translation>
+<translation id="229286271464650057">这个配置文件允许 VPN 自动连接并保护您设备上每个应用的流量，且一直如此。这个 VPN 连接将被加密，其流量将由 Guardian 智能防火墙路由，以阻止广告和追踪器。</translation>
+<translation id="9073255657908892407">联系技术支持</translation>
+<translation id="1139934321138152517">已启用 VPN</translation>
+<translation id="7678718921266217759">一些背景...</translation>
+<translation id="7267573208549764106">先前的 VPN 连接已断开。要重新连接到 VPN，您需要接受连接请求。
+
+如果您不接受此请求，VPN 不会重新连接，您的互联网连接将不受到保护。</translation>
+<translation id="2429299231491852747">接受连接请求</translation>
+<translation id="3428909627460825679">创建 VPN 配置文件失败。请再试一次。</translation>
+<translation id="8584119457978684056">购买令牌验证失败。请再试一次。</translation>
+<translation id="8905950042180169719">VPN 正在后台运行</translation>
+<translation id="8681480718817027245">订阅</translation>
+<translation id="7805768142964895445">状态</translation>
+<translation id="5747552184818312860">到期时间</translation>
+<translation id="1656814355341174523">管理订阅</translation>
+<translation id="1919008675977575793">服务器</translation>
+<translation id="4812684235631257312">主机</translation>
+<translation id="5646376287012673985">位置信息</translation>
+<translation id="8375573361134671513">重置配置</translation>
+<translation id="850405162932416400">VPN 支持</translation>
+<translation id="1330148827129583049">未创建 VPN 配置文件。创建新的配置文件。</translation>
+<translation id="6772117549627334582">获取服务器位置失败。请稍后再试。</translation>
+<translation id="5863914199331127413">VPN 主机名</translation>
+<translation id="5499653136178260315">订阅类型</translation>
+<translation id="4741058112780154119">应用版本</translation>
+<translation id="7286066816862208787">应用收据</translation>
+<translation id="2552966063069741410">时区</translation>
+<translation id="4395361077929528480">网络类型</translation>
+<translation id="755448900483975096">移动网络服务提供商</translation>
+<translation id="1279441577056010362">继续使用电子邮件</translation>
+<translation id="2553687444159335134">支持由 Guardian 团队帮助提供。\n\n请选择您愿意与我们分享的信息。\n\n您最初与我们分享的信息越多，我们的支持人员就越容易帮助您解决您的问题</translation>
+<translation id="7999094850625689785">将根据您的系统时区自动选择最接近您的服务器区域。这是推荐选项，以确保高速的互联网连接。</translation>
+<translation id="8018707825009059641">其他问题</translation>
+<translation id="6687228121145903051">无法连接到 VPN（其他错误）</translation>
+<translation id="9184988385244077767">连接成功，但没法上网</translation>
+<translation id="21570240866965662">连接缓慢</translation>
+<translation id="1219475260382643267">网站无法使用</translation>
+<translation id="7138678301420049075">其他</translation>
+<translation id="4827315939627587219">重置 VPN 配置</translation>
+<translation id="6883280223123252086">确定要重置 VPN 配置吗？</translation>
+<translation id="604124094241169006">自动</translation>
+<translation id="7475580600756356589">正在连接到服务器。应该只需要一会儿…</translation>
+<translation id="1342728075788541348">正在断开与服务器的连接。应该只需要一会儿…</translation>
+<translation id="669072536454692117">成功续订</translation>
+<translation id="1187506504156101449">未能确认购买：</translation>
+<translation id="8420522105268941892">您已经订阅了订阅套餐。尝试恢复订阅。</translation>
+<translation id="74771564105268111">错误！！\n由用户取消购买流程引起。</translation>
+<translation id="3851978668258201962">错误！！\n购买失败。</translation>
+<translation id="6452181791372256707">拒绝</translation>
+<translation id="8030852056903932865">批准</translation>
+<translation id="1597199892790541240">Gas 费用</translation>
+<translation id="1634828734222219955">总量</translation>
+<translation id="7995708795274219641">数量 + Gas</translation>
+<translation id="1950052789869821983">交易</translation>
+<translation id="6122742277607781713">投资组合</translation>
+<translation id="2805756323405976993">应用</translation>
+<translation id="6083912983861746409">Gas 价格 (GWEI)</translation>
+<translation id="2499079593046817044">Gas Price (GWEI)</translation>
+<translation id="6389441740143786465">禁用 Sharing Hub</translation>
+<translation id="9065203028668620118">编辑</translation>
+<translation id="473775607612524610">更新</translation>
+<translation id="479795390141144417">账户更新失败。</translation>
+<translation id="8084782383392198011">账户名不能为空。</translation>
+<translation id="5045550434625856497">密码不正确</translation>
+<translation id="1367951781824006909">选择文件</translation>
+<translation id="8648684608605749476">在无痕模式下阻止第三方 Cookie</translation>
+<translation id="1118876217803190221">余额不足</translation>
+<translation id="275990379543116961">gas 资金不足</translation>
+<translation id="3292453499915466604">流动性不足</translation>
+<translation id="3380365263193509176">未知错误</translation>
+<translation id="1538774398124896437">直播</translation>
+<translation id="990936698620790924">市场价格 (ETH)</translation>
 </translationbundle>

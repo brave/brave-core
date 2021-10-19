@@ -190,10 +190,10 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5655621391922317800">Dompet Crypto</translation>
 <translation id="1696548911367097044">Sambungan Dompet Kripto yang tidak digunakan</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Penyedia Ethereum untuk menggunakan Dapps</translation>
-<translation id="5913089932885076110">Muatkan Dompet Kripto ketika bermula</translation>
-<translation id="757886143331967039">Memuatkan sambungan Dompet Kripto yang tidak digunakan pada permulaan</translation>
+<translation id="9131889008937672866">Dompet mata wang kripto lalai</translation>
 <translation id="1834467296210148203">Tunjukkan ikon Dompet Brave pada bar alat</translation>
+<translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
+<translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="6864914031231797928">Benarkan log masuk Google untuk sambungan</translation>
 <translation id="5927916530277631319">Kaedah untuk menyelesaikan Domain yang tidak dapat Dihentikan</translation>
 <translation id="5248318250177143470">Kaedah untuk menyelesaikan Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1251574393468476924">Saiz cache IPFS maksimum (GB)</translation>
 <translation id="2503497578400410320">Had atas yang lembut untuk saiz datastore repositori IPFS.</translation>
 <translation id="7703184801853248830">Alamat gerbang tidak sah</translation>
+<translation id="7690058578502751948">Hanya get laluan IPFS yang sah dengan pengasingan Origin yang diaktifkan dapat digunakan di Brave</translation>
 <translation id="585868419599255817">Undur balik get laluan awam IPFS</translation>
 <translation id="207763736230883589">Kembali ke gerbang IPFS awam secara automatik apabila nod tempatan anda tidak boleh dicapai.</translation>
 <translation id="4107552920076294723">Halakan semula sumber IPFS kepada gerbang IPFS yang dikonfigurasi</translation>
@@ -300,6 +301,10 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1391855377994926460">Teruskan menyemak lalu web lebih pantas - sehingga 6x lebih pantas pada tapak berita utama.</translation>
 <translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
+<translation id="732814027519296280">Mahu menjadikan Brave Search lebih baik?</translation>
+<translation id="2677865600861971449">Ikut serta dalam Projek Penemuan Web untuk menyumbang sebilangan carian data penyemakan imbas tanpa nama, dan tingkatkan hasil Carian Brave untuk semua. Privasi Terpelihara. Tanpa bimbang. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Hidupkan</translation>
+<translation id="780301667611848630">Tidak, terima kasih</translation>
 <translation id="5039804452771397117">Benarkan</translation>
 <translation id="7053983685419859001">Sekat</translation>
 <translation id="7815301689257843278">Hantar laporan ranap secara automatik supaya Brave dapat mencegah isu ini daripada berulang lagi?</translation>
@@ -309,6 +314,8 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6873781976650514089">tetapan ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5600566490506283344">Pemberitahuan Iklan Brave</translation>
+<translation id="4174337572777167894">Projek Penemuan Web</translation>
+<translation id="8659271182272561965">Lakukan penyemakan imbas data tanpa nama &amp; untuk memperhalusi Brave Search.</translation>
 <translation id="1516554614404600536">Petua Alat Brave</translation>
 <translation id="4877147287319222750">Tambah ke bar sisi</translation>
 <translation id="4233010476457917696">Tunjukkan bar sisi</translation>

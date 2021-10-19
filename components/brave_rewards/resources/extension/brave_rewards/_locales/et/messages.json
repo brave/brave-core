@@ -19,6 +19,26 @@
     "message": "Värskenda olekut",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Kõik saadetud preemiad jäävad teie rahakotti ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata. $link_begin$Lisateave$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "See looja ei ole veel registreerunud.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "See looja ei ole praegu konfigureeritud teie rahakotist preemiaid saama.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ platvormil $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ saabub $days$ pärast",
+    "message": "$amount$ väljamakset hakatakse töötlema $days$ päeva jooksul",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Loobu",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Tasuta kõne alustamiseks lülitage sisse Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewardsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Lülita Rewards sisse",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Klõpsamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$. Keelata saate suvalisel ajal seadetest.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Tasuta kõne alustamiseks lubage Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Adsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Lülita Brave Private Ads sisse",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Adsi sisselülitamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Saate nüüd alustada tasuta kõnet",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave Talkis jätkamiseks klõpsake ekraanil suvalises kohas.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Kas soovite lisateavet Brave Rewardsi kohta? $tour_link_begin$Tehke kiire ringkäik$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

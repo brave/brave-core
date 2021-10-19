@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Estää seuraajia ja mainoksia lataamasta ja näkymästä verkkosivuilla</translation>
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
+<translation id="5254037869598726291">Anonymisoidut P3A-tiedot auttavat Bravea arvioimaan kokonaiskäyttöä ja varmistamaan, että parannamme suosittuja ominaisuuksia.</translation>
 <translation id="4272190451231642425">Lähetä virheraportit automaattisesti</translation>
 <translation id="2239766974964486304">Virheraporttien avulla Brave voi parantaa tuotteen vakautta kaikille käyttäjille.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
@@ -47,6 +48,9 @@
 <translation id="4479934682648362332">Suosi sivustojen työpöytäversioita</translation>
 <translation id="1842747674580016420">Videoiden toisto Bravessa</translation>
 <translation id="5368992950177874750">Jos tämä asetus otetaan käyttöön, videot toistetaan Bravessa oletussovelluksen sijaan</translation>
+<translation id="410351446219883937">Automaattinen toisto</translation>
+<translation id="7445411102860286510">Salli sivustoille mykistettyjen videoiden automaattinen toisto (suositus)</translation>
+<translation id="7837721118676387834">Sallii tietylle sivustolle mykistettyjen videoiden automaattisen toiston.</translation>
 <translation id="181905442828471321">Brave-suojausten yleiset oletukset</translation>
 <translation id="2675679258824361492">Muut tietosuoja-asetukset</translation>
 <translation id="8026334261755873520">Poista selaustiedot</translation>
@@ -113,6 +117,7 @@
 <translation id="8280223431922155812">MARRASKUU</translation>
 <translation id="4254029385847607686">JOULUKUU</translation>
 <translation id="3780605330121608425">Lompakkosi</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Lisää varoja</translation>
@@ -374,12 +379,12 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="7427567994475794038">Kytke yksityisyysraportit päälle, niin näet miten monta seurainta &amp; mainosta on estetty viimeisen kolmen tunnin aikana.</translation>
 <translation id="2053891538879944400">Säästit Brave-selaimella <ph name="DATA"/> <ph name="DATA_TEXT"/> dataa.</translation>
 <translation id="8640064498452534195">Kytke yksityisyysraportit päälle, niin näet miten paljon dataa olet säästänyt.</translation>
-<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.&#128267;</translation>
+<translation id="2252497442547961651">Brave-selain käyttää keskimäärin 40 % vähemmän akkua.🔋</translation>
 <translation id="1945330434665345785">Estit Brave-selaimella viime viikolla <ph name="COUNT"/> seurainta &amp; mainosta.</translation>
 <translation id="2883868922264431515">Tienaa poletteja katselemalla yksityisyyttä kunnioittavia mainoksia ja tue suosikkisivustojasi.</translation>
-<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.&#128293;</translation>
-<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.&#128267;</translation>
-<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Siistiä! Olet estänyt Brave-selaimella 250 jäljittävää mainosta.🔥</translation>
+<translation id="9199047775708635708">Siistiä! Olet säästänyt 10 Megatavua Brave-selaimella.🔋</translation>
+<translation id="1880168210969863408">Siistiä! Olet säästänyt Brave-selaimella 10 minuuttia latausaikaa.💨💨</translation>
 <translation id="7408493389591475748">Aloita selailu yksityisyysraporttien näkemiseksi</translation>
 <translation id="9080777565335515917">Tee Bravesta oletusselaimesi ja nauti yksityisestä ja turvallisesta selaamisesta.</translation>
 <translation id="1390943217516275883">Sallii Braven näyttää yksityisyystilastosi</translation>
@@ -466,6 +471,17 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="3769645103175790584">Ansaitse makustunnuksia ja palkitse kehittäjiä heidän upeasta sisällöstään selatessasi verkkoa. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Pikakatsaus</translation>
 <translation id="1080013038789678738">Olen mukana!</translation>
+<translation id="8037420924417098685">Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön</translation>
+<translation id="8961724619078500274">Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="7307847920988946894">Ota Rewards käyttöön</translation>
+<translation id="1186139901474936180">Napauttamalla hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>. Poista käytöstä milloin tahansa asetuksissa.</translation>
+<translation id="6128511569382736135">Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön</translation>
+<translation id="7930006085154756245">Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
+<translation id="4992617448154987397">Ota Brave Private Ads käyttöön</translation>
+<translation id="7314030474505546826">Ottamalla Adsin käyttöön hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Voit nyt aloittaa ilmaisen puhelun</translation>
+<translation id="6712250553966900750">Napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
+<translation id="626339649633171286">Haluatko lisää tietoja Brave Rewardsista? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Muunsit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> arvoksi <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Valitse verkkoyhteytesi.</translation>
 <translation id="7889432931837317731">Avaa automaattisesti aina kun mahdollista</translation>
@@ -528,6 +544,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="7408247683131762445">VAROITUS: älä koskaan kerro varmuuskopiolausettasi kenellekään. Kuka tahansa tämän lauseen omaava voi napata varasi pysyvästi.</translation>
 <translation id="939275786514736244">Olen varmuuskopioinut lauseeni turvalliseen paikkaan</translation>
 <translation id="6896758677409633944">Kopioi</translation>
+<translation id="2604744480284798833">Varmuuskopioi lompakkosi nyt suojataksesi kryptoportfoliosi pääsyn menetykseltä.</translation>
 <translation id="1202920745614909195">Osta kryptoa Apple Payn, luottokortin tai pankkikortin avulla.</translation>
 <translation id="841880029259839903">Lähetä kryptoa tai siirrä sitä tililtä toiselle.</translation>
 <translation id="8982246458261383692">Vaihda krypto-omaisuutta Braven DEX-aggregaattorin avulla.</translation>
@@ -536,7 +553,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="4450951602553063001">Anna salasana uudelleen</translation>
 <translation id="1783870616707290226">Salasanan on oltava vähintään 7 merkkiä pitkä</translation>
 <translation id="7383102760859258982">Uudelleen kirjoitettu salasana ei täsmää</translation>
-<translation id="1538774398124896437">Live</translation>
+<translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1PÄIVÄ</translation>
 <translation id="7640956400175663828">1VIIKKO</translation>
 <translation id="9100647964747998533">1KK</translation>
@@ -546,6 +563,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="8892168913673237979">Kaikki valmista!</translation>
 <translation id="8331501996028380732">Osta, vaihda tai pidä kryptoa. Jos sinulla on olemassa oleva kryptotili, voit lisätä sen nyt.</translation>
 <translation id="2267753748892043616">Lisää tili</translation>
+<translation id="2632612428525029752">Päivitä tili</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ota sormenjälkilukituksen poistaminen käyttöön?</translation>
 <translation id="5493402808936397665">Ota biometriset tiedot käyttöön, jotta voit nopeasti avata lompakkosi antamatta salasanaasi.</translation>
@@ -565,7 +583,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="1144810021918451336">Ei suojele sinua vaarallisilta verkkosivustoilta, latauksilta ja laajennuksilta.</translation>
 <translation id="745115390910697838">Lauseet eivät täsmää. Yritä uudelleen.</translation>
 <translation id="2360588547830602174">Tilin palautus epäonnistui. Yritä uudelleen.</translation>
-<translation id="990936698620790924">Markkinahinta Ethereumeissa</translation>
+<translation id="6392640873800632439">Markkinahinta: <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Hinta Ethereumeissa</translation>
 <translation id="6748108480210050150">Alkaen</translation>
 <translation id="3318280255740629162">25 %</translation>
@@ -593,10 +611,109 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="569068482611873351">Tuo...</translation>
 <translation id="1940465339426637378">Omaisuudet</translation>
 <translation id="4522570452068850558">Tarkat tiedot</translation>
-<translation id="9065203028668620118">Muokkaa</translation>
 <translation id="3995184924764722477">Tilin tiedot</translation>
 <translation id="8967036623785635603">Muokkaa näkyviä omaisuuseriä</translation>
 <translation id="5050890334032852465">Tallenna tilin seurantalista</translation>
 <translation id="7755766175599167100">Hae tokeneista</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="4449475351935531438">Brave Firewall ja VPN</translation>
+<translation id="719977489961414786">Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.</translation>
+<translation id="3435896845095436175">Ota käyttöön</translation>
+<translation id="8814357473522731680">Palvelun tarjoaa</translation>
+<translation id="5596139545583924414">Estää mainokset ja seurannan kaikissa sovelluksissa</translation>
+<translation id="8272917646984397798">Suojaa kaikki yhteydet</translation>
+<translation id="1751947227857853925">Nopea ja rajoittamaton, jopa 100 Mbit/s</translation>
+<translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
+<translation id="5051030058817632680">Estää ei-toivotut verkkoyhteydet</translation>
+<translation id="3510283489391432976">Valitse sijainti tai maa</translation>
+<translation id="4390800080658195654">Pitää sinut anonyyminä verkossa</translation>
+<translation id="639981156979733813">Tukee jopa 100 Mbps:n nopeutta</translation>
+<translation id="8396607116169935837">Käyttää suojattua ja salattua IKEv2-protokollaan perustuvaa VPN-tunnelia</translation>
+<translation id="1571230671455380494">Emme koskaan jaa tai myy tietojasi</translation>
+<translation id="276866628038850725">Kaikki tilaukset sisältävät maksuttoman 7 päivän kokeilujakson!</translation>
+<translation id="7280825497485894053">Kuukausitilaus</translation>
+<translation id="3001303523417455986">Vuositilaus</translation>
+<translation id="6748319398471481216">Uusiutuu kuukausittain</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/kk.</translation>
+<translation id="1163809943099641131">Yksi vuosi</translation>
+<translation id="6277055349883621705">Uusi vuosittain, säästä 16 %</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/>/vuosi.</translation>
+<translation id="4487678670820292781">119,88 $</translation>
+<translation id="5867778679088331977">Kokeile ilmaiseksi 7 päivän ajan. 7 päivän kuluttua sinulta veloitetaan tilauksen hinta. Kaikki tilaukset uusitaan automaattisesti, mutta ne voidaan peruuttaa ennen uusimista.</translation>
+<translation id="6053992191006521518">Kokeile ILMAISEKSI</translation>
+<translation id="721747358270435486">Asenna VPN</translation>
+<translation id="836074276610740314">Asenna VPN-profiili</translation>
+<translation id="8021842065465097929">Brave asentaa nyt VPN-profiilin.</translation>
+<translation id="229286271464650057">Tämän profiilin avulla VPN voi automaattisesti muodostaa yhteyden ja suojata liikennettä laitteellasi kaikissa sovelluksissa ja koko ajan. Tämä VPN-yhteys salataan ja reititetään Guardianin älykkään palomuurin kautta mainosten ja seurannan estämiseksi.</translation>
+<translation id="9073255657908892407">Ota yhteyttä tekniseen tukeen</translation>
+<translation id="1139934321138152517">VPN on nyt käytössä</translation>
+<translation id="7678718921266217759">Vähän kontekstia...</translation>
+<translation id="7267573208549764106">Edellinen VPN-yhteys katkesi. Jos haluat muodostaa yhteyden VPN:ään uudelleen, sinun on hyväksyttävä yhteyden muodostuspyyntö.
+
+Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja Internet-yhteyttäsi ei suojata.</translation>
+<translation id="2429299231491852747">Hyväksy yhteyden muodostuspyyntö</translation>
+<translation id="3428909627460825679">VPN-profiilin luonti epäonnistui. Yritä uudelleen.</translation>
+<translation id="8584119457978684056">Ostotokenin vahvistus epäonnistui. Yritä uudelleen.</translation>
+<translation id="8905950042180169719">VPN on käynnissä taustalla</translation>
+<translation id="8681480718817027245">Tilaus</translation>
+<translation id="7805768142964895445">Tila</translation>
+<translation id="5747552184818312860">Vanhenee</translation>
+<translation id="1656814355341174523">Hallitse tilausta</translation>
+<translation id="1919008675977575793">Palvelin</translation>
+<translation id="4812684235631257312">Isäntä</translation>
+<translation id="5646376287012673985">Sijainti</translation>
+<translation id="8375573361134671513">Nollaa määritykset</translation>
+<translation id="850405162932416400">VPN-tuki</translation>
+<translation id="1330148827129583049">VPN-profiilia ei luotu. Uutta profiilia luodaan.</translation>
+<translation id="6772117549627334582">Palvelimen sijainnin haku ei onnistu. Yritä myöhemmin uudelleen.</translation>
+<translation id="5863914199331127413">VPN:n isäntänimi</translation>
+<translation id="5499653136178260315">Tilaustyyppi</translation>
+<translation id="4741058112780154119">Sovellusversio</translation>
+<translation id="7286066816862208787">Sovelluksen kuitti</translation>
+<translation id="2552966063069741410">Aikavyöhyke</translation>
+<translation id="4395361077929528480">Verkkotyyppi</translation>
+<translation id="755448900483975096">Mobiilipalveluntarjoaja</translation>
+<translation id="1279441577056010362">Jatka sähköpostiin</translation>
+<translation id="2553687444159335134">Tuki tarjotaan Guardian-tiimin kautta.\n\nValitse tiedot, jotka haluat jakaa kanssamme.\n\nMitä enemmän tietoja meille annat, sitä helpompaa tukihenkilöstömme on auttaa sinua ratkaisemaan ongelmasi</translation>
+<translation id="7999094850625689785">Lähin palvelinalue valitaan automaattisesti järjestelmän aikavyöhykkeen perusteella. Tätä suositellaan Internet-yhteyden nopeuden varmistamiseksi.</translation>
+<translation id="8018707825009059641">Muut ongelmat</translation>
+<translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
+<translation id="9184988385244077767">Ei Internet-yhteyttä yhdistämisen jälkeen</translation>
+<translation id="21570240866965662">Hidas yhteys</translation>
+<translation id="1219475260382643267">Verkkosivusto ei toimi</translation>
+<translation id="7138678301420049075">Muu</translation>
+<translation id="4827315939627587219">Nollaa VPN-määritykset</translation>
+<translation id="6883280223123252086">Haluatko varmasti nollata VPN-määritykset?</translation>
+<translation id="604124094241169006">Automaattinen</translation>
+<translation id="7475580600756356589">Yhdistetään palvelimeen. Tämän pitäisi kestää vain hetki...</translation>
+<translation id="1342728075788541348">Katkaistaan yhteyttä palvelimeen. Tämän pitäisi kestää vain hetki...</translation>
+<translation id="669072536454692117">Tilaus käytetty</translation>
+<translation id="1187506504156101449">Ostoksen hyväksyminen epäonnistui:</translation>
+<translation id="8420522105268941892">Olet jo tehnyt tilauksen. Yritä palauttaa tilaus.</translation>
+<translation id="74771564105268111">VIRHE!!\nSyynä on käyttäjän peruuttama ostos.</translation>
+<translation id="3851978668258201962">VIRHE!!\nOstaminen epäonnistui..</translation>
+<translation id="6452181791372256707">Hylkää</translation>
+<translation id="8030852056903932865">Hyväksy</translation>
+<translation id="1597199892790541240">Gas-maksu</translation>
+<translation id="1634828734222219955">Yhteensä</translation>
+<translation id="7995708795274219641">Määrä + gas</translation>
+<translation id="1950052789869821983">Maksutapahtuma</translation>
+<translation id="6122742277607781713">Portfolio</translation>
+<translation id="2805756323405976993">Sovellukset</translation>
+<translation id="6083912983861746409">Gas-hinta (GWEI)</translation>
+<translation id="2499079593046817044">Gas-raja (GWEI)</translation>
+<translation id="6389441740143786465">Poista jakamiskeskus käytöstä</translation>
+<translation id="9065203028668620118">Muokkaa</translation>
+<translation id="473775607612524610">Päivitä</translation>
+<translation id="479795390141144417">Tilin päivitys epäonnistui.</translation>
+<translation id="8084782383392198011">Tilin nimi ei voi olla tyhjä.</translation>
+<translation id="5045550434625856497">Väärä salasana</translation>
+<translation id="1367951781824006909">Valitse tiedosto</translation>
+<translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
+<translation id="1118876217803190221">Riittämätön saldo</translation>
+<translation id="275990379543116961">Riittämättömät varat Gas-tokeniin</translation>
+<translation id="3292453499915466604">Riittämätön likviditeetti</translation>
+<translation id="3380365263193509176">Tuntematon virhe</translation>
+<translation id="1538774398124896437">Live</translation>
+<translation id="990936698620790924">Markkinahinta Ethereumeissa</translation>
 </translationbundle>

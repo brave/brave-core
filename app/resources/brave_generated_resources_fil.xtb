@@ -190,10 +190,10 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5655621391922317800">Mga Crypto Wallet</translation>
 <translation id="1696548911367097044">Hindi na ginagamit na extension ng Crypto Wallets</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Provider ng Ethereum para sa paggamit ng Dapps</translation>
-<translation id="5913089932885076110">I-load ang Crypto Wallets sa startup</translation>
-<translation id="757886143331967039">I-load ang hindi na ginagamit na extension ng Crypto Wallets sa startup</translation>
+<translation id="9131889008937672866">Default na wallet ng cryptocurrency</translation>
 <translation id="1834467296210148203">Ipakita ang icon ng Brave Wallet sa toolbar</translation>
+<translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
+<translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
@@ -232,6 +232,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1251574393468476924">Maximum na laki ng cache ng IPFS (GB)</translation>
 <translation id="2503497578400410320">Isang soft upper limit para sa laki ng datastore ng repository ng IPFS.</translation>
 <translation id="7703184801853248830">Invalid na gateway address</translation>
+<translation id="7690058578502751948">Valid na IPFS gateway lang na naka-enable ang Origin isolation ang pwedeng gamitin sa Brave</translation>
 <translation id="585868419599255817">Fallback ng pampublikong gateway ng IPFS</translation>
 <translation id="207763736230883589">Awtomatikong bumalik sa pampublikong gateway ng IPFS kung hindi makaugnayan ang iyong lokal na node.</translation>
 <translation id="4107552920076294723">I-redirect ang mga resource ng IPFS sa naka-configure na gateway ng IPFS</translation>
@@ -300,6 +301,10 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1391855377994926460">Patuloy na mag-browse sa web nang mas mabilis - mas mabilis nang hanggang 6x sa mga pangunahing site ng balita.</translation>
 <translation id="9218430445555521422">Itakda bilang default</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
+<translation id="732814027519296280">Gusto mo bang gawing mas maganda ang Brave Search?</translation>
+<translation id="2677865600861971449">Sumali sa Web Discovery Project para anonymous na makapag-ambag sa ilang data sa paghahahanap at pag-browse, at pahusayin ang mga resulta ng Brave Search para sa lahat. Nagpapanatili ng privacy. At walang kahirap-hirap. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">I-on</translation>
+<translation id="780301667611848630">Hindi salamat</translation>
 <translation id="5039804452771397117">Payagan</translation>
 <translation id="7053983685419859001">I-block</translation>
 <translation id="7815301689257843278">Awtomatikong mag-send ng mga crash report para awtomatikong mapigilan ng Brave na mangyari ulit ang isyung ito?</translation>
@@ -309,6 +314,8 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6873781976650514089">setting na ito</translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="5600566490506283344">Notification ng Brave Ad</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Mag-ambag ng ilang anonymous na paghahanap at data mula sa pag-browse para pahusayin ang Brave Search.</translation>
 <translation id="1516554614404600536">Tooltip ng Brave</translation>
 <translation id="4877147287319222750">Idagdag sa Sidebar</translation>
 <translation id="4233010476457917696">Ipakita ang sidebar</translation>

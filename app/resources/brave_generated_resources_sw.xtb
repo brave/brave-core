@@ -191,10 +191,10 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5655621391922317800">Pochi za Crypto</translation>
 <translation id="1696548911367097044">Kiendelezi cha Pochi za Crypto kilichopingwa</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Mtoa huduma wa Ethereum kwa kutumia Dapps</translation>
-<translation id="5913089932885076110">Pakia Crypto Wallets mwanzoni</translation>
-<translation id="757886143331967039">Pakia kiendelezi cha Pochi za Crypto kilichopingwa kwenye mwanzo</translation>
+<translation id="9131889008937672866">Pochi ya cryptocurrency chaguomsingi</translation>
 <translation id="1834467296210148203">Onyesha ikoni ya Brave Wallet kwenye upau zana</translation>
+<translation id="8239147115686034860">Funga Brave Wallet kiotomatiki</translation>
+<translation id="414639769490080648">Idadi ya dakika za kusubiri hadi Brave Wallet ifungwe kiotomatiki</translation>
 <translation id="6864914031231797928">Ruhusu kuingia kwa Google kwa ajili hya viendelezi</translation>
 <translation id="5927916530277631319">Mbinu ya kusuluhisha Vikoa Visivyoweza Kusimamishwa</translation>
 <translation id="5248318250177143470">Mbinu ya kusuluhisha Ethereum Name Service (ENS)</translation>
@@ -233,6 +233,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="1251574393468476924">Ukubwa wa hifadhi ya juu zaidi ya IPFS (GB)</translation>
 <translation id="2503497578400410320">Kikomo cha juu laini cha ukubwa wa hifadhidata ya hazina ya IPFS.</translation>
 <translation id="7703184801853248830">Awani ya lango si sahihi</translation>
+<translation id="7690058578502751948">Njia sahihi tu ya IPFS ambayo Origin isolation imewezeshwa ndiyo inayoweza kutumiwa katika Brave</translation>
 <translation id="585868419599255817">Lango mbadala la umma la IPFS</translation>
 <translation id="207763736230883589">Badilisha kiotomatiki hadi lango la umma la IPFS ikiwa nodi ya ndani haiwezi kufikiwa.</translation>
 <translation id="4107552920076294723">Elekeza rasilimali za IPFS kwenye lango lililosanidiwa la IPFS</translation>
@@ -302,6 +303,10 @@ Zawadi za Avatar Paladin</translation>
 <translation id="1391855377994926460">Endelea kuvinjari wavuti haraka - hadi mara 6 haraka zaidi kwenye tovuti kuu za habari.</translation>
 <translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
 <translation id="3479552764303398839">Si sasa</translation>
+<translation id="732814027519296280">Unataka kufanya Brave Search iwe bora hata zaidi?</translation>
+<translation id="2677865600861971449">Ingia katika Web Discovery Project ili uchangie kwenye utafutaji bila kujulikana na data ya kuvinjari na uimarishe matokeo ya Brave Search kwa wote. Inadumisha faragha. Hakuna kutumia nguvu. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Washa</translation>
+<translation id="780301667611848630">Hapana, asante</translation>
 <translation id="5039804452771397117">Ruhusu</translation>
 <translation id="7053983685419859001">Zuia</translation>
 <translation id="7815301689257843278">Tuma ripot za kuacha kufanya kazi kiotomatiki ili Brave izuie tatizo hili kutokea tena?</translation>
@@ -311,6 +316,8 @@ Zawadi za Avatar Paladin</translation>
 <translation id="6873781976650514089">mpangilio huu</translation>
 <translation id="6040143037577758943">Funga</translation>
 <translation id="5600566490506283344">Arifa ya Matangazo ya Brave</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Changia utafutaji usiotambulisha na data ya kuvinjari ili kuboresha Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">Ongeza kwenye Sidebar</translation>
 <translation id="4233010476457917696">Onyesha utepe</translation>

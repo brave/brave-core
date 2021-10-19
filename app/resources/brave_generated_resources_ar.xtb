@@ -190,10 +190,10 @@
 <translation id="5655621391922317800">محافظ Crypto Wallets</translation>
 <translation id="1696548911367097044">الملحق الخاص بمحافظ العملات المشفرة التي تم الحد من استخدامها</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">مزوّد منصة إيثريوم لاستخدام تطبيقات Dapps</translation>
-<translation id="5913089932885076110">تحميل Crypto Wallets عند بدء التشغيل</translation>
-<translation id="757886143331967039">تحميل الملحق الخاص بمحافظ العملات المشفرة التي تم الحد من استخدامها عند بدء التشغيل</translation>
+<translation id="9131889008937672866">المحفظة الافتراضية للعملات المشفرة</translation>
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
+<translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
+<translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
 <translation id="5927916530277631319">طريقة لمعالجة النطاقات التي لا يمكن إيقافها</translation>
 <translation id="5248318250177143470">طريقة لمعالجة خدمة اسم إيثريوم (ENS)</translation>
@@ -233,6 +233,7 @@
 <translation id="1251574393468476924">الحد الأقصى لحجم ذاكرة التخزين المؤقت IPFS (جيجابايت)</translation>
 <translation id="2503497578400410320">حد أعلى مرن لمساحة قاعدة البيانات الخاصة بالـ IPFS القابلة للحفظ.</translation>
 <translation id="7703184801853248830">عنوان البوابة غير صالح</translation>
+<translation id="7690058578502751948">يمكن فقط استخدام بوابة IPFS صالحة مع تمكين عزل Origin في Brave</translation>
 <translation id="585868419599255817">الرجوع لبوابة IPFS العامة</translation>
 <translation id="207763736230883589">العودة تلقائياً إلى بوابة IPFS العامة إذا تعذر الوصول إلى العقدة المحلية الخاصة بك.</translation>
 <translation id="4107552920076294723">إعادة توجيه موارد IPFS إلى بوابة IPFS المهيأة</translation>
@@ -301,6 +302,10 @@
 <translation id="1391855377994926460">استمتع بتصفّح الويب بسرعةٍ أكبر - حتى 6 مرات أكثر على مواقع الأخبار الرئيسية.</translation>
 <translation id="9218430445555521422">تعيين كافتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
+<translation id="732814027519296280">هل تريد أن تجعل Brave Search أفضل؟</translation>
+<translation id="2677865600861971449">اشترك في Web Discovery Project للمساهمة بشكل مجهول في بعض عمليات البحث &amp; تصفح البيانات، وتحسين نتائج Brave Search للجميع. الحفاظ على الخصوصية. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">تفعيل</translation>
+<translation id="780301667611848630">لا، شكرًا</translation>
 <translation id="5039804452771397117">سماح</translation>
 <translation id="7053983685419859001">حظر</translation>
 <translation id="7815301689257843278">هل تريد إرسال تقارير الأعطال تلقائيًا حتى يتمكن Brave من منع حدوث هذه المشكلة مرة أخرى؟</translation>
@@ -310,6 +315,8 @@
 <translation id="6873781976650514089">هذا الإعداد</translation>
 <translation id="6040143037577758943">إغلاق</translation>
 <translation id="5600566490506283344">إشعار Brave Ad</translation>
+<translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
+<translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
 <translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
 <translation id="4877147287319222750">أضف إلى الشريط الجانبي</translation>
 <translation id="4233010476457917696">إظهار الشريط الجانبي</translation>

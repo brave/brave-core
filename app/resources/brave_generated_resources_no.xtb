@@ -169,10 +169,10 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5655621391922317800">Kryptolommebøker</translation>
 <translation id="1696548911367097044">Avviklet Kryptolommebøker-utvidelse</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum-leverandør for bruk av Dapps</translation>
-<translation id="5913089932885076110">Last inn kryptolommeboken ved oppstart</translation>
-<translation id="757886143331967039">Last inn avviklet Kryptolommebøker-utvidelse ved oppstart</translation>
+<translation id="9131889008937672866">Standard kryptovaluta-lommebok</translation>
 <translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
+<translation id="8239147115686034860">Lås Brave-lommeboken automatisk</translation>
+<translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="5927916530277631319">Metode for oppslag av ustoppelige domener</translation>
 <translation id="5248318250177143470">Metode for oppslag av Ethereum-navnetjeneste (ENS)</translation>
@@ -211,6 +211,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1251574393468476924">Maksimal IPFS-bufferstørrelse (GB)</translation>
 <translation id="2503497578400410320">En myk øvre grense for størrelsen på datalageret for IPFS-repositoriet.</translation>
 <translation id="7703184801853248830">Ugyldig systemport-adresse</translation>
+<translation id="7690058578502751948">Bare gyldige IPFS-gatewayer med Origin-isolering aktivert kan brukes i Brave.</translation>
 <translation id="585868419599255817">Tilbakefall av offentlig IPFS-gateway</translation>
 <translation id="207763736230883589">Gå tilbake til offentlig IPFS-systemport dersom den lokale noden din er utilgjengelig.</translation>
 <translation id="4107552920076294723">Omdiriger IPFS-ressurser til den konfigurerte IPFS-systemporten</translation>
@@ -279,6 +280,10 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1391855377994926460">Fortsett å surfe raskere på nettet – opptil 6 ganger raskere på store nyhetssider.</translation>
 <translation id="9218430445555521422">Bruk som standard</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
+<translation id="732814027519296280">Vil du bidra til at Brave-søket blir enda bedre?</translation>
+<translation id="2677865600861971449">Bli med i Web Discovery Project for å bidra anonymt med søke- og nettleserdata og forbedre Brave-resultatene for alle. Personvernet ditt er garantert ivaretatt – og du trenger ikke å gjøre noe. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Slå på</translation>
+<translation id="780301667611848630">Nei takk</translation>
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="7053983685419859001">Blokkér</translation>
 <translation id="7815301689257843278">Send krasjrapporter automatisk, slik at Brave kan forhindre at dette problemet oppstår igjen?</translation>
@@ -288,6 +293,8 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6873781976650514089">denne innstillingen</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="5600566490506283344">Varsel om Brave-reklame</translation>
+<translation id="4174337572777167894">Web Discovery-prosjektet</translation>
+<translation id="8659271182272561965">Bidra med anonyme søke- og surfedata for å forbedre Brave-søket.</translation>
 <translation id="1516554614404600536">Brave-tooltip</translation>
 <translation id="4877147287319222750">Legg til i sidestolpe</translation>
 <translation id="4233010476457917696">Vis sidefelt</translation>

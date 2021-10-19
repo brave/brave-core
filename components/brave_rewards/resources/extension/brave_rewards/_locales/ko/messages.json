@@ -19,6 +19,26 @@
     "message": "상태 새로 고침",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "보내신 모든 팁은 월렛 내에 보류 중 상태로 남게 되며 90일간 자동으로 다시 시도합니다. $link_begin$자세히 알아보기$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "아직 가입하지 않은 제작자입니다.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "이 제작자는 현재 귀하의 월렛에서 팁을 받을 수 있도록 구성되어 있지 않습니다.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ - $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ 도착 예정, $days$ 후",
+    "message": "$amount$ 지급 처리 시작, $days$ 후",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "숨기기",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "무료 통화를 시작하려면 Brave Rewards를 켜세요.",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "리워드 켜기",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "클릭하면 $tos_link_begin$이용 약관$tos_link_end$, $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의하게 됩니다.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "무료 통화를 시작하려면 Brave Private Ads를 활성화하세요.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads 켜기",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "광고를 켜면 $tos_link_begin$이용 약관$tos_link_end$, $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의하게 됩니다.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "이제 무료 통화 시작 가능",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave Talk로 이동하려면 화면의 아무데나 클릭하세요.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewards에 대해 자세히 알고 싶으십니까? $tour_link_begin$빠르게 둘러보세요$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

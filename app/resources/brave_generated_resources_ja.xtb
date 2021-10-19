@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="1696548911367097044">非推奨のCryptoウォレット拡張機能</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dappsを使用するためのイーサリアムプロバイダー</translation>
-<translation id="5913089932885076110">開始時にクリプトウォレットをロードする</translation>
-<translation id="757886143331967039">起動時に非推奨のCryptoウォレット拡張機能を読み込む</translation>
+<translation id="9131889008937672866">デフォルトの暗号通貨ウォレット</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
+<translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
+<translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
@@ -233,6 +233,7 @@
 <translation id="1251574393468476924">最大IPFSキャッシュサイズ（GB）</translation>
 <translation id="2503497578400410320">IPFSリポジトリのデータストアのサイズに対するソフトな上限。</translation>
 <translation id="7703184801853248830">無効なゲートウェイアドレス</translation>
+<translation id="7690058578502751948">Brave で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
 <translation id="585868419599255817">IPFSパブリックゲートウェイのフォールバック</translation>
 <translation id="207763736230883589">ローカルノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
 <translation id="4107552920076294723">IPFSリソースを構成済みIPFSゲートウェイにリダイレクトします</translation>
@@ -301,6 +302,10 @@
 <translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
+<translation id="732814027519296280">Brave Search をさらに良くしたいですか？</translation>
+<translation id="2677865600861971449">Web Discovery Project にオプトインして、検索ブラウジングデータを匿名で提供し、すべての人の Brave Search 結果を改善します。プライバシーは保護され、労力がかかることはありません。<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">オンにする</translation>
+<translation id="780301667611848630">利用しない</translation>
 <translation id="5039804452771397117">許可</translation>
 <translation id="7053983685419859001">ブロック</translation>
 <translation id="7815301689257843278">クラッシュレポートを自動的にBraveに送信して、このような問題の再発防止対策にご協力いただけますか？</translation>
@@ -310,6 +315,8 @@
 <translation id="6873781976650514089">この設定</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="5600566490506283344">Brave Adの通知</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
 <translation id="4877147287319222750">サイドバーに追加</translation>
 <translation id="4233010476457917696">サイドバーを表示</translation>
