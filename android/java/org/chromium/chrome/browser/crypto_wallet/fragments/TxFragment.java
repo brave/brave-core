@@ -135,8 +135,10 @@ public class TxFragment extends Fragment {
 
     private void setupView(View view) {
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
-        final double totalGas = Utils.fromHexWei(Utils.multiplyHexBN(
-                mTxInfo.txData.baseData.gasLimit, mTxInfo.txData.baseData.gasPrice));
+        final double totalGas =
+                Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
+                                         mTxInfo.txData.baseData.gasPrice),
+                        18);
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
                         String.format(Locale.getDefault(), "%.8f", totalGas)));
@@ -145,10 +147,10 @@ public class TxFragment extends Fragment {
             valueAsset = mTxInfo.txArgs[1];
         }
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
-                        String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)),
-                        mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
+        totalAmount.setText(String.format(
+                getResources().getString(R.string.crypto_wallet_total_amount),
+                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, 18)),
+                mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};

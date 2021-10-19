@@ -7,9 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -30,8 +27,6 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -146,39 +141,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                             }
                         });
             }
-            final ImageView iconImg = holder.iconImg;
-            final String iconPath = walletListItemModel.getIconPath();
-            final int iconId = walletListItemModel.getIcon();
-            mExecutor.execute(() -> {
-                InputStream inputStream = null;
-                try {
-                    Bitmap logoBitmap = null;
-                    if (iconPath == null) {
-                        mHandler.post(() -> { iconImg.setImageResource(iconId); });
-                        return;
-                    } else {
-                        Uri logoFileUri = Uri.parse(iconPath);
-                        inputStream = context.getContentResolver().openInputStream(logoFileUri);
-                        logoBitmap =
-                                Utils.resizeBitmap(BitmapFactory.decodeStream(inputStream), 110);
-                        inputStream.close();
-                    }
-                    final Bitmap bitmap = logoBitmap;
-                    mHandler.post(() -> { iconImg.setImageBitmap(bitmap); });
-                } catch (IOException exc) {
-                    org.chromium.base.Log.e("WCA", exc.getMessage());
-                } catch (IllegalArgumentException exc) {
-                    org.chromium.base.Log.e("WCA", exc.getMessage());
-                } finally {
-                    try {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                    } catch (IOException exception) {
-                        org.chromium.base.Log.e("WCA", exception.getMessage());
-                    }
-                }
-            });
+            Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
+                    walletListItemModel.getIcon(), holder.iconImg, null);
         } else {
             holder.iconImg.setImageResource(walletListItemModel.getIcon());
         }
