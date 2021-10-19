@@ -268,6 +268,15 @@ test("brave_unit_tests") {
     deps += [ "//brave/browser/decentralized_dns/test:unit_tests" ]
   }
 
+  if (brave_wallet_enabled) {
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+    ]
+  }
+
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
   }
