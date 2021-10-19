@@ -14,8 +14,6 @@ static_library("browser") {
     "ads_service_observer.h",
     "ads_storage_cleanup.cc",
     "ads_storage_cleanup.h",
-    "background_helper.cc",
-    "background_helper.h",
     "component_updater/component_info.cc",
     "component_updater/component_info.h",
     "component_updater/component_util.cc",
@@ -79,8 +77,6 @@ static_library("browser") {
     sources += [
       "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
       "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
-      "background_helper_android.cc",
-      "background_helper_android.h",
       "notification_helper_android.cc",
       "notification_helper_android.h",
     ]
@@ -94,8 +90,6 @@ static_library("browser") {
 
   if (is_linux) {
     sources += [
-      "background_helper_linux.cc",
-      "background_helper_linux.h",
       "notification_helper_linux.cc",
       "notification_helper_linux.h",
     ]
@@ -105,8 +99,6 @@ static_library("browser") {
 
   if (is_mac) {
     sources += [
-      "background_helper_mac.h",
-      "background_helper_mac.mm",
       "notification_helper_mac.h",
       "notification_helper_mac.mm",
     ]
@@ -114,8 +106,6 @@ static_library("browser") {
 
   if (is_win) {
     sources += [
-      "background_helper_win.cc",
-      "background_helper_win.h",
       "notification_helper_win.cc",
       "notification_helper_win.h",
     ]

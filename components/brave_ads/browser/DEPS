@@ -12,17 +12,6 @@ include_rules = [
 
 # Existing exceptions
 specific_include_rules = {
-  "background_helper_.*(\.cc|\.h)": [
-    "+chrome/browser/ui/browser.h",
-    "+chrome/browser/ui/browser_list.h",
-    "+chrome/browser/ui/browser_list_observer.h",
-    "+chrome/browser/ui/browser_window.h",
-    "+ui/aura/window.h",
-    "+ui/aura/window_tree_host.h",
-    "+ui/gfx/x/x11_atom_cache.h",
-    "+ui/gfx/win/singleton_hwnd_observer.h",
-    "+ui/views/win/hwnd_util.h",
-  ],
   "notification_helper_.*(\.cc|\.h|\.mm)": [
     "+brave/browser/brave_ads/android/jni_headers/BraveAds_jni.h",
     "+brave/browser/brave_ads/android/jni_headers/BraveAdsSignupDialog_jni.h",

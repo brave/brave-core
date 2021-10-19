@@ -13,6 +13,8 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/ads_service_impl.h",
   "//brave/browser/brave_ads/ads_tab_helper.cc",
   "//brave/browser/brave_ads/ads_tab_helper.h",
+  "//brave/browser/brave_ads/background_helper/background_helper.cc",
+  "//brave/browser/brave_ads/background_helper/background_helper.h",
   "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge.h",
 ]
 
@@ -52,18 +54,7 @@ brave_browser_brave_ads_deps = [
   "//ui/message_center/public/cpp",
 ]
 
-if (is_android) {
-  brave_browser_brave_ads_sources += [
-    "//brave/browser/brave_ads/brave_ads_host_android.cc",
-    "//brave/browser/brave_ads/brave_ads_host_android.h",
-    "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge_android.cc",
-  ]
-
-  brave_browser_brave_ads_deps += [
-    "//brave/browser/brave_ads/android:jni_headers",
-    "//brave/browser/notifications",
-  ]
-} else {
+if (!is_android) {
   brave_browser_brave_ads_sources += [ "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge.cc" ]
 
   if (enable_extensions) {
@@ -79,6 +70,52 @@ if (is_android) {
       "//extensions/common",
     ]
   }
+}
+
+if (is_android) {
+  brave_browser_brave_ads_sources += [
+    "//brave/browser/brave_ads/background_helper/background_helper_android.cc",
+    "//brave/browser/brave_ads/background_helper/background_helper_android.h",
+    "//brave/browser/brave_ads/brave_ads_host_android.cc",
+    "//brave/browser/brave_ads/brave_ads_host_android.h",
+    "//brave/browser/brave_ads/notifications/ad_notification_platform_bridge_android.cc",
+  ]
+
+  brave_browser_brave_ads_deps += [
+    "//brave/browser/brave_ads/android:jni_headers",
+    "//brave/browser/notifications",
+  ]
+}
+
+if (is_linux) {
+  brave_browser_brave_ads_sources += [
+    "//brave/browser/brave_ads/background_helper/background_helper_linux.cc",
+    "//brave/browser/brave_ads/background_helper/background_helper_linux.h",
+  ]
+
+  brave_browser_brave_ads_deps += [
+    "//ui/aura",
+    "//ui/gfx/x",
+  ]
+}
+
+if (is_mac) {
+  brave_browser_brave_ads_sources += [
+    "//brave/browser/brave_ads/background_helper/background_helper_mac.h",
+    "//brave/browser/brave_ads/background_helper/background_helper_mac.mm",
+  ]
+}
+
+if (is_win) {
+  brave_browser_brave_ads_sources += [
+    "//brave/browser/brave_ads/background_helper/background_helper_win.cc",
+    "//brave/browser/brave_ads/background_helper/background_helper_win.h",
+  ]
+
+  brave_browser_brave_ads_deps += [
+    "//ui/gfx",
+    "//ui/views",
+  ]
 }
 
 if (brave_adaptive_captcha_enabled) {
