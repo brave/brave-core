@@ -610,6 +610,55 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
 }
 
+TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
+  // This makes sure the state manager gets the chain ID
+  browser_task_environment_.RunUntilIdle();
+  std::string tx_hash;
+  CreateWallet();
+  AddAccount();
+  GURL url("https://brave.com");
+  Navigate(url);
+  SetNetwork("0x4");
+  AddEthereumPermission(url);
+  // Chain ID as 0x0
+  provider()->AddAndApprove1559Transaction(
+      mojom::TxData1559::New(
+          mojom::TxData::New("0x00", "", "0x1",
+                             "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                             "0x00", std::vector<uint8_t>()),
+          "0x0", "0x1", "0x1", nullptr),
+      from(),
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
+                                     const std::string& error_message) {
+        EXPECT_TRUE(success);
+        EXPECT_FALSE(hash.empty());
+        EXPECT_TRUE(error_message.empty());
+        tx_hash = hash;
+      }));
+  browser_task_environment_.RunUntilIdle();
+  // Chain ID as an empty string
+  provider()->AddAndApprove1559Transaction(
+      mojom::TxData1559::New(
+          mojom::TxData::New("0x00", "", "0x1",
+                             "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                             "0x00", std::vector<uint8_t>()),
+          "", "0x1", "0x1", nullptr),
+      from(),
+      base::BindLambdaForTesting([&](bool success, const std::string& hash,
+                                     const std::string& error_message) {
+        EXPECT_TRUE(success);
+        EXPECT_FALSE(hash.empty());
+        EXPECT_TRUE(error_message.empty());
+        tx_hash = hash;
+      }));
+  browser_task_environment_.RunUntilIdle();
+
+  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  ASSERT_EQ(infos.size(), 2UL);
+  EXPECT_EQ(infos[0]->tx_data->chain_id, "0x4");
+  EXPECT_EQ(infos[1]->tx_data->chain_id, "0x4");
+}
+
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
   // This makes sure the state manager gets the chain ID
   browser_task_environment_.RunUntilIdle();

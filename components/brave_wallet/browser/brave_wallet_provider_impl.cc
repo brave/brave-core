@@ -206,13 +206,33 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
     return;
   }
 
+  // If the chain id is not known yet, then get it and set it first
+  if (tx_data->chain_id == "0x0" || tx_data->chain_id.empty()) {
+    rpc_controller_->GetChainId(base::BindOnce(
+        &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
+        weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
+        from));
+  } else {
+    GetAllowedAccounts(base::BindOnce(
+        &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction2,
+        weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
+        from));
+  }
+}
+
+void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
+    AddAndApprove1559TransactionCallback callback,
+    mojom::TxData1559Ptr tx_data,
+    const std::string& from,
+    const std::string& chain_id) {
+  tx_data->chain_id = chain_id;
   GetAllowedAccounts(base::BindOnce(
-      &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
+      &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction2,
       weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
       from));
 }
 
-void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction(
+void BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction2(
     AddAndApprove1559TransactionCallback callback,
     mojom::TxData1559Ptr tx_data,
     const std::string& from,
