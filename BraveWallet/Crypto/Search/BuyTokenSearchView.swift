@@ -29,24 +29,10 @@ private struct TokenView: View {
 struct BuyTokenSearchView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
   
-  @State private var allTokens: [BraveWallet.ERCToken] = []
-  @State private var query = ""
-  
   @Environment(\.presentationMode) @Binding private var presentationMode
   
-  private var tokens: [BraveWallet.ERCToken] {
-    let query = query.lowercased()
-    if query.isEmpty {
-      return buyTokenStore.buyTokens
-    }
-    return buyTokenStore.buyTokens.filter {
-      $0.symbol.lowercased().contains(query) ||
-      $0.name.lowercased().contains(query)
-    }
-  }
-  
   var body: some View {
-    TokenList(tokens: tokens) { token in
+    TokenList(tokens: buyTokenStore.buyTokens) { token in
       Button(action: {
         buyTokenStore.selectedBuyToken = token
         presentationMode.dismiss()
@@ -55,8 +41,6 @@ struct BuyTokenSearchView: View {
       }
     }
     .navigationTitle(Strings.Wallet.searchTitle)
-    .animation(nil, value: query)
-    .filterable(text: $query)
   }
 }
 

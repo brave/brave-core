@@ -11,6 +11,19 @@ struct TokenList<Content: View>: View {
   var tokens: [BraveWallet.ERCToken]
   var content: (BraveWallet.ERCToken) -> Content
   
+  @State private var query = ""
+  
+  private var filteredTokens: [BraveWallet.ERCToken] {
+    let query = query.lowercased()
+    if query.isEmpty {
+      return tokens
+    }
+    return tokens.filter {
+      $0.symbol.lowercased().contains(query) ||
+      $0.name.lowercased().contains(query)
+    }
+  }
+  
   init(
     tokens: [BraveWallet.ERCToken],
     @ViewBuilder content: @escaping (BraveWallet.ERCToken) -> Content
@@ -34,15 +47,14 @@ struct TokenList<Content: View>: View {
           }
         }
       ) {
-        let tokens = self.tokens
-        if tokens.isEmpty {
+        if filteredTokens.isEmpty {
           Text(Strings.Wallet.assetSearchEmpty)
             .font(.footnote)
             .foregroundColor(Color(.secondaryBraveLabel))
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity)
         } else {
-          ForEach(tokens) { token in
+          ForEach(filteredTokens) { token in
             content(token)
           }
         }
@@ -50,6 +62,8 @@ struct TokenList<Content: View>: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
+    .animation(nil, value: query)
+    .filterable(text: $query)
   }
 }
 

@@ -52,7 +52,7 @@ struct BuyTokenView: View {
         ) {
           HStack {
             Text("$")
-            TextField(Strings.Wallet.amountInCurrency, text: $amountInput)
+            TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, "USD"), text: $amountInput)
               .keyboardType(.decimalPad)
           }
         }
@@ -81,7 +81,7 @@ struct BuyTokenView: View {
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItemGroup(placement: .navigationBarLeading) {
+        ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: {
             presentationMode.dismiss()
           }) {
