@@ -241,9 +241,7 @@ void BraveWalletProviderImpl::OnAddUnapprovedTransaction(
     add_tx_callbacks_[tx_meta_id] = std::move(callback);
     delegate_->ShowBubble();
   } else {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_ERROR));
+    std::move(callback).Run(false, "", error_message);
   }
 }
 
