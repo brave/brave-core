@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class EditVisibleAssetsBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener, OnWalletListItemClick {
@@ -222,7 +223,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
     private void setUpAssetsList(View view, ErcToken[] tokens, ErcToken[] userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<String>();
         for (ErcToken userSelectedToken : userSelectedTokens) {
-            selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase());
+            selectedTokensSymbols.add(userSelectedToken.symbol.toUpperCase(Locale.getDefault()));
         }
 
         RecyclerView rvAssets = view.findViewById(R.id.rvAssets);
@@ -232,7 +233,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         ErcToken eth = createEthereumErcToken();
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
-        itemModelEth.setIsUserSelected(selectedTokensSymbols.contains(eth.symbol.toUpperCase()));
+        itemModelEth.setIsUserSelected(
+                selectedTokensSymbols.contains(eth.symbol.toUpperCase(Locale.getDefault())));
         itemModelEth.setErcToken(eth);
         walletListItemModelList.add(itemModelEth);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
@@ -246,7 +248,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment
             itemModel.setErcToken(tokens[i]);
             itemModel.setIconPath("file://" + tokensPath + "/" + tokens[i].logo);
 
-            boolean isUserSelected = selectedTokensSymbols.contains(tokens[i].symbol.toUpperCase());
+            boolean isUserSelected = selectedTokensSymbols.contains(
+                    tokens[i].symbol.toUpperCase(Locale.getDefault()));
             itemModel.setIsUserSelected(isUserSelected);
             walletListItemModelList.add(itemModel);
         }

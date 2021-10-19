@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -46,7 +47,8 @@
                 android:textColor="@color/wallet_text_color"
                 android:background="@null"
                 android:enabled="false"
-                android:textColorHint="@color/wallet_edittext_outline_color" />
+                android:textColorHint="@color/wallet_edittext_outline_color"
+                tools:ignore="LabelFor" />
 
             <TextView
                 android:id ="@+id/copy_to_clipboard_text"

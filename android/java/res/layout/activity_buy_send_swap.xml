@@ -423,7 +423,8 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:paddingTop="2dp"
-                android:paddingBottom="2dp" />
+                android:paddingBottom="2dp"
+                tools:ignore="SmallSp" />
 
         </LinearLayout>
 

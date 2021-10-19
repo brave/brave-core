@@ -1702,17 +1702,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
         https://policies.google.com/terms/embedded
       </message>
-      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
-        Brave &amp; Chrome OS Additional Terms of Service
-      </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
         https://www.google.com/chrome/terms/
       </message>
       <message name="IDS_PRIVACY_POLICY_TITLE" desc="Title for the Brave privacy policy">
         Brave Privacy Policy
-      </message>
-      <message name="IDS_GOOGLE_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
-        https://policies.google.com/privacy
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/

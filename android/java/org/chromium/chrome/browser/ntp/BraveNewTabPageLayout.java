@@ -421,6 +421,7 @@ public class BraveNewTabPageLayout
         }
     }
 
+    @SuppressLint("VisibleForTests")
     protected void insertSiteSectionView() {
         mainLayout = findViewById(R.id.ntp_main_layout);
 
