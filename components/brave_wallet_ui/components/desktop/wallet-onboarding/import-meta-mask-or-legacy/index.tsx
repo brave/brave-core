@@ -120,6 +120,7 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
             placeholder={getLocale('braveWalletCreatePasswordInput')}
             value={password}
             onChange={onPasswordChanged}
+            onKeyDown={handleKeyDown}
             error={getLocale('braveWalletCreatePasswordError')}
             hasError={hasPasswordError}
           />
