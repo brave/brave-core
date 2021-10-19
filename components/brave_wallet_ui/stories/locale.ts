@@ -370,5 +370,11 @@ provideStrings({
   // Send Input Errors
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidAddress: 'Not a valid address',
-  braveWalletNotDomain: 'Domain is not registered'
+  braveWalletNotDomain: 'Domain is not registered',
+
+  // Transaction Queue Strings
+  braveWalletQueueOf: 'of',
+  braveWalletQueueNext: 'next',
+  braveWalletQueueFirst: 'first',
+  braveWalletQueueRejectAll: 'Reject transactions'
 })
