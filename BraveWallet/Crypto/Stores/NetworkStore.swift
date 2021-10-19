@@ -19,7 +19,7 @@ public class NetworkStore: ObservableObject {
       get: { self.ethereumChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init() },
       set: {
         self.selectedChainId = $0.chainId
-        self.controller.setNetwork($0.chainId)
+        self.controller.setNetwork($0.chainId) { _ in }
       }
     )
   }
@@ -34,7 +34,7 @@ public class NetworkStore: ObservableObject {
     controller.chainId { chainId in
       let id = chainId.isEmpty ? BraveWallet.MainnetChainId : chainId
       self.selectedChainId = id
-      self.controller.setNetwork(id)
+      self.controller.setNetwork(id) { _ in }
     }
     controller.add(self)
   }

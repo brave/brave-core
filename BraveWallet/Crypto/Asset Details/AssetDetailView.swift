@@ -77,7 +77,8 @@ struct CurrencyDetailView_Previews: PreviewProvider {
           isErc721: false,
           symbol: "ETH",
           decimals: 18,
-          visible: true
+          visible: true,
+          tokenId: ""
         )
       )
         .navigationBarTitleDisplayMode(.inline)
