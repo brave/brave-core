@@ -11,6 +11,5 @@ static_library("weekly_storage") {
   deps = [
     "//base:base",
     "//components/prefs",
-    "//third_party/abseil-cpp:absl",
   ]
 }

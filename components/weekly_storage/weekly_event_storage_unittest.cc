@@ -97,7 +97,6 @@ TEST_F(WeeklyEventStorageTest, InfrequentUsage) {
 
 // Verify serialization order across reloads, since GetLatest
 // relies on this.
-// FIXME(rillian): Disabled because it crashes as written.
 TEST_F(WeeklyEventStorageTest, SerializationOrder) {
   // Add a series of events.
   state_->Add(TestValues::kFoo);
