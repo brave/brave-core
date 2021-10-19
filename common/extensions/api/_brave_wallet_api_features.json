@@ -82,5 +82,23 @@
     "dependencies": [],
     "contexts": ["webui"],
     "component_extensions_auto_granted": false
+  },
+  "braveWallet.getCustomNetworksList": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["webui"],
+    "component_extensions_auto_granted": false
+  },
+  "braveWallet.removeEthereumChain": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["webui"],
+    "component_extensions_auto_granted": false
+  },
+  "braveWallet.addEthereumChain": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["webui"],
+    "component_extensions_auto_granted": false
   }
 }

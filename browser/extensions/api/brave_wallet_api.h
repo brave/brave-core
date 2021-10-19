@@ -116,6 +116,33 @@ class BraveWalletGetWeb3ProviderListFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletGetCustomNetworksListFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getCustomNetworksList", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetCustomNetworksListFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletRemoveEthereumChainFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.removeEthereumChain", UNKNOWN)
+
+ protected:
+  ~BraveWalletRemoveEthereumChainFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletAddEthereumChainFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.addEthereumChain", UNKNOWN)
+
+ protected:
+  ~BraveWalletAddEthereumChainFunction() override {}
+  ResponseAction Run() override;
+};
+
 class BraveWalletIsNativeWalletEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.isNativeWalletEnabled", UNKNOWN)

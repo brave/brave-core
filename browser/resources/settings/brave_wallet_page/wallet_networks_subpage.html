@@ -1,0 +1,82 @@
+<link rel="import" href="chrome://resources/html/cr.html">
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="add_wallet_network_dialog.js">
+<script type="module" src="brave_wallet_browser_proxy.js"></script>
+<script type="module" src="../settings_page/settings_section.js"></script>
+<script type="module" src="../settings_shared_css.js"></script>
+<script type="module" src="../settings_vars_css.js"></script>
+<script type="module" src="chrome://resources/cr_elements/cr_link_row/cr_link_row.js"></script>
+
+<dom-module id="settings-wallet-networks-subpage">
+<template>
+<style include="cr-shared-style settings-shared iron-flex">
+  .settings-row:not(:first-child) {
+    border-top: var(--cr-separator-line);
+  }
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+  .error-text {
+    color: red;
+  }
+  #icon-button {
+    display: none;
+  }
+
+  #networks-section {
+    display: block;
+    background-color: var(--cr-card-background-color);
+    padding-block-end: 0;
+    padding-block-start: 0;
+    padding-inline-end: var(--cr-section-padding);
+    padding-inline-start: var(--cr-section-indent-padding);
+  }
+</style>
+
+<div id="networks-section" class="flex-container">
+  <div class="flex">
+    <div class="settings-row">
+      <div class="flex cr-padded-text">
+          $i18n{walletNetworksListTitle}
+      </div>
+      <cr-button on-click="onAddNetworkTap_" >
+        $i18n{add}
+      </cr-button>
+    </div>
+    <div class="flex" id="listContainer">
+      <iron-list items="[[networks]]" class="flex" id="networksList"
+          preserve-focus risk-selection>
+        <template>
+          <div on-dblclick=onItemDoubleClick>
+            <div class="settings-box">
+              <div class="flex cr-padded-text">
+                <div><span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>{{item.chainName}}</div>
+                <div class="secondary">[[getItemDescritionText(item)]]</div>
+              </div>
+              <cr-icon-button class="icon-picture-delete"
+                  hidden=[[isDefaultNetwork(item.chainId)]]
+                  on-click="onDeleteActionTapped_">
+              </cr-icon-button>
+            </div>
+          </div>
+        </template>
+      </iron-list>
+    </div>
+  </div>
+</div>
+<template is="dom-if" if="[[showAddWalletNetworkDialog_]]" restamp>
+  <add-wallet-network-dialog networks="[[networks]]" selected="{{selectedNetwork}}" on-close="onAddNetworkDialogClosed_" hidden="[[!showAddWalletNetworkDialog_]]" >
+  </add-wallet-network-dialog>
+</template>
+
+</template>
+<script src="wallet_networks_subpage.js"></script>
+</dom-module>
