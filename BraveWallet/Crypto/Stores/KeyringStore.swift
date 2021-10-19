@@ -239,6 +239,19 @@ public class KeyringStore: ObservableObject {
   /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
   static func storePasswordInKeychain(_ password: String) -> Bool {
     guard let passwordData = password.data(using: .utf8) else { return false }
+    #if targetEnvironment(simulator)
+    // There is a bug with iOS 15 simulators when attempting to add a keychain item with
+    // `kSecAttrAccessControl` set. This of course means that on simulator we will not ask for biometrics
+    // and it will just auto-fill the password field but at least to set it up you still need to enable
+    // biometrics on the simulator
+    //
+    // Last checked: Xcode 13.1 (13A1030d)
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrAccount as String: passwordKeychainKey,
+      kSecValueData as String: passwordData
+    ]
+    #else
     let accessControl = SecAccessControlCreateWithFlags(
       nil,
       kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
@@ -251,6 +264,7 @@ public class KeyringStore: ObservableObject {
       kSecAttrAccessControl as String: accessControl as Any,
       kSecValueData as String: passwordData
     ]
+    #endif
     let status = SecItemAdd(query as CFDictionary, nil)
     return status == errSecSuccess
   }

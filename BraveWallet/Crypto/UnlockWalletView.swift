@@ -55,6 +55,9 @@ struct UnlockWalletView: View {
             .fixedSize(horizontal: false, vertical: true)
           SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
             .font(.subheadline)
+            .introspectTextField(customize: { tf in
+              tf.becomeFirstResponder()
+            })
             .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
             .padding(.horizontal, 48)
         }
