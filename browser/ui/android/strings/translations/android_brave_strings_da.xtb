@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">Foretrækker desktop-version af sider</translation>
 <translation id="1842747674580016420">Videoafspilning i Brave</translation>
 <translation id="5368992950177874750">Hvis aktiveret, afspilles videoer i Bravei stedet for den tilsvarende app</translation>
+<translation id="410351446219883937">Autoplay</translation>
+<translation id="7445411102860286510">Tillad, at websites automatisk afspiller videoer med lyden slået fra (anbefales)</translation>
+<translation id="7837721118676387834">Tillad automatisk afspilning af videoer, hvor lyden er slået fra, for et bestemt website.</translation>
 <translation id="181905442828471321">Globale standarder for Brave Shields</translation>
 <translation id="2675679258824361492">Andre anonymitetsindstillinger</translation>
 <translation id="8026334261755873520">Ryd browserdata</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3780605330121608425">Din tegnebog</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">Tilføj Penge</translation>
@@ -464,6 +468,17 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="3769645103175790584">Optjen tokens og beløn skabere for fantastisk indhold, når du surfer. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Hurtig tur</translation>
 <translation id="1080013038789678738">Jeg er klar!</translation>
+<translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
+<translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="7307847920988946894">Slå Rewards til</translation>
+<translation id="1186139901474936180">Ved at trykke acceptere du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>. Deaktivér til enhver tid i Indstillinger.</translation>
+<translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
+<translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
+<translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
+<translation id="7314030474505546826">Ved at aktivere Ads accepterer du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
+<translation id="6712250553966900750">Tryk hvor som helst på skærmen for at fortætte til Brave Talk.</translation>
+<translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
 <translation id="7889432931837317731">Åbn automatisk, når det er muligt</translation>
@@ -526,6 +541,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="7408247683131762445">ADVARSEL: Oplys aldrig din backup-sætning. Personer i besiddelse af sætningen kan tage dine midler permanent.</translation>
 <translation id="939275786514736244">Jeg har lavet en backup af min sætning og gemt den et sikkert sted</translation>
 <translation id="6896758677409633944">Kopier</translation>
+<translation id="2604744480284798833">Backup din wallet nu for at beskytte din crypto-portefølje i tilfælde af mistet adgang.</translation>
 <translation id="1202920745614909195">Køb krypto med Apple Pay eller betalingskort.</translation>
 <translation id="841880029259839903">Send krypto, eller overfør fra én konto til en anden.</translation>
 <translation id="8982246458261383692">Handl kryptoaktiver med Brave DEX Aggregator.</translation>
@@ -534,7 +550,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="4450951602553063001">Indtast adgangskoden igen</translation>
 <translation id="1783870616707290226">Adgangskoden skal indeholde mindst 7 tegn.</translation>
 <translation id="7383102760859258982">De genindtastede adgangskode stemte ikke overens</translation>
-<translation id="1538774398124896437">Live</translation>
+<translation id="3188963375823360044">1H</translation>
 <translation id="8163269366661594721">1 d.</translation>
 <translation id="7640956400175663828">1 u.</translation>
 <translation id="9100647964747998533">1 m.</translation>
@@ -544,6 +560,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="8892168913673237979">Så er vi klar!</translation>
 <translation id="8331501996028380732">Køb, sælg og opbevar kryptovaluta. Hvis du ikke har en eksisterende kryptokonto, kan du tilføje én nu.</translation>
 <translation id="2267753748892043616">Tilføj konto</translation>
+<translation id="2632612428525029752">Opdatér konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivér oplåsning via fingeraftryk?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
@@ -563,7 +580,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
 <translation id="745115390910697838">Sætningerne stemte ikke overens. Prøv igen.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
-<translation id="990936698620790924">Markedspris i ETH</translation>
+<translation id="6392640873800632439">Markedspris i <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Pris i ETH</translation>
 <translation id="6748108480210050150">Fra</translation>
 <translation id="3318280255740629162">25 %</translation>
@@ -591,10 +608,107 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="569068482611873351">Importér ...</translation>
 <translation id="1940465339426637378">Aktiver</translation>
 <translation id="4522570452068850558">Detaljer</translation>
-<translation id="9065203028668620118">Rediger</translation>
 <translation id="3995184924764722477">Kontooplysninger</translation>
 <translation id="8967036623785635603">Redigér synlige aktiver</translation>
 <translation id="5050890334032852465">Gem kontoens overvågningsliste</translation>
 <translation id="7755766175599167100">Søg i tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
+<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="719977489961414786">Opgradér til en VPN, der beskytter din forbindelse og blokerer invasive trackere over alt.</translation>
+<translation id="3435896845095436175">Aktivér</translation>
+<translation id="8814357473522731680">Køres af</translation>
+<translation id="5596139545583924414">Blokér reklamer &amp; trackere på tværs af alle apps</translation>
+<translation id="8272917646984397798">Sikrer alle forbindelser</translation>
+<translation id="1751947227857853925">Hurtig og ubegrænset op til 100 Mbps</translation>
+<translation id="1400240082805528049">24/7 support</translation>
+<translation id="5051030058817632680">Blokere uønskede netværksforbindelser</translation>
+<translation id="3510283489391432976">Vælg din placering/dit land</translation>
+<translation id="4390800080658195654">Holder dig anonym, når du er online</translation>
+<translation id="639981156979733813">Understøtter hastigheder på op til 100 Mbps</translation>
+<translation id="8396607116169935837">Bruger IKEv2 sikker, krypteret VPN-tunnel</translation>
+<translation id="1571230671455380494">Vi deler eller sælger aldrig din information</translation>
+<translation id="276866628038850725">Alle abonnementer indeholder en gratis prøveperiode på 7 dage!</translation>
+<translation id="7280825497485894053">Månedlig abonnement</translation>
+<translation id="3001303523417455986">Årligt abonnement</translation>
+<translation id="6748319398471481216">Forny månedlig</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / md.</translation>
+<translation id="1163809943099641131">Et år</translation>
+<translation id="6277055349883621705">Forny årligt, og spar 16 %</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / år.</translation>
+<translation id="4487678670820292781">$119.88</translation>
+<translation id="5867778679088331977">Prøv gratis i 7 dage. Efter 7 dage vil du blive opkrævet abonnementsprisen. Alle abonnementer fornyes automatisk, men kan annulleres inden fornyelse.</translation>
+<translation id="6053992191006521518">Prøv GRATIS</translation>
+<translation id="721747358270435486">Installér VPN</translation>
+<translation id="836074276610740314">Installér VPN-profil</translation>
+<translation id="8021842065465097929">Brave installerer nu en VPN-profil.</translation>
+<translation id="229286271464650057">Denne profil tillader, at VPN altid automatisk opretter forbindelse og sikrer traffik på tværs af din enhed — i alle apps. Denne VPN-forbindelse bliver krypteret og føres gennem Guardians intelligente firewall for at blokere reklamer og trackere.</translation>
+<translation id="9073255657908892407">Kontakt teknisk support</translation>
+<translation id="1139934321138152517">VPN er nu aktiveret</translation>
+<translation id="7678718921266217759">Lidt kontekst ...</translation>
+<translation id="7267573208549764106">Din tidligere VPN-forbindelse blev afbrudt. For at genoprette VPN-forbindelsen skal du acceptere forbindelsesanmodningen.
+
+Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genoprettet og din internetforbindelse er ikke sikker.</translation>
+<translation id="2429299231491852747">Acceptér forbindelsesanmodning</translation>
+<translation id="3428909627460825679">VPN-profil kunne ikke oprettes. Prøv igen.</translation>
+<translation id="8584119457978684056">Bekræftelse af køb af polet mislykkedes. Prøv igen.</translation>
+<translation id="8905950042180169719">VPN kører i baggrunden</translation>
+<translation id="8681480718817027245">Abonnement</translation>
+<translation id="7805768142964895445">Status</translation>
+<translation id="5747552184818312860">Udløber</translation>
+<translation id="1656814355341174523">Administrér abonnement</translation>
+<translation id="1919008675977575793">Server</translation>
+<translation id="4812684235631257312">Vært</translation>
+<translation id="5646376287012673985">Placering</translation>
+<translation id="8375573361134671513">Nulstil konfiguration</translation>
+<translation id="850405162932416400">VPN-support</translation>
+<translation id="1330148827129583049">VPN-profil blev ikke oprettet. Opretter en ny profil.</translation>
+<translation id="6772117549627334582">Kunne ikke få serverplacering. Prøv igen.</translation>
+<translation id="5863914199331127413">VPN-værtsnavn</translation>
+<translation id="5499653136178260315">Abonnementstype</translation>
+<translation id="4741058112780154119">App-version</translation>
+<translation id="7286066816862208787">App-kvittering</translation>
+<translation id="2552966063069741410">Tidszone</translation>
+<translation id="4395361077929528480">Netværkstype</translation>
+<translation id="755448900483975096">Mobilselskab</translation>
+<translation id="1279441577056010362">Fortsæt til e-mail</translation>
+<translation id="2553687444159335134">Support giver med hjælp fra Guardian-teamet.\n\nVælg den information, du vil dele med os.\n\nDen information, du deler med os, vil gøre det nemmere for vores supportmedarbejdere at løse dit</translation>
+<translation id="7999094850625689785">En serverregion tætteste på dig bliver automatisk valgt baseret på dit systems tidszone. Dette anbefales for at sikre hurtig internethastighed.</translation>
+<translation id="8018707825009059641">Andre problemer</translation>
+<translation id="6687228121145903051">Kan ikke oprette forbindelse til VPN (anden fejl)</translation>
+<translation id="9184988385244077767">Intet internet, når der er forbindelse</translation>
+<translation id="21570240866965662">Langsom forbindelse</translation>
+<translation id="1219475260382643267">Hjemmesiden virker ikke</translation>
+<translation id="7138678301420049075">Andet</translation>
+<translation id="4827315939627587219">Nulstil VPN-konfiguration</translation>
+<translation id="6883280223123252086">Er du sikker på, du vil nulstille VPN-konfiguration?</translation>
+<translation id="604124094241169006">Automatisk</translation>
+<translation id="7475580600756356589">Opretter forbindelse til din server. Det bør kun tage et øjeblik ...</translation>
+<translation id="1342728075788541348">Afbryder forbindelsen til din server. Burde kun tage et øjeblik ...</translation>
+<translation id="669072536454692117">Abonnement genoprettet</translation>
+<translation id="1187506504156101449">Kunne ikke bekræfte køb :</translation>
+<translation id="8420522105268941892">Du er allerede tilmeldt dette abonnement. Prøv at gendanne abonnementet.</translation>
+<translation id="74771564105268111">FEJL!!\nForårsaget af en bruger, der annullerede købsprocessen.</translation>
+<translation id="3851978668258201962">FEJL!!\nKøb mislykkedes ...</translation>
+<translation id="6452181791372256707">Afvis</translation>
+<translation id="8030852056903932865">Godkend</translation>
+<translation id="1597199892790541240">Brændstofgebyr</translation>
+<translation id="1634828734222219955">Total</translation>
+<translation id="7995708795274219641">Beløb + Brændstof</translation>
+<translation id="1950052789869821983">Transaktion</translation>
+<translation id="6122742277607781713">Portefølje</translation>
+<translation id="2805756323405976993">Apps</translation>
+<translation id="6083912983861746409">Gaspris(GWEI)</translation>
+<translation id="2499079593046817044">Gasgrænse(GWEI)</translation>
+<translation id="6389441740143786465">Deaktivér Sharing Hub</translation>
+<translation id="9065203028668620118">Rediger</translation>
+<translation id="473775607612524610">Opdater</translation>
+<translation id="479795390141144417">Kontoopdatering mislykkedes.</translation>
+<translation id="8084782383392198011">Kontonavn kan ikke være tom.</translation>
+<translation id="5045550434625856497">Ugyldig adgangskode</translation>
+<translation id="1367951781824006909">Vælg en fil</translation>
+<translation id="8648684608605749476">Bloker tredjepartscookies i Inkognito</translation>
+<translation id="1118876217803190221">Utilstrækkelig saldo</translation>
+<translation id="275990379543116961">Ikke nok midler til gas</translation>
+<translation id="3292453499915466604">Utilstrækkelig likviditet</translation>
+<translation id="3380365263193509176">Ukendt fejl</translation>
 </translationbundle>

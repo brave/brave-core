@@ -19,6 +19,26 @@
     "message": "রিফ্রেশের স্থিতি",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "আপনার করা যে কোনও টিপ আপনার ওয়ালেটে জমা থাকবে এবং 90 দিন ধরে স্বয়ংক্রিয়ভাবে পুনঃপ্রয়াস হবে। $link_begin$আরও জানুন$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "এই নির্মাতা এখনও সাইন আপ করেন নি।",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "এই নির্মাতাটি বর্তমানে আপনার ওয়ালেট থেকে কোনও টিপ পাওয়ার জন্য কনফিগার করা নেই।",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$ এ $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$days$-তে $amount$ আসছে",
+    "message": "$days$-এ $amount$ পেআউট প্রক্রিয়াকরণ শুরু করে",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "খারিজ",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "একটি বিনামূল্যে কল শুরু করতে Brave Rewards চালু করুন",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপনগুলো দেখার জন্য টোকেন অর্জন করেন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "পুরষ্কারগুলির বোতাম চালু করুন",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "ক্লিক করে আপনি $tos_link_begin$পরিষেবার শর্তাবলী$tos_link_end$ এবং $pp_link_begin$গোপনীয়তা নীতির$pp_link_end$ সাথে সম্মত হন। যে কোনও সময়ে সেটিংসে অক্ষম করুন।",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "একটি বিনামূল্যে কল শুরু করতে Brave ব্যক্তিগত বিজ্ঞাপন সক্ষম করুন",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave ব্যক্তিগত বিজ্ঞাপন-এর সাহায্যে আপনি ব্যক্তিগত বিজ্ঞাপন দেখার জন্য টোকেন উপার্জন করুন (আপনার ডেটা নিরাপদ)। সেই টোকেনগুলো নগদ, উপহার কার্ডে…বা এমনকি আপনি ভালবাসেন এমন টিপে পরিণত করুন। কোনও ট্র্যাকিং নেই। কোনও গতি হ্রাস নেই।",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave ব্যক্তিগত বিজ্ঞাপনগুলো চালু করুন",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "বিজ্ঞাপনগুলো চালু করে আপনি $tos_link_begin$পরিষেবার বিধি$tos_link_end$ ও $pp_link_begin$গোপনীয়তা নীতির$pp_link_end$ সাথে সম্মত হন।",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "আপনি এখন বিনামূল্যে কল শুরু করতে পারেন",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Brave টক চালিয়ে যেতে স্ক্রিনে যে কোনও স্থানে ক্লিক করুন।",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewards সম্পর্কে আরও জানতে চান? $tour_link_begin$একবার চটজলদি ঘুরে দেখুন$tour_link_end$।",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

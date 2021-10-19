@@ -19,6 +19,26 @@
     "message": "Status vernieuwen",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden. $link_begin$Meer informatie$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Deze ontwikkelaar is nog niet aangemeld.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Deze ontwikkelaar is momenteel niet geconfigureerd om fooien te ontvangen van je wallet.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ op $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ komt binnen over $days$",
+    "message": "Uitbetaling van $amount$ wordt verwerkt over $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Zet Brave Rewards aan om een gratis telefoongesprek te starten",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Met Brave Rewards verdien je tokens door privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen... of zelfs in fooi voor de websites die je leuk vindt. Geen tracking. Geen vertragingen.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Beloningen inschakelen",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Door te klikken ga je akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$. Dit kun je op welk moment dan ook uitschakelen via Instellingen.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Schakel Brave Private Ads in om een gratis telefoongesprek te starten",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Met Brave Private Ads verdien je tokens door privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen... of zelfs in fooi voor websites die je leuk vindt. Geen tracking. Geen vertragingen.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads aanzetten",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Door Ads aan te zetten, ga je akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Je kunt nu een gratis telefoongesprek starten",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klik ergens op het scherm om door te gaan naar Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Wil je meer informatie over Brave Rewards? $tour_link_begin$Volg een korte rondleiding$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -190,10 +190,10 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5655621391922317800">Kriptopénztárcák</translation>
 <translation id="1696548911367097044">Elavult Crypto Wallets bővítmény</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Ethereum szolgáltató a Dapps használatához</translation>
-<translation id="5913089932885076110">Crypto Wallets betöltése indításkor</translation>
-<translation id="757886143331967039">Elavult Crypto Wallets bővítmény betöltése bekapcsoláskor.</translation>
+<translation id="9131889008937672866">Alapértelmezett kriptovaluta-tárca</translation>
 <translation id="1834467296210148203">A Brave Wallet ikon megjelenítése az eszköztárban</translation>
+<translation id="8239147115686034860">Brave Wallet automatikus zárolása</translation>
+<translation id="414639769490080648">Ennyi percbe telik, amíg a Brave Wallet automatikusan zárolva lesz</translation>
 <translation id="6864914031231797928">Google bejelentkezés engedélyezése a bővítmények számára</translation>
 <translation id="5927916530277631319">Módszer az Unstoppable Domains megoldására</translation>
 <translation id="5248318250177143470">Módszer az Ethereum Name Service (ENS) megoldására</translation>
@@ -232,6 +232,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1251574393468476924">IPFS gyórsítótár maximális mérete (GB)</translation>
 <translation id="2503497578400410320">Egy állítható felső korlát az IPFS tárhely adattárának méretére</translation>
 <translation id="7703184801853248830">Érvénytelen átjárócím</translation>
+<translation id="7690058578502751948">Csak engedélyezett Origin izolációval rendelkező, érvényes IPFS átjárót lehet a Brave-vel használni</translation>
 <translation id="585868419599255817">Visszaállás IPFS nyilvános átjáróra</translation>
 <translation id="207763736230883589">Automatikus visszaállás nyilvános IPFS átjáróra, ha a helyi csomópont nem érhető el.</translation>
 <translation id="4107552920076294723">IPFS források átirányítása a beállított IPFS átjáróra</translation>
@@ -300,6 +301,10 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1391855377994926460">Böngésszen gyorsabban az interneten – a főbb híroldalakon akár 6x gyorsabban.</translation>
 <translation id="9218430445555521422">Beállítás alapértelmezettként</translation>
 <translation id="3479552764303398839">Ne most</translation>
+<translation id="732814027519296280">Szeretné, ha még jobb lenne a Brave Search?</translation>
+<translation id="2677865600861971449">Csatlakozzon a Web Discovery projekthez, hogy névtelen keresési és böngészési adatokat szolgáltasson, segítve azt, hogy mindenki jobb Brave Search találatokat kapjon. Biztonságos. Semmi ráfordítást nem igényel. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Bekapcsolás</translation>
+<translation id="780301667611848630">Köszönöm, nem</translation>
 <translation id="5039804452771397117">Engedélyezés</translation>
 <translation id="7053983685419859001">Letiltás</translation>
 <translation id="7815301689257843278">Küldjön a rendszer automatikusan jelentéseket az összeomlásról, hogy a Brave meg tudja előzni a probléma újbóli előfordulását?</translation>
@@ -309,6 +314,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6873781976650514089">ezt a beállítást</translation>
 <translation id="6040143037577758943">Bezárás</translation>
 <translation id="5600566490506283344">Brave Ad értesítés</translation>
+<translation id="4174337572777167894">Web Discovery projekt</translation>
+<translation id="8659271182272561965">Szolgáltasson névtelen keresési és böngészési adatokat, hogy pontosabbá tegye a Brave Search-öt.</translation>
 <translation id="1516554614404600536">Brave elemleírás</translation>
 <translation id="4877147287319222750">Hozzáadás az oldalsávhoz</translation>
 <translation id="4233010476457917696">Oldalsáv mutatása</translation>

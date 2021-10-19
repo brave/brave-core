@@ -98,6 +98,9 @@
 <translation id="730042046912793465">Tai yra</translation>
 <translation id="2055363275850890030">Privatus langas</translation>
 <translation id="9133213713928851646">„Brave“ neįsimena, ką veikiate privačiame lange. Svetainės, kuriose lankotės, nerodomos jūsų istorijoje, o baigus slapukai dingsta. Vis dėlto, privatūs langai visiškai nenuslepia jūsų tapatybės internete.</translation>
+<translation id="4085423007106063912">„Brave“ niekada neįsimena, ką veikiate inkognito lange. Svetainės, kuriose lankotės, istorijoje rodomos nebus. Uždarius langą, slapukai, formų, svetainės duomenys išnyks.</translation>
+<translation id="1700746046668116047">Atminkite, kad interneto paslaugų teikėjas, pasyvūs interneto stebėtojai arba darbdavys vis tiek gali matyti jūsų veiklą (jei naudojate darbo įrenginį arba tinklą). Norėdami užtikrinti dar didesnį privatumą, atidarykite privatųjį „Tor“ naršyklės langą.</translation>
+<translation id="8759753423332885148">Sužinokite daugiau.</translation>
 <translation id="3546750666732517156">Privatus langas su „Tor“ prisijungimu</translation>
 <translation id="5383068818957293256">„Brave“ niekada nekaupia atmintyje jokių jūsų veiksmų privačiame lange. „Tor“ prisijungimas taip pat leidžia paslėpti jūsų IP adresą nuo jūsų lankomų svetainių. Tačiau jei nuo anonimiškumo priklauso jūsų asmeninis saugumas, geriau naudokite „Tor“ naršyklę.</translation>
 <translation id="778096729652828897">Daugiau sužinokite apie privačius langus su „Tor“</translation>
@@ -238,18 +241,16 @@
 <translation id="5549059668721746831">Kito mėnesinio indėlio data</translation>
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME"/>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
-<translation id="3113653894794167793">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
 <translation id="3082557070674409251">Spustelėta</translation>
 <translation id="7119308337584989771">Atsisakyta</translation>
 <translation id="6805660603861526473">Žiūrėta</translation>
+<translation id="3113653894794167793">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
+<translation id="8832187864682447273">Norint prisijungti jums reikia patvirtintos piniginės</translation>
+<translation id="2607420597216860026"><ph name="PROVIDER"/> baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
 <translation id="1501075228659004450">Hmm, atrodo, kad jūsų „Brave Rewards“ piniginė jau patvirtinta su kita <ph name="PROVIDER"/> sąskaita. Bandykite patvirtinti dar kartą, naudodami savo ankstesnę sąskaitą.</translation>
 <translation id="5111921830714291902">Klaida: kita paskyra</translation>
-<translation id="2359865110462963929">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
-<translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
-<translation id="8429332714958713413">Norint prisijungti jums reikia patvirtintos piniginės</translation>
-<translation id="5881716477679854586"><ph name="CUSTODIAN"/> baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
-<translation id="4285403731827683059"><ph name="AMOUNT"/> gaunama po <ph name="DAYS"/></translation>
+<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Išmoka gali būti apdorota ir BAT galite gauti per keletą dienų.</translation>
 <translation id="4672975606583962967">Pasirinkite piniginės paslaugą</translation>
 <translation id="1815503044492647974">Pasirinkite piniginės apsaugos partnerį. Jei jau turite paskyrą, būsite paprašyti prisijungti, kad galėtumėte užmegzti ryšį.</translation>
 <translation id="2205685774710519016">Pastaba. Jūsų operacijos pasirinktai piniginės paslaugai bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
@@ -357,6 +358,7 @@
 <translation id="864162897141534043">Ruošiatės skirti arbatpinigių</translation>
 <translation id="3084276630953238154">Įvyko atsitiktinė klaida</translation>
 <translation id="3263379510325043678">Ryšio su serveriu klaida</translation>
+<translation id="7172012963002631836">Siunčiant arbatpinigius iškilo problema.</translation>
 <translation id="8994556588732085585">Uždarykite ir iš naujo atidarykite arbatpinigių davimo langą, kad pabandytumėte dar kartą.</translation>
 <translation id="8987454605694983241">pvz., <ph name="AMOUNT"/></translation>
 <translation id="4492470488449820476">Minimali arbatpinigių suma yra <ph name="AMOUNT"/> <ph name="CURRENCY"/></translation>
@@ -453,6 +455,7 @@
 <translation id="6045860799501892362">Nustatyti mėnesinį indėlį</translation>
 <translation id="298067735430872465">Uždarbis iš reklamos</translation>
 <translation id="2266556115441975588">Savo atlygius už reklamą rasite čia!</translation>
+<translation id="1418534671788496616">Peržiūrėti įnašų istoriją</translation>
 <translation id="8764029012618014430">Aktyvinti arbatpinigius</translation>
 <translation id="3412655388715513818">Neįtraukti šios svetainės</translation>
 <translation id="418343137736963579">Bendras svetainių skaičius, kurių neįtraukėte į automatinį indėlį:</translation>
@@ -502,7 +505,6 @@
 <translation id="1110535155349301542">pašalinti</translation>
 <translation id="8204292894173669182">Pašalinti iš įrašytų</translation>
 <translation id="5530851178552343773">Jūs paskyrėte [[reservedAmount]] [[currency]] kūrėjams, kurie dar nebuvo užsiregistravę gauti įmokas. Jūsų naršyklė toliau mėgins prisidėti finansiškai, kol jie užsiregistruos ar kol praeis 90 dienų.</translation>
-<translation id="8759753423332885148">Sužinokite daugiau.</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="3157931365184549694">Atkurti</translation>
 <translation id="1797334173232638045">Jūsų prisegtos svetainės perkeltos į</translation>
@@ -528,7 +530,6 @@
 <translation id="3267911153934785912">Įveskite atkūrimo kodą arba</translation>
 <translation id="1209382772199769572">Prieš pakeisdami piniginę, sukurkite jos atsarginę kopiją. Priešingu atveju prarasite dabartinėje piniginėje esančius pinigus – [[funds]].</translation>
 <translation id="5423214929210538027">Ar tikrai norite iš naujo nustatyti „Rewards“ piniginę?</translation>
-<translation id="8683358891240311475">Jei iš naujo nustatysite piniginę, jūsų <ph name="BAT_AMOUNT"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami <ph name="PROVIDER"/>, kad neprarastumėte BAT.</translation>
 <translation id="2028613172174411919">Jei iš naujo nustatysite piniginę, jūsų „Rewards“ duomenys bus prarasti visam laikui.</translation>
 <translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
 <translation id="3494964159182650590">„Rewards“ suvestinė</translation>
@@ -546,8 +547,6 @@
 <translation id="1726566769229204312">Atpažinimo ženklo suteikimas</translation>
 <translation id="4395099108822007284">Įkeliamas vaizdas...</translation>
 <translation id="3535654229833214438">Operacijos</translation>
-<translation id="244362569344671266">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias „Brave“ reklamas ir automatiškai paremkite turinio kūrėjus.</translation>
-<translation id="3903419925307046908">Gaukite žetonų ir pasidalykite jais</translation>
 <translation id="8772672608371898774">„Brave“ patvirtintas leidėjas</translation>
 <translation id="5050370287908180130">Rodyti išsamią mėnesinę ataskaitą</translation>
 <translation id="8615803647903750175">Piniginės veikla</translation>
@@ -558,6 +557,7 @@
 <translation id="7530570094705720669">Kuriama piniginė</translation>
 <translation id="1988679729106502285">PASTABA.</translation>
 <translation id="7979350009208995417">Šis kūrėjas dar nėra sukonfigūruotas gauti arbatpinigių iš jūsų piniginės. Visi jam jūsų siųsti arbatpinigiai bus sulaikyti jūsų piniginėje automatiškai kartojant arbatpinigių siuntimą 90 dienų.</translation>
+<translation id="6521772344816912550">Šis kūrėjas dar neužsiregistravęs. Visi siųsti arbatpinigiai bus sulaikyti jūsų piniginėje automatiškai kartojant arbatpinigių siuntimą 90 dienų.</translation>
 <translation id="3197752845651180812">Laukiantys indėliai</translation>
 <translation id="6964891561514920613">Rodyti visus laukiančius indėlius</translation>
 <translation id="4346944508027912677">Laukiama iki</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="3656941797339037856">Susiekite „Rewards“ su „Gemini“!</translation>
-<translation id="671838195432136371">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY* nuo turimų BAT. Nauji „Gemini“ naudotojai, kurie susies, nemokamai gaus 5 BAT!</translation>
-<translation id="9136976526700181750">* „Gemini“ uždirbamas APY 2021 m. rugpjūčio 15 d. duomenimis</translation>
+<translation id="2383784987664887340">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY nuo turimų BAT. Patvirtinkite ir susiekite savo „Brave Rewards“ piniginę su „Gemini“ dabar!</translation>
+<translation id="2237374144728570574">* „Gemini“ uždirbamas APY 2021 m. rugsėjo 15 d. duomenimis</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
@@ -585,21 +585,7 @@
 <translation id="1109729143147368573">Leiskite turimas kriptovaliutas ir kitą turtą, pirkdami iš beveik 50 milijonų pardavėjų ir išsigrynindami pinigus bankomatuose visame pasaulyje. Leiskite kriptovaliutas, kad gautumėte kriptovaliutų!</translation>
 <translation id="7840362246306242214">Prekyba JAV akcijomis, vykdoma „Uphold“</translation>
 <translation id="3345432088196080137">Investuokite vos nuo 1 USD į populiarias akcijas ir biržoje prekiaujamus fondus, pavyzdžiui, AAPL, TSLA arba AMZN</translation>
-<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/> apie „Brave Rewards“</translation>
-<translation id="7443190393462029180">Spustelėdami „Pradėti naudotis „Brave Rewards“, sutinkate su <ph name="TOS_LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>privatumo politika<ph name="PP_LINK_END"/>.</translation>
-<translation id="8344084848798035850">Apytikslis šio mėnesio uždarbis</translation>
-<translation id="5235444069025581717">Šio mėnesio arbatpinigiai ir indėliai</translation>
-<translation id="1210965535849006928">Atsiimti „Rewards“</translation>
-<translation id="4609518959946843710">Gaukite atlygį už šio remiamo foninio vaizdo peržiūrą.</translation>
-<translation id="5311968438376723685">Įjunkite „Brave Private Ads“ ir gaukite savo dalį. Taip pat galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
-<translation id="8568666589217601917">Puiku!</translation>
-<translation id="764235488372037377">Savo atlygius už reklamą rasite čia</translation>
-<translation id="7091215606170476659">Jūsų laukia UGP išmoka iš „Brave“.</translation>
-<translation id="6759185676704303656">Gaunate užmokestį už šio foninio vaizdo peržiūrą.</translation>
-<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie per „Brave Rewards“ remiamus vaizdus.</translation>
-<translation id="6113004497629356998">Slėpti remiamus vaizdus</translation>
 <translation id="3787061634640932557">Redaguoti korteles</translation>
-<translation id="8511604585939286108">Spustelėdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 <translation id="5977237145327845546">Pradėti privatų vaizdo skambutį su draugais ir kolegomis.</translation>
 <translation id="5850325887346946383">Pradėti vaizdo skambutį</translation>
 <translation id="3651550649176056334">Apie jūsų duomenis</translation>
@@ -781,7 +767,9 @@
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
 <translation id="5894023780213944778">Mano piniginė</translation>
 <translation id="2613359062756190460">Vienkartiniai arbatpinigiai</translation>
+<translation id="4240437602809703483"><ph name="AMOUNT"/> išmoka bus pradėta apdoroti po <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Atlygis už reklamą</translation>
+<translation id="4989163558385430922">Žr. viską</translation>
 <translation id="3026978804849658576">Peržiūrėti ataskaitą</translation>
 <translation id="8494748383523030337">Jūsų balansas</translation>
 <translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
@@ -793,6 +781,251 @@
 <translation id="1875861420974447980">Šis grandinės ID šiuo metu naudojamas</translation>
 <translation id="167698752210114155">Įvyko vidinė klaida</translation>
 <translation id="4641919696349069826">Užklausa jau vykdoma</translation>
+<translation id="872806943696014633">Nėra operacijos duomenų</translation>
+<translation id="4805410229033541409">Siuntėjas nėra įgaliotas atlikti siuntimo operacijų.</translation>
+<translation id="7068183357903252127">Reikia nurodyti operacijos gavėjo arba duomenų informaciją</translation>
+<translation id="3087354946579878968">Su „Vienakartinis raktas“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="7577623631309755655">Su „gasPrice“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="8909404207805041979">Su „Dujos“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="670444168393199227">Su „Reikšmė“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="6180576227145734714">Nurodžius su operacijos duomenimis susijęs gavėjas turi būti tinkamas adresas.</translation>
+<translation id="6916219411793555838">Reikia nurodyti operacijos duomenis „gasPrice“ arba „maxFeePerGas“</translation>
+<translation id="1406937874668963740">Su „chainId“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="9195349857587166771">Su „maxFeePerGas“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="8809307000287364168">Su „maxPriorityFeePerGas“ susiję operacijos duomenys yra neteisingi</translation>
+<translation id="7381733147588397055">Nepavyko konvertuoti operacijos duomenų</translation>
+<translation id="3829038878925630240">Reikia nurodyti operacijos siuntėjo duomenis</translation>
+<translation id="4732386285392573809">Gauti operacijos dujų kainos nepavyko</translation>
+<translation id="7619826778671319444">Gauti operacijos dujų limito nepavyko</translation>
+<translation id="4232775951515678071">Gauti operacijos tipo nepavyko</translation>
+<translation id="7631054302129692654">Gauti operacijos EIP-1559 numatomo dujų kiekio nepavyko</translation>
+<translation id="4958950550253325418">„Defi“ programos</translation>
+<translation id="735961408871282410">NFT rinkos</translation>
+<translation id="7740287852186792672">Paieškos rezultatai</translation>
+<translation id="5140238928332244937">Naršyti daugiau „Defi“</translation>
+<translation id="6825869531314999449">Naršyti daugiau NFT</translation>
+<translation id="2744185997184360326">Compound</translation>
+<translation id="7587986159645261196">Atraskite atvirų finansinių programų pasaulį</translation>
+<translation id="1614407808582616698">MakerDAO</translation>
+<translation id="8723680648033138705">„Maker“ – stabilizuotosios kriptovaliutos, paskolos ir valdymas...</translation>
+<translation id="1209155679734532646">Aave</translation>
+<translation id="348141691274391859">Protokolas, padedantis uždirbti iš įnašų ir pasiskolinti aktyvų.</translation>
+<translation id="5074570831310922792">OpenSea</translation>
+<translation id="8246868867733222286">Didžiausia NFT rinka. Pirkite, parduokite ir atraskite retų skaitmeninių elementų</translation>
+<translation id="8375074247703832257">Rarible</translation>
+<translation id="7826627294887983832">Kurkite ir parduokite skaitmeninius meno kūrinius</translation>
+<translation id="8767749833522980474">Kriptovaliuta</translation>
+<translation id="944736176598169208">„Rewards“</translation>
+<translation id="6122742277607781713">Portfelis</translation>
+<translation id="7020503656406658141">Kainos</translation>
+<translation id="2805756323405976993">Taikomosios programos</translation>
+<translation id="3586775666459823714">NFT</translation>
+<translation id="1987317783729300807">Paskyros</translation>
+<translation id="3188963375823360044">1 val.</translation>
+<translation id="8163269366661594721">1D</translation>
+<translation id="7640956400175663828">1W</translation>
+<translation id="9100647964747998533">1M</translation>
+<translation id="6366007539108097840">3M</translation>
+<translation id="6977728312178289892">1Y</translation>
+<translation id="6598532182053592167">Pridėti monetą</translation>
+<translation id="629730747756840877">Paskyra</translation>
+<translation id="3891414008432200754">Kaina</translation>
+<translation id="2267753748892043616">Pridėti paskyrą</translation>
+<translation id="1483493594462132177">Siųsti</translation>
+<translation id="538450413584738399">„Swap“</translation>
+<translation id="5420730209575475110">nepalaikoma</translation>
+<translation id="6518133107902771759">Patvirtinti</translation>
+<translation id="1420318137760245955">Sveiki, tai naujoji „Brave“ piniginė</translation>
+<translation id="8303434745767477417">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite su „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
+<translation id="6972754398087986839">Darbo pradžia</translation>
+<translation id="375882617301124395">Susikurkite atsarginę kriptovaliutos piniginės kopiją</translation>
+<translation id="1078873179929044999">Atlikdami kitą veiksmą, matysite 12 žodžių atkūrimo frazę, kurią galėsite panaudoti pagrindinėms kriptovaliutos sąskaitoms atkurti. Laikykite frazę saugioje vietoje. Šį atkūrimo frazė yra vienintelis būdas norint atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įrenginio vagystės atveju arba norint pereiti nuo vienos piniginės prie kitos.</translation>
+<translation id="5024543173656851695">Suprantu, kad praradęs atkūrimo žodžius neteksiu prieigos prie savo kriptopiniginės.</translation>
+<translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
+<translation id="5077747669435508720">Užsirašykite arba nukopijuokite šiuos žodžius būtent tokia tvarka, kokia jie rodomi, ir saugokite saugioje vietoje. Šį atkūrimo frazė yra vienintelis būdas norint atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įrenginio vagystės atveju arba norint pereiti nuo vienos piniginės prie kitos.</translation>
+<translation id="701097641287626853">ĮSPĖJIMAS.</translation>
+<translation id="7226627749435082904">Niekada neatskleiskite atkūrimo frazės kitiems asmenims.</translation>
+<translation id="8396133702401662097">Sužinoję šią frazę, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
+<translation id="111912712268284159">Susikūriau frazės atsarginę kopiją saugioje vietoje.</translation>
+<translation id="2339124864228588937">Patikrinkite atkūrimo frazę</translation>
+<translation id="3747079125031086337">Pasirinkite atkūrimo frazės žodžius tinkama tvarka.</translation>
+<translation id="802060020117206314">Atkūrimo frazė neatitiko, bandykite dar kartą.</translation>
+<translation id="2813156651070657572">Apsaugokite kriptoaktyvus slaptažodžiu</translation>
+<translation id="6901073872645365201">Slaptažodžiai turi būti sudaryti bent iš 7 simbolių, turi būti panaudotas bent vienas skaičius ir bent vienas specialusis simbolis.</translation>
+<translation id="6657585470893396449">Slaptažodis</translation>
+<translation id="692381016487372902">Įveskite slaptažodį iš naujo</translation>
+<translation id="3527905866577245691">Patvirtinimo slaptažodis nesutampa</translation>
+<translation id="5168349973342709369">Įveskite slaptažodį, kad atrakintumėte piniginę</translation>
+<translation id="9111102763498581341">Atrakinti</translation>
+<translation id="5045550434625856497">Neteisingas slaptažodis</translation>
+<translation id="7341660388388100491">Užrakinti kriptovaliutą</translation>
+<translation id="765834632354589737">Atsarginė piniginė</translation>
+<translation id="722307450061393855">Susikurkite atsarginę piniginės kopiją dabar, kad apsaugotumėte kriptoaktyvus ir užtikrintumėte, jog niekada neprarasite prieigos.</translation>
+<translation id="1018806299114415224">Kurti atsarginę kopiją dabar</translation>
+<translation id="5234764350956374838">Atsisakyti</translation>
+<translation id="4075073132992924258">„Brave“ piniginė nenustatyta kaip numatytoji, todėl nereaguos į „Web3 DApps“. Apsilankykite nustatymų srityje ir pakeiskite numatytąją piniginę.</translation>
+<translation id="4362717653795263052">Atkurkite pagrindines kriptovaliutų sąskaitas</translation>
+<translation id="3038077262567136741">Įveskite atkūrimo frazę ir atkurkite „Brave“ piniginės kriptovaliutos sąskaitą.</translation>
+<translation id="955918646509748368">Įvesta atkūrimo frazė yra neteisinga.</translation>
+<translation id="8107437138787377150">Įklijuoti atkūrimo frazę iš iškarpinės</translation>
+<translation id="4811736040444856406">Rodyti atkūrimo frazę</translation>
+<translation id="4359319875297001084">Importuoti iš senesnių „Brave“ kriptovaliutos piniginių?</translation>
+<translation id="3331452756822160641">Naujas slaptažodis</translation>
+<translation id="8624315169751085215">Kopijuoti į iškarpinę</translation>
+<translation id="1121335910737476837">Pagrindinės kriptovaliutų sąskaitos</translation>
+<translation id="3604193429970465812">Papildomos sąskaitos</translation>
+<translation id="2471916999505901943">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų profilyje. Nepaisant to atminkite, kad įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę atkurti antrinių sąskaitų negalima.</translation>
+<translation id="1940465339426637378">Turtas</translation>
+<translation id="2236507293802791911">Rodomi aktyvai</translation>
+<translation id="7525067979554623046">Sukurti</translation>
+<translation id="4324198334837993695">Aparatinė įranga</translation>
+<translation id="3067168166931605141">Sąskaitos pavadinimas</translation>
+<translation id="1136772623587250243">Įklijuoti privatųjį raktą iš iškarpinės</translation>
+<translation id="7978412674231730200">Asmeninis raktas</translation>
+<translation id="2795015351889043417">JSON failas</translation>
+<translation id="5468881191994555667">Pasirinkti failą</translation>
+<translation id="795667975304826397">Failai nepasirinkti</translation>
+<translation id="5891811606602061966">Importuoti sąskaitos nepavyko, bandykite dar kartą.</translation>
+<translation id="5051929972046200722">Pasirinkite aparatinės įrangos slaptažodinės įrenginį</translation>
+<translation id="6932355307691676490">Prijunkite</translation>
+<translation id="4513956488935671725">piniginę tiesiai prie savo kompiuterio.</translation>
+<translation id="5041211872515579638">Atrakinkite įrenginį ir pasirinkite programą „Ethereum“.</translation>
+<translation id="6598291715079540080">Trezor</translation>
+<translation id="5605670050355397069">Ledger</translation>
+<translation id="4378551569595875038">Jungiamasi...</translation>
+<translation id="1943188256166395881">Pridėti pažymėtas sąskaitas</translation>
+<translation id="8554010658308662631">Įkelti daugiau</translation>
+<translation id="6998738230710304743">Įkelti daugiau...</translation>
+<translation id="4970164249406565575">Ieškoti 0x sąskaitos</translation>
+<translation id="6151024411349343484">Jei nepavyksta rasti ieškomos sąskaitos, bandykite pakeisti HD kelią (viršuje).</translation>
+<translation id="2844691569989101734">Ledger Live</translation>
+<translation id="7265732100380987017">„Legacy (MEW /MyCrypto)“</translation>
+<translation id="5149944858285555235">Nežinoma klaida, prijunkite aparatinės įrangos slaptažodinę iš naujo ir bandykite dar kartą.</translation>
+<translation id="4522570452068850558">Išsami informacija</translation>
+<translation id="9220525904950070496">Pašalinti paskyrą</translation>
+<translation id="8574289650879708853">Pridėti pasirinktinį aktyvą</translation>
+<translation id="6600400596821238377">Žetono pavadinimas</translation>
+<translation id="4432966365400169165">Žetono sutarties adresas</translation>
+<translation id="4092152169181928870">Žetono simbolis</translation>
+<translation id="871696868578199698">Skaičiai po kablelio</translation>
+<translation id="6637540491667802882">kaip pasirinktinį žetoną</translation>
+<translation id="7978047524114351365">Nėra pavadintų aktyvų</translation>
+<translation id="9040455159722359521">Ieškoti aktyvų arba sutarties adreso</translation>
+<translation id="6018178824574796106">Pridėti pasirinktinio žetono nepavyko, bandykite dar kartą.</translation>
+<translation id="2708402071160162126">ĮSPĖJIMAS. Niekada neatskleiskite atkūrimo frazės. Sužinoję šią frazę, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
+<translation id="2902856457593699108">Rodyti raktą</translation>
+<translation id="8033497299373164724">Slėpti raktą</translation>
+<translation id="2702143907607790516">Atnaujinti sąskaitos pavadinimo nepavyko, bandykite dar kartą.</translation>
+<translation id="3318280255740629162">25 %</translation>
+<translation id="2636487255623744079">50 %</translation>
+<translation id="8654192805213365413">75 %</translation>
+<translation id="3512100619724810532">Visi</translation>
+<translation id="1530109021798294736">„Mainnet“</translation>
+<translation id="1613627717923045622">Bandomasis tinklas</translation>
+<translation id="4245123003308024264">Ropsten</translation>
+<translation id="2219337030359508039">Kovan</translation>
+<translation id="992469614838016642">Rinkeby</translation>
+<translation id="4022672158058543834">Goerli</translation>
+<translation id="1260818237399583903">Binance Smart Chain</translation>
+<translation id="9047549342128428249">BSC</translation>
+<translation id="6749024162985917640">Localhost</translation>
+<translation id="3792938779249970121">Pasirinkti sąskaitą</translation>
+<translation id="6797737193502014008">Ieškoti sąskaitų</translation>
+<translation id="3505920073976671674">Pasirinkti tinklą</translation>
+<translation id="6857856707736769720">Pasirinkti iš</translation>
+<translation id="6323024765179772761">Ieškoti monetų</translation>
+<translation id="6998989275928107238">Iki</translation>
+<translation id="1506421160138798546">apytiksliai</translation>
+<translation id="3567988240819868195">Rinka</translation>
+<translation id="59223531494896848">Apribojimas</translation>
+<translation id="8569380433211549748">Kaina</translation>
+<translation id="2490428413101944234">Testuoti čiaupą</translation>
+<translation id="6082785102488657349">Gaukite eterių iš čiaupo</translation>
+<translation id="7420359180991315365">Tęsti su „Wyre“</translation>
+<translation id="2581671693710952401">Gauti eterių</translation>
+<translation id="8009571545960303544">Prašoma jūsų parašo</translation>
+<translation id="5294062982587710720">Atminkite, kad „Brave“ negali atsakyti už tai, kas nutiks pasirašius. Parašas gali suteikti įgaliojimą atlikti beveik bet kokį su jūsų sąskaita susijusį veiksmą arba jūsų vardu, įskaitant (bet neapsiribojant) suteikti visišką jūsų sąskaitos ir kriptovaliutų aktyvų kontrolę svetainei, kuri teikia užklausą. Pasirašykite tik tuo atveju, kai esate įsitikinę, jog norite atlikti šį veiksmą ir pasitikite užklausą teikiančia svetaine.</translation>
+<translation id="3474375934783434676">Pasirašydami prisiimate sau visą atsakomybę</translation>
+<translation id="5488357322146334497">Pranešimas</translation>
+<translation id="3586752056660754651">Prisijunkite</translation>
+<translation id="7065157926159745595">Leisti šiai programai leisti jūsų</translation>
+<translation id="2746256479706649252">Suteikdami leidimą, leidžiate šiai programai išsiimti</translation>
+<translation id="3959778836307233598">ir automatizuoti jūsų atliekamas operacijas.</translation>
+<translation id="8786100550345425552">Redaguoti leidimus</translation>
+<translation id="7710469167917867539">Operacijos mokestis</translation>
+<translation id="9065203028668620118">Redaguoti</translation>
+<translation id="7968982339740310781">Peržiūrėti išsamią informaciją</translation>
+<translation id="6452181791372256707">Atmesti</translation>
+<translation id="4717431746210146708">Leisti šiai svetainei pridėti tinklą?</translation>
+<translation id="2521480044079508357">Atlikus šį veiksmą, tinklą bus galima naudoti „Brave“ piniginei.</translation>
+<translation id="1982257600591932657">Tinklo pavadinimas</translation>
+<translation id="5052727830821470769">Tinklo URL</translation>
+<translation id="427875364838253580">Peržiūrėti visą informaciją</translation>
+<translation id="8030852056903932865">Patvirtinti</translation>
+<translation id="4822132585477111396">Grandinės ID</translation>
+<translation id="7131971375297699539">Valiutos simbolis</translation>
+<translation id="4693057234255364395">Blokuoti naršyklės URL</translation>
+<translation id="3948067511324628726">Dujų mokestis</translation>
+<translation id="7163997622278957886">Kainos pasiūlymas</translation>
+<translation id="1074360622426001342">Suma ir dujos</translation>
+<translation id="7084089311475827950">Duomenų nėra.</translation>
+<translation id="5821668936183240062">kitas</translation>
+<translation id="793994607260936590">pirmas</translation>
+<translation id="4709524402122994378">operacijos</translation>
+<translation id="4460220693591349571">FUNKCIJOS TIPAS</translation>
+<translation id="838933475572692615">ŠEŠIOLIKTAINIAI DUOMENYS</translation>
+<translation id="2240831799756994975">BAITAI</translation>
+<translation id="4874303883488468190">Pasirinkti sąskaitą (-as)</translation>
+<translation id="4015195974325151180">Peržiūrėkite adresus, skirtus</translation>
+<translation id="3587259018193837508">leidžiamoms sąskaitoms (privaloma)</translation>
+<translation id="7029403458170657879">Prisijunkite naudodami „Brave“ piniginę</translation>
+<translation id="7982184974053636367">„Brave“ piniginei reikia naudoti saugesnį slaptažodį.</translation>
+<translation id="2372897697869224590">Nustatykite „Brave“ piniginės slaptažodį</translation>
+<translation id="7739762330714405363">Naudoti tą patį slaptažodį</translation>
+<translation id="1085027414516521238">„MetaMask“</translation>
+<translation id="8449314044437208543">Importuoti iš</translation>
+<translation id="4428111176561355185">Importuokite</translation>
+<translation id="8929587248006013051">„MetaMask“ sąskaitas į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau bei sąveikaukite naudodami „Web3 DApps“.</translation>
+<translation id="4237840336687249184">„MetaMask“ slaptažodis</translation>
+<translation id="2381605201035323535">kriptovaliutų piniginių</translation>
+<translation id="2770851145415891830">Aptikta esamų kriptovaliutų piniginių</translation>
+<translation id="4938145712652668388">Spustelėję „Pradėti“ ankstesnę kriptovaliutų piniginę importuosite į naująją „Brave“ piniginę ir galėsite naudotis visais pirmiau nurodytais privalumais. Išbandykite ir pateikite mums savo nuomonę!</translation>
+<translation id="913613743605881268">Jei importavimo veiksmą pageidaujate praleisti ir toliau naudoti senąsias kriptovaliutų pinigines, tiesiog eikite į „Brave“ naršyklę</translation>
+<translation id="5886242758142314994">ir numatytąjį nustatymą vėl pakeiskite į kriptovaliutų pinigines. Taip pat galite bet kada importuoti, išbandyti naująją „Brave“ piniginę ir vėl nustatyti ankstesnius nustatymus.</translation>
+<translation id="3301259443293676544">Įveskite esamą kriptovaliutų piniginių slaptažodį, kad importuotumėte į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau bei sąveikaukite naudodami „Web3 DApps“.</translation>
+<translation id="9099900965604225657">Kriptovaliutų piniginių slaptažodis</translation>
+<translation id="4020495774166914146">Pamiršau slaptažodį ir atkūrimo frazę, sukurti naują piniginę.</translation>
+<translation id="480319080797177742">prijungta</translation>
+<translation id="4203566092423620442">atjungta</translation>
+<translation id="5317781812114905957">Instrukcijos</translation>
+<translation id="1952715382071350669">Aparatinės įrangos slaptažodinėje reikia pateikti operacijos patvirtinimą.</translation>
+<translation id="8687869982094542529">išsiųsta</translation>
+<translation id="5013754027092416509">gauta</translation>
+<translation id="5867988533873716616">Blokų naršyklės URL nepasiekiamas.</translation>
+<translation id="4255623233927788178">Peržiūrėti blokų naršyklėje</translation>
+<translation id="6383204195803840504">Operacijos bus rodomos čia</translation>
+<translation id="8941851657764077659">Didž. prioritetinis mokestis</translation>
+<translation id="8047527352810290817">Redaguoti dujas</translation>
+<translation id="9091334651803050473">Negalime užtikrinti, tačiau sumokėjus daugiau kasėjai gali jūsų operacijai taikyti prioritetą.</translation>
+<translation id="2941112035454246133">Žemas</translation>
+<translation id="5431902940483264007">Optimalus</translation>
+<translation id="7304030187361489308">Didelis</translation>
+<translation id="3275974034681834347">Dujų limitas</translation>
+<translation id="6388054724320152261">Kainą už dujas (GWEI)</translation>
+<translation id="1254969878422524947">Kaina už dujų arbatpinigių ribą (GWEI)</translation>
+<translation id="7373308452149471621">Kaina už dujų kainos ribą (GWEI)</translation>
+<translation id="5956400126884970816">Didž. mokestis</translation>
+<translation id="2445079431396622762">Didžiausias mokestis</translation>
+<translation id="6152793706702141594">Esamas bazinis mokestis</translation>
+<translation id="8689322170423904690">GWEI</translation>
+<translation id="8685908198496503620">Nustatyti pasirinktinį</translation>
+<translation id="7400927223938424379">Nustatyti rekomenduojamą</translation>
+<translation id="1118876217803190221">Nepakankamas likutis</translation>
+<translation id="275990379543116961">Nepakanka lėšų dujoms</translation>
+<translation id="3292453499915466604">Nepakankamas likvidumas</translation>
+<translation id="805808215102934711">Aktyvinti <ph name="FROM_ASSET_SYMBOL"/></translation>
+<translation id="3380365263193509176">Nežinoma klaida</translation>
+<translation id="6687008710463927359">Sąskaita <ph name="VALUE"/></translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -809,7 +1042,6 @@
 <translation id="6804537228302563756">Prijungti paskyrą</translation>
 <translation id="5019698312620117604">24 val. kainų istorija</translation>
 <translation id="8720719072204443171">24 val. apimtis</translation>
-<translation id="3891414008432200754">Kaina</translation>
 <translation id="7723176927437578611">Tęsia</translation>
 <translation id="2983078329159689577">Pateikiama...</translation>
 <translation id="6641102760094059194">Patvirtinti (<ph name="NUMBER_OF_SECONDS_LEFT"/>sek.)</translation>
@@ -819,4 +1051,28 @@
 <translation id="6973157709854838218">Slėpti likučius ekrane</translation>
 <translation id="4548946945059463969">Likučius matykite ekrane</translation>
 <translation id="242959166945779492">Jūsų sąskaitoje likučio nėra. Apsilankykite FTX ir šiek tiek įsigykite.</translation>
+<translation id="2359865110462963929">BAT šiuo metu jūsų regione nepalaikoma. Naujinių ieškokite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/>.</translation>
+<translation id="2564425876266960486">Kuriant „Brave“ naršyklės BAT kortelę, įvyko klaida</translation>
+<translation id="8429332714958713413">Norint prisijungti jums reikia patvirtintos piniginės</translation>
+<translation id="5881716477679854586"><ph name="CUSTODIAN"/> baigę tapatybės patvirtinimą, bandykite dar kartą.</translation>
+<translation id="4285403731827683059"><ph name="AMOUNT"/> gaunama po <ph name="DAYS"/></translation>
+<translation id="8683358891240311475">Jei iš naujo nustatysite piniginę, jūsų <ph name="BAT_AMOUNT"/> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami <ph name="PROVIDER"/>, kad neprarastumėte BAT.</translation>
+<translation id="244362569344671266">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias „Brave“ reklamas ir automatiškai paremkite turinio kūrėjus.</translation>
+<translation id="3903419925307046908">Gaukite žetonų ir pasidalykite jais</translation>
+<translation id="671838195432136371">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti 3,49 % APY* nuo turimų BAT. Nauji „Gemini“ naudotojai, kurie susies, nemokamai gaus 5 BAT!</translation>
+<translation id="9136976526700181750">* „Gemini“ uždirbamas APY 2021 m. rugpjūčio 15 d. duomenimis</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/> apie „Brave Rewards“</translation>
+<translation id="7443190393462029180">Spustelėdami „Pradėti naudotis „Brave Rewards“, sutinkate su <ph name="TOS_LINK_BEGIN"/>paslaugų teikimo sąlygomis<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>privatumo politika<ph name="PP_LINK_END"/>.</translation>
+<translation id="8344084848798035850">Apytikslis šio mėnesio uždarbis</translation>
+<translation id="5235444069025581717">Šio mėnesio arbatpinigiai ir indėliai</translation>
+<translation id="1210965535849006928">Atsiimti „Rewards“</translation>
+<translation id="4609518959946843710">Gaukite atlygį už šio remiamo foninio vaizdo peržiūrą.</translation>
+<translation id="5311968438376723685">Įjunkite „Brave Private Ads“ ir gaukite savo dalį. Taip pat galite pasirinkti <ph name="LINK_BEGIN"/>slėpti remiamus vaizdus<ph name="LINK_END"/>.</translation>
+<translation id="8568666589217601917">Puiku!</translation>
+<translation id="764235488372037377">Savo atlygius už reklamą rasite čia</translation>
+<translation id="7091215606170476659">Jūsų laukia UGP išmoka iš „Brave“.</translation>
+<translation id="6759185676704303656">Gaunate užmokestį už šio foninio vaizdo peržiūrą.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie per „Brave Rewards“ remiamus vaizdus.</translation>
+<translation id="6113004497629356998">Slėpti remiamus vaizdus</translation>
+<translation id="8511604585939286108">Spustelėdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 </translationbundle>

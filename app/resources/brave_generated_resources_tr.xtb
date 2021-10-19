@@ -190,10 +190,10 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5655621391922317800">Kripto Cüzdanlar</translation>
 <translation id="1696548911367097044">Onaylanmamış Kripto Cüzdanlar uzantısı</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Dapps kullanmak için Ethereum sağlayıcı</translation>
-<translation id="5913089932885076110">Başlangıçta Kripto Cüzdanı Yükle</translation>
-<translation id="757886143331967039">Onaylanmamış Kripto Cüzdanlar uzantısını başlangıçta yükle</translation>
+<translation id="9131889008937672866">Varsayılan kripto para cüzdanı</translation>
 <translation id="1834467296210148203">Brave Cüzdan simgesini araç çubuğunda göster</translation>
+<translation id="8239147115686034860">Brave Wallet'ı otomatik olarak kilitle</translation>
+<translation id="414639769490080648">Brave Wallet'ın otomatik olarak kilitlenmesi için beklenilmesi gereken dakikalar</translation>
 <translation id="6864914031231797928">Uzantılar için Google ile oturum açmaya izin ver</translation>
 <translation id="5927916530277631319">Unstoppable Domains'i çözmenin yolu</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) çözümlemesi için yol</translation>
@@ -232,6 +232,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1251574393468476924">En Yüksek IPFS önbellek boyutu (GB)</translation>
 <translation id="2503497578400410320">IPFS havuzunun veri deposu boyutu için yumuşak bir üst sınır</translation>
 <translation id="7703184801853248830">Geçersiz ağ geçidi adresi</translation>
+<translation id="7690058578502751948">Brave'de sadece Origin izolasyonu etkinleştirilmiş geçerli bir IPFS ağ geçidi kullanılabilir</translation>
 <translation id="585868419599255817">IPFS herkese açık ağ geçidi geri çekilmesi</translation>
 <translation id="207763736230883589">Yerel düğümünüze erişilemezse ortak IPFS ağ geçidine otomatik olarak geri düşün.</translation>
 <translation id="4107552920076294723">IPFS kaynaklarını ayarlanmış IPFS ağ geçidine yeniden yönlendirin</translation>
@@ -300,6 +301,10 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="1391855377994926460">Web'de daha hızlı gezinmeye devam edin. Başlıca haber sitelerinde 6 kata kadar daha hızlı gezinin.</translation>
 <translation id="9218430445555521422">Varsayılan olarak ayarla</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
+<translation id="732814027519296280">Brave Search'ü olduğundan da iyi bir hale getirmek ister misiniz?</translation>
+<translation id="2677865600861971449">Anonim olarak bazı arama &amp; tarayıcı verilerinizle katkıda bulunarak Brave Search sonuçlarını herkes için geliştirmek üzere Web Keşif Projesi'ne katılın. Gizliliğinizi korur. Hiç efor sarf etmezsiniz. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Etkinleştir</translation>
+<translation id="780301667611848630">Hayır, teşekkürler</translation>
 <translation id="5039804452771397117">İzin ver</translation>
 <translation id="7053983685419859001">Engelle</translation>
 <translation id="7815301689257843278">Brave'in bu sorunun tekrar yaşanmasını önleyebilmesi için kilitlenme raporları otomatik gönderilsin mi?</translation>
@@ -309,6 +314,8 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="6873781976650514089">Bu ayarı</translation>
 <translation id="6040143037577758943">Kapat</translation>
 <translation id="5600566490506283344">Brave Reklam Bildirimi</translation>
+<translation id="4174337572777167894">Web Keşif Projesi</translation>
+<translation id="8659271182272561965">Brave Search'ü daha iyi hale getirmek için anonim arama &amp; tarayıcı verilerinizle katkıda bulunun.</translation>
 <translation id="1516554614404600536">Brave Araç İpucu</translation>
 <translation id="4877147287319222750">Kenar çubuğuna ekle</translation>
 <translation id="4233010476457917696">Kenar çubuğunu göster</translation>

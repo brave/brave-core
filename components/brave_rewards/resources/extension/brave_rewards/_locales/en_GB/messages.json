@@ -19,6 +19,26 @@
     "message": "Refresh Status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Any tip you make will remain pending in your wallet and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "This creator is not signed up yet.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "This creator is currently not configured to receive tips from your wallet.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ on $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ arriving in $days$",
+    "message": "$amount$ payout begins processing in $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "To start a free call, turn on Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards … or even tip the websites you love. No tracking. No slow downs.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Turn on Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "By clicking, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$. Disable any time in Settings.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "To start a free call, enable Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards … or even tip the websites you love. No tracking. No slow downs.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Turn on Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "By turning on Ads, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "You can now start a free call",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Click anywhere on the screen to continue to Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Want to learn more about Brave Rewards? $tour_link_begin$Take a quick tour$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

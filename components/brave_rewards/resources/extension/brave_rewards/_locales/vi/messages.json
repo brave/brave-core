@@ -19,6 +19,26 @@
     "message": "Làm mới Trạng thái",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Mọi khoản tiền mà bạn thưởng sẽ vẫn nằm chờ trong ví của bạn và sẽ tự động thử lại trong 90 ngày. $link_begin$Tìm hiểu thêm$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Nhà sáng tạo này chưa đăng ký.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Nhà sáng tạo này hiện chưa được cấu hình để nhận tiền thưởng từ ví của bạn.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ trên $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ đến trong vòng $days$",
+    "message": "Khoản tiền thanh toán $amount$ sẽ bắt đầu xử lý trong $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Với Brave Rewards, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Bật Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Với việc nhấp vào, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$. Tắt đi bất cứ lúc nào trong Cài đặt.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Với Brave Private Ads, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Bật Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Với việc bật Ads, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Muốn tìm hiểu thêm về Brave Rewards? $tour_link_begin$Hãy dạo nhanh một vòng$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

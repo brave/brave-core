@@ -19,6 +19,26 @@
     "message": "Actualiser le statut",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Toutes les contributions que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours. $link_begin$En savoir plus$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Ce créateur n'est pas encore inscrit.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Ce créateur n'a pas encore configuré son compte pour recevoir des contributions de votre portefeuille.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ sur $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "Le montant de $amount$ arrive dans $days$",
+    "message": "Le traitement du paiement de $amount$ commence dans $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Ignorer",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Pour démarrer un appel gratuit, activez Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Avec Brave Rewards, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Activer Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "En cliquant, vous acceptez les $tos_link_begin$Conditions d'utilisation$tos_link_end$ et la$pp_link_begin$Politique de confidentialité$pp_link_end$. À tout moment, vous pouvez procéder à la désactivation dans les paramètres.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Pour démarrer un appel gratuit, activez Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Avec Brave Private Ads, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Activer Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "En activant Ads, vous acceptez les $tos_link_begin$Conditions d'utilisation$tos_link_end$ et la$pp_link_begin$Politique de confidentialité$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Vous pouvez à présent démarrer un appel gratuit",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Cliquez n'importe où sur l'écran pour continuer vers Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vous souhaitez en apprendre davantage sur Brave Rewards ? $tour_link_begin$Faire une visite rapide$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

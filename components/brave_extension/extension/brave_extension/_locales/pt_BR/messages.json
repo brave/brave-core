@@ -188,7 +188,7 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites geralmente incluem cookies e scripts que tentam identificar você e seu aparelho (geralmente embutidos em anúncios). Eles querem descobrir quem você é e segui-lo pela internet — rastreando o que você faz em todos os sites. Brave bloqueia essas coisas para que você possa navegar sem ser perseguido.",
+    "message": "Sites geralmente incluem cookies e scripts que tentam identificar você e seu aparelho (geralmente embutidos em anúncios). Eles querem descobrir quem você é e segui-lo pela internet — rastreando o que você faz em todos os sites. O Brave bloqueia essas coisas para que você possa navegar sem ser perseguido.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {

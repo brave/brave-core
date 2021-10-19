@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">Крипто портфейли</translation>
 <translation id="1696548911367097044">Отхвърлено разширение за крипто портфейли</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="7090046810227878892">Доставчик на Ethereum за използване на Dapps</translation>
-<translation id="5913089932885076110">Зареждане на Crypto Wallets при стартиране</translation>
-<translation id="757886143331967039">Заредете отхвърлено разширение за крипто портфейли при стартиране</translation>
+<translation id="9131889008937672866">Портфейл с криптовалути по подразбиране</translation>
 <translation id="1834467296210148203">Показване на иконата на Brave портфейла в лентата с инструменти</translation>
+<translation id="8239147115686034860">Автоматично заключване на портфейла на Brave</translation>
+<translation id="414639769490080648">Оставащи минути до автоматичното заключване на портфейл на Brave</translation>
 <translation id="6864914031231797928">Разрешаване на вход за Google за разширения</translation>
 <translation id="5927916530277631319">Метод за разрешаване на Unstoppable Domains</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за DNS върху HTTPS и съображенията за поверителност на Ethereum.</translation>
@@ -236,6 +236,7 @@
 <translation id="1251574393468476924">Максимален размер на кеша на IPFS (GB)</translation>
 <translation id="2503497578400410320">Мека горна граница за размера на хранилището на данни на IPFS хранилището.</translation>
 <translation id="7703184801853248830">Невалиден адрес на шлюза</translation>
+<translation id="7690058578502751948">В Brave може да се използва само валиден шлюз на IPFS с активирано изолиране на източника</translation>
 <translation id="585868419599255817">Възстановяване на публичния шлюз на IPFS</translation>
 <translation id="207763736230883589">Автоматично връщане към публичния IPFS шлюз, ако локалният ви възел не може да бъде достигнат.</translation>
 <translation id="4107552920076294723">Пренасочване на IPFS ресурси към конфигурирания IPFS шлюз</translation>
@@ -304,6 +305,10 @@
 <translation id="1391855377994926460">Продължете по-бързото си сърфиране в мрежата - до 6 пъти по-бързо в най-големите новинарски сайтове.</translation>
 <translation id="9218430445555521422">Задаване по подразбиране</translation>
 <translation id="3479552764303398839">Не сега</translation>
+<translation id="732814027519296280">Искате ли да подобрите търсенето в Brave?</translation>
+<translation id="2677865600861971449">Включете се в проекта за откриване в уеб за анонимно допринасяне на данни за търсене и сърфиране и подобряване на резултатите от търсенето в Brave. Запазване на поверителността. Без усилия. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Включване</translation>
+<translation id="780301667611848630">Не, благодаря</translation>
 <translation id="5039804452771397117">Разрешаване</translation>
 <translation id="7053983685419859001">Блокиране</translation>
 <translation id="7815301689257843278">Автоматично изпращане на отчети за сривове, така че Brave да може да предотврати повторното появяване на този проблем?</translation>
@@ -313,6 +318,8 @@
 <translation id="6873781976650514089">тази настройка</translation>
 <translation id="6040143037577758943">Затваряне</translation>
 <translation id="5600566490506283344">Известие за Brave Реклама</translation>
+<translation id="4174337572777167894">Проект за откриване в уеб</translation>
+<translation id="8659271182272561965">Допринесете анонимно данни за търсене и сърфиране, за да прецизирате търсенето в Brave.</translation>
 <translation id="1516554614404600536">Пояснение на Brave</translation>
 <translation id="4877147287319222750">Добавяне към страничната лента</translation>
 <translation id="4233010476457917696">Показване на страничната лента</translation>
