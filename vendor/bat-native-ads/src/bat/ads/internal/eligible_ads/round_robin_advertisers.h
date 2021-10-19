@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ads/internal/bundle/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
 
 namespace ads {
 
@@ -22,10 +21,8 @@ T FilterSeenAdvertisers(const T& ads,
   const auto iter = std::remove_if(
       unseen_advertisers.begin(), unseen_advertisers.end(),
       [&seen_advertisers](const CreativeAdInfo& creative_ad) {
-        SplitTestFrequencyCap frequency_cap;
-        return frequency_cap.ShouldExclude(creative_ad) ||
-               seen_advertisers.find(creative_ad.advertiser_id) !=
-                   seen_advertisers.end();
+        return seen_advertisers.find(creative_ad.advertiser_id) !=
+               seen_advertisers.end();
       });
 
   unseen_advertisers.erase(iter, unseen_advertisers.end());
