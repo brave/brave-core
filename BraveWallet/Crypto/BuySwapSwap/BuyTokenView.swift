@@ -15,6 +15,7 @@ struct BuyTokenView: View {
   @State private var amountInput = ""
   
   @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.openWalletURLAction) private var openWalletURL
   
   var body: some View {
     NavigationView {
@@ -59,8 +60,11 @@ struct BuyTokenView: View {
         Section(
           header: HStack {
             Button(action: {
-              buyTokenStore.fetchBuyUrl(account: keyringStore.selectedAccount, amount: amountInput) { url in
-                // check url is nil
+              buyTokenStore.fetchBuyUrl(account: keyringStore.selectedAccount, amount: amountInput) { urlString in
+                guard let urlString = urlString, let url = URL(string: urlString) else {
+                  return
+                }
+                openWalletURL?(url)
               }
             }) {
               Text(Strings.Wallet.buyButtonTitle)

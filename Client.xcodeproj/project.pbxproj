@@ -348,6 +348,7 @@
 		277190EA2702512900DC81D5 /* TestStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277190E92702512900DC81D5 /* TestStores.swift */; };
 		277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223712469B4FB0059A7EB /* FaviconFetcher.swift */; };
 		277223762469E7290059A7EB /* LargeFaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223752469E7290059A7EB /* LargeFaviconView.swift */; };
+		27730993271E0807007643F6 /* BrowserViewController+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27730992271E0807007643F6 /* BrowserViewController+Wallet.swift */; };
 		27733E5826977EC40086799A /* PasscodeMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E5726977EC40086799A /* PasscodeMigrationView.swift */; };
 		27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */; };
 		277568D425ACF91600C129AF /* SPMLibraries.h in Headers */ = {isa = PBXBuildFile; fileRef = 277568D225ACF91600C129AF /* SPMLibraries.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -479,6 +480,7 @@
 		27EB6020244607DA00265C1B /* NewTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EB601F244607DA00265C1B /* NewTabPageViewController.swift */; };
 		27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */; };
 		27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
+		27F3AEF4271DDE0C00F75B7F /* OpenWalletURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */ = {isa = PBXBuildFile; productRef = 27F4798B25AF94B0004922E4 /* YubiKit */; };
@@ -1902,6 +1904,7 @@
 		277190E92702512900DC81D5 /* TestStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStores.swift; sourceTree = "<group>"; };
 		277223712469B4FB0059A7EB /* FaviconFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconFetcher.swift; sourceTree = "<group>"; };
 		277223752469E7290059A7EB /* LargeFaviconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeFaviconView.swift; sourceTree = "<group>"; };
+		27730992271E0807007643F6 /* BrowserViewController+Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+Wallet.swift"; sourceTree = "<group>"; };
 		27733E5726977EC40086799A /* PasscodeMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeMigrationView.swift; sourceTree = "<group>"; };
 		27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityEmbedInScrollViewViewModifier.swift; sourceTree = "<group>"; };
 		277568D025ACF91500C129AF /* SPMLibraries.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMLibraries.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2120,6 +2123,7 @@
 		27EEEDB52507CE1C00024038 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Release (AppStore).entitlements"; sourceTree = "<group>"; };
 		27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceListViewController.swift; sourceTree = "<group>"; };
+		27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWalletURLAction.swift; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* ShareExtension.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ShareExtension.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
@@ -3567,6 +3571,7 @@
 			isa = PBXGroup;
 			children = (
 				270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */,
+				27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5437,6 +5442,7 @@
 				2F45B409263AF1C20033A594 /* BrowserViewController+ToolbarDelegate.swift */,
 				2FD1C61B2639AE9100E3C25F /* BrowserViewController+Onboarding.swift */,
 				279CC2D7260CF37C009B3895 /* BrowserViewController+Menu.swift */,
+				27730992271E0807007643F6 /* BrowserViewController+Wallet.swift */,
 				0A91598822B834CE00CCC119 /* BVC+Rewards.swift */,
 				2FFD2012260B914200E552A5 /* ProductNotifications */,
 				2F55443025913BAA000E4689 /* OpenSearch */,
@@ -7387,6 +7393,7 @@
 				271F68C026EBD27E00AA2A50 /* WalletTableViewHeaderView.swift in Sources */,
 				271F68A726EBD27E00AA2A50 /* BackupNotifyView.swift in Sources */,
 				2729E7D326F502AC00200648 /* AccountPicker.swift in Sources */,
+				27F3AEF4271DDE0C00F75B7F /* OpenWalletURLAction.swift in Sources */,
 				2762FF32271A2448001EF41D /* BuySendSwapDestination.swift in Sources */,
 				271F68A426EBD27E00AA2A50 /* AccountsView.swift in Sources */,
 				2766848B270CDA3500DF45C5 /* UserAssetsStore.swift in Sources */,
@@ -7867,6 +7874,7 @@
 				0A1E843D2190A57F0042F782 /* SyncSettingsTableViewController.swift in Sources */,
 				4422D56C21BFFB7F00BF1855 /* bitstate.cc in Sources */,
 				D314E7F71A37B98700426A76 /* BottomToolbarView.swift in Sources */,
+				27730993271E0807007643F6 /* BrowserViewController+Wallet.swift in Sources */,
 				2FB0E26C2653132500B722AF /* BraveServiceStateObserver.swift in Sources */,
 				4422D55321BFFB7E00BF1855 /* parse.cc in Sources */,
 				4422D4F421BFFB7600BF1855 /* version_edit.cc in Sources */,
