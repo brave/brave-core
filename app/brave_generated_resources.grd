@@ -891,6 +891,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
       </message>
+      <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
+        Reset Wallet
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
+        Do you really want to reset your wallet?
+      </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
         Import
       </message>
