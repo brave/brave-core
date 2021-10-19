@@ -1,30 +1,37 @@
 import * as React from 'react'
-import * as S from './style'
 import { Button, Radio } from 'brave-ui'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
-import { Region } from '../../api/region_interface'
-import locale from '../../constants/locale'
-interface Props {
-  onDone: Function
-  onRegionClick: Function
-  onConnectClick: Function
-  regions: Array<Region>
-  selectedRegion: Region
-}
 
-function SelectRegion (props: Props) {
+import * as S from './style'
+import { Region } from '../../api/panel_browser_api'
+import { useSelector, useDispatch } from '../../state/hooks'
+import * as Actions from '../../state/actions'
+import locale from '../../constants/locale'
+
+function SelectRegion () {
   // TODO(nullhook): Scroll to the selected radio input when this component loads
   // TODO(nullhook): Add search region functionality
+  const dispatch = useDispatch()
+  const currentRegion = useSelector(state => state.currentRegion)
+  const regions = useSelector(state => state.regions)
+  const [selectedRegion, setSelectedRegion] = React.useState(currentRegion)
+
   const handleGoBackClick = () => {
-    props.onDone()
+    dispatch(Actions.toggleRegionSelector(false))
   }
 
   const handleItemClick = (currentRegion: Region) => {
-    props.onRegionClick(currentRegion)
+    // Using a local state will help to keep the selection
+    // consistent, if the user exits without pressing connect
+    setSelectedRegion(currentRegion)
   }
 
   const handleConnect = () => {
-    props.onConnectClick()
+    dispatch(Actions.connectToNewRegion(selectedRegion))
+  }
+
+  if (!selectedRegion) {
+    console.error(`Selected region is not defined`)
   }
 
   return (
@@ -40,11 +47,11 @@ function SelectRegion (props: Props) {
         </S.PanelHeader>
         <S.RegionList>
           <Radio
-            value={{ [props.selectedRegion.name]: true }}
+            value={selectedRegion ? { [selectedRegion?.name]: true } : {}}
             size={'small'}
             disabled={false}
           >
-            {props.regions.map((entry: Region, i: number) => (
+            {regions?.map((entry: Region, i: number) => (
               <div
                 key={i}
                 data-value={entry.name}

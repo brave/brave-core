@@ -1,18 +1,23 @@
 import * as React from 'react'
-import * as S from './style'
 import { Button } from 'brave-ui'
+
+import * as S from './style'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import locale from '../../constants/locale'
-import { RegionState } from '../../api/region_interface'
-interface Props {
-  onTryAgainClick: Function
-  onChooseServerClick: Function
-  region: RegionState
-}
+import { useSelector, useDispatch } from '../../state/hooks'
+import * as Actions from '../../state/actions'
 
-function ErrorPanel (props: Props) {
-  const handleTryAgain = () => props.onTryAgainClick()
-  const handleChooseServer = () => props.onChooseServerClick()
+function ErrorPanel () {
+  const dispatch = useDispatch()
+  const currentRegion = useSelector(state => state.currentRegion)
+
+  const handleTryAgain = () => {
+    dispatch(Actions.retryConnect())
+  }
+
+  const handleChooseServer = () => {
+    dispatch(Actions.toggleRegionSelector(true))
+  }
 
   return (
     <S.Box>
@@ -22,7 +27,7 @@ function ErrorPanel (props: Props) {
         </S.IconBox>
         <S.ReasonTitle>{locale.cantConnectError}</S.ReasonTitle>
         <S.ReasonDesc>Brave Firewall + VPN couldn't connect to the{' '}
-          {props.region?.current?.namePretty} server.
+          {currentRegion?.namePretty} server.
           You can try again, or choose another.</S.ReasonDesc>
         <S.ActionArea>
             <Button
