@@ -7,8 +7,18 @@ import Foundation
 import SwiftUI
 import BraveCore
 
+/// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
+/// some integration with the browser
+public protocol BraveWalletDelegate {
+  /// Open a specific URL that comes from the wallet UI. For instance, when purchasing tokens through Wyre
+  ///
+  /// This will be called after the wallet UI is dismissed
+  func openWalletURL(_ url: URL)
+}
+
 /// The initial wallet controller to present when the user wants to view their wallet
 public class WalletHostingViewController: UIHostingController<CryptoView> {
+  public var delegate: BraveWalletDelegate?
   
   public init(walletStore: WalletStore) {
     gesture = WalletInteractionGestureRecognizer(
@@ -22,6 +32,11 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
     )
     rootView.dismissAction = { [unowned self] in
       self.dismiss(animated: true)
+    }
+    rootView.openWalletURLAction = { [unowned self] url in
+      (presentingViewController ?? self).dismiss(animated: true) {
+        self.delegate?.openWalletURL(url)
+      }
     }
   }
   

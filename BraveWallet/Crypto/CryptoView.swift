@@ -18,6 +18,8 @@ public struct CryptoView: View {
   // but for now we'll have to manage this ourselves
   var dismissAction: (() -> Void)?
   
+  var openWalletURLAction: ((URL) -> Void)?
+  
   public init(
     walletStore: WalletStore,
     keyringStore: KeyringStore
@@ -87,5 +89,8 @@ public struct CryptoView: View {
     }
     .animation(.default, value: visibleScreen) // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
+    .environment(\.openWalletURLAction, .init(action: { url in
+      openWalletURLAction?(url)
+    }))
   }
 }

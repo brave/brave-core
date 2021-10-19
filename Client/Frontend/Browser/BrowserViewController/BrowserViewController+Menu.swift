@@ -74,6 +74,7 @@ extension BrowserViewController {
                     )
                     
                     let vc = WalletHostingViewController(walletStore: walletStore)
+                    vc.delegate = self
                     self.dismiss(animated: true) {
                         self.present(vc, animated: true)
                     }
