@@ -85,7 +85,7 @@ void WeeklyEventStorage::Load() {
     if (!day || !value) {
       continue;
     }
-    events_.push_front({day.value(), value.value()});
+    events_.push_back({day.value(), value.value()});
   }
 }
 
