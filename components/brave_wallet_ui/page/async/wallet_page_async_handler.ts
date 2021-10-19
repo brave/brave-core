@@ -156,13 +156,21 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
+  const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromCryptoWallets(payload.password, payload.newPassword)
+  if (result.success) {
+    await keyringController.notifyWalletBackupComplete()
+  }
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 
 handler.on(WalletPageActions.importFromMetaMask.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
+  const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromMetaMask(payload.password, payload.newPassword)
+  if (result.success) {
+    await keyringController.notifyWalletBackupComplete()
+  }
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 
