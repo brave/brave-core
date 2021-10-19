@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// clang-format off
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+
 #include <stdio.h>
 #include <tchar.h>
 
+#include <fstream>
 #include <memory>
 #include <string>
-// clang-format on
 
 // Determines verbosity of output based on the value of the environmental
 // variable BRAVE_BUILD_SHOW_REDIRECT_CC_CMD (set to 1 for verbose).
@@ -52,6 +52,20 @@ const std::wstring EscapeArg(const wchar_t* arg) {
   return str;
 }
 
+const std::wstring GetPythonExe() {
+  std::wifstream wif(
+      L"..\\..\\brave\\vendor\\depot_tools\\python_bin_reldir.txt");
+  if (!wif.is_open()) {
+    wprintf(L"REDIRECT-CC: unable to open python_bin_reldir.txt.\n");
+    return std::wstring();
+  }
+  std::wstring line;
+  std::getline(wif, line);
+  wif.close();
+  line = L"..\\..\\brave\\vendor\\depot_tools\\" + line + L"\\python.exe";
+  return line;
+}
+
 // Calls python executable from search path and passes it redirect-cc.py script
 // and all args passed to this exe.
 int wmain(int argc, wchar_t* argv[]) {
@@ -60,9 +74,18 @@ int wmain(int argc, wchar_t* argv[]) {
     return 1;
   }
 
+  // Get path to python.exe from depot_tools
+  const std::wstring python_exe = GetPythonExe();
+  if (python_exe.empty()) {
+    return 1;
+  }
+  if (IsVerbose()) {
+    wprintf(L"Using python = %s\n", python_exe.c_str());
+  }
+
   // Build the new command line that calls python with our script.
   std::wstring cmd_line_builder =
-      L"python ..\\..\\brave\\script\\redirect-cc.py";
+      python_exe + L" ..\\..\\brave\\script\\redirect-cc.py";
   for (int i = 1; i < argc; i++) {
     cmd_line_builder.append(_T(" "));
     // Double-quote escape args as they may have spaces.
