@@ -24,6 +24,11 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
   SearchEngineProviderP3ATest() {
     histogram_tester_.reset(new base::HistogramTester);
 
+    // Override the default region. Defaults vary and this
+    // ties the expected test results to a specific region
+    // so everyone sees the same behaviour.
+    //
+    // May also help with unstable test results in ci.
     create_services_subscription_ =
         BrowserContextDependencyManager::GetInstance()
             ->RegisterCreateServicesCallbackForTesting(
@@ -74,7 +79,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   // Check that the metric is reported on startup.
-  // For some reason we record kNoSwitch twice, even through
+  // For some reason we record kNoSwitch twice, even though
   // kDefaultSearchEngineMetric is only updated once at this point.
   histogram_tester_->ExpectUniqueSample(kSwitchSearchEngineMetric,
                                         SearchEngineSwitchP3A::kNoSwitch, 2);
