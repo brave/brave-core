@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
 
 namespace {
 constexpr char kAdaptiveCaptchaPanelUrl[] = "adaptive_captcha_panel.html";
@@ -23,6 +24,10 @@ bool ShowPanel(content::BrowserContext* context,
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser) {
     return false;
+  }
+
+  if (browser->window()->IsMinimized()) {
+    browser->window()->Restore();
   }
 
   std::string error;
