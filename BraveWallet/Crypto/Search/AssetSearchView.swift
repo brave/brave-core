@@ -35,63 +35,22 @@ struct AssetSearchView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var allTokens: [BraveWallet.ERCToken] = []
-  @State private var query = ""
-  
-  private var tokens: [BraveWallet.ERCToken] {
-    let query = query.lowercased()
-    if query.isEmpty {
-      return allTokens
-    }
-    return allTokens.filter {
-      $0.symbol.lowercased().contains(query) ||
-      $0.name.lowercased().contains(query)
-    }
-  }
   
   var body: some View {
     NavigationView {
-      List {
-        Section(
-          header: WalletListHeaderView(
-            title: Text(Strings.Wallet.assetsTitle)
+      TokenList(tokens: allTokens) { token in
+        NavigationLink(
+          destination: AssetDetailView(
+            keyringStore: keyringStore,
+            networkStore: networkStore,
+            token: token
           )
-          .osAvailabilityModifiers { content in
-            if #available(iOS 15.0, *) {
-              content // Padding already applied
-            } else {
-              content
-                .padding(.top)
-            }
-          }
         ) {
-          let tokens = self.tokens
-          if tokens.isEmpty {
-            Text(Strings.Wallet.assetSearchEmpty)
-              .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
-              .multilineTextAlignment(.center)
-              .frame(maxWidth: .infinity)
-          } else {
-            ForEach(tokens) { token in
-              NavigationLink(
-                destination: AssetDetailView(
-                  keyringStore: keyringStore,
-                  networkStore: networkStore,
-                  token: token
-                )
-              ) {
-                TokenView(token: token)
-              }
-            }
-          }
+          TokenView(token: token)
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-      .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.searchTitle)
-      .listStyle(InsetGroupedListStyle())
-      .animation(nil, value: query)
-      .filterable(text: $query)
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(action: {
