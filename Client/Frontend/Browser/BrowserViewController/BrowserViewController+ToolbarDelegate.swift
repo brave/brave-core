@@ -320,7 +320,7 @@ extension BrowserViewController: TopToolbarDelegate {
         searchController.searchDelegate = self
         searchController.profile = self.profile
 
-        searchLoader = SearchLoader(historyAPI: historyAPI, bookmarkAPI: bookmarkAPI)
+        searchLoader = SearchLoader(historyAPI: historyAPI, bookmarkManager: bookmarkManager)
         searchLoader?.addListener(searchController)
         searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
             self?.topToolbar.setAutocompleteSuggestion(completion)
@@ -446,8 +446,8 @@ extension BrowserViewController: TopToolbarDelegate {
     
     private func showBookmarkController() {
         let bookmarkViewController = BookmarksViewController(
-            folder: bookmarkAPI.lastVisitedFolder(),
-            bookmarkAPI: bookmarkAPI,
+            folder: bookmarkManager.lastVisitedFolder(),
+            bookmarkManager: bookmarkManager,
             isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         
         bookmarkViewController.toolbarUrlActionsDelegate = self
@@ -463,11 +463,10 @@ extension BrowserViewController: TopToolbarDelegate {
         }
 
         let bookmarkUrl = selectedUrl.decodeReaderModeURL ?? selectedUrl
-
+        
         let mode = BookmarkEditMode.addBookmark(title: selectedTab.displayTitle, url: bookmarkUrl.absoluteString)
-
-        let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: bookmarkAPI, mode: mode)
-
+        
+        let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
         presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
     }
     
@@ -626,7 +625,7 @@ extension BrowserViewController: ToolbarDelegate {
         if tabManager.openedWebsitesCount > 0 {
             controller.addAction( UIAlertAction(title: Strings.bookmarkAllTabsTitle, style: .default, handler: { [unowned self] _ in
                 let mode =  BookmarkEditMode.addFolderUsingTabs(title: Strings.savedTabsFolderTitle, tabList: self.tabManager.tabsForCurrentMode)
-                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkAPI: self.bookmarkAPI, mode: mode)
+                let addBookMarkController = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager, mode: mode)
                 
                 self.presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
             }), accessibilityIdentifier: "toolbarTabButtonLongPress.bookmarkTab")

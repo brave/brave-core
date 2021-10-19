@@ -14,8 +14,8 @@ class SearchLoader: Loader<[Site], SearchViewController> {
     
     var autocompleteSuggestionHandler: ((String) -> Void)?
     
-    init(historyAPI: BraveHistoryAPI, bookmarkAPI: BraveBookmarksAPI) {
-        frequencyQuery = FrequencyQuery(historyAPI: historyAPI, bookmarkAPI: bookmarkAPI)
+    init(historyAPI: BraveHistoryAPI, bookmarkManager: BookmarkManager) {
+        frequencyQuery = FrequencyQuery(historyAPI: historyAPI, bookmarkManager: bookmarkManager)
     }
 
     var query: String = "" {

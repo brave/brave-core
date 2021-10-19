@@ -355,7 +355,7 @@ extension SceneDelegate {
             profile: profile,
             diskImageStore: diskImageStore,
             historyAPI: appDelegate.braveCore.historyAPI!,
-            bookmarkAPI: appDelegate.braveCore.bookmarksAPI!,
+            bookmarksAPI: appDelegate.braveCore.bookmarksAPI!,
             crashedLastSession: crashedLastSession)
         
         browserViewController.do {
