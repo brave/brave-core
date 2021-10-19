@@ -40,7 +40,7 @@ struct BuyTokenSearchView: View {
         TokenView(token: token)
       }
     }
-    .navigationTitle(Strings.Wallet.searchTitle)
+    .navigationTitle(Strings.Wallet.searchTitle.capitalized)
   }
 }
 

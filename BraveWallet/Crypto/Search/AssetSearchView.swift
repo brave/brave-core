@@ -49,7 +49,7 @@ struct AssetSearchView: View {
           TokenView(token: token)
         }
       }
-      .navigationTitle(Strings.Wallet.searchTitle)
+      .navigationTitle(Strings.Wallet.searchTitle.capitalized)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
