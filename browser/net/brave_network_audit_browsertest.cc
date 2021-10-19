@@ -31,7 +31,7 @@ namespace {
 
 // Max amount of time to wait after getting an URL loaded, in milliseconds. Note
 // that the value passed to --ui-test-action-timeout in //brave/package.json, as
-// part of the 'test-security' script, must be big enough to accomodate this.
+// part of the 'network-audit' script, must be big enough to accomodate this.
 //
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
