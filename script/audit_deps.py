@@ -22,6 +22,16 @@ NPM_EXCLUDE_PATHS = [
     os.path.join('vendor', 'brave-extension', 'node_modules'),
 ]
 
+# Tag @sec-team before adding any advisory to this list
+# Ignore these rust advisories
+IGNORED_CARGO_ADVISORIES = [
+# Remove when:
+# https://github.com/chronotope/chrono/issues/602 is resolved
+# Tracking issue: https://github.com/brave/brave-browser/issues/18838
+    'RUSTSEC-2020-0071',
+    'RUSTSEC-2020-0159'
+]
+
 # Use only these (sub)paths for cargo audit.
 CARGO_INCLUDE_PATHS = [
     os.path.join('build', 'rust'),
@@ -151,6 +161,9 @@ def cargo_audit_deps(path, args):
     cargo_args.append("audit")
     cargo_args.append("--file")
     cargo_args.append(os.path.join(path, "Cargo.lock"))
+    for advisory in IGNORED_CARGO_ADVISORIES:
+        cargo_args.append("--ignore")
+        cargo_args.append(advisory)
 
     return subprocess.call(cargo_args, env=env)
 
