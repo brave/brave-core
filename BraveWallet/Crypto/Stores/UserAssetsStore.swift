@@ -15,7 +15,8 @@ extension BraveWallet.ERCToken {
     isErc721: false,
     symbol: "ETH",
     decimals: 18,
-    visible: false
+    visible: false,
+    tokenId: ""
   )
 }
 
@@ -25,7 +26,7 @@ public class AssetStore: ObservableObject, Equatable {
     didSet {
       if isCustomToken {
         walletService.setUserAssetVisible(
-          token.contractAddress,
+          token,
           chainId: chainId,
           visible: isVisible
         ) { _ in }
@@ -33,7 +34,7 @@ public class AssetStore: ObservableObject, Equatable {
         if isVisible {
           walletService.addUserAsset(token, chainId: chainId) { _ in }
         } else {
-          walletService.removeUserAsset(token.contractAddress, chainId: chainId) { _ in }
+          walletService.removeUserAsset(token, chainId: chainId) { _ in }
         }
       }
     }

@@ -848,13 +848,6 @@ extension Strings {
       value: "The number of minutes to wait until the Brave Wallet is automatically locked",
       comment: "The footer beneath the auto-lock title and interval duration"
     )
-    public static let autoLockNeverInterval = NSLocalizedString(
-      "wallet.autoLockNeverInterval",
-      tableName: "BraveWallet",
-      bundle: .braveWallet,
-      value: "Never",
-      comment: "One of the auto-lock interval options. As in to never automatically lock the wallet."
-    )
     public static let enterAmount = NSLocalizedString(
       "wallet.enterAmount",
       tableName: "BraveWallet",

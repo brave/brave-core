@@ -13,9 +13,9 @@ struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
   var label: String
   
-  init(value: Int32, label: String? = nil) {
+  init(value: Int32) {
     self.value = value
-    self.label = label ?? Self.formatter.string(
+    self.label = Self.formatter.string(
       from: Measurement<UnitDuration>(value: Double(value), unit: .minutes)
     )
   }
@@ -28,14 +28,12 @@ struct AutoLockInterval: Identifiable, Hashable {
   static let fiveMinutes = AutoLockInterval(value: 5)
   static let tenMinutes = AutoLockInterval(value: 10)
   static let thirtyMinutes = AutoLockInterval(value: 30)
-  static let never = AutoLockInterval(value: Int32.max, label: Strings.Wallet.autoLockNeverInterval)
   
   static let allOptions: [AutoLockInterval] = [
     .minute,
     .fiveMinutes,
     .tenMinutes,
-    .thirtyMinutes,
-    .never
+    .thirtyMinutes
   ]
   
   private static let formatter = MeasurementFormatter().then {
@@ -90,14 +88,14 @@ public class KeyringStore: ObservableObject {
       isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
     }
     controller.autoLockMinutes { minutes in
-      self.autoLockInterval = minutes == Int32.max ? .never : .init(value: minutes)
+      self.autoLockInterval = .init(value: minutes)
     }
   }
   
   private func updateKeyringInfo() {
     controller.defaultKeyringInfo { [self] keyringInfo in
       keyring = keyringInfo
-      if (!keyring.accountInfos.isEmpty) {
+      if !keyring.accountInfos.isEmpty {
         controller.selectedAccount { accountAddress in
           selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
             keyringInfo.accountInfos.first!

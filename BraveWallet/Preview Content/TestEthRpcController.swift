@@ -72,12 +72,29 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     
   }
   
-  func setNetwork(_ chainId: String) {
+  func setNetwork(_ chainId: String, completion: @escaping (Bool) -> Void) {
     self.chainId = chainId
+    completion(true)
   }
   
   func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, completion: @escaping (Bool, String) -> Void) {
-    
+    completion(false, "")
+  }
+  
+  func ensGetEthAddr(_ domain: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func unstoppableDomainsGetEthAddr(_ domain: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func erc721Owner(of contract: String, tokenId: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func erc721TokenBalance(_ contractAddress: String, tokenId: String, accountAddress: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
   }
 }
 

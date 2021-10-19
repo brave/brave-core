@@ -116,6 +116,9 @@ class TestEthTxController: BraveWalletEthTxController {
   
   func setGasFeeAndLimitForUnapprovedTransaction(_ txMetaId: String, maxPriorityFeePerGas: String, maxFeePerGas: String, gasLimit: String, completion: @escaping (Bool) -> Void) { 
   }
+  
+  func makeErc721Transfer(fromData from: String, to: String, tokenId: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+  }
 }
 
 #endif

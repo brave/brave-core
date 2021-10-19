@@ -20,13 +20,13 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
     assets[chainId]?.append(token)
   }
   
-  func removeUserAsset(_ contractAddress: String, chainId: String, completion: @escaping (Bool) -> Void) {
-    assets[chainId]?.removeAll(where: { $0.contractAddress == contractAddress })
+  func removeUserAsset(_ token: BraveWallet.ERCToken, chainId: String, completion: @escaping (Bool) -> Void) {
+    assets[chainId]?.removeAll(where: { $0.contractAddress == token.contractAddress })
   }
   
-  func setUserAssetVisible(_ contractAddress: String, chainId: String, visible: Bool, completion: @escaping (Bool) -> Void) {
+  func setUserAssetVisible(_ token: BraveWallet.ERCToken, chainId: String, visible: Bool, completion: @escaping (Bool) -> Void) {
     let chainAssets = assets[chainId]
-    if let index = chainAssets?.firstIndex(where: { $0.contractAddress == contractAddress }) {
+    if let index = chainAssets?.firstIndex(where: { $0.contractAddress == token.contractAddress }) {
       chainAssets?[index].visible = visible
     }
   }
@@ -68,5 +68,12 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
   
   func activeOrigin(_ completion: @escaping (String) -> Void) {
     completion("")
+  }
+  
+  func pendingSignMessageRequest(_ completion: @escaping (Int32, String, String) -> Void) {
+    completion(0, "", "")
+  }
+  
+  func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32) {
   }
 }
