@@ -333,14 +333,19 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsKeyExport", IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM},
     {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
     {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
-    {"resetWallet", IDS_SETTINGS_WALLET_RESET},
-    {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION}
+    {"resetWallet", IDS_SETTINGS_WALLET_RESET}
   };
 
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
+  auto confirmation_phrase =
+      l10n_util::GetStringUTF16(IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
+  html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
+  auto confirmation_text = l10n_util::GetStringFUTF16(
+      IDS_SETTINGS_WALLET_RESET_CONFIRMATION, confirmation_phrase);
+  html_source->AddString("walletResetConfirmation", confirmation_text);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif

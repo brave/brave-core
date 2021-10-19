@@ -895,7 +895,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Reset Wallet
       </message>
       <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
-        Do you really want to reset your wallet?
+        Do you really want to reset your wallet? Doing so will lose all account data including associated funds if the account is not backed up. Type '<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>' to confirm.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
+        Yes
       </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
         Import

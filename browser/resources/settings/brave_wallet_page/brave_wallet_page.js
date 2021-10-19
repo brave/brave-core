@@ -63,7 +63,7 @@ Polymer({
 
   onResetWallet_: function() {
     var message = this.i18n('walletResetConfirmation')
-    if (!window.confirm(message))
+    if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase'))
       return
     this.browserProxy_.resetWallet();
   }
