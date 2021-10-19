@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wallet_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/wallet_toolbar_bg_color"
+            android:translationZ="10dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_vertical" />
+
+        <include layout="@layout/wallet_backup_banner"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_wallet_edittext">
+
+            <EditText
+                android:id="@+id/private_key_text"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:layout_gravity="center_vertical"
+                android:importantForAutofill="no"
+                android:inputType="textPassword|textMultiLine"
+                android:paddingEnd="18dp"
+                android:paddingStart="18dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textCursorDrawable="@null"
+                android:textSize="14sp"
+                android:textColor="@color/wallet_text_color"
+                android:background="@null"
+                android:enabled="false"
+                android:textColorHint="@color/wallet_edittext_outline_color" />
+
+            <TextView
+                android:id ="@+id/copy_to_clipboard_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/brave_action_color"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                app:drawableEndCompat="@drawable/ic_copy"
+                android:text="@string/brave_sync_copy_button_text"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/brave_action_color"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_show_private_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/show_private_key"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

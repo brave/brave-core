@@ -141,7 +141,7 @@
                 android:paddingBottom="10dp"
                 android:textCursorDrawable="@null"
                 android:textSize="14sp"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:textColor="@color/wallet_text_color"
                 android:textColorHint="@color/wallet_edittext_outline_color" />
 
