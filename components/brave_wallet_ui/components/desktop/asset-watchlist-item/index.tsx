@@ -13,7 +13,9 @@ import {
   AssetIcon,
   DeleteButton,
   DeleteIcon,
-  RightSide
+  RightSide,
+  NameAndSymbol,
+  AssetSymbol
 } from './style'
 
 export interface Props {
@@ -45,7 +47,10 @@ const AssetWatchlistItem = (props: Props) => {
     <StyledWrapper>
       <NameAndIcon>
         <AssetIcon icon={(token.symbol === 'ETH' ? ETH.asset.logo : token.logo) ?? ''} />
-        <AssetName>{token.name}</AssetName>
+        <NameAndSymbol>
+          <AssetName>{token.name}</AssetName>
+          <AssetSymbol>{token.symbol}</AssetSymbol>
+        </NameAndSymbol>
       </NameAndIcon>
       <RightSide>
         {isCustom &&

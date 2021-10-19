@@ -24,7 +24,7 @@ export const WatchlistScrollContainer = styled.div`
   max-height: 225px;
   margin-bottom: 24px;
   box-sizing: border-box;
-  padding-right: 4px;
+  padding-right: 12px;
 `
 
 export const LoadingWrapper = styled.div`
