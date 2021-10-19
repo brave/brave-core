@@ -37,6 +37,10 @@ function OnboardingVerify (props: Props) {
     unSelectWord(word)
   }
 
+  const isDisabled = React.useMemo((): boolean => {
+    return sortedPhrase.length !== recoveryPhrase.length
+  }, [sortedPhrase, recoveryPhrase])
+
   return (
     <StyledWrapper>
       <Title>{getLocale('braveWalletVerifyRecoveryTitle')}</Title>
@@ -68,7 +72,7 @@ function OnboardingVerify (props: Props) {
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
-      <NavButton disabled={sortedPhrase.length !== 12} buttonType='primary' text={getLocale('braveWalletButtonVerify')} onSubmit={onSubmit} />
+      <NavButton disabled={isDisabled} buttonType='primary' text={getLocale('braveWalletButtonVerify')} onSubmit={onSubmit} />
     </StyledWrapper>
   )
 }
