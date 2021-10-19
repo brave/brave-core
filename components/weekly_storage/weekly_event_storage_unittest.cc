@@ -28,16 +28,20 @@ class WeeklyEventStorageTest : public ::testing::Test {
     kMaxValue = kBrave,
   };
 
-  WeeklyEventStorageTest() : clock_(new base::SimpleTestClock) {
+  WeeklyEventStorageTest() {
     pref_service_.registry()->RegisterListPref(kPrefName);
+    CreateWeeklyEventStorage();
+  }
 
+  void CreateWeeklyEventStorage() {
+    clock_ = new base::SimpleTestClock;
+    clock_->SetNow(base::Time::Now());
     state_ = std::make_unique<WeeklyEventStorage>(
         &pref_service_, kPrefName, std::unique_ptr<base::Clock>(clock_));
-    clock_->SetNow(base::Time::Now());
   }
 
  protected:
-  base::SimpleTestClock* clock_;
+  base::SimpleTestClock* clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<WeeklyEventStorage> state_;
 };
@@ -94,7 +98,7 @@ TEST_F(WeeklyEventStorageTest, InfrequentUsage) {
 // Verify serialization order across reloads, since GetLatest
 // relies on this.
 // FIXME(rillian): Disabled because it crashes as written.
-TEST_F(WeeklyEventStorageTest, DISABLED_SerializationOrder) {
+TEST_F(WeeklyEventStorageTest, SerializationOrder) {
   // Add a series of events.
   state_->Add(TestValues::kFoo);
   state_->Add(TestValues::kBar);
@@ -109,8 +113,7 @@ TEST_F(WeeklyEventStorageTest, DISABLED_SerializationOrder) {
   state_.reset();
 
   // Create a new one.
-  state_ = std::make_unique<WeeklyEventStorage>(
-      &pref_service_, kPrefName, std::unique_ptr<base::Clock>(clock_));
+  CreateWeeklyEventStorage();
 
   // Most recently added event should still be the latest.
   EXPECT_EQ(state_->GetLatest(),
