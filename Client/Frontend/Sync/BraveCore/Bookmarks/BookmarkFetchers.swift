@@ -20,10 +20,10 @@ protocol BookmarksV2FetchResultsDelegate: AnyObject {
 protocol BookmarksV2FetchResultsController {
     /* weak */ var delegate: BookmarksV2FetchResultsDelegate? { get set }
     
-    var fetchedObjects: [BookmarkNode]? { get }
+    var fetchedObjects: [Bookmarkv2]? { get }
     var fetchedObjectsCount: Int { get }
     func performFetch() throws
-    func object(at indexPath: IndexPath) -> BookmarkNode?
+    func object(at indexPath: IndexPath) -> Bookmarkv2?
 }
 
 class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
@@ -32,7 +32,7 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
     private weak var bookmarksAPI: BraveBookmarksAPI?
     
     private let parentNode: BookmarkNode?
-    private var children = [BookmarkNode]()
+    private var children = [Bookmarkv2]()
     
     init(_ parentNode: BookmarkNode?, api: BraveBookmarksAPI) {
         self.parentNode = parentNode
@@ -47,7 +47,7 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
         })
     }
     
-    var fetchedObjects: [BookmarkNode]? {
+    var fetchedObjects: [Bookmarkv2]? {
         return children
     }
     
@@ -59,18 +59,18 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
         children.removeAll()
         
         if let parentNode = self.parentNode {
-            children.append(contentsOf: parentNode.children.map({ $0 }))
+            children.append(contentsOf: parentNode.children.map({ Bookmarkv2($0) }))
         } else {
             if let node = bookmarksAPI?.mobileNode {
-                children.append(node)
+                children.append(Bookmarkv2(node))
             }
             
             if let node = bookmarksAPI?.desktopNode, node.childCount > 0 {
-                children.append(node)
+                children.append(Bookmarkv2(node))
             }
             
             if let node = bookmarksAPI?.otherNode, node.childCount > 0 {
-                children.append(node)
+                children.append(Bookmarkv2(node))
             }
             
             if children.isEmpty {
@@ -81,7 +81,7 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
         }
     }
     
-    func object(at indexPath: IndexPath) -> BookmarkNode? {
+    func object(at indexPath: IndexPath) -> Bookmarkv2? {
         return children[safe: indexPath.row]
     }
 }
@@ -91,7 +91,7 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
     private var bookmarkModelListener: BookmarkModelListener?
     
     private var excludedFolder: BookmarkNode?
-    private var children = [BookmarkNode]()
+    private var children = [Bookmarkv2]()
     private weak var bookmarksAPI: BraveBookmarksAPI?
     
     init(_ excludedFolder: BookmarkNode?, api: BraveBookmarksAPI) {
@@ -107,7 +107,7 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
         })
     }
     
-    var fetchedObjects: [BookmarkNode]? {
+    var fetchedObjects: [Bookmarkv2]? {
         return children
     }
     
@@ -137,11 +137,11 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
         }
     }
     
-    func object(at indexPath: IndexPath) -> BookmarkNode? {
+    func object(at indexPath: IndexPath) -> Bookmarkv2? {
         return children[safe: indexPath.row]
     }
     
-    private func getNestedFolders(_ node: BookmarkNode, guid: String?) -> [BookmarkNode] {
+    private func getNestedFolders(_ node: BookmarkNode, guid: String?) -> [Bookmarkv2] {
         if let guid = guid {
             return node.nestedChildFolders.filter({ $0.bookmarkNode.guid != guid }).map({ BraveBookmarkFolder($0) })
         }
