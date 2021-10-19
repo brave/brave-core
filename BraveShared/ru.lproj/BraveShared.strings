@@ -115,6 +115,9 @@
 /* No comment provided by engineer. */
 "BlockScriptsDescription" = "Блокирует JavaScript (это может нарушать работу сайтов).";
 
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Добавить все вкладки в избранное";
+
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Папка закладок";
 
@@ -293,7 +296,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Оптимизировано для iOS %@. Сделайте Brave браузером по умолчанию.";
+"defaultBrowserCallout.notificationBody" = "Оптимизировано под iOS %@. Сделайте Brave вашим браузером по умолчанию.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Браузер Brave";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Здесь будут показаны скачанные вами файлы";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Ранее";
 
 /* No comment provided by engineer. */
 "Edit" = "Изменить";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Приносим извинения";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "С Brave Rewards вы можете просматривать рекламу из Brave Ads без замедления работы и отслеживания активности. Ваши данные находятся под надежной защитой. ";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Включить Brave Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Чтобы открыть Brave Talk, нажмите на любое место экрана.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Теперь вам доступны бесплатные звонки";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Чтобы начать бесплатный вызов, включите Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Нажимая кнопку, вы принимаете следующие соглашения: %1$@ и %2$@. Вы можете в любое время изменить настройки.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Панель Rewards";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Сохраненные учетные данные";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Сохраненные вкладки";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Сохранить изображение";

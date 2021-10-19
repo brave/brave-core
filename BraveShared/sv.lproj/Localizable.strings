@@ -199,6 +199,9 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Lägg till i Brave Playlist";
 
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Brave-spellista";
+
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Den här videon var en livestream eller tidsgränsen nåddes. Öppna länken igen för att uppdatera.";
 
@@ -217,7 +220,10 @@
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Visa menyaviseringsmärke";
 
-/* Text indicator on the table cell If a video is already downloaded */
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Du kan lägga till objekt i din Brave Playlist i webbläsaren";
+
+/* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Inga objekt tillgängliga";
 
 /* Title for download video error alert */
@@ -352,6 +358,21 @@
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Sparat för offline ...";
 
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Du kan öppna det aktuella objektet på en ny flik eller dela det via System Share-menyn";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Brave Playlist-meny";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Öppna i privat flik";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Öppna i ny flik";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Dela ...";
+
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Tyvärr";
 
@@ -366,6 +387,12 @@
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Visa i Brave Playlist";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Lägger till en spellistknapp (den ser ut som 4 linjer med en + symbol) bredvid adressfältet i Brave-webbläsaren. Med den här knappen får du snabb åtkomst till att öppna Playlist eller lägga till eller ta bort media.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Aktivera snabbåtkomstknapp";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Stäng kontextmenyn";

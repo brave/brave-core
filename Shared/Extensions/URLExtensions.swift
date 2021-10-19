@@ -439,7 +439,7 @@ extension URL {
         
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         if self.isErrorPageURL, let queryURL = components?.queryItems?.find({ $0.name == "url" })?.value {
-            return URL(string: queryURL)
+            return URL(string: queryURL) ?? URL(string: queryURL.escape() ?? queryURL)
         }
         return nil
     }

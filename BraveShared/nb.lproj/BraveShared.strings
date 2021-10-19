@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "Blokker sporere på tvers av nettsteder";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Forhindrer annonser, sprettoppvinduer og sporere fra å lastes inn";
+"BlockAdsAndTrackingDescription" = "Forhindrer at annonser, popup-vinduer og sporere lastes inn.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokker alle informasjonskapsler";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Alternativet kan ikke endres. Prøv senere.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Forhindrer nettsteder i å lagre informasjon om dine tidligere besøk";
+"BlockCookiesDescription" = "Forhindrer at nettsteder lagrer informasjon om dine tidligere besøk.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Blokkeringsoversikt";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Blokker skripter";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokkerer Javascript (kan ødelegge nettsteder)";
+"BlockScriptsDescription" = "Blokkerer Javascript (kan ødelegge nettsteder).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Legg til bokmerker for alle faner";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Bokmerkemappe";
@@ -293,7 +296,7 @@
 "defaultBrowserCallout.introTertiaryText" = "Åpne Innstillinger, trykk på Standard Nettleser-appen, og velg Brave.";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Optimalisert for iOS %@. Gjør Brave til din standard nettleser i dag.";
+"defaultBrowserCallout.notificationBody" = "Optimalisert for iOS %@. Gjør Brave til den standard nettleseren din i dag.";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Brave-nettleser";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Nedlastede filer vil vises her.";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Tidligere";
 
 /* No comment provided by engineer. */
 "Edit" = "Rediger";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Dette er litt flaut.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Med Brave Rewards kan du se annonser fra Brave Ads-nettverket som respekterer personvernet ditt. Ingen sporere. Ingen forsinkelser. Og dataene dine forblir helt trygge.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Slå på Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Klikk hvor som helst på skjermen for å fortsette til Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Du kan nå starte et gratis anrop";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "For å starte et gratis anrop, må du slå på Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Ved å klikke, samtykker du til %1$@ og %2$@. Deaktiver dette når som helst i innstillingene.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Belønningspanel";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Lagrede innlogginger";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Lagrede faner";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Lagre bilde";

@@ -199,6 +199,9 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Tambahkan ke Brave Playlist";
 
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Daftar Putar Brave";
+
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Video ini merupakan siaran aliran langsung atau telah mecapai batas waktunya. Silakan buka tautannya kembali untuk melakukan penyegaran. ";
 
@@ -217,7 +220,10 @@
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Tampilkan Emblem Notifikasi Menu";
 
-/* Text indicator on the table cell If a video is already downloaded */
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Anda dapat menambahkan media ke Brave Playlist Anda di dalam peramban";
+
+/* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Video Tidak Tersedia";
 
 /* Title for download video error alert */
@@ -352,6 +358,21 @@
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Menyimpan untuk Luring...";
 
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Anda dapat membuka media saat ini di Tab Baru, atau membagikannya melalui Menu Pembagian Sistem";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Menu Brave Playlist";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Buka di Tab Privat";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Buka di Tab Baru";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Bagikan...";
+
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Maaf";
 
@@ -366,6 +387,12 @@
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Lihat di Brave Playlist";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Tambahkan tombol daftar putar (seperti 4 garis dengan simbol +) di samping bilah alamat pada peramban Brave. Tombol ini memberikan Anda akses cepat untuk membuka Daftar Putar, atau menambahkan atau menyingkirkan media.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Aktifkan tombol akses cepat";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Tutup Menu Konteks";

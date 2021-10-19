@@ -74,10 +74,10 @@
 "Block3rdPartyCookies" = "Blokir cookie pihak ke-3";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Blokir pelacak lintas situs";
+"BlockAdsAndTracking" = "Blokir Pelacak Lintas Situs";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Mencegah dimuatnya iklan, popup, dan pelacak";
+"BlockAdsAndTrackingDescription" = "Mencegah dimuatnya iklan, popup, dan pelacak.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokir semua Kuki";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Gagal mengatur preferensi. Coba lagi.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Mencegah situs web menyimpan informasi tentang kunjungan Anda sebelumnya";
+"BlockCookiesDescription" = "Mencegah situs web menyimpan informasi tentang kunjungan Anda sebelumnya.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Memblokir Monitor";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Blokir Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokir JavaScript (dapat membatasi akses ke situs web)";
+"BlockScriptsDescription" = "Memblokir Javascript (mungkin merusak situs).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Tandai Semua Tab";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder Markah";
@@ -355,6 +358,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = " File yang diunduh akan muncul di sini.";
 
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Lebih Awal";
+
 /* No comment provided by engineer. */
 "Edit" = "Edit";
 
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "Metode Sidik Jari";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokir pengenal sidik jari";
+"FingerprintingProtection" = "Blokir Pengenal Sidik Jari";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Mempersulit bagi situs untuk mengenali karakteristik unik perangkat Anda.";
@@ -518,7 +524,7 @@
 "Home" = "Beranda";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "Upgrade koneksi ke HTTPS";
+"HTTPSEverywhere" = "Tingkatkan Koneksi ke HTTPS";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "Membuka beberapa situs menggunakan koneksi HTTPS yang aman, bukan sekadar HTTP.";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Terjadi masalah.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Dengan Brave Rewards, Anda dapat melihat iklan yang menghormati privasi dari jaringan Brave Ads. Tanpa pelacak. Tanpa hambatan. Dan data Anda akan tetap aman sepenuhnya.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Aktifkan Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Klik di mana saja pada layar untuk melanjutkan ke Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Kini, Anda dapat mulai melakukan panggilan gratis";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Untuk memulai panggilan gratis, aktifkan Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Dengan mengklik, Anda menyetujui %1$@ dan %2$@. Nonaktifkan kapan saja di Pengaturan.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel Reward";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Info Masuk Tersimpan";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Tab yang Disimpan";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Simpan Gambar";

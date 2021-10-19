@@ -74,10 +74,10 @@
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "クロスサイトトラッカーをブロック";
+"BlockAdsAndTracking" = "クロスサイトトラッキングをブロックする";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "広告やポップアップ、トラッカーの読み込みをブロックする";
+"BlockAdsAndTrackingDescription" = "広告、ポップアップ、トラッキングの読み込みをブロックします。";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "すべてのクッキーをブロック";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "設定に失敗しました。もう一度やり直してください。";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "ウェブサイトがあなたに関する情報を保存しないようにします。";
+"BlockCookiesDescription" = "ウェブサイトにあなたの訪問履歴が保存されないようにします。";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "ブロックモニター";
@@ -113,7 +113,10 @@
 "BlockScripts" = "スクリプトをブロック";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "JavaScriptをブロック（サイトが正常に表示できなくなる可能性があります）";
+"BlockScriptsDescription" = "JavaScriptをブロックする（サイトが正常に動作しない可能性があります）";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "全てのタブをブックマークする";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "ブックマークフォルダ";
@@ -293,7 +296,7 @@
 "defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
 
 /* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "BraveはiOS%@に最適化されています。今すぐBraveをデフォルトブラウザに設定しましょう";
+"defaultBrowserCallout.notificationBody" = "iOS %@ に最適化されています。Braveを今すぐデフォルトブラウザにしましょう。";
 
 /* Notification title to promote setting Brave app as default browser */
 "defaultBrowserCallout.notificationTitle" = "Braveブラウザ";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "ダウンロードしたファイルが表示されます。";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "さらに前";
 
 /* No comment provided by engineer. */
 "Edit" = "編集";
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "フィンガープリンティングをブロック";
+"FingerprintingProtection" = "フィンガープリンティングをブロックする";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
@@ -518,7 +524,7 @@
 "Home" = "ホーム";
 
 /* No comment provided by engineer. */
-"HTTPSEverywhere" = "HTTPS接続にアップグレード";
+"HTTPSEverywhere" = "HTTPSに接続をアップグレードする";
 
 /* No comment provided by engineer. */
 "HTTPSEverywhereDescription" = "ウェブサイトをHTTPではなく、よりセキュアなHTTPSで接続する";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "申し訳ありません";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Brave Rewardsにより、あなたはBrave Adsネットワークから提供される、プライバシーを保護した形の広告を閲覧することができます。トラッキングも、読み込み遅延もありません。あなたのデータが外部に漏れることもありません。";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Rewardsをオンにする";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "続いてBrave Talkに移動するにはスクリーンのどこかをタップしてください";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "無料の通話を開始することができます";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "無料の通話を開始するには、Brave Rewardsをオンにしてください";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "クリックすることで %1$@ と %2$@ に同意したことになります。設定からいつでも無効にすることができます。";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Rewardsパネル";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存したログイン情報";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "保存されたタブ";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "画像を保存";

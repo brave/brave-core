@@ -100,9 +100,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     let profile: Profile
     let tabManager: TabManager
     let historyAPI: BraveHistoryAPI
-    let bookmarkAPI: BraveBookmarksAPI
     let syncAPI: BraveSyncAPI
     let migration: Migration?
+    let bookmarkManager: BookmarkManager
     
     /// Whether last session was a crash or not
     fileprivate let crashedLastSession: Bool
@@ -187,20 +187,20 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     /// Data Source object used to determine blocking stats
     //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
-
+    
     init(profile: Profile,
          diskImageStore: DiskImageStore?,
          historyAPI: BraveHistoryAPI,
-         bookmarkAPI: BraveBookmarksAPI,
+         bookmarksAPI: BraveBookmarksAPI,
          syncAPI: BraveSyncAPI,
          migration: Migration?,
          crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
         self.profile = profile
         self.historyAPI = historyAPI
-        self.bookmarkAPI = bookmarkAPI
         self.syncAPI = syncAPI
         self.migration = migration
+        self.bookmarkManager = BookmarkManager(bookmarksAPI: bookmarksAPI)
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
 

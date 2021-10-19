@@ -70,7 +70,8 @@ class SearchEngines {
     }
     
     func searchEngineSetup() {
-        setInitialDefaultEngine(initialSearchEngines.defaultSearchEngine.rawValue)
+        let engine = initialSearchEngines.defaultSearchEngine
+        setInitialDefaultEngine(engine.legacyName ?? engine.rawValue)
     }
     
     /// If no engine type is specified this method returns search engine for regular browsing.
