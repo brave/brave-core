@@ -25,8 +25,6 @@ static_library("browser") {
     "component_updater/resource_info.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
-    "notification_helper.cc",
-    "notification_helper.h",
     "service_sandbox_type.h",
   ]
 
@@ -71,52 +69,10 @@ static_library("browser") {
     "//url",
   ]
 
-  public_deps += [ "//brave/vendor/bat-native-ads" ]
-
-  if (is_android) {
-    sources += [
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.cc",
-      "//brave/browser/brave_ads/android/brave_ads_native_helper.h",
-      "notification_helper_android.cc",
-      "notification_helper_android.h",
-    ]
-
-    deps += [
-      "//brave/browser/brave_ads/android:jni_headers",
-      "//brave/build/android:jni_headers",
-      "//chrome/android:jni_headers",
-    ]
-  }
-
-  if (is_linux) {
-    sources += [
-      "notification_helper_linux.cc",
-      "notification_helper_linux.h",
-    ]
-
-    deps += [ "//ui/gfx/x" ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "notification_helper_mac.h",
-      "notification_helper_mac.mm",
-    ]
-  }
-
-  if (is_win) {
-    sources += [
-      "notification_helper_win.cc",
-      "notification_helper_win.h",
-    ]
-
-    deps += [
-      "//ui/gfx",
-      "//ui/views",
-    ]
-  }
-
-  public_deps += [ "//brave/components/brave_adaptive_captcha/buildflags" ]
+  public_deps += [
+    "//brave/components/brave_adaptive_captcha/buildflags",
+    "//brave/vendor/bat-native-ads",
+  ]
 
   if (brave_adaptive_captcha_enabled) {
     sources += [ "ads_tooltips_delegate.h" ]

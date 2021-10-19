@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/notification_helper_android.h"
+#include "brave/browser/brave_ads/notification_helper/notification_helper_android.h"
 
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
