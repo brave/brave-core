@@ -115,6 +115,11 @@ class BraveWalletProviderImpl final
       AddAndApproveTransactionCallback callback,
       mojom::TxData1559Ptr tx_data,
       const std::string& from,
+      const std::string& chain_id);
+  void ContinueAddAndApprove1559Transaction2(
+      AddAndApproveTransactionCallback callback,
+      mojom::TxData1559Ptr tx_data,
+      const std::string& from,
       bool success,
       const std::vector<std::string>& allowed_accounts);
   void ContinueSignMessage(const std::string& address,
