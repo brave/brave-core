@@ -95,6 +95,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // As each instance should have its own protection?
         self.windowProtection = WindowProtection(window: window)
         window.makeKeyAndVisible()
+        
+        // Open shared URLs on launch if there are any
+        if !connectionOptions.urlContexts.isEmpty {
+            self.scene(windowScene, openURLContexts: connectionOptions.urlContexts)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -351,7 +356,7 @@ extension SceneDelegate {
             profile: profile,
             diskImageStore: diskImageStore,
             historyAPI: appDelegate.braveCore.historyAPI,
-            bookmarkAPI: appDelegate.braveCore.bookmarksAPI,
+            bookmarksAPI: appDelegate.braveCore.bookmarksAPI,
             syncAPI: appDelegate.braveCore.syncAPI,
             migration: migration,
             crashedLastSession: crashedLastSession)

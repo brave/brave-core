@@ -143,6 +143,12 @@ class Migration {
                 } catch {
                     log.error("Moving Playlist Item for \(errorPath) failed: \(error)")
                 }
+                
+                do {
+                    try FileManager.default.removeItem(at: url)
+                } catch {
+                    log.error("Deleting Playlist Item for \(errorPath) failed: \(error)")
+                }
             }
         } catch {
             log.error("Moving Playlist Files for \(errorPath) failed: \(error)")

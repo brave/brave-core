@@ -74,10 +74,10 @@
 "Block3rdPartyCookies" = "Blokuj pliki cookie stron trzecich";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTracking" = "Zablokuj moduły śledzące działające pomiędzy witrynami";
+"BlockAdsAndTracking" = "Zablokuj trackery działające pomiędzy witrynami";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Zapobiega wczytywaniu się reklam, wyskakujących okienek i trackerów";
+"BlockAdsAndTrackingDescription" = "Zapobiega wczytywaniu się reklam, wyskakujących okienek i trackerów.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blokuj wszystkie pliki cookie";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Ustawienie preferencji nie powiodło się. Spróbuj ponownie.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Zapobiega przechowywaniu przez strony internetowe informacji o Twoich poprzednich wizytach";
+"BlockCookiesDescription" = "Zapobiega przechowywaniu przez strony internetowe informacji o Twoich poprzednich wizytach.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor blokowania";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Blokuj skrypty";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blokuje Javascript (może uniemożliwić ładowanie stron)";
+"BlockScriptsDescription" = "Blokuje Javascript (może uniemożliwić ładowanie stron).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Zapisz wszystkie karty";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Folder zakładek";
@@ -355,6 +358,9 @@
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "W tym miejscu pojawią się pobrane pliki.";
 
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Wcześniej";
+
 /* No comment provided by engineer. */
 "Edit" = "Edytuj";
 
@@ -461,7 +467,7 @@
 "FingerprintingMethods" = "Metody pobierania odcisków palców";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Blokuj odciski palca";
+"FingerprintingProtection" = "Zablokuj odciski palca";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Utrudnia stronom rozpoznawanie charakterystycznych cech Twojego urządzenia.";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Cóż, to krępujące.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Dzięki Brave Rewards możesz wyświetlać reklamy szanujące prywatność z sieci Brave Ads. Bez trackerów. Bez spowolnienia. A Twoje dane pozostaną całkowicie bezpieczne. ";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Włącz nagrody";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknij w dowolnym miejscu ekranu, aby przejść do Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Możesz teraz rozpocząć bezpłatne połączenie";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Aby rozpocząć bezpłatne połączenie, włącz Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Klikając, wyrażasz zgodę na %1$@ i %2$@. W dowolnym momencie możesz to wyłączyć w Ustawieniach.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Panel Rewards";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Zapisane loginy";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Zapisane karty";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Zapisz obraz";

@@ -13,9 +13,9 @@ enum BookmarkEditMode {
     case addBookmark(title: String, url: String)
     case addFolder(title: String)
     case addFolderUsingTabs(title: String, tabList: [Tab])
-    case editBookmark(_ bookmark: BookmarkNode)
-    case editFolder(_ folder: BookmarkNode)
-    case editFavorite(_ favorite: BookmarkNode)
+    case editBookmark(_ bookmark: Bookmarkv2)
+    case editFolder(_ folder: Bookmarkv2)
+    case editFavorite(_ favorite: Bookmarkv2)
     
     /// Returns a initial, default save location if none is provided
     var initialSaveLocation: BookmarkSaveLocation {
@@ -35,7 +35,7 @@ enum BookmarkEditMode {
     /// Returns a folder which is edited, otherwise retuns nil.
     /// This is required to exclude the folder from showing in
     /// folder hierarchy.
-    var folder: BookmarkNode? {
+    var folder: Bookmarkv2? {
         switch self {
         case .editFolder(let folder): return folder
         default: return nil
@@ -53,8 +53,8 @@ enum BookmarkEditMode {
         }
     }
     
-    private func folderOrRoot(bookmarkOrFolder: BookmarkNode) -> BookmarkSaveLocation {
-        guard let parent = bookmarkOrFolder.parentNode else { return .rootLevel }
+    private func folderOrRoot(bookmarkOrFolder: Bookmarkv2) -> BookmarkSaveLocation {
+        guard let parent = bookmarkOrFolder.parent else { return .rootLevel }
         return .folder(folder: parent)
     }
     

@@ -77,7 +77,7 @@
 "BlockAdsAndTracking" = "Blocca il tracciamento tra più siti";
 
 /* No comment provided by engineer. */
-"BlockAdsAndTrackingDescription" = "Impedisce il caricamento di annunci, popup e tracker";
+"BlockAdsAndTrackingDescription" = "Impedisce il caricamento di annunci, popup e tracker.";
 
 /* Title for setting to block all website cookies. */
 "BlockAllCookies" = "Blocca tutti i cookie";
@@ -95,7 +95,7 @@
 "BlockAllCookiesFailedAlertMsg" = "Impossibile impostare la preferenza. Riprova.";
 
 /* No comment provided by engineer. */
-"BlockCookiesDescription" = "Impedisce ai siti web di memorizzare le informazioni sulle tue visite precedenti";
+"BlockCookiesDescription" = "Impedisce ai siti web di memorizzare le informazioni sulle tue visite precedenti.";
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitoraggio blocchi";
@@ -113,7 +113,10 @@
 "BlockScripts" = "Blocca script";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Blocca JavaScript (potrebbe compromettere il funzionamento dei siti)";
+"BlockScriptsDescription" = "Blocca JavaScript (potrebbe compromettere il funzionamento dei siti).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List */
+"BookmarkAllTabsTitle" = "Aggiungi tutte le schede ai segnalibri";
 
 /* Bookmark Folder Section Title */
 "BookmarkFolder" = "Cartella dei segnalibri";
@@ -354,6 +357,9 @@
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "I file scaricati appariranno qui.";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Precedenti";
 
 /* No comment provided by engineer. */
 "Edit" = "Modifica";
@@ -829,6 +835,24 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Ops, questo è un guaio.";
 
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Con Brave Rewards puoi visualizzare gli annunci rispettosi della privacy dalla rete Brave Ads. Nessun tracker. Nessun rallentamento. E i tuoi dati rimangono totalmente al sicuro.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Attiva Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Fai clic in un punto qualsiasi dello schermo per continuare con Brave Talk.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Ora puoi avviare una chiamata gratuita";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Per avviare una chiamata gratuita, attiva Brave Rewards";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Facendo clic, accetti i %1$@ e l’%2$@. Disabilitali in qualsiasi momento dalle Impostazioni.";
+
 /* Button to show the rewards panel */
 "RewardsPanel" = "Pannello Premi";
 
@@ -837,6 +861,9 @@
 
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Accessi salvati";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Schede salvate";
 
 /* Context menu item for saving an image */
 "SaveImageActionTitle" = "Salva immagine";
