@@ -46,7 +46,10 @@ import {
   MessageBoxRow,
   FiatRow,
   FavIcon,
-  URLText
+  URLText,
+  QueueStepText,
+  QueueStepRow,
+  QueueStepButton
 } from './style'
 
 import {
@@ -67,8 +70,12 @@ export interface Props {
   selectedNetwork: EthereumChain
   transactionSpotPrices: AssetPriceInfo[]
   gasEstimates?: GasEstimation
+  transactionsQueueLength: number
+  transactionQueueNumber: number
+  onQueueNextTransction: () => void
   onConfirm: () => void
   onReject: () => void
+  onRejectAllTransactions: () => void
   refreshGasEstimates: () => void
   updateUnapprovedTransactionGasFields: (payload: UpdateUnapprovedTransactionGasFieldsType) => void
 }
@@ -81,8 +88,12 @@ function ConfirmTransactionPanel (props: Props) {
     visibleTokens,
     transactionSpotPrices,
     gasEstimates,
+    transactionsQueueLength,
+    transactionQueueNumber,
+    onQueueNextTransction,
     onConfirm,
     onReject,
+    onRejectAllTransactions,
     refreshGasEstimates,
     updateUnapprovedTransactionGasFields
   } = props
@@ -176,6 +187,19 @@ function ConfirmTransactionPanel (props: Props) {
                 <AccountCircle orb={toOrb} />
               </AddressAndOrb>
             }
+            {transactionsQueueLength > 1 &&
+              <QueueStepRow>
+                <QueueStepText>{transactionQueueNumber} {getLocale('braveWalletQueueOf')} {transactionsQueueLength}</QueueStepText>
+                <QueueStepButton
+                  onClick={onQueueNextTransction}
+                >
+                  {transactionQueueNumber === transactionsQueueLength
+                    ? getLocale('braveWalletQueueFirst')
+                    : getLocale('braveWalletQueueNext')
+                  }
+                </QueueStepButton>
+              </QueueStepRow>
+            }
           </TopRow>
           {transactionInfo.txType === TransactionType.ERC20Approve ? (
             <>
@@ -252,8 +276,16 @@ function ConfirmTransactionPanel (props: Props) {
                   </>
                 }
               </>
-            ) : <TransactionDetailBox transactionInfo={transactionInfo}/>}
+            ) : <TransactionDetailBox transactionInfo={transactionInfo} />}
           </MessageBox>
+          {transactionsQueueLength > 1 &&
+            <QueueStepButton
+              needsMargin={true}
+              onClick={onRejectAllTransactions}
+            >
+              {getLocale('braveWalletQueueRejectAll').replace('$1', transactionsQueueLength.toString())}
+            </QueueStepButton>
+          }
           <ButtonRow>
             <NavButton
               buttonType='reject'

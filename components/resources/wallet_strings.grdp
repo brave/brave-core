@@ -295,6 +295,10 @@
     <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
     <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
     <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="VALUE">$1</ph> is not registered</message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
+    <message name="IDS_BRAVE_WALLET_QUEUE_REJECT_ALL" desc="Confirm Transaction Queue Reject All Transactions">Reject <ph name="VALUE">$1</ph> transactions</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE" desc="Swap CTA text for insufficient balance">Insufficient balance</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE" desc="Swap CTA text for insufficient ETH balance">Insufficient funds for gas</message>
     <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
