@@ -11,8 +11,6 @@ static_library("browser") {
     "ads_p2a.h",
     "ads_service.cc",
     "ads_service.h",
-    "ads_service_impl.cc",
-    "ads_service_impl.h",
     "ads_service_observer.h",
     "ads_storage_cleanup.cc",
     "ads_storage_cleanup.h",
