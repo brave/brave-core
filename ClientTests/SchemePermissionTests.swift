@@ -75,7 +75,7 @@ class SchemePermissionTests: XCTestCase {
             profile: profile,
             diskImageStore: imageStore,
             historyAPI: historyAPI,
-            bookmarkAPI: bookmarksAPI,
+            bookmarksAPI: bookmarksAPI,
             syncAPI: syncAPI,
             migration: migration,
             crashedLastSession: false)
