@@ -10,8 +10,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 namespace {
+
+// Preference name switch events are stored under.
+constexpr char kSwitchSearchEngineP3AStorage[] =
+    "brave.search.p3a_default_switch";
 
 // Deduces the search engine from |type|, if nothing is found - from |url|.
 // Not all engines added by Brave are present in |SearchEngineType| enumeration.
@@ -44,6 +49,39 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
   UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric, answer);
 }
 
+SearchEngineSwitchP3A SearchEngineSwitchP3AMapAnswer(const GURL& to,
+                                                     const GURL& from) {
+  SearchEngineSwitchP3A answer;
+
+  DCHECK(from.is_valid());
+  DCHECK(to.is_valid());
+
+  if (from.DomainIs("brave.com")) {
+    // Switching away from Brave Search.
+    if (to.DomainIs("google.com")) {
+      answer = SearchEngineSwitchP3A::kBraveToGoogle;
+    } else if (to.DomainIs("duckduckgo.com")) {
+      answer = SearchEngineSwitchP3A::kBraveToDDG;
+    } else {
+      answer = SearchEngineSwitchP3A::kBraveToOther;
+    }
+  } else if (to.DomainIs("brave.com")) {
+    // Switching to Brave Search.
+    if (from.DomainIs("google.com")) {
+      answer = SearchEngineSwitchP3A::kGoogleToBrave;
+    } else if (from.DomainIs("duckduckgo.com")) {
+      answer = SearchEngineSwitchP3A::kDDGToBrave;
+    } else {
+      answer = SearchEngineSwitchP3A::kOtherToBrave;
+    }
+  } else {
+    // Any other transition.
+    answer = SearchEngineSwitchP3A::kOtherToOther;
+  }
+
+  return answer;
+}
+
 }  // namespace
 
 // static
@@ -62,10 +100,12 @@ SearchEngineTrackerFactory::~SearchEngineTrackerFactory() {}
 
 KeyedService* SearchEngineTrackerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  auto* template_url_service = TemplateURLServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(context));
-  if (template_url_service) {
-    return new SearchEngineTracker(template_url_service);
+  auto* profile = Profile::FromBrowserContext(context);
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  auto* user_prefs = profile->GetPrefs();
+  if (template_url_service && user_prefs) {
+    return new SearchEngineTracker(template_url_service, user_prefs);
   }
   return nullptr;
 }
@@ -74,9 +114,16 @@ bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
 
+void SearchEngineTrackerFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(kSwitchSearchEngineP3AStorage);
+}
+
 SearchEngineTracker::SearchEngineTracker(
-    TemplateURLService* template_url_service)
-    : template_url_service_(template_url_service) {
+    TemplateURLService* template_url_service,
+    PrefService* user_prefs)
+    : switch_record_(user_prefs, kSwitchSearchEngineP3AStorage),
+      template_url_service_(template_url_service) {
   observer_.Observe(template_url_service_);
   const TemplateURL* template_url =
       template_url_service_->GetDefaultSearchProvider();
@@ -89,7 +136,9 @@ SearchEngineTracker::SearchEngineTracker(
     const GURL url = template_url->GenerateSearchURL(search_terms);
     if (!url.is_empty()) {
       default_search_url_ = url;
+      previous_search_url_ = url;
       RecordSearchEngineP3A(url, template_url->GetEngineType(search_terms));
+      RecordSwitchP3A(url);
     }
   }
 }
@@ -106,5 +155,27 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
     if (url != default_search_url_) {
       RecordSearchEngineP3A(url, template_url->GetEngineType(search_terms));
     }
+    RecordSwitchP3A(url);
   }
+}
+
+void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
+  // Default to the last recorded switch so when we're called
+  // at start-up we initialize the histogram with whatever we
+  // remember from the previous run.
+  auto answer = SearchEngineSwitchP3A::kNoSwitch;
+  auto last = switch_record_.GetLatest();
+  if (last) {
+    answer = static_cast<SearchEngineSwitchP3A>(last.value());
+    DCHECK(answer <= SearchEngineSwitchP3A::kMaxValue);
+  }
+
+  if (url.is_valid() && url != previous_search_url_) {
+    // The default url has been switched, record that instead.
+    answer = SearchEngineSwitchP3AMapAnswer(url, previous_search_url_);
+    previous_search_url_ = url;
+    switch_record_.Add(static_cast<int>(answer));
+  }
+
+  UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);
 }
