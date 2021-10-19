@@ -146,7 +146,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         TextView amountAsset = view.findViewById(R.id.amount_asset);
         amountAsset.setText(String.format(
                 getResources().getString(R.string.crypto_wallet_amount_asset),
-                String.format(Locale.getDefault(), "%.4f", Utils.fromHexWei(valueToConvert)),
+                String.format(Locale.getDefault(), "%.4f", Utils.fromHexWei(valueToConvert, 18)),
                 mAsset));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
@@ -163,7 +163,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                 && mTxInfo.txArgs.length > 1) {
                             valueAsset = mTxInfo.txArgs[1];
                         }
-                        double value = Utils.fromHexWei(valueAsset);
+                        double value = Utils.fromHexWei(valueAsset, 18);
                         double price = Double.valueOf(valueFiat);
                         mTotalPrice = value * price;
                         TextView amountFiat = view.findViewById(R.id.amount_fiat);
