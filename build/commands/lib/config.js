@@ -392,6 +392,9 @@ Config.prototype.buildArgs = function () {
     // Fixes WebRTC IP leak with default option
     args.enable_mdns = true
 
+    // We want it to be enabled for all configurations
+    args.disable_android_lint = false
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl

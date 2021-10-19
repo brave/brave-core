@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.externalnav;
 
+import android.annotation.SuppressLint;
+
 import org.chromium.chrome.browser.BraveUphold;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.external_intents.ExternalNavigationHandler;
@@ -38,6 +40,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
         mBraveUphold.CompleteUpholdVerification(params, this);
     }
 
+    @SuppressLint("VisibleForTests")
     public OverrideUrlLoadingResult clobberCurrentTabWithFallbackUrl(
             String browserFallbackUrl, ExternalNavigationParams params) {
         // Below is an actual code that was used prior to deletion of

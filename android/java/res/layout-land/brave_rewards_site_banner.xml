@@ -423,7 +423,8 @@
                 android:layout_weight="1.2"
                 android:background="@android:color/transparent"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="4dp"
+                tools:ignore="RelativeOverlap">
 
                 <TextView
                     android:id="@+id/make_monthly_text"

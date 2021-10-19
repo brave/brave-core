@@ -61,8 +61,6 @@
 
     <color name="tab_back_incognito">@color/toolbar_background_primary_incognito</color>
 
-    <color name="compositor_background_tab_bg_incognito">@color/toolbar_background_primary_incognito</color>
-    <color name="compositor_background_tab_outline_incognito">@color/toolbar_background_primary_incognito</color>
     <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
 
     <!-- Incognito NTP Colors. -->

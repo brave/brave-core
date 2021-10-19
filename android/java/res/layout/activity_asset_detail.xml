@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -68,7 +69,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="0.03265 BTC"
-            android:textColor="@color/wallet_secondary_text_color"/>
+            android:textColor="@color/wallet_secondary_text_color"
+            tools:ignore="HardcodedText" />
 
         <org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced
             android:layout_marginTop="32dp"

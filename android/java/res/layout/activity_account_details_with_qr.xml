@@ -97,7 +97,8 @@
             android:textCursorDrawable="@null"
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
-            android:textColorHint="@color/wallet_edittext_outline_color" />
+            android:textColorHint="@color/wallet_edittext_outline_color"
+            tools:ignore="LabelFor" />
 
         <TextView
             android:id="@+id/account_private_key_text"

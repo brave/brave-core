@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -141,6 +142,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     @Override
+    @SuppressLint("SetTextI18n")
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_buy_send_swap);
 
@@ -461,13 +463,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (from) {
             TextView fromBalanceText = findViewById(R.id.from_balance_text);
             mConvertedFromBalance = Utils.fromHexWei(balance);
-            fromBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
-                    + String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance));
+            String text = getText(R.string.crypto_wallet_balance) + " "
+                    + String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance);
+            fromBalanceText.setText(text);
         } else {
             TextView toBalanceText = findViewById(R.id.to_balance_text);
             mConvertedToBalance = Utils.fromHexWei(balance);
-            toBalanceText.setText(getText(R.string.crypto_wallet_balance) + " "
-                    + String.format(Locale.getDefault(), "%.4f", mConvertedToBalance));
+            String text = getText(R.string.crypto_wallet_balance) + " "
+                    + String.format(Locale.getDefault(), "%.4f", mConvertedToBalance);
+            toBalanceText.setText(text);
         }
     }
 

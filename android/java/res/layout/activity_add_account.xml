@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -143,7 +144,8 @@
                 android:textSize="14sp"
                 android:inputType="textPassword"
                 android:textColor="@color/wallet_text_color"
-                android:textColorHint="@color/wallet_edittext_outline_color" />
+                android:textColorHint="@color/wallet_edittext_outline_color"
+                tools:ignore="TextFields" />
 
         </LinearLayout>
 

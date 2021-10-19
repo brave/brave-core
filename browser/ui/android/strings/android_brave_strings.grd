@@ -1837,12 +1837,12 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ALL" desc="Brave Wallet graph duration text">
       ALL
     </message>
-    <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
+    <!-- <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
       All set!
     </message>
     <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
       Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
-    </message>
+    </message> -->
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add Account
     </message>
@@ -1942,9 +1942,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
     </message>
-    <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Price in ETH
-    </message>
+    </message> -->
     <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
       From
     </message>
@@ -1969,18 +1969,18 @@ until they verify, or until 90 days have passed.
     <message name="IDS_TO_ADDRESS_EDIT" desc="Brave Wallet buy-send-swap section for address(hint)">
       address or url
     </message>
-    <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
       Limit
     </message>
     <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
       Market
-    </message>
+    </message> -->
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
     </message>
-    <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
       Expires in
-    </message>
+    </message> -->
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
     </message>
@@ -2299,9 +2299,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
       Portfolio
     </message>
-    <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
+    <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
-    </message>
+    </message> -->
     <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
       <ph name="FROM">%1$s<ex>0xabcd...</ex></ph> -> <ph name="TO">%2$s<ex>0xabcd...</ex></ph>
     </message>

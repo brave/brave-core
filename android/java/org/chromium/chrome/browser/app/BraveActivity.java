@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.app;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
@@ -193,6 +194,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private String mProductId = "";
     private boolean mIsVerification;
 
+    @SuppressLint("VisibleForTests")
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();

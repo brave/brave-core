@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,11 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
     }
 
     @Override
+    // TODO(samartnik): this one requires review, for now just suppress to force lint checks.
+    // Warning: Unconditional layout inflation from view adapter: Should use View Holder pattern
+    // (use recycled view passed into this method as the second parameter) for smoother scrolling
+    // [ViewHolder]
+    @SuppressLint("ViewHolder")
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);

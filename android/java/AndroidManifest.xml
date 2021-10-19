@@ -137,7 +137,7 @@
 </activity>
 
 <activity android:name="com.android.billingclient.api.ProxyBillingActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen.Transparent"
+    android:theme="@style/BraveProxyBillingActivityTheme"
     android:exported="false"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

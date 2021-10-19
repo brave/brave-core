@@ -230,5 +230,7 @@ public class AddAccountActivity
                 }
                 break;
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
