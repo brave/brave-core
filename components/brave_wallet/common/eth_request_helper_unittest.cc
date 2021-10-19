@@ -294,7 +294,7 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
   // Fills missing id and jsonrpc values
   std::string partial_json = "{\"method\":\"eth_blockNumber\",\"params\":[]}";
   std::string expected_full_json_no_id =
-      "{\"id\":null,\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\","
+      "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\","
       "\"params\":[]}";
   EXPECT_TRUE(NormalizeEthRequest(partial_json, &output_json));
   EXPECT_EQ(expected_full_json_no_id, output_json);

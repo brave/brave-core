@@ -18,21 +18,12 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
     int http_code,
     const std::string& controller_response,
     bool* reject);
-std::unique_ptr<base::Value> GetProviderSendAsyncReturnFromEthJsonResponse(
-    int http_code,
-    base::Value id,
-    const std::string& controller_response,
-    bool* reject);
-std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
-                                                base::Value* result,
-                                                base::Value* error);
-
-std::unique_ptr<base::Value> GetJsonRpcErrorResponse(
-    base::Value id,
-    base::Value error_dictionary);
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
     ProviderErrors code,
     const std::string& message);
+std::unique_ptr<base::Value> ToProviderResponse(base::Value id,
+                                                base::Value* result,
+                                                base::Value* error);
 
 }  // namespace brave_wallet
 
