@@ -100,7 +100,9 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            branch('${params.DEVOPS_BRANCH}')
+                                            //FIXME: before merging change to:
+                                            //branch('${params.DEVOPS_BRANCH}')
+                                            branch('issues/7207')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
