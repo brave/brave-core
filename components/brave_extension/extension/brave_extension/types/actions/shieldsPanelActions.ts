@@ -10,10 +10,13 @@ export interface ShieldDetails {
   cosmeticBlocking: boolean
   ads: BlockOptions
   trackers: BlockOptions
+  firstPartyCosmeticFiltering: boolean
   httpUpgradableResources: BlockOptions
   javascript: BlockOptions
   fingerprinting: BlockFPOptions
   cookies: BlockCookiesOptions
+  url: string
+  braveShields: boolean
   origin: string
   hostname: string
 }

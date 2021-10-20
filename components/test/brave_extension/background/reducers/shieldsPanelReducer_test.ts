@@ -24,7 +24,7 @@ import * as noScriptState from '../../../../brave_extension/extension/brave_exte
 
 // Utils
 import { initialState } from '../../../testData'
-import * as deepFreeze from 'deep-freeze-node'
+import deepFreeze from '../../../deepFreeze'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
 const origin = 'https://brave.com'
@@ -33,6 +33,7 @@ const tabId = 2
 
 const details: ShieldDetails = {
   id: tabId,
+  cosmeticBlocking: false,
   origin,
   hostname: 'brave.com',
   httpUpgradableResources: 'block',
@@ -40,7 +41,9 @@ const details: ShieldDetails = {
   trackers: 'block',
   ads: 'block',
   fingerprinting: 'block',
-  cookies: 'block'
+  cookies: 'block',
+  firstPartyCosmeticFiltering: false,
+  url: 'https://brave.com'
 }
 
 const tab: chrome.tabs.Tab = {
@@ -78,7 +81,16 @@ const state: State = deepFreeze({
       adsBlockedResources: [],
       fingerprintingBlockedResources: [],
       httpsRedirectedResources: [],
-      trackersBlockedResources: []
+      trackersBlockedResources: [],
+      hostname: 'brave.com',
+      url: 'https://brave.com',
+      ads: 'block',
+      trackers: 'block',
+      httpUpgradableResources: 'block',
+      javascript: 'block',
+      fingerprinting: 'block',
+      cookies: 'block',
+      firstPartyCosmeticFiltering: false
     }
   },
   windows: {

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { State, PersistentData } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
-import * as deepFreeze from 'deep-freeze-node'
+import deepFreeze from '../../deepFreeze'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
@@ -40,13 +40,58 @@ const state: State = deepFreeze({
       fingerprinting: 'block',
       fingerprintingBlocked: 0,
       fingerprintingBlockedResources: [],
-      cookies: 'block'
+      cookies: 'block',
+      firstPartyCosmeticFiltering: false
     },
     3: {
-      id: 3
+      id: 3,
+      hostname: 'https://brave.com',
+      origin: 'https://brave.com',
+      url: 'https://brave.com',
+      ads: 'block',
+      adsBlocked: 0,
+      adsBlockedResources: [],
+      braveShields: 'allow',
+      controlsOpen: true,
+      trackers: 'block',
+      trackersBlocked: 0,
+      trackersBlockedResources: [],
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      httpsRedirectedResources: [],
+      javascript: 'block',
+      javascriptBlocked: 0,
+      noScriptInfo: {},
+      fingerprinting: 'block',
+      fingerprintingBlocked: 0,
+      fingerprintingBlockedResources: [],
+      cookies: 'block',
+      firstPartyCosmeticFiltering: false
     },
     4: {
-      id: 4
+      id: 4,
+      hostname: 'https://brave.com',
+      origin: 'https://brave.com',
+      url: 'https://brave.com',
+      ads: 'block',
+      adsBlocked: 0,
+      adsBlockedResources: [],
+      braveShields: 'allow',
+      controlsOpen: true,
+      trackers: 'block',
+      trackersBlocked: 0,
+      trackersBlockedResources: [],
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      httpsRedirectedResources: [],
+      javascript: 'block',
+      javascriptBlocked: 0,
+      noScriptInfo: {},
+      fingerprinting: 'block',
+      fingerprintingBlocked: 0,
+      fingerprintingBlockedResources: [],
+      cookies: 'block',
+      firstPartyCosmeticFiltering: false
     }
   },
   windows: {
