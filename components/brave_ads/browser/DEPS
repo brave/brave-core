@@ -4,8 +4,4 @@ include_rules = [
   "-bat/ads/internal",
   "+bat/ledger/mojom_structs.h",
   "+content/public/browser",
-  "+services/network/public",
-  "+ui/base",
-  "+ui/gfx",
-  "+ui/message_center/public",
 ]

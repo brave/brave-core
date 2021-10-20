@@ -2,10 +2,6 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 
 static_library("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
-  check_includes = false
-  public_deps = [ "//brave/components/brave_rewards/browser" ]
-
   sources = [
     "ads_p2a.cc",
     "ads_p2a.h",
@@ -30,46 +26,22 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
-    "//brave/browser/notifications",
-    "//brave/common",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_rewards/common",
-    "//brave/components/brave_today/common",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
-    "//brave/components/ntp_background_images/common",
-    "//brave/components/rpill/common",
-    "//brave/components/services/bat_ads/public/cpp",
-    "//brave/components/services/bat_ads/public/interfaces",
     "//brave/components/weekly_storage",
-    "//brave/vendor/bat-native-ads/include/bat/ads/public/interfaces",
-    "//chrome/common:buildflags",
-    "//components/history/core/browser",
-    "//components/history/core/common",
-    "//components/wifi",
-    "//content/public/browser",
-    "//net",
-    "//services/network/public/cpp",
-    "//services/network/public/mojom",
-    "//sql",
-    "//ui/base",
-    "//ui/message_center/public/cpp",
-
-    # for profile.h
-    "//components/domain_reliability",
-    "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/sessions",
     "//content/public/browser",
+    "//sql",
     "//url",
   ]
 
-  public_deps += [
+  public_deps = [
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/vendor/bat-native-ads",
   ]

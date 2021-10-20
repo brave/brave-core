@@ -32,6 +32,7 @@ brave_browser_brave_ads_deps = [
   "//brave/components/brave_ads/common",
   "//brave/components/brave_ads/common:mojom",
   "//brave/components/brave_rewards/browser",
+  "//brave/components/brave_today/common",
   "//brave/components/ntp_background_images/common",
   "//brave/components/rpill/common",
   "//brave/components/services/bat_ads/public/cpp",
