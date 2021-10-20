@@ -126,6 +126,13 @@ export const _ConfirmTransaction = () => {
     alert('Rejected Transaction')
   }
 
+  const onRejectAllTransactions = () => {
+    alert('Rejected All Transaction')
+  }
+  const onQueueNextTransction = () => {
+    alert('Will queue next transaction in line')
+  }
+
   const refreshGasEstimates = () => {
     // do nothing
   }
@@ -153,6 +160,10 @@ export const _ConfirmTransaction = () => {
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         selectedNetwork={mockNetworks[0]}
+        onQueueNextTransction={onQueueNextTransction}
+        onRejectAllTransactions={onRejectAllTransactions}
+        transactionQueueNumber={0}
+        transactionsQueueLength={0}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         accounts={accounts}

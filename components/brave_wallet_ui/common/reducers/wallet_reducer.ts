@@ -85,6 +85,12 @@ const getAccountType = (info: AccountInfo) => {
   return info.isImported ? 'Secondary' : 'Primary'
 }
 
+const sortTransactionByDate = (transactions: TransactionInfo[]) => {
+  return [...transactions].sort(function (x: TransactionInfo, y: TransactionInfo) {
+    return Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
+  })
+}
+
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
   const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
@@ -300,13 +306,14 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
 reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: TransactionStatusChanged) => {
   const newPendingTransactions =
     state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
-  const newSelectedPendingTransaction = newPendingTransactions.pop()
+  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+  const newSelectedPendingTransaction = sortedTransactionList[0]
   if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
     payload.txInfo.txStatus === TransactionStatus.Rejected ||
     payload.txInfo.txStatus === TransactionStatus.Approved) {
     const newState = {
       ...state,
-      pendingTransactions: newPendingTransactions,
+      pendingTransactions: sortedTransactionList,
       selectedPendingTransaction: newSelectedPendingTransaction
     }
     return newState
@@ -317,10 +324,11 @@ reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: Transac
 reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: TransactionInfo[]) => {
   const newPendingTransactions =
     payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
-  const newSelectedPendingTransaction = state.selectedPendingTransaction || newPendingTransactions.pop()
+  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+  const newSelectedPendingTransaction = sortedTransactionList[0]
   return {
     ...state,
-    pendingTransactions: newPendingTransactions,
+    pendingTransactions: sortedTransactionList,
     selectedPendingTransaction: newSelectedPendingTransaction,
     knownTransactions: payload
   }
@@ -384,6 +392,19 @@ reducer.on(WalletActions.setSitePermissions, (state: any, payload: SitePermissio
   return {
     ...state,
     connectedAccounts: payload.accounts
+  }
+})
+
+reducer.on(WalletActions.queueNextTransaction, (state: any) => {
+  const pendingTransactions = state.pendingTransactions
+  const index = pendingTransactions.findIndex((tx: TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
+  let newPendingTransaction = pendingTransactions[index]
+  if (pendingTransactions.length === index) {
+    newPendingTransaction = pendingTransactions[0]
+  }
+  return {
+    ...state,
+    selectedPendingTransaction: newPendingTransaction
   }
 })
 

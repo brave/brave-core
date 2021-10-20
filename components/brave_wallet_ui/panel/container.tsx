@@ -97,7 +97,8 @@ function Container (props: Props) {
     transactionSpotPrices,
     gasEstimates,
     connectedAccounts,
-    activeOrigin
+    activeOrigin,
+    pendingTransactions
   } = props.wallet
 
   const {
@@ -380,6 +381,14 @@ function Container (props: Props) {
     }
   }
 
+  const onRejectAllTransactions = () => {
+    props.walletActions.rejectAllTransactions()
+  }
+
+  const onQueueNextTransction = () => {
+    props.walletActions.queueNextTransaction()
+  }
+
   const onConfirmTransaction = () => {
     if (selectedPendingTransaction) {
       props.walletActions.approveTransaction(selectedPendingTransaction)
@@ -447,6 +456,10 @@ function Container (props: Props) {
           <ConfirmTransactionPanel
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
+            onRejectAllTransactions={onRejectAllTransactions}
+            onQueueNextTransction={onQueueNextTransction}
+            transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
+            transactionsQueueLength={pendingTransactions.length}
             accounts={accounts}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
