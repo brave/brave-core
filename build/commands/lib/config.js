@@ -431,6 +431,13 @@ Config.prototype.buildArgs = function () {
 
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
+    args.ios_locales_pack_extra_source_patterns = [
+      "%root_gen_dir%/components/brave_components_strings_",
+    ]
+    args.ios_locales_pack_extra_deps = [
+      "//brave/components/resources:strings",
+    ]
+
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
     delete args.proprietary_codecs
