@@ -1766,7 +1766,7 @@ until they verify, or until 90 days have passed.
       Backup your wallet now!
     </message>
     <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
-      In the next step you will see 12 words that allows you to recover your crypto wallet.
+      In the next step you will see 12 words that allow you to recover your crypto wallet.
     </message>
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
@@ -1877,7 +1877,7 @@ until they verify, or until 90 days have passed.
       Verify recovery phrase
     </message>
     <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
-      Tap the words top put them next to each other in the correct order.
+      Tap the words to put them next to each other in the correct order.
     </message>
     <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
       Verify
@@ -1901,7 +1901,7 @@ until they verify, or until 90 days have passed.
       Does not protect you against dangerous websites, downloads, and extensions.
     </message>
     <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
-      Phrases did not match, Please try again.
+      Phrases did not match. Please try again.
     </message>
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
@@ -2115,7 +2115,7 @@ until they verify, or until 90 days have passed.
       &#36;119.88
     </message>
     <message name="IDS_BRAVE_VPN_RENEWAL_TEXT" desc="Brave VPN plan text">
-      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renawal.
+      Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.
     </message>
     <message name="IDS_TRY_FOR_FREE" desc="Brave VPN plan text">
       Try for FREE
