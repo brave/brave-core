@@ -68,6 +68,13 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
       !GetProperty(context, object, method_name).ToLocal(&method)) {
     return;
   }
+
+  // Without the IsFunction test here JS blocking from content settings
+  // will trigger a DCHECK crash.
+  if (method.IsEmpty() || !method->IsFunction()) {
+    return;
+  }
+
   std::vector<v8::Local<v8::Value>> args;
   for (auto const& argument : arguments.GetList()) {
     args.push_back(
