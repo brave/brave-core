@@ -451,7 +451,6 @@ Config.prototype.buildArgs = function () {
     delete args.brave_google_api_key
     delete args.brave_stats_api_key
     delete args.brave_stats_updater_url
-    delete args.brave_infura_project_id
     delete args.binance_client_id
     delete args.ftx_client_id
     delete args.ftx_client_secret
