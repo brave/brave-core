@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -209,6 +210,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filter(String text) {
         walletListItemModelList.clear();
         if (text.isEmpty()) {

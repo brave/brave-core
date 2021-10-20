@@ -60,7 +60,7 @@
                 app:drawableEndCompat="@drawable/ic_copy"
                 android:text="@string/brave_sync_copy_button_text"
                 android:drawablePadding="8dp"
-                android:drawableTint="@color/brave_action_color"
+                app:drawableTint="@color/brave_action_color"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
