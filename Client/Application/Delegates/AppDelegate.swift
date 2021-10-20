@@ -103,10 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
         }
         
-        // We have to wait until pre1.12 migration is done until we proceed with database
-        // initialization. This is because Database container may change. See bugs #3416, #3377.
-        DataController.shared.initialize()
-        
         return startApplication(application, withLaunchOptions: launchOptions)
     }
 

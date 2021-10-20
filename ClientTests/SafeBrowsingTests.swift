@@ -16,7 +16,7 @@ class SafeBrowsingTests: XCTestCase {
         
         Preferences.Shields.blockPhishingAndMalware.reset()
         DataController.shared = DataController()
-        DataController.shared.initialize()
+        DataController.shared.initializeOnce()
     }
 
     override func tearDown() {

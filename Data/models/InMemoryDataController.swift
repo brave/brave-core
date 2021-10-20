@@ -21,6 +21,6 @@ public class InMemoryDataController: DataController {
         // Calling `initialize` in constructor.
         // Initialize code in constructor can't happen in persistent database
         // because we have to check for migration code first, see #3425
-        initialize()
+        initializeOnce()
     }
 }
