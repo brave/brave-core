@@ -61,7 +61,7 @@ void BraveAdsHost::RequestAdsEnabled(RequestAdsEnabledCallback callback) {
 
   rewards_service_observation_.Observe(rewards_service);
 
-  if (!ShowRewardsPopup()) {
+  if (!ShowRewardsPopup(rewards_service)) {
     RunCallbacksAndReset(false);
   }
 }
@@ -80,7 +80,10 @@ void BraveAdsHost::OnAdsEnabled(brave_rewards::RewardsService* rewards_service,
   RunCallbacksAndReset(ads_enabled);
 }
 
-bool BraveAdsHost::ShowRewardsPopup() {
+bool BraveAdsHost::ShowRewardsPopup(
+    brave_rewards::RewardsService* rewards_service) {
+  DCHECK(rewards_service);
+
   Browser* browser = chrome::FindBrowserWithProfile(profile_);
   DCHECK(browser);
 
@@ -90,9 +93,16 @@ bool BraveAdsHost::ShowRewardsPopup() {
     return false;
   }
 
-  static_cast<extensions::BraveComponentLoader*>(
-      extension_service->component_loader())
-      ->AddRewardsExtension();
+  extensions::BraveComponentLoader* component_loader =
+      static_cast<extensions::BraveComponentLoader*>(
+          extension_service->component_loader());
+  DCHECK(component_loader);
+
+  if (!component_loader->Exists(brave_rewards_extension_id)) {
+    component_loader->AddRewardsExtension();
+
+    rewards_service->StartProcess(base::DoNothing());
+  }
 
   std::string error;
   return extensions::BraveActionAPI::ShowActionUI(
