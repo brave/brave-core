@@ -98,6 +98,7 @@ void AdServing::StopServingAdsAtRegularIntervals() {
 
 void AdServing::MaybeServeAd() {
   if (is_serving_) {
+    BLOG(1, "Already serving ad");
     return;
   }
 
