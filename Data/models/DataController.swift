@@ -50,10 +50,16 @@ public class DataController {
         return queue
     }()
     
+    private var initializationCompleted = false
+    
     /// IMPORTANT: This must be called after pre 1.12 migration logic has been called.
-    public func initialize() {
+    /// Initialization logic will run only once, then do nothing on subsequent calls to this method.
+    public func initializeOnce() {
+        if initializationCompleted { return }
+        
         configureContainer(container, store: storeURL)
         createOldDocumentStoreIfNeeded()
+        initializationCompleted = true
     }
     
     // MARK: - Public interface
@@ -242,8 +248,8 @@ public class DataController {
     func addPersistentStore(for container: NSPersistentContainer, store: URL) {
         let storeDescription = NSPersistentStoreDescription(url: store)
         
-        // This makes the database file encrypted until device is unlocked.
-        let completeProtection = FileProtectionType.complete as NSObject
+        // This makes the database file encrypted until first user unlock after device restart.
+        let completeProtection = FileProtectionType.completeUntilFirstUserAuthentication as NSObject
         storeDescription.setOption(completeProtection, forKey: NSPersistentStoreFileProtectionKey)
         
         container.persistentStoreDescriptions = [storeDescription]
@@ -266,8 +272,8 @@ public class DataController {
             }
             
             if store.type != NSInMemoryStoreType {
-                // This makes the database file encrypted until device is unlocked.
-                let completeProtection = FileProtectionType.complete as NSObject
+                // This makes the database file encrypted until first user unlock after device restart.
+                let completeProtection = FileProtectionType.completeUntilFirstUserAuthentication as NSObject
                 store.setOption(completeProtection, forKey: NSPersistentStoreFileProtectionKey)
             }
         })
