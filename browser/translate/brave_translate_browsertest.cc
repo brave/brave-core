@@ -10,8 +10,8 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/translate/core/browser/brave_translate_features.h"
-#include "brave/components/translate/core/browser/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/translate/chrome_translate_client.h"
@@ -66,10 +66,10 @@ google.translate = (function() {
     }
   };
 })();
-cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/translate_static/css/translateelement.css");
+cr.googleTranslate.onLoadCSS("https://translate.googleapis.com/static/translateelement.css");
 
 // Will call cr.googleTranslate.onTranslateElementLoad():
-cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/translate_static/js/element/main.js");
+cr.googleTranslate.onLoadJavascript("https://translate.googleapis.com/static/main.js");
 )";
 
 const char kXhrPromiseTemplate[] = R"(
@@ -115,11 +115,10 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
     // to load pages from other hosts without an error.
     command_line->AppendSwitch(::switches::kIgnoreCertificateErrors);
 
-    // Remap translate-relay requests to the https test server.
+    // Remap translate.brave.com requests to the https test server.
     const std::string host_port = https_server_->host_port_pair().ToString();
-    command_line->AppendSwitchASCII(
-        network::switches::kHostResolverRules,
-        "MAP translate-relay.brave.com:443 " + host_port);
+    command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
+                                    "MAP translate.brave.com:443 " + host_port);
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -154,17 +153,16 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
 
   // Set up expectations for the secondary test scripts and for the test css.
   void SetupTestScriptExpectations() {
-    EXPECT_CALL(backend_request_, Call("/translate_a/element.js"))
+    EXPECT_CALL(backend_request_, Call("/static/element.js"))
         .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
                                          "text/javascript", kTestScript)));
 
-    EXPECT_CALL(backend_request_,
-                Call("/translate_static/css/translateelement.css"))
+    EXPECT_CALL(backend_request_, Call("/static/translateelement.css"))
         .WillRepeatedly(
             Return(std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/css",
                                    "body{background-color:#AAA}")));
 
-    EXPECT_CALL(backend_request_, Call("/translate_static/js/element/main.js"))
+    EXPECT_CALL(backend_request_, Call("/static/main.js"))
         .WillOnce(Return(
             std::make_tuple(net::HttpStatusCode::HTTP_OK, "text/javascript",
                             "cr.googleTranslate.onTranslateElementLoad()")));
@@ -242,9 +240,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   // Check used urls.
   EXPECT_EQ(language_list->LanguageFetchURLForTesting().host(),
-            "translate-relay.brave.com");
+            "translate.brave.com");
   EXPECT_EQ(TranslateScript::GetTranslateScriptURL().host(),
-            "translate-relay.brave.com");
+            "translate.brave.com");
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
@@ -255,10 +253,10 @@ class BraveTranslateBrowserGoogleRedirectTest
     BraveTranslateBrowserTest::SetUpCommandLine(command_line);
     const std::string host_port = https_server_->host_port_pair().ToString();
     // Add translate.google.com redirection to the https test server.
-    command_line->AppendSwitchASCII(
-        network::switches::kHostResolverRules,
-        "MAP translate-relay.brave.com:443 " + host_port +
-            ", MAP translate.google.com:443 " + host_port);
+    command_line->AppendSwitchASCII(network::switches::kHostResolverRules,
+                                    "MAP translate.brave.com:443 " + host_port +
+                                        ", MAP translate.google.com:443 " +
+                                        host_port);
   }
 };
 
@@ -293,7 +291,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
                           do_xhr_and_get_final_url));
 
   // Check that the same page request from translate world will be redirected.
-  EXPECT_EQ("https://translate-relay.brave.com/something.svg",
+  EXPECT_EQ("https://translate.brave.com/something.svg",
             EvalTranslateJs(do_xhr_and_get_final_url));
 
   const char kLoadImageTemplate[] = R"(

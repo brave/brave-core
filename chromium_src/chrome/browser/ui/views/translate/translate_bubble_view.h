@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TRANSLATE_TRANSLATE_BUBBLE_VIEW_H_
 
+// The balloon can have several different states (that includes titles, icons,
+// etc) that depend on features/flags. That's why several methods are made
+// virtual and actual ctor TranslateBubbleView() is replaced to
+// MakeTranslateBubbleView(). See the descendants of TranslateBubbleView.
 #define BRAVE_TRANSLATE_BUBBLE_VIEW_H_                                     \
  private:                                                                  \
   friend class BraveTranslateBubbleView;                                   \

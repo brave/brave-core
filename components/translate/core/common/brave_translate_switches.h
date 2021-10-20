@@ -7,7 +7,11 @@
 #define BRAVE_COMPONENTS_TRANSLATE_CORE_COMMON_BRAVE_TRANSLATE_SWITCHES_H_
 
 namespace translate {
+namespace switches {
 
+extern const char kBraveTranslateUseGoogleEndpoint[];
+
+}  // namespace switches
 }  // namespace translate
 
 #endif  // BRAVE_COMPONENTS_TRANSLATE_CORE_COMMON_BRAVE_TRANSLATE_SWITCHES_H_

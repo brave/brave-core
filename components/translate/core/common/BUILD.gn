@@ -15,10 +15,10 @@ source_set("common") {
     "brave_translate_constants.h",
     "brave_translate_features.cc",
     "brave_translate_features.h",
-    "brave_translate_switches.cc",
-    "brave_translate_switches.h",
     "brave_translate_language_filter.cc",
     "brave_translate_language_filter.h",
+    "brave_translate_switches.cc",
+    "brave_translate_switches.h",
   ]
   deps = [ "//base" ]
   public_deps = [ ":buildflags" ]

@@ -7,8 +7,8 @@
 
 namespace translate {
 
-const char kBraveTranslateOrigin[] = "https://translate-relay.brave.com";
+const char kBraveTranslateOrigin[] = "https://translate.brave.com";
 const char kBraveTranslateScriptURL[] =
-    "https://translate-relay.brave.com/translate_a/element.js";
+    "https://translate.brave.com/static/element.js";
 
 }  // namespace translate

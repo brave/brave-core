@@ -5,6 +5,8 @@
 
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
+#include "base/command_line.h"
+#include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/translate/core/common/buildflags.h"
 
 namespace translate {
@@ -15,8 +17,6 @@ const base::Feature kUseBraveTranslateGo{
 
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
-const base::FeatureParam<bool> kUseBraveReplayParam{&kUseBraveTranslateGo,
-                                                    "use-brave-relay", true};
 
 }  // namespace features
 
@@ -42,7 +42,9 @@ bool ShouldUpdateLanguagesList() {
 }
 
 bool UseGoogleTranslateEndpoint() {
-  return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
+  return IsBraveTranslateGoAvailable() &&
+         base::CommandLine::ForCurrentProcess()->HasSwitch(
+             switches::kBraveTranslateUseGoogleEndpoint);
 }
 
 }  // namespace translate

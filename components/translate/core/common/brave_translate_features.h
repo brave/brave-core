@@ -16,8 +16,6 @@ extern const base::Feature kUseBraveTranslateGo;
 
 extern const base::FeatureParam<bool> kUpdateLanguageListParam;
 extern const base::FeatureParam<bool> kReplaceSecurityOriginParam;
-extern const base::FeatureParam<bool>
-    kDisableTranslateLibraryNetworkRedirectsParam;
 
 }  // namespace features
 

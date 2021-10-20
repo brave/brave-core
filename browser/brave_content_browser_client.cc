@@ -54,6 +54,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
@@ -544,6 +545,13 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     }
     command_line->AppendSwitchASCII("brave_session_token",
                                     base::NumberToString(session_token));
+
+    // Switches to pass to render processes.
+    static const char* const kSwitchNames[] = {
+        translate::switches::kBraveTranslateUseGoogleEndpoint,
+    };
+    command_line->CopySwitchesFrom(browser_command_line, kSwitchNames,
+                                   base::size(kSwitchNames));
   }
 }
 

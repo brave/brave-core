@@ -6,6 +6,9 @@
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 
 namespace translate {
+namespace switches {
 
+const char kBraveTranslateUseGoogleEndpoint[] = "use-google-translate-endpoint";
 
+}  // namespace switches
 }  // namespace translate
