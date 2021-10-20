@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import BackupIcon from '../../../../assets/svg-icons/onboarding/backup-your-crypto.svg'
+import BackupIconDark from '../../../../assets/svg-icons/onboarding/backup-your-crypto-dark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -72,6 +73,9 @@ export const PageIcon = styled.div`
   background-repeat: no-repeat;
   background-size: 100%;
   margin-bottom: 35px;
+  @media (prefers-color-scheme: dark) {
+    background: url(${BackupIconDark});
+  }
 `
 
 export const SkipButton = styled.button`

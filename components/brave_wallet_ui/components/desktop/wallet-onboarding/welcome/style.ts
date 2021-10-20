@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import WelcomeIcon from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
+import WelcomeIconDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
 import MMIcon from '../../../../assets/svg-icons/meta-mask-icon.svg'
 
 export const StyledWrapper = styled.div`
@@ -35,10 +36,13 @@ export const Description = styled.span`
 
 export const PageIcon = styled.div`
   width: 240px;
-  height: 182px;
+  height: 183px;
   background: url(${WelcomeIcon});
   margin-bottom: 28px;
   background-repeat: no-repeat;
+  @media (prefers-color-scheme: dark) {
+    background: url(${WelcomeIconDark});
+  }
 `
 
 export const RestoreButton = styled.button`

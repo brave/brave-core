@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import SecureIcon from '../../../assets/svg-icons/onboarding/secure-your-crypto.svg'
+import SecureIconDark from '../../../assets/svg-icons/onboarding/secure-your-crypto-dark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -22,12 +23,15 @@ export const Title = styled.span`
 `
 
 export const PanelIcon = styled.div`
-  width: 100px;
+  width: 111px;
   height: 100px;
   background: url(${SecureIcon});
   background-repeat: no-repeat;
   background-size: 100%;
   margin-bottom: 10px;
+  @media (prefers-color-scheme: dark) {
+    background: url(${SecureIconDark});
+  }
 `
 
 export const Column = styled.div`

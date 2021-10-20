@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import WelcomeIcon from '../../../assets/svg-icons/onboarding/brave-wallet.svg'
+import WelcomeIconDark from '../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -34,12 +35,15 @@ export const Description = styled.span`
 `
 
 export const PageIcon = styled.div`
-  width: 200px;
+  width: 210px;
   height: 160px;
   background: url(${WelcomeIcon});
   background-size: 100%;
   background-repeat: no-repeat;
   margin-bottom: 20px;
+  @media (prefers-color-scheme: dark) {
+    background: url(${WelcomeIconDark});
+  }
 `
 
 export const RestoreButton = styled.button`
