@@ -23,10 +23,10 @@ bool ShouldOverride(NativeTheme::ColorId color_id) {
     return false;
   }
   switch (color_id) {
-    case NativeTheme::kColorId_EnabledMenuItemForegroundColor:
-    case NativeTheme::kColorId_DisabledMenuItemForegroundColor:
-    case NativeTheme::kColorId_LabelTextSelectionBackgroundFocused:
-    case NativeTheme::kColorId_TextfieldSelectionBackgroundFocused:
+    // case NativeTheme::kColorId_EnabledMenuItemForegroundColor:
+    // case NativeTheme::kColorId_DisabledMenuItemForegroundColor:
+    // case NativeTheme::kColorId_LabelTextSelectionBackgroundFocused:
+    // case NativeTheme::kColorId_TextfieldSelectionBackgroundFocused:
     case NativeTheme::kColorId_FocusedBorderColor:
       return true;
     default:
