@@ -1387,6 +1387,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TEXT_HAS_BEEN_COPIED" desc="Copy to clipboard toast text.">
         Your text has been copied to the clipboard.
       </message>
+      <message name="IDS_TEXT_HAS_BEEN_SAVED" desc="Save to file toast text.">
+        Your text has been saved to a text file.
+      </message>
+      <message name="IDS_TEXT_FILE_NOT_SAVED" desc="File not saved toast text.">
+        File not saved.
+      </message>
       <message name="IDS_RETRY" desc="Retry button text.">
         Retry
       </message>
@@ -1786,8 +1792,11 @@ until they verify, or until 90 days have passed.
     <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
       I have backed up my phrase somewhere safe
     </message>
-    <message name="IDS_COPY" desc="Brave Wallet onboarding button text">
+    <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
+    </message>
+    <message name="IDS_WALLET_SAVE" desc="Brave Wallet onboarding bottom menu text">
+      Save
     </message>
     <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
       Backup your wallet now to protect your crypto portfolio from loss of access.

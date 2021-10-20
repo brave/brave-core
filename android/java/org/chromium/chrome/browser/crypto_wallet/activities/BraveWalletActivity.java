@@ -52,8 +52,11 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.NavigationItem;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.components.browser_ui.modaldialog.AppModalPresenter;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,7 @@ public class BraveWalletActivity
     private View cryptoLayout;
     private ImageView swapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
+    private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private KeyringController mKeyringController;
     private ErcTokenRegistry mErcTokenRegistry;
@@ -148,6 +152,9 @@ public class BraveWalletActivity
                     @Override
                     public void onPageScrollStateChanged(int state) {}
                 });
+
+        mModalDialogManager = new ModalDialogManager(
+                new AppModalPresenter(this), ModalDialogManager.ModalDialogType.APP);
 
         onInitialLayoutInflationComplete();
     }
@@ -254,12 +261,23 @@ public class BraveWalletActivity
         if (mKeyringController != null) {
             mKeyringController.lock();
         }
+        mModalDialogManager.destroy();
         super.onDestroy();
     }
 
     @Override
     public boolean shouldStartGpuProcess() {
         return true;
+    }
+
+    @Override
+    protected ActivityWindowAndroid createWindowAndroid() {
+        return new ActivityWindowAndroid(this, true, getIntentRequestTracker()) {
+            @Override
+            public ModalDialogManager getModalDialogManager() {
+                return mModalDialogManager;
+            }
+        };
     }
 
     private void setNavigationFragments(int type) {
