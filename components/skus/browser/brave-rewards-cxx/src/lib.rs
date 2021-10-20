@@ -2,20 +2,28 @@ mod errors;
 mod httpclient;
 mod storage;
 
-pub use brave_rewards;
+use std::cell::RefCell;
+use std::error::Error;
+use std::fmt;
+use std::rc::Rc;
+
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::LocalPool;
 use futures::task::LocalSpawnExt;
-use std::cell::RefCell;
-use std::error::Error;
-use std::rc::Rc;
 
-use crate::httpclient::HttpRoundtripContext;
+pub use brave_rewards;
 
-pub struct NativeClient();
+use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
-thread_local! {
-    static LOCAL_POOL: RefCell<LocalPool> = RefCell::new(LocalPool::new());
+#[derive(Clone)]
+pub struct NativeClient {
+    pool: Rc<RefCell<LocalPool>>,
+}
+
+impl fmt::Debug for NativeClient {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("NativeClient").finish()
+    }
 }
 
 #[allow(unused)]
@@ -62,6 +70,7 @@ mod ffi {
 
     extern "Rust" {
         type HttpRoundtripContext;
+        type WakeupContext;
 
         type CppSDK;
         fn initialize_sdk(env: String) -> Box<CppSDK>;
@@ -82,7 +91,11 @@ mod ffi {
             ctx: Box<HttpRoundtripContext>,
         );
 
-        fn shim_scheduleWakeup(delay_ms: u64, done: fn());
+        fn shim_scheduleWakeup(
+            delay_ms: u64,
+            done: fn(Box<WakeupContext>),
+            ctx: Box<WakeupContext>,
+        );
 
         fn shim_purge();
         fn shim_set(key: &str, value: &str);
@@ -94,27 +107,35 @@ mod ffi {
 }
 
 pub struct CppSDK {
-    sdk: Rc<brave_rewards::sdk::SDK>,
+    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
 }
 
 fn initialize_sdk(env: String) -> Box<CppSDK> {
     // FIXME replace with ffi logging
     tracing_subscriber::fmt::init();
 
-    let sdk = brave_rewards::sdk::SDK::new::<NativeClient>(&env, None, None);
+    // FIXME
+    let sdk = brave_rewards::sdk::SDK::new(
+        NativeClient {
+            pool: Rc::new(RefCell::new(LocalPool::new())),
+        },
+        &env,
+        None,
+        None,
+    );
     let sdk = Rc::new(sdk);
-    LOCAL_POOL.with(|pool| {
+    let mut spawner = sdk.client.pool.borrow_mut().spawner();
+    {
         let sdk = sdk.clone();
-        let mut spawner = pool.borrow_mut().spawner();
 
         spawner
             .spawn_local(async move {
-                sdk.initialize::<NativeClient>().await.unwrap();
+                sdk.initialize().await.unwrap();
             })
             .unwrap();
+    }
 
-        pool.borrow_mut().run_until_stalled();
-    });
+    sdk.client.pool.borrow_mut().run_until_stalled();
 
     Box::new(CppSDK { sdk })
 }
@@ -126,20 +147,17 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        LOCAL_POOL.with(|pool| {
-            let mut spawner = pool.borrow_mut().spawner();
+        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        spawner
+            .spawn_local(refresh_order_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                order_id,
+            ))
+            .unwrap();
 
-            spawner
-                .spawn_local(refresh_order_task(
-                    self.sdk.clone(),
-                    callback,
-                    callback_state,
-                    order_id,
-                ))
-                .unwrap();
-
-            pool.borrow_mut().run_until_stalled();
-        })
+        self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
 }
 
@@ -158,12 +176,12 @@ unsafe impl ExternType for RefreshOrderCallback {
 }
 
 async fn refresh_order_task(
-    sdk: Rc<brave_rewards::sdk::SDK>,
+    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
     callback: RefreshOrderCallback,
     callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
     order_id: String,
 ) {
-    match sdk.refresh_order::<NativeClient>(&order_id).await {
+    match sdk.refresh_order(&order_id).await {
         Ok(order) => {
             let order = serde_json::to_string(&order).unwrap();
             callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &order)
