@@ -1,0 +1,32 @@
+<html>
+<head><title>failed</title></head>
+<body></body>
+<script>
+ if (window.speechSynthesis !== undefined) {
+     var voicesFormatted = function (voices) {
+         return voices.map(x => `${x.name} (${x.voiceURI})`).toString()
+     }
+     var speechTimeout = 1000
+     var speechSynthesisTimerId
+
+     var onVoicesChanged = function () {
+         clearTimeout(speechSynthesisTimerId)
+         var voices = window.speechSynthesis.getVoices()
+         document.title=voicesFormatted(voices);
+     }
+
+     speechSynthesisTimerId = setTimeout(function () {
+         window.speechSynthesis.removeEventListener('voiceschanged', onVoicesChanged)
+         document.title="";
+     }, speechTimeout)
+
+     var voices = window.speechSynthesis.getVoices();
+     if (voices.length !== 0) {
+         clearTimeout(speechSynthesisTimerId)
+         document.title=voicesFormatted(voices);
+     } else {
+         window.speechSynthesis.addEventListener('voiceschanged', onVoicesChanged)
+     }
+ }
+</script>
+</html>

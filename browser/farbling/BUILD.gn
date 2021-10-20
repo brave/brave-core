@@ -17,6 +17,7 @@ if (!is_android) {
       "brave_navigator_plugins_farbling_browsertest.cc",
       "brave_navigator_useragent_farbling_browsertest.cc",
       "brave_offscreencanvas_farbling_browsertest.cc",
+      "brave_speech_synthesis_farbling_browsertest.cc",
       "brave_webaudio_farbling_browsertest.cc",
       "brave_webgl_farbling_browsertest.cc",
     ]
