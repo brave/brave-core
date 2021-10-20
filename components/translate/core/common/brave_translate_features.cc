@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/translate/core/browser/brave_translate_features.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
 
-#include "brave/components/translate/core/browser/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
 
 namespace translate {
 

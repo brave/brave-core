@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
 
-#include "brave/components/translate/core/browser/brave_translate_features.h"
-#include "brave/components/translate/core/browser/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/views/controls/image_view.h"

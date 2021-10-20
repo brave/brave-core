@@ -6,7 +6,7 @@
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
 #include "brave/browser/ui/views/translate/brave_translate_icon_view.h"
-#include "brave/components/translate/core/browser/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/views/reader_mode/reader_mode_icon_view.h"
 

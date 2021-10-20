@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/translate/core/browser/brave_translate_language_filter.h"
+#include "brave/components/translate/core/common/brave_translate_language_filter.h"
 
 #include "base/containers/contains.h"
 #include "base/strings/string_piece.h"

@@ -1,12 +1,12 @@
 diff --git a/components/translate/core/browser/BUILD.gn b/components/translate/core/browser/BUILD.gn
-index ebf718409b2eab70d889addbf828d3ab646dc1fb..59a66b156639dcf69c5caa9c80b16139d335937e 100644
+index ebf718409b2eab70d889addbf828d3ab646dc1fb..bfe851dc03d308e6c56b03368b5cfbde1ca0b2f9 100644
 --- a/components/translate/core/browser/BUILD.gn
 +++ b/components/translate/core/browser/BUILD.gn
 @@ -85,6 +85,7 @@ static_library("browser") {
      ]
      deps += [ "//components/infobars/core" ]
    }
-+  public_deps += ["//brave/components/translate/core/browser"]
++  public_deps += ["//brave/components/translate/core/common"]
  }
  
  source_set("translate_pref_names") {

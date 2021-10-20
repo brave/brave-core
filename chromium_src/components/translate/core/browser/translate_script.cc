@@ -8,7 +8,7 @@
 #include "base/callback.h"
 #include "base/strings/strcat.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/translate/core/browser/brave_translate_features.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslateScript ChromiumTranslateScript
 #include "../../../../../../components/translate/core/browser/translate_script.cc"

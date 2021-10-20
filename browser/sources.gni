@@ -39,7 +39,7 @@ import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
 import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
-import("//brave/components/translate/core/browser/buildflags.gni")
+import("//brave/components/translate/core/common/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -149,7 +149,7 @@ brave_chrome_browser_deps = [
   "//brave/components/skus/browser",
   "//brave/components/speedreader:buildflags",
   "//brave/components/tor/buildflags",
-  "//brave/components/translate/core/browser:buildflags",
+  "//brave/components/translate/core/common:buildflags",
   "//brave/components/version_info",
   "//brave/services/network/public/cpp",
   "//chrome/browser:browser_process",
