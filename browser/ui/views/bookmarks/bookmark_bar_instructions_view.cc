@@ -9,8 +9,8 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/chrome_pages.h"
