@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "wrapper.hpp"
+#include "wrapper.h"
 
 using namespace std;
 using namespace rust::cxxbridge1;
@@ -27,24 +27,50 @@ namespace brave_rewards {
 
     callback(std::move(ctx), resp);
   }
+
+
+void shim_purge() {
+    cout<<"shim_purge"<<"\n";
+}
+
+void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
+    cout<<"shim_set"<<"\n";
+}
+
+rust::String shim_get(rust::cxxbridge1::Str key) {
+    cout<<"shim_get"<<"\n";
+    //std::unique_ptr<std::string> empty(new std::string("{}"));
+  //return empty;
+		std::string foo = "{}";
+  return foo;
+}
+
+void shim_scheduleWakeup(::std::uint64_t delay_ms,
+      rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
+      rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx
+) {
+    cout<<"shim_scheduleWakeup"<<"\n";
+}
+
 }
 
 void on_refresh_order(
-  std::unique_ptr<RefreshOrderCallbackState> callback_state,
+  RefreshOrderCallbackState* callback_state,
   RewardsResult result,
   rust::cxxbridge1::Str order
 ) {
-    callback_state->cb(result, order);
+    cout<<"on_refresh_order"<<"\n";
+    //callback_state->cb(result, order);
 }
 
 int main() {
   Box<CppSDK> sdk = initialize_sdk("local");
 
   std::unique_ptr<RefreshOrderCallbackState> cbs (new RefreshOrderCallbackState);
-  cbs->CbFunc = [](RewardsResult result, rust::cxxbridge1::Str order) {
-    cout<<"result:"<<unsigned(result)<<"\n";
-    cout<<"order:"<<order<<"\n";
-  };
+  //cbs->CbFunc = [](RewardsResult result, rust::cxxbridge1::Str order) {
+    //cout<<"result:"<<unsigned(result)<<"\n";
+    //cout<<"order:"<<order<<"\n";
+  //};
 
   sdk->refresh_order(on_refresh_order, std::move(cbs), "b788a168-1136-411f-9546-43a372a2e3ed");
 }

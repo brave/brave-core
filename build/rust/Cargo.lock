@@ -158,7 +158,7 @@ dependencies = [
 [[package]]
 name = "brave-rewards"
 version = "0.1.0"
-source = "git+ssh://git@github.com/brave-intl/br-rs?branch=skus#d7ac37c4a1f239405c9eee4fc913220dc654b93d"
+source = "git+ssh://git@github.com/brave-intl/br-rs?branch=skus#bb49caa0f0649e7733134fd28ca99588fa89d7ff"
 dependencies = [
  "async-trait 0.1.51 (registry+https://github.com/rust-lang/crates.io-index)",
  "base64 0.9.3",
@@ -271,7 +271,7 @@ dependencies = [
 [[package]]
 name = "challenge-bypass-ristretto"
 version = "1.0.0"
-source = "git+https://github.com/brave-intl/challenge-bypass-ristretto?rev=e22fad1#e22fad19cce344a001e17fca3702527114acb6df"
+source = "git+https://github.com/brave-intl/challenge-bypass-ristretto?rev=17a7922#17a7922d8e174b20af1230f5b05f949c8c967eb5"
 dependencies = [
  "base64 0.13.0",
  "clear_on_drop",
