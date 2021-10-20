@@ -46,6 +46,10 @@ class MediaPlayer: NSObject {
         player.timeControlStatus == .playing
     }
     
+    public var isWaitingToPlay: Bool {
+        player.timeControlStatus == .waitingToPlayAtSpecifiedRate
+    }
+    
     public var currentItem: AVPlayerItem? {
         player.currentItem
     }
