@@ -219,6 +219,21 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void Unlock() {
+    base::RunLoop run_loop;
+    keyring_controller_->Unlock(
+        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void Lock() {
+    keyring_controller_->Lock();
+    browser_task_environment_.RunUntilIdle();
+  }
+
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_controller_->SetSelectedAccount(
@@ -829,11 +844,15 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
 
   keyring_controller()->Lock();
 
-  SignMessage(true, addresses[0], "0x1234", &signature, &error, &error_message);
+  // nullopt for the first param here because we don't AddSignMessageRequest
+  // whent here are no accounts returned.
+  SignMessage(absl::nullopt, addresses[0], "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
-                               IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(addresses[0])));
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
@@ -903,6 +922,18 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   Navigate(url);
   EXPECT_FALSE(observer_->AccountsChangedFired());
   AddEthereumPermission(url);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
+  observer_->Reset();
+
+  // Locking the account fires an event change with no accounts
+  Lock();
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>(), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Unlocking also fires an event wit the same account list as before
+  Unlock();
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
   observer_->Reset();

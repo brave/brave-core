@@ -479,6 +479,14 @@ void BraveWalletProviderImpl::SelectedAccountChanged() {
   UpdateKnownAccounts();
 }
 
+void BraveWalletProviderImpl::Locked() {
+  UpdateKnownAccounts();
+}
+
+void BraveWalletProviderImpl::Unlocked() {
+  UpdateKnownAccounts();
+}
+
 void BraveWalletProviderImpl::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
