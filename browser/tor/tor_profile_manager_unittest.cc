@@ -58,6 +58,7 @@ class TorProfileManagerUnitTest : public testing::Test {
 };
 
 TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
+  profile()->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
   Profile* tor_profile =
       TorProfileManager::GetInstance().GetTorProfile(profile());
   ASSERT_EQ(tor_profile->GetOriginalProfile(), profile());
@@ -81,5 +82,10 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   // Check translate.enabled for translate bubble.
   EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(
       translate::prefs::kOfferTranslateEnabled));
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Check WDP status.
+  EXPECT_FALSE(tor_profile->GetPrefs()->GetBoolean(kWebDiscoveryEnabled));
 #endif
 }

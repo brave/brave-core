@@ -131,4 +131,9 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
     BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 #endif
+
+  // Disable Web Discovery Project in Tor
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  pref_service->SetBoolean(kWebDiscoveryEnabled, false);
+#endif
 }
