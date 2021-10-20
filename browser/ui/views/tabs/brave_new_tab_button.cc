@@ -11,8 +11,8 @@
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "ui/gfx/geometry/size.h"
-#include "ui/gfx/scoped_canvas.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/scoped_canvas.h"
 
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
