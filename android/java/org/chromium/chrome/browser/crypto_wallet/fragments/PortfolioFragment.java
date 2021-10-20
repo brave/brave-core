@@ -36,6 +36,7 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -220,6 +221,7 @@ public class PortfolioFragment
             WalletCoinAdapter walletCoinAdapter =
                     new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
             List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
             for (ErcToken userAsset : userAssets) {
                 String currentAssetSymbol = userAsset.symbol.toLowerCase();
                 Double fiatBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
@@ -229,13 +231,14 @@ public class PortfolioFragment
                 String cryptoBalanceString = String.format(
                         Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-                walletListItemModelList.add(new WalletListItemModel(
-                        // TODO(AlexeyBarabash): pick correct icon
-                        R.drawable.ic_eth, userAsset.name, userAsset.symbol,
-                        // Amount in USD
-                        fiatBalanceString,
-                        // Amount in current crypto currency/token
-                        cryptoBalanceString));
+                WalletListItemModel walletListItemModel =
+                        new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
+                                // Amount in USD
+                                fiatBalanceString,
+                                // Amount in current crypto currency/token
+                                cryptoBalanceString);
+                walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+                walletListItemModelList.add(walletListItemModel);
             }
 
             walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);

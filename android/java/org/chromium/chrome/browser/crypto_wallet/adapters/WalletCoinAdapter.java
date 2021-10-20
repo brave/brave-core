@@ -111,6 +111,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 onWalletListItemClick.onAccountClick(walletListItemModel);
             }
         });
+
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
                 || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_ASSETS_LIST) {
             holder.text1Text.setVisibility(View.GONE);
@@ -141,10 +142,11 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                             }
                         });
             }
+        }
+
+        if (mType != AdapterType.ACCOUNTS_LIST) {
             Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
                     walletListItemModel.getIcon(), holder.iconImg, null);
-        } else {
-            holder.iconImg.setImageResource(walletListItemModel.getIcon());
         }
     }
 
