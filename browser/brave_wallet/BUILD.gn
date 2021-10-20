@@ -119,6 +119,7 @@ source_set("tab_helper") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "brave_wallet_prefs_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "brave_wallet_tab_helper_unittest.cc",
     "erc_token_images_source_unittest.cc",

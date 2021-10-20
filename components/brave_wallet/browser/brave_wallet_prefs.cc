@@ -60,7 +60,7 @@ namespace brave_wallet {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
-      kBraveWalletWeb3Provider,
+      kDefaultWallet,
       static_cast<int>(brave_wallet::IsNativeWalletEnabled()
                            ? brave_wallet::mojom::DefaultWallet::BraveWallet
                            : brave_wallet::mojom::DefaultWallet::Ask));
@@ -94,6 +94,12 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2021
   registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
                                 false);
+  // Added 09/2021
+  registry->RegisterIntegerPref(
+      kBraveWalletWeb3ProviderDeprecated,
+      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
+                           ? mojom::DefaultWallet::BraveWallet
+                           : mojom::DefaultWallet::Ask));
 }
 
 void ClearProfilePrefs(PrefService* prefs) {
@@ -112,6 +118,22 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 10/2021 for migrating the contract address for eth in user asset
   // list from 'eth' to an empty string.
   BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
+
+  if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
+    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
+        prefs->GetInteger(kBraveWalletWeb3ProviderDeprecated));
+    mojom::DefaultWallet default_wallet = provider;
+    if (IsNativeWalletEnabled() &&
+        (provider == mojom::DefaultWallet::Ask ||
+         provider == mojom::DefaultWallet::CryptoWallets)) {
+      default_wallet = mojom::DefaultWallet::BraveWallet;
+    } else if (!IsNativeWalletEnabled() &&
+               provider == mojom::DefaultWallet::BraveWallet) {
+      default_wallet = mojom::DefaultWallet::Ask;
+    }
+    prefs->SetInteger(kDefaultWallet, static_cast<int>(default_wallet));
+    prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
+  }
 }
 
 }  // namespace brave_wallet

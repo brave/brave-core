@@ -226,7 +226,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
   // Brave Wallet pref
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  (*s_brave_allowlist)[kBraveWalletWeb3Provider] =
+  (*s_brave_allowlist)[kDefaultWallet] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kShowWalletIconOnToolbar] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
