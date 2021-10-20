@@ -844,11 +844,15 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessage) {
 
   keyring_controller()->Lock();
 
-  SignMessage(true, addresses[0], "0x1234", &signature, &error, &error_message);
+  // nullopt for the first param here because we don't AddSignMessageRequest
+  // whent here are no accounts returned.
+  SignMessage(absl::nullopt, addresses[0], "0x1234", &signature, &error,
+              &error_message);
   EXPECT_TRUE(signature.empty());
-  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
-  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
-                               IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnauthorized));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringFUTF8(IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                                      base::ASCIIToUTF16(addresses[0])));
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
