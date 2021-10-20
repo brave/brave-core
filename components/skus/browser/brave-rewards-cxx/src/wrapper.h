@@ -938,6 +938,7 @@ namespace brave_rewards {
   struct HttpRequest;
   struct HttpResponse;
   struct HttpRoundtripContext;
+  struct WakeupContext;
   struct CppSDK;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
 }
@@ -1007,6 +1008,20 @@ private:
   };
 };
 #endif // CXXBRIDGE1_STRUCT_brave_rewards$HttpRoundtripContext
+
+#ifndef CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
+#define CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
+struct WakeupContext final : public ::rust::Opaque {
+  ~WakeupContext() = delete;
+
+private:
+  friend ::rust::layout;
+  struct layout {
+    static ::std::size_t size() noexcept;
+    static ::std::size_t align() noexcept;
+  };
+};
+#endif // CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
 
 #ifndef CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
