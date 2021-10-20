@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-
+import { LoaderIcon } from 'brave-ui/components/icons'
 import LedgerLogo from '../../../../../assets/svg-icons/ledger-logo.svg'
 import TrezorLogo from '../../../../../assets/svg-icons/trezor-logo.svg'
-
 import { DisclaimerWrapper as DisclaimerWrapperBase } from '../style'
 
 interface StyleProps {
@@ -45,7 +44,7 @@ export const HardwareButton = styled.button<StyleProps>`
 
 export const LedgerIcon = styled.div`
   width: 93px;
-  height: 25px;
+  height: 23px;
   background-color: ${(p) => p.theme.color.interactive07};
   -webkit-mask-image: url(${LedgerLogo});
   mask-image: url(${LedgerLogo});
@@ -81,7 +80,6 @@ export const ConnectingButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 10px 22px;
-
   border: 1px solid ${(p) => p.theme.color.interactive08};
   box-sizing: border-box;
   border-radius: 48px;
@@ -126,10 +124,9 @@ export const HardwareWalletAccountsList = styled.div`
   align-items: flex-start;
   padding: 0px;
   width: 100%;
-
-  max-height: 300px;
+  height: 300px;
   overflow-y: auto;
-
+  margin-bottom: 15px;
   ::-webkit-scrollbar {
     //width: 0;  /* Remove scrollbar space */
     //background: transparent;  /* Optional: just make scrollbar invisible */
@@ -151,7 +148,6 @@ export const HardwareWalletAccountListItemColumn = styled.div`
   font-weight: normal;
   font-size: 14px;
   line-height: 20px;
-
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
@@ -164,10 +160,18 @@ export const HardwareWalletAccountListItemColumn = styled.div`
   padding-left: 10px;
 `
 
+export const AddressBalanceWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 140px;
+  height: 100%;
+`
+
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
-
   button:first-child {
     margin-right: 10px;
   }
@@ -182,10 +186,27 @@ export const SelectWrapper = styled.div`
   margin-left: -300px;
   width: 250px;
 `
+
 export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
+`
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 70px;
+  width: 70px;
+  opacity: .4;
 `

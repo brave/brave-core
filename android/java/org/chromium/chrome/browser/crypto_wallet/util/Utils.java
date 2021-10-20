@@ -13,7 +13,12 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.view.inputmethod.InputMethodManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -53,7 +58,12 @@ public class Utils {
     public static int ASSET_ITEM = 2;
     public static int TRANSACTION_ITEM = 3;
 
+    public static final int ACCOUNT_REQUEST_CODE = 2;
+
     private static final String PREF_CRYPTO_ONBOARDING = "crypto_onboarding";
+    public static final String ADDRESS = "address";
+    public static final String NAME = "name";
+    public static final String ISIMPORTED = "isImported";
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -128,15 +138,7 @@ public class Utils {
         activity.startActivity(addAccountActivityIntent);
     }
 
-    public static void openAccountDetailActivity(Activity activity, String name, String address) {
-        assert activity != null;
-        Intent accountDetailActivityIntent = new Intent(activity, AccountDetailActivity.class);
-        accountDetailActivityIntent.putExtra("name", name);
-        accountDetailActivityIntent.putExtra("address", address);
-        activity.startActivity(accountDetailActivityIntent);
-    }
-
-    public static List<String> getNetworksList(Activity activity) {
+    public static String[] getNetworksList(Activity activity) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
@@ -144,6 +146,29 @@ public class Utils {
         categories.add(activity.getText(R.string.goerli).toString());
         categories.add(activity.getText(R.string.kovan).toString());
         categories.add(activity.getText(R.string.localhost).toString());
+
+        return categories.toArray(new String[0]);
+    }
+
+    public static String[] getNetworksAbbrevList(Activity activity) {
+        List<String> categories = new ArrayList<String>();
+        categories.add(activity.getText(R.string.mainnet_short).toString());
+        categories.add(activity.getText(R.string.rinkeby_short).toString());
+        categories.add(activity.getText(R.string.ropsten_short).toString());
+        categories.add(activity.getText(R.string.goerli_short).toString());
+        categories.add(activity.getText(R.string.kovan_short).toString());
+        categories.add(activity.getText(R.string.localhost).toString());
+
+        return categories.toArray(new String[0]);
+    }
+
+    public static List<String> getSlippageToleranceList(Activity activity) {
+        List<String> categories = new ArrayList<String>();
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_05).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_1).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_15).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_3).toString());
+        categories.add(activity.getText(R.string.crypto_wallet_tolerance_6).toString());
 
         return categories;
     }
@@ -169,6 +194,32 @@ public class Utils {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
             default:
                 strNetwork = activity.getText(R.string.mainnet);
+        }
+
+        return strNetwork;
+    }
+
+    public static CharSequence getNetworkShortText(Activity activity, String chain_id) {
+        CharSequence strNetwork = activity.getText(R.string.mainnet_short);
+        switch (chain_id) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+                strNetwork = activity.getText(R.string.rinkeby_short);
+                break;
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+                strNetwork = activity.getText(R.string.ropsten_short);
+                break;
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+                strNetwork = activity.getText(R.string.goerli_short);
+                break;
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+                strNetwork = activity.getText(R.string.kovan_short);
+                break;
+            case BraveWalletConstants.LOCALHOST_CHAIN_ID:
+                strNetwork = activity.getText(R.string.localhost);
+                break;
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+            default:
+                strNetwork = activity.getText(R.string.mainnet_short);
         }
 
         return strNetwork;
@@ -231,6 +282,41 @@ public class Utils {
         return 0;
     }
 
+    public static String toWei(String number) {
+        if (number.isEmpty()) {
+            return "0";
+        }
+        int dotPosition = number.indexOf(".");
+        String multiplier = "1000000000000000000";
+        if (dotPosition != -1) {
+            int zeroToRemove = number.length() - dotPosition - 1;
+            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            number = number.replace(".", "");
+        }
+        try {
+            BigInteger bigNumber = new BigInteger(number, 10);
+            BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
+
+            return res.toString();
+        } catch (NumberFormatException ex) {
+        }
+
+        return "0";
+    }
+
+    public static double fromWei(String number) {
+        if (number == null || number.isEmpty()) {
+            return 0;
+        }
+        BigInteger bigNumber = new BigInteger(number);
+        BigInteger divider = new BigInteger("1000000000000000000");
+        BigDecimal bDecimal = new BigDecimal(bigNumber);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        String resStr = bDecimalRes.toPlainString();
+
+        return Double.valueOf(resStr);
+    }
+
     public static String toHexWei(String number) {
         if (number.isEmpty()) {
             return "0x0";
@@ -265,6 +351,46 @@ public class Utils {
         return "0x0";
     }
 
+    public static String toWeiHex(String number) {
+        if (number.isEmpty()) {
+            return "0x0";
+        }
+        BigInteger bigNumber = new BigInteger(number, 10);
+
+        return "0x" + bigNumber.toString(16);
+    }
+
+    public static String multiplyHexBN(String number1, String number2) {
+        if (number1.startsWith("0x")) {
+            number1 = number1.substring(2);
+        }
+        if (number2.startsWith("0x")) {
+            number2 = number2.substring(2);
+        }
+        BigInteger bigNumber1 = new BigInteger(number1, 16);
+        BigInteger bigNumber2 = new BigInteger(number2, 16);
+
+        BigInteger res = bigNumber1.multiply(bigNumber2);
+
+        return "0x" + res.toString(16);
+    }
+
+    public static byte[] hexStrToNumberArray(String value) {
+        if (value.startsWith("0x")) {
+            value = value.substring(2);
+        }
+        if (value.isEmpty()) {
+            return new byte[0];
+        }
+
+        byte[] data = new byte[value.length() / 2];
+        for (int n = 0; n < value.length(); n += 2) {
+            data[n / 2] = (byte) Long.parseLong(value.substring(n, 2 + n), 16);
+        }
+
+        return data;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();
@@ -286,5 +412,63 @@ public class Utils {
         }
 
         return newAddress;
+    }
+
+    public static boolean isJSONValid(String text) {
+        try {
+            new JSONObject(text);
+        } catch (JSONException ex) {
+            try {
+                new JSONArray(text);
+            } catch (JSONException ex1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isSwapLiquidityErrorReason(String error) {
+        try {
+            JSONObject mainObj = new JSONObject(error);
+            JSONArray errorsArray = mainObj.getJSONArray("validationErrors");
+            if (errorsArray == null) {
+                return false;
+            }
+            for (int index = 0; index < errorsArray.length(); index++) {
+                JSONObject errorObj = errorsArray.getJSONObject(index);
+                if (errorObj == null) {
+                    continue;
+                }
+                String reason = errorObj.getString("reason");
+                if (reason.equals("INSUFFICIENT_ASSET_LIQUIDITY")) {
+                    return true;
+                }
+            }
+        } catch (JSONException ex) {
+        }
+
+        return false;
+    }
+
+    public static Bitmap resizeBitmap(Bitmap source, int maxLength) {
+        try {
+            if (source.getHeight() >= source.getWidth()) {
+                int targetHeight = maxLength;
+                double aspectRatio = (double) source.getWidth() / (double) source.getHeight();
+                int targetWidth = (int) (targetHeight * aspectRatio);
+
+                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+                return result;
+            } else {
+                int targetWidth = maxLength;
+                double aspectRatio = ((double) source.getHeight()) / ((double) source.getWidth());
+                int targetHeight = (int) (targetWidth * aspectRatio);
+
+                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+                return result;
+            }
+        } catch (Exception e) {
+            return source;
+        }
     }
 }

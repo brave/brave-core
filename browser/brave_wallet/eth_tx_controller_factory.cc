@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
@@ -55,6 +56,7 @@ EthTxControllerFactory::EthTxControllerFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_wallet::RpcControllerFactory::GetInstance());
   DependsOn(brave_wallet::KeyringControllerFactory::GetInstance());
+  DependsOn(brave_wallet::AssetRatioControllerFactory::GetInstance());
 }
 
 EthTxControllerFactory::~EthTxControllerFactory() {}
@@ -64,6 +66,7 @@ KeyedService* EthTxControllerFactory::BuildServiceInstanceFor(
   return brave_wallet::BuildEthTxController(
              RpcControllerFactory::GetControllerForContext(context),
              KeyringControllerFactory::GetControllerForContext(context),
+             AssetRatioControllerFactory::GetControllerForContext(context),
              user_prefs::UserPrefs::Get(context))
       .release();
 }

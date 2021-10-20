@@ -101,8 +101,13 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   std::vector<std::string> segments;
-  for (auto& segment : list3->GetList()) {
-    segments.push_back(segment.GetString());
+  for (const auto& segment_value : list3->GetList()) {
+    const std::string segment = segment_value.GetString();
+    if (segment.empty()) {
+      BLOG(1, "Failed to load from JSON, empty segment found");
+      return false;
+    }
+    segments.push_back(segment);
   }
 
   // Parsing field: "segment_keywords"
@@ -129,6 +134,10 @@ bool PurchaseIntent::FromJson(const std::string& json) {
     ad_targeting::PurchaseIntentSegmentKeywordInfo info;
     info.keywords = it.key();
     for (const auto& segment_ix : it.value().GetList()) {
+      if (static_cast<size_t>(segment_ix.GetInt()) >= segments.size()) {
+        BLOG(1, "Failed to load from JSON, segment keywords are ill-formed");
+        return false;
+      }
       info.segments.push_back(segments.at(segment_ix.GetInt()));
     }
 

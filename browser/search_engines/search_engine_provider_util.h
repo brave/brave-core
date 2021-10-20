@@ -16,7 +16,11 @@ namespace brave {
 
 bool UseAlternativeSearchEngineProviderEnabled(Profile* profile);
 
+bool ShowAlternativeSearchEngineProviderToggleEnabled(Profile* profile);
+
 void ToggleUseAlternativeSearchEngineProvider(Profile* profile);
+
+void SetShowAlternativeSearchEngineProviderToggle(Profile* profile);
 
 bool IsRegionForQwant(Profile* profile);
 

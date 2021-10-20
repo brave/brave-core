@@ -28,8 +28,7 @@ export const Description = styled.span`
   line-height: 22px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
-  max-width: 380px;
-  height: 64px;
+  max-width: 450px;
   text-align: center;
   margin-bottom: 18px;
 `

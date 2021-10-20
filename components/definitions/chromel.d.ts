@@ -95,6 +95,7 @@ declare namespace chrome.braveRewards {
   const onAdsEnabled: {
     addListener: (callback: (enabled: boolean) => void) => void
   }
+  const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
@@ -173,6 +174,7 @@ declare namespace chrome.braveRewards {
 
   const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
   const updatePrefs: (prefs: Partial<RewardsPrefs>) => void
+  const requestAdsEnabledPopupClosed: (adsEnabled: boolean) => void
 }
 
 declare namespace chrome.binance {

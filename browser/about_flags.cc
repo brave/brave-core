@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/brave_talk/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/common/features.h"
@@ -25,7 +24,7 @@
 #include "brave/components/speedreader/buildflags.h"
 #include "net/base/features.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/components/brave_vpn/features.h"
 #endif
 
@@ -57,6 +56,8 @@ using brave_shields::features::kBraveAdblockDefault1pBlocking;
 using brave_shields::features::kBraveDarkModeBlock;
 using brave_shields::features::kBraveDomainBlock;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
+using brave_shields::features::kCosmeticFilteringSyncLoad;
+
 using debounce::features::kBraveDebounce;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
@@ -116,6 +117,11 @@ constexpr char kBraveExtensionNetworkBlockingName[] =
 constexpr char kBraveExtensionNetworkBlockingDescription[] =
     "Enable blocking for network requests initiated by extensions";
 
+constexpr char kCosmeticFilteringSyncLoadName[] =
+    "Enable sync loading of cosmetic filter rules";
+constexpr char kCosmeticFilteringSyncLoadDescription[] =
+    "Enable sync loading of cosmetic filter rules";
+
 constexpr char kBraveIpfsName[] = "Enable IPFS";
 constexpr char kBraveIpfsDescription[] = "Enable native support of IPFS.";
 
@@ -168,6 +174,12 @@ constexpr char kBraveEphemeralStorageKeepAliveDescription[] =
     "Keep ephemeral storage partitions alive for a specified time after all "
     "tabs for that origin are closed";
 
+constexpr char kBraveFirstPartyEphemeralStorageName[] =
+    "First Party Ephemeral Storage";
+constexpr char kBraveFirstPartyEphemeralStorageDescription[] =
+    "Enable support for first party ephemeral storage using SESSION ONLY "
+    "cookie setting";
+
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 constexpr char kBraveRewardsGeminiName[] = "Enable Gemini for Brave Rewards";
 constexpr char kBraveRewardsGeminiDescription[] =
@@ -194,12 +206,6 @@ constexpr char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 constexpr char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";
 
-constexpr char kBraveTalkName[] = "Enable Brave Talk";
-constexpr char kBraveTalkDescription[] =
-    "Enables the Brave Talk integration on the new tab page. You can "
-    "use Brave Talk to start a private video call with your friends "
-    "and colleagues.";
-
 constexpr char kNativeBraveWalletName[] =
     "Enable experimental Brave native wallet";
 constexpr char kNativeBraveWalletDescription[] =
@@ -219,12 +225,12 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 // file so we turn it off for the macro sections.
 // clang-format off
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #define BRAVE_VPN_FEATURE_ENTRIES                         \
     {kBraveVPNFeatureInternalName,                        \
      flag_descriptions::kBraveVPNName,                    \
      flag_descriptions::kBraveVPNDescription,             \
-     kOsMac | kOsWin | kOsAndroid,                        \
+     kOsMac | kOsWin,                                     \
      FEATURE_VALUE_TYPE(brave_vpn::features::kBraveVPN)},
 #else
 #define BRAVE_VPN_FEATURE_ENTRIES
@@ -246,11 +252,7 @@ constexpr char kUseDevUpdaterUrlDescription[] =
     {"brave-speedreader",                                               \
      flag_descriptions::kBraveSpeedreaderName,                          \
      flag_descriptions::kBraveSpeedreaderDescription, kOsDesktop,       \
-     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},             \
-    {"speedreader-legacy-backend",                                      \
-     flag_descriptions::kBraveSpeedreaderLegacyName,                    \
-     flag_descriptions::kBraveSpeedreaderLegacyDescription, kOsDesktop, \
-     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderLegacyBackend)},
+     FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature)},
 #else
 #define SPEEDREADER_FEATURE_ENTRIES
 #endif
@@ -347,6 +349,10 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \
      FEATURE_VALUE_TYPE(kBraveExtensionNetworkBlocking)},                   \
+    {"brave-cosmetic-filtering-sync-load",                                  \
+     flag_descriptions::kCosmeticFilteringSyncLoadName,                     \
+     flag_descriptions::kCosmeticFilteringSyncLoadDescription, kOsAll,      \
+     FEATURE_VALUE_TYPE(kCosmeticFilteringSyncLoad)},                       \
     {"brave-super-referral",                                                \
      flag_descriptions::kBraveSuperReferralName,                            \
      flag_descriptions::kBraveSuperReferralDescription,                     \
@@ -360,6 +366,11 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveEphemeralStorageKeepAliveName,                \
      flag_descriptions::kBraveEphemeralStorageKeepAliveDescription, kOsAll, \
      FEATURE_VALUE_TYPE(net::features::kBraveEphemeralStorageKeepAlive)},   \
+    {"brave-first-party-ephemeral-storage",                                 \
+     flag_descriptions::kBraveFirstPartyEphemeralStorageName,               \
+     flag_descriptions::kBraveFirstPartyEphemeralStorageDescription,        \
+     kOsAll,                                                                \
+     FEATURE_VALUE_TYPE(net::features::kBraveFirstPartyEphemeralStorage)},  \
     {"brave-rewards-verbose-logging",                                       \
      flag_descriptions::kBraveRewardsVerboseLoggingName,                    \
      flag_descriptions::kBraveRewardsVerboseLoggingDescription,             \
@@ -370,11 +381,6 @@ constexpr char kUseDevUpdaterUrlDescription[] =
      flag_descriptions::kBraveAdsCustomNotificationsDescription,            \
      kOsDesktop | kOsAndroid,                                               \
      FEATURE_VALUE_TYPE(brave_ads::features::kCustomAdNotifications)},      \
-    {"brave-talk",                                                          \
-     flag_descriptions::kBraveTalkName,                                     \
-     flag_descriptions::kBraveTalkDescription,                              \
-     kOsDesktop,                                                            \
-     FEATURE_VALUE_TYPE(brave_talk::features::kBraveTalk)},                 \
     {"brave-sync-v2",                                                       \
       flag_descriptions::kBraveSyncName,                                    \
       flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \

@@ -15,6 +15,10 @@ transpile_web_ui("brave_rewards_panel") {
       rebase_path("brave_rewards_panel.tsx"),
     ],
     [
+      "request_ads_enabled_panel",
+      rebase_path("request_ads_enabled_panel.tsx"),
+    ],
+    [
       "brave_rewards_panel_background",
       rebase_path("background.ts"),
     ],

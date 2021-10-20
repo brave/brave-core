@@ -78,6 +78,8 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.ntp.NewTabPage;
+import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopup;
+import org.chromium.chrome.browser.onboarding.BraveTalkOptInPopupListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -121,6 +123,7 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
@@ -132,6 +135,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
+    private static final List<String> mBraveSearchEngineDefaultRegions =
+            Arrays.asList("CA", "DE", "FR", "GB", "US");
     private static final long MB_10 = 10000000;
     private static final long MINUTES_10 = 10 * 60 * 1000;
     private static final int URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP = 10;
@@ -148,6 +153,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsPanelPopup mRewardsPopup;
+    private BraveTalkOptInPopup mBraveTalkOptInPopup;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
     private TextView mBraveRewardsNotificationsCount;
@@ -939,12 +945,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onUrlFocusChange(boolean hasFocus) {
         Context context = getContext();
+        String countryCode = Locale.getDefault().getCountry();
         if (hasFocus && PackageUtils.isFirstInstall(context)
                 && BraveActivity.getBraveActivity() != null
                 && BraveActivity.getBraveActivity().getActivityTab() != null
                 && UrlUtilities.isNTPUrl(
                         BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
-                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+                && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+                && !mBraveSearchEngineDefaultRegions.contains(countryCode)) {
             Intent searchActivityIntent = new Intent(context, SearchActivity.class);
             context.startActivity(searchActivityIntent);
         }
@@ -1085,6 +1093,30 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void openRewardsPanel() {
         onClick(mBraveRewardsButton);
+    }
+
+    public void openBraveTalkOptInPopup(BraveTalkOptInPopupListener popupListener) {
+        if (mRewardsPopup != null) {
+            dismissRewardsPanel();
+        }
+
+        if (mBraveTalkOptInPopup != null) {
+            mBraveTalkOptInPopup.dismissPopup();
+        }
+
+        mBraveTalkOptInPopup = new BraveTalkOptInPopup(mBraveRewardsButton, popupListener);
+        mBraveTalkOptInPopup.showLikePopDownMenu();
+    }
+
+    public void onBraveTalkOptInPopupDismiss() {
+        mBraveTalkOptInPopup = null;
+    }
+
+    public void closeBraveTalkOptInPopup() {
+        if (mBraveTalkOptInPopup != null) {
+            mBraveTalkOptInPopup.dismissPopup();
+            mBraveTalkOptInPopup = null;
+        }
     }
 
     public boolean isShieldsTooltipShown() {

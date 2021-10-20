@@ -56,7 +56,69 @@ bool Approve(const std::string& spender_address,
   return ConcatHexStrings(hex_strings, data);
 }
 
+bool Allowance(const std::string& owner_address,
+               const std::string& spender_address,
+               std::string* data) {
+  const std::string function_hash =
+      GetFunctionHash("allowance(address,address)");
+  std::string padded_owner_address;
+  if (!brave_wallet::PadHexEncodedParameter(owner_address,
+                                            &padded_owner_address)) {
+    return false;
+  }
+  std::string padded_spender_address;
+  if (!brave_wallet::PadHexEncodedParameter(spender_address,
+                                            &padded_spender_address)) {
+    return false;
+  }
+  std::vector<std::string> hex_strings = {function_hash, padded_owner_address,
+                                          padded_spender_address};
+  return ConcatHexStrings(hex_strings, data);
+}
+
 }  // namespace erc20
+
+namespace erc721 {
+
+bool TransferFrom(const std::string& from,
+                  const std::string& to,
+                  uint256_t token_id,
+                  std::string* data) {
+  const std::string function_hash =
+      GetFunctionHash("transferFrom(address,address,uint256)");
+
+  std::string padded_from;
+  if (!brave_wallet::PadHexEncodedParameter(from, &padded_from)) {
+    return false;
+  }
+
+  std::string padded_to;
+  if (!brave_wallet::PadHexEncodedParameter(to, &padded_to)) {
+    return false;
+  }
+
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  std::vector<std::string> hex_strings = {function_hash, padded_from, padded_to,
+                                          padded_token_id};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+bool OwnerOf(uint256_t token_id, std::string* data) {
+  const std::string function_hash = GetFunctionHash("ownerOf(uint256)");
+
+  std::string padded_token_id;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
+    return false;
+  }
+
+  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
+}
+
+}  // namespace erc721
 
 namespace unstoppable_domains {
 
@@ -87,19 +149,46 @@ bool GetMany(const std::vector<std::string>& keys,
   return true;
 }
 
+bool Get(const std::string& key, const std::string& domain, std::string* data) {
+  const std::string function_hash = GetFunctionHash("get(string,uint256)");
+
+  std::string offset_for_key;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_key)) {
+    return false;
+  }
+
+  std::string tokenID = Namehash(domain);
+
+  std::string encoded_key;
+  if (!EncodeString(key, &encoded_key)) {
+    return false;
+  }
+
+  std::vector<std::string> hex_strings = {function_hash, offset_for_key,
+                                          tokenID, encoded_key};
+  return ConcatHexStrings(hex_strings, data);
+}
+
 }  // namespace unstoppable_domains
 
 namespace ens {
 
-bool GetResolverAddress(const std::string& domain, std::string* data) {
+bool Resolver(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("resolver(bytes32)");
   std::string tokenID = Namehash(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);
 }
 
-bool GetContentHashAddress(const std::string& domain, std::string* data) {
+bool ContentHash(const std::string& domain, std::string* data) {
   const std::string function_hash = GetFunctionHash("contenthash(bytes32)");
+  std::string tokenID = Namehash(domain);
+  std::vector<std::string> hex_strings = {function_hash, tokenID};
+  return ConcatHexStrings(hex_strings, data);
+}
+
+bool Addr(const std::string& domain, std::string* data) {
+  const std::string function_hash = GetFunctionHash("addr(bytes32)");
   std::string tokenID = Namehash(domain);
   std::vector<std::string> hex_strings = {function_hash, tokenID};
   return ConcatHexStrings(hex_strings, data);

@@ -7,6 +7,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
+import BigNumber from 'bignumber.js'
+
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import store from './store'
@@ -42,18 +44,25 @@ import {
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
-import { formatPrices } from '../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
-import { convertMojoTimeToJS } from '../utils/mojo-time'
+import { convertMojoTimeToJS } from '../utils/datetime-utils'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import {
   HardwareWalletAccount
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
-import { onConnectHardwareWallet, getBalance } from '../common/async/wallet_async_handler'
+import {
+  onConnectHardwareWallet,
+  getBalance,
+  getERC20Allowance,
+  findENSAddress,
+  findUnstoppableDomainAddress
+} from '../common/async/wallet_async_handler'
 
-import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useSwap, useAssets } from '../common/hooks'
+import { formatBalance } from '../utils/format-balances'
+import { useSwap, useAssets, useTimeout, useBalance, useSend } from '../common/hooks'
+import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
   wallet: WalletState
@@ -101,15 +110,19 @@ function Container (props: Props) {
     showAddModal,
     isCryptoWalletsInstalled,
     isMetaMaskInstalled,
-    swapQuote
+    swapQuote,
+    swapError
   } = props.page
 
   // const [view, setView] = React.useState<NavTypes>('crypto')
   const [inputValue, setInputValue] = React.useState<string>('')
-  const [toAddress, setToAddress] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
+
+  const notifyUserInteraction = () => {
+    props.walletActions.notifyUserInteraction()
+  }
+  useTimeout(notifyUserInteraction, isWalletLocked)
 
   const {
     tokenOptions,
@@ -126,8 +139,11 @@ function Container (props: Props) {
     orderExpiration,
     orderType,
     slippageTolerance,
+    swapValidationError,
     toAmount,
     toAsset,
+    swapAssetOptions,
+    customSlippageTolerance,
     onToggleOrderType,
     onSwapQuoteRefresh,
     onSetToAmount,
@@ -137,14 +153,39 @@ function Container (props: Props) {
     onSetExchangeRate,
     onSelectExpiration,
     onSelectSlippageTolerance,
-    onSelectTransactAsset
+    onSelectTransactAsset,
+    onCustomSlippageToleranceChange
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    props.walletPageActions.fetchPageSwapQuote,
     assetOptions,
-    swapQuote
+    props.walletPageActions.fetchPageSwapQuote,
+    getERC20Allowance,
+    props.walletActions.approveERC20Allowance,
+    swapQuote,
+    swapError
   )
+
+  const {
+    onSetSendAmount,
+    onSetToAddressOrUrl,
+    onSubmitSend,
+    sendAmount,
+    toAddressOrUrl,
+    toAddress,
+    addressError
+  } = useSend(
+    findENSAddress,
+    findUnstoppableDomainAddress,
+    selectedAccount,
+    fromAsset,
+    props.walletActions.sendERC20Transfer,
+    props.walletActions.sendTransaction,
+    props.walletActions.sendERC721TransferFrom
+  )
+
+  const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -154,16 +195,8 @@ function Container (props: Props) {
     }
   }, [walletLocation])
 
-  const onSetToAddress = (value: string) => {
-    setToAddress(value)
-  }
-
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
-  }
-
-  const onSetSendAmount = (value: string) => {
-    setSendAmount(value)
   }
 
   const onSelectAccount = (account: WalletAccountType) => {
@@ -228,7 +261,9 @@ function Container (props: Props) {
     return false
   }, [invalidMnemonic])
 
-  const recoveryPhrase = (mnemonic || '').split(' ')
+  const recoveryPhrase = React.useMemo(() => {
+    return (mnemonic || '').split(' ')
+  }, [mnemonic])
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = (asset: TokenInfo) => {
@@ -283,7 +318,7 @@ function Container (props: Props) {
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatPrices(grandTotal)
+    return formatWithCommasAndDecimals(grandTotal.toString())
   }, [userAssetList])
 
   const onChangeTimeline = (timeline: AssetPriceTimeframe) => {
@@ -304,36 +339,35 @@ function Container (props: Props) {
     return formated
   }, [selectedAssetPriceHistory])
 
-  const fromAssetBalance = React.useMemo(() => {
-    if (!selectedAccount) {
-      return '0'
+  const onSelectPresetAmountFactory = (sendOrSwap: 'send' | 'swap') => (percent: number) => {
+    const asset = selectedAccount.tokens.find(
+      (token) => (
+        token.asset.contractAddress === fromAsset.asset.contractAddress ||
+        token.asset.symbol === fromAsset.asset.symbol
+      )
+    )
+    const amount = new BigNumber(asset?.assetBalance || '0').times(percent).toString()
+    const formattedAmount = formatBalance(amount.toString(), asset?.asset.decimals ?? 18)
+
+    if (sendOrSwap === 'send') {
+      onSetSendAmount(formattedAmount)
+    } else {
+      onSetFromAmount(formattedAmount)
     }
-    const token = selectedAccount.tokens ? selectedAccount.tokens.find((token) => token.asset.symbol === fromAsset.asset.symbol) : undefined
-    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
-  }, [accounts, selectedAccount, fromAsset])
-
-  const onSelectPresetFromAmount = (percent: number) => {
-    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
-    const amount = Number(fromAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
-    onSetFromAmount(formatedAmmount)
   }
 
-  const onSelectPresetSendAmount = (percent: number) => {
-    const asset = userVisibleTokenOptions.find((asset) => asset.symbol === fromAsset.asset.symbol)
-    const amount = Number(fromAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), asset?.decimals ?? 18)
-    setSendAmount(formatedAmmount)
+  const onShowAddModal = () => {
+    props.walletPageActions.setShowAddModal(true)
   }
 
-  const onToggleAddModal = () => {
-    props.walletPageActions.setShowAddModal(!showAddModal)
+  const onHideAddModal = () => {
+    props.walletPageActions.setShowAddModal(false)
   }
 
   const onCreateAccount = (name: string) => {
     const created = props.walletPageActions.addAccount({ accountName: name })
     if (created) {
-      onToggleAddModal()
+      onHideAddModal()
     }
   }
 
@@ -373,21 +407,6 @@ function Container (props: Props) {
     return result ? { success: true } : { success: false }
   }
 
-  const onSubmitSend = () => {
-    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
-      contractAddress: fromAsset.asset.contractAddress
-    })
-
-    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
-    })
-  }
-
   const fetchFullTokenList = () => {
     props.walletActions.getAllTokensList()
   }
@@ -412,22 +431,22 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (contractAddress: string, isVisible: boolean) => {
-    props.walletActions.setUserAssetVisible({ contractAddress, chainId: selectedNetwork.chainId, isVisible })
+  const onSetUserAssetVisible = (token: TokenInfo, isVisible: boolean) => {
+    props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
   const onAddUserAsset = (token: TokenInfo) => {
     props.walletActions.addUserAsset({
       token: {
         ...token,
-        logo: token.logo?.replace('chrome://erc-token-images/', '')
+        logo: stripERC20TokenImageURL(token.logo)
       },
       chainId: selectedNetwork.chainId
     })
   }
 
-  const onRemoveUserAsset = (contractAddress: string) => {
-    props.walletActions.removeUserAsset({ contractAddress, chainId: selectedNetwork.chainId })
+  const onRemoveUserAsset = (token: TokenInfo) => {
+    props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 
   const onOpenWalletSettings = () => {
@@ -459,6 +478,7 @@ function Container (props: Props) {
       hasInitialized &&
       walletLocation !== WalletRoutes.Backup &&
       walletLocation !== WalletRoutes.Accounts &&
+      walletLocation !== WalletRoutes.AddAccountModal &&
       acceptedAccountRoutes.length !== 0 &&
       !acceptedAccountRoutes.includes(walletLocation) &&
       walletLocation !== WalletRoutes.Portfolio &&
@@ -557,7 +577,7 @@ function Container (props: Props) {
                 onImportAccount={onImportAccount}
                 isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
-                onToggleAddModal={onToggleAddModal}
+                onHideAddModal={onHideAddModal}
                 onUpdateAccountName={onUpdateAccountName}
                 fetchFullTokenList={fetchFullTokenList}
                 selectedNetwork={selectedNetwork}
@@ -580,6 +600,7 @@ function Container (props: Props) {
                 addUserAssetError={addUserAssetError}
                 defaultWallet={defaultWallet}
                 onOpenWalletSettings={onOpenWalletSettings}
+                onShowAddModal={onShowAddModal}
               />
             }
           </Route>
@@ -602,19 +623,24 @@ function Container (props: Props) {
             fromAmount={fromAmount}
             fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
+            addressError={addressError}
             toAssetBalance='0'
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
+            swapValidationError={swapValidationError}
+            toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}
-            swapAssetOptions={assetOptions}
+            swapAssetOptions={swapAssetOptions}
             isSwapSubmitDisabled={isSwapButtonDisabled}
+            customSlippageTolerance={customSlippageTolerance}
+            onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
-            onSetToAddress={onSetToAddress}
+            onSetToAddressOrUrl={onSetToAddressOrUrl}
             onSelectExpiration={onSelectExpiration}
-            onSelectPresetFromAmount={onSelectPresetFromAmount}
-            onSelectPresetSendAmount={onSelectPresetSendAmount}
+            onSelectPresetFromAmount={onSelectPresetAmountFactory('swap')}
+            onSelectPresetSendAmount={onSelectPresetAmountFactory('send')}
             onSelectSlippageTolerance={onSelectSlippageTolerance}
             onSetExchangeRate={onSetExchangeRate}
             onSetSendAmount={onSetSendAmount}

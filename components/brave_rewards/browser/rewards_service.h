@@ -317,6 +317,8 @@ class RewardsService : public KeyedService {
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) = 0;
 
+  virtual void RequestAdsEnabledPopupClosed(bool ads_enabled) = 0;
+
   virtual void DisconnectWallet() = 0;
 
   virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;

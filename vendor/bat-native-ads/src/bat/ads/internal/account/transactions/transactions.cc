@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
@@ -92,6 +93,8 @@ uint64_t GetCountForMonth(const base::Time& time) {
 
 void Add(const double estimated_redemption_value,
          const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   TransactionInfo transaction;
 
   transaction.timestamp = base::Time::Now().ToDoubleT();

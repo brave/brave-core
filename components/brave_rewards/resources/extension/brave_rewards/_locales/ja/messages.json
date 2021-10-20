@@ -19,6 +19,26 @@
     "message": "ステータスを更新する",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "送ったチップはウォレットに保留されたままになり、90 日間自動的に再試行されます。$link_begin$さらに詳しく$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "このクリエイターはまだサインアップしていません。",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "このクリエイターは現在、ウォレットからチップを受け取るように構成されていません。",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$の$name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$が$days$以内に届きます",
+    "message": "$amount$ の支払いは $days$ で処理を開始します",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "閉じる",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "無料通話を開始するには、Brave Rewards を有効にします",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Brave Rewards を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "「Rewards」をオンにする",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "クリックすることで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。設定でいつでも無効にできます。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "無料通話を開始するには、Brave Private Ads を有効にします",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Brave Private Ads を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads を有効にする",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "広告を有効にすることで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "これで無料通話を開始できます",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "画面上をクリックして、Brave Talk に進みます。",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Brave Rewardsについて詳しくは、$tour_link_begin$クイックツアーにご参加ください$tour_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

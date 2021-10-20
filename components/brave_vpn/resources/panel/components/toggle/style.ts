@@ -15,7 +15,7 @@ const moveBg = keyframes`
   }
 `
 
-export const Box = styled.button<Props>`
+export const ToggleBox = styled.button<Props>`
   --bg-color: ${(p) => p.theme.color.disabled};
   position: relative;
   display: flex;
@@ -24,6 +24,7 @@ export const Box = styled.button<Props>`
   border: 0;
   border-radius: 50px;
   background: var(--bg-color);
+  margin-bottom: 24px;
 
   ${p => p.isActive && css`
     --bg-color: linear-gradient(
@@ -38,7 +39,7 @@ export const Box = styled.button<Props>`
     animation: ${moveBg} 5s ease infinite;
   `}
 `
-export const Circle = styled.div<Props>`
+export const Knob = styled.div<Props>`
   position: absolute;
   top: 5px;
   left: ${(p) => !p.isActive && '5px'};
@@ -47,4 +48,46 @@ export const Circle = styled.div<Props>`
   height: 40px;
   border-radius: 50%;
   background-color: white;
+`
+
+// Status indicator
+export const StatusBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+`
+
+export const StatusText = styled.span`
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: ${(p) => p.theme.color.text01};
+  letter-spacing: 0.04em;
+`
+
+export const ActiveIndicator = styled.span`
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: ${(p) => p.theme.color.successBorder};
+`
+
+export const InActiveIndicator = styled(ActiveIndicator)`
+  background: ${(p) => p.theme.color.disabled};
+`
+
+export const FailedIndicator = styled(ActiveIndicator)`
+  background: ${(p) => p.theme.color.warn};
+`
+
+export const Loader = styled.span`
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+
+  svg>path {
+    fill: ${(p) => p.theme.color.text03};
+  }
 `

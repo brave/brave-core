@@ -23,11 +23,24 @@ Unverified::Unverified(LedgerImpl* ledger) :
 Unverified::~Unverified() = default;
 
 void Unverified::Contribute() {
-  ledger_->wallet()->FetchBalance(
-      std::bind(&Unverified::OnContributeUnverifiedBalance,
-                this,
-                _1,
-                _2));
+  ledger_->database()->GetUnverifiedPublishersForPendingContributions(
+      std::bind(&Unverified::FetchInfoForUnverifiedPublishers, this, _1));
+}
+
+void Unverified::FetchInfoForUnverifiedPublishers(
+    std::vector<std::string>&& publisher_keys) {
+  if (!publisher_keys.empty()) {
+    const auto publisher_key = std::move(publisher_keys.back());
+    ledger_->publisher()->FetchServerPublisherInfo(
+        publisher_key, [this, publisher_keys = std::move(publisher_keys)](
+                           type::ServerPublisherInfoPtr) mutable {
+          publisher_keys.pop_back();
+          FetchInfoForUnverifiedPublishers(std::move(publisher_keys));
+        });
+  } else {
+    ledger_->wallet()->FetchBalance(
+        std::bind(&Unverified::OnContributeUnverifiedBalance, this, _1, _2));
+  }
 }
 
 void Unverified::OnContributeUnverifiedBalance(
@@ -77,24 +90,14 @@ void Unverified::OnContributeUnverifiedPublishers(
       continue;
     }
 
-    bool process = false;
-    switch (item->processor) {
-      case type::ContributionProcessor::UPHOLD:
-        process = item->status == type::PublisherStatus::UPHOLD_VERIFIED;
-        break;
-      case type::ContributionProcessor::BITFLYER:
-        process = item->status == type::PublisherStatus::BITFLYER_VERIFIED;
-        break;
-      case type::ContributionProcessor::GEMINI:
-        process = item->status == type::PublisherStatus::GEMINI_VERIFIED;
-        break;
-      default:
-        process = item->status != type::PublisherStatus::NOT_VERIFIED &&
-                  item->status != type::PublisherStatus::CONNECTED;
-        break;
+    // If the publisher is still not verified,
+    // leave the contribution in the pending table.
+    if (item->status == type::PublisherStatus::NOT_VERIFIED ||
+        item->status == type::PublisherStatus::CONNECTED) {
+      continue;
     }
 
-    if (process && !current) {
+    if (!current) {
       current = item->Clone();
     }
   }

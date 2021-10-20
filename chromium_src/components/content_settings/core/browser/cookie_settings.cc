@@ -5,13 +5,36 @@
 
 #include "components/content_settings/core/browser/cookie_settings.h"
 
+#include "net/base/features.h"
 #include "net/base/url_util.h"
+
+// Determines whether a 3p cookies block should be applied if a requesting URL
+// uses an explicit 1PES setting (CONTENT_SETTING_SESSION_ONLY). By default
+// Chromimum allows all 3p cookies if applied CookieSettingsPatterns for the URL
+// were explicit. We use explicit setting to enable 1PES mode, but in this mode
+// we still want to block 3p frames as usual and not fallback to "allow
+// everything" path.
+#define BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL               \
+  if (!block && is_third_party_request) {                                 \
+    block = ShouldBlockThirdPartyIfSettingIsExplicit(                     \
+        ShouldBlockThirdPartyCookies(), setting, IsExplicitSetting(info), \
+        first_party_url.SchemeIs(extension_scheme_));                     \
+  }                                                                       \
+  /* Store patterns information to determine if Shields are disabled. */  \
+  if (auto* setting_with_brave_metadata =                                 \
+          cookie_setting_with_brave_metadata()) {                         \
+    setting_with_brave_metadata->primary_pattern_matches_all_hosts =      \
+        info.primary_pattern.MatchesAllHosts();                           \
+    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =    \
+        info.secondary_pattern.MatchesAllHosts();                         \
+  }
 
 #define ShutdownOnUIThread ShutdownOnUIThread_ChromiumImpl
 
 #include "../../../../../../components/content_settings/core/browser/cookie_settings.cc"
 
 #undef ShutdownOnUIThread
+#undef BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL
 
 namespace content_settings {
 
@@ -22,7 +45,7 @@ void CookieSettings::ShutdownOnUIThread() {
 
 bool CookieSettings::ShouldUseEphemeralStorage(
     const url::Origin& origin,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
     url::Origin& storage_origin) {
   const bool should_use = CookieSettingsBase::ShouldUseEphemeralStorage(
@@ -73,5 +96,3 @@ std::vector<url::Origin> CookieSettings::TakeEphemeralStorageOpaqueOrigins(
 }
 
 }  // namespace content_settings
-
-#undef BRAVE_COOKIE_SETTINGS_GET_COOKIES_SETTINGS_INTERNAL

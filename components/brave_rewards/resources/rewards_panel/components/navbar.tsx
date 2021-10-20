@@ -6,7 +6,7 @@ import * as React from 'react'
 
 import { LocaleContext } from '../../shared/lib/locale_context'
 
-import { SettingsIcon } from './icons/settings_icon'
+import { SettingsIcon } from '../../shared/components/icons/settings_icon'
 import { SummaryIcon } from './icons/summary_icon'
 import { TipIcon } from './icons/tip_icon'
 

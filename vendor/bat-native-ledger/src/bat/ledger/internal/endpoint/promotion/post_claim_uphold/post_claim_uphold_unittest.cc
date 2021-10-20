@@ -92,7 +92,8 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
 
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
-                    EXPECT_EQ(result, type::Result::TOO_MANY_RESULTS);
+                    EXPECT_EQ(result,
+                              type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
                     EXPECT_EQ(address, kExpectedAddress);
                   });
 }
@@ -128,7 +129,7 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
 
   claim_->Request(30.0, "address",
                   [](const type::Result result, const std::string& address) {
-                    EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
+                    EXPECT_EQ(result, type::Result::DEVICE_LIMIT_REACHED);
                     EXPECT_EQ(address, kExpectedAddress);
                   });
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import WelcomeIcon from '../../../assets/svg-icons/graphic-wallet-welcome-panel.svg'
+import WelcomeIcon from '../../../assets/svg-icons/onboarding/brave-wallet.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -29,14 +29,16 @@ export const Description = styled.span`
   color: ${(p) => p.theme.color.text02};
   max-width: 270px;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 35px;
   letter-spacing: 0.01em;
 `
 
 export const PageIcon = styled.div`
-  width: 222px;
-  height: 130px;
+  width: 200px;
+  height: 160px;
   background: url(${WelcomeIcon});
+  background-size: 100%;
+  background-repeat: no-repeat;
   margin-bottom: 20px;
 `
 

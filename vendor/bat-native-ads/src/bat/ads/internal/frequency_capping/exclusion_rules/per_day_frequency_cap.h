@@ -22,7 +22,7 @@ class PerDayFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   PerDayFrequencyCap(const PerDayFrequencyCap&) = delete;
   PerDayFrequencyCap& operator=(const PerDayFrequencyCap&) = delete;
 
-  bool ShouldExclude(const CreativeAdInfo& ad) override;
+  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
 
@@ -31,10 +31,11 @@ class PerDayFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   std::string last_message_;
 
-  bool DoesRespectCap(const AdEventList& ad_events, const CreativeAdInfo& ad);
+  bool DoesRespectCap(const AdEventList& ad_events,
+                      const CreativeAdInfo& creative_ad);
 
   AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& ad) const;
+                             const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

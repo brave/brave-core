@@ -7,19 +7,33 @@
 
 #include <utility>
 
+#include "base/bind.h"
+#include "base/environment.h"
+#include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
+
+// The domain name should be a-z | A-Z | 0-9 and hyphen(-).
+// The domain name should not start or end with hyphen (-).
+// The domain name can be a subdomain.
+// TLD & TLD-1 must be at least two characters.
+constexpr char kDomainPattern[] =
+    "(?:[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9]\\.)+[A-Za-z]{2,}$";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("eth_json_rpc_controller", R"(
@@ -54,7 +68,12 @@ EthJsonRpcController::EthJsonRpcController(
     : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
+  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
+             base::BindOnce([](bool success) {
+               if (!success)
+                 LOG(ERROR)
+                     << "Could not set netowrk from EthJsonRpcController()";
+             }));
 }
 
 EthJsonRpcController::~EthJsonRpcController() {}
@@ -79,9 +98,39 @@ void EthJsonRpcController::AddObserver(
 void EthJsonRpcController::Request(const std::string& json_payload,
                                    bool auto_retry_on_network_change,
                                    RequestCallback callback) {
-  api_request_helper_.Request("POST", network_url_, json_payload,
+  RequestInternal(json_payload, auto_retry_on_network_change, network_url_,
+                  std::move(callback));
+}
+
+void EthJsonRpcController::RequestInternal(const std::string& json_payload,
+                                           bool auto_retry_on_network_change,
+                                           const GURL& network_url,
+                                           RequestCallback callback) {
+  DCHECK(network_url.is_valid());
+
+  base::flat_map<std::string, std::string> request_headers;
+  std::string id, method, params;
+  if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
+    request_headers["X-Eth-Method"] = method;
+    if (method == kEthGetBlockByNumber) {
+      std::string cleaned_params;
+      base::RemoveChars(params, "\" []", &cleaned_params);
+      request_headers["X-eth-get-block"] = cleaned_params;
+    } else if (method == kEthBlockNumber) {
+      request_headers["X-Eth-Block"] = "true";
+    }
+  }
+
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  std::string brave_key(BRAVE_SERVICES_KEY);
+  if (env->HasVar("BRAVE_SERVICES_KEY")) {
+    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
+  }
+  request_headers["x-brave-key"] = brave_key;
+
+  api_request_helper_.Request("POST", network_url, json_payload,
                               "application/json", auto_retry_on_network_change,
-                              std::move(callback));
+                              std::move(callback), request_headers);
 }
 
 void EthJsonRpcController::FirePendingRequestCompleted(
@@ -146,14 +195,68 @@ void EthJsonRpcController::AddEthereumChainRequestCompleted(
   add_chain_pending_requests_.erase(chain_id);
 }
 
-void EthJsonRpcController::SetNetwork(const std::string& chain_id) {
+void EthJsonRpcController::SetNetwork(const std::string& chain_id,
+                                      SetNetworkCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
-  if (!network_url.is_valid())
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(false);
     return;
+  }
+
   chain_id_ = chain_id;
   network_url_ = network_url;
   prefs_->SetString(kBraveWalletCurrentChainId, chain_id);
+
   FireNetworkChanged();
+  MaybeUpdateIsEip1559(chain_id);
+  std::move(callback).Run(true);
+}
+
+void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {
+  // Only try to update is_eip1559 for localhost or custom chains.
+  auto chain = GetKnownChain(prefs_, chain_id);
+  if (chain && chain_id != brave_wallet::mojom::kLocalhostChainId)
+    return;
+
+  GetIsEip1559(base::BindOnce(&EthJsonRpcController::UpdateIsEip1559,
+                              weak_ptr_factory_.GetWeakPtr(), chain_id));
+}
+
+void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
+                                           bool success,
+                                           bool is_eip1559) {
+  if (!success)
+    return;
+
+  bool changed = false;
+  if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
+    changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
+    prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
+  } else {
+    ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    for (base::Value& custom_network : update.Get()->GetList()) {
+      if (!custom_network.is_dict())
+        continue;
+
+      const std::string* id = custom_network.FindStringKey("chainId");
+      if (!id || *id != chain_id)
+        continue;
+
+      changed = custom_network.FindBoolKey("is_eip1559").value_or(false) !=
+                is_eip1559;
+      custom_network.SetBoolKey("is_eip1559", is_eip1559);
+      // Break the loop cuz we don't expect multiple entries with the same
+      // chainId in the list.
+      break;
+    }
+  }
+
+  if (!changed)
+    return;
+
+  for (const auto& observer : observers_) {
+    observer->OnIsEip1559Changed(chain_id, is_eip1559);
+  }
 }
 
 void EthJsonRpcController::FireNetworkChanged() {
@@ -364,101 +467,26 @@ void EthJsonRpcController::OnGetERC20TokenBalance(
   std::move(callback).Run(true, result);
 }
 
-void EthJsonRpcController::EnsProxyReaderGetResolverAddress(
+void EthJsonRpcController::GetERC20TokenAllowance(
     const std::string& contract_address,
-    const std::string& domain,
-    UnstoppableDomainsProxyReaderGetManyCallback callback) {
+    const std::string& owner_address,
+    const std::string& spender_address,
+    EthJsonRpcController::GetERC20TokenAllowanceCallback callback) {
   std::string data;
-  if (!ens::GetResolverAddress(domain, &data)) {
-    std::move(callback).Run(false, "");
-  }
-
-  auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::OnEnsProxyReaderGetResolverAddress,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback), domain);
-  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
-          std::move(internal_callback));
-}
-
-void EthJsonRpcController::OnEnsProxyReaderGetResolverAddress(
-    UnstoppableDomainsProxyReaderGetManyCallback callback,
-    const std::string& domain,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  DCHECK(callback);
-  if (status < 200 || status > 299) {
+  if (!erc20::Allowance(owner_address, spender_address, &data)) {
     std::move(callback).Run(false, "");
     return;
-  }
-  std::string result;
-  if (!ParseEthCall(body, &result) || result.empty()) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-  size_t offset = 2 /* len of "0x" */ + 24 /* len of offset to array */;
-  if (offset >= result.size()) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-  std::string contenthash = "0x" + result.substr(offset);
-  EnsProxyReaderResolveAddress(contenthash, domain, std::move(callback));
-}
-
-bool EthJsonRpcController::EnsProxyReaderResolveAddress(
-    const std::string& contract_address,
-    const std::string& domain,
-    UnstoppableDomainsProxyReaderGetManyCallback callback) {
-  std::string data;
-  if (!ens::GetContentHashAddress(domain, &data)) {
-    return false;
   }
 
   auto internal_callback =
-      base::BindOnce(&EthJsonRpcController::OnEnsProxyReaderResolveAddress,
-                     base::Unretained(this), std::move(callback));
-  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
-          std::move(internal_callback));
-  return true;
-}
-
-void EthJsonRpcController::OnEnsProxyReaderResolveAddress(
-    UnstoppableDomainsProxyReaderGetManyCallback callback,
-    int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  DCHECK(callback);
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-  std::string result;
-  if (!ParseEthCall(body, &result)) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-  std::move(callback).Run(true, result);
-}
-
-void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
-    const std::string& contract_address,
-    const std::string& domain,
-    const std::vector<std::string>& keys,
-    UnstoppableDomainsProxyReaderGetManyCallback callback) {
-  std::string data;
-  if (!unstoppable_domains::GetMany(keys, domain, &data)) {
-    std::move(callback).Run(false, "");
-  }
-
-  auto internal_callback = base::BindOnce(
-      &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
-      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+      base::BindOnce(&EthJsonRpcController::OnGetERC20TokenAllowance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
           std::move(internal_callback));
 }
 
-void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
-    UnstoppableDomainsProxyReaderGetManyCallback callback,
+void EthJsonRpcController::OnGetERC20TokenAllowance(
+    GetERC20TokenAllowanceCallback callback,
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
@@ -472,6 +500,271 @@ void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
     return;
   }
   std::move(callback).Run(true, result);
+}
+
+void EthJsonRpcController::EnsRegistryGetResolver(
+    const std::string& chain_id,
+    const std::string& domain,
+    StringResultCallback callback) {
+  const std::string contract_address = GetEnsRegistryContractAddress(chain_id);
+  if (contract_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!ens::Resolver(domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  GURL network_url = GetNetworkURL(prefs_, chain_id);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsRegistryGetResolver,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth_call("", contract_address, "", "", "", data, "latest"),
+                  true, network_url, std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnEnsRegistryGetResolver(
+    StringResultCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  DCHECK(callback);
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string resolver_address;
+  if (!ParseAddressResult(body, &resolver_address) ||
+      resolver_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, resolver_address);
+}
+
+void EthJsonRpcController::EnsResolverGetContentHash(
+    const std::string& chain_id,
+    const std::string& domain,
+    StringResultCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::ContinueEnsResolverGetContentHash,
+      weak_ptr_factory_.GetWeakPtr(), chain_id, domain, std::move(callback));
+  EnsRegistryGetResolver(chain_id, domain, std::move(internal_callback));
+}
+
+void EthJsonRpcController::ContinueEnsResolverGetContentHash(
+    const std::string& chain_id,
+    const std::string& domain,
+    StringResultCallback callback,
+    bool success,
+    const std::string& resolver_address) {
+  if (!success || resolver_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!ens::ContentHash(domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  GURL network_url = GetNetworkURL(prefs_, chain_id);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsResolverGetContentHash,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth_call("", resolver_address, "", "", "", data, "latest"),
+                  true, network_url, std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnEnsResolverGetContentHash(
+    StringResultCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  DCHECK(callback);
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string content_hash;
+  if (!ParseEnsResolverContentHash(body, &content_hash) ||
+      content_hash.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, content_hash);
+}
+
+void EthJsonRpcController::EnsGetEthAddr(const std::string& domain,
+                                         EnsGetEthAddrCallback callback) {
+  if (!IsValidDomain(domain)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::ContinueEnsGetEthAddr,
+      weak_ptr_factory_.GetWeakPtr(), domain, std::move(callback));
+  EnsRegistryGetResolver(chain_id_, domain, std::move(internal_callback));
+}
+
+void EthJsonRpcController::ContinueEnsGetEthAddr(
+    const std::string& domain,
+    StringResultCallback callback,
+    bool success,
+    const std::string& resolver_address) {
+  if (!success || resolver_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!ens::Addr(domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnEnsGetEthAddr,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", resolver_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnEnsGetEthAddr(
+    StringResultCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  DCHECK(callback);
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseAddressResult(body, &address) || address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
+}
+
+void EthJsonRpcController::UnstoppableDomainsProxyReaderGetMany(
+    const std::string& chain_id,
+    const std::string& domain,
+    const std::vector<std::string>& keys,
+    UnstoppableDomainsProxyReaderGetManyCallback callback) {
+  const std::string contract_address =
+      GetUnstoppableDomainsProxyReaderContractAddress(chain_id);
+  if (contract_address.empty()) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  std::string data;
+  if (!unstoppable_domains::GetMany(keys, domain, &data)) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  GURL network_url = GetNetworkURL(prefs_, chain_id);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(eth_call("", contract_address, "", "", "", data, "latest"),
+                  true, network_url, std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnUnstoppableDomainsProxyReaderGetMany(
+    UnstoppableDomainsProxyReaderGetManyCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  std::vector<std::string> values;
+  if (!ParseUnstoppableDomainsProxyReaderGetMany(body, &values)) {
+    std::move(callback).Run(false, std::vector<std::string>());
+    return;
+  }
+
+  std::move(callback).Run(true, values);
+}
+
+void EthJsonRpcController::UnstoppableDomainsGetEthAddr(
+    const std::string& domain,
+    UnstoppableDomainsGetEthAddrCallback callback) {
+  if (!IsValidDomain(domain)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  const std::string contract_address =
+      GetUnstoppableDomainsProxyReaderContractAddress(chain_id_);
+  if (contract_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!unstoppable_domains::Get(kCryptoEthAddressKey, domain, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnUnstoppableDomainsGetEthAddr,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnUnstoppableDomainsGetEthAddr(
+    UnstoppableDomainsGetEthAddrCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseUnstoppableDomainsProxyReaderGet(body, &address) ||
+      address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
 }
 
 GURL EthJsonRpcController::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
@@ -544,6 +837,112 @@ void EthJsonRpcController::OnGetGasPrice(
   }
 
   std::move(callback).Run(true, result);
+}
+
+void EthJsonRpcController::GetIsEip1559(GetIsEip1559Callback callback) {
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetIsEip1559,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(eth_getBlockByNumber("latest", false), true,
+                 std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetIsEip1559(
+    GetIsEip1559Callback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  base::Value result;
+  if (!ParseResult(body, &result) || !result.is_dict()) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  const std::string* base_fee = result.FindStringKey("baseFeePerGas");
+  std::move(callback).Run(true, base_fee && !base_fee->empty());
+}
+
+bool EthJsonRpcController::IsValidDomain(const std::string& domain) {
+  static const base::NoDestructor<re2::RE2> kDomainRegex(kDomainPattern);
+  return re2::RE2::FullMatch(domain, kDomainPattern);
+}
+
+void EthJsonRpcController::GetERC721OwnerOf(const std::string& contract,
+                                            const std::string& token_id,
+                                            GetERC721OwnerOfCallback callback) {
+  uint256_t token_id_uint = 0;
+  if (!HexValueToUint256(token_id, &token_id_uint)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string data;
+  if (!erc721::OwnerOf(token_id_uint, &data)) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetERC721OwnerOf,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetERC721OwnerOf(
+    GetERC721OwnerOfCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::string address;
+  if (!ParseAddressResult(body, &address) || address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, address);
+}
+
+void EthJsonRpcController::GetERC721TokenBalance(
+    const std::string& contract_address,
+    const std::string& token_id,
+    const std::string& account_address,
+    GetERC721TokenBalanceCallback callback) {
+  const auto eth_account_address = EthAddress::FromHex(account_address);
+  if (eth_account_address.IsEmpty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &EthJsonRpcController::ContinueGetERC721TokenBalance,
+      weak_ptr_factory_.GetWeakPtr(), eth_account_address.ToChecksumAddress(),
+      std::move(callback));
+  GetERC721OwnerOf(contract_address, token_id, std::move(internal_callback));
+}
+
+void EthJsonRpcController::ContinueGetERC721TokenBalance(
+    const std::string& account_address,
+    GetERC721TokenBalanceCallback callback,
+    bool success,
+    const std::string& owner_address) {
+  if (!success || owner_address.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  bool is_owner = owner_address == account_address;
+  std::move(callback).Run(true, is_owner ? "0x1" : "0x0");
 }
 
 }  // namespace brave_wallet

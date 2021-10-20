@@ -59,7 +59,7 @@ GURL AppendLocalPort(const std::string& port) {
 // go-ipfs_v0.9.0-rc1_windows-amd64 - valid
 // go-ipfs_v0.9.0_windows-amd64 - valid
 constexpr char kExecutableRegEx[] =
-    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-amd64";
+    "go-ipfs_v(\\d+\\.\\d+\\.\\d+)(-rc\\d+)?\\_\\w+-\\w+";
 
 // Valid CID multibase prefix, "code" character
 // from https://github.com/multiformats/multibase/blob/master/multibase.csv

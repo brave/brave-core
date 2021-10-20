@@ -31,6 +31,8 @@ const char kWidevineOptedIn[] = "brave.widevine_opted_in";
 const char kAskWidevineInstall[] = "brave.ask_widevine_install";
 const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
+const char kShowAlternativeSearchEngineProviderToggle[] =
+    "brave.show_alternate_private_search_engine_toggle";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
@@ -90,6 +92,8 @@ const char kDefaultBrowserPromptEnabled[] =
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 const char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
+const char kDontAskEnableWebDiscovery[] = "brave.dont_ask_enable_web_discovery";
+const char kBraveSearchVisitCount[] = "brave.brave_search_visit_count";
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -100,6 +104,8 @@ const char kImportDialogPayments[] = "import_dialog_payments";
 const char kMRUCyclingEnabled[] = "brave.mru_cycling_enabled";
 const char kTabsSearchShow[] = "brave.tabs_search_show";
 const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
+const char kEnableMediaRouterOnRestart[] =
+    "brave.enable_media_router_on_restart";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";

@@ -56,7 +56,6 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      PrefService* local_state = nullptr);
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                             const GURL& url);
-bool ShouldDoCosmeticFiltering(HostContentSettingsMap* map, const GURL& url);
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
                                           const GURL& url);
 

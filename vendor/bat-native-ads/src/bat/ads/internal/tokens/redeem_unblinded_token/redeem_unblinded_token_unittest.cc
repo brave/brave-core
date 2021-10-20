@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
@@ -57,12 +58,9 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
   }
 
   ConfirmationInfo GetConfirmationInfo() {
-    ConfirmationInfo confirmation;
-    confirmation.id = "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91";
-
-    confirmation.creative_instance_id = "70829d71-ce2e-4483-a4c0-e1e2bee96520";
-
-    confirmation.type = ConfirmationType::kViewed;
+    ConfirmationInfo confirmation = BuildConfirmation(
+        "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
+        "70829d71-ce2e-4483-a4c0-e1e2bee96520", ConfirmationType::kViewed);
 
     if (!get_unblinded_tokens()->IsEmpty()) {
       const privacy::UnblindedTokenInfo unblinded_token =

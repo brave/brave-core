@@ -392,6 +392,9 @@ Config.prototype.buildArgs = function () {
     // Fixes WebRTC IP leak with default option
     args.enable_mdns = true
 
+    // We want it to be enabled for all configurations
+    args.disable_android_lint = false
+
     // These do not exist on android
     // TODO - recheck
     delete args.enable_nacl
@@ -412,6 +415,7 @@ Config.prototype.buildArgs = function () {
     args.enable_stripping = !this.isDebug()
     args.use_xcode_clang = false
     args.use_clang_coverage = false
+    args.use_lld = false
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
@@ -429,6 +433,13 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_widget_kit_extension = false
 
     args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
+
+    args.ios_locales_pack_extra_source_patterns = [
+      "%root_gen_dir%/components/brave_components_strings_",
+    ]
+    args.ios_locales_pack_extra_deps = [
+      "//brave/components/resources:strings",
+    ]
 
     delete args.safebrowsing_api_endpoint
     delete args.safe_browsing_mode
@@ -814,6 +825,10 @@ Config.prototype.update = function (options) {
       opts.push(`-${key}`)
       opts.push(value)
     })
+  }
+
+  if (options.target) {
+    this.buildTarget = options.target
   }
 }
 

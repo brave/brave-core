@@ -11,8 +11,6 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"
 
 namespace base {
@@ -31,7 +29,6 @@ namespace speedreader {
 class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
  public:
   // SpeedreaderComponent::Observer
-  void OnWhitelistReady(const base::FilePath& path) override;
   void OnStylesheetReady(const base::FilePath& path) override;
 
   explicit SpeedreaderRewriterService(
@@ -43,19 +40,12 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
       delete;
 
   // The API
-  bool IsWhitelisted(const GURL& url);
+  bool URLLooksReadable(const GURL& url);
   std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
   const std::string& GetContentStylesheet();
 
  private:
-  using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
-
-  void OnLoadDATFileData(GetDATFileDataResult result);
   void OnLoadStylesheet(std::string stylesheet);
-
-  // Default backend is an Arc90 implementation.
-  RewriterType backend_ = RewriterType::RewriterReadability;
 
   std::string content_stylesheet_;
   std::unique_ptr<speedreader::SpeedreaderComponent> component_;

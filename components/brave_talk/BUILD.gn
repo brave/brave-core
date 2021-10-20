@@ -1,8 +1,0 @@
-source_set("brave_talk") {
-  sources = [
-    "features.cc",
-    "features.h",
-  ]
-
-  deps = [ "//base" ]
-}

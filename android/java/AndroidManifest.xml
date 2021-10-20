@@ -77,6 +77,11 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountPrivateKeyActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
 <activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailsWithQrActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:screenOrientation="sensorPortrait"
@@ -132,7 +137,7 @@
 </activity>
 
 <activity android:name="com.android.billingclient.api.ProxyBillingActivity"
-    android:theme="@style/Theme.Chromium.Activity.Fullscreen.Transparent"
+    android:theme="@style/BraveProxyBillingActivityTheme"
     android:exported="false"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

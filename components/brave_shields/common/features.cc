@@ -44,5 +44,8 @@ const base::Feature kBraveExtensionNetworkBlocking{
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 const base::Feature kBraveDarkModeBlock{"BraveDarkModeBlock",
                                         base::FEATURE_ENABLED_BY_DEFAULT};
+// load the cosmetic filter rules using sync ipc
+const base::Feature kCosmeticFilteringSyncLoad{
+    "CosmeticFilterSyncLoad", base::FEATURE_ENABLED_BY_DEFAULT};
 }  // namespace features
 }  // namespace brave_shields

@@ -14,6 +14,7 @@ import * as Cr from 'chrome://resources/js/cr.m'
 
 export type PrivateTabData = {
   useAlternativePrivateSearchEngine: boolean
+  showAlternativePrivateSearchEngineToggle: boolean
 }
 
 type PrivateTabDataUpdatedHandler = (data: PrivateTabData) => void

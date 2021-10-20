@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
+import { AssetIconProps, AssetIconFactory } from '../../../shared/style'
 
 interface StyleProps {
-  icon: string
   isDown: boolean
 }
 
@@ -12,7 +12,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `
 
 export const TopRow = styled.div`
@@ -105,13 +105,15 @@ export const DetailText = styled.span`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const AssetIcon = styled.div<Partial<StyleProps>>`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background: no-repeat ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01}};
-  margin-right: 12px;
-`
+// Construct styled-component using JS object instead of string, for editor
+// support with custom AssetIconFactory.
+//
+// Ref: https://styled-components.com/docs/advanced#style-objects
+export const AssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: '40px',
+  marginRight: '12px'
+})
 
 export const SubDivider = styled.div`
   width: 100%;

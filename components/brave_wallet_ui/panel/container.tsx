@@ -14,7 +14,8 @@ import {
   SignPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel,
-  ConnectHardwareWalletPanel
+  ConnectHardwareWalletPanel,
+  SitePermissions
 } from '../components/extension'
 import {
   Send,
@@ -30,7 +31,7 @@ import {
   ScrollContainer,
   StyledExtensionWrapper,
   SelectContainer,
-  SignContainer,
+  LongWrapper,
   ConnectWithSiteWrapper
 } from '../stories/style'
 import { SendWrapper, PanelWrapper } from './style'
@@ -48,16 +49,17 @@ import {
   BuySendSwapViewTypes,
   AccountAssetOptionType,
   EthereumChain,
-  ToOrFromType
+  ToOrFromType,
+  WalletOrigin
 } from '../constants/types'
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
-
-import { formatBalance, toWeiHex } from '../utils/format-balances'
-import { useAssets, useSwap } from '../common/hooks'
+import { getERC20Allowance, findENSAddress, findUnstoppableDomainAddress } from '../common/async/wallet_async_handler'
+import { formatBalance } from '../utils/format-balances'
+import { useAssets, useBalance, useSwap, useSend } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -92,15 +94,21 @@ function Container (props: Props) {
     hasInitialized,
     isWalletCreated,
     networkList,
-    transactionSpotPrices
+    transactionSpotPrices,
+    gasEstimates,
+    connectedAccounts,
+    activeOrigin,
+    pendingTransactions
   } = props.wallet
 
   const {
-    connectedSiteOrigin,
+    connectToSiteOrigin,
     panelTitle,
     selectedPanel,
     networkPayload,
-    swapQuote
+    swapQuote,
+    swapError,
+    signMessageData
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -109,11 +117,8 @@ function Container (props: Props) {
   // that loading indicator ASAP.
   const [selectedAccounts, setSelectedAccounts] = React.useState<WalletAccountType[]>([])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
-  const [toAddress, setToAddress] = React.useState('')
-  const [sendAmount, setSendAmount] = React.useState('')
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
@@ -131,9 +136,11 @@ function Container (props: Props) {
     orderExpiration,
     orderType,
     slippageTolerance,
+    swapValidationError,
     swapToOrFrom,
     toAmount,
     toAsset,
+    customSlippageTolerance,
     setFromAsset,
     setSwapToOrFrom,
     onToggleOrderType,
@@ -144,14 +151,44 @@ function Container (props: Props) {
     onSelectSlippageTolerance,
     onSwapInputChange,
     onFilterAssetList,
-    onSelectTransactAsset
+    onSelectTransactAsset,
+    onCustomSlippageToleranceChange
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    props.walletPanelActions.fetchPanelSwapQuote,
     assetOptions,
-    swapQuote
+    props.walletPanelActions.fetchPanelSwapQuote,
+    getERC20Allowance,
+    props.walletActions.approveERC20Allowance,
+    swapQuote,
+    swapError
   )
+
+  const {
+    onSetSendAmount,
+    onSetToAddressOrUrl,
+    onSubmitSend,
+    sendAmount,
+    toAddressOrUrl,
+    toAddress,
+    addressError
+  } = useSend(
+    findENSAddress,
+    findUnstoppableDomainAddress,
+    selectedAccount,
+    fromAsset,
+    props.walletActions.sendERC20Transfer,
+    props.walletActions.sendTransaction,
+    props.walletActions.sendERC721TransferFrom
+  )
+
+  React.useMemo(() => {
+    setSelectedAccounts([selectedAccount])
+  }, [selectedAccount])
+
+  const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
+  const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -202,43 +239,16 @@ function Container (props: Props) {
 
   const onInputChange = (value: string, name: string) => {
     if (name === 'address') {
-      setToAddress(value)
+      onSetToAddressOrUrl(value)
     } else {
-      setSendAmount(value)
+      onSetSendAmount(value)
     }
   }
-
-  const getAssetBalance = React.useCallback((asset: AccountAssetOptionType) => {
-    if (!selectedAccount || !selectedAccount.tokens) {
-      return '0'
-    }
-    const token = selectedAccount.tokens.find((token) => token.asset.symbol === asset.asset.symbol)
-    return token ? formatBalance(token.assetBalance, token.asset.decimals) : '0'
-  }, [accounts, selectedAccount])
 
   const onSelectPresetSendAmount = (percent: number) => {
     const amount = Number(fromAsset.assetBalance) * percent
     const formatedAmmount = formatBalance(amount.toString(), fromAsset.asset.decimals)
-    setSendAmount(formatedAmmount)
-  }
-
-  const onSubmitSend = () => {
-    fromAsset.asset.isErc20 && props.walletActions.sendERC20Transfer({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
-      contractAddress: fromAsset.asset.contractAddress
-    })
-
-    !fromAsset.asset.isErc20 && props.walletActions.sendTransaction({
-      from: selectedAccount.address,
-      to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
-    })
-  }
-
-  const toggleConnected = () => {
-    setWalletConnected(!walletConnected)
+    onSetSendAmount(formatedAmmount)
   }
 
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
@@ -256,7 +266,7 @@ function Container (props: Props) {
   const onSubmit = () => {
     props.walletPanelActions.connectToSite({
       selectedAccounts,
-      siteToConnectTo: connectedSiteOrigin
+      siteToConnectTo: connectToSiteOrigin
     })
   }
   const primaryAction = () => {
@@ -274,7 +284,7 @@ function Container (props: Props) {
     } else {
       props.walletPanelActions.cancelConnectToSite({
         selectedAccounts,
-        siteToConnectTo: props.panel.connectedSiteOrigin
+        siteToConnectTo: props.panel.connectToSiteOrigin
       })
       setSelectedAccounts([])
       setReadyToConnect(false)
@@ -320,7 +330,7 @@ function Container (props: Props) {
   }
 
   const filterList = (event: any) => {
-    filterAppList(event, AppsList, setFilteredAppsList)
+    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const onSelectAccount = (account: WalletAccountType) => () => {
@@ -338,11 +348,17 @@ function Container (props: Props) {
   }
 
   const onCancelSigning = () => {
-    // Logic here to cancel signing
+    props.walletPanelActions.signMessageProcessed({
+      approved: false,
+      id: signMessageData.id
+    })
   }
 
   const onSignData = () => {
-    // Logic here to sign a transaction
+    props.walletPanelActions.signMessageProcessed({
+      approved: true,
+      id: signMessageData.id
+    })
   }
 
   const onApproveAddNetwork = () => {
@@ -365,6 +381,14 @@ function Container (props: Props) {
     }
   }
 
+  const onRejectAllTransactions = () => {
+    props.walletActions.rejectAllTransactions()
+  }
+
+  const onQueueNextTransction = () => {
+    props.walletActions.queueNextTransaction()
+  }
+
   const onConfirmTransaction = () => {
     if (selectedPendingTransaction) {
       props.walletActions.approveTransaction(selectedPendingTransaction)
@@ -379,16 +403,32 @@ function Container (props: Props) {
     // Logic here to cancel connecting your hardware wallet
   }
 
+  const removeSitePermission = (origin: string, address: string) => {
+    props.walletActions.removeSitePermission({ origin: origin, account: address })
+  }
+
+  const onAddAccount = () => {
+    props.walletPanelActions.expandWalletAccounts()
+  }
+
+  const isConnectedToSite = React.useMemo((): boolean => {
+    if (activeOrigin === WalletOrigin) {
+      return true
+    } else {
+      return connectedAccounts.some(account => account.address === selectedAccount.address)
+    }
+  }, [connectedAccounts, selectedAccount, activeOrigin])
+
   if (!hasInitialized || !accounts) {
     return null
   }
 
   if (!isWalletCreated) {
     return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
           <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
-        </StyledExtensionWrapper>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -412,17 +452,24 @@ function Container (props: Props) {
   if (selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <ConfirmTransactionPanel
             onConfirm={onConfirmTransaction}
             onReject={onRejectTransaction}
+            onRejectAllTransactions={onRejectAllTransactions}
+            onQueueNextTransction={onQueueNextTransction}
+            transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
+            transactionsQueueLength={pendingTransactions.length}
             accounts={accounts}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokenOptions}
+            refreshGasEstimates={props.walletActions.refreshGasEstimates}
+            updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
+            gasEstimates={gasEstimates}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -446,14 +493,14 @@ function Container (props: Props) {
   if (selectedPanel === 'addEthereumChain') {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <AllowAddNetworkPanel
             onApprove={onApproveAddNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
             networkPayload={networkPayload}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -461,17 +508,17 @@ function Container (props: Props) {
   if (selectedPanel === 'signData') {
     return (
       <PanelWrapper isLonger={true}>
-        <SignContainer>
+        <LongWrapper>
           <SignPanel
-            message='Pass Sign Transaction Message Here'
+            message={signMessageData.message}
             onCancel={onCancelSigning}
             onSign={onSignData}
             selectedAccount={selectedAccount}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             // Pass a boolean here if the signing method is risky
-            showWarning={true}
+            showWarning={false}
           />
-        </SignContainer>
+        </LongWrapper>
       </PanelWrapper>
     )
   }
@@ -520,6 +567,8 @@ function Container (props: Props) {
             accounts={accounts}
             onBack={onReturnToMain}
             onSelectAccount={onSelectAccount}
+            onAddAccount={onAddAccount}
+            hasAddButton={true}
           />
         </SelectContainer>
       </PanelWrapper>
@@ -559,7 +608,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <ConnectWithSiteWrapper>
           <ConnectWithSite
-            siteURL={connectedSiteOrigin}
+            siteURL={connectToSiteOrigin}
             isReady={readyToConnect}
             accounts={accountsToConnect}
             primaryAction={primaryAction}
@@ -590,7 +639,9 @@ function Container (props: Props) {
                 onSubmit={onSubmitSend}
                 selectedAsset={fromAsset}
                 selectedAssetAmount={sendAmount}
-                selectedAssetBalance={getAssetBalance(fromAsset)}
+                selectedAssetBalance={fromAssetBalance}
+                addressError={addressError}
+                toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
               />
             </SendWrapper>
@@ -628,41 +679,64 @@ function Container (props: Props) {
 
   if (selectedPanel === 'swap') {
     return (
-        <PanelWrapper isLonger={false}>
-          <StyledExtensionWrapper>
-            <Panel
-                navAction={navigateTo}
-                title={panelTitle}
-                useSearch={false}
-            >
-              <SendWrapper>
-                <Swap
-                  fromAsset={fromAsset}
-                  toAsset={toAsset}
-                  fromAmount={fromAmount}
-                  toAmount={toAmount}
-                  exchangeRate={exchangeRate}
-                  orderType={orderType}
-                  orderExpiration={orderExpiration}
-                  slippageTolerance={slippageTolerance}
-                  isSubmitDisabled={isSwapButtonDisabled}
-                  fromAssetBalance={getAssetBalance(fromAsset)}
-                  toAssetBalance={getAssetBalance(toAsset)}
-                  onToggleOrderType={onToggleOrderType}
-                  onSelectExpiration={onSelectExpiration}
-                  onSelectSlippageTolerance={onSelectSlippageTolerance}
-                  onFlipAssets={flipSwapAssets}
-                  onSubmitSwap={onSubmitSwap}
-                  onQuoteRefresh={onSwapQuoteRefresh}
-                  onSelectPresetAmount={onSelectPresetSendAmount}
-                  onInputChange={onSwapInputChange}
-                  onFilterAssetList={onFilterAssetList}
-                  onChangeSwapView={onChangeSwapView}
-                />
-              </SendWrapper>
-            </Panel>
-          </StyledExtensionWrapper>
-        </PanelWrapper>
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <SendWrapper>
+              <Swap
+                fromAsset={fromAsset}
+                toAsset={toAsset}
+                fromAmount={fromAmount}
+                toAmount={toAmount}
+                exchangeRate={exchangeRate}
+                orderType={orderType}
+                orderExpiration={orderExpiration}
+                slippageTolerance={slippageTolerance}
+                isSubmitDisabled={isSwapButtonDisabled}
+                validationError={swapValidationError}
+                fromAssetBalance={fromAssetBalance}
+                toAssetBalance={toAssetBalance}
+                customSlippageTolerance={customSlippageTolerance}
+                onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
+                onToggleOrderType={onToggleOrderType}
+                onSelectExpiration={onSelectExpiration}
+                onSelectSlippageTolerance={onSelectSlippageTolerance}
+                onFlipAssets={flipSwapAssets}
+                onSubmitSwap={onSubmitSwap}
+                onQuoteRefresh={onSwapQuoteRefresh}
+                onSelectPresetAmount={onSelectPresetSendAmount}
+                onInputChange={onSwapInputChange}
+                onFilterAssetList={onFilterAssetList}
+                onChangeSwapView={onChangeSwapView}
+              />
+            </SendWrapper>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'sitePermissions') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <SitePermissions
+              connectedAccounts={connectedAccounts}
+              onDisconnect={removeSitePermission}
+              siteURL={activeOrigin}
+            />
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
     )
   }
 
@@ -671,11 +745,11 @@ function Container (props: Props) {
       <ConnectedPanel
         selectedAccount={selectedAccount}
         selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
-        isConnected={walletConnected}
-        connectAction={toggleConnected}
+        isConnected={isConnectedToSite}
         navAction={navigateTo}
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
+        activeOrigin={activeOrigin}
       />
     </PanelWrapper>
   )

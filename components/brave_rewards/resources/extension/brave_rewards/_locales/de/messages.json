@@ -19,6 +19,26 @@
     "message": "Status aktualisieren",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Jedes Trinkgeld, das Sie vergeben, bleibt in Ihrer Wallet ausstehend und der Vorgang wird 90 Tage lang automatisch erneut versucht. $link_begin$Mehr erfahren$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Dieser Urheber ist noch nicht registriert.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Dieser Urheber ist derzeit nicht so konfiguriert, dass er Trinkgelder aus Ihrer Wallet erhalten kann.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ auf $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "Eingang von $amount$ in $days$",
+    "message": "$amount$ Auszahlung beginnt in $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Schließen",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Mit Brave Rewards verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Rewards aktivieren",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Durch Klicken stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu. In den Einstellungen können Sie dies jederzeit widerrufen.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads aktivieren",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Durch das Aktivieren von Anzeigen stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Sie können jetzt einen kostenlosen Anruf starten",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klicken Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Möchten Sie mehr über Brave Rewards erfahren? $tour_link_begin$Machen Sie eine kurze Tour$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

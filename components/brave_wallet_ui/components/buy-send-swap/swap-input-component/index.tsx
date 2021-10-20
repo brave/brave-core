@@ -1,9 +1,18 @@
 import * as React from 'react'
-import { AccountAssetOptionType, OrderTypes, SlippagePresetObjectType, ExpirationPresetObjectType } from '../../../constants/types'
+import {
+  AccountAssetOptionType,
+  OrderTypes,
+  SlippagePresetObjectType,
+  ExpirationPresetObjectType,
+  SwapValidationErrorType,
+  AmountPresetTypes
+} from '../../../constants/types'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
-import locale from '../../../constants/locale'
+import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import { getLocale } from '../../../../common/locale'
+import { reduceAddress } from '../../../utils/reduce-address'
 
 // Styled Components
 import {
@@ -21,7 +30,10 @@ import {
   Input,
   Row,
   PasteIcon,
-  PasteButton
+  PasteButton,
+  SlippageInput,
+  WarningText,
+  AddressConfirmationText
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
@@ -39,11 +51,16 @@ export interface Props {
   selectedAssetBalance?: string
   selectedAsset?: AccountAssetOptionType
   selectedAssetInputAmount?: string
+  addressError?: string
+  toAddressOrUrl?: string
   toAddress?: string
   inputName?: string
   orderType?: OrderTypes
   slippageTolerance?: SlippagePresetObjectType
   orderExpiration?: ExpirationPresetObjectType
+  validationError?: SwapValidationErrorType
+  customSlippageTolerance?: string
+  onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
   onSelectSlippageTolerance?: (slippage: SlippagePresetObjectType) => void
@@ -61,10 +78,15 @@ function SwapInputComponent (props: Props) {
     componentType,
     selectedAssetInputAmount,
     inputName,
+    addressError,
+    toAddressOrUrl,
     toAddress,
     orderType,
     slippageTolerance,
     orderExpiration,
+    validationError,
+    customSlippageTolerance,
+    onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
     onRefresh,
@@ -75,6 +97,8 @@ function SwapInputComponent (props: Props) {
   } = props
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
+  const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
+  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
@@ -101,8 +125,9 @@ function SwapInputComponent (props: Props) {
     }
   }
 
-  const setPresetAmmountValue = (percent: number) => () => {
+  const setPresetAmountValue = (percent: AmountPresetTypes) => () => {
     if (onSelectPresetAmount) {
+      setSelectedPreset(percent)
       onSelectPresetAmount(percent)
     }
   }
@@ -110,29 +135,29 @@ function SwapInputComponent (props: Props) {
   const getTitle = () => {
     switch (componentType) {
       case 'fromAmount':
-        return locale.swapFrom
+        return getLocale('braveWalletSwapFrom')
       case 'toAmount':
         if (orderType === 'market') {
-          return `${locale.swapTo} (${locale.swapEstimate})`
+          return `${getLocale('braveWalletSwapTo')} (${getLocale('braveWalletSwapEstimate')})`
         } else {
-          return locale.swapTo
+          return getLocale('braveWalletSwapTo')
         }
       case 'buyAmount':
-        return locale.buy
+        return getLocale('braveWalletBuy')
       case 'exchange':
         if (orderType === 'market') {
-          return `${locale.swapMarket} ${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapMarket')} ${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
         } else {
-          return `${locale.swapPriceIn} ${selectedAsset?.asset.symbol}`
+          return `${getLocale('braveWalletSwapPriceIn')} ${selectedAsset?.asset.symbol}`
         }
       case 'selector':
         if (orderType === 'market') {
-          return 'Slippage tolerance'
+          return getLocale('braveWalletSlippageToleranceTitle')
         } else {
-          return 'Expires in'
+          return getLocale('braveWalletExpiresInTitle')
         }
       case 'toAddress':
-        return locale.swapTo
+        return getLocale('braveWalletSwapTo')
     }
   }
 
@@ -142,9 +167,41 @@ function SwapInputComponent (props: Props) {
     }
   }
 
+  React.useMemo(() => {
+    // Show Warning if slippage is to high
+    if (Number(customSlippageTolerance) >= 6) {
+      setShowSlippageWarning(true)
+      return
+    }
+    setShowSlippageWarning(false)
+  }, [customSlippageTolerance])
+
+  const handleCustomSlippageToleranceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onCustomSlippageToleranceChange) {
+      // This will only formate to only allow Numbers and remove multiple . decimals
+      const value = event.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
+      // Sets the value to not go higher than 100
+      if (Number(value) > 100) {
+        onCustomSlippageToleranceChange('100')
+        return
+      }
+      // Prevents double 00 before decimal place and formats to 0. if value starts with .
+      if (value === '00' || value === '.') {
+        onCustomSlippageToleranceChange('0.')
+        return
+      }
+      onCustomSlippageToleranceChange(value)
+    }
+  }
+
   const resetAnimation = () => {
     setSpin(0)
   }
+
+  const fromAmountHasErrors = validationError && (
+    validationError === 'insufficientBalance' ||
+    validationError === 'insufficientEthBalance'
+  )
 
   return (
     <BubbleContainer>
@@ -159,7 +216,7 @@ function SwapInputComponent (props: Props) {
             */}
 
             {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-              <FromBalanceText>{locale.balance}: {selectedAssetBalance}</FromBalanceText>
+              <FromBalanceText>{getLocale('braveWalletBalance')}: {formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')}</FromBalanceText>
             }
             {componentType === 'toAddress' &&
               <PasteButton onClick={onPaste}>
@@ -174,12 +231,12 @@ function SwapInputComponent (props: Props) {
             <Input
               componentType={componentType}
               type={componentType === 'toAddress' ? 'text' : 'number'}
-              placeholder={componentType === 'toAddress' ? '0x address or url' : '0'}
-              value={componentType === 'toAddress' ? toAddress : selectedAssetInputAmount}
+              placeholder={componentType === 'toAddress' ? getLocale('braveWalletSendPlaceholder') : '0'}
+              value={componentType === 'toAddress' ? toAddressOrUrl : selectedAssetInputAmount}
               name={inputName}
               onChange={onInputChanged}
               spellCheck={false}
-              hasError={selectedAssetBalance && componentType === 'fromAmount' ? Number(selectedAssetInputAmount) > Number(selectedAssetBalance) : false}
+              hasError={componentType === 'fromAmount' && fromAmountHasErrors}
               disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
             />
             {componentType === 'exchange' && orderType === 'market' &&
@@ -200,10 +257,11 @@ function SwapInputComponent (props: Props) {
           </Row>
           {componentType === 'fromAmount' &&
             <PresetRow>
-              {AmountPresetOptions.map((preset) =>
+              {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton
-                  key={preset.id}
-                  onClick={setPresetAmmountValue(preset.id)}
+                  isSelected={selectedPreset === preset.value}
+                  key={idx}
+                  onClick={setPresetAmountValue(preset.value)}
                 >
                   {preset.name}
                 </PresetButton>
@@ -217,7 +275,7 @@ function SwapInputComponent (props: Props) {
           <Row>
             <SelectText>{getTitle()}</SelectText>
             <AssetButton onClick={toggleExpandSelector}>
-              <SelectValueText>{orderType === 'market' ? `${slippageTolerance?.slippage}%` : `${orderExpiration?.expiration} days`}</SelectValueText>
+              <SelectValueText>{orderType === 'market' ? customSlippageTolerance ? `${customSlippageTolerance}%` : `${slippageTolerance?.slippage}%` : `${orderExpiration?.expiration} days`}</SelectValueText>
               <CaratDownIcon />
             </AssetButton>
           </Row>
@@ -228,11 +286,21 @@ function SwapInputComponent (props: Props) {
                   {SlippagePresetOptions.map((preset) =>
                     <PresetButton
                       key={preset.id}
+                      isSlippage={true}
+                      isSelected={customSlippageTolerance === '' ? slippageTolerance?.slippage === preset.slippage : false}
                       onClick={setPresetSlippageValue(preset)}
                     >
                       {preset.slippage}%
                     </PresetButton>
                   )}
+                  <SlippageInput
+                    value={customSlippageTolerance}
+                    placeholder='%'
+                    type='text'
+                    isSelected={customSlippageTolerance !== ''}
+                    onChange={handleCustomSlippageToleranceChange}
+                    maxLength={4}
+                  />
                 </>
               ) : (
                 <>
@@ -249,6 +317,15 @@ function SwapInputComponent (props: Props) {
             </PresetRow>
           }
         </>
+      }
+      {showSlippageWarning &&
+        <WarningText>{getLocale('braveWalletSlippageToleranceWarning')}</WarningText>
+      }
+      {componentType === 'toAddress' && addressError &&
+        <WarningText>{addressError}</WarningText>
+      }
+      {componentType === 'toAddress' && toAddress !== toAddressOrUrl && !addressError &&
+        <AddressConfirmationText>{reduceAddress(toAddress ?? '')}</AddressConfirmationText>
       }
     </BubbleContainer >
   )

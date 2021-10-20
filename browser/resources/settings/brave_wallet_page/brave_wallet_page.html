@@ -24,6 +24,13 @@
         display: flex;
         padding: 8px 1em;
       }
+      .hidden {
+        display: none;
+      }
+      .reset-wallet {
+        cursor: pointer;
+        color: red;
+      }
   </style>
   <div class="settings-box first">
     <div class="start">$i18n{defaultWalletDesc}</div>
@@ -39,8 +46,7 @@
           label="$i18n{showBravewalletIconOnToolbar}">
       </settings-toggle-button>
     </template>
-    <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <div class="settings-box">
+    <div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">
       <div class="flex cr-padded-text">
         <div>$i18n{autoLockMinutes}</div>
         <div class="secondary">$i18n{autoLockMinutesDesc}</div>
@@ -49,13 +55,17 @@
           id="walletAutoLockMinutes" type="number"
           class="flex-container"
           value="$i18n{autoLockMinutesValue}"
-          on-change="onChangeAutoLockMinutes_"
+          on-input="onInputAutoLockMinutes_"
           min="1"
           max="10080"
       >
       </cr-input>
     </div>
-    </template>
+    <div class="settings-box " on-click="onResetWallet_">
+      <div class="flex cr-padded-text reset-wallet">
+        <div>$i18n{resetWallet}</div>
+      </div>
+    </div>
   </template>
   <script src="brave_wallet_page.js"></script>
 </dom-module>

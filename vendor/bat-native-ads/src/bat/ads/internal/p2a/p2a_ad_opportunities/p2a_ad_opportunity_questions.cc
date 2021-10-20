@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity_questions.h"
 
+#include "base/check.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/segments/segments_util.h"
@@ -24,9 +25,12 @@ std::vector<std::string> CreateAdOpportunityQuestions(
   const std::vector<std::string> parent_segments = GetParentSegments(segments);
 
   for (auto& segment : parent_segments) {
+    DCHECK(!segment.empty());
+
     std::string stripped_segment = StripNonAlphaNumericCharacters(segment);
 
     base::ReplaceChars(stripped_segment, " ", "", &stripped_segment);
+    DCHECK(!stripped_segment.empty());
 
     const std::string question =
         base::StringPrintf("%s%s", kQuestionPrefix, stripped_segment.c_str());

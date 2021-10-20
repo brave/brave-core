@@ -4,23 +4,32 @@ import * as React from 'react'
 import {
   Header,
   HeaderText,
-  BackButton,
+  Button,
   BackIcon,
-  HeaderSpacing
+  HeaderSpacing,
+  PlusIcon
 } from './style'
 
 export interface Props {
   title: string
+  hasAddButton?: boolean
+  onAddAccount?: () => void
   onBack: () => void
 }
 
 function SelectHeader (props: Props) {
-  const { onBack, title } = props
+  const { onBack, title, hasAddButton, onAddAccount } = props
   return (
     <Header>
-      <BackButton onClick={onBack}><BackIcon /></BackButton>
+      <Button onClick={onBack}><BackIcon /></Button>
       <HeaderText>{title}</HeaderText>
-      <HeaderSpacing />
+      {hasAddButton ? (
+        <Button onClick={onAddAccount}>
+          <PlusIcon />
+        </Button>
+      ) : (
+        <HeaderSpacing />
+      )}
     </Header>
   )
 }

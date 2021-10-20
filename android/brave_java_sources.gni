@@ -113,6 +113,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/status/BraveStatusMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveTalkOptInPopup.java",
+  "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveTalkOptInPopupListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnViewPagerAction.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingPrefManager.java",
@@ -265,12 +267,15 @@ if (enable_brave_referrals) {
 if (brave_wallet_enabled) {
   brave_java_sources += [
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/ERCTokenRegistryFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthJsonRpcControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthTxControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringControllerFactory.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapControllerFactory.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailsWithQrActivity.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountPrivateKeyActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AddAccountActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AssetDetailActivity.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BraveWalletActivity.java",
@@ -279,10 +284,10 @@ if (brave_wallet_enabled) {
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/ApproveTxFragmentPageAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoFragmentPageAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CryptoWalletOnboardingPagerAdapter.java",
+    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/NetworkSpinnerAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/RecoveryPhraseAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletCoinAdapter.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/AccountsFragment.java",
-    "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/AddAccountOnboardingDialogFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/ApproveTxBottomSheetDialogFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/EditVisibleAssetsBottomSheetDialogFragment.java",
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/PortfolioFragment.java",
@@ -306,16 +311,6 @@ if (brave_wallet_enabled) {
     "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Utils.java",
   ]
 }
-
-brave_components_browser_ui_site_settings_android_java = [
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveContentSettingsResources.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSingleWebsiteSettings.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsCategory.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveWebsite.java",
-  "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveWebsitePermissionsFetcher.java",
-]
 
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 

@@ -5,23 +5,37 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux'
 
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
 import Container from './container'
 import { PanelWrapper } from './style'
-import apiProxy from './vpn_panel_api_proxy.js'
+import store from './state/store'
+import getPanelBrowserAPI from './api/panel_browser_api'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
 
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        getPanelBrowserAPI().panelHandler.showUI()
+      }
+    }
+
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+    }
   }, [])
 
   return (
-    <React.Fragment>
+    <Provider store={store}>
       {initialThemeType &&
         <BraveCoreThemeProvider
           initialThemeType={initialThemeType}
@@ -33,15 +47,15 @@ function App () {
           </PanelWrapper>
         </BraveCoreThemeProvider>
       }
-    </React.Fragment>
+    </Provider>
   )
 }
 
 function initialize () {
   render(<App />, document.getElementById('mountPoint'),
   () => {
-    apiProxy.getInstance().showUI()
-    apiProxy.getInstance().createVPNConnection()
+    getPanelBrowserAPI().panelHandler.showUI()
+    getPanelBrowserAPI().serviceHandler.createVPNConnection()
   })
 }
 

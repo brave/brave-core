@@ -23,7 +23,7 @@ import {
 import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { SwapResponse, TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
+import { SwapResponse, SwapErrorResponse, TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
@@ -58,4 +58,5 @@ export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayl
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')
 export const setPageSwapQuote = createAction<SwapResponse>('setPageSwapQuote')
+export const setPageSwapError = createAction<SwapErrorResponse | undefined>('setPageSwapError')
 export const fetchPageSwapQuote = createAction<SwapParamsPayloadType>('fetchPageSwapQuote')

@@ -15,8 +15,7 @@ import {
   PendingPublisherVerifiedNotification,
   PendingTipFailedNotification,
   ExternalWalletVerifiedNotification,
-  ExternalWalletDisconnectedNotification,
-  ExternalWalletLinkingFailedNotification
+  ExternalWalletDisconnectedNotification
 } from '../../shared/components/notifications'
 
 function parseGrantId (id: string) {
@@ -121,14 +120,6 @@ export function mapNotification (
       })
     case ExtensionNotificationType.GENERAL_LEDGER:
       switch (obj.args[0]) {
-        case 'wallet_device_limit_reached':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            // The provider is not currently recorded for this notification
-            provider: mapProvider(''),
-            reason: 'device-limit-reached'
-          })
         case 'wallet_disconnected':
           return create<ExternalWalletDisconnectedNotification>({
             ...baseProps,
@@ -136,46 +127,11 @@ export function mapNotification (
             // The provider is not currently recorded for this notification
             provider: mapProvider('')
           })
-        case 'wallet_mismatched_provider_accounts':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            provider: mapProvider(obj.args[1] || ''),
-            reason: 'mismatched-provider-accounts'
-          })
         case 'wallet_new_verified':
           return create<ExternalWalletVerifiedNotification>({
             ...baseProps,
             type: 'external-wallet-verified',
             provider: mapProvider(obj.args[1] || '')
-          })
-        case 'uphold_bat_not_allowed_for_user':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            provider: 'uphold',
-            reason: 'uphold-bat-not-supported'
-          })
-        case 'uphold_blocked_user':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            provider: 'uphold',
-            reason: 'uphold-user-blocked'
-          })
-        case 'uphold_pending_user':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            provider: 'uphold',
-            reason: 'uphold-user-pending'
-          })
-        case 'uphold_restricted_user':
-          return create<ExternalWalletLinkingFailedNotification>({
-            ...baseProps,
-            type: 'external-wallet-linking-failed',
-            provider: 'uphold',
-            reason: 'uphold-user-restricted'
           })
       }
       break

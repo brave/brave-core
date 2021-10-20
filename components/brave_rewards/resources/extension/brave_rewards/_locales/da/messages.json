@@ -19,6 +19,26 @@
     "message": "Genopfrisk status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Når du giver drikkepenge, vil beløbet stå reserveret i din wallet, som vil forsøge at aflevere det igen i 90 dage. $link_begin$Få mere at vide her$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Denne skaber er ikke tilmeldt endnu.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Denne skaber kan ikke modtage drikkepenge fra din wallet endnu.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ på $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ bliver modtaget om $days$",
+    "message": "$amount$ udbetaling bliver behandlet om $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Luk",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "For at starte et gratis opkald skal du aktivere Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Slå Rewards til ",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Ved at klikke accepterer du vores $tos_link_begin$Servicebetingelser $tos_link_end$ og $pp_link_begin$Privatlivspolitik$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "For at starte et gratis opkald skal du aktivere Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort ... eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Aktivér Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ved at aktivere reklamer accepterer du vores $tos_link_begin$Servicebetingelser$tos_link_end$ og $pp_link_begin$Privatlivspolitik$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Du kan nu startet et gratis opkald",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klik hvor som helst på skærmen for at fortsætte Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vil du vide mere om Brave Rewards? $tour_link_begin$Få en hurtig gennemgang$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

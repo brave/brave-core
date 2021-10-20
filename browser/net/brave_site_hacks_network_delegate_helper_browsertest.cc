@@ -105,7 +105,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                         const GURL& landing_url) {
     ui_test_utils::UrlLoadObserver load_complete(
         landing_url, content::NotificationService::AllSources());
-    ui_test_utils::NavigateToURL(browser(), original_url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
     EXPECT_EQ(contents()->GetMainFrame()->GetLastCommittedURL(), original_url);
     load_complete.Wait();
 
@@ -252,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
     // Direct navigations go through the query filter.
     GURL input = landing_url(inputs[i], simple_landing_url());
     GURL output = landing_url(outputs[i], simple_landing_url());
-    ui_test_utils::NavigateToURL(browser(), input);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), input));
     EXPECT_EQ(contents()->GetLastCommittedURL(), output);
   }
 }

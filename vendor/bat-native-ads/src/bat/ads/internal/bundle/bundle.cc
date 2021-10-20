@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -157,6 +158,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         // Segments
         for (const auto& segment : creative_set.segments) {
           auto segment_name = base::ToLowerASCII(segment.name);
+          DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -174,6 +176,8 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
+          DCHECK(!top_level_segment_name.empty());
+
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
             creative_ad_notifications.push_back(info);
@@ -229,6 +233,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         // Segments
         for (const auto& segment : creative_set.segments) {
           auto segment_name = base::ToLowerASCII(segment.name);
+          DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -246,6 +251,8 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
+          DCHECK(!top_level_segment_name.empty());
+
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
             creative_inline_content_ads.push_back(info);
@@ -298,6 +305,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         // Segments
         for (const auto& segment : creative_set.segments) {
           auto segment_name = base::ToLowerASCII(segment.name);
+          DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -315,6 +323,8 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
+          DCHECK(!top_level_segment_name.empty());
+
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
             creative_new_tab_page_ads.push_back(info);
@@ -367,6 +377,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         // Segments
         for (const auto& segment : creative_set.segments) {
           auto segment_name = base::ToLowerASCII(segment.name);
+          DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
@@ -384,6 +395,8 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
+          DCHECK(!top_level_segment_name.empty());
+
           if (top_level_segment_name != segment_name) {
             info.segment = top_level_segment_name;
             creative_promoted_content_ads.push_back(info);

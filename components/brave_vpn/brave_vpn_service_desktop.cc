@@ -19,6 +19,7 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
+#include "brave/components/brave_vpn/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
@@ -294,6 +295,13 @@ bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
     regions_.push_back(region);
   }
 
+  // Sort region list alphabetically
+  std::sort(regions_.begin(), regions_.end(),
+            [](brave_vpn::mojom::Region& a, brave_vpn::mojom::Region& b) {
+              return (a.name_pretty < b.name_pretty);
+            });
+
+  // If we can't get region list, we can't determine device region.
   if (regions_.empty())
     return false;
 
@@ -452,6 +460,14 @@ void BraveVpnServiceDesktop::SetSelectedRegion(
 
   // Start hostname fetching for selected region.
   FetchHostnamesForRegion(region_ptr->name);
+}
+
+void BraveVpnServiceDesktop::GetProductUrls(GetProductUrlsCallback callback) {
+  brave_vpn::mojom::ProductUrls urls;
+  urls.feedback = brave_vpn::kFeedbackUrl;
+  urls.about = brave_vpn::kAboutUrl;
+  urls.manage = brave_vpn::GetManageUrl();
+  std::move(callback).Run(urls.Clone());
 }
 
 void BraveVpnServiceDesktop::FetchHostnamesForRegion(const std::string& name) {

@@ -48,7 +48,7 @@ void InlineContentAd::FireEvent(
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       [=](const bool success, const std::string& creative_instance_id,
-          const CreativeInlineContentAdInfo& creative_inline_content_ad) {
+          const CreativeInlineContentAdInfo& creative_ad) {
         if (!success) {
           BLOG(1,
                "Failed to fire inline content ad event due to missing creative "
@@ -59,8 +59,7 @@ void InlineContentAd::FireEvent(
           return;
         }
 
-        const InlineContentAdInfo ad =
-            BuildInlineContentAd(creative_inline_content_ad, uuid);
+        const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad, uuid);
 
         FireEvent(ad, uuid, creative_instance_id, event_type);
       });

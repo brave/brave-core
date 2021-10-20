@@ -14,10 +14,10 @@ struct AdNotificationInfo;
 struct CreativeAdNotificationInfo;
 
 AdNotificationInfo BuildAdNotification(
-    const CreativeAdNotificationInfo& creative_ad_notification);
+    const CreativeAdNotificationInfo& creative_ad);
 
 AdNotificationInfo BuildAdNotification(
-    const CreativeAdNotificationInfo& creative_ad_notification,
+    const CreativeAdNotificationInfo& creative_ad,
     const std::string& uuid);
 
 }  // namespace ads

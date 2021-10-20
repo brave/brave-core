@@ -90,6 +90,7 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
     promotion.promotion_id = item->id;
     promotion.type = static_cast<int>(item->type);
     promotion.status = static_cast<int>(item->status);
+    promotion.created_at = item->created_at;
     promotion.expires_at = item->expires_at;
     promotion.amount = item->approximate_value;
   }

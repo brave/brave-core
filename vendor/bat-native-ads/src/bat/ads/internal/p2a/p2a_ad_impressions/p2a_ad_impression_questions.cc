@@ -21,20 +21,19 @@ std::vector<std::string> CreateAdImpressionQuestions(
     const std::string& segment) {
   std::vector<std::string> questions;
 
-  if (!segment.empty()) {
-    const std::string parent_segment = GetParentSegment(segment);
+  const std::string parent_segment = GetParentSegment(segment);
+  DCHECK(!parent_segment.empty());
 
-    std::string stripped_parent_segment =
-        StripNonAlphaNumericCharacters(parent_segment);
+  std::string stripped_parent_segment =
+      StripNonAlphaNumericCharacters(parent_segment);
 
-    base::ReplaceChars(stripped_parent_segment, " ", "",
-                       &stripped_parent_segment);
+  base::ReplaceChars(stripped_parent_segment, " ", "",
+                     &stripped_parent_segment);
 
-    const std::string question = base::StringPrintf(
-        "%s%s", kQuestionPrefix, stripped_parent_segment.c_str());
+  const std::string question = base::StringPrintf(
+      "%s%s", kQuestionPrefix, stripped_parent_segment.c_str());
 
-    questions.push_back(question);
-  }
+  questions.push_back(question);
 
   questions.push_back("Brave.P2A.TotalAdImpressions");
 

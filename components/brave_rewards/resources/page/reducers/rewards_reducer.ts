@@ -333,35 +333,28 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       chrome.send('brave_rewards.getExternalWallet')
 
-      // TOO_MANY_RESULTS
-      if (data.result === 8) {
-        ui.modalRedirect = 'mismatchedProviderAccountsModal'
+      if (data.result === 9) { // type::Result::NOT_FOUND
+        ui.modalRedirect = 'kycRequiredModal'
         break
       }
 
-      // NOT_FOUND
-      if (data.result === 9) {
-        ui.modalRedirect = 'batLimit'
-        break
-      }
-
-      // EXPIRED_TOKEN
-      if (data.result === 24) {
+      if (data.result === 24) { // type::Result::EXPIRED_TOKEN
         ui.modalRedirect = 'error'
         break
       }
 
-      // BAT_NOT_ALLOWED
-      if (data.result === 25) {
-        ui.modalRedirect = 'notAllowed'
+      if (data.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
+        ui.modalRedirect = 'upholdBATNotAllowedModal'
         break
       }
 
-      // ALREADY_EXISTS
-      if (data.result === 26) {
-        // User has reached device linking limit; no need to show modal, as we
-        // posted a notification for this
-        ui.modalRedirect = 'hide'
+      if (data.result === 36) { // type::Result::DEVICE_LIMIT_REACHED
+        ui.modalRedirect = 'deviceLimitReachedModal'
+        break
+      }
+
+      if (data.result === 37) { // type::Result::MISMATCHED_PROVIDER_ACCOUNTS
+        ui.modalRedirect = 'mismatchedProviderAccountsModal'
         break
       }
 

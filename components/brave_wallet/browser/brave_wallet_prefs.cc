@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 
+#include <string>
 #include <utility>
+#include <vector>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -16,20 +19,14 @@
 namespace {
 
 base::Value GetDefaultUserAssets() {
-  // Show ETH and BAT by default for mainnet.
-  base::Value user_assets_pref(base::Value::Type::DICTIONARY);
-  base::Value* user_assets_dict =
-      user_assets_pref.SetKey("mainnet", base::Value(base::Value::Type::LIST));
-
   base::Value eth(base::Value::Type::DICTIONARY);
-  eth.SetKey("contract_address", base::Value("eth"));
+  eth.SetKey("contract_address", base::Value(""));
   eth.SetKey("name", base::Value("Ethereum"));
   eth.SetKey("symbol", base::Value("ETH"));
   eth.SetKey("is_erc20", base::Value(false));
   eth.SetKey("is_erc721", base::Value(false));
   eth.SetKey("decimals", base::Value(18));
   eth.SetKey("visible", base::Value(true));
-  user_assets_dict->Append(std::move(eth));
 
   base::Value bat(base::Value::Type::DICTIONARY);
   bat.SetKey("contract_address",
@@ -40,8 +37,19 @@ base::Value GetDefaultUserAssets() {
   bat.SetKey("is_erc721", base::Value(false));
   bat.SetKey("decimals", base::Value(18));
   bat.SetKey("visible", base::Value(true));
-  bat.SetKey("logo", base::Value("bat.svg"));
-  user_assets_dict->Append(std::move(bat));
+  bat.SetKey("logo", base::Value("bat.png"));
+
+  // Show ETH and BAT by default for mainnet, and ETH for other known networks.
+  base::Value user_assets_pref(base::Value::Type::DICTIONARY);
+
+  std::vector<std::string> network_ids = brave_wallet::GetAllKnownNetworkIds();
+  for (const auto& network_id : network_ids) {
+    base::Value* user_assets_list = user_assets_pref.SetKey(
+        network_id, base::Value(base::Value::Type::LIST));
+    user_assets_list->Append(eth.Clone());
+    if (network_id == "mainnet")
+      user_assets_list->Append(bat.Clone());
+  }
 
   return user_assets_pref;
 }
@@ -69,6 +77,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
+  registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
+  registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -80,6 +90,10 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(kBraveWalletDefaultKeyringAccountNum, 0);
   registry->RegisterBooleanPref(kBraveWalletBackupComplete, false);
   registry->RegisterListPref(kBraveWalletAccountNames);
+
+  // Added 10/2021
+  registry->RegisterBooleanPref(kBraveWalletUserAssetEthContractAddressMigrated,
+                                false);
 }
 
 void ClearProfilePrefs(PrefService* prefs) {
@@ -90,6 +104,14 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kBraveWalletKeyrings);
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
+  prefs->ClearPref(kBraveWalletSelectedAccount);
+  prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+}
+
+void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  // Added 10/2021 for migrating the contract address for eth in user asset
+  // list from 'eth' to an empty string.
+  BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
 }
 
 }  // namespace brave_wallet

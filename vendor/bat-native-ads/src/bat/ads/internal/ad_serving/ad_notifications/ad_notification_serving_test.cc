@@ -88,15 +88,13 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
   // Arrange
   RecordUserActivityEvents();
 
-  CreativeAdNotificationList creative_ad_notifications;
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-  creative_ad_notifications.push_back(creative_ad_notification);
-  Save(creative_ad_notifications);
+  CreativeAdNotificationList creative_ads;
+  CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
-  EXPECT_CALL(*ads_client_mock_,
-              ShowNotification(DoesMatchCreativeInstanceId(
-                  creative_ad_notification.creative_instance_id)))
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                     creative_ad.creative_instance_id)))
       .Times(1);
 
   // Act
@@ -132,11 +130,10 @@ TEST_F(BatAdsAdNotificationServingTest, DoNotServeInvalidAd) {
 TEST_F(BatAdsAdNotificationServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
-  CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-  creative_ad_notifications.push_back(creative_ad_notification);
-  Save(creative_ad_notifications);
+  CreativeAdNotificationList creative_ads;
+  CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
@@ -150,11 +147,10 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
   // Arrange
   RecordUserActivityEvents();
 
-  CreativeAdNotificationList creative_ad_notifications;
-  const CreativeAdNotificationInfo creative_ad_notification =
-      GetCreativeAdNotification();
-  creative_ad_notifications.push_back(creative_ad_notification);
-  Save(creative_ad_notifications);
+  CreativeAdNotificationList creative_ads;
+  const CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  creative_ads.push_back(creative_ad);
+  Save(creative_ads);
 
   ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
@@ -169,9 +165,8 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
       {{features::kAdServing, ad_serving_parameters}}, {});
 
   // Act
-  EXPECT_CALL(*ads_client_mock_,
-              ShowNotification(DoesMatchCreativeInstanceId(
-                  creative_ad_notification.creative_instance_id)))
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                     creative_ad.creative_instance_id)))
       .Times(1);
 
   ServeAd();

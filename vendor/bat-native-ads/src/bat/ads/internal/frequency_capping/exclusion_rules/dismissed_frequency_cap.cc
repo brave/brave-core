@@ -16,14 +16,15 @@ DismissedFrequencyCap::DismissedFrequencyCap(const AdEventList& ad_events)
 
 DismissedFrequencyCap::~DismissedFrequencyCap() = default;
 
-bool DismissedFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+bool DismissedFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  const AdEventList filtered_ad_events =
+      FilterAdEvents(ad_events_, creative_ad);
 
   if (!DoesRespectCap(filtered_ad_events)) {
     last_message_ = base::StringPrintf(
         "campaignId %s has exceeded the "
         "frequency capping for dismissed",
-        ad.campaign_id.c_str());
+        creative_ad.campaign_id.c_str());
     return true;
   }
 
@@ -56,7 +57,7 @@ bool DismissedFrequencyCap::DoesRespectCap(const AdEventList& ad_events) {
 
 AdEventList DismissedFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& creative_ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const base::Time now = base::Time::Now();
@@ -66,9 +67,9 @@ AdEventList DismissedFrequencyCap::FilterAdEvents(
 
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad, &now, &time_constraint](const AdEventInfo& ad_event) {
+      [&creative_ad, &now, &time_constraint](const AdEventInfo& ad_event) {
         return ad_event.type != AdType::kAdNotification ||
-               ad_event.campaign_id != ad.campaign_id ||
+               ad_event.campaign_id != creative_ad.campaign_id ||
                now - ad_event.created_at >= time_constraint;
       });
 

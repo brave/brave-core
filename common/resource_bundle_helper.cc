@@ -44,12 +44,11 @@ base::FilePath GetResourcesPakFilePath() {
 #if !defined(OS_ANDROID)
 base::FilePath GetScaledResourcesPakFilePath(
     ui::ResourceScaleFactor scale_factor) {
-  DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
-         scale_factor == ui::SCALE_FACTOR_200P);
+  DCHECK(scale_factor == ui::k100Percent || scale_factor == ui::k200Percent);
 
-  const char* pak_file =
-      (scale_factor == ui::SCALE_FACTOR_100P) ? "brave_100_percent.pak"
-                                              : "brave_200_percent.pak";
+  const char* pak_file = (scale_factor == ui::k100Percent)
+                             ? "brave_100_percent.pak"
+                             : "brave_200_percent.pak";
 #if defined(OS_MAC)
   base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
       base::SysUTF8ToCFStringRef(pak_file));
@@ -75,12 +74,12 @@ void InitializeResourceBundle() {
                                        base::FilePath());
 #else
   auto& rb = ui::ResourceBundle::GetSharedInstance();
-  rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::SCALE_FACTOR_NONE);
-  rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_100P),
-                         ui::SCALE_FACTOR_100P);
-  if (ui::ResourceBundle::IsScaleFactorSupported(ui::SCALE_FACTOR_200P)) {
-    rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::SCALE_FACTOR_200P),
-                           ui::SCALE_FACTOR_200P);
+  rb.AddDataPackFromPath(GetResourcesPakFilePath(), ui::kScaleFactorNone);
+  rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k100Percent),
+                         ui::k100Percent);
+  if (ui::ResourceBundle::IsScaleFactorSupported(ui::k200Percent)) {
+    rb.AddDataPackFromPath(GetScaledResourcesPakFilePath(ui::k200Percent),
+                           ui::k200Percent);
   }
 #endif  // OS_ANDROID
 }

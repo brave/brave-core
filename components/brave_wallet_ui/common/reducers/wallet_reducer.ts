@@ -22,15 +22,19 @@ import {
   TransactionInfo,
   TransactionStatus,
   TransactionListInfo,
-  DefaultWallet
+  DefaultWallet,
+  GasEstimation
 } from '../../constants/types'
 import {
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
-  InitializedPayloadType
+  ActiveOriginChanged,
+  IsEip1559Changed,
+  InitializedPayloadType,
+  SitePermissionsPayloadType
 } from '../constants/action_types'
-import { convertMojoTimeToJS } from '../../utils/mojo-time'
+import { convertMojoTimeToJS } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
 
@@ -50,7 +54,8 @@ const defaultState: WalletState = {
     iconUrls: [],
     symbol: 'ETH',
     symbolName: 'Ethereum',
-    decimals: 18
+    decimals: 18,
+    isEip1559: true
   } as EthereumChain,
   accounts: [],
   userVisibleTokensInfo: [],
@@ -65,7 +70,10 @@ const defaultState: WalletState = {
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: DefaultWallet.BraveWallet
+  defaultWallet: DefaultWallet.BraveWallet,
+  activeOrigin: '',
+  gasEstimates: undefined,
+  connectedAccounts: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -75,6 +83,12 @@ const getAccountType = (info: AccountInfo) => {
     return info.hardware.vendor
   }
   return info.isImported ? 'Secondary' : 'Primary'
+}
+
+const sortTransactionByDate = (transactions: TransactionInfo[]) => {
+  return [...transactions].sort(function (x: TransactionInfo, y: TransactionInfo) {
+    return Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
+  })
 }
 
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
@@ -87,9 +101,13 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
       fiatBalance: '0',
       asset: 'eth',
       accountType: getAccountType(info),
+      deviceId: info.hardware ? info.hardware.deviceId : '',
       tokens: []
     }
   })
+  const selectedAccount = payload.selectedAccount ?
+    accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
+    : accounts[0]
   return {
     ...state,
     hasInitialized: true,
@@ -98,7 +116,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadTy
     favoriteApps: payload.favoriteApps,
     accounts,
     isWalletBackedUp: payload.isWalletBackedUp,
-    selectedAccount: accounts[0]
+    selectedAccount: selectedAccount
   }
 })
 
@@ -109,7 +127,7 @@ reducer.on(WalletActions.hasIncorrectPassword, (state: any, payload: boolean) =>
   }
 })
 
-reducer.on(WalletActions.selectAccount, (state: any, payload: WalletAccountType) => {
+reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccountType) => {
   return {
     ...state,
     selectedAccount: payload
@@ -162,7 +180,13 @@ reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalance
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userVisibleTokensInfo: TokenInfo[] = state.userVisibleTokensInfo
+  const userTokens: TokenInfo[] = state.userVisibleTokensInfo
+  const userVisibleTokensInfo = userTokens.map((token) => {
+    return {
+      ...token,
+      logo: `chrome://erc-token-images/${token.logo}`
+    }
+  })
   const prices = payload.prices
   const findTokenPrice = (symbol: string) => {
     if (prices.success) {
@@ -177,9 +201,12 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
       let assetBalance = '0'
       let fiatBalance = '0'
 
-      if (userVisibleTokensInfo[tokenIndex].contractAddress === 'eth') {
+      if (userVisibleTokensInfo[tokenIndex].contractAddress === '') {
         assetBalance = account.balance
         fiatBalance = account.fiatBalance
+      } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
+        assetBalance = info.balance
+        fiatBalance = '0'  // TODO: support estimated market value.
       } else if (info.success) {
         assetBalance = info.balance
         fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
@@ -279,13 +306,14 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
 reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: TransactionStatusChanged) => {
   const newPendingTransactions =
     state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
-  const newSelectedPendingTransaction = newPendingTransactions.pop()
+  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+  const newSelectedPendingTransaction = sortedTransactionList[0]
   if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
     payload.txInfo.txStatus === TransactionStatus.Rejected ||
     payload.txInfo.txStatus === TransactionStatus.Approved) {
     const newState = {
       ...state,
-      pendingTransactions: newPendingTransactions,
+      pendingTransactions: sortedTransactionList,
       selectedPendingTransaction: newSelectedPendingTransaction
     }
     return newState
@@ -296,10 +324,11 @@ reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: Transac
 reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: TransactionInfo[]) => {
   const newPendingTransactions =
     payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
-  const newSelectedPendingTransaction = state.selectedPendingTransaction || newPendingTransactions.pop()
+  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+  const newSelectedPendingTransaction = sortedTransactionList[0]
   return {
     ...state,
-    pendingTransactions: newPendingTransactions,
+    pendingTransactions: sortedTransactionList,
     selectedPendingTransaction: newSelectedPendingTransaction,
     knownTransactions: payload
   }
@@ -323,6 +352,59 @@ reducer.on(WalletActions.defaultWalletUpdated, (state: any, payload: DefaultWall
   return {
     ...state,
     defaultWallet: payload
+  }
+})
+
+reducer.on(WalletActions.activeOriginChanged, (state: any, payload: ActiveOriginChanged) => {
+  return {
+    ...state,
+    activeOrigin: payload.origin
+  }
+})
+
+reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip1559Changed) => {
+  const selectedNetwork = state.networkList.find(
+    network => network.chainId === payload.chainId
+  ) || state.selectedNetwork
+
+  const updatedNetwork: EthereumChain = {
+    ...selectedNetwork,
+    isEip1559: payload.isEip1559
+  }
+
+  return {
+    ...state,
+    selectedNetwork: updatedNetwork,
+    networkList: state.networkList.map(
+      network => network.chainId === payload.chainId ? updatedNetwork : network
+    )
+  }
+})
+
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {
+  return {
+    ...state,
+    gasEstimates: payload
+  }
+})
+
+reducer.on(WalletActions.setSitePermissions, (state: any, payload: SitePermissionsPayloadType) => {
+  return {
+    ...state,
+    connectedAccounts: payload.accounts
+  }
+})
+
+reducer.on(WalletActions.queueNextTransaction, (state: any) => {
+  const pendingTransactions = state.pendingTransactions
+  const index = pendingTransactions.findIndex((tx: TransactionInfo) => tx.id === state.selectedPendingTransaction.id) + 1
+  let newPendingTransaction = pendingTransactions[index]
+  if (pendingTransactions.length === index) {
+    newPendingTransaction = pendingTransactions[0]
+  }
+  return {
+    ...state,
+    selectedPendingTransaction: newPendingTransaction
   }
 })
 

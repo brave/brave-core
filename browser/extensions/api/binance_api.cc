@@ -128,7 +128,7 @@ BinanceGetConvertQuoteFunction::Run() {
   }
 
   std::unique_ptr<binance::GetConvertQuote::Params> params(
-      binance::GetConvertQuote::Params::Create(*args_));
+      binance::GetConvertQuote::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());
@@ -175,7 +175,7 @@ BinanceGetDepositInfoFunction::Run() {
   }
 
   std::unique_ptr<binance::GetDepositInfo::Params> params(
-      binance::GetDepositInfo::Params::Create(*args_));
+      binance::GetDepositInfo::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());
@@ -206,7 +206,7 @@ BinanceConfirmConvertFunction::Run() {
   }
 
   std::unique_ptr<binance::ConfirmConvert::Params> params(
-      binance::ConfirmConvert::Params::Create(*args_));
+      binance::ConfirmConvert::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto* service = GetBinanceService(browser_context());

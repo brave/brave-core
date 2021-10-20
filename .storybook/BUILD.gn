@@ -1,0 +1,17 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+group("storybook") {
+  # Depend on any generated JS output that will
+  # be imported by any JS code used in any Brave
+  # storybook JS.
+  # Explicitly defined here so that even when those targets
+  # are disabled in a regular brave build due to build flags,
+  # they will be generated before storybook is compiled.
+  deps = [
+    "//brave/components/brave_vpn:mojom_js",
+    "//ui/webui/resources/js:cr.m",
+  ]
+}

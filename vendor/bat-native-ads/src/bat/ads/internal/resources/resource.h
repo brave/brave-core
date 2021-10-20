@@ -9,7 +9,7 @@
 namespace ads {
 namespace resource {
 
-template <class T>
+template <typename T>
 class Resource {
  public:
   virtual ~Resource() = default;

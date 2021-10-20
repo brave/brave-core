@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">ترجیح دادن نسخه دسک‌تاپ سایت‌ها</translation>
 <translation id="1842747674580016420">بازپخش ویدئو در Brave</translation>
 <translation id="5368992950177874750">در صورت فعال شدن آن، ویدیوها به جای برنامه مربوطه در مرورگر Brave پخش خواهند شد</translation>
+<translation id="410351446219883937">پخش خودکار</translation>
+<translation id="7445411102860286510">اجازه به سایت‌ها برای پخش خودکار ویدیوهای صامت‌شده (توصیه می‌شود)</translation>
+<translation id="7837721118676387834">به پخش‌خودکار ویدیو‌های صامت‌شده برای سایتی خاص امکان دهید.</translation>
 <translation id="181905442828471321">پیش‌فرض‌های جهانی سپرهای ایمنی Brave</translation>
 <translation id="2675679258824361492">دیگر تنظیمات حریم خصوصی</translation>
 <translation id="8026334261755873520">پاک کردن داده‌های مرور</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">نوامبر</translation>
 <translation id="4254029385847607686">دسامبر</translation>
 <translation id="3780605330121608425">کیف پول شما</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="1165667598801520610">افزودن سرمایه</translation>
@@ -466,6 +470,17 @@
 <translation id="3769645103175790584">درحین مرور کردن توکن کسب کنید و به سازندگان برای محتواهای عالی پاداش دهید. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">گشتی سریع</translation>
 <translation id="1080013038789678738">شرکت می‌کنم!</translation>
+<translation id="8037420924417098685">برای شروع تماس رایگان، Brave Rewards را روشن کنید</translation>
+<translation id="8961724619078500274">با Brave Rewards، برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید (داده‌های شما ایمن هستند). آن توکن‌ها را به پول نقد، کارت هدیه یا غیره تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
+<translation id="7307847920988946894">روشن کردن «پاداش‌ها»</translation>
+<translation id="1186139901474936180">ضربه زدن به‌منزله موافقت شما با <ph name="TERMS_OF_SERVICE"/> و <ph name="PRIVACY_POLICY"/> است. هر زمان که بخواهید می‌توانید آن را در «تنظیمات» غیرفعال کنید.</translation>
+<translation id="6128511569382736135">برای شروع تماس رایگان، Brave Private Ads را فعال کنید</translation>
+<translation id="7930006085154756245">با Brave Private Ads، شما برای مشاهده آگهی‌های خصوصی توکن دریافت می‌کنید (داده‌های شما ایمن است). آن توکن‌ها را به پول نقد، کارت هدیه یا غیره تبدیل کنید یا حتی به وب‌سایت‌های موردعلاقه‌تان انعام دهید. ردیابی در کار نیست. بدون افت سرعت.</translation>
+<translation id="4992617448154987397">روشن کردن Brave Private Ads</translation>
+<translation id="7314030474505546826">روشن کردن «آگهی‌ها» به‌منزله موافقت شما با <ph name="TERMS_OF_SERVICE"/> و <ph name="PRIVACY_POLICY"/> است.</translation>
+<translation id="3415016869273103668">اکنون می‌توانید تماس رایگان برقرار کنید</translation>
+<translation id="6712250553966900750">برای رفتن به Brave Talk در ادامه، روی نقطه‌ای دلخواه از صفحه ضربه بزنید.</translation>
+<translation id="626339649633171286">می‌خواهید درباره Brave Rewards اطلاعات بیشتری کسب کنید؟ <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">شما <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> را تبدیل کردید!</translation>
 <translation id="392587271502873865">لطفاً اتصال شبکه را بررسی کنید</translation>
 <translation id="7889432931837317731">باز کردن خودکار، در صورت امکان</translation>
@@ -528,6 +543,7 @@
 <translation id="7408247683131762445">هشدار: هرگز عبارت پشتیبان را نزد کسی فاش نکنید. هر کسی با داشتن این عبارت می‌تواند سرمایه‌های شما را به‌صورت همیشگی تصاحب کند.</translation>
 <translation id="939275786514736244">از عبارت بازیابی‌ام در جای امنی پشتیبان گرفته‌ام</translation>
 <translation id="6896758677409633944">کپی</translation>
+<translation id="2604744480284798833">برای اینکه پرتفوی رمزارز خود را در برابر از دست دادن دسترسی محافظت کنید، اکنون از کیف پول خود پشتیبان‌گیری کنید.</translation>
 <translation id="1202920745614909195">با Apple Pay، کارت اعتباری یا کارت نقدی رمزارز بخرید.</translation>
 <translation id="841880029259839903">رمزارز ارسال کنید یا از یک حساب به حساب دیگری منتقل کنید.</translation>
 <translation id="8982246458261383692">دارایی‌های رمزارز را با تجمیع‌کننده DEX مرورگر Brave مبادله کنید.</translation>
@@ -536,7 +552,7 @@
 <translation id="4450951602553063001">گذرواژه را مجدداً وارد کنید</translation>
 <translation id="1783870616707290226">گذرواژه باید 7 نویسه یا بیشتر داشته باشد</translation>
 <translation id="7383102760859258982">گذرواژه دوباره‌تایپ‌شده مطابقت نداشت</translation>
-<translation id="1538774398124896437">زنده</translation>
+<translation id="3188963375823360044">1 ساعت</translation>
 <translation id="8163269366661594721">1 روز</translation>
 <translation id="7640956400175663828">1 هفته</translation>
 <translation id="9100647964747998533">1 ماه</translation>
@@ -546,6 +562,7 @@
 <translation id="8892168913673237979">همه موارد تنظیم شد!</translation>
 <translation id="8331501996028380732">رمزارزها را بخرید، مبادله کنید یا نگه دارید. اگر حساب رمزارزی از قبل دارید، می‌توانید آن را اکنون اضافه کنید.</translation>
 <translation id="2267753748892043616">افزودن حساب</translation>
+<translation id="2632612428525029752">به‌روزرسانی حساب</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">قفل‌گشایی با اثر انگشت فعال شود؟</translation>
 <translation id="5493402808936397665">بیومتریک را فعال کنید تا قفل کیف پول خود را به‌سرعت بدون وارد کردن گذرواژه‌تان باز کنید.</translation>
@@ -565,7 +582,7 @@
 <translation id="1144810021918451336">از شما در برابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک محافظت نمی‌کند.</translation>
 <translation id="745115390910697838">عبارت‌ها مطابق نبودند، لطفاً دوباره امتحان کنید.</translation>
 <translation id="2360588547830602174">حساب بازیابی نشد. لطفاً دوباره امتحان کنید</translation>
-<translation id="990936698620790924">قیمت بازار برحسب ETH</translation>
+<translation id="6392640873800632439">قیمت بازار در <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">قیمت بر حسب ETH</translation>
 <translation id="6748108480210050150">از</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -593,10 +610,107 @@
 <translation id="569068482611873351">وارد کردن…</translation>
 <translation id="1940465339426637378">دارایی‌ها</translation>
 <translation id="4522570452068850558">جزئیات</translation>
-<translation id="9065203028668620118">ویرایش</translation>
 <translation id="3995184924764722477">جزئیات حساب</translation>
 <translation id="8967036623785635603">ویرایش دارایی‌های قابل مشاهده</translation>
 <translation id="5050890334032852465">ذخیره فهرست دیده‌بان حساب</translation>
 <translation id="7755766175599167100">جستجوی توکن‌ها</translation>
 <translation id="3835223348537121988">موجودی:</translation>
+<translation id="4449475351935531438">دیوار آتش Brave ‏+ VPN</translation>
+<translation id="719977489961414786">برای محافظت از اتصال خود و مسدود کردن ردیاب‌های مهاجم در همه جا، به یک شبکه VPN ارتقا دهید.</translation>
+<translation id="3435896845095436175">فعال کردن</translation>
+<translation id="8814357473522731680">تحت پشتیبانی</translation>
+<translation id="5596139545583924414">مسدود کردن آگهی‌ها و ردیاب‌ها در همه برنامه‌ها</translation>
+<translation id="8272917646984397798">امنیت همه اتصال‌ها را تأمین می‌کند</translation>
+<translation id="1751947227857853925">سریع و نامحدود تا 100 مگابیت در ثانیه</translation>
+<translation id="1400240082805528049">پشتیبانی شبانه‌روزی</translation>
+<translation id="5051030058817632680">اتصال‌های ناخواسته شبکه را مسدود می‌کند</translation>
+<translation id="3510283489391432976">مکان جغرافیایی/کشور خود را انتخاب کنید</translation>
+<translation id="4390800080658195654">شما را در بستر آنلاین ناشناس نگه می‌دارد</translation>
+<translation id="639981156979733813">تا سرعت 100 مگابیت در ثانیه پشتیبانی می‌کند</translation>
+<translation id="8396607116169935837">از تونل VPN رمزگذاری‌شده امن IKEv2 استفاده می‌کند</translation>
+<translation id="1571230671455380494">ما هرگز اطلاعاتتان را به اشتراک نمی‌گذاریم یا نمی‌فروشیم</translation>
+<translation id="276866628038850725">همه طرح‌ها دارای یک دوره آزمایشی 7 روزه رایگان هستند!</translation>
+<translation id="7280825497485894053">اشتراک ماهانه</translation>
+<translation id="3001303523417455986">اشتراک سالانه</translation>
+<translation id="6748319398471481216">ماهانه تمدید می‌شود</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ماه.</translation>
+<translation id="1163809943099641131">یک سال</translation>
+<translation id="6277055349883621705">با تمدید سالانه 16 درصد صرفه‌جویی کنید</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / سال.</translation>
+<translation id="4487678670820292781">$119.88</translation>
+<translation id="5867778679088331977">7 روز رایگان امتحان کنید. پس از 7 روز، باید هزینه طرح را بپردازید. همه اشتراک‌ها به‌صورت خودکار تمدید می‌شوند اما می‌توان قبل از تمدید خودکار، آنها را لغو کرد.</translation>
+<translation id="6053992191006521518">به‌صورت رایگان امتحان کنید</translation>
+<translation id="721747358270435486">نصب VPN</translation>
+<translation id="836074276610740314">نصب نمایه VPN</translation>
+<translation id="8021842065465097929">Brave اکنون نمایه VPN را نصب خواهد کرد.</translation>
+<translation id="229286271464650057">این نمایه به VPN اجازه می‌دهد تا به‌طور خودکار ترافیک را در هر برنامه و برای همیشه در دستگاهتان متصل و امن کند. این اتصال VPN برای مسدود کردن آگهی‌ها و ردیاب‌ها از طریق دیوار آتش هوشمند Guardian رمزگذاری و هدایت می‌شود.</translation>
+<translation id="9073255657908892407">با پشتیبانی فنی تماس بگیرید</translation>
+<translation id="1139934321138152517">VPN اکنون فعال شده است</translation>
+<translation id="7678718921266217759">توضیحاتی زمینه‌ای...</translation>
+<translation id="7267573208549764106">اتصال VPN قبلی شما قطع شد. برای اتصال مجدد به VPN، باید درخواست اتصال را بپذیرید.
+
+اگر این درخواست را قبول نکنید، VPN دوباره متصل نمی‌شود و اتصال اینترنت شما امن نخواهد بود.</translation>
+<translation id="2429299231491852747">درخواست اتصال را بپذیرید</translation>
+<translation id="3428909627460825679">ایجاد نمایه Vpn ناموفق بود. لطفاً دوباره تلاش کنید.</translation>
+<translation id="8584119457978684056">تأیید اعتبار توکن خرید ناموفق بود. لطفاً دوباره امتحان کنید.</translation>
+<translation id="8905950042180169719">VPN در پس‌زمینه اجرا می‌شود</translation>
+<translation id="8681480718817027245">اشتراک</translation>
+<translation id="7805768142964895445">وضعیت</translation>
+<translation id="5747552184818312860">تاریخ انقضا</translation>
+<translation id="1656814355341174523">مدیریت اشتراک</translation>
+<translation id="1919008675977575793">سرور</translation>
+<translation id="4812684235631257312">میزبان</translation>
+<translation id="5646376287012673985">مکان</translation>
+<translation id="8375573361134671513">بازنشانی پیکربندی</translation>
+<translation id="850405162932416400">پشتیبانی VPN</translation>
+<translation id="1330148827129583049">نمایه Vpn ایجاد نشده است. نمایه جدیدی ایجاد کنید.</translation>
+<translation id="6772117549627334582">دریافت موقعیت مکانی سرور ناموفق بود. لطفاً بعداً امتحان کنید.</translation>
+<translation id="5863914199331127413">نام میزبان VPN</translation>
+<translation id="5499653136178260315">نوع اشتراک</translation>
+<translation id="4741058112780154119">نسخه برنامه</translation>
+<translation id="7286066816862208787">رسید برنامه</translation>
+<translation id="2552966063069741410">منطقه زمانی</translation>
+<translation id="4395361077929528480">نوع شبکه</translation>
+<translation id="755448900483975096">شبکه محابراتی تلفن همراه</translation>
+<translation id="1279441577056010362">ادامه و رفتن به ایمیل</translation>
+<translation id="2553687444159335134">پشتیبانی با کمک تیم Guardian ارائه می‌شود.\n\nلطفاً اطلاعاتی را که اشتراک‌گذاریشان با ما مشکلی ندارد انتخاب کنید.\n\nهرچه اطلاعاتی که در ابتدا با ما به اشتراک می‌گذارید بیشتر باشد، کارکنان پشتیبانی ما راحت‌تر می‌توانند به شما کمک کنند تا مشکل خود را حل کنید</translation>
+<translation id="7999094850625689785">بر اساس منطقه زمانی سیستم شما، منطقه سروری که به شما نزدیک‌تر است به‌طور خودکار انتخاب می‌شود. این امر به‌منظور اطمینان از سرعت بالای اینترنت توصیه می‌شود.</translation>
+<translation id="8018707825009059641">مشکلات دیگر</translation>
+<translation id="6687228121145903051">اتصال به VPN امکان‌پذیر نیست (خطای دیگر)</translation>
+<translation id="9184988385244077767">هنگام اتصال اینترنت وجود ندارد</translation>
+<translation id="21570240866965662">اتصال ضعیف</translation>
+<translation id="1219475260382643267">وب‌سایت کار نمی‌کند</translation>
+<translation id="7138678301420049075">دیگر</translation>
+<translation id="4827315939627587219">بازنشانی پیکربندی VPN</translation>
+<translation id="6883280223123252086">مطمئنید می‌خواهید پیکربندی vpn را بازنشانی کنید؟</translation>
+<translation id="604124094241169006">خودکار</translation>
+<translation id="7475580600756356589">در حال اتصال به سرور شما. فقط کمی طول می‌کشد...</translation>
+<translation id="1342728075788541348">در حال قطع اتصال از سرور شما. فقط کمی طول می‌کشد...</translation>
+<translation id="669072536454692117">اشتراک با موفقیت مصرف شد</translation>
+<translation id="1187506504156101449">خرید تأیید نشد:</translation>
+<translation id="8420522105268941892">شما قبلاً در این اشتراک مشترک شده‌اید. سعی کنید اشتراک را بازیابی کنید.</translation>
+<translation id="74771564105268111">خطا!!\nبه علت لغو جریان خرید توسط کاربر اتفاق افتاد.</translation>
+<translation id="3851978668258201962">خطا!!\nخرید ناموفق بود..</translation>
+<translation id="6452181791372256707">عدم پذیرش</translation>
+<translation id="8030852056903932865">تصدیق</translation>
+<translation id="1597199892790541240">فیس گاز</translation>
+<translation id="1634828734222219955">مجموع</translation>
+<translation id="7995708795274219641">مبلغ + گاز</translation>
+<translation id="1950052789869821983">تراکنش</translation>
+<translation id="6122742277607781713">پرتفوی</translation>
+<translation id="2805756323405976993">برنامه‌ها</translation>
+<translation id="6083912983861746409">قیمت گس(GWEI)</translation>
+<translation id="2499079593046817044">حد گس(GWEI)</translation>
+<translation id="6389441740143786465">غیرفعال کردن هاب اشتراک‌گذاری</translation>
+<translation id="9065203028668620118">ویرایش</translation>
+<translation id="473775607612524610">به‌روزرسانی</translation>
+<translation id="479795390141144417">به‌روزرسانی حساب ناموفق بود.</translation>
+<translation id="8084782383392198011">نام حساب نمی‌تواند خالی باشد.</translation>
+<translation id="5045550434625856497">گذرواژه نادرست</translation>
+<translation id="1367951781824006909">انتخاب یک فایل</translation>
+<translation id="8648684608605749476">مسدود کردن کوکی‌های شخص ثالث در «حالت ناشناس»</translation>
+<translation id="1118876217803190221">موجودی کافی نیست</translation>
+<translation id="275990379543116961">وجوه برای گس کافی نیست</translation>
+<translation id="3292453499915466604">نقدینگی کافی نیست</translation>
+<translation id="3380365263193509176">خطای ناشناس</translation>
 </translationbundle>

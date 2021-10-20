@@ -2,7 +2,7 @@ import * as React from 'react'
 import { EthereumChain } from '../../../constants/types'
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   SelectWrapper,
@@ -19,7 +19,7 @@ function SelectNetworkWithHeader (props: Props) {
   const { networks, onSelectNetwork, onBack } = props
   return (
     <SelectWrapper>
-      <Header title={locale.selectNetwork} onBack={onBack} />
+      <Header title={getLocale('braveWalletSelectNetwork')} onBack={onBack} />
       <SelectScrollContainer>
         <SelectNetwork
           networks={networks}

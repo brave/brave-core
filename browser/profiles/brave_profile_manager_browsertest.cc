@@ -8,6 +8,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
@@ -186,6 +187,51 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 #endif
 #endif
 }
+
+#if !defined(OS_ANDROID)
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       PRE_MediaRouterDisabledRestartTest) {
+  Profile* profile =
+      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  {
+    profile->GetPrefs()->SetBoolean(::prefs::kEnableMediaRouter, true);
+    profile->GetPrefs()->SetBoolean(kEnableMediaRouterOnRestart, false);
+    EXPECT_TRUE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
+    EXPECT_FALSE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       MediaRouterDisabledRestartTest) {
+  Profile* profile =
+      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  {
+    EXPECT_FALSE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
+    EXPECT_FALSE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
+                       PRE_MediaRouterEnabledRestartTest) {
+  Profile* profile =
+      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  {
+    profile->GetPrefs()->SetBoolean(::prefs::kEnableMediaRouter, false);
+    profile->GetPrefs()->SetBoolean(kEnableMediaRouterOnRestart, true);
+    EXPECT_FALSE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
+    EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest, MediaRouterEnabledRestartTest) {
+  Profile* profile =
+      g_browser_process->profile_manager()->GetPrimaryUserProfile();
+  {
+    EXPECT_TRUE(profile->GetPrefs()->GetBoolean(::prefs::kEnableMediaRouter));
+    EXPECT_TRUE(profile->GetPrefs()->GetBoolean(kEnableMediaRouterOnRestart));
+  }
+}
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,

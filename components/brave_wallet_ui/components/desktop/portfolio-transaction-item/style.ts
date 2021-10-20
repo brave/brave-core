@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { TransactionStatus } from '../../../constants/types'
 import { MoreVertRIcon, ArrowRightIcon } from 'brave-ui/components/icons'
+import CoinsIconSVG from '../../../assets/svg-icons/coins-icon.svg'
 
 interface StyleProps {
   orb: string
@@ -50,6 +51,9 @@ export const FromCircle = styled.div<Partial<StyleProps>>`
   background-image: url(${(p) => p.orb});
   background-size: cover;
   margin-right: 30px;
+  @media screen and (max-width: 600px) {
+    display: none
+  }
 `
 
 export const ToCircle = styled.div<Partial<StyleProps>>`
@@ -60,6 +64,9 @@ export const ToCircle = styled.div<Partial<StyleProps>>`
   background-size: cover;
   position: absolute;
   left: 26px;
+  @media screen and (max-width: 600px) {
+    display: none
+  }
 `
 
 export const MoreButton = styled.button`
@@ -157,4 +164,45 @@ export const StatusBubble = styled.div<Partial<StyleProps>>`
       p.status === 0 ? p.theme.color.interactive08 : p.theme.color.warningIcon
   };
   margin-right: 6px;
+`
+
+export const CoinsButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  outline: none;
+  background: none;
+  border: none;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+`
+
+export const CoinsIcon = styled.div`
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 4.17%;
+  background-image: url(${CoinsIconSVG});
+`
+
+export const AddressOrAsset = styled.button`
+  display: inline;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  color: #4D54D2;
+  padding: 0;
+`
+
+export const TransactionFeeTooltipTitle = styled.div`
+  font-weight: 600;
+  letter-spacing: 0.01em;
+`
+
+export const TransactionFeeTooltipBody = styled.div`
+  font-weight: 400;
+  letter-spacing: 0.01em;
 `

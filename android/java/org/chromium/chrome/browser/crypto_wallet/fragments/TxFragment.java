@@ -135,20 +135,20 @@ public class TxFragment extends Fragment {
 
     private void setupView(View view) {
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
+        final double totalGas = Utils.fromHexWei(Utils.multiplyHexBN(
+                mTxInfo.txData.baseData.gasLimit, mTxInfo.txData.baseData.gasPrice));
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                        String.format(Locale.getDefault(), "%.8f",
-                                Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+                        String.format(Locale.getDefault(), "%.8f", totalGas)));
         String valueAsset = mTxInfo.txData.baseData.value;
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueAsset = mTxInfo.txArgs[1];
         }
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(String.format(
-                getResources().getString(R.string.crypto_wallet_total_amount),
-                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)), mAsset,
-                String.format(Locale.getDefault(), "%.8f",
-                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice))));
+        totalAmount.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
+                        String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)),
+                        mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};
@@ -158,9 +158,8 @@ public class TxFragment extends Fragment {
                         if (!success || values.length == 0) {
                             return;
                         }
-                        double value = Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice);
                         double price = Double.valueOf(values[0].price);
-                        double totalPrice = value * price;
+                        double totalPrice = totalGas * price;
                         TextView gasFeeAmountFiat = view.findViewById(R.id.gas_fee_amount_fiat);
                         gasFeeAmountFiat.setText(String.format(
                                 getResources().getString(R.string.crypto_wallet_amount_fiat),

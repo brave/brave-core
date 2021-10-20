@@ -191,10 +191,10 @@
 <translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
 <translation id="1696548911367097044">Nebenaudojamų kriptovaliutų piniginių plėtinys</translation>
 <translation id="1085027414516521238">„MetaMask“</translation>
-<translation id="7090046810227878892">Decentralizuotų programėlių „Ethereum“ teikėjas</translation>
-<translation id="5913089932885076110">Užkrauti kriptovaliutų pinigines paleidus kompiuterį</translation>
-<translation id="757886143331967039">Užkrauti nebenaudojamų kriptovaliutų piniginių plėtinį paleidžiant</translation>
+<translation id="9131889008937672866">Numatytoji kriptovaliutos piniginė</translation>
 <translation id="1834467296210148203">Rodyti „Brave Wallet“ piktogramą įrankių juostoje</translation>
+<translation id="8239147115686034860">Automatiškai užrakinti „Brave“ piniginę</translation>
+<translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="5927916530277631319">„Unstoppable Domains“ sprendimo būdas</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/> apie DNS per HTTPS ir „Ethereum“ privatumo nuostatas.</translation>
@@ -236,6 +236,7 @@
 <translation id="1251574393468476924">Maksimalus IPFS talpyklos dydis (GB)</translation>
 <translation id="2503497578400410320">IPFS duomenų saugyklos dydžio lanksti viršutinė riba.</translation>
 <translation id="7703184801853248830">Netinkamas tinklų sietuvo adresas</translation>
+<translation id="7690058578502751948">„Brave“ galima naudoti tik IPFS tinklų sietuvą, kuriame įjungta kilmės vietos izoliavimo funkcija.</translation>
 <translation id="585868419599255817">IPFS atsarginis viešasis tinklų sietuvas</translation>
 <translation id="207763736230883589">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei vietinio mazgo pasiekti neįmanoma.</translation>
 <translation id="4107552920076294723">Nukreipti IPFS išteklius į sukonfigūruotą IPFS tinklų sietuvą</translation>
@@ -304,6 +305,10 @@
 <translation id="1391855377994926460">Saityne naršykite sparčiau – pagrindinėse naujienų svetainėse iki 6 kartų greičiau.</translation>
 <translation id="9218430445555521422">Nustatyti kaip numatytąją</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
+<translation id="732814027519296280">Norite, kad „Brave“ paieška veiktų dar geriau?</translation>
+<translation id="2677865600861971449">Sutikite dalyvauti žiniatinklio pažinimo projekte ir anonimiškai pateikite paieškos ir naršymo duomenis, kad padėtumėte patikslinti „Brave“ paieškos rezultatus visiems šia funkcija besinaudojantiems naudotojams. Visiškai privačiai, neįdedant nė kiek pastangų.<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="5860491529813859533">Įjungti</translation>
+<translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="5039804452771397117">Leisti</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
 <translation id="7815301689257843278">Siųsti gedimo ataskaitas automatiškai, kad „Brave“ galėtų šios problemos išvengti  ateityje?</translation>
@@ -313,6 +318,8 @@
 <translation id="6873781976650514089">Šią nuostatą</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
 <translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
+<translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
+<translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
 <translation id="1516554614404600536">„Brave“ patarimas apie įrankį</translation>
 <translation id="4877147287319222750">Pridėti į šoninę juostą</translation>
 <translation id="4233010476457917696">Rodyti šoninę juostą</translation>

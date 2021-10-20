@@ -8,36 +8,61 @@ import {
   RestoreButton,
   Divider,
   ImportButton,
+  SettingsButton,
   ImportButtonText,
-  MetaMaskIcon
+  MetaMaskIcon,
+  CryptoWalletsAlertBox,
+  CryptoWalletsAlertTitle,
+  CryptoWalletsAlertDescription
 } from './style'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 export interface Props {
   onSetup: () => void
   onRestore: () => void
   onClickImportMetaMask: () => void
   metaMaskWalletDetected: boolean
+  cryptoWalletsDetected: boolean
 }
 
 function OnboardingWelcome (props: Props) {
-  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected } = props
+  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected, cryptoWalletsDetected } = props
+
+  const onClickSettings = () => {
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
   return (
     <StyledWrapper>
       <PageIcon />
-      <Title>{locale.welcomeTitle}</Title>
-      <Description>{locale.welcomeDescription}</Description>
-      <NavButton buttonType='primary' text={locale.welcomeButton} onSubmit={onSetup} />
-      <RestoreButton onClick={onRestore}>{locale.welcomeRestoreButton}</RestoreButton>
+      <Title>{getLocale('braveWalletWelcomeTitle')}</Title>
+      <Description>{getLocale('braveWalletWelcomeDescription')}</Description>
+      <NavButton buttonType='primary' text={getLocale('braveWalletWelcomeButton')} onSubmit={onSetup} />
+      <RestoreButton onClick={onRestore}>{getLocale('braveWalletWelcomeRestoreButton')}</RestoreButton>
       {metaMaskWalletDetected &&
         <>
           <Divider />
           <ImportButton onClick={onClickImportMetaMask}>
             <MetaMaskIcon />
-            <ImportButtonText>{locale.importMetaMaskTitle}</ImportButtonText>
+            <ImportButtonText>{getLocale('braveWalletImportTitle')} {getLocale('braveWalletImportMetaMaskTitle')}</ImportButtonText>
           </ImportButton>
         </>
+      }
+      {cryptoWalletsDetected &&
+        <CryptoWalletsAlertBox>
+          <CryptoWalletsAlertTitle>{getLocale('braveWalletCryptoWalletsDetected')}</CryptoWalletsAlertTitle>
+          <CryptoWalletsAlertDescription>{getLocale('braveWalletCryptoWalletsDescriptionOne')}</CryptoWalletsAlertDescription>
+          <CryptoWalletsAlertDescription>
+            {getLocale('braveWalletCryptoWalletsDescriptionTwoFirst')}{` `}
+            <SettingsButton onClick={onClickSettings}>{getLocale('braveWalletWalletPopupSettings')}</SettingsButton>{` `}
+            {getLocale('braveWalletCryptoWalletsDescriptionTwoSecond')}
+          </CryptoWalletsAlertDescription>
+        </CryptoWalletsAlertBox>
       }
     </StyledWrapper>
   )

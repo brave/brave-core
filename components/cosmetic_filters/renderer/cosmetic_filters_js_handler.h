@@ -15,6 +15,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
 
@@ -33,7 +34,10 @@ class CosmeticFiltersJSHandler {
   // Adds the "cs_worker" JavaScript object and its functions to the current
   // render_frame_.
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
-  void ProcessURL(const GURL& url, base::OnceClosure callback);
+  // Fetches an initial set of resources to inject into the page if cosmetic
+  // filtering is enabled, and returns whether or not to proceed with cosmetic
+  // filtering.
+  bool ProcessURL(const GURL& url, absl::optional<base::OnceClosure> callback);
   void ApplyRules();
 
  private:
@@ -58,8 +62,6 @@ class CosmeticFiltersJSHandler {
   void HiddenClassIdSelectors(const std::string& input);
 
   void OnUrlCosmeticResources(base::OnceClosure callback,
-                              bool enabled,
-                              bool first_party_enabled,
                               base::Value result);
   void CSSRulesRoutine(base::DictionaryValue* resources_dict);
   void OnHiddenClassIdSelectors(base::Value result);

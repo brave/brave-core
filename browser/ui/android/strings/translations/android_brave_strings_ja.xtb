@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">PCサイトを優先して表示</translation>
 <translation id="1842747674580016420">Braveで動画を再生</translation>
 <translation id="5368992950177874750">有効にすると動画は、対応するアプリではなくBraveで再生されます</translation>
+<translation id="410351446219883937">自動再生</translation>
+<translation id="7445411102860286510">ミュートされた動画の自動再生をサイトに許可する（推奨）</translation>
+<translation id="7837721118676387834">特定のサイトに対し、ミュートされた動画の自動再生を許可します。</translation>
 <translation id="181905442828471321">Brave Shields グローバルデフォルト</translation>
 <translation id="2675679258824361492">その他のプライバシー設定</translation>
 <translation id="8026334261755873520">閲覧履歴データの削除</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">11月</translation>
 <translation id="4254029385847607686">12月</translation>
 <translation id="3780605330121608425">ウォレット</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">米ドル</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
@@ -464,6 +468,17 @@
 <translation id="3769645103175790584">閲覧中にトークンを獲得し、クリエイターの素晴らしいコンテンツに対して報酬を与えます。<ph name="QUICK_TOUR"/>。</translation>
 <translation id="6912901278692845878">クイックツアー</translation>
 <translation id="1080013038789678738">参加します！</translation>
+<translation id="8037420924417098685">無料通話を開始するには、Brave Rewards を有効にします</translation>
+<translation id="8961724619078500274">Brave Rewards を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
+<translation id="7307847920988946894">「Rewards」をオンにする</translation>
+<translation id="1186139901474936180">タップすると、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したことになります。設定でいつでも無効にできます。</translation>
+<translation id="6128511569382736135">無料通話を開始するには、Brave Private Ads を有効にします</translation>
+<translation id="7930006085154756245">Brave Private Ads を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。</translation>
+<translation id="4992617448154987397">Brave Private Ads を有効にする</translation>
+<translation id="7314030474505546826">Ads を有効にすると、<ph name="TERMS_OF_SERVICE"/>および<ph name="PRIVACY_POLICY"/>に同意したことになります。</translation>
+<translation id="3415016869273103668">これで無料通話を開始できます</translation>
+<translation id="6712250553966900750">画面上をタップして、Brave Talk に進みます。</translation>
+<translation id="626339649633171286">Brave Rewards について詳しく知りたいですか？<ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">あなたは<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>を<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>に変換しました！</translation>
 <translation id="392587271502873865">ネットワーク接続を確認してください。</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
@@ -526,6 +541,7 @@
 <translation id="7408247683131762445">警告: バックアップフレーズは絶対に公開しないでください。このフレーズであなたの資産が永久に失われてしまう可能性があります。</translation>
 <translation id="939275786514736244">フレーズを安全にバックアップしました</translation>
 <translation id="6896758677409633944">コピー</translation>
+<translation id="2604744480284798833">今すぐウォレットをバックアップして、暗号通貨ポートフォリオのアクセスを失わないようにしてください。</translation>
 <translation id="1202920745614909195">Apple Pay、クレジットカード、またはデビットカードで仮想通貨を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ仮想通貨を送信また転送できます。</translation>
 <translation id="8982246458261383692">仮想通貨アセットをBrave DEXアグリゲーターとスワップします。</translation>
@@ -534,7 +550,7 @@
 <translation id="4450951602553063001">パスワードを再入力</translation>
 <translation id="1783870616707290226">パスワードは7文字以上で入力してください</translation>
 <translation id="7383102760859258982">再入力したパスワードが一致しません</translation>
-<translation id="1538774398124896437">ライブ</translation>
+<translation id="3188963375823360044">1 時間</translation>
 <translation id="8163269366661594721">1日</translation>
 <translation id="7640956400175663828">1週間</translation>
 <translation id="9100647964747998533">1か月</translation>
@@ -544,6 +560,7 @@
 <translation id="8892168913673237979">すべて完了です！</translation>
 <translation id="8331501996028380732">仮想通貨を購入、取引、保有しましょう。既存の仮想通貨アカウントをお持ちの方は今すぐ追加できます。</translation>
 <translation id="2267753748892043616">アカウントを追加</translation>
+<translation id="2632612428525029752">アカウントを更新</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">指紋によるロック解除を有効にしますか？</translation>
 <translation id="5493402808936397665">生体認証を有効にすると、パスワードを入力しなくてもウォレットのロックをすばやく解除できます。</translation>
@@ -563,7 +580,7 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="745115390910697838">フレーズが一致しません。もう一度お試しください。</translation>
 <translation id="2360588547830602174">アカウントの復元に失敗しました。もう一度お試しください。</translation>
-<translation id="990936698620790924">市場価格 (ETH)</translation>
+<translation id="6392640873800632439"><ph name="ASSET"/> の市場価格</translation>
 <translation id="5593852897152820572">ETH価格</translation>
 <translation id="6748108480210050150">送信元</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -591,10 +608,107 @@
 <translation id="569068482611873351">インポート…</translation>
 <translation id="1940465339426637378">アセット</translation>
 <translation id="4522570452068850558">詳細</translation>
-<translation id="9065203028668620118">編集</translation>
 <translation id="3995184924764722477">アカウント詳細</translation>
 <translation id="8967036623785635603">公開アセットの編集</translation>
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
 <translation id="3835223348537121988">残高:</translation>
+<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="719977489961414786">VPN にアップグレードして、接続を保護し、あらゆる場所で侵入型トラッカーをブロックします。</translation>
+<translation id="3435896845095436175">有効にする</translation>
+<translation id="8814357473522731680">提供元</translation>
+<translation id="5596139545583924414">すべてのアプリで広告とトラッカーをブロックする</translation>
+<translation id="8272917646984397798">すべての接続を保護します</translation>
+<translation id="1751947227857853925">最大 100 Mbps の速度が無制限</translation>
+<translation id="1400240082805528049">24 時間年中無休のサポート</translation>
+<translation id="5051030058817632680">不要なネットワーク接続をブロックします</translation>
+<translation id="3510283489391432976">地域/国の場所を選択してください</translation>
+<translation id="4390800080658195654">オンラインで匿名を維持</translation>
+<translation id="639981156979733813">最大 100 Mbps の速度をサポート</translation>
+<translation id="8396607116169935837">IKEv2 の安全な暗号化された VPN トンネルを使用します</translation>
+<translation id="1571230671455380494">私たちはお客様の情報を共有したり販売したりすることは決してありません</translation>
+<translation id="276866628038850725">すべてのプランには 7 日間の無料トライアルが含まれています。</translation>
+<translation id="7280825497485894053">月間サブスクリプション</translation>
+<translation id="3001303523417455986">年間サブスクリプション</translation>
+<translation id="6748319398471481216">毎月更新</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
+<translation id="1163809943099641131">1 年</translation>
+<translation id="6277055349883621705">年間更新で 16% オフ</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
+<translation id="4487678670820292781">$119.88</translation>
+<translation id="5867778679088331977">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
+<translation id="6053992191006521518">無料で試す</translation>
+<translation id="721747358270435486">VPN をインストール</translation>
+<translation id="836074276610740314">VPN プロファイルをインストール</translation>
+<translation id="8021842065465097929">Brave は VPN プロファイルをインストールします。</translation>
+<translation id="229286271464650057">このプロファイルにより、VPN は、すべてのアプリで、デバイス全体のトラフィックを常に自動的に接続して保護できます。この VPN 接続は暗号化され、Guardian のインテリジェントファイアウォールを介してルーティングされ、広告とトラッカーをブロックします。</translation>
+<translation id="9073255657908892407">テクニカルサポートに連絡する</translation>
+<translation id="1139934321138152517">VPN が有効になりました</translation>
+<translation id="7678718921266217759">コンテキスト...</translation>
+<translation id="7267573208549764106">以前の VPN 接続が切断されました。VPN に再接続するには、接続要求を受け入れる必要があります。
+
+このリクエストを受け入れない場合、VPN は再接続せず、インターネット接続は保護されません。</translation>
+<translation id="2429299231491852747">接続要求を受け入れる</translation>
+<translation id="3428909627460825679">VPN プロファイルの作成に失敗しました。もう一度お試しください。</translation>
+<translation id="8584119457978684056">購入トークンの検証に失敗しました。もう一度お試しください。</translation>
+<translation id="8905950042180169719">VPN はバックグラウンドで実行されています</translation>
+<translation id="8681480718817027245">サブスクリプション</translation>
+<translation id="7805768142964895445">ステータス</translation>
+<translation id="5747552184818312860">有効期限</translation>
+<translation id="1656814355341174523">サブスクリプションの管理</translation>
+<translation id="1919008675977575793">サーバー</translation>
+<translation id="4812684235631257312">ホスト</translation>
+<translation id="5646376287012673985">位置情報</translation>
+<translation id="8375573361134671513">構成をリセット</translation>
+<translation id="850405162932416400">VPN サポート</translation>
+<translation id="1330148827129583049">VPN プロファイルが作成されていません。新しいプロファイルを作成します。</translation>
+<translation id="6772117549627334582">サーバーの場所を取得できません。後でもう一度やり直してください。</translation>
+<translation id="5863914199331127413">VPN ホスト名</translation>
+<translation id="5499653136178260315">サブスクリプションタイプ</translation>
+<translation id="4741058112780154119">アプリバージョン</translation>
+<translation id="7286066816862208787">アプリの領収書</translation>
+<translation id="2552966063069741410">タイムゾーン</translation>
+<translation id="4395361077929528480">ネットワークタイプ</translation>
+<translation id="755448900483975096">セルラーキャリア</translation>
+<translation id="1279441577056010362">メールに進む</translation>
+<translation id="2553687444159335134">Guardian チームによるサポートが提供されます。\n\n私たちと共有しても構わない情報を選択してください。\n\n最初に私たちと共有する情報が多いほど、サポートスタッフが問題の解決を支援しやすくなります。</translation>
+<translation id="7999094850625689785">システムのタイムゾーンに基づいて、最も近いサーバーリージョンが自動的に選択されます。これは、高速インターネット速度を確保するために推奨されます。</translation>
+<translation id="8018707825009059641">その他の問題</translation>
+<translation id="6687228121145903051">VPN に接続できません (その他のエラー)</translation>
+<translation id="9184988385244077767">接続時にインターネットがない</translation>
+<translation id="21570240866965662">低速回線</translation>
+<translation id="1219475260382643267">ウェブサイトが機能しない</translation>
+<translation id="7138678301420049075">その他</translation>
+<translation id="4827315939627587219">VPN 構成をリセット</translation>
+<translation id="6883280223123252086">VPN 構成をリセットしてもよろしいですか？</translation>
+<translation id="604124094241169006">自動設定</translation>
+<translation id="7475580600756356589">サーバーに接続しています。少々お待ちください...</translation>
+<translation id="1342728075788541348">サーバーから切断しています。少々お待ちください...</translation>
+<translation id="669072536454692117">サブスクリプションが正常に消費されました</translation>
+<translation id="1187506504156101449">購入の確認に失敗しました:</translation>
+<translation id="8420522105268941892">すでにサブスクリプションに登録しています。サブスクリプションを復元してみてください。</translation>
+<translation id="74771564105268111">エラー!!\nユーザーが購入フローをキャンセルしたことが原因です。</translation>
+<translation id="3851978668258201962">エラー!!\n購入に失敗しました。</translation>
+<translation id="6452181791372256707">拒否</translation>
+<translation id="8030852056903932865">承認する</translation>
+<translation id="1597199892790541240">ガス料金</translation>
+<translation id="1634828734222219955">合計</translation>
+<translation id="7995708795274219641">金額 + ガス</translation>
+<translation id="1950052789869821983">トランザクション</translation>
+<translation id="6122742277607781713">ポートフォリオ</translation>
+<translation id="2805756323405976993">アプリ</translation>
+<translation id="6083912983861746409">ガス価格 (GWEI)</translation>
+<translation id="2499079593046817044">ガス制限 (GWEI)</translation>
+<translation id="6389441740143786465">共有ハブを無効にする</translation>
+<translation id="9065203028668620118">編集</translation>
+<translation id="473775607612524610">更新</translation>
+<translation id="479795390141144417">アカウントの更新に失敗しました。</translation>
+<translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
+<translation id="5045550434625856497">パスワードが正しくありません</translation>
+<translation id="1367951781824006909">ファイルを選択</translation>
+<translation id="8648684608605749476">プライベートモードでサードパーティの Cookie をブロックします</translation>
+<translation id="1118876217803190221">残高不足です</translation>
+<translation id="275990379543116961">ガス代のための資金が不足しています</translation>
+<translation id="3292453499915466604">不十分な流動性</translation>
+<translation id="3380365263193509176">不明なエラー</translation>
 </translationbundle>

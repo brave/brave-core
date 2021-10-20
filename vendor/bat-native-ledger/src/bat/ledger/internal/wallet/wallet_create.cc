@@ -8,9 +8,11 @@
 #include <utility>
 #include <vector>
 
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/constants.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -27,11 +29,21 @@ WalletCreate::WalletCreate(LedgerImpl* ledger) :
 WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  auto wallet = ledger_->wallet()->GetWallet(true);
+  bool corrupted = false;
+  auto wallet = ledger_->wallet()->GetWallet(&corrupted);
+
+  if (corrupted) {
+    BLOG(0, "Rewards wallet data is corrupted - generating a new wallet");
+    ledger_->database()->SaveEventLog(log::kWalletCorrupted, "");
+  }
+
   if (!wallet) {
-    BLOG(0, "Wallet does not exist and could not be created");
-    callback(type::Result::LEDGER_ERROR);
-    return;
+    wallet = type::BraveWallet::New();
+    wallet->recovery_seed = util::Security::GenerateSeed();
+    if (!ledger_->wallet()->SetWallet(wallet->Clone())) {
+      callback(type::Result::LEDGER_ERROR);
+      return;
+    }
   }
 
   if (!wallet->payment_id.empty()) {

@@ -209,4 +209,73 @@ void AssetRatioController::OnGetPriceHistory(
   std::move(callback).Run(true, std::move(values));
 }
 
+// static
+GURL AssetRatioController::GetEstimatedTimeURL(const std::string& gas_price) {
+  std::string spec = base::StringPrintf(
+      "%sv2/etherscan/"
+      "passthrough?module=gastracker&action=gasestimate&gasprice=%s",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str(),
+      gas_price.c_str());
+  return GURL(spec);
+}
+
+// static
+GURL AssetRatioController::GetGasOracleURL() {
+  std::string spec = base::StringPrintf(
+      "%sv2/etherscan/passthrough?module=gastracker&action=gasoracle",
+      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
+                                    : base_url_for_test_.spec().c_str());
+  return GURL(spec);
+}
+
+void AssetRatioController::GetEstimatedTime(const std::string& gas_price,
+                                            GetEstimatedTimeCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioController::OnGetEstimatedTime,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_.Request("GET", GetEstimatedTimeURL(gas_price), "", "",
+                              true, std::move(internal_callback));
+}
+
+void AssetRatioController::OnGetEstimatedTime(
+    GetEstimatedTimeCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  const std::string seconds = ParseEstimatedTime(body);
+  if (seconds.empty()) {
+    std::move(callback).Run(false, "");
+    return;
+  }
+
+  std::move(callback).Run(true, seconds);
+}
+
+void AssetRatioController::GetGasOracle(GetGasOracleCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&AssetRatioController::OnGetGasOracle,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  api_request_helper_.Request("GET", GetGasOracleURL(), "", "", true,
+                              std::move(internal_callback));
+}
+
+void AssetRatioController::OnGetGasOracle(
+    GetGasOracleCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(ParseGasOracle(body));
+}
+
 }  // namespace brave_wallet

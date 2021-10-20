@@ -1,50 +1,50 @@
 import { AppsListType } from '../constants/types'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 const compoundIcon = require('../assets/app-icons/compound-icon.png')
 const makerIcon = require('../assets/app-icons/maker-icon.jpeg')
 const aaveIcon = require('../assets/app-icons/aave-icon.jpeg')
 const openSeaIcon = require('../assets/app-icons/opensea-icon.png')
 const raribleIcon = require('../assets/app-icons/rarible-icon.png')
 
-export const AppsList: AppsListType[] = [
+export const AppsList = (): AppsListType[] => [
   {
-    category: locale.defiCategory,
-    categoryButtonText: locale.defiButtonText,
+    category: getLocale('braveWalletDefiCategory'),
+    categoryButtonText: getLocale('braveWalletDefiButtonText'),
     appList: [
       {
-        name: locale.compoundName,
-        description: locale.compoundDescription,
-        url: locale.compoundUrl,
+        name: getLocale('braveWalletCompoundName'),
+        description: getLocale('braveWalletCompoundDescription'),
+        url: '',
         icon: compoundIcon
       },
       {
-        name: locale.makerName,
-        description: locale.makerDescription,
-        url: locale.makerUrl,
+        name: getLocale('braveWalletMakerName'),
+        description: getLocale('braveWalletMakerDescription'),
+        url: '',
         icon: makerIcon
       },
       {
-        name: locale.aaveName,
-        description: locale.aaveDescription,
-        url: locale.aaveUrl,
+        name: getLocale('braveWalletAaveName'),
+        description: getLocale('braveWalletAaveDescription'),
+        url: '',
         icon: aaveIcon
       }
     ]
   },
   {
-    category: locale.nftCategory,
-    categoryButtonText: locale.nftButtonText,
+    category: getLocale('braveWalletNftCategory'),
+    categoryButtonText: getLocale('braveWalletNftButtonText'),
     appList: [
       {
-        name: locale.openSeaName,
-        description: locale.openSeaDescription,
-        url: locale.openSeaUrl,
+        name: getLocale('braveWalletOpenSeaName'),
+        description: getLocale('braveWalletOpenSeaDescription'),
+        url: '',
         icon: openSeaIcon
       },
       {
-        name: locale.raribleName,
-        description: locale.raribleDescription,
-        url: locale.raribleUrl,
+        name: getLocale('braveWalletRaribleName'),
+        description: getLocale('braveWalletRaribleDescription'),
+        url: '',
         icon: raribleIcon
       }
     ]

@@ -28,7 +28,7 @@ class EthPendingTxTracker {
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
 
-  void UpdatePendingTransactions();
+  bool UpdatePendingTransactions(size_t* num_pending);
   void ResubmitPendingTransactions();
 
  private:

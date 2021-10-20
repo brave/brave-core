@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 import { EthereumChain } from '../../../constants/types'
 import { TransactionPopup } from '../'
 // Styled Components
@@ -48,7 +49,7 @@ const PortfolioAccountItem = (props: Props) => {
       const url = `${exporerURL}/address/${address}`
       window.open(url, '_blank')
     } else {
-      alert(locale.transactionExplorerMissing)
+      alert(getLocale('braveWalletTransactionExplorerMissing'))
     }
   }
 
@@ -66,7 +67,7 @@ const PortfolioAccountItem = (props: Props) => {
     <StyledWrapper onClick={onHideTransactionPopup}>
       <NameAndIcon>
         <AccountCircle orb={orb} />
-        <Tooltip text={locale.toolTipCopyToClipboard}>
+        <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
           <AccountAndAddress onClick={onCopyToClipboard}>
             <AccountName>{name}</AccountName>
             <AccountAddress>{reduceAddress(address)}</AccountAddress>
@@ -75,8 +76,8 @@ const PortfolioAccountItem = (props: Props) => {
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
-          <FiatBalanceText>${fiatBalance}</FiatBalanceText>
-          <AssetBalanceText>{assetBalance} {assetTicker}</AssetBalanceText>
+          <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+          <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {assetTicker}</AssetBalanceText>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>
           <MoreIcon />

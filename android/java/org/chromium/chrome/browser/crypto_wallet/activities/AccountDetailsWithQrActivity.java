@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.MenuItem;
@@ -34,16 +35,18 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
 
     private ImageView qrCodeImage;
 
-    private String address;
-    private String name;
+    private String mAddress;
+    private String mName;
+    private boolean mIsImported;
 
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_details_with_qr);
 
         if (getIntent() != null) {
-            address = getIntent().getStringExtra("address");
-            name = getIntent().getStringExtra("name");
+            mAddress = getIntent().getStringExtra(Utils.ADDRESS);
+            mName = getIntent().getStringExtra(Utils.NAME);
+            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -52,19 +55,32 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         getSupportActionBar().setTitle(getResources().getString(R.string.account_details));
 
         qrCodeImage = findViewById(R.id.qr_code_image);
-        fillQrCode(address);
+        fillQrCode(mAddress);
 
         TextView accountValueText = findViewById(R.id.account_value_text);
-        accountValueText.setText(address);
+        accountValueText.setText(Utils.stripAccountAddress(mAddress));
 
         ImageView accountCopyImage = findViewById(R.id.account_copy_image);
-        accountCopyImage.setOnClickListener(v
-                -> Utils.saveTextToClipboard(
-                        AccountDetailsWithQrActivity.this, accountValueText.getText().toString()));
+        accountCopyImage.setOnClickListener(
+                v -> Utils.saveTextToClipboard(AccountDetailsWithQrActivity.this, mAddress));
 
         EditText accountNameText = findViewById(R.id.account_name_text);
-        accountNameText.setText(name);
+        accountNameText.setText(mName);
         accountNameText.setEnabled(false);
+
+        TextView privateKeyText = findViewById(R.id.account_private_key_text);
+        if (mIsImported) {
+            privateKeyText.setVisibility(View.GONE);
+        }
+        privateKeyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountPrivateKeyActivityIntent = new Intent(
+                        AccountDetailsWithQrActivity.this, AccountPrivateKeyActivity.class);
+                accountPrivateKeyActivityIntent.putExtra(Utils.ADDRESS, mAddress);
+                startActivity(accountPrivateKeyActivityIntent);
+            }
+        });
 
         onInitialLayoutInflationComplete();
     }

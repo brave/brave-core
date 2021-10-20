@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import locale from '../../../../../constants/locale'
+import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 
 // Styled Components
@@ -39,6 +39,7 @@ const derivationBatch = 4
 export default function (props: Props) {
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<string>(kLedgerHardwareVendor)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
+  const [isConnected, setIsConnected] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<Array<HardwareWalletAccount>>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
   const [connectionError, setConnectionError] = React.useState<string>('')
@@ -48,10 +49,10 @@ export default function (props: Props) {
 
   const getErrorMessage = (error: any) => {
     if (error.statusCode && error.statusCode === 27404) {
-      return locale.connectHardwareInfo3
+      return getLocale('braveWalletConnectHardwareInfo3')
     }
     if (!error || !error.message) {
-      return locale.unknownInternalError
+      return getLocale('braveWalletUnknownInternalError')
     }
     return error.message
   }
@@ -66,13 +67,15 @@ export default function (props: Props) {
       scheme: scheme
     }).then((result) => {
       setAccounts(result)
+      setIsConnected(true)
     }).catch((error) => {
+      setIsConnecting(false)
       setConnectionError(getErrorMessage(error))
     })
   }
+
   const onConnectHardwareWallet = (hardware: string) => {
     setIsConnecting(true)
-
     props.onConnectHardwareWallet({
       hardware,
       startIndex: accounts.length,
@@ -80,9 +83,11 @@ export default function (props: Props) {
       scheme: selectedDerivationScheme
     }).then((result) => {
       setAccounts([...accounts, ...result])
+      setIsConnected(true)
       setIsConnecting(false)
     }).catch((error) => {
       setConnectionError(getErrorMessage(error))
+      setIsConnected(false)
       setIsConnecting(false)
     })
   }
@@ -110,7 +115,7 @@ export default function (props: Props) {
     console.error(connectionError)
   }
 
-  if (accounts.length > 0) {
+  if (isConnected) {
     return (
       <HardwareWalletAccountsList
         hardwareWallet={selectedHardwareWallet}
@@ -128,7 +133,7 @@ export default function (props: Props) {
 
   return (
     <>
-      <HardwareTitle>{locale.connectHardwareTitle}</HardwareTitle>
+      <HardwareTitle>{getLocale('braveWalletConnectHardwareTitle')}</HardwareTitle>
       <HardwareButtonRow>
         <HardwareButton onClick={onSelectLedger} isSelected={selectedHardwareWallet === kLedgerHardwareVendor}>
           <LedgerIcon />
@@ -141,21 +146,21 @@ export default function (props: Props) {
         <InfoIcon />
         <HardwareInfoColumn>
           <DisclaimerText>
-            {locale.connectHardwareInfo1} {selectedHardwareWallet} {locale.connectHardwareInfo2}
+            {getLocale('braveWalletConnectHardwareInfo1')} {selectedHardwareWallet} {getLocale('braveWalletConnectHardwareInfo2')}
           </DisclaimerText>
-          <DisclaimerText>{locale.connectHardwareInfo3}</DisclaimerText>
+          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo3')}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
       {connectionError !== '' &&
-              <ErrorText>{connectionError}</ErrorText>
-            }
+        <ErrorText>{connectionError}</ErrorText>
+      }
 
       {isConnecting ? (
         <ConnectingButton>
-          <ConnectingButtonText>{locale.connectingHardwareWallet}</ConnectingButtonText>
+          <ConnectingButtonText>{getLocale('braveWalletConnectingHardwareWallet')}</ConnectingButtonText>
         </ConnectingButton>
       ) : (
-        <NavButton onSubmit={onSubmit} text={locale.addAccountConnect} buttonType='primary' />
+        <NavButton onSubmit={onSubmit} text={getLocale('braveWalletAddAccountConnect')} buttonType='primary' />
       )}
     </>
   )

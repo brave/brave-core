@@ -65,6 +65,7 @@ bool GetTransactionInfoFromData(const std::string& data,
   static std::map<std::string, mojom::TransactionType> kEthDataFunctionHashes =
       {{"0xa9059cbb", mojom::TransactionType::ERC20Transfer},
        {"0x095ea7b3", mojom::TransactionType::ERC20Approve},
+       {"0x23b872dd", mojom::TransactionType::ERC721TransferFrom},
        {"0x70a08231", mojom::TransactionType::Other}};
 
   if (data.empty() || data == "0x0") {
@@ -104,6 +105,34 @@ bool GetTransactionInfoFromData(const std::string& data,
     }
 
     if (tx_params) {
+      tx_params->push_back("address");
+      tx_params->push_back("uint256");
+    }
+  } else if (*tx_type == mojom::TransactionType::ERC721TransferFrom) {
+    std::string from, to, token_id;
+    std::string left_over_data = data.substr(10);
+    // Intentional copy of left_over_data
+    if (!GetAddressArgFromData(std::string(left_over_data), &from,
+                               &left_over_data))
+      return false;
+    if (!GetAddressArgFromData(std::string(left_over_data), &to,
+                               &left_over_data))
+      return false;
+    if (!GetUint256HexFromData(std::string(left_over_data), &token_id,
+                               &left_over_data))
+      return false;
+    // Very strictly must have correct data
+    if (left_over_data.length() > 0)
+      return false;
+
+    if (tx_args) {
+      tx_args->push_back(from);
+      tx_args->push_back(to);
+      tx_args->push_back(token_id);
+    }
+
+    if (tx_params) {
+      tx_params->push_back("address");
       tx_params->push_back("address");
       tx_params->push_back("uint256");
     }

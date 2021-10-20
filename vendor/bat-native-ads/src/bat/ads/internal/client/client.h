@@ -90,16 +90,17 @@ class Client final {
 
   void UpdateSeenAd(const AdInfo& ad);
   const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);
-  void ResetSeenAdsForType(const CreativeAdList& ads, const AdType& type);
+  void ResetSeenAdsForType(const CreativeAdList& creative_ads,
+                           const AdType& type);
   void ResetAllSeenAdsForType(const AdType& type);
   const std::map<std::string, bool>& GetSeenAdvertisersForType(
       const AdType& type);
-  void ResetSeenAdvertisersForType(const CreativeAdList& ads,
+  void ResetSeenAdvertisersForType(const CreativeAdList& creative_ads,
                                    const AdType& type);
   void ResetAllSeenAdvertisersForType(const AdType& type);
 
-  void SetServeNextAdAt(const base::Time& time);
-  base::Time GetServeNextAdAt();
+  void SetServeAdAt(const base::Time& time);
+  base::Time GetServeAdAt();
 
   void AppendTextClassificationProbabilitiesToHistory(
       const ad_targeting::TextClassificationProbabilitiesMap& probabilities);

@@ -73,6 +73,7 @@ class BraveVpnServiceDesktop
   void GetDeviceRegion(GetDeviceRegionCallback callback) override;
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(brave_vpn::mojom::RegionPtr region) override;
+  void GetProductUrls(GetProductUrlsCallback callback) override;
 
  private:
   friend class BraveAppMenuBrowserTest;

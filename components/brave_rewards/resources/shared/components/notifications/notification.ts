@@ -14,8 +14,7 @@ export type NotificationType =
   'pending-publisher-verified' |
   'pending-tip-failed' |
   'external-wallet-verified' |
-  'external-wallet-disconnected' |
-  'external-wallet-linking-failed'
+  'external-wallet-disconnected'
 
 export interface Notification {
   type: NotificationType
@@ -57,18 +56,6 @@ export interface ExternalWalletVerifiedNotification extends Notification {
 export interface ExternalWalletDisconnectedNotification extends Notification {
   type: 'external-wallet-disconnected'
   provider: ExternalWalletProvider
-}
-
-export interface ExternalWalletLinkingFailedNotification extends Notification {
-  type: 'external-wallet-linking-failed'
-  provider: ExternalWalletProvider
-  reason:
-    'device-limit-reached' |
-    'mismatched-provider-accounts' |
-    'uphold-bat-not-supported' |
-    'uphold-user-blocked' |
-    'uphold-user-pending' |
-    'uphold-user-restricted'
 }
 
 export type NotificationActionType =

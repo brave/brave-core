@@ -2,7 +2,7 @@ import * as React from 'react'
 import { UserAccountType } from '../../../constants/types'
 import { SearchBar, SelectAccount } from '../../shared'
 import Header from '../../buy-send-swap/select-header'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   SelectWrapper,
@@ -12,11 +12,13 @@ import {
 export interface Props {
   accounts: UserAccountType[]
   onSelectAccount: (account: UserAccountType) => () => void
+  onAddAccount?: () => void
+  hasAddButton?: boolean
   onBack: () => void
 }
 
 function SelectAccountWithHeader (props: Props) {
-  const { accounts, onSelectAccount, onBack } = props
+  const { accounts, onSelectAccount, onBack, onAddAccount, hasAddButton } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<UserAccountType[]>(accounts)
 
   const filterAccountList = (event: any) => {
@@ -36,8 +38,13 @@ function SelectAccountWithHeader (props: Props) {
 
   return (
     <SelectWrapper>
-      <Header title={locale.selectAccount} onBack={onBack} />
-      <SearchBar placeholder={locale.searchAccount} action={filterAccountList} />
+      <Header
+        title={getLocale('braveWalletSelectAccount')}
+        onBack={onBack}
+        onAddAccount={onAddAccount}
+        hasAddButton={hasAddButton}
+      />
+      <SearchBar placeholder={getLocale('braveWalletSearchAccount')} action={filterAccountList} />
       <SelectScrollSearchContainer>
         <SelectAccount
           accounts={filteredAccountList}

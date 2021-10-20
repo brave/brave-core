@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "base/time/time.h"
 #include "base/system/sys_info.h"
+#include "base/time/time.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_stats {
@@ -29,6 +29,17 @@ int GetIsoWeekNumber(const base::Time& time);
 base::Time GetYMDAsDate(const base::StringPiece& ymd);
 
 std::string GetAPIKey();
+
+enum : uint8_t {
+  kIsInactiveUser = 0,
+  kIsDailyUser = (1 << 0),
+  kIsWeeklyUser = (1 << 1),
+  kIsMonthlyUser = (1 << 2),
+};
+
+uint8_t UsageBitstringFromTimestamp(
+    const base::Time& time,
+    const base::Time& reference = base::Time::Now());
 
 }  // namespace brave_stats
 

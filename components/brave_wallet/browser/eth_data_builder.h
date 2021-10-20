@@ -19,14 +19,30 @@ namespace erc20 {
 bool Transfer(const std::string& to_address,
               uint256_t amount,
               std::string* data);
-// Returns the balance of an  address
+// Returns the balance of an address
 bool BalanceOf(const std::string& address, std::string* data);
 // Approves the use of funds to an address
 bool Approve(const std::string& spender_address,
              uint256_t amount,
              std::string* data);
+bool Allowance(const std::string& owner_address,
+               const std::string& spender_address,
+               std::string* data);
 
 }  // namespace erc20
+
+namespace erc721 {
+
+// Transfer ownership of an NFT.
+bool TransferFrom(const std::string& from,
+                  const std::string& to,
+                  uint256_t token_id,
+                  std::string* data);
+
+// Find the owner of an NFT.
+bool OwnerOf(uint256_t token_id, std::string* data);
+
+}  // namespace erc721
 
 namespace unstoppable_domains {
 
@@ -35,12 +51,18 @@ bool GetMany(const std::vector<std::string>& keys,
              const std::string& domain,
              std::string* data);
 
+// Get the value of the key for the target domain.
+bool Get(const std::string& key, const std::string& domain, std::string* data);
+
 }  // namespace unstoppable_domains
 
 namespace ens {
 
-bool GetResolverAddress(const std::string& domain, std::string* data);
-bool GetContentHashAddress(const std::string& domain, std::string* data);
+bool Resolver(const std::string& domain, std::string* data);
+bool ContentHash(const std::string& domain, std::string* data);
+
+// Get Ethereum address from an ENS name.
+bool Addr(const std::string& domain, std::string* data);
 
 }  // namespace ens
 

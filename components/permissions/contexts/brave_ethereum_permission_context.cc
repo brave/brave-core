@@ -195,6 +195,12 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
     return;
   }
 
+  // Fail if there is no last committed URL yet
+  if (web_contents->GetMainFrame()->GetLastCommittedURL().is_empty()) {
+    std::move(callback).Run(true, std::vector<std::string>());
+    return;
+  }
+
   permissions::PermissionManager* permission_manager =
       permissions::PermissionsClient::Get()->GetPermissionManager(
           web_contents->GetBrowserContext());

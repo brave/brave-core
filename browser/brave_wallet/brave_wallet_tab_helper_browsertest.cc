@@ -82,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
                        DoNotHidePanelIfRequestedHIDPermissions) {
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
@@ -108,7 +108,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
                        HidePanelWhenOthersRequestedHIDPermissions) {
   GURL url =
       https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);

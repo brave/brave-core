@@ -16,6 +16,7 @@ import {
 
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { getLocale } from '../../../common/locale'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -33,7 +34,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
       try {
         if (!this.isUnlocked() && !(await this.unlock())) {
-          return reject(new Error())
+          return reject(new Error(getLocale('braveWalletUnlockError')))
         }
       } catch (e) {
         reject(e)
@@ -52,24 +53,38 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       return this.app
     }
     this.app = new Eth(await TransportWebHID.create())
+    if (this.app) {
+      const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+      const address = await this._getAddress(zeroPath)
+      this.deviceId_ = await this._getDeviceId(address)
+    }
     return this.isUnlocked()
   }
 
   signTransaction = async (path: string, rawTxHex: string) => {
     if (!this.isUnlocked() && !(await this.unlock())) {
-      return new Error('Unable to unlock device, try to reconnect')
+      return new Error(getLocale('braveWalletUnlockError'))
     }
     return this.app.signTransaction(path, rawTxHex)
   }
 
   /* PRIVATE METHODS */
+  _getDeviceId = async (address: string) => {
+    const utf8 = new TextEncoder()
+    const msgBuffer = utf8.encode(address)
+    const hashBuffer = await Promise.resolve(crypto.subtle.digest('SHA-256', msgBuffer))
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashHex
+  }
+
   _getPathForIndex = (index: number, scheme: string) => {
     if (scheme === LedgerDerivationPaths.LedgerLive) {
       return `m/44'/60'/${index}'/0/0`
     } else if (scheme === LedgerDerivationPaths.Legacy) {
       return `m/44'/60'/${index}'/0`
     } else {
-      throw Error('Unknown scheme')
+      throw Error(getLocale('braveWalletDeviceUnknownScheme'))
     }
   }
 
@@ -88,8 +103,9 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       accounts.push({
         address: address.address,
         derivationPath: path,
-        name: this.type() + ' ' + i,
-        hardwareVendor: this.type()
+        name: this.type(),
+        hardwareVendor: this.type(),
+        deviceId: this.deviceId_
       })
     }
     return accounts

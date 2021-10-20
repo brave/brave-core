@@ -1,8 +1,5 @@
 import styled from 'styled-components'
-
-interface StyleProps {
-  icon: string
-}
+import { AssetIconProps, AssetIconFactory } from '../../shared/style'
 
 export const StyledWrapper = styled.button`
   display: flex;
@@ -55,11 +52,12 @@ export const AssetBalanceText = styled.span`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const AssetIcon = styled.div<StyleProps>`
-  width: 40px;
-  height: 40px;
-  border-radius: 100%;
-  background: no-repeat ${(p) => p.icon ? `url(${p.icon})` : p.theme.color.background01};
-  background-size: 40px;
-  margin-right: 8px;
-`
+// Construct styled-component using JS object instead of string, for editor
+// support with custom AssetIconFactory.
+//
+// Ref: https://styled-components.com/docs/advanced#style-objects
+export const AssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: '40px',
+  marginRight: '8px'
+})

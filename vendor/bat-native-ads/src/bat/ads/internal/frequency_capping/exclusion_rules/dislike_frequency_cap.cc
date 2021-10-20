@@ -15,11 +15,11 @@ DislikeFrequencyCap::DislikeFrequencyCap() = default;
 
 DislikeFrequencyCap::~DislikeFrequencyCap() = default;
 
-bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  if (!DoesRespectCap(ad)) {
+bool DislikeFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  if (!DoesRespectCap(creative_ad)) {
     last_message_ =
         base::StringPrintf("creativeSetId %s excluded due to being disliked",
-                           ad.creative_set_id.c_str());
+                           creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -31,17 +31,17 @@ std::string DislikeFrequencyCap::GetLastMessage() const {
   return last_message_;
 }
 
-bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& ad) {
+bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const FilteredAdList filtered_ads = Client::Get()->GetFilteredAds();
   if (filtered_ads.empty()) {
     return true;
   }
 
-  const auto iter =
-      std::find_if(filtered_ads.begin(), filtered_ads.end(),
-                   [&ad](const FilteredAdInfo& filtered_ad) {
-                     return filtered_ad.creative_set_id == ad.creative_set_id;
-                   });
+  const auto iter = std::find_if(
+      filtered_ads.begin(), filtered_ads.end(),
+      [&creative_ad](const FilteredAdInfo& filtered_ad) {
+        return filtered_ad.creative_set_id == creative_ad.creative_set_id;
+      });
 
   if (iter == filtered_ads.end()) {
     return true;

@@ -12,6 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/values.h"
+#include "bat/ads/internal/logging.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -39,10 +40,11 @@ bool GetArmFromDictionary(const base::DictionaryValue* dictionary,
   EpsilonGreedyBanditArmInfo arm;
 
   const std::string* segment = dictionary->FindStringKey(kSegmentKey);
-  if (!segment) {
+  if (!segment || segment->empty()) {
     return false;
   }
   arm.segment = *segment;
+  DCHECK(!arm.segment.empty());
 
   arm.pulls = dictionary->FindIntKey(kPullsKey).value_or(0);
 
@@ -62,26 +64,36 @@ EpsilonGreedyBanditArmMap GetArmsFromDictionary(
     return arms;
   }
 
+  bool found_errors = false;
   for (const auto value : dictionary->DictItems()) {
+    if (value.first.empty()) {
+      found_errors = true;
+      continue;
+    }
+
     if (!value.second.is_dict()) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     const base::DictionaryValue* arm_dictionary = nullptr;
     value.second.GetAsDictionary(&arm_dictionary);
     if (!arm_dictionary) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     EpsilonGreedyBanditArmInfo arm;
     if (!GetArmFromDictionary(arm_dictionary, &arm)) {
-      NOTREACHED();
+      found_errors = true;
       continue;
     }
 
     arms[value.first] = arm;
+  }
+
+  if (found_errors) {
+    BLOG(0, "Errors detected when parsing epsilon greedy bandit arms");
   }
 
   return arms;

@@ -28,7 +28,6 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
                                  chrome::startup::IsFirstRun is_first_run);
 
   bool Launch(Profile* profile,
-              const std::vector<GURL>& urls_to_open,
               bool process_startup,
               std::unique_ptr<LaunchModeRecorder> launch_mode_recorder);
 };
@@ -56,41 +55,22 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 // won't be launched.
 bool BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
-    const std::vector<GURL>& urls_to_open,
     bool process_startup,
     std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
-  std::vector<GURL> revised_urls_to_open = urls_to_open;
-#if defined(OS_WIN)
-  for (const std::wstring& arg : command_line_.GetArgs()) {
-    // Fetch url from command line args if it includes microsoft-edge protocol
-    // and url is delivered.
-    absl::optional<GURL> url = GetURLFromMSEdgeProtocol(arg);
-    if (!url)
-      continue;
-    if (url->is_valid())
-      revised_urls_to_open.push_back(std::move(*url));
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
   if (StartupBrowserCreatorImpl::command_line_.HasSwitch(switches::kTor)) {
     LOG(INFO) << "Switching to Tor profile and starting Tor service.";
     profile = TorProfileManager::GetInstance().GetTorProfile(profile);
 
-    // Call GetURLsFromCommandLine so that if one runs
-    //   brave-browser --tor "? search query"
-    // the search query is not passed to the default search engine of the
-    // regular profile.
-    const std::vector<GURL>& my_urls_to_open =
-        GetURLsFromCommandLine(command_line_, cur_dir_, profile);
-    return StartupBrowserCreatorImpl::Launch(profile, my_urls_to_open,
-                                             process_startup,
+    // Call StartupBrowserCreatorImpl::Launch() with the Tor profile so that if
+    // one runs brave-browser --tor "? search query" the search query is not
+    // passed to the default search engine of the regular profile.
+    return StartupBrowserCreatorImpl::Launch(profile, process_startup,
                                              std::move(launch_mode_recorder));
   }
 #endif
 
-  return StartupBrowserCreatorImpl::Launch(profile, revised_urls_to_open,
-                                           process_startup,
+  return StartupBrowserCreatorImpl::Launch(profile, process_startup,
                                            std::move(launch_mode_recorder));
 }
 

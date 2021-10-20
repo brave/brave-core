@@ -19,6 +19,26 @@
     "message": "تحديث الحالة",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "ستبقى أي نصيحة تقدمها معلقة في محفظتك وستعيد المحاولة تلقائيًا لمدة 90 يومًا.$link_begin$معرفة المزيد$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "لم يتم تسجيل هذا المنشئ بعد.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "لم يتم تكوين هذا المنشئ حاليًا لتلقي نصائح من محفظتك.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ على $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "سيصل $amount$ في $days$",
+    "message": "سيصل $amount$ في$days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "رفض",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "مع Brave Rewards ، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "تشغيل المكافآت",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "من خلال الضغط، فستوافق على$tos_link_begin$شروط الخدمة$tos_link_end$و$pp_link_begin$سياسة الخصوصية$pp_link_end$. يمكنك تعطيل هذه الميزة في أي وقت من \"الإعدادات\".",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حوّل هذه الرموز إلى نقود أو بطاقات هدايا ... أو حتى بقشيش للمواقع التي تحبها. لا نتبع سياسة التعقب أو التباطؤ.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "تشغيل Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "من خلال تشغيل \"الإعلانات\"، فستوافق على $tos_link_begin$شروط الخدمة$tos_link_end$و$pp_link_begin$سياسة الخصوصية$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "يمكنك إجراء مكالمة مجانية الآن",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "انقر على أي مكان في الشاشة لمواصلة التواجد في Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "هل تريد معرفة المزيد عن Brave Rewards؟ $tour_link_begin$يمكنك التنقل في جولة $tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

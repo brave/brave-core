@@ -38,6 +38,24 @@ void OnGetPriceHistory(
   *callback_run = true;
 }
 
+void OnGetEstimatedTime(bool* callback_run,
+                        bool expected_success,
+                        const std::string& expected_result,
+                        bool success,
+                        const std::string& result) {
+  EXPECT_EQ(expected_success, success);
+  EXPECT_EQ(expected_result, result);
+  *callback_run = true;
+}
+
+void OnGetGasOracle(
+    bool* callback_run,
+    brave_wallet::mojom::GasEstimation1559Ptr expected_estimation,
+    brave_wallet::mojom::GasEstimation1559Ptr estimation) {
+  EXPECT_EQ(expected_estimation, estimation);
+  *callback_run = true;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -69,7 +87,7 @@ class AssetRatioControllerUnitTest : public testing::Test {
 
   void SetErrorInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&](const network::ResourceRequest& request) {
+        [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           net::HTTP_REQUEST_TIMEOUT);
@@ -260,6 +278,109 @@ TEST_F(AssetRatioControllerUnitTest, GetPriceHistoryUnexpectedResponse) {
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
 
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetEstimatedTime) {
+  SetInterceptor(R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "",
+        "result": "3615"
+      },
+      "lastUpdated": "2021-09-22T21:45:40.015Z"
+    }
+  )");
+
+  bool callback_run = false;
+  asset_ratio_controller_->GetEstimatedTime(
+      "2000000000",
+      base::BindOnce(&OnGetEstimatedTime, &callback_run, true, "3615"));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetEstimatedTimeEmptyResult) {
+  SetInterceptor(R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "",
+        "result": ""
+      },
+      "lastUpdated": "2021-09-22T21:45:40.015Z"
+    }
+  )");
+
+  bool callback_run = false;
+  asset_ratio_controller_->GetEstimatedTime(
+      "2000000000",
+      base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetEstimatedTimeServerError) {
+  SetErrorInterceptor("error");
+  bool callback_run = false;
+  asset_ratio_controller_->GetEstimatedTime(
+      "2000000000",
+      base::BindOnce(&OnGetEstimatedTime, &callback_run, false, ""));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetGasOracle) {
+  SetInterceptor(R"(
+    {
+      "payload": {
+        "status": "1",
+        "message": "",
+        "result": {
+          "LastBlock": "13243541",
+          "SafeGasPrice": "47",
+          "ProposeGasPrice": "48",
+          "FastGasPrice": "49",
+          "suggestBaseFee": "46.574033786",
+          "gasUsedRatio": "0.27036175840958,0.0884828740801432,0.0426623303159149,0.972173412918789,0.319781207901446"
+        }
+      },
+      "lastUpdated": "2021-09-22T21:45:40.015Z"
+    }
+  )");
+
+  bool callback_run = false;
+  brave_wallet::mojom::GasEstimation1559Ptr expected_estimation =
+      brave_wallet::mojom::GasEstimation1559::New(
+          "0x3b9aca00" /* Hex of 1 * 1e9 */,
+          "0xaf16b1600" /* Hex of 47 * 1e9 */,
+          "0x77359400" /* Hex of 2 * 1e9 */,
+          "0xb2d05e000" /* Hex of 48 * 1e9 */,
+          "0xb2d05e00" /* Hex of 3 * 1e9 */,
+          "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+          "0xad8075b7a" /* Hex of 46574033786 */);
+  asset_ratio_controller_->GetGasOracle(base::BindOnce(
+      &OnGetGasOracle, &callback_run, std::move(expected_estimation)));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetGasOracleUnexpectedResponse) {
+  SetInterceptor("unexpected response");
+  bool callback_run = false;
+  asset_ratio_controller_->GetGasOracle(
+      base::BindOnce(&OnGetGasOracle, &callback_run, nullptr));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_run);
+}
+
+TEST_F(AssetRatioControllerUnitTest, GetGasOracleServerError) {
+  SetErrorInterceptor("error");
+  bool callback_run = false;
+  asset_ratio_controller_->GetGasOracle(
+      base::BindOnce(&OnGetGasOracle, &callback_run, nullptr));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }

@@ -10,6 +10,7 @@
 #include "base/guid.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -82,6 +83,8 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
   std::string chain_id;
   std::string max_priority_fee_per_gas;
   std::string max_fee_per_gas;
+
+  mojom::GasEstimation1559Ptr gas_estimation_1559_ptr = nullptr;
   if (meta.tx->type() == 1) {
     // When type is 1 it's always Eip2930Transaction
     auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta.tx.get());
@@ -93,6 +96,9 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());
     max_fee_per_gas = Uint256ValueToHex(tx1559->max_fee_per_gas());
+    gas_estimation_1559_ptr =
+        Eip1559Transaction::GasEstimation::ToMojomGasEstimation1559(
+            tx1559->gas_estimation());
   }
 
   mojom::TransactionType tx_type;
@@ -114,8 +120,12 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
               Uint256ValueToHex(meta.tx->gas_price()),
               Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
-          chain_id, max_priority_fee_per_gas, max_fee_per_gas),
-      meta.status, tx_type, tx_params, tx_args);
+          chain_id, max_priority_fee_per_gas, max_fee_per_gas,
+          std::move(gas_estimation_1559_ptr)),
+      meta.status, tx_type, tx_params, tx_args,
+      base::TimeDelta::FromMilliseconds(meta.created_time.ToJavaTime()),
+      base::TimeDelta::FromMilliseconds(meta.submitted_time.ToJavaTime()),
+      base::TimeDelta::FromMilliseconds(meta.confirmed_time.ToJavaTime()));
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(

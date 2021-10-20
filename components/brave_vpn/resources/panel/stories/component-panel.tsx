@@ -1,19 +1,14 @@
 import { select } from '@storybook/addon-knobs'
 import * as React from 'react'
-import * as S from './style'
-
+import { createStore } from 'redux'
+import { Provider as ReduxProvider } from 'react-redux'
 // Components
-import MainPanel from '../components/main-panel'
+import * as S from './style'
+import { ConnectionState } from '../api/panel_browser_api'
+import { mockRegionList } from './mock-data/region-list'
 import ErrorPanel from '../components/error-panel'
-import SelectRegion from '../components/select-region'
-import { ConnectionState } from '../types/connection_state'
-
-const statusOptions = {
-  'Disconnected': ConnectionState.DISCONNECTED,
-  'Connecting': ConnectionState.CONNECTING,
-  'Disconnecting': ConnectionState.DISCONNECTING,
-  'Connected': ConnectionState.CONNECTED
-}
+import SelectRegionList from '../components/select-region-list'
+import MainPanel from '../components/main-panel'
 
 export default {
   title: 'VPN/Panels',
@@ -22,54 +17,48 @@ export default {
   },
   argTypes: {
     locked: { control: { type: 'boolean', lock: false } }
-  }
+  },
+  decorators: [
+    (Story: any) => {
+      // We're not adding a reducer here because UI in storybook
+      // shouldn't trigger any actions therefore shouldn't modify any state
+      const store = createStore(state => state, {
+        hasError: false,
+        isSelectingRegion: false,
+        connectionStatus: select('Current Status', ConnectionState, ConnectionState.DISCONNECTED),
+        regions: mockRegionList,
+        currentRegion: mockRegionList[2]
+      })
+
+      return (
+        <ReduxProvider store={store}>
+          <Story />
+        </ReduxProvider>
+      )
+    }
+  ]
 }
 
 export const _Main = () => {
-  const [isOn, setIsOn] = React.useState(false)
-  const handleToggleClick = () => setIsOn(state => !state)
-  const handleSelectRegionButtonClick = () => {/**/}
-
   return (
     <S.PanelFrame>
-      <MainPanel
-        isOn={isOn}
-        status={select('Current Status', statusOptions, ConnectionState.DISCONNECTED)}
-        region='Tokyo'
-        onToggleClick={handleToggleClick}
-        onSelectRegionButtonClick={handleSelectRegionButtonClick}
-      />
+      <MainPanel />
     </S.PanelFrame>
   )
 }
 
 export const _Error = () => {
-  const handleTryAgain = () => {
-    alert('Trying..')
-  }
-
-  const handleChooseServer = () => {
-    alert('Server selection panel')
-  }
-
   return (
     <S.PanelFrame>
-      <ErrorPanel
-        onTryAgainClick={handleTryAgain}
-        onChooseServerClick={handleChooseServer}
-        region='Tokyo'
-      />
+      <ErrorPanel />
     </S.PanelFrame>
   )
 }
 
 export const _SelectLocation = () => {
-  const onDone = () => {
-    alert('Going back')
-  }
   return (
     <S.PanelFrame>
-      <SelectRegion onDone={onDone} />
+      <SelectRegionList />
     </S.PanelFrame>
   )
 }

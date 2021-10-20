@@ -1,5 +1,3 @@
-import locale from '../../../../../constants/locale'
-
 import {
   kLedgerHardwareVendor,
   kTrezorHardwareVendor
@@ -15,8 +13,8 @@ export enum TrezorDerivationPaths {
 }
 
 export const HardwareWalletDerivationPathLocaleMapping = {
-  [LedgerDerivationPaths.LedgerLive]: locale.ledgerLiveDerivationPath,
-  [LedgerDerivationPaths.Legacy]: locale.ledgerLegacyDerivationPath,
+  [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',
+  [LedgerDerivationPaths.Legacy]: 'Legacy (MEW/MyCrypto)',
   [TrezorDerivationPaths.Default]: 'Default'
 }
 
@@ -43,4 +41,5 @@ export interface HardwareWalletAccount {
   derivationPath: string
   name: string
   hardwareVendor: string
+  deviceId: string
 }

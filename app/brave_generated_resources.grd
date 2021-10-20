@@ -891,6 +891,15 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
         '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
       </message>
+      <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
+        Reset Wallet
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
+        Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+      </message>
+      <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
+        Yes
+      </message>
       <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
         Import
       </message>
@@ -1162,6 +1171,25 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         </message>
         <message name="IDS_BRAVE_DEFAULT_BROWSER_DIALOG_CANCEL_BUTTON_LABEL" desc="The text for default browser dialog cancel button">
           Not now
+        </message>
+        <!-- Web Discovery dialog -->
+        <message name="IDS_WEB_DISCOVERY_DIALOG_HEADER_TEXT" desc="The text for web discovery dialog header">
+          Want to make Brave Search even better?
+        </message>
+        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT" desc="The text for web discovery dialog contents">
+          Opt in to the Web Discovery Project to anonymously contribute some search &amp; browsing data, and improve Brave Search results for all. Privacy-preserving. And zero effort. <ph name="LEARN_MORE_TEXT">$1<ex>Learn more</ex></ph>
+        </message>
+        <message name="IDS_WEB_DISCOVERY_DIALOG_CONTENTS_TEXT_LEARN_MORE_PART" desc="The text learn more link for web discovery dialog contents. This text should be same with above Learn more text in CONTENTS_TEXT">
+          Learn more
+        </message>
+        <message name="IDS_WEB_DISCOVERY_DIALOG_DONT_ASK_AGAIN_TEXT" desc="The text for disabling web discovery dialog checkbox">
+          Don't ask again
+        </message>
+        <message name="IDS_WEB_DISCOVERY_DIALOG_OK_BUTTON_TEXT" desc="The text for ok button">
+          Turn on
+        </message>
+        <message name="IDS_WEB_DISCOVERY_DIALOG_CANCEL_BUTTON_TEXT" desc="The text for cancel button">
+          No thanks
         </message>
         <!-- Brave crash report permission ask dialog -->
         <message name="IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_OK_BUTTON_LABEL" desc="The text for ok button">

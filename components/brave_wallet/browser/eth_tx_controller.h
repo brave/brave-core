@@ -9,6 +9,8 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_block_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_pending_tx_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -26,14 +28,19 @@ class SequencedTaskRunner;
 
 namespace brave_wallet {
 
+class AssetRatioController;
 class EthJsonRpcController;
 class KeyringController;
 
-class EthTxController : public KeyedService, public mojom::EthTxController {
+class EthTxController : public KeyedService,
+                        public mojom::EthTxController,
+                        public mojom::KeyringControllerObserver,
+                        public EthBlockTracker::Observer {
  public:
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
       KeyringController* keyring_controller,
+      AssetRatioController* asset_ratio_controller,
       std::unique_ptr<EthTxStateManager> tx_state_manager,
       std::unique_ptr<EthNonceTracker> nonce_tracker,
       std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
@@ -62,13 +69,27 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void MakeERC20ApproveData(const std::string& to_address,
                             const std::string& amount,
                             MakeERC20ApproveDataCallback) override;
+
+  void MakeERC721TransferFromData(const std::string& from,
+                                  const std::string& to,
+                                  const std::string& token_id,
+                                  MakeERC721TransferFromDataCallback) override;
+
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
+
   void SetGasPriceAndLimitForUnapprovedTransaction(
       const std::string& tx_meta_id,
       const std::string& gas_price,
       const std::string& gas_limit,
       SetGasPriceAndLimitForUnapprovedTransactionCallback callback) override;
+  void SetGasFeeAndLimitForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::string& max_priority_fee_per_gas,
+      const std::string& max_fee_per_gas,
+      const std::string& gas_limit,
+      SetGasFeeAndLimitForUnapprovedTransactionCallback callback) override;
+
   void ApproveHardwareTransaction(
       const std::string& tx_meta_id,
       ApproveHardwareTransactionCallback callback) override;
@@ -77,6 +98,7 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
                               const std::string& r,
                               const std::string& s,
                               ProcessLedgerSignatureCallback callback) override;
+
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
@@ -88,6 +110,8 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
       const std::string& tx_meta_id);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, TestSubmittedToConfirmed);
+
   void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
@@ -105,27 +129,59 @@ class EthTxController : public KeyedService, public mojom::EthTxController {
   void OnPublishTransaction(std::string tx_meta_id,
                             bool status,
                             const std::string& tx_hash);
-  void OnGetEstimateGas(const std::string& from,
-                        const std::string& gas_price,
-                        std::unique_ptr<EthTransaction> tx,
-                        AddUnapprovedTransactionCallback callback,
-                        bool success,
-                        const std::string& result);
+  void OnGetGasPrice(const std::string& from,
+                     const std::string& to,
+                     const std::string& value,
+                     const std::string& data,
+                     const std::string& gas_limit,
+                     std::unique_ptr<EthTransaction> tx,
+                     AddUnapprovedTransactionCallback callback,
+                     bool success,
+                     const std::string& result);
   void ContinueAddUnapprovedTransaction(
       const std::string& from,
       std::unique_ptr<EthTransaction> tx,
       AddUnapprovedTransactionCallback callback,
       bool success,
       const std::string& result);
+  void OnGetGasOracle(const std::string& from,
+                      const std::string& to,
+                      const std::string& value,
+                      const std::string& data,
+                      const std::string& gas_limit,
+                      std::unique_ptr<Eip1559Transaction> tx,
+                      AddUnapprovedTransactionCallback callback,
+                      mojom::GasEstimation1559Ptr gas_estimation);
+  void CheckIfBlockTrackerShouldRun();
+  void UpdatePendingTransactions();
 
-  EthJsonRpcController* rpc_controller_;   // NOT OWNED
-  KeyringController* keyring_controller_;  // NOT OWNED
+  // KeyringControllerObserver:
+  void KeyringCreated() override;
+  void KeyringRestored() override;
+  void Locked() override;
+  void Unlocked() override;
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+  void AutoLockMinutesChanged() override {}
+  void SelectedAccountChanged() override {}
+
+  // EthBlockTracker::Observer:
+  void OnLatestBlock(uint256_t block_num) override {}
+  void OnNewBlock(uint256_t block_num) override;
+
+  EthJsonRpcController* rpc_controller_;          // NOT OWNED
+  KeyringController* keyring_controller_;         // NOT OWNED
+  AssetRatioController* asset_ratio_controller_;  // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  std::unique_ptr<EthBlockTracker> eth_block_tracker_;
+  bool known_no_pending_tx = false;
 
   mojo::RemoteSet<mojom::EthTxControllerObserver> observers_;
   mojo::ReceiverSet<mojom::EthTxController> receivers_;
+  mojo::Receiver<brave_wallet::mojom::KeyringControllerObserver>
+      keyring_observer_receiver_{this};
 
   base::WeakPtrFactory<EthTxController> weak_factory_;
 };

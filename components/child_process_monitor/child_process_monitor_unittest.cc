@@ -12,6 +12,7 @@
 #endif
 
 #include "base/process/kill.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/multiprocess_test.h"
 #include "base/test/task_environment.h"
@@ -38,7 +39,6 @@ class ChildProcessMonitorTest : public base::MultiProcessTest {
   void SetUp() override {
     callback_runner_ = base::SequencedTaskRunnerHandle::Get();
   }
-  void RunLoop() { task_environment_.RunUntilIdle(); }
 
   base::test::TaskEnvironment task_environment_;
   scoped_refptr<base::SequencedTaskRunner> callback_runner_;
@@ -56,17 +56,16 @@ TEST_F(ChildProcessMonitorTest, Terminate) {
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
-  bool is_called = false;
+  base::RunLoop run_loop;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
                    EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
                    EXPECT_EQ(pid, process.Pid());
-                   is_called = true;
+                   run_loop.Quit();
                  }));
   process.Terminate(0, false);
   WaitForChildTermination(process.Handle());
-  RunLoop();
-  EXPECT_TRUE(is_called);
+  run_loop.Run();
 }
 
 TEST_F(ChildProcessMonitorTest, Kill) {
@@ -74,12 +73,12 @@ TEST_F(ChildProcessMonitorTest, Kill) {
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("NeverDieChildProcess");
-  bool is_called = false;
+  base::RunLoop run_loop;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
                    EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
                    EXPECT_EQ(pid, process.Pid());
-                   is_called = true;
+                   run_loop.Quit();
                  }));
 #if defined(OS_WIN)
   HANDLE handle = ::OpenProcess(PROCESS_ALL_ACCESS, 0, process.Pid());
@@ -88,8 +87,7 @@ TEST_F(ChildProcessMonitorTest, Kill) {
   ::kill(process.Pid(), SIGKILL);
 #endif
   WaitForChildTermination(process.Handle());
-  RunLoop();
-  EXPECT_TRUE(is_called);
+  run_loop.Run();
 }
 
 MULTIPROCESS_TEST_MAIN(FastSleepyChildProcess) {
@@ -101,17 +99,16 @@ TEST_F(ChildProcessMonitorTest, ChildExit) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 
+  base::RunLoop run_loop;
   base::Process process = SpawnChild("FastSleepyChildProcess");
-  bool is_called = false;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
                    EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
                    EXPECT_EQ(pid, process.Pid());
-                   is_called = true;
+                   run_loop.Quit();
                  }));
   WaitForChildTermination(process.Handle());
-  RunLoop();
-  EXPECT_TRUE(is_called);
+  run_loop.Run();
 }
 
 MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
@@ -127,24 +124,20 @@ MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
   return 1;
 }
 
-// TODO(darkdh): This test case is not stable on Windows CI
-#if !defined(OS_WIN)
 TEST_F(ChildProcessMonitorTest, ChildCrash) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 
   base::Process process = SpawnChild("SleepyCrashChildProcess");
-  bool is_called = false;
+  base::RunLoop run_loop;
   monitor->Start(process.Duplicate(),
                  base::BindLambdaForTesting([&](base::ProcessId pid) {
                    EXPECT_TRUE(callback_runner_->RunsTasksInCurrentSequence());
                    EXPECT_EQ(pid, process.Pid());
-                   is_called = true;
+                   run_loop.Quit();
                  }));
   WaitForChildTermination(process.Handle());
-  RunLoop();
-  EXPECT_TRUE(is_called);
+  run_loop.Run();
 }
-#endif
 
 }  // namespace brave

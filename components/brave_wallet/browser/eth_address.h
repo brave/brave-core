@@ -21,6 +21,7 @@ class EthAddress {
   // input should be a valid address with 20 bytes hex representation starting
   // with 0x
   static EthAddress FromHex(const std::string& input);
+  static bool IsValidAddress(const std::string& input);
   EthAddress();
   EthAddress(const EthAddress& other);
   ~EthAddress();

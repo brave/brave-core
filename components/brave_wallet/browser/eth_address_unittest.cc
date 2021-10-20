@@ -52,6 +52,11 @@ TEST(EthAddressUnitTest, FromHex) {
   EXPECT_EQ(address3.ToHex(), "0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
   EXPECT_NE(address, address3);
 
+  // checksum address
+  EthAddress address4 =
+      EthAddress::FromHex("0x3599689E6292b81B2d85451025146515070129Bb");
+  EXPECT_EQ(address4.ToHex(), "0x3599689e6292b81b2d85451025146515070129bb");
+
   address = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb");
   EXPECT_TRUE(address.IsEmpty());
 
@@ -60,6 +65,21 @@ TEST(EthAddressUnitTest, FromHex) {
 
   address = EthAddress::FromHex("0x123");
   EXPECT_TRUE(address.IsEmpty());
+}
+
+TEST(EthAddressUnitTest, IsValidAddress) {
+  // 19 bytes
+  EXPECT_FALSE(
+      EthAddress::IsValidAddress("0x2f015c60e0be116b1f0cd534704db9c92118fb"));
+  // 21 bytes
+  EXPECT_FALSE(EthAddress::IsValidAddress(
+      "0x2f015c60e0be116b1f0cd534704db9c92118fb6a11"));
+  EXPECT_FALSE(EthAddress::IsValidAddress("0x1234"));
+  // checksum address
+  EXPECT_TRUE(
+      EthAddress::IsValidAddress("0x3599689E6292b81B2d85451025146515070129Bb"));
+  EXPECT_TRUE(
+      EthAddress::IsValidAddress("0x3599689e6292b81b2d85451025146515070129bb"));
 }
 
 TEST(EthAddressUnitTest, ToChecksumAddress) {

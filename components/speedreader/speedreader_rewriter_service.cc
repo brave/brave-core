@@ -15,6 +15,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/speedreader/features.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_component.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/grit/brave_components_resources.h"
@@ -44,10 +45,6 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  if (base::FeatureList::IsEnabled(kSpeedreaderLegacyBackend)) {
-    backend_ = RewriterType::RewriterStreaming;
-  }
-
   // Load the built-in stylesheet as the default
   content_stylesheet_ =
       "<style id=\"brave_speedreader_style\">" +
@@ -61,26 +58,11 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
   if (!stylesheet_path.empty())
     OnStylesheetReady(stylesheet_path);
 
-  const auto whitelist_path = component_->GetWhitelistPath();
-  if (!whitelist_path.empty())
-    OnWhitelistReady(whitelist_path);
-
   component_->AddObserver(this);
 }
 
 SpeedreaderRewriterService::~SpeedreaderRewriterService() {
   component_->RemoveObserver(this);
-}
-
-void SpeedreaderRewriterService::OnWhitelistReady(const base::FilePath& path) {
-  VLOG(2) << "Whitelist ready at " << path;
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
-          path),
-      base::BindOnce(&SpeedreaderRewriterService::OnLoadDATFileData,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
@@ -91,29 +73,26 @@ void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
                      weak_factory_.GetWeakPtr()));
 }
 
-bool SpeedreaderRewriterService::IsWhitelisted(const GURL& url) {
-  if (backend_ == RewriterType::RewriterStreaming) {
-    return speedreader_->IsReadableURL(url.spec());
-  } else {
-    // Only HTTP is readable.
-    if (!url.SchemeIsHTTPOrHTTPS())
-      return false;
+bool SpeedreaderRewriterService::URLLooksReadable(const GURL& url) {
+  // Only HTTP is readable.
+  if (!url.SchemeIsHTTPOrHTTPS())
+    return false;
 
-    // @pes research has shown basically no landing pages are readable.
-    if (!url.has_path() || url.path() == "/")
-      return false;
+  // @pes research has shown basically no landing pages are readable.
+  if (!url.has_path() || url.path() == "/")
+    return false;
 
-    // TODO(keur): Once implemented, check against the "maybe-speedreadable"
-    // list here.
+  // TODO(keur): Once implemented, check against the "maybe-speedreadable"
+  // list here.
 
-    // Check URL against precompiled regexes
-    return URLReadableHintExtractor::GetInstance()->HasHints(url);
-  }
+  // Check URL against precompiled regexes
+  return URLReadableHintExtractor::GetInstance()->HasHints(url);
 }
 
 std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
     const GURL& url) {
-  return speedreader_->MakeRewriter(url.spec(), backend_);
+  return speedreader_->MakeRewriter(url.spec(),
+                                    RewriterType::RewriterReadability);
 }
 
 const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
@@ -123,13 +102,6 @@ const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
 void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
   VLOG(2) << "Speedreader stylesheet loaded";
   content_stylesheet_ = stylesheet;
-}
-
-void SpeedreaderRewriterService::OnLoadDATFileData(
-    GetDATFileDataResult result) {
-  VLOG(2) << "Speedreader loaded from DAT file";
-  if (result.first)
-    speedreader_ = std::move(result.first);
 }
 
 }  // namespace speedreader

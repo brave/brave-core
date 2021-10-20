@@ -10,7 +10,10 @@ import("//testing/test.gni")
 source_set("brave_wallet_common_unit_tests") {
   testonly = true
   if (brave_wallet_enabled) {
-    sources = [ "//brave/components/brave_wallet/common/value_conversion_utils_unittest.cc" ]
+    sources = [
+      "//brave/components/brave_wallet/common/eth_request_helper_unittest.cc",
+      "//brave/components/brave_wallet/common/value_conversion_utils_unittest.cc",
+    ]
 
     deps = [
       "//base/test:test_support",

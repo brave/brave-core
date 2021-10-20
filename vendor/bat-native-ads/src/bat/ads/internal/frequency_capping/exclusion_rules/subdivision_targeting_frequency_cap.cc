@@ -19,29 +19,30 @@ namespace ads {
 namespace {
 
 bool DoesAdSupportSubdivisionTargetingCode(
-    const CreativeAdInfo& ad,
+    const CreativeAdInfo& creative_ad,
     const std::string& subdivision_targeting_code) {
   const std::string country_code =
       locale::GetCountryCode(subdivision_targeting_code);
 
   const auto iter =
-      std::find_if(ad.geo_targets.begin(), ad.geo_targets.end(),
+      std::find_if(creative_ad.geo_targets.begin(),
+                   creative_ad.geo_targets.end(),
                    [&subdivision_targeting_code,
                     &country_code](const std::string& geo_target) {
                      return geo_target == subdivision_targeting_code ||
                             geo_target == country_code;
                    });
 
-  if (iter == ad.geo_targets.end()) {
+  if (iter == creative_ad.geo_targets.end()) {
     return false;
   }
 
   return true;
 }
 
-bool DoesAdTargetSubdivision(const CreativeAdInfo& ad) {
+bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   const auto iter = std::find_if(
-      ad.geo_targets.begin(), ad.geo_targets.end(),
+      creative_ad.geo_targets.begin(), creative_ad.geo_targets.end(),
       [](const std::string& geo_target) {
         const std::vector<std::string> components = base::SplitString(
             geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
@@ -49,7 +50,7 @@ bool DoesAdTargetSubdivision(const CreativeAdInfo& ad) {
         return components.size() == 2;
       });
 
-  if (iter == ad.geo_targets.end()) {
+  if (iter == creative_ad.geo_targets.end()) {
     return false;
   }
 
@@ -66,11 +67,12 @@ SubdivisionTargetingFrequencyCap::SubdivisionTargetingFrequencyCap(
 
 SubdivisionTargetingFrequencyCap::~SubdivisionTargetingFrequencyCap() = default;
 
-bool SubdivisionTargetingFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  if (!DoesRespectCap(ad)) {
+bool SubdivisionTargetingFrequencyCap::ShouldExclude(
+    const CreativeAdInfo& creative_ad) {
+  if (!DoesRespectCap(creative_ad)) {
     last_message_ = base::StringPrintf(
         "creativeSetId %s excluded as not within the targeted subdivision",
-        ad.creative_set_id.c_str());
+        creative_ad.creative_set_id.c_str());
 
     return true;
   }
@@ -83,16 +85,16 @@ std::string SubdivisionTargetingFrequencyCap::GetLastMessage() const {
 }
 
 bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
-    const CreativeAdInfo& ad) {
+    const CreativeAdInfo& creative_ad) {
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 
   if (!subdivision_targeting_->ShouldAllowForLocale(locale)) {
-    return !DoesAdTargetSubdivision(ad);
+    return !DoesAdTargetSubdivision(creative_ad);
   }
 
   if (subdivision_targeting_->IsDisabled()) {
-    return !DoesAdTargetSubdivision(ad);
+    return !DoesAdTargetSubdivision(creative_ad);
   }
 
   const std::string subdivision_targeting_code =
@@ -102,7 +104,8 @@ bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
     return false;
   }
 
-  return DoesAdSupportSubdivisionTargetingCode(ad, subdivision_targeting_code);
+  return DoesAdSupportSubdivisionTargetingCode(creative_ad,
+                                               subdivision_targeting_code);
 }
 
 }  // namespace ads

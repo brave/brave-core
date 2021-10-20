@@ -60,7 +60,7 @@ class DomainBlockTestBase : public AdBlockServiceTest {
   }
 
   void NavigateTo(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     content::RenderFrameHost* frame = web_contents()->GetMainFrame();
     ASSERT_TRUE(WaitForRenderFrameReady(frame));
   }
@@ -223,9 +223,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectNewTabs) {
   // by the domain block interstitial, because the permission we gave by
   // clicking "Proceed anyway" in the other tab is tab-specific.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_TRUE(IsShowingInterstitial());
 }
@@ -263,9 +263,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   // directly, because we previously saved the "don't warn again" choice for
   // this domain and are now respecting that choice.
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
   ASSERT_FALSE(IsShowingInterstitial());
   EXPECT_EQ(web_contents()->GetURL().host(), "a.com");
@@ -304,9 +304,9 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
   SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
   BlockDomainByURL(url);
   ui_test_utils::AllBrowserTabAddedWaiter new_tab;
-  ui_test_utils::NavigateToURLWithDisposition(
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   new_tab.Wait();
 
   // Should be showing domain blocked interstitial page.

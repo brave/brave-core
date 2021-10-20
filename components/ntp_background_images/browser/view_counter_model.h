@@ -42,6 +42,7 @@ class ViewCounterModel {
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  void RegisterPageViewBackgroundImagesOnly();
   void ResetCurrentWallpaperImageIndex();
 #endif
   void ResetCurrentBrandedWallpaperImageIndex();
@@ -57,6 +58,7 @@ class ViewCounterModel {
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesOnlyTest);
 #endif
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 

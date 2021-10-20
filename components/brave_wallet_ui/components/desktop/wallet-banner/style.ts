@@ -16,6 +16,10 @@ export const StyledWrapper = styled.div<Partial<StyleProps>>`
   border: 1px solid ${(p) => p.bannerType === 'warning' ? p.theme.color.warningBorder : p.theme.color.errorBorder};
   padding: 20px;
   margin-bottom: 14px;
+  @media screen and (max-width: 1080px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
  `
 
 export const WarningText = styled.span`
@@ -24,6 +28,9 @@ export const WarningText = styled.span`
   font-weight: 500;
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
+  @media screen and (max-width: 1080px) {
+    margin-bottom: 12px;
+  }
 `
 
 export const ButtonRow = styled.div`
@@ -50,4 +57,8 @@ export const BannerButton = styled.button<Partial<StyleProps>>`
   }
   letter-spacing: 0.01em;
   margin-left: 20px;
+  @media screen and (max-width: 1080px) {
+    margin-left: 0px;
+    margin-right: 20px;
+  }
 `

@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/content_features.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
@@ -49,6 +50,10 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+#endif
+
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
@@ -64,6 +69,9 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_SPARKLE)
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
+#endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
 #endif
 }
 
@@ -84,6 +92,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   NavigationBarDataProvider::Initialize(html_source);
   if (auto* service = ViewCounterServiceFactory::GetForProfile(profile))
     service->InitializeWebUIDataSource(html_source);
+  html_source->AddBoolean(
+      "isIdleDetectionFeatureEnabled",
+      base::FeatureList::IsEnabled(features::kIdleDetection));
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // TODO(simonhong): Remove this when sidebar is shipped by default in all
   // channels.

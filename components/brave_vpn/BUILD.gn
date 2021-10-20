@@ -10,25 +10,16 @@ import("//tools/grit/preprocess_if_expr.gni")
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-assert(enable_brave_vpn)
-
 static_library("brave_vpn") {
   sources = [
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
-    "brave_vpn_utils.cc",
-    "brave_vpn_utils.h",
-    "features.cc",
-    "features.h",
-    "pref_names.cc",
-    "pref_names.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
     "//components/keyed_service/core",
-    "//components/prefs",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//url",
@@ -49,7 +40,14 @@ static_library("brave_vpn") {
       "brave_vpn_service_desktop.h",
       "brave_vpn_service_observer.cc",
       "brave_vpn_service_observer.h",
+      "brave_vpn_utils.cc",
+      "brave_vpn_utils.h",
+      "features.cc",
+      "features.h",
+      "pref_names.cc",
+      "pref_names.h",
       "switches.h",
+      "url_constants.h",
     ]
 
     if (is_win) {
@@ -74,6 +72,7 @@ static_library("brave_vpn") {
     deps += [
       ":brave_vpn_internal",
       ":mojom",
+      "//components/prefs",
       "//third_party/icu",
     ]
   }
@@ -121,13 +120,13 @@ source_set("unit_tests") {
 executable("vpntool") {
   sources = []
   deps = [
-    ":brave_vpn",
     ":brave_vpn_internal",
     "//base",
   ]
 
   if (is_win) {
     sources += [ "winvpntool.cc" ]
+    libs = [ "rasapi32.lib" ]
   }
 }
 

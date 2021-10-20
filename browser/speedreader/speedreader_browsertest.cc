@@ -11,7 +11,6 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/speedreader/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "chrome/browser/profiles/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
@@ -32,8 +31,6 @@
 const char kTestHost[] = "theguardian.com";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
-const base::FilePath::StringPieceType kTestWhitelist =
-    FILE_PATH_LITERAL("speedreader_whitelist.json");
 
 constexpr char kSpeedreaderToggleUMAHistogramName[] =
     "Brave.SpeedReader.ToggleCount";
@@ -60,11 +57,6 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   ~SpeedReaderBrowserTest() override {}
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    base::FilePath whitelist_path = test_data_dir.Append(kTestWhitelist);
-    command_line->AppendSwitchPath(speedreader::kSpeedreaderWhitelistPath,
-                                   whitelist_path);
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
@@ -111,9 +103,9 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       WindowOpenDisposition disposition =
           WindowOpenDisposition::NEW_FOREGROUND_TAB) {
     const GURL url = https_server_.GetURL(kTestHost, path);
-    ui_test_utils::NavigateToURLWithDisposition(
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, disposition,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   }
 
  protected:
@@ -175,7 +167,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   ToggleSpeedreader();
   const GURL url = https_server_.GetURL(kTestHost, kTestPageReadable);
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents = ActiveWebContents();
   content::RenderFrameHost* rfh = contents->GetMainFrame();
 
@@ -191,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
 
   // Check that disabled speedreader doesn't affect the page.
   ToggleSpeedreader();
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   rfh = contents->GetMainFrame();
   EXPECT_LT(106000, content::EvalJs(rfh, kGetContentLength));
 }

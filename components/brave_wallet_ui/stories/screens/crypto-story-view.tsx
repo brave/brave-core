@@ -23,7 +23,7 @@ import {
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
 import { SearchBar, AppList } from '../../components/shared'
-import locale from '../../constants/locale'
+import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
 import { PortfolioView, AccountsView } from '../../components/desktop/views'
@@ -56,8 +56,8 @@ export interface Props {
   transactionSpotPrices: AssetPriceInfo[]
   hasImportError: boolean
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -128,9 +128,9 @@ const CryptoStoryView = (props: Props) => {
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [hideNav, setHideNav] = React.useState<boolean>(false)
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
+  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
-    AppsList[0].appList[0]
+    AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
 
@@ -156,7 +156,7 @@ const CryptoStoryView = (props: Props) => {
   }
 
   const filterList = (event: any) => {
-    filterAppList(event, AppsList, setFilteredAppsList)
+    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const toggleNav = () => {
@@ -194,12 +194,16 @@ const CryptoStoryView = (props: Props) => {
     alert('Will Nav to brave://settings/wallet')
   }
 
+  const onRouteBackToAccounts = () => {
+    // Does nothing in storybook
+  }
+
   return (
     <StyledWrapper>
       {!hideNav &&
         <>
           <TopTabNav
-            tabList={TopNavOptions}
+            tabList={TopNavOptions()}
             selectedTab={selectedTab}
             onSubmit={tabTo}
             hasMoreButtons={true}
@@ -207,21 +211,21 @@ const CryptoStoryView = (props: Props) => {
           />
           {showDefaultWalletBanner &&
             <WalletBanner
-              description={locale.defaultWalletBanner}
+              description={getLocale('braveWalletDefaultWalletBanner')}
               onDismiss={onDismissDefaultWalletBanner}
               onClick={onClickSettings}
               bannerType='warning'
-              buttonText={locale.walletPopupSettings}
+              buttonText={getLocale('braveWalletWalletPopupSettings')}
             />
           }
 
           {needsBackup && showBackupWarning &&
             <WalletBanner
-              description={locale.backupWarningText}
+              description={getLocale('braveWalletBackupWarningText')}
               onDismiss={onDismissBackupWarning}
               onClick={onShowBackup}
               bannerType='danger'
-              buttonText={locale.backupButton}
+              buttonText={getLocale('braveWalletBackupButton')}
             />
           }
         </>
@@ -229,7 +233,7 @@ const CryptoStoryView = (props: Props) => {
       {selectedTab === 'apps' &&
         <>
           <SearchBar
-            placeholder={locale.searchText}
+            placeholder={getLocale('braveWalletSearchText')}
             action={filterList}
           />
           <AppList
@@ -251,6 +255,7 @@ const CryptoStoryView = (props: Props) => {
           selectedTimeline={selectedTimeline}
           selectedPortfolioTimeline={selectedPortfolioTimeline}
           onSelectAsset={onSelectAsset}
+          onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
           fetchFullTokenList={fetchFullTokenList}
@@ -285,6 +290,7 @@ const CryptoStoryView = (props: Props) => {
           onViewPrivateKey={onViewPrivateKey}
           goBack={goBack}
           onSelectAccount={onSelectAccount}
+          onSelectAsset={onSelectAsset}
           privateKey={privateKey}
           transactions={transactions}
           selectedNetwork={selectedNetwork}
@@ -296,7 +302,7 @@ const CryptoStoryView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={locale.addAccount}
+          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
@@ -306,6 +312,7 @@ const CryptoStoryView = (props: Props) => {
           onImportAccountFromJson={onImportAccountFromJson}
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
+          onRouteBackToAccounts={onRouteBackToAccounts}
         />
       }
     </StyledWrapper>

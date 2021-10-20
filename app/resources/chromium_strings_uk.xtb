@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">ОС Brave не вдалося синхронізувати ваші дані, оскільки синхронізація для вашого домену недоступна.</translation>
 <translation id="5147525139567260139">Поділитися вкладкою Brave</translation>
 <translation id="1530633922026945685">Brave потрібен дозвіл на використання камери, щоб створити 3D-карту вашого оточення</translation>
+<translation id="4828904843379324771">Коли ви закриваєте Brave, усі файли cookie та дані відвіданих сайтів автоматично видаляються</translation>
 <translation id="5616153642055197778">Доступна нова, надійніша версія Brave.</translation>
 <translation id="6797402139308059782">Дозволити Brave працювати у фоновому режимі</translation>
 <translation id="5875673934455379806">Перевстановити Brave</translation>
@@ -30,6 +31,7 @@
 <translation id="9095263438435683933">Щоб надіслати номер на телефон Android, увійдіть у Brave на обох пристроях.</translation>
 <translation id="3813272600615358652">Це розширення змінило сторінку, яка відкривається під час запуску Brave.</translation>
 <translation id="2576129394594491151">Розширення "<ph name="EXTENSION_NAME"/>" змінило сторінку, яка відкривається під час запуску Brave.</translation>
+<translation id="1248225940185478633">Веб-переглядачу Brave потрібен доступ до камери та мікрофона для цього сайту</translation>
 <translation id="6078442581074612226">У Brave</translation>
 <translation id="2485422356828889247">Видалити</translation>
 <translation id="9026991721384951619">ОС Brave не вдалося синхронізувати ваші дані, оскільки дані для входу в обліковий запис застаріли.</translation>
@@ -49,6 +51,8 @@
 <translation id="777113543093865885">Видалити з Brave…</translation>
 <translation id="2885378588091291677">Диспетчер завдань</translation>
 <translation id="2176825726964012531">Про &amp;Brave</translation>
+<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Останнє нагадування: під час встановлення <ph name="BEGIN_BOLD"/>всі дані жорсткого диска буде видалено<ph name="END_BOLD"/>. Переконайтеся, що ви маєте резервну копію всіх важливих даних.<ph name="END_PARAGRAPH1"/>
+          <ph name="BEGIN_PARAGRAPH2"/>Коли встановлення розпочнеться, його не можна буде скасувати.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">У вас остання версія Brave</translation>
 <translation id="2953892977076487219">Brave намагається змінити паролі.</translation>
 <translation id="8755404239607088219">Brave не може перевірити паролі. Повторіть спробу пізніше.</translation>
@@ -77,7 +81,6 @@
 <translation id="2024972335338126423">Комбінація клавіш <ph name="SHORTCUT"/> перемикає профілі Brave</translation>
 <translation id="8703492925273919597">Закрийте всі вікна Brave і повторіть спробу.</translation>
 <translation id="1384923383737428730">Виявлено шкідливе програмне забезпечення на вашому комп’ютері. Brave може видалити його, відновити налаштування та вимкнути розширення, щоб веб-переглядач знову працював належним чином.</translation>
-<translation id="2409866122341731384">Видалити всі дані жорсткого диска й установити Chrome OS</translation>
 <translation id="7029305463989165490">Щоб надіслати номер із сайту <ph name="ORIGIN"/> на телефон Android, увійдіть у Brave на обох пристроях.</translation>
 <translation id="4304059894777924102">Brave не може перевірити паролі. Перевірте інтернет-з'єднання.</translation>
 <translation id="1807774211756215222">Відкрити посилання в новій &amp;вкладці Brave</translation>
@@ -140,6 +143,7 @@
 <translation id="4331809312908958774">ОС Brave</translation>
 <translation id="79947657522496226">ОС Brave і <ph name="BEGIN_LINK_LINUX_OSS"/>середовище для розробки Linux<ph name="END_LINK_LINUX_OSS"/> працюють завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="7207456302801184289">Вітаємо в Brave</translation>
+<translation id="8054200348483755053">Веб-переглядач Brave виявив, що наведені нижче елементи містять зловмисне програмне забезпечення.</translation>
 <translation id="5895138241574237353">Перезапустити</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Вхід у мережу</translation>
 <translation id="3598551856834560515">Щоб почати синхронізацію, оновіть Brave</translation>
@@ -154,18 +158,10 @@
 <translation id="4168372721886011198">Файл <ph name="FILE_NAME"/> небезпечний, тому Brave заблокував його.</translation>
 <translation id="7006260220514217183">Безпечний перегляд вимкнено. Brave радить увімкнути його.</translation>
 <translation id="4060970194201477024">Тут можна перемикати профілі Brave</translation>
-<translation id="2417565246123344595"><ph name="BEGIN_PARAGRAPH1"/>Chrome OS уже можна встановити. Коли ви продовжите:
-          <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>усі файли, дані та поточну операційну систему буде видалено з пристрою;
-          <ph name="LIST_ITEM"/>буде встановлено Chrome OS;
-          <ph name="LIST_ITEM"/>після завершення встановлення пристрій завершить роботу.
-          <ph name="END_LIST"/>
-          <ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Останнє нагадування: під час встановлення всі дані жорсткого диска буде видалено. Переконайтеся, що ви маєте резервну копію всіх важливих даних.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Коли встановлення розпочнеться, його не можна буде скасувати.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4368341489795135329">Переконайтеся, що ви ввійшли в Brave на пристрої <ph name="TARGET_DEVICE_NAME"/>, і повторіть спробу.</translation>
 <translation id="8320964054148936490">На цьому комп’ютері вже встановлено новішу версію Brave. Якщо програмне забезпечення не працює, видаліть Brave і повторіть спробу.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave перезапуститься зараз}=1{Brave перезапуститься через 1 секунду}one{Brave перезапуститься через # секунду}few{Brave перезапуститься через # секунди}many{Brave перезапуститься через # секунд}other{Brave перезапуститься через # секунди}}</translation>
+<translation id="5980269616827212166">Веб-переглядачу Brave потрібен доступ до пам’яті, щоб завантажувати файли</translation>
 <translation id="5019879183386042809">Зробити Brave переглядачем за умовчанням</translation>
 <translation id="428541510811554120">Brave не може перевірити наявність оновлень. Перевірте інтернет-з'єднання.</translation>
 <translation id="7445061995866044926">Вийти з Brave?</translation>
@@ -180,14 +176,15 @@
 <translation id="2644798301485385923">ОС Brave</translation>
 <translation id="1684121725014454063">Представляємо профілі Brave</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave перезапуститься через 1 секунду}one{Brave перезапуститься через # секунду}few{Brave перезапуститься через # секунди}many{Brave перезапуститься через # секунд}other{Brave перезапуститься через # секунди}}</translation>
-<translation id="664235759707825982">Chrome OS можна встановити</translation>
 <translation id="2675662665675552980">Також указує сторінку, яка відкривається під час запуску Brave.</translation>
 <translation id="5590013613412457132">Видалити Brave</translation>
 <translation id="8646609321956191980">У кожному профілі Brave зберігається власна інформація, як-от закладки, історія, паролі тощо</translation>
 <translation id="2312399718665761438">Щоб виправляти орфографічні помилки, Brave надсилає введений текст у Brave</translation>
 <translation id="3507835409099344374">Перейти до налаштувань сповіщень Brave</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
+<translation id="245693535809364497">Веб-переглядачу Brave потрібен доступ до камери, щоб створити 3D-карту вашого оточення</translation>
 <translation id="6676384891291319759">Доступ до Інтернету</translation>
+<translation id="1257247502847251159">Веб-переглядачу Brave потрібен доступ до мікрофона для цього сайту</translation>
 <translation id="1489465648257900784">Ваш профіль не можна використовувати, оскільки він створений у новішій версії Brave.
 
 Деякі функції можуть бути недоступними. Укажіть інший каталог профілю або скористайтеся новішою версією Brave.</translation>
@@ -199,6 +196,7 @@
 <translation id="8211837073776713955">Якщо ваші паролі колись викрадуть, Brave повідомить вас про це</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (скопійовано в Brave)</translation>
+<translation id="3028928628792374067">Веб-переглядач Brave виявив, що розширення "<ph name="EXTENSION_NAME"/>" містить зловмисне програмне забезпечення</translation>
 <translation id="2301993384336631869">Brave оновлено, проте ви не користувалися цим веб-переглядачем щонайменше 30 днів.</translation>
 <translation id="8828443087767259398">Щоб продовжити підключення, надайте веб-переглядачу Brave
 доступ до Bluetooth. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
@@ -206,6 +204,7 @@
 <translation id="3335606533094650083">Brave потрібен дозвіл на використання мікрофона, щоб надати цьому сайту доступ до нього</translation>
 <translation id="1705567146636171298">Оновити Brave</translation>
 <translation id="5499063270485366718">Якщо зображення не має корисного опису, Brave спробує додати його. Для цього зображення надсилаються в Brave.</translation>
+<translation id="1008530050039597147">Веб-переглядачу Brave потрібен доступ до камери для цього сайту</translation>
 <translation id="1197672524850678392">Не вдалося запустити Brave. Повторіть спробу.</translation>
 <translation id="3405035915691517126">Brave не може перевірити паролі. Повторіть спробу через 24 години.</translation>
 <translation id="5516268345616100622">Диспетчер завдань – Brave</translation>
@@ -247,6 +246,7 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="6915252145142862992">Це додаткове встановлення Brave. Його не можна зробити вашим веб-переглядачем за умовчанням.</translation>
 <translation id="7685904775439037072">Коли Brave отримає доступ, веб-сайти зможуть надсилати вам запити на доступ.</translation>
 <translation id="828406390101464081">Користувачі зазначених облікових записів не ввійшли в профілі Brave. Якщо ви хочете скористатись обліковим записом в іншому профілі, спершу вилучіть цей профіль.</translation>
+<translation id="2061155704815580583">Веб-переглядачу Brave потрібен дозвіл на доступ до геоданих для цього сайту</translation>
 <translation id="9067428552314418522">Цей файл небезпечний, тому Brave заблокував його.</translation>
 <translation id="8207657266087451193">Якщо зображення не має корисного опису, Brave спробує додати його. Для цього зображення надсилаються в Brave. Ви можете будь-коли вимкнути це в налаштуваннях.</translation>
 <translation id="8622246347342688645">Brave не може перевірити паролі, оскільки ви не ввійшли в обліковий запис</translation>

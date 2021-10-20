@@ -90,7 +90,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
   // Assert
   base::ListValue list_values(list.GetList());
 
-  EXPECT_EQ(list_values.GetSize(), unblinded_tokens.size());
+  EXPECT_EQ(list_values.GetList().size(), unblinded_tokens.size());
 
   for (auto& value : list_values.GetList()) {
     base::DictionaryValue* dictionary = nullptr;

@@ -47,6 +47,9 @@
 <translation id="4479934682648362332">Se preferă versiunea desktop a siteurilor</translation>
 <translation id="1842747674580016420">Redare video în Brave</translation>
 <translation id="5368992950177874750">Dacă este activat, fișierele video vor fi redate pe Brave în loc de aplicația corespondentă</translation>
+<translation id="410351446219883937">Redare automată</translation>
+<translation id="7445411102860286510">Permite site-urilor să redea automat videoclipuri cu sunetul dezactivat (recomandat)</translation>
+<translation id="7837721118676387834">Permite unui anumit site să redea automat videoclipuri cu sunetul dezactivat.</translation>
 <translation id="181905442828471321">Valori implicite globale pentru scuturile Brave</translation>
 <translation id="2675679258824361492">Alte setări de confidențialitate</translation>
 <translation id="8026334261755873520">Șterge datele de navigare</translation>
@@ -113,6 +116,7 @@
 <translation id="8280223431922155812">NOIEMBRIE</translation>
 <translation id="4254029385847607686">DECEMBRIE</translation>
 <translation id="3780605330121608425">Portofelul dumneavoastră</translation>
+<translation id="3960619311638643872">VPN Brave</translation>
 <translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">Dolari SUA</translation>
 <translation id="1165667598801520610">Adaugă fonduri</translation>
@@ -463,6 +467,17 @@ lună...</translation>
 <translation id="3769645103175790584">Câștigați tokenuri și trimiteți recompense creatorilor pentru conținutul de calitate în timp ce navigați. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Tur rapid</translation>
 <translation id="1080013038789678738">Particip!</translation>
+<translation id="8037420924417098685">Pentru a iniția un apel gratuit, activați Brave Rewards</translation>
+<translation id="8961724619078500274">Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori puteți susține site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="7307847920988946894">Activare Rewards</translation>
+<translation id="1186139901474936180">Atingerea presupune că acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>. Puteți dezactiva opțiunea în orice moment în Setări.</translation>
+<translation id="6128511569382736135">Pentru a iniția un apel gratuit, activați Brave Private Ads</translation>
+<translation id="7930006085154756245">Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
+<translation id="4992617448154987397">Activați Brave Private Ads</translation>
+<translation id="7314030474505546826">Dacă activați Brave Ads, acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
+<translation id="6712250553966900750">Atingeți în orice loc pe ecran pentru a continua la Brave Talk.</translation>
+<translation id="626339649633171286">Doriți să aflați mai multe despre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
 <translation id="7889432931837317731">Deschideți automat atunci când este posibil</translation>
@@ -525,6 +540,7 @@ lună...</translation>
 <translation id="7408247683131762445">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua fondurile definitiv.</translation>
 <translation id="939275786514736244">Am realizat o copie de rezervă după expresia mea într-un loc sigur</translation>
 <translation id="6896758677409633944">Copiază</translation>
+<translation id="2604744480284798833">Realizați o copie de rezervă după portofel, pentru a vă proteja portofoliul de criptomonede în cazul pierderii accesului.</translation>
 <translation id="1202920745614909195">Cumpărați criptomonede folosind Apple Pay, un card de credit ori un card de debit</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
 <translation id="8982246458261383692">Tranzacționați criptomonede cu agregatorul de schimb descentralizat Brave!</translation>
@@ -533,7 +549,7 @@ lună...</translation>
 <translation id="4450951602553063001">Reintroduceți parola</translation>
 <translation id="1783870616707290226">Parolele trebuie să aibă cel puțin 7 caractere</translation>
 <translation id="7383102760859258982">Parola introdusă a doua oară nu este identică cu prima</translation>
-<translation id="1538774398124896437">Timp real</translation>
+<translation id="3188963375823360044">1 oră</translation>
 <translation id="8163269366661594721">1 zi</translation>
 <translation id="7640956400175663828">1 săpt.</translation>
 <translation id="9100647964747998533">1 lună</translation>
@@ -543,6 +559,7 @@ lună...</translation>
 <translation id="8892168913673237979">Totul e în regulă!</translation>
 <translation id="8331501996028380732">Cumpărați, tranzacționați sau păstrați criptomonede! Dacă aveți deja un cont pentru criptomonede, îl puteți adăuga acum.</translation>
 <translation id="2267753748892043616">Adăugați un cont</translation>
+<translation id="2632612428525029752">Actualizați contul</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activați deblocarea cu amprentă?</translation>
 <translation id="5493402808936397665">Activați datele biometrice, pentru a debloca rapid portofelul fără a introduce parola.</translation>
@@ -562,7 +579,7 @@ lună...</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="745115390910697838">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
-<translation id="990936698620790924">Prețul pieței în ETH</translation>
+<translation id="6392640873800632439">Prețul pieței în <ph name="ASSET"/></translation>
 <translation id="5593852897152820572">Prețul în ETH</translation>
 <translation id="6748108480210050150">De la</translation>
 <translation id="3318280255740629162">25%</translation>
@@ -590,10 +607,107 @@ lună...</translation>
 <translation id="569068482611873351">Importați...</translation>
 <translation id="1940465339426637378">Active</translation>
 <translation id="4522570452068850558">Detalii</translation>
-<translation id="9065203028668620118">Editează</translation>
 <translation id="3995184924764722477">Detalii cont</translation>
 <translation id="8967036623785635603">Editați activele vizibile</translation>
 <translation id="5050890334032852465">Salvarea listei cu activele de urmărit</translation>
 <translation id="7755766175599167100">Căutați token-uri</translation>
 <translation id="3835223348537121988">Sold:</translation>
+<translation id="4449475351935531438">Firewall Brave + VPN</translation>
+<translation id="719977489961414786">Treceți la un VPN, pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde v-ați afla.</translation>
+<translation id="3435896845095436175">Activează</translation>
+<translation id="8814357473522731680">Oferit de</translation>
+<translation id="5596139545583924414">Blocați anunțurile și urmărirea în toate aplicațiile</translation>
+<translation id="8272917646984397798">Securizează toate conexiunile</translation>
+<translation id="1751947227857853925">Rapid și nelimitat, până la 100 Mbps</translation>
+<translation id="1400240082805528049">Asistență non-stop</translation>
+<translation id="5051030058817632680">Blochează conexiunile nedorite la rețea</translation>
+<translation id="3510283489391432976">Selectați zona dvs. geografică/țara</translation>
+<translation id="4390800080658195654">Vă păstrați anonimitatea online</translation>
+<translation id="639981156979733813">Acceptă viteze de până la 100 Mbps</translation>
+<translation id="8396607116169935837">Utilizează un tunel VPN criptat și securizat IKEv2</translation>
+<translation id="1571230671455380494">Nu distribuim și nu vindem niciodată datele dvs.</translation>
+<translation id="276866628038850725">Toate abonamentele includ o perioadă de încercare de 7 zile!</translation>
+<translation id="7280825497485894053">Abonament lunar</translation>
+<translation id="3001303523417455986">Abonament anual</translation>
+<translation id="6748319398471481216">Se prelungește lunar</translation>
+<translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / lună.</translation>
+<translation id="1163809943099641131">Un an</translation>
+<translation id="6277055349883621705">Reînnoiți anual și economisiți 16%</translation>
+<translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / an.</translation>
+<translation id="4487678670820292781">119,88 $</translation>
+<translation id="5867778679088331977">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
+<translation id="6053992191006521518">Încercați GRATUIT</translation>
+<translation id="721747358270435486">Instalați VPN-ul</translation>
+<translation id="836074276610740314">Instalați profilul VPN</translation>
+<translation id="8021842065465097929">Brave va instala cum un profil VPN.</translation>
+<translation id="229286271464650057">Acest profil permite conectarea automată a rețelei VPN și securizarea traficului pe dispozitivul dvs. — în orice aplicație permanent. Această conexiune VPN va fi criptată și direcționată prin firewall-ul inteligent Guardian pentru a bloca anunțurile și urmărirea.</translation>
+<translation id="9073255657908892407">Contactați asistența tehnică</translation>
+<translation id="1139934321138152517">VPN-ul este activat acum</translation>
+<translation id="7678718921266217759">Puțin context...</translation>
+<translation id="7267573208549764106">Conexiunea VPN anterioară a fost întreruptă. Pentru reconectarea la VPN, trebuie să acceptați solicitarea de conectare.
+
+Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, iar conexiunea la internet nu va fi securizată.</translation>
+<translation id="2429299231491852747">Acceptați cererea de conexiune</translation>
+<translation id="3428909627460825679">Nu a reușit crearea profilului VPN. Încercați din nou.</translation>
+<translation id="8584119457978684056">Nu s-a reușit confirmarea achiziției de token. Încercați din nou!</translation>
+<translation id="8905950042180169719">VPN-ul rulează în fundal</translation>
+<translation id="8681480718817027245">Abonament</translation>
+<translation id="7805768142964895445">Stare</translation>
+<translation id="5747552184818312860">Expiră</translation>
+<translation id="1656814355341174523">Gestionați abonamentul</translation>
+<translation id="1919008675977575793">Server</translation>
+<translation id="4812684235631257312">Gazdă</translation>
+<translation id="5646376287012673985">Locație</translation>
+<translation id="8375573361134671513">Resetați configurația</translation>
+<translation id="850405162932416400">Asistență VPN</translation>
+<translation id="1330148827129583049">Profilul VPN nu este creat. Crearea unui profil nou.</translation>
+<translation id="6772117549627334582">Nu s-a putut obține locul serverului. Încercați din nou mai târziu.</translation>
+<translation id="5863914199331127413">Nume gazdă VPN</translation>
+<translation id="5499653136178260315">Tipul abonamentului</translation>
+<translation id="4741058112780154119">Versiunea aplicației</translation>
+<translation id="7286066816862208787">Confirmare aplicație</translation>
+<translation id="2552966063069741410">Fus orar</translation>
+<translation id="4395361077929528480">Tip de rețea</translation>
+<translation id="755448900483975096">Furnizor de date mobile</translation>
+<translation id="1279441577056010362">Continuați la e-mail</translation>
+<translation id="2553687444159335134">Se oferă asistență cu ajutorul echipei Guardian.\n\nSelectați informațiile pe care sunteți de acord să ni le transmiteți.\n\nCu cât ne furnizați mai multe informații inițial, cu atât va fi mai ușor pentru echipa noastră de asistență să rezolve</translation>
+<translation id="7999094850625689785">Se va selecta automat regiunea de server cea mai apropiată de dvs., în funcție de fusul orar în care vă aflați. Această opțiune este recomandată pentru a asigura conexiunea la viteză mare.</translation>
+<translation id="8018707825009059641">Alte probleme</translation>
+<translation id="6687228121145903051">Nu este posibilă conectarea la VPN (altă eroare)</translation>
+<translation id="9184988385244077767">Fără internet în momentul conectării</translation>
+<translation id="21570240866965662">Viteză mică</translation>
+<translation id="1219475260382643267">Site-ul nu funcționează</translation>
+<translation id="7138678301420049075">Altele</translation>
+<translation id="4827315939627587219">Resetați configurația VPN</translation>
+<translation id="6883280223123252086">Sigur doriți să resetați configurația VPN?</translation>
+<translation id="604124094241169006">Automat</translation>
+<translation id="7475580600756356589">Se conectează la server. Ar trebui să dureze doar o clipă...</translation>
+<translation id="1342728075788541348">Se deconectează de la server. Ar trebui să dureze doar o clipă...</translation>
+<translation id="669072536454692117">Abonamentul a fost utilizat cu succes</translation>
+<translation id="1187506504156101449">Nu s-a reușit confirmarea achiziției:</translation>
+<translation id="8420522105268941892">Aveți deja acest abonament. Încercați să restabiliți abonamentul.</translation>
+<translation id="74771564105268111">EROARE!!\nEste cauzată de un utilizator care a anulat fluxul de achiziție.</translation>
+<translation id="3851978668258201962">EROARE!!\nAchiziția nu a reușit.</translation>
+<translation id="6452181791372256707">Respingeți</translation>
+<translation id="8030852056903932865">Aprobă</translation>
+<translation id="1597199892790541240">Taxă gas</translation>
+<translation id="1634828734222219955">Total</translation>
+<translation id="7995708795274219641">Suma + Gas</translation>
+<translation id="1950052789869821983">Tranzacție</translation>
+<translation id="6122742277607781713">Portofoliu</translation>
+<translation id="2805756323405976993">Aplicații</translation>
+<translation id="6083912983861746409">Preț gas (GWEI)</translation>
+<translation id="2499079593046817044">Limită gas (GWEI)</translation>
+<translation id="6389441740143786465">Dezactivați hub-ul de distribuire</translation>
+<translation id="9065203028668620118">Editează</translation>
+<translation id="473775607612524610">Actualizează</translation>
+<translation id="479795390141144417">Eroare la actualizarea contului.</translation>
+<translation id="8084782383392198011">Câmpul pentru numele contului nu poate rămâne gol.</translation>
+<translation id="5045550434625856497">Parolă incorectă</translation>
+<translation id="1367951781824006909">Alege un fișier</translation>
+<translation id="8648684608605749476">Blochează cookie-urile terță parte în modul incognito</translation>
+<translation id="1118876217803190221">Sold insuficient</translation>
+<translation id="275990379543116961">Fonduri insuficiente pentru gas</translation>
+<translation id="3292453499915466604">Lichidități insuficiente</translation>
+<translation id="3380365263193509176">Eroare necunoscută</translation>
 </translationbundle>

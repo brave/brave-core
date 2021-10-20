@@ -19,6 +19,26 @@
     "message": "I-refresh ang Status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Ang anumang tip na gagawin mo ay mananatiling nakabinbin sa iyong wallet at awtomatiko itong susubukan ulit sa loob ng 90 araw. $link_begin$Matuto pa$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Hindi pa nakapag-sign up ang creator na ito.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Kasalukuyang hindi pa na-configure ang creator na ito para tumanggap ng mga tip mula sa iyong wallet.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ sa $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ ang darating pagkalipas ng $days$",
+    "message": "Magsisimulang maiproseso ang payout ng $amount$ sa loob ng $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Balewalain",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Para magsimula ng libreng tawag, i-on ang Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Sa Brave Rewards, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon...o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "I-on ang Mga Reward",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Sa pamamagitan ng pag-click, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$. I-disable anumang oras sa Mga Setting.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Para magsimula ng libreng tawag, i-on ang Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Sa Brave Private Ads, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon...o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "I-on ang Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Sa pamamagitan ng pag-on ng Brave Ads, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Pwede ka nang magsimula ng libreng tawag",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Mag-click kahit saan sa screen para magpatuloy sa Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Gusto mo bang matuto pa tungkol sa Brave Rewards? $tour_link_begin$Mag-tour nang mabilis$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

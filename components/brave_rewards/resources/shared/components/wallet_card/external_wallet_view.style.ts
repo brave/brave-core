@@ -4,20 +4,34 @@
 
 import styled from 'styled-components'
 
+const buttonMixin = `
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 6px 18px;
+  border-radius: 48px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`
+
 export const root = styled.div`
   position: relative;
 `
 
+export const buttonText = styled.div`
+  text-align: left;
+`
+
+export const buttonIcons = styled.div`
+  flex: 0 0 auto;
+`
+
 export const verifyWallet = styled.div`
   button {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    padding: 6px 18px;
+    ${buttonMixin}
     background: rgba(255, 255, 255, 0.24);
-    border-radius: 48px;
-    border: none;
-    cursor: pointer;
 
     &:hover {
       background: rgba(255, 255, 255, 0.30);
@@ -35,14 +49,8 @@ export const verifyWallet = styled.div`
 
 export const bubbleAction = styled.div`
   button {
+    ${buttonMixin}
     background: none;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 18px;
-    padding: 6px 18px;
-    border-radius: 48px;
-    border: none;
-    cursor: pointer;
 
     &.pressed, &:hover {
       background: rgba(0, 0, 0, 0.14);

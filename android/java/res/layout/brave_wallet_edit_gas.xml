@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            tools:ignore="LabelFor, Autofill" />
 
     </LinearLayout>
 
@@ -54,7 +55,8 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:textColor="@color/wallet_text_color"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            tools:ignore="LabelFor, Autofill" />
 
     </LinearLayout>
 

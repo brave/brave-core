@@ -19,6 +19,7 @@
     <color name="modern_blue_300">#FF7654</color>
     <color name="modern_blue_600">#EA3A0D</color>
     <color name="modern_blue_700">#C22700</color>
+    <color name="dialog_bg_color_dark">@color/toolbar_background_primary_dark</color>
 
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>
@@ -60,8 +61,6 @@
 
     <color name="tab_back_incognito">@color/toolbar_background_primary_incognito</color>
 
-    <color name="compositor_background_tab_bg_incognito">@color/toolbar_background_primary_incognito</color>
-    <color name="compositor_background_tab_outline_incognito">@color/toolbar_background_primary_incognito</color>
     <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
 
     <!-- Incognito NTP Colors. -->
@@ -156,6 +155,8 @@
     <color name="brave_action_color">#4C54D2</color>
     <color name="wallet_positive_trend_color">#51CF66</color>
     <color name="wallet_asset_graph_color">#12A378</color>
+    <color name="wallet_top_banner_color">#33E32444</color>
+    <color name="wallet_top_banner_text_color">#FF4B6A</color>
     
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>

@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -34,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountsFragment extends Fragment implements OnWalletListItemClick {
-    private static final int ACCOUNT_REQUEST_CODE = 2;
     private View rootView;
     private WalletCoinAdapter walletCoinAdapter;
     public static AccountsFragment newInstance() {
@@ -62,7 +62,7 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         TextView addAccountBtn = view.findViewById(R.id.add_account_btn);
         addAccountBtn.setOnClickListener(v -> {
             Intent addAccountActivityIntent = new Intent(getActivity(), AddAccountActivity.class);
-            startActivityForResult(addAccountActivityIntent, ACCOUNT_REQUEST_CODE);
+            startActivityForResult(addAccountActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
         });
 
         setUpAccountList(view);
@@ -79,8 +79,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
-                                accountInfo.name, accountInfo.address, null, null));
+                        if (!accountInfo.isImported) {
+                            walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
+                                    accountInfo.name, accountInfo.address, null, null,
+                                    accountInfo.isImported));
+                        }
                     }
                     if (walletCoinAdapter != null) {
                         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
@@ -98,31 +101,52 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
         RecyclerView rvSecondaryAccounts = view.findViewById(R.id.rv_secondary_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
-        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "jamesmudgett.eth", "0xFCdF***DDee", null, null));
-        walletListItemModelList.add(new WalletListItemModel(
-                R.drawable.ic_eth, "allmydoge", "0xA1da***7af1", null, null));
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(AccountsFragment.this);
-        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
-        rvSecondaryAccounts.setAdapter(walletCoinAdapter);
-        rvSecondaryAccounts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        KeyringController keyringController = getKeyringController();
+        if (keyringController != null) {
+            keyringController.getDefaultKeyringInfo(keyringInfo -> {
+                if (keyringInfo != null) {
+                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
+                    List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+                    for (AccountInfo accountInfo : accountInfos) {
+                        if (accountInfo.isImported) {
+                            walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
+                                    accountInfo.name, accountInfo.address, null, null,
+                                    accountInfo.isImported));
+                        }
+                    }
+                    if (walletCoinAdapter != null) {
+                        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+                        walletCoinAdapter.setOnWalletListItemClick(AccountsFragment.this);
+                        walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
+                        rvSecondaryAccounts.setAdapter(walletCoinAdapter);
+                        rvSecondaryAccounts.setLayoutManager(
+                                new LinearLayoutManager(getActivity()));
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Utils.openAccountDetailActivity(
-                getActivity(), walletListItemModel.getTitle(), walletListItemModel.getSubTitle());
+        Intent accountDetailActivityIntent = new Intent(getActivity(), AccountDetailActivity.class);
+        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
+        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
+        accountDetailActivityIntent.putExtra(
+                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ACCOUNT_REQUEST_CODE) {
+        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                if (rootView != null) setUpAccountList(rootView);
+                if (rootView != null) {
+                    setUpAccountList(rootView);
+                    setUpSecondaryAccountList(rootView);
+                }
             }
         }
     }

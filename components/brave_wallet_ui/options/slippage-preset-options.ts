@@ -11,14 +11,6 @@ export const SlippagePresetOptions: SlippagePresetObjectType[] = [
   },
   {
     id: 3,
-    slippage: 1.5
-  },
-  {
-    id: 4,
-    slippage: 3
-  },
-  {
-    id: 5,
-    slippage: 6
+    slippage: 2
   }
 ]

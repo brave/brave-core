@@ -11,6 +11,8 @@
 #include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -20,11 +22,13 @@
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 
 /* kBraveWalletKeyrings structure
  *
@@ -33,12 +37,12 @@
  *     "Ledger12445": {
  *        "account_metas": {
  *            "0xEA04...CC8Acc": {
- *              "account_name": "Ledger 1",
+ *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/1'/0/0",
  *              "hardware_vendor": "ledger"
  *           },
  *           "0x264Ef...6b8F1": {
- *              "account_name": "Ledger 2",
+ *              "account_name": "Ledger",
  *              "derivation_path": "m/44'/60'/2'/0/0",
  *              "hardware_vendor": "ledger"
  *            }
@@ -85,8 +89,6 @@ const size_t kSaltSize = 32;
 const size_t kNonceSize = 12;
 const char kRootPath[] = "m/44'/60'/0'/0";
 const char kDefaultKeyringId[] = "default";
-// TODO(darkdh): use resource string
-const char kFirstAccountName[] = "Account 1";
 const char kPasswordEncryptorSalt[] = "password_encryptor_salt";
 const char kPasswordEncryptorNonce[] = "password_encryptor_nonce";
 const char kEncryptedMnemonic[] = "encrypted_mnemonic";
@@ -105,7 +107,13 @@ static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
 }
 
-void SerializeHardwareAccounts(const base::Value* account_value,
+std::string GetAccountName(size_t number) {
+  return l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME,
+                                   base::NumberToString16(number));
+}
+
+void SerializeHardwareAccounts(const std::string& device_id,
+                               const base::Value* account_value,
                                std::vector<mojom::AccountInfoPtr>* accounts) {
   for (const auto account : account_value->DictItems()) {
     std::string address = account.first;
@@ -128,7 +136,7 @@ void SerializeHardwareAccounts(const base::Value* account_value,
 
     accounts->push_back(mojom::AccountInfo::New(
         address, name, false,
-        mojom::HardwareInfo::New(derivation_path, hardware_vendor)));
+        mojom::HardwareInfo::New(derivation_path, hardware_vendor, device_id)));
   }
 }
 
@@ -144,6 +152,11 @@ KeyringController::KeyringController(PrefService* prefs) : prefs_(prefs) {
       kBraveWalletAutoLockMinutes,
       base::BindRepeating(&KeyringController::OnAutoLockPreferenceChanged,
                           base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kBraveWalletSelectedAccount,
+      base::BindRepeating(
+          &KeyringController::OnSelectedAccountPreferenceChanged,
+          base::Unretained(this)));
 }
 
 KeyringController::~KeyringController() {
@@ -201,7 +214,7 @@ void KeyringController::MigrateObsoleteProfilePrefs(PrefService* prefs) {
       // This shouldn't happen but we will reset account to default state as
       // fail-safe
       SetAccountMetaForKeyring(prefs, GetAccountPathByIndex(0),
-                               kFirstAccountName, "", kDefaultKeyringId);
+                               GetAccountName(1), "", kDefaultKeyringId);
     }
     prefs->ClearPref(kBraveWalletDefaultKeyringAccountNum);
     prefs->ClearPref(kBraveWalletAccountNames);
@@ -544,7 +557,7 @@ void KeyringController::CreateWallet(const std::string& password,
                                      CreateWalletCallback callback) {
   auto* keyring = CreateDefaultKeyring(password);
   if (keyring) {
-    AddAccountForDefaultKeyring(kFirstAccountName);
+    AddAccountForDefaultKeyring(GetAccountName(1));
   }
 
   std::move(callback).Run(GetMnemonicForDefaultKeyringImpl());
@@ -557,7 +570,7 @@ void KeyringController::RestoreWallet(const std::string& mnemonic,
   auto* keyring =
       RestoreDefaultKeyring(mnemonic, password, is_legacy_brave_wallet);
   if (keyring && !keyring->GetAccountsNumber()) {
-    AddAccountForDefaultKeyring(kFirstAccountName);
+    AddAccountForDefaultKeyring(GetAccountName(1));
   }
   // TODO(darkdh): add account discovery mechanism
 
@@ -800,14 +813,13 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
   return result;
 }
 
-void KeyringController::GetHardwareAccounts(
-    GetHardwareAccountsCallback callback) {
+std::vector<mojom::AccountInfoPtr>
+KeyringController::GetHardwareAccountsSync() {
   std::vector<mojom::AccountInfoPtr> accounts;
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value = GetPrefForHardwareKeyringUpdate(prefs_);
   if (!value) {
-    std::move(callback).Run({});
-    return;
+    return {};
   }
 
   for (const auto hw_keyring : value->DictItems()) {
@@ -815,10 +827,15 @@ void KeyringController::GetHardwareAccounts(
     const base::Value* account_value = hw_keyring.second.FindKey(kAccountMetas);
     if (!account_value)
       continue;
-    SerializeHardwareAccounts(account_value, &accounts);
+    SerializeHardwareAccounts(device_id, account_value, &accounts);
   }
 
-  std::move(callback).Run(std::move(accounts));
+  return accounts;
+}
+
+void KeyringController::GetHardwareAccounts(
+    GetHardwareAccountsCallback callback) {
+  std::move(callback).Run(GetHardwareAccountsSync());
 }
 
 // static
@@ -840,24 +857,24 @@ void KeyringController::AddHardwareAccounts(
     std::vector<mojom::HardwareWalletAccountPtr> infos) {
   if (infos.empty())
     return;
-  const auto& hardware_vendor = infos.front()->hardware_vendor;
-  const auto hash = base::PersistentHash(infos.front()->address);
-  std::string device_id = hardware_vendor + std::to_string(hash);
 
   base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
 
-  base::Value* device_value = hardware_keyrings->FindKey(device_id);
-  if (!device_value) {
-    device_value = hardware_keyrings->SetKey(
-        device_id, base::Value(base::Value::Type::DICTIONARY));
-  }
-
-  base::Value* meta_value = device_value->FindKey(kAccountMetas);
-  if (!meta_value) {
-    meta_value = device_value->SetKey(
-        kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
-  }
   for (const auto& info : infos) {
+    const auto& hardware_vendor = info->hardware_vendor;
+    std::string device_id = info->device_id;
+    base::Value* device_value = hardware_keyrings->FindKey(device_id);
+    if (!device_value) {
+      device_value = hardware_keyrings->SetKey(
+          device_id, base::Value(base::Value::Type::DICTIONARY));
+    }
+
+    base::Value* meta_value = device_value->FindKey(kAccountMetas);
+    if (!meta_value) {
+      meta_value = device_value->SetKey(
+          kAccountMetas, base::Value(base::Value::Type::DICTIONARY));
+    }
+
     DCHECK_EQ(hardware_vendor, info->hardware_vendor);
     if (hardware_vendor != info->hardware_vendor)
       continue;
@@ -898,6 +915,47 @@ void KeyringController::SignTransactionByDefaultKeyring(
   if (!default_keyring_)
     return;
   default_keyring_->SignTransaction(address, tx, chain_id);
+}
+
+KeyringController::SignatureWithError::SignatureWithError() = default;
+KeyringController::SignatureWithError::SignatureWithError(
+    SignatureWithError&& other) = default;
+KeyringController::SignatureWithError&
+KeyringController::SignatureWithError::operator=(SignatureWithError&& other) =
+    default;
+KeyringController::SignatureWithError::~SignatureWithError() = default;
+
+KeyringController::SignatureWithError
+KeyringController::SignMessageByDefaultKeyring(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  SignatureWithError ret;
+  if (!default_keyring_) {
+    ret.signature = absl::nullopt;
+    ret.error_message =
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST);
+    return ret;
+  }
+
+  // MM currently doesn't provide chain_id when signing message
+  std::vector<uint8_t> signature =
+      default_keyring_->SignMessage(address, message, 0);
+  if (signature.empty()) {
+    ret.signature = absl::nullopt;
+    ret.error_message =
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
+                                  base::ASCIIToUTF16(address));
+    return ret;
+  }
+  ret.signature = std::move(signature);
+  return ret;
+}
+
+void KeyringController::AddAccountsWithDefaultName(size_t number) {
+  size_t current_num = default_keyring_->GetAccountsNumber();
+  for (size_t i = current_num + 1; i <= current_num + number; ++i) {
+    AddAccountForDefaultKeyring(GetAccountName(i));
+  }
 }
 
 bool KeyringController::IsLocked() const {
@@ -1072,7 +1130,46 @@ void KeyringController::AddObserver(
 }
 
 void KeyringController::NotifyUserInteraction() {
-  auto_lock_timer_->Reset();
+  if (auto_lock_timer_->IsRunning()) {
+    auto_lock_timer_->Reset();
+  }
+}
+
+void KeyringController::GetSelectedAccount(
+    GetSelectedAccountCallback callback) {
+  std::string address = prefs_->GetString(kBraveWalletSelectedAccount);
+  if (address.empty()) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  std::move(callback).Run(address);
+}
+
+void KeyringController::SetSelectedAccount(
+    const std::string& address,
+    SetSelectedAccountCallback callback) {
+  std::vector<mojom::AccountInfoPtr> infos =
+      GetAccountInfosForKeyring(kDefaultKeyringId);
+
+  // Check for matching default and imported account
+  for (const mojom::AccountInfoPtr& info : infos) {
+    if (base::EqualsCaseInsensitiveASCII(info->address, address)) {
+      prefs_->SetString(kBraveWalletSelectedAccount, address);
+      std::move(callback).Run(true);
+      return;
+    }
+  }
+
+  auto hardware_account_info_ptrs = GetHardwareAccountsSync();
+  for (const mojom::AccountInfoPtr& info : hardware_account_info_ptrs) {
+    if (base::EqualsCaseInsensitiveASCII(info->address, address)) {
+      prefs_->SetString(kBraveWalletSelectedAccount, address);
+      std::move(callback).Run(true);
+      return;
+    }
+  }
+
+  std::move(callback).Run(false);
 }
 
 void KeyringController::SetDefaultKeyringDerivedAccountName(
@@ -1143,6 +1240,37 @@ void KeyringController::NotifyAccountsChanged() {
 void KeyringController::OnAutoLockPreferenceChanged() {
   StopAutoLockTimer();
   ResetAutoLockTimer();
+  for (const auto& observer : observers_) {
+    observer->AutoLockMinutesChanged();
+  }
+}
+
+void KeyringController::OnSelectedAccountPreferenceChanged() {
+  for (const auto& observer : observers_) {
+    observer->SelectedAccountChanged();
+  }
+}
+
+void KeyringController::GetAutoLockMinutes(
+    GetAutoLockMinutesCallback callback) {
+  std::move(callback).Run(prefs_->GetInteger(kBraveWalletAutoLockMinutes));
+}
+
+void KeyringController::SetAutoLockMinutes(
+    int32_t minutes,
+    SetAutoLockMinutesCallback callback) {
+  // Check bounds
+  if (minutes < kAutoLockMinutesMin || minutes > kAutoLockMinutesMax) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  int32_t old_auto_lock_minutes =
+      prefs_->GetInteger(kBraveWalletAutoLockMinutes);
+  if (minutes != old_auto_lock_minutes) {
+    prefs_->SetInteger(kBraveWalletAutoLockMinutes, minutes);
+  }
+  std::move(callback).Run(true);
 }
 
 }  // namespace brave_wallet

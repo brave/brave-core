@@ -8,7 +8,7 @@ import * as mixins from '../../lib/css_mixins'
 
 export const root = styled.div`
   position: absolute;
-  top: 32px;
+  top: calc(100% + 2px);
   left: 1px;
   overflow: hidden;
   z-index: 1;

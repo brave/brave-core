@@ -28,11 +28,17 @@ class TrackerObserver : public EthBlockTracker::Observer {
  public:
   void OnLatestBlock(uint256_t block_num) override {
     block_num_ = block_num;
-    ++observer_notified_;
+    ++latest_block_fired_;
+  }
+  void OnNewBlock(uint256_t block_num) override {
+    ++new_block_fired_;
+    block_num_from_new_block_ = block_num;
   }
 
-  size_t observer_notified_ = 0;
+  size_t latest_block_fired_ = 0;
+  size_t new_block_fired_ = 0;
   uint256_t block_num_ = 0;
+  uint256_t block_num_from_new_block_ = 0;
 };
 }  // namespace
 
@@ -108,14 +114,26 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   tracker.Start(base::TimeDelta::FromSeconds(5));
   task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
   EXPECT_EQ(observer.block_num_, uint256_t(1));
-  EXPECT_EQ(observer.observer_notified_, 1u);
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(1));
+  EXPECT_EQ(observer.latest_block_fired_, 1u);
+  EXPECT_EQ(observer.new_block_fired_, 1u);
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(1));
 
   response_block_num_ = 3;
   tracker.Start(base::TimeDelta::FromSeconds(5));
   task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
   EXPECT_EQ(observer.block_num_, uint256_t(3));
-  EXPECT_EQ(observer.observer_notified_, 2u);
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
+  EXPECT_EQ(observer.latest_block_fired_, 2u);
+  EXPECT_EQ(observer.new_block_fired_, 2u);
+  EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
+
+  // Still response_block_num_ 3
+  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
+  EXPECT_EQ(observer.block_num_, uint256_t(3));
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
+  EXPECT_EQ(observer.latest_block_fired_, 3u);
+  EXPECT_EQ(observer.new_block_fired_, 2u);
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
 
   tracker.Stop();
@@ -132,7 +150,9 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.block_num_, uint256_t(3));
-  EXPECT_EQ(observer.observer_notified_, 2u);
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(3));
+  EXPECT_EQ(observer.latest_block_fired_, 3u);
+  EXPECT_EQ(observer.new_block_fired_, 2u);
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(3));
 }
 
@@ -151,8 +171,9 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberError) {
 
   tracker.Start(base::TimeDelta::FromSeconds(5));
   task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(5));
-  EXPECT_EQ(observer.observer_notified_, 0u);
+  EXPECT_EQ(observer.latest_block_fired_, 0u);
   EXPECT_EQ(observer.block_num_, uint256_t(0));
+  EXPECT_EQ(observer.block_num_from_new_block_, uint256_t(0));
   EXPECT_EQ(tracker.GetCurrentBlock(), uint256_t(0));
 
   bool callback_called = false;

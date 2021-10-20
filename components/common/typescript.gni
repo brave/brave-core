@@ -28,6 +28,8 @@ brave_common_web_compile_inputs = [
 
   # webpack config changes warrant a re-build of all webpack builds
   rebase_path("../webpack/webpack.config.js"),
+  rebase_path("../webpack/gen-webpack-grd.js"),
+  rebase_path("../webpack/path-map.js"),
   rebase_path("../webpack/webpack-plugin-depfile.js"),
 
   # typescript config changes warrant a re-build of all typescript builds
@@ -83,6 +85,7 @@ template("transpile_web_ui") {
 
     # make sure rebuilds when common files change
     inputs = brave_common_web_compile_inputs
+    inputs += [ "$root_gen_dir/tsconfig-webpack.json" ]
     if (defined(invoker.inputs)) {
       inputs += invoker.inputs
     }
@@ -90,7 +93,7 @@ template("transpile_web_ui") {
     deps = [
       # Ensure chrome://resources/js file and typescript definitions are
       # generated
-      "//ui/webui/resources:library",
+      "//brave/components/webpack:generate_tsconfig",
     ]
     if (defined(invoker.deps)) {
       deps += invoker.deps

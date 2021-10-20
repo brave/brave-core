@@ -238,10 +238,6 @@
     "message": "Add Funds",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Learn More",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Reconnect",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "You have pending tips due to insufficient funds",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Wallet linking failed",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Your wallet cannot be verified because you've reached the maximum verified device limit.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "It looks like your Brave Rewards wallet has already been verified with another $provider$ account. Please try verifying again using your previous account.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT is not yet supported in your region on Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Your account at Uphold is currently blocked.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Your account at Uphold is still pending.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Your account at Uphold is currently restricted.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -595,5 +558,85 @@
   "captchaDismiss": {
     "message": "Dismiss",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "To start a free call, turn on Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Turn on Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "By clicking, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$. Disable any time in Settings.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "To start a free call, enable Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Turn on Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "By turning on Ads, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "You can now start a free call",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Click anywhere on the screen to continue to Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Want to learn more about Brave Rewards? $tour_link_begin$Take a quick tour$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

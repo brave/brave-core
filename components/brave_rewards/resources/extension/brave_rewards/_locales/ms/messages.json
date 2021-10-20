@@ -19,6 +19,26 @@
     "message": "Segar Semula Status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Sebarang tip yang anda berikan akan kekal di dalam dompet anda dan akan dicuba semula selama 90 hari secara automatik. $link_begin$Ketahui lebih lanjut$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Pencipta ini belum lagi mendaftar.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Pencipta ini tidak dikonfigurasi untuk menerima tip daripada dompet anda pada masa ini.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ di $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ akan tiba dalam $days$",
+    "message": "$amount$ pembayaran mula diproses dalam $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Singkirkan",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Untuk memulakan panggilan percuma, hidupkan Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Dengan Brave Rewards, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Hidupkan Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Dengan mengklik, anda bersetuju dengan $tos_link_begin$Terma Perkhidmatan$tos_link_end$ dan $pp_link_begin$Dasar Privasi$pp_link_end$. Nyahdayakan pada bila-bila masa di Tetapan.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Untuk memulakan panggilan percuma, dayakan Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Dengan Brave Private Ads, anda memperoleh token hasil tontonan iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah...atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tidak diperlahankan.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Hidupkan Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Dengan mendayakan Iklan, anda bersetuju dengan $tos_link_begin$Terma Perkhidmatan$tos_link_end$ dan $pp_link_begin$ Dasar Privasi$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Anda kini boleh memulakan panggilan percuma",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Klik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Ingin ketahui lebih lanjut tentang Brave Rewards?$tour_link_begin$Jelajah pantas$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

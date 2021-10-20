@@ -11,6 +11,7 @@
     <color name="baseline_primary_100">#5B2A23</color>
     <color name="baseline_primary_200">#F35333</color>
     <color name="default_text_color_on_accent1">@color/default_text_color_on_accent1_light</color>
+    <color name="dialog_bg_color_dark">@color/toolbar_background_primary</color>
 
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
@@ -67,5 +68,7 @@
     <color name="wallet_edittext_outline_color">#3B3E4F</color>
     <color name="wallet_warning_box_bg_color">#3B3E4F</color>
     <color name="recovery_phrase_warning_text_color">#1E2029</color>
+    <color name="wallet_top_banner_color">#33E32444</color>
+    <color name="wallet_top_banner_text_color">#FF4B6A</color>
 
 </resources>

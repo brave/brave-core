@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/ml_transformation_util.h"
@@ -67,6 +68,7 @@ bool TextProcessing::FromJson(const std::string& json) {
     is_initialized_ = true;
   } else {
     is_initialized_ = false;
+    BLOG(0, "Failed to parse text classification pipeline JSON");
   }
 
   return is_initialized_;

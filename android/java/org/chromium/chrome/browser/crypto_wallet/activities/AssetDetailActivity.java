@@ -6,11 +6,14 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringControllerFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -45,6 +49,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     private SmoothLineChartEquallySpaced chartES;
     private AssetRatioController mAssetRatioController;
     private KeyringController mKeyringController;
+    private int checkedTimeframeType;
 
     @Override
     protected void onDestroy() {
@@ -88,7 +93,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
         });
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
+        checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int leftDot = R.drawable.ic_live_dot;
+            ((RadioButton) findViewById(checkedTimeframeType))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            RadioButton button = findViewById(checkedId);
+            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             int timeframeType;
             if (checkedId == R.id.live_radiobutton) {
                 timeframeType = AssetPriceTimeframe.LIVE;
@@ -106,10 +117,12 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 timeframeType = AssetPriceTimeframe.ALL;
             }
             getPriceHistory("eth", timeframeType);
+            checkedTimeframeType = checkedId;
         });
 
         chartES = findViewById(R.id.line_chart);
         chartES.setColors(new int[] {getResources().getColor(R.color.wallet_asset_graph_color)});
+        chartES.drawLine(0.f, findViewById(R.id.asset_price));
         chartES.setOnTouchListener(new View.OnTouchListener() {
             @Override
             @SuppressLint("ClickableViewAccessibility")
@@ -152,9 +165,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
                     for (AccountInfo accountInfo : accountInfos) {
-                        Log.e("NTP", "Account name : " + accountInfo.name);
-                        walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
-                                accountInfo.name, accountInfo.address, null, null));
+                        walletListItemModelList.add(
+                                new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
+                                        accountInfo.address, null, null, accountInfo.isImported));
                     }
                     if (walletCoinAdapter != null) {
                         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
@@ -228,8 +241,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Utils.openAccountDetailActivity(AssetDetailActivity.this, walletListItemModel.getTitle(),
-                walletListItemModel.getSubTitle());
+        Intent accountDetailActivityIntent =
+                new Intent(AssetDetailActivity.this, AccountDetailActivity.class);
+        accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
+        accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
+        accountDetailActivityIntent.putExtra(
+                Utils.ISIMPORTED, walletListItemModel.getIsImportedAccount());
+        startActivityForResult(accountDetailActivityIntent, Utils.ACCOUNT_REQUEST_CODE);
     }
 
     @Override
@@ -245,5 +263,16 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     public KeyringController getKeyringController() {
         return mKeyringController;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Utils.ACCOUNT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                setUpAccountList();
+            }
+        }
     }
 }

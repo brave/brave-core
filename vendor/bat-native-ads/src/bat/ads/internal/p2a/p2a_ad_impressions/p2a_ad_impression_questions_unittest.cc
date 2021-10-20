@@ -28,21 +28,5 @@ TEST(BatAdsP2AAdImpressionQuestionTest, CreateAdImpressionQuestions) {
   EXPECT_EQ(expected_questions, questions);
 }
 
-TEST(BatAdsP2AAdImpressionQuestionTest,
-     CreateAdImpressionQuestionsForEmptySegment) {
-  // Arrange
-  const std::string segment;
-
-  // Act
-  const std::vector<std::string> questions =
-      CreateAdImpressionQuestions(segment);
-
-  // Assert
-  const std::vector<std::string> expected_questions = {
-      "Brave.P2A.TotalAdImpressions"};
-
-  EXPECT_EQ(expected_questions, questions);
-}
-
 }  // namespace p2a
 }  // namespace ads

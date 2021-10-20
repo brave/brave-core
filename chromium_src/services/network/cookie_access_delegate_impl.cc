@@ -19,8 +19,8 @@ bool CookieAccessDelegateImpl::ShouldUseEphemeralStorage(
     const absl::optional<url::Origin>& top_frame_origin) const {
   if (!cookie_settings_)
     return false;
-  return cookie_settings_->ShouldUseEphemeralStorage(
-      url, site_for_cookies.RepresentativeUrl(), top_frame_origin);
+  return cookie_settings_->ShouldUseEphemeralStorage(url, site_for_cookies,
+                                                     top_frame_origin);
 }
 
 }  // namespace network

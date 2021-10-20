@@ -46,6 +46,7 @@ export const newTabInitialState: NewTab.ApplicationState = {
     showEmptyPage: false,
     isIncognito: new ChromeEvent(),
     useAlternativePrivateSearchEngine: false,
+    showAlternativePrivateSearchEngineToggle: false,
     torCircuitEstablished: false,
     torInitProgress: '',
     isTor: false,

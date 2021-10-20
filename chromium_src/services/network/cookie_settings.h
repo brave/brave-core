@@ -9,23 +9,23 @@
 #define IsCookieAccessible                                        \
   IsEphemeralCookieAccessible(                                    \
       const net::CanonicalCookie& cookie, const GURL& url,        \
-      const GURL& site_for_cookies,                               \
+      const net::SiteForCookies& site_for_cookies,                \
       const absl::optional<url::Origin>& top_frame_origin) const; \
   bool IsCookieAccessible
 
-#define IsPrivacyModeEnabled                                      \
-  IsEphemeralPrivacyModeEnabled(                                  \
-      const GURL& url, const GURL& site_for_cookies,              \
-      const absl::optional<url::Origin>& top_frame_origin,        \
-      net::SamePartyContext::Type same_party_context_type) const; \
+#define IsPrivacyModeEnabled                                        \
+  IsEphemeralPrivacyModeEnabled(                                    \
+      const GURL& url, const net::SiteForCookies& site_for_cookies, \
+      const absl::optional<url::Origin>& top_frame_origin,          \
+      net::SamePartyContext::Type same_party_context_type) const;   \
   bool IsPrivacyModeEnabled
 
-#define AnnotateAndMoveUserBlockedCookies                   \
-  AnnotateAndMoveUserBlockedEphemeralCookies(               \
-      const GURL& url, const GURL& site_for_cookies,        \
-      const url::Origin* top_frame_origin,                  \
-      net::CookieAccessResultList& maybe_included_cookies,  \
-      net::CookieAccessResultList& excluded_cookies) const; \
+#define AnnotateAndMoveUserBlockedCookies                           \
+  AnnotateAndMoveUserBlockedEphemeralCookies(                       \
+      const GURL& url, const net::SiteForCookies& site_for_cookies, \
+      const url::Origin* top_frame_origin,                          \
+      net::CookieAccessResultList& maybe_included_cookies,          \
+      net::CookieAccessResultList& excluded_cookies) const;         \
   bool AnnotateAndMoveUserBlockedCookies
 
 #include "../../../../services/network/cookie_settings.h"

@@ -24,6 +24,13 @@ mojom::AssetRatioController* AssetRatioControllerFactory::GetForBrowserState(
 }
 
 // static
+AssetRatioController* AssetRatioControllerFactory::GetControllerForBrowserState(
+    ChromeBrowserState* browser_state) {
+  return static_cast<AssetRatioController*>(
+      GetInstance()->GetServiceForBrowserState(browser_state, true));
+}
+
+// static
 AssetRatioControllerFactory* AssetRatioControllerFactory::GetInstance() {
   return base::Singleton<AssetRatioControllerFactory>::get();
 }

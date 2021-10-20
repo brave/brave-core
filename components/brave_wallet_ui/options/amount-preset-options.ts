@@ -1,21 +1,21 @@
 import { AmountPresetObjectType } from '../constants/types'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 
-export const AmountPresetOptions: AmountPresetObjectType[] = [
+export const AmountPresetOptions = (): AmountPresetObjectType[] => [
   {
-    name: locale.preset25,
-    id: 0.25
+    name: getLocale('braveWalletPreset25'),
+    value: 0.25
   },
   {
-    name: locale.preset50,
-    id: 0.5
+    name: getLocale('braveWalletPreset50'),
+    value: 0.5
   },
   {
-    name: locale.preset75,
-    id: 0.75
+    name: getLocale('braveWalletPreset75'),
+    value: 0.75
   },
   {
-    name: locale.preset100,
-    id: 1
+    name: getLocale('braveWalletPreset100'),
+    value: 1
   }
 ]

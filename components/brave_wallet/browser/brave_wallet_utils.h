@@ -98,18 +98,26 @@ base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
-void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains);
-const std::vector<mojom::EthereumChain> GetAllKnownNetworks();
+void GetAllKnownChains(PrefService* prefs,
+                       std::vector<mojom::EthereumChainPtr>* chains);
+const std::vector<mojom::EthereumChain> GetAllKnownNetworksForTesting();
 void GetAllCustomChains(PrefService* prefs,
                         std::vector<mojom::EthereumChainPtr>* result);
 void GetAllChains(PrefService* prefs,
                   std::vector<mojom::EthereumChainPtr>* result);
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
-mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id);
+mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
+                                      const std::string& chain_id);
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id);
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
+std::vector<std::string> GetAllKnownNetworkIds();
+std::string GetKnownNetworkId(const std::string& chain_id);
+
+std::string GetUnstoppableDomainsProxyReaderContractAddress(
+    const std::string& chain_id);
+std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
 }  // namespace brave_wallet
 

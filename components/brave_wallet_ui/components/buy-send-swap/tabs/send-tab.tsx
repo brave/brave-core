@@ -20,14 +20,16 @@ export interface Props {
   selectedAssetAmount: string
   selectedAssetBalance: string
   assetOptions: AccountAssetOptionType[]
+  toAddressOrUrl: string
   toAddress: string
   showHeader?: boolean
+  addressError: string
   onSubmit: () => void
   onSelectNetwork: (network: EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
   onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
   onSetSendAmount: (value: string) => void
-  onSetToAddress: (value: string) => void
+  onSetToAddressOrUrl: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
   networkList: EthereumChain[]
 }
@@ -41,15 +43,17 @@ function SendTab (props: Props) {
     selectedAccount,
     selectedAssetAmount,
     selectedAssetBalance,
+    toAddressOrUrl,
     toAddress,
     showHeader,
     assetOptions,
+    addressError,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
     onSelectAsset,
     onSetSendAmount,
-    onSetToAddress,
+    onSetToAddressOrUrl,
     onSelectPresetAmount
   } = props
   const [sendView, setSendView] = React.useState<BuySendSwapViewTypes>('send')
@@ -78,7 +82,7 @@ function SendTab (props: Props) {
       onSetSendAmount(value)
     }
     if (name === 'address') {
-      onSetToAddress(value)
+      onSetToAddressOrUrl(value)
     }
   }
 
@@ -101,7 +105,9 @@ function SendTab (props: Props) {
             selectedAssetAmount={selectedAssetAmount}
             selectedAsset={selectedAsset}
             selectedAssetBalance={selectedAssetBalance}
+            toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
+            addressError={addressError}
             onChangeSendView={onChangeSendView}
             onInputChange={onInputChange}
             onSelectPresetAmount={onSelectPresetAmount}

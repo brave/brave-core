@@ -16,6 +16,9 @@ const base::Feature kAdNotifications{"AdNotifications",
 const base::Feature kCustomAdNotifications{"CustomAdNotifications",
                                            base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
+                                          base::FEATURE_DISABLED_BY_DEFAULT};
+
 namespace {
 
 // Set to true to fallback to custom ad notifications if native notifications
@@ -168,6 +171,10 @@ int AdNotificationInsetY() {
 }
 
 #endif  // !defined(OS_ANDROID)
+
+bool IsRequestAdsEnabledApiEnabled() {
+  return base::FeatureList::IsEnabled(kRequestAdsEnabledApi);
+}
 
 }  // namespace features
 }  // namespace brave_ads

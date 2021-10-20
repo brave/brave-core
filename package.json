@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.32.30",
+  "version": "1.33.21",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "pylint": "node ./build/commands/scripts/commands.js pylint",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
+    "web-ui-gen-tsconfig": "node components/webpack/gen-tsconfig",
     "web-ui": "webpack --config components/webpack/webpack.config.js --colors",
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
@@ -277,6 +278,7 @@
     "csstype": "2.6.15",
     "deep-freeze-node": "1.1.3",
     "emptykit.css": "1.0.1",
+    "enhanced-resolve": "5.8.3",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",

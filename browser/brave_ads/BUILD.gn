@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("brave_ads") {
   # Remove when https://github.com/brave/brave-browser/issues/10639 is resolved
@@ -17,6 +18,8 @@ source_set("brave_ads") {
     "//brave/browser/profiles:util",
     "//brave/components/brave_adaptive_captcha/buildflags",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/common:mojom",
+    "//chrome/browser/profiles:profile",
     "//components/dom_distiller/content/browser",
     "//components/keyed_service/content",
     "//components/sessions",
@@ -24,10 +27,32 @@ source_set("brave_ads") {
     "//ui/base",
   ]
 
+  if (is_android) {
+    sources += [
+      "brave_ads_host_android.cc",
+      "brave_ads_host_android.h",
+    ]
+  } else if (enable_extensions) {
+    sources += [
+      "brave_ads_host.cc",
+      "brave_ads_host.h",
+    ]
+
+    deps += [
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+
   if (brave_adaptive_captcha_enabled) {
     deps += [
       "//brave/browser/brave_ads/tooltips/",
       "//brave/components/brave_adaptive_captcha:brave_adaptive_captcha",
     ]
+  }
+
+  if (is_android) {
+    deps += [ "//brave/browser/brave_ads/android:jni_headers" ]
   }
 }

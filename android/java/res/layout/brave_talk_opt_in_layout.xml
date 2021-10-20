@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_background_bat"
+        android:scaleType="center"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/brave_talk_opt_in_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_onboarding_graphic_cashback"
+            android:scaleType="center"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/brave_talk_opt_in_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:gravity="center"
+            android:text="@string/brave_talk_turn_on_rewards_text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/brave_talk_opt_in_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/brave_talk_rewards_description_text"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/brave_talk_opt_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/blue_rounded_button"
+            android:text="@string/brave_talk_turn_on_rewards_button_text"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:layout_marginBottom="14dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:id="@+id/brave_talk_opt_in_tos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/brave_talk_rewards_tos_pp_text"
+            android:textSize="12sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+</FrameLayout>

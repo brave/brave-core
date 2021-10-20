@@ -30,7 +30,7 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   void RegisterMessages() override;
 
  private:
-  void HandleSubmitReport(const base::ListValue* args);
+  void HandleSubmitReport(base::Value::ConstListView args);
   std::unique_ptr<brave::WebcompatReportUploader> uploader_;
 
   DISALLOW_COPY_AND_ASSIGN(WebcompatReporterDOMHandler);
@@ -51,12 +51,12 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
 }
 
 void WebcompatReporterDOMHandler::HandleSubmitReport(
-    const base::ListValue* args) {
-  DCHECK_EQ(args->GetSize(), 1U);
-  std::string site_url;
-  if (!args->GetString(0, &site_url))
+    base::Value::ConstListView args) {
+  DCHECK_EQ(args.size(), 1U);
+  if (!args[0].is_string())
     return;
 
+  std::string site_url = args[0].GetString();
   uploader_->SubmitReport(site_url);
 }
 

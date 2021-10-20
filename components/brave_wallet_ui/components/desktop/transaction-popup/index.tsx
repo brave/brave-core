@@ -1,5 +1,5 @@
 import * as React from 'react'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   StyledWrapper,
@@ -21,7 +21,7 @@ const TransactionPopup = (props: Props) => {
     <>
       <StyledWrapper>
         <PopupButton onClick={onClickView}>
-          <PopupButtonText>{locale.transactionExplorer}</PopupButtonText>
+          <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
         </PopupButton>
       </StyledWrapper>
       <ClickAwayContainer />

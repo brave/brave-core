@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_bg"
@@ -36,26 +37,6 @@
                     android:drawablePadding="12dp"
                     android:layout_marginEnd="20dp"/>
 
-                <TextView
-                    android:id="@+id/asset_network_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:gravity="center_vertical"
-                    android:text="@string/mainnet"
-                    android:textColor="@color/wallet_text_color"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:background="@drawable/rounded_white_holo_bg"
-                    app:drawableEndCompat="@drawable/ic_circle_down"
-                    android:drawablePadding="8dp"
-                    android:layout_marginEnd="20dp"/>
-
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -76,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="$1,812.31"
             android:textColor="@color/wallet_text_color"
             android:textStyle="bold"
             android:textSize="32sp" />
@@ -89,7 +69,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="0.03265 BTC"
-            android:textColor="@color/wallet_secondary_text_color"/>
+            android:textColor="@color/wallet_secondary_text_color"
+            tools:ignore="HardcodedText" />
 
         <org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced
             android:layout_marginTop="32dp"
@@ -114,11 +95,17 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/wallet_radio_button_selector"
                     android:gravity="center"
-                    android:padding="4dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:textColor="@color/crypto_wallet_radiobutton_color_selector"
                     android:button="@null"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:checked="true"
                     app:drawableStartCompat="@drawable/ic_live_dot"
                     android:drawablePadding="4dp"
                     android:text="@string/live" />
@@ -140,7 +127,6 @@
                     android:button="@null"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:checked="true"
                     android:text="@string/day_1" />
 
                 <RadioButton

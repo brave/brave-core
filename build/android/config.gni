@@ -14,6 +14,7 @@ brave_chrome_java_deps = [
   "//brave/browser/notifications:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/browser/ui/android/theme:java",
+  "//brave/components/browser_ui/site_settings/android:java",
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
@@ -42,9 +43,6 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps =
-    [ "//brave/build/android:android_brave_strings_grd" ]
-
-brave_components_browser_ui_site_settings_android_java_resources_deps =
     [ "//brave/build/android:android_brave_strings_grd" ]
 
 brave_resources_exclusion_exceptions =

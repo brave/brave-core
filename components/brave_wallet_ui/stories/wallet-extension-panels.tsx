@@ -9,7 +9,8 @@ import {
   SignPanel,
   AllowAddNetworkPanel,
   ConfirmTransactionPanel,
-  ConnectHardwareWalletPanel
+  ConnectHardwareWalletPanel,
+  SitePermissions
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -30,6 +31,7 @@ import {
   TransactionInfo,
   TransactionType
 } from '../constants/types'
+import { UpdateUnapprovedTransactionGasFieldsType } from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
@@ -43,7 +45,8 @@ import {
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
-
+import { PanelTitles } from '../options/panel-titles'
+import './locale'
 export default {
   title: 'Wallet/Extension/Panels',
   parameters: {
@@ -109,7 +112,10 @@ export const _ConfirmTransaction = () => {
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
     txParams: ['address', 'ammount'],
-    txType: TransactionType.ERC20Transfer
+    txType: TransactionType.ERC20Transfer,
+    createdTime: { microseconds: 0 },
+    submittedTime: { microseconds: 0 },
+    confirmedTime: { microseconds: 0 }
   }
 
   const onConfirmTransaction = () => {
@@ -118,6 +124,21 @@ export const _ConfirmTransaction = () => {
 
   const onRejectTransaction = () => {
     alert('Rejected Transaction')
+  }
+
+  const onRejectAllTransactions = () => {
+    alert('Rejected All Transaction')
+  }
+  const onQueueNextTransction = () => {
+    alert('Will queue next transaction in line')
+  }
+
+  const refreshGasEstimates = () => {
+    // do nothing
+  }
+
+  const updateUnapprovedTransactionGasFields = (payload: UpdateUnapprovedTransactionGasFieldsType) => {
+    alert('Updated gas fields')
   }
 
   const transactionSpotPrices = [
@@ -139,12 +160,18 @@ export const _ConfirmTransaction = () => {
     <StyledExtensionWrapperLonger>
       <ConfirmTransactionPanel
         selectedNetwork={mockNetworks[0]}
+        onQueueNextTransction={onQueueNextTransction}
+        onRejectAllTransactions={onRejectAllTransactions}
+        transactionQueueNumber={0}
+        transactionsQueueLength={0}
         onConfirm={onConfirmTransaction}
         onReject={onRejectTransaction}
         accounts={accounts}
         transactionInfo={transactionInfo}
         visibleTokens={NewAssetOptions}
         transactionSpotPrices={transactionSpotPrices}
+        refreshGasEstimates={refreshGasEstimates}
+        updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -275,10 +302,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     accounts[0]
   )
   const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
-    AppsList[0].appList[0]
+    AppsList()[0].appList[0]
   ])
-  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList)
-  const [walletConnected, setWalletConnected] = React.useState<boolean>(true)
+  const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
@@ -340,16 +366,9 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     }
   }
 
-  const toggleConnected = () => {
-    setWalletConnected(!walletConnected)
-  }
-
   const getTitle = (path: PanelTypes) => {
-    if (path === 'networks') {
-      setPanelTitle('Select Network')
-    } else {
-      setPanelTitle(path)
-    }
+    const title = PanelTitles().find((title) => path === title.id)
+    setPanelTitle(title ? title.title : '')
   }
 
   const navigateTo = (path: PanelTypes) => {
@@ -377,7 +396,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   }
 
   const filterList = (event: any) => {
-    filterAppList(event, AppsList, setFilteredAppsList)
+    filterAppList(event, AppsList(), setFilteredAppsList)
   }
 
   const unlockWallet = () => {
@@ -414,6 +433,14 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will navigate to full wallet restore page')
   }
 
+  const onDisconnectFromOrigin = (origin: string, address: string) => {
+    console.log(`Will disconnect ${address} from ${origin}`)
+  }
+
+  const onAddAccount = () => {
+    console.log('Will Expand to the Accounts Page')
+  }
+
   return (
     <StyledExtensionWrapper>
       {walletLocked ? (
@@ -430,11 +457,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
             <ConnectedPanel
               selectedNetwork={selectedNetwork}
               selectedAccount={selectedAccount}
-              isConnected={walletConnected}
-              connectAction={toggleConnected}
+              isConnected={true}
               navAction={navigateTo}
               onLockWallet={onLockWallet}
               onOpenSettings={onOpenSettings}
+              activeOrigin=''
             />
           ) : (
             <>
@@ -453,6 +480,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     accounts={accounts}
                     onBack={onBack}
                     onSelectAccount={onSelectAccount}
+                    onAddAccount={onAddAccount}
+                    hasAddButton={true}
                   />
                 </SelectContainer>
               }
@@ -488,9 +517,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onInputChange={onInputChange}
                         onSelectPresetAmount={onSelectPresetAmount}
                         onSubmit={onSubmitSend}
+                        addressError=''
                         selectedAsset={selectedAsset}
                         selectedAssetAmount={fromAmount}
                         selectedAssetBalance={selectedAccount.balance.toString()}
+                        toAddressOrUrl={toAddress}
                         toAddress={toAddress}
                       />
                     }
@@ -503,6 +534,13 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         buyAmount={buyAmount}
                         selectedNetwork={selectedNetwork}
                         networkList={[]}
+                      />
+                    }
+                    {selectedPanel === 'sitePermissions' &&
+                      <SitePermissions
+                        siteURL='https://app.uniswap.org'
+                        onDisconnect={onDisconnectFromOrigin}
+                        connectedAccounts={accounts}
                       />
                     }
                   </ScrollContainer>
@@ -535,9 +573,9 @@ export const _SetupWallet = () => {
   }
 
   return (
-    <StyledExtensionWrapper>
+    <StyledExtensionWrapperLonger>
       <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
-    </StyledExtensionWrapper>
+    </StyledExtensionWrapperLonger>
   )
 }
 

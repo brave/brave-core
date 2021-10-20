@@ -26,6 +26,7 @@ import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
+import { SponsoredImageTooltip } from '../../components/default/rewards'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 
 // Helpers
@@ -807,18 +808,33 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderRewardsWidget (showContent: boolean, position: number) {
-    const { newTabData } = this.props
-    const {
-      rewardsState,
-      showRewards: rewardsWidgetOn,
-      textDirection
-    } = newTabData
-    const isShowingBrandedWallpaper = GetIsShowingBrandedWallpaper(this.props)
-    const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
-    const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
+  renderBrandedWallpaperNotification () {
+    if (!GetShouldShowBrandedWallpaperNotification(this.props)) {
+      return null
+    }
 
-    if (!shouldShowRewardsWidget) {
+    const { rewardsState } = this.props.newTabData
+    if (!rewardsState.adsSupported) {
+      return null
+    }
+
+    const onClose = () => { this.dismissBrandedWallpaperNotification(true) }
+    const onEnableAds = () => { this.startRewards() }
+
+    return (
+      <Page.BrandedWallpaperNotification>
+        <SponsoredImageTooltip
+          adsEnabled={rewardsState.enabledAds}
+          onEnableAds={onEnableAds}
+          onClose={onClose}
+        />
+      </Page.BrandedWallpaperNotification>
+    )
+  }
+
+  renderRewardsWidget (showContent: boolean, position: number) {
+    const { rewardsState, showRewards, textDirection } = this.props.newTabData
+    if (!showRewards) {
       return null
     }
 
@@ -839,13 +855,7 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onStartRewards={this.startRewards}
-        isShowingBrandedWallpaper={isShowingBrandedWallpaper}
-        showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
-        onDisableBrandedWallpaper={this.disableBrandedWallpaper}
-        brandedWallpaperData={newTabData.brandedWallpaperData}
-        isNotification={!rewardsWidgetOn}
         onDismissNotification={this.dismissNotification}
-        onDismissBrandedWallpaperNotification={this.dismissBrandedWallpaperNotification}
       />
     )
   }
@@ -1138,6 +1148,7 @@ class NewTabPage extends React.Component<Props, State> {
                 onClickLogo={this.onClickLogo}
                 data={newTabData.brandedWallpaperData.logo}
               />
+              {this.renderBrandedWallpaperNotification()}
             </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}

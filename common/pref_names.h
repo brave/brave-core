@@ -26,6 +26,7 @@ extern const char kStatsReportingEnabled[];
 extern const char kWidevineOptedIn[];
 extern const char kAskWidevineInstall[];
 extern const char kUseAlternativeSearchEngineProvider[];
+extern const char kShowAlternativeSearchEngineProviderToggle[];
 extern const char kAlternativeSearchEngineProviderInTor[];
 extern const char kBraveThemeType[];
 extern const char kUseOverriddenBraveThemeType[];
@@ -78,6 +79,8 @@ extern const char kDefaultBrowserPromptEnabled[];
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 // Web discovery project
 extern const char kWebDiscoveryEnabled[];
+extern const char kDontAskEnableWebDiscovery[];
+extern const char kBraveSearchVisitCount[];
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -98,5 +101,11 @@ extern const char kSafetynetStatus[];
 extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
 extern const char kDontAskForCrashReporting[];
+
+// Cast extension requires a browser restart once the setting is toggled.
+// kEnableMediaRouterOnRestart is used as a proxy to identify the current
+// state of the switch and prefs::kEnableMediaRouter is updated to
+// kEnableMediaRouterOnRestart on restart.
+extern const char kEnableMediaRouterOnRestart[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

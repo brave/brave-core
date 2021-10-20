@@ -5,6 +5,7 @@
 
 #include <map>
 #include <utility>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -46,8 +47,8 @@ void DatabasePendingContribution::InsertOrUpdateList(
 
   const std::string query = base::StringPrintf(
       "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "
-      "added_date, viewing_id, type, processor) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "added_date, viewing_id, type) "
+      "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
   for (const auto& item : list) {
@@ -61,7 +62,6 @@ void DatabasePendingContribution::InsertOrUpdateList(
     BindInt64(command.get(), 3, now);
     BindString(command.get(), 4, item->viewing_id);
     BindInt(command.get(), 5, static_cast<int>(item->type));
-    BindInt(command.get(), 6, static_cast<int>(item->processor));
 
     transaction->commands.push_back(std::move(command));
   }
@@ -129,7 +129,7 @@ void DatabasePendingContribution::GetAllRecords(
   const std::string query = base::StringPrintf(
       "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
       "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
-      "pc.amount, pc.added_date, pc.viewing_id, pc.type, pc.processor "
+      "pc.amount, pc.added_date, pc.viewing_id, pc.type "
       "FROM %s as pc "
       "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
       "LEFT JOIN server_publisher_info AS spi "
@@ -151,7 +151,6 @@ void DatabasePendingContribution::GetAllRecords(
                               type::DBCommand::RecordBindingType::DOUBLE_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::STRING_TYPE,
-                              type::DBCommand::RecordBindingType::INT_TYPE,
                               type::DBCommand::RecordBindingType::INT_TYPE};
 
   transaction->commands.push_back(std::move(command));
@@ -199,13 +198,56 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->expiration_date =
         info->added_date +
         constant::kPendingContributionExpirationInterval;
-    info->processor = static_cast<type::ContributionProcessor>(
-        GetIntColumn(record_pointer, 12));
 
     list.push_back(std::move(info));
   }
 
   callback(std::move(list));
+}
+
+void DatabasePendingContribution::GetUnverifiedPublishers(
+    ledger::UnverifiedPublishersCallback callback) {
+  std::string query = base::StringPrintf(
+      "SELECT pi.publisher_id "
+      "FROM %s AS pc "
+      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi ON spi.publisher_key = "
+      "pi.publisher_id "
+      "WHERE spi.status IS NULL OR spi.status IN (0, 1) "
+      "GROUP BY pi.publisher_id",
+      kTableName);
+
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
+  command->command = std::move(query);
+  command->record_bindings = {type::DBCommand::RecordBindingType::STRING_TYPE};
+
+  auto transaction = type::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      std::bind(&DatabasePendingContribution::OnGetUnverifiedPublishers, this,
+                _1, std::move(callback)));
+}
+
+void DatabasePendingContribution::OnGetUnverifiedPublishers(
+    type::DBCommandResponsePtr response,
+    ledger::UnverifiedPublishersCallback callback) {
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
+    return callback({});
+  }
+
+  std::vector<std::string> publisher_keys{};
+  for (const auto& record : response->result->get_records()) {
+    auto* record_pointer = record.get();
+    DCHECK(record_pointer);
+    publisher_keys.push_back(GetStringColumn(record_pointer, 0));
+  }
+
+  callback(std::move(publisher_keys));
 }
 
 void DatabasePendingContribution::DeleteRecord(

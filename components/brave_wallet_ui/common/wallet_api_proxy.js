@@ -49,6 +49,9 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.chainChangedEvent({ chainId }))
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
+      },
+      onIsEip1559Changed: function (chainId, isEip1559) {
+        store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
       }
     })
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote());
@@ -65,6 +68,15 @@ export default class WalletApiProxy {
     return txData
   }
 
+  makeEIP1559TxData(chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit, to, value, data) {
+    const txData = new braveWallet.mojom.TxData1559()
+    txData.baseData = this.makeTxData(nonce, '', gasLimit, to, value, data)
+    txData.maxPriorityFeePerGas = maxPriorityFeePerGas
+    txData.maxFeePerGas = maxFeePerGas
+    txData.chainId = chainId
+    return txData
+  }
+
   getKeyringsByType(type) {
     if (type == kLedgerHardwareVendor) {
       return this.ledgerHardwareKeyring;
@@ -74,23 +86,29 @@ export default class WalletApiProxy {
 
   addKeyringControllerObserver(store) {
     const keyringControllerObserverReceiver = new braveWallet.mojom.KeyringControllerObserverReceiver({
-      keyringCreated: function (chainId) {
+      keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
       },
-      keyringRestored: function (chainId) {
+      keyringRestored: function () {
         store.dispatch(WalletActions.keyringRestored())
       },
-      locked: function (chainId) {
+      locked: function () {
         store.dispatch(WalletActions.locked())
       },
-      unlocked: function (chainId) {
+      unlocked: function () {
         store.dispatch(WalletActions.unlocked())
       },
-      backedUp: function (chainId) {
+      backedUp: function () {
         store.dispatch(WalletActions.backedUp())
       },
-      accountsChanged: function (chainId) {
+      accountsChanged: function () {
         store.dispatch(WalletActions.accountsChanged())
+      },
+      autoLockMinutesChanged: function () {
+        store.dispatch(WalletActions.autoLockMinutesChanged())
+      },
+      selectedAccountChanged: function () {
+        store.dispatch(WalletActions.selectedAccountChanged())
       }
     })
     this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote());
@@ -109,5 +127,17 @@ export default class WalletApiProxy {
       }
     })
     this.ethTxController.addObserver(ethTxControllerObserverReceiver.$.bindNewPipeAndPassRemote());
+  }
+
+  addBraveWalletServiceObserver(store) {
+    const braveWalletServiceObserverReceiver = new braveWallet.mojom.BraveWalletServiceObserverReceiver({
+      onActiveOriginChanged: function (origin) {
+        store.dispatch(WalletActions.activeOriginChanged({origin}))
+      },
+      onDefaultWalletChanged: function (defaultWallet) {
+        store.dispatch(WalletActions.defaultWalletChanged({defaultWallet}))
+      }
+    })
+    this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote());
   }
 }

@@ -1,12 +1,12 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index aeccafb94d3b523a9159411a89ea3a17c08f52ad..8e3e1d4924b900efd7570373ddde5bc7305d76fc 100644
+index 06d04849441463faceb7990db05a5013e6e12fb5..651a2f702cccbc7de34c9a1070146e6dba60a078 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -966,6 +966,7 @@ void PageInfo::PresentSitePermissions() {
+@@ -968,6 +968,7 @@ void PageInfo::PresentSitePermissions() {
        }
      }
  
 +    BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
      if (ShouldShowPermission(
-             permission_info, site_url_, content_settings, web_contents(),
+             permission_info, site_url_, content_settings, web_contents_.get(),
              HasContentSettingChangedViaPageInfo(permission_info.type),

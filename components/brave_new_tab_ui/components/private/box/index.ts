@@ -8,12 +8,28 @@ import Heading from 'brave-ui/components/text/heading'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 import { DuckDuckGoIcon, TorLockIcon } from 'brave-ui/components/icons'
 
+interface Props {
+  isStandalonePrivatePage?: boolean
+}
+
 export const Box = styled('section')<{}>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   padding: 30px 30px 50px;
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.25);
+`
+
+export const ControlBox = styled('section')<{}>`
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  padding: 10px 20px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin: 10px auto;
 `
 
 export const HeaderBox = styled('section')<{}>`
@@ -27,11 +43,12 @@ export const Content = styled('article')<{}>`
   min-height: 285px;
 `
 
-export const DuckDuckGoImage = styled(DuckDuckGoIcon)`
+export const DuckDuckGoImage = styled(DuckDuckGoIcon)<Props>`
   box-sizing: border-box;
   display: block;
   width: 40px;
-  margin-bottom: 20px;
+  ${p => p.isStandalonePrivatePage && 'margin-right: 10px'};
+  ${p => !p.isStandalonePrivatePage && 'margin-bottom: 20px'};
 `
 
 export const TorLockImage = styled(TorLockIcon)`
@@ -41,14 +58,19 @@ export const TorLockImage = styled(TorLockIcon)`
   margin-bottom: 20px;
 `
 
-export const PrivateImage = styled('img')<{}>`
+export const PrivateImage = styled('img')<Props>`
   box-sizing: border-box;
   display: block;
-  width: 293px;
+  width: ${p => p.isStandalonePrivatePage ? '164px' : '293px'};
+  ${p => p.isStandalonePrivatePage && 'margin: auto'};
+  ${p => !p.isStandalonePrivatePage && '@media screen and (max-width: \'1170px\') { margin: auto; }'};
+`
 
-  @media screen and (max-width: 1170px) {
-    margin: auto;
-  }
+export const PrivacyEyeImage = styled('img')<{}>`
+  box-sizing: border-box;
+  display: block;
+  width: 73px;
+  margin: auto;
 `
 
 export const TorImage = styled('img')<{}>`
@@ -62,30 +84,47 @@ export const TorImage = styled('img')<{}>`
   }
 `
 
-export const SubTitle = styled('small')<{}>`
+export const SubTitle = styled('small')<Props>`
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   display: block;
   color: #7642F5;
+  ${p => p.isStandalonePrivatePage && 'font-family: Poppins'};
   font-size: 14px;
-  text-transform: uppercase;
   font-weight: 600;
+  text-transform: uppercase;
   margin-bottom: 5px;
 `
 
-export const Title = styled(Heading)`
-  font-size: 38px;
-  letter-spacing: 0.02px;
+export const Title = styled(Heading)<Props>`
+  ${p => p.isStandalonePrivatePage && 'font-family: Poppins'};
+  font-size: ${p => p.isStandalonePrivatePage ? '28px' : '38px'};
   font-weight: 500;
+  letter-spacing: 0.02px;
+  ${p => p.isStandalonePrivatePage && 'line-height: 38px'};
   color: #fff;
-  margin: 0 0 0px;
+  margin: ${p => p.isStandalonePrivatePage ? 'auto' : '0 0 0px'};
 `
-export const Text = styled('p')<{}>`
-  font-family: ${p => p.theme.fontFamily.body};
-  letter-spacing: 0.19px;
-  line-height: 26px;
-  font-size: 15px;
+
+export const Text = styled('p')<Props>`
+  font-family: ${p => p.isStandalonePrivatePage ? 'Poppins' : p.theme.fontFamily.body};
+  font-size: ${p => p.isStandalonePrivatePage ? '12px' : '15px'};
+  ${p => p.isStandalonePrivatePage && 'font-weight: 600'};
+  ${p => p.isStandalonePrivatePage && 'font-style: normal'};
+  letter-spacing: ${p => p.isStandalonePrivatePage ? '0.01em' : '0.19px'};
+  line-height: ${p => p.isStandalonePrivatePage ? '18px' : '26px'};
   margin: 15px 0;
+  color: #fff;
+  ${p => p.isStandalonePrivatePage && 'opacity: 0.8'};
+`
+
+export const ControlText = styled('p')<{}>`
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
   color: #fff;
 `
 
@@ -103,16 +142,16 @@ export const PurpleButton = styled(Button as ComponentType<ButtonProps>)`
   padding: 14px 20px;
   margin: 25px 25px 0 0;
 `
-export const Link = styled('a')<{}>`
-  font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 14px;
-  color: #814EFF;
+export const Link = styled('a')<Props>`
+  font-family: ${p => p.isStandalonePrivatePage ? 'Poppins' : p.theme.fontFamily.heading};
+  font-size: ${p => p.isStandalonePrivatePage ? '12px' : '14px'};
   font-style: normal;
+  color: ${p => p.isStandalonePrivatePage ? '#fff' : '#814EFF'};
   line-height: 1;
   align-self: center;
   margin: 25px 20px 0 0;
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: ${p => p.isStandalonePrivatePage ? 'underline' : 'none'};
 `
 
 interface FakeButtonProps {

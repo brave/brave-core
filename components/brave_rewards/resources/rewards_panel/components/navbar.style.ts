@@ -14,6 +14,8 @@ export const root = styled.div`
   margin-top: 13px;
   padding: 24px 30px;
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
 
   button {
     font-weight: inherit;
@@ -70,7 +72,7 @@ export const root = styled.div`
 
 export const tip = styled.div`
   flex: 1 1 auto;
-  margin-left: 38px;
+  text-align: center;
 
   .icon {
     width: 24px;
@@ -78,9 +80,7 @@ export const tip = styled.div`
 `
 
 export const summary = styled.div`
-  flex: 1 1 auto;
-  text-align: right;
-  margin-right: 17px;
+  padding: 0 24px;
 
   .icon {
     margin-bottom: 4px;
@@ -88,7 +88,6 @@ export const summary = styled.div`
 `
 
 export const settings = styled.div`
-  flex: 0 0 auto;
   border-left: solid 1px var(--brave-palette-neutral200);
   padding-left: 16px;
   height: 24px;

@@ -8,7 +8,8 @@ import {
 } from '../..'
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
+import { ETH } from '../../../../options/initial-visible-token-info'
 
 // Styled Components
 import {
@@ -24,14 +25,15 @@ import {
   Input,
   Divider,
   ButtonRow,
-  ErrorText
+  ErrorText,
+  TopRow
 } from './style'
 
 export interface Props {
   onClose: () => void
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   addUserAssetError: boolean
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
@@ -89,12 +91,17 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   const tokenList = React.useMemo(() => {
     const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
-    const notVisibleList = fullAssetList.filter((token) => !visibleContracts.includes(token.contractAddress))
+    const fullList = visibleContracts.includes('') ? fullAssetList : [ETH, ...fullAssetList]
+    const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
     return [...userVisibleTokensInfo, ...notVisibleList]
   }, [fullAssetList, userVisibleTokensInfo])
 
-  React.useMemo(() => {
-    setFilteredTokenList(tokenList)
+  React.useEffect(() => {
+    // Added this timeout to throttle setting the list
+    // to allow the modal to appear instantly
+    setTimeout(function () {
+      setFilteredTokenList(tokenList)
+    }, 500)
     if (!addUserAssetError) {
       setShowAddCustomToken(false)
     }
@@ -105,7 +112,9 @@ const EditVisibleAssetsModal = (props: Props) => {
   const filterWatchlist = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const search = event.target.value
     if (search === '') {
-      setFilteredTokenList(tokenList)
+      setTimeout(function () {
+        setFilteredTokenList(tokenList)
+      }, 100)
     } else {
       const filteredList = tokenList.filter((item) => {
         return (
@@ -158,9 +167,9 @@ const EditVisibleAssetsModal = (props: Props) => {
     const isUserToken = userVisibleTokensInfo.includes(token)
     if (isUserToken) {
       if (isCustom) {
-        selected ? onSetUserAssetVisible(token.contractAddress, true) : onSetUserAssetVisible(token.contractAddress, false)
+        selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
       } else {
-        selected ? onAddUserAsset(token) : onRemoveUserAsset(token.contractAddress)
+        selected ? onAddUserAsset(token) : onRemoveUserAsset(token)
       }
     } else {
       onAddUserAsset(token)
@@ -184,7 +193,7 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   const onRemoveAsset = (token: TokenInfo) => {
     setIsLoading(true)
-    onRemoveUserAsset(token.contractAddress)
+    onRemoveUserAsset(token)
   }
 
   const isDisabled = React.useMemo(() => {
@@ -202,12 +211,12 @@ const EditVisibleAssetsModal = (props: Props) => {
   }, [tokenContractAddress, fullAssetList])
 
   return (
-    <PopupModal title={showAddCustomToken ? locale.watchlistAddCustomAsset : locale.accountsEditVisibleAssets} onClose={onClose}>
+    <PopupModal title={showAddCustomToken ? getLocale('braveWalletWatchlistAddCustomAsset') : getLocale('braveWalletAccountsEditVisibleAssets')} onClose={onClose}>
       {showAddCustomToken &&
         <Divider />
       }
       <StyledWrapper>
-        {fullAssetList.length === 0 || isLoading ? (
+        {(filteredTokenList.length === 0 && searchValue === '') || isLoading ? (
           <LoadingWrapper>
             <LoadIcon />
           </LoadingWrapper>
@@ -215,24 +224,24 @@ const EditVisibleAssetsModal = (props: Props) => {
           <>
             {showAddCustomToken ? (
               <FormWrapper>
-                <InputLabel>{locale.watchListTokenName}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenName')}</InputLabel>
                 <Input
                   value={tokenName}
                   onChange={handleTokenNameChanged}
                   disabled={isDisabled}
                 />
-                <InputLabel>{locale.watchListTokenAddress}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenAddress')}</InputLabel>
                 <Input
                   value={tokenContractAddress}
                   onChange={handleTokenAddressChanged}
                 />
-                <InputLabel>{locale.watchListTokenSymbol}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenSymbol')}</InputLabel>
                 <Input
                   value={tokenSymbol}
                   onChange={handleTokenSymbolChanged}
                   disabled={isDisabled}
                 />
-                <InputLabel>{locale.watchListTokenDecimals}</InputLabel>
+                <InputLabel>{getLocale('braveWalletWatchListTokenDecimals')}</InputLabel>
                 <Input
                   value={tokenDecimals}
                   onChange={handleTokenDecimalsChanged}
@@ -240,17 +249,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                   type='number'
                 />
                 {hasError &&
-                  <ErrorText>{locale.watchListError}</ErrorText>
+                  <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
                 }
                 <ButtonRow>
                   <NavButton
                     onSubmit={onClickCancel}
-                    text={locale.backupButtonCancel}
+                    text={getLocale('braveWalletBackupButtonCancel')}
                     buttonType='secondary'
                   />
                   <NavButton
                     onSubmit={onClickAddCustomToken}
-                    text={locale.watchListAdd}
+                    text={getLocale('braveWalletWatchListAdd')}
                     buttonType='primary'
                     disabled={
                       tokenName === ''
@@ -266,9 +275,16 @@ const EditVisibleAssetsModal = (props: Props) => {
               <>
                 <SearchBar
                   value={searchValue}
-                  placeholder={locale.watchListSearchPlaceholder}
+                  placeholder={getLocale('braveWalletWatchListSearchPlaceholder')}
                   action={filterWatchlist}
                 />
+                {!searchValue.toLowerCase().startsWith('0x') &&
+                  <TopRow>
+                    <NoAssetButton onClick={toggleShowAddCustomToken}>
+                      {getLocale('braveWalletWatchlistAddCustomAsset')}
+                    </NoAssetButton>
+                  </TopRow>
+                }
                 <WatchlistScrollContainer>
                   <>
                     {filteredTokenList.map((token) =>
@@ -284,17 +300,17 @@ const EditVisibleAssetsModal = (props: Props) => {
                     {filteredTokenList.length === 0 &&
                       <NoAssetRow>
                         {searchValue.toLowerCase().startsWith('0x') ? (
-                          <NoAssetButton onClick={onClickSuggestAdd}>{locale.watchListAdd} {searchValue} {locale.watchListSuggestion}</NoAssetButton>
+                          <NoAssetButton onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListAdd')} {searchValue} {getLocale('braveWalletWatchListSuggestion')}</NoAssetButton>
                         ) : (
-                          <NoAssetText>{locale.watchListNoAsset} {searchValue}</NoAssetText>
+                          <NoAssetText>{getLocale('braveWalletWatchListNoAsset')} {searchValue}</NoAssetText>
                         )}
                       </NoAssetRow>
                     }
                   </>
                 </WatchlistScrollContainer>
                 <NavButton
-                  onSubmit={toggleShowAddCustomToken}
-                  text={locale.watchlistAddCustomAsset}
+                  onSubmit={onClose}
+                  text={getLocale('braveWalletWatchListDoneButton')}
                   buttonType='primary'
                 />
               </>

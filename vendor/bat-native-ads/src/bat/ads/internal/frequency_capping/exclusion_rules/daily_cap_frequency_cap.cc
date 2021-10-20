@@ -18,14 +18,14 @@ DailyCapFrequencyCap::DailyCapFrequencyCap(const AdEventList& ad_events)
 
 DailyCapFrequencyCap::~DailyCapFrequencyCap() = default;
 
-bool DailyCapFrequencyCap::ShouldExclude(const CreativeAdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+bool DailyCapFrequencyCap::ShouldExclude(const CreativeAdInfo& creative_ad) {
+  const AdEventList filtered_ad_events =
+      FilterAdEvents(ad_events_, creative_ad);
 
-  if (!DoesRespectCap(filtered_ad_events, ad)) {
+  if (!DoesRespectCap(filtered_ad_events, creative_ad)) {
     last_message_ = base::StringPrintf(
-        "campaignId %s has exceeded the "
-        "frequency capping for dailyCap",
-        ad.campaign_id.c_str());
+        "campaignId %s has exceeded the frequency capping for dailyCap",
+        creative_ad.campaign_id.c_str());
 
     return true;
   }
@@ -38,27 +38,27 @@ std::string DailyCapFrequencyCap::GetLastMessage() const {
 }
 
 bool DailyCapFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
-                                          const CreativeAdInfo& ad) {
+                                          const CreativeAdInfo& creative_ad) {
   const std::deque<base::Time> history = GetHistoryForAdEvents(ad_events);
 
   const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
-                                                       ad.daily_cap);
+                                                       creative_ad.daily_cap);
 }
 
 AdEventList DailyCapFrequencyCap::FilterAdEvents(
     const AdEventList& ad_events,
-    const CreativeAdInfo& ad) const {
+    const CreativeAdInfo& creative_ad) const {
   AdEventList filtered_ad_events = ad_events;
 
   const auto iter = std::remove_if(
       filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
+      [&creative_ad](const AdEventInfo& ad_event) {
         return (ad_event.type != AdType::kAdNotification &&
                 ad_event.type != AdType::kInlineContentAd) ||
-               ad_event.campaign_id != ad.campaign_id ||
+               ad_event.campaign_id != creative_ad.campaign_id ||
                ad_event.confirmation_type != ConfirmationType::kServed;
       });
 

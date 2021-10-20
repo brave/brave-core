@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Host, GrantInfo, GrantCaptchaStatus } from './interfaces'
+import { Host, GrantCaptchaStatus } from './interfaces'
+import { GrantInfo } from '../../shared/lib/grant_info'
 import { OpenLinkAction, ClaimGrantAction } from '../../shared/components/notifications'
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'

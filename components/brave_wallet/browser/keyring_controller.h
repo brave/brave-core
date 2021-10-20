@@ -148,11 +148,34 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                                        EthTransaction* tx,
                                        uint256_t chain_id);
 
+  struct SignatureWithError {
+    SignatureWithError();
+    SignatureWithError(SignatureWithError&& other);
+    SignatureWithError& operator=(SignatureWithError&& other);
+    SignatureWithError(const SignatureWithError&) = delete;
+    SignatureWithError& operator=(const SignatureWithError&) = delete;
+    ~SignatureWithError();
+
+    absl::optional<std::vector<uint8_t>> signature;
+    std::string error_message;
+  };
+  SignatureWithError SignMessageByDefaultKeyring(
+      const std::string& address,
+      const std::vector<uint8_t>& message);
+
+  void AddAccountsWithDefaultName(size_t number);
+
   bool IsLocked() const;
 
   void AddObserver(::mojo::PendingRemote<mojom::KeyringControllerObserver>
                        observer) override;
   void NotifyUserInteraction() override;
+  void GetSelectedAccount(GetSelectedAccountCallback callback) override;
+  void SetSelectedAccount(const std::string& address,
+                          SetSelectedAccountCallback callback) override;
+  void GetAutoLockMinutes(GetAutoLockMinutesCallback callback) override;
+  void SetAutoLockMinutes(int32_t minutes,
+                          SetAutoLockMinutesCallback callback) override;
 
   /* TODO(darkdh): For other keyrings support
   void DeleteKeyring(size_t index);
@@ -186,11 +209,13 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, AutoLock);
+  FRIEND_TEST_ALL_PREFIXES(KeyringControllerUnitTest, SetSelectedAccount);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxControllerUnitTest;
 
   void AddAccountForDefaultKeyring(const std::string& account_name);
   void OnAutoLockFired();
+  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync();
 
   // Address will be returned when success
   absl::optional<std::string> ImportAccountForDefaultKeyring(
@@ -230,6 +255,7 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();
+  void OnSelectedAccountPreferenceChanged();
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<HDKeyring> default_keyring_;

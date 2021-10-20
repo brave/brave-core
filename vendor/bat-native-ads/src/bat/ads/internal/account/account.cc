@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/account/account.h"
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/ad_rewards/ad_rewards.h"
@@ -90,6 +90,9 @@ void Account::SetCatalogIssuers(const CatalogIssuersInfo& catalog_issuers) {
 
 void Account::Deposit(const std::string& creative_instance_id,
                       const ConfirmationType& confirmation_type) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+
   confirmations_->Confirm(creative_instance_id, confirmation_type);
 }
 
@@ -174,6 +177,8 @@ void Account::OnDidConfirm(const double estimated_redemption_value,
 }
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   TopUpUnblindedTokens();
 
   confirmations_->RetryAfterDelay();

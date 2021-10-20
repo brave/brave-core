@@ -9,29 +9,28 @@ import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'
 import useScrollIntoView from '../../useScrollIntoView'
 import useReadArticleClickHandler from '../../useReadArticleClickHandler'
-import { OnReadFeedItem, OnSetPublisherPref } from '../../'
+import { OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from '../../'
 import CardImage from '../CardImage'
 import PublisherMeta from '../PublisherMeta'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
-interface Props {
-  content: (BraveToday.Article | BraveToday.PromotedArticle | undefined)[]
-  publishers: BraveToday.Publishers
-  articleToScrollTo?: BraveToday.FeedItem
+type Props = {
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
-  onItemViewed?: (item: BraveToday.FeedItem) => any
+  onItemViewed?: OnPromotedItemViewed
   isPromoted?: boolean
 }
 
-type ArticleProps = {
+type ArticlesProps = Props & {
+  content: (BraveToday.Article | BraveToday.PromotedArticle | undefined)[]
+  publishers: BraveToday.Publishers
+  articleToScrollTo?: BraveToday.FeedItem
+}
+
+type ArticleProps = Props & {
   item: BraveToday.Article | BraveToday.PromotedArticle
   publisher?: BraveToday.Publisher
   shouldScrollIntoView?: boolean
-  onReadFeedItem: OnReadFeedItem
-  onSetPublisherPref: OnSetPublisherPref
-  onItemViewed?: (item: BraveToday.FeedItem) => any
-  isPromoted?: boolean
 }
 //
 // Promoted Card URL now points to the 'https://brave.com/brave-news' instead of 'https://brave.com/brave-today'
@@ -55,13 +54,24 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
   const { publisher, item } = props
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
 
-  const onClick = useReadArticleClickHandler(props.onReadFeedItem, { item, isPromoted: props.isPromoted })
-
   const innerRef = React.useRef<HTMLElement>(null)
 
-  const onItemViewedRef = React.useRef(props.onItemViewed)
+  const uuid = React.useMemo<string | undefined>(function () {
+    if (props.isPromoted) {
+      // @ts-ignore
+      const uuid: string = crypto.randomUUID()
+      return uuid
+    }
+    return undefined
+  }, [props.isPromoted, props.item.url])
+
+  const onClick = useReadArticleClickHandler(props.onReadFeedItem, { item, isPromoted: props.isPromoted, promotedUUID: uuid })
+
+  const onItemViewedRef = React.useRef<Function | null>()
   onItemViewedRef.current = props.onItemViewed
-  
+    ? props.onItemViewed.bind(undefined, { item: props.item, uuid })
+    : null
+        
   React.useEffect(() => {
     if (!innerRef.current) {
       return
@@ -84,7 +94,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
     const observer = new VisibilityTimer(() => {
       const onItemViewed = onItemViewedRef.current
       if (onItemViewed) {
-        onItemViewed(item)
+        onItemViewed()
       }
     }, 100, innerRef.current)
 
@@ -141,7 +151,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
   )
 })
 
-const CardSingleArticleLarge = React.forwardRef<HTMLElement, Props>(function (props, ref) {
+const CardSingleArticleLarge = React.forwardRef<HTMLElement, ArticlesProps>(function (props, ref) {
   // no full content no render®
   if (props.content.length === 0) {
     return null

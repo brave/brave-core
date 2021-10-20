@@ -87,6 +87,7 @@ static_library("browser") {
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
@@ -97,6 +98,7 @@ static_library("browser") {
     "//brave/third_party/ethash",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/component_updater",
+    "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
@@ -104,6 +106,7 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//third_party/boringssl",
+    "//third_party/re2",
     "//ui/base:base",
     "//url",
   ]

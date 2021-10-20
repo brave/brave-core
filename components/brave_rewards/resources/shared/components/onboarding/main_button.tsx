@@ -14,7 +14,9 @@ interface Props {
 export function MainButton (props: Props) {
   return (
     <style.root>
-      <button onClick={props.onClick}>{props.children}</button>
+      <button onClick={props.onClick} data-test-id='rewards-onboarding-main-button'>
+        {props.children}
+      </button>
     </style.root>
   )
 }

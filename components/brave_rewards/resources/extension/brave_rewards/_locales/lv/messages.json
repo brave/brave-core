@@ -19,6 +19,26 @@
     "message": "Pārlādēt stāvokli",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Jebkura jūsu nosūtītā dzeramnauda makā paliks kā neapmaksāta un to vēlreiz automātiski mēģinās nosūtīt 90 dienas. $link_begin$Uzziniet vairāk$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Šis satura veidotājs vēl nav reģistrējies.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Šis satura veidotājs šobrīd nav iestatījis dzeramnaudas saņemšanu no jūsu maka.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ platformā $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ tiks saņemti $days$ laikā",
+    "message": "$amount$ izmaksas apstrāde sāksies $days$ laikā",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Noraidīt",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Lai sāktu bezmaksas zvanu, ieslēdziet Brave Rewards.",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Ar Brave Rewards jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Ieslēgt balvas",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Noklikšķinot jūs piekrītat $tos_link_begin$pakalpojumu sniegšanas noteikumiem$tos_link_end$ un $pp_link_begin$privātuma politikai$pp_link_end$. Jebkurā brīdī varat to atspējot iestatījumos.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Lai sāktu bezmaksas zvanu, iespējojiet Brave Private Ads.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Ar Brave Private Ads jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Ieslēdziet Brave Private Ads.",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Ieslēdzot Ads, jūs piekrītat $tos_link_begin$pakalpojumu sniegšanas noteikumiem$tos_link_end$ un $pp_link_begin$privātuma politikai$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Tagad varat sākt bezmaksas zvanu.",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Noklikšķiniet jebkur ekrānā, lai turpinātu Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Vai vēlaties uzzināt vairāk par Brave Rewards? $tour_link_begin$Iziejiet ātru iepazīšanās kursu$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

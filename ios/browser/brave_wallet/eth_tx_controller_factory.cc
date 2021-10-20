@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/factory/eth_tx_controller_factory_helper.h"
+#include "brave/ios/browser/brave_wallet/asset_ratio_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/eth_json_rpc_controller_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_controller_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -37,6 +38,7 @@ EthTxControllerFactory::EthTxControllerFactory()
           BrowserStateDependencyManager::GetInstance()) {
   DependsOn(EthJsonRpcControllerFactory::GetInstance());
   DependsOn(KeyringControllerFactory::GetInstance());
+  DependsOn(AssetRatioControllerFactory::GetInstance());
 }
 
 EthTxControllerFactory::~EthTxControllerFactory() = default;
@@ -48,7 +50,10 @@ std::unique_ptr<KeyedService> EthTxControllerFactory::BuildServiceInstanceFor(
       EthJsonRpcControllerFactory::GetControllerForBrowserState(browser_state);
   auto* keyring_controller =
       KeyringControllerFactory::GetControllerForBrowserState(browser_state);
+  auto* asset_ratio_controller =
+      AssetRatioControllerFactory::GetControllerForBrowserState(browser_state);
   return brave_wallet::BuildEthTxController(rpc_controller, keyring_controller,
+                                            asset_ratio_controller,
                                             browser_state->GetPrefs());
 }
 

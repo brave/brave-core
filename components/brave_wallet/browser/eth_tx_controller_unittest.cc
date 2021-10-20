@@ -12,9 +12,11 @@
 
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -35,6 +37,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+namespace {
 
 void AddUnapprovedTransactionSuccessCallback(bool* callback_called,
                                              std::string* tx_meta_id,
@@ -58,15 +62,30 @@ void AddUnapprovedTransactionFailureCallback(bool* callback_called,
   *callback_called = true;
 }
 
+mojom::GasEstimation1559Ptr GetMojomGasEstimation() {
+  return mojom::GasEstimation1559::New(
+      "0x3b9aca00" /* Hex of 1 * 1e9 */, "0xaf16b1600" /* Hex of 47 * 1e9 */,
+      "0x77359400" /* Hex of 2 * 1e9 */, "0xb2d05e000" /* Hex of 48 * 1e9 */,
+      "0xb2d05e00" /* Hex of 3 * 1e9 */, "0xb68a0aa00" /* Hex of 49 * 1e9 */,
+      "0xad8075b7a" /* Hex of 46574033786 */);
+}
+
+}  // namespace
+
 class TestEthTxControllerObserver
     : public brave_wallet::mojom::EthTxControllerObserver {
  public:
-  TestEthTxControllerObserver(const std::string& expected_gas_price,
-                              const std::string& expected_gas_limit,
-                              mojom::TransactionStatus expected_status =
-                                  mojom::TransactionStatus::Unapproved)
+  TestEthTxControllerObserver(
+      const std::string& expected_gas_price,
+      const std::string& expected_gas_limit,
+      const std::string& expected_max_priority_fee_per_gas = "",
+      const std::string& expected_max_fee_per_gas = "",
+      mojom::TransactionStatus expected_status =
+          mojom::TransactionStatus::Unapproved)
       : expected_gas_price_(expected_gas_price),
         expected_gas_limit_(expected_gas_limit),
+        expected_max_priority_fee_per_gas_(expected_max_priority_fee_per_gas),
+        expected_max_fee_per_gas_(expected_max_fee_per_gas),
         expected_status_(expected_status) {}
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {}
@@ -76,6 +95,10 @@ class TestEthTxControllerObserver
               base::ToLowerASCII(expected_gas_price_));
     EXPECT_EQ(tx->tx_data->base_data->gas_limit,
               base::ToLowerASCII(expected_gas_limit_));
+    EXPECT_EQ(tx->tx_data->max_priority_fee_per_gas,
+              base::ToLowerASCII(expected_max_priority_fee_per_gas_));
+    EXPECT_EQ(tx->tx_data->max_fee_per_gas,
+              base::ToLowerASCII(expected_max_fee_per_gas_));
     tx_updated_ = true;
   }
 
@@ -98,6 +121,8 @@ class TestEthTxControllerObserver
  private:
   std::string expected_gas_price_;
   std::string expected_gas_limit_;
+  std::string expected_max_priority_fee_per_gas_;
+  std::string expected_max_fee_per_gas_;
   bool tx_updated_ = false;
   bool tx_status_changed_ = false;
   mojom::TransactionStatus expected_status_;
@@ -118,6 +143,21 @@ class EthTxControllerUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
+
+          if (request.url.spec().find("action=gasoracle") !=
+              std::string::npos) {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"payload\": {\"status\": \"1\", \"message\": \"\", "
+                "\"result\": {\"LastBlock\": \"13243541\", \"SafeGasPrice\": "
+                "\"47\", \"ProposeGasPrice\": \"48\", \"FastGasPrice\": "
+                "\"49\", \"suggestBaseFee\": \"46.574033786\", "
+                "\"gasUsedRatio\": "
+                "\"0.27036175840958,0.0884828740801432,0.0426623303159149,0."
+                "972173412918789,0.319781207901446\"}}, \"lastUpdated\": "
+                "\"2021-09-22T21:45:40.015Z\"}");
+            return;
+          }
 
           base::StringPiece request_string(request.request_body->elements()
                                                ->at(0)
@@ -151,6 +191,8 @@ class EthTxControllerUnitTest : public testing::Test {
     rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
     keyring_controller_.reset(new KeyringController(&prefs_));
+    asset_ratio_controller_.reset(
+        new AssetRatioController(shared_url_loader_factory_));
 
     auto tx_state_manager = std::make_unique<EthTxStateManager>(
         &prefs_, rpc_controller_->MakeRemote());
@@ -161,10 +203,16 @@ class EthTxControllerUnitTest : public testing::Test {
 
     eth_tx_controller_.reset(new EthTxController(
         rpc_controller_.get(), keyring_controller_.get(),
-        std::move(tx_state_manager), std::move(nonce_tracker),
-        std::move(pending_tx_tracker), &prefs_));
+        asset_ratio_controller_.get(), std::move(tx_state_manager),
+        std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
 
-    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+    base::RunLoop run_loop;
+    rpc_controller_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                base::BindLambdaForTesting([&](bool success) {
+                                  EXPECT_TRUE(success);
+                                  run_loop.Quit();
+                                }));
+    run_loop.Run();
     keyring_controller_->CreateWallet(
         "testing123", base::DoNothing::Once<const std::string&>());
     base::RunLoop().RunUntilIdle();
@@ -180,6 +228,8 @@ class EthTxControllerUnitTest : public testing::Test {
   std::string from() {
     return keyring_controller_->default_keyring_->GetAddress(0);
   }
+
+  EthTxController* eth_tx_controller() { return eth_tx_controller_.get(); }
 
   void SetErrorInterceptor() {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -200,6 +250,7 @@ class EthTxControllerUnitTest : public testing::Test {
   std::unique_ptr<EthJsonRpcController> rpc_controller_;
   std::unique_ptr<KeyringController> keyring_controller_;
   std::unique_ptr<EthTxController> eth_tx_controller_;
+  std::unique_ptr<AssetRatioController> asset_ratio_controller_;
   std::vector<uint8_t> data_;
 };
 
@@ -508,7 +559,7 @@ TEST_F(EthTxControllerUnitTest, ValidateTxData1559) {
           mojom::TxData::New("0x00", "", "0x00",
                              "0x0101010101010101010101010101010101010101",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x1"),
+          "0x04", "0x0", "0x1", nullptr),
       &error_message));
 
   // Can't specify both gas price and max fee per gas
@@ -517,7 +568,7 @@ TEST_F(EthTxControllerUnitTest, ValidateTxData1559) {
           mojom::TxData::New("0x00", "0x1", "0x00",
                              "0x0101010101010101010101010101010101010101",
                              "0x00", std::vector<uint8_t>()),
-          "0x04", "0x0", "0x1"),
+          "0x04", "0x0", "0x1", nullptr),
       &error_message));
 }
 
@@ -566,7 +617,8 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
       tx_data.Clone(), from(),
       base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
                      &tx_meta_id));
-  TestEthTxControllerObserver observer("", "", mojom::TransactionStatus::Error);
+  TestEthTxControllerObserver observer("", "", "", "",
+                                       mojom::TransactionStatus::Error);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -611,7 +663,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  TestEthTxControllerObserver observer("", "",
+  TestEthTxControllerObserver observer("", "", "", "",
                                        mojom::TransactionStatus::Approved);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
@@ -637,10 +689,10 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
 
 TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
   auto tx_data = mojom::TxData1559::New(
-      mojom::TxData::New("0x00", "", "0x00",
+      mojom::TxData::New("0x00", "", "0x01",
                          "0x0101010101010101010101010101010101010101", "0x00",
                          std::vector<uint8_t>()),
-      "0x04", "0x0", "0x1");
+      "0x04", "0x1", "0x1", nullptr);
 
   bool callback_called = false;
   std::string tx_meta_id;
@@ -652,7 +704,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
 
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  TestEthTxControllerObserver observer("", "",
+  TestEthTxControllerObserver observer("", "", "", "",
                                        mojom::TransactionStatus::Approved);
   eth_tx_controller_->AddObserver(observer.GetReceiver());
   callback_called = false;
@@ -662,7 +714,7 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction1559) {
         EXPECT_TRUE(success);
         EXPECT_EQ(
             result,
-            "0x02dd04808001809401010101010101010101010101010101010101018080c0");
+            "0x02dd04800101019401010101010101010101010101010101010101018080c0");
         auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Approved);
@@ -688,6 +740,492 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransactionFail) {
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_called);
   ASSERT_FALSE(observer.TxStatusChanged());
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithGasFeeAndLimit) {
+  const std::string gas_limit = "0x0974";
+
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
+  const std::string gas_limit = "0x0974";
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasFeeAndLimit) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasFeeAndLimitForEthSend) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Default gas limit value will be used.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithGasFeeAndLimitForEthSend) {
+  const std::string gas_limit = "0x0974";
+
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasLimitForEthSend) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Default gas limit value will be used.
+  EXPECT_EQ(tx_meta->tx->gas_limit(), kDefaultSendEthGasLimit);
+
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
+}
+
+TEST_F(EthTxControllerUnitTest,
+       AddUnapproved1559TransactionWithoutGasFeeForEthSend) {
+  const std::string gas_limit = "0x0974";
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", gas_limit,
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", std::vector<uint8_t>()),
+      "0x04", "", "", nullptr);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+}
+
+TEST_F(EthTxControllerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
+  auto tx_data = mojom::TxData1559::New(
+      mojom::TxData::New("0x1", "", "",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x04", "", "", nullptr);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapproved1559Transaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  // Gas limit should be filled by requesting eth_estimateGas.
+  uint256_t gas_limit_value;
+  EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+
+  // Gas fee and estimation should be filled by gas oracle.
+  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
+  EXPECT_EQ(tx1559->gas_estimation(),
+            Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+                GetMojomGasEstimation()));
+
+  // Fail if transaction is not found.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      "not_exist", "0x1", "0x2", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty gas limit.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "", "0x2", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty max_priority_fee_per_gas.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x1", "", "0x3",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Fail if passing an empty max_fee_per_gas.
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x1", "0x2", "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  const std::string update_max_priority_fee_per_gas_hex_string = "0x3344";
+  const std::string update_max_fee_per_gas_hex_string = "0x5566";
+  const std::string update_gas_limit_hex_string = "0xFDE8";
+
+  uint256_t update_max_priority_fee_per_gas;
+  EXPECT_TRUE(HexValueToUint256(update_max_priority_fee_per_gas_hex_string,
+                                &update_max_priority_fee_per_gas));
+  uint256_t update_max_fee_per_gas;
+  EXPECT_TRUE(HexValueToUint256(update_max_fee_per_gas_hex_string,
+                                &update_max_fee_per_gas));
+  uint256_t update_gas_limit;
+  EXPECT_TRUE(
+      HexValueToUint256(update_gas_limit_hex_string, &update_gas_limit));
+
+  TestEthTxControllerObserver observer(
+      "0x0", update_gas_limit_hex_string,
+      update_max_priority_fee_per_gas_hex_string,
+      update_max_fee_per_gas_hex_string);
+  eth_tx_controller_->AddObserver(observer.GetReceiver());
+
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, update_max_priority_fee_per_gas_hex_string,
+      update_max_fee_per_gas_hex_string, update_gas_limit_hex_string,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(observer.TxUpdated());
+
+  // Get the updated TX.
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
+  tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559->max_priority_fee_per_gas(),
+            update_max_priority_fee_per_gas);
+  EXPECT_EQ(tx1559->max_fee_per_gas(), update_max_fee_per_gas);
+}
+
+TEST_F(EthTxControllerUnitTest,
+       SetGasFeeAndLimitForUnapprovedTransactionRejectNotEip1559) {
+  auto tx_data =
+      mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller_->AddUnapprovedTransaction(
+      std::move(tx_data), from(),
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+
+  callback_called = false;
+  eth_tx_controller_->SetGasFeeAndLimitForUnapprovedTransaction(
+      tx_meta_id, "0x3344", "0x5566", "0xFED8",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
+  EthAddress addr1 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+  EthAddress addr2 =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
+  base::RunLoop().RunUntilIdle();
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  meta.from = addr1;
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  meta.id = "002";
+  meta.from = addr2;
+  meta.tx->set_nonce(uint256_t(4));
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [this](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        std::string header_value;
+        EXPECT_TRUE(request.headers.GetHeader("X-Eth-Method", &header_value));
+        LOG(ERROR) << "Header value is: " << header_value;
+        if (header_value == "eth_blockNumber") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc":"2.0",
+              "result":"0x65a8db",
+              "id":1
+            })");
+        } else if (header_value == "eth_getTransactionReceipt") {
+          url_loader_factory_.AddResponse(request.url.spec(), R"(
+            {
+              "jsonrpc": "2.0",
+              "id":1,
+              "result": {
+                "transactionHash": "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238",
+                "transactionIndex":  "0x1",
+                "blockNumber": "0xb",
+                "blockHash": "0xc6ef2fc5426d6ad6fd9e2a26abeab0aa2411b7ab17f30a99d3cb96aed1d1055b",
+                "cumulativeGasUsed": "0x33bc",
+                "gasUsed": "0x4dc",
+                "contractAddress": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
+                "logs": [],
+                "logsBloom": "0x00...0",
+                "status": "0x1"
+              }
+            })");
+        }
+      }));
+
+  // Nothing is triggered after 10s
+  task_environment_.FastForwardBy(
+      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds - 1));
+  auto tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  auto tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(1));
+  tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+  tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+
+  // If the keyring is locked, nothing should update
+  meta.id = "001";
+  meta.from = addr1;
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  meta.id = "002";
+  meta.from = addr2;
+  meta.tx->set_nonce(uint256_t(4));
+  meta.status = mojom::TransactionStatus::Submitted;
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+  keyring_controller_->Lock();
+  task_environment_.FastForwardBy(
+      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds + 1));
+  tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
 }
 
 }  //  namespace brave_wallet

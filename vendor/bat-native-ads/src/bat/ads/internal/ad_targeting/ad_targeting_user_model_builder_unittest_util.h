@@ -13,8 +13,8 @@ namespace ad_targeting {
 
 struct UserModelInfo;
 
-UserModelInfo BuildUserModel(const SegmentList& segments);
 UserModelInfo BuildUserModel(const SegmentList& interest_segments,
+                             const SegmentList& latent_interest_segments,
                              const SegmentList& purchase_intent_segments);
 
 }  // namespace ad_targeting

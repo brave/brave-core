@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
@@ -12,8 +13,11 @@ import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,7 +54,22 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_secure_password, container, false);
+        View view = inflater.inflate(R.layout.fragment_secure_password, container, false);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            @SuppressLint("ClickableViewAccessibility")
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    InputMethodManager inputMethodManager =
+                            (InputMethodManager) getActivity().getSystemService(
+                                    Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(
+                            getActivity().getCurrentFocus().getWindowToken(), 0);
+                }
+                return true;
+            }
+        });
+        return view;
     }
 
     @Override
@@ -73,6 +92,29 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                         getResources().getString(R.string.retype_password_error));
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    final BiometricPrompt.AuthenticationCallback
+                            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+                        private void onNextPage() {
+                            // Go to next Page
+                            goToTheNextPage();
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(
+                                BiometricPrompt.AuthenticationResult result) {
+                            super.onAuthenticationSucceeded(result);
+                            onNextPage();
+                        }
+
+                        @Override
+                        public void onAuthenticationError(int errorCode, CharSequence errString) {
+                            super.onAuthenticationError(errorCode, errString);
+
+                            // Even though we have an error, we still let to proceed
+                            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
+                            onNextPage();
+                        }
+                    };
                     showFingerprintDialog(authenticationCallback);
                 } else {
                     goToTheNextPage();
@@ -111,28 +153,4 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    BiometricPrompt.AuthenticationCallback
-            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-        private void onNextPage() {
-            // Go to next Page
-            goToTheNextPage();
-        }
-
-        @Override
-        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-            super.onAuthenticationSucceeded(result);
-            onNextPage();
-        }
-
-        @Override
-        public void onAuthenticationError(int errorCode, CharSequence errString) {
-            super.onAuthenticationError(errorCode, errString);
-
-            // Even though we have an error, we still let to proceed
-            Toast.makeText(getActivity(), errString, Toast.LENGTH_SHORT).show();
-            onNextPage();
-        }
-    };
 }

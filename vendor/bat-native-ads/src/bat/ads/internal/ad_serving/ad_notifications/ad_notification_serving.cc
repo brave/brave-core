@@ -20,32 +20,45 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_builder.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/client/client.h"
-#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications.h"
+#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_base.h"
+#include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_factory.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/p2a/p2a_ad_opportunities/p2a_ad_opportunity.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
-#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace ad_notifications {
 
 namespace {
-constexpr base::TimeDelta kRetryServingAdAtNextInterval =
+
+constexpr base::TimeDelta kServeFirstAdAfterDelay =
     base::TimeDelta::FromMinutes(2);
+
+constexpr base::TimeDelta kMinimumDelayBeforeServingAnAd =
+    base::TimeDelta::FromMinutes(1);
+
+constexpr base::TimeDelta kRetryServingAdAfterDelay =
+    base::TimeDelta::FromMinutes(2);
+
 }  // namespace
 
 AdServing::AdServing(
     ad_targeting::geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource)
-    : eligible_ads_(std::make_unique<EligibleAds>(subdivision_targeting,
-                                                  anti_targeting_resource)) {}
+    resource::AntiTargeting* anti_targeting_resource) {
+  DCHECK(subdivision_targeting);
+  DCHECK(anti_targeting_resource);
+
+  const int version = features::GetAdServingVersion();
+  eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
+                                            anti_targeting_resource);
+}
 
 AdServing::~AdServing() = default;
 
@@ -64,26 +77,17 @@ void AdServing::StartServingAdsAtRegularIntervals() {
     return;
   }
 
-  BLOG(1, "Start serving ads at regular intervals");
+  BLOG(1, "Start serving ad notifications at regular intervals");
 
-  base::TimeDelta delay;
+  const base::TimeDelta delay = CalculateDelayBeforeServingAnAd();
 
-  if (Client::Get()->GetServeNextAdAt().is_null()) {
-    delay = base::TimeDelta::FromMinutes(2);
-    const base::Time next_interval = base::Time::Now() + delay;
-    Client::Get()->SetServeNextAdAt(next_interval);
-  } else {
-    if (ShouldServeAd()) {
-      delay = base::TimeDelta::FromMinutes(1);
-    } else {
-      const base::Time next_interval = Client::Get()->GetServeNextAdAt();
-
-      delay = next_interval - base::Time::Now();
-    }
+  if (!HasPreviouslyServedAnAd()) {
+    const base::Time serve_ad_at = base::Time::Now() + delay;
+    Client::Get()->SetServeAdAt(serve_ad_at);
   }
 
-  const base::Time next_interval = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
+  const base::Time serve_ad_at = MaybeServeAdAfter(delay);
+  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(serve_ad_at));
 }
 
 void AdServing::StopServingAdsAtRegularIntervals() {
@@ -91,12 +95,25 @@ void AdServing::StopServingAdsAtRegularIntervals() {
     return;
   }
 
-  BLOG(1, "Stop serving ads at regular intervals");
+  BLOG(1, "Stop serving ad notifications at regular intervals");
 
   timer_.Stop();
 }
 
 void AdServing::MaybeServeAd() {
+  if (is_serving_) {
+    BLOG(1, "Already serving ad");
+    return;
+  }
+
+  is_serving_ = true;
+
+  if (!IsSupported()) {
+    BLOG(1, "Ad notification not served: Unsupported version");
+    FailedToServeAd();
+    return;
+  }
+
   frequency_capping::PermissionRules permission_rules;
   if (!permission_rules.HasPermission()) {
     BLOG(1, "Ad notification not served: Not allowed due to permission rules");
@@ -104,91 +121,43 @@ void AdServing::MaybeServeAd() {
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/17542): Refactor Brave
-  // ads serving
-  const int ad_serving_version = features::GetAdServingVersion();
-  BLOG(1, "Ad serving version " << ad_serving_version);
-
-  switch (ad_serving_version) {
-    case 1: {
-      MaybeServeAdV1();
-      break;
-    }
-
-    case 2: {
-      MaybeServeAdV2();
-      break;
-    }
-
-    default: {
-      NOTREACHED() << "Ad serving version is not supported";
-      break;
-    }
-  }
-}
-
-void AdServing::MaybeServeAdV1() {
   const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
 
-  eligible_ads_->Get(user_model, [=](const bool was_allowed,
-                                     const CreativeAdNotificationList& ads) {
-    if (was_allowed) {
-      const SegmentList segments =
-          ad_targeting::GetTopParentChildSegments(user_model);
-      p2a::RecordAdOpportunityForSegments(AdType::kAdNotification, segments);
-    }
-
-    if (ads.empty()) {
-      BLOG(1, "Ad notification not served: No eligible ads found");
-      FailedToServeAd();
-      return;
-    }
-
-    BLOG(1, "Found " << ads.size() << " eligible ads");
-
-    const int rand = base::RandInt(0, ads.size() - 1);
-    const CreativeAdNotificationInfo ad = ads.at(rand);
-
-    if (!ServeAd(ad)) {
-      BLOG(1, "Failed to serve ad notification");
-      FailedToServeAd();
-      return;
-    }
-
-    BLOG(1, "Served ad notification");
-    ServedAd(ad);
-  });
-}
-
-void AdServing::MaybeServeAdV2() {
-  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
-
-  eligible_ads_->GetV2(
-      user_model, [=](const bool was_allowed,
-                      const absl::optional<CreativeAdNotificationInfo>& ad) {
-        if (was_allowed) {
+  DCHECK(eligible_ads_);
+  eligible_ads_->GetForUserModel(
+      user_model, [=](const bool had_opportunity,
+                      const CreativeAdNotificationList& creative_ads) {
+        if (had_opportunity) {
+          const SegmentList segments =
+              ad_targeting::GetTopParentChildSegments(user_model);
           p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
-                                              user_model.interest_segments);
+                                              segments);
         }
 
-        if (!ad) {
+        if (creative_ads.empty()) {
           BLOG(1, "Ad notification not served: No eligible ads found");
           FailedToServeAd();
           return;
         }
 
-        if (!ServeAd(ad.value())) {
+        BLOG(1, "Found " << creative_ads.size() << " eligible ads");
+
+        const int rand = base::RandInt(0, creative_ads.size() - 1);
+        const CreativeAdNotificationInfo creative_ad = creative_ads.at(rand);
+
+        const AdNotificationInfo ad = BuildAdNotification(creative_ad);
+        if (!ServeAd(ad)) {
           BLOG(1, "Failed to serve ad notification");
           FailedToServeAd();
           return;
         }
 
         BLOG(1, "Served ad notification");
-        ServedAd(ad.value());
+        ServedAd(ad);
       });
 }
 
-void AdServing::OnAdsPerHourChanged() {
+void AdServing::OnPrefChanged() {
   const int64_t ads_per_hour = settings::GetAdsPerHour();
   BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
 
@@ -206,8 +175,41 @@ void AdServing::OnAdsPerHourChanged() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+bool AdServing::IsSupported() const {
+  if (!eligible_ads_) {
+    return false;
+  }
+
+  return true;
+}
+
 bool AdServing::ShouldServeAdsAtRegularIntervals() const {
   return PlatformHelper::GetInstance()->IsMobile();
+}
+
+bool AdServing::HasPreviouslyServedAnAd() const {
+  return !Client::Get()->GetServeAdAt().is_null();
+}
+
+bool AdServing::ShouldServeAd() const {
+  const base::Time serve_ad_at = Client::Get()->GetServeAdAt();
+  if (base::Time::Now() < serve_ad_at) {
+    return false;
+  }
+
+  return true;
+}
+
+base::TimeDelta AdServing::CalculateDelayBeforeServingAnAd() const {
+  if (!HasPreviouslyServedAnAd()) {
+    return kServeFirstAdAfterDelay;
+  }
+
+  if (ShouldServeAd()) {
+    return kMinimumDelayBeforeServingAnAd;
+  }
+
+  return Client::Get()->GetServeAdAt() - base::Time::Now();
 }
 
 void AdServing::MaybeServeAdAtNextRegularInterval() {
@@ -222,8 +224,8 @@ void AdServing::MaybeServeAdAtNextRegularInterval() {
 
   const int64_t seconds = base::Time::kSecondsPerHour / ads_per_hour;
   const base::TimeDelta delay = base::TimeDelta::FromSeconds(seconds);
-  const base::Time next_interval = MaybeServeAdAfter(delay);
-  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
+  const base::Time serve_ad_at = MaybeServeAdAfter(delay);
+  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(serve_ad_at));
 }
 
 void AdServing::RetryServingAdAtNextInterval() {
@@ -231,64 +233,55 @@ void AdServing::RetryServingAdAtNextInterval() {
     return;
   }
 
-  const base::Time next_interval =
-      MaybeServeAdAfter(kRetryServingAdAtNextInterval);
-  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(next_interval));
-}
-
-bool AdServing::ShouldServeAd() const {
-  const base::Time next_interval = Client::Get()->GetServeNextAdAt();
-  if (base::Time::Now() < next_interval) {
-    return false;
-  }
-
-  return true;
+  const base::Time serve_ad_at = MaybeServeAdAfter(kRetryServingAdAfterDelay);
+  BLOG(1, "Maybe serve ad notification " << FriendlyDateAndTime(serve_ad_at));
 }
 
 base::Time AdServing::MaybeServeAdAfter(const base::TimeDelta delay) {
-  const base::Time next_interval = base::Time::Now() + delay;
-  Client::Get()->SetServeNextAdAt(next_interval);
+  const base::Time serve_ad_at = base::Time::Now() + delay;
+  Client::Get()->SetServeAdAt(serve_ad_at);
 
   return timer_.Start(
       delay, base::BindOnce(&AdServing::MaybeServeAd, base::Unretained(this)));
 }
 
-bool AdServing::ServeAd(
-    const CreativeAdNotificationInfo& creative_ad_notification) const {
-  const AdNotificationInfo ad_notification =
-      BuildAdNotification(creative_ad_notification);
+bool AdServing::ServeAd(const AdNotificationInfo& ad) const {
+  DCHECK(ad.IsValid());
 
   BLOG(1, "Serving ad notification:\n"
-              << "  uuid: " << ad_notification.uuid << "\n"
-              << "  creativeInstanceId: "
-              << ad_notification.creative_instance_id << "\n"
-              << "  creativeSetId: " << ad_notification.creative_set_id << "\n"
-              << "  campaignId: " << ad_notification.campaign_id << "\n"
-              << "  advertiserId: " << ad_notification.advertiser_id << "\n"
-              << "  segment: " << ad_notification.segment << "\n"
-              << "  title: " << ad_notification.title << "\n"
-              << "  body: " << ad_notification.body << "\n"
-              << "  targetUrl: " << ad_notification.target_url);
+              << "  uuid: " << ad.uuid << "\n"
+              << "  creativeInstanceId: " << ad.creative_instance_id << "\n"
+              << "  creativeSetId: " << ad.creative_set_id << "\n"
+              << "  campaignId: " << ad.campaign_id << "\n"
+              << "  advertiserId: " << ad.advertiser_id << "\n"
+              << "  segment: " << ad.segment << "\n"
+              << "  title: " << ad.title << "\n"
+              << "  body: " << ad.body << "\n"
+              << "  targetUrl: " << ad.target_url);
 
   AdDelivery ad_delivery;
-  if (!ad_delivery.MaybeDeliverAd(ad_notification)) {
+  if (!ad_delivery.MaybeDeliverAd(ad)) {
     return false;
   }
 
-  NotifyDidServeAdNotification(ad_notification);
+  NotifyDidServeAdNotification(ad);
 
   return true;
 }
 
 void AdServing::FailedToServeAd() {
+  is_serving_ = false;
+
   NotifyFailedToServeAdNotification();
 
   RetryServingAdAtNextInterval();
 }
 
-void AdServing::ServedAd(
-    const CreativeAdNotificationInfo& creative_ad_notification) {
-  eligible_ads_->SetLastServedAd(creative_ad_notification);
+void AdServing::ServedAd(const AdNotificationInfo& ad) {
+  DCHECK(eligible_ads_);
+  eligible_ads_->set_last_served_ad(ad);
+
+  is_serving_ = false;
 
   MaybeServeAdAtNextRegularInterval();
 }

@@ -19,6 +19,26 @@
     "message": "Обновяване на състоянието",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Всяко дарение, което направите, ще остане в състояние на изчакване във вашия портфейл и ще се извършва повторен опит автоматично в продължение на 90 дни. $link_begin$Научете повече$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Този създател все още не е регистриран.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Този създател в момента не е конфигуриран да получава от вашия портфейл.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ в $platform$",
     "placeholders": {
@@ -146,7 +166,7 @@
     "description": ""
   },
   "walletDisconnected": {
-    "message": "Разкачен",
+    "message": " Връзката е прекъсната",
     "description": ""
   },
   "walletDisconnectLink": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ пристига след $days$",
+    "message": "Обработването на плащането на $amount$ започва след $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -379,11 +399,11 @@
     "description": ""
   },
   "onboardingEarnHeader": {
-    "message": "Печелете токени и върнете обратно",
+    "message": "Печелете жетони и върнете обратно",
     "description": ""
   },
   "onboardingEarnText": {
-    "message": "Печелете токени, като гледате реклами, зачитащи поверителността, и автоматично подкрепяте любимите си сайтове и създатели на съдържание.",
+    "message": "Печелете жетони, като гледате реклами, зачитащи поверителността, и автоматично подкрепяте любимите си сайтове и създатели на съдържание.",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
@@ -457,7 +477,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Brave Private Ads ви възнаграждава с токени за подкрепа на създателите на съдържание, за разлика от традиционните реклами, като същевременно запазва личната ви информация поверителна.",
+    "message": "Brave Private Ads ви възнаграждава с жетони за подкрепа на създателите на съдържание, за разлика от традиционните реклами, като същевременно запазва личната ви информация поверителна.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -473,7 +493,7 @@
     "description": ""
   },
   "onboardingPanelScheduleText": {
-    "message": "Спечелените от вас токени от Brave Private Ads през текущия месец ще пристигнат на 5-то число на следващия месец.",
+    "message": "Спечелените от вас жетони от Brave Private Ads през текущия месец ще пристигнат на 5-о число на следващия месец.",
     "description": ""
   },
   "onboardingPanelAcHeader": {
@@ -481,7 +501,7 @@
     "description": ""
   },
   "onboardingPanelAcText": {
-    "message": "Създателите получават вашите внесени токени автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.",
+    "message": "Създателите получават вашите внесени жетони автоматично въз основа на нивата ви на ангажираност, които измерваме като „Внимание“.",
     "description": ""
   },
   "onboardingPanelTippingHeader": {
@@ -493,11 +513,11 @@
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
-    "message": "Какво можете да направите с токени?",
+    "message": "Какво можете да направите с жетони?",
     "description": ""
   },
   "onboardingPanelRedeemText": {
-    "message": "Токените могат да се използват не само за подкрепа на създателите. Можете да купувате цифрово съдържание и други стоки, когато търговците се качат на борда.",
+    "message": "Жетоните могат да се използват не само за подкрепа на създателите. Можете да купувате цифрово съдържание и други стоки, когато търговците се качат на борда.",
     "description": ""
   },
   "onboardingPanelSetupHeader": {
@@ -521,7 +541,7 @@
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "За да изтеглите токените, които сте спечелили за гледане на реклами, е необходимо да потвърдите портфейла си.",
+    "message": "За да изтеглите жетоните, които сте спечелили за гледане на реклами, е необходимо да потвърдите портфейла си.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -537,7 +557,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите токени, които сте спечелили през Brave Rewards.",
+    "message": "Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите жетони, които сте спечелили през Brave Rewards.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Отхвърляне",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "За да започнете безплатно обаждане, активирайте Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Включете Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Щраквайки, вие се съгласявате с $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$. Дезактивирайте по всяко време в настройките.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "За да започнете безплатно обаждане, активирайте Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Включете Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Включвайки рекламите, вие се съгласявате с $tos_link_begin$Условия за ползване$tos_link_end$ и $pp_link_begin$Политика за поверителност$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Вече можете да започнете безплатно обаждане",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Щракнете където и да е по екрана, за да продължите към Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Искате ли да научите повече за Brave Rewards? $tour_link_begin$Направете кратка обиколка$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

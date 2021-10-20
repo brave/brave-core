@@ -1,10 +1,8 @@
 import styled from 'styled-components'
-import MMIcon from '../../../../assets/svg-icons/meta-mask-icon.svg'
-import BIcon from '../../../../assets/svg-icons/brave-icon.svg'
-import AIcon from '../../../../assets/svg-icons/import-arrow-icon.svg'
+import MMIcon from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
+import BIcon from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet.svg'
 
 interface StyleProps {
-  isMetaMask: boolean
   needsNewPassword: boolean
   useSamePasswordVerified: boolean
 }
@@ -41,14 +39,6 @@ export const Description = styled.span`
   margin-bottom: 24px;
 `
 
-export const PageIcons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  margin-bottom: 24px;
-`
-
 export const InputColumn = styled.div<Partial<StyleProps>>`
   display: flex;
   align-items: center;
@@ -59,25 +49,20 @@ export const InputColumn = styled.div<Partial<StyleProps>>`
 `
 
 export const MetaMaskIcon = styled.div`
-  width: 94px;
-  height: 94px;
+  width: 240px;
+  height: 160px;
   background: url(${MMIcon});
-  margin-right: 4px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-bottom: 18px;
 `
 
 export const BraveIcon = styled.div<Partial<StyleProps>>`
-  width: ${(p) => p.isMetaMask ? '82px' : '118px'};
-  height: ${(p) => p.isMetaMask ? '94px' : '135px'};
+  width: 226px;
+  height: 160px;
   background: url(${BIcon});
-  margin-right: 4px;
-  background-size: 100%;
-`
-
-export const ArrowIcon = styled.div`
-  width: 61px;
-  height: 15px;
-  background: url(${AIcon});
-  margin-right: 4px;
+  margin-bottom: 25px;
+  background-repeat: no-repeat;
   background-size: 100%;
 `
 
@@ -94,6 +79,7 @@ export const LostButton = styled.button`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   margin-top: 35px;
+  max-width: 340px;
 `
 
 export const PasswordTitle = styled.span<Partial<StyleProps>>`

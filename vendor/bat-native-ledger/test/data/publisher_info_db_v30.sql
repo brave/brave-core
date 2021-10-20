@@ -205,7 +205,6 @@ CREATE TABLE IF NOT EXISTS "event_log" (
 INSERT INTO "meta" VALUES ('mmap_status','-1'),
  ('version','30'),
  ('last_compatible_version','1');
-INSERT INTO "pending_contribution" VALUES (1,'pub_key', 1.0, 0, 'v01', 0);
 INSERT INTO "balance_report_info" VALUES ('2014_04', 0, 0, 0, 0, 0);
 CREATE INDEX IF NOT EXISTS "promotion_promotion_id_index" ON "promotion" (
 	"promotion_id"

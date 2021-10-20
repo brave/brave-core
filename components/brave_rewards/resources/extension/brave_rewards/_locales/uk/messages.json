@@ -19,6 +19,26 @@
     "message": "Оновити статус",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Усі зроблені чайові залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів. $link_begin$Дізнайтеся більше$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Цей автор ще не зареєструвався.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Наразі налаштування цього автора не дають моєливості отримувати чайові з вашого гаманця.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ на $platform$",
     "placeholders": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Відхилити",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Увімкніть Brave Rewards, щоб розпочати безкоштовний виклик",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "За програмою Brave Rewards ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Увімкнути Винагороди",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Натискаючи, ви погоджуєтеся з $tos_link_begin$Умовами використання$tos_link_end$ й $pp_link_begin$Політикою конфіденційності$pp_link_end$. Згоду можна скасувати будь-коли в меню «Налаштування».",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Увімкніть Brave Private Ads, щоб розпочати безкоштовний виклик.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "За допомогою Brave Private Ads ви заробляєте токени за перегляд приватних рекламних оголошень (ваші дані в безпеці). Перетворіть ці токени на готівку, подарункові картки… або навіть залиште чайові для вебсайтів, які вам справді подобаються. Без відстежування. Жодних сповільнень у роботі.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Увімкнути Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Увімкнувши Ads, ви погоджуєтеся з $tos_link_begin$Умовами обслуговування$tos_link_end$ й $pp_link_begin$Політикою конфіденційності$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Тепер ви можете розпочати безкоштовний виклик",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Натисніть у будь-якому місці екрана, щоб продовжити користуватися Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Хочете дізнатися більше про Brave Rewards? $tour_link_begin$Подивіться короткий огляд$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

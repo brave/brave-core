@@ -22,19 +22,19 @@ namespace ledger {
 namespace uphold {
 
 namespace {
-std::string GetNotificationForUserStatus(UserStatus status) {
+type::Result GetReturnValueForUserStatus(UserStatus status) {
   DCHECK(status != UserStatus::OK);
 
   switch (status) {
     case UserStatus::BLOCKED:
-      return notifications::kBlockedUser;
+      return type::Result::UPHOLD_BLOCKED_USER;
     case UserStatus::PENDING:
-      return notifications::kPendingUser;
+      return type::Result::UPHOLD_PENDING_USER;
     case UserStatus::RESTRICTED:
-      return notifications::kRestrictedUser;
+      return type::Result::UPHOLD_RESTRICTED_USER;
     default:
       DCHECK(status == UserStatus::EMPTY);
-      return "";
+      return type::Result::LEDGER_ERROR;
   }
 }
 }  // namespace
@@ -114,8 +114,8 @@ void UpholdWallet::OnGetUser(const type::Result result,
   if (user.bat_not_allowed) {
     BLOG(0, "BAT is not allowed for the user!");
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet(notifications::kBATNotAllowedForUser);
-    return callback(type::Result::BAT_NOT_ALLOWED);
+    ledger_->uphold()->DisconnectWallet("");
+    return callback(type::Result::UPHOLD_BAT_NOT_ALLOWED);
   }
 
   uphold_wallet->user_name = user.name;
@@ -126,14 +126,10 @@ void UpholdWallet::OnGetUser(const type::Result result,
   }
 
   if (user.status != UserStatus::OK) {
-    const auto notification = GetNotificationForUserStatus(user.status);
-
     // Entering NOT_CONNECTED or DISCONNECTED_VERIFIED.
-    ledger_->uphold()->DisconnectWallet(
-        !notification.empty() ? notification
-                              : ledger::notifications::kWalletDisconnected);
+    ledger_->uphold()->DisconnectWallet("");
 
-    return callback(type::Result::LEDGER_ERROR);
+    return callback(GetReturnValueForUserStatus(user.status));
   }
 
   if (uphold_wallet->status == type::WalletStatus::VERIFIED) {
@@ -260,28 +256,26 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   DCHECK(uphold_wallet->address.empty());
   DCHECK(!id.empty());
 
-  if (result == type::Result::ALREADY_EXISTS) {
+  if (result == type::Result::DEVICE_LIMIT_REACHED) {
     // Entering NOT_CONNECTED.
-    ledger_->uphold()->DisconnectWallet(
-        ledger::notifications::kWalletDeviceLimitReached);
+    ledger_->uphold()->DisconnectWallet("");
 
     ledger_->database()->SaveEventLog(
         log::kDeviceLimitReached,
         constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
-    return callback(type::Result::ALREADY_EXISTS);
+    return callback(type::Result::DEVICE_LIMIT_REACHED);
   }
 
-  if (result == type::Result::TOO_MANY_RESULTS) {
+  if (result == type::Result::MISMATCHED_PROVIDER_ACCOUNTS) {
     // Entering NOT_CONNECTED.
-    ledger_->uphold()->DisconnectWallet(
-        ledger::notifications::kWalletMismatchedProviderAccounts);
+    ledger_->uphold()->DisconnectWallet("");
 
     ledger_->database()->SaveEventLog(
         log::kMismatchedProviderAccounts,
         constant::kWalletUphold + std::string("/") + id.substr(0, 5));
 
-    return callback(type::Result::TOO_MANY_RESULTS);
+    return callback(type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
   }
 
   if (result != type::Result::LEDGER_OK) {

@@ -13,21 +13,22 @@ void BraveWalletServiceDelegate::IsCryptoWalletsInstalled(
     IsCryptoWalletsInstalledCallback callback) {
   std::move(callback).Run(false);
 }
+
 void BraveWalletServiceDelegate::IsMetaMaskInstalled(
     IsMetaMaskInstalledCallback callback) {
   std::move(callback).Run(false);
 }
-void BraveWalletServiceDelegate::ImportFromCryptoWallets(
+
+void BraveWalletServiceDelegate::GetImportInfoFromCryptoWallets(
     const std::string& password,
-    const std::string& new_password,
-    ImportFromCryptoWalletsCallback callback) {
-  std::move(callback).Run(false);
+    GetImportInfoCallback callback) {
+  std::move(callback).Run(false, ImportInfo());
 }
-void BraveWalletServiceDelegate::ImportFromMetaMask(
+
+void BraveWalletServiceDelegate::GetImportInfoFromMetaMask(
     const std::string& password,
-    const std::string& new_password,
-    ImportFromMetaMaskCallback callback) {
-  std::move(callback).Run(false);
+    GetImportInfoCallback callback) {
+  std::move(callback).Run(false, ImportInfo());
 }
 
 void BraveWalletServiceDelegate::HasEthereumPermission(
@@ -42,6 +43,11 @@ void BraveWalletServiceDelegate::ResetEthereumPermission(
     const std::string& account,
     ResetEthereumPermissionCallback callback) {
   std::move(callback).Run(false);
+}
+
+void BraveWalletServiceDelegate::GetActiveOrigin(
+    GetActiveOriginCallback callback) {
+  std::move(callback).Run("");
 }
 
 }  // namespace brave_wallet

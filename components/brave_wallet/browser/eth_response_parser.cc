@@ -11,8 +11,29 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/eth_address.h"
 
 namespace {
+
+bool ParseSingleStringResult(const std::string& json, std::string* result) {
+  DCHECK(result);
+
+  base::Value result_v;
+  if (!brave_wallet::ParseResult(json, &result_v))
+    return false;
+
+  const std::string* result_str = result_v.GetIfString();
+  if (!result_str)
+    return false;
+
+  *result = *result_str;
+
+  return true;
+}
+
+}  // namespace
+
+namespace brave_wallet {
 
 bool ParseResult(const std::string& json, base::Value* result) {
   DCHECK(result);
@@ -39,25 +60,28 @@ bool ParseResult(const std::string& json, base::Value* result) {
   return true;
 }
 
-bool ParseSingleStringResult(const std::string& json, std::string* result) {
-  DCHECK(result);
+bool ParseAddressResult(const std::string& json, std::string* address) {
+  DCHECK(address);
 
-  base::Value result_v;
-  if (!ParseResult(json, &result_v))
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
     return false;
 
-  const std::string* result_str = result_v.GetIfString();
-  if (!result_str)
+  // Expected result: 0x prefix + 24 leading 0s + 40 characters for address.
+  if (result.size() != 66) {
+    return false;
+  }
+
+  size_t offset = 2 /* len of "0x" */ + 24 /* len of leading zeros */;
+  *address = "0x" + result.substr(offset);
+
+  auto eth_addr = EthAddress::FromHex("0x" + result.substr(offset));
+  if (eth_addr.IsEmpty())
     return false;
 
-  *result = *result_str;
-
+  *address = eth_addr.ToChecksumAddress();
   return true;
 }
-
-}  // namespace
-
-namespace brave_wallet {
 
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   std::string block_num_str;
@@ -166,6 +190,46 @@ bool ParseEthEstimateGas(const std::string& json, std::string* result) {
 
 bool ParseEthGasPrice(const std::string& json, std::string* result) {
   return ParseSingleStringResult(json, result);
+}
+
+bool ParseEnsResolverContentHash(const std::string& json,
+                                 std::string* content_hash) {
+  DCHECK(content_hash);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  return brave_wallet::DecodeString(offset, result, content_hash);
+}
+
+bool ParseUnstoppableDomainsProxyReaderGetMany(
+    const std::string& json,
+    std::vector<std::string>* values) {
+  DCHECK(values);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  if (offset > result.size())
+    return false;
+
+  return brave_wallet::DecodeStringArray(result.substr(offset), values);
+}
+
+bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
+                                           std::string* value) {
+  DCHECK(value);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
+  return brave_wallet::DecodeString(offset, result, value);
 }
 
 }  // namespace brave_wallet

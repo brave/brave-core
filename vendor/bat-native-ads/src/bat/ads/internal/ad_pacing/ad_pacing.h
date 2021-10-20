@@ -19,9 +19,10 @@ T PaceAds(const T& ads) {
 
   T paced_ads = ads;
 
-  const auto iter = std::remove_if(
-      paced_ads.begin(), paced_ads.end(),
-      [&](const CreativeAdInfo& ad) { return ShouldPaceAd(ad); });
+  const auto iter = std::remove_if(paced_ads.begin(), paced_ads.end(),
+                                   [&](const CreativeAdInfo& creative_ad) {
+                                     return ShouldPaceAd(creative_ad);
+                                   });
 
   paced_ads.erase(iter, paced_ads.end());
 

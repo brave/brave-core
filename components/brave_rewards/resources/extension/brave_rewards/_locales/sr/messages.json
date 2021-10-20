@@ -19,6 +19,26 @@
     "message": "Osveži status",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Svaka napojnica koju date ostaće na čekanju u vašem novčaniku i automatski će biti ponovo aktivirana u toku od 90 dana. $link_begin$Saznajte više$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Ovaj kreator još nije registrovan.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Ovaj kreator trenutno nije konfigurisan za primanje napojnica iz vašeg novčanika.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ na $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ stiže za $days$",
+    "message": "$amount$ isplata započeće sa obradom za $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Одбаци",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Da biste započeli besplatan poziv, uključite Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "Zahvaljujući opciji Brave Rewards, možete dobiti tokene za gledanje privatnih oglasa (vaši podaci su bezbedni). Pretvorite tokene u gotovinu, poklon kartice... ili čak možete dati napojnicu veb-sajtu koji volite. Bez praćenja. Bez usporavanja.",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Uključi nagrade",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "Ako kliknete, to znači da pristajete na $tos_link_begin$uslove korišćenja $tos_link_end$ i $pp_link_begin$politiku privatnosti$pp_link_end$. Možete onemogućiti kad god poželite u podešavanjima.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Da biste započeli besplatan poziv, uključite Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "Zahvaljujući opciji Brave Private Ads, možete dobiti tokene za gledanje privatnih oglasa (vaši podaci su bezbedni). Pretvorite tokene u gotovinu, poklon kartice... ili čak možete dati napojnicu veb-sajtu koji volite. Bez praćenja. Bez usporavanja.",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Uključi Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Uključivanjem opcije Ads, pristajete na $tos_link_begin$uslove korišćenja $tos_link_end$ i $pp_link_begin$politiku privatnosti$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Sada možete započeti besplatan poziv",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Kliknite na bilo koje mesto na ekranu da biste nastavili do Brave Talk.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Želite li da saznate više o opciji Brave Rewards? $tour_link_begin$Krenite u brzi obilazak$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

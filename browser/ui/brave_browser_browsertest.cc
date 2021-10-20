@@ -12,7 +12,7 @@
 using BraveBrowserBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
-  ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
 
   auto* tab_model = browser()->tab_strip_model();
   EXPECT_FALSE(

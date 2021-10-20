@@ -131,6 +131,7 @@ void IPFSTabHelper::IPFSLinkResolved(const GURL& ipfs) {
     content::OpenURLParams params(GetIPFSResolvedURL(), content::Referrer(),
                                   WindowOpenDisposition::CURRENT_TAB,
                                   ui::PAGE_TRANSITION_LINK, false);
+    params.should_replace_current_entry = true;
     web_contents()->OpenURL(params);
     return;
   }

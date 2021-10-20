@@ -8,12 +8,18 @@ import {
   InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
+  IsEip1559Changed,
   NewUnapprovedTxAdded,
   UnapprovedTxUpdated,
   TransactionStatusChanged,
+  ActiveOriginChanged,
+  DefaultWalletChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
-  RemoveUserAssetPayloadType
+  RemoveUserAssetPayloadType,
+  UpdateUnapprovedTransactionGasFieldsType,
+  SitePermissionsPayloadType,
+  RemoveSitePermissionPayloadType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -28,9 +34,12 @@ import {
   AssetPriceTimeframe,
   SendTransactionParams,
   ER20TransferParams,
+  ERC721TransferFromParams,
   TransactionInfo,
   TransactionListInfo,
-  DefaultWallet
+  DefaultWallet,
+  GasEstimation,
+  ApproveERC20Params
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
@@ -51,12 +60,14 @@ export const setNetwork = createAction<EthereumChain>('setNetwork')
 export const getAllNetworks = createAction('getAllNetworks')
 export const setAllNetworks = createAction<GetAllNetworksList>('getAllNetworks')
 export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
+export const isEip1559Changed = createAction<IsEip1559Changed>('isEip1559Changed')
 export const keyringCreated = createAction('keyringCreated')
 export const keyringRestored = createAction('keyringRestored')
 export const locked = createAction('locked')
 export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
 export const accountsChanged = createAction('accountsChanged')
+export const selectedAccountChanged = createAction('selectedAccountChanged')
 export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
 export const ethBalancesUpdated = createAction<GetETHBalancesPriceReturnInfo>('ethBalancesUpdated')
@@ -66,11 +77,24 @@ export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('select
 export const portfolioTimelineUpdated = createAction<AssetPriceTimeframe>('portfolioTimelineUpdated')
 export const sendTransaction = createAction<SendTransactionParams>('sendTransaction')
 export const sendERC20Transfer = createAction<ER20TransferParams>('sendERC20Transfer')
+export const sendERC721TransferFrom = createAction<ERC721TransferFromParams>('sendERC721TransferFrom')
+export const approveERC20Allowance = createAction<ApproveERC20Params>('approveERC20Allowance')
 export const newUnapprovedTxAdded = createAction<NewUnapprovedTxAdded>('newUnapprovedTxAdded')
 export const unapprovedTxUpdated = createAction<UnapprovedTxUpdated>('unapprovedTxUpdated')
 export const transactionStatusChanged = createAction<TransactionStatusChanged>('transactionStatusChanged')
 export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
+export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')
 export const setTransactionList = createAction<TransactionListInfo[]>('setTransactionList')
 export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')
+export const notifyUserInteraction = createAction('notifyUserInteraction')
+export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
+export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
+export const refreshGasEstimates = createAction('refreshGasEstimates')
+export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
+export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
+export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
+export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
+export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
+export const queueNextTransaction = createAction('queueNextTransaction')

@@ -178,7 +178,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void NavigateToPageWithFrame(const GURL url) {
-    ui_test_utils::NavigateToURL(browser(), url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   }
 
   void ExpectCookiesOnHost(const GURL url, const std::string& expected) {
@@ -239,7 +239,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 // It is important that cookies in following tests are set by response headers,
 // not by javascript. Fetching such cookies is controlled by NetworkDelegate.
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieBlocked) {
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
   const std::string cookie = content::GetCookies(
       browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
@@ -247,7 +247,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieBlocked) {
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieAllowed) {
   AllowCookies(top_level_page_url_);
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
   const std::string cookie = content::GetCookies(
       browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_FALSE(cookie.empty());
@@ -255,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieAllowed) {
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PShieldsDown) {
   ShieldsDown(top_level_page_url_);
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
   const std::string cookie =
       content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
@@ -265,13 +265,13 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        Iframe3PShieldsDownOverridesCookieBlock) {
   // create an explicit override
   BlockCookies(top_level_page_url_);
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
   std::string cookie =
       content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 
   ShieldsDown(top_level_page_url_);
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
   cookie = content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }
@@ -279,7 +279,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 // Fetching not just a frame, but some other resource.
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        IframeJs3PCookieBlocked) {
-  ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_));
   const std::string cookie =
       content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
@@ -288,7 +289,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        IframeJs3PCookieAllowed) {
   AllowCookies(top_level_page_url_);
-  ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_));
   const std::string cookie =
       content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
@@ -296,7 +298,8 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, DefaultCookiesBlocked) {
   DefaultBlockAllCookies();
-  ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_));
   std::string cookie =
       content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
@@ -309,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        ThirdPartyCookiesBlockedNestedFirstPartyIframe) {
   DefaultBlockThirdPartyCookies();
 
-  ui_test_utils::NavigateToURL(browser(), url_);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_));
 
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 

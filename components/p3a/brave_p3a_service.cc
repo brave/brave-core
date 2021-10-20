@@ -82,6 +82,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.WalletState",
     "Brave.Savings.BandwidthSavingsMB",
     "Brave.Search.DefaultEngine.4",
+    "Brave.Search.SwitchEngine",
     "Brave.Shields.UsageStatus",
     "Brave.SpeedReader.Enabled",
     "Brave.SpeedReader.ToggleCount",
@@ -93,6 +94,9 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
+    "Brave.Wallet.UsageDaily",
+    "Brave.Wallet.UsageWeekly",
+    "Brave.Wallet.UsageMonthly",
     "Brave.Welcome.InteractionStatus",
 
     // IPFS

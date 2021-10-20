@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import FlashdriveIcon from '../../../../assets/svg-icons/graphic-flashdrive-icon.svg'
+import BackupIcon from '../../../../assets/svg-icons/onboarding/backup-your-crypto.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -28,8 +28,7 @@ export const Description = styled.span`
   line-height: 20px;
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
-  max-width: 380px;
-  height: 64px;
+  max-width: 450px;
   text-align: center;
   margin-bottom: 18px;
 `
@@ -50,7 +49,7 @@ export const TermsRow = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  max-width: 320px;
+  max-width: 360px;
   margin-bottom: 30px;
 `
 
@@ -67,9 +66,12 @@ export const IconBackground = styled.div`
 `
 
 export const PageIcon = styled.div`
-  width: 92px;
-  height: 92px;
-  background: url(${FlashdriveIcon});
+  width: 200px;
+  height: 160px;
+  background: url(${BackupIcon});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  margin-bottom: 35px;
 `
 
 export const SkipButton = styled.button`

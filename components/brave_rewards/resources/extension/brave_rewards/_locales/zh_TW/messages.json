@@ -19,6 +19,26 @@
     "message": "重新整理狀態",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "您提供的任何小費都將會保留在您的錢包中，並在90天內重試。$link_begin$取得更多資訊$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "此創作者尚未註冊。",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "此創作者目前尚未設定好從您的錢包接收小費。",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$platform$ 上的 $name$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ 即將於 $days$ 內入帳",
+    "message": "$amount$ 付款開始處理於 $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "關閉",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "要開始免費通話，請開啟 Brave Rewards",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "使用 Brave Rewards，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "開啟 Rewards",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "點擊即表示您同意$tos_link_begin$服務條款$tos_link_end$與$pp_link_begin$隱私權政策$pp_link_end$。可隨時在設定中停用。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "要開始免費通話，請開啟 Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "使用 Brave Private Ads，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡……或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "開啟 Brave Private Ads",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "開啟廣告即表示您同意$tos_link_begin$服務條款$tos_link_end$與$pp_link_begin$隱私權政策$pp_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "您現在可以開始免費通話了",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "點擊螢幕上的任何位置以繼續 Brave Talk。",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "想要取得更多關於 Brave Rewards 的資訊？$tour_link_begin$快速導覽$tour_link_end$。",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

@@ -23,10 +23,7 @@ describe('welcomeReducer', () => {
     })
     it('calls storage.load() when initial state is undefined', () => {
       const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-      expect(assertion).toEqual({
-        searchProviders: [],
-        browserProfiles: []
-      })
+      expect(assertion).toEqual(storage.defaultState)
       expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)
     })
@@ -125,11 +122,7 @@ describe('welcomeReducer', () => {
         type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
         payload: mockSearchProviders
       })
-      const expected = {
-        ...mockState,
-        searchProviders: mockSearchProviders
-      }
-      expect(result).toEqual(expected)
+      expect(result.searchProviders).toEqual(mockSearchProviders)
     })
 
     describe('with the region', () => {
@@ -167,37 +160,49 @@ describe('welcomeReducer', () => {
         expect(spy).toBeCalledWith('countryString')
       })
 
-      describe('when user is in US/Canada', () => {
-        it('should NOT filter out the Brave engine', () => {
+      describe('when user is in US/Canada/approved regions', () => {
+        it('should have the Brave engine', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: examplePayload
           })
           expect(result.searchProviders.length).toEqual(2)
         })
-      })
 
-      describe('when user is NOT in US/Canada', () => {
-        beforeEach(() => {
-          countryString = 'GB'
-        })
-        afterEach(() => {
-          countryString = 'US'
-        })
-        it('should filter out Brave', () => {
+        it('should NOT show onboarding', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: examplePayload
           })
-          expect(result.searchProviders.length).toEqual(1)
+          expect(result.hideSearchOnboarding).toEqual(true)
+        })
+      })
+
+      describe('when user is NOT in US/Canada/approved regions', () => {
+        beforeEach(() => {
+          countryString = 'CN'
+        })
+        afterEach(() => {
+          countryString = 'US'
         })
 
-        it('should leave Brave if its set as default', () => {
+        it('should show onboarding', () => {
           const result = welcomeReducer(mockState, {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: [
               { name: 'Google', canBeRemoved: true },
-              { name: 'Brave Search beta', canBeRemoved: false }
+              { name: 'Brave Search beta', canBeRemoved: true }
+            ]
+          })
+          expect(result.hideSearchOnboarding).toEqual(false)
+        })
+
+        it('should leave Brave in the list', () => {
+          const result = welcomeReducer(mockState, {
+            type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+            payload: [
+              { name: 'Google', canBeRemoved: true },
+              { name: 'Brave Search beta', canBeRemoved: true }
             ]
           })
           expect(result.searchProviders.length).toEqual(2)

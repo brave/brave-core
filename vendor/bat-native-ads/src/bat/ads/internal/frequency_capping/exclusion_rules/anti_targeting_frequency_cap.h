@@ -28,7 +28,7 @@ class AntiTargetingFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   AntiTargetingFrequencyCap& operator=(const AntiTargetingFrequencyCap&) =
       delete;
 
-  bool ShouldExclude(const CreativeAdInfo& ad) override;
+  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
 
@@ -39,7 +39,7 @@ class AntiTargetingFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   std::string last_message_;
 
-  bool DoesRespectCap(const CreativeAdInfo& ad) const;
+  bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

@@ -22,12 +22,13 @@ import {
   EthereumChain,
   TokenInfo,
   TransactionListInfo,
-  BuySendSwapTypes
+  BuySendSwapTypes,
+  WalletAccountType
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
-
+import './locale'
 // import { NavOptions } from '../options/side-nav-options'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
@@ -39,9 +40,9 @@ import { mockRPCResponse } from './mock-data/rpc-response'
 import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
-import { formatPrices } from '../utils/format-prices'
+import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 import {
   HardwareWalletAccount,
   HardwareWalletConnectOpts
@@ -79,7 +80,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 3,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -101,7 +105,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 4,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -123,7 +130,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 2,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -145,7 +155,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 1,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       }
     ]
   },
@@ -172,7 +185,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 0,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       },
       {
         fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -194,7 +210,10 @@ const transactionDummyData: TransactionListInfo[] = [
         txStatus: 5,
         txArgs: [],
         txParams: [],
-        txType: 0
+        txType: 0,
+        createdTime: { microseconds: 0 },
+        submittedTime: { microseconds: 0 },
+        confirmedTime: { microseconds: 0 }
       }
     ]
   }
@@ -233,6 +252,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
   const [importError, setImportError] = React.useState<boolean>(false)
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
+  const [customTolerance, setCustomTolerance] = React.useState('')
 
   const onToggleRestore = () => {
     setIsRestoring(!isRestoring)
@@ -336,7 +356,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const asset = assetInfo(account)
     const data = CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)
     const value = data ? asset ? Number(asset.balance) * Number(data.usd) : 0 : 0
-    return formatPrices(value)
+    return formatWithCommasAndDecimals(value.toString())
   }
 
   // This returns the balance of a single accounts asset
@@ -357,7 +377,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const newList = list.map((wallet) => {
       const walletInfo = accountInfo(wallet)
       const id = walletInfo ? walletInfo.id : ''
-      const name = walletInfo ? walletInfo.name : locale.account
+      const name = walletInfo ? walletInfo.name : getLocale('braveWalletAccount')
       return {
         id: id,
         name: name,
@@ -367,7 +387,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         asset: selectedAsset ? selectedAsset.symbol : '',
         accountType: 'Primary',
         tokens: []
-      }
+      } as WalletAccountType
     })
     return newList
   }, [selectedAsset, mockRPCResponse])
@@ -414,7 +434,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatPrices(grandTotal)
+    return formatWithCommasAndDecimals(grandTotal.toString())
   }
 
   // This will change once we hit a real api for pricing
@@ -548,6 +568,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onSelectSlippageTolerance = (slippage: SlippagePresetObjectType) => {
     setSlippageTolerance(slippage)
+    setCustomTolerance('')
   }
 
   const onSetExchangeRate = (value: string) => {
@@ -588,7 +609,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
         address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
         derivationPath: makeDerivationPath(i + opts.startIndex),
         name: 'Ledger 1',
-        hardwareVendor: 'Ledger'
+        hardwareVendor: 'Ledger',
+        deviceId: 'device1'
       })))
     })
   }
@@ -631,6 +653,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onRemoveUserAsset = () => {
     alert('Will Remove a Token')
+  }
+
+  const onSetCustomTolerance = (value: string) => {
+    setCustomTolerance(value)
   }
 
   return (
@@ -764,12 +790,16 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             toAmount={toAmount}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
+            toAddressOrUrl={toAddress}
             toAddress={toAddress}
+            addressError=''
             isSwapSubmitDisabled={false}
+            customSlippageTolerance={customTolerance}
+            onCustomSlippageToleranceChange={onSetCustomTolerance}
             onSubmitBuy={onSubmitBuy}
             onSetBuyAmount={onSetBuyAmount}
             onSetSendAmount={onSetSendAmount}
-            onSetToAddress={onSetToAddress}
+            onSetToAddressOrUrl={onSetToAddress}
             onSetFromAmount={onSetFromAmount}
             onSetToAmount={onSetToAmount}
             onSubmitSend={onSubmitSend}

@@ -17,16 +17,16 @@ namespace ads {
 using GetCreativeInlineContentAdCallback =
     std::function<void(const bool success,
                        const std::string& creative_instance_id,
-                       const CreativeInlineContentAdInfo& ad)>;
+                       const CreativeInlineContentAdInfo& creative_ad)>;
 
 using GetCreativeInlineContentAdsCallback =
     std::function<void(const bool success,
                        const SegmentList& segments,
-                       const CreativeInlineContentAdList& ads)>;
+                       const CreativeInlineContentAdList& creative_ads)>;
 
 using GetCreativeInlineContentAdsForDimensionsCallback =
     std::function<void(const bool success,
-                       const CreativeInlineContentAdList& ads)>;
+                       const CreativeInlineContentAdList& creative_ads)>;
 
 }  // namespace ads
 

@@ -91,29 +91,34 @@ public class AppearancePreferences extends BravePreferenceFragment
 
         Preference enableBottomToolbar =
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
-        if (enableBottomToolbar == null) return;
-
-        enableBottomToolbar.setOnPreferenceChangeListener(this);
-        if (enableBottomToolbar instanceof ChromeSwitchPreference) {
-            boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                    ContextUtils.getApplicationContext());
-            ((ChromeSwitchPreference) enableBottomToolbar)
-                    .setChecked(!isTablet && BottomToolbarConfiguration.isBottomToolbarEnabled());
+        if (enableBottomToolbar != null) {
+            enableBottomToolbar.setOnPreferenceChangeListener(this);
+            if (enableBottomToolbar instanceof ChromeSwitchPreference) {
+                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                        ContextUtils.getApplicationContext());
+                ((ChromeSwitchPreference) enableBottomToolbar)
+                        .setChecked(
+                                !isTablet && BottomToolbarConfiguration.isBottomToolbarEnabled());
+            }
         }
 
         Preference enableTabGroups = findPreference(PREF_BRAVE_ENABLE_TAB_GROUPS);
-        enableTabGroups.setOnPreferenceChangeListener(this);
-        if (enableTabGroups instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) enableTabGroups)
-                    .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled(getActivity()));
+        if (enableTabGroups != null) {
+            enableTabGroups.setOnPreferenceChangeListener(this);
+            if (enableTabGroups instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) enableTabGroups)
+                        .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled(getActivity()));
+            }
         }
 
         Preference disableSharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
-        disableSharingHub.setOnPreferenceChangeListener(this);
-        if (disableSharingHub instanceof ChromeSwitchPreference) {
-            ((ChromeSwitchPreference) disableSharingHub)
-                    .setChecked(SharedPreferencesManager.getInstance().readBoolean(
-                            BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false));
+        if (disableSharingHub != null) {
+            disableSharingHub.setOnPreferenceChangeListener(this);
+            if (disableSharingHub instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) disableSharingHub)
+                        .setChecked(SharedPreferencesManager.getInstance().readBoolean(
+                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false));
+            }
         }
     }
 

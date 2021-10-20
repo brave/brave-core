@@ -26,7 +26,7 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletAccountType } from '../../../constants/types'
-import locale from '../../../constants/locale'
+import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   siteURL: string
@@ -77,11 +77,11 @@ function ConnectWithSite (props: Props) {
             <Details>{createAccountList()}</Details>
           </AccountListWrapper>
         ) : (
-          <Details>{locale.connectWithSiteTitle}</Details>
+          <Details>{getLocale('braveWalletConnectWithSiteTitle')}</Details>
         )}
         {!isReady ? (
           <SelectAddressContainer>
-            <NewAccountTitle>{locale.accounts}</NewAccountTitle>
+            <NewAccountTitle>{getLocale('braveWalletAccounts')}</NewAccountTitle>
             <DividerLine />
             <SelectAddressScrollContainer>
               {accounts.map((account) => (
@@ -99,15 +99,15 @@ function ConnectWithSite (props: Props) {
           <ConfirmTextRow>
             <ConfirmIcon />
             <ConfirmTextColumn>
-              <ConfirmText>{locale.connectWithSiteDescription1}</ConfirmText>
-              <ConfirmText>{locale.connectWithSiteDescription2}</ConfirmText>
+              <ConfirmText>{getLocale('braveWalletConnectWithSiteDescription1')}</ConfirmText>
+              <ConfirmText>{getLocale('braveWalletConnectWithSiteDescription2')}</ConfirmText>
             </ConfirmTextColumn>
           </ConfirmTextRow>
         )}
       </MiddleWrapper>
       <ConnectBottomNav
-        primaryText={isReady ? locale.addAccountConnect : locale.connectWithSiteNext}
-        secondaryText={isReady ? locale.back : locale.backupButtonCancel}
+        primaryText={isReady ? getLocale('braveWalletAddAccountConnect') : getLocale('braveWalletConnectWithSiteNext')}
+        secondaryText={isReady ? getLocale('braveWalletBack') : getLocale('braveWalletBackupButtonCancel')}
         primaryAction={primaryAction}
         secondaryAction={secondaryAction}
         disabled={selectedAccounts.length === 0}

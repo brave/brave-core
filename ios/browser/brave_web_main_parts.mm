@@ -45,7 +45,7 @@ void BraveWebMainParts::PreCreateMainMessageLoop() {
    base::FilePath resources_pack_path;
    base::PathService::Get(ios::FILE_RESOURCES_PACK, &resources_pack_path);
    ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
-       resources_pack_path, ui::SCALE_FACTOR_100P);
+       resources_pack_path, ui::k100Percent);
 }
 
 void BraveWebMainParts::PreCreateThreads() {

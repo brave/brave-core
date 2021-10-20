@@ -24,7 +24,7 @@ void BraveLoadMainAndroidPackFile(const char* path_within_apk,
                         &g_brave_resources_pack_region)) {
     ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
         base::File(g_brave_resources_pack_fd), g_brave_resources_pack_region,
-        SCALE_FACTOR_NONE);
+        ui::kScaleFactorNone);
   }
 }
 
@@ -36,7 +36,7 @@ void BraveLoadBrave100PercentPackFile(const char* path_within_apk,
                         &g_brave_100_percent_pack_region)) {
     ResourceBundle::GetSharedInstance().AddDataPackFromFileRegion(
         base::File(g_brave_100_percent_pack_fd),
-        g_brave_100_percent_pack_region, SCALE_FACTOR_100P);
+        g_brave_100_percent_pack_region, ui::k100Percent);
   }
 }
 

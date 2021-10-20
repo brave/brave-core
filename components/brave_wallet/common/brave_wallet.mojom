@@ -11,6 +11,7 @@ import "url/mojom/url.mojom";
 
 interface EventsListener {
   ChainChangedEvent(string chain_id);
+  AccountsChangedEvent(array<string> accounts);
 };
 
 interface BraveWalletProvider {
@@ -18,8 +19,10 @@ interface BraveWalletProvider {
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   RequestEthereumPermissions() => (bool success, array<string> accounts);
   AddEthereumChain(string json_payload) => (bool success, int32 error, string message);
-  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
-  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  AddAndApproveTransaction(TxData tx_data, string from) => (bool success, string tx_hash, string error_message);
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
+  // error will be 0 when success
+  SignMessage(string address, string message) => (string signature, int32 error, string error_message);
   GetChainId() => (string chain_id);
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
@@ -106,9 +109,7 @@ struct SwapParams {
   string buy_amount;
   string buy_token;
   string sell_token;
-  double buy_token_percentage_fee;
   double slippage_percentage;
-  string fee_recipient;
   string gas_price;
 };
 
@@ -140,11 +141,13 @@ struct HardwareWalletAccount {
   string derivation_path;
   string name;
   string hardware_vendor;
+  string device_id;
 };
 
 struct HardwareInfo {
   string path;
   string vendor;
+  string device_id;
 };
 
 struct AccountInfo {
@@ -180,6 +183,7 @@ struct ERCToken {
   string symbol;
   int32 decimals;
   bool visible = true;
+  string token_id = "";  // Non-empty for ERC721 tokens.
 };
 
 // WebUI-side handler for requests from the browser.
@@ -193,6 +197,8 @@ interface KeyringControllerObserver {
   Unlocked();
   BackedUp();
   AccountsChanged();
+  AutoLockMinutesChanged();
+  SelectedAccountChanged();
 };
 
 interface ERCTokenRegistry {
@@ -232,6 +238,11 @@ interface KeyringController {
   GetHardwareAccounts() => (array<AccountInfo> accounts);
   RemoveHardwareAccount(string address);
   NotifyUserInteraction();
+  GetSelectedAccount() => (string? address);
+  SetSelectedAccount(string address) => (bool success);
+  GetAutoLockMinutes() => (int32 minutes);
+  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
+  SetAutoLockMinutes(int32 minutes) => (bool success);
 };
 
 interface AssetRatioController {
@@ -239,6 +250,11 @@ interface AssetRatioController {
       (bool success, array<AssetPrice> values);
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
+
+  // Gas estimation APIs
+  GetEstimatedTime(string gas_price /* decimal string in wei */) =>
+      (bool success, string seconds);
+  GetGasOracle() => (GasEstimation1559? estimation);
 };
 
 interface SwapController {
@@ -251,6 +267,7 @@ interface SwapController {
 interface EthJsonRpcControllerObserver {
   ChainChangedEvent(string chain_id);
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
+  OnIsEip1559Changed(string chain_id, bool is_eip1559);
 };
 
 struct TxData {
@@ -262,11 +279,22 @@ struct TxData {
   array<uint8> data;
 };
 
+struct GasEstimation1559 {
+  string slow_max_priority_fee_per_gas;
+  string slow_max_fee_per_gas;
+  string avg_max_priority_fee_per_gas;
+  string avg_max_fee_per_gas;
+  string fast_max_priority_fee_per_gas;
+  string fast_max_fee_per_gas;
+  string base_fee_per_gas;
+};
+
 struct TxData1559 {
   TxData base_data;
   string chain_id;
   string max_priority_fee_per_gas;
   string max_fee_per_gas;
+  GasEstimation1559? gas_estimation;
 };
 
 const string kMainnetChainId = "0x1";
@@ -285,13 +313,14 @@ struct EthereumChain {
   string symbol;
   string symbol_name;
   int32 decimals;
+  bool is_eip1559;
 };
 
 interface EthJsonRpcController {
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   GetPendingChainRequests() => (array<EthereumChain> networks);
-  SetNetwork(string chain_id);
+  SetNetwork(string chain_id) => (bool success);
   GetAllNetworks() => (array<EthereumChain> networks);
   GetChainId() => (string chain_id);
   GetBlockTrackerUrl() => (string block_tracker_url);
@@ -299,11 +328,17 @@ interface EthJsonRpcController {
   GetBalance(string address) => (bool success, string balance);
   GetERC20TokenBalance(string contract,
                        string address) => (bool success, string balance);
-  UnstoppableDomainsProxyReaderGetMany(string contract_address, string domain, array<string> keys) => (bool status, string result);
-  EnsProxyReaderGetResolverAddress(string contract_address, string domain) => (bool status, string result);
+  GetERC20TokenAllowance(string contract,
+                         string owner_address, string spender_address) => (bool success, string allowance);
+  EnsGetEthAddr(string domain) => (bool success, string address);
+  UnstoppableDomainsGetEthAddr(string domain) => (bool success, string address);
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
+  GetERC721OwnerOf(string contract, string token_id) => (bool success, string owner_address);
+  // Balance is 0x1 if current selected account is the same as token owner's
+  // address, otherwise balance is 0x0.
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (bool success, string balance);
 };
 
 enum TransactionStatus {
@@ -319,6 +354,7 @@ enum TransactionType {
   ETHSend,
   ERC20Transfer,
   ERC20Approve,
+  ERC721TransferFrom,
   Other
 };
 
@@ -331,6 +367,9 @@ struct TransactionInfo {
   TransactionType tx_type;
   array<string> tx_params;
   array<string> tx_args;
+  mojo_base.mojom.TimeDelta created_time;
+  mojo_base.mojom.TimeDelta submitted_time;
+  mojo_base.mojom.TimeDelta confirmed_time;
 };
 
 interface EthTxControllerObserver {
@@ -345,8 +384,10 @@ interface EthTxController {
   ApproveTransaction(string tx_meta_id) => (bool status);
   RejectTransaction(string tx_meta_id) => (bool status);
   SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
+  SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
+  MakeERC721TransferFromData(string from, string to, string token_id) => (bool success, array<uint8> data);
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
@@ -354,11 +395,17 @@ interface EthTxController {
   ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 
+interface BraveWalletServiceObserver {
+  OnActiveOriginChanged(string origin);
+  OnDefaultWalletChanged(DefaultWallet wallet);
+};
+
 interface BraveWalletService {
+  AddObserver(pending_remote<BraveWalletServiceObserver> observer);
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
-  RemoveUserAsset(string contract_address, string chain_id) => (bool success);
-  SetUserAssetVisible(string contract_address, string chain_id, bool visible) => (bool success);
+  RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
+  SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
   IsCryptoWalletsInstalled() => (bool installed);
   IsMetaMaskInstalled() => (bool installed);
   ImportFromCryptoWallets(string password, string newPassword) => (bool success);
@@ -367,6 +414,10 @@ interface BraveWalletService {
   SetDefaultWallet(DefaultWallet default_wallet);
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
   ResetEthereumPermission(string origin, string account) => (bool success);
+  GetActiveOrigin() => (string origin);
+  GetPendingSignMessageRequest() => (int32 id, string address, string message);
+  // UI to native
+  NotifySignMessageRequestProcessed(bool approved, int32 id);
 };
 
 enum DefaultWallet {

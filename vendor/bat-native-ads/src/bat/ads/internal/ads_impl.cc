@@ -147,7 +147,7 @@ void AdsImpl::OnPrefChanged(const std::string& path) {
 
     MaybeServeAdNotificationsAtRegularIntervals();
   } else if (path == prefs::kAdsPerHour) {
-    ad_notification_serving_->OnAdsPerHourChanged();
+    ad_notification_serving_->OnPrefChanged();
   } else if (path == prefs::kAdsSubdivisionTargetingCode) {
     subdivision_targeting_->MaybeFetchForCurrentLocale();
   }
@@ -214,11 +214,11 @@ void AdsImpl::OnUnIdle(const int idle_time, const bool was_locked) {
     return;
   }
 
-  auto unidle_timestamp_diagnostics =
+  auto last_unidle_timestamp_diagnostics =
       std::make_unique<LastUnIdleTimestampAdDiagnosticsEntry>();
-  unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
+  last_unidle_timestamp_diagnostics->SetLastUnIdleTimestamp(base::Time::Now());
   AdDiagnostics::Get()->SetDiagnosticsEntry(
-      std::move(unidle_timestamp_diagnostics));
+      std::move(last_unidle_timestamp_diagnostics));
 
   MaybeUpdateIdleTimeThreshold();
 
@@ -424,6 +424,9 @@ AdContentActionType AdsImpl::ToggleAdThumbUp(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentActionType& action) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   auto like_action = Client::Get()->ToggleAdThumbUp(creative_instance_id,
                                                     creative_set_id, action);
   if (like_action == AdContentActionType::kThumbsUp) {
@@ -437,6 +440,9 @@ AdContentActionType AdsImpl::ToggleAdThumbDown(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const AdContentActionType& action) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   auto like_action = Client::Get()->ToggleAdThumbDown(creative_instance_id,
                                                       creative_set_id, action);
   if (like_action == AdContentActionType::kThumbsDown) {
@@ -461,6 +467,9 @@ CategoryContentActionType AdsImpl::ToggleAdOptOutAction(
 bool AdsImpl::ToggleSaveAd(const std::string& creative_instance_id,
                            const std::string& creative_set_id,
                            const bool saved) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   return Client::Get()->ToggleSaveAd(creative_instance_id, creative_set_id,
                                      saved);
 }
@@ -468,6 +477,9 @@ bool AdsImpl::ToggleSaveAd(const std::string& creative_instance_id,
 bool AdsImpl::ToggleFlagAd(const std::string& creative_instance_id,
                            const std::string& creative_set_id,
                            const bool flagged) {
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
   auto flag_ad = Client::Get()->ToggleFlagAd(creative_instance_id,
                                              creative_set_id, flagged);
   if (flag_ad) {

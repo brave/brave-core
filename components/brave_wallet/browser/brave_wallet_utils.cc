@@ -86,7 +86,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kRinkebyChainId,
      "Rinkeby Test Network",
      {"https://rinkeby.etherscan.io"},
@@ -94,7 +95,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kRopstenChainId,
      "Ropsten Test Network",
      {"https://ropsten.etherscan.io"},
@@ -102,7 +104,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kGoerliChainId,
      "Goerli Test Network",
      {"https://goerli.etherscan.io"},
@@ -110,7 +113,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kKovanChainId,
      "Kovan Test Network",
      {"https://kovan.etherscan.io"},
@@ -118,7 +122,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {},
      "ETH",
      "Ethereum",
-     18},
+     18,
+     true},
     {brave_wallet::mojom::kLocalhostChainId,
      "Localhost",
      {kGanacheLocalhostURL},
@@ -126,7 +131,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      {kGanacheLocalhostURL},
      "ETH",
      "Ethereum",
-     18}};
+     18,
+     false}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
@@ -134,6 +140,23 @@ const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kRopstenChainId, "ropsten"},
     {brave_wallet::mojom::kGoerliChainId, "goerli"},
     {brave_wallet::mojom::kKovanChainId, "kovan"}};
+
+const base::flat_map<std::string, std::string>
+    kUnstoppableDomainsProxyReaderContractAddressMap = {
+        {brave_wallet::mojom::kMainnetChainId,
+         "0xa6E7cEf2EDDEA66352Fd68E5915b60BDbb7309f5"},
+        {brave_wallet::mojom::kRinkebyChainId,
+         "0x3A2e74CF832cbA3d77E72708d55370119E4323a6"}};
+
+const base::flat_map<std::string, std::string> kEnsRegistryContractAddressMap =
+    {{brave_wallet::mojom::kMainnetChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kRopstenChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kRinkebyChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"},
+     {brave_wallet::mojom::kGoerliChainId,
+      "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"}};
 
 std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
   auto subdomain = brave_wallet::GetInfuraSubdomainForKnownChainId(chain_id);
@@ -161,11 +184,15 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
 
 }  // namespace
 
-mojom::EthereumChainPtr GetKnownChain(const std::string& chain_id) {
+mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
+                                      const std::string& chain_id) {
   for (const auto& network : kKnownNetworks) {
     if (network.chain_id != chain_id)
       continue;
+
     auto result = network.Clone();
+    if (chain_id == brave_wallet::mojom::kLocalhostChainId)
+      result->is_eip1559 = prefs->GetBoolean(kSupportEip1559OnLocalhostChain);
     if (result->rpc_urls.empty())
       result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
     return result;
@@ -198,7 +225,8 @@ bool IsNativeWalletEnabled() {
       brave_wallet::features::kNativeBraveWalletFeature);
 }
 
-const std::vector<brave_wallet::mojom::EthereumChain> GetAllKnownNetworks() {
+const std::vector<brave_wallet::mojom::EthereumChain>
+GetAllKnownNetworksForTesting() {
   std::vector<brave_wallet::mojom::EthereumChain> result;
   result.assign(kKnownNetworks, std::end(kKnownNetworks));
   return result;
@@ -687,14 +715,15 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   return tx_receipt;
 }
 
-void GetAllKnownChains(std::vector<mojom::EthereumChainPtr>* chains) {
+void GetAllKnownChains(PrefService* prefs,
+                       std::vector<mojom::EthereumChainPtr>* chains) {
   for (const auto& network : kKnownNetworks) {
-    chains->push_back(GetKnownChain(network.chain_id));
+    chains->push_back(GetKnownChain(prefs, network.chain_id));
   }
 }
 
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
-  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
+  mojom::EthereumChainPtr known_network = GetKnownChain(prefs, chain_id);
   if (!known_network)
     return GetCustomChainURL(prefs, chain_id);
 
@@ -706,27 +735,47 @@ GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
 
 void GetAllChains(PrefService* prefs,
                   std::vector<mojom::EthereumChainPtr>* result) {
-  GetAllKnownChains(result);
+  GetAllKnownChains(prefs, result);
   GetAllCustomChains(prefs, result);
+}
+
+std::vector<std::string> GetAllKnownNetworkIds() {
+  std::vector<std::string> network_ids;
+  for (const auto& network : kKnownNetworks) {
+    std::string network_id = GetKnownNetworkId(network.chain_id);
+    if (!network_id.empty())
+      network_ids.push_back(network_id);
+  }
+  return network_ids;
+}
+
+std::string GetKnownNetworkId(const std::string& chain_id) {
+  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty())
+    return subdomain;
+
+  // Separate check for localhost in known networks as it is predefined but
+  // does not have infura subdomain.
+  if (chain_id == mojom::kLocalhostChainId) {
+    for (const auto& network : kKnownNetworks) {
+      if (network.chain_id == chain_id) {
+        return GURL(network.rpc_urls.front()).spec();
+      }
+    }
+  }
+
+  return "";
 }
 
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
   DCHECK(prefs);
 
-  auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
-  if (!subdomain.empty())
-    return subdomain;
-  // Separate check for localhost in known networks as it is predefined
-  // but doesnt have infura subdomain.
-  mojom::EthereumChainPtr known_network = GetKnownChain(chain_id);
-  if (known_network) {
-    if (known_network->rpc_urls.size())
-      return GURL(known_network->rpc_urls.front()).spec();
-  }
+  std::string id = GetKnownNetworkId(chain_id);
+  if (!id.empty())
+    return id;
 
   std::vector<mojom::EthereumChainPtr> custom_chains;
   GetAllCustomChains(prefs, &custom_chains);
-  std::string id;
   for (const auto& network : custom_chains) {
     if (network->chain_id != chain_id)
       continue;
@@ -748,6 +797,19 @@ mojom::DefaultWallet GetDefaultWallet(PrefService* prefs) {
 
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
   prefs->SetInteger(kBraveWalletWeb3Provider, static_cast<int>(default_wallet));
+}
+
+std::string GetUnstoppableDomainsProxyReaderContractAddress(
+    const std::string& chain_id) {
+  if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id))
+    return kUnstoppableDomainsProxyReaderContractAddressMap.at(chain_id);
+  return "";
+}
+
+std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
+  if (kEnsRegistryContractAddressMap.contains(chain_id))
+    return kEnsRegistryContractAddressMap.at(chain_id);
+  return "";
 }
 
 }  // namespace brave_wallet

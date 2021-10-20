@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/segments/segments_json_writer.h"
 
+#include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 
@@ -15,6 +16,7 @@ std::string WriteSegments(const SegmentList& segments) {
   base::Value list(base::Value::Type::LIST);
 
   for (const auto& segment : segments) {
+    DCHECK(!segment.empty());
     list.Append(segment);
   }
 

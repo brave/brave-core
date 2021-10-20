@@ -7,8 +7,13 @@
 #include <utility>
 
 #include "base/test/bind.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/swap_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -50,7 +55,12 @@ class SwapControllerUnitTest : public testing::Test {
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
-    swap_controller_.reset(new SwapController(shared_url_loader_factory_));
+    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    rpc_controller_.reset(
+        new EthJsonRpcController(shared_url_loader_factory_, &prefs_));
+    swap_controller_.reset(
+        new SwapController(shared_url_loader_factory_, rpc_controller_.get()));
   }
 
   ~SwapControllerUnitTest() override = default;
@@ -77,6 +87,8 @@ class SwapControllerUnitTest : public testing::Test {
   }
 
  protected:
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  std::unique_ptr<EthJsonRpcController> rpc_controller_;
   std::unique_ptr<SwapController> swap_controller_;
 
  private:
@@ -251,6 +263,42 @@ TEST_F(SwapControllerUnitTest, GetTransactionPayloadUnexpectedReturn) {
       base::BindOnce(&OnRequestResponse, &callback_run, false, nullptr, error));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_run);
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationRopsten) {
+  std::string swap_api_url = "https://ropsten.api.0x.org/";
+  std::string buy_token_percantage_fee = "0.00875";
+  std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  EXPECT_EQ(swap_api_url,
+            SwapController::GetBaseSwapURL(mojom::kRopstenChainId));
+  EXPECT_EQ(buy_token_percantage_fee,
+            SwapController::GetFee(mojom::kRopstenChainId));
+  EXPECT_EQ(fee_recipient,
+            SwapController::GetFeeRecipient(mojom::kRopstenChainId));
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationMainnet) {
+  std::string swap_api_url = "https://api.0x.org/";
+  std::string buy_token_percantage_fee = "0.00875";
+  std::string fee_recipient = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+  EXPECT_EQ(swap_api_url,
+            SwapController::GetBaseSwapURL(mojom::kMainnetChainId));
+  EXPECT_EQ(buy_token_percantage_fee,
+            SwapController::GetFee(mojom::kMainnetChainId));
+  EXPECT_EQ(fee_recipient,
+            SwapController::GetFeeRecipient(mojom::kMainnetChainId));
+}
+
+TEST_F(SwapControllerUnitTest, GetSwapConfigurationOtherNet) {
+  std::string swap_api_url;
+  std::string buy_token_percantage_fee;
+  std::string fee_recipient;
+  EXPECT_EQ(swap_api_url,
+            SwapController::GetBaseSwapURL(mojom::kRinkebyChainId));
+  EXPECT_EQ(buy_token_percantage_fee,
+            SwapController::GetFee(mojom::kRinkebyChainId));
+  EXPECT_EQ(fee_recipient,
+            SwapController::GetFeeRecipient(mojom::kRinkebyChainId));
 }
 
 }  // namespace brave_wallet

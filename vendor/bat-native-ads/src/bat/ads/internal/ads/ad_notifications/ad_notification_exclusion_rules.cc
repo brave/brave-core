@@ -46,88 +46,89 @@ ExclusionRules::ExclusionRules(
 
 ExclusionRules::~ExclusionRules() = default;
 
-bool ExclusionRules::ShouldExcludeAd(const CreativeAdInfo& ad) const {
+bool ExclusionRules::ShouldExcludeCreativeAd(
+    const CreativeAdInfo& creative_ad) const {
   bool should_exclude = false;
 
   DailyCapFrequencyCap daily_cap_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &daily_cap_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &daily_cap_frequency_cap)) {
     should_exclude = true;
   }
 
   PerDayFrequencyCap per_day_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &per_day_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &per_day_frequency_cap)) {
     should_exclude = true;
   }
 
   PerHourFrequencyCap per_hour_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &per_hour_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &per_hour_frequency_cap)) {
     should_exclude = true;
   }
 
   PerWeekFrequencyCap per_week_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &per_week_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &per_week_frequency_cap)) {
     should_exclude = true;
   }
 
   PerMonthFrequencyCap per_month_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &per_month_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &per_month_frequency_cap)) {
     should_exclude = true;
   }
 
   TotalMaxFrequencyCap total_max_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &total_max_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &total_max_frequency_cap)) {
     should_exclude = true;
   }
 
   ConversionFrequencyCap conversion_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &conversion_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &conversion_frequency_cap)) {
     should_exclude = true;
   }
 
   SubdivisionTargetingFrequencyCap subdivision_frequency_cap(
       subdivision_targeting_);
-  if (ShouldExclude(ad, &subdivision_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &subdivision_frequency_cap)) {
     should_exclude = true;
   }
 
   DaypartFrequencyCap daypart_frequency_cap;
-  if (ShouldExclude(ad, &daypart_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &daypart_frequency_cap)) {
     should_exclude = true;
   }
 
   DismissedFrequencyCap dismissed_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &dismissed_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &dismissed_frequency_cap)) {
     should_exclude = true;
   }
 
   TransferredFrequencyCap transferred_frequency_cap(ad_events_);
-  if (ShouldExclude(ad, &transferred_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &transferred_frequency_cap)) {
     should_exclude = true;
   }
 
   DislikeFrequencyCap dislike_frequency_cap;
-  if (ShouldExclude(ad, &dislike_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &dislike_frequency_cap)) {
     should_exclude = true;
   }
 
   MarkedToNoLongerReceiveFrequencyCap marked_to_no_longer_receive_frequency_cap;
-  if (ShouldExclude(ad, &marked_to_no_longer_receive_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &marked_to_no_longer_receive_frequency_cap)) {
     should_exclude = true;
   }
 
   MarkedAsInappropriateFrequencyCap marked_as_inappropriate_frequency_cap;
-  if (ShouldExclude(ad, &marked_as_inappropriate_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &marked_as_inappropriate_frequency_cap)) {
     should_exclude = true;
   }
 
   SplitTestFrequencyCap split_test_frequency_cap;
-  if (ShouldExclude(ad, &split_test_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &split_test_frequency_cap)) {
     should_exclude = true;
   }
 
   AntiTargetingFrequencyCap anti_targeting_frequency_cap(
       anti_targeting_resource_, browsing_history_);
-  if (ShouldExclude(ad, &anti_targeting_frequency_cap)) {
+  if (ShouldExclude(creative_ad, &anti_targeting_frequency_cap)) {
     should_exclude = true;
   }
 

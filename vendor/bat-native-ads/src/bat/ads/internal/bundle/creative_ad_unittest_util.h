@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "bat/ads/internal/bundle/creative_ad_info.h"
-
 namespace ads {
+
+struct CreativeAdInfo;
 
 CreativeAdInfo GetCreativeAd();
 

@@ -29,6 +29,7 @@ source_set("app") {
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/bookmarks",
+    "//brave/ios/browser/api/brave_wallet",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/api/history",
     "//brave/ios/browser/api/ledger",

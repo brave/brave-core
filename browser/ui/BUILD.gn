@@ -119,6 +119,13 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
     ]
 
+    if (brave_wallet_enabled) {
+      sources += [
+        "webui/settings/brave_wallet_handler.cc",
+        "webui/settings/brave_wallet_handler.h",
+      ]
+    }
+
     if (is_mac) {
       sources += [ "webui/settings/brave_import_data_handler_mac.mm" ]
     } else {
@@ -131,7 +138,7 @@ source_set("ui") {
         "webui/settings/brave_relaunch_handler_mac.mm",
       ]
     }
-  }
+  }  # !is_android
 
   if (toolkit_views) {
     sources += [
@@ -163,6 +170,8 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
       "views/toolbar/brave_app_menu.h",
+      "views/web_discovery_dialog_view.cc",
+      "views/web_discovery_dialog_view.h",
     ]
 
     if (use_aura) {

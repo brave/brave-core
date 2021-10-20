@@ -1,4 +1,4 @@
-import locale from '../constants/locale'
+import { getLocale } from '../../common/locale'
 import { AppsListType } from '../constants/types'
 
 export const filterAppList = (event: any, AppsList: AppsListType[], updateList: (AppsList: AppsListType[]) => void) => {
@@ -16,7 +16,7 @@ export const filterAppList = (event: any, AppsList: AppsListType[], updateList: 
     })
     const newList = [
       {
-        category: locale.searchCategory,
+        category: getLocale('braveWalletSearchCategory'),
         appList: filteredList
       }
     ]

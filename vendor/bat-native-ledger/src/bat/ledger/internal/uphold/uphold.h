@@ -68,7 +68,7 @@ class Uphold {
 
   void CreateCard(CreateCardCallback callback);
 
-  void DisconnectWallet(const std::string& notification);
+  void DisconnectWallet(const absl::optional<std::string>& notification);
 
   void GetUser(GetUserCallback callback);
 

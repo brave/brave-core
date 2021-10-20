@@ -22,7 +22,7 @@ class DismissedFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   DismissedFrequencyCap(const DismissedFrequencyCap&) = delete;
   DismissedFrequencyCap& operator=(const DismissedFrequencyCap&) = delete;
 
-  bool ShouldExclude(const CreativeAdInfo& ad) override;
+  bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
 
@@ -34,7 +34,7 @@ class DismissedFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   bool DoesRespectCap(const AdEventList& ad_events);
 
   AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& ad) const;
+                             const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

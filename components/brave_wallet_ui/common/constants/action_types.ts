@@ -6,10 +6,12 @@
 import {
   AppObjectType,
   AccountInfo,
+  DefaultWallet,
   TransactionInfo,
   TokenInfo,
   AccountAssetOptionType,
-  SlippagePresetObjectType
+  SlippagePresetObjectType,
+  WalletAccountType
 } from '../../constants/types'
 
 export type InitializedPayloadType = {
@@ -19,6 +21,7 @@ export type InitializedPayloadType = {
   isWalletBackedUp: boolean
   visibleTokens: string[]
   accountInfos: AccountInfo[]
+  selectedAccount: string
 }
 
 export type UnlockWalletPayloadType = {
@@ -27,6 +30,11 @@ export type UnlockWalletPayloadType = {
 
 export type ChainChangedEventPayloadType = {
   chainId: string
+}
+
+export type IsEip1559Changed = {
+  chainId: string,
+  isEip1559: boolean
 }
 
 export type NewUnapprovedTxAdded = {
@@ -47,12 +55,12 @@ export type AddUserAssetPayloadType = {
 }
 
 export type RemoveUserAssetPayloadType = {
-  contractAddress: string
+  token: TokenInfo
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  contractAddress: string
+  token: TokenInfo
   chainId: string
   isVisible: boolean
 }
@@ -66,4 +74,29 @@ export type SwapParamsPayloadType = {
   accountAddress: string,
   networkChainId: string,
   full: boolean
+}
+
+export type ActiveOriginChanged = {
+  origin: string
+}
+
+export type UpdateUnapprovedTransactionGasFieldsType = {
+  txMetaId: string,
+  gasLimit: string,
+  gasPrice?: string,
+  maxPriorityFeePerGas?: string,
+  maxFeePerGas?: string
+}
+
+export type DefaultWalletChanged = {
+  defaultWallet: DefaultWallet
+}
+
+export type SitePermissionsPayloadType = {
+  accounts: (WalletAccountType | undefined)[]
+}
+
+export type RemoveSitePermissionPayloadType = {
+  origin: string,
+  account: string
 }

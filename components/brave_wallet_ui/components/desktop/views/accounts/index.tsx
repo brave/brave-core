@@ -7,12 +7,13 @@ import {
   TransactionListInfo,
   EthereumChain,
   TokenInfo,
-  AssetPriceInfo
+  AssetPriceInfo,
+  TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { formatBalance } from '../../../../utils/format-balances'
 
 // Styled Components
@@ -70,6 +71,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
+  onSelectAsset: (token: TokenInfo) => void
   goBack: () => void
 }
 
@@ -84,6 +86,7 @@ function Accounts (props: Props) {
     selectedAccount,
     goBack,
     onSelectAccount,
+    onSelectAsset,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
     toggleNav,
@@ -93,6 +96,13 @@ function Accounts (props: Props) {
     onRemoveAccount
   } = props
 
+  const groupById = (accounts: WalletAccountType[], key: string) => {
+    return accounts.reduce((result, obj) => {
+      (result[obj[key]] = result[obj[key]] || []).push(obj)
+      return result
+    }, {})
+  }
+
   const primaryAccounts = React.useMemo(() => {
     return accounts.filter((account) => account.accountType === 'Primary')
   }, [accounts])
@@ -101,8 +111,14 @@ function Accounts (props: Props) {
     return accounts.filter((account) => account.accountType === 'Secondary')
   }, [accounts])
 
-  const hardwareAccounts = React.useMemo(() => {
-    return accounts.filter((account) => account.accountType === 'Trezor' || account.accountType === 'Ledger')
+  const trezorAccounts = React.useMemo(() => {
+    const foundTrezorAccounts = accounts.filter((account) => account.accountType === 'Trezor')
+    return groupById(foundTrezorAccounts, 'deviceId')
+  }, [accounts])
+
+  const ledgerAccounts = React.useMemo(() => {
+    const foundLedgerAccounts = accounts.filter((account) => account.accountType === 'Ledger')
+    return groupById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
@@ -115,7 +131,11 @@ function Accounts (props: Props) {
   }
 
   const onClickSettings = () => {
-    alert('Will Nav to Brave Browser Settings')
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
   }
 
   const onChangeTab = (id: AccountSettingsNavTypes) => {
@@ -140,7 +160,8 @@ function Accounts (props: Props) {
   const transactionList = React.useMemo(() => {
     if (selectedAccount) {
       const foundTransactions = transactions.find((account) => account?.account.address === selectedAccount.address)?.transactions ?? []
-      return foundTransactions
+      return [...foundTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
+        Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
     } else {
       return []
     }
@@ -154,11 +175,11 @@ function Accounts (props: Props) {
       {!selectedAccount ? (
         <>
           <PrimaryRow>
-            <SectionTitle>{locale.accountsPrimary}</SectionTitle>
+            <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
             <ButtonsRow>
               <BackupButton onClick={onClickBackup}>
                 <BackupIcon />
-                <BackupButtonText>{locale.backupButton}</BackupButtonText>
+                <BackupButtonText>{getLocale('braveWalletBackupButton')}</BackupButtonText>
               </BackupButton>
               <Button onClick={onClickSettings}>
                 <SettingsIcon />
@@ -176,8 +197,8 @@ function Accounts (props: Props) {
               />
             )}
           </PrimaryListContainer>
-          <SectionTitle>{locale.accountsSecondary}</SectionTitle>
-          <DisclaimerText>{locale.accountsSecondaryDisclaimer}</DisclaimerText>
+          <SectionTitle>{getLocale('braveWalletAccountsSecondary')}</SectionTitle>
+          <DisclaimerText>{getLocale('braveWalletAccountsSecondaryDisclaimer')}</DisclaimerText>
           <SubDivider />
           <SecondaryListContainer isHardwareWallet={false}>
             {secondaryAccounts.map((account) =>
@@ -190,9 +211,9 @@ function Accounts (props: Props) {
               />
             )}
           </SecondaryListContainer>
-          {hardwareAccounts.length !== 0 &&
-            <SecondaryListContainer isHardwareWallet={true}>
-              {hardwareAccounts.map((account) =>
+          {Object.keys(trezorAccounts).map(key =>
+            <SecondaryListContainer key={key} isHardwareWallet={true}>
+              {trezorAccounts[key].map((account: WalletAccountType) =>
                 <AccountListItem
                   key={account.id}
                   isHardwareWallet={true}
@@ -202,11 +223,24 @@ function Accounts (props: Props) {
                 />
               )}
             </SecondaryListContainer>
-          }
+          )}
+          {Object.keys(ledgerAccounts).map(key =>
+            <SecondaryListContainer key={key} isHardwareWallet={true}>
+              {ledgerAccounts[key].map((account: WalletAccountType) =>
+                <AccountListItem
+                  key={account.id}
+                  isHardwareWallet={true}
+                  onClick={onSelectAccount}
+                  onRemoveAccount={onRemoveAccount}
+                  account={account}
+                />
+              )}
+            </SecondaryListContainer>
+          )}
           <AddButton
             buttonType='secondary'
             onSubmit={onClickAddAccount}
-            text={locale.addAccount}
+            text={getLocale('braveWalletAddAccount')}
           />
         </>
       ) : (
@@ -215,7 +249,7 @@ function Accounts (props: Props) {
             <WalletInfoLeftSide>
               <AccountCircle orb={orb} />
               <WalletName>{selectedAccount.name}</WalletName>
-              <Tooltip text={locale.toolTipCopyToClipboard}>
+              <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
                 <WalletAddress onClick={onCopyToClipboard}>{reduceAddress(selectedAccount.address)}</WalletAddress>
               </Tooltip>
               <Button onClick={onShowEditModal}>
@@ -226,7 +260,7 @@ function Accounts (props: Props) {
               <EditIcon />
             </Button>
           </WalletInfoRow>
-          <SubviewSectionTitle>{locale.accountsAssets}</SubviewSectionTitle>
+          <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
           <SubDivider />
           {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
@@ -239,7 +273,7 @@ function Accounts (props: Props) {
               isVisible={item.asset.visible}
             />
           )}
-          <SubviewSectionTitle>{locale.transactions}</SubviewSectionTitle>
+          <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>
           <SubDivider />
           {transactionList.length !== 0 ? (
             <>
@@ -249,21 +283,25 @@ function Accounts (props: Props) {
                   key={transaction?.id}
                   transaction={transaction}
                   account={selectedAccount}
+                  accounts={accounts}
                   transactionSpotPrices={transactionSpotPrices}
                   visibleTokens={userVisibleTokensInfo}
+                  displayAccountName={false}
+                  onSelectAccount={onSelectAccount}
+                  onSelectAsset={onSelectAsset}
                 />
               )}
             </>
           ) : (
             <TransactionPlaceholderContainer>
-              <TransactionPlaceholderText>{locale.transactionPlaceholder}</TransactionPlaceholderText>
+              <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
             </TransactionPlaceholderContainer>
           )}
         </>
       )}
       {showEditModal && selectedAccount &&
         <AccountSettingsModal
-          title={locale.account}
+          title={getLocale('braveWalletAccount')}
           account={selectedAccount}
           onClose={onCloseEditModal}
           onUpdateAccountName={onUpdateAccountName}

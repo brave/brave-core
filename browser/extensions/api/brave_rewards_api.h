@@ -379,6 +379,16 @@ class BraveRewardsDisconnectWalletFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetRewardsEnabledFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRewardsEnabled", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetRewardsEnabledFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetAdsEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsEnabled", UNKNOWN)
@@ -502,6 +512,18 @@ class BraveRewardsUpdatePrefsFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsUpdatePrefsFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsRequestAdsEnabledPopupClosedFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.requestAdsEnabledPopupClosed",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsRequestAdsEnabledPopupClosedFunction() override;
 
   ResponseAction Run() override;
 };

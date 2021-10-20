@@ -30,7 +30,8 @@ class SpeedreaderBubbleBrowserTest : public DialogBrowserTest {
 
  protected:
   bool NavigateToNewTab() {
-    ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab"));
+    EXPECT_TRUE(
+        ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
     return WaitForLoadStop(ActiveWebContents());
   }
 

@@ -179,7 +179,7 @@ void Uphold::CreateCard(CreateCardCallback callback) {
   card_->CreateBATCardIfNecessary(callback);
 }
 
-void Uphold::DisconnectWallet(const std::string& notification) {
+void Uphold::DisconnectWallet(const absl::optional<std::string>& notification) {
   auto wallet = GetWallet();
   if (!wallet) {
     return;
@@ -191,7 +191,7 @@ void Uphold::DisconnectWallet(const std::string& notification) {
                                         (!wallet->address.empty() ? "/" : "") +
                                         wallet->address.substr(0, 5));
 
-  const bool manual = notification.empty();
+  const bool manual = !notification.has_value();
 
   const auto from = wallet->status;
   wallet = ledger::wallet::ResetWallet(std::move(wallet));
@@ -204,9 +204,9 @@ void Uphold::DisconnectWallet(const std::string& notification) {
 
   const bool shutting_down = ledger_->IsShuttingDown();
 
-  if (!manual && !shutting_down) {
-    ledger_->ledger_client()->ShowNotification(notification, {"Uphold"},
-                                               [](type::Result _) {});
+  if (!manual && !shutting_down && !notification->empty()) {
+    ledger_->ledger_client()->ShowNotification(*notification, {"Uphold"},
+                                               [](type::Result) {});
   }
 
   wallet = GenerateLinks(std::move(wallet));

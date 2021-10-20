@@ -15,7 +15,6 @@
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
-// #include "url/url_constants.h"
 
 namespace {
 
@@ -23,14 +22,13 @@ class BraveTranslateRedirectNetworkDelegateHelperTest
     : public testing::Test {
  public:
   BraveTranslateRedirectNetworkDelegateHelperTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {}
+      : context_(new net::TestURLRequestContext(true)) {}
   ~BraveTranslateRedirectNetworkDelegateHelperTest() override {}
   void SetUp() override { context_->Init(); }
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
@@ -52,8 +50,8 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
     std::shared_ptr<brave::BraveRequestInfo> before_url_context(
         new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
+    before_url_context->initiator_url = GURL(kTranslateInitiatorURL);
+    before_url_context->request_url = url;
     brave::ResponseCallback callback;
 
     GURL expected_url(kBraveTranslateServer + path_string);
@@ -81,8 +79,7 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
     std::shared_ptr<brave::BraveRequestInfo> before_url_context(
         new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
+    before_url_context->request_url = url;
     brave::ResponseCallback callback;
 
     int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
@@ -110,8 +107,7 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
     std::shared_ptr<brave::BraveRequestInfo> before_url_context(
         new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
+    before_url_context->request_url = url;
     brave::ResponseCallback callback;
 
     GURL expected_url(kBraveTranslateServer + url.path());
@@ -137,8 +133,8 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-      before_url_context);
+  before_url_context->initiator_url = GURL(kTranslateInitiatorURL);
+  before_url_context->request_url = url;
   brave::ResponseCallback callback;
 
   GURL expected_url(kBraveTranslateEndpoint + std::string("?") + url.query());
@@ -162,8 +158,7 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-      before_url_context);
+  before_url_context->request_url = url;
   brave::ResponseCallback callback;
 
   GURL expected_url(kBraveTranslateServer + url.path());
@@ -186,8 +181,7 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
+  before_url_context->request_url = url;
   brave::ResponseCallback callback;
 
   int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
@@ -210,8 +204,7 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
 
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
+  before_url_context->request_url = url;
   brave::ResponseCallback callback;
 
   int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,

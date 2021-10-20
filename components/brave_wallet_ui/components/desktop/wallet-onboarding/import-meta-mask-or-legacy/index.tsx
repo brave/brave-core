@@ -3,12 +3,10 @@ import { WalletOnboardingSteps } from '../../../../constants/types'
 import {
   StyledWrapper,
   Title,
-  PageIcons,
   InputColumn,
   Description,
   MetaMaskIcon,
   BraveIcon,
-  ArrowIcon,
   LostButton,
   PasswordTitle,
   CheckboxRow
@@ -16,7 +14,7 @@ import {
 import { Checkbox } from 'brave-ui'
 import { PasswordInput } from '../../../shared'
 import { NavButton } from '../../../extension'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 export interface Props {
   onSubmit: () => void
@@ -75,31 +73,29 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
 
   return (
     <StyledWrapper>
-      <PageIcons>
-        {isMetaMask &&
-          <>
-            <MetaMaskIcon />
-            <ArrowIcon />
-          </>
-        }
-        <BraveIcon isMetaMask={isMetaMask} />
-      </PageIcons>
+      {isMetaMask ? (
+        <MetaMaskIcon />
+      ) : (
+        <BraveIcon />
+      )}
       <Title>
+        {getLocale('braveWalletImportTitle')}{` `}
         {isMetaMask ?
-          locale.importMetaMaskTitle
-          : locale.importBraveLegacyTitle}
+          getLocale('braveWalletImportMetaMaskTitle')
+          : getLocale('braveWalletImportBraveLegacyTitle')}
       </Title>
       <Description>
+        {getLocale('braveWalletImportDescriptionOne')}{` `}
         {isMetaMask ?
-          locale.importMetaMaskDescription
-          : locale.importBraveLegacyDescription
-        }
+          getLocale('braveWalletImportMetaMaskTitle')
+          : getLocale('braveWalletImportBraveLegacyTitle')
+        }{` `}{getLocale('braveWalletImportDescriptionTwo')}
       </Description>
       <InputColumn useSamePasswordVerified={useSamePasswordVerified}>
         <PasswordInput
-          placeholder={isMetaMask ? locale.importMetaMaskInput : locale.importBraveLegacyInput}
+          placeholder={isMetaMask ? getLocale('braveWalletImportMetaMaskInput') : getLocale('braveWalletImportBraveLegacyInput')}
           onChange={onImportPasswordChanged}
-          error={locale.lockScreenError}
+          error={getLocale('braveWalletLockScreenError')}
           hasError={hasImportError}
           autoFocus={true}
         />
@@ -107,39 +103,40 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
       {!useSamePasswordVerified &&
         <PasswordTitle needsNewPassword={needsNewPassword}>
           {needsNewPassword ?
-            locale.braveWalletImportFromExternalNewPassword
-            : locale.braveWalletImportFromExternalCreatePassword}
+            getLocale('braveWalletImportFromExternalNewPassword')
+            : getLocale('braveWalletImportFromExternalCreatePassword')}
         </PasswordTitle>
       }
       {!needsNewPassword &&
         <CheckboxRow>
           <Checkbox disabled={importPassword === ''} value={{ useSamePassword: useSamePassword }} onChange={onSelectUseSamePassword}>
-            <div data-key='useSamePassword'>{locale.braveWalletImportFromExternalPasswordCheck}</div>
+            <div data-key='useSamePassword'>{getLocale('braveWalletImportFromExternalPasswordCheck')}</div>
           </Checkbox>
         </CheckboxRow>
       }
       {!useSamePasswordVerified &&
         <InputColumn>
           <PasswordInput
-            placeholder={locale.createPasswordInput}
+            placeholder={getLocale('braveWalletCreatePasswordInput')}
             value={password}
             onChange={onPasswordChanged}
-            error={locale.createPasswordError}
+            onKeyDown={handleKeyDown}
+            error={getLocale('braveWalletCreatePasswordError')}
             hasError={hasPasswordError}
           />
           <PasswordInput
-            placeholder={locale.confirmPasswordInput}
+            placeholder={getLocale('braveWalletConfirmPasswordInput')}
             value={confirmedPassword}
             onChange={onConfirmPasswordChanged}
             onKeyDown={handleKeyDown}
-            error={locale.confirmPasswordError}
+            error={getLocale('braveWalletConfirmPasswordError')}
             hasError={hasConfirmPasswordError}
           />
         </InputColumn>
       }
-      <NavButton buttonType='primary' text={locale.addAccountImport} onSubmit={onSubmit} disabled={disabled} />
+      <NavButton buttonType='primary' text={getLocale('braveWalletAddAccountImport')} onSubmit={onSubmit} disabled={disabled} />
       {!isMetaMask &&
-        <LostButton onClick={onClickLost}>{locale.importBraveLegacyAltButton}</LostButton>
+        <LostButton onClick={onClickLost}>{getLocale('braveWalletImportBraveLegacyAltButton')}</LostButton>
       }
     </StyledWrapper>
   )

@@ -96,7 +96,7 @@
                       android:id="@+id/from_value_text"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:inputType="text"
+                      android:inputType="number"
                       android:textColor="@color/wallet_text_color"
                       android:textSize="20sp"/>
 
@@ -247,7 +247,7 @@
                     android:id="@+id/to_value_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
 
@@ -285,7 +285,7 @@
 
         </LinearLayout>
 
-        <RadioGroup
+        <!--<RadioGroup
             android:id="@+id/buy_send_swap_type_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -326,7 +326,7 @@
                 android:textColor="@color/wallet_text_color"
                 android:text="@string/limit" />
 
-        </RadioGroup>
+        </RadioGroup>-->
 
         <LinearLayout
             android:id="@+id/market_price_section"
@@ -406,22 +406,25 @@
                 android:id="@+id/slipping_expires_value_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="@string/slipping_tolerance"
                 android:textColor="@color/wallet_secondary_text_color"
                 android:textSize="14sp"/>
 
-            <TextView
-                android:id="@+id/slipping_tolerance_value_text"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/slippage_tolerance_spinner"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:clickable="true"
-                android:focusable="true"
+                android:layout_weight="1"
+                android:textSize="10sp"
                 android:textColor="@color/wallet_text_color"
-                android:drawablePadding="4dp"
-                android:textSize="12sp"
-                app:drawableEndCompat="@drawable/ic_carat_down" />
+                android:layout_gravity="center_vertical"
+                android:prompt="@string/crypto_wallet_tolerance_05"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                tools:ignore="SmallSp" />
 
         </LinearLayout>
 

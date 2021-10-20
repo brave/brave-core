@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/decentralized_dns/constants.h"
 #include "brave/components/decentralized_dns/features.h"
 #include "brave/components/decentralized_dns/pref_names.h"
@@ -111,164 +112,56 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
-       DecentralizedDnsRedirectWork) {
+       UnstoppableDomainsRedirectWork) {
   GURL url("http://brave.crypto");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
   // No redirect for failed requests.
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(
-      ResponseCallback(), brave_request_info, false, "");
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(ResponseCallback(),
+                                                    brave_request_info, false,
+                                                    std::vector<std::string>());
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(ResponseCallback(),
-                                                  brave_request_info, true, "");
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+      ResponseCallback(), brave_request_info, true, std::vector<std::string>());
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // Has both IPFS URI & fallback URL.
-  std::string result =
-      // offset for array
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      // count for array
-      "0000000000000000000000000000000000000000000000000000000000000006"
-      // offsets for array elements
-      "00000000000000000000000000000000000000000000000000000000000000c0"
-      "0000000000000000000000000000000000000000000000000000000000000120"
-      "0000000000000000000000000000000000000000000000000000000000000180"
-      "00000000000000000000000000000000000000000000000000000000000001a0"
-      "00000000000000000000000000000000000000000000000000000000000001c0"
-      "0000000000000000000000000000000000000000000000000000000000000200"
-      // count for "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"
-      "000000000000000000000000000000000000000000000000000000000000002e"
-      // encoding for "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"
-      "516d5772644e4a574d62765278787a4c686f6a564b614244737753344b4e564d"
-      "374c766a734e3751624472766b61000000000000000000000000000000000000"
-      // count for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
-      "000000000000000000000000000000000000000000000000000000000000002e"
-      // encoding for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
-      "516d6257717842454b433350387471734b633938786d574e7a727a4474524c4d"
-      "694d504c387742755447734d6e52000000000000000000000000000000000000"
-      // count for empty dns.A
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.AAAA
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "https://fallback1.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback1.test.com"
-      "68747470733a2f2f66616c6c6261636b312e746573742e636f6d000000000000"
-      // count for "https://fallback2.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback2.test.com"
-      "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000";
-
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+  std::vector<std::string> result = {
+      "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",  // dweb.ipfs.hash
+      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",  // ipfs.html.value
+      "",                                                // dns.A
+      "",                                                // dns.AAAA
+      "https://fallback1.test.com",                      // browser.redirect_url
+      "https://fallback2.test.com",  // ipfs.redirect_domain.value
+  };
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
   EXPECT_EQ("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka",
             brave_request_info->new_url_spec);
 
   // Has legacy IPFS URI & fallback URL
-  result =
-      // offset for array
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      // count for array
-      "0000000000000000000000000000000000000000000000000000000000000006"
-      // offsets for array elements
-      "00000000000000000000000000000000000000000000000000000000000000c0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      "0000000000000000000000000000000000000000000000000000000000000140"
-      "0000000000000000000000000000000000000000000000000000000000000160"
-      "0000000000000000000000000000000000000000000000000000000000000180"
-      "00000000000000000000000000000000000000000000000000000000000001c0"
-      // count for empty dweb.ipfs.hash
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
-      "000000000000000000000000000000000000000000000000000000000000002e"
-      // encoding for "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
-      "516d6257717842454b433350387471734b633938786d574e7a727a4474524c4d"
-      "694d504c387742755447734d6e52000000000000000000000000000000000000"
-      // count for empty dns.A
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.AAAA
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "https://fallback1.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback1.test.com"
-      "68747470733a2f2f66616c6c6261636b312e746573742e636f6d000000000000"
-      // count for "https://fallback2.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback2.test.com"
-      "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000";
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+  result[static_cast<int>(RecordKeys::DWEB_IPFS_HASH)] = "";
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
   EXPECT_EQ("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR",
             brave_request_info->new_url_spec);
 
   // Has both fallback URL
-  result =
-      // offset for array
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      // count for array
-      "0000000000000000000000000000000000000000000000000000000000000006"
-      // offsets for array elements
-      "00000000000000000000000000000000000000000000000000000000000000c0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      "0000000000000000000000000000000000000000000000000000000000000100"
-      "0000000000000000000000000000000000000000000000000000000000000120"
-      "0000000000000000000000000000000000000000000000000000000000000140"
-      "0000000000000000000000000000000000000000000000000000000000000180"
-      // count for empty dweb.ipfs.hash
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty ipfs.html.value
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.A
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.AAAA
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "https://fallback1.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback1.test.com"
-      "68747470733a2f2f66616c6c6261636b312e746573742e636f6d000000000000"
-      // count for "https://fallback2.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback2.test.com"
-      "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000";
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+  result[static_cast<int>(RecordKeys::IPFS_HTML_VALUE)] = "";
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
   EXPECT_EQ("https://fallback1.test.com/", brave_request_info->new_url_spec);
 
   // Has legacy URL
-  result =
-      // offset for array
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      // count for array
-      "0000000000000000000000000000000000000000000000000000000000000006"
-      // offsets for array elements
-      "00000000000000000000000000000000000000000000000000000000000000c0"
-      "00000000000000000000000000000000000000000000000000000000000000e0"
-      "0000000000000000000000000000000000000000000000000000000000000100"
-      "0000000000000000000000000000000000000000000000000000000000000120"
-      "0000000000000000000000000000000000000000000000000000000000000140"
-      "0000000000000000000000000000000000000000000000000000000000000160"
-      // count for empty dweb.ipfs.hash
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty ipfs.html.value
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.A
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty dns.AAAA
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for empty browser.redirect_url
-      "0000000000000000000000000000000000000000000000000000000000000000"
-      // count for "https://fallback2.test.com"
-      "000000000000000000000000000000000000000000000000000000000000001a"
-      // encoding for "https://fallback2.test.com"
-      "68747470733a2f2f66616c6c6261636b322e746573742e636f6d000000000000";
-  OnBeforeURLRequest_DecentralizedDnsRedirectWork(
+  result[static_cast<int>(RecordKeys::BROWSER_REDIRECT_URL)] = "";
+  OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
       ResponseCallback(), brave_request_info, true, result);
   EXPECT_EQ("https://fallback2.test.com/", brave_request_info->new_url_spec);
 }
 
 TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
-  GURL url("http://brave.eth");
+  GURL url("http://brantly.eth");
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
   // No redirect for failed requests.
@@ -279,27 +172,36 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
   OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
                                      true, "");
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-  std::string hash =
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      "0000000000000000000000000000000000000000000000000000000000000026e7"
-      "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
-      "7fe0e3bc0000000000000000000000000000000000000000000000000000";
 
+  // No redirect for invalid content hash.
+  std::string content_hash_encoded_string =
+      "0x0000000000000000000000000000000000000000000000000000000000000020000000"
+      "000000000000000000000000000000000000000000000000000000002655010170122023"
+      "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
+      "000000000000000000000000000000000000000000";
+
+  std::string content_hash;
+  EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
+                                         &content_hash));
   OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, hash);
+                                     true, content_hash);
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
-  hash =
-      "0x0000000000000000000000000000000000000000000000000000000000000020"
-      "0000000000000000000000000000000000000000000000000000000000000026e5"
-      "0101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c"
-      "7fe0e3bc0000000000000000000000000000000000000000000000000000";
+  // Redirect for valid content hash.
+  content_hash_encoded_string =
+      "0x0000000000000000000000000000000000000000000000000000000000000020000000"
+      "0000000000000000000000000000000000000000000000000000000026e3010170122023"
+      "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
+      "000000000000000000000000000000000000000000";
 
+  content_hash = "";
+  EXPECT_TRUE(brave_wallet::DecodeString(66, content_hash_encoded_string,
+                                         &content_hash));
   OnBeforeURLRequest_EnsRedirectWork(ResponseCallback(), brave_request_info,
-                                     true, hash);
+                                     true, content_hash);
   EXPECT_EQ(
       brave_request_info->new_url_spec,
-      "ipns://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq");
+      "ipfs://bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
 }
 
 }  // namespace decentralized_dns

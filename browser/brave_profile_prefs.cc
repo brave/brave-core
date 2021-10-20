@@ -37,6 +37,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
+#include "brave/components/skus/browser/skus_sdk_impl.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -49,6 +50,7 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
@@ -177,9 +179,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   brave_vpn::prefs::RegisterProfilePrefs(registry);
 #endif
+
+  // SKU SDK (can be used on account.brave.com)
+  brave_rewards::SkusSdkImpl::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings
@@ -287,6 +292,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Disable default webstore icons in topsites or apps.
   registry->SetDefaultPrefValue(prefs::kHideWebStoreIcon, base::Value(true));
 
+  // Disable Chromium's privacy sandbox
+  registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabled,
+                                base::Value(false));
+
+  // Disable Chromium's privacy sandbox
+  registry->SetDefaultPrefValue(prefs::kPrivacySandboxFlocEnabled,
+                                base::Value(false));
+
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
@@ -377,6 +390,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery extension, default false
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
+  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
+  registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -416,6 +431,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
+
+  registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
 
   RegisterProfilePrefsForMigration(registry);
 }

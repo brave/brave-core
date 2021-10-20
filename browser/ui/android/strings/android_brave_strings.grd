@@ -1567,6 +1567,39 @@ until they verify, or until 90 days have passed.
       <message name="IDS_IM_IN" desc="Brave rewards opt in button text">
         I’m In!
       </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_TEXT" desc="Turn on brave rewards">
+        To start a free call, turn on Brave Rewards
+      </message>
+      <message name="IDS_BRAVE_TALK_REWARDS_DESCRIPTION_TEXT" desc="Brave rewards description">
+        With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_BUTTON_TEXT" desc="Turn on brave rewards button">
+        Turn on Rewards
+      </message>
+      <message name="IDS_BRAVE_TALK_REWARDS_TOS_PP_TEXT" desc="Brave rewards terms of service and privacy policy">
+        By tapping, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>. Disable any time in Settings.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TEXT" desc="Turn on brave private ads">
+        To start a free call, enable Brave Private Ads
+      </message>
+      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_DESCRIPTION_TEXT" desc="Brave private ads description">
+        With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.
+      </message>
+      <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_BUTTON_TEXT" desc="Turn on brave private ads button">
+        Turn on Brave Private Ads
+      </message>
+      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_TOS_PP_TEXT" desc="Brave private ads terms of service and privacy policy">
+        By turning on Ads, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
+      </message>
+      <message name="IDS_BRAVE_TALK_START_FREE_CALL_TEXT" desc="Brave talk start call popup header">
+        You can now start a free call
+      </message>
+      <message name="IDS_BRAVE_TALK_TAP_ANYWHERE_TEXT" desc="Brave talk continue popup text">
+        Tap anywhere on the screen to continue to Brave Talk.
+      </message>
+      <message name="IDS_BRAVE_TALK_WANT_LEARN_MORE_TEXT" desc="Brave talk learn more popup text">
+        Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR">%1$s</ph>.
+      </message>
       <message name="IDS_CONVERT_SUCCESS" desc="Binance convert success text">
         You converted <ph name="FROM_VALUE">%1$s</ph> <ph name="FROM_CURRENCY">%2$s</ph> to <ph name="TO_VALUE">%3$s</ph> <ph name="TO_CURRENCY">%4$s</ph>!
       </message>
@@ -1756,6 +1789,9 @@ until they verify, or until 90 days have passed.
     <message name="IDS_COPY" desc="Brave Wallet onboarding button text">
       Copy
     </message>
+    <message name="IDS_BACKUP_WALLET_BANNER_TEXT" desc="Brave Wallet backup banner text">
+      Backup your wallet now to protect your crypto portfolio from loss of access.
+    </message>
     <message name="IDS_BUY_SWAP_TEXT" desc="Brave Wallet buy bottomsheet text">
       Buy crypto with Apple Pay, credit or debit card.
     </message>
@@ -1781,7 +1817,7 @@ until they verify, or until 90 days have passed.
       Re-typed password did not match
     </message>
     <message name="IDS_LIVE" desc="Brave Wallet graph duration text">
-      Live
+      1H
     </message>
     <message name="IDS_DAY_1" desc="Brave Wallet graph duration text">
       1D
@@ -1801,14 +1837,17 @@ until they verify, or until 90 days have passed.
     <message name="IDS_ALL" desc="Brave Wallet graph duration text">
       ALL
     </message>
-    <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
+    <!-- <message name="IDS_ALL_SET" desc="Brave Wallet onboarding text">
       All set!
     </message>
     <message name="IDS_ADD_ACCOUNT_DIALOG_TEXT" desc="Brave Wallet onboarding text">
       Buy, trade, or hold crypto. If you have an existing crypto account you may add it now.
-    </message>
+    </message> -->
     <message name="IDS_ADD_ACCOUNT" desc="Brave Wallet account dialog button text">
       Add Account
+    </message>
+    <message name="IDS_UPDATE_ACCOUNT" desc="Brave Wallet account dialog button text">
+      Update Account
     </message>
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
       <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
@@ -1820,7 +1859,7 @@ until they verify, or until 90 days have passed.
       Enable biometrics to quickly unlock your wallet without entering your password.
     </message>
     <message name="IDS_MENU_BRAVE_WALLET" desc="Brave Wallet menu item text">
-      Brave Wallet
+      Wallet
     </message>
     <message name="IDS_RESTORE_CRYPTO_TEXT" desc="Brave Wallet onboarding text">
       Enter your recovery phrase to restore your Brave Wallet crypto account.
@@ -1868,29 +1907,44 @@ until they verify, or until 90 days have passed.
       Account recovery failed. Please try again.
     </message>
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Mainnet
+      Ethereum Mainnet
     </message>
     <message name="IDS_RINKEBY" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Rinkeby
+      Rinkeby Test Network
     </message>
     <message name="IDS_ROPSTEN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Ropsten
+      Ropsten Test Network
     </message>
     <message name="IDS_GOERLI" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Goerli
+      Goerli Test Network
     </message>
     <message name="IDS_KOVAN" desc="Brave Wallet network selection button text(network name)" translateable="false">
-      Kovan
+      Kovan Test Network
     </message>
     <message name="IDS_LOCALHOST" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Localhost
     </message>
+    <message name="IDS_MAINNET_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Mainnet
+    </message>
+    <message name="IDS_RINKEBY_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Rinkeby
+    </message>
+    <message name="IDS_ROPSTEN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Ropsten
+    </message>
+    <message name="IDS_GOERLI_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Goerli
+    </message>
+    <message name="IDS_KOVAN_SHORT" desc="Brave Wallet network selection button text(network name short)" translateable="false">
+      Kovan
+    </message>
     <message name="IDS_MARKET_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
-      Market Price in ETH
+      Market Price in <ph name="ASSET">%1$s<ex>ETH</ex></ph>
     </message>
-    <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_PRICE_IN" desc="Brave Wallet buy-send-swap section text">
       Price in ETH
-    </message>
+    </message> -->
     <message name="IDS_FROM" desc="Brave Wallet buy-send-swap section text">
       From
     </message>
@@ -1915,18 +1969,18 @@ until they verify, or until 90 days have passed.
     <message name="IDS_TO_ADDRESS_EDIT" desc="Brave Wallet buy-send-swap section for address(hint)">
       address or url
     </message>
-    <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_LIMIT" desc="Brave Wallet buy-send-swap section text">
       Limit
     </message>
     <message name="IDS_MARKET" desc="Brave Wallet buy-send-swap section text">
       Market
-    </message>
+    </message> -->
     <message name="IDS_SLIPPING_TOLERANCE" desc="Brave Wallet buy-send-swap section text">
       Slippage tolerance
     </message>
-    <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
+    <!-- <message name="IDS_EXPIRES_IN" desc="Brave Wallet buy-send-swap section text">
       Expires in
-    </message>
+    </message> -->
     <message name="IDS_ACCOUNTS" desc="Brave Wallet section text">
       Accounts
     </message>
@@ -1972,9 +2026,6 @@ until they verify, or until 90 days have passed.
     </message>
     <message name="IDS_DETAILS" desc="Brave wallet accounts text">
       Details
-    </message>
-    <message name="IDS_EDIT" desc="Brave wallet accounts text">
-      Edit
     </message>
     <message name="IDS_ACCOUNT_DETAILS" desc="Brave wallet accounts text">
       Account Details
@@ -2125,11 +2176,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_HOST" desc="Brave VPN settings section text">
       Host
     </message>
-    <message name="IDS_LOCATION" desc="Brave VPN settings section text">
-      Location
-    </message>
     <message name="IDS_CHANGE_LOCATION" desc="Brave VPN settings section text">
-      Change Location
+      Location
     </message>
     <message name="IDS_RESET_CONFIGURATION" desc="Brave VPN settings section text">
       Reset Configuration
@@ -2206,8 +2254,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTOMATIC" desc="Brave Vpn default server location text">
       Automatic
     </message>
-    <message name="IDS_VPN_LOADING_TEXT" desc="Brave Vpn loading text">
-      Loading. Please wait...
+    <message name="IDS_VPN_CONNECT_TEXT" desc="Brave Vpn loading text">
+      Connecting to your server. Should only take a moment...
+    </message>
+    <message name="IDS_VPN_DISCONNECT_TEXT" desc="Brave Vpn loading text">
+      Disconnecting from your server. Should only take a moment...
     </message>
     <message name="IDS_SUBSCRIPTION_CONSUMED" desc="Brave Vpn in app purchase message">
       Subscription successfully consumed
@@ -2248,9 +2299,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PORTFOLIO" desc="Brave crypto wallet section Portfolio">
       Portfolio
     </message>
-    <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
+    <!-- <message name="IDS_APPS" desc="Brave crypto wallet section Apps">
       Apps
-    </message>
+    </message> -->
     <message name="IDS_CRYPTO_WALLET_FROM_TO" desc="From address -> to address" translateable="false">
       <ph name="FROM">%1$s<ex>0xabcd...</ex></ph> -> <ph name="TO">%2$s<ex>0xabcd...</ex></ph>
     </message>
@@ -2274,6 +2325,66 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
       Disable Sharing Hub
+    </message>
+    <message name="IDS_EDIT" desc="Brave wallet accounts text">
+      Edit
+    </message>
+    <message name="IDS_UPDATE" desc="Brave wallet accounts text">
+      Update
+    </message>
+    <message name="IDS_ACCOUNT_UPDATE_FAILED" desc="Brave Wallet account update error text">
+      Account update failed.
+    </message>
+    <message name="IDS_ACCOUNT_NAME_EMPTY_ERROR" desc="Brave Wallet empty account error text">
+      Account name can't be empty.
+    </message>
+    <message name="IDS_INCORRECT_PASSWORD_ERROR" desc="Brave Wallet incorrect password error text">
+      Incorrect password
+    </message>
+    <message name="IDS_CHOOSE_A_FILE" desc="Brave wallet accounts text">
+      Choose a file
+    </message>
+    <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_PRIVATE_TITLE" desc="Text used to explain the block third-party cookies in Private option in settings">
+      Block third-party cookies in Private
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_05" desc="Slippage tolerance %" translateable="false">
+      0.5%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_1" desc="Slippage tolerance %" translateable="false">
+      1%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_15" desc="Slippage tolerance %" translateable="false">
+      1.5%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_3" desc="Slippage tolerance %" translateable="false">
+      3%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_TOLERANCE_6" desc="Slippage tolerance %" translateable="false">
+      6%
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_BALANCE" desc="Error on crypto wallets">
+      Insufficient balance
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_GAS" desc="Error on crypto wallets">
+      Insufficient funds for gas
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_INSUFFICIENT_LIQUIDITY" desc="Error on crypto wallets">
+      Insufficient liquidity
+    </message>
+    <message name="IDS_CRYPTO_WALLET_ERROR_UNKNOWN_ERROR" desc="Error on crypto wallets">
+      Unknown error
+    </message>
+    <message name="IDS_PRIVATE_KEY" desc="Wallet account private key text">
+      Private Key
+    </message>
+    <message name="IDS_SHOW_PRIVATE_KEY" desc="Wallet account private key text">
+      Show Private Key
+    </message>
+    <message name="IDS_HIDE_PRIVATE_KEY" desc="Wallet account private key text">
+      Hide Private Key
+    </message>
+    <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
+      Warning: Never disclose this key. Anyone with private key can steal any assets held in your account.
     </message>
     </messages>
   </release>

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 934324202e0577e9c925363fbec67a91bb3deb42..ebfae463ffd506b1bd8cfef82902a86d3d81f1ad 100644
+index 9de3983076996312367d8c2f1a8f27b817f8eef1..21a81c4ee10188f327949389ceefa0591f0627a2 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -59,7 +59,9 @@ by a child template that "extends" this file.
@@ -65,7 +65,7 @@ index 934324202e0577e9c925363fbec67a91bb3deb42..ebfae463ffd506b1bd8cfef82902a86d
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1212,6 +1226,7 @@ by a child template that "extends" this file.
+@@ -1205,6 +1219,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -73,7 +73,7 @@ index 934324202e0577e9c925363fbec67a91bb3deb42..ebfae463ffd506b1bd8cfef82902a86d
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1290,6 +1305,7 @@ by a child template that "extends" this file.
+@@ -1283,6 +1298,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

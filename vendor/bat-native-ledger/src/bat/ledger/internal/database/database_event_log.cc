@@ -33,9 +33,8 @@ DatabaseEventLog::~DatabaseEventLog() = default;
 void DatabaseEventLog::Insert(
     const std::string& key,
     const std::string& value) {
-  if (key.empty() || value.empty()) {
-    BLOG_IF(1, key.empty(), "Key is empty");
-    BLOG_IF(1, value.empty(), "Value is empty");
+  if (key.empty()) {
+    BLOG(0, "Key is empty");
     return;
   }
 

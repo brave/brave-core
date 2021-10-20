@@ -101,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
   GURL url = embedded_test_server()->GetURL("www.digg.com", "/");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
   GURL url = embedded_test_server()->GetURL("www.brianbondy.com", "/");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
 IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
-  ui_test_utils::NavigateToURL(browser(), url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
   const char kIframeID[] = "test";

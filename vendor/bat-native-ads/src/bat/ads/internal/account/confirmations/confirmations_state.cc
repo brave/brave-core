@@ -134,12 +134,16 @@ ConfirmationList ConfirmationsState::GetFailedConfirmations() const {
 
 void ConfirmationsState::AppendFailedConfirmation(
     const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   DCHECK(is_initialized_);
   failed_confirmations_.push_back(confirmation);
 }
 
 bool ConfirmationsState::RemoveFailedConfirmation(
     const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
   DCHECK(is_initialized_);
 
   const auto iter =
@@ -291,6 +295,8 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
 
   base::Value list(base::Value::Type::LIST);
   for (const auto& confirmation : confirmations) {
+    DCHECK(confirmation.IsValid());
+
     base::Value confirmation_dictionary(base::Value::Type::DICTIONARY);
 
     confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
@@ -498,6 +504,11 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     absl::optional<bool> created =
         confirmation_dictionary->FindBoolKey("created");
     confirmation.was_created = created.value_or(true);
+
+    if (!confirmation.IsValid()) {
+      BLOG(0, "Invalid confirmation");
+      continue;
+    }
 
     new_failed_confirmations.push_back(confirmation);
   }

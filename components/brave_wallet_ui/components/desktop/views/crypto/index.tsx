@@ -17,7 +17,7 @@ import {
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
-import locale from '../../../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 import { PortfolioView, AccountsView } from '../'
 import {
   HardwareWalletAccount,
@@ -40,7 +40,8 @@ export interface Props {
   onAddHardwareAccounts: (selected: HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
-  onToggleAddModal: () => void
+  onShowAddModal: () => void
+  onHideAddModal: () => void
   onSelectNetwork: (network: EthereumChain) => void
   fetchFullTokenList: () => void
   onRemoveAccount: (address: string, hardware: boolean) => void
@@ -49,8 +50,8 @@ export interface Props {
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (hasError: boolean) => void
   onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (contractAddress: string, isVisible: boolean) => void
-  onRemoveUserAsset: (contractAddress: string) => void
+  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
+  onRemoveUserAsset: (token: TokenInfo) => void
   onOpenWalletSettings: () => void
   addUserAssetError: boolean
   hasImportError: boolean
@@ -93,7 +94,6 @@ const CryptoView = (props: Props) => {
     onUpdateAccountName,
     fetchFullTokenList,
     onSelectNetwork,
-    onToggleAddModal,
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
@@ -103,6 +103,8 @@ const CryptoView = (props: Props) => {
     onSetUserAssetVisible,
     onRemoveUserAsset,
     onOpenWalletSettings,
+    onShowAddModal,
+    onHideAddModal,
     defaultWallet,
     addUserAssetError,
     hasImportError,
@@ -152,9 +154,13 @@ const CryptoView = (props: Props) => {
     }
     if (category === 'accounts') {
       if (id !== undefined) {
-        const account = accounts.find((a) => a.address.toLowerCase() === id.toLowerCase())
-        setSelectedAccount(account)
-        setHideNav(true)
+        if (id === 'add-account') {
+          onShowAddModal()
+        } else {
+          const account = accounts.find((a) => a.address.toLowerCase() === id.toLowerCase())
+          setSelectedAccount(account)
+          setHideNav(true)
+        }
       } else {
         setSelectedAccount(undefined)
         setHideNav(false)
@@ -174,12 +180,17 @@ const CryptoView = (props: Props) => {
     setShowDefaultWalletBanner(false)
   }
 
-  const onClickAddAccount = () => {
-    onToggleAddModal()
+  const onCloseAddModal = () => {
+    history.push(`${WalletRoutes.Accounts}`)
+    onHideAddModal()
   }
 
-  const onCloseAddModal = () => {
-    onToggleAddModal()
+  const onClickAddAccount = () => {
+    history.push(`${WalletRoutes.AddAccountModal}`)
+  }
+
+  const onRouteBack = () => {
+    history.push(`${WalletRoutes.Accounts}`)
   }
 
   const selectAsset = (asset: TokenInfo | undefined) => {
@@ -208,7 +219,7 @@ const CryptoView = (props: Props) => {
       {!hideNav &&
         <>
           <TopTabNav
-            tabList={TopNavOptions}
+            tabList={TopNavOptions()}
             selectedTab={category}
             onSubmit={tabTo}
             hasMoreButtons={true}
@@ -219,8 +230,8 @@ const CryptoView = (props: Props) => {
               onDismiss={onDismissDefaultWalletBanner}
               onClick={onOpenWalletSettings}
               bannerType='warning'
-              buttonText={locale.walletPopupSettings}
-              description={locale.defaultWalletBanner}
+              buttonText={getLocale('braveWalletWalletPopupSettings')}
+              description={getLocale('braveWalletDefaultWalletBanner')}
             />
           }
           {needsBackup && showBackupWarning &&
@@ -228,8 +239,8 @@ const CryptoView = (props: Props) => {
               onDismiss={onDismissBackupWarning}
               onClick={onShowBackup}
               bannerType='danger'
-              buttonText={locale.backupButton}
-              description={locale.backupWarningText}
+              buttonText={getLocale('braveWalletBackupButton')}
+              description={getLocale('braveWalletBackupWarningText')}
             />
           }
         </>
@@ -245,6 +256,7 @@ const CryptoView = (props: Props) => {
           selectedTimeline={selectedTimeline}
           selectedPortfolioTimeline={selectedPortfolioTimeline}
           onSelectAsset={selectAsset}
+          onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
           fetchFullTokenList={fetchFullTokenList}
@@ -278,6 +290,7 @@ const CryptoView = (props: Props) => {
           onDoneViewingPrivateKey={onDoneViewingPrivateKey}
           onViewPrivateKey={onViewPrivateKey}
           onSelectAccount={onSelectAccount}
+          onSelectAsset={selectAsset}
           goBack={goBack}
           selectedAccount={selectedAccount}
           privateKey={privateKey}
@@ -291,8 +304,9 @@ const CryptoView = (props: Props) => {
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
-          title={locale.addAccount}
+          title={getLocale('braveWalletAddAccount')}
           onClose={onCloseAddModal}
+          onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}

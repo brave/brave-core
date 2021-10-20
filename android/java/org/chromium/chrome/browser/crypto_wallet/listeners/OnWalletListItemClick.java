@@ -11,4 +11,6 @@ public interface OnWalletListItemClick {
     default public void onAccountClick(WalletListItemModel walletListItemModel){};
     default public void onAssetClick(){};
     default public void onTransactionClick(){};
+    default public void onAssetCheckedChanged(
+            WalletListItemModel walletListItemModel, boolean isChecked){};
 }

@@ -30,7 +30,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
         "symbol": "gorETH",
         "decimals": 18
       },
-      "blockExplorerUrls": ["https://goerli.etherscan.io"]
+      "blockExplorerUrls": ["https://goerli.etherscan.io"],
+      "is_eip1559": true
     })")
                                                .value());
     ASSERT_TRUE(chain);
@@ -49,6 +50,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
               chain->icon_urls.front());
     EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.png",
               chain->icon_urls.back());
+    EXPECT_TRUE(chain->is_eip1559);
   }
   {
     absl::optional<brave_wallet::mojom::EthereumChain> chain =
@@ -64,6 +66,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
     ASSERT_TRUE(chain->block_explorer_urls.empty());
     ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
+    ASSERT_FALSE(chain->is_eip1559);
   }
 
   {
@@ -85,13 +88,14 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
 TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
   brave_wallet::mojom::EthereumChain chain(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11);
+      {"https://url1.com"}, "symbol_name", "symbol", 11, true);
   base::Value value = brave_wallet::EthereumChainToValue(chain.Clone());
   EXPECT_EQ(*value.FindStringKey("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindStringKey("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringPath("nativeCurrency.name"), chain.symbol_name);
   EXPECT_EQ(*value.FindStringPath("nativeCurrency.symbol"), chain.symbol);
   EXPECT_EQ(*value.FindIntPath("nativeCurrency.decimals"), chain.decimals);
+  EXPECT_EQ(value.FindBoolKey("is_eip1559").value(), true);
   for (const auto& entry : value.FindListKey("rpcUrls")->GetList()) {
     ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),
                         entry.GetString()),

@@ -55,6 +55,9 @@ class EthJsonRpcController : public KeyedService,
   mojo::PendingRemote<mojom::EthJsonRpcController> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::EthJsonRpcController> receiver);
 
+  using StringResultCallback =
+      base::OnceCallback<void(bool success, const std::string& result)>;
+
   using GetBlockNumberCallback =
       base::OnceCallback<void(bool status, uint256_t result)>;
   void GetBlockNumber(GetBlockNumberCallback callback);
@@ -62,6 +65,7 @@ class EthJsonRpcController : public KeyedService,
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
                RequestCallback callback) override;
+
   void GetBalance(const std::string& address,
                   GetBalanceCallback callback) override;
 
@@ -83,25 +87,33 @@ class EthJsonRpcController : public KeyedService,
   void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
                             GetERC20TokenBalanceCallback callback) override;
+  void GetERC20TokenAllowance(const std::string& contract_address,
+                              const std::string& owner_address,
+                              const std::string& spender_address,
+                              GetERC20TokenAllowanceCallback callback) override;
 
+  using UnstoppableDomainsProxyReaderGetManyCallback =
+      base::OnceCallback<void(bool success,
+                              const std::vector<std::string>& values)>;
   // Call getMany function of ProxyReader contract from Unstoppable Domains.
   void UnstoppableDomainsProxyReaderGetMany(
-      const std::string& contract_address,
+      const std::string& chain_id,
       const std::string& domain,
       const std::vector<std::string>& keys,
-      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
-
-  void EnsProxyReaderGetResolverAddress(
-      const std::string& contract_address,
-      const std::string& domain,
-      UnstoppableDomainsProxyReaderGetManyCallback callback) override;
-
-  bool EnsProxyReaderResolveAddress(
-      const std::string& contract_address,
-      const std::string& domain,
       UnstoppableDomainsProxyReaderGetManyCallback callback);
 
-  void SetNetwork(const std::string& chain_id) override;
+  void UnstoppableDomainsGetEthAddr(
+      const std::string& domain,
+      UnstoppableDomainsGetEthAddrCallback callback) override;
+
+  void EnsResolverGetContentHash(const std::string& chain_id,
+                                 const std::string& domain,
+                                 StringResultCallback callback);
+  void EnsGetEthAddr(const std::string& domain,
+                     EnsGetEthAddrCallback callback) override;
+
+  void SetNetwork(const std::string& chain_id,
+                  SetNetworkCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
                         const GURL& origin,
                         AddEthereumChainCallback callback) override;
@@ -141,6 +153,19 @@ class EthJsonRpcController : public KeyedService,
       base::OnceCallback<void(bool status, const std::string& result)>;
   void GetGasPrice(GetGasPriceCallback callback);
 
+  using GetIsEip1559Callback =
+      base::OnceCallback<void(bool success, bool is_eip1559)>;
+  void GetIsEip1559(GetIsEip1559Callback callback);
+
+  void GetERC721OwnerOf(const std::string& contract,
+                        const std::string& token_id,
+                        GetERC721OwnerOfCallback callback) override;
+
+  void GetERC721TokenBalance(const std::string& contract_address,
+                             const std::string& token_id,
+                             const std::string& account_address,
+                             GetERC721TokenBalanceCallback callback) override;
+
  private:
   void FireNetworkChanged();
   void FirePendingRequestCompleted(const std::string& chain_id,
@@ -176,6 +201,11 @@ class EthJsonRpcController : public KeyedService,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
+  void OnGetERC20TokenAllowance(
+      GetERC20TokenAllowanceCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
 
   void OnUnstoppableDomainsProxyReaderGetMany(
       UnstoppableDomainsProxyReaderGetManyCallback callback,
@@ -183,18 +213,43 @@ class EthJsonRpcController : public KeyedService,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnEnsProxyReaderGetResolverAddress(
-      UnstoppableDomainsProxyReaderGetManyCallback callback,
-      const std::string& domain,
+  void OnUnstoppableDomainsGetEthAddr(
+      UnstoppableDomainsGetEthAddrCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void EnsRegistryGetResolver(const std::string& chain_id,
+                              const std::string& domain,
+                              StringResultCallback callback);
+
+  void OnEnsRegistryGetResolver(
+      StringResultCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
-  void OnEnsProxyReaderResolveAddress(
-      UnstoppableDomainsProxyReaderGetManyCallback callback,
+  void ContinueEnsResolverGetContentHash(const std::string& chain_id,
+                                         const std::string& domain,
+                                         StringResultCallback callback,
+                                         bool success,
+                                         const std::string& resolver_address);
+
+  void OnEnsResolverGetContentHash(
+      StringResultCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
+
+  void ContinueEnsGetEthAddr(const std::string& domain,
+                             StringResultCallback callback,
+                             bool success,
+                             const std::string& resolver_address);
+
+  void OnEnsGetEthAddr(StringResultCallback callback,
+                       int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
 
   void OnGetEstimateGas(
       GetEstimateGasCallback callback,
@@ -206,6 +261,35 @@ class EthJsonRpcController : public KeyedService,
                      int status,
                      const std::string& body,
                      const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetIsEip1559(GetIsEip1559Callback callback,
+                      int status,
+                      const std::string& body,
+                      const base::flat_map<std::string, std::string>& headers);
+
+  void MaybeUpdateIsEip1559(const std::string& chain_id);
+  void UpdateIsEip1559(const std::string& chain_id,
+                       bool success,
+                       bool is_eip1559);
+
+  void RequestInternal(const std::string& json_payload,
+                       bool auto_retry_on_network_change,
+                       const GURL& network_url,
+                       RequestCallback callback);
+
+  FRIEND_TEST_ALL_PREFIXES(EthJsonRpcControllerUnitTest, IsValidDomain);
+  bool IsValidDomain(const std::string& domain);
+
+  void OnGetERC721OwnerOf(
+      GetERC721OwnerOfCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void ContinueGetERC721TokenBalance(const std::string& account_address,
+                                     GetERC721TokenBalanceCallback callback,
+                                     bool success,
+                                     const std::string& owner_address);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;

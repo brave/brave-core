@@ -19,6 +19,26 @@
     "message": "Frissítési állapot",
     "description": ""
   },
+  "pendingTipText": {
+    "message": "Minden borravaló, amit ad, a pénztárcájában marad függő állapotban, és feldolgozását 90 napot át automatikusan mindig újra megkíséreljük. $link_begin$Tudjon meg többet$link_end$",
+    "description": "",
+    "placeholders": {
+      "link_begin": {
+        "content": "$1"
+      },
+      "link_end": {
+        "content": "$2"
+      }
+    }
+  },
+  "pendingTipTitle": {
+    "message": "Ez az alkotó még nem regisztrált.",
+    "description": ""
+  },
+  "pendingTipTitleRegistered": {
+    "message": "Ennél az alkotónál még nincs beállítva, hogy borravalókat fogadhasson az Ön tárcájából.",
+    "description": ""
+  },
   "platformPublisherTitle": {
     "message": "$name$ itt: $platform$",
     "placeholders": {
@@ -183,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ érkezik ekkor: $days$",
+    "message": "$amount$ kifizetés feldolgozásának megkezdése $days$ napon belül",
     "description": "",
     "placeholders": {
       "amount": {
@@ -411,7 +431,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "A folytatással elfogadod a $tos_link_begin$TSzolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
+    "message": "A folytatással elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -575,5 +595,85 @@
   "captchaDismiss": {
     "message": "Elvetés",
     "description": ""
+  },
+  "braveTalkTurnOnRewardsToStartCall": {
+    "message": "Ingyenes hívás indításához kapcsolja be a Brave Rewardsot",
+    "description": ""
+  },
+  "braveTalkBraveRewardsDescription": {
+    "message": "A Brave Rewards privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás. ",
+    "description": ""
+  },
+  "braveTalkTurnOnRewards": {
+    "message": "Rewards bekapcsolása",
+    "description": ""
+  },
+  "braveTalkOptInRewardsTerms": {
+    "message": "A folytatással elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$. Bármikor kikapcsolhatja a Beállításokban.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkTurnOnPrivateAdsToStartCall": {
+    "message": "Ingyenes hívás indításához engedélyezze a Brave Private Adst.",
+    "description": ""
+  },
+  "braveTalkPrivateAdsDescription": {
+    "message": "A Brave Private Ads privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás. ",
+    "description": ""
+  },
+  "braveTalkTurnOnPrivateAds": {
+    "message": "Brave Private Ads bekapcsolása",
+    "description": ""
+  },
+  "braveTalkOptInAdsTerms": {
+    "message": "Az Ads bekapcsolásával elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tos_link_begin": {
+        "content": "$1"
+      },
+      "tos_link_end": {
+        "content": "$2"
+      },
+      "pp_link_begin": {
+        "content": "$3"
+      },
+      "pp_link_end": {
+        "content": "$4"
+      }
+    }
+  },
+  "braveTalkCanStartFreeCall": {
+    "message": "Most már indíthat ingyenes hívást",
+    "description": ""
+  },
+  "braveTalkClickAnywhereToBraveTalk": {
+    "message": "Kattintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.",
+    "description": ""
+  },
+  "braveTalkWantLearnMore": {
+    "message": "Többet szeretne megtudni a Brave Rewards-ról?$tour_link_begin$Gyors bemutató indítása$tour_link_end$.",
+    "description": "",
+    "placeholders": {
+      "tour_link_begin": {
+        "content": "$1"
+      },
+      "tour_link_end": {
+        "content": "$2"
+      }
+    }
   }
 }

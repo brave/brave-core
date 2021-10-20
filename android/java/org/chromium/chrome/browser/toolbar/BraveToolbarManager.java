@@ -207,7 +207,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
                 mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
-                        mAppThemeColorProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
+                        mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,
                         mBottomSheetController, mActivityLifecycleDispatcher,
                         mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
                         mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
@@ -220,11 +220,11 @@ public class BraveToolbarManager extends ToolbarManager {
                             id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null)),
                     mActivityTabProvider, mToolbarTabController::openHomepage,
                     mCallbackController.makeCancelable((reason) -> setUrlBarFocus(true, reason)),
-                    mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                    mMenuButtonCoordinator.getMenuButtonHelperSupplier(), mAppThemeColorProvider,
                     /* Below are parameters for BottomControlsCoordinator */
                     mActivity, mWindowAndroid, mLayoutManager,
                     mCompositorViewHolder.getResourceManager(), mBrowserControlsSizer,
-                    mFullscreenManager, mBottomControls, mAppThemeColorProvider, mTabGroupUi,
+                    mFullscreenManager, mBottomControls, mTabGroupUi,
                     mOverlayPanelVisibilitySupplier));
             mBottomControls.setBottomControlsCoordinatorSupplier(
                     mBottomControlsCoordinatorSupplier);
