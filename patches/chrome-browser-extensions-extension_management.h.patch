@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_management.h b/chrome/browser/extensions/extension_management.h
-index 8bf1f102ea4f1efa4262203d2a144f9b349fafca..81e32a7af751269d2b671cc964eca26bf5203795 100644
+index b260e6775633b10e47838ac33dd4b222333a92cb..7d3e5c489b137c869fe1a698e3f68bca7a184c37 100644
 --- a/chrome/browser/extensions/extension_management.h
 +++ b/chrome/browser/extensions/extension_management.h
-@@ -229,6 +229,7 @@ class ExtensionManagement : public KeyedService {
+@@ -230,6 +230,7 @@ class ExtensionManagement : public KeyedService {
    bool is_child() const { return is_child_; }
  
   private:
