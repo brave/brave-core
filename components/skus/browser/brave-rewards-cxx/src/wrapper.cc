@@ -991,6 +991,7 @@ namespace brave_rewards {
   struct HttpRequest;
   struct HttpResponse;
   struct HttpRoundtripContext;
+  struct WakeupContext;
   struct CppSDK;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
 }
@@ -1061,6 +1062,20 @@ private:
 };
 #endif // CXXBRIDGE1_STRUCT_brave_rewards$HttpRoundtripContext
 
+#ifndef CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
+#define CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
+struct WakeupContext final : public ::rust::Opaque {
+  ~WakeupContext() = delete;
+
+private:
+  friend ::rust::layout;
+  struct layout {
+    static ::std::size_t size() noexcept;
+    static ::std::size_t align() noexcept;
+  };
+};
+#endif // CXXBRIDGE1_STRUCT_brave_rewards$WakeupContext
+
 #ifndef CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 struct CppSDK final : public ::rust::Opaque {
@@ -1085,6 +1100,8 @@ namespace brave_rewards {
 extern "C" {
 ::std::size_t brave_rewards$cxxbridge1$HttpRoundtripContext$operator$sizeof() noexcept;
 ::std::size_t brave_rewards$cxxbridge1$HttpRoundtripContext$operator$alignof() noexcept;
+::std::size_t brave_rewards$cxxbridge1$WakeupContext$operator$sizeof() noexcept;
+::std::size_t brave_rewards$cxxbridge1$WakeupContext$operator$alignof() noexcept;
 ::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$sizeof() noexcept;
 ::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$alignof() noexcept;
 
@@ -1103,15 +1120,15 @@ void brave_rewards$cxxbridge1$shim_executeRequest$done$0(::rust::Box<::brave_rew
   brave_rewards$cxxbridge1$shim_executeRequest$done$1(arg0.into_raw(), resp, extern$);
 }
 
-void brave_rewards$cxxbridge1$shim_scheduleWakeup(::std::uint64_t delay_ms, ::rust::Fn<void()> done) noexcept {
-  void (*shim_scheduleWakeup$)(::std::uint64_t, ::rust::Fn<void()>) = ::brave_rewards::shim_scheduleWakeup;
-  shim_scheduleWakeup$(delay_ms, done);
+void brave_rewards$cxxbridge1$shim_scheduleWakeup(::std::uint64_t delay_ms, ::rust::Fn<void(::rust::Box<::brave_rewards::WakeupContext>)> done, ::brave_rewards::WakeupContext *ctx) noexcept {
+  void (*shim_scheduleWakeup$)(::std::uint64_t, ::rust::Fn<void(::rust::Box<::brave_rewards::WakeupContext>)>, ::rust::Box<::brave_rewards::WakeupContext>) = ::brave_rewards::shim_scheduleWakeup;
+  shim_scheduleWakeup$(delay_ms, done, ::rust::Box<::brave_rewards::WakeupContext>::from_raw(ctx));
 }
 
-void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(void *) noexcept;
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(::brave_rewards::WakeupContext *arg0, void *) noexcept;
 
-void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$0(void *extern$) noexcept {
-  brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(extern$);
+void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$0(::rust::Box<::brave_rewards::WakeupContext> arg0, void *extern$) noexcept {
+  brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(arg0.into_raw(), extern$);
 }
 
 void brave_rewards$cxxbridge1$shim_purge() noexcept {
@@ -1136,6 +1153,14 @@ void brave_rewards$cxxbridge1$shim_get(::rust::Str key, ::rust::String *return$)
 
 ::std::size_t HttpRoundtripContext::layout::align() noexcept {
   return brave_rewards$cxxbridge1$HttpRoundtripContext$operator$alignof();
+}
+
+::std::size_t WakeupContext::layout::size() noexcept {
+  return brave_rewards$cxxbridge1$WakeupContext$operator$sizeof();
+}
+
+::std::size_t WakeupContext::layout::align() noexcept {
+  return brave_rewards$cxxbridge1$WakeupContext$operator$alignof();
 }
 
 ::std::size_t CppSDK::layout::size() noexcept {
@@ -1183,6 +1208,10 @@ void cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$drop(::std::u
 ::brave_rewards::HttpRoundtripContext *cxxbridge1$box$brave_rewards$HttpRoundtripContext$alloc() noexcept;
 void cxxbridge1$box$brave_rewards$HttpRoundtripContext$dealloc(::brave_rewards::HttpRoundtripContext *) noexcept;
 void cxxbridge1$box$brave_rewards$HttpRoundtripContext$drop(::rust::Box<::brave_rewards::HttpRoundtripContext> *ptr) noexcept;
+
+::brave_rewards::WakeupContext *cxxbridge1$box$brave_rewards$WakeupContext$alloc() noexcept;
+void cxxbridge1$box$brave_rewards$WakeupContext$dealloc(::brave_rewards::WakeupContext *) noexcept;
+void cxxbridge1$box$brave_rewards$WakeupContext$drop(::rust::Box<::brave_rewards::WakeupContext> *ptr) noexcept;
 } // extern "C"
 
 namespace rust {
@@ -1210,6 +1239,18 @@ void Box<::brave_rewards::HttpRoundtripContext>::allocation::dealloc(::brave_rew
 template <>
 void Box<::brave_rewards::HttpRoundtripContext>::drop() noexcept {
   cxxbridge1$box$brave_rewards$HttpRoundtripContext$drop(this);
+}
+template <>
+::brave_rewards::WakeupContext *Box<::brave_rewards::WakeupContext>::allocation::alloc() noexcept {
+  return cxxbridge1$box$brave_rewards$WakeupContext$alloc();
+}
+template <>
+void Box<::brave_rewards::WakeupContext>::allocation::dealloc(::brave_rewards::WakeupContext *ptr) noexcept {
+  cxxbridge1$box$brave_rewards$WakeupContext$dealloc(ptr);
+}
+template <>
+void Box<::brave_rewards::WakeupContext>::drop() noexcept {
+  cxxbridge1$box$brave_rewards$WakeupContext$drop(this);
 }
 } // namespace cxxbridge1
 } // namespace rust
