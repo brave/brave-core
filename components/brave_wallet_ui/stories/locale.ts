@@ -260,8 +260,7 @@ provideStrings({
 
   // Allow Spend ERC20 Panel
   braveWalletAllowSpendTitle: 'Allow this app to spend your',
-  braveWalletAllowSpendDescriptionFirstHalf: 'By granting this permission, you are allowing this app to withdraw your ',
-  braveWalletAllowSpendDescriptionSecondHalf: ' and automate transactions for you.',
+  braveWalletAllowSpendDescription: 'By granting this permission, you are allowing this app to withdraw your $1 and automate transactions for you.',
   braveWalletAllowSpendBoxTitle: 'Edit permissions',
   braveWalletAllowSpendTransactionFee: 'Transaction fee',
   braveWalletAllowSpendEditButton: 'Edit',
@@ -366,6 +365,13 @@ provideStrings({
   braveWalletEditGasGwei: 'Gwei',
   braveWalletEditGasSetCustom: 'Set custom',
   braveWalletEditGasSetSuggested: 'Set suggested',
+
+  // Edit permissions
+  braveWalletEditPermissionsTitle: 'Edit permissions',
+  braveWalletEditPermissionsDescription: 'Spend limit permission allows $1 to withdraw and spend up to the following amount:',
+  braveWalletEditPermissionsButton: 'Edit permissions',
+  braveWalletEditPermissionsProposedAllowance: 'Proposed allowance',
+  braveWalletEditPermissionsCustomAllowance: 'Custom allowance',
 
   // Send Input Errors
   braveWalletNotValidEthAddress: 'Not a valid ETH address',

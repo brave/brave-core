@@ -16,7 +16,8 @@ import {
   RemoveUserAssetPayloadType,
   SwapParamsPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
-  RemoveSitePermissionPayloadType
+  RemoveSitePermissionPayloadType,
+  UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -698,6 +699,30 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
       )
     }
   }
+})
+
+handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), async (store, payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
+  // const apiProxy = await getAPIProxy()
+  //
+  // TODO: implement setAllowanceForUnapprovedTransaction
+  // const result = await apiProxy.ethTxController.setAllowanceForUnapprovedTransaction(
+  //     payload.txMetaId,
+  //     payload.allowance
+  // )
+  //
+  // if (!result.success) {
+  //   console.error(
+  //     `Failed to update unapproved transaction: ` +
+  //     `id=${payload.txMetaId} ` +
+  //     `allowance=${payload.allowance}`
+  //   )
+  // }
+
+  alert(
+    `Updated ERC20Approve allowance: ` +
+    `id=${payload.txMetaId} ` +
+    `allowance=${payload.allowance}`
+  )
 })
 
 export const getERC20Allowance = (contractAddress: string, ownerAddress: string, spenderAddress: string): Promise<string> => {

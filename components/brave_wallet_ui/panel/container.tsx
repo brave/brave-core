@@ -57,7 +57,11 @@ import LockPanel from '../components/extension/lock-panel'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
 import { GetNetworkInfo } from '../utils/network-utils'
-import { getERC20Allowance, findENSAddress, findUnstoppableDomainAddress } from '../common/async/wallet_async_handler'
+import {
+  findENSAddress,
+  findUnstoppableDomainAddress,
+  getERC20Allowance
+} from '../common/async/wallet_async_handler'
 import { formatBalance } from '../utils/format-balances'
 import { useAssets, useBalance, useSwap, useSend } from '../common/hooks'
 
@@ -466,7 +470,9 @@ function Container (props: Props) {
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokenOptions}
             refreshGasEstimates={props.walletActions.refreshGasEstimates}
+            getERC20Allowance={getERC20Allowance}
             updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
+            updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}
             gasEstimates={gasEstimates}
           />
         </LongWrapper>

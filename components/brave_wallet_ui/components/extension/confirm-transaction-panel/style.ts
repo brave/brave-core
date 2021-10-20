@@ -167,6 +167,7 @@ export const SectionRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+  height: inherit;
 `
 
 export const SectionRightColumn = styled.div`
