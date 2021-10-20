@@ -8,58 +8,70 @@
  * 'change-ipfs-gateway-dialog' provides a dialog to configure the public
  * IPFS gateway address.
  */
+
 import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
+import {html, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {PrefsMixin} from '../prefs/prefs_mixin.js';
 import '../settings_shared_css.js';
-
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
-//import {PrefsBehavior} from '../prefs/prefs_behavior.js';
 import {BraveIPFSBrowserProxyImpl} from './brave_ipfs_browser_proxy.m.js';
 
-Polymer({
-  is: 'change-ipfs-gateway-dialog',
+const ChangeIpfsGatewayDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
-  _template: html`{__html_template__}`,
+class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
+  static get is() {
+    return 'change-ipfs-gateway-dialog'
+  }
 
-  behaviors: [
-    I18nBehavior,
-    //PrefsBehavior
-  ],
+  static get template() {
+    return html`{__html_template__}`
+  }
 
-  properties: {
-    /** Preferences state. */
-    prefs: {
-      type: Object,
-      notify: true,
-    },
+  static get properties() {
+    return {
+      /** Preferences state. */
+      prefs: {
+        type: Object,
+        notify: true,
+      },
 
-    isUrlValid_: Boolean,
-    isSumitButtonEnabled_: Boolean,
+      isUrlValid_: Boolean,
+      isSumitButtonEnabled_: Boolean,
 
-    /**
-     * IPFS public gateway address to be configured which is validated already.
-     * @private
-     */
-    gatewayUrl_: String,
+      /**
+       * IPFS public gateway address to be configured which is validated already.
+       * @private
+       */
+      gatewayUrl_: String,
 
-    invalidAddressMessage_: String
-  },
-  browserProxy_: null,
-  /** @override */
-  created: function() {
-    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance();
-    this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
-  },
+      invalidAddressMessage_: String
+    }
+  }
 
-  /** @override */
-  ready: function() {
+  browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance()
+  invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
+
+  ready() {
     this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
-  },
+  }
 
-  /** @private */
-  urlChanged_: function() {
+  handleSubmit_() {
+    this.browserProxy_.validateGatewayUrl(
+        this.gatewayUrl_.toString()).then(success => {
+      this.isUrlValid_ = success
+      if (success) {
+        this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
+        this.fire('close');
+      } else {
+        this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
+      }
+    });
+  }
+
+  /** @private **/
+  urlChanged_() {
     const url_ = this.$.url.value
     // Disable the submit button if input url is empty but don't show the URL
     // invalid error message.
@@ -84,18 +96,8 @@ Polymer({
     if (valid) {
       this.gatewayUrl_ = url.toString();
     }
-  },
+  }
+}
 
-  handleSubmit_: function() {
-    this.browserProxy_.validateGatewayUrl(
-        this.gatewayUrl_.toString()).then(success => {
-      this.isUrlValid_ = success
-      if (success) {
-        this.setPrefValue('brave.ipfs.public_gateway_address', this.gatewayUrl_);
-        this.fire('close');
-      } else {
-        this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
-      }
-    });
-  },
-});
+customElements.define(
+  ChangeIpfsGatewayDialog.is, ChangeIpfsGatewayDialog)
