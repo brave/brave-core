@@ -50,10 +50,14 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
     }
   }
 
-  browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance()
-  invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
+  constructor() {
+    super()
+    this.browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance()
+    this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
+  }
 
   ready() {
+    super.ready()
     this.$.url.value = this.getPref('brave.ipfs.public_gateway_address').value;
   }
 
@@ -67,7 +71,7 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
       } else {
         this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddressOrigin')
       }
-    });
+    })
   }
 
   /** @private **/
@@ -76,25 +80,25 @@ class ChangeIpfsGatewayDialog extends ChangeIpfsGatewayDialogBase {
     // Disable the submit button if input url is empty but don't show the URL
     // invalid error message.
     if (url_.trim() == '') {
-      this.isUrlValid_ = true;
-      this.isSubmitButtonEnabled_ = false;
-      return;
+      this.isUrlValid_ = true
+      this.isSubmitButtonEnabled_ = false
+      return
     }
     this.invalidAddressMessage_ = this.i18n('ipfsErrorInvalidAddress')
-    let url;
+    let url
     try {
-      url = new URL(url_.trim());
+      url = new URL(url_.trim())
     } catch (e) {
-      this.isUrlValid_ = false;
-      this.isSubmitButtonEnabled_ = false;
+      this.isUrlValid_ = false
+      this.isSubmitButtonEnabled_ = false
       return;
     }
 
-    let valid = url.protocol === "http:" || url.protocol === "https:";
-    this.isUrlValid_ = valid;
-    this.isSubmitButtonEnabled_ = valid;
+    let valid = url.protocol === "http:" || url.protocol === "https:"
+    this.isUrlValid_ = valid
+    this.isSubmitButtonEnabled_ = valid
     if (valid) {
-      this.gatewayUrl_ = url.toString();
+      this.gatewayUrl_ = url.toString()
     }
   }
 }

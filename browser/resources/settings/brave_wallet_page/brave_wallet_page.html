@@ -21,35 +21,35 @@
 </style>
 <div class="settings-box first">
   <div class="start">$i18n{defaultWalletDesc}</div>
-    <settings-dropdown-menu id="defaultWalletType"
-                            pref="{{prefs.brave.wallet.web3_provider}}"
-                            menu-options="[[wallets_]]">
-    </settings-dropdown-menu>
+  <settings-dropdown-menu id="defaultWalletType"
+                          pref="{{prefs.brave.wallet.web3_provider}}"
+                          menu-options="[[wallets_]]">
+  </settings-dropdown-menu>
+</div>
+<template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
+  <settings-toggle-button id="showBraveWalletIconOnToolbar"
+      class="cr-row"
+      pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
+      label="$i18n{showBravewalletIconOnToolbar}">
+  </settings-toggle-button>
+</template>
+<div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">
+  <div class="flex cr-padded-text">
+    <div>$i18n{autoLockMinutes}</div>
+    <div class="secondary">$i18n{autoLockMinutesDesc}</div>
   </div>
-  <template is="dom-if" if="[[isNativeWalletEnabled_]]" restamp>
-    <settings-toggle-button id="showBraveWalletIconOnToolbar"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.show_wallet_icon_on_toolbar}}"
-        label="$i18n{showBravewalletIconOnToolbar}">
-    </settings-toggle-button>
-  </template>
-  <div class="settings-box" hidden="[[!isNativeWalletEnabled_]]">
-    <div class="flex cr-padded-text">
-      <div>$i18n{autoLockMinutes}</div>
-      <div class="secondary">$i18n{autoLockMinutesDesc}</div>
-    </div>
-    <cr-input
-        id="walletAutoLockMinutes" type="number"
-        class="flex-container"
-        value="$i18n{autoLockMinutesValue}"
-        on-input="onInputAutoLockMinutes_"
-        min="1"
-        max="10080"
-    >
-    </cr-input>
+  <cr-input
+      id="walletAutoLockMinutes" type="number"
+      class="flex-container"
+      value="$i18n{autoLockMinutesValue}"
+      on-input="onInputAutoLockMinutes_"
+      min="1"
+      max="10080"
+  >
+  </cr-input>
+</div>
+<div class="settings-box " on-click="onResetWallet_">
+  <div class="flex cr-padded-text reset-wallet">
+    <div>$i18n{resetWallet}</div>
   </div>
-  <div class="settings-box " on-click="onResetWallet_">
-    <div class="flex cr-padded-text reset-wallet">
-      <div>$i18n{resetWallet}</div>
-    </div>
-  </div>
+</div>

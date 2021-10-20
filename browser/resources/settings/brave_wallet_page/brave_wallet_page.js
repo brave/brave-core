@@ -4,7 +4,7 @@
 
 
 
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
@@ -33,9 +33,13 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     }
   }
 
-  browserProxy_ = settings.BraveWalletBrowserProxyImpl.getInstance()
+  constructor() {
+    super()
+    this.browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
+  }
 
   ready() {
+    super.ready()
     this.browserProxy_.getWeb3ProviderList().then(list => {
       // TODO(petemill): provide wallets type
       this.wallets_ = JSON.parse(list)

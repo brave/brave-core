@@ -52,7 +52,7 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
   }
 
   /** @private {?settings.BraveIPFSBrowserProxy} */
-  browserProxy_ = raveIPFSBrowserProxyImpl.getInstance()
+  browserProxy_ = BraveIPFSBrowserProxyImpl.getInstance()
 
   ready() {
     super.ready()
@@ -78,41 +78,41 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
 
   /** @private **/
   setupOptionsVisibility() {
-    const resolve_method = this.getPref('brave.ipfs.resolve_method').value;
+    const resolve_method = this.getPref('brave.ipfs.resolve_method').value
     // Check if IPFS method is LOCAL_NODE
     this.isLocalNodeEnabled_ = (resolve_method == IPFS_RESOLVE_METHOD_TYPES.IPFS_LOCAL) &&
-                                this.ipfsEnabled_;
+                                this.ipfsEnabled_
     this.showIPFSLearnMoreLink_ =
-      (resolve_method == IPFS_RESOLVE_METHOD_TYPES.IPFS_ASK);
+      (resolve_method == IPFS_RESOLVE_METHOD_TYPES.IPFS_ASK)
     this.$.ipfsStorageMax.value =
-      this.getPref('brave.ipfs.storage_max').value;
+      this.getPref('brave.ipfs.storage_max').value
   }
 
   /** @private **/
   onLoad_() {
-    this.setupOptionsVisibility();
+    this.setupOptionsVisibility()
     if (this.isKeysEditorRoute() && !this.isLocalNodeEnabled_) {
-      const router = Router.getInstance();
-      router.navigateTo(router.getRoutes().BRAVE_IPFS);
+      const router = Router.getInstance()
+      router.navigateTo(router.getRoutes().BRAVE_IPFS)
     }
   }
 
   /** @private **/
   onIpfsPeersEditorClick_() {
-    const router = Router.getInstance();
-    router.navigateTo(router.getRoutes().BRAVE_IPFS_PEERS);
+    const router = Router.getInstance()
+    router.navigateTo(router.getRoutes().BRAVE_IPFS_PEERS)
   }
 
   /** @private **/
   onP2pKeysEditorClick_() {
-    const router = Router.getInstance();
-    router.navigateTo(router.getRoutes().BRAVE_IPFS_KEYS);
+    const router = Router.getInstance()
+    router.navigateTo(router.getRoutes().BRAVE_IPFS_KEYS)
   }
 
   /** @private **/
   onChangeIpfsMethod_() {
     let local_node_used = this.isLocalNodeEnabled_
-    this.setupOptionsVisibility();
+    this.setupOptionsVisibility()
     // Automatically start node if we changed method to local node
     if (!local_node_used && this.isLocalNodeEnabled_) {
       this.browserProxy_.launchIPFSService().then(success => {
@@ -125,34 +125,34 @@ class SettingsBraveIpfsPageElement extends SettingBraveIpfsPageElementBase {
 
   /** @private **/
   isKeysEditorRoute() {
-    const router = Router.getInstance();
-    return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_KEYS);
+    const router = Router.getInstance()
+    return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_KEYS)
   }
 
   /** @private **/
   isPeersEditorRoute() {
-    const router = Router.getInstance();
-    return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_PEERS);
+    const router = Router.getInstance()
+    return (router.getCurrentRoute() == router.getRoutes().BRAVE_IPFS_PEERS)
   }
 
   /** @private **/
   onChangeIpfsStorageMax_() {
-    this.browserProxy_.setIPFSStorageMax(Number(this.$.ipfsStorageMax.value));
+    this.browserProxy_.setIPFSStorageMax(Number(this.$.ipfsStorageMax.value))
   }
 
   /** @private **/
   onIPFSCompanionEnabledChange_() {
-    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
+    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked)
   }
 
   /** @private **/
   onChangeIPFSGatewayDialogTapped_() {
-    this.showChangeIPFSGatewayDialog_ = true;
+    this.showChangeIPFSGatewayDialog_ = true
   }
 
   /** @private **/
   onChangeIPFSGatewayDialogClosed_() {
-    this.showChangeIPFSGatewayDialog_ = false;
+    this.showChangeIPFSGatewayDialog_ = false
   }
 }
 
