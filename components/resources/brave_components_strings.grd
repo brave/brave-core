@@ -1006,6 +1006,9 @@
       <part file="speedreader_strings.grdp" />
       <part file="wallet_strings.grdp" />
       <part file="tor_strings.grdp" />
+      <if expr="enable_brave_vpn">
+        <part file="brave_vpn_strings.grdp" />
+      </if>
       <if expr="enable_ftx">
         <part file="ftx_strings.grdp" />
       </if>

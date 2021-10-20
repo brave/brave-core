@@ -2,7 +2,8 @@ import * as React from 'react'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
-import locale from '../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
+
 import { ConnectionState } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
@@ -43,11 +44,11 @@ function Toggle () {
         {status === ConnectionState.DISCONNECTED && <S.InActiveIndicator />}
         {status === ConnectionState.CONNECT_FAILED && <S.FailedIndicator />}
         <S.StatusText>
-          {status === ConnectionState.CONNECTED && locale.connectedLabel}
-          {status === ConnectionState.CONNECTING && `${locale.connectingLabel}…`}
-          {status === ConnectionState.DISCONNECTING && `${locale.disconnectingLabel}…`}
-          {status === ConnectionState.DISCONNECTED && locale.disconnectedLabel}
-          {status === ConnectionState.CONNECT_FAILED && locale.connectionFailedLabel}
+          {status === ConnectionState.CONNECTED && getLocale('braveVpnConnected')}
+          {status === ConnectionState.CONNECTING && getLocale('braveVpnConnecting')}
+          {status === ConnectionState.DISCONNECTING && getLocale('braveVpnDisconnecting')}
+          {status === ConnectionState.DISCONNECTED && getLocale('braveVpnDisconnected')}
+          {status === ConnectionState.CONNECT_FAILED && getLocale('braveVpnConnectionFailed')}
         </S.StatusText>
       </S.StatusBox>
     </>

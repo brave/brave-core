@@ -6,7 +6,9 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { initLocale } from 'brave-ui'
 
+import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
 import vpnDarkTheme from './theme/vpn-dark'
 import vpnLightTheme from './theme/vpn-light'
@@ -52,6 +54,7 @@ function App () {
 }
 
 function initialize () {
+  initLocale(loadTimeData.data_)
   render(<App />, document.getElementById('mountPoint'),
   () => {
     getPanelBrowserAPI().panelHandler.showUI()

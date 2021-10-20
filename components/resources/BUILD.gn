@@ -132,6 +132,7 @@ grit("strings") {
     "enable_tor=$enable_tor",
     "enable_sidebar=$enable_sidebar",
     "enable_ftx=$enable_ftx",
+    "enable_brave_vpn=$enable_brave_vpn",
   ]
 
   foreach(locale, locales_with_pseudolocales) {
