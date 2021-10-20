@@ -1694,11 +1694,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
         https://policies.google.com/terms/embedded
       </message>
+      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
+        Brave &amp; Chrome OS Additional Terms of Service
+      </message>
       <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
         https://www.google.com/chrome/terms/
       </message>
       <message name="IDS_PRIVACY_POLICY_TITLE" desc="Title for the Brave privacy policy">
         Brave Privacy Policy
+      </message>
+      <message name="IDS_GOOGLE_PRIVACY_POLICY_URL" desc="URL for the Brave privacy policy" translateable="false">
+        https://policies.google.com/privacy
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
@@ -5132,6 +5138,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_AUTO_DARK_DIALOG_POSITIVE_BUTTON" desc="The label for the button to give feedback.">
         Share feedback
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_NO_FEEDBACK_TITLE" desc="Title of dialog that asks if users want to disable auto dark theming.">
+        Change your dark theme settings?
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_NO_FEEDBACK_MESSAGE" desc="Description of dialog that informs the user that auto dark theming can be disabled in theme settings.">
+        You can turn off dark theme for sites in your settings.
+      </message>
+      <message name="IDS_AUTO_DARK_DIALOG_NO_FEEDBACK_POSITIVE_BUTTON" desc="The label for the button to enter theme settings.">
+        Open settings
       </message>
 
       <!-- Profile Management strings -->
