@@ -74,9 +74,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/powered_by"
-                        android:drawableEnd="@drawable/ic_guardian"
+                        app:drawableEndCompat="@drawable/ic_guardian"
                         android:drawablePadding="4dp"
-                        android:drawableTint="@android:color/white"
+                        app:drawableTint="@android:color/white"
                         android:textSize="14sp"
                         android:textColor="@android:color/white"/>
 
