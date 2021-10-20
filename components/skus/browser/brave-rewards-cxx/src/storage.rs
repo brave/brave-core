@@ -1,11 +1,10 @@
-use crate::{ffi, NativeClient, LOCAL_POOL};
+use crate::{ffi, NativeClient};
 use brave_rewards::{errors, KVClient, KVStore};
 use tracing::debug;
 
 impl KVClient<NativeClient> for NativeClient {
-    fn get_store() -> Result<Self, errors::InternalError> {
-        // FIXME
-        return Ok(NativeClient());
+    fn get_store(&self) -> Result<Self, errors::InternalError> {
+        Ok(self.to_owned())
     }
 }
 

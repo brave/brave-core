@@ -4,60 +4,70 @@ use futures::channel::oneshot;
 
 use tracing::debug;
 
-use crate::{ffi, NativeClient, LOCAL_POOL};
+use crate::{ffi, NativeClient};
 
-pub struct HttpRoundtripContext(
-    oneshot::Sender<Result<http::Response<Vec<u8>>, errors::InternalError>>,
-);
+pub struct HttpRoundtripContext {
+    tx: oneshot::Sender<Result<http::Response<Vec<u8>>, errors::InternalError>>,
+    client: NativeClient,
+}
 
-pub async fn execute_request(
-    req: ffi::HttpRequest,
-) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
-    let (tx, rx) = oneshot::channel();
-    let context = Box::new(HttpRoundtripContext(tx));
+pub struct WakeupContext {
+    client: NativeClient,
+}
 
-    ffi::shim_executeRequest(
-        &req,
-        |context, resp| {
-            let resp = match resp.result {
-                ffi::RewardsResult::Ok => {
-                    // FIXME implement from
+impl NativeClient {
+    pub async fn execute_request(
+        &self,
+        req: ffi::HttpRequest,
+    ) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
+        let (tx, rx) = oneshot::channel();
+        let context = Box::new(HttpRoundtripContext {
+            tx,
+            client: self.clone(),
+        });
 
-                    let mut response = http::Response::builder();
+        ffi::shim_executeRequest(
+            &req,
+            |context, resp| {
+                let resp = match resp.result {
+                    ffi::RewardsResult::Ok => {
+                        // FIXME implement from
 
-                    response.status(resp.return_code);
-                    for header in resp.headers {
-                        let header = header.to_string();
-                        // header: value
-                        let idx = header.find(':').unwrap();
-                        let (key, value) = header.split_at(idx);
-                        let value = value.get(1..).unwrap();
+                        let mut response = http::Response::builder();
 
-                        response.header(key, value);
+                        response.status(resp.return_code);
+                        for header in resp.headers {
+                            let header = header.to_string();
+                            // header: value
+                            let idx = header.find(':').unwrap();
+                            let (key, value) = header.split_at(idx);
+                            let value = value.get(1..).unwrap();
+
+                            response.header(key, value);
+                        }
+
+                        Ok(response.body(resp.body.iter().cloned().collect()).unwrap())
                     }
+                    _ => Err(errors::InternalError::RequestFailed),
+                };
 
-                    Ok(response.body(resp.body.iter().cloned().collect()).unwrap())
-                }
-                _ => Err(errors::InternalError::RequestFailed),
-            };
+                let _ = context.tx.send(resp);
 
-            let _ = context.0.send(resp);
-
-            LOCAL_POOL.with(|pool| {
-                if let Ok(mut pool) = pool.try_borrow_mut() {
+                if let Ok(mut pool) = context.client.pool.try_borrow_mut() {
                     pool.run_until_stalled();
                 }
-            });
-        },
-        context,
-    );
+            },
+            context,
+        );
 
-    rx.await.unwrap()
+        rx.await.unwrap()
+    }
 }
 
 #[async_trait(?Send)]
 impl HTTPClient for NativeClient {
     async fn execute(
+        &self,
         req: http::Request<Vec<u8>>,
     ) -> Result<http::Response<Vec<u8>>, errors::InternalError> {
         // FIXME implement from
@@ -72,7 +82,7 @@ impl HTTPClient for NativeClient {
         }
 
         let body = req.body().to_vec();
-        execute_request(ffi::HttpRequest {
+        self.execute_request(ffi::HttpRequest {
             url,
             method,
             headers,
@@ -81,22 +91,26 @@ impl HTTPClient for NativeClient {
         .await
     }
 
-    fn schedule_wakeup(delay_ms: u64) {
-        ffi::shim_scheduleWakeup(delay_ms, || {
-            debug!("woke up!");
-            LOCAL_POOL.with(|pool| {
-                if let Ok(mut pool) = pool.try_borrow_mut() {
+    fn schedule_wakeup(&self, delay_ms: u64) {
+        ffi::shim_scheduleWakeup(
+            delay_ms,
+            |context| {
+                debug!("woke up!");
+                if let Ok(mut pool) = context.client.pool.try_borrow_mut() {
                     pool.run_until_stalled();
                 }
-            });
-        })
+            },
+            Box::new(WakeupContext {
+                client: self.clone(),
+            }),
+        )
     }
 
-    fn get_cookie(_key: &str) -> Option<String> {
+    fn get_cookie(&self, _key: &str) -> Option<String> {
         unimplemented!();
     }
 
-    fn set_cookie(_value: &str) {
+    fn set_cookie(&self, _value: &str) {
         unimplemented!();
     }
 }
