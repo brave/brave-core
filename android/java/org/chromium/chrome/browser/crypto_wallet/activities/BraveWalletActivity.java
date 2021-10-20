@@ -272,8 +272,7 @@ public class BraveWalletActivity
 
     @Override
     protected ActivityWindowAndroid createWindowAndroid() {
-        return new ActivityWindowAndroid(this, true,
-                getIntentRequestTracker()) {
+        return new ActivityWindowAndroid(this, true, getIntentRequestTracker()) {
             @Override
             public ModalDialogManager getModalDialogManager() {
                 return mModalDialogManager;

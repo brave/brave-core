@@ -65,10 +65,13 @@ public class RecoveryPhraseFragment extends CryptoOnboardingFragment {
                 TextView copyButton = view.findViewById(R.id.btn_copy);
                 assert getActivity() != null;
                 copyButton.setOnClickListener(v -> {
-                    RecoveryPhraseSaveCopyBottomSheetDialogFragment recoveryPhraseSaveCopyBottomSheetDialogFragment =
-                            RecoveryPhraseSaveCopyBottomSheetDialogFragment.newInstance(Utils.getRecoveryPhraseFromList(recoveryPhrases));
+                    RecoveryPhraseSaveCopyBottomSheetDialogFragment
+                            recoveryPhraseSaveCopyBottomSheetDialogFragment =
+                                    RecoveryPhraseSaveCopyBottomSheetDialogFragment.newInstance(
+                                            Utils.getRecoveryPhraseFromList(recoveryPhrases));
                     recoveryPhraseSaveCopyBottomSheetDialogFragment.show(
-                            ((FragmentActivity) getActivity()).getSupportFragmentManager(), RecoveryPhraseSaveCopyBottomSheetDialogFragment.TAG_FRAGMENT);
+                            ((FragmentActivity) getActivity()).getSupportFragmentManager(),
+                            RecoveryPhraseSaveCopyBottomSheetDialogFragment.TAG_FRAGMENT);
                 });
                 setupRecoveryPhraseRecyclerView(view);
             });

@@ -5,8 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,16 +33,19 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.ui.base.WindowAndroid;
 
-public class RecoveryPhraseSaveCopyBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements View.OnClickListener, WindowAndroid.IntentCallback {
-    public static final String TAG_FRAGMENT = RecoveryPhraseSaveCopyBottomSheetDialogFragment.class.getName();
+public class RecoveryPhraseSaveCopyBottomSheetDialogFragment extends BottomSheetDialogFragment
+        implements View.OnClickListener, WindowAndroid.IntentCallback {
+    public static final String TAG_FRAGMENT =
+            RecoveryPhraseSaveCopyBottomSheetDialogFragment.class.getName();
     LinearLayout mCopyLayout;
     LinearLayout mSaveLayout;
     private String mRecoveryPhrasesText;
 
-    public static RecoveryPhraseSaveCopyBottomSheetDialogFragment newInstance(String recoveryPhrasesText) {
-        RecoveryPhraseSaveCopyBottomSheetDialogFragment recoveryPhraseSaveCopyBottomSheetDialogFragment =
-                new RecoveryPhraseSaveCopyBottomSheetDialogFragment();
+    public static RecoveryPhraseSaveCopyBottomSheetDialogFragment newInstance(
+            String recoveryPhrasesText) {
+        RecoveryPhraseSaveCopyBottomSheetDialogFragment
+                recoveryPhraseSaveCopyBottomSheetDialogFragment =
+                        new RecoveryPhraseSaveCopyBottomSheetDialogFragment();
         Bundle args = new Bundle();
         args.putCharSequence("recoveryPhrasesText", recoveryPhrasesText);
         recoveryPhraseSaveCopyBottomSheetDialogFragment.setArguments(args);

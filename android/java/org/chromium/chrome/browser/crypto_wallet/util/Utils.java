@@ -14,9 +14,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.inputmethod.InputMethodManager;
 
@@ -26,8 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.chromium.base.Log;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
@@ -39,10 +39,10 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
 
-import java.lang.NumberFormatException;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -113,14 +113,14 @@ public class Utils {
         }
     }
 
-    public static void LaunchBackupFilePicker(AsyncInitializationActivity activity,
-            WindowAndroid.IntentCallback callback) {
+    public static void LaunchBackupFilePicker(
+            AsyncInitializationActivity activity, WindowAndroid.IntentCallback callback) {
         // Check if READ_EXTERNAL_STORAGE permission is granted.
         String storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
         WindowAndroid window = activity.getWindowAndroid();
         assert window != null;
         if (!window.hasPermission(storagePermission)) {
-            String[] requestPermissions = new String[]{storagePermission};
+            String[] requestPermissions = new String[] {storagePermission};
             window.requestPermissions(requestPermissions, (permissions, grantResults) -> {
                 assert permissions.length == 1 && grantResults.length == 1;
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
@@ -164,11 +164,15 @@ public class Utils {
     }
 
     public static void onFileSaved() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_has_been_saved, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_has_been_saved,
+                     Toast.LENGTH_SHORT)
+                .show();
     }
 
     public static void onFileNotSelected() {
-        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_file_not_saved, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ContextUtils.getApplicationContext(), R.string.text_file_not_saved,
+                     Toast.LENGTH_SHORT)
+                .show();
     }
 
     public static boolean shouldShowCryptoOnboarding() {
