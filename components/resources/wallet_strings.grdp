@@ -163,7 +163,7 @@
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_NAME" desc="Visible assets modal token name label">Token name</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ADDRESS" desc="Visible assets modal contract address label">Token contract address</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_SYMBOL" desc="Visible assets modal token symbol label">Token symbol</message>
-  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of percision</message>
+  <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_DECIMALS" desc="Visible assets modal decimals label">Decimals of precision</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_ADD" desc="Visible assets modal add button">Add</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_DONE_BUTTON" desc="Visible assets modal done button">Done</message>
   <message name="IDS_BRAVE_WALLET_WATCH_LIST_SUGGESTION" desc="Visible assets modal suggestion button">Add <ph name="CONTRACT_ADDRESS"><ex>0x55296f69f40ea6d20e478533c15a6b08b654e758</ex>$1</ph> as a custom token</message>
@@ -251,7 +251,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_TITLE" desc="Connect with site panel select accounts label">Select accounts(s)</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_DESCRIPTION" desc="Connect with site panel description">View the addressess of your permitted accounts (required)</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_DESCRIPTION" desc="Connect with site panel description">View the addresses of your permitted accounts (required)</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_NEXT" desc="Connect with site panel next button">Next</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_HEADER_TITLE" desc="Connect with site panel header title">Connect with Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_EXTERNAL_NEW_PASSWORD" desc="Import external wallet screen new password title">A more secure password is required for Brave Wallet</message>
