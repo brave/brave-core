@@ -10,7 +10,7 @@
 #undef TranslateBubbleModelImpl
 
 #include "base/containers/contains.h"
-#include "brave/components/translate/core/browser/brave_translate_language_filter.h"
+#include "brave/components/translate/core/common/brave_translate_language_filter.h"
 
 namespace {
 const int kNoIndex = static_cast<int>(translate::TranslateUIDelegate::kNoIndex);

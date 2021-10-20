@@ -19,7 +19,6 @@
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
@@ -41,10 +40,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/net/brave_torrent_redirect_network_delegate_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
@@ -92,12 +87,6 @@ void BraveRequestHandler::SetupCallbacks() {
 
   callback = base::BindRepeating(brave_rewards::OnBeforeURLRequest);
   before_url_request_callbacks_.push_back(callback);
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  callback =
-      base::BindRepeating(brave::OnBeforeURLRequest_TranslateRedirectWork);
-  before_url_request_callbacks_.push_back(callback);
-#endif
 
 #if BUILDFLAG(ENABLE_IPFS)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {

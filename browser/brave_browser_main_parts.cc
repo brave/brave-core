@@ -15,9 +15,13 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_constants.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
+#include "components/translate/core/browser/translate_language_list.h"
+#include "components/translate/core/common/translate_switches.h"
 #include "content/public/browser/render_frame_host.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"
@@ -152,8 +156,8 @@ void BraveBrowserMainParts::PreShutdown() {
 
 void BraveBrowserMainParts::PreProfileInit() {
   ChromeBrowserMainParts::PreProfileInit();
-#if !defined(OS_ANDROID)
   auto* command_line = base::CommandLine::ForCurrentProcess();
+#if !defined(OS_ANDROID)
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
     if (!command_line->HasSwitch(switches::kDisableSync))
@@ -164,6 +168,23 @@ void BraveBrowserMainParts::PreProfileInit() {
     command_line->RemoveSwitch(switches::kDisableSync);
   }
 #endif
+
+  // Redirect the translate script request to the Brave
+  // endpoints.
+  if (!command_line->HasSwitch(translate::switches::kTranslateScriptURL)) {
+    command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
+                                    translate::kBraveTranslateScriptURL);
+  }
+
+  // Redirect the rest native translate requests.
+  if (!command_line->HasSwitch(translate::switches::kTranslateSecurityOrigin)) {
+    command_line->AppendSwitchASCII(
+        translate::switches::kTranslateSecurityOrigin,
+        translate::kBraveTranslateOrigin);
+  }
+
+  if (!translate::ShouldUpdateLanguagesList())
+    translate::TranslateLanguageList::DisableUpdate();
 }
 
 void BraveBrowserMainParts::PostProfileInit() {

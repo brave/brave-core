@@ -190,3 +190,7 @@ void BraveTranslateBubbleView::Init() {
   removed_translate_view_ = RemoveChildViewT(translate_view_);
   translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
 }
+
+int BraveTranslateBubbleView::GetTitleBeforeTranslateTitle() {
+  return IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE;
+}

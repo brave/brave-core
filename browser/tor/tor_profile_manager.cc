@@ -8,11 +8,11 @@
 #include <algorithm>
 
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -21,7 +21,8 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
@@ -126,7 +127,8 @@ void TorProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   pref_service->SetBoolean(translate::prefs::kOfferTranslateEnabled, false);
 #endif
 }

@@ -8,12 +8,12 @@
 #include <utility>
 
 #include "brave/browser/sparkle_buildflags.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -48,9 +48,9 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#include "extensions/browser/extension_registry.h"
-#include "extensions/common/constants.h"
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#include "brave/browser/translate/brave_translate_utils.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -270,24 +270,16 @@ ShowTranslateBubbleResult BraveBrowserView::ShowTranslateBubble(
     const std::string& target_language,
     translate::TranslateErrors::Type error_type,
     bool is_user_gesture) {
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  return BrowserView::ShowTranslateBubble(web_contents,
-                                          step,
-                                          source_language,
-                                          target_language,
-                                          error_type,
-                                          is_user_gesture);
-#elif BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-  if (!extensions::ExtensionRegistry::Get(GetProfile())
-      ->GetInstalledExtension(google_translate_extension_id)) {
-    return BrowserView::ShowTranslateBubble(web_contents,
-                                            step,
-                                            source_language,
-                                            target_language,
-                                            error_type,
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+  if (translate::ShouldOfferExtensionInstallation(GetProfile()) ||
+      translate::IsInternalTranslationEnabled(GetProfile())) {
+    return BrowserView::ShowTranslateBubble(web_contents, step, source_language,
+                                            target_language, error_type,
                                             is_user_gesture);
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) ||
+        // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   return ShowTranslateBubbleResult::BROWSER_WINDOW_NOT_VALID;
 }
 

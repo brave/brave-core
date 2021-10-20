@@ -11,9 +11,6 @@
 
 #include "chrome/browser/ui/views/translate/translate_bubble_view.h"
 
-#include "brave/browser/translate/buildflags/buildflags.h"
-#include "extensions/buildflags/buildflags.h"
-
 class BraveTranslateIconView;
 
 // The purpose of this subclass is to repurpose the translate bubble to install
@@ -44,6 +41,8 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   std::unique_ptr<views::View> BraveCreateViewBeforeTranslate();
   void DisableOfferTranslatePref();
   void ButtonPressed(ButtonID button_id);
+
+  int GetTitleBeforeTranslateTitle() override;
 
   // Remove this. As we replace |translate_view_|, we should destroy after
   // replacing it. However, its child view(|tabbed_pane_|) is still referenced

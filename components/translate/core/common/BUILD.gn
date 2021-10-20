@@ -1,0 +1,25 @@
+import("//brave/components/translate/core/common/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_TRANSLATE_GO=$enable_brave_translate_go",
+    "ENABLE_BRAVE_TRANSLATE_EXTENSION=$enable_brave_translate_extension",
+  ]
+}
+
+source_set("common") {
+  sources = [
+    "brave_translate_constants.cc",
+    "brave_translate_constants.h",
+    "brave_translate_features.cc",
+    "brave_translate_features.h",
+    "brave_translate_language_filter.cc",
+    "brave_translate_language_filter.h",
+    "brave_translate_switches.cc",
+    "brave_translate_switches.h",
+  ]
+  deps = [ "//base" ]
+  public_deps = [ ":buildflags" ]
+}

@@ -11,9 +11,7 @@
 #include <vector>
 
 #include "base/strings/string_piece_forward.h"
-#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
-#include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/net_errors.h"
 
@@ -88,12 +86,6 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
       kWidevineGoogleDlPrefix);
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
-      kTranslateElementJSPattern);
-  static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
-      kTranslateLanguagePattern);
-#endif
   if (geo_pattern.MatchesURL(request_url)) {
     *new_url = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY);
     return net::OK;
@@ -179,23 +171,7 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     return net::OK;
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-  if (translate_pattern.MatchesURL(request_url)) {
-    replacements.SetQueryStr(request_url.query_piece());
-    replacements.SetPathStr(request_url.path_piece());
-    *new_url =
-      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements);
-    return net::OK;
-  }
-
-  if (translate_language_pattern.MatchesURL(request_url)) {
-    *new_url = GURL(kBraveTranslateLanguageEndpoint);
-    return net::OK;
-  }
-#endif
-
   return net::OK;
 }
-
 
 }  // namespace brave

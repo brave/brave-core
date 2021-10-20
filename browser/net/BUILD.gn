@@ -1,4 +1,3 @@
-import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -49,7 +48,6 @@ source_set("net") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
-    "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_referrals/buildflags",
@@ -108,13 +106,6 @@ source_set("net") {
     deps += [
       "//brave/components/brave_webtorrent/browser/",
       "//extensions/browser",
-    ]
-  }
-
-  if (enable_brave_translate_go) {
-    sources += [
-      "brave_translate_redirect_network_delegate_helper.cc",
-      "brave_translate_redirect_network_delegate_helper.h",
     ]
   }
 

@@ -1,6 +1,5 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
-import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
@@ -17,6 +16,7 @@ import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/translate/core/common/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -132,7 +132,6 @@ test("brave_unit_tests") {
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth_unittest.cc",
     "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_region_unittest.cc",
     "//brave/components/p3a/brave_p2a_protocols_unittest.cc",
-    "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/components/weekly_storage/daily_storage_unittest.cc",
     "//brave/components/weekly_storage/weekly_event_storage_unittest.cc",
     "//brave/components/weekly_storage/weekly_storage_unittest.cc",
@@ -169,7 +168,6 @@ test("brave_unit_tests") {
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
     "//brave/browser/tor:unit_tests",
-    "//brave/browser/translate/buildflags",
     "//brave/browser/ui",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/sidebar:unit_tests",
@@ -217,6 +215,7 @@ test("brave_unit_tests") {
     "//brave/components/sync/engine:unit_tests",
     "//brave/components/tor:tor_unit_tests",
     "//brave/components/tor/buildflags",
+    "//brave/components/translate/core/common:buildflags",
     "//brave/components/weekly_storage",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net/proxy_resolution:unit_tests",
@@ -471,10 +470,6 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (enable_brave_translate_go) {
-    sources += [ "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc" ]
-  }
-
   if (enable_brave_translate_extension) {
     sources += [ "//brave/browser/ui/views/translate/brave_translate_bubble_view_unittest.cc" ]
 
@@ -631,6 +626,7 @@ if (!is_android) {
       "//brave/browser/search_engines/search_engine_tracker_browsertest.cc",
       "//brave/browser/themes/brave_dark_mode_prefs_migration_browsertest.cc",
       "//brave/browser/themes/brave_theme_service_browsertest.cc",
+      "//brave/browser/translate/brave_translate_browsertest.cc",
       "//brave/browser/ui/bookmark/bookmark_tab_helper_browsertest.cc",
       "//brave/browser/ui/brave_browser_command_controller_browsertest.cc",
       "//brave/browser/ui/content_settings/brave_autoplay_blocked_image_model_browsertest.cc",

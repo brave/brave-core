@@ -4,23 +4,55 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
+
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
+#include "ui/views/controls/image_view.h"
 
+int ChromiumTranslateBubbleView::GetTitleBeforeTranslateTitle() {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
-#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
-  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#elif BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
-#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
-  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
-#define BRAVE_TRANSLATE_BUBBLE_VIEW_ BraveTranslateBubbleView
+  return IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE;
 #else
-#define BRAVE_TRANSLATE_BUBBLE_VIEW_ TranslateBubbleView
+  return IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE;
 #endif
+}
+
+// static
+template <typename... Args>
+ChromiumTranslateBubbleView*
+ChromiumTranslateBubbleView::MakeTranslateBubbleView(Args&&... args) {
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  if (translate::IsTranslateExtensionAvailable()) {
+    return new BraveTranslateBubbleView(std::forward<Args>(args)...);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+  return new TranslateBubbleView(std::forward<Args>(args)...);
+}
+
+std::unique_ptr<views::ImageView> TranslateBubbleView::CreateTranslateIcon() {
+  return std::make_unique<views::ImageView>();
+}
+
+#define ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO) || \
+    BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
+#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  GetTitleBeforeTranslateTitle()
+#define MAKE_TRANSLATE_BUBBLE_VIEW_ MakeTranslateBubbleView
+#endif
+#define MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW MakeTranslateBubbleView
+#define TranslateBubbleView ChromiumTranslateBubbleView
 
 #include "../../../../../../../chrome/browser/ui/views/translate/translate_bubble_view.cc"
+
+#undef TranslateBubbleView
+#undef MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW
+#undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
+  ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
+#undef ORIGINAL_IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE

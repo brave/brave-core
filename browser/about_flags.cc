@@ -22,6 +22,8 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "brave/components/translate/core/common/buildflags.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
@@ -217,6 +219,13 @@ constexpr char kUseDevUpdaterUrlDescription[] =
     "Use the dev url for the component updater. "
     "This is for internal testing only.";
 
+constexpr char kBraveTranslateGoName[] =
+    "Enable internal translate engine (brave-translate-go)";
+constexpr char kBraveTranslateGoDescription[] =
+    "Enable internal translate engine, which are build on top of client engine "
+    "and brave translation backed. Also disables suggestions to install google "
+    "translate extension.";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -299,6 +308,17 @@ constexpr char kUseDevUpdaterUrlDescription[] =
 #else
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
+#define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES                           \
+    {"brave-translate-go",                                           \
+     flag_descriptions::kBraveTranslateGoName,                       \
+     flag_descriptions::kBraveTranslateGoDescription,                \
+     kOsDesktop,                                                     \
+     FEATURE_VALUE_TYPE(translate::features::kUseBraveTranslateGo)},
+#else
+#define BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
+#endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                   \
     {"use-dev-updater-url",                                                 \
@@ -391,4 +411,5 @@ constexpr char kUseDevUpdaterUrlDescription[] =
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     SIDEBAR_FEATURE_ENTRIES                                                 \
-    SPEEDREADER_FEATURE_ENTRIES
+    SPEEDREADER_FEATURE_ENTRIES                                             \
+    BRAVE_TRANSLATE_GO_FEATURE_ENTRIES
