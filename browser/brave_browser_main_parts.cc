@@ -169,16 +169,20 @@ void BraveBrowserMainParts::PreProfileInit() {
   }
 #endif
 
-  // If enable then redirect the most of translate requests to the Brave
-  // endpoints. The rest will be redirected in
-  // OnBeforeURLRequest_TranslateRedirectWork().
-  if (translate::UseBraveTranslateRelay()) {
-    command_line->AppendSwitchASCII(
-        translate::switches::kTranslateSecurityOrigin,
-        translate::kBraveTranslateOrigin);
+  // Redirect the translate script request to the Brave
+  // endpoints.
+  if (!command_line->HasSwitch(translate::switches::kTranslateScriptURL)) {
     command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
                                     translate::kBraveTranslateScriptURL);
   }
+
+  // Redirect the rest native translate requests.
+  if (!command_line->HasSwitch(translate::switches::kTranslateSecurityOrigin)) {
+    command_line->AppendSwitchASCII(
+        translate::switches::kTranslateSecurityOrigin,
+        translate::kBraveTranslateOrigin);
+  }
+
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
 }

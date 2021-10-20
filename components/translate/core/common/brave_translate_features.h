@@ -30,13 +30,13 @@ extern const base::FeatureParam<bool>
 bool IsBraveTranslateGoAvailable();
 bool IsTranslateExtensionAvailable();
 
-// True if the translate urls in native code are redirected to
-// translate-relay.brave.com. True by default, use false only for local testing.
-bool UseBraveTranslateRelay();
-
 // True if the supported language list can be updated from the backend. False by
 // default.
 bool ShouldUpdateLanguagesList();
+
+// True if the actual translate requests in the scripts are redirected to the
+// google translate endpoint. False by default, use it only for local testing.
+bool UseGoogleTranslateEndpoint();
 
 }  // namespace translate
 

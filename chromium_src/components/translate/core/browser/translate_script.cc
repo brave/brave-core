@@ -7,6 +7,7 @@
 
 #include "base/callback.h"
 #include "base/strings/strcat.h"
+#include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
@@ -17,9 +18,15 @@
 namespace {
 
 const char* kRedirectAllRequestsToSecurityOrigin = R"(
+  const useGoogleTranslateEndpoint = %s;
   const securityOriginHost = new URL(securityOrigin).host;
   const redirectToSecurityOrigin = (url) => {
     new_url = new URL(url);
+    if (useGoogleTranslateEndpoint && new_url.pathname === '/translate') {
+      new_url.host = 'translate.googleapis.com';
+      new_url.pathname = '/translate_a/t';
+      return new_url.toString();
+    }
     new_url.host = securityOriginHost;
     return new_url.toString();
   };
@@ -55,8 +62,11 @@ void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
 
 void TranslateScript::OnScriptFetchComplete(bool success,
                                             const std::string& data) {
-  const std::string new_data =
-      base::StrCat({kRedirectAllRequestsToSecurityOrigin, data});
+  const std::string new_data = base::StrCat(
+      {base::StringPrintf(
+           kRedirectAllRequestsToSecurityOrigin,
+           translate::UseGoogleTranslateEndpoint() ? "true" : "false"),
+       data});
   ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);
 }
 

@@ -1,4 +1,5 @@
 include_rules = [
   "+../../../../../../components/translate/content/renderer",
+  "+brave/components/translate/core/common",
   "+third_party/blink/public/platform"
 ]

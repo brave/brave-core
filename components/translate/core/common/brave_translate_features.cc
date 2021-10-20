@@ -36,13 +36,13 @@ bool IsTranslateExtensionAvailable() {
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 }
 
-bool UseBraveTranslateRelay() {
-  return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
-}
-
 bool ShouldUpdateLanguagesList() {
   return IsBraveTranslateGoAvailable() &&
          features::kUpdateLanguageListParam.Get();
+}
+
+bool UseGoogleTranslateEndpoint() {
+  return IsBraveTranslateGoAvailable() && features::kUseBraveReplayParam.Get();
 }
 
 }  // namespace translate

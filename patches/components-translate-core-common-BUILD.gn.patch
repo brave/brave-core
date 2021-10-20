@@ -1,0 +1,13 @@
+diff --git a/components/translate/core/common/BUILD.gn b/components/translate/core/common/BUILD.gn
+index 01627c321e5f91ee244582e2e2adfd3b72f02089..6c5b08baec33f76c402e90fa657664cfafb4b3d1 100644
+--- a/components/translate/core/common/BUILD.gn
++++ b/components/translate/core/common/BUILD.gn
+@@ -20,6 +20,8 @@ static_library("common") {
+     "translate_util.h",
+   ]
+ 
++  public_deps = ["//brave/components/translate/core/common"]
++
+   deps = [
+     "//base",
+     "//components/language/core/common",
