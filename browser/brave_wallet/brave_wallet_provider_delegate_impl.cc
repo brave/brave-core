@@ -171,15 +171,17 @@ void BraveWalletProviderDelegateImpl::ContinueGetAllowedAccounts(
          const absl::optional<std::string>& selected_account,
          brave_wallet::mojom::KeyringInfoPtr keyring_info) {
         std::vector<std::string> addresses;
-        for (const auto& account_info : keyring_info->account_infos) {
-          // If one of the selected accounts is an allowed account, then make
-          // the selected account the first item that is returned.
-          if (selected_account &&
-              base::CompareCaseInsensitiveASCII(account_info->address,
-                                                *selected_account) == 0) {
-            addresses.insert(addresses.begin(), account_info->address);
-          } else {
-            addresses.push_back(account_info->address);
+        if (!keyring_info->is_locked) {
+          for (const auto& account_info : keyring_info->account_infos) {
+            // If one of the selected accounts is an allowed account, then make
+            // the selected account the first item that is returned.
+            if (selected_account &&
+                base::CompareCaseInsensitiveASCII(account_info->address,
+                                                  *selected_account) == 0) {
+              addresses.insert(addresses.begin(), account_info->address);
+            } else {
+              addresses.push_back(account_info->address);
+            }
           }
         }
         permissions::BraveEthereumPermissionContext::GetAllowedAccounts(

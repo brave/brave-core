@@ -219,6 +219,21 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void Unlock() {
+    base::RunLoop run_loop;
+    keyring_controller_->Unlock(
+        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
+          EXPECT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void Lock() {
+    keyring_controller_->Lock();
+    browser_task_environment_.RunUntilIdle();
+  }
+
   void SetSelectedAccount(const std::string& address) {
     base::RunLoop run_loop;
     keyring_controller_->SetSelectedAccount(
@@ -903,6 +918,18 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   Navigate(url);
   EXPECT_FALSE(observer_->AccountsChangedFired());
   AddEthereumPermission(url);
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
+  observer_->Reset();
+
+  // Locking the account fires an event change with no accounts
+  Lock();
+  EXPECT_TRUE(observer_->AccountsChangedFired());
+  EXPECT_EQ(std::vector<std::string>(), observer_->GetAccounts());
+  observer_->Reset();
+
+  // Unlocking also fires an event wit the same account list as before
+  Unlock();
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ(std::vector<std::string>{from()}, observer_->GetAccounts());
   observer_->Reset();
