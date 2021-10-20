@@ -2,70 +2,71 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-//import {PrefsBehavior} from '../prefs/prefs_behavior.js';
+
+
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
- 
-(function() {
-'use strict';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import {WebUIListenerMixin} from 'chrome://resources/js/web_ui_listener_mixin.js';
+import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
+import {PrefsMixin} from '../prefs/prefs_mixin.js';
+import {BraveWalletBrowserProxy,  BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
+
+const SettingsBraveWalletPageBase = WebUIListenerMixin(PrefsMixin(I18nMixin(PolymerElement)))
 
 /**
  * 'settings-brave-default-extensions-page' is the settings page containing
  * brave's default extensions.
  */
-Polymer({
-  is: 'settings-brave-wallet-page',
+class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
+  static get is() {
+    return 'settings-brave-wallet-page'
+  }
 
-  behaviors: [
-    WebUIListenerBehavior,
-    //PrefsBehavior,
-    I18nBehavior
-  ],
+  static get template() {
+    return html`{__html_template__}`
+  }
 
-  properties: {
-    isNativeWalletEnabled_: Boolean
-  },
+  static get properties() {
+    return {
+      isNativeWalletEnabled_: Boolean
+    }
+  }
 
-  /** @private {?settings.BraveWalletBrowserProxy} */
-  browserProxy_: null,
+  browserProxy_ = settings.BraveWalletBrowserProxyImpl.getInstance()
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = settings.BraveWalletBrowserProxyImpl.getInstance();
-  },
-
-  /** @override */
-  ready: function() {
-    this.onBraveWalletEnabledChange_ = this.onBraveWalletEnabledChange_.bind(this)
-    this.onInputAutoLockMinutes_ = this.onInputAutoLockMinutes_.bind(this)
-    this.onResetWallet_ = this.onResetWallet_.bind(this)
+  ready() {
     this.browserProxy_.getWeb3ProviderList().then(list => {
+      // TODO(petemill): provide wallets type
       this.wallets_ = JSON.parse(list)
     });
     this.browserProxy_.isNativeWalletEnabled().then(val => {
-      this.isNativeWalletEnabled_ = val;
+      this.isNativeWalletEnabled_ = val
     });
     this.browserProxy_.getAutoLockMinutes().then(val => {
       this.$.walletAutoLockMinutes.value = val
     })
-  },
+  }
 
-  onBraveWalletEnabledChange_: function() {
+  onBraveWalletEnabledChange_() {
     this.browserProxy_.setBraveWalletEnabled(this.$.braveWalletEnabled.checked);
-  },
+  }
 
-  onInputAutoLockMinutes_: function() {
+  onInputAutoLockMinutes_() {
     let value = Number(this.$.walletAutoLockMinutes.value)
     if (Number.isNaN(value) || value < 1 || value > 10080) {
       return
     }
     this.setPrefValue('brave.wallet.auto_lock_minutes', value)
-  },
+  }
 
-  onResetWallet_: function() {
+  onResetWallet_() {
     var message = this.i18n('walletResetConfirmation')
     if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase'))
       return
-    this.browserProxy_.resetWallet();
+    this.browserProxy_.resetWallet()
   }
-});
-})();
+}
+
+customElements.define(
+  SettingsBraveWalletPage.is, SettingsBraveWalletPage)
