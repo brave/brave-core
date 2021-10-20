@@ -56,6 +56,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
   auto* service = TemplateURLServiceFactory::GetForProfile(
       browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
 
   // Check that changing the default engine triggers emitting of a new value.
   auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
