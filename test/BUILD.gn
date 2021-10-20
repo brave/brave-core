@@ -956,6 +956,11 @@ if (!is_android) {
   test("brave_network_audit_tests") {
     testonly = true
 
+    # We need to disable the ThinLTO cache or the linker will die with
+    # a "Resource temporarily unavailable" error due to the linking
+    # reaching the vm.max_map_count limit of 65530 memory mappings.
+    configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
+
     sources = [
       "//brave/browser/net/brave_network_audit_browsertest.cc",
       "//brave/browser/net/brave_network_audit_whitelists.h",
