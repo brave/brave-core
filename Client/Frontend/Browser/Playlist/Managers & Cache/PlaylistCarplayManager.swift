@@ -58,9 +58,27 @@ class PlaylistCarplayManager: NSObject {
             return nil
         }
         
+        // CarPlay can be launched independently of the browser/app
+        // CarPlay utilizes the database, and since `SceneDelegate` is never invoked
+        // We must manually invoke the database initialization here.
+        DataController.shared.initializeOnce()
+        
         // REFACTOR to support multiple windows.
         // OR find a way to get WebKit to load `Youtube` and other sites WITHOUT having to be in the view hierarchy..
-        let currentWindow = browserController?.view.window
+        var currentWindow = browserController?.view.window
+        
+        // BrowserController can actually be null when CarPlay is launched by the system
+        // The only such window that will be available is the actual CarPlay window
+        // So that's the window we need to use
+        // This does NOT break Multi-Window because we don't actually have multiple windows running
+        // when there is no browser controller. There is only a single CarPlay window.
+        if currentWindow == nil {
+            currentWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .compactMap({$0 as? UIWindowScene})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+        }
         
         // If there is no media player, create one,
         // pass it to the car-play controller
@@ -68,6 +86,7 @@ class PlaylistCarplayManager: NSObject {
         let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView(),
                                                   certStore: browserController?.profile.certStore)
         
+        // Construct the CarPlay UI
         let carPlayController = PlaylistCarplayController(mediaStreamer: mediaStreamer,
                                                           player: mediaPlayer,
                                                           interfaceController: carplayInterface)
@@ -120,25 +139,23 @@ class PlaylistCarplayManager: NSObject {
     }
     
     private func attemptInterfaceConnection(isCarPlayAvailable: Bool) {
-        ensureMainThread {
-            self.isCarPlayAvailable = isCarPlayAvailable
-            
-            // If there is no media player, create one,
-            // pass it to the carplay controller
-            if isCarPlayAvailable {
-                // Protect against reentrancy.
-                if self.carPlayController == nil {
-                    self.carPlayController = self.getCarPlayController()
-                }
-            } else {
-                self.carPlayController = nil
-                self.mediaPlayer = nil
+        self.isCarPlayAvailable = isCarPlayAvailable
+        
+        // If there is no media player, create one,
+        // pass it to the carplay controller
+        if isCarPlayAvailable {
+            // Protect against reentrancy.
+            if carPlayController == nil {
+                carPlayController = getCarPlayController()
             }
-
-            // Sometimes the `endpointAvailable` WILL RETURN TRUE!
-            // Even when the car is NOT connected.
-            log.debug("CARPLAY CONNECTED: \(isCarPlayAvailable)")
+        } else {
+            carPlayController = nil
+            mediaPlayer = nil
         }
+
+        // Sometimes the `endpointAvailable` WILL RETURN TRUE!
+        // Even when the car is NOT connected.
+        log.debug("CARPLAY CONNECTED: \(isCarPlayAvailable)")
     }
 }
 
