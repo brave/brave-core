@@ -659,7 +659,7 @@ void BraveNewTabMessageHandler::HandleTodayOnCardVisit(
   }
   std::string item_id = args[1].GetString();
   std::string creative_instance_id = args[2].GetString();
-  bool is_promoted = args[0].GetList()[3].GetBool();
+  bool is_promoted = (args[3].is_bool() && args[3].GetBool());
   if (is_promoted && !item_id.empty() && !creative_instance_id.empty()) {
     auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
     ads_service_->OnPromotedContentAdEvent(
