@@ -53,12 +53,12 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
-  onConnectHardwareWallet,
+  findENSAddress,
+  findUnstoppableDomainAddress,
   getBalance,
   getERC20Allowance,
-  findENSAddress,
-  findUnstoppableDomainAddress
-} from '../common/async/wallet_async_handler'
+  onConnectHardwareWallet
+} from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
 import { useSwap, useAssets, useTimeout, useBalance, useSend } from '../common/hooks'

@@ -100,3 +100,4 @@ export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultW
 export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
 export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
 export const queueNextTransaction = createAction('queueNextTransaction')
+export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
