@@ -185,18 +185,19 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, ISOLATED_WORLD_ID_TRANSLATE);
   }
 
-  bool HasBadFlagsInfobar() {
+  ::testing::AssertionResult HasNoBadFlagsInfobar() {
     auto* infobar_manager = infobars::ContentInfoBarManager::FromWebContents(
         browser()->tab_strip_model()->GetActiveWebContents());
-    CHECK(infobar_manager);
+    if (!infobar_manager)
+      return ::testing::AssertionFailure() << "!infobar_manager";
 
     for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
       if (infobar_manager->infobar_at(i)->delegate()->GetIdentifier() ==
           infobars::InfoBarDelegate::BAD_FLAGS_INFOBAR_DELEGATE) {
-        return true;
+        return ::testing::AssertionFailure() << "Bad flags infobar found.";
       }
     }
-    return false;
+    return ::testing::AssertionSuccess();
   }
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -262,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
 
   // Check no bad flags infobar is shown (about the different translate
   // script/origin).
-  EXPECT_FALSE(HasBadFlagsInfobar());
+  EXPECT_TRUE(HasNoBadFlagsInfobar());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
@@ -378,7 +379,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
 
   // Check no bad flags infobar is shown (about the different translate
   // script/origin).
-  EXPECT_FALSE(HasBadFlagsInfobar());
+  EXPECT_TRUE(HasNoBadFlagsInfobar());
 }
 
 }  // namespace translate

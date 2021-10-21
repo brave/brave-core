@@ -20,7 +20,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "components/translate/core/browser/translate_language_list.h"
-#include "components/translate/core/common/translate_switches.h"
 #include "content/public/browser/render_frame_host.h"
 #include "extensions/buildflags/buildflags.h"
 #include "media/base/media_switches.h"

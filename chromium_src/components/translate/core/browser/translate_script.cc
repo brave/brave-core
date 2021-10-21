@@ -56,8 +56,8 @@ namespace translate {
 GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
   GURL result = ::translate::AddHostLocaleToUrl(url);
   const GURL google_translate_script(kScriptURL);
-  const GURL brave_translate_script(kBraveTranslateScriptURL);
   if (result.host_piece() == google_translate_script.host_piece()) {
+    const GURL brave_translate_script(kBraveTranslateScriptURL);
     GURL::Replacements replaces;
     replaces.SetHostStr(brave_translate_script.host_piece());
     replaces.SetPathStr(brave_translate_script.path_piece());
