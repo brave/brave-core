@@ -176,13 +176,6 @@ void BraveBrowserMainParts::PreProfileInit() {
                                     translate::kBraveTranslateScriptURL);
   }
 
-  // Redirect the rest native translate requests.
-  if (!command_line->HasSwitch(translate::switches::kTranslateSecurityOrigin)) {
-    command_line->AppendSwitchASCII(
-        translate::switches::kTranslateSecurityOrigin,
-        translate::kBraveTranslateOrigin);
-  }
-
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
 }
