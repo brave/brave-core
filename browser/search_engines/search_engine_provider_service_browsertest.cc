@@ -9,6 +9,7 @@
 #include "brave/browser/search_engines/guest_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -21,6 +22,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/search_engines/search_engines_test_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
@@ -37,6 +39,17 @@
 
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
+namespace {
+
+// An observer that returns back to test code after a new profile is
+// initialized.
+void OnProfileCreation(base::RunLoop* run_loop,
+                       Profile* profile,
+                       Profile::CreateStatus status) {
+  if (status == Profile::CREATE_STATUS_INITIALIZED)
+    run_loop->Quit();
+}
+
 TemplateURLData CreateTestSearchEngine() {
   TemplateURLData result;
   result.SetShortName(u"test1");
@@ -44,6 +57,8 @@ TemplateURLData CreateTestSearchEngine() {
   result.SetURL("http://test.com/search?t={searchTerms}");
   return result;
 }
+
+}  // namespace
 
 // In Qwant region, alternative search engine prefs isn't used.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
@@ -147,9 +162,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
-  brave::NewOffTheRecordWindowTor(browser());
-  content::RunAllTasksUntilIdle();
-
+  base::RunLoop run_loop;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindRepeating(&OnProfileCreation, &run_loop));
+  run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
@@ -175,9 +191,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // sessions.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
-  brave::NewOffTheRecordWindowTor(browser());
-  content::RunAllTasksUntilIdle();
-
+  base::RunLoop run_loop;
+  TorProfileManager::SwitchToTorProfile(
+      browser()->profile(), base::BindRepeating(&OnProfileCreation, &run_loop));
+  run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
@@ -194,8 +211,10 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 // Check ddg toggle button state is changed by user's settings change.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        GuestWindowControllerTest) {
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
-  content::RunAllTasksUntilIdle();
+  base::RunLoop run_loop;
+  profiles::SwitchToGuestProfile(
+      base::BindRepeating(&OnProfileCreation, &run_loop));
+  run_loop.Run();
 
   Profile* guest_profile =
       BrowserList::GetInstance()->GetLastActive()->profile();
