@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_BUTTON_VIEW_H_
 
+#include <string>
+
 #include "ui/views/controls/button/image_button.h"
 
 class SidebarButtonView : public views::ImageButton {
@@ -20,7 +22,8 @@ class SidebarButtonView : public views::ImageButton {
     virtual ~Delegate() = default;
   };
 
-  explicit SidebarButtonView(Delegate* delegate);
+  explicit SidebarButtonView(Delegate* delegate,
+                             const std::u16string& accessible_name);
   ~SidebarButtonView() override;
 
   SidebarButtonView(const SidebarButtonView&) = delete;
