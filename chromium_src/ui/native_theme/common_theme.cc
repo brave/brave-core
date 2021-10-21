@@ -9,11 +9,6 @@
 #include "../../../../ui/native_theme/common_theme.cc"
 #undef GetAuraColor
 
-namespace {
-  const SkColor kBraveColorBrand = SkColorSetRGB(0xfb, 0x54, 0x2b);
-}  // namespace
-
-
 namespace ui {
 
 SkColor GetAuraColor(NativeTheme::ColorId color_id,
@@ -24,7 +19,7 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
   switch (color_id) {
     case NativeTheme::kColorId_ProminentButtonColor:
     case NativeTheme::kColorId_FocusedBorderColor:
-      return kBraveColorBrand;
+      return gfx::kBraveColorBrand;
     case NativeTheme::kColorId_TextOnProminentButtonColor:
       return SK_ColorWHITE;
     default:
