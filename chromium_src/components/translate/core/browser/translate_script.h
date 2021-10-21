@@ -14,8 +14,8 @@ using BraveTranslateScript = TranslateScript;
 #define TranslateScript ChromiumTranslateScript
 #define OnScriptFetchComplete virtual OnScriptFetchComplete
 #define Request virtual Request
-#define callback_list_ \
-  callback_list_;      \
+#define callback_list_                             \
+  callback_list_;                                  \
   static GURL AddHostLocaleToUrl(const GURL& url); \
   friend BraveTranslateScript
 #include "../../../../../../components/translate/core/browser/translate_script.h"
