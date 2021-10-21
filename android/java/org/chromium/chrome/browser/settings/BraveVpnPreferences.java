@@ -340,7 +340,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     @Override
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
         BraveVpnApiResponseUtils.handleOnGetTimezonesForRegions(
-                getActivity(), jsonTimezones, isSuccess);
+                getActivity(), mBraveVpnPrefModel, jsonTimezones, isSuccess);
     }
 
     @Override

@@ -117,7 +117,7 @@ public abstract class BraveVpnParentActivity
     @Override
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
         BraveVpnApiResponseUtils.handleOnGetTimezonesForRegions(
-                BraveVpnParentActivity.this, jsonTimezones, isSuccess);
+                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonTimezones, isSuccess);
     }
 
     @Override

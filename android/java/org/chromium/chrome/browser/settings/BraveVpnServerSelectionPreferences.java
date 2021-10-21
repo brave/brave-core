@@ -63,7 +63,7 @@ public class BraveVpnServerSelectionPreferences
         automaticText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+                BraveVpnUtils.selectedServerRegion = BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC;
                 BraveVpnUtils.mIsServerLocationChanged = true;
                 getActivity().onBackPressed();
             }
@@ -113,7 +113,7 @@ public class BraveVpnServerSelectionPreferences
     OnServerRegionSelection onServerRegionSelection = new OnServerRegionSelection() {
         @Override
         public void onServerRegionClick(BraveVpnServerRegion braveVpnServerRegion) {
-            BraveVpnPrefUtils.setServerRegion(braveVpnServerRegion.getName());
+            BraveVpnUtils.selectedServerRegion = braveVpnServerRegion.getName();
             BraveVpnUtils.mIsServerLocationChanged = true;
             getActivity().onBackPressed();
         }

@@ -44,6 +44,7 @@ public class BraveVpnUtils {
     public static final int BRAVE_VPN_NOTIFICATION_ID = 36;
 
     public static boolean mIsServerLocationChanged;
+    public static String selectedServerRegion;
     private static ProgressDialog mProgressDialog;
 
     public static boolean isBraveVpnFeatureEnable() {

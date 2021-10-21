@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.vpn.utils;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import org.chromium.base.Log;
@@ -54,15 +55,28 @@ public class BraveVpnApiResponseUtils {
         }
     }
 
-    public static void handleOnGetTimezonesForRegions(
-            Activity activity, String jsonTimezones, boolean isSuccess) {
+    public static void handleOnGetTimezonesForRegions(Activity activity,
+            BraveVpnPrefModel braveVpnPrefModel, String jsonTimezones, boolean isSuccess) {
         if (isSuccess) {
             String region = BraveVpnUtils.getRegionForTimeZone(
                     jsonTimezones, TimeZone.getDefault().getID());
-            String serverRegion = BraveVpnPrefUtils.getServerRegion();
-            BraveVpnNativeWorker.getInstance().getHostnamesForRegion(
-                    serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC) ? region
-                                                                                    : serverRegion);
+
+            if (!TextUtils.isEmpty(BraveVpnUtils.selectedServerRegion)
+                    && BraveVpnUtils.selectedServerRegion != null) {
+                region = BraveVpnUtils.selectedServerRegion.equals(
+                                 BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)
+                        ? region
+                        : BraveVpnUtils.selectedServerRegion;
+                BraveVpnUtils.selectedServerRegion = null;
+            } else {
+                String serverRegion = BraveVpnPrefUtils.getServerRegion();
+                region = serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)
+                        ? region
+                        : serverRegion;
+            }
+
+            BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
+            braveVpnPrefModel.setServerRegion(region);
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
@@ -77,8 +91,7 @@ public class BraveVpnApiResponseUtils {
         if (isSuccess && braveVpnPrefModel != null) {
             host = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
             BraveVpnNativeWorker.getInstance().getProfileCredentials(
-                    braveVpnPrefModel.getSubscriberCredential(),
-                    host.first != null ? host.first : "");
+                    braveVpnPrefModel.getSubscriberCredential(), host.first);
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
