@@ -210,14 +210,15 @@
     <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE" desc="Sign panel message title">Message</message>
     <message name="IDS_BRAVE_WALLET_SIGN_TRANSACTION_BUTTON" desc="Sign panel sign button">Sign</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TITLE" desc="Allow spend panel Title">Allow this app to spend your</message>
-    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION_FIRST_HALF" desc="Allow spend panel description 1">By granting this permission, you are allowing this app to withdraw your </message>
-    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION_SECOND_HALF" desc="Allow spend panel description 2"> and automate transactions for you.</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DESCRIPTION" desc="Allow spend panel description">By granting this permission, you are allowing this app to withdraw your <ph name="VALUE">$1</ph> and automate transactions for you.</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_BOX_TITLE" desc="Allow spend panel edit permissions button">Edit permissions</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_TRANSACTION_FEE" desc="Allow spend panel transaction fee label">Transaction fee</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_EDIT_BUTTON" desc="Allow spend panel edit button">Edit</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_DETAILS_BUTTON" desc="Allow spend panel view details button">View details</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_REJECT_BUTTON" desc="Allow spend panel reject button">Reject</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_CONFIRM_BUTTON" desc="Allow spend panel confirm button">Confirm</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_CURRENT_ALLOWANCE" desc="Allow spend panel current approval limit">Current allowance</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_SPEND_PROPOSED_ALLOWANCE" desc="Allow spend panel proposed approval">Proposed allowance</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE" desc="Add network panel title">Allow this site to add a network?</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DESCRIPTION" desc="Add network panel description">This will allow this network to be used within Brave Wallet.</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_LEARN_MORE_BUTTON" desc="Add network panel learn more button">Learn more.</message>
@@ -292,6 +293,11 @@
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_GWEI" desc="Edit gas panel gwei label">Gwei</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_CUSTOM" desc="Edit gas panel set custom button">Set custom</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_SET_SUGGESTED" desc="Edit gas panel set suggested button">Set suggested</message>
+    <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_TITLE" desc="Edit allowance panel title">Edit permissions</message>
+    <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_DESCRIPTION" desc="Edit allowance panel description">Spend limit permission allows <ph name="VALUE">$1</ph> to withdraw and spend up to the following amount:</message>
+    <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_BUTTON" desc="Edit allowance panel button">Edit permissions</message>
+    <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_PROPOSED_ALLOWANCE" desc="Edit allowance panel button">Proposed allowance</message>
+    <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE" desc="Edit allowance panel button">Custom allowance</message>
     <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
     <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
     <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="VALUE">$1</ph> is not registered</message>

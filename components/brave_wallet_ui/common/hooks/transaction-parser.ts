@@ -49,6 +49,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   nativeCurrencyTotal: string
   value: string
   symbol: string
+  decimals: number
 
   // Token approvals
   approvalTarget?: string
@@ -121,6 +122,7 @@ export function useTransactionParser (
           nativeCurrencyTotal: formatGasFeeFromFiat(sendAmountFiat, findSpotPrice(selectedNetwork.symbol)),
           value: formatBalance(amount, token?.decimals ?? 18),
           symbol: token?.symbol ?? '',
+          decimals: token?.decimals ?? 18,
           ...feeDetails
         } as ParsedTransaction
       }
@@ -146,6 +148,7 @@ export function useTransactionParser (
           nativeCurrencyTotal: (0).toFixed(2),
           value: formatBalance(amount, token?.decimals ?? 18),
           symbol: token?.symbol ?? '',
+          decimals: token?.decimals ?? 18,
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
           ...feeDetails
@@ -176,6 +179,7 @@ export function useTransactionParser (
           nativeCurrencyTotal: formatGasFeeFromFiat(sendAmountFiat, findSpotPrice(selectedNetwork.symbol)),
           value: formatBalance(value, selectedNetwork.decimals),
           symbol: selectedNetwork.symbol,
+          decimals: selectedNetwork?.decimals ?? 18,
           ...feeDetails
         } as ParsedTransaction
       }

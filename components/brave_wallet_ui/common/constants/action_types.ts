@@ -88,6 +88,11 @@ export type UpdateUnapprovedTransactionGasFieldsType = {
   maxFeePerGas?: string
 }
 
+export type UpdateUnapprovedTransactionSpendAllowanceType = {
+  txMetaId: string,
+  allowance: string
+}
+
 export type DefaultWalletChanged = {
   defaultWallet: DefaultWallet
 }

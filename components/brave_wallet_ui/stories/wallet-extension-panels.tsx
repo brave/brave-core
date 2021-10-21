@@ -31,7 +31,10 @@ import {
   TransactionInfo,
   TransactionType
 } from '../constants/types'
-import { UpdateUnapprovedTransactionGasFieldsType } from '../common/constants/action_types'
+import {
+  UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionSpendAllowanceType
+} from '../common/constants/action_types'
 import { AppsList } from '../options/apps-list-options'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import { filterAppList } from '../utils/filter-app-list'
@@ -141,6 +144,14 @@ export const _ConfirmTransaction = () => {
     alert('Updated gas fields')
   }
 
+  const updateUnapprovedTransactionSpendAllowance = (payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
+    alert('Updated spending allowance')
+  }
+
+  const getERC20Allowance = (recipient: string, sender: string, approvalTarget: string) => {
+    return Promise.resolve('0x15ddf09c97b0000')
+  }
+
   const transactionSpotPrices = [
     {
       fromAsset: 'ETH',
@@ -172,6 +183,8 @@ export const _ConfirmTransaction = () => {
         transactionSpotPrices={transactionSpotPrices}
         refreshGasEstimates={refreshGasEstimates}
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
+        updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
+        getERC20Allowance={getERC20Allowance}
       />
     </StyledExtensionWrapperLonger>
   )
