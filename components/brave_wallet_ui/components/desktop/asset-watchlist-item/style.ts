@@ -19,10 +19,26 @@ export const NameAndIcon = styled.div`
   width: 42%;
 `
 
+export const NameAndSymbol = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+`
+
 export const AssetName = styled.span`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
+`
+
+export const AssetSymbol = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
 `
