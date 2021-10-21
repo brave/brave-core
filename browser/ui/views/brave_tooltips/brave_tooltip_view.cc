@@ -33,12 +33,12 @@
 
 namespace {
 
-constexpr int kBodyMaximumLines = 3;
+constexpr int kBodyMaximumLines = 4;
 
-constexpr gfx::Size kTooltipSize(424 + 15, 94 + 15);
+constexpr gfx::Size kTooltipSize(434 + 15, 104 + 15);
 constexpr gfx::Size kTitleSize(200, 20);
-constexpr gfx::Size kBodySize(279, 48);
-constexpr gfx::Size kButtonSize(72, 24);
+constexpr gfx::Size kBodySize(279, 58);
+constexpr gfx::Size kButtonSize(82, 24);
 
 constexpr char kFontName[] = "Roboto";
 constexpr gfx::Font::FontStyle kFontStyle = gfx::Font::NORMAL;
