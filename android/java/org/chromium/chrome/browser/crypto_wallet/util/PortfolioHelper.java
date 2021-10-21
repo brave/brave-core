@@ -17,9 +17,11 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PortfolioHelper {
     private static String TAG = "PortfolioHelper";
@@ -81,7 +83,8 @@ public class PortfolioHelper {
             ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
                     new ArrayList<AsyncUtils.GetPriceResponseContext>();
             for (ErcToken userAsset : mUserAssets) {
-                String[] fromAssets = new String[] {userAsset.symbol.toLowerCase()};
+                String[] fromAssets =
+                        new String[] {userAsset.symbol.toLowerCase(Locale.getDefault())};
                 String[] toAssets = new String[] {"usd"};
 
                 AsyncUtils.GetPriceResponseContext priceContext =
@@ -110,7 +113,8 @@ public class PortfolioHelper {
                         return;
                     }
                     tokenToUsdRatios.put(
-                            priceContext.prices[0].fromAsset.toLowerCase(), usdPerToken);
+                            priceContext.prices[0].fromAsset.toLowerCase(Locale.getDefault()),
+                            usdPerToken);
                 }
 
                 mKeyringController.getDefaultKeyringInfo(keyringInfo -> {
@@ -150,9 +154,10 @@ public class PortfolioHelper {
 
                         balancesMultiResponse.setWhenAllCompletedAction(() -> {
                             for (AsyncUtils.GetBalanceResponseBaseContext context : contexts) {
-                                String currentAssetSymbol = context.userAsset.symbol.toLowerCase();
-                                Double usdPerThisToken =
-                                        tokenToUsdRatios.getOrDefault(currentAssetSymbol, 0.0d);
+                                String currentAssetSymbol =
+                                        context.userAsset.symbol.toLowerCase(Locale.getDefault());
+                                Double usdPerThisToken = Utils.getOrDefault(
+                                        tokenToUsdRatios, currentAssetSymbol, 0.0d);
 
                                 Double thisBalanceCryptoPart =
                                         context.success ? fromHexWei(context.balance) : 0.0d;
@@ -160,13 +165,14 @@ public class PortfolioHelper {
                                 Double thisBalanceFiatPart =
                                         usdPerThisToken * thisBalanceCryptoPart;
 
-                                Double prevThisTokenCryptoSum =
-                                        mPerTokenCryptoSum.getOrDefault(currentAssetSymbol, 0.0d);
+                                Double prevThisTokenCryptoSum = Utils.getOrDefault(
+                                        mPerTokenCryptoSum, currentAssetSymbol, 0.0d);
+
                                 mPerTokenCryptoSum.put(currentAssetSymbol,
                                         prevThisTokenCryptoSum + thisBalanceCryptoPart);
 
-                                Double prevThisTokenFiatSum =
-                                        mPerTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
+                                Double prevThisTokenFiatSum = Utils.getOrDefault(
+                                        mPerTokenFiatSum, currentAssetSymbol, 0.0d);
                                 mPerTokenFiatSum.put(currentAssetSymbol,
                                         prevThisTokenFiatSum + thisBalanceFiatPart);
 

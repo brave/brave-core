@@ -220,10 +220,10 @@ public class PortfolioFragment
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         for (ErcToken userAsset : userAssets) {
-            String currentAssetSymbol = userAsset.symbol.toLowerCase();
-            Double fiatBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
+            String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
+            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
             String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-            Double cryptoBalance = perTokenCryptoSum.getOrDefault(currentAssetSymbol, 0.0d);
+            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetSymbol, 0.0d);
             String cryptoBalanceString =
                     String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
@@ -286,7 +286,8 @@ public class PortfolioFragment
         String chainId = Utils.getNetworkConst(getActivity(), chainName);
         portfolioHelper.setChainId(chainId);
         portfolioHelper.calculateBalances(() -> {
-            final String fiatSumString = String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+            final String fiatSumString =
+                    String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
             PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
                 mBalance.setText(fiatSumString);
                 mBalance.invalidate();
