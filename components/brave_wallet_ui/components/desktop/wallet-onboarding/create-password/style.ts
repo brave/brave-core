@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import SecureIcon from '../../../../assets/svg-icons/onboarding/secure-your-crypto.svg'
+import SecureIconDark from '../../../../assets/svg-icons/onboarding/secure-your-crypto-dark.svg'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -52,6 +53,9 @@ export const PageIcon = styled.div`
   background: url(${SecureIcon});
   background-repeat: no-repeat;
   background-size: 100%;
+  @media (prefers-color-scheme: dark) {
+    background: url(${SecureIconDark});
+  }
 `
 
 export const InputColumn = styled.div`
