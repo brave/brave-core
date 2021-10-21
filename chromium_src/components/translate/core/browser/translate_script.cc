@@ -9,6 +9,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 
 #define TranslateScript ChromiumTranslateScript
@@ -50,6 +51,20 @@ const char* kRedirectAllRequestsToSecurityOrigin = R"(
 
 }  // namespace
 namespace translate {
+
+// Redirect the translate script request to the Brave endpoints.
+GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
+  GURL result = ::translate::AddHostLocaleToUrl(url);
+  const GURL google_translate_script(kScriptURL);
+  if (result.host_piece() == google_translate_script.host_piece()) {
+    const GURL brave_translate_script(kBraveTranslateScriptURL);
+    GURL::Replacements replaces;
+    replaces.SetHostStr(brave_translate_script.host_piece());
+    replaces.SetPathStr(brave_translate_script.path_piece());
+    return result.ReplaceComponents(replaces);
+  }
+  return result;
+}
 
 void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
   if (!IsBraveTranslateGoAvailable()) {
