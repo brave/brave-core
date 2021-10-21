@@ -5,7 +5,7 @@
 
 #include "brave/components/translate/core/common/brave_translate_constants.h"
 
-#define GetTranslateSecurityOrigin GetTranslateSecurityOriginChromiumUnused
+#define GetTranslateSecurityOrigin GetTranslateSecurityOrigin_Chromium
 #include "../../../../../../components/translate/core/common/translate_util.cc"
 #undef GetTranslateSecurityOrigin
 
