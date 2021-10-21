@@ -1576,7 +1576,7 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_TALK_TURN_ON_REWARDS_BUTTON_TEXT" desc="Turn on brave rewards button">
         Turn on Rewards
       </message>
-      <message name="IDS_BRAVE_TALK_REWARDS_TOS_PP_TEXT" desc="Brave rewards terms of service and privacy policy">
+      <message name="IDS_BRAVE_TALK_REWARDS_TOS_PRIVACY_POLICY_TEXT" desc="Brave rewards terms of service and privacy policy">
         By enabling, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
       </message>
       <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TEXT" desc="Turn on brave private ads">

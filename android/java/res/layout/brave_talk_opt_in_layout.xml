@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/brave_talk_rewards_tos_pp_text"
+            android:text="@string/brave_talk_rewards_tos_privacy_policy_text"
             android:textSize="12sp"
             android:layout_marginBottom="10dp"
             android:textColor="@android:color/black"/>
