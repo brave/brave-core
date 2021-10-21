@@ -186,6 +186,7 @@ function Container (props: Props) {
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
+  const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -624,7 +625,7 @@ function Container (props: Props) {
             fromAssetBalance={fromAssetBalance}
             toAmount={toAmount}
             addressError={addressError}
-            toAssetBalance='0'
+            toAssetBalance={toAssetBalance}
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             swapValidationError={swapValidationError}
