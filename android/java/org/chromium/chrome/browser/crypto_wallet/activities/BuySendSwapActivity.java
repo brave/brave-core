@@ -40,6 +40,7 @@ import org.chromium.brave_wallet.mojom.SwapController;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioControllerFactory;
@@ -114,7 +115,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
 
         @Override
-        public void onTransactionStatusChanged(TransactionInfo txInfo) {}
+        public void onTransactionStatusChanged(TransactionInfo txInfo) {
+            if (txInfo.id.equals(mParentActivity.mActivateAllowanceTxId)
+                    && txInfo.txStatus == TransactionStatus.SUBMITTED) {
+                mParentActivity.mActivateAllowanceTxId = "";
+                mParentActivity.showSwapButtonText();
+            }
+        }
 
         @Override
         public void onUnapprovedTxUpdated(TransactionInfo txInfo) {}
@@ -125,6 +132,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         @Override
         public void onConnectionError(MojoException e) {}
     }
+
+    public String mActivateAllowanceTxId;
 
     private ErcTokenRegistry mErcTokenRegistry;
     private EthJsonRpcController mEthJsonRpcController;
@@ -142,6 +151,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private ExecutorService mExecutor;
     private Handler mHandler;
     private String mCurrentChainId;
+    private String mAllowanceTarget;
 
     @Override
     protected void onDestroy() {
@@ -152,6 +162,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_buy_send_swap);
 
+        mActivateAllowanceTxId = "";
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.BUY.getValue()));
@@ -168,23 +179,15 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         fromValueText.setHint("0");
 
         TextView fromBalanceText = findViewById(R.id.from_balance_text);
-        fromBalanceText.setText("Balance: 1.2832");
-
         TextView fromAssetText = findViewById(R.id.from_asset_text);
         fromAssetText.setText("ETH");
 
         EditText toValueText = findViewById(R.id.to_value_text);
-        toValueText.setText("561.121");
-
         TextView toBalanceText = findViewById(R.id.to_balance_text);
-        toBalanceText.setText("Balance: 0");
-
         TextView toAssetText = findViewById(R.id.to_asset_text);
         toAssetText.setText("ETH");
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
-        marketPriceValueText.setText("0.0005841");
-
         Spinner spinner = findViewById(R.id.network_spinner);
         spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
@@ -392,9 +395,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     private void checkBalanceShowError(SwapResponse response, String errorResponse) {
-        if (mConvertedFromBalance == 0 && mConvertedToBalance == 0) {
-            return;
-        }
+        final Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
         EditText fromValueText = findViewById(R.id.from_value_text);
         String value = fromValueText.getText().toString();
         double valueFrom = 0;
@@ -404,22 +405,21 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             gasLimit = Double.parseDouble(response.estimatedGas);
         } catch (NumberFormatException | NullPointerException ex) {
         }
-        final Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
         if (valueFrom > mConvertedFromBalance) {
             btnBuySendSwap.setText(getString(R.string.crypto_wallet_error_insufficient_balance));
             btnBuySendSwap.setEnabled(false);
 
             return;
         }
-        final Double fee = gasLimit * Utils.fromWei(response.gasPrice, 18);
-        final Double fromValue = valueFrom;
+        final double fee = gasLimit * Utils.fromWei(response.gasPrice, 18);
+        final double fromValue = valueFrom;
         assert mEthJsonRpcController != null;
         Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         mEthJsonRpcController.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
                 (success, balance) -> {
                     if (success) {
-                        Double currentBalance = Utils.fromHexWei(balance, 18);
+                        double currentBalance = Utils.fromHexWei(balance, 18);
                         if (mCurrentErcToken == null
                                 || mCurrentErcToken.contractAddress.isEmpty()) {
                             if (currentBalance < fee + fromValue) {
@@ -444,6 +444,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         btnBuySendSwap.setText(getString(R.string.swap));
                         btnBuySendSwap.setEnabled(true);
                         enableDisableSwapButton();
+                        if (btnBuySendSwap.isEnabled() && mCurrentErcToken != null
+                                && mCurrentErcToken.isErc20) {
+                            // Check for ERC20 token allowance
+                            checkAllowance(mCurrentErcToken.contractAddress,
+                                    response.allowanceTarget, fromValue);
+                        }
                     } else {
                         if (Utils.isSwapLiquidityErrorReason(errorResponse)) {
                             btnBuySendSwap.setText(
@@ -454,6 +460,26 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         }
                         btnBuySendSwap.setEnabled(false);
                     }
+                });
+    }
+
+    private void checkAllowance(String contract, String spenderAddress, double amountToSend) {
+        assert mEthJsonRpcController != null;
+        assert mCurrentErcToken != null;
+        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+        String ownerAddress =
+                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition());
+        mEthJsonRpcController.getErc20TokenAllowance(
+                contract, ownerAddress, spenderAddress, (success, allowance) -> {
+                    if (!success
+                            || amountToSend
+                                    <= Utils.fromHexWei(allowance, mCurrentErcToken.decimals)) {
+                        return;
+                    }
+                    Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+                    btnBuySendSwap.setText(String.format(
+                            getString(R.string.activate_erc20), mCurrentErcToken.symbol));
+                    mAllowanceTarget = spenderAddress;
                 });
     }
 
@@ -504,6 +530,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String text = getText(R.string.crypto_wallet_balance) + " "
                     + String.format(Locale.getDefault(), "%.4f", mConvertedToBalance);
             toBalanceText.setText(text);
+        }
+        if (mActivityType == ActivityType.SWAP) {
+            getSendSwapQuota(true, false);
         }
     }
 
@@ -665,6 +694,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     TabUtils.bringChromeTabbedActivityToTheTop(this);
                 });
             } else if (mActivityType == ActivityType.SWAP) {
+                if (mCurrentErcToken != null) {
+                    String btnText = btnBuySendSwap.getText().toString();
+                    String toCompare = String.format(
+                            getString(R.string.activate_erc20), mCurrentErcToken.symbol);
+                    if (btnText.equals(toCompare)) {
+                        activateErc20Allowance();
+
+                        return;
+                    }
+                }
                 getSendSwapQuota(true, true);
             }
         });
@@ -726,6 +765,26 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         public void afterTextChanged(Editable s) {}
     };
 
+    private void activateErc20Allowance() {
+        assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
+        assert mEthTxController != null;
+        assert mCurrentErcToken != null;
+        mEthTxController.makeErc20ApproveData(mAllowanceTarget,
+                Utils.toHexWei(String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance),
+                        mCurrentErcToken.decimals),
+                (success, data) -> {
+                    if (!success) {
+                        return;
+                    }
+                    TxData txData = Utils.getTxData(
+                            "0x1", "", "", mCurrentErcToken.contractAddress, "0x0", data);
+                    Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+                    String from = mCustomAccountAdapter.getTitleAtPosition(
+                            accountSpinner.getSelectedItemPosition());
+                    addUnapprovedTransaction(txData, from);
+                });
+    }
+
     private void addUnapprovedTransaction(TxData data, String from) {
         assert mEthTxController != null;
         if (mEthTxController == null) {
@@ -734,7 +793,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         mEthTxController.addUnapprovedTransaction(data, from,
                 (success, tx_meta_id, error_message)
                         -> {
-                                // Do nothing here ass we will receive an
+                                // Do nothing here as we will receive an
                                 // unapproved transaction in
                                 // EthTxControllerObserverImpl
                         });
@@ -770,6 +829,16 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             String txType = getText(R.string.send).toString();
             if (mActivityType == ActivityType.SWAP) {
                 txType = getText(R.string.swap).toString();
+                if (mCurrentErcToken != null) {
+                    Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+                    String btnText = btnBuySendSwap.getText().toString();
+                    String toCompare = String.format(
+                            getString(R.string.activate_erc20), mCurrentErcToken.symbol);
+                    if (btnText.equals(toCompare)) {
+                        txType = toCompare;
+                        mActivateAllowanceTxId = txInfo.id;
+                    }
+                }
             }
             TextView assetFromDropDown = findViewById(R.id.from_asset_text);
             String asset = assetFromDropDown.getText().toString();
@@ -779,6 +848,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             approveTxBottomSheetDialogFragment.show(
                     getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
         });
+    }
+
+    public void showSwapButtonText() {
+        Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+        btnBuySendSwap.setText(getString(R.string.swap));
     }
 
     public void updateBuySendAsset(String asset, ErcToken ercToken) {
