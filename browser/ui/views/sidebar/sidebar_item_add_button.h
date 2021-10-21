@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_ADD_BUTTON_H_
 
+#include <string>
+
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
@@ -17,7 +19,8 @@ class BraveBrowser;
 class SidebarItemAddButton : public SidebarButtonView,
                              public views::WidgetObserver {
  public:
-  explicit SidebarItemAddButton(BraveBrowser* browser);
+  explicit SidebarItemAddButton(BraveBrowser* browser,
+                                const std::u16string& accessible_name);
   ~SidebarItemAddButton() override;
 
   SidebarItemAddButton(const SidebarItemAddButton&) = delete;

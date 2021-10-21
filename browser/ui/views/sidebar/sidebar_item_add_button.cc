@@ -15,8 +15,10 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-SidebarItemAddButton::SidebarItemAddButton(BraveBrowser* browser)
-    : SidebarButtonView(nullptr), browser_(browser) {
+SidebarItemAddButton::SidebarItemAddButton(
+    BraveBrowser* browser,
+    const std::u16string& accessible_name)
+    : SidebarButtonView(nullptr, accessible_name), browser_(browser) {
   UpdateButtonImages();
 
   on_enabled_changed_subscription_ =
