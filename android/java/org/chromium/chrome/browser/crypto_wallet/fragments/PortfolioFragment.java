@@ -227,7 +227,7 @@ public class PortfolioFragment
                 Double fiatBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
                 String fiatBalanceString =
                         String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-                Double cryptoBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
+                Double cryptoBalance = perTokenCryptoSum.getOrDefault(currentAssetSymbol, 0.0d);
                 String cryptoBalanceString = String.format(
                         Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
@@ -322,21 +322,32 @@ public class PortfolioFragment
         }
     }
 
-    private class GetBalanceResponseBaseContext {
+    private class SingleResponseBaseContext {
+        private Runnable mResponseCompleteCallback;
+
+        public SingleResponseBaseContext(Runnable responseCompleteCallback) {
+            mResponseCompleteCallback = responseCompleteCallback;
+        }
+
+        public void fireResponseCompleteCallback() {
+            assert mResponseCompleteCallback != null;
+            mResponseCompleteCallback.run();
+        }
+    }
+
+    private class GetBalanceResponseBaseContext extends SingleResponseBaseContext {
         public Boolean success;
         public String balance;
         public ErcToken userAsset;
-        private Runnable mResponseCompleteCallback;
 
         public GetBalanceResponseBaseContext(Runnable responseCompleteCallback) {
-            mResponseCompleteCallback = responseCompleteCallback;
+            super(responseCompleteCallback);
         }
 
         public void callBase(Boolean success, String balance) {
             this.success = success;
             this.balance = balance;
-            assert mResponseCompleteCallback != null;
-            mResponseCompleteCallback.run();
+            super.fireResponseCompleteCallback();
         }
     };
 
@@ -364,6 +375,23 @@ public class PortfolioFragment
         }
     }
 
+    private class GetPriceResponseContext
+            extends SingleResponseBaseContext implements AssetRatioController.GetPriceResponse {
+        public Boolean success;
+        public AssetPrice[] prices;
+
+        public GetPriceResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(Boolean success, AssetPrice[] prices) {
+            this.success = success;
+            this.prices = prices;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
     private void updatePortfolio() {
         // Get user assets
         // Get convertion prices
@@ -383,31 +411,44 @@ public class PortfolioFragment
         String chainId = Utils.getNetworkConst(getActivity(), chainName);
         assert chainId != null && !chainId.isEmpty();
         braveWalletService.getUserAssets(chainId, (userAssets) -> {
-            String[] fromAssets = new String[userAssets.length];
-            int i = 0;
-            for (ErcToken userAsset : userAssets) {
-                fromAssets[i] = userAsset.symbol.toLowerCase();
-                ++i;
-            }
-            String[] toAssets = new String[] {"usd"};
-
             HashMap<String, Double> tokenToUsdRatios = new HashMap<String, Double>();
 
-            // TODO(AlexeyBarabash):
-            // Sometimes with certain tokens the price request gives 404 error
-            // I need to query rate not all-in-one but per each token separately
-            assetRatioController.getPrice(
-                    fromAssets, toAssets, AssetPriceTimeframe.LIVE, (success, assetPrices) -> {
-                        for (AssetPrice assetPrice : assetPrices) {
-                            Double usdPerToken = 0.0d;
-                            try {
-                                usdPerToken = Double.parseDouble(assetPrice.price);
-                            } catch (NullPointerException | NumberFormatException ex) {
-                                Log.e(TAG, "Cannot parse " + assetPrice.price + ", " + ex);
-                                return;
+            GetBalanceMultiResponse pricesMultiResponse =
+                    new GetBalanceMultiResponse(userAssets.length);
+            ArrayList<GetPriceResponseContext> pricesContexts =
+                    new ArrayList<GetPriceResponseContext>();
+            for (ErcToken userAsset : userAssets) {
+                String[] fromAssets = new String[] {userAsset.symbol.toLowerCase()};
+                String[] toAssets = new String[] {"usd"};
+
+                GetPriceResponseContext priceContext =
+                        new GetPriceResponseContext(pricesMultiResponse.singleResponseComplete);
+
+                pricesContexts.add(priceContext);
+
+                assetRatioController.getPrice(
+                        fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
+            }
+
+            pricesMultiResponse.setWhenAllCompletedAction(
+                    () -> {
+                        for (GetPriceResponseContext priceContext : pricesContexts) {
+                            if (!priceContext.success) {
+                                continue;
                             }
 
-                            tokenToUsdRatios.put(assetPrice.fromAsset.toLowerCase(), usdPerToken);
+                            assert priceContext.prices.length == 1;
+
+                            Double usdPerToken = 0.0d;
+                            try {
+                                usdPerToken = Double.parseDouble(priceContext.prices[0].price);
+                            } catch (NullPointerException | NumberFormatException ex) {
+                                Log.e(TAG,
+                                        "Cannot parse " + priceContext.prices[0].price + ", " + ex);
+                                return;
+                            }
+                            tokenToUsdRatios.put(
+                                    priceContext.prices[0].fromAsset.toLowerCase(), usdPerToken);
                         }
 
                         keyringController.getDefaultKeyringInfo(keyringInfo -> {
@@ -453,8 +494,10 @@ public class PortfolioFragment
                                             new HashMap<String, Double>();
 
                                     for (GetBalanceResponseBaseContext context : contexts) {
+                                        String currentAssetSymbol =
+                                                context.userAsset.symbol.toLowerCase();
                                         Double usdPerThisToken = tokenToUsdRatios.getOrDefault(
-                                                context.userAsset.symbol.toLowerCase(), 0.0d);
+                                                currentAssetSymbol, 0.0d);
 
                                         Double thisBalanceCryptoPart = context.success
                                                 ? fromHexWei(context.balance, 18)
@@ -465,15 +508,13 @@ public class PortfolioFragment
 
                                         Double prevThisTokenCryptoSum =
                                                 perTokenCryptoSum.getOrDefault(
-                                                        context.userAsset.symbol.toLowerCase(),
-                                                        0.0d);
-                                        perTokenCryptoSum.put(
-                                                context.userAsset.symbol.toLowerCase(),
+                                                        currentAssetSymbol, 0.0d);
+                                        perTokenCryptoSum.put(currentAssetSymbol,
                                                 prevThisTokenCryptoSum + thisBalanceCryptoPart);
 
                                         Double prevThisTokenFiatSum = perTokenFiatSum.getOrDefault(
-                                                context.userAsset.symbol.toLowerCase(), 0.0d);
-                                        perTokenFiatSum.put(context.userAsset.symbol.toLowerCase(),
+                                                currentAssetSymbol, 0.0d);
+                                        perTokenFiatSum.put(currentAssetSymbol,
                                                 prevThisTokenFiatSum + thisBalanceFiatPart);
 
                                         totalFiatSum += thisBalanceFiatPart;
