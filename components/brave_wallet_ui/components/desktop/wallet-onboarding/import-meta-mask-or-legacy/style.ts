@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import MMIcon from '../../../../assets/svg-icons/onboarding/import-from-metamask.svg'
+import MMIconDark from '../../../../assets/svg-icons/onboarding/import-from-metamask-dark.svg'
 import BIcon from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet.svg'
+import BIconDark from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet-dark.svg'
 
 interface StyleProps {
   needsNewPassword: boolean
@@ -50,20 +52,26 @@ export const InputColumn = styled.div<Partial<StyleProps>>`
 
 export const MetaMaskIcon = styled.div`
   width: 240px;
-  height: 160px;
+  height: 161px;
   background: url(${MMIcon});
   background-size: 100%;
   background-repeat: no-repeat;
   margin-bottom: 18px;
+  @media (prefers-color-scheme: dark) {
+    background: url(${MMIconDark});
+  }
 `
 
 export const BraveIcon = styled.div<Partial<StyleProps>>`
-  width: 226px;
+  width: 227px;
   height: 160px;
   background: url(${BIcon});
   margin-bottom: 25px;
   background-repeat: no-repeat;
   background-size: 100%;
+  @media (prefers-color-scheme: dark) {
+    background: url(${BIconDark});
+  }
 `
 
 export const LostButton = styled.button`
