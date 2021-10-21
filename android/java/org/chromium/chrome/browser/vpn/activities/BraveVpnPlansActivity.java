@@ -177,21 +177,12 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
 
     @Override
     public void showProgress() {
-        if (mPlanProgress != null) {
-            mPlanProgress.setVisibility(View.VISIBLE);
-        }
-        if (mPlanLayout != null) {
-            mPlanLayout.setAlpha(0.4f);
-        }
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
     }
 
     @Override
     public void hideProgress() {
-        if (mPlanProgress != null) {
-            mPlanProgress.setVisibility(View.GONE);
-        }
-        if (mPlanLayout != null) {
-            mPlanLayout.setAlpha(1f);
-        }
+        BraveVpnUtils.dismissProgressDialog();
     }
 }

@@ -14,6 +14,7 @@ import android.net.NetworkRequest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
@@ -22,6 +23,7 @@ import com.android.billingclient.api.Purchase;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -163,6 +165,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             connectivityManager.registerNetworkCallback(networkRequest, mNetworkCallback);
         }
         BraveVpnNativeWorker.getInstance().getAllServerRegions();
+        if (!InternetConnection.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getActivity(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -210,7 +216,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             }
         }
         updateSummary(PREF_SERVER_CHANGE_LOCATION, serverLocation);
-        updateSummary(PREF_SERVER_HOST, BraveVpnPrefUtils.getHostname());
+        updateSummary(PREF_SERVER_HOST, BraveVpnPrefUtils.getHostnameDisplay());
         if (!BraveVpnPrefUtils.getProductId().isEmpty()) {
             updateSummary(PREF_SUBSCRIPTION_STATUS,
                     BraveVpnPrefUtils.getProductId().equals(
@@ -235,7 +241,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 public void onAvailable(Network network) {
                     BraveVpnUtils.dismissProgressDialog();
                     if (getActivity() != null) {
-                        BraveVpnUtils.showBraveVpnNotification(getActivity());
+                        if (BraveVpnPrefUtils.hasVpnStarted()) {
+                            BraveVpnUtils.showBraveVpnNotification(getActivity());
+                        }
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -243,7 +251,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                     mVpnSwitch.setChecked(
                                             BraveVpnProfileUtils.getInstance().isVPNConnected(
                                                     getActivity()));
-                                updateSummaries();
+                                new Handler().post(() -> updateSummaries());
                             }
                         });
                     }
@@ -263,6 +271,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                                     getActivity()));
                             }
                         });
+                        BraveVpnPrefUtils.setVpnStart(false);
                     }
                 }
             };
@@ -336,15 +345,17 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
     @Override
     public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        mBraveVpnPrefModel.setHostname(BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
-                getActivity(), mBraveVpnPrefModel, jsonHostNames, isSuccess));
+        Pair<String, String> host = BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
+                getActivity(), mBraveVpnPrefModel, jsonHostNames, isSuccess);
+        mBraveVpnPrefModel.setHostname(host.first);
+        mBraveVpnPrefModel.setHostnameDisplay(host.second);
     }
 
     @Override
     public void onGetProfileCredentials(String jsonProfileCredentials, boolean isSuccess) {
         BraveVpnApiResponseUtils.handleOnGetProfileCredentials(
                 getActivity(), mBraveVpnPrefModel, jsonProfileCredentials, isSuccess);
-        updateSummaries();
+        new Handler().post(() -> updateSummaries());
     }
 
     @Override
@@ -367,10 +378,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 getActivity().getResources().getString(R.string.reset_vpn_config_dialog_message));
         confirmDialog.setPositiveButton(
                 getActivity().getResources().getString(android.R.string.yes), (dialog, which) -> {
-                    if (BraveVpnProfileUtils.getInstance().isVPNConnected(getActivity())) {
-                        BraveVpnProfileUtils.getInstance().stopVpn(getActivity());
-                    }
-                    BraveVpnProfileUtils.getInstance().deleteVpnProfile(getActivity());
+                    BraveVpnUtils.resetProfileConfiguration(getActivity());
+                    new Handler().post(() -> updateSummaries());
                     dialog.dismiss();
                 });
         confirmDialog.setNegativeButton(getActivity().getResources().getString(android.R.string.no),

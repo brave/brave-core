@@ -10,6 +10,7 @@ public class BraveVpnPrefModel {
     private String mProductId;
     private String mSubscriberCredential;
     private String mHostname;
+    private String mHostnameDisplay;
 
     public void setPurchaseToken(String purchaseToken) {
         mPurchaseToken = purchaseToken;
@@ -27,6 +28,10 @@ public class BraveVpnPrefModel {
         mHostname = hostname;
     }
 
+    public void setHostnameDisplay(String hostnameDisplay) {
+        mHostnameDisplay = hostnameDisplay;
+    }
+
     public String getPurchaseToken() {
         return mPurchaseToken;
     }
@@ -41,5 +46,9 @@ public class BraveVpnPrefModel {
 
     public String getHostname() {
         return mHostname;
+    }
+
+    public String getHostnameDisplay() {
+        return mHostnameDisplay;
     }
 }

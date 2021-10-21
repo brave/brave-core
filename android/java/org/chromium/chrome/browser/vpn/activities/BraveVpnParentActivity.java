@@ -9,6 +9,8 @@ package org.chromium.chrome.browser.vpn.activities;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
+import android.util.Pair;
+
 import com.android.billingclient.api.Purchase;
 
 import org.chromium.base.Log;
@@ -120,8 +122,10 @@ public abstract class BraveVpnParentActivity
 
     @Override
     public void onGetHostnamesForRegion(String jsonHostNames, boolean isSuccess) {
-        mBraveVpnPrefModel.setHostname(BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
-                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonHostNames, isSuccess));
+        Pair<String, String> host = BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
+                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonHostNames, isSuccess);
+        mBraveVpnPrefModel.setHostname(host.first);
+        mBraveVpnPrefModel.setHostnameDisplay(host.second);
     }
 
     @Override

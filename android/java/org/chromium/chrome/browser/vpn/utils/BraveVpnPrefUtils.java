@@ -19,6 +19,7 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE =
             "brave_vpn_subscription_purchase";
     private static final String PREF_BRAVE_VPN_HOSTNAME = "brave_vpn_hostname";
+    private static final String PREF_BRAVE_VPN_HOSTNAME_DISPLAY = "brave_vpn_hostname_display";
     private static final String PREF_BRAVE_VPN_PURCHASE_TOKEN = "brave_vpn_purchase_token";
     private static final String PREF_BRAVE_VPN_PRODUCT_ID = "brave_vpn_product_id";
     private static final String PREF_BRAVE_VPN_PURCHASE_EXPIRY = "brave_vpn_purchase_expiry";
@@ -27,6 +28,7 @@ public class BraveVpnPrefUtils {
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
+    public static final String PREF_BRAVE_VPN_START = "brave_vpn_start";
 
     public static final String PREF_BRAVE_VPN_USERNAME = "brave_vpn_username";
     public static final String PREF_BRAVE_VPN_API_AUTH_TOKEN = "brave_vpn_api_auth_token";
@@ -43,6 +45,16 @@ public class BraveVpnPrefUtils {
     public static void setBraveVpnFeatureEnabled(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_FEATURE, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean hasVpnStarted() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_START, false);
+    }
+
+    public static void setVpnStart(boolean newValue) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_START, newValue);
         sharedPreferencesEditor.apply();
     }
 
@@ -84,6 +96,16 @@ public class BraveVpnPrefUtils {
 
     public static String getHostname() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME, "");
+    }
+
+    public static void setHostnameDisplay(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getHostnameDisplay() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_HOSTNAME_DISPLAY, "");
     }
 
     public static void setPurchaseToken(String value) {
@@ -169,6 +191,7 @@ public class BraveVpnPrefUtils {
 
     public static void setPrefModel(BraveVpnPrefModel braveVpnPrefModel) {
         setHostname(braveVpnPrefModel.getHostname());
+        setHostnameDisplay(braveVpnPrefModel.getHostnameDisplay());
         setPurchaseToken(braveVpnPrefModel.getPurchaseToken());
         setProductId(braveVpnPrefModel.getProductId());
         setSubscriberCredential(braveVpnPrefModel.getSubscriberCredential());

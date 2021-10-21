@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.vpn.utils;
 
 import android.app.Activity;
+import android.util.Pair;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
@@ -70,20 +71,21 @@ public class BraveVpnApiResponseUtils {
         }
     }
 
-    public static String handleOnGetHostnamesForRegion(Activity activity,
+    public static Pair<String, String> handleOnGetHostnamesForRegion(Activity activity,
             BraveVpnPrefModel braveVpnPrefModel, String jsonHostNames, boolean isSuccess) {
-        String hostname = "";
+        Pair<String, String> host = new Pair<String, String>("", "");
         if (isSuccess && braveVpnPrefModel != null) {
-            hostname = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
+            host = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
             BraveVpnNativeWorker.getInstance().getProfileCredentials(
-                    braveVpnPrefModel.getSubscriberCredential(), hostname);
+                    braveVpnPrefModel.getSubscriberCredential(),
+                    host.first != null ? host.first : "");
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
             Log.e("BraveVPN", "handleOnGetHostnamesForRegion : failed");
             BraveVpnUtils.dismissProgressDialog();
         }
-        return hostname;
+        return host;
     }
 
     public static void handleOnGetProfileCredentials(Activity activity,
@@ -101,7 +103,7 @@ public class BraveVpnApiResponseUtils {
                         braveVpnProfileCredentials.getPassword());
             } catch (Exception securityException) {
                 BraveVpnProfileUtils.getInstance().startVpn(activity);
-                // activity.finish();
+                activity.finish();
             }
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)

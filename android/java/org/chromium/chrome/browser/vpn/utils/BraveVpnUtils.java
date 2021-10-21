@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
 
@@ -30,6 +31,7 @@ import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
+import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +103,7 @@ public class BraveVpnUtils {
         return "";
     }
 
-    public static String getHostnameForRegion(String jsonHostnames) {
+    public static Pair<String, String> getHostnameForRegion(String jsonHostnames) {
         jsonHostnames = "{\"hostnames\":" + jsonHostnames + "}";
         try {
             JSONObject result = new JSONObject(jsonHostnames);
@@ -121,11 +123,11 @@ public class BraveVpnUtils {
             } else {
                 hostname = hosts.get(new Random().nextInt(hosts.size()));
             }
-            return hostname.getString("hostname");
+            return new Pair<>(hostname.getString("hostname"), hostname.getString("display-name"));
         } catch (JSONException e) {
             Log.e("BraveVPN", "BraveVpnUtils -> getHostnameForRegion JSONException error " + e);
         }
-        return "";
+        return new Pair<String, String>("", "");
     }
 
     public static BraveVpnProfileCredentials getProfileCredentials(String jsonProfileCredentials) {
@@ -201,5 +203,14 @@ public class BraveVpnUtils {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(BRAVE_VPN_NOTIFICATION_ID);
+    }
+
+    public static void resetProfileConfiguration(Activity activity) {
+        if (BraveVpnProfileUtils.getInstance().isVPNConnected(activity)) {
+            BraveVpnProfileUtils.getInstance().stopVpn(activity);
+        }
+        BraveVpnPrefUtils.setHostname("");
+        BraveVpnPrefUtils.setHostnameDisplay("");
+        BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
     }
 }
