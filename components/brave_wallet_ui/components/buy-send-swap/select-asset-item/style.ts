@@ -45,6 +45,6 @@ export const AssetBalance = styled.span`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '24px',
-  height: '24px',
+  height: 'auto',
   marginRight: '8px'
 })
