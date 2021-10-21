@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
@@ -208,46 +209,39 @@ public class PortfolioFragment
         });
     }
 
-    private void setUpCoinList(
-            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
+    private void setUpCoinList(ErcToken[] userAssets, HashMap<String, Double> perTokenCryptoSum,
+            HashMap<String, Double> perTokenFiatSum) {
         View view = getView();
         assert view != null;
-        BraveWalletService braveWalletService = getBraveWalletService();
-        assert braveWalletService != null;
-        String chainName = mSpinner.getSelectedItem().toString();
-        String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        assert chainId != null && !chainId.isEmpty();
-        braveWalletService.getUserAssets(chainId, (userAssets) -> {
-            RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-            WalletCoinAdapter walletCoinAdapter =
-                    new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-            String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
-            for (ErcToken userAsset : userAssets) {
-                String currentAssetSymbol = userAsset.symbol.toLowerCase();
-                Double fiatBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
-                String fiatBalanceString =
-                        String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
-                Double cryptoBalance = perTokenCryptoSum.getOrDefault(currentAssetSymbol, 0.0d);
-                String cryptoBalanceString = String.format(
-                        Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-                WalletListItemModel walletListItemModel =
-                        new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
-                                // Amount in USD
-                                fiatBalanceString,
-                                // Amount in current crypto currency/token
-                                cryptoBalanceString);
-                walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
-                walletListItemModelList.add(walletListItemModel);
-            }
+        RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        for (ErcToken userAsset : userAssets) {
+            String currentAssetSymbol = userAsset.symbol.toLowerCase();
+            Double fiatBalance = perTokenFiatSum.getOrDefault(currentAssetSymbol, 0.0d);
+            String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
+            Double cryptoBalance = perTokenCryptoSum.getOrDefault(currentAssetSymbol, 0.0d);
+            String cryptoBalanceString =
+                    String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-            walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-            walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-            walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-            rvCoins.setAdapter(walletCoinAdapter);
-            rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
-        });
+            WalletListItemModel walletListItemModel =
+                    new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
+                            // Amount in USD
+                            fiatBalanceString,
+                            // Amount in current crypto currency/token
+                            cryptoBalanceString);
+            walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+            walletListItemModelList.add(walletListItemModel);
+        }
+
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+        rvCoins.setAdapter(walletCoinAdapter);
+        rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
@@ -285,149 +279,22 @@ public class PortfolioFragment
     }
 
     private void updatePortfolio() {
-        // Get user assets
-        // Get convertion prices
-        // Get accounts
-        // Get balance per account and asset contract address
-
-        BraveWalletService braveWalletService = getBraveWalletService();
-        assert braveWalletService != null;
-        AssetRatioController assetRatioController = getAssetRatioController();
-        assert assetRatioController != null;
-        KeyringController keyringController = getKeyringController();
-        assert keyringController != null;
-        EthJsonRpcController rpcController = getEthJsonRpcController();
-        assert rpcController != null;
+        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                getAssetRatioController(), getKeyringController(), getEthJsonRpcController());
 
         String chainName = mSpinner.getSelectedItem().toString();
         String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        assert chainId != null && !chainId.isEmpty();
-        braveWalletService.getUserAssets(chainId, (userAssets) -> {
-            HashMap<String, Double> tokenToUsdRatios = new HashMap<String, Double>();
+        portfolioHelper.setChainId(chainId);
+        portfolioHelper.calculateBalances(() -> {
+            final String fiatSumString = String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+            PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                mBalance.setText(fiatSumString);
+                mBalance.invalidate();
 
-            AsyncUtils.MultiResponseHandler pricesMultiResponse =
-                    new AsyncUtils.MultiResponseHandler(userAssets.length);
-            ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
-                    new ArrayList<AsyncUtils.GetPriceResponseContext>();
-            for (ErcToken userAsset : userAssets) {
-                String[] fromAssets = new String[] {userAsset.symbol.toLowerCase()};
-                String[] toAssets = new String[] {"usd"};
-
-                AsyncUtils.GetPriceResponseContext priceContext =
-                        new AsyncUtils.GetPriceResponseContext(
-                                pricesMultiResponse.singleResponseComplete);
-
-                pricesContexts.add(priceContext);
-
-                assetRatioController.getPrice(
-                        fromAssets, toAssets, AssetPriceTimeframe.LIVE, priceContext);
-            }
-
-            pricesMultiResponse.setWhenAllCompletedAction(
-                    () -> {
-                        for (AsyncUtils.GetPriceResponseContext priceContext : pricesContexts) {
-                            if (!priceContext.success) {
-                                continue;
-                            }
-
-                            assert priceContext.prices.length == 1;
-
-                            Double usdPerToken = 0.0d;
-                            try {
-                                usdPerToken = Double.parseDouble(priceContext.prices[0].price);
-                            } catch (NullPointerException | NumberFormatException ex) {
-                                Log.e(TAG,
-                                        "Cannot parse " + priceContext.prices[0].price + ", " + ex);
-                                return;
-                            }
-                            tokenToUsdRatios.put(
-                                    priceContext.prices[0].fromAsset.toLowerCase(), usdPerToken);
-                        }
-
-                        keyringController.getDefaultKeyringInfo(keyringInfo -> {
-                            if (keyringInfo != null) {
-                                AccountInfo[] accountInfos = keyringInfo.accountInfos;
-
-                                AsyncUtils.MultiResponseHandler multiResponse =
-                                        new AsyncUtils.MultiResponseHandler(
-                                                accountInfos.length * userAssets.length);
-
-                                ArrayList<AsyncUtils.GetBalanceResponseBaseContext> contexts =
-                                        new ArrayList<AsyncUtils.GetBalanceResponseBaseContext>();
-
-                                // Tokens balances
-                                for (AccountInfo accountInfo : accountInfos) {
-                                    for (ErcToken userAsset : userAssets) {
-                                        if (userAsset.contractAddress.isEmpty()) {
-                                            AsyncUtils.GetBalanceResponseContext context =
-                                                    new AsyncUtils.GetBalanceResponseContext(
-                                                            multiResponse.singleResponseComplete);
-                                            context.userAsset = userAsset;
-                                            contexts.add(context);
-                                            rpcController.getBalance(accountInfo.address, context);
-
-                                        } else {
-                                            AsyncUtils.GetErc20TokenBalanceResponseContext context =
-                                                    new AsyncUtils
-                                                            .GetErc20TokenBalanceResponseContext(
-                                                                    multiResponse
-                                                                            .singleResponseComplete);
-                                            context.userAsset = userAsset;
-                                            contexts.add(context);
-                                            rpcController.getErc20TokenBalance(
-                                                    userAsset.contractAddress, accountInfo.address,
-                                                    context);
-                                        }
-                                    }
-                                }
-
-                                multiResponse.setWhenAllCompletedAction(() -> {
-                                    Double totalFiatSum = 0.0d;
-                                    HashMap<String, Double> perTokenFiatSum =
-                                            new HashMap<String, Double>();
-
-                                    HashMap<String, Double> perTokenCryptoSum =
-                                            new HashMap<String, Double>();
-
-                                    for (AsyncUtils.GetBalanceResponseBaseContext context :
-                                            contexts) {
-                                        String currentAssetSymbol =
-                                                context.userAsset.symbol.toLowerCase();
-                                        Double usdPerThisToken = tokenToUsdRatios.getOrDefault(
-                                                currentAssetSymbol, 0.0d);
-
-                                        Double thisBalanceCryptoPart = context.success
-                                                ? fromHexWei(context.balance, 18)
-                                                : 0.0d;
-
-                                        Double thisBalanceFiatPart =
-                                                usdPerThisToken * thisBalanceCryptoPart;
-
-                                        Double prevThisTokenCryptoSum =
-                                                perTokenCryptoSum.getOrDefault(
-                                                        currentAssetSymbol, 0.0d);
-                                        perTokenCryptoSum.put(currentAssetSymbol,
-                                                prevThisTokenCryptoSum + thisBalanceCryptoPart);
-
-                                        Double prevThisTokenFiatSum = perTokenFiatSum.getOrDefault(
-                                                currentAssetSymbol, 0.0d);
-                                        perTokenFiatSum.put(currentAssetSymbol,
-                                                prevThisTokenFiatSum + thisBalanceFiatPart);
-
-                                        totalFiatSum += thisBalanceFiatPart;
-                                    }
-                                    final String fiatSumString =
-                                            String.format(Locale.getDefault(), "$%,.2f", totalFiatSum);
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        mBalance.setText(fiatSumString);
-                                        mBalance.invalidate();
-
-                                        setUpCoinList(perTokenCryptoSum, perTokenFiatSum);
-                                    });
-                                });
-                            }
-                        });
-                    });
+                setUpCoinList(portfolioHelper.getUserAssets(),
+                        portfolioHelper.getPerTokenCryptoSum(),
+                        portfolioHelper.getPerTokenFiatSum());
+            });
         });
     }
 }
