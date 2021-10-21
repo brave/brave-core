@@ -56,15 +56,15 @@ public abstract class BraveVpnParentActivity
             Purchase purchase = purchases.get(0);
             mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
             mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
-            if (mIsVerification) {
-                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
-                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
-            } else {
+            if (!mIsVerification || BraveVpnPrefUtils.isResetConfiguration()) {
                 BraveVpnNativeWorker.getInstance().getSubscriberCredential(
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, mBraveVpnPrefModel.getProductId(),
                         BraveVpnUtils.IAP_ANDROID_PARAM_TEXT, mBraveVpnPrefModel.getPurchaseToken(),
                         getPackageName());
+            } else {
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getPackageName());
             }
         } else {
             if (!mIsVerification) {

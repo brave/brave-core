@@ -213,5 +213,6 @@ public class BraveVpnUtils {
         BraveVpnPrefUtils.setHostname("");
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
+        BraveVpnPrefUtils.setResetConfiguration(true);
     }
 }

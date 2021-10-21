@@ -283,15 +283,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             Purchase purchase = purchases.get(0);
             mBraveVpnPrefModel.setPurchaseToken(purchase.getPurchaseToken());
             mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
-            if (isVerification) {
-                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
-                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
-                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getActivity().getPackageName());
-            } else {
+            if (!isVerification || BraveVpnPrefUtils.isResetConfiguration()) {
                 BraveVpnNativeWorker.getInstance().getSubscriberCredential(
                         BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, mBraveVpnPrefModel.getProductId(),
                         BraveVpnUtils.IAP_ANDROID_PARAM_TEXT, mBraveVpnPrefModel.getPurchaseToken(),
                         getActivity().getPackageName());
+            } else {
+                BraveVpnNativeWorker.getInstance().verifyPurchaseToken(
+                        mBraveVpnPrefModel.getPurchaseToken(), mBraveVpnPrefModel.getProductId(),
+                        BraveVpnUtils.SUBSCRIPTION_PARAM_TEXT, getActivity().getPackageName());
             }
         } else {
             BraveVpnApiResponseUtils.queryPurchaseFailed(getActivity());

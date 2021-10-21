@@ -25,6 +25,8 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_PURCHASE_EXPIRY = "brave_vpn_purchase_expiry";
     private static final String PREF_BRAVE_VPN_SERVER_REGIONS = "brave_vpn_server_regions";
     private static final String PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION = "server_change_location";
+    private static final String PREF_BRAVE_VPN_RESET_CONFIGURATION =
+            "brave_vpn_reset_configuration";
 
     public static final String PREF_BRAVE_VPN_AUTOMATIC = "automatic";
     public static final String PREF_BRAVE_VPN_FEATURE = "brave_vpn_feature";
@@ -85,6 +87,16 @@ public class BraveVpnPrefUtils {
     public static void setSubscriptionPurchase(boolean newValue) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_SUBSCRIPTION_PURCHASE, newValue);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean isResetConfiguration() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, false);
+    }
+
+    public static void setResetConfiguration(boolean newValue) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_VPN_RESET_CONFIGURATION, newValue);
         sharedPreferencesEditor.apply();
     }
 
@@ -196,5 +208,6 @@ public class BraveVpnPrefUtils {
         setPurchaseToken(braveVpnPrefModel.getPurchaseToken());
         setProductId(braveVpnPrefModel.getProductId());
         setSubscriberCredential(braveVpnPrefModel.getSubscriberCredential());
+        setResetConfiguration(false);
     }
 }
