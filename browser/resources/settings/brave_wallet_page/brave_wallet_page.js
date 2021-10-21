@@ -18,6 +18,7 @@ Polymer({
   behaviors: [
     WebUIListenerBehavior,
     PrefsBehavior,
+    I18nBehavior
   ],
 
   properties: {
@@ -36,6 +37,7 @@ Polymer({
   ready: function() {
     this.onBraveWalletEnabledChange_ = this.onBraveWalletEnabledChange_.bind(this)
     this.onInputAutoLockMinutes_ = this.onInputAutoLockMinutes_.bind(this)
+    this.onResetWallet_ = this.onResetWallet_.bind(this)
     this.browserProxy_.getWeb3ProviderList().then(list => {
       this.wallets_ = JSON.parse(list)
     });
@@ -58,5 +60,12 @@ Polymer({
     }
     this.setPrefValue('brave.wallet.auto_lock_minutes', value)
   },
+
+  onResetWallet_: function() {
+    var message = this.i18n('walletResetConfirmation')
+    if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase'))
+      return
+    this.browserProxy_.resetWallet();
+  }
 });
 })();

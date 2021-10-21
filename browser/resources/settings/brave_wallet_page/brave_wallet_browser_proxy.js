@@ -21,6 +21,10 @@ export class BraveWalletBrowserProxy {
  */
 export class BraveWalletBrowserProxyImpl {
   /** @override */
+  resetWallet () {
+    chrome.send('resetWallet', [])
+  }
+  /** @override */
   setBraveWalletEnabled (value) {
     chrome.send('setBraveWalletEnabled', [value])
   }
