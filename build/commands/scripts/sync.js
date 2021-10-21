@@ -61,6 +61,7 @@ async function RunCommand () {
     Log.warn('--all, --run_hooks and --run_sync are deprecated. Will behave as if flag was not passed. Please update your command to `npm run sync` in the future.')
   }
 
+  let braveCoreRef = program.args[0]
   if (braveCoreRef && !program.init) {
     Log.error('[ref] option requies --init to work correctly')
     process.exit(1)
@@ -74,7 +75,6 @@ async function RunCommand () {
     util.buildGClientConfig()
   }
 
-  let braveCoreRef = program.args[0]
   if (!braveCoreRef) {
     braveCoreRef = program.init ? config.getProjectVersion('brave-core') : null
   }
