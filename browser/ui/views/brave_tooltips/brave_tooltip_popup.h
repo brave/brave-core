@@ -84,6 +84,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   // User pressed the Cancel button
   void OnCancelButtonPressed();
 
+  gfx::Rect CalculateBounds(bool use_default_origin);
+
   void set_normalized_display_coordinates(double x, double y);
 
   void set_display_work_area_insets(int x, int y);
@@ -111,6 +113,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   // views::WidgetObserver:
   void OnWidgetCreated(views::Widget* widget) override;
   void OnWidgetDestroyed(views::Widget* widget) override;
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& new_bounds) override;
 
   // AnimationDelegate:
   void AnimationEnded(const gfx::Animation* animation) override;
@@ -121,8 +125,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   void CreatePopup();
 
   gfx::Point GetDefaultOriginForSize(const gfx::Size& size);
-
-  gfx::Rect CalculateBounds();
 
   void RecomputeAlignment();
 
@@ -145,6 +147,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
   std::unique_ptr<BraveTooltip> tooltip_;
 
   BraveTooltipView* tooltip_view_ = nullptr;  // NOT OWNED
+
+  gfx::Point widget_origin_ = {0, 0};
 
   double normalized_display_coordinate_x_ = 1.0;
   double normalized_display_coordinate_y_ = 0.0;

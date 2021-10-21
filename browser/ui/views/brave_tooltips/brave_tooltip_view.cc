@@ -126,8 +126,7 @@ bool BraveTooltipView::OnMouseDragged(const ui::MouseEvent& event) {
     return false;
   }
 
-  gfx::Rect bounds =
-      GetWidget()->GetContentsView()->GetBoundsInScreen() + movement;
+  gfx::Rect bounds = tooltip_popup_->CalculateBounds(false) + movement;
   const gfx::NativeView native_view = GetWidget()->GetNativeView();
   AdjustBoundsToFitWorkAreaForNativeView(&bounds, native_view);
   GetWidget()->SetBounds(bounds);
@@ -146,6 +145,13 @@ void BraveTooltipView::OnMouseReleased(const ui::MouseEvent& event) {
   }
 
   View::OnMouseReleased(event);
+}
+
+void BraveTooltipView::OnDeviceScaleFactorChanged(
+    float old_device_scale_factor,
+    float new_device_scale_factor) {
+  GetWidget()->DeviceScaleFactorChanged(old_device_scale_factor,
+                                        new_device_scale_factor);
 }
 
 void BraveTooltipView::OnThemeChanged() {
