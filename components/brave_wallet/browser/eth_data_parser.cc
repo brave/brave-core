@@ -74,8 +74,10 @@ bool GetTransactionInfoFromData(const std::string& data,
   }
   if (!IsValidHexString(data))
     return false;
-  if (data.length() < 10)
-    return false;
+  if (data.length() < 10) {
+    *tx_type = mojom::TransactionType::Other;
+    return true;
+  }
 
   std::string function_hash = base::ToLowerASCII(data.substr(0, 10));
   auto it = kEthDataFunctionHashes.find(function_hash);

@@ -160,7 +160,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
   std::vector<std::string> tx_args;
 
   // No function hash
-  EXPECT_FALSE(
+  EXPECT_TRUE(
       GetTransactionInfoFromData("0x1", &tx_type, &tx_params, &tx_args));
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
   EXPECT_TRUE(

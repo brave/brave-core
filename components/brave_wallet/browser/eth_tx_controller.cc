@@ -773,6 +773,23 @@ void EthTxController::SetGasFeeAndLimitForUnapprovedTransaction(
   std::move(callback).Run(true);
 }
 
+void EthTxController::SetDataForUnapprovedTransaction(
+    const std::string& tx_meta_id,
+    const std::vector<uint8_t>& data,
+    SetDataForUnapprovedTransactionCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> tx_meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!tx_meta || tx_meta->status != mojom::TransactionStatus::Unapproved) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  tx_meta->tx->set_data(data);
+  tx_state_manager_->AddOrUpdateTx(*tx_meta);
+  NotifyUnapprovedTxUpdated(tx_meta.get());
+  std::move(callback).Run(true);
+}
+
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxController::GetTxForTesting(
     const std::string& tx_meta_id) {
   return tx_state_manager_->GetTx(tx_meta_id);
