@@ -155,8 +155,8 @@ void BraveBrowserMainParts::PreShutdown() {
 
 void BraveBrowserMainParts::PreProfileInit() {
   ChromeBrowserMainParts::PreProfileInit();
-  auto* command_line = base::CommandLine::ForCurrentProcess();
 #if !defined(OS_ANDROID)
+  auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
     if (!command_line->HasSwitch(switches::kDisableSync))
