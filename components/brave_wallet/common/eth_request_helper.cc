@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 
 namespace {
@@ -240,7 +241,11 @@ bool ParsePersonalSignParams(const std::string& json,
     return false;
 
   *address = *address_str;
-  *message = *message_str;
+  if (IsValidHexString(*message_str)) {
+    *message = *message_str;
+  } else {
+    *message = ToHex(*message_str);
+  }
 
   return true;
 }
