@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
@@ -283,115 +284,6 @@ public class PortfolioFragment
         return null;
     }
 
-    // Helper to track multiple EthJsonRpcController.getBalance responses
-    private class GetBalanceMultiResponse {
-        private Runnable mWhenAllCompletedRunnable;
-        private int mTotalElements;
-        private int mCurrentElements;
-
-        public GetBalanceMultiResponse(int totalElements) {
-            synchronized (this) {
-                mTotalElements = totalElements;
-            }
-        }
-
-        // TODO(AlexeyBarabash): add runnable to handle the timeout case
-        public void setWhenAllCompletedAction(Runnable whenAllCompletedRunnable) {
-            synchronized (this) {
-                assert this.mWhenAllCompletedRunnable == null;
-                this.mWhenAllCompletedRunnable = whenAllCompletedRunnable;
-                checkAndRunCompletedAction();
-            }
-        }
-
-        public Runnable singleResponseComplete = new Runnable() {
-            @Override
-            public void run() {
-                synchronized (this) {
-                    mCurrentElements++;
-                    assert mCurrentElements <= mTotalElements;
-                    checkAndRunCompletedAction();
-                }
-            }
-        };
-
-        private void checkAndRunCompletedAction() {
-            if (mCurrentElements == mTotalElements) {
-                mWhenAllCompletedRunnable.run();
-            }
-        }
-    }
-
-    private class SingleResponseBaseContext {
-        private Runnable mResponseCompleteCallback;
-
-        public SingleResponseBaseContext(Runnable responseCompleteCallback) {
-            mResponseCompleteCallback = responseCompleteCallback;
-        }
-
-        public void fireResponseCompleteCallback() {
-            assert mResponseCompleteCallback != null;
-            mResponseCompleteCallback.run();
-        }
-    }
-
-    private class GetBalanceResponseBaseContext extends SingleResponseBaseContext {
-        public Boolean success;
-        public String balance;
-        public ErcToken userAsset;
-
-        public GetBalanceResponseBaseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        public void callBase(Boolean success, String balance) {
-            this.success = success;
-            this.balance = balance;
-            super.fireResponseCompleteCallback();
-        }
-    };
-
-    private class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetErc20TokenBalanceResponse {
-        public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
-        }
-    }
-
-    private class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetBalanceResponse {
-        public GetBalanceResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(Boolean success, String balance) {
-            super.callBase(success, balance);
-        }
-    }
-
-    private class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioController.GetPriceResponse {
-        public Boolean success;
-        public AssetPrice[] prices;
-
-        public GetPriceResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(Boolean success, AssetPrice[] prices) {
-            this.success = success;
-            this.prices = prices;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     private void updatePortfolio() {
         // Get user assets
         // Get convertion prices
@@ -413,16 +305,17 @@ public class PortfolioFragment
         braveWalletService.getUserAssets(chainId, (userAssets) -> {
             HashMap<String, Double> tokenToUsdRatios = new HashMap<String, Double>();
 
-            GetBalanceMultiResponse pricesMultiResponse =
-                    new GetBalanceMultiResponse(userAssets.length);
-            ArrayList<GetPriceResponseContext> pricesContexts =
-                    new ArrayList<GetPriceResponseContext>();
+            AsyncUtils.MultiResponseHandler pricesMultiResponse =
+                    new AsyncUtils.MultiResponseHandler(userAssets.length);
+            ArrayList<AsyncUtils.GetPriceResponseContext> pricesContexts =
+                    new ArrayList<AsyncUtils.GetPriceResponseContext>();
             for (ErcToken userAsset : userAssets) {
                 String[] fromAssets = new String[] {userAsset.symbol.toLowerCase()};
                 String[] toAssets = new String[] {"usd"};
 
-                GetPriceResponseContext priceContext =
-                        new GetPriceResponseContext(pricesMultiResponse.singleResponseComplete);
+                AsyncUtils.GetPriceResponseContext priceContext =
+                        new AsyncUtils.GetPriceResponseContext(
+                                pricesMultiResponse.singleResponseComplete);
 
                 pricesContexts.add(priceContext);
 
@@ -432,7 +325,7 @@ public class PortfolioFragment
 
             pricesMultiResponse.setWhenAllCompletedAction(
                     () -> {
-                        for (GetPriceResponseContext priceContext : pricesContexts) {
+                        for (AsyncUtils.GetPriceResponseContext priceContext : pricesContexts) {
                             if (!priceContext.success) {
                                 continue;
                             }
@@ -455,27 +348,30 @@ public class PortfolioFragment
                             if (keyringInfo != null) {
                                 AccountInfo[] accountInfos = keyringInfo.accountInfos;
 
-                                GetBalanceMultiResponse multiResponse = new GetBalanceMultiResponse(
-                                        accountInfos.length * userAssets.length);
+                                AsyncUtils.MultiResponseHandler multiResponse =
+                                        new AsyncUtils.MultiResponseHandler(
+                                                accountInfos.length * userAssets.length);
 
-                                ArrayList<GetBalanceResponseBaseContext> contexts =
-                                        new ArrayList<GetBalanceResponseBaseContext>();
+                                ArrayList<AsyncUtils.GetBalanceResponseBaseContext> contexts =
+                                        new ArrayList<AsyncUtils.GetBalanceResponseBaseContext>();
 
                                 // Tokens balances
                                 for (AccountInfo accountInfo : accountInfos) {
                                     for (ErcToken userAsset : userAssets) {
                                         if (userAsset.contractAddress.isEmpty()) {
-                                            GetBalanceResponseContext context =
-                                                    new GetBalanceResponseContext(
+                                            AsyncUtils.GetBalanceResponseContext context =
+                                                    new AsyncUtils.GetBalanceResponseContext(
                                                             multiResponse.singleResponseComplete);
                                             context.userAsset = userAsset;
                                             contexts.add(context);
                                             rpcController.getBalance(accountInfo.address, context);
 
                                         } else {
-                                            GetErc20TokenBalanceResponseContext context =
-                                                    new GetErc20TokenBalanceResponseContext(
-                                                            multiResponse.singleResponseComplete);
+                                            AsyncUtils.GetErc20TokenBalanceResponseContext context =
+                                                    new AsyncUtils
+                                                            .GetErc20TokenBalanceResponseContext(
+                                                                    multiResponse
+                                                                            .singleResponseComplete);
                                             context.userAsset = userAsset;
                                             contexts.add(context);
                                             rpcController.getErc20TokenBalance(
@@ -493,7 +389,8 @@ public class PortfolioFragment
                                     HashMap<String, Double> perTokenCryptoSum =
                                             new HashMap<String, Double>();
 
-                                    for (GetBalanceResponseBaseContext context : contexts) {
+                                    for (AsyncUtils.GetBalanceResponseBaseContext context :
+                                            contexts) {
                                         String currentAssetSymbol =
                                                 context.userAsset.symbol.toLowerCase();
                                         Double usdPerThisToken = tokenToUsdRatios.getOrDefault(
