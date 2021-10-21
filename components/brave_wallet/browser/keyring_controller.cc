@@ -810,6 +810,11 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
     account_info->is_imported = true;
     result.push_back(std::move(account_info));
   }
+
+  // append hardware accounts info
+  for (const auto& hardware_account_info : GetHardwareAccountsSync()) {
+    result.push_back(hardware_account_info.Clone());
+  }
   return result;
 }
 
@@ -831,11 +836,6 @@ KeyringController::GetHardwareAccountsSync() {
   }
 
   return accounts;
-}
-
-void KeyringController::GetHardwareAccounts(
-    GetHardwareAccountsCallback callback) {
-  std::move(callback).Run(GetHardwareAccountsSync());
 }
 
 // static

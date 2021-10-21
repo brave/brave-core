@@ -235,7 +235,6 @@ interface KeyringController {
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
   SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
   AddHardwareAccounts(array<HardwareWalletAccount> info);
-  GetHardwareAccounts() => (array<AccountInfo> accounts);
   RemoveHardwareAccount(string address);
   NotifyUserInteraction();
   GetSelectedAccount() => (string? address);

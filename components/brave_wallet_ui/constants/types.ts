@@ -681,7 +681,6 @@ export interface KeyringController {
   lock: () => Promise<void>
   unlock: (password: string) => Promise<UnlockReturnInfo>
   addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
-  getHardwareAccounts: () => Promise<{ accounts: AccountInfo[] }>
   notifyUserInteraction: () => Promise<void>
   getSelectedAccount: () => Promise<GetSelectedAccountReturnInfo>
   setSelectedAccount: (address: string) => Promise<SetSelectedAccountReturnInfo>
