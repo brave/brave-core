@@ -22,6 +22,8 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/translate/core/browser/translate_download_manager.h"
 #include "components/translate/core/browser/translate_language_list.h"
@@ -183,6 +185,20 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS, ISOLATED_WORLD_ID_TRANSLATE);
   }
 
+  bool HasBadFlagsInfobar() {
+    auto* infobar_manager = infobars::ContentInfoBarManager::FromWebContents(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    CHECK(infobar_manager);
+
+    for (size_t i = 0; i < infobar_manager->infobar_count(); ++i) {
+      if (infobar_manager->infobar_at(i)->delegate()->GetIdentifier() ==
+          infobars::InfoBarDelegate::BAD_FLAGS_INFOBAR_DELEGATE) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   MockFunction<std::tuple<net::HttpStatusCode, std::string, std::string>(
       std::string)>
@@ -243,6 +259,10 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
             "translate.brave.com");
   EXPECT_EQ(TranslateScript::GetTranslateScriptURL().host(),
             "translate.brave.com");
+
+  // Check no bad flags infobar is shown (about the different translate
+  // script/origin).
+  EXPECT_FALSE(HasBadFlagsInfobar());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 
@@ -355,6 +375,10 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
   // The resulting callback must be postted immediately, so simply use
   // RunUtilIdle() to wait for it.
   base::RunLoop().RunUntilIdle();
+
+  // Check no bad flags infobar is shown (about the different translate
+  // script/origin).
+  EXPECT_FALSE(HasBadFlagsInfobar());
 }
 
 }  // namespace translate

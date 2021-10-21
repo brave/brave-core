@@ -15,7 +15,6 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/translate/core/common/brave_translate_constants.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
@@ -168,13 +167,6 @@ void BraveBrowserMainParts::PreProfileInit() {
     command_line->RemoveSwitch(switches::kDisableSync);
   }
 #endif
-
-  // Redirect the translate script request to the Brave
-  // endpoints.
-  if (!command_line->HasSwitch(translate::switches::kTranslateScriptURL)) {
-    command_line->AppendSwitchASCII(translate::switches::kTranslateScriptURL,
-                                    translate::kBraveTranslateScriptURL);
-  }
 
   if (!translate::ShouldUpdateLanguagesList())
     translate::TranslateLanguageList::DisableUpdate();
