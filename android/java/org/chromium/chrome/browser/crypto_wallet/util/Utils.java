@@ -17,7 +17,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +47,7 @@ import org.chromium.ui.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -344,7 +348,7 @@ public class Utils {
         return Double.valueOf(resStr);
     }
 
-    public static double fromHexWeiToGWEI(String number) {
+    public static double fromHexGWeiToGWEI(String number) {
         try {
             if (number.equals("0x0")) {
                 return 0;

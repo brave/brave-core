@@ -88,11 +88,11 @@ public class TxFragment extends Fragment {
 
                 EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                 gasFeeEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                        Utils.fromHexWeiToGWEI(mTxInfo.txData.baseData.gasPrice)));
+                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice, 9)));
 
                 EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
                 gasLimitEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                        Utils.fromHexWeiToGWEI(mTxInfo.txData.baseData.gasLimit)));
+                        Utils.fromHexGWeiToGWEI(mTxInfo.txData.baseData.gasLimit)));
 
                 Button cancel = dialog.findViewById(R.id.cancel);
                 cancel.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class TxFragment extends Fragment {
                             return;
                         }
                         mTxInfo.txData.baseData.gasPrice =
-                                Utils.toHexWeiFromGWEI(gasFeeEdit.getText().toString());
+                                Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
                         mTxInfo.txData.baseData.gasLimit =
                                 Utils.toHexWeiFromGWEI(gasLimitEdit.getText().toString());
                         ethTxController.setGasPriceAndLimitForUnapprovedTransaction(mTxInfo.id,
