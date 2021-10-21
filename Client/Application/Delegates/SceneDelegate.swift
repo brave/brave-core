@@ -82,7 +82,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             SceneObserver.setupApplication(window: $0) // TODO: REFACTOR for multiple windows
             
             $0.backgroundColor = .black
-            $0.frame = UIScreen.main.bounds
             $0.overrideUserInterfaceStyle = expectedThemeOverride
             $0.tintColor = UIColor {
                 if $0.userInterfaceStyle == .dark {
