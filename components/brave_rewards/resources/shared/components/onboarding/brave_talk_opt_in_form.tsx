@@ -92,7 +92,7 @@ export function BraveTalkOptInForm (props: Props) {
         </MainButton>
       </style.enable>
       <style.terms>
-        <TermsOfService text={getString('braveTalkOptInAdsTerms')} />
+        <TermsOfService text={getString('braveTalkOptInRewardsTerms')} />
       </style.terms>
     </style.root>
   )

@@ -1577,7 +1577,7 @@ until they verify, or until 90 days have passed.
         Turn on Rewards
       </message>
       <message name="IDS_BRAVE_TALK_REWARDS_TOS_PP_TEXT" desc="Brave rewards terms of service and privacy policy">
-        By tapping, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>. Disable any time in Settings.
+        By enabling, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
       </message>
       <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_TEXT" desc="Turn on brave private ads">
         To start a free call, enable Brave Private Ads
@@ -1588,14 +1588,11 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_TALK_TURN_ON_PRIVATE_ADS_BUTTON_TEXT" desc="Turn on brave private ads button">
         Turn on Brave Private Ads
       </message>
-      <message name="IDS_BRAVE_TALK_PRIVATE_ADS_TOS_PP_TEXT" desc="Brave private ads terms of service and privacy policy">
-        By turning on Ads, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph> and <ph name="PRIVACY_POLICY">%2$s</ph>.
-      </message>
       <message name="IDS_BRAVE_TALK_START_FREE_CALL_TEXT" desc="Brave talk start call popup header">
         You can now start a free call
       </message>
       <message name="IDS_BRAVE_TALK_TAP_ANYWHERE_TEXT" desc="Brave talk continue popup text">
-        Tap anywhere on the screen to continue to Brave Talk.
+        Click or tap anywhere on the screen to continue to Brave Talk.
       </message>
       <message name="IDS_BRAVE_TALK_WANT_LEARN_MORE_TEXT" desc="Brave talk learn more popup text">
         Want to learn more about Brave Rewards? <ph name="TAKE_QUICK_TOUR">%1$s</ph>.
