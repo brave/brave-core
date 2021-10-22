@@ -150,6 +150,13 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
           123
         ]
       })");
+  const std::string json_with_message_string(
+      R"({
+        "params": [
+          "Have you tried Brave?",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
   std::string address;
   std::string message;
   EXPECT_TRUE(ParsePersonalSignParams(json, &address, &message));
@@ -159,6 +166,11 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   EXPECT_TRUE(ParsePersonalSignParams(json_extra_entry, &address, &message));
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(message, "0xdeadbeef");
+
+  EXPECT_TRUE(
+      ParsePersonalSignParams(json_with_message_string, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0x4861766520796f752074726965642042726176653f");
 
   EXPECT_FALSE(ParsePersonalSignParams(json, &address, nullptr));
   EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, &message));

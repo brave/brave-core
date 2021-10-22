@@ -24,30 +24,12 @@ class GURL;
 namespace brave_wallet {
 
 bool IsNativeWalletEnabled();
-// Equivalent to web3.utils.toHex(string);
-std::string ToHex(const std::string& data);
-std::string ToHex(const std::vector<uint8_t>& data);
 // Equivalent to web3.utils.keccak256(string)
 std::string KeccakHash(const std::string& input, bool to_hex = true);
 std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input);
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
 std::string GetFunctionHash(const std::string& input);
-// Pads a hex encoded parameter to 32-bytes
-// i.e. 64 hex characters.
-// Input must be prefixed with 0x
-bool PadHexEncodedParameter(const std::string& hex_input, std::string* out);
-// Determines if the passed in hex string is valid
-bool IsValidHexString(const std::string& hex_input);
-// Takes 2 inputs prefixed by 0x and combines them into an output with a single
-// 0x. For example 0x1 and 0x2 would return 0x12.
-// Note thta this doesn't do any special casing like 0x and 0x will make 0x00
-// and not 0x.
-bool ConcatHexStrings(const std::string& hex_input1,
-                      const std::string& hex_input2,
-                      std::string* out);
-bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
-                      std::string* out);
 
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
 std::string Uint256ValueToHex(uint256_t input);
