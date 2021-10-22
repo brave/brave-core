@@ -40,6 +40,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -317,6 +318,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      vg_sync_service_(VgSyncServiceFactory::GetForProfile(profile_)),
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -344,6 +346,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     greaselion_service_->AddObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(this);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -354,6 +358,8 @@ RewardsServiceImpl::~RewardsServiceImpl() {
     greaselion_service_->RemoveObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(nullptr);
 
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
@@ -3192,8 +3198,11 @@ void RewardsServiceImpl::RunDBTransaction(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
                      ledger_database_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                         ledger::client::RunDBTransactionCallback,
+                         ledger::type::DBCommandResponsePtr)>(
+                         &RewardsServiceImpl::OnRunDBTransaction),
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(
@@ -3201,6 +3210,28 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::type::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   callback(std::move(response));
+}
+
+void RewardsServiceImpl::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  DCHECK(ledger_database_);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
+                     ledger_database_.get()),
+      base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                         ledger::client::RunDBTransactionCallback2,
+                         ledger::type::DBCommandResponsePtr)>(
+                         &RewardsServiceImpl::OnRunDBTransaction),
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRunDBTransaction(
+    ledger::client::RunDBTransactionCallback2 callback,
+    ledger::type::DBCommandResponsePtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(callback).Run(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(
@@ -3509,6 +3540,58 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
 void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   if (IsValidWalletType(wallet_type)) {
     profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
+  }
+}
+
+void RewardsServiceImpl::BackUpVgBodies() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgBodies(
+        base::BindOnce(&RewardsServiceImpl::OnBackUpVgBodies, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    vg_sync_service_->BackUpVgBodies(std::move(vg_bodies));
+  } else {
+    VLOG(0) << "RewardsServiceImpl::OnBackUpVgBodies failed";
+  }
+}
+
+void RewardsServiceImpl::BackUpVgSpendStatuses() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    vg_sync_service_->BackUpVgSpendStatuses(std::move(vg_spend_statuses));
+  } else {
+    VLOG(0) << "OnBackUpVgSpendStatuses failed";
+  }
+}
+
+void RewardsServiceImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (Connected()) {
+    bat_ledger_->RestoreVgs(
+        std::move(vg_bodies), std::move(vg_spend_statuses),
+        base::BindOnce(&RewardsServiceImpl::OnRestoreVgs, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    VLOG(0) << "RestoreVgs was successful";
+  } else {
+    VLOG(0) << "RestoreVgs failed";
   }
 }
 

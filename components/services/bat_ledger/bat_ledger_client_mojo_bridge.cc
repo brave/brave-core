@@ -328,7 +328,29 @@ void BatLedgerClientMojoBridge::RunDBTransaction(
     ledger::client::RunDBTransactionCallback callback) {
   bat_ledger_client_->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+      base::BindOnce(
+          static_cast<void (*)(const ledger::client::RunDBTransactionCallback&,
+                               ledger::type::DBCommandResponsePtr)>(
+              &OnRunDBTransaction),
+          std::move(callback)));
+}
+
+void OnRunDBTransaction(
+    ledger::client::RunDBTransactionCallback2&& callback,
+    ledger::type::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
+}
+
+void BatLedgerClientMojoBridge::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  bat_ledger_client_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(
+          static_cast<void (*)(ledger::client::RunDBTransactionCallback2&&,
+                               ledger::type::DBCommandResponsePtr)>(
+              &OnRunDBTransaction),
+          std::move(callback)));
 }
 
 void OnGetCreateScript(
@@ -382,6 +404,14 @@ absl::optional<std::string> BatLedgerClientMojoBridge::DecryptString(
   absl::optional<std::string> result;
   bat_ledger_client_->DecryptString(value, &result);
   return result;
+}
+
+void BatLedgerClientMojoBridge::BackUpVgBodies() {
+  bat_ledger_client_->BackUpVgBodies();
+}
+
+void BatLedgerClientMojoBridge::BackUpVgSpendStatuses() {
+  bat_ledger_client_->BackUpVgSpendStatuses();
 }
 
 }  // namespace bat_ledger
