@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 374ba71ddf91ba549ecfceea700d51183546bbf9..5e6ce0d1bee09b7d12b167046b11bc5e8495b401 100644
+index 9e5760e10f99967294208a91ff406a502b873d3b..b3143375715e958aab6b2d03e8a50966c0626a46 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -98,6 +98,7 @@ generate_grd("build_grd") {
@@ -8,7 +8,7 @@ index 374ba71ddf91ba549ecfceea700d51183546bbf9..5e6ce0d1bee09b7d12b167046b11bc5e
    }
 +  deps += [ "//brave/browser/resources/settings:resources" ]
  }
- 
+
  preprocess_if_expr("preprocess") {
 @@ -786,4 +787,6 @@ ts_library("build_ts") {
      ":preprocess",

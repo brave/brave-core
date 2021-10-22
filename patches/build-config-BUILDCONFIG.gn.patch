@@ -1,8 +1,8 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 62e7e4bcd3e6c1ef49e3c929af7ac4634a1e6e2b..7522c87aa5708b5d50937c694723d0849bbc9676 100644
+index 652b179ee12afd8b445ea86976b170bdd7393a85..9aeade1255d4383cdb6a0e66872eb1f44a075b93 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -314,6 +314,7 @@ is_posix = !is_win && !is_fuchsia
+@@ -319,6 +319,7 @@ is_posix = !is_win && !is_fuchsia
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [
