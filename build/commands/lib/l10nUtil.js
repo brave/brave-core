@@ -14,7 +14,7 @@ const path = require('path')
 const fs = require('fs')
 const chalk = require('chalk')
 const { JSDOM } = require("jsdom")
-const config = require('../lib/config')
+const config = require('./config')
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false
