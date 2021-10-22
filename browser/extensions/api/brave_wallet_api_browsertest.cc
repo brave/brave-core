@@ -39,7 +39,7 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
     // Brave extension must be loaded, otherwise dapp detection events
     // could be missed from a race condition.
     ExtensionTestMessageListener extension_listener("brave-extension-enabled",
-        false);
+                                                    false);
     ASSERT_TRUE(extension_listener.WaitUntilSatisfied());
   }
 
@@ -93,15 +93,14 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
         extension_.get(), extensions::UNINSTALL_REASON_FOR_TESTING);
   }
 
-  ~BraveWalletAPIBrowserTest() override {
-  }
+  ~BraveWalletAPIBrowserTest() override {}
 
   content::WebContents* active_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
   bool NavigateToURLUntilLoadStop(const std::string& origin,
-      const std::string& path) {
+                                  const std::string& path) {
     EXPECT_TRUE(ui_test_utils::NavigateToURL(
         browser(), embedded_test_server()->GetURL(origin, path)));
     return WaitForLoadStop(active_contents());
@@ -115,8 +114,7 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
   scoped_refptr<const extensions::Extension> extension_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
-    FakeInstallMetaMask) {
+IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, FakeInstallMetaMask) {
   if (brave_wallet::IsNativeWalletEnabled()) {
     brave_wallet::SetDefaultWallet(browser()->profile()->GetPrefs(),
                                    brave_wallet::mojom::DefaultWallet::Ask);
@@ -127,8 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   ASSERT_EQ(GetDefaultWallet(), brave_wallet::mojom::DefaultWallet::Metamask);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
-    FakeUninstallMetaMask) {
+IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, FakeUninstallMetaMask) {
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   RemoveFakeMetaMaskExtension();
@@ -140,10 +137,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
     ASSERT_EQ(GetDefaultWallet(),
               brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
+
+  ASSERT_TRUE(false);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
-    UpdatesDoNotChangeSettings) {
+IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, UpdatesDoNotChangeSettings) {
   WaitForBraveExtensionAdded();
   // User installs MetaMask
   AddFakeMetaMaskExtension(false);
