@@ -125,6 +125,8 @@ using SuccessCallback = base::OnceCallback<void(const bool success)>;
 using GetEventLogsCallback =
     base::OnceCallback<void(ledger::type::EventLogs logs)>;
 
+using RestoreVGsCallback = base::OnceCallback<void(ledger::type::Result)>;
+
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
 
@@ -357,6 +359,8 @@ class RewardsService : public KeyedService {
   virtual void CompleteReset(SuccessCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void RestoreVGs(RestoreVGsCallback callback) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 

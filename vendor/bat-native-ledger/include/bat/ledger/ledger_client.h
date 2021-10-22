@@ -29,6 +29,9 @@ using OnLoadCallback =
 using RunDBTransactionCallback =
     std::function<void(type::DBCommandResponsePtr)>;
 
+using RunDBTransactionCallback2 =
+    base::OnceCallback<void(type::DBCommandResponsePtr)>;
+
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
@@ -143,6 +146,10 @@ class LEDGER_EXPORT LedgerClient {
   virtual void RunDBTransaction(
       type::DBTransactionPtr transaction,
       client::RunDBTransactionCallback callback) = 0;
+
+  virtual void RunDBTransaction(
+      type::DBTransactionPtr transaction,
+      client::RunDBTransactionCallback2 callback) = 0;
 
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
