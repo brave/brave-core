@@ -10,7 +10,8 @@ import {
   EthereumChainPayload,
   EthereumChainRequestPayload,
   SignMessagePayload,
-  SignMessageProcessedPayload
+  SignMessageProcessedPayload,
+  SignMessageHardwareProcessedPayload
 } from '../constants/action_types'
 import { SwapErrorResponse, SwapResponse, SignMessageData } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
@@ -35,4 +36,4 @@ export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPan
 export const signMessage = createAction<SignMessagePayload>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<SignMessageData>('signMessageHardware')
-export const signMessageHardwareCancelled = createAction<SignMessageProcessedPayload>('signMessageHardwareCancelled')
+export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')

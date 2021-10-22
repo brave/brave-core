@@ -363,9 +363,11 @@ function Container (props: Props) {
 
   const onCancelSigning = () => {
     if (isHardwareAccount(signMessageData.address)) {
-      props.walletPanelActions.signMessageHardwareCancelled({
-        approved: false,
-        id: signMessageData.id
+      props.walletPanelActions.signMessageHardwareProcessed({
+        success: false,
+        id: signMessageData.id,
+        signature: '',
+        error: ''
       })
     } else {
       props.walletPanelActions.signMessageProcessed({

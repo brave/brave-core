@@ -35,3 +35,10 @@ export type SignMessageProcessedPayload = {
   approved: boolean,
   id: number
 }
+
+export type SignMessageHardwareProcessedPayload = {
+  success: boolean,
+  id: number,
+  signature: string,
+  error: string
+}
