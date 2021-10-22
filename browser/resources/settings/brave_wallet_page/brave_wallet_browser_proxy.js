@@ -33,15 +33,17 @@ export class BraveWalletBrowserProxyImpl {
   }
 
   getCustomNetworksList () {
-    return new Promise(resolve => chrome.braveWallet.getCustomNetworksList(resolve))
+    return sendWithPromise('getCustomNetworksList')
   }
   
   removeEthereumChain (chainId) {
-    return new Promise(resolve => chrome.braveWallet.removeEthereumChain(chainId, resolve))
+    return sendWithPromise('removeEthereumChain', chainId)
   }
+
   addEthereumChain (payload) {
-    return new Promise(resolve => chrome.braveWallet.addEthereumChain(payload, resolve))
+    return sendWithPromise('addEthereumChain', payload)
   }
+
   /** @override */
   getWeb3ProviderList () {
     return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
