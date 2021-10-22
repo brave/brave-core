@@ -445,7 +445,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti->from_address, meta.from.ToHex());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash);
   EXPECT_EQ(ti->tx_status, meta.status);
-  EXPECT_EQ(ti->tx_data->base_data->nonce, Uint256ValueToHex(meta.tx->nonce()));
+  EXPECT_EQ(ti->tx_data->base_data->nonce,
+            Uint256ValueToHex(meta.tx->nonce().value()));
   EXPECT_EQ(ti->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta.tx->gas_price()));
   EXPECT_EQ(ti->tx_data->base_data->gas_limit,
@@ -485,7 +486,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti1->tx_hash, meta1.tx_hash);
   EXPECT_EQ(ti1->tx_status, meta1.status);
   EXPECT_EQ(ti1->tx_data->base_data->nonce,
-            Uint256ValueToHex(meta1.tx->nonce()));
+            Uint256ValueToHex(meta1.tx->nonce().value()));
   EXPECT_EQ(ti1->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta1.tx->gas_price()));
   EXPECT_EQ(ti1->tx_data->base_data->gas_limit,
@@ -524,7 +525,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti2->tx_hash, meta2.tx_hash);
   EXPECT_EQ(ti2->tx_status, meta2.status);
   EXPECT_EQ(ti2->tx_data->base_data->nonce,
-            Uint256ValueToHex(meta2.tx->nonce()));
+            Uint256ValueToHex(meta2.tx->nonce().value()));
   EXPECT_EQ(ti2->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta2.tx->gas_price()));
   EXPECT_EQ(ti2->tx_data->base_data->gas_limit,

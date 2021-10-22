@@ -706,7 +706,7 @@ TEST_F(EthTxControllerUnitTest, ProcessLedgerSignatureFail) {
 
 TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
   auto tx_data =
-      mojom::TxData::New("0x06", "" /* gas_price */, "" /* gas_limit */,
+      mojom::TxData::New("", "" /* gas_price */, "" /* gas_limit */,
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", data_);
   bool callback_called = false;
