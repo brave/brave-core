@@ -39,7 +39,7 @@ void BravePermissionManager::ResetPermissionViaContentSetting(
     return;
   context->ResetPermission(
       GetCanonicalOrigin(type, requesting_origin, embedding_origin),
-      embedding_origin.GetOrigin());
+      embedding_origin.DeprecatedGetOriginAsURL());
 }
 
 }  // namespace permissions

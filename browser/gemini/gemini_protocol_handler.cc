@@ -44,7 +44,8 @@ void LoadNewTabURL(const GURL& url,
   }
 
   GURL allowed_origin("https://exchange.gemini.com");
-  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin ||
+  if (web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL() !=
+          allowed_origin ||
       !initiating_origin.has_value() ||
       initiating_origin.value().GetURL() != allowed_origin) {
     return;

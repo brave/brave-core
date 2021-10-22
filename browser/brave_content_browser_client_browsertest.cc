@@ -501,7 +501,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   blink::mojom::ReferrerPtr referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
                               &referrer);
-  EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
+  EXPECT_EQ(referrer->url, kDocumentUrl.DeprecatedGetOriginAsURL());
 
   // Same-origin navigations get full referrers.
   referrer = kReferrer.Clone();
@@ -513,13 +513,13 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kSameSiteRequestUrl,
                               kDocumentUrl, &referrer);
-  EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin());
+  EXPECT_EQ(referrer->url, kDocumentUrl.DeprecatedGetOriginAsURL());
 
   // Cross-origin iframe navigations get origins.
   referrer = kReferrer.Clone();
   client()->MaybeHideReferrer(browser()->profile(), kRequestUrl, kDocumentUrl,
                               &referrer);
-  EXPECT_EQ(referrer->url, kDocumentUrl.GetOrigin().spec());
+  EXPECT_EQ(referrer->url, kDocumentUrl.DeprecatedGetOriginAsURL().spec());
 
   // Same-origin iframe navigations get full referrers.
   referrer = kReferrer.Clone();
@@ -537,7 +537,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
 
   // Allow referrers for certain URL.
   content_settings()->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString(kDocumentUrl.GetOrigin().spec() + "*"),
+      ContentSettingsPattern::FromString(
+          kDocumentUrl.DeprecatedGetOriginAsURL().spec() + "*"),
       ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_REFERRERS,
       CONTENT_SETTING_ALLOW);
   referrer = kReferrer.Clone();

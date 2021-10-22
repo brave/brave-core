@@ -46,8 +46,10 @@ void LoadNewTabURL(const GURL& url,
     return;
   }
 
-  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_one &&
-      web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin_two &&
+  if (web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL() !=
+          allowed_origin_one &&
+      web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL() !=
+          allowed_origin_two &&
       initiating_origin.value().GetURL() != allowed_origin_one &&
       initiating_origin.value().GetURL() != allowed_origin_two) {
     return;
