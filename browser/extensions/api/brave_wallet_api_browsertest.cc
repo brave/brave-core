@@ -11,6 +11,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/test_extension_environment.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -19,6 +21,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
@@ -55,6 +59,11 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_test_server()->Start());
   }
 
+  extensions::ExtensionService* GetExtensionService() {
+    return extensions::ExtensionSystem::Get(browser()->profile())
+        ->extension_service();
+  }
+
   void AddFakeMetaMaskExtension(bool is_update) {
     DictionaryBuilder manifest;
     manifest.Set("name", "ext")
@@ -66,21 +75,20 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest {
                      .Build();
     ASSERT_TRUE(extension_);
     if (!is_update) {
-      ExtensionRegistry::Get(browser()->profile())->AddEnabled(
-          extension_.get());
+      GetExtensionService()->AddExtension(extension_.get());
     }
-    ExtensionRegistry::Get(browser()->profile())->TriggerOnInstalled(
-        extension_.get(), is_update);
+    ExtensionRegistry::Get(browser()->profile())
+        ->TriggerOnInstalled(extension_.get(), is_update);
     if (!is_update) {
       ExtensionRegistry::Get(browser()->profile())->AddReady(extension_.get());
     }
   }
 
   void RemoveFakeMetaMaskExtension() {
-    ExtensionRegistry::Get(browser()->profile())->RemoveReady(
-        metamask_extension_id);
-    ExtensionRegistry::Get(browser()->profile())->RemoveEnabled(
-        metamask_extension_id);
+    ExtensionRegistry::Get(browser()->profile())
+        ->RemoveReady(metamask_extension_id);
+    GetExtensionService()->UnloadExtension(
+        metamask_extension_id, extensions::UnloadedExtensionReason::UNINSTALL);
     ExtensionRegistry::Get(browser()->profile())->TriggerOnUninstalled(
         extension_.get(), extensions::UNINSTALL_REASON_FOR_TESTING);
   }
