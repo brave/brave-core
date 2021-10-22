@@ -8,6 +8,7 @@
 
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -73,6 +74,7 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
+  DependsOn(VgSyncServiceFactory::GetInstance());
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(

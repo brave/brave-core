@@ -150,6 +150,9 @@ class MockLedgerClient : public LedgerClient {
       type::DBTransactionPtr,
       client::RunDBTransactionCallback));
 
+  MOCK_METHOD2(RunDBTransaction,
+               void(type::DBTransactionPtr, client::RunDBTransactionCallback2));
+
   MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const type::Result result));
