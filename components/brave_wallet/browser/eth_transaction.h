@@ -49,6 +49,7 @@ class EthTransaction {
   std::vector<uint8_t> s() const { return s_; }
 
   void set_nonce(uint256_t nonce) { nonce_ = nonce; }
+  void set_data(const std::vector<uint8_t>& data) { data_ = data; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
   bool ProcessVRS(const std::string& v,
