@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -35,17 +36,22 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.KeyringController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class PortfolioFragment
         extends Fragment implements OnWalletListItemClick, AdapterView.OnItemSelectedListener {
@@ -129,7 +135,6 @@ public class PortfolioFragment
         if (ethJsonRpcController != null) {
             ethJsonRpcController.getChainId(chain_id -> {
                 mSpinner.setSelection(getIndexOf(mSpinner, chain_id));
-                setUpCoinList(getView());
                 updatePortfolio();
             });
         }
@@ -163,7 +168,6 @@ public class PortfolioFragment
                             Log.e(TAG, "Could not set network");
                         }
                     });
-            setUpCoinList(getView());
             updatePortfolio();
         }
     }
@@ -195,7 +199,7 @@ public class PortfolioFragment
                         @Override
                         public void onDismiss(Boolean isAssetsListChanged) {
                             if (isAssetsListChanged != null && isAssetsListChanged) {
-                                setUpCoinList(getView());
+                                updatePortfolio();
                             }
                         }
                     });
@@ -205,32 +209,39 @@ public class PortfolioFragment
         });
     }
 
-    private void setUpCoinList(View view) {
+    private void setUpCoinList(ErcToken[] userAssets, HashMap<String, Double> perTokenCryptoSum,
+            HashMap<String, Double> perTokenFiatSum) {
+        View view = getView();
         assert view != null;
-        BraveWalletService braveWalletService = getBraveWalletService();
-        assert braveWalletService != null;
-        String chainName = mSpinner.getSelectedItem().toString();
-        String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        assert chainId != null && !chainId.isEmpty();
-        braveWalletService.getUserAssets(chainId, (userAssets) -> {
-            RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
-            WalletCoinAdapter walletCoinAdapter =
-                    new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-            List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
-            for (ErcToken userAsset : userAssets) {
-                walletListItemModelList.add(new WalletListItemModel(
-                        // TODO(AlexeyBarabash): pick correct icon
-                        R.drawable.ic_eth, userAsset.name, userAsset.symbol,
-                        // TODO(AlexeyBarabash): actual price will be pull in PR for issue #18339
-                        "$872.48", "0.31178 ETH"));
-            }
 
-            walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-            walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-            walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-            rvCoins.setAdapter(walletCoinAdapter);
-            rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
-        });
+        RecyclerView rvCoins = view.findViewById(R.id.rvCoins);
+        WalletCoinAdapter walletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+        List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+        String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
+        for (ErcToken userAsset : userAssets) {
+            String currentAssetSymbol = userAsset.symbol.toLowerCase(Locale.getDefault());
+            Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetSymbol, 0.0d);
+            String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
+            Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetSymbol, 0.0d);
+            String cryptoBalanceString =
+                    String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
+
+            WalletListItemModel walletListItemModel =
+                    new WalletListItemModel(R.drawable.ic_eth, userAsset.name, userAsset.symbol,
+                            // Amount in USD
+                            fiatBalanceString,
+                            // Amount in current crypto currency/token
+                            cryptoBalanceString);
+            walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
+            walletListItemModelList.add(walletListItemModel);
+        }
+
+        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+        rvCoins.setAdapter(walletCoinAdapter);
+        rvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Override
@@ -267,124 +278,24 @@ public class PortfolioFragment
         return null;
     }
 
-    // Helper to track multiple EthJsonRpcController.getBalance responses
-    private class GetBalanceMultiResponse {
-        private Runnable mWhenAllCompletedRunnable;
-        private int mTotalElements;
-        private int mCurrentElements;
-
-        public GetBalanceMultiResponse(int totalElements) {
-            synchronized (this) {
-                mTotalElements = totalElements;
-            }
-        }
-
-        // TODO(AlexeyBarabash): add runnable to handle the timeout case
-        public void setWhenAllCompletedAction(Runnable whenAllCompletedRunnable) {
-            synchronized (this) {
-                assert this.mWhenAllCompletedRunnable == null;
-                this.mWhenAllCompletedRunnable = whenAllCompletedRunnable;
-                checkAndRunCompletedAction();
-            }
-        }
-
-        public Runnable singleResponseComplete = new Runnable() {
-            @Override
-            public void run() {
-                synchronized (this) {
-                    mCurrentElements++;
-                    assert mCurrentElements <= mTotalElements;
-                    checkAndRunCompletedAction();
-                }
-            }
-        };
-
-        private void checkAndRunCompletedAction() {
-            if (mCurrentElements == mTotalElements) {
-                mWhenAllCompletedRunnable.run();
-            }
-        }
-    }
-
-    // Helper for async EthJsonRpcController.getBalance
-    private class GetBalanceResponseContext implements EthJsonRpcController.GetBalanceResponse {
-        public Boolean success;
-        public String balance;
-        private Runnable mResponseCompleteCallback;
-
-        public GetBalanceResponseContext(Runnable responseCompleteCallback) {
-            mResponseCompleteCallback = responseCompleteCallback;
-        }
-
-        @Override
-        public void call(Boolean success, String balance) {
-            this.success = success;
-            this.balance = balance;
-            assert mResponseCompleteCallback != null;
-            mResponseCompleteCallback.run();
-        }
-    }
-
     private void updatePortfolio() {
-        AssetRatioController assetRatioController = getAssetRatioController();
-        assert assetRatioController != null : "assetRatioController is null";
+        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                getAssetRatioController(), getKeyringController(), getEthJsonRpcController());
 
-        // Get Ethereum price in USD
-        assetRatioController.getPrice(new String[] {"eth"}, new String[] {"usd"},
-                AssetPriceTimeframe.LIVE, (success, assetPrices) -> {
-                    if (success && assetPrices.length == 1 && assetPrices[0].fromAsset.equals("eth")
-                            && assetPrices[0].toAsset.equals("usd")) {
-                        Double usdPerEth;
-                        try {
-                            usdPerEth = Double.parseDouble(assetPrices[0].price);
-                        } catch (NullPointerException | NumberFormatException ex) {
-                            Log.e(TAG, "Cannot parse " + assetPrices[0].price + ", " + ex);
-                            return;
-                        }
+        String chainName = mSpinner.getSelectedItem().toString();
+        String chainId = Utils.getNetworkConst(getActivity(), chainName);
+        portfolioHelper.setChainId(chainId);
+        portfolioHelper.calculateBalances(() -> {
+            final String fiatSumString =
+                    String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+            PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                mBalance.setText(fiatSumString);
+                mBalance.invalidate();
 
-                        // Get all accounts
-                        KeyringController keyringController = getKeyringController();
-                        assert keyringController != null : "keyringController is null";
-                        keyringController.getDefaultKeyringInfo(keyringInfo -> {
-                            if (keyringInfo != null) {
-                                AccountInfo[] accountInfos = keyringInfo.accountInfos;
-                                EthJsonRpcController rpcController = getEthJsonRpcController();
-                                assert rpcController != null : "rpcController is null";
-
-                                GetBalanceMultiResponse multiResponse =
-                                        new GetBalanceMultiResponse(accountInfos.length);
-
-                                ArrayList<GetBalanceResponseContext> contexts =
-                                        new ArrayList<GetBalanceResponseContext>();
-                                for (AccountInfo accountInfo : accountInfos) {
-                                    GetBalanceResponseContext context =
-                                            new GetBalanceResponseContext(
-                                                    multiResponse.singleResponseComplete);
-                                    contexts.add(context);
-                                    rpcController.getBalance(accountInfo.address, context);
-                                }
-
-                                multiResponse.setWhenAllCompletedAction(() -> {
-                                    Double fiatSum = 0.0d;
-                                    for (GetBalanceResponseContext context : contexts) {
-                                        fiatSum += ((context.success)
-                                                        ? (fromHexWei(context.balance, 18)
-                                                                * usdPerEth)
-                                                        : 0.0d);
-                                    }
-                                    final String fiatSumString = String.format("$%,.2f", fiatSum);
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        mBalance.setText(fiatSumString);
-                                        mBalance.invalidate();
-                                    });
-                                });
-                            } else {
-                                Log.e(TAG, "Wrong keyring info");
-                            }
-                        });
-                    } else {
-                        Log.e(TAG, "Wrong response from AssetRatioController");
-                    }
-                });
+                setUpCoinList(portfolioHelper.getUserAssets(),
+                        portfolioHelper.getPerTokenCryptoSum(),
+                        portfolioHelper.getPerTokenFiatSum());
+            });
+        });
     }
 }

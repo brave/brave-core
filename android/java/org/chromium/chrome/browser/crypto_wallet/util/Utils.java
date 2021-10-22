@@ -602,4 +602,13 @@ public class Utils {
             return source;
         }
     }
+
+    public static Double getOrDefault(
+            HashMap<String, Double> map, String key, Double defaultValue) {
+        // Can't use java.util.HashMap#getOrDefault with API level 21
+        if (map.containsKey(key)) {
+            return map.get(key);
+        }
+        return defaultValue;
+    }
 }

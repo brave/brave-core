@@ -214,7 +214,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         eth.name = "Ethereum";
         eth.symbol = "ETH";
         eth.contractAddress = "";
-        eth.logo = "";
+        eth.logo = "eth.png";
         eth.decimals = 18;
         return eth;
     }
