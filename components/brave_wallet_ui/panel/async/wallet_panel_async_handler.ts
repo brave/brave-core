@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
@@ -17,9 +16,8 @@ import {
   SignMessagePayload,
   SignMessageProcessedPayload
 } from '../constants/action_types'
-import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
-
-type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
+import { fetchSwapQuoteFactory } from '../../common/async/handlers'
+import { Store } from '../../common/async/types'
 
 const handler = new AsyncActionHandler()
 
@@ -29,12 +27,12 @@ async function getAPIProxy () {
   return api.default.getInstance()
 }
 
-function getPanelState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): PanelState {
+function getPanelState (store: Store): PanelState {
   return (store.getState() as WalletPanelState).panel
 }
 
-function getWalletState (store: MiddlewareAPI<Dispatch<AnyAction>, any>): WalletState {
-  return (store.getState() as WalletPanelState).wallet
+function getWalletState (store: Store): WalletState {
+  return store.getState().wallet
 }
 
 async function refreshWalletInfo (store: Store) {
@@ -103,14 +101,14 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.cancelConnectToSite.getType(), async (store, payload: AccountPayloadType) => {
+handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
   const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
   apiProxy.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.connectToSite.getType(), async (store, payload: AccountPayloadType) => {
+handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
   const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
   let accounts: string[] = []
@@ -119,7 +117,7 @@ handler.on(PanelActions.connectToSite.getType(), async (store, payload: AccountP
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) => {
+handler.on(PanelActions.visibilityChanged.getType(), async (store: Store, isVisible) => {
   if (!isVisible) {
     return
   }
@@ -128,19 +126,19 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store, isVisible) =>
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.showConnectToSite.getType(), async (store, payload: ShowConnectToSitePayload) => {
+handler.on(PanelActions.showConnectToSite.getType(), async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('connectWithSite'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.showApproveTransaction.getType(), async (store, payload: ShowConnectToSitePayload) => {
+handler.on(PanelActions.showApproveTransaction.getType(), async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('approveTransaction'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.addEthereumChain.getType(), async (store, payload: EthereumChainPayload) => {
+handler.on(PanelActions.addEthereumChain.getType(), async (store: Store, payload: EthereumChainPayload) => {
   store.dispatch(PanelActions.navigateTo('addEthereumChain'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
@@ -158,13 +156,13 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.signMessage.getType(), async (store, payload: SignMessagePayload) => {
+handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: SignMessagePayload) => {
   store.dispatch(PanelActions.navigateTo('signData'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
 })
 
-handler.on(PanelActions.signMessageProcessed.getType(), async (store, payload: SignMessageProcessedPayload) => {
+handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
@@ -223,7 +221,7 @@ handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
   })
 })
 
-handler.on(WalletActions.transactionStatusChanged.getType(), async (store, payload: TransactionStatusChanged) => {
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
   const state = getPanelState(store)
   const walletState = getWalletState(store)
   if (payload.txInfo.txStatus === TransactionStatus.Submitted ||

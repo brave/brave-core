@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletPageActions from '../actions/wallet_page_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
@@ -24,9 +23,8 @@ import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
-import { fetchSwapQuoteFactory } from '../../common/async/wallet_async_handler'
-
-type Store = MiddlewareAPI<Dispatch<AnyAction>, any>
+import { fetchSwapQuoteFactory } from '../../common/async/handlers'
+import { Store } from '../../common/async/types'
 
 const handler = new AsyncActionHandler()
 
@@ -42,13 +40,13 @@ async function refreshWalletInfo (store: Store) {
   store.dispatch(WalletActions.initialized(result))
 }
 
-handler.on(WalletPageActions.createWallet.getType(), async (store, payload: CreateWalletPayloadType) => {
+handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.createWallet(payload.password)
   store.dispatch(WalletPageActions.walletCreated({ mnemonic: result.mnemonic }))
 })
 
-handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: RestoreWalletPayloadType) => {
+handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, payload: RestoreWalletPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.restoreWallet(payload.mnemonic, payload.password, payload.isLegacy)
   if (!result.isValidMnemonic) {
@@ -60,13 +58,13 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store, payload: Res
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
 })
 
-handler.on(WalletPageActions.addAccount.getType(), async (store, payload: AddAccountPayloadType) => {
+handler.on(WalletPageActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.addAccount(payload.accountName)
   return result.success
 })
 
-handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store, payload: boolean) => {
+handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, payload: boolean) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.getMnemonicForDefaultKeyring()
   store.dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: result.mnemonic }))
@@ -77,7 +75,7 @@ handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
   await keyringController.notifyWalletBackupComplete()
 })
 
-handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: UpdateSelectedAssetType) => {
+handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload: UpdateSelectedAssetType) => {
   store.dispatch(WalletPageActions.updateSelectedAsset(payload.asset))
   store.dispatch(WalletPageActions.setIsFetchingPriceHistory(true))
   const assetPriceController = (await getAPIProxy()).assetRatioController
@@ -90,7 +88,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store, payload: Updat
   }
 })
 
-handler.on(WalletPageActions.importAccount.getType(), async (store, payload: ImportAccountPayloadType) => {
+handler.on(WalletPageActions.importAccount.getType(), async (store: Store, payload: ImportAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.importAccount(payload.accountName, payload.privateKey)
   if (result.success) {
@@ -101,7 +99,7 @@ handler.on(WalletPageActions.importAccount.getType(), async (store, payload: Imp
   }
 })
 
-handler.on(WalletPageActions.importAccountFromJson.getType(), async (store, payload: ImportAccountFromJsonPayloadType) => {
+handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Store, payload: ImportAccountFromJsonPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.importAccountFromJson(payload.accountName, payload.password, payload.json)
   if (result.success) {
@@ -112,13 +110,13 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store, payl
   }
 })
 
-handler.on(WalletPageActions.removeImportedAccount.getType(), async (store, payload: RemoveImportedAccountPayloadType) => {
+handler.on(WalletPageActions.removeImportedAccount.getType(), async (store: Store, payload: RemoveImportedAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.removeImportedAccount(payload.address)
   return result.success
 })
 
-handler.on(WalletPageActions.viewPrivateKey.getType(), async (store, payload: ViewPrivateKeyPayloadType) => {
+handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payload: ViewPrivateKeyPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = payload.isDefault ?
     await keyringController.getPrivateKeyForDefaultKeyringAccount(payload.address)
@@ -126,7 +124,7 @@ handler.on(WalletPageActions.viewPrivateKey.getType(), async (store, payload: Vi
   store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 
-handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload: UpdateAccountNamePayloadType) => {
+handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, payload: UpdateAccountNamePayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   const result = payload.isDerived ?
     await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
@@ -134,13 +132,13 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store, payload:
   return result.success
 })
 
-handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store, accounts: HardwareWalletAccount[]) => {
+handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: HardwareWalletAccount[]) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
-handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store, payload: RemoveHardwareAccountPayloadType) => {
+handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
   await keyringController.removeHardwareAccount(payload.address)
   store.dispatch(WalletPageActions.setShowAddModal(false))
@@ -154,7 +152,7 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   store.dispatch(WalletPageActions.setMetaMaskInstalled(mmResult.installed))
 })
 
-handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromCryptoWallets(payload.password, payload.newPassword)
@@ -164,7 +162,7 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store, pa
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 
-handler.on(WalletPageActions.importFromMetaMask.getType(), async (store, payload: ImportFromExternalWalletPayloadType) => {
+handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromMetaMask(payload.password, payload.newPassword)
@@ -174,7 +172,7 @@ handler.on(WalletPageActions.importFromMetaMask.getType(), async (store, payload
   store.dispatch(WalletPageActions.setImportError(!result.success))
 })
 
-handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store, payload: NewUnapprovedTxAdded) => {
+handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, payload: NewUnapprovedTxAdded) => {
   const pageHandler = (await getAPIProxy()).pageHandler
   await pageHandler.showApprovePanelUI()
 })

@@ -4,15 +4,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 
 import reducers from './reducers'
 import walletPageAsyncHandler from './async/wallet_page_async_handler'
-import walletAsyncHandler from '../common/async/wallet_async_handler'
+import walletAsyncHandler from '../common/async/handlers'
 import apiProxy from './wallet_page_api_proxy.js'
+
+const middlewares = [
+  thunk,
+  walletAsyncHandler,
+  walletPageAsyncHandler
+]
 
 const store = createStore(
     reducers,
-    applyMiddleware(walletAsyncHandler, walletPageAsyncHandler)
+    applyMiddleware(...middlewares)
 )
 
 apiProxy.getInstance().addEthJsonRpcControllerObserver(store)
