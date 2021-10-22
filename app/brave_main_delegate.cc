@@ -244,6 +244,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kInterestGroupStorage.name,
     blink::features::kNavigatorPluginsFixed.name,
     blink::features::kParakeet.name,
+    blink::features::kReportAllJavaScriptFrameworks.name,
     blink::features::kTextFragmentAnchor.name,
     blink::features::kWebSQLInThirdPartyContextEnabled.name,
 #if !defined(OS_ANDROID)
