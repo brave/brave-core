@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
+#include <vector>
+
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "net/http/http_status_code.h"
@@ -41,13 +43,12 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableIntegrationTest,
   // Assert
   const std::vector<std::string> segments = {"technology & computing"};
 
-  database::table::CreativeAdNotifications creative_ad_notifications;
-  creative_ad_notifications.GetForSegments(
-      segments,
-      [](const bool success, const SegmentList& segments,
-         const CreativeAdNotificationList& creative_ad_notifications) {
+  database::table::CreativeAdNotifications creative_ads;
+  creative_ads.GetForSegments(
+      segments, [](const bool success, const SegmentList& segments,
+                   const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_EQ(2UL, creative_ad_notifications.size());
+        EXPECT_EQ(2UL, creative_ads.size());
       });
 }
 

@@ -37,12 +37,12 @@ class BatAdsSplitTestFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsSplitTestFrequencyCapTest,
     AllowIfNoFieldTrialAndNoAdGroup) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
   SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -50,13 +50,13 @@ TEST_F(BatAdsSplitTestFrequencyCapTest,
 
 TEST_F(BatAdsSplitTestFrequencyCapTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.split_test_group = "GroupA";
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.split_test_group = "GroupA";
 
   // Act
   SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -64,15 +64,15 @@ TEST_F(BatAdsSplitTestFrequencyCapTest, DoNotAllowIfNoFieldTrialAndAdGroup) {
 
 TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialAndNoAdGroup) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act
   SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -80,16 +80,16 @@ TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialAndNoAdGroup) {
 
 TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialMatchesAdGroup) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.split_test_group = "GroupA";
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.split_test_group = "GroupA";
 
   scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act
   SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -98,16 +98,16 @@ TEST_F(BatAdsSplitTestFrequencyCapTest, AllowIfFieldTrialMatchesAdGroup) {
 TEST_F(BatAdsSplitTestFrequencyCapTest,
     DoNotAllowIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.split_test_group = "GroupB";
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.split_test_group = "GroupB";
 
   scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
   trial->AppendGroup(kGroup, 100);
 
   // Act
   SplitTestFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

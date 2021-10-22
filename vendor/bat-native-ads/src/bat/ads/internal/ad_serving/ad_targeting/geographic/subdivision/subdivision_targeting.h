@@ -11,6 +11,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -27,29 +28,31 @@ class SubdivisionTargeting final {
   bool IsDisabled() const;
 
   void MaybeFetchForLocale(const std::string& locale);
-
   void MaybeFetchForCurrentLocale();
 
-  std::string GetAdsSubdivisionTargetingCode() const;
+  std::string GetSubdivisionCode() const;
+
+  void OnPrefChanged(const std::string& path);
 
  private:
   Timer timer_;
   BackoffTimer retry_timer_;
 
-  bool IsSupportedLocale(const std::string& locale) const;
+  mutable absl::optional<std::string> auto_detected_subdivision_code_optional_;
+  std::string GetLazyAutoDetectedSubdivisionCode() const;
 
+  mutable absl::optional<std::string> subdivision_code_optional_;
+  std::string GetLazySubdivisionCode() const;
+
+  bool IsSupportedLocale(const std::string& locale) const;
   void MaybeAllowForLocale(const std::string& locale);
 
   bool ShouldAutoDetect() const;
 
   void Fetch();
-
   void OnFetch(const mojom::UrlResponse& url_response);
-
   bool ParseJson(const std::string& json);
-
   void Retry();
-
   void FetchAfterDelay();
 };
 

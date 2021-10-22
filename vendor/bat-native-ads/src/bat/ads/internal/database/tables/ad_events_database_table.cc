@@ -142,6 +142,11 @@ void AdEvents::Migrate(mojom::DBTransaction* transaction,
       break;
     }
 
+    case 17: {
+      MigrateToV17(transaction);
+      break;
+    }
+
     default: {
       break;
     }
@@ -353,6 +358,12 @@ void AdEvents::MigrateToV13(mojom::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   util::Drop(transaction, "ad_events_temp");
+}
+
+void AdEvents::MigrateToV17(mojom::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  util::CreateIndex(transaction, "ad_events", "timestamp");
 }
 
 }  // namespace table

@@ -56,7 +56,7 @@ class BatAdsRefillUnblindedTokensTest : public UnitTestBase {
     return wallet.Get();
   }
 
-  CatalogIssuersInfo GetValidCatalogIssuers() {
+  CatalogIssuersInfo BuildValidCatalogIssuers() {
     CatalogIssuersInfo catalog_issuers;
     catalog_issuers.public_key = "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=";
 
@@ -179,7 +179,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokens) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -217,7 +217,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillUnblindedTokensCaptchaRequired) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -428,7 +428,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -474,7 +474,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RequestSignedTokensMissingNonce) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -585,7 +585,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest,
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -637,7 +637,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensInvalidResponse) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -741,7 +741,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingPublicKey) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -845,7 +845,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingBatchProofDleq) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -898,7 +898,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetSignedTokensMissingSignedTokens) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -1003,7 +1003,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
   const std::vector<Token> tokens = GetTokens();
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -1044,7 +1044,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, VerifyAndUnblindInvalidTokens) {
 
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act
@@ -1202,7 +1202,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
 
   ON_CALL(*token_generator_mock_, Generate(_)).WillByDefault(Return(tokens));
 
-  CatalogIssuersInfo catalog_issuers = GetValidCatalogIssuers();
+  const CatalogIssuersInfo catalog_issuers = BuildValidCatalogIssuers();
   ConfirmationsState::Get()->SetCatalogIssuers(catalog_issuers);
 
   // Act

@@ -66,7 +66,7 @@ void CreativeAdNotifications::Save(
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    CreativeAdList creative_ads(batch.begin(), batch.end());
+    CreativeAdList creative_ads(batch.cbegin(), batch.cend());
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     segments_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
@@ -420,7 +420,7 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.value = ColumnDouble(record, 13);
   creative_ad_notification.split_test_group = ColumnString(record, 14);
   creative_ad_notification.segment = ColumnString(record, 15);
-  creative_ad_notification.geo_targets.push_back(ColumnString(record, 16));
+  creative_ad_notification.geo_targets.insert(ColumnString(record, 16));
   creative_ad_notification.target_url = ColumnString(record, 17);
   creative_ad_notification.title = ColumnString(record, 18);
   creative_ad_notification.body = ColumnString(record, 19);

@@ -37,7 +37,7 @@ template <typename T>
 std::pair<unsigned int, T> GetHighestPriorityBucket(
     const std::map<unsigned int, T>& buckets) {
   const auto iter = std::min_element(
-      buckets.begin(), buckets.end(),
+      buckets.cbegin(), buckets.cend(),
       [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });
 
   return *iter;

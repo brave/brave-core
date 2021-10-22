@@ -76,8 +76,8 @@ class BatAdsAdNotificationServingTest : public UnitTestBase {
     ad_serving.MaybeServeAd();
   }
 
-  void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications,
+  void Save(const CreativeAdNotificationList& creative_ads) {
+    database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
@@ -89,7 +89,7 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAd) {
   RecordUserActivityEvents();
 
   CreativeAdNotificationList creative_ads;
-  CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 
@@ -131,7 +131,7 @@ TEST_F(BatAdsAdNotificationServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeAdNotificationList creative_ads;
-  CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 
@@ -148,7 +148,7 @@ TEST_F(BatAdsAdNotificationServingTest, ServeAdWithAdServingVersion2) {
   RecordUserActivityEvents();
 
   CreativeAdNotificationList creative_ads;
-  const CreativeAdNotificationInfo creative_ad = GetCreativeAdNotification();
+  const CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 

@@ -76,6 +76,8 @@ class ConversionQueue final : public Table {
 
   void MigrateToV11(mojom::DBTransaction* transaction);
 
+  void MigrateToV17(mojom::DBTransaction* transaction);
+
   int batch_size_;
 };
 

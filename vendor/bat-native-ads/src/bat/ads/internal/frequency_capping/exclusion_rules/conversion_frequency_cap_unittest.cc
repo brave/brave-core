@@ -35,14 +35,14 @@ class BatAdsConversionFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsConversionFrequencyCapTest, AllowAdIfThereIsNoConversionHistory) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
   const AdEventList ad_events;
 
   // Act
   ConversionFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -54,19 +54,19 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   ads_client_mock_->SetBooleanPref(prefs::kShouldAllowConversionTracking,
                                    false);
 
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIds.at(0);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-                                               ConfirmationType::kConversion);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
   // Act
   ConversionFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -74,19 +74,19 @@ TEST_F(BatAdsConversionFrequencyCapTest,
 
 TEST_F(BatAdsConversionFrequencyCapTest, DoNotAllowAdIfAlreadyConverted) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIds.at(0);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-                                               ConfirmationType::kConversion);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
   // Act
   ConversionFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);
@@ -107,19 +107,19 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIds.at(0);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad,
-                                               ConfirmationType::kConversion);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad, ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
   // Act
   ConversionFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -127,22 +127,22 @@ TEST_F(BatAdsConversionFrequencyCapTest,
 
 TEST_F(BatAdsConversionFrequencyCapTest, AllowAdIfNotAlreadyConverted) {
   // Arrange
-  CreativeAdInfo ad_1;
-  ad_1.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo creative_ad_1;
+  creative_ad_1.creative_set_id = kCreativeSetIds.at(0);
 
-  CreativeAdInfo ad_2;
-  ad_2.creative_set_id = kCreativeSetIds.at(1);
+  CreativeAdInfo creative_ad_2;
+  creative_ad_2.creative_set_id = kCreativeSetIds.at(1);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event = GenerateAdEvent(AdType::kAdNotification, ad_2,
-                                               ConfirmationType::kConversion);
+  const AdEventInfo ad_event = GenerateAdEvent(
+      AdType::kAdNotification, creative_ad_2, ConfirmationType::kConversion);
 
   ad_events.push_back(ad_event);
 
   // Act
   ConversionFrequencyCap frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad_1);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

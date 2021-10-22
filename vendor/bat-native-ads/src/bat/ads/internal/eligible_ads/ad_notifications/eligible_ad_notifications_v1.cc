@@ -13,11 +13,10 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_exclusion_rules.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_constants.h"
-#include "bat/ads/internal/eligible_ads/eligible_ads_util.h"
+#include "bat/ads/internal/eligible_ads/frequency_capping.h"
 #include "bat/ads/internal/eligible_ads/seen_ads.h"
 #include "bat/ads/internal/eligible_ads/seen_advertisers.h"
 #include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
@@ -36,7 +35,7 @@ EligibleAdsV1::~EligibleAdsV1() = default;
 
 void EligibleAdsV1::GetForUserModel(
     const ad_targeting::UserModelInfo& user_model,
-    GetEligibleAdsCallback callback) {
+    GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
   BLOG(1, "Get eligible ad notifications:");
 
   database::table::AdEvents database_table;
@@ -62,7 +61,7 @@ void EligibleAdsV1::GetEligibleAds(
     const ad_targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback callback) const {
+    GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
   GetForParentChildSegments(user_model, ad_events, browsing_history, callback);
 }
 
@@ -70,7 +69,7 @@ void EligibleAdsV1::GetForParentChildSegments(
     const ad_targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback callback) const {
+    GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
   const SegmentList segments =
       ad_targeting::GetTopParentChildSegments(user_model);
   if (segments.empty()) {
@@ -105,7 +104,7 @@ void EligibleAdsV1::GetForParentSegments(
     const ad_targeting::UserModelInfo& user_model,
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback callback) const {
+    GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
   const SegmentList segments = ad_targeting::GetTopParentSegments(user_model);
   if (segments.empty()) {
     GetForUntargeted(ad_events, browsing_history, callback);
@@ -137,7 +136,7 @@ void EligibleAdsV1::GetForParentSegments(
 void EligibleAdsV1::GetForUntargeted(
     const AdEventList& ad_events,
     const BrowsingHistoryList& browsing_history,
-    GetEligibleAdsCallback callback) const {
+    GetEligibleAdsCallback<CreativeAdNotificationList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
   database::table::CreativeAdNotifications database_table;
@@ -158,17 +157,18 @@ void EligibleAdsV1::GetForUntargeted(
 CreativeAdNotificationList EligibleAdsV1::FilterCreativeAds(
     const CreativeAdNotificationList& creative_ads,
     const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history) const {
+    const BrowsingHistoryList& browsing_history) {
   if (creative_ads.empty()) {
     return {};
   }
 
   CreativeAdNotificationList eligible_creative_ads = creative_ads;
 
+  frequency_capping::ExclusionRules exclusion_rules(
+      ad_events, subdivision_targeting_, anti_targeting_resource_,
+      browsing_history);
   eligible_creative_ads = ApplyFrequencyCapping(
-      eligible_creative_ads,
-      ShouldCapLastServedAd(creative_ads) ? last_served_ad_ : AdInfo(),
-      ad_events, browsing_history);
+      eligible_creative_ads, last_served_ad_, &exclusion_rules);
 
   eligible_creative_ads = FilterSeenAdvertisersAndRoundRobinIfNeeded(
       eligible_creative_ads, AdType::kAdNotification);
@@ -179,30 +179,6 @@ CreativeAdNotificationList EligibleAdsV1::FilterCreativeAds(
   eligible_creative_ads = PaceAds(eligible_creative_ads);
 
   eligible_creative_ads = PrioritizeAds(eligible_creative_ads);
-
-  return eligible_creative_ads;
-}
-
-CreativeAdNotificationList EligibleAdsV1::ApplyFrequencyCapping(
-    const CreativeAdNotificationList& creative_ads,
-    const AdInfo& last_served_ad,
-    const AdEventList& ad_events,
-    const BrowsingHistoryList& browsing_history) const {
-  CreativeAdNotificationList eligible_creative_ads = creative_ads;
-
-  const frequency_capping::ExclusionRules exclusion_rules(
-      subdivision_targeting_, anti_targeting_resource_, ad_events,
-      browsing_history);
-
-  const auto iter = std::remove_if(
-      eligible_creative_ads.begin(), eligible_creative_ads.end(),
-      [&exclusion_rules, &last_served_ad](const CreativeAdInfo& creative_ad) {
-        return exclusion_rules.ShouldExcludeCreativeAd(creative_ad) ||
-               creative_ad.creative_instance_id ==
-                   last_served_ad.creative_instance_id;
-      });
-
-  eligible_creative_ads.erase(iter, eligible_creative_ads.end());
 
   return eligible_creative_ads;
 }

@@ -27,12 +27,12 @@ class BatAdsDislikeFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsDislikeFrequencyCapTest, AllowAd) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
   DislikeFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -40,16 +40,17 @@ TEST_F(BatAdsDislikeFrequencyCapTest, AllowAd) {
 
 TEST_F(BatAdsDislikeFrequencyCapTest, DoNotAllowAd) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-  ad.creative_set_id = kCreativeSetId;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_set_id = kCreativeSetId;
 
-  Client::Get()->ToggleAdThumbDown(ad.creative_instance_id, ad.creative_set_id,
+  Client::Get()->ToggleAdThumbDown(creative_ad.creative_instance_id,
+                                   creative_ad.creative_set_id,
                                    AdContentActionType::kNeutral);
 
   // Act
   DislikeFrequencyCap frequency_cap;
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

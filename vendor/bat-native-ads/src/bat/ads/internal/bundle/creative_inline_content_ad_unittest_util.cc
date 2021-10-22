@@ -10,8 +10,8 @@
 
 namespace ads {
 
-CreativeInlineContentAdInfo GetCreativeInlineContentAd() {
-  const CreativeAdInfo creative_ad = GetCreativeAd();
+CreativeInlineContentAdInfo BuildCreativeInlineContentAd() {
+  const CreativeAdInfo creative_ad = BuildCreativeAd();
   CreativeInlineContentAdInfo creative_inline_content_ad(creative_ad);
 
   creative_inline_content_ad.title = "Test Ad Title";
@@ -21,13 +21,6 @@ CreativeInlineContentAdInfo GetCreativeInlineContentAd() {
   creative_inline_content_ad.cta_text = "Call to action text";
 
   return creative_inline_content_ad;
-}
-
-CreativeInlineContentAdInfo GetCreativeInlineContentAdForSegment(
-    const std::string& segment) {
-  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
-  creative_ad.segment = segment;
-  return creative_ad;
 }
 
 }  // namespace ads

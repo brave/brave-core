@@ -59,6 +59,8 @@ class AdEvents final : public Table {
 
   void CreateTableV13(mojom::DBTransaction* transaction);
   void MigrateToV13(mojom::DBTransaction* transaction);
+
+  void MigrateToV17(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

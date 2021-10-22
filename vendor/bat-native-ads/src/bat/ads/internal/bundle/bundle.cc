@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -88,7 +89,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     // Geo Targets
-    std::vector<std::string> geo_targets;
+    std::set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
@@ -97,7 +98,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
         continue;
       }
 
-      geo_targets.push_back(code);
+      geo_targets.insert(code);
     }
 
     std::vector<CreativeDaypartInfo> creative_dayparts;

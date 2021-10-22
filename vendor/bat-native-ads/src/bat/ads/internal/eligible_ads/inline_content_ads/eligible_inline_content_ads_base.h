@@ -6,11 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_BASE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_BASE_H_
 
-#include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_aliases.h"
-
 #include <string>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 
 namespace ads {
 
@@ -34,9 +34,10 @@ class EligibleAdsBase {
       resource::AntiTargeting* anti_targeting_resource);
   virtual ~EligibleAdsBase();
 
-  virtual void GetForUserModel(const ad_targeting::UserModelInfo& user_model,
-                               const std::string& dimensions,
-                               GetEligibleAdsCallback callback) = 0;
+  virtual void GetForUserModel(
+      const ad_targeting::UserModelInfo& user_model,
+      const std::string& dimensions,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) = 0;
 
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 

@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_SERVING_AD_NOTIFICATIONS_AD_NOTIFICATION_SERVING_H_
 
 #include <memory>
+#include <string>
 
 #include "base/observer_list.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving_observer.h"
@@ -50,7 +51,7 @@ class AdServing final {
 
   void MaybeServeAd();
 
-  void OnPrefChanged();
+  void OnPrefChanged(const std::string& path);
 
  private:
   bool is_serving_ = false;

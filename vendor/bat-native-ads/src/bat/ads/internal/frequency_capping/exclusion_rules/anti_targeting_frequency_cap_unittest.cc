@@ -30,8 +30,8 @@ class BatAdsAntiTargetingFrequencyCapTest : public UnitTestBase {
 
 TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfResourceDidNotLoad) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
 
   resource::AntiTargeting resource;
 
@@ -41,7 +41,7 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfResourceDidNotLoad) {
 
   // Act
   AntiTargetingFrequencyCap frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -49,8 +49,8 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfResourceDidNotLoad) {
 
 TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfCreativeSetDoesNotMatch) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIdNotOnAntiTargetingList;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIdNotOnAntiTargetingList;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -61,7 +61,7 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfCreativeSetDoesNotMatch) {
 
   // Act
   AntiTargetingFrequencyCap frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -69,8 +69,8 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfCreativeSetDoesNotMatch) {
 
 TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfSiteDoesNotMatch) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -80,7 +80,7 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfSiteDoesNotMatch) {
 
   // Act
   AntiTargetingFrequencyCap frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
@@ -89,8 +89,8 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest, AllowIfSiteDoesNotMatch) {
 TEST_F(BatAdsAntiTargetingFrequencyCapTest,
        DoNotAllowIfCreativeSetAndSiteDoesMatch) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
+  CreativeAdInfo creative_ad;
+  creative_ad.creative_set_id = kCreativeSetIdOnAntiTargetingList;
 
   resource::AntiTargeting resource;
   resource.Load();
@@ -100,7 +100,7 @@ TEST_F(BatAdsAntiTargetingFrequencyCapTest,
 
   // Act
   AntiTargetingFrequencyCap frequency_cap(&resource, history);
-  const bool should_exclude = frequency_cap.ShouldExclude(ad);
+  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_TRUE(should_exclude);

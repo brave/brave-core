@@ -21,6 +21,8 @@ class DaypartFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   DaypartFrequencyCap(const DaypartFrequencyCap&) = delete;
   DaypartFrequencyCap& operator=(const DaypartFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;

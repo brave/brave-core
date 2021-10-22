@@ -5,14 +5,15 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/promoted_content_ad_uuid_frequency_cap.h"
 
-#include <cstdint>
+#include <algorithm>
+#include <iterator>
 
 #include "base/strings/stringprintf.h"
 
 namespace ads {
 
 namespace {
-const uint64_t kPromotedContentAdUuidFrequencyCap = 1;
+const int kPromotedContentAdUuidFrequencyCap = 1;
 }  // namespace
 
 PromotedContentAdUuidFrequencyCap::PromotedContentAdUuidFrequencyCap(
@@ -22,14 +23,16 @@ PromotedContentAdUuidFrequencyCap::PromotedContentAdUuidFrequencyCap(
 PromotedContentAdUuidFrequencyCap::~PromotedContentAdUuidFrequencyCap() =
     default;
 
-bool PromotedContentAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
-  const AdEventList filtered_ad_events = FilterAdEvents(ad_events_, ad);
+std::string PromotedContentAdUuidFrequencyCap::GetUuid(const AdInfo& ad) const {
+  return ad.uuid;
+}
 
-  if (!DoesRespectCap(filtered_ad_events)) {
+bool PromotedContentAdUuidFrequencyCap::ShouldExclude(const AdInfo& ad) {
+  if (!DoesRespectCap(ad_events_, ad)) {
     last_message_ = base::StringPrintf(
-        "uuid %s has exceeded the "
-        "frequency capping for new tab page ad",
+        "uuid %s has exceeded the promoted content ad frequency cap",
         ad.uuid.c_str());
+
     return true;
   }
 
@@ -41,30 +44,20 @@ std::string PromotedContentAdUuidFrequencyCap::GetLastMessage() const {
 }
 
 bool PromotedContentAdUuidFrequencyCap::DoesRespectCap(
-    const AdEventList& ad_events) {
-  if (ad_events.size() >= kPromotedContentAdUuidFrequencyCap) {
+    const AdEventList& ad_events,
+    const AdInfo& ad) {
+  const int count = std::count_if(
+      ad_events.cbegin(), ad_events.cend(), [&ad](const AdEventInfo& ad_event) {
+        return ad_event.type == AdType::kPromotedContentAd &&
+               ad_event.uuid == ad.uuid &&
+               ad_event.confirmation_type == ConfirmationType::kViewed;
+      });
+
+  if (count >= kPromotedContentAdUuidFrequencyCap) {
     return false;
   }
 
   return true;
-}
-
-AdEventList PromotedContentAdUuidFrequencyCap::FilterAdEvents(
-    const AdEventList& ad_events,
-    const AdInfo& ad) const {
-  AdEventList filtered_ad_events = ad_events;
-
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
-      [&ad](const AdEventInfo& ad_event) {
-        return ad_event.uuid != ad.uuid ||
-               ad_event.confirmation_type != ConfirmationType::kViewed ||
-               ad_event.type != AdType::kPromotedContentAd;
-      });
-
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
-
-  return filtered_ad_events;
 }
 
 }  // namespace ads

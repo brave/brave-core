@@ -125,7 +125,7 @@ bool ShouldFilterSegment(const std::string& segment) {
   }
 
   const auto iter = std::find_if(
-      filtered_segments.begin(), filtered_segments.end(),
+      filtered_segments.cbegin(), filtered_segments.cend(),
       [&segment](const FilteredCategoryInfo& filtered_segment) {
         if (HasChildSegment(filtered_segment.name)) {
           // Filter against parent-child, i.e. "technology & computing-linux"

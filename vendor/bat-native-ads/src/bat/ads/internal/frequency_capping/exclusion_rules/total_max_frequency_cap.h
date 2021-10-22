@@ -22,6 +22,8 @@ class TotalMaxFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   TotalMaxFrequencyCap(const TotalMaxFrequencyCap&) = delete;
   TotalMaxFrequencyCap& operator=(const TotalMaxFrequencyCap&) = delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
@@ -33,9 +35,6 @@ class TotalMaxFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
 
   bool DoesRespectCap(const AdEventList& ad_events,
                       const CreativeAdInfo& creative_ad);
-
-  AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const CreativeAdInfo& creative_ad) const;
 };
 
 }  // namespace ads

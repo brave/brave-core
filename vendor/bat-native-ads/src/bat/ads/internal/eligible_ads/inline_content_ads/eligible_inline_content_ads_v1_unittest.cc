@@ -45,12 +45,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentChildSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 =
-      GetCreativeInlineContentAdForSegment("technology & computing");
+  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 =
-      GetCreativeInlineContentAdForSegment("technology & computing-software");
+  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);
@@ -78,8 +78,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad =
-      GetCreativeInlineContentAdForSegment("technology & computing");
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -107,8 +107,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad =
-      GetCreativeInlineContentAdForSegment("untargeted");
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -135,16 +135,16 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 =
-      GetCreativeInlineContentAdForSegment("technology & computing");
+  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 =
-      GetCreativeInlineContentAdForSegment("finance-banking");
+  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeInlineContentAdInfo creative_ad_3 =
-      GetCreativeInlineContentAdForSegment("food & drink");
+  CreativeInlineContentAdInfo creative_ad_3 = BuildCreativeInlineContentAd();
+  creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
   Save(creative_ads);
@@ -174,8 +174,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad =
-      GetCreativeInlineContentAdForSegment("untargeted");
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -202,8 +202,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad =
-      GetCreativeInlineContentAdForSegment("technology & computing");
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -230,8 +230,8 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUnmatchedDimensions) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad =
-      GetCreativeInlineContentAdForSegment("technology & computing");
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);

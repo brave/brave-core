@@ -23,6 +23,8 @@ class NewTabPageAdUuidFrequencyCap final : public ExclusionRule<AdInfo> {
   NewTabPageAdUuidFrequencyCap& operator=(const NewTabPageAdUuidFrequencyCap&) =
       delete;
 
+  std::string GetUuid(const AdInfo& ad) const override;
+
   bool ShouldExclude(const AdInfo& ad) override;
 
   std::string GetLastMessage() const override;
@@ -32,10 +34,7 @@ class NewTabPageAdUuidFrequencyCap final : public ExclusionRule<AdInfo> {
 
   std::string last_message_;
 
-  bool DoesRespectCap(const AdEventList& ad_events);
-
-  AdEventList FilterAdEvents(const AdEventList& ad_events,
-                             const AdInfo& ad) const;
+  bool DoesRespectCap(const AdEventList& ad_events, const AdInfo& ad);
 };
 
 }  // namespace ads

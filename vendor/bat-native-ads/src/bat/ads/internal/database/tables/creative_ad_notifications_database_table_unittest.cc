@@ -24,8 +24,8 @@ class BatAdsCreativeAdNotificationsDatabaseTableTest : public UnitTestBase {
 
   ~BatAdsCreativeAdNotificationsDatabaseTableTest() override = default;
 
-  void Save(const CreativeAdNotificationList& creative_ad_notifications) {
-    database_table_->Save(creative_ad_notifications,
+  void Save(const CreativeAdNotificationList& creative_ads) {
+    database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
@@ -35,10 +35,10 @@ class BatAdsCreativeAdNotificationsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        SaveEmptyCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications = {};
+  CreativeAdNotificationList creative_ads = {};
 
   // Act
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Assert
 }
@@ -46,7 +46,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        SaveCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -70,7 +70,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -93,25 +93,22 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 0.8;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   // Act
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications =
-      creative_ad_notifications;
+  const CreativeAdNotificationList expected_creative_ads = creative_ads;
 
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
@@ -120,7 +117,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   // Arrange
   database_table_->set_batch_size(2);
 
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -144,7 +141,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -167,7 +164,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 1.0;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   CreativeAdNotificationInfo info_3;
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
@@ -190,32 +187,29 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.title = "Test Ad 3 Title";
   info_3.body = "Test Ad 3 Body";
   info_3.ptr = 1.0;
-  creative_ad_notifications.push_back(info_3);
+  creative_ads.push_back(info_3);
 
   // Act
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications =
-      creative_ad_notifications;
+  const CreativeAdNotificationList expected_creative_ads = creative_ads;
 
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        DoNotSaveDuplicateCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info;
@@ -239,34 +233,31 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
   info.ptr = 1.0;
-  creative_ad_notifications.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications =
-      creative_ad_notifications;
+  const CreativeAdNotificationList expected_creative_ads = creative_ads;
 
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -290,7 +281,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -313,33 +304,30 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 1.0;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications =
-      creative_ad_notifications;
+  const CreativeAdNotificationList expected_creative_ads = creative_ads;
 
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetCreativeAdNotificationsForEmptySegments) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info;
@@ -363,32 +351,30 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
   info.ptr = 1.0;
-  creative_ad_notifications.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications = {};
+  const CreativeAdNotificationList expected_creative_ads = {};
 
   const SegmentList segments = {};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetCreativeAdNotificationsForNonExistentCategory) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info;
@@ -412,32 +398,30 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
   info.ptr = 1.0;
-  creative_ad_notifications.push_back(info);
+  creative_ads.push_back(info);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  const CreativeAdNotificationList expected_creative_ad_notifications = {};
+  const CreativeAdNotificationList expected_creative_ads = {};
 
   const SegmentList segments = {"food & drink"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetCreativeAdNotificationsFromMultipleSegments) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -461,7 +445,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -484,7 +468,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 1.0;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
   CreativeAdNotificationInfo info_3;
   info_3.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
@@ -507,35 +491,33 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.title = "Test Ad 3 Title";
   info_3.body = "Test Ad 3 Body";
   info_3.ptr = 1.0;
-  creative_ad_notifications.push_back(info_3);
+  creative_ads.push_back(info_3);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  CreativeAdNotificationList expected_creative_ad_notifications;
-  expected_creative_ad_notifications.push_back(info_1);
-  expected_creative_ad_notifications.push_back(info_2);
+  CreativeAdNotificationList expected_creative_ads;
+  expected_creative_ads.push_back(info_1);
+  expected_creative_ads.push_back(info_2);
 
   const std::vector<std::string> segments = {"technology & computing-software",
                                              "food & drink"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetNonExpiredCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -559,7 +541,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "eaa6224a-876d-4ef8-a384-9ac34f238631";
@@ -582,34 +564,32 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 1.0;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
   FastForwardClockBy(base::TimeDelta::FromHours(1));
 
   // Assert
-  CreativeAdNotificationList expected_creative_ad_notifications;
-  expected_creative_ad_notifications.push_back(info_2);
+  CreativeAdNotificationList expected_creative_ads;
+  expected_creative_ads.push_back(info_2);
 
   const SegmentList segments = {"technology & computing-software"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        GetCreativeAdNotificationsMatchingCaseInsensitiveSegments) {
   // Arrange
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads;
 
   CreativeDaypartInfo daypart_info;
   CreativeAdNotificationInfo info_1;
@@ -633,7 +613,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
   info_1.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1);
+  creative_ads.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
   info_2.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
@@ -656,26 +636,24 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
   info_2.ptr = 1.0;
-  creative_ad_notifications.push_back(info_2);
+  creative_ads.push_back(info_2);
 
-  Save(creative_ad_notifications);
+  Save(creative_ads);
 
   // Act
 
   // Assert
-  CreativeAdNotificationList expected_creative_ad_notifications;
-  expected_creative_ad_notifications.push_back(info_2);
+  CreativeAdNotificationList expected_creative_ads;
+  expected_creative_ads.push_back(info_2);
 
   const SegmentList segments = {"FoOd & DrInK"};
 
   database_table_->GetForSegments(
       segments,
-      [&expected_creative_ad_notifications](
-          const bool success, const SegmentList& segments,
-          const CreativeAdNotificationList& creative_ad_notifications) {
+      [&expected_creative_ads](const bool success, const SegmentList& segments,
+                               const CreativeAdNotificationList& creative_ads) {
         EXPECT_TRUE(success);
-        EXPECT_TRUE(CompareAsSets(expected_creative_ad_notifications,
-                                  creative_ad_notifications));
+        EXPECT_TRUE(CompareAsSets(expected_creative_ads, creative_ads));
       });
 }
 

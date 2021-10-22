@@ -11,6 +11,7 @@
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
 
 namespace ads {
 
@@ -28,12 +29,14 @@ class AntiTargetingFrequencyCap final : public ExclusionRule<CreativeAdInfo> {
   AntiTargetingFrequencyCap& operator=(const AntiTargetingFrequencyCap&) =
       delete;
 
+  std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
+
   bool ShouldExclude(const CreativeAdInfo& creative_ad) override;
 
   std::string GetLastMessage() const override;
 
  private:
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
+  resource::AntiTargetingInfo anti_targeting_;
 
   BrowsingHistoryList browsing_history_;
 

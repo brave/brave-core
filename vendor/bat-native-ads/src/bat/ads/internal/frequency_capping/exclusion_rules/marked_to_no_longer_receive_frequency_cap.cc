@@ -16,6 +16,11 @@ MarkedToNoLongerReceiveFrequencyCap::MarkedToNoLongerReceiveFrequencyCap() =
 MarkedToNoLongerReceiveFrequencyCap::~MarkedToNoLongerReceiveFrequencyCap() =
     default;
 
+std::string MarkedToNoLongerReceiveFrequencyCap::GetUuid(
+    const CreativeAdInfo& creative_ad) const {
+  return creative_ad.creative_set_id;
+}
+
 bool MarkedToNoLongerReceiveFrequencyCap::ShouldExclude(
     const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(creative_ad)) {

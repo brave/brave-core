@@ -57,7 +57,7 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
     get_unblinded_tokens()->SetTokens({unblinded_token});
   }
 
-  ConfirmationInfo GetConfirmationInfo() {
+  ConfirmationInfo BuildConfirmationWithPayloadIfNeeded() {
     ConfirmationInfo confirmation = BuildConfirmation(
         "9fd71bc4-1b8e-4c1e-8ddc-443193a09f91",
         "70829d71-ce2e-4483-a4c0-e1e2bee96520", ConfirmationType::kViewed);
@@ -131,7 +131,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
 
   SetUnblindedTokens();
 
-  const ConfirmationInfo confirmation = GetConfirmationInfo();
+  const ConfirmationInfo confirmation = BuildConfirmationWithPayloadIfNeeded();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -176,7 +176,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
 
   SetUnblindedTokens();
 
-  ConfirmationInfo confirmation = GetConfirmationInfo();
+  ConfirmationInfo confirmation = BuildConfirmationWithPayloadIfNeeded();
   confirmation.was_created = true;
 
   // Act
@@ -211,7 +211,7 @@ TEST_F(
 
   SetUnblindedTokens();
 
-  const ConfirmationInfo confirmation = GetConfirmationInfo();
+  const ConfirmationInfo confirmation = BuildConfirmationWithPayloadIfNeeded();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -246,7 +246,7 @@ TEST_F(
 
   SetUnblindedTokens();
 
-  const ConfirmationInfo confirmation = GetConfirmationInfo();
+  const ConfirmationInfo confirmation = BuildConfirmationWithPayloadIfNeeded();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;
@@ -283,7 +283,7 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  const ConfirmationInfo confirmation = GetConfirmationInfo();
+  const ConfirmationInfo confirmation = BuildConfirmationWithPayloadIfNeeded();
 
   // Act
   ConfirmationInfo expected_confirmation = confirmation;

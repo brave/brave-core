@@ -31,8 +31,8 @@ class BatAdsAdEventHistoryTest : public UnitTestBase {
         timestamp);
   }
 
-  std::vector<double> GetAdEvent(const AdType& ad_type,
-                                 const ConfirmationType& confirmation_type) {
+  std::vector<double> GetAdEvents(const AdType& ad_type,
+                                  const ConfirmationType& confirmation_type) {
     const std::string ad_type_as_string = std::string(ad_type);
 
     const std::string confirmation_type_as_string =
@@ -51,7 +51,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForNewType) {
 
   // Act
   const std::vector<double> history =
-      GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
   const double timestamp = NowAsTimestamp();
@@ -66,7 +66,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForExistingType) {
 
   // Act
   const std::vector<double> history =
-      GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
   const double timestamp = NowAsTimestamp();
@@ -81,7 +81,7 @@ TEST_F(BatAdsAdEventHistoryTest, RecordAdEventForMultipleTypes) {
 
   // Act
   const std::vector<double> history =
-      GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
   const double timestamp = NowAsTimestamp();
@@ -100,7 +100,7 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
 
   // Act
   const std::vector<double> history =
-      GetAdEvent(AdType::kAdNotification, ConfirmationType::kViewed);
+      GetAdEvents(AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
   const double timestamp = NowAsTimestamp();

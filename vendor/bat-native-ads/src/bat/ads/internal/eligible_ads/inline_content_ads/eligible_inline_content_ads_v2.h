@@ -10,7 +10,7 @@
 
 #include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
-#include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_aliases.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/eligible_ads/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
 
@@ -27,8 +27,6 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-struct AdInfo;
-
 namespace inline_content_ads {
 
 class EligibleAdsV2 final : public EligibleAdsBase {
@@ -38,22 +36,23 @@ class EligibleAdsV2 final : public EligibleAdsBase {
       resource::AntiTargeting* anti_targeting);
   ~EligibleAdsV2() override;
 
-  void GetForUserModel(const ad_targeting::UserModelInfo& user_model,
-                       const std::string& dimensions,
-                       GetEligibleAdsCallback callback) override;
+  void GetForUserModel(
+      const ad_targeting::UserModelInfo& user_model,
+      const std::string& dimensions,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
-  void GetEligibleAds(const ad_targeting::UserModelInfo& user_model,
-                      const AdEventList& ad_events,
-                      const BrowsingHistoryList& browsing_history,
-                      const std::string& dimensions,
-                      GetEligibleAdsCallback callback) const;
-
-  CreativeInlineContentAdList ApplyFrequencyCapping(
-      const CreativeInlineContentAdList& creative_ads,
-      const AdInfo& last_served_ad,
+  void GetEligibleAds(
+      const ad_targeting::UserModelInfo& user_model,
       const AdEventList& ad_events,
-      const BrowsingHistoryList& browsing_history) const;
+      const BrowsingHistoryList& browsing_history,
+      const std::string& dimensions,
+      GetEligibleAdsCallback<CreativeInlineContentAdList> callback);
+
+  CreativeInlineContentAdList FilterCreativeAds(
+      const CreativeInlineContentAdList& creative_ads,
+      const AdEventList& ad_events,
+      const BrowsingHistoryList& browsing_history);
 };
 
 }  // namespace inline_content_ads

@@ -66,7 +66,7 @@ void CreativePromotedContentAds::Save(
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    std::vector<CreativeAdInfo> creative_ads(batch.begin(), batch.end());
+    std::vector<CreativeAdInfo> creative_ads(batch.cbegin(), batch.cend());
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
                                                  creative_ads);
@@ -532,7 +532,7 @@ CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
   creative_promoted_content_ad.total_max = ColumnInt(record, 12);
   creative_promoted_content_ad.value = ColumnDouble(record, 13);
   creative_promoted_content_ad.segment = ColumnString(record, 14);
-  creative_promoted_content_ad.geo_targets.push_back(ColumnString(record, 15));
+  creative_promoted_content_ad.geo_targets.insert(ColumnString(record, 15));
   creative_promoted_content_ad.target_url = ColumnString(record, 16);
   creative_promoted_content_ad.title = ColumnString(record, 17);
   creative_promoted_content_ad.description = ColumnString(record, 18);

@@ -51,8 +51,8 @@ class BatAdsInlineContentAdServingTest : public UnitTestBase {
     UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
   }
 
-  void Save(const CreativeInlineContentAdList& creative_inline_content_ads) {
-    database_table_->Save(creative_inline_content_ads,
+  void Save(const CreativeInlineContentAdList& creative_ads) {
+    database_table_->Save(creative_ads,
                           [](const bool success) { ASSERT_TRUE(success); });
   }
 
@@ -69,7 +69,7 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   RecordUserActivityEvents();
 
   CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 
@@ -91,7 +91,7 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForUnavailableDimensions) {
   RecordUserActivityEvents();
 
   CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 
@@ -107,7 +107,7 @@ TEST_F(BatAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = GetCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
   creative_ads.push_back(creative_ad);
   Save(creative_ads);
 

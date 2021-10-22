@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_ROUND_ROBIN_ADVERTISERS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_ROUND_ROBIN_ADVERTISERS_H_
 
+#include <algorithm>
+#include <iterator>
 #include <map>
 #include <string>
 
@@ -16,16 +18,13 @@ namespace ads {
 template <typename T>
 T FilterSeenAdvertisers(const T& ads,
                         const std::map<std::string, bool>& seen_advertisers) {
-  T unseen_advertisers = ads;
+  T unseen_advertisers;
 
-  const auto iter = std::remove_if(
-      unseen_advertisers.begin(), unseen_advertisers.end(),
-      [&seen_advertisers](const CreativeAdInfo& creative_ad) {
-        return seen_advertisers.find(creative_ad.advertiser_id) !=
-               seen_advertisers.end();
-      });
-
-  unseen_advertisers.erase(iter, unseen_advertisers.end());
+  std::copy_if(ads.cbegin(), ads.cend(), std::back_inserter(unseen_advertisers),
+               [&seen_advertisers](const CreativeAdInfo& creative_ad) {
+                 return seen_advertisers.find(creative_ad.advertiser_id) ==
+                        seen_advertisers.end();
+               });
 
   return unseen_advertisers;
 }

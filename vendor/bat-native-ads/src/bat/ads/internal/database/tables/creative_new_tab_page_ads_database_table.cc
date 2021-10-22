@@ -65,7 +65,7 @@ void CreativeNewTabPageAds::Save(
   for (const auto& batch : batches) {
     InsertOrUpdate(transaction.get(), batch);
 
-    std::vector<CreativeAdInfo> creative_ads(batch.begin(), batch.end());
+    std::vector<CreativeAdInfo> creative_ads(batch.cbegin(), batch.cend());
     campaigns_database_table_->InsertOrUpdate(transaction.get(), creative_ads);
     creative_ads_database_table_->InsertOrUpdate(transaction.get(),
                                                  creative_ads);
@@ -527,7 +527,7 @@ CreativeNewTabPageAdInfo CreativeNewTabPageAds::GetFromRecord(
   creative_new_tab_page_ad.total_max = ColumnInt(record, 12);
   creative_new_tab_page_ad.value = ColumnDouble(record, 13);
   creative_new_tab_page_ad.segment = ColumnString(record, 14);
-  creative_new_tab_page_ad.geo_targets.push_back(ColumnString(record, 15));
+  creative_new_tab_page_ad.geo_targets.insert(ColumnString(record, 15));
   creative_new_tab_page_ad.target_url = ColumnString(record, 16);
   creative_new_tab_page_ad.company_name = ColumnString(record, 17);
   creative_new_tab_page_ad.alt = ColumnString(record, 18);

@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/ad_events/ad_events.h"
+#include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
 #include "bat/ads/internal/database/tables/conversion_queue_database_table.h"
 #include "bat/ads/internal/database/tables/conversions_database_table.h"
@@ -42,18 +42,6 @@ class BatAdsConversionsTest : public UnitTestBase {
 
   base::Time CalculateExpireAtTime(const int observation_window) {
     return Now() + base::TimeDelta::FromDays(observation_window);
-  }
-
-  void FireAdEvent(const std::string& creative_set_id,
-                   const ConfirmationType confirmation_type) {
-    AdEventInfo ad_event;
-    ad_event.type = AdType::kAdNotification;
-    ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";
-    ad_event.creative_set_id = creative_set_id;
-    ad_event.confirmation_type = confirmation_type;
-    ad_event.created_at = Now();
-
-    LogAdEvent(ad_event, [](const bool success) { ASSERT_TRUE(success); });
   }
 
   std::unique_ptr<Conversions> conversions_;
@@ -110,7 +98,9 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAd) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
@@ -146,8 +136,12 @@ TEST_F(BatAdsConversionsTest, ConvertClickedAd) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event_1);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
+  FireAdEvent(ad_event_2);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar/baz"}, "", {});
@@ -193,10 +187,21 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion_1.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent("7ee858e8-6306-4317-88c3-9e7d58afad26",
+                   conversion_1.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event_1);
 
-  FireAdEvent(conversion_2.creative_set_id, ConfirmationType::kViewed);
-  FireAdEvent(conversion_2.creative_set_id, ConfirmationType::kClicked);
+  AdvanceClock(base::TimeDelta::FromMinutes(1));
+
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
+                   conversion_2.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event_2);
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
+                   conversion_2.creative_set_id, ConfirmationType::kClicked);
+  FireAdEvent(ad_event_3);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/qux"}, "", {});
@@ -218,11 +223,11 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
         EXPECT_EQ(2UL, ad_events.size());
 
         const ConversionInfo conversion_1 = conversions.at(0);
-        const AdEventInfo ad_event_1 = ad_events.at(0);
+        const AdEventInfo ad_event_1 = ad_events.at(1);
         EXPECT_EQ(conversion_1.creative_set_id, ad_event_1.creative_set_id);
 
         const ConversionInfo conversion_2 = conversions.at(1);
-        const AdEventInfo ad_event_2 = ad_events.at(1);
+        const AdEventInfo ad_event_2 = ad_events.at(0);
         EXPECT_EQ(conversion_2.creative_set_id, ad_event_2.creative_set_id);
       });
 }
@@ -241,8 +246,12 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event_1);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kClicked);
+  FireAdEvent(ad_event_2);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/quxbarbaz"}, "", {});
@@ -278,11 +287,21 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDismissed);
+  FireAdEvent(ad_event_1);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kTransferred);
+  FireAdEvent(ad_event_2);
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kFlagged);
+  FireAdEvent(ad_event_3);
+  const AdEventInfo ad_event_4 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kUpvoted);
+  FireAdEvent(ad_event_4);
+  const AdEventInfo ad_event_5 =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kDownvoted);
+  FireAdEvent(ad_event_5);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
@@ -314,7 +333,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
@@ -336,7 +357,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
   const std::string creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
 
-  FireAdEvent(creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
@@ -369,7 +392,9 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   conversions_->MaybeConvert({"https://www.foo.com/bar"}, "", {});
 
@@ -408,7 +433,9 @@ TEST_F(BatAdsConversionsTest,
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/qux"}, "", {});
@@ -440,7 +467,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(3) -
                                   base::TimeDelta::FromMinutes(1));
@@ -479,7 +508,9 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   task_environment_.FastForwardBy(base::TimeDelta::FromDays(3));
 
@@ -513,7 +544,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert(
@@ -551,7 +584,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert(
@@ -589,7 +624,9 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert(
@@ -632,7 +669,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   conversions_->MaybeConvert(
@@ -676,7 +715,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   // See associated patterns in the verifiable conversion resource
@@ -721,7 +762,9 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
 
   SaveConversions(conversions);
 
-  FireAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  const AdEventInfo ad_event =
+      BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
+  FireAdEvent(ad_event);
 
   // Act
   // See associated patterns in the verifiable conversion resource

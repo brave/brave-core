@@ -45,12 +45,12 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForParentChildSegment) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_1 =
-      GetCreativeAdNotificationForSegment("technology & computing");
+  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeAdNotificationInfo creative_ad_2 =
-      GetCreativeAdNotificationForSegment("technology & computing-software");
+  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);
@@ -77,8 +77,8 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForParentSegment) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad =
-      GetCreativeAdNotificationForSegment("technology & computing");
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -105,8 +105,8 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad =
-      GetCreativeAdNotificationForSegment("untargeted");
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -133,16 +133,16 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad_1 =
-      GetCreativeAdNotificationForSegment("technology & computing");
+  CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification();
+  creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeAdNotificationInfo creative_ad_2 =
-      GetCreativeAdNotificationForSegment("finance-banking");
+  CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification();
+  creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeAdNotificationInfo creative_ad_3 =
-      GetCreativeAdNotificationForSegment("food & drink");
+  CreativeAdNotificationInfo creative_ad_3 = BuildCreativeAdNotification();
+  creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
   Save(creative_ads);
@@ -171,8 +171,8 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForNoSegments) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad =
-      GetCreativeAdNotificationForSegment("untargeted");
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  creative_ad.segment = "untargeted";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
@@ -199,8 +199,8 @@ TEST_F(BatAdsEligibleAdNotificationsV1Test, GetAdsForUnmatchedSegments) {
   // Arrange
   CreativeAdNotificationList creative_ads;
 
-  CreativeAdNotificationInfo creative_ad =
-      GetCreativeAdNotificationForSegment("technology & computing");
+  CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification();
+  creative_ad.segment = "technology & computing";
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);

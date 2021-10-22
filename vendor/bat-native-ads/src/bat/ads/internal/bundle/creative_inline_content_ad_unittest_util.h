@@ -6,16 +6,11 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_INLINE_CONTENT_AD_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_INLINE_CONTENT_AD_UNITTEST_UTIL_H_
 
-#include <string>
-
 namespace ads {
 
 struct CreativeInlineContentAdInfo;
 
-CreativeInlineContentAdInfo GetCreativeInlineContentAd();
-
-CreativeInlineContentAdInfo GetCreativeInlineContentAdForSegment(
-    const std::string& segment);
+CreativeInlineContentAdInfo BuildCreativeInlineContentAd();
 
 }  // namespace ads
 

@@ -15,6 +15,8 @@ class ExclusionRule {
  public:
   virtual ~ExclusionRule() = default;
 
+  virtual std::string GetUuid(const T&) const = 0;
+
   virtual bool ShouldExclude(const T&) = 0;
 
   virtual std::string GetLastMessage() const = 0;

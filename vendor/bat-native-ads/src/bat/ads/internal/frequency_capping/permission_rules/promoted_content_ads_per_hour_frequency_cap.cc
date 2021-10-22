@@ -40,7 +40,7 @@ bool PromotedContentAdsPerHourFrequencyCap::DoesRespectCap(
   const base::TimeDelta time_constraint =
       base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
 
-  const uint64_t cap = features::GetMaximumPromotedContentAdsPerHour();
+  const int cap = features::GetMaximumPromotedContentAdsPerHour();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);

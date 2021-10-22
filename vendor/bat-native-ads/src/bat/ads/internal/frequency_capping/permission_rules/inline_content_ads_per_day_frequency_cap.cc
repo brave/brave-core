@@ -39,7 +39,7 @@ bool InlineContentAdsPerDayFrequencyCap::DoesRespectCap(
   const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
 
-  const uint64_t cap = features::GetMaximumInlineContentAdsPerDay();
+  const int cap = features::GetMaximumInlineContentAdsPerDay();
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history, time_constraint,
                                                        cap);

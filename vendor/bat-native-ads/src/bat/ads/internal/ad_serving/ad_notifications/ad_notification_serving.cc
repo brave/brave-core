@@ -32,6 +32,7 @@
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "bat/ads/internal/settings/settings.h"
 #include "bat/ads/internal/time_formatting_util.h"
+#include "bat/ads/pref_names.h"
 
 namespace ads {
 namespace ad_notifications {
@@ -157,20 +158,22 @@ void AdServing::MaybeServeAd() {
       });
 }
 
-void AdServing::OnPrefChanged() {
-  const int64_t ads_per_hour = settings::GetAdsPerHour();
-  BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
+void AdServing::OnPrefChanged(const std::string& path) {
+  if (path == prefs::kAdsPerHour) {
+    const int64_t ads_per_hour = settings::GetAdsPerHour();
+    BLOG(1, "Maximum ads per hour changed to " << ads_per_hour);
 
-  if (!ShouldServeAdsAtRegularIntervals()) {
-    return;
+    if (!ShouldServeAdsAtRegularIntervals()) {
+      return;
+    }
+
+    if (ads_per_hour == 0) {
+      StopServingAdsAtRegularIntervals();
+      return;
+    }
+
+    MaybeServeAdAtNextRegularInterval();
   }
-
-  if (ads_per_hour == 0) {
-    StopServingAdsAtRegularIntervals();
-    return;
-  }
-
-  MaybeServeAdAtNextRegularInterval();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

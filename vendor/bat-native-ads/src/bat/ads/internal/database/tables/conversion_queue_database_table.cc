@@ -183,6 +183,11 @@ void ConversionQueue::Migrate(mojom::DBTransaction* transaction,
       break;
     }
 
+    case 17: {
+      MigrateToV17(transaction);
+      break;
+    }
+
     default: {
       break;
     }
@@ -373,6 +378,12 @@ void ConversionQueue::MigrateToV11(mojom::DBTransaction* transaction) {
 
   // Rename temporary table
   util::Rename(transaction, temp_table_name, GetTableName());
+}
+
+void ConversionQueue::MigrateToV17(mojom::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  util::CreateIndex(transaction, "conversion_queue", "creative_instance_id");
 }
 
 }  // namespace table
