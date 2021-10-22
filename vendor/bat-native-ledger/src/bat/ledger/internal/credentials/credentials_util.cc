@@ -204,6 +204,9 @@ std::string ConvertRewardTypeToString(const type::RewardsType type) {
     case type::RewardsType::TRANSFER: {
       return "";
     }
+    case type::RewardsType::NONE: {
+      return "";
+    }
   }
 }
 
