@@ -118,7 +118,8 @@ class BraveWalletService : public KeyedService,
 
  private:
   void OnDefaultWalletChanged();
-
+  void GetPendingSignMessageHardwareRequest(
+    GetPendingSignMessageRequestCallback callback);
   friend class BraveWalletProviderImplUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
@@ -137,8 +138,9 @@ class BraveWalletService : public KeyedService,
 
   base::queue<SignMessageRequest> sign_message_requests_;
   base::queue<SignMessageRequestCallback> sign_message_callbacks_;
+  base::queue<SignMessageRequest> sign_message_hardware_requests_;
   base::queue<SignMessageHardwareRequestCallback>
-      sign_hardware_message_callbacks_;
+      sign_message_hardware_callbacks_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringController* keyring_controller_;
