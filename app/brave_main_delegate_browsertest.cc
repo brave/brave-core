@@ -90,11 +90,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kComputePressure,
     &blink::features::kConversionMeasurement,
+    &blink::features::kFledge,
     &blink::features::kHandwritingRecognitionWebPlatformApiFinch,
     &blink::features::kInterestCohortAPIOriginTrial,
     &blink::features::kInterestCohortFeaturePolicy,
     &blink::features::kInterestGroupStorage,
     &blink::features::kNavigatorPluginsFixed,
+    &blink::features::kParakeet,
     &blink::features::kTextFragmentAnchor,
     &blink::features::kWebSQLInThirdPartyContextEnabled,
 #if !defined(OS_ANDROID)
