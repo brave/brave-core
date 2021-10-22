@@ -369,7 +369,8 @@ public class PortfolioFragment
                                     Double fiatSum = 0.0d;
                                     for (GetBalanceResponseContext context : contexts) {
                                         fiatSum += ((context.success)
-                                                        ? (fromHexWei(context.balance) * usdPerEth)
+                                                        ? (fromHexWei(context.balance, 18)
+                                                                * usdPerEth)
                                                         : 0.0d);
                                     }
                                     final String fiatSumString =
