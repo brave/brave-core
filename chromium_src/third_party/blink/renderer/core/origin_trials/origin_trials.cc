@@ -29,6 +29,7 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
       "Fledge",
       "HandwritingRecognition",
       "Parakeet",
+      "Prerender2",
       "SignedExchangeSubresourcePrefetch",
       "SubresourceWebBundles",
       "TrustTokens",
@@ -48,12 +49,13 @@ bool IsTrialDisabledInBrave(const StringView& trial_name) {
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
   // clang-format off
-  static const std::array<OriginTrialFeature, 8> kBraveDisabledTrialFeatures = {
+  static const std::array<OriginTrialFeature, 9> kBraveDisabledTrialFeatures = {
       OriginTrialFeature::kConversionMeasurement,
       OriginTrialFeature::kDigitalGoods,
       OriginTrialFeature::kFledge,
       OriginTrialFeature::kHandwritingRecognition,
       OriginTrialFeature::kParakeet,
+      OriginTrialFeature::kPrerender2,
       OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
       OriginTrialFeature::kSubresourceWebBundles,
       OriginTrialFeature::kTrustTokens,
