@@ -363,20 +363,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return request_queue_size;
   }
 
-  size_t GetSignMessageHardwareQueueSize() const {
-    size_t request_queue_size =
-        brave_wallet_service_->sign_message_hardware_requests_.size();
-    EXPECT_EQ(brave_wallet_service_->sign_message_hardware_callbacks_.size(),
-              request_queue_size);
-    return request_queue_size;
-  }
-
   BraveWalletService::SignMessageRequest GetSignMessageQueueFront() const {
     return brave_wallet_service_->sign_message_requests_.front();
-  }
-  BraveWalletService::SignMessageRequest GetSignMessageHardwareQueueFront()
-      const {
-    return brave_wallet_service_->sign_message_hardware_requests_.front();
   }
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
@@ -1080,32 +1068,32 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardwareRequestQueue) {
   const std::string message2_in_queue(message_bytes2.begin(),
                                       message_bytes2.end());
 
-  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 2u);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id1);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message1_in_queue);
   const std::string signature = "signature";
   // wrong order
   brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
       true, id2, signature, "");
-  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 2u);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id1);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message1_in_queue);
+  EXPECT_EQ(GetSignMessageQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message1_in_queue);
 
   brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
       true, id1, signature, "");
-  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 1u);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id2);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message2_in_queue);
 
   // old id
   brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
       true, id1, signature, "");
-  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 1u);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id2);
-  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message2_in_queue);
+  EXPECT_EQ(GetSignMessageQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageQueueFront().message, message2_in_queue);
 
   brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
       true, id2, signature, "");
-  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 0u);
+  EXPECT_EQ(GetSignMessageQueueSize(), 0u);
 }
 }  // namespace brave_wallet

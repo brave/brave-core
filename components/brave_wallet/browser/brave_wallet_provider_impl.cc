@@ -307,7 +307,7 @@ void BraveWalletProviderImpl::ContinueSignMessage(
 
   std::string message_to_request = std::string(message.begin(), message.end());
   if (keyring_controller_->IsHardwareAccount(address)) {
-    brave_wallet_service_->AddSignMessageHardwareRequest(
+    brave_wallet_service_->AddSignMessageRequest(
         {sign_message_id_++, address, std::move(message_to_request)},
         base::BindOnce(
             &BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed,
@@ -327,7 +327,9 @@ void BraveWalletProviderImpl::OnSignMessageRequestProcessed(
     SignMessageCallback callback,
     const std::string& address,
     std::vector<uint8_t>&& message,
-    bool approved) {
+    bool approved,
+    const std::string& signature,
+    const std::string& error) {
   if (!approved) {
     std::move(callback).Run(
         "", static_cast<int>(ProviderErrors::kUserRejectedRequest),

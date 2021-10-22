@@ -511,22 +511,10 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
     std::move(callback).Run("");
 }
 
-void BraveWalletService::GetPendingSignMessageHardwareRequest(
-    GetPendingSignMessageRequestCallback callback) {
-  if (sign_message_hardware_requests_.empty()) {
-    std::move(callback).Run(-1, "", "");
-    return;
-  }
-
-  auto request = sign_message_hardware_requests_.front();
-  std::move(callback).Run(request.id, std::move(request.address),
-                          std::move(request.message));
-}
-
 void BraveWalletService::GetPendingSignMessageRequest(
     GetPendingSignMessageRequestCallback callback) {
   if (sign_message_requests_.empty()) {
-    GetPendingSignMessageHardwareRequest(std::move(callback));
+    std::move(callback).Run(-1, "", "");
     return;
   }
 
@@ -546,7 +534,7 @@ void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
   sign_message_requests_.pop();
   sign_message_callbacks_.pop();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::string(), std::string());
 }
 
 void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
@@ -554,14 +542,14 @@ void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
     int id,
     const std::string& signature,
     const std::string& error) {
-  if (sign_message_hardware_requests_.front().id != id) {
+  if (sign_message_requests_.front().id != id) {
     VLOG(1) << "id: " << id << " is not expected, should be "
-            << sign_message_hardware_requests_.front().id;
+            << sign_message_requests_.front().id;
     return;
   }
-  auto callback = std::move(sign_message_hardware_callbacks_.front());
-  sign_message_hardware_requests_.pop();
-  sign_message_hardware_callbacks_.pop();
+  auto callback = std::move(sign_message_callbacks_.front());
+  sign_message_requests_.pop();
+  sign_message_callbacks_.pop();
 
   std::move(callback).Run(approved, signature, error);
 }
@@ -607,13 +595,6 @@ void BraveWalletService::AddSignMessageRequest(
     SignMessageRequestCallback callback) {
   sign_message_requests_.push(std::move(request));
   sign_message_callbacks_.push(std::move(callback));
-}
-
-void BraveWalletService::AddSignMessageHardwareRequest(
-    SignMessageRequest&& request,
-    SignMessageHardwareRequestCallback callback) {
-  sign_message_hardware_requests_.push(std::move(request));
-  sign_message_hardware_callbacks_.push(std::move(callback));
 }
 
 }  // namespace brave_wallet
