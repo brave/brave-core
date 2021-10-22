@@ -129,7 +129,7 @@ const ConnectedPanel = (props: Props) => {
           </Tooltip>
         </BalanceColumn>
         <BalanceColumn>
-          <AssetBalanceText>{formatBalance(selectedAccount.balance, 18)} {selectedAccount.asset.toUpperCase()}</AssetBalanceText>
+          <AssetBalanceText>{formatBalance(selectedAccount.balance, selectedNetwork.decimals)} {selectedNetwork.symbol}</AssetBalanceText>
           <FiatBalanceText>${formatWithCommasAndDecimals(selectedAccount.fiatBalance)}</FiatBalanceText>
         </BalanceColumn>
       </CenterColumn>
