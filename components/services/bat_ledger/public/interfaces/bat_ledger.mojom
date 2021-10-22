@@ -156,6 +156,8 @@ interface BatLedger {
   Shutdown() => (ledger.mojom.Result result);
 
   GetEventLogs() => (array<ledger.mojom.EventLog> logs);
+  
+  RestoreVirtualGrants() => (ledger.mojom.Result result);
 
   GetBraveWallet() => (ledger.mojom.BraveWallet? wallet);
 

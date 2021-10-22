@@ -3189,8 +3189,11 @@ void RewardsServiceImpl::RunDBTransaction(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
                      ledger_database_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRunDBTransaction, AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                         ledger::client::RunDBTransactionCallback,
+                         ledger::type::DBCommandResponsePtr)>(
+                         &RewardsServiceImpl::OnRunDBTransaction),
+                     AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(
@@ -3198,6 +3201,28 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::type::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   callback(std::move(response));
+}
+
+void RewardsServiceImpl::RunDBTransaction(
+    ledger::type::DBTransactionPtr transaction,
+    ledger::client::RunDBTransactionCallback2 callback) {
+  DCHECK(ledger_database_);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
+                     ledger_database_.get()),
+      base::BindOnce(static_cast<void (RewardsServiceImpl::*)(
+                         ledger::client::RunDBTransactionCallback2,
+                         ledger::type::DBCommandResponsePtr)>(
+                         &RewardsServiceImpl::OnRunDBTransaction),
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnRunDBTransaction(
+    ledger::client::RunDBTransactionCallback2 callback,
+    ledger::type::DBCommandResponsePtr response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::move(callback).Run(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(
@@ -3352,6 +3377,21 @@ void RewardsServiceImpl::OnGetEventLogs(
     GetEventLogsCallback callback,
     ledger::type::EventLogs logs) {
   std::move(callback).Run(std::move(logs));
+}
+
+void RewardsServiceImpl::RestoreVirtualGrants(
+    RestoreVirtualGrantsCallback callback) {
+  if (Connected()) {
+    bat_ledger_->RestoreVirtualGrants(
+        base::BindOnce(&RewardsServiceImpl::OnRestoreVirtualGrants, AsWeakPtr(),
+                       std::move(callback)));
+  }
+}
+
+void RewardsServiceImpl::OnRestoreVirtualGrants(
+    RestoreVirtualGrantsCallback callback,
+    ledger::type::Result result) {
+  std::move(callback).Run(result);
 }
 
 absl::optional<std::string> RewardsServiceImpl::EncryptString(

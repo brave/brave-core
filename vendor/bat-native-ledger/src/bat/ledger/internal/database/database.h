@@ -32,6 +32,7 @@
 #include "bat/ledger/internal/database/database_sku_order.h"
 #include "bat/ledger/internal/database/database_sku_transaction.h"
 #include "bat/ledger/internal/database/database_unblinded_token.h"
+#include "bat/ledger/internal/database/database_vg_backup_restore.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/ledger.h"
 
@@ -428,6 +429,14 @@ class Database {
       const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
+  /**
+   * VIRTUAL GRANT BACKUP & RESTORE
+   */
+  void BackUpVirtualGrants(BackUpVirtualGrantsCallback callback);
+
+  void RestoreVirtualGrants(type::VirtualGrants&& vgs,
+                            RestoreVirtualGrantsCallback callback);
+
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
@@ -448,6 +457,7 @@ class Database {
   std::unique_ptr<DatabaseSKUOrder> sku_order_;
   std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
+  std::unique_ptr<DatabaseVGBackupRestore> vg_backup_restore_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 

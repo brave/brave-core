@@ -1129,6 +1129,27 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 }
 
 // static
+void BatLedgerImpl::OnRestoreVirtualGrants(
+    CallbackHolder<RestoreVirtualGrantsCallback>* holder,
+    ledger::type::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::RestoreVirtualGrants(
+    RestoreVirtualGrantsCallback callback) {
+  auto* holder = new CallbackHolder<RestoreVirtualGrantsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->RestoreVirtualGrants(
+      base::BindOnce(BatLedgerImpl::OnRestoreVirtualGrants, holder));
+}
+
+// static
 void BatLedgerImpl::OnGetBraveWallet(
     CallbackHolder<GetBraveWalletCallback>* holder,
     ledger::type::BraveWalletPtr wallet) {

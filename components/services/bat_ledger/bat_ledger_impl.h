@@ -244,6 +244,8 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void RestoreVirtualGrants(RestoreVirtualGrantsCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
@@ -447,6 +449,10 @@ class BatLedgerImpl :
   static void OnGetEventLogs(
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
+
+  static void OnRestoreVirtualGrants(
+      CallbackHolder<RestoreVirtualGrantsCallback>* holder,
+      ledger::type::Result result);
 
   static void OnGetBraveWallet(
       CallbackHolder<GetBraveWalletCallback>* holder,

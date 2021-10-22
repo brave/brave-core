@@ -184,6 +184,11 @@ using UrlRequestPtr = mojom::UrlRequestPtr;
 using UrlResponse = mojom::UrlResponse;
 using UrlResponsePtr = mojom::UrlResponsePtr;
 
+using VirtualGrant = mojom::VirtualGrant;
+using VirtualGrantPtr = mojom::VirtualGrantPtr;
+using VirtualGrants =
+    std::multimap<std::string /* creds_id */, VirtualGrantPtr>;
+
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;
 

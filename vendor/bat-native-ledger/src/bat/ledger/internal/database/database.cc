@@ -43,6 +43,7 @@ Database::Database(LedgerImpl* ledger) :
   sku_order_ = std::make_unique<DatabaseSKUOrder>(ledger_);
   unblinded_token_ =
       std::make_unique<DatabaseUnblindedToken>(ledger_);
+  vg_backup_restore_ = std::make_unique<DatabaseVGBackupRestore>(ledger_);
 }
 
 Database::~Database() = default;
@@ -646,6 +647,18 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
     const std::vector<type::CredsBatchType>& batch_types,
     GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
+}
+
+/**
+ * VIRTUAL GRANT BACKUP & RESTORE
+ */
+void Database::BackUpVirtualGrants(BackUpVirtualGrantsCallback callback) {
+  vg_backup_restore_->BackUpVirtualGrants(std::move(callback));
+}
+
+void Database::RestoreVirtualGrants(type::VirtualGrants&& vgs,
+                                    RestoreVirtualGrantsCallback callback) {
+  vg_backup_restore_->RestoreVirtualGrants(std::move(vgs), std::move(callback));
 }
 
 }  // namespace database

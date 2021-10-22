@@ -335,6 +335,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void RestoreVirtualGrants(RestoreVirtualGrantsCallback callback) override;
+
   void StopLedger(StopLedgerCallback callback);
 
   absl::optional<std::string> EncryptString(const std::string& value) override;
@@ -657,6 +659,10 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 
@@ -730,6 +736,9 @@ class RewardsServiceImpl : public RewardsService,
       ledger::client::RunDBTransactionCallback callback,
       ledger::type::DBCommandResponsePtr response);
 
+  void OnRunDBTransaction(ledger::client::RunDBTransactionCallback2 callback,
+                          ledger::type::DBCommandResponsePtr response);
+
   void OnGetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback,
       const std::vector<std::string>& ids);
@@ -753,6 +762,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetEventLogs(
       GetEventLogsCallback callback,
       ledger::type::EventLogs logs);
+
+  void OnRestoreVirtualGrants(RestoreVirtualGrantsCallback callback,
+                              ledger::type::Result result);
 
   void OnGetBraveWallet(
       GetBraveWalletCallback callback,

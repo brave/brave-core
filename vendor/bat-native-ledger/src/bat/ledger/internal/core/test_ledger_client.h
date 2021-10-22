@@ -143,6 +143,9 @@ class TestLedgerClient : public LedgerClient {
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(client::GetCreateScriptCallback callback) override;
 
   void PendingContributionSaved(const mojom::Result result) override;
@@ -175,6 +178,9 @@ class TestLedgerClient : public LedgerClient {
                          client::LoadURLCallback callback);
 
   void RunDBTransactionCompleted(client::RunDBTransactionCallback callback,
+                                 mojom::DBCommandResponsePtr response);
+
+  void RunDBTransactionCompleted(client::RunDBTransactionCallback2 callback,
                                  mojom::DBCommandResponsePtr response);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

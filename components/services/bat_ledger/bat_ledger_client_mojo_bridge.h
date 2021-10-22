@@ -102,6 +102,10 @@ class BatLedgerClientMojoBridge :
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 

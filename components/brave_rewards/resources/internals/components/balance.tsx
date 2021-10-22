@@ -36,7 +36,11 @@ const getWalletName = (walletKey: string) => {
 const getWalletBalance = (wallets: Record<string, number>) => {
   let items = []
   for (const key in wallets) {
-    items.push(<div key={'wallet-' + key}> {getWalletName(key)}: {wallets[key]} {getLocale('bat')} </div>)
+    if (key === 'blinded') {
+      items.push(<div key={'wallet-' + key}> {getWalletName(key)}: {wallets[key]} {getLocale('bat')} <button onClick={() => chrome.send('brave_rewards_internals.restoreVirtualGrants')}>Restore</button></div>)
+    } else {
+      items.push(<div key={'wallet-' + key}> {getWalletName(key)}: {wallets[key]} {getLocale('bat')} </div>)
+    }
   }
 
   return items

@@ -73,6 +73,8 @@ using GetAllMonthlyReportIdsCallback =
 
 using GetEventLogsCallback = std::function<void(type::EventLogs)>;
 
+using RestoreVirtualGrantsCallback = base::OnceCallback<void(type::Result)>;
+
 using SKUOrderCallback = std::function<void(type::Result, const std::string&)>;
 
 using GetContributionReportCallback =
@@ -362,6 +364,8 @@ class LEDGER_EXPORT Ledger {
   virtual void Shutdown(ResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void RestoreVirtualGrants(RestoreVirtualGrantsCallback callback) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 
