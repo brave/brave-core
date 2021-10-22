@@ -34,5 +34,5 @@ export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('se
 export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')
 export const signMessage = createAction<SignMessagePayload>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signHardwareMessage = createAction<SignMessageData>('signHardwareMessage')
-export const signHardwareMessageProcessed = createAction<SignMessageProcessedPayload>('signHardwareMessageProcessed')
+export const signMessageHardware = createAction<SignMessageData>('signMessageHardware')
+export const signMessageHardwareCancelled = createAction<SignMessageProcessedPayload>('signMessageHardwareCancelled')

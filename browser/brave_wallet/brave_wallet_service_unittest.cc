@@ -992,7 +992,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
         ASSERT_TRUE(error.empty());
         callback_is_called = true;
       }));
-  service_->NotifyHardwareSignMessageRequestProcessed(
+  service_->NotifySignMessageHardwareRequestProcessed(
       true, 1, expected_signature, std::string());
   ASSERT_TRUE(callback_is_called);
   callback_is_called = false;
@@ -1007,7 +1007,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
         EXPECT_EQ(error, expected_error);
         callback_is_called = true;
       }));
-  service_->NotifyHardwareSignMessageRequestProcessed(
+  service_->NotifySignMessageHardwareRequestProcessed(
       false, 2, expected_signature, expected_error);
   ASSERT_TRUE(callback_is_called);
 }

@@ -287,7 +287,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         browser_context(), url.spec(), from(from_index));
   }
 
-  void SignHardwareMessage(bool user_approved,
+  void SignMessageHardware(bool user_approved,
                            const std::string& address,
                            const std::string& message,
                            const std::string& hardware_signature,
@@ -314,7 +314,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         }),
         user_approved, allowed_accounts);
     browser_task_environment_.RunUntilIdle();
-    brave_wallet_service_->NotifyHardwareSignMessageRequestProcessed(
+    brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
         user_approved, provider()->sign_message_id_ - 1, hardware_signature,
         error_in);
     run_loop.Run();
@@ -1013,7 +1013,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
-TEST_F(BraveWalletProviderImplUnitTest, SignHardwareMessage) {
+TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
   CreateWallet();
   std::string address = "0x111";
   AddHardwareAccount(address);
@@ -1026,7 +1026,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SignHardwareMessage) {
   AddEthereumPermission(url);
 
   // success
-  SignHardwareMessage(true, address, "0x1234", expected_signature, "",
+  SignMessageHardware(true, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(signature, expected_signature);
@@ -1035,14 +1035,14 @@ TEST_F(BraveWalletProviderImplUnitTest, SignHardwareMessage) {
 
   // forwarding errors from javascript
   std::string expected_error = "error text";
-  SignHardwareMessage(false, address, "0x1234", expected_signature,
+  SignMessageHardware(false, address, "0x1234", expected_signature,
                       expected_error, &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInternalError));
   EXPECT_EQ(error_message, expected_error);
 
   // user rejected request
-  SignHardwareMessage(false, address, "0x1234", expected_signature, "",
+  SignMessageHardware(false, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));

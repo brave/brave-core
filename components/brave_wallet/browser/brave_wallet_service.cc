@@ -537,7 +537,7 @@ void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
   std::move(callback).Run(approved);
 }
 
-void BraveWalletService::NotifyHardwareSignMessageRequestProcessed(
+void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
     bool approved,
     int id,
     const std::string& signature,
@@ -597,9 +597,9 @@ void BraveWalletService::AddSignMessageRequest(
   sign_message_callbacks_.push(std::move(callback));
 }
 
-void BraveWalletService::AddHardwareSignMessageRequest(
+void BraveWalletService::AddSignMessageHardwareRequest(
     SignMessageRequest&& request,
-    SignHardwareMessageRequestCallback callback) {
+    SignMessageHardwareRequestCallback callback) {
   sign_message_requests_.push(std::move(request));
   sign_hardware_message_callbacks_.push(std::move(callback));
 }

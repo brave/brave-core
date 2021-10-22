@@ -38,7 +38,7 @@ class BraveWalletService : public KeyedService,
                            public BraveWalletServiceDelegate::Observer {
  public:
   using SignMessageRequestCallback = base::OnceCallback<void(bool)>;
-  using SignHardwareMessageRequestCallback =
+  using SignMessageHardwareRequestCallback =
       base::OnceCallback<void(bool, const std::string&, const std::string&)>;
 
   explicit BraveWalletService(
@@ -94,7 +94,7 @@ class BraveWalletService : public KeyedService,
   void GetPendingSignMessageRequest(
       GetPendingSignMessageRequestCallback callback) override;
   void NotifySignMessageRequestProcessed(bool approved, int id) override;
-  void NotifyHardwareSignMessageRequestProcessed(
+  void NotifySignMessageHardwareRequestProcessed(
       bool approved,
       int id,
       const std::string& signature,
@@ -112,9 +112,9 @@ class BraveWalletService : public KeyedService,
   };
   void AddSignMessageRequest(SignMessageRequest&& request,
                              SignMessageRequestCallback callback);
-  void AddHardwareSignMessageRequest(
+  void AddSignMessageHardwareRequest(
       SignMessageRequest&& request,
-      SignHardwareMessageRequestCallback callback);
+      SignMessageHardwareRequestCallback callback);
 
  private:
   void OnDefaultWalletChanged();
@@ -137,7 +137,7 @@ class BraveWalletService : public KeyedService,
 
   base::queue<SignMessageRequest> sign_message_requests_;
   base::queue<SignMessageRequestCallback> sign_message_callbacks_;
-  base::queue<SignHardwareMessageRequestCallback>
+  base::queue<SignMessageHardwareRequestCallback>
       sign_hardware_message_callbacks_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
