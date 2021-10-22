@@ -52,6 +52,7 @@ include_rules = [
   "+../../../../../../chrome/browser/ui/bookmarks",
   "+../../../../../../chrome/browser/ui/cocoa",
   "+../../../../../../chrome/browser/ui/content_settings",
+  "+../../../../../../chrome/browser/ui/dialogs",
   "+../../../../../../chrome/browser/ui/extensions",
   "+../../../../../../chrome/browser/ui/omnibox",
   "+../../../../../../chrome/browser/ui/page_info",
