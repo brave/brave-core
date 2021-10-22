@@ -153,6 +153,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private Handler mHandler;
     private String mCurrentChainId;
     private String mAllowanceTarget;
+    private Spinner mAccountSpinner;
 
     @Override
     protected void onDestroy() {
@@ -225,11 +226,11 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     accountTitles[currentPos] = info.address;
                     currentPos++;
                 }
-                Spinner accountSpinner = findViewById(R.id.accounts_spinner);
+                mAccountSpinner = findViewById(R.id.accounts_spinner);
                 mCustomAccountAdapter = new AccountSpinnerAdapter(
                         getApplicationContext(), pictures, accountNames, accountTitles);
-                accountSpinner.setAdapter(mCustomAccountAdapter);
-                accountSpinner.setOnItemSelectedListener(this);
+                mAccountSpinner.setAdapter(mCustomAccountAdapter);
+                mAccountSpinner.setOnItemSelectedListener(this);
                 if (accountTitles.length > 0) {
                     updateBalance(accountTitles[0], true);
                     if (mActivityType == ActivityType.SWAP) {
@@ -253,13 +254,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     mCurrentChainId = chainId;
                 });
             }
-            Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                  accountSpinner.getSelectedItemPosition()),
+                                  mAccountSpinner.getSelectedItemPosition()),
                     true);
             if (mActivityType == ActivityType.SWAP) {
                 updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                      accountSpinner.getSelectedItemPosition()),
+                                      mAccountSpinner.getSelectedItemPosition()),
                         false);
             }
         } else if (parent.getId() == R.id.accounts_spinner) {
@@ -276,9 +276,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     public void onNothingSelected(AdapterView<?> arg0) {}
 
     private void getSendSwapQuota(boolean calculatePerSellAsset, boolean sendTx) {
-        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         String from =
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition());
+                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
         EditText fromValueText = findViewById(R.id.from_value_text);
         String value = fromValueText.getText().toString();
         EditText toValueText = findViewById(R.id.to_value_text);
@@ -416,9 +415,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         final double fee = gasLimit * Utils.fromWei(response.gasPrice, 18);
         final double fromValue = valueFrom;
         assert mEthJsonRpcController != null;
-        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         mEthJsonRpcController.getBalance(
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 (success, balance) -> {
                     if (success) {
                         double currentBalance = Utils.fromHexWei(balance, 18);
@@ -468,9 +466,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     private void checkAllowance(String contract, String spenderAddress, double amountToSend) {
         assert mEthJsonRpcController != null;
         assert mCurrentErcToken != null;
-        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         String ownerAddress =
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition());
+                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
         mEthJsonRpcController.getErc20TokenAllowance(
                 contract, ownerAddress, spenderAddress, (success, allowance) -> {
                     if (!success
@@ -667,9 +664,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
 
         btnBuySendSwap.setOnClickListener(v -> {
-            Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             String from = mCustomAccountAdapter.getTitleAtPosition(
-                    accountSpinner.getSelectedItemPosition());
+                    mAccountSpinner.getSelectedItemPosition());
             EditText fromValueText = findViewById(R.id.from_value_text);
             // TODO(sergz): Some kind of validation that we have enough balance
             String value = fromValueText.getText().toString();
@@ -780,9 +776,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     }
                     TxData txData = Utils.getTxData(
                             "0x1", "", "", mCurrentErcToken.contractAddress, "0x0", data);
-                    Spinner accountSpinner = findViewById(R.id.accounts_spinner);
                     String from = mCustomAccountAdapter.getTitleAtPosition(
-                            accountSpinner.getSelectedItemPosition());
+                            mAccountSpinner.getSelectedItemPosition());
                     addUnapprovedTransaction(txData, from);
                 });
     }
@@ -823,11 +818,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         mEthJsonRpcController.getChainId(chainId -> {
             String chainName = Utils.getNetworkText(this, chainId).toString();
-            Spinner accountSpinner = findViewById(R.id.accounts_spinner);
             String accountName = mCustomAccountAdapter.getNameAtPosition(
-                    accountSpinner.getSelectedItemPosition());
+                    mAccountSpinner.getSelectedItemPosition());
             int accountPic = mCustomAccountAdapter.getPictureAtPosition(
-                    accountSpinner.getSelectedItemPosition());
+                    mAccountSpinner.getSelectedItemPosition());
             String txType = getText(R.string.send).toString();
             if (mActivityType == ActivityType.SWAP) {
                 txType = getText(R.string.swap).toString();
@@ -874,9 +868,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
         Utils.setBitmapResource(
                 mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null, assetFromDropDown);
-        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         updateBalance(
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 true);
         if (mActivityType == ActivityType.SWAP) {
             enableDisableSwapButton();
@@ -903,9 +896,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
         Utils.setBitmapResource(
                 mExecutor, mHandler, this, iconPath, R.drawable.ic_eth_24, null, assetToDropDown);
-        Spinner accountSpinner = findViewById(R.id.accounts_spinner);
         updateBalance(
-                mCustomAccountAdapter.getTitleAtPosition(accountSpinner.getSelectedItemPosition()),
+                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
                 false);
         enableDisableSwapButton();
         getSendSwapQuota(true, false);

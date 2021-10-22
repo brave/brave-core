@@ -325,6 +325,15 @@ public class Utils {
         return networkConst;
     }
 
+    private static String getDecimalsDepNumber(int decimals) {
+        String strDecimals = "1";
+        for (int i = 0; i < decimals; i++) {
+            strDecimals += "0";
+        }
+
+        return strDecimals;
+    }
+
     public static double fromHexWei(String number, int decimals) {
         if (number.equals("0x0")) {
             return 0;
@@ -336,11 +345,7 @@ public class Utils {
             return 0;
         }
         BigInteger bigNumber = new BigInteger(number, 16);
-        String strDecimals = "1";
-        for (int i = 0; i < decimals; i++) {
-            strDecimals += "0";
-        }
-        BigInteger divider = new BigInteger(strDecimals);
+        BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
         BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
         String resStr = bDecimalRes.toPlainString();
@@ -374,11 +379,7 @@ public class Utils {
             return "0";
         }
         int dotPosition = number.indexOf(".");
-        String strDecimals = "1";
-        for (int i = 0; i < decimals; i++) {
-            strDecimals += "0";
-        }
-        String multiplier = strDecimals;
+        String multiplier = getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
             multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
@@ -400,11 +401,7 @@ public class Utils {
             return 0;
         }
         BigInteger bigNumber = new BigInteger(number);
-        String strDecimals = "1";
-        for (int i = 0; i < decimals; i++) {
-            strDecimals += "0";
-        }
-        BigInteger divider = new BigInteger(strDecimals);
+        BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
         BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
         String resStr = bDecimalRes.toPlainString();
@@ -417,11 +414,7 @@ public class Utils {
             return "0x0";
         }
         int dotPosition = number.indexOf(".");
-        String strDecimals = "1";
-        for (int i = 0; i < decimals; i++) {
-            strDecimals += "0";
-        }
-        String multiplier = strDecimals;
+        String multiplier = getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
             multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
@@ -551,32 +544,26 @@ public class Utils {
 
     public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
             String iconPath, int iconId, ImageView iconImg, TextView textView) {
+        if (iconPath == null) {
+            if (iconImg != null) {
+                iconImg.setImageResource(iconId);
+            } else if (textView != null) {
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        iconId, 0, R.drawable.ic_carat_down, 0);
+            }
+
+            return;
+        }
         executor.execute(() -> {
-            InputStream inputStream = null;
-            try {
-                Bitmap logoBitmap = null;
-                if (iconPath == null) {
-                    handler.post(() -> {
-                        if (iconImg != null) {
-                            iconImg.setImageResource(iconId);
-                        } else if (textView != null) {
-                            textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                                    iconId, 0, R.drawable.ic_carat_down, 0);
-                        }
-                    });
-                    return;
-                } else {
-                    Uri logoFileUri = Uri.parse(iconPath);
-                    inputStream = context.getContentResolver().openInputStream(logoFileUri);
-                    int resizeFactor = 110;
-                    if (textView != null) {
-                        resizeFactor = 70;
-                    }
-                    logoBitmap = Utils.resizeBitmap(
-                            BitmapFactory.decodeStream(inputStream), resizeFactor);
-                    inputStream.close();
-                }
-                final Bitmap bitmap = logoBitmap;
+            Uri logoFileUri = Uri.parse(iconPath);
+            int resizeFactor = 110;
+            if (textView != null) {
+                resizeFactor = 70;
+            }
+            try (InputStream inputStream =
+                            context.getContentResolver().openInputStream(logoFileUri)) {
+                final Bitmap bitmap =
+                        Utils.resizeBitmap(BitmapFactory.decodeStream(inputStream), resizeFactor);
                 handler.post(() -> {
                     if (iconImg != null) {
                         iconImg.setImageBitmap(bitmap);
@@ -590,14 +577,6 @@ public class Utils {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
             } catch (IllegalArgumentException exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
-            } finally {
-                try {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                } catch (IOException exception) {
-                    org.chromium.base.Log.e("Utils", exception.getMessage());
-                }
             }
         });
     }
