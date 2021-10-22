@@ -30,6 +30,7 @@
 #include "bat/ledger/internal/sku/sku.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/internal/vg/backup_restore.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -77,6 +78,8 @@ class LedgerImpl : public Ledger {
   gemini::Gemini* gemini() const;
 
   uphold::Uphold* uphold() const;
+
+  vg::BackupRestore* backup_restore() const;
 
   virtual database::Database* database() const;
 
@@ -296,6 +299,15 @@ class LedgerImpl : public Ledger {
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) override;
+
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   std::string GetWalletPassphrase() override;
@@ -352,6 +364,7 @@ class LedgerImpl : public Ledger {
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
+  std::unique_ptr<vg::BackupRestore> backup_restore_;
 
   std::map<uint32_t, type::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
