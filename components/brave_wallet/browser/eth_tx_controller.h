@@ -103,6 +103,13 @@ class EthTxController : public KeyedService,
                               const std::string& s,
                               ProcessLedgerSignatureCallback callback) override;
 
+  void SpeedupOrCancelTransaction(
+      const std::string& tx_meta_id,
+      bool cancel,
+      SpeedupOrCancelTransactionCallback callback) override;
+  void RetryTransaction(const std::string& tx_meta_id,
+                        RetryTransactionCallback callback) override;
+
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 
@@ -158,6 +165,20 @@ class EthTxController : public KeyedService,
                       mojom::GasEstimation1559Ptr gas_estimation);
   void CheckIfBlockTrackerShouldRun();
   void UpdatePendingTransactions();
+
+  void ContinueSpeedupOrCancelTransaction(
+      const std::string& from,
+      const std::string& gas_limit,
+      std::unique_ptr<EthTransaction> tx,
+      SpeedupOrCancelTransactionCallback callback,
+      bool success,
+      const std::string& result);
+  void ContinueSpeedupOrCancel1559Transaction(
+      const std::string& from,
+      const std::string& gas_limit,
+      std::unique_ptr<Eip1559Transaction> tx,
+      SpeedupOrCancelTransactionCallback callback,
+      mojom::GasEstimation1559Ptr gas_estimation);
 
   // KeyringControllerObserver:
   void KeyringCreated() override;
