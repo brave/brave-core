@@ -31,52 +31,84 @@ struct BuyTokenView: View {
             .padding(.bottom, -16) // Get it a bit closer
         ) {
         }
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
-        ) {
-          NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore)) {
-            HStack {
-              if let token = buyTokenStore.selectedBuyToken {
-                AssetIconView(token: token, length: 26)
+        if networkStore.selectedChain.chainId == BraveWallet.MainnetChainId {
+          Section(
+            header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
+          ) {
+            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore)) {
+              HStack {
+                if let token = buyTokenStore.selectedBuyToken {
+                  AssetIconView(token: token, length: 26)
+                }
+                Text(buyTokenStore.selectedBuyToken?.symbol ?? "BAT")
+                  .font(.title3.weight(.semibold))
+                  .foregroundColor(Color(.braveLabel))
               }
-              Text(buyTokenStore.selectedBuyToken?.symbol ?? "BAT")
-                .font(.title3.weight(.semibold))
-                .foregroundColor(Color(.braveLabel))
+              .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
+          Section(
+            header: WalletListHeaderView(title: Text(Strings.Wallet.enterAmount))
+          ) {
+            HStack {
+              Text("$")
+              TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, "USD"), text: $amountInput)
+                .keyboardType(.decimalPad)
+            }
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
-        Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.enterAmount))
-        ) {
-          HStack {
-            Text("$")
-            TextField(String.localizedStringWithFormat(Strings.Wallet.amountInCurrency, "USD"), text: $amountInput)
-              .keyboardType(.decimalPad)
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        Section(
-          header: HStack {
-            Button(action: {
-              buyTokenStore.fetchBuyUrl(account: keyringStore.selectedAccount, amount: amountInput) { urlString in
-                guard let urlString = urlString, let url = URL(string: urlString) else {
-                  return
+          Section(
+            header: HStack {
+              Button(action: {
+                buyTokenStore.fetchBuyUrl(account: keyringStore.selectedAccount, amount: amountInput) { urlString in
+                  guard let urlString = urlString, let url = URL(string: urlString) else {
+                    return
+                  }
+                  openWalletURL?(url)
                 }
-                openWalletURL?(url)
+              }) {
+                Text(Strings.Wallet.buyButtonTitle)
               }
-            }) {
-              Text(Strings.Wallet.buyButtonTitle)
+                .buttonStyle(BraveFilledButtonStyle(size: .normal))
+                .frame(maxWidth: .infinity)
             }
+              .resetListHeaderStyle()
+              .listRowBackground(Color(.clear))
+          ) {
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } else {
+          Section {
+            VStack(alignment: .leading, spacing: 4.0) {
+              Text(Strings.Wallet.buyTestTitle)
+                .font(.headline)
+              Text(String.localizedStringWithFormat(Strings.Wallet.buyTestDescription, networkStore.selectedChain.chainName))
+                .font(.subheadline)
+                .foregroundColor(Color(.secondaryBraveLabel))
+            }
+            .padding(.vertical, 6.0)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          }
+          .listRowBackground(Color(.clear))
+          Section(
+            header:
+              Button(action: {
+                buyTokenStore.fetchTestFaucetUrl { urlString in
+                  guard let urlString = urlString, let url = URL(string: urlString) else {
+                    return
+                  }
+                  openWalletURL?(url)
+                }
+              }) {
+                Text(Strings.Wallet.buyTestButtonTitle)
+              }
               .buttonStyle(BraveFilledButtonStyle(size: .normal))
               .frame(maxWidth: .infinity)
+              .resetListHeaderStyle()
+          ) {
           }
-            .resetListHeaderStyle()
-            .listRowBackground(Color(.clear))
-        ) {
         }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)

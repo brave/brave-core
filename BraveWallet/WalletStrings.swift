@@ -869,5 +869,26 @@ extension Strings {
       value: "Continue to Wyre",
       comment: "The title of the button for users to click when they are ready to buy using Wyre payment"
     )
+    public static let buyTestTitle = NSLocalizedString(
+      "wallet.buyTestTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Test Faucet",
+      comment: "The title below account picker when user has selected a test network"
+    )
+    public static let buyTestDescription = NSLocalizedString(
+      "wallet.buyTestDescription",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Get Ether from a faucet for %@",
+      comment: "The description of where user will go to once a test network has been picked in buy screen. '%@' will be replaced with a network such as 'Rinkeby' or 'Ropsten'"
+    )
+    public static let buyTestButtonTitle = NSLocalizedString(
+      "wallet.buyTestButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Get Ether",
+      comment: "The title of the button for users to get ether if the test network has been chosen"
+    )
   }
 }

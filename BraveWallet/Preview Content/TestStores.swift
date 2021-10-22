@@ -43,7 +43,10 @@ extension KeyringStore {
 
 extension BuyTokenStore {
   static var previewStore: BuyTokenStore {
-    .init(tokenRegistry: TestTokenRegistry())
+    .init(
+      tokenRegistry: TestTokenRegistry(),
+      rpcController: TestEthJsonRpcController()
+    )
   }
 }
 
