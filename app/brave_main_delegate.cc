@@ -237,11 +237,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kAdInterestGroupAPI.name,
     blink::features::kComputePressure.name,
     blink::features::kConversionMeasurement.name,
+    blink::features::kFledge.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
     blink::features::kInterestGroupStorage.name,
     blink::features::kNavigatorPluginsFixed.name,
+    blink::features::kParakeet.name,
     blink::features::kTextFragmentAnchor.name,
     blink::features::kWebSQLInThirdPartyContextEnabled.name,
 #if !defined(OS_ANDROID)
