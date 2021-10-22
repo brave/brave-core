@@ -51,12 +51,11 @@ export const localeStrings = {
   braveTalkTurnOnRewardsToStartCall: 'To start a free call, turn on Brave Rewards',
   braveTalkBraveRewardsDescription: 'With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.',
   braveTalkTurnOnRewards: 'Turn on Rewards',
-  braveTalkOptInRewardsTerms: 'By clicking, you agree to the $1Terms of Service$2 and $3Privacy Policy$4. Disable any time in Settings.',
+  braveTalkOptInRewardsTerms: 'By enabling, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   braveTalkTurnOnPrivateAdsToStartCall: 'To start a free call, enable Brave Private Ads',
   braveTalkPrivateAdsDescription: 'With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.',
   braveTalkTurnOnPrivateAds: 'Turn on Brave Private Ads',
-  braveTalkOptInAdsTerms: 'By turning on Ads, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   braveTalkCanStartFreeCall: 'You can now start a free call',
-  braveTalkClickAnywhereToBraveTalk: 'Click anywhere on the screen to continue to Brave Talk.',
+  braveTalkClickAnywhereToBraveTalk: 'Click or tap anywhere on the screen to continue to Brave Talk.',
   braveTalkWantLearnMore: 'Want to learn more about Brave Rewards? $1Take a quick tour$2.'
 }

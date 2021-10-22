@@ -133,24 +133,24 @@ public class BraveTalkOptInPopup {
             }
         }));
 
-        if (BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
-            initTosTextView(R.string.brave_talk_rewards_tos_pp_text);
-        } else {
+        if (!BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()) {
             mOptInButton.setText(mView.getResources().getString(
                     R.string.brave_talk_turn_on_private_ads_button_text));
             mOptInPopupTitle.setText(
                     mView.getResources().getString(R.string.brave_talk_turn_on_private_ads_text));
             mOptInPopupDescription.setText(mView.getResources().getString(
                     R.string.brave_talk_private_ads_description_text));
-            initTosTextView(R.string.brave_talk_private_ads_tos_pp_text);
         }
+
+        initTosTextView(R.string.brave_talk_rewards_tos_privacy_policy_text);
     }
 
-    private void initTosTextView(int tos_pp_text_resource_id) {
+    private void initTosTextView(int tos_privacy_policy_resource_id) {
         String termsOfServiceString = mView.getResources().getString(R.string.terms_of_service);
         String privacyPolicyString = mView.getResources().getString(R.string.privacy_policy);
-        String tosText = String.format(mView.getResources().getString(tos_pp_text_resource_id),
-                termsOfServiceString, privacyPolicyString);
+        String tosText =
+                String.format(mView.getResources().getString(tos_privacy_policy_resource_id),
+                        termsOfServiceString, privacyPolicyString);
         Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
         SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
 
