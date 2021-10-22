@@ -122,7 +122,6 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
                              ImportAccountCallback callback) override;
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
-  void GetHardwareAccounts(GetHardwareAccountsCallback callback) override;
   void RemoveHardwareAccount(const std::string& address) override;
   void GetPrivateKeyForImportedAccount(
       const std::string& address,
