@@ -14,7 +14,7 @@
 #include <mutex>  // NOLINT
 
 #include "base/files/file_path.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
