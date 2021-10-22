@@ -22,9 +22,9 @@ bool ShouldUseBraveImporter(importer::ImporterType type) {
 }  // namespace
 
 template <>
-inline sandbox::policy::SandboxType
+inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
-  return sandbox::policy::SandboxType::kNoSandbox;
+  return sandbox::mojom::Sandbox::kNoSandbox;
 }
 
 BraveExternalProcessImporterClient::BraveExternalProcessImporterClient(
