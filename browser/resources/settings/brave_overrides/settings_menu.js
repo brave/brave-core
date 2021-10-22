@@ -14,6 +14,8 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
     menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
   }
   menuEl.href = href
+  menuEl.setAttribute('role', 'menuitem')
+  menuEl.setAttribute('class', 'cr-nav-menu-item')
   const child = document.createElement('iron-icon')
   child.setAttribute('icon', iconName)
   menuEl.appendChild(child)
