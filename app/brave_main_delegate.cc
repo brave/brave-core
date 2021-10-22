@@ -275,17 +275,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
   };
 
-#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableDnsOverHttps)) {
     disabled_features.insert(features::kDnsOverHttps.name);
   }
-#else
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    enabled_features.insert(features::kDnsOverHttps.name);
-  }
-#endif
 
   command_line.AppendFeatures(enabled_features, disabled_features);
 
