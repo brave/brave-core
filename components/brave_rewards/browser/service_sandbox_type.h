@@ -15,12 +15,12 @@ class BatLedgerService;
 }  // namespace bat_ledger
 
 template <>
-inline sandbox::policy::SandboxType
+inline sandbox::mojom::Sandbox
 content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
 #if !defined(OS_ANDROID)
-  return sandbox::policy::SandboxType::kNoSandbox;
+  return sandbox::mojom::Sandbox::kNoSandbox;
 #else
-  return sandbox::policy::SandboxType::kUtility;
+  return sandbox::mojom::Sandbox::kUtility;
 #endif  // !defined(OS_ANDROID)
 }
 
