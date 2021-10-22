@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -202,6 +202,9 @@ std::string ConvertRewardTypeToString(const type::RewardsType type) {
       return "payment";
     }
     case type::RewardsType::TRANSFER: {
+      return "";
+    }
+    case type::RewardsType::NONE: {
       return "";
     }
   }
