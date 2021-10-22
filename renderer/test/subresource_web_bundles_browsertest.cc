@@ -13,7 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/embedder_support/switches.h"
-#include "components/web_package/test_support/web_bundle_builder.h"
+#include "components/web_package/web_bundle_builder.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_features.h"
@@ -89,7 +89,7 @@ std::string CreateWebBundle() {
   std::string flbk_js_url_str =
       GURL(base::JoinString({kOriginTrialTestHostname, "fallback.js"}, "/"))
           .spec();
-  web_package::test::WebBundleBuilder builder(flbk_js_url_str, "");
+  web_package::WebBundleBuilder builder(flbk_js_url_str, "");
   auto pass_js_location = builder.AddResponse(
       {{":status", "200"}, {"content-type", "application/javascript"}},
       "document.title = 'script loaded';");
