@@ -42,16 +42,6 @@ void UpdateCustomNetworks(PrefService* prefs,
 
 namespace brave_wallet {
 
-TEST(BraveWalletUtilsUnitTest, ToHex) {
-  ASSERT_EQ(ToHex(""), "0x0");
-  ASSERT_EQ(ToHex("hello world"), "0x68656c6c6f20776f726c64");
-
-  ASSERT_EQ(ToHex(std::vector<uint8_t>()), "0x0");
-  const std::string str1("hello world");
-  ASSERT_EQ(ToHex(std::vector<uint8_t>(str1.begin(), str1.end())),
-            "0x68656c6c6f20776f726c64");
-}
-
 TEST(BraveWalletUtilsUnitTest, KeccakHash) {
   ASSERT_EQ(
       KeccakHash(""),
@@ -65,62 +55,6 @@ TEST(BraveWalletUtilsUnitTest, GetFunctionHash) {
   ASSERT_EQ(GetFunctionHash("transfer(address,uint256)"), "0xa9059cbb");
   ASSERT_EQ(GetFunctionHash("approve(address,uint256)"), "0x095ea7b3");
   ASSERT_EQ(GetFunctionHash("balanceOf(address)"), "0x70a08231");
-}
-
-TEST(BraveWalletUtilsUnitTest, PadHexEncodedParameter) {
-  std::string out;
-  // Pad an address
-  ASSERT_TRUE(PadHexEncodedParameter(
-      "0x4e02f254184E904300e0775E4b8eeCB14a1b29f0", &out));
-  ASSERT_EQ(
-      out,
-      "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0");
-
-  // Corner case: 62
-  ASSERT_TRUE(PadHexEncodedParameter(
-      "0x11111111112222222222333333333344444444445555555555666666666600",
-      &out));
-  ASSERT_EQ(
-      out,
-      "0x0011111111112222222222333333333344444444445555555555666666666600");
-
-  ASSERT_TRUE(PadHexEncodedParameter("0x0", &out));
-  ASSERT_EQ(
-      out,
-      "0x0000000000000000000000000000000000000000000000000000000000000000");
-  // Invalid input
-  ASSERT_FALSE(PadHexEncodedParameter("0x", &out));
-  ASSERT_FALSE(PadHexEncodedParameter("0", &out));
-  ASSERT_FALSE(PadHexEncodedParameter("", &out));
-}
-
-TEST(BraveWalletUtilsUnitTest, IsValidHexString) {
-  ASSERT_TRUE(IsValidHexString("0x0"));
-  ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
-  ASSERT_FALSE(IsValidHexString("0x"));
-  ASSERT_FALSE(IsValidHexString("0xZ"));
-  ASSERT_FALSE(IsValidHexString("123"));
-  ASSERT_FALSE(IsValidHexString("0"));
-  ASSERT_FALSE(IsValidHexString(""));
-  ASSERT_FALSE(IsValidHexString("0xBraVe"));
-  ASSERT_FALSE(IsValidHexString("0x12$$"));
-}
-
-TEST(BraveWalletUtilsUnitTest, ConcatHexStrings) {
-  std::string out;
-  // Pad an address
-  ASSERT_TRUE(ConcatHexStrings(
-      "0x70a08231",
-      "0x0000000000000000000000004e02f254184E904300e0775E4b8eeCB14a1b29f0",
-      &out));
-  ASSERT_EQ(out,
-            "0x70a082310000000000000000000000004e02f254184E904300e0775E4b8eeCB1"
-            "4a1b29f0");
-  ASSERT_TRUE(ConcatHexStrings("0x0", "0x0", &out));
-  ASSERT_EQ(out, "0x00");
-  // Invalid input
-  ASSERT_FALSE(ConcatHexStrings("0x", "0x0", &out));
-  ASSERT_FALSE(ConcatHexStrings("0x0", "0", &out));
 }
 
 TEST(BraveWalletUtilsUnitTest, HexValueToUint256) {
