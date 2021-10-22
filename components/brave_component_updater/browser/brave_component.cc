@@ -9,7 +9,7 @@
 
 #include "base/bind.h"
 #include "base/logging.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 
 namespace brave_component_updater {
 
