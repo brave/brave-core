@@ -12,12 +12,14 @@
 
 #include "brave/browser/brave_rewards/vg_body_sync_bridge.h"
 #include "brave/browser/brave_rewards/vg_spend_status_sync_bridge.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sync/model/data_batch.h"
 #include "components/sync/model/model_type_controller_delegate.h"
 
-class VgSyncService : public KeyedService {
+class VgSyncService : public KeyedService,
+                      public VgBodySyncBridge::Observer,
+                      public VgSpendStatusSyncBridge::Observer {
  public:
   // using GetPairsCallback =
   //     base::OnceCallback<void(std::vector<bat_ledger::mojom::PairPtr>)>;
@@ -39,16 +41,39 @@ class VgSyncService : public KeyedService {
 
   void Shutdown() override;
 
-  // void AddPair(std::int64_t key, const std::string& value);
+  void BackUpVgBodies(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies);
+
+  void RestoreVgBodies(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
+
+  void BackUpVgSpendStatuses(
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
+
+  void RestoreVgSpendStatuses(
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
+
+  struct Observer {
+    virtual ~Observer() = default;
+
+    virtual void RestoreVgs(
+        std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+        std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) = 0;
+  };
+
+  void SetObserver(Observer* observer);
 
   // void GetPairs(GetPairsCallback callback);
 
  private:
   // void OnGetPairs(GetPairsCallback callback,
   //                 std::unique_ptr<syncer::DataBatch> data_batch);
-
   std::unique_ptr<VgBodySyncBridge> vg_body_sync_bridge_;
   std::unique_ptr<VgSpendStatusSyncBridge> vg_spend_status_sync_bridge_;
+  Observer* observer_;
+  absl::optional<std::vector<sync_pb::VgBodySpecifics>> vg_bodies_;
+  absl::optional<std::vector<sync_pb::VgSpendStatusSpecifics>>
+      vg_spend_statuses_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_REWARDS_VG_SYNC_SERVICE_H_
