@@ -25,11 +25,13 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "brave/browser/brave_rewards/vg_sync_service.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
@@ -99,6 +101,7 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
+                           public VgSyncService::Observer,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -660,6 +663,10 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 
@@ -735,6 +742,9 @@ class RewardsServiceImpl : public RewardsService,
       ledger::client::RunDBTransactionCallback callback,
       ledger::type::DBCommandResponsePtr response);
 
+  void OnRunDBTransaction(ledger::client::RunDBTransactionCallback2 callback,
+                          ledger::type::DBCommandResponsePtr response);
+
   void OnGetAllMonthlyReportIds(
       GetAllMonthlyReportIdsCallback callback,
       const std::vector<std::string>& ids);
@@ -767,6 +777,23 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
+  void BackUpVgBodies() override;
+
+  void OnBackUpVgBodies(ledger::type::Result result,
+                        std::vector<sync_pb::VgBodySpecifics> vg_bodies);
+
+  void BackUpVgSpendStatuses() override;
+
+  void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
+
+  void OnRestoreVgs(ledger::type::Result result);
+
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
   void GrantAttestationResult(
@@ -780,6 +807,7 @@ class RewardsServiceImpl : public RewardsService,
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
 #endif
+  raw_ptr<VgSyncService> vg_sync_service_ = nullptr;  // NOT OWNED
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;

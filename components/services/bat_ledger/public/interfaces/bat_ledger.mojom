@@ -157,6 +157,12 @@ interface BatLedger {
 
   GetEventLogs() => (array<ledger.mojom.EventLog> logs);
 
+  BackUpVgBodies() => (ledger.mojom.Result result, array<ledger.mojom.VgBody> vg_bodies);
+  
+  BackUpVgSpendStatuses() => (ledger.mojom.Result result, array<ledger.mojom.VgSpendStatus> vg_spend_statuses);
+
+  RestoreVgs(array<ledger.mojom.VgBody> vg_bodies, array<ledger.mojom.VgSpendStatus> vg_spend_statuses) => (ledger.mojom.Result result);
+
   GetBraveWallet() => (ledger.mojom.BraveWallet? wallet);
 
   GetWalletPassphrase() => (string passphrase);
@@ -248,4 +254,8 @@ interface BatLedgerClient {
 
   [Sync]
   DecryptString(string value) => (string? decrypted);
+
+  BackUpVgBodies();
+
+  BackUpVgSpendStatuses();
 };
