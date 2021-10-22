@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "base/sequenced_task_runner.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_updater_service.h"
 
