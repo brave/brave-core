@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <functional>
+
 #include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
@@ -24,7 +26,17 @@
 
 namespace {
 const char kClientHints[] = "/ch.html";
-const std::vector<base::Feature> kTestFeatures = {
+const std::reference_wrapper<const base::Feature> kTestFeatures[] = {
+    blink::features::kClientHintsDeviceMemory,
+    blink::features::kClientHintsDeviceMemory_DEPRECATED,
+    blink::features::kClientHintsDPR,
+    blink::features::kClientHintsDPR_DEPRECATED,
+    blink::features::kClientHintsResourceWidth,
+    blink::features::kClientHintsResourceWidth_DEPRECATED,
+    blink::features::kClientHintsViewportWidth,
+    blink::features::kClientHintsViewportWidth_DEPRECATED,
+    blink::features::kPrefersColorSchemeClientHintHeader,
+    blink::features::kUserAgentClientHint,
     blink::features::kViewportHeightClientHintHeader,
 };
 }  // namespace
@@ -55,11 +67,17 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
   void SetUp() override {
     // Test that even with CH features enabled, there is no header.
-    scoped_feature_list_.InitWithFeatures(
-        IsClientHintHeaderEnabled() ? kTestFeatures
-                                    : std::vector<base::Feature>(),
-        IsClientHintHeaderEnabled() ? std::vector<base::Feature>()
-                                    : kTestFeatures);
+    std::vector<base::Feature> enabled_features;
+    std::vector<base::Feature> disabled_features;
+    for (const auto& feature : kTestFeatures) {
+      if (IsClientHintHeaderEnabled()) {
+        enabled_features.push_back(feature);
+      } else {
+        disabled_features.push_back(feature);
+      }
+    }
+
+    scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
     InProcessBrowserTest::SetUp();
   }
 
