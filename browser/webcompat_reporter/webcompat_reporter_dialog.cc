@@ -102,7 +102,7 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
 void OpenWebcompatReporterDialog(content::WebContents* initiator) {
   GURL site_url = initiator->GetLastCommittedURL();
   auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("siteUrl", site_url.GetOrigin().spec());
+  params_dict->SetString("siteUrl", site_url.DeprecatedGetOriginAsURL().spec());
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);

@@ -452,7 +452,7 @@ bool MaybeChangeReferrer(bool allow_referrers,
   // See https://github.com/brave/brave-browser/issues/13464
   *output_referrer = Referrer::SanitizeForRequest(
       target_url,
-      Referrer(current_referrer.GetOrigin(),
+      Referrer(current_referrer.DeprecatedGetOriginAsURL(),
                network::mojom::ReferrerPolicy::kStrictOriginWhenCrossOrigin));
 
   return true;

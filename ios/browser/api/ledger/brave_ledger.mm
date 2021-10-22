@@ -783,7 +783,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
     return;
   }
 
-  auto origin = parsedUrl.GetOrigin();
+  auto origin = parsedUrl.DeprecatedGetOriginAsURL();
   std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
@@ -1303,7 +1303,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   }
 
   GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-  auto origin = parsedUrl.GetOrigin();
+  auto origin = parsedUrl.DeprecatedGetOriginAsURL();
   const std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

@@ -137,7 +137,7 @@ bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
 bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
   if (!url.is_valid())
     return false;
-  auto api_origin = ipfs::GetAPIServer(channel).GetOrigin();
+  auto api_origin = ipfs::GetAPIServer(channel).DeprecatedGetOriginAsURL();
   if (api_origin == url)
     return true;
   if (net::IsLocalhost(api_origin) && net::IsLocalhost(url)) {

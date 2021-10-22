@@ -59,7 +59,7 @@ std::u16string BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
     if (gurl.SchemeIs(url::kAboutScheme)) {
       origin = gurl.spec();
     } else {
-      origin = gurl.GetOrigin().spec();
+      origin = gurl.DeprecatedGetOriginAsURL().spec();
       if (!gurl.SchemeIsFile()) {
         base::TrimString(origin, "/", &origin);
       }

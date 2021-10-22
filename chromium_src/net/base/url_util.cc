@@ -21,7 +21,7 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
   // GetDomainAndRegistry might return an empty string if this host is an IP
   // address or a file URL.
   if (domain.empty())
-    domain = url::Origin::Create(url.GetOrigin()).Serialize();
+    domain = url::Origin::Create(url.DeprecatedGetOriginAsURL()).Serialize();
 
   return domain;
 }
