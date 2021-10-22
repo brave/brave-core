@@ -49,9 +49,7 @@ export const AssetButton = styled.button`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '24px',
-  height: 'auto',
-  marginRight: '8px',
-  marginLeft: '4px'
+  height: 'auto'
 })
 
 export const AssetTicker = styled.span`
