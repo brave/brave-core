@@ -386,4 +386,12 @@ void LedgerClientMojoBridge::DecryptString(const std::string& value,
   std::move(callback).Run(ledger_client_->DecryptString(value));
 }
 
+void LedgerClientMojoBridge::BackUpVgBodies() {
+  ledger_client_->BackUpVgBodies();
+}
+
+void LedgerClientMojoBridge::BackUpVgSpendStatuses() {
+  ledger_client_->BackUpVgSpendStatuses();
+}
+
 }  // namespace bat_ledger
