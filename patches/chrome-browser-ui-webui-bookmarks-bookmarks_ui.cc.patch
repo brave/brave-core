@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 54fe2e48cde408898820773ba74e4c9185de98c8..847c0d2874271bd852589e0a0fe38a9be4d19729 100644
+index d187871aba41d857f8661a6bd568b22fb0fdc0f3..b43959d66d9ea2c190b106359e88191c6b1a7a6f 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -135,6 +135,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
+@@ -133,6 +133,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
                          ? "enable-branding-update"
                          : "");
  

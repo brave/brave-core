@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index b5a21c7807a64b02563444fb38b648086409c959..67279645ff3bf11ee138e4c07a7e54ad9d5c8990 100644
+index e3a69e27433144b479768cf2b8c7e102cc80be53..790c8d082e3bd08f982a54c6292041767f5e1075 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
 @@ -795,6 +795,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/about_page/about_page.ts b/chrome/browser/resources/settings/about_page/about_page.ts
-index ea048e137e803eb08bd8c495956569df061ee2e6..422d4061bf772f5f9110180892991cb50131647f 100644
+index a5dcbb3ee70a59be9e4d269e62f88c0cf2d16160..d54d233e4ad0c4a92d845d87e2c59b8c816e7347 100644
 --- a/chrome/browser/resources/settings/about_page/about_page.ts
 +++ b/chrome/browser/resources/settings/about_page/about_page.ts
-@@ -204,7 +204,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
+@@ -190,7 +190,14 @@ export class SettingsAboutPageElement extends SettingsAboutPageElementBase {
    }
  
    private onRelaunchTap_() {

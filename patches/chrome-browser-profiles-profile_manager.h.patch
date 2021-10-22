@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index d6120ff3abd2e780aaf416d7a27fa11fc2585d9f..880b6c42d09e09905d7a211b2a886db0d67f27be 100644
+index fca117d60623efcbea6b8fd1b0af0fd7f72a097d..57d40b6909f5c6eeaad50de30c0c8e5f5ac4212c 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -297,6 +297,7 @@ class ProfileManager : public Profile::Delegate {
