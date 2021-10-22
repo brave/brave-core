@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index 737e063aa9d4ad3e1cdf2bcf4a9b4b27336191b9..b793639f7a6d6d30a86969d59547350505454263 100644
+index 9dabfae6d775cfa4048e4982d1e794d4072d35dd..f38962ae7ebd81b6c00d45ab17b5170fbef78fb7 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
-@@ -49,6 +49,7 @@ if (is_win) {
+@@ -51,6 +51,7 @@ if (is_win) {
      ]
  
      libs = [ "netapi32.lib" ]
