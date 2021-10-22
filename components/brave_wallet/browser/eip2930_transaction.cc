@@ -45,7 +45,7 @@ bool Eip2930Transaction::AccessListItem::operator!=(
 }
 
 Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
-Eip2930Transaction::Eip2930Transaction(uint256_t nonce,
+Eip2930Transaction::Eip2930Transaction(absl::optional<uint256_t> nonce,
                                        uint256_t gas_price,
                                        uint256_t gas_limit,
                                        const EthAddress& to,
@@ -153,6 +153,7 @@ Eip2930Transaction::ValueToAccessList(const base::Value& value) {
 
 std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
                                                           bool hash) const {
+  DCHECK(nonce_);
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -160,7 +161,7 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
   // deprecated
   base::ListValue list;
   list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(gas_price_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
   list.Append(base::Value(to_.bytes()));
@@ -175,12 +176,13 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
 
 std::string Eip2930Transaction::GetSignedTransaction() const {
   DCHECK(IsSigned());
+  DCHECK(nonce_);
 
   // TODO(darkdh): Migrate to std::vector<base::Value>, base::ListValue is
   // deprecated
   base::ListValue list;
   list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(gas_price_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
   list.Append(base::Value(to_.bytes()));

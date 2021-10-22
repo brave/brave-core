@@ -376,14 +376,14 @@ void EthTxController::ApproveHardwareTransaction(
     std::move(callback).Run(false, "");
     return;
   }
-  if (!meta->last_gas_price) {
+  if (!meta->tx->nonce()) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
         from, base::BindOnce(&EthTxController::OnGetNextNonceForHardware,
                              weak_factory_.GetWeakPtr(), std::move(meta),
                              std::move(callback)));
   } else {
-    uint256_t nonce = meta->tx->nonce();
+    uint256_t nonce = meta->tx->nonce().value();
     OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
                               nonce);
   }
@@ -460,14 +460,14 @@ void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  if (!meta->last_gas_price) {
+  if (!meta->tx->nonce()) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
         from,
         base::BindOnce(&EthTxController::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta), chain_id));
   } else {
-    uint256_t nonce = meta->tx->nonce();
+    uint256_t nonce = meta->tx->nonce().value();
     OnGetNextNonce(std::move(meta), chain_id, true, nonce);
   }
 

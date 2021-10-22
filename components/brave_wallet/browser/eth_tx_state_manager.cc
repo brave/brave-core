@@ -116,7 +116,8 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
       meta.id, meta.from.ToHex(), meta.tx_hash,
       mojom::TxData1559::New(
           mojom::TxData::New(
-              Uint256ValueToHex(meta.tx->nonce()),
+              meta.tx->nonce() ? Uint256ValueToHex(meta.tx->nonce().value())
+                               : "",
               Uint256ValueToHex(meta.tx->gas_price()),
               Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
