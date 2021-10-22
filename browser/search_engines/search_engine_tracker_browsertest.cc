@@ -14,6 +14,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "components/country_codes/country_codes.h"
+#include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "content/public/test/browser_test.h"
 
@@ -21,17 +23,36 @@ class SearchEngineProviderP3ATest : public InProcessBrowserTest {
  public:
   SearchEngineProviderP3ATest() {
     histogram_tester_.reset(new base::HistogramTester);
+
+    // Override the default region. Defaults vary and this
+    // ties the expected test results to a specific region
+    // so everyone sees the same behaviour.
+    //
+    // May also help with unstable test results in ci.
+    create_services_subscription_ =
+        BrowserContextDependencyManager::GetInstance()
+            ->RegisterCreateServicesCallbackForTesting(
+                base::BindRepeating(&OverrideCountryID, "US"));
+  }
+
+ private:
+  static void OverrideCountryID(const std::string& country_id,
+                                content::BrowserContext* context) {
+    const int32_t id = country_codes::CountryCharsToCountryID(country_id.at(0),
+                                                              country_id.at(1));
+    Profile::FromBrowserContext(context)->GetPrefs()->SetInteger(
+        country_codes::kCountryIDAtInstall, id);
   }
 
  protected:
   std::unique_ptr<base::HistogramTester> histogram_tester_;
+  base::CallbackListSubscription create_services_subscription_;
 };
 
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
-                       DISABLED_DefaultSearchEngineP3A) {
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
   // Check that the metric is reported on startup.
   histogram_tester_->ExpectUniqueSample(kDefaultSearchEngineMetric,
-                                        SearchEngineP3A::kGoogle, 1);
+                                        SearchEngineP3A::kBrave, 1);
 
   auto* service =
       TemplateURLServiceFactory::GetForProfile(browser()->profile());
@@ -54,4 +75,57 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest,
 #endif
 
   histogram_tester_->ExpectTotalCount(kDefaultSearchEngineMetric, 2);
+}
+
+IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
+  // Check that the metric is reported on startup.
+  // For some reason we record kNoSwitch twice, even though
+  // kDefaultSearchEngineMetric is only updated once at this point.
+  histogram_tester_->ExpectUniqueSample(kSwitchSearchEngineMetric,
+                                        SearchEngineSwitchP3A::kNoSwitch, 2);
+
+  // Load service for switching the default search engine.
+  auto* service =
+      TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  search_test_utils::WaitForTemplateURLServiceToLoad(service);
+
+  // Check that changing the default engine triggers emission of a new value.
+  auto ddg_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+  TemplateURL ddg_url(*ddg_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&ddg_url);
+  // This assumes Brave Search is the default!
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kBraveToDDG, 1);
+
+  // Check additional changes.
+  auto brave_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
+  TemplateURL brave_url(*brave_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&brave_url);
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kDDGToBrave, 1);
+
+  // Check additional changes.
+  auto bing_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      browser()->profile()->GetPrefs(),
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BING);
+  TemplateURL bing_url(*bing_data);
+
+  service->SetUserSelectedDefaultSearchProvider(&bing_url);
+  histogram_tester_->ExpectBucketCount(kSwitchSearchEngineMetric,
+                                       SearchEngineSwitchP3A::kBraveToOther, 1);
+
+  // Check that incognito or TOR profiles do not emit the metric.
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
+  CreateIncognitoBrowser();
+#if BUILDFLAG(ENABLE_TOR)
+  brave::NewOffTheRecordWindowTor(browser());
+#endif
+
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
 }

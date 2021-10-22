@@ -31,6 +31,7 @@ if (is_android) {
 brave_browser_search_engines_deps = [
   "//brave/browser/profiles:util",
   "//brave/common:pref_names",
+  "//brave/components/weekly_storage",
   "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//components/pref_registry",
