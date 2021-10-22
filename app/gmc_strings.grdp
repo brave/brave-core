@@ -2,14 +2,8 @@
 <!-- Global Media Controls-specific strings (included from generated_resources.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_GLOBAL_MEDIA_CONTROLS_BACK_TO_TAB" desc="A11y text for the Global Media Controls container describing how clicking it takes you back to the tab.">
-   Back to tab
-  </message>
   <message name="IDS_GLOBAL_MEDIA_CONTROLS_ICON_TOOLTIP_TEXT" desc="Tooltip for the Global Media Controls icon, which appears in the toolbar. The tooltip appears on mouseover of the icon.">
    Control your music, videos, and more
-  </message>
-  <message name="IDS_GLOBAL_MEDIA_CONTROLS_DISMISS_ICON_TOOLTIP_TEXT" desc="Tooltip for the dismiss button within the Global Media Controls dialog. The tooltip appears on mouseover of the icon.">
-   Dismiss
   </message>
   <message name="IDS_GLOBAL_MEDIA_CONTROLS_DEVICES_BUTTON_LABEL" desc="Label for a button that opens a menu for picking an audio or cast device to play from.">
    Select a device
@@ -40,6 +34,9 @@
   </message>
   <message name="IDS_GLOBAL_MEDIA_CONTROLS_CONTROL_CAST_SESSIONS_PROMO" desc="Text shown on promotional UI appearing next to the global media controls button to promote controlling cast sessions.">
    Control the media you're casting
+  </message>
+  <message name="IDS_MEDIA_TOOLBAR_CONTEXT_REPORT_CAST_ISSUE" desc="Title of the toolbar button's context menu item, which, on click, opens a page to report an issue with Cast.">
+    Report an issue with Brave Cast
   </message>
 
 </grit-part>
