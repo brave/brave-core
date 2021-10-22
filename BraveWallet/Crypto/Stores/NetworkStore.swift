@@ -14,6 +14,10 @@ public class NetworkStore: ObservableObject {
   @Published private(set) var ethereumChains: [BraveWallet.EthereumChain] = []
   @Published private(set) var selectedChainId: String = BraveWallet.MainnetChainId
   
+  var selectedChain: BraveWallet.EthereumChain {
+    ethereumChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init()
+  }
+  
   var selectedChainBinding: Binding<BraveWallet.EthereumChain> {
     .init(
       get: { self.ethereumChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init() },
