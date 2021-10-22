@@ -18,10 +18,10 @@
 
 #include <utility>
 
-#include "base/bind_post_task.h"
 #include "base/logging.h"
 #include "base/process/kill.h"
-#include "base/single_thread_task_runner.h"
+#include "base/task/bind_post_task.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
