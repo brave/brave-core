@@ -74,7 +74,8 @@ void DomainBlockPage::PopulateInterstitialStrings(base::Value* load_time_data) {
   load_time_data->SetStringKey(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
-  load_time_data->SetStringKey("domain", request_url().GetOrigin().spec());
+  load_time_data->SetStringKey("domain",
+                               request_url().DeprecatedGetOriginAsURL().spec());
   load_time_data->SetStringKey(
       "explanationParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_EXPLANATION));

@@ -92,7 +92,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   GURL url = https_server()->GetURL("a.com", "/simple.html");
-  std::string expected_origin = url.GetOrigin().spec();
+  std::string expected_origin = url.DeprecatedGetOriginAsURL().spec();
   TestBraveWalletServiceObserver observer;
   wallet_service()->AddObserver(observer.GetReceiver());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -105,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
   url = https_server()->GetURL("b.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  expected_origin = url.DeprecatedGetOriginAsURL().spec();
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -116,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
   url = https_server()->GetURL("c.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  expected_origin = url.DeprecatedGetOriginAsURL().spec();
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   EXPECT_EQ(observer.active_origin(), expected_origin);
 
   url = https_server()->GetURL("d.com", "/simple.html");
-  expected_origin = url.GetOrigin().spec();
+  expected_origin = url.DeprecatedGetOriginAsURL().spec();
   observer.Reset();
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,

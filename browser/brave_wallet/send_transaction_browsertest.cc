@@ -158,7 +158,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   GURL GetLastCommitedOrigin() {
-    return web_contents()->GetLastCommittedURL().GetOrigin();
+    return web_contents()->GetLastCommittedURL().DeprecatedGetOriginAsURL();
   }
 
   net::EmbeddedTestServer* https_server_for_files() {
