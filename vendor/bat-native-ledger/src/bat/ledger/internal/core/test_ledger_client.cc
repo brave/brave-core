@@ -282,8 +282,25 @@ void TestLedgerClient::RunDBTransaction(
       FROM_HERE,
       base::BindOnce(RunDBTransactionInTask, std::move(transaction),
                      ledger_database_.get()),
-      base::BindOnce(&TestLedgerClient::RunDBTransactionCompleted,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(
+          static_cast<void (TestLedgerClient::*)(
+              client::RunDBTransactionCallback, mojom::DBCommandResponsePtr)>(
+              &TestLedgerClient::RunDBTransactionCompleted),
+          weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void TestLedgerClient::RunDBTransaction(
+    mojom::DBTransactionPtr transaction,
+    client::RunDBTransactionCallback2 callback) {
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(RunDBTransactionInTask, std::move(transaction),
+                     ledger_database_.get()),
+      base::BindOnce(
+          static_cast<void (TestLedgerClient::*)(
+              client::RunDBTransactionCallback2, mojom::DBCommandResponsePtr)>(
+              &TestLedgerClient::RunDBTransactionCompleted),
+          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TestLedgerClient::GetCreateScript(
@@ -354,6 +371,12 @@ void TestLedgerClient::RunDBTransactionCompleted(
     client::RunDBTransactionCallback callback,
     mojom::DBCommandResponsePtr response) {
   callback(std::move(response));
+}
+
+void TestLedgerClient::RunDBTransactionCompleted(
+    client::RunDBTransactionCallback2 callback,
+    mojom::DBCommandResponsePtr response) {
+  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace ledger
