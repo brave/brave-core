@@ -5,13 +5,19 @@ const fs = require('fs')
 const os = require('os')
 const assert = require('assert')
 const { spawnSync } = require('child_process')
-const rootDir = require('./root')
 
 let npmCommand = 'npm'
 if (process.platform === 'win32') {
   npmCommand += '.cmd'
 }
 let NpmConfig = null
+
+let dirName = __dirname
+// Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
+if (process.platform === 'win32') {
+  dirName = fs.realpathSync.native(dirName)
+}
+const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 
 const run = (cmd, args = []) => {
   const prog = spawnSync(cmd, args)
