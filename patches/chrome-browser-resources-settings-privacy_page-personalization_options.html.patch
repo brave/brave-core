@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a57796779 100644
+index f69e4c52ca5a661bb2dc7061caf687fa5fd60c0b..3c8bbb09da391917332afe7a92c042441ef63948 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -8,6 +8,7 @@
@@ -7,18 +7,18 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a
        }
      </style>
 +<if expr="_google_chrome">
- <if expr="not chromeos">
+ <if expr="not chromeos and not lacros">
+     <!-- Signout is not supported yet on lacros, https://crbug.com/1217645 -->
      <settings-toggle-button id="signinAllowedToggle"
-         class="hr"
-@@ -20,6 +21,7 @@
+@@ -21,6 +22,7 @@
          no-set-pref>
      </settings-toggle-button>
- </if><!-- not chromeos -->
+ </if><!-- not chromeos and not lacros -->
 +</if>
      <settings-toggle-button id="searchSuggestToggle"
          class="hr"
          hidden="[[!pageVisibility.searchPrediction]]"
-@@ -35,6 +37,8 @@
+@@ -36,6 +38,8 @@
          sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -27,7 +27,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          class="hr"
-@@ -50,13 +54,15 @@
+@@ -51,13 +55,15 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -44,7 +44,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          class="hr"
-@@ -76,6 +82,7 @@
+@@ -77,6 +83,7 @@
        </settings-toggle-button>
      </template>
  
@@ -52,7 +52,7 @@ index 70eeec029bfbf19f8419aa5176acfc7dd8f13732..1be168dddf273d27d28935d2d4d2e64a
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -88,3 +95,4 @@
+@@ -89,3 +96,4 @@
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>
  </if>
