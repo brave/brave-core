@@ -117,18 +117,6 @@ test('Sign personal message successfully', () => {
     .resolves.toStrictEqual('0xb68983r68983-26')
 })
 
-test('Sign personal message wrong address', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
-  ledgerHardwareKeyring.app.signature = { v: 1, r: 'b68983', s: 'r68983' }
-  ledgerHardwareKeyring._recoverAddressFromSignature = (message: string, signature: string) => {
-    return '0x1112'
-  }
-  return expect(ledgerHardwareKeyring.signPersonalMessage(
-    'm/44\'/60\'/0\'/0/0', '0x111', 'message'))
-    .rejects.toThrow()
-})
-
 test('Sign personal message failed', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   ledgerHardwareKeyring.app = new MockApp()

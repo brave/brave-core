@@ -22,7 +22,7 @@ export function findHardwareAccountInfo (accountInfos: AccountInfo[], address: s
     if (!account.hardware) {
       continue
     }
-    if (account.address.toLowerCase() === address.toLowerCase()) {
+    if (account.address === address) {
       return account
     }
   }

@@ -17,8 +17,6 @@ import {
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { getLocale } from '../../../common/locale'
-import { recoverPersonalSignature } from 'eth-sig-util'
-import { toChecksumAddress } from 'ethereumjs-util'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -89,19 +87,12 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
     })
   }
-  _recoverAddressFromSignature = (message: string, signature: string) => {
-    return recoverPersonalSignature({ data: message, sig: signature })
-  }
   _createMessageSignature = (result: SignatureVRS, message: string, address: string) => {
     let v = (result.v - 27).toString()
     if (v.length < 2) {
       v = `0${v}`
     }
     const signature = `0x${result.r}${result.s}${v}`
-    const addressSignedWith = this._recoverAddressFromSignature(message, signature)
-    if (toChecksumAddress(addressSignedWith) !== toChecksumAddress(address)) {
-      return null
-    }
     return signature
   }
 
