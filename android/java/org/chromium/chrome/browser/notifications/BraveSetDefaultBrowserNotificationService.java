@@ -22,6 +22,7 @@ import android.provider.Settings;
 import androidx.core.app.NotificationCompat;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
@@ -139,7 +140,8 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         intent.setAction(DEEP_LINK);
         intent.putExtra(DEEP_LINK, SHOW_DEFAULT_APP_SETTINGS);
         intent.putExtra(NOTIFICATION_ID_EXTRA, NOTIFICATION_ID);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                | IntentUtils.getPendingIntentMutabilityFlag(true));
     }
 
     public static PendingIntent getDismissIntent(Context context, int notification_id) {
@@ -147,7 +149,7 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         intent.setAction(CANCEL_NOTIFICATION);
         intent.putExtra(NOTIFICATION_ID_EXTRA, notification_id);
 
-        return PendingIntent.getBroadcast(context, notification_id, intent, 0);
+        return PendingIntent.getBroadcast(context, notification_id, intent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
     }
 
     private boolean hasAskedAt1122() {
@@ -177,8 +179,10 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         Intent intent = new Intent(mContext, BraveSetDefaultBrowserNotificationService.class);
         intent.putExtra(INTENT_TYPE, AT_11_22);
         intent.setAction(AT_11_22);
-        am.setExact(AlarmManager.RTC_WAKEUP, currentTime.getTimeInMillis(),
-                PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+        am.set(AlarmManager.RTC_WAKEUP, currentTime.getTimeInMillis(),
+                PendingIntent.getBroadcast(mContext, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+                        | IntentUtils.getPendingIntentMutabilityFlag(true)));
     }
 
     private void handleBraveSetDefaultBrowserDeepLink(Intent intent) {

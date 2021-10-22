@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.IntentUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
@@ -99,7 +100,7 @@ public class BraveAdsSignupDialog {
             am.set(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis() + MOMENT_LATER,
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getPendingIntentMutabilityFlag(true))
             );
         }
     }
