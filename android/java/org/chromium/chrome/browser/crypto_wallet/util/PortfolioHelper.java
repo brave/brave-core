@@ -159,8 +159,13 @@ public class PortfolioHelper {
                                 Double usdPerThisToken = Utils.getOrDefault(
                                         tokenToUsdRatios, currentAssetSymbol, 0.0d);
 
-                                Double thisBalanceCryptoPart =
-                                        context.success ? fromHexWei(context.balance) : 0.0d;
+                                int decimals = (context.userAsset.decimals != 0)
+                                        ? context.userAsset.decimals
+                                        : 18;
+
+                                Double thisBalanceCryptoPart = context.success
+                                        ? fromHexWei(context.balance, decimals)
+                                        : 0.0d;
 
                                 Double thisBalanceFiatPart =
                                         usdPerThisToken * thisBalanceCryptoPart;
