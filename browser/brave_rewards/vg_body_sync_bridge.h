@@ -30,7 +30,7 @@ class VgBodySyncBridge : public syncer::ModelTypeSyncBridge {
 
   base::WeakPtr<syncer::ModelTypeControllerDelegate> GetControllerDelegate();
 
-  void AddVgBody(sync_pb::VgBodySpecifics vg_body);
+  void BackUpVgBodies(std::vector<sync_pb::VgBodySpecifics> vg_bodies);
 
   void GetVgBodies(DataCallback callback);
 
@@ -57,6 +57,15 @@ class VgBodySyncBridge : public syncer::ModelTypeSyncBridge {
   void ApplyStopSyncChanges(std::unique_ptr<syncer::MetadataChangeList>
                                 delete_metadata_change_list) override;
 
+  struct Observer {
+    virtual ~Observer() = default;
+
+    virtual void RestoreVgBodies(
+        std::vector<sync_pb::VgBodySpecifics> vg_bodies) = 0;
+  };
+
+  void SetObserver(Observer* observer);
+
  private:
   void OnStoreCreated(const absl::optional<syncer::ModelError>& error,
                       std::unique_ptr<syncer::ModelTypeStore> store);
@@ -64,7 +73,10 @@ class VgBodySyncBridge : public syncer::ModelTypeSyncBridge {
   void OnReadAllMetadata(const absl::optional<syncer::ModelError>& error,
                          std::unique_ptr<syncer::MetadataBatch> metadata_batch);
 
-  void OnCommitWriteBatch(const absl::optional<syncer::ModelError>& error);
+  void OnBackUpVgBodies(const absl::optional<syncer::ModelError>& error);
+
+  void OnRestoreVgBodies(std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+                         const absl::optional<syncer::ModelError>& error);
 
   void OnReadData(
       DataCallback callback,
@@ -80,6 +92,7 @@ class VgBodySyncBridge : public syncer::ModelTypeSyncBridge {
   void OnDeleteAllDataAndMetadata(
       const absl::optional<syncer::ModelError>& error);
 
+  Observer* observer_;  // NOT OWNED
   std::unique_ptr<syncer::ModelTypeStore> store_;
   base::WeakPtrFactory<VgBodySyncBridge> weak_ptr_factory_{this};
 };
