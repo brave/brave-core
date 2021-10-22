@@ -982,7 +982,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string message = "0xAB";
   std::string message_to_request = std::string(message.begin(), message.end());
   bool callback_is_called = false;
-  service_->AddHardwareSignMessageRequest(
+  service_->AddSignMessageHardwareRequest(
       {1, address, std::move(message_to_request)},
       base::BindLambdaForTesting([&](bool approved,
                                      const std::string& signature,
@@ -997,7 +997,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   ASSERT_TRUE(callback_is_called);
   callback_is_called = false;
   std::string expected_error = "error";
-  service_->AddHardwareSignMessageRequest(
+  service_->AddSignMessageHardwareRequest(
       {2, address, std::move(message_to_request)},
       base::BindLambdaForTesting([&](bool approved,
                                      const std::string& signature,

@@ -512,7 +512,7 @@ void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
 }
 
 void BraveWalletService::GetPendingSignMessageHardwareRequest(
-  GetPendingSignMessageRequestCallback callback) {
+    GetPendingSignMessageRequestCallback callback) {
   if (sign_message_hardware_requests_.empty()) {
     std::move(callback).Run(-1, "", "");
     return;

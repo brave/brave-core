@@ -119,7 +119,7 @@ class BraveWalletService : public KeyedService,
  private:
   void OnDefaultWalletChanged();
   void GetPendingSignMessageHardwareRequest(
-    GetPendingSignMessageRequestCallback callback);
+      GetPendingSignMessageRequestCallback callback);
   friend class BraveWalletProviderImplUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);

@@ -224,7 +224,6 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         address, "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"));
 
     keyring_controller_->AddHardwareAccounts(std::move(hw_accounts));
-    browser_task_environment_.RunUntilIdle();
   }
 
   void Unlock() {
@@ -274,9 +273,12 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
 
   void AddEthereumPermission(const GURL& url, size_t from_index = 0) {
+    AddEthereumPermission(url, from(from_index));
+  }
+  void AddEthereumPermission(const GURL& url, const std::string& address) {
     GURL sub_request_origin;
-    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(url, from(from_index),
-                                                  &sub_request_origin));
+    ASSERT_TRUE(
+        brave_wallet::GetSubRequestOrigin(url, address, &sub_request_origin));
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
@@ -299,20 +301,16 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
       return;
 
     base::RunLoop run_loop;
-    std::vector<std::string> allowed_accounts;
-    allowed_accounts.push_back(address);
-    std::vector<uint8_t> message_bytes;
-    ASSERT_TRUE(base::HexStringToBytes(message.substr(2), &message_bytes));
-    provider()->ContinueSignMessage(
-        address, std::move(message_bytes),
+    provider()->SignMessage(
+        address, message,
         base::BindLambdaForTesting([&](const std::string& signature, int error,
                                        const std::string& error_message) {
           *signature_out = signature;
           *error_out = error;
           *error_message_out = error_message;
           run_loop.Quit();
-        }),
-        user_approved, allowed_accounts);
+        }));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
     browser_task_environment_.RunUntilIdle();
     brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
         user_approved, provider()->sign_message_id_ - 1, hardware_signature,
@@ -365,10 +363,21 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return request_queue_size;
   }
 
+  size_t GetSignMessageHardwareQueueSize() const {
+    size_t request_queue_size =
+        brave_wallet_service_->sign_message_hardware_requests_.size();
+    EXPECT_EQ(brave_wallet_service_->sign_message_hardware_callbacks_.size(),
+              request_queue_size);
+    return request_queue_size;
+  }
+
   BraveWalletService::SignMessageRequest GetSignMessageQueueFront() const {
     return brave_wallet_service_->sign_message_requests_.front();
   }
-
+  BraveWalletService::SignMessageRequest GetSignMessageHardwareQueueFront()
+      const {
+    return brave_wallet_service_->sign_message_hardware_requests_.front();
+  }
   std::vector<std::string> GetAddresses() {
     std::vector<std::string> result;
     base::RunLoop run_loop;
@@ -1015,7 +1024,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
 
 TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
   CreateWallet();
-  std::string address = "0x111";
+  std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
   AddHardwareAccount(address);
   std::string signature;
   std::string expected_signature = "0xExpectedSignature";
@@ -1023,7 +1032,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
   std::string error_message;
   GURL url("https://brave.com");
   Navigate(url);
-  AddEthereumPermission(url);
+  AddEthereumPermission(url, address);
 
   // success
   SignMessageHardware(true, address, "0x1234", expected_signature, "",
@@ -1050,4 +1059,53 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
 }
 
+TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardwareRequestQueue) {
+  CreateWallet();
+  std::string address = "0xA99D71De40D67394eBe68e4D0265cA6C9D421029";
+  AddHardwareAccount(address);
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(url, address);
+  const std::string message1 = "0xbeef01";
+  const std::string message2 = "0xbeef02";
+  int id1 = SignMessageRequest(address, message1);
+  int id2 = SignMessageRequest(address, message2);
+
+  std::vector<uint8_t> message_bytes1;
+  std::vector<uint8_t> message_bytes2;
+  ASSERT_TRUE(base::HexStringToBytes(message1.substr(2), &message_bytes1));
+  ASSERT_TRUE(base::HexStringToBytes(message2.substr(2), &message_bytes2));
+  const std::string message1_in_queue(message_bytes1.begin(),
+                                      message_bytes1.end());
+  const std::string message2_in_queue(message_bytes2.begin(),
+                                      message_bytes2.end());
+
+  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message1_in_queue);
+  const std::string signature = "signature";
+  // wrong order
+  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+      true, id2, signature, "");
+  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 2u);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id1);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message1_in_queue);
+
+  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+      true, id1, signature, "");
+  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message2_in_queue);
+
+  // old id
+  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+      true, id1, signature, "");
+  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 1u);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().id, id2);
+  EXPECT_EQ(GetSignMessageHardwareQueueFront().message, message2_in_queue);
+
+  brave_wallet_service_->NotifySignMessageHardwareRequestProcessed(
+      true, id2, signature, "");
+  EXPECT_EQ(GetSignMessageHardwareQueueSize(), 0u);
+}
 }  // namespace brave_wallet
