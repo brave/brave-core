@@ -76,7 +76,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_TRUE(brave_request_info->new_referrer.has_value());
     EXPECT_EQ(brave_request_info->new_referrer.value(),
-              original_referrer.GetOrigin().spec());
+              original_referrer.DeprecatedGetOriginAsURL().spec());
   }
 }
 

@@ -163,7 +163,7 @@ void EthJsonRpcController::GetPendingChainRequests(
 void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
                                             const GURL& origin,
                                             AddEthereumChainCallback callback) {
-  DCHECK_EQ(origin, origin.GetOrigin());
+  DCHECK_EQ(origin, origin.DeprecatedGetOriginAsURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
       HasRequestFromOrigin(origin)) {

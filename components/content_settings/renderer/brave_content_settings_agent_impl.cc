@@ -99,7 +99,7 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
   return base::Contains(temporarily_allowed_scripts_,
-                        script_url.GetOrigin().spec()) ||
+                        script_url.DeprecatedGetOriginAsURL().spec()) ||
          base::Contains(temporarily_allowed_scripts_, script_url.spec());
 }
 

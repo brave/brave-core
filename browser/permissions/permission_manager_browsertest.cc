@@ -100,7 +100,7 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
   GURL GetLastCommitedOrigin() {
-    return web_contents()->GetLastCommittedURL().GetOrigin();
+    return web_contents()->GetLastCommittedURL().DeprecatedGetOriginAsURL();
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }

@@ -82,7 +82,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
     function->set_has_callback(true);
 
     const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
-    const std::string allow_origin = url.GetOrigin().spec();
+    const std::string allow_origin = url.DeprecatedGetOriginAsURL().spec();
     int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
 
     RunFunctionAndReturnSingleResult(
@@ -103,7 +103,7 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
     function->set_has_callback(true);
 
     const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
-    const std::string allow_origin = url.GetOrigin().spec();
+    const std::string allow_origin = url.DeprecatedGetOriginAsURL().spec();
 
     int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
     RunFunctionAndReturnSingleResult(function.get(),

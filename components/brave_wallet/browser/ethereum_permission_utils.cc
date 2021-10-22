@@ -38,7 +38,7 @@ void ExtractAddresses(const GURL& origin,
                       std::queue<std::string>* address_queue) {
   static const base::NoDestructor<re2::RE2> kAddrRegex(kAddrPattern);
   DCHECK(origin.is_valid() && address_queue);
-  DCHECK_EQ(origin, origin.GetOrigin());
+  DCHECK_EQ(origin, origin.DeprecatedGetOriginAsURL());
 
   re2::StringPiece input(origin.spec());
   std::string match;
@@ -54,7 +54,7 @@ bool ParseRequestingOriginInternal(const GURL& origin,
                                    std::string* requesting_origin,
                                    std::string* account,
                                    std::queue<std::string>* address_queue) {
-  if (!origin.is_valid() || origin != origin.GetOrigin())
+  if (!origin.is_valid() || origin != origin.DeprecatedGetOriginAsURL())
     return false;
 
   std::string scheme_host_group;
