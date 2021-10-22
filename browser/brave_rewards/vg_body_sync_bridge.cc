@@ -23,7 +23,7 @@ std::string GetStorageKeyFromSpecifics(
 }
 
 std::unique_ptr<syncer::EntityData> ToEntityData(
-    sync_pb::VgBodySpecifics&& vg_body) {
+    sync_pb::VgBodySpecifics vg_body) {
   auto entity_data = std::make_unique<syncer::EntityData>();
   entity_data->id = vg_body.creds_id();
   entity_data->name = vg_body.creds_id();
@@ -36,7 +36,8 @@ std::unique_ptr<syncer::EntityData> ToEntityData(
 VgBodySyncBridge::VgBodySyncBridge(
     std::unique_ptr<syncer::ModelTypeChangeProcessor> change_processor,
     syncer::OnceModelTypeStoreFactory store_factory)
-    : syncer::ModelTypeSyncBridge(std::move(change_processor)) {
+    : syncer::ModelTypeSyncBridge(std::move(change_processor)),
+      observer_(nullptr) {
   std::move(store_factory)
       .Run(syncer::VG_BODIES, base::BindOnce(&VgBodySyncBridge::OnStoreCreated,
                                              weak_ptr_factory_.GetWeakPtr()));
@@ -49,7 +50,8 @@ VgBodySyncBridge::GetControllerDelegate() {
   return change_processor()->GetControllerDelegate();
 }
 
-void VgBodySyncBridge::AddVgBody(sync_pb::VgBodySpecifics vg_body) {
+void VgBodySyncBridge::BackUpVgBodies(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
   if (!store_) {
     return;
   }
@@ -58,18 +60,18 @@ void VgBodySyncBridge::AddVgBody(sync_pb::VgBodySpecifics vg_body) {
     return;
   }
 
-  // LOG(INFO) << "Adding pair { " << pair.key() << ", " << pair.value()
-  //           << " } ...";
-
-  const std::string storage_key = GetStorageKeyFromSpecifics(vg_body);
-
   auto write_batch = store_->CreateWriteBatch();
-  write_batch->WriteData(storage_key, vg_body.SerializeAsString());
-  change_processor()->Put(storage_key, ToEntityData(std::move(vg_body)),
-                          write_batch->GetMetadataChangeList());
 
+  for (auto& vg_body : vg_bodies) {
+    const std::string storage_key = GetStorageKeyFromSpecifics(vg_body);
+
+    write_batch->WriteData(storage_key, vg_body.SerializeAsString());
+    change_processor()->Put(storage_key, ToEntityData(std::move(vg_body)),
+                            write_batch->GetMetadataChangeList());
+  }
+  
   store_->CommitWriteBatch(std::move(write_batch),
-                           base::BindOnce(&VgBodySyncBridge::OnCommitWriteBatch,
+                           base::BindOnce(&VgBodySyncBridge::OnBackUpVgBodies,
                                           weak_ptr_factory_.GetWeakPtr()));
 }
 
@@ -95,21 +97,25 @@ absl::optional<syncer::ModelError> VgBodySyncBridge::ApplySyncChanges(
     syncer::EntityChangeList entity_changes) {
   auto write_batch = store_->CreateWriteBatch();
 
+  std::vector<sync_pb::VgBodySpecifics> vg_bodies;
+
   for (const auto& change : entity_changes) {
-    if (change->type() == syncer::EntityChange::ACTION_DELETE) {
+    if (change->type() ==
+        syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
       write_batch->DeleteData(change->storage_key());
     } else {
-      write_batch->WriteData(
-          change->storage_key(),
-          change->data().specifics.vg_body().SerializeAsString());
+      vg_bodies.push_back(change->data().specifics.vg_body());
+      write_batch->WriteData(change->storage_key(),
+                             vg_bodies.back().SerializeAsString());
     }
   }
 
   write_batch->TakeMetadataChangesFrom(std::move(metadata_change_list));
 
-  store_->CommitWriteBatch(std::move(write_batch),
-                           base::BindOnce(&VgBodySyncBridge::OnCommitWriteBatch,
-                                          weak_ptr_factory_.GetWeakPtr()));
+  store_->CommitWriteBatch(
+      std::move(write_batch),
+      base::BindOnce(&VgBodySyncBridge::OnRestoreVgBodies,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(vg_bodies)));
 
   return {};
 }
@@ -146,6 +152,10 @@ void VgBodySyncBridge::ApplyStopSyncChanges(
   }
 }
 
+void VgBodySyncBridge::SetObserver(Observer* observer) {
+  observer_ = observer;
+}
+
 void VgBodySyncBridge::OnStoreCreated(
     const absl::optional<syncer::ModelError>& error,
     std::unique_ptr<syncer::ModelTypeStore> store) {
@@ -168,10 +178,24 @@ void VgBodySyncBridge::OnReadAllMetadata(
   }
 }
 
-void VgBodySyncBridge::OnCommitWriteBatch(
+void VgBodySyncBridge::OnBackUpVgBodies(
     const absl::optional<syncer::ModelError>& error) {
   if (error) {
     change_processor()->ReportError(*error);
+  }
+}
+
+void VgBodySyncBridge::OnRestoreVgBodies(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    const absl::optional<syncer::ModelError>& error) {
+  if (error) {
+    change_processor()->ReportError(*error);
+  } else {
+    if (observer_) {
+      if (!vg_bodies.empty()) {
+        observer_->RestoreVgBodies(std::move(vg_bodies));
+      }
+    }
   }
 }
 

@@ -450,6 +450,9 @@ void Promotion::OnComplete(
         ConvertPromotionTypeToReportType(promotion->type),
         promotion->approximate_value,
         [](const type::Result){});
+
+    ledger_->ledger_client()->BackUpVgBodies();
+    ledger_->ledger_client()->BackUpVgSpendStatuses();
   }
 
   callback(result, std::move(promotion));
