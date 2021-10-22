@@ -233,7 +233,7 @@ const Portfolio = (props: Props) => {
     const filteredTransactions = transactions.flatMap((txListInfo) =>
       (txListInfo?.transactions ?? []).flatMap((tx) =>
         parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-    ))
+      ))
 
     return [...filteredTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
       Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
@@ -384,6 +384,7 @@ const Portfolio = (props: Props) => {
           onAddUserAsset={onAddUserAsset}
           onSetUserAssetVisible={onSetUserAssetVisible}
           onRemoveUserAsset={onRemoveUserAsset}
+          selectedNetwork={selectedNetwork}
         />
       }
     </StyledWrapper>
