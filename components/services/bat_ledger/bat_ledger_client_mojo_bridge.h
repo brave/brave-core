@@ -102,6 +102,10 @@ class BatLedgerClientMojoBridge :
       ledger::type::DBTransactionPtr transaction,
       ledger::client::RunDBTransactionCallback callback) override;
 
+  void RunDBTransaction(
+      ledger::type::DBTransactionPtr transaction,
+      ledger::client::RunDBTransactionCallback2 callback) override;
+
   void GetCreateScript(
       ledger::client::GetCreateScriptCallback callback) override;
 
@@ -121,6 +125,10 @@ class BatLedgerClientMojoBridge :
   absl::optional<std::string> EncryptString(const std::string& name) override;
 
   absl::optional<std::string> DecryptString(const std::string& name) override;
+
+  void BackUpVgBodies() override;
+
+  void BackUpVgSpendStatuses() override;
 
  private:
   bool Connected() const;
