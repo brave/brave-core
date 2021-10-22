@@ -2,11 +2,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
-import("//build/config/features.gni")
+import("//brave/build/cargo.gni")
 
 import("//build/config/features.gni")
+
+lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
+lib_output_path =
+    "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
 
 static_library("browser") {
+  libs = [ lib_output_path ]
+
   sources = [
     "pref_names.h",
     "skus_sdk_impl.cc",
