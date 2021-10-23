@@ -124,6 +124,7 @@ include_rules = [
   "+components/spellcheck/browser",
   "+components/startup_metric_utils/browser",
   "+components/strings",
+  "+components/translate/core/browser/translate_prefs.h",
   "+components/version_info",
   "+extensions/browser",
   "+extensions/buildflags",
