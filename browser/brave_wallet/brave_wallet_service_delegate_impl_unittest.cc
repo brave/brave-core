@@ -60,6 +60,9 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
  public:
   BraveWalletServiceDelegateImplUnitTest() = default;
 
+  using ImportInfo = BraveWalletServiceDelegate::ImportInfo;
+  using ImportError = BraveWalletServiceDelegate::ImportError;
+
   void TearDown() override { delegate_.reset(); }
 
   void SetUp() override {
@@ -71,11 +74,11 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
 
   content::BrowserContext* browser_context() { return &profile_; }
 
-  void SimulateGetLocalStorage(
-      const std::string& password,
-      const std::string& json_str,
-      bool* out_success,
-      BraveWalletServiceDelegate::ImportInfo* out_info) {
+  void SimulateGetLocalStorage(const std::string& password,
+                               const std::string& json_str,
+                               bool* out_success,
+                               ImportInfo* out_info,
+                               ImportError* out_error) {
     ASSERT_NE(out_success, nullptr);
 
     auto json = base::JSONReader::Read(json_str);
@@ -85,9 +88,10 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
     delegate_->OnGetLocalStorage(
         password,
         base::BindLambdaForTesting(
-            [&](bool success, BraveWalletServiceDelegate::ImportInfo info) {
+            [&](bool success, ImportInfo info, ImportError error) {
               *out_success = success;
               *out_info = info;
+              *out_error = error;
               run_loop.Quit();
             }),
         base::DictionaryValue::From(
@@ -105,52 +109,66 @@ class BraveWalletServiceDelegateImplUnitTest : public testing::Test {
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorageError) {
   bool result = true;
-  BraveWalletServiceDelegate::ImportInfo info;
+  ImportInfo info;
+  ImportError error;
   // empty password
-  SimulateGetLocalStorage("", valid_data, &result, &info);
+  SimulateGetLocalStorage("", valid_data, &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kPasswordError);
 
   result = true;
+  error = ImportError::kNone;
   // no vault
   SimulateGetLocalStorage("123", R"({"data": { "KeyringController": {}}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
+  error = ImportError::kNone;
   // vault is not a valid json
   SimulateGetLocalStorage(
       "123", R"({"data": { "KeyringController": { "vault": "{[}]"}}})", &result,
-      &info);
+      &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
+  error = ImportError::kNone;
   // vault missing iv and salt
   SimulateGetLocalStorage(
       "123",
       R"({"data": { "KeyringController": { "vault": "{\"data\": \"data\"}"}}})",
-      &result, &info);
+      &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
+  error = ImportError::kNone;
   // data is not base64 encoded
   SimulateGetLocalStorage("123",
                           R"({"data": {"KeyringController": {
-                          "vault": "{\"data\": \"data\",
+                          "vault": "{\"data\": \"d\",
                           \"iv\": \"aXY=\", \"salt\": \"c2FsdA==\"}"}}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
+  error = ImportError::kNone;
   // wrong password
-  SimulateGetLocalStorage("123", valid_data, &result, &info);
+  SimulateGetLocalStorage("123", valid_data, &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kPasswordError);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
   bool result = false;
-  BraveWalletServiceDelegate::ImportInfo info;
-  SimulateGetLocalStorage("brave4ever", valid_data, &result, &info);
+  ImportInfo info;
+  ImportError error;
+  SimulateGetLocalStorage("brave4ever", valid_data, &result, &info, &error);
   EXPECT_TRUE(result);
+  EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, valid_mnemonic);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
@@ -159,15 +177,18 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, OnGetLocalStorage) {
 TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
   bool result = true;
   // argonParams is not a dict
-  BraveWalletServiceDelegate::ImportInfo info;
+  ImportInfo info;
+  ImportError error;
   SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
                   "argonParams": "123"
               }}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
+  error = ImportError::kNone;
   // argonParams multiple fields are missing
   SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
@@ -175,10 +196,12 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "mem": 256
                   }
               }}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
+  error = ImportError::kNone;
   // argonParams type is not 2
   SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
@@ -189,10 +212,12 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 1
                   }
               }}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
+  error = ImportError::kNone;
   // KeyringController.salt is missing
   SimulateGetLocalStorage("123", R"({
           "data": { "KeyringController": {
@@ -203,15 +228,19 @@ TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWalletError) {
                     "type": 2
                   }
               }}})",
-                          &result, &info);
+                          &result, &info, &error);
   EXPECT_FALSE(result);
+  EXPECT_EQ(error, ImportError::kInternalError);
 }
 
 TEST_F(BraveWalletServiceDelegateImplUnitTest, ImportLegacyWallet) {
   bool result = false;
-  BraveWalletServiceDelegate::ImportInfo info;
-  SimulateGetLocalStorage("bbbravey", valid_legacy_data, &result, &info);
+  ImportInfo info;
+  ImportError error;
+  SimulateGetLocalStorage("bbbravey", valid_legacy_data, &result, &info,
+                          &error);
   EXPECT_TRUE(result);
+  EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
   EXPECT_TRUE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 2u);

@@ -320,5 +320,8 @@
     <message name="IDS_BRAVE_WALLET_APPROVAL_TRANSACTION_INTENT" desc="Token approval transaction description">approved</message>
     <message name="IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR" desc="Ledger signature validation error text">Ledger: The signature doesnt match the right address</message>
     <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR" desc="Hardware account not found error message">Hardware account not found</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_JSON_ERROR" desc="Importer error message">JSON data is not expected</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR" desc="Importer error message">Password is not correct</message>
+    <message name="IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR" desc="Importer error message">Internal error</message>
   </if>
 </grit-part>
