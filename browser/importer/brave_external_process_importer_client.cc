@@ -49,8 +49,6 @@ void BraveExternalProcessImporterClient::Start() {
   auto options = content::ServiceProcessHost::Options()
                      .WithDisplayName(IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME)
                      .Pass();
-  options.sandbox_type =
-      content::GetServiceSandboxType<brave::mojom::ProfileImport>();
   content::ServiceProcessHost::Launch(
       brave_profile_import_.BindNewPipeAndPassReceiver(), std::move(options));
 
