@@ -590,31 +590,31 @@ TEST_P(InstallStaticUtilTest, GetChromeChannel) {
 
 #if defined(OFFICIAL_BUILD)
 // Stable supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Stable,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(STABLE_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Stable,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(STABLE_INDEX),
+                                          testing::Values("user", "system")));
 // Beta supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Beta,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(BETA_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Beta,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(BETA_INDEX),
+                                          testing::Values("user", "system")));
 // Dev supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Dev,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(DEV_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Dev,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(DEV_INDEX),
+                                          testing::Values("user", "system")));
 // Canary is only at user level.
-INSTANTIATE_TEST_CASE_P(Nightly,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(NIGHTLY_INDEX),
-                                         testing::Values("user")));
+INSTANTIATE_TEST_SUITE_P(Nightly,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(NIGHTLY_INDEX),
+                                          testing::Values("user")));
 #else   // OFFICIAL_BUILD
 // Chromium supports user and system levels.
-INSTANTIATE_TEST_CASE_P(Development,
-                        InstallStaticUtilTest,
-                        testing::Combine(testing::Values(DEVELOPER_INDEX),
-                                         testing::Values("user", "system")));
+INSTANTIATE_TEST_SUITE_P(Development,
+                         InstallStaticUtilTest,
+                         testing::Combine(testing::Values(DEVELOPER_INDEX),
+                                          testing::Values("user", "system")));
 #endif  // !OFFICIAL_BUILD
 
 }  // namespace install_static
