@@ -247,8 +247,8 @@ TEST_P(MakeProductDetailsTest, UpdateCohortName) {
   }
 }
 
-INSTANTIATE_TEST_CASE_P(All,
-                        MakeProductDetailsTest,
-                        testing::ValuesIn(kTestData));
+INSTANTIATE_TEST_SUITE_P(All,
+                         MakeProductDetailsTest,
+                         testing::ValuesIn(kTestData));
 
 }  // namespace install_static
