@@ -36,14 +36,14 @@ std::unique_ptr<PageInfoHoverButton> CreateButton(
 
 }  // namespace
 
-// clang-format off
-#define InitializeUiState InitializeUiState(this); if (ipfs::IsIPFSScheme(url)) BraveAddIPFSButtons  // NOLINT
-// clang-format on
+#define BRAVE_PAGE_INFO_BUBBLE_VIEW_PAGE_INFO_BUBBLE_VIEW \
+  if (ipfs::IsIPFSScheme(url))                            \
+    BraveAddIPFSButtons();
 
 #include "../../../../../../../chrome/browser/ui/views/page_info/page_info_bubble_view.cc"
-#undef InitializeUiState
+#undef BRAVE_PAGE_INFO_BUBBLE_VIEW_PAGE_INFO_BUBBLE_VIEW
 
-void PageInfoBubbleView::BraveAddIPFSButtons(PageInfoBubbleView* ui) {
+void PageInfoBubbleView::BraveAddIPFSButtons() {
   site_settings_view_->AddChildViewAt(
       CreateButton(IDR_BRAVE_IPFS_LOGO, IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TEXT,
                    IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TOOLTIP_TEXT,
@@ -74,9 +74,4 @@ void PageInfoBubbleView::BraveAddIPFSButtons(PageInfoBubbleView* ui) {
                        },
                        base::Unretained(this))),
       0);
-
-  Layout();
-  SizeToContents();
 }
-
-#undef BRAVE_PAGE_INFO_VIEW_FACTORY_GET_PERMISSION_ICON
