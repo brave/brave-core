@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
 class Profile;
+class TestBraveWalletHandler;
 
 class BraveWalletHandler : public settings::SettingsPageUIHandler {
  public:
@@ -16,6 +17,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   ~BraveWalletHandler() override = default;
 
  private:
+  friend TestBraveWalletHandler;
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
   void OnJavascriptAllowed() override {}

@@ -5,6 +5,10 @@
 
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -19,21 +23,11 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
 namespace {
+
 bool RemoveEthereumChain(PrefService* prefs,
                          const std::string& chain_id_to_remove) {
   std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
   ::brave_wallet::GetAllCustomChains(prefs, &custom_chains);
-  bool network_exists = false;
-  for (const auto& it : custom_chains) {
-    if (it->chain_id != chain_id_to_remove)
-      continue;
-    network_exists = true;
-    break;
-  }
-
-  if (!network_exists) {
-    return false;
-  }
 
   {
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
@@ -56,10 +50,12 @@ bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
   if (!records_v) {
     return false;
   }
+
   const base::DictionaryValue* params_dict = nullptr;
   if (!records_v->GetAsDictionary(&params_dict) || !params_dict) {
     return false;
   }
+
   const std::string* chain_id = params_dict->FindStringKey("chainId");
   if (!chain_id) {
     return false;
@@ -76,14 +72,24 @@ bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
   if (network_exists) {
     return false;
   }
+  const auto& value_to_add = records_v.value();
+  auto chain = brave_wallet::ValueToEthereumChain(value_to_add);
+  if (!chain) {
+    return false;
+  }
 
+  // Saving converted value to initialized missed by user field with default
+  // values
+  auto value =
+      brave_wallet::EthereumChainToValue(std::move(chain).value().Clone());
   {
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
     base::ListValue* list = update.Get();
-    list->Append(std::move(records_v).value());
+    list->Append(std::move(value));
   }
   return true;
 }
+
 }  // namespace
 
 void BraveWalletHandler::RegisterMessages() {
@@ -126,8 +132,8 @@ void BraveWalletHandler::GetCustomNetworksList(
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
-  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  ::brave_wallet::GetAllCustomChains(prefs, &custom_chains);
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
     list.Append(::brave_wallet::EthereumChainToValue(it));
   }
