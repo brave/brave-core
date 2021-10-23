@@ -2,6 +2,7 @@ import * as React from 'react'
 import { SettingsAdvancedIcon, CaratStrongRightIcon } from 'brave-ui/components/icons'
 
 import * as S from './style'
+import { getLocale } from '../../../../../common/locale'
 import SelectRegionList from '../select-region-list'
 import PanelBox from '../panel-box'
 import Toggle from '../toggle'
@@ -37,7 +38,7 @@ function MainPanel () {
             <SettingsAdvancedIcon />
           </S.SettingsButton>
         </S.PanelHeader>
-        <S.PanelTitle>Brave Firewall + VPN</S.PanelTitle>
+        <S.PanelTitle>{getLocale('braveVpn')}</S.PanelTitle>
         <Toggle />
         <S.RegionSelectorButton
           type='button'

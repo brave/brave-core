@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_VPN" translateable="false" desc="Title for VPN the product">Brave Firewall + VPN</message>
+  <message name="IDS_BRAVE_VPN_CONNECT" desc="Button title to perform connect to a region">Connect</message>
+  <message name="IDS_BRAVE_VPN_CONNECTING" desc="Status label when VPN is in progress to connect">Connecting…</message>
+  <message name="IDS_BRAVE_VPN_CONNECTED" desc="Status label when VPN has connected to a region">Connected</message>
+  <message name="IDS_BRAVE_VPN_DISCONNECTING" desc="Status label when VPN is in progress to disconnect">Disconnecting…</message>
+  <message name="IDS_BRAVE_VPN_DISCONNECTED" desc="Status label when VPN has disconnected from a region">Disconnected</message>
+  <message name="IDS_BRAVE_VPN_CONNECTION_FAILED" desc="Status label when has failed to connect to a region">Connection Failed</message>
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_TO_SERVER" desc="Title to show user can't connect to a region's server">Can't connect to server</message>
+  <message name="IDS_BRAVE_VPN_TRY_AGAIN" desc="Button title to perform connect action again">Try again</message>
+  <message name="IDS_BRAVE_VPN_CHOOSE_ANOTHER_SERVER" desc="Button title to show a region list">Choose another server</message>
+  <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another</message>
+</grit-part>

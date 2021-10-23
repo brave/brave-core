@@ -6,7 +6,7 @@ import * as S from './style'
 import { Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
-import locale from '../../constants/locale'
+import { getLocale } from '../../../../../common/locale'
 
 function SelectRegion () {
   // TODO(nullhook): Scroll to the selected radio input when this component loads
@@ -71,7 +71,7 @@ function SelectRegion () {
             level='primary'
             type='accent'
             brand='rewards'
-            text={locale.connectLabel}
+            text={getLocale('braveVpnConnect')}
           />
         </S.ActionArea>
       </S.PanelContent>

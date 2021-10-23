@@ -2,7 +2,9 @@ import { select } from '@storybook/addon-knobs'
 import * as React from 'react'
 import { createStore } from 'redux'
 import { Provider as ReduxProvider } from 'react-redux'
+
 // Components
+import './locale'
 import * as S from './style'
 import { ConnectionState } from '../api/panel_browser_api'
 import { mockRegionList } from './mock-data/region-list'

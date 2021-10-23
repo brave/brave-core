@@ -11,6 +11,7 @@
 #include "base/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -29,6 +30,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui, true) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kVPNPanelHost);
+
+  source->AddLocalizedStrings(brave_vpn::kLocalizedStrings);
 
   webui::SetupWebUIDataSource(
       source,
