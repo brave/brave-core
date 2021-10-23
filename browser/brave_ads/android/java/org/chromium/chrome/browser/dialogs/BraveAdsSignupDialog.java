@@ -28,11 +28,11 @@ import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 
 import java.lang.System;
 
@@ -97,11 +97,10 @@ public class BraveAdsSignupDialog {
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, BraveOnboardingNotification.class);
             intent.putExtra(BraveOnboardingNotification.USE_CUSTOM_NOTIFICATION, useCustomNotification);
-            am.set(
-                AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + MOMENT_LATER,
-                PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | IntentUtils.getPendingIntentMutabilityFlag(true))
-            );
+            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + MOMENT_LATER,
+                    PendingIntent.getBroadcast(context, 0, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                                    | IntentUtils.getPendingIntentMutabilityFlag(true)));
         }
     }
 
