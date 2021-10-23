@@ -2,12 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- import {PrefsBehavior} from '../prefs/prefs_behavior.js';
- import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.m.js';
+import 'chrome://resources/cr_elements/cr_button/cr_button.m.js';
+import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PrefsBehavior} from '../prefs/prefs_behavior.js';
+import './add_wallet_network_dialog.js';
 
-(function() {
-  'use strict';
-  
 /**
 * @fileoverview
 * 'settings-sync-subpage' is the settings page content
@@ -15,17 +16,14 @@
 Polymer({
   is: 'settings-wallet-networks-subpage',
 
+  _template: html`{__html_template__}`,
+  
   behaviors: [
     PrefsBehavior,
-    I18nBehavior,
-    WebUIListenerBehavior
+    I18nBehavior
   ],
 
   properties: {
-    /**
-     * Array of sites to display in the widget.
-     * @type {!Array<SiteException>}
-     */
     networks: {
       type: Array,
       value() {
@@ -46,11 +44,6 @@ Polymer({
   /** @override */
   created: function() {
     this.browserProxy_ = BraveWalletBrowserProxyImpl.getInstance();
-    window.addEventListener('load', this.onLoad_.bind(this));
-  },
-
-  onLoad_: function() {
-    this.updateNetworks();
   },
 
   notifyKeylist: function() {
@@ -111,4 +104,4 @@ Polymer({
     this.updateNetworks();
   }
 });
-})();
+

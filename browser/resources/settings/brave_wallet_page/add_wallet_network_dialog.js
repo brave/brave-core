@@ -8,7 +8,7 @@ import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.m.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
 import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
-import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.m.js';
+import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
 
 Polymer({
   is: 'add-wallet-network-dialog',
@@ -45,15 +45,50 @@ Polymer({
         return [{value: ''}];
       }
     },
-
+    isRpcPlusButtonDisabled_: {
+      type: Boolean,
+      value: true,
+    },
+    isIconPlusButtonDisabled_: {
+      type: Boolean,
+      value: true,
+    },
+    isBlockPlusButtonDisabled_: {
+      type: Boolean,
+      value: true,
+    },
     isSubmitButtonEnabled_: {
       type: Boolean,
       value: false,
     },
+
+    chainIdValue_: String,
+    invalidChainIdMessage_: String,
+    chainIdInvalid_: {
+      type: Boolean,
+      value: false,
+    },
+
+    chainNameValue_: String,
+    chainNameInvalid_: {
+      type: Boolean,
+      value: false,
+    },
+    isCurrencyErrorHidden_: {
+      type: Boolean,
+      value: true,
+    },
+    isSubmissionErrorHidden_: {
+      type: Boolean,
+      value: true,
+    },
     selected: {
       type: Object,
       value: {}
-    }
+    },
+    currencyNameValue_: String,
+    currencySymbolValue_: String,
+    currencyDecimalsValue_: Number
   },
   
   browserProxy_: null,
@@ -66,13 +101,13 @@ Polymer({
   ready: function() {
     if (Object.keys(this.selected).length === 0)
       return
-    this.$$('#chainId').value = this.selected.chainId
-    this.$$('#chainName').value = this.selected.chainName
-    this.$$('#currencyName').value = this.selected.nativeCurrency.name
-    this.$$('#currencySymbol').value = this.selected.nativeCurrency.symbol
+    this.chainIdValue_ = this.selected.chainId
+    this.chainNameValue_ = this.selected.chainName
+    this.currencyNameValue_ = this.selected.nativeCurrency.name
+    this.currencySymbolValue_ = this.selected.nativeCurrency.symbol
     const decimals = this.selected.nativeCurrency.decimals
     if (decimals) {
-      this.$$('#currencyDecimals').value = decimals
+      this.currencyDecimalsValue_ = decimals
     }
     this.rpcUrls = this.selected.rpcUrls.map(element => { return {value: element}})
     if (this.selected.iconUrls.length)
@@ -103,21 +138,20 @@ Polymer({
   },
   /** @private */
   chainIdChanged_: function(event) {
-    let element = (this.$$('#chainId'))
-    const value = element.value
-    element.invalid = !this.isValidHexValue(value)
+    const value = event.target.value
+    this.chainIdInvalid_ = !this.isValidHexValue(value)
     const empty = value.trim() === ''
-    if (element.invalid) {
+    if (this.chainIdInvalid_) {
       const text = empty ? this.i18n('walletAddNetworkMandarotyFieldError')
                          : this.i18n('walletAddNetworkInvalidChainId')
-      element.setAttribute('error-message', text)
+      this.invalidChainIdMessage_ = text
     }
     this.updateSubmitButtonState_()
   },
 
   chainNameChanged_: function(event) {
-    let element = (this.$$('#chainName'))
-    element.invalid = element.value.trim() === ''
+    const element = event.target
+    this.chainNameInvalid_ = element.value.trim() === ''
     this.updateSubmitButtonState_()
   },
 
@@ -127,36 +161,26 @@ Polymer({
     }
     return !this.validateURL(value)
   },
-  
-  nameChangedImpl_: function(value, list) {
-    const elementId = list + '-urls-list'
-    const selector = '#' + elementId + ' > cr-input:focus-within'
-    let element = (this.$$(selector));
-    element.invalid = this.isInvalidInputForList_(value, list)
-    this.updateSubmitButtonState_()
-    const empty = value.trim() === ''
-    if (list == 'rpc' && element.invalid) {
-      const text = empty ? this.i18n('walletAddNetworkMandarotyFieldError')
-                         : this.i18n('walletAddNetworkInvalidURLInput')
-      element.setAttribute('error-message', text)
-    }
-    if (!element.invalid || empty) {
-      this.updatePlusButtonState_(list);
+  getTailOfUrlsArray: function(list) {
+    if (list === 'rpc') {
+      return this.rpcUrls.at(0).value
+    } else if (list === 'icon') {
+      return this.iconUrls.at(0).value
+    } else if (list === 'block') {
+      return this.blockUrls.at(0).value
     }
   },
-
-  updatePlusButtonState_: function(list) {
-    let buttonElement = (this.$$('#' + list + '-plus-button'));
-    const elementId = list + '-urls-list'
-    const elementSelector = '#' + elementId + ' > cr-input'
-    let inputElement = (this.$$(elementSelector));
-    if (!inputElement.value || inputElement.value.trim() === '') {
-      buttonElement.disabled = true
-    } else  {
-      buttonElement.disabled = inputElement.invalid
+  updatePlusButtonState: function(list) {
+    const inputElementValue = this.getTailOfUrlsArray(list)
+    const disabled = (!inputElementValue || inputElementValue.trim() === '')
+    if (list === 'rpc') {
+      this.isRpcPlusButtonDisabled_ = disabled
+    }  else if (list === 'icon') {
+      this.isIconPlusButtonDisabled_ = disabled
+    } else if (list === 'block') {
+      this.isBlockPlusButtonDisabled_ = disabled
     }
   },
-
   updateSubmitButtonState_: function() {
     for (const input of this.shadowRoot.querySelectorAll('.mandatory')) {
       if (input && (input.invalid || !input.value || input.value.trim() === '')) {
@@ -170,14 +194,12 @@ Polymer({
         return;
       }
     }
-    let chainIdElement = (this.$$('#chainId'))
-    if (chainIdElement.value === '') {
+    if (this.chainIdValue_ === '') {
       this.isSubmitButtonEnabled_ = false
       return;
     }
-    
-    let chainNameElement = (this.$$('#chainName'))
-    if (chainNameElement.value === '') {
+
+    if (this.chainNameValue_ === '') {
       this.isSubmitButtonEnabled_ = false
       return;
     }
@@ -190,31 +212,44 @@ Polymer({
     this.isSubmitButtonEnabled_ = true
   },
   nativeCurrencyChanged_: function(event) {
-    this.shadowRoot.querySelector('#currency-error').hidden = true
+    this.isCurrencyErrorHidden_ = true
   },
-  nameChangedIcons_: function(event) {
-    return this.nameChangedImpl_(event.model.item.value, 'icon')
+  // Called for any change in the urls inputs
+  // validates value of focused one and shows error if the value is invalid
+  // calls update for Plus buton state
+  urlChangedImpl_: function(element, list) {
+    element.invalid = this.isInvalidInputForList_(element.value, list)
+    this.updateSubmitButtonState_()
+    const empty = element.value.trim() === ''
+    if (list == 'rpc' && element.invalid) {
+      const text = empty ? this.i18n('walletAddNetworkMandarotyFieldError')
+                         : this.i18n('walletAddNetworkInvalidURLInput')
+      element.setAttribute('error-message', text)
+    }
+    if (!element.invalid || empty) {
+      this.updatePlusButtonState(list)
+    }
   },
-  nameChangedRpc_: function(event) {
-    return this.nameChangedImpl_(event.model.item.value, 'rpc')
+  urlChangedIcons_: function(event) {
+    return this.urlChangedImpl_(event.target, 'icon')
   },
-  nameChangedBlock_: function(event) {
-    return this.nameChangedImpl_(event.model.item.value, 'block')
+  urlChangedRpc_: function(event) {
+    return this.urlChangedImpl_(event.target, 'rpc')
+  },
+  urlChangedBlock_: function(event) {
+    return this.urlChangedImpl_(event.target, 'block')
   },
   onAddRpcUrlTap_: function(item) {
     this.splice('rpcUrls', 0, 0, {value: ''});
-    let buttonElement = (this.$$('#rpc-plus-button'));
-    buttonElement.disabled = true
+    this.isRpcPlusButtonDisabled_ = true
   },
   onAddIconUrlTap_: function(item) {
     this.splice('iconUrls', 0, 0, {value: ''});
-    let buttonElement = (this.$$('#icon-plus-button'));
-    buttonElement.disabled = true
+    this.isIconPlusButtonDisabled_ = true
   },
   onAddBlockUrlTap_: function(item) {
     this.splice('blockUrls', 0, 0, {value: ''});
-    let buttonElement = (this.$$('#block-plus-button'));
-    buttonElement.disabled = true
+    this.isBlockPlusButtonDisabled_ = true
   },
   transformListForSerializaion_: function(list) {
     return list.reduce((filtered, item) => {
@@ -227,16 +262,20 @@ Polymer({
       return filtered
     }, null)
   },
-  setSubmissionResult: function(success, errorId) {
-    this.shadowRoot.querySelector('#currency-error').hidden = this.shadowRoot.querySelector('#submission-error').hidden = true;
+  showCurrencyError: function() {
+    this.isSubmissionErrorHidden_ = true;
+    this.isCurrencyErrorHidden_ = false
+  },
+  setSubmissionResult: function(success) {
+    this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true;
     if (!success) {
-      this.shadowRoot.querySelector(errorId).hidden = false
+      this.isSubmissionErrorHidden_ = false
     }
   },
   addNewNetwork: function(payload) {
     this.browserProxy_.addEthereumChain(JSON.stringify(payload))
       .then(success => {
-        this.setSubmissionResult(success, '#submission-error')
+        this.setSubmissionResult(success)
         if (success) {
           this.fire('close');
           return
@@ -245,17 +284,17 @@ Polymer({
   },
   onAddNetworkTap_: function(item) {
     let payload = Object({
-      chainId: this.$$('#chainId').value,
-      chainName: this.$$('#chainName').value,
+      chainId: this.chainIdValue_,
+      chainName: this.chainNameValue_,
     })
     const nativeCurrency = Object({
-      name: this.$$('#currencyName').value.trim(),
-      symbol: this.$$('#currencySymbol').value.trim(),
-      decimals: parseInt(this.$$('#currencyDecimals').value)
+      name: this.currencyNameValue_.trim(),
+      symbol: this.currencySymbolValue_.trim(),
+      decimals: parseInt(this.currencyDecimalsValue_)
     })
     if ((nativeCurrency.name || nativeCurrency.symbol || nativeCurrency.decimals)) {
       if (!nativeCurrency.name || !nativeCurrency.symbol || !nativeCurrency.decimals) {
-        this.setSubmissionResult(false, '#currency-error')
+        this.showCurrencyError()
         return;
       }
       payload.nativeCurrency = nativeCurrency;

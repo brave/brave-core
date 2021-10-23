@@ -4,7 +4,8 @@
 import {Router, RouteObserverBehavior} from '../router.js';
 import {PrefsBehavior} from '../prefs/prefs_behavior.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.m.js';
- 
+import './wallet_networks_subpage.js';
+
 (function() {
 'use strict';
 
@@ -24,7 +25,10 @@ Polymer({
 
   properties: {
     isNativeWalletEnabled_: Boolean,
-    mainBlockVisibility_: String
+    isNetworkEditor_: {
+      type: Boolean,
+      value: false,
+    }
   },
 
   /** @private {?settings.BraveWalletBrowserProxy} */
@@ -61,8 +65,7 @@ Polymer({
 
   /** @protected */
   currentRouteChanged: function() {
-    const hidden = this.isNetworkEditorRoute()
-    this.mainBlockVisibility_ = hidden ? 'hidden' : ''
+    this.isNetworkEditor_ = this.isNetworkEditorRoute()
   },
   onInputAutoLockMinutes_: function() {
     let value = Number(this.$.walletAutoLockMinutes.value)

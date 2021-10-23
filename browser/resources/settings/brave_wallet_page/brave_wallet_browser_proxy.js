@@ -15,7 +15,7 @@ export class BraveWalletBrowserProxy {
    isNativeWalletEnabled() {}
    getAutoLockMinutes() {}
    getCustomNetworksList () {}
-   removeEthereumChain () {}
+   removeEthereumChain (chainId) {}
    addEthereumChain (value) {}
 }
 
