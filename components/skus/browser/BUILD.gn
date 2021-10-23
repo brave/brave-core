@@ -18,6 +18,7 @@ static_library("browser") {
     "skus_sdk_impl.cc",
     "skus_sdk_impl.h",
     "br-rs/brave-rewards-cxx/src/cxx.h",
+    "br-rs/brave-rewards-cxx/src/cxx.cc",
     "br-rs/brave-rewards-cxx/src/shim.hpp",
     "br-rs/brave-rewards-cxx/src/wrapper.cpp",
     "br-rs/brave-rewards-cxx/src/wrapper.hpp",
