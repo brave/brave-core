@@ -247,7 +247,7 @@ TEST_P(MakeProductDetailsTest, UpdateCohortName) {
   }
 }
 
-INSTANTIATE_TEST_CASE_P(All,
+INSTANTIATE_TEST_SUITE_P(All,
                         MakeProductDetailsTest,
                         testing::ValuesIn(kTestData));
 
