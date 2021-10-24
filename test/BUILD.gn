@@ -789,6 +789,7 @@ if (!is_android) {
         "//brave/browser/brave_wallet/brave_wallet_service_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
         "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
+        "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
         "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
       ]
