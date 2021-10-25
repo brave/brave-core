@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {
-  TokenInfo
+  TokenInfo,
+  EthereumChain,
+  kMainnetChainId
 } from '../../../../constants/types'
 import {
   PopupModal,
@@ -9,7 +11,6 @@ import {
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
 import { getLocale } from '../../../../../common/locale'
-import { ETH } from '../../../../options/initial-visible-token-info'
 
 // Styled Components
 import {
@@ -37,6 +38,7 @@ export interface Props {
   addUserAssetError: boolean
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
+  selectedNetwork: EthereumChain
 }
 
 const EditVisibleAssetsModal = (props: Props) => {
@@ -44,6 +46,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     fullAssetList,
     userVisibleTokensInfo,
     addUserAssetError,
+    selectedNetwork,
     onClose,
     onAddUserAsset,
     onRemoveUserAsset,
@@ -89,12 +92,27 @@ const EditVisibleAssetsModal = (props: Props) => {
     setTokenDecimals(event.target.value)
   }
 
+  const nativeAsset = {
+    contractAddress: '',
+    decimals: selectedNetwork.decimals,
+    isErc20: false,
+    isErc721: false,
+    logo: selectedNetwork.iconUrls[0] ?? '',
+    name: selectedNetwork.symbolName,
+    symbol: selectedNetwork.symbol,
+    visible: true
+  }
+
   const tokenList = React.useMemo(() => {
     const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
-    const fullList = visibleContracts.includes('') ? fullAssetList : [ETH, ...fullAssetList]
+    const fullList = visibleContracts.includes('') ? fullAssetList : [nativeAsset, ...fullAssetList]
     const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
-    return [...userVisibleTokensInfo, ...notVisibleList]
-  }, [fullAssetList, userVisibleTokensInfo])
+    return selectedNetwork.chainId !== kMainnetChainId
+      ? visibleContracts.includes('')
+        ? userVisibleTokensInfo
+        : [...userVisibleTokensInfo, nativeAsset]
+      : [...userVisibleTokensInfo, ...notVisibleList]
+  }, [fullAssetList, userVisibleTokensInfo, selectedNetwork])
 
   React.useEffect(() => {
     // Added this timeout to throttle setting the list
