@@ -29,7 +29,7 @@ import {
   GetAllNetworksList,
   GetAllTokensReturnInfo,
   TokenInfo,
-  GetETHBalancesPriceReturnInfo,
+  GetNativeAssetBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   PortfolioTokenHistoryAndInfo,
   AssetPriceTimeframe,
@@ -71,7 +71,7 @@ export const accountsChanged = createAction('accountsChanged')
 export const selectedAccountChanged = createAction('selectedAccountChanged')
 export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
-export const ethBalancesUpdated = createAction<GetETHBalancesPriceReturnInfo>('ethBalancesUpdated')
+export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesPriceReturnInfo>('nativeAssetBalancesUpdated')
 export const tokenBalancesUpdated = createAction<GetERC20TokenBalanceAndPriceReturnInfo>('tokenBalancesUpdated')
 export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAndInfo[][]>('portfolioPriceHistoryUpdated')
 export const selectPortfolioTimeline = createAction<AssetPriceTimeframe>('selectPortfolioTimeline')

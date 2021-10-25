@@ -96,36 +96,37 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
     const { wallet: { accounts, selectedPortfolioTimeline } } = getState()
 
     const { braveWalletService, assetRatioController, ethJsonRpcController } = apiProxy
+
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
-    // Selected Network's Base Asset
-    const initialToken: TokenInfo[] = [{
+    // Selected Network's Native Asset
+    const nativeAsset: TokenInfo = {
       contractAddress: '',
       decimals: currentNetwork.decimals,
       isErc20: false,
       isErc721: false,
-      logo: '',
+      logo: currentNetwork.iconUrls[0] ?? '',
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
       visible: false
-    }]
+    }
 
-    const visibleTokens: TokenInfo[] = visibleTokensInfo.tokens.length === 0 ? initialToken : visibleTokensInfo.tokens
+    const visibleTokens: TokenInfo[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     // Update ETH Balances
-    const getEthPrice = await assetRatioController.getPrice(['eth'], ['usd'], selectedPortfolioTimeline)
-    const ethPrice = getEthPrice.success ? getEthPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
+    const getNativeAssetPrice = await assetRatioController.getPrice([nativeAsset.symbol.toLowerCase()], ['usd'], selectedPortfolioTimeline)
+    const nativeAssetPrice = getNativeAssetPrice.success ? getNativeAssetPrice.values.find((i) => i.toAsset === 'usd')?.price ?? '0' : '0'
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       const balanceInfo = await ethJsonRpcController.getBalance(account.address)
       return balanceInfo
     }))
     const balancesAndPrice = {
-      usdPrice: ethPrice,
+      usdPrice: nativeAssetPrice,
       balances: getBalanceReturnInfos
     }
 
-    await dispatch(WalletActions.ethBalancesUpdated(balancesAndPrice))
+    await dispatch(WalletActions.nativeAssetBalancesUpdated(balancesAndPrice))
 
     // Update Token Balances
     if (!visibleTokens) {
