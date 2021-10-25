@@ -7,18 +7,23 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
-import { WalletPanelState, PanelState, WalletState, TransactionStatus } from '../../constants/types'
+import { WalletPanelState, PanelState, WalletState, TransactionStatus, SignMessageData } from '../../constants/types'
 import {
   AccountPayloadType,
   ShowConnectToSitePayload,
   EthereumChainPayload,
   EthereumChainRequestPayload,
   SignMessagePayload,
-  SignMessageProcessedPayload
+  SignMessageProcessedPayload,
+  SignMessageHardwareProcessedPayload
 } from '../constants/action_types'
+import {
+  findHardwareAccountInfo
+} from '../../common/async/lib'
+
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
-
+import { getLocale } from '../../../common/locale'
 const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
@@ -166,6 +171,32 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
   braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
+  apiProxy.closeUI()
+})
+
+handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageData) => {
+  const apiProxy = await getAPIProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  const hardwareAccount = await findHardwareAccountInfo(messageData.address)
+  if (hardwareAccount && hardwareAccount.hardware) {
+    let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
+    deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
+      then(async (signature: string) => {
+        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
+      }).catch(async (error: any) => {
+        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
+      })
+    return
+  }
+  await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
+      '', getLocale('braveWalletHardwareAccountNotFound'))
+  apiProxy.closeUI()
+})
+
+handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
+  const apiProxy = await getAPIProxy()
+  const braveWalletService = apiProxy.braveWalletService
+  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
   apiProxy.closeUI()
 })
 

@@ -818,8 +818,8 @@ std::vector<mojom::AccountInfoPtr> KeyringController::GetAccountInfosForKeyring(
   return result;
 }
 
-std::vector<mojom::AccountInfoPtr>
-KeyringController::GetHardwareAccountsSync() {
+std::vector<mojom::AccountInfoPtr> KeyringController::GetHardwareAccountsSync()
+    const {
   std::vector<mojom::AccountInfoPtr> accounts;
   base::Value hardware_keyrings(base::Value::Type::DICTIONARY);
   const base::Value* value = GetPrefForHardwareKeyringUpdate(prefs_);
@@ -972,6 +972,15 @@ void KeyringController::Lock() {
     observer->Locked();
   }
   StopAutoLockTimer();
+}
+
+bool KeyringController::IsHardwareAccount(const std::string& account) const {
+  for (const auto& hardware_account_info : GetHardwareAccountsSync()) {
+    if (hardware_account_info->address == account) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void KeyringController::Unlock(const std::string& password,

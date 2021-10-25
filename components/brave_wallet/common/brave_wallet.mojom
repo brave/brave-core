@@ -418,6 +418,7 @@ interface BraveWalletService {
   GetPendingSignMessageRequest() => (int32 id, string address, string message);
   // UI to native
   NotifySignMessageRequestProcessed(bool approved, int32 id);
+  NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
 };
 
 enum DefaultWallet {
