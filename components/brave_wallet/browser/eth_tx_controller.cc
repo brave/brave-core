@@ -810,8 +810,7 @@ void EthTxController::CheckIfBlockTrackerShouldRun() {
   bool locked = keyring_controller_->IsLocked();
   bool running = eth_block_tracker_->IsRunning();
   if (!locked && !running) {
-    eth_block_tracker_->Start(
-        base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds));
+    eth_block_tracker_->Start(base::Seconds(kBlockTrackerDefaultTimeInSeconds));
   } else if ((locked || known_no_pending_tx) && running) {
     eth_block_tracker_->Stop();
   }

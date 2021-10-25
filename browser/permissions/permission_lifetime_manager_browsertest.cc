@@ -149,8 +149,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
         run_loop.Quit();
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
         scoped_mock_time_task_runner =
             std::make_unique<base::ScopedMockTimeMessageLoopTaskRunner>();
       }));
@@ -166,13 +165,11 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(20));
+  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(20));
+  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ASK);
@@ -188,8 +185,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
       }));
 
   content::ExecuteScriptAsync(
@@ -222,15 +218,13 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
   EXPECT_FALSE(GetExpirationsPrefValue()->DictEmpty());
 
-  scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(10));
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(10));
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
                 url, url, ContentSettingsType::GEOLOCATION),
             ContentSetting::CONTENT_SETTING_ALLOW);
 
-  scoped_mock_time_task_runner.task_runner()->FastForwardBy(
-      base::TimeDelta::FromSeconds(60));
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(60));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
   EXPECT_TRUE(GetExpirationsPrefValue()->DictEmpty());
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -246,8 +240,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
   EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
       .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(
-            base::TimeDelta::FromSeconds(30));
+        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
       }));
 
   content::ExecuteScriptAsync(
@@ -275,8 +268,7 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
  public:
   PermissionLifetimeManagerWithOriginMonitorBrowserTest() {
     ephemeral_storage::EphemeralStorageTabHelper::
-        SetKeepAliveTimeDelayForTesting(
-            base::TimeDelta::FromSeconds(kKeepAliveInterval));
+        SetKeepAliveTimeDelayForTesting(base::Seconds(kKeepAliveInterval));
   }
 };
 
@@ -315,8 +307,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -370,8 +361,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(
@@ -425,8 +415,7 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
   // Permission Should be reset after the timeout
   base::RunLoop run_loop;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(),
-      base::TimeDelta::FromSeconds(kKeepAliveInterval));
+      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
   run_loop.Run();
 
   EXPECT_EQ(host_content_settings_map()->GetContentSetting(

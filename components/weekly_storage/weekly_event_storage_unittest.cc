@@ -67,7 +67,7 @@ TEST_F(WeeklyEventStorageTest, ForgetsOldEvents) {
   EXPECT_EQ(state_->GetLatest(), absl::optional<TestValues>(TestValues::kFoo));
 
   // Jump to the next week.
-  clock_->Advance(base::TimeDelta::FromDays(8));
+  clock_->Advance(base::Days(8));
   // Should have forgotten about older days.
   EXPECT_FALSE(state_->HasEvent());
 
@@ -80,7 +80,7 @@ TEST_F(WeeklyEventStorageTest, ForgetsOldEvents) {
 TEST_F(WeeklyEventStorageTest, IntermittentUsage) {
   auto value = TestValues::kFoo;
   for (int day = 0; day < 10; day++) {
-    clock_->Advance(base::TimeDelta::FromDays(day % 3));
+    clock_->Advance(base::Days(day % 3));
     state_->Add(value);
   }
   EXPECT_EQ(state_->GetLatest(), absl::optional<TestValues>(value));
@@ -88,10 +88,10 @@ TEST_F(WeeklyEventStorageTest, IntermittentUsage) {
 
 TEST_F(WeeklyEventStorageTest, InfrequentUsage) {
   state_->Add(TestValues::kFoo);
-  clock_->Advance(base::TimeDelta::FromDays(6));
+  clock_->Advance(base::Days(6));
   state_->Add(TestValues::kBar);
   EXPECT_EQ(state_->GetLatest(), absl::optional<TestValues>(TestValues::kBar));
-  clock_->Advance(base::TimeDelta::FromDays(10));
+  clock_->Advance(base::Days(10));
   EXPECT_EQ(state_->GetLatest(), absl::nullopt);
 }
 
@@ -101,10 +101,10 @@ TEST_F(WeeklyEventStorageTest, SerializationOrder) {
   // Add a series of events.
   state_->Add(TestValues::kFoo);
   state_->Add(TestValues::kBar);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   state_->Add(TestValues::kFoo);
   state_->Add(TestValues::kBrave);
-  clock_->Advance(base::TimeDelta::FromDays(1));
+  clock_->Advance(base::Days(1));
   EXPECT_EQ(state_->GetLatest(),
             absl::optional<TestValues>(TestValues::kBrave));
 

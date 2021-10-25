@@ -1032,9 +1032,8 @@ void KeyringController::ResetAutoLockTimer() {
   } else {
     size_t auto_lock_minutes =
         (size_t)prefs_->GetInteger(kBraveWalletAutoLockMinutes);
-    auto_lock_timer_->Start(FROM_HERE,
-                            base::TimeDelta::FromMinutes(auto_lock_minutes),
-                            this, &KeyringController::OnAutoLockFired);
+    auto_lock_timer_->Start(FROM_HERE, base::Minutes(auto_lock_minutes), this,
+                            &KeyringController::OnAutoLockFired);
   }
 }
 

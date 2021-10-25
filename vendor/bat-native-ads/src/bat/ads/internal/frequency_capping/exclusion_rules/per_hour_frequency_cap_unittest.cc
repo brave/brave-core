@@ -51,7 +51,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1Hour) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
@@ -80,7 +80,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, AdAllowedAfter1HourForMultipleTypes) {
       AdType::kPromotedContentAd, creative_ad, ConfirmationType::kServed);
   ad_events.push_back(ad_event_3);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);
@@ -102,7 +102,7 @@ TEST_F(BatAdsPerHourFrequencyCapTest, DoNotAllowTheSameAdWithin1Hour) {
 
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(59));
+  FastForwardClockBy(base::Minutes(59));
 
   // Act
   PerHourFrequencyCap frequency_cap(ad_events);

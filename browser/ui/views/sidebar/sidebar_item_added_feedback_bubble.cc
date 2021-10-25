@@ -30,9 +30,7 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
     views::View* anchor_view,
     views::View* items_contents_view)
     : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::LEFT_CENTER),
-      animation_(base::TimeDelta::FromMilliseconds(kFadeoutDurationInMs),
-                 60,
-                 this) {
+      animation_(base::Milliseconds(kFadeoutDurationInMs), 60, this) {
   // This bubble uses same color for all themes.
   constexpr SkColor kBubbleBackground = SkColorSetRGB(0x33, 0x9A, 0xF0);
   set_color(kBubbleBackground);
@@ -55,7 +53,7 @@ void SidebarItemAddedFeedbackBubble::OnWidgetVisibilityChanged(
   if (visible && !fade_timer_.IsRunning()) {
     constexpr int kFadeoutStartTimeInMs = 2500;
     fade_timer_.Start(
-        FROM_HERE, base::TimeDelta::FromMilliseconds(kFadeoutStartTimeInMs),
+        FROM_HERE, base::Milliseconds(kFadeoutStartTimeInMs),
         base::BindOnce(&gfx::Animation::Start, base::Unretained(&animation_)));
   }
 }

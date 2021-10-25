@@ -166,8 +166,8 @@ bool CatalogInfo::FromJson(const std::string& json,
           continue;
         }
 
-        conversion.expire_at = end_at_time + base::TimeDelta::FromDays(
-                                                 conversion.observation_window);
+        conversion.expire_at =
+            end_at_time + base::Days(conversion.observation_window);
 
         creative_set_info.conversions.push_back(conversion);
       }

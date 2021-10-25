@@ -70,7 +70,7 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
   const int count = features::GetMaximumPromotedContentAdsPerDay();
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::Days(1));
 
   // Act
   PromotedContentAdsPerDayFrequencyCap frequency_cap;
@@ -86,7 +86,7 @@ TEST_F(BatAdsPromotedContentAdsPerDayFrequencyCapTest,
   const int count = features::GetMaximumPromotedContentAdsPerDay();
   RecordAdEvents(AdType::kPromotedContentAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(23));
+  FastForwardClockBy(base::Hours(23));
 
   // Act
   PromotedContentAdsPerDayFrequencyCap frequency_cap;

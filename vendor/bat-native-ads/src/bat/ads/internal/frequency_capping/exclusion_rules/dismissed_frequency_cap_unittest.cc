@@ -82,10 +82,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -167,10 +167,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -211,10 +211,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -255,10 +255,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -299,10 +299,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -344,10 +344,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -389,10 +389,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -434,10 +434,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -482,10 +482,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(47));
+  FastForwardClockBy(base::Hours(47));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);
@@ -518,10 +518,10 @@ TEST_F(BatAdsDismissedFrequencyCapTest,
 
     ad_events.push_back(ad_event);
 
-    FastForwardClockBy(base::TimeDelta::FromMinutes(5));
+    FastForwardClockBy(base::Minutes(5));
   }
 
-  FastForwardClockBy(base::TimeDelta::FromHours(48));
+  FastForwardClockBy(base::Hours(48));
 
   // Act
   DismissedFrequencyCap frequency_cap(ad_events);

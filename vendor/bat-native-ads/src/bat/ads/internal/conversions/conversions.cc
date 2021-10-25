@@ -43,8 +43,7 @@ const char kSearchInUrl[] = "url";
 
 bool HasObservationWindowForAdEventExpired(const int observation_window,
                                            const AdEventInfo& ad_event) {
-  const base::Time time =
-      base::Time::Now() - base::TimeDelta::FromDays(observation_window);
+  const base::Time time = base::Time::Now() - base::Days(observation_window);
 
   if (time < ad_event.created_at) {
     return false;
@@ -386,7 +385,7 @@ void Conversions::AddItemToQueue(
   const int64_t rand_delay = static_cast<int64_t>(brave_base::random::Geometric(
       g_is_debug ? kDebugConvertAfterSeconds : kConvertAfterSeconds));
   conversion_queue_item.confirm_at =
-      base::Time::Now() + base::TimeDelta::FromSeconds(rand_delay);
+      base::Time::Now() + base::Seconds(rand_delay);
 
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item}, [=](const bool success) {
@@ -482,7 +481,7 @@ void Conversions::StartTimer(
   } else {
     const int64_t rand_delay = static_cast<int64_t>(
         brave_base::random::Geometric(kExpiredConvertAfterSeconds));
-    delay = base::TimeDelta::FromSeconds(rand_delay);
+    delay = base::Seconds(rand_delay);
   }
 
   const base::Time time = timer_.Start(

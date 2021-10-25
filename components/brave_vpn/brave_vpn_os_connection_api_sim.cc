@@ -49,7 +49,7 @@ void BraveVPNOSConnectionAPISim::Connect(const std::string& name) {
         FROM_HERE,
         base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
                        weak_factory_.GetWeakPtr(), name, true),
-        base::TimeDelta::FromSeconds(1));
+        base::Seconds(1));
     return;
   }
 
@@ -61,7 +61,7 @@ void BraveVPNOSConnectionAPISim::Connect(const std::string& name) {
       FROM_HERE,
       base::BindOnce(&BraveVPNOSConnectionAPISim::OnConnected,
                      weak_factory_.GetWeakPtr(), name, false),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void BraveVPNOSConnectionAPISim::Disconnect(const std::string& name) {

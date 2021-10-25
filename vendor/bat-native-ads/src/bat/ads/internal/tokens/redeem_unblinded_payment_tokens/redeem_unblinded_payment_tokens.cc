@@ -168,7 +168,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
                      base::Unretained(this)));
 
@@ -203,8 +203,7 @@ base::TimeDelta RedeemUnblindedPaymentTokens::CalculateTokenRedemptionDelay() {
   base::TimeDelta delay;
   if (now >= next_token_redemption_date) {
     // Browser was launched after the next token redemption date
-    delay =
-        base::TimeDelta::FromSeconds(kExpiredNextTokenRedemptionAfterSeconds);
+    delay = base::Seconds(kExpiredNextTokenRedemptionAfterSeconds);
   } else {
     delay = next_token_redemption_date - now;
   }
@@ -226,7 +225,7 @@ base::Time RedeemUnblindedPaymentTokens::CalculateNextTokenRedemptionDate() {
   const int64_t rand_delay =
       static_cast<int64_t>(brave_base::random::Geometric(delay));
 
-  return now + base::TimeDelta::FromSeconds(rand_delay);
+  return now + base::Seconds(rand_delay);
 }
 
 }  // namespace ads

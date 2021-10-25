@@ -229,8 +229,8 @@ class PermissionLifetimeManagerTest : public testing::Test {
  protected:
   const GURL kOrigin{"https://example.com"};
   const GURL kOrigin2{"https://brave.com"};
-  const base::TimeDelta kLifetime{base::TimeDelta::FromSeconds(5)};
-  const base::TimeDelta kOneSecond{base::TimeDelta::FromSeconds(1)};
+  const base::TimeDelta kLifetime{base::Seconds(5)};
+  const base::TimeDelta kOneSecond{base::Seconds(1)};
 
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
@@ -371,8 +371,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
 
 TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
   auto request(CreateRequestAndAllowContentSetting(
-      kOrigin, ContentSettingsType::NOTIFICATIONS,
-      base::TimeDelta::FromDays(5)));
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,
@@ -482,8 +481,7 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
 
 TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   auto request(CreateRequestAndAllowContentSetting(
-      kOrigin, ContentSettingsType::NOTIFICATIONS,
-      base::TimeDelta::FromDays(5)));
+      kOrigin, ContentSettingsType::NOTIFICATIONS, base::Days(5)));
   const base::Time expected_expiration_time =
       base::Time::Now() + *request->GetLifetime();
   manager()->PermissionDecided(*request, kOrigin, kOrigin,

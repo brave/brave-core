@@ -365,7 +365,7 @@ void RewardsServiceImpl::ConnectionClosed() {
       FROM_HERE,
       base::BindOnce(&RewardsServiceImpl::StartLedgerProcessIfNecessary,
                      AsWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 bool RewardsServiceImpl::IsInitialized() {
@@ -2264,7 +2264,7 @@ bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
 void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
   if (sufficient) return;
 
-  base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
+  base::Time next_time = base::Time::Now() + base::Days(3);
   profile_->GetPrefs()->SetTime(prefs::kAddFundsNotification, next_time);
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(

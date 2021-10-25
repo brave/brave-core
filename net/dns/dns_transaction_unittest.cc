@@ -65,7 +65,7 @@ namespace net {
 
 namespace {
 
-base::TimeDelta kFallbackPeriod = base::TimeDelta::FromSeconds(1);
+base::TimeDelta kFallbackPeriod = base::Seconds(1);
 
 const char kMockHostname[] = "mock.http";
 

@@ -80,7 +80,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+  task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);
@@ -128,7 +128,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
                       ConfirmationType::kTransferred);
   ad_events.push_back(ad_event_3);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+  task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);
@@ -164,7 +164,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+  task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);
@@ -200,7 +200,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+  task_environment_.FastForwardBy(base::Hours(47));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);
@@ -236,7 +236,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
+  task_environment_.FastForwardBy(base::Hours(48));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);
@@ -276,7 +276,7 @@ TEST_F(BatAdsTransferredFrequencyCapTest,
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
+  task_environment_.FastForwardBy(base::Hours(48));
 
   // Act
   TransferredFrequencyCap frequency_cap(ad_events);

@@ -134,7 +134,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapWithin1Day) {
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
+  task_environment_.FastForwardBy(base::Hours(23));
 
   // Act
   DailyCapFrequencyCap frequency_cap(ad_events);
@@ -157,7 +157,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Day) {
 
   ad_events.push_back(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
+  task_environment_.FastForwardBy(base::Days(1));
 
   // Act
   DailyCapFrequencyCap frequency_cap(ad_events);

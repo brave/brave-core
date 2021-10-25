@@ -100,7 +100,7 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
 
 const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
-constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
+constexpr base::TimeDelta kTenMins = base::Minutes(10);
 
 ProxyConfigServiceTor::ProxyConfigServiceTor() {}
 
@@ -188,9 +188,9 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     if (host_port_pair.username() == username) {
       // password is a int64_t -> std::to_string in milliseconds
       int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
-      map->MaybeExpire(host_port_pair.username(),
-          base::Time::FromDeltaSinceWindowsEpoch(
-              base::TimeDelta::FromMicroseconds(time)));
+      map->MaybeExpire(
+          host_port_pair.username(),
+          base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(time)));
     }
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));

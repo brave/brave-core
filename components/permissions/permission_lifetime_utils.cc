@@ -41,7 +41,7 @@ absl::optional<PermissionLifetimeOption> GetTestSecondsOption() {
   }
   return PermissionLifetimeOption(
       base::UTF8ToUTF16(base::StringPrintf("%d seconds", *test_seconds)),
-      base::TimeDelta::FromSeconds(*test_seconds));
+      base::Seconds(*test_seconds));
 }
 
 }  // namespace
@@ -60,10 +60,10 @@ std::vector<PermissionLifetimeOption> CreatePermissionLifetimeOptions() {
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(
           IDS_PERMISSIONS_BUBBLE_24_HOURS_LIFETIME_OPTION),
-      base::TimeDelta::FromHours(24)));
+      base::Hours(24)));
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_1_WEEK_LIFETIME_OPTION),
-      base::TimeDelta::FromDays(7)));
+      base::Days(7)));
   options.emplace_back(PermissionLifetimeOption(
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOREVER_LIFETIME_OPTION),
       absl::nullopt));

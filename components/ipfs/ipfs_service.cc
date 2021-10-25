@@ -293,8 +293,7 @@ bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
   bool exited = false;
   int exit_code = 0;
   base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
-  exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(10),
-                                          &exit_code);
+  exited = process.WaitForExitWithTimeout(base::Seconds(10), &exit_code);
   if (!exited)
     process.Terminate(0, true);
   return exited && !exit_code;
@@ -513,7 +512,7 @@ void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback,
 base::TimeDelta IpfsService::CalculatePeersRetryTime() {
   if (zero_peer_time_for_test_)
     return base::TimeDelta();
-  return base::TimeDelta::FromMilliseconds(
+  return base::Milliseconds(
       base::RandInt(kMinimalPeersRetryIntervalMs,
                     kPeersRetryRate * kMinimalPeersRetryIntervalMs));
 }

@@ -1356,13 +1356,13 @@ TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
 
   // Nothing is triggered after 10s
   task_environment_.FastForwardBy(
-      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds - 1));
+      base::Seconds(kBlockTrackerDefaultTimeInSeconds - 1));
   auto tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
   auto tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromSeconds(1));
+  task_environment_.FastForwardBy(base::Seconds(1));
   tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
   EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
   tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
@@ -1380,7 +1380,7 @@ TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
   eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
   keyring_controller_->Lock();
   task_environment_.FastForwardBy(
-      base::TimeDelta::FromSeconds(kBlockTrackerDefaultTimeInSeconds + 1));
+      base::Seconds(kBlockTrackerDefaultTimeInSeconds + 1));
   tx_meta1 = eth_tx_controller()->GetTxForTesting("001");
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
   tx_meta2 = eth_tx_controller()->GetTxForTesting("002");

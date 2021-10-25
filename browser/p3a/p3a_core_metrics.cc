@@ -58,8 +58,7 @@ constexpr char kDailyUptimesListPrefName[] = "daily_uptimes";
 
 BraveUptimeTracker::BraveUptimeTracker(PrefService* local_state)
     : state_(local_state, kDailyUptimesListPrefName) {
-  timer_.Start(FROM_HERE,
-               base::TimeDelta::FromMinutes(kUsageTimeQueryIntervalMinutes),
+  timer_.Start(FROM_HERE, base::Minutes(kUsageTimeQueryIntervalMinutes),
                base::BindRepeating(&BraveUptimeTracker::RecordUsage,
                                    base::Unretained(this)));
 }
@@ -79,7 +78,7 @@ void BraveUptimeTracker::RecordP3A() {
   int answer = 0;
   if (state_.IsOneWeekPassed()) {
     uint64_t total = state_.GetWeeklySum();
-    const int minutes = base::TimeDelta::FromSeconds(total).InMinutes();
+    const int minutes = base::Seconds(total).InMinutes();
     DCHECK_GE(minutes, 0);
     if (0 <= minutes && minutes < 30) {
       answer = 1;
@@ -109,8 +108,7 @@ BraveWindowTracker::BraveWindowTracker(PrefService* local_state)
     return;
   }
   BrowserList::AddObserver(this);
-  timer_.Start(FROM_HERE,
-               base::TimeDelta::FromMinutes(kWindowUsageP3AIntervalMinutes),
+  timer_.Start(FROM_HERE, base::Minutes(kWindowUsageP3AIntervalMinutes),
                base::BindRepeating(&BraveWindowTracker::UpdateP3AValues,
                                    base::Unretained(this)));
   UpdateP3AValues();
@@ -154,11 +152,11 @@ void BraveWindowTracker::UpdateP3AValues() const {
   const base::Time now = base::Time::Now();
   if (time.is_null()) {
     bucket = WindowUsageStats::kNeverUsed;
-  } else if (now - time < base::TimeDelta::FromHours(24)) {
+  } else if (now - time < base::Hours(24)) {
     bucket = WindowUsageStats::kUsedIn24h;
-  } else if (now - time < base::TimeDelta::FromDays(7)) {
+  } else if (now - time < base::Days(7)) {
     bucket = WindowUsageStats::kUsedInLastWeek;
-  } else if (now - time < base::TimeDelta::FromDays(28)) {
+  } else if (now - time < base::Days(28)) {
     bucket = WindowUsageStats::kUsedInLast28Days;
   } else {
     bucket = WindowUsageStats::kEverUsed;

@@ -34,7 +34,7 @@ class BatAdsConversionsDatabaseTableTest : public UnitTestBase {
   }
 
   base::Time CalculateExpireAtTime(const int observation_window) {
-    return Now() + base::TimeDelta::FromDays(observation_window);
+    return Now() + base::Days(observation_window);
   }
 
   std::unique_ptr<database::table::Conversions> database_table_;
@@ -151,7 +151,7 @@ TEST_F(BatAdsConversionsDatabaseTableTest, PurgeExpiredConversions) {
   Save(conversions);
 
   // Act
-  FastForwardClockBy(base::TimeDelta::FromDays(4));
+  FastForwardClockBy(base::Days(4));
 
   PurgeExpired();
 

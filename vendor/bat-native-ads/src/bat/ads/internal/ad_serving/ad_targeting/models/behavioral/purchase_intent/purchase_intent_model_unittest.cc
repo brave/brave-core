@@ -51,7 +51,7 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   const GURL url_1 = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url_1);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(1));
+  FastForwardClockBy(base::Days(1));
 
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
   processor.Process(url_2);

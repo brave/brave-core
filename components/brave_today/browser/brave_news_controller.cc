@@ -352,16 +352,16 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
   if (is_enabled) {
     VLOG(1) << "STARTING TIMERS";
     if (!timer_feed_update_.IsRunning()) {
-      timer_feed_update_.Start(FROM_HERE, base::TimeDelta::FromHours(3), this,
+      timer_feed_update_.Start(FROM_HERE, base::Hours(3), this,
                                &BraveNewsController::CheckForFeedsUpdate);
     }
     if (!timer_publishers_update_.IsRunning()) {
       timer_publishers_update_.Start(
-          FROM_HERE, base::TimeDelta::FromDays(1), this,
+          FROM_HERE, base::Days(1), this,
           &BraveNewsController::CheckForPublishersUpdate);
     }
     if (!timer_prefetch_.IsRunning()) {
-      timer_prefetch_.Start(FROM_HERE, base::TimeDelta::FromMinutes(1), this,
+      timer_prefetch_.Start(FROM_HERE, base::Minutes(1), this,
                             &BraveNewsController::Prefetch);
     }
   } else {
