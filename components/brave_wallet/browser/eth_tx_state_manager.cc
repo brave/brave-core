@@ -50,7 +50,6 @@ EthTxStateManager::TxMeta::TxMeta(std::unique_ptr<EthTransaction> tx_in)
 EthTxStateManager::TxMeta::~TxMeta() = default;
 bool EthTxStateManager::TxMeta::operator==(const TxMeta& meta) const {
   return id == meta.id && status == meta.status && from == meta.from &&
-         last_gas_price == meta.last_gas_price &&
          created_time == meta.created_time &&
          submitted_time == meta.submitted_time &&
          confirmed_time == meta.confirmed_time &&
@@ -67,7 +66,6 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   dict.SetStringKey("id", meta.id);
   dict.SetIntKey("status", static_cast<int>(meta.status));
   dict.SetStringKey("from", meta.from.ToHex());
-  dict.SetStringKey("last_gas_price", Uint256ValueToHex(meta.last_gas_price));
   dict.SetKey("created_time", base::TimeToValue(meta.created_time));
   dict.SetKey("submitted_time", base::TimeToValue(meta.submitted_time));
   dict.SetKey("confirmed_time", base::TimeToValue(meta.confirmed_time));
@@ -147,14 +145,6 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
   if (!from)
     return nullptr;
   meta->from = EthAddress::FromHex(*from);
-
-  const std::string* last_gas_price = value.FindStringKey("last_gas_price");
-  if (!last_gas_price)
-    return nullptr;
-  uint256_t last_gas_price_uint;
-  if (!HexValueToUint256(*last_gas_price, &last_gas_price_uint))
-    return nullptr;
-  meta->last_gas_price = last_gas_price_uint;
 
   const base::Value* created_time = value.FindKey("created_time");
   if (!created_time)
