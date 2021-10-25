@@ -44,14 +44,14 @@ TEST_F(IPFSP3ATest, TestGetIPFSDetectionPromptBucket) {
 }
 
 TEST_F(IPFSP3ATest, TestGetDaemonUsageBucket) {
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(0)), 0);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(5)), 0);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(6)), 1);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(60)), 1);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromMinutes(61)), 2);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromHours(24)), 2);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromHours(25)), 3);
-  ASSERT_EQ(GetDaemonUsageBucket(base::TimeDelta::FromDays(1337)), 3);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Minutes(0)), 0);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Minutes(5)), 0);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Minutes(6)), 1);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Minutes(60)), 1);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Minutes(61)), 2);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Hours(24)), 2);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Hours(25)), 3);
+  ASSERT_EQ(GetDaemonUsageBucket(base::Days(1337)), 3);
 }
 
 }  // namespace ipfs

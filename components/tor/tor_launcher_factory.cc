@@ -319,7 +319,7 @@ void TorLauncherFactory::DelayedRelaunchTor() {
       FROM_HERE,
       base::BindOnce(&TorLauncherFactory::RelaunchTor,
                      weak_ptr_factory_.GetWeakPtr()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void TorLauncherFactory::OnTorEvent(

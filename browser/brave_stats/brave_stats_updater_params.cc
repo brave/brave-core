@@ -25,7 +25,7 @@ namespace brave_stats {
 base::Time BraveStatsUpdaterParams::g_current_time;
 bool BraveStatsUpdaterParams::g_force_first_run = false;
 static constexpr base::TimeDelta g_dtoi_delete_delta =
-    base::TimeDelta::FromSeconds(30 * 24 * 60 * 60);
+    base::Seconds(30 * 24 * 60 * 60);
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(
     PrefService* stats_pref_service,
@@ -176,7 +176,7 @@ int BraveStatsUpdaterParams::GetCurrentISOWeekNumber() const {
 }
 
 base::Time BraveStatsUpdaterParams::GetReferenceTime() const {
-  return GetCurrentTimeNow() - base::TimeDelta::FromDays(1);
+  return GetCurrentTimeNow() - base::Days(1);
 }
 
 base::Time BraveStatsUpdaterParams::GetCurrentTimeNow() const {

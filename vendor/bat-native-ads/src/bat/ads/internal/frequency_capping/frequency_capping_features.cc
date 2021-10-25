@@ -23,12 +23,12 @@ const bool kDefaultShouldExcludeAdIfConverted = true;
 const char kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow[] =
     "exclude_ad_if_dismissed_within_time_window";
 const base::TimeDelta kDefaultExcludeAdIfDismissedWithinTimeWindow =
-    base::TimeDelta::FromDays(2);
+    base::Days(2);
 
 const char kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow[] =
     "exclude_ad_if_transferred_within_time_window";
 const base::TimeDelta kDefaultExcludeAdIfTransferredWithinTimeWindow =
-    base::TimeDelta::FromDays(2);
+    base::Days(2);
 
 const char kFieldTrialParameterShouldOnlyServeAdsInWindowedMode[] =
     "should_only_serve_ads_in_windowed_mode";

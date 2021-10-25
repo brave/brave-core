@@ -159,9 +159,8 @@ void BraveStatsUpdater::Start() {
   DCHECK(!server_ping_periodic_timer_);
   server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   server_ping_periodic_timer_->Start(
-      FROM_HERE,
-      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequencySeconds),
-      this, &BraveStatsUpdater::OnServerPingTimerFired);
+      FROM_HERE, base::Seconds(kUpdateServerPeriodicPingFrequencySeconds), this,
+      &BraveStatsUpdater::OnServerPingTimerFired);
 }
 
 void BraveStatsUpdater::Stop() {
@@ -382,8 +381,7 @@ void BraveStatsUpdater::OnDetectUncertainFuture(
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   stats_startup_complete_ = true;
   server_ping_startup_timer_->Start(
-      FROM_HERE,
-      base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelaySeconds), this,
+      FROM_HERE, base::Seconds(kUpdateServerStartupPingDelaySeconds), this,
       &BraveStatsUpdater::OnServerPingTimerFired);
 }
 

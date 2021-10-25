@@ -177,8 +177,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   constexpr int kSIComponentUpdateCheckIntervalMins = 15;
   si_update_check_timer_.Start(
-      FROM_HERE,
-      base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins),
+      FROM_HERE, base::Minutes(kSIComponentUpdateCheckIntervalMins),
       base::BindRepeating(
           &NTPBackgroundImagesService::CheckImagesComponentUpdate,
           base::Unretained(this), data->component_id));

@@ -37,9 +37,9 @@ base::TimeDelta* g_testing_subscription_retry_interval;
 
 namespace {
 
-const base::TimeDelta kListUpdateInterval = base::TimeDelta::FromDays(7);
-const base::TimeDelta kListRetryInterval = base::TimeDelta::FromHours(1);
-const base::TimeDelta kListCheckInitialDelay = base::TimeDelta::FromMinutes(1);
+const base::TimeDelta kListUpdateInterval = base::Days(7);
+const base::TimeDelta kListRetryInterval = base::Hours(1);
+const base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 
 SubscriptionInfo BuildInfoFromDict(const GURL& sub_url,
                                    const base::Value* dict) {

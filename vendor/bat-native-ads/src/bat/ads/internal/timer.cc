@@ -45,8 +45,7 @@ base::Time Timer::StartWithPrivacy(const base::TimeDelta& delay,
   const int64_t rand_delay_in_seconds =
       static_cast<int64_t>(brave_base::random::Geometric(delay_in_seconds));
 
-  return Start(base::TimeDelta::FromSeconds(rand_delay_in_seconds),
-               std::move(user_task));
+  return Start(base::Seconds(rand_delay_in_seconds), std::move(user_task));
 }
 
 bool Timer::IsRunning() const {

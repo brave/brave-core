@@ -84,16 +84,15 @@ void BraveOperationalPatterns::Start() {
       std::make_unique<base::RetainingOneShotTimer>();
   simulate_local_training_step_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(
-          operational_patterns::features::
-              GetSimulateLocalTrainingStepDurationValue() *
-          60),
+      base::Seconds(operational_patterns::features::
+                        GetSimulateLocalTrainingStepDurationValue() *
+                    60),
       this, &BraveOperationalPatterns::OnSimulateLocalTrainingStepTimerFired);
 
   collection_slot_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   collection_slot_periodic_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(
+      base::Seconds(
           operational_patterns::features::GetCollectionSlotSizeValue() * 60 /
           2),
       this, &BraveOperationalPatterns::OnCollectionSlotStartTimerFired);
@@ -192,7 +191,7 @@ void BraveOperationalPatterns::MaybeResetCollectionId() {
     collection_id_ =
         base::ToUpperASCII(base::UnguessableToken::Create().ToString());
     collection_id_expiration_time_ =
-        now + base::TimeDelta::FromSeconds(
+        now + base::Seconds(
                   operational_patterns::features::GetCollectionIdLifetime() *
                   24 * 60 * 60);
     SavePrefs();

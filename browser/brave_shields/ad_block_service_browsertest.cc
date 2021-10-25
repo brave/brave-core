@@ -238,8 +238,8 @@ bool AdBlockServiceTest::StartAdBlockRegionalServices() {
 }
 
 void AdBlockServiceTest::SetSubscriptionIntervals() {
-  auto initial_delay = base::TimeDelta::FromSeconds(2);
-  auto retry_interval = base::TimeDelta::FromSeconds(2);
+  auto initial_delay = base::Seconds(2);
+  auto retry_interval = base::Seconds(2);
 
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
   auto* subscription_service_manager =

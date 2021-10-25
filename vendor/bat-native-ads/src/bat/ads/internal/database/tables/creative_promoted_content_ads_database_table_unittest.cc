@@ -684,7 +684,7 @@ TEST_F(BatAdsCreativePromotedContentAdsDatabaseTableTest,
   Save(creative_promoted_content_ads);
 
   // Act
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Assert
   CreativePromotedContentAdList expected_creative_promoted_content_ads;

@@ -359,7 +359,7 @@ void RefillUnblindedTokens::Retry() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(time));

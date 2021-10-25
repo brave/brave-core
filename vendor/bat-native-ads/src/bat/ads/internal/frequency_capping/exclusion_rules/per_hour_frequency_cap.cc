@@ -49,7 +49,7 @@ bool PerHourFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
   const base::Time now = base::Time::Now();
 
   const base::TimeDelta time_constraint =
-      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
+      base::Seconds(base::Time::kSecondsPerHour);
 
   const int count = std::count_if(
       ad_events.cbegin(), ad_events.cend(),

@@ -119,8 +119,7 @@ void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(
     // command should be finished in just a few seconds and we do not expect
     // this child process would hang forever. To be safe, we will wait for 30
     // seconds max here.
-    exited = process.WaitForExitWithTimeout(base::TimeDelta::FromSeconds(30),
-                                            nullptr);
+    exited = process.WaitForExitWithTimeout(base::Seconds(30), nullptr);
   }
 
   if (!exited)

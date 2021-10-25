@@ -111,7 +111,7 @@ void Client::AppendAdHistory(const AdHistoryInfo& ad_history) {
   client_->ads_shown_history.push_front(ad_history);
 
   const base::Time distant_past =
-      base::Time::Now() - base::TimeDelta::FromDays(history::kForDays);
+      base::Time::Now() - base::Days(history::kForDays);
 
   const auto iter = std::remove_if(
       client_->ads_shown_history.begin(), client_->ads_shown_history.end(),

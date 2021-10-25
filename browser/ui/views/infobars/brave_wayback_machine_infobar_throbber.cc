@@ -23,7 +23,7 @@ void BraveWaybackMachineInfoBarThrobber::Start() {
 
   start_time_ = base::TimeTicks::Now();
   timer_.Start(
-      FROM_HERE, base::TimeDelta::FromMilliseconds(30),
+      FROM_HERE, base::Milliseconds(30),
       base::BindRepeating(&BraveWaybackMachineInfoBarThrobber::SchedulePaint,
                           base::Unretained(this)));
   SchedulePaint();  // paint right away

@@ -30,13 +30,13 @@ int GetIPFSDetectionPromptBucket(PrefService* prefs) {
 }
 
 int GetDaemonUsageBucket(base::TimeDelta elapsed_time) {
-  if (elapsed_time <= base::TimeDelta::FromMinutes(5)) {
+  if (elapsed_time <= base::Minutes(5)) {
     return 0;
   }
-  if (elapsed_time <= base::TimeDelta::FromHours(1)) {
+  if (elapsed_time <= base::Hours(1)) {
     return 1;
   }
-  if (elapsed_time <= base::TimeDelta::FromHours(24)) {
+  if (elapsed_time <= base::Hours(24)) {
     return 2;
   }
   return 3;
@@ -92,7 +92,7 @@ void IpfsP3A::OnIpfsLaunched(bool result, int64_t pid) {
 
   daemon_start_time_ = base::TimeTicks::Now();
   timer_.Start(
-      FROM_HERE, base::TimeDelta::FromMinutes(kP3ATimerInterval),
+      FROM_HERE, base::Minutes(kP3ATimerInterval),
       base::BindRepeating(&IpfsP3A::RecordDaemonUsage, base::Unretained(this)));
 }
 

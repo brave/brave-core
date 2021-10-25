@@ -71,7 +71,7 @@ void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
       base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                      weak_ptr_factory_.GetWeakPtr(), client_id, 1,
                      std::move(callback)),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
@@ -85,7 +85,7 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
         base::BindOnce(&DeviceInfoSyncBridge::OnDeviceInfoDeleted,
                        weak_ptr_factory_.GetWeakPtr(), client_id, attempt + 1,
                        std::move(callback)),
-        base::TimeDelta::FromSeconds(1));
+        base::Seconds(1));
   } else {
     std::move(callback).Run();
   }

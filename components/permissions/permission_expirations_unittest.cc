@@ -150,8 +150,8 @@ class PermissionExpirationsTest : public testing::Test {
   const GURL kOrigin{"https://example.com"};
   const GURL kOrigin2{"https://brave1.com"};
   const GURL kOrigin3{"https://brave2.com"};
-  const base::TimeDelta kLifetime{base::TimeDelta::FromSeconds(5)};
-  const base::TimeDelta kOneSecond{base::TimeDelta::FromSeconds(1)};
+  const base::TimeDelta kLifetime{base::Seconds(5)};
+  const base::TimeDelta kOneSecond{base::Seconds(1)};
 
   const base::Time now_{base::Time::Now()};
 
@@ -160,7 +160,7 @@ class PermissionExpirationsTest : public testing::Test {
 };
 
 TEST_F(PermissionExpirationsTest, AddAndRemoveAfterExpiration) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);
@@ -183,7 +183,7 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveAfterExpiration) {
 }
 
 TEST_F(PermissionExpirationsTest, AddWithAllAndRemoveDataAfterExpiration) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   PermissionOrigins permission_origins(kOrigin, kOrigin2,
                                        CONTENT_SETTING_BLOCK);
@@ -210,11 +210,11 @@ TEST_F(PermissionExpirationsTest, AddWithAllAndRemoveDataAfterExpiration) {
 }
 
 TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);
-  const auto expiration_delta2 = base::TimeDelta::FromSeconds(15);
+  const auto expiration_delta2 = base::Seconds(15);
   const auto expiration_time2 = now_ + expiration_delta2;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta2,
                         kOrigin2);
@@ -250,7 +250,7 @@ TEST_F(PermissionExpirationsTest, AddAndRemoveExpiring) {
 }
 
 TEST_F(PermissionExpirationsTest, RemoveExpiredDifferentTypes) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);
@@ -328,7 +328,7 @@ TEST_F(PermissionExpirationsTest, AddRemoveDomainExpiration) {
 }
 
 TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);
@@ -357,7 +357,7 @@ TEST_F(PermissionExpirationsTest, RemoveDomainThenTimeExpirations) {
 }
 
 TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);
@@ -385,7 +385,7 @@ TEST_F(PermissionExpirationsTest, RemoveTimeThenDomainExpirations) {
 }
 
 TEST_F(PermissionExpirationsTest, RemoveAllDomainExpirations) {
-  const auto expiration_delta = base::TimeDelta::FromSeconds(10);
+  const auto expiration_delta = base::Seconds(10);
   const auto expiration_time = now_ + expiration_delta;
   AddExpiringPermission(ContentSettingsType::NOTIFICATIONS, expiration_delta,
                         kOrigin);

@@ -800,7 +800,7 @@ void AdsServiceImpl::MaybeStart(const bool should_restart) {
         FROM_HERE,
         base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr(),
                        total_number_of_starts_),
-        base::TimeDelta::FromSeconds(1));
+        base::Seconds(1));
   } else {
     Start(total_number_of_starts_);
   }
@@ -987,7 +987,7 @@ void AdsServiceImpl::StartCheckIdleStateTimer() {
 #if !defined(OS_ANDROID)
   idle_poll_timer_.Stop();
 
-  idle_poll_timer_.Start(FROM_HERE, base::TimeDelta::FromSeconds(1), this,
+  idle_poll_timer_.Start(FROM_HERE, base::Seconds(1), this,
                          &AdsServiceImpl::CheckIdleState);
 #endif
 }
@@ -1982,8 +1982,7 @@ void AdsServiceImpl::StartNotificationTimeoutTimer(const std::string& uuid) {
     return;
   }
 
-  const base::TimeDelta timeout =
-      base::TimeDelta::FromSeconds(timeout_in_seconds);
+  const base::TimeDelta timeout = base::Seconds(timeout_in_seconds);
 
   notification_timers_[uuid] = std::make_unique<base::OneShotTimer>();
   notification_timers_[uuid]->Start(

@@ -69,7 +69,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourFrequencyCapTest,
   const int count = features::GetMaximumNewTabPageAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromHours(1));
+  FastForwardClockBy(base::Hours(1));
 
   // Act
   NewTabPageAdsPerHourFrequencyCap frequency_cap;
@@ -85,7 +85,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourFrequencyCapTest,
   const int count = features::GetMaximumNewTabPageAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(59));
+  FastForwardClockBy(base::Minutes(59));
 
   // Act
   NewTabPageAdsPerHourFrequencyCap frequency_cap;

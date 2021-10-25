@@ -122,7 +122,7 @@ TEST(BatAdsUserActivityFeaturesTest, TimeWindow) {
   const base::TimeDelta time_window = features::user_activity::GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromHours(2);
+  const base::TimeDelta expected_time_window = base::Hours(2);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -141,7 +141,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   const base::TimeDelta time_window = features::user_activity::GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromHours(1);
+  const base::TimeDelta expected_time_window = base::Hours(1);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -161,7 +161,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
   const base::TimeDelta time_window = features::user_activity::GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromHours(1);
+  const base::TimeDelta expected_time_window = base::Hours(1);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -245,8 +245,7 @@ TEST(BatAdsUserActivityFeaturesTest, IdleTimeThreshold) {
       features::user_activity::GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold =
-      base::TimeDelta::FromSeconds(5);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
@@ -266,8 +265,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThreshold) {
       features::user_activity::GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold =
-      base::TimeDelta::FromSeconds(15);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(15);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
@@ -288,8 +286,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
       features::user_activity::GetIdleTimeThreshold();
 
   // Assert
-  const base::TimeDelta expected_idle_time_threshold =
-      base::TimeDelta::FromSeconds(15);
+  const base::TimeDelta expected_idle_time_threshold = base::Seconds(15);
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
@@ -312,8 +309,7 @@ TEST(BatAdsUserActivityFeaturesTest, MaximumIdleTime) {
       features::user_activity::GetMaximumIdleTime();
 
   // Assert
-  const base::TimeDelta expected_maximum_idle_time =
-      base::TimeDelta::FromMinutes(30);
+  const base::TimeDelta expected_maximum_idle_time = base::Minutes(30);
   EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
 }
 
@@ -333,8 +329,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTime) {
       features::user_activity::GetMaximumIdleTime();
 
   // Assert
-  const base::TimeDelta expected_maximum_idle_time =
-      base::TimeDelta::FromSeconds(0);
+  const base::TimeDelta expected_maximum_idle_time = base::Seconds(0);
   EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
 }
 
@@ -355,8 +350,7 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
       features::user_activity::GetMaximumIdleTime();
 
   // Assert
-  const base::TimeDelta expected_maximum_idle_time =
-      base::TimeDelta::FromSeconds(0);
+  const base::TimeDelta expected_maximum_idle_time = base::Seconds(0);
   EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
 }
 

@@ -73,7 +73,7 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
       CONTENT_SETTING_BLOCK);
 
   const base::Time kNow = base::Time::Now();
-  const base::Time k1DaysOld = kNow - base::TimeDelta::FromDays(1);
+  const base::Time k1DaysOld = kNow - base::Days(1);
 
   // Check current shields settings count is 2 and zero after clearing 1 day
   // time range.
