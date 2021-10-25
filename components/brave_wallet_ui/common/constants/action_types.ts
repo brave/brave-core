@@ -90,6 +90,7 @@ export type UpdateUnapprovedTransactionGasFieldsType = {
 
 export type UpdateUnapprovedTransactionSpendAllowanceType = {
   txMetaId: string,
+  spenderAddress: string,
   allowance: string
 }
 
