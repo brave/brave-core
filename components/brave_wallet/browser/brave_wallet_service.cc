@@ -534,7 +534,24 @@ void BraveWalletService::NotifySignMessageRequestProcessed(bool approved,
   sign_message_requests_.pop();
   sign_message_callbacks_.pop();
 
-  std::move(callback).Run(approved);
+  std::move(callback).Run(approved, std::string(), std::string());
+}
+
+void BraveWalletService::NotifySignMessageHardwareRequestProcessed(
+    bool approved,
+    int id,
+    const std::string& signature,
+    const std::string& error) {
+  if (sign_message_requests_.front().id != id) {
+    VLOG(1) << "id: " << id << " is not expected, should be "
+            << sign_message_requests_.front().id;
+    return;
+  }
+  auto callback = std::move(sign_message_callbacks_.front());
+  sign_message_requests_.pop();
+  sign_message_callbacks_.pop();
+
+  std::move(callback).Run(approved, signature, error);
 }
 
 void BraveWalletService::AddObserver(
@@ -575,7 +592,7 @@ void BraveWalletService::OnGetImportInfo(
 
 void BraveWalletService::AddSignMessageRequest(
     SignMessageRequest&& request,
-    base::OnceCallback<void(bool)> callback) {
+    SignMessageRequestCallback callback) {
   sign_message_requests_.push(std::move(request));
   sign_message_callbacks_.push(std::move(callback));
 }
