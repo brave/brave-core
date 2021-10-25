@@ -11,7 +11,7 @@ import {
   GetAllTokensReturnInfo,
   GetAllNetworksList,
   TokenInfo,
-  GetETHBalancesPriceReturnInfo,
+  GetNativeAssetBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   AccountInfo,
   PortfolioTokenHistoryAndInfo,
@@ -163,13 +163,13 @@ reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensRet
   }
 })
 
-reducer.on(WalletActions.ethBalancesUpdated, (state: any, payload: GetETHBalancesPriceReturnInfo) => {
+reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNativeAssetBalancesPriceReturnInfo) => {
   let accounts: WalletAccountType[] = [...state.accounts]
 
   accounts.forEach((account, index) => {
     if (payload.balances[index].success) {
       accounts[index].balance = payload.balances[index].balance
-      accounts[index].fiatBalance = formatFiatBalance(payload.balances[index].balance, 18, payload.usdPrice).toString()
+      accounts[index].fiatBalance = formatFiatBalance(payload.balances[index].balance, state.selectedNetwork.decimals, payload.usdPrice).toString()
     }
   })
 

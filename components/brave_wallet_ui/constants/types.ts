@@ -430,7 +430,7 @@ export interface GetBalanceReturnInfo {
   balance: string
 }
 
-export interface GetETHBalancesPriceReturnInfo {
+export interface GetNativeAssetBalancesPriceReturnInfo {
   usdPrice: string
   balances: GetBalanceReturnInfo[]
 }
