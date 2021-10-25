@@ -2227,21 +2227,7 @@ extension BrowserViewController: TabManagerDelegate {
             wv.accessibilityLabel = nil
             wv.accessibilityElementsHidden = true
             wv.accessibilityIdentifier = nil
-            
-            #if swift(>=5.4)
-            if #available(iOS 15.0, *) {
-                wv.alpha = 0.0
-                wv.requestMediaPlaybackState { state in
-                    if state != .playing && wv != tabManager.selectedTab?.webView {
-                        wv.alpha = 1.0
-                    }
-                }
-            } else {
-                wv.removeFromSuperview()
-            }
-            #else
             wv.removeFromSuperview()
-            #endif
         }
         
         toolbar?.setSearchButtonState(url: selected?.url)
@@ -2270,9 +2256,6 @@ extension BrowserViewController: TabManagerDelegate {
             webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.accessibilityIdentifier = "contentView"
             webView.accessibilityElementsHidden = false
-            
-            // Restore WebView visibility state
-            webView.alpha = 1.0
 
             if webView.url == nil {
                 // The web view can go gray if it was zombified due to memory pressure.
@@ -2317,18 +2300,6 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         updateInContentHomePanel(selected?.url as URL?)
-        
-        #if swift(>=5.4)
-        for tab in tabManager.allTabs {
-            if #available(iOS 15.0, *), let wv = tab.webView {
-                wv.requestMediaPlaybackState { state in
-                    if state != .playing && wv != tabManager.selectedTab?.webView {
-                        wv.alpha = 1.0
-                    }
-                }
-            }
-        }
-        #endif
     }
 
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
