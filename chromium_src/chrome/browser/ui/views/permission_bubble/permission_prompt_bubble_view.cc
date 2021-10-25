@@ -115,6 +115,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
                                     base::Unretained(this)));
     SetModel(this);
     OnItemSelected();
+    SetAccessibleName(l10n_util::GetStringUTF16(
+        IDS_PERMISSIONS_BUBBLE_LIFETIME_COMBOBOX_LABEL));
   }
 
   PermissionLifetimeCombobox(const PermissionLifetimeCombobox&) = delete;
