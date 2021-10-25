@@ -137,8 +137,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, FakeUninstallMetaMask) {
     ASSERT_EQ(GetDefaultWallet(),
               brave_wallet::mojom::DefaultWallet::CryptoWallets);
   }
-
-  ASSERT_TRUE(false);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest, UpdatesDoNotChangeSettings) {
