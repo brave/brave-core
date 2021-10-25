@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_block_tracker.h"
@@ -89,7 +90,10 @@ class EthTxController : public KeyedService,
       const std::string& max_fee_per_gas,
       const std::string& gas_limit,
       SetGasFeeAndLimitForUnapprovedTransactionCallback callback) override;
-
+  void SetDataForUnapprovedTransaction(
+      const std::string& tx_meta_id,
+      const std::vector<uint8_t>& data,
+      SetDataForUnapprovedTransactionCallback callback) override;
   void ApproveHardwareTransaction(
       const std::string& tx_meta_id,
       ApproveHardwareTransactionCallback callback) override;
