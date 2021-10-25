@@ -93,14 +93,21 @@ void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  bool use_brave_web3_provider =
-      (static_cast<brave_wallet::mojom::DefaultWallet>(
-           brave_wallet_web3_provider_.GetValue()) ==
-       brave_wallet::mojom::DefaultWallet::BraveWallet) &&
+  auto default_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
+      brave_wallet_web3_provider_.GetValue());
+
+  bool brave_use_native_wallet =
+      (default_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
+       default_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
 
+  bool allow_overwrite_window_ethereum =
+      default_wallet ==
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
+
   (*renderer_configuration)
-      ->SetConfiguration(
-          brave::mojom::DynamicParams::New(use_brave_web3_provider));
+      ->SetConfiguration(brave::mojom::DynamicParams::New(
+          brave_use_native_wallet, allow_overwrite_window_ethereum));
 #endif
 }

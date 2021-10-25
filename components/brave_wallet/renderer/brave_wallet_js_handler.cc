@@ -19,12 +19,25 @@
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
 #include "third_party/blink/public/web/blink.h"
+#include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace {
+
+// By default we allow extensions to overwrite the window.ethereum object
+// but if the user goes into settings and explicitly selects to use Brave Wallet
+// then we will block modifications to window.ethereum here.
+const char kEthereumNonWritable[] =
+    R"(;(function() {
+           Object.defineProperty(window, 'ethereum', {
+             value: window.ethereum,
+             writable: false
+           });
+    })();)";
 
 static base::NoDestructor<std::string> g_provider_script("");
 
@@ -289,8 +302,11 @@ void BraveWalletJSHandler::SendResponse(
   }
 }
 
-BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame), is_connected_(false) {
+BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame,
+                                           bool allow_overwrite_window_ethereum)
+    : render_frame_(render_frame),
+      allow_overwrite_window_ethereum_(allow_overwrite_window_ethereum),
+      is_connected_(false) {
   if (g_provider_script->empty()) {
     *g_provider_script =
         LoadDataResource(IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS);
@@ -347,6 +363,11 @@ void BraveWalletJSHandler::CreateEthereumObject(
     global->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
         .Check();
     BindFunctionsToObject(isolate, context, ethereum_obj);
+  } else {
+    render_frame_->GetWebFrame()->AddMessageToConsole(
+        blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
+                                 "Brave Wallet will not insert window.ethereum "
+                                 "because it already exists!"));
   }
 }
 
@@ -729,6 +750,9 @@ void BraveWalletJSHandler::ExecuteScript(const std::string script) {
 
 void BraveWalletJSHandler::InjectInitScript() {
   ExecuteScript(*g_provider_script);
+  if (!allow_overwrite_window_ethereum_) {
+    ExecuteScript(kEthereumNonWritable);
+  }
 }
 
 void BraveWalletJSHandler::FireEvent(const std::string& event,
