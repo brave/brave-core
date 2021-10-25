@@ -23,7 +23,8 @@ import {
   TokenInfo,
   TransactionListInfo,
   BuySendSwapTypes,
-  WalletAccountType
+  WalletAccountType,
+  ImportWalletError
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
 import BackupWallet from './screens/backup-wallet'
@@ -250,7 +251,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [fromAmount, setFromAmount] = React.useState('')
   const [toAmount, setToAmount] = React.useState('')
   const [isRestoring, setIsRestoring] = React.useState<boolean>(false)
-  const [importError, setImportError] = React.useState<boolean>(false)
+  const [importAccountError, setImportAccountError] = React.useState<boolean>(false)
+  const [importWalletError, setImportWalletError] = React.useState<ImportWalletError>({ hasError: false })
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [customTolerance, setCustomTolerance] = React.useState('')
 
@@ -623,7 +625,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onImportWallet = (password: string) => {
     if (password !== 'password') {
-      setImportError(true)
+      setImportWalletError({ hasError: true })
     }
   }
 
@@ -643,8 +645,12 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     // Doesnt do anything in storybook
   }
 
-  const onSetImportError = (hasError: boolean) => {
-    setImportError(hasError)
+  const onSetImportAccountError = (hasError: boolean) => {
+    setImportAccountError(hasError)
+  }
+
+  const onSetImportWalletError = (hasError: boolean) => {
+    setImportWalletError({ hasError })
   }
 
   const onAddUserAsset = () => {
@@ -678,7 +684,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             {needsOnboarding ?
               (
                 <Onboarding
-                  hasImportError={importError}
+                  importError={importWalletError}
                   recoveryPhrase={recoveryPhrase}
                   onSubmit={completeWalletSetup}
                   onPasswordProvided={passwordProvided}
@@ -687,7 +693,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                   metaMaskWalletDetected={true}
                   onImportMetaMask={onImportWallet}
                   onImportCryptoWallets={onImportWallet}
-                  onSetImportError={onSetImportError}
+                  onSetImportError={onSetImportWalletError}
                 />
               ) : (
                 <>
@@ -748,8 +754,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onViewPrivateKey={onViewPrivateKey}
                               networkList={mockNetworks}
                               onImportAccountFromJson={onImportAccountFromJson}
-                              hasImportError={importError}
-                              onSetImportError={onSetImportError}
+                              hasImportError={importAccountError}
+                              onSetImportError={onSetImportAccountError}
                               onAddUserAsset={onAddUserAsset}
                               onSetUserAssetVisible={onSetUserAssetVisible}
                               onRemoveUserAsset={onRemoveUserAsset}

@@ -105,7 +105,7 @@ export const _Onboarding = () => {
     <WalletPageLayout>
       <WalletSubViewLayout>
         <Onboarding
-          hasImportError={false}
+          importError={{ hasError: false }}
           recoveryPhrase={recoveryPhrase}
           onSubmit={complete}
           onPasswordProvided={passwordProvided}

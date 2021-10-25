@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { WalletOnboardingSteps } from '../../../../constants/types'
+import {
+  WalletOnboardingSteps,
+  ImportWalletError
+} from '../../../../constants/types'
 import {
   StyledWrapper,
   Title,
@@ -26,7 +29,7 @@ export interface Props {
   password: string
   confirmedPassword: string
   useSamePassword: boolean
-  hasImportError: boolean
+  importError: ImportWalletError
   hasPasswordError: boolean
   hasConfirmPasswordError: boolean
   disabled: boolean
@@ -51,7 +54,7 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
     useSamePassword,
     hasPasswordError,
     hasConfirmPasswordError,
-    hasImportError,
+    importError,
     onboardingStep,
     disabled,
     needsNewPassword
@@ -95,8 +98,8 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
         <PasswordInput
           placeholder={isMetaMask ? getLocale('braveWalletImportMetaMaskInput') : getLocale('braveWalletImportBraveLegacyInput')}
           onChange={onImportPasswordChanged}
-          error={getLocale('braveWalletLockScreenError')}
-          hasError={hasImportError}
+          error={importError.errorMessage ? importError.errorMessage : ''}
+          hasError={importError.hasError}
           autoFocus={true}
         />
       </InputColumn>

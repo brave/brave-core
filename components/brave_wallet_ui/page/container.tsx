@@ -106,7 +106,8 @@ function Container (props: Props) {
     setupStillInProgress,
     isFetchingPriceHistory,
     privateKey,
-    importError,
+    importAccountError,
+    importWalletError,
     showAddModal,
     isCryptoWalletsInstalled,
     isMetaMaskInstalled,
@@ -391,8 +392,12 @@ function Container (props: Props) {
     props.walletPageActions.importAccountFromJson({ accountName, password, json })
   }
 
-  const onSetImportError = (hasError: boolean) => {
-    props.walletPageActions.setImportError(hasError)
+  const onSetImportAccountError = (hasError: boolean) => {
+    props.walletPageActions.setImportAccountError(hasError)
+  }
+
+  const onSetImportWalletError = (hasError: boolean) => {
+    props.walletPageActions.setImportWalletError({ hasError })
   }
 
   const onRemoveAccount = (address: string, hardware: boolean) => {
@@ -527,10 +532,10 @@ function Container (props: Props) {
               onShowRestore={onToggleShowRestore}
               braveLegacyWalletDetected={isCryptoWalletsInstalled}
               metaMaskWalletDetected={isMetaMaskInstalled}
-              hasImportError={importError}
+              importError={importWalletError}
+              onSetImportError={onSetImportWalletError}
               onImportCryptoWallets={onImportCryptoWallets}
               onImportMetaMask={onImportMetaMask}
-              onSetImportError={onSetImportError}
             />
           </Route>
           <Route path={WalletRoutes.Unlock} exact={true}>
@@ -589,8 +594,8 @@ function Container (props: Props) {
                 onDoneViewingPrivateKey={onDoneViewingPrivateKey}
                 onViewPrivateKey={onViewPrivateKey}
                 onImportAccountFromJson={onImportAccountFromJson}
-                onSetImportError={onSetImportError}
-                hasImportError={importError}
+                onSetImportError={onSetImportAccountError}
+                hasImportError={importAccountError}
                 onAddHardwareAccounts={onAddHardwareAccounts}
                 transactionSpotPrices={transactionSpotPrices}
                 userVisibleTokensInfo={userVisibleTokenOptions}

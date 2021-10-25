@@ -4,7 +4,10 @@ import {
   OnboardingCreatePassword,
   OnboardingImportMetaMaskOrLegacy
 } from '../../components/desktop'
-import { WalletOnboardingSteps } from '../../constants/types'
+import {
+  WalletOnboardingSteps,
+  ImportWalletError
+} from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
 
@@ -12,7 +15,7 @@ export interface Props {
   recoveryPhrase: string[]
   metaMaskWalletDetected: boolean
   braveLegacyWalletDetected: boolean
-  hasImportError: boolean
+  importError: ImportWalletError
   onSetImportError: (hasError: boolean) => void
   onPasswordProvided: (password: string) => void
   onImportMetaMask: (password: string, newPassword: string) => void
@@ -26,7 +29,7 @@ function Onboarding (props: Props) {
     recoveryPhrase,
     metaMaskWalletDetected,
     braveLegacyWalletDetected,
-    hasImportError,
+    importError,
     onSetImportError,
     onPasswordProvided,
     onSubmit,
@@ -43,14 +46,14 @@ function Onboarding (props: Props) {
   const [useSamePasswordVerified, setUseSamePasswordVerified] = React.useState<boolean>(false)
 
   React.useMemo(() => {
-    if (hasImportError) {
+    if (importError.hasError) {
       setPassword('')
       setConfirmedPassword('')
       setUseSamePassword(false)
       setNeedsNewPassword(false)
       setUseSamePasswordVerified(false)
     }
-  }, [hasImportError])
+  }, [importError])
 
   const nextStep = () => {
     if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && braveLegacyWalletDetected) {
@@ -85,7 +88,7 @@ function Onboarding (props: Props) {
   }
 
   const handleImportPasswordChanged = (value: string) => {
-    if (hasImportError) {
+    if (importError.hasError) {
       onSetImportError(false)
     }
     if (needsNewPassword || useSamePasswordVerified) {
@@ -222,7 +225,7 @@ function Onboarding (props: Props) {
             onConfirmPasswordChanged={handleConfirmPasswordChanged}
             disabled={isImportDisabled}
             onboardingStep={onboardingStep}
-            hasImportError={hasImportError}
+            importError={importError}
             onClickLost={startNormalOnboarding}
             hasPasswordError={checkPassword}
             hasConfirmPasswordError={checkConfirmedPassword}
