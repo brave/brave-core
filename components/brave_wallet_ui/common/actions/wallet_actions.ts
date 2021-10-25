@@ -101,3 +101,4 @@ export const setSitePermissions = createAction<SitePermissionsPayloadType>('setS
 export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
+export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')

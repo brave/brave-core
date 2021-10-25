@@ -91,7 +91,8 @@ function Container (props: Props) {
     isFetchingPortfolioPriceHistory,
     transactionSpotPrices,
     addUserAssetError,
-    defaultWallet
+    defaultWallet,
+    isMetaMaskInstalled
   } = props.wallet
 
   // Page Props
@@ -109,7 +110,6 @@ function Container (props: Props) {
     importError,
     showAddModal,
     isCryptoWalletsInstalled,
-    isMetaMaskInstalled,
     swapQuote,
     swapError
   } = props.page
@@ -602,6 +602,7 @@ function Container (props: Props) {
                 defaultWallet={defaultWallet}
                 onOpenWalletSettings={onOpenWalletSettings}
                 onShowAddModal={onShowAddModal}
+                isMetaMaskInstalled={isMetaMaskInstalled}
               />
             }
           </Route>
