@@ -60,9 +60,9 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsEnabled) {
 
   // MetaMask remains MetaMask
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::Metamask));
+                         static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::Metamask,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultWallet)));
 
@@ -98,9 +98,9 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsDisabled) {
 
   // MetaMask remains MetaMask
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::Metamask));
+                         static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::Metamask,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
                 GetPrefs()->GetInteger(kDefaultWallet)));
 

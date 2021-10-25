@@ -722,8 +722,8 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultWallet) {
   SetDefaultWallet(mojom::DefaultWallet::None);
   EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::None);
 
-  SetDefaultWallet(mojom::DefaultWallet::Metamask);
-  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Metamask);
+  SetDefaultWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
+  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::BraveWalletPreferExtension);
 
   SetDefaultWallet(mojom::DefaultWallet::Ask);
   EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Ask);

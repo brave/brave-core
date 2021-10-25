@@ -192,7 +192,7 @@ BraveWalletGetWeb3ProviderFunction::Run() {
   } else if (default_wallet ==
              ::brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     extension_id = ethereum_remote_client_extension_id;
-  } else if (default_wallet == ::brave_wallet::mojom::DefaultWallet::Metamask) {
+  } else if (default_wallet == ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension) {
     extension_id = metamask_extension_id;
   }
   return RespondNow(OneArgument(base::Value(extension_id)));
@@ -223,7 +223,7 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
   if (registry->ready_extensions().Contains(metamask_extension_id)) {
     list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK),
-        ::brave_wallet::mojom::DefaultWallet::Metamask));
+        ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
   }
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),

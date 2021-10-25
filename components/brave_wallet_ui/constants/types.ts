@@ -721,7 +721,7 @@ export enum DefaultWallet {
   Ask,
   None,
   CryptoWallets,
-  Metamask,
+  Extension,
   BraveWallet
 }
 

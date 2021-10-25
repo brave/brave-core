@@ -116,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,
   WaitForBraveExtensionAdded();
   AddFakeMetaMaskExtension(false);
   // Should auto select MetaMask
-  ASSERT_EQ(GetDefaultWallet(), brave_wallet::mojom::DefaultWallet::Metamask);
+  ASSERT_EQ(GetDefaultWallet(), brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletAPIBrowserTest,

@@ -111,7 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderMetaMask) {
   brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::Metamask);
+                                 brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
