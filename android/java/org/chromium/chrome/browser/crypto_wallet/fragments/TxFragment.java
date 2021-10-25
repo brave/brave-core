@@ -88,11 +88,11 @@ public class TxFragment extends Fragment {
 
                 EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                 gasFeeEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                        Utils.fromHexWeiToGWEI(mTxInfo.txData.baseData.gasPrice)));
+                        Utils.fromHexWei(mTxInfo.txData.baseData.gasPrice, 9)));
 
                 EditText gasLimitEdit = dialog.findViewById(R.id.gas_limit_edit);
                 gasLimitEdit.setText(String.format(Locale.getDefault(), "%.0f",
-                        Utils.fromHexWeiToGWEI(mTxInfo.txData.baseData.gasLimit)));
+                        Utils.fromHexGWeiToGWEI(mTxInfo.txData.baseData.gasLimit)));
 
                 Button cancel = dialog.findViewById(R.id.cancel);
                 cancel.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +113,7 @@ public class TxFragment extends Fragment {
                             return;
                         }
                         mTxInfo.txData.baseData.gasPrice =
-                                Utils.toHexWeiFromGWEI(gasFeeEdit.getText().toString());
+                                Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
                         mTxInfo.txData.baseData.gasLimit =
                                 Utils.toHexWeiFromGWEI(gasLimitEdit.getText().toString());
                         ethTxController.setGasPriceAndLimitForUnapprovedTransaction(mTxInfo.id,
@@ -135,8 +135,10 @@ public class TxFragment extends Fragment {
 
     private void setupView(View view) {
         TextView gasFeeAmount = view.findViewById(R.id.gas_fee_amount);
-        final double totalGas = Utils.fromHexWei(Utils.multiplyHexBN(
-                mTxInfo.txData.baseData.gasLimit, mTxInfo.txData.baseData.gasPrice));
+        final double totalGas =
+                Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
+                                         mTxInfo.txData.baseData.gasPrice),
+                        18);
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
                         String.format(Locale.getDefault(), "%.8f", totalGas)));
@@ -145,10 +147,10 @@ public class TxFragment extends Fragment {
             valueAsset = mTxInfo.txArgs[1];
         }
         TextView totalAmount = view.findViewById(R.id.total_amount);
-        totalAmount.setText(
-                String.format(getResources().getString(R.string.crypto_wallet_total_amount),
-                        String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset)),
-                        mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
+        totalAmount.setText(String.format(
+                getResources().getString(R.string.crypto_wallet_total_amount),
+                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, 18)),
+                mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
         AssetRatioController assetRatioController = getAssetRatioController();
         if (assetRatioController != null) {
             String[] assets = {"eth"};

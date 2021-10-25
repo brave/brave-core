@@ -2395,6 +2395,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PRIVATE_KEY_WARNING_TEXT" desc="Wallet account private key warning text">
       Warning: Never disclose this key. Anyone with private key can steal any assets held in your account.
     </message>
+    <message name="IDS_ACTIVATE_ERC20" desc="A button to activate an ERC20 token">
+      Activate <ph name="TOKEN">%1$s<ex>BAT</ex></ph>
+    </message>
     </messages>
   </release>
 </grit>

@@ -17,8 +17,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -42,6 +47,7 @@ import org.chromium.ui.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.NumberFormatException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -52,6 +58,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -317,7 +325,16 @@ public class Utils {
         return networkConst;
     }
 
-    public static double fromHexWei(String number) {
+    private static String getDecimalsDepNumber(int decimals) {
+        String strDecimals = "1";
+        for (int i = 0; i < decimals; i++) {
+            strDecimals += "0";
+        }
+
+        return strDecimals;
+    }
+
+    public static double fromHexWei(String number, int decimals) {
         if (number.equals("0x0")) {
             return 0;
         }
@@ -328,7 +345,7 @@ public class Utils {
             return 0;
         }
         BigInteger bigNumber = new BigInteger(number, 16);
-        BigInteger divider = new BigInteger("1000000000000000000");
+        BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
         BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
         String resStr = bDecimalRes.toPlainString();
@@ -336,7 +353,7 @@ public class Utils {
         return Double.valueOf(resStr);
     }
 
-    public static double fromHexWeiToGWEI(String number) {
+    public static double fromHexGWeiToGWEI(String number) {
         try {
             if (number.equals("0x0")) {
                 return 0;
@@ -357,12 +374,12 @@ public class Utils {
         return 0;
     }
 
-    public static String toWei(String number) {
+    public static String toWei(String number, int decimals) {
         if (number.isEmpty()) {
             return "0";
         }
         int dotPosition = number.indexOf(".");
-        String multiplier = "1000000000000000000";
+        String multiplier = getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
             multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
@@ -379,12 +396,12 @@ public class Utils {
         return "0";
     }
 
-    public static double fromWei(String number) {
+    public static double fromWei(String number, int decimals) {
         if (number == null || number.isEmpty()) {
             return 0;
         }
         BigInteger bigNumber = new BigInteger(number);
-        BigInteger divider = new BigInteger("1000000000000000000");
+        BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
         BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
         String resStr = bDecimalRes.toPlainString();
@@ -392,12 +409,12 @@ public class Utils {
         return Double.valueOf(resStr);
     }
 
-    public static String toHexWei(String number) {
+    public static String toHexWei(String number, int decimals) {
         if (number.isEmpty()) {
             return "0x0";
         }
         int dotPosition = number.indexOf(".");
-        String multiplier = "1000000000000000000";
+        String multiplier = getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
             multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
@@ -523,6 +540,45 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static void setBitmapResource(ExecutorService executor, Handler handler, Context context,
+            String iconPath, int iconId, ImageView iconImg, TextView textView) {
+        if (iconPath == null) {
+            if (iconImg != null) {
+                iconImg.setImageResource(iconId);
+            } else if (textView != null) {
+                textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        iconId, 0, R.drawable.ic_carat_down, 0);
+            }
+
+            return;
+        }
+        executor.execute(() -> {
+            Uri logoFileUri = Uri.parse(iconPath);
+            int resizeFactor = 110;
+            if (textView != null) {
+                resizeFactor = 70;
+            }
+            try (InputStream inputStream =
+                            context.getContentResolver().openInputStream(logoFileUri)) {
+                final Bitmap bitmap =
+                        Utils.resizeBitmap(BitmapFactory.decodeStream(inputStream), resizeFactor);
+                handler.post(() -> {
+                    if (iconImg != null) {
+                        iconImg.setImageBitmap(bitmap);
+                    } else if (textView != null) {
+                        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                new BitmapDrawable(context.getResources(), bitmap), null,
+                                context.getResources().getDrawable(R.drawable.ic_carat_down), null);
+                    }
+                });
+            } catch (IOException exc) {
+                org.chromium.base.Log.e("Utils", exc.getMessage());
+            } catch (IllegalArgumentException exc) {
+                org.chromium.base.Log.e("Utils", exc.getMessage());
+            }
+        });
     }
 
     public static Bitmap resizeBitmap(Bitmap source, int maxLength) {
