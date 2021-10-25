@@ -62,8 +62,9 @@ bool IsSubset(const KeywordList& keywords_lhs,
   KeywordList sorted_keywords_rhs = keywords_rhs;
   std::sort(sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
 
-  return std::includes(sorted_keywords_lhs.begin(), sorted_keywords_lhs.end(),
-                       sorted_keywords_rhs.begin(), sorted_keywords_rhs.end());
+  return std::includes(sorted_keywords_lhs.cbegin(), sorted_keywords_lhs.cend(),
+                       sorted_keywords_rhs.cbegin(),
+                       sorted_keywords_rhs.cend());
 }
 
 }  // namespace

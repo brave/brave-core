@@ -56,20 +56,20 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
 
   const SegmentList interest_segments = GetTopSegments(
       user_model.interest_segments, kTopInterestSegmentsCount, parent_only);
-  segments.insert(segments.end(), interest_segments.begin(),
-                  interest_segments.end());
+  segments.insert(segments.end(), interest_segments.cbegin(),
+                  interest_segments.cend());
 
   const SegmentList latent_interest_segments =
       GetTopSegments(user_model.latent_interest_segments,
                      kTopLatentInterestSegmentsCount, parent_only);
-  segments.insert(segments.end(), latent_interest_segments.begin(),
-                  latent_interest_segments.end());
+  segments.insert(segments.end(), latent_interest_segments.cbegin(),
+                  latent_interest_segments.cend());
 
   const SegmentList purchase_intent_segments =
       GetTopSegments(user_model.purchase_intent_segments,
                      kTopPurchaseIntentSegmentsCount, parent_only);
-  segments.insert(segments.end(), purchase_intent_segments.begin(),
-                  purchase_intent_segments.end());
+  segments.insert(segments.end(), purchase_intent_segments.cbegin(),
+                  purchase_intent_segments.cend());
 
   return segments;
 }

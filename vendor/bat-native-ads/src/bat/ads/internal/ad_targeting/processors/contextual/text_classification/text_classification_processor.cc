@@ -22,7 +22,7 @@ std::string GetTopSegmentFromPageProbabilities(
   DCHECK(!probabilities.empty());
 
   const auto iter =
-      std::max_element(probabilities.begin(), probabilities.end(),
+      std::max_element(probabilities.cbegin(), probabilities.cend(),
                        [](const SegmentProbabilityPair& lhs,
                           const SegmentProbabilityPair& rhs) -> bool {
                          return lhs.second < rhs.second;

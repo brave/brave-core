@@ -115,7 +115,7 @@ bool CatalogIssuersInfo::PublicKeyExists(const std::string& public_key) const {
   }
 
   const auto iter =
-      std::find_if(issuers.begin(), issuers.end(),
+      std::find_if(issuers.cbegin(), issuers.cend(),
                    [&public_key](const CatalogIssuerInfo& issuer) {
                      return issuer.public_key == public_key;
                    });
@@ -129,7 +129,7 @@ bool CatalogIssuersInfo::PublicKeyExists(const std::string& public_key) const {
 
 absl::optional<double> CatalogIssuersInfo::GetEstimatedRedemptionValue(
     const std::string& public_key) const {
-  const auto iter = std::find_if(issuers.begin(), issuers.end(),
+  const auto iter = std::find_if(issuers.cbegin(), issuers.cend(),
                                  [&public_key](const auto& issuer) {
                                    return issuer.public_key == public_key;
                                  });

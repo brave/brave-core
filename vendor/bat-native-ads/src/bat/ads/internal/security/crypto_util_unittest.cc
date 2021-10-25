@@ -199,7 +199,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {
   KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
   std::vector<uint8_t> nonce = GenerateRandom192BitNonce();
   const std::string message = "The quick brown fox jumps over the lazy dog";
-  std::vector<uint8_t> plaintext(message.begin(), message.end());
+  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
 
   // Act
   const std::vector<uint8_t> ciphertext = security::Encrypt(

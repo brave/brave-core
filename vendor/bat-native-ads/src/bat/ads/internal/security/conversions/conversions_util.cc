@@ -53,7 +53,7 @@ absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
   }
 
   // Protocol requires at least 2 trailing zero-padding bytes
-  std::vector<uint8_t> plaintext(message.begin(), message.end());
+  std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
   plaintext.insert(plaintext.end(), kVacCipherTextLength - plaintext.size(), 0);
   DCHECK_EQ(kVacCipherTextLength, plaintext.size());
 
@@ -75,7 +75,8 @@ absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
   // The first 16 bytes of the resulting ciphertext is left as padding by the
   // C API and should be removed before sending out extraneously.
   const std::vector<uint8_t> ciphertext(
-      padded_ciphertext.begin() + kCryptoBoxZeroBytes, padded_ciphertext.end());
+      padded_ciphertext.cbegin() + kCryptoBoxZeroBytes,
+      padded_ciphertext.cend());
 
   VerifiableConversionEnvelopeInfo envelope;
   envelope.algorithm = kAlgorithm;

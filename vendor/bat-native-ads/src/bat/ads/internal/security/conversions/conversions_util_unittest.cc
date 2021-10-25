@@ -39,7 +39,7 @@ absl::optional<std::string> EnvelopeOpen(
       Base64ToBytes(envelope.ephemeral_public_key);
 
   // API requires 16 leading zero-padding bytes
-  ciphertext.insert(ciphertext.begin(), kCryptoBoxZeroBytes, 0);
+  ciphertext.insert(ciphertext.cbegin(), kCryptoBoxZeroBytes, 0);
 
   std::vector<uint8_t> plaintext =
       Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);

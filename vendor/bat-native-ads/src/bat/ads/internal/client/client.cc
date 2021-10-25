@@ -342,8 +342,8 @@ bool Client::ToggleSaveAd(const std::string& creative_instance_id,
 
   // Update this ad in the saved ads list
   auto it_ad = std::find_if(
-      client_->ad_preferences.saved_ads.begin(),
-      client_->ad_preferences.saved_ads.end(),
+      client_->ad_preferences.saved_ads.cbegin(),
+      client_->ad_preferences.saved_ads.cend(),
       [&creative_instance_id](const SavedAdInfo& saved_ad) {
         return saved_ad.creative_instance_id == creative_instance_id;
       });
@@ -396,8 +396,8 @@ bool Client::ToggleFlagAd(const std::string& creative_instance_id,
 
   // Update this ad in the flagged ads list
   auto it_ad = std::find_if(
-      client_->ad_preferences.flagged_ads.begin(),
-      client_->ad_preferences.flagged_ads.end(),
+      client_->ad_preferences.flagged_ads.cbegin(),
+      client_->ad_preferences.flagged_ads.cend(),
       [&creative_instance_id](const FlaggedAdInfo& flagged_ad) {
         return flagged_ad.creative_instance_id == creative_instance_id;
       });

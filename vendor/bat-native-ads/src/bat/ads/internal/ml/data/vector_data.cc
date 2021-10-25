@@ -37,7 +37,7 @@ VectorData::VectorData(const int dimension_count,
     : Data(DataType::kVector) {
   dimension_count_ = dimension_count;
   data_.reserve(dimension_count_);
-  for (auto iter = data.begin(); iter != data.end(); iter++) {
+  for (auto iter = data.cbegin(); iter != data.cend(); iter++) {
     data_.push_back(SparseVectorElement(iter->first, iter->second));
   }
 }
@@ -81,7 +81,7 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
 
 void VectorData::Normalize() {
   const double vector_length = sqrt(std::accumulate(
-      data_.begin(), data_.end(), 0.0,
+      data_.cbegin(), data_.cend(), 0.0,
       [](const double& lhs, const SparseVectorElement& rhs) -> double {
         return lhs + rhs.second * rhs.second;
       }));

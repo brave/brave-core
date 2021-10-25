@@ -101,7 +101,7 @@ std::string ExtractConversionIdFromText(
     const ConversionIdPatternInfo conversion_id_pattern_info = iter->second;
     if (conversion_id_pattern_info.search_in == kSearchInUrl) {
       const auto url_iter = std::find_if(
-          redirect_chain.begin(), redirect_chain.end(),
+          redirect_chain.cbegin(), redirect_chain.cend(),
           [=](const std::string& url) {
             return DoesUrlMatchPattern(url, conversion_url_pattern);
           });

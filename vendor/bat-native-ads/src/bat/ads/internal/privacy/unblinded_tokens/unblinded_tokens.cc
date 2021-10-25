@@ -109,7 +109,7 @@ void UnblindedTokens::AddTokens(const UnblindedTokenList& unblinded_tokens) {
 }
 
 bool UnblindedTokens::RemoveToken(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
+  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
                            [&unblinded_token](const UnblindedTokenInfo& value) {
                              return unblinded_token == value;
                            });
@@ -127,7 +127,7 @@ void UnblindedTokens::RemoveTokens(const UnblindedTokenList& unblinded_tokens) {
   const auto iter = std::remove_if(
       unblinded_tokens_.begin(), unblinded_tokens_.end(),
       [&unblinded_tokens](const UnblindedTokenInfo& unblinded_token) {
-        return std::find(unblinded_tokens.begin(), unblinded_tokens.end(),
+        return std::find(unblinded_tokens.cbegin(), unblinded_tokens.cend(),
                          unblinded_token) != unblinded_tokens.end();
       });
 
@@ -139,7 +139,7 @@ void UnblindedTokens::RemoveAllTokens() {
 }
 
 bool UnblindedTokens::TokenExists(const UnblindedTokenInfo& unblinded_token) {
-  auto iter = std::find_if(unblinded_tokens_.begin(), unblinded_tokens_.end(),
+  auto iter = std::find_if(unblinded_tokens_.cbegin(), unblinded_tokens_.cend(),
                            [&unblinded_token](const UnblindedTokenInfo& value) {
                              return unblinded_token == value;
                            });

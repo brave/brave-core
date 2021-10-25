@@ -34,7 +34,7 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   result.reserve((elements.size() + chunk_size - 1) / chunk_size);
 
   auto begin = elements.begin();
-  const auto end = elements.end();
+  const auto end = elements.cend();
   while (begin != end) {
     const auto next =
         std::distance(begin, end) >= chunk_size ? begin + chunk_size : end;
@@ -50,7 +50,7 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
 template <typename T>
 bool CompareMaps(const T& lhs, const T& rhs) {
   return lhs.size() == rhs.size() &&
-         std::equal(lhs.begin(), lhs.end(), rhs.begin());
+         std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
 }
 
 // Checks that |c1| and |c2| contain the same number of elements and each
