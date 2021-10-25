@@ -76,6 +76,12 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
   SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   UpdateButtonState();
+
+  // Views resulting in focusable nodes later on in the accessibility tree need
+  // to have an accessible name for screen readers to see what they are about.
+  // TODO(simonhong): Re-visit this name.
+  SetAccessibleName(
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
 }
 
 BraveVPNButton::~BraveVPNButton() = default;
