@@ -17,74 +17,76 @@ import '../people_page/sync_controls.js';
 import './brave_sync_configure.js';
 import './brave_sync_setup.js';
 
-import {assert} from 'chrome://resources/js/assert.m.js';
-import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
+import { assert } from 'chrome://resources/js/assert.m.js';
+import { html, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import { I18nMixin } from 'chrome://resources/js/i18n_mixin.js';
 
-import {Route, RouteObserverBehavior, Router} from '../router.js';
-import {SyncBrowserProxyImpl, StatusAction} from '../people_page/sync_browser_proxy.js';
+import { Route, RouteObserverMixin, Router } from '../router.js';
+import { SyncBrowserProxyImpl, StatusAction } from '../people_page/sync_browser_proxy.js';
 
-/**
-* @fileoverview
-* 'settings-sync-subpage' is the settings page content
-*/
-Polymer({
-  is: 'settings-brave-sync-subpage',
+const SettingBraveSyncSubpageBase = I18nMixin(RouteObserverMixin(PolymerElement))
 
-  _template: html`{__html_template__}`,
+class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
+  static get is() {
+    return 'settings-brave-sync-subpage'
+  }
 
-  behaviors: [
-    RouteObserverBehavior,
-  ],
+  static get template() {
+    return html`{__html_template__}`
+  }
 
-  properties: {
-    /**
-    * Current page status
-    * 'configure' | 'setup' | 'spinner'
-    * @private
-    */
-    pageStatus_: {
-      type: String,
-      value: 'configure',
-    },
+  static get properties() {
+    return {
+      /**
+       * Current page status
+       * 'configure' | 'setup' | 'spinner'
+       * @private
+       */
+      pageStatus_: {
+        type: String,
+        value: 'configure',
+      },
 
-    /**
-    * The current sync preferences, supplied by SyncBrowserProxy.
-    * @type {SyncPrefs|undefined}
-    */
-    syncPrefs: {
-      type: Object,
-    },
+      /**
+      * The current sync preferences, supplied by SyncBrowserProxy.
+      * @type {SyncPrefs|undefined}
+      */
+      syncPrefs: {
+        type: Object,
+      },
 
-    /** @type {SyncStatus} */
-    syncStatus: {
-      type: Object,
-    },
+      /** @type {SyncStatus} */
+      syncStatus: {
+        type: Object,
+      },
 
-    /** @private */
-    syncDisabledByAdmin_: {
-      type: Boolean,
-      value: false,
-      computed: 'computeSyncDisabledByAdmin_(syncStatus.managed)',
-    },
+      /** @private */
+      syncDisabledByAdmin_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeSyncDisabledByAdmin_(syncStatus.managed)',
+      },
 
-    /** @private */
-    syncSectionDisabled_: {
-      type: Boolean,
-      value: false,
-      computed: 'computeSyncSectionDisabled_(' +
+      /** @private */
+      syncSectionDisabled_: {
+        type: Boolean,
+        value: false,
+        computed: 'computeSyncSectionDisabled_(' +
           'syncStatus.disabled, ' +
           'syncStatus.hasError, syncStatus.statusAction, ' +
           'syncPrefs.trustedVaultKeysRequired)',
-    },
-  },
+      },
+    }
+  }
 
-  observers: [
-    'updatePageStatus_(syncStatus.*)'
-  ],
+  static get observers() {
+    return [
+      'updatePageStatus_(syncStatus.*)'
+    ]
+  }
 
   /** @private {?SyncBrowserProxy} */
-  browserProxy_: null,
+  browserProxy_ = SyncBrowserProxyImpl.getInstance()
 
   /**
   * The beforeunload callback is used to show the 'Leave site' dialog. This
@@ -96,7 +98,7 @@ Polymer({
   *
   * @private {?Function}
   */
-  beforeunloadCallback_: null,
+  beforeunloadCallback_ = null
 
   /**
   * The unload callback is used to cancel the sync setup when the user hits
@@ -107,155 +109,155 @@ Polymer({
   *
   * @private {?Function}
   */
-  unloadCallback_: null,
+  unloadCallback_ = null
 
   /**
   * Whether the user completed setup successfully.
   * @private {boolean}
   */
-  setupSuccessful_: false,
+  setupSuccessful_ = false
 
-  /** @override */
-  created: function() {
-    this.browserProxy_ = SyncBrowserProxyImpl.getInstance();
-  },
-
-  /** @override */
-  attached: function() {
-    const router = Router.getInstance();
+  attached() {
+    super.attached()
+    const router = Router.getInstance()
     if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
-      this.onNavigateToPage_();
+      this.onNavigateToPage_()
     }
-  },
+  }
 
   /** @override */
-  detached: function() {
-    const router = Router.getInstance();
+  detached() {
+    const router = Router.getInstance()
     if (router.getRoutes().BRAVE_SYNC_SETUP.contains(router.getCurrentRoute())) {
-      this.onNavigateAwayFromPage_();
+      this.onNavigateAwayFromPage_()
     }
 
     if (this.beforeunloadCallback_) {
-      window.removeEventListener('beforeunload', this.beforeunloadCallback_);
-      this.beforeunloadCallback_ = null;
+      window.removeEventListener('beforeunload', this.beforeunloadCallback_)
+      this.beforeunloadCallback_ = null
     }
     if (this.unloadCallback_) {
-      window.removeEventListener('unload', this.unloadCallback_);
-      this.unloadCallback_ = null;
+      window.removeEventListener('unload', this.unloadCallback_)
+      this.unloadCallback_ = null
     }
-  },
 
-  updatePageStatus_: function () {
+    super.detached()
+  }
+
+  updatePageStatus_(newValue, oldValue) {
     const isFirstSetup = this.syncStatus && this.syncStatus.firstSetupInProgress
     this.pageStatus_ = isFirstSetup ? 'setup' : 'configure'
-  },
+  }
 
   /**
   * @return {boolean}
   * @private
   */
-  computeSyncSectionDisabled_: function() {
+  computeSyncSectionDisabled_() {
     return this.syncStatus !== undefined &&
-        (!!this.syncStatus.disabled ||
+      (!!this.syncStatus.disabled ||
         (!!this.syncStatus.hasError &&
           this.syncStatus.statusAction !==
-              StatusAction.ENTER_PASSPHRASE &&
+          StatusAction.ENTER_PASSPHRASE &&
           this.syncStatus.statusAction !==
-              StatusAction.RETRIEVE_TRUSTED_VAULT_KEYS));
-  },
+          StatusAction.RETRIEVE_TRUSTED_VAULT_KEYS))
+  }
 
   /**
   * @return {boolean}
   * @private
   */
   computeSyncDisabledByAdmin_() {
-    return this.syncStatus != undefined && !!this.syncStatus.managed;
-  },
+    return this.syncStatus != undefined && !!this.syncStatus.managed
+  }
 
   /** @protected */
-  currentRouteChanged: function() {
+  currentRouteChanged() {
     const router = Router.getInstance();
     if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
-      this.onNavigateToPage_();
-      return;
+      this.onNavigateToPage_()
+      return
     }
 
     if (router.getRoutes().BRAVE_SYNC_SETUP.contains(router.getCurrentRoute())) {
-      return;
+      return
     }
 
-    this.onNavigateAwayFromPage_();
-  },
+    this.onNavigateAwayFromPage_()
+  }
 
   /**
   * @param {!PageStatus} expectedPageStatus
   * @return {boolean}
   * @private
   */
-  isStatus_: function(expectedPageStatus) {
+  isStatus_(expectedPageStatus) {
     return expectedPageStatus == this.pageStatus_;
-  },
+  }
 
   /** @private */
-  onNavigateToPage_: function() {
-    const router = Router.getInstance();
-    assert(router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP);
+  onNavigateToPage_() {
+    const router = Router.getInstance()
+    assert(router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP)
     if (this.beforeunloadCallback_) {
-      return;
+      return
     }
 
     // Triggers push of prefs to our handler
-    this.browserProxy_.didNavigateToSyncPage();
+    this.browserProxy_.didNavigateToSyncPage()
 
     this.beforeunloadCallback_ = event => {
       // When the user tries to leave the sync setup, show the 'Leave site'
       // dialog.
       if (this.syncStatus && this.syncStatus.firstSetupInProgress) {
-        event.preventDefault();
-        event.returnValue = '';
+        event.preventDefault()
+        event.returnValue = ''
 
         chrome.metricsPrivate.recordUserAction(
-            'Signin_Signin_AbortAdvancedSyncSettings');
+          'Signin_Signin_AbortAdvancedSyncSettings')
       }
     };
-    window.addEventListener('beforeunload', this.beforeunloadCallback_);
+    window.addEventListener('beforeunload', this.beforeunloadCallback_)
 
-    this.unloadCallback_ = this.onNavigateAwayFromPage_.bind(this);
-    window.addEventListener('unload', this.unloadCallback_);
-  },
+    this.unloadCallback_ = this.onNavigateAwayFromPage_.bind(this)
+    window.addEventListener('unload', this.unloadCallback_)
+  }
 
   /** @private */
-  onNavigateAwayFromPage_: function() {
+  onNavigateAwayFromPage_() {
     if (!this.beforeunloadCallback_) {
-      return;
+      return
     }
 
-    this.browserProxy_.didNavigateAwayFromSyncPage(!this.setupSuccessful_);
+    this.browserProxy_.didNavigateAwayFromSyncPage(!this.setupSuccessful_)
 
     // Reset state as this component could actually be kept around even though
     // it is hidden.
     this.setupSuccessful_ = false
 
-    window.removeEventListener('beforeunload', this.beforeunloadCallback_);
-    this.beforeunloadCallback_ = null;
+    window.removeEventListener('beforeunload', this.beforeunloadCallback_)
+    this.beforeunloadCallback_ = null
 
     if (this.unloadCallback_) {
-      window.removeEventListener('unload', this.unloadCallback_);
-      this.unloadCallback_ = null;
+      window.removeEventListener('unload', this.unloadCallback_)
+      this.unloadCallback_ = null
     }
-  },
+  }
 
   /**
   * Called when setup is complete and sync code is set
   * @private
   */
-  onSetupSuccess_: function() {
+  onSetupSuccess_() {
     this.setupSuccessful_ = true
     // This navigation causes the firstSetupInProgress flag to be marked as false
     // via `didNavigateAwayFromSyncPage`.
-    const router = Router.getInstance();
+    const router = Router.getInstance()
     if (router.getCurrentRoute() == router.getRoutes().BRAVE_SYNC_SETUP) {
-      router.navigateTo(router.getRoutes().BRAVE_SYNC);
+      router.navigateTo(router.getRoutes().BRAVE_SYNC)
     }
-  },
-});
+  }
+}
+
+customElements.define(
+  SettingBraveSyncSubpage.is, SettingBraveSyncSubpage)
