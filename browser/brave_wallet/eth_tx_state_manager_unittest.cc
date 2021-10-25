@@ -436,8 +436,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EthTxStateManager::TxMeta meta(std::move(tx));
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &meta.confirmed_time));
-  meta.submitted_time = meta.confirmed_time - base::TimeDelta::FromSeconds(3);
-  meta.created_time = meta.confirmed_time - base::TimeDelta::FromMinutes(1);
+  meta.submitted_time = meta.confirmed_time - base::Seconds(3);
+  meta.created_time = meta.confirmed_time - base::Minutes(1);
 
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);

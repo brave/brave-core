@@ -58,7 +58,7 @@ TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfUrlIsMissingHTTPOrHTTPSScheme) {
 
   // Act
   ad_transfer_->MaybeTransferAd(1, {"brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetAdTransferCount());
@@ -75,7 +75,7 @@ TEST_F(BatAdsAdTransferTest,
 
   // Act
   ad_transfer_->MaybeTransferAd(1, {"brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(0, GetAdTransferCount());
@@ -93,7 +93,7 @@ TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 
   // Act
   ad_transfer_->MaybeTransferAd(1, {"https://brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(1, GetAdTransferCount());
@@ -117,7 +117,7 @@ TEST_F(BatAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
 
   // Act
   ad_transfer_->MaybeTransferAd(2, {"https://brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(1, GetAdTransferCount());
@@ -134,7 +134,7 @@ TEST_F(BatAdsAdTransferTest,
 
   // Act
   ad_transfer_->MaybeTransferAd(1, {"https://brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(1, GetAdTransferCount());
@@ -150,7 +150,7 @@ TEST_F(BatAdsAdTransferTest, FailToTransferAdIfNotVisible) {
 
   // Act
   ad_transfer_->MaybeTransferAd(1, {"https://brave.com"});
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(-1, GetAdTransferCount());
@@ -171,7 +171,7 @@ TEST_F(BatAdsAdTransferTest,
   TabManager::Get()->OnUpdated(1, "https://foobar.com", /* is_visible */ true,
                                /* is_incognito */ false);
 
-  FastForwardClockBy(base::TimeDelta::FromSeconds(10));
+  FastForwardClockBy(base::Seconds(10));
 
   // Assert
   EXPECT_EQ(-1, GetAdTransferCount());

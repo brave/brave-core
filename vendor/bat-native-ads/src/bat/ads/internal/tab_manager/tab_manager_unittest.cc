@@ -76,8 +76,7 @@ TEST_F(BatAdsTabManagerTest, OpenedNewTabUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -97,8 +96,7 @@ TEST_F(BatAdsTabManagerTest, FocusedOnExistingTabUserActivityEvent) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -128,8 +126,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingIncognitoTab) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   const UserActivityEventList expected_events = {};
 
@@ -161,8 +158,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenUpdatingOccludedTab) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   const UserActivityEventList expected_events = {};
 
@@ -197,8 +193,7 @@ TEST_F(BatAdsTabManagerTest,
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -236,8 +231,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenUpdatingExistingTab) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -272,8 +266,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenClosingTab) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -307,8 +300,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenPlayingMedia) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -344,8 +336,7 @@ TEST_F(BatAdsTabManagerTest, DoNotRecordEventWhenAlreadyPlayingMedia) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
@@ -381,8 +372,7 @@ TEST_F(BatAdsTabManagerTest, RecordEventWhenStoppedPlayingMedia) {
 
   // Assert
   const UserActivityEventList events =
-      UserActivity::Get()->GetHistoryForTimeWindow(
-          base::TimeDelta::FromHours(1));
+      UserActivity::Get()->GetHistoryForTimeWindow(base::Hours(1));
 
   UserActivityEventList expected_events;
   UserActivityEventInfo event;

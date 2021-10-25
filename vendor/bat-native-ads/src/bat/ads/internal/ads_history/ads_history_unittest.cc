@@ -31,7 +31,7 @@ class BatAdsAdsHistoryTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClock(base::TimeDelta::FromDays(history::kForDays));
+    AdvanceClock(base::Days(history::kForDays));
   }
 };
 
@@ -161,7 +161,7 @@ TEST_F(BatAdsAdsHistoryTest, PurgedHistoryEntriesOnOrAfter30Days) {
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);
 
-  AdvanceClock(base::TimeDelta::FromDays(30) + base::TimeDelta::FromSeconds(1));
+  AdvanceClock(base::Days(30) + base::Seconds(1));
 
   // Act
   PromotedContentAdInfo promoted_content_ad;
@@ -177,7 +177,7 @@ TEST_F(BatAdsAdsHistoryTest, DoNotPurgedHistoryEntriesBefore30Days) {
   NewTabPageAdInfo new_tab_page_ad;
   history::AddNewTabPageAd(new_tab_page_ad, ConfirmationType::kViewed);
 
-  AdvanceClock(base::TimeDelta::FromDays(30));
+  AdvanceClock(base::Days(30));
 
   // Act
   PromotedContentAdInfo promoted_content_ad;

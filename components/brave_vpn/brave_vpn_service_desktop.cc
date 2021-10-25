@@ -77,8 +77,8 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
 
   constexpr int kRegionDataUpdateIntervalInHours = 5;
   region_data_update_timer_.Start(
-      FROM_HERE, base::TimeDelta::FromHours(kRegionDataUpdateIntervalInHours),
-      this, &BraveVpnServiceDesktop::FetchRegionData);
+      FROM_HERE, base::Hours(kRegionDataUpdateIntervalInHours), this,
+      &BraveVpnServiceDesktop::FetchRegionData);
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;

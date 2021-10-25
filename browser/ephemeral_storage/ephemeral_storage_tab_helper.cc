@@ -144,7 +144,7 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
             &EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive,
             weak_factory_.GetWeakPtr(), tld_ephemeral_lifetime_->key()),
         g_storage_keep_alive_for_testing.is_min()
-            ? base::TimeDelta::FromSeconds(
+            ? base::Seconds(
                   net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds
                       .Get())
             : g_storage_keep_alive_for_testing);

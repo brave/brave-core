@@ -53,7 +53,7 @@ bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
   }
 
   const base::TimeDelta time_constraint =
-      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour / ads_per_hour);
+      base::Seconds(base::Time::kSecondsPerHour / ads_per_hour);
 
   return DoesHistoryRespectCapForRollingTimeConstraint(
       history, time_constraint, kMinimumWaitTimeFrequencyCap);

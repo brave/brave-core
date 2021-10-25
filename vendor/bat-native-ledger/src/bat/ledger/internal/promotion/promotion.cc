@@ -496,9 +496,9 @@ void Promotion::CredentialsProcessed(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
   if (result == type::Result::RETRY) {
-    retry_timer_.Start(FROM_HERE, base::TimeDelta::FromSeconds(5),
-        base::BindOnce(&Promotion::OnRetryTimerElapsed,
-            base::Unretained(this)));
+    retry_timer_.Start(FROM_HERE, base::Seconds(5),
+                       base::BindOnce(&Promotion::OnRetryTimerElapsed,
+                                      base::Unretained(this)));
     callback(type::Result::LEDGER_OK);
     return;
   }
@@ -556,8 +556,7 @@ void Promotion::Refresh(const bool retry_after_error) {
   base::TimeDelta start_timer_in;
 
   if (retry_after_error) {
-    start_timer_in = util::GetRandomizedDelay(
-        base::TimeDelta::FromSeconds(300));
+    start_timer_in = util::GetRandomizedDelay(base::Seconds(300));
 
     BLOG(1, "Failed to refresh promotion, will try again in "
         << start_timer_in);
@@ -574,11 +573,11 @@ void Promotion::Refresh(const bool retry_after_error) {
     }
 
     if (now == last_promo_stamp) {
-      start_timer_in = base::TimeDelta::FromSeconds(default_time);
+      start_timer_in = base::Seconds(default_time);
     } else if (time_since_last_promo_check > 0 &&
         default_time > time_since_last_promo_check) {
-      start_timer_in = base::TimeDelta::FromSeconds(
-          default_time - time_since_last_promo_check);
+      start_timer_in =
+          base::Seconds(default_time - time_since_last_promo_check);
     }
   }
 

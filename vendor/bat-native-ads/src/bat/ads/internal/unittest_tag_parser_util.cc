@@ -44,13 +44,13 @@ bool ParseTimeDelta(const std::string& value, base::TimeDelta* time_delta) {
 
   const std::string period = components.at(1);
   if (period == kFromSecondsTagValue) {
-    *time_delta = base::TimeDelta::FromSeconds(offset);
+    *time_delta = base::Seconds(offset);
   } else if (period == kFromMinutesTagValue) {
-    *time_delta = base::TimeDelta::FromMinutes(offset);
+    *time_delta = base::Minutes(offset);
   } else if (period == kFromHoursTagValue) {
-    *time_delta = base::TimeDelta::FromHours(offset);
+    *time_delta = base::Hours(offset);
   } else if (period == kFromDaysTagValue) {
-    *time_delta = base::TimeDelta::FromDays(offset);
+    *time_delta = base::Days(offset);
   } else {
     return false;
   }

@@ -184,8 +184,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // By default, browser check update status every 5 hours.
   // However, this background interval is too long for SI. Use 1 hour interval.
   si_update_check_timer_.Start(
-      FROM_HERE,
-      base::TimeDelta::FromHours(kSIComponentUpdateCheckIntervalHours),
+      FROM_HERE, base::Hours(kSIComponentUpdateCheckIntervalHours),
       base::BindRepeating(
           &NTPBackgroundImagesService::CheckImagesComponentUpdate,
           base::Unretained(this), data->component_id));

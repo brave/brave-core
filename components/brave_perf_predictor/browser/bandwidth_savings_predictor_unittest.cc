@@ -56,22 +56,19 @@ TEST_F(BandwidthSavingsPredictorTest, FeaturiseTiming) {
 
   auto timing = page_load_metrics::CreatePageLoadTiming();
   timing->document_timing->dom_content_loaded_event_start =
-      base::TimeDelta::FromMilliseconds(1000);
+      base::Milliseconds(1000);
   predictor_->OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedDomContentLoaded"], 1000);
 
-  timing->document_timing->load_event_start =
-      base::TimeDelta::FromMilliseconds(2000);
+  timing->document_timing->load_event_start = base::Milliseconds(2000);
   predictor_->OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedLoad"], 2000);
 
-  timing->paint_timing->first_meaningful_paint =
-      base::TimeDelta::FromMilliseconds(1500);
+  timing->paint_timing->first_meaningful_paint = base::Milliseconds(1500);
   predictor_->OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor_->feature_map_["metrics.firstMeaningfulPaint"], 1500);
 
-  timing->paint_timing->first_contentful_paint =
-      base::TimeDelta::FromMilliseconds(800);
+  timing->paint_timing->first_contentful_paint = base::Milliseconds(800);
   predictor_->OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor_->feature_map_["metrics.observedFirstVisualChange"], 800);
 }
