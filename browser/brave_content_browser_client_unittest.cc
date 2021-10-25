@@ -18,7 +18,10 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/common/content_client.h"
 
 namespace extensions {
@@ -68,6 +71,9 @@ TEST_F(BraveWalleBrowserClientUnitTest,
 TEST_F(BraveWalleBrowserClientUnitTest,
     ResolvesEthereumRemoteClientIfInstalled) {
   AddExtension();
+  profile()->GetPrefs()->SetInteger(
+      kDefaultWallet,
+      static_cast<int>(brave_wallet::mojom::DefaultWallet::CryptoWallets));
   GURL url("chrome://wallet/");
   ASSERT_TRUE(BraveContentBrowserClient::HandleURLOverrideRewrite(
         &url, browser_context()));
