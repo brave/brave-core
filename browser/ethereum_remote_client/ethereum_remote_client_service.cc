@@ -257,13 +257,6 @@ bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
       ethereum_remote_client_extension_id);
 }
 
-bool EthereumRemoteClientService::ShouldShowLazyLoadInfobar() const {
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
-  return default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets &&
-         !IsCryptoWalletsReady();
-}
-
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
     LoadUICallback callback) {
   load_ui_callback_ = std::move(callback);

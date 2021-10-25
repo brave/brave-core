@@ -46,7 +46,6 @@ class EthereumRemoteClientService
   std::string GetBitGoSeed(std::vector<uint8_t> key);
   bool IsLegacyCryptoWalletsSetup() const;
   bool IsCryptoWalletsReady() const;
-  bool ShouldShowLazyLoadInfobar() const;
   void MaybeLoadCryptoWalletsExtension(LoadUICallback callback);
   void CryptoWalletsExtensionReady();
   void UnloadCryptoWalletsExtension();
