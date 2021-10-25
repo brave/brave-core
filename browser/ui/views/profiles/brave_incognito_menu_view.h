@@ -15,6 +15,7 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
 
   // ProfileMenuViewBase:
   void BuildMenu() override;
+  void AddedToWidget() override;
 
  private:
   friend class IncognitoMenuView;
