@@ -148,6 +148,60 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
     EXPECT_EQ(result.size(), 1u);
     EXPECT_EQ(result[0], chain1.Clone());
   }
+
+  auto args2 = base::ListValue();
+  args2.Append(base::Value("id"));
+  args2.Append(base::Value(json_string));
+  LOG(ERROR) << json_string;
+  handler.AddEthereumChain(args2.GetList());
+  const auto& data = *handler.web_ui()->call_data()[1];
+  ASSERT_TRUE(data.arg1()->is_string());
+  EXPECT_EQ(data.arg1()->GetString(), "id");
+  ASSERT_TRUE(data.arg3()->is_bool());
+  ASSERT_FALSE(data.arg3()->GetBool());
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], chain1.Clone());
+  }
+}
+
+TEST(TestBraveWalletHandler, AddEthereumChainFail) {
+  TestBraveWalletHandler handler;
+
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 0u);
+  }
+
+  auto args = base::ListValue();
+  args.Append(base::Value("id"));
+  args.Append(base::Value(""));
+  handler.AddEthereumChain(args.GetList());
+
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 0u);
+  }
+
+  auto args2 = base::ListValue();
+  args2.Append(base::Value("id"));
+  args2.Append(base::Value(R"({"chain_name\":"a","rpcUrl":["http://u.c"]})"));
+  handler.AddEthereumChain(args2.GetList());
+  const auto& data = *handler.web_ui()->call_data()[0];
+  ASSERT_TRUE(data.arg1()->is_string());
+  EXPECT_EQ(data.arg1()->GetString(), "id");
+  ASSERT_TRUE(data.arg3()->is_bool());
+  ASSERT_FALSE(data.arg3()->GetBool());
+
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 0u);
+  }
 }
 
 TEST(TestBraveWalletHandler, GetNetworkList) {

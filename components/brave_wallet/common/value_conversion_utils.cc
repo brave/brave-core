@@ -61,9 +61,7 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
       chain.symbol = *symbol;
     }
     absl::optional<int> decimals = nativeCurrencyValue->FindIntKey("decimals");
-    if (decimals) {
-      chain.decimals = decimals.value();
-    }
+    chain.decimals = (decimals) ? decimals.value() : 0;
   }
 
   chain.is_eip1559 = params_dict->FindBoolKey("is_eip1559").value_or(false);

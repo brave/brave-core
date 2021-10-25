@@ -24,11 +24,8 @@
 
 namespace {
 
-bool RemoveEthereumChain(PrefService* prefs,
+void RemoveEthereumChain(PrefService* prefs,
                          const std::string& chain_id_to_remove) {
-  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  ::brave_wallet::GetAllCustomChains(prefs, &custom_chains);
-
   {
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
     base::ListValue* list = update.Get();
@@ -39,7 +36,6 @@ bool RemoveEthereumChain(PrefService* prefs,
       return *chain_id_value == chain_id_to_remove;
     });
   }
-  return true;
 }
 
 bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
@@ -56,26 +52,17 @@ bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
     return false;
   }
 
-  const std::string* chain_id = params_dict->FindStringKey("chainId");
-  if (!chain_id) {
-    return false;
-  }
-  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  ::brave_wallet::GetAllChains(prefs, &custom_chains);
-  bool network_exists = false;
-  for (const auto& it : custom_chains) {
-    if (it->chain_id != *chain_id)
-      continue;
-    network_exists = true;
-    break;
-  }
-  if (network_exists) {
-    return false;
-  }
   const auto& value_to_add = records_v.value();
   auto chain = brave_wallet::ValueToEthereumChain(value_to_add);
   if (!chain) {
     return false;
+  }
+
+  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  brave_wallet::GetAllChains(prefs, &custom_chains);
+  for (const auto& it : custom_chains) {
+    if (it->chain_id == chain->chain_id)
+      return false;
   }
 
   // Saving converted value to initialized missed by user field with default
@@ -123,8 +110,8 @@ void BraveWalletHandler::RemoveEthereumChain(base::Value::ConstListView args) {
   CHECK_EQ(args.size(), 2U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args[0], base::Value(::RemoveEthereumChain(prefs, args[1].GetString())));
+  ::RemoveEthereumChain(prefs, args[1].GetString());
+  ResolveJavascriptCallback(args[0], base::Value(true));
 }
 
 void BraveWalletHandler::GetCustomNetworksList(
@@ -135,7 +122,7 @@ void BraveWalletHandler::GetCustomNetworksList(
   std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
   brave_wallet::GetAllCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    list.Append(::brave_wallet::EthereumChainToValue(it));
+    list.Append(brave_wallet::EthereumChainToValue(it));
   }
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
