@@ -17,7 +17,7 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
-import { formatBalance } from '../../../utils/format-balances'
+import { formatBalance, toWeiHex } from '../../../utils/format-balances'
 import { getLocale } from '../../../../common/locale'
 import { usePricing, useTransactionParser } from '../../../common/hooks'
 
@@ -196,7 +196,8 @@ function ConfirmTransactionPanel (props: Props) {
   const onEditAllowanceSave = (allowance: string) => {
     updateUnapprovedTransactionSpendAllowance({
       txMetaId: transactionInfo.id,
-      allowance
+      spenderAddress: transactionDetails.approvalTarget || '',
+      allowance: toWeiHex(allowance, transactionDetails.decimals)
     })
   }
 

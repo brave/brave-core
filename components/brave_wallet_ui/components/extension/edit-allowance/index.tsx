@@ -59,10 +59,7 @@ const EditAllowance = (props: Props) => {
   }
 
   const isSaveButtonDisabled = React.useMemo(() => {
-    // TODO: enable once https://github.com/brave/brave-browser/issues/18866 is ready.
-    return true
-
-    // return allowanceType === 'custom' && customAllowance === ''
+    return allowanceType === 'custom' && customAllowance === ''
   }, [allowanceType, customAllowance])
 
   return (
