@@ -61,7 +61,8 @@ import {
   findENSAddress,
   findUnstoppableDomainAddress,
   getERC20Allowance
-} from '../common/async/wallet_async_handler'
+} from '../common/async/lib'
+
 import { formatBalance } from '../utils/format-balances'
 import { useAssets, useBalance, useSwap, useSend } from '../common/hooks'
 
