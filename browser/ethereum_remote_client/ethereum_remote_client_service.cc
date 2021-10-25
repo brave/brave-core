@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -47,17 +46,6 @@ EthereumRemoteClientService::EthereumRemoteClientService(
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(user_prefs::UserPrefs::Get(context_));
-  pref_change_registrar_->Add(
-      kDefaultWallet,
-      base::BindRepeating(&EthereumRemoteClientService::OnPreferenceChanged,
-                          base::Unretained(this)));
-  // In case any web3 providers have already loaded content scripts at
-  // this point.
-  RemoveUnusedWeb3ProviderContentScripts();
-  extension_registry_observer_.Observe(
-      extensions::ExtensionRegistry::Get(context));
 }
 
 EthereumRemoteClientService::~EthereumRemoteClientService() {}
@@ -249,103 +237,6 @@ std::string EthereumRemoteClientService::GetBitGoSeed(
     return "";
   }
   return EthereumRemoteClientService::GetBitGoSeedFromRootSeed(seed);
-}
-
-void EthereumRemoteClientService::RemoveUnusedWeb3ProviderContentScripts() {
-// We don't use ExtensionRegistryObserver and simply access the private methods
-// OnExtensionLoaded()/OnExtensionUnloaded() from UserScriptLoader instead since
-// we only want to load/unload the content scripts and not the extension.
-  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto* user_script_manager =
-      extensions::ExtensionSystem::Get(context_)->user_script_manager();
-  if (!user_script_manager) {
-    return;
-  }
-  auto* registry = extensions::ExtensionRegistry::Get(context_);
-  auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
-  auto* erc_extension = registry->enabled_extensions().GetByID(
-      ethereum_remote_client_extension_id);
-  if (erc_extension) {
-    user_script_manager->OnExtensionUnloaded(
-        context_, erc_extension, extensions::UnloadedExtensionReason::DISABLE);
-  }
-  auto* metamask_extension =
-      registry->enabled_extensions().GetByID(metamask_extension_id);
-  if (metamask_extension) {
-    user_script_manager->OnExtensionUnloaded(
-        context_, metamask_extension,
-        extensions::UnloadedExtensionReason::DISABLE);
-  }
-
-  // If the user has not manually gone into settings and selected
-  // they want to use Crypto Wallets. Then we prefer MetaMask.
-  // MetaMask is the default if it is installed.
-  // We can't have 2 web3 providers, we:
-  // 1) Check if MetaMask content scripts are disabled, if so, enable them.
-  // 2) Check if CryptoWallets content scripts are enabled, if so, disable them.
-  if (default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
-    if (erc_extension) {
-      user_script_manager->OnExtensionLoaded(context_, erc_extension);
-    }
-  } else if (default_wallet !=
-                 brave_wallet::mojom::DefaultWallet::CryptoWallets &&
-             default_wallet !=
-                 brave_wallet::mojom::DefaultWallet::BraveWallet) {
-    if (metamask_extension) {
-      user_script_manager->OnExtensionLoaded(context_, metamask_extension);
-    }
-  }
-}
-
-void EthereumRemoteClientService::OnPreferenceChanged() {
-  RemoveUnusedWeb3ProviderContentScripts();
-}
-
-void EthereumRemoteClientService::OnExtensionInstalled(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    bool is_update) {
-  if (extension->id() == metamask_extension_id && !is_update) {
-    PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    brave_wallet::SetDefaultWallet(
-        prefs, brave_wallet::mojom::DefaultWallet::Metamask);
-    RemoveUnusedWeb3ProviderContentScripts();
-  }
-}
-
-void EthereumRemoteClientService::OnExtensionReady(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension) {
-  if (extension->id() == metamask_extension_id ||
-      extension->id() == ethereum_remote_client_extension_id) {
-    RemoveUnusedWeb3ProviderContentScripts();
-  }
-}
-
-void EthereumRemoteClientService::OnExtensionUnloaded(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UnloadedExtensionReason reason) {
-  if (extension->id() == metamask_extension_id ||
-      extension->id() == ethereum_remote_client_extension_id) {
-    RemoveUnusedWeb3ProviderContentScripts();
-  }
-}
-
-void EthereumRemoteClientService::OnExtensionUninstalled(
-    content::BrowserContext* browser_context,
-    const extensions::Extension* extension,
-    extensions::UninstallReason reason) {
-  if (extension->id() == metamask_extension_id) {
-    PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-    auto default_wallet = brave_wallet::GetDefaultWallet(prefs);
-    if (default_wallet == brave_wallet::mojom::DefaultWallet::Metamask)
-      brave_wallet::SetDefaultWallet(
-          prefs, brave_wallet::IsNativeWalletEnabled()
-                     ? brave_wallet::mojom::DefaultWallet::BraveWallet
-                     : brave_wallet::mojom::DefaultWallet::CryptoWallets);
-    RemoveUnusedWeb3ProviderContentScripts();
-  }
 }
 
 void EthereumRemoteClientService::CryptoWalletsExtensionReady() {
