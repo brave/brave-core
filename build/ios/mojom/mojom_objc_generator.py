@@ -68,7 +68,7 @@ class TimeDeltaMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return "[[NSDate alloc] init]"
     def ObjCToCpp(self, accessor):
-        return "base::TimeDelta::FromSecondsD(%s.timeIntervalSince1970)" % accessor
+        return "base::Seconds(%s.timeIntervalSince1970)" % accessor
     def CppToObjC(self, accessor):
         return "[NSDate dateWithTimeIntervalSince1970:%s.InSecondsF()]" % accessor
 

@@ -87,8 +87,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
   UserActivity::Get()->RecordEvent(UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
-      features::user_activity::GetTimeWindow() +
-      base::TimeDelta::FromSeconds(1);
+      features::user_activity::GetTimeWindow() + base::Seconds(1);
   AdvanceClock(elapsed_time_window);
 
   // Act

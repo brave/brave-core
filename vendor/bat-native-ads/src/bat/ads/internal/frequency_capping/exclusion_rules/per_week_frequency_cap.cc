@@ -49,7 +49,7 @@ bool PerWeekFrequencyCap::DoesRespectCap(const AdEventList& ad_events,
 
   const base::Time now = base::Time::Now();
 
-  const base::TimeDelta time_constraint = base::TimeDelta::FromSeconds(
+  const base::TimeDelta time_constraint = base::Seconds(
       7 * (base::Time::kSecondsPerHour * base::Time::kHoursPerDay));
 
   const int count = std::count_if(

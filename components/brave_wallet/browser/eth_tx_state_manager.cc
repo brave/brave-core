@@ -119,9 +119,9 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
           chain_id, max_priority_fee_per_gas, max_fee_per_gas,
           std::move(gas_estimation_1559_ptr)),
       meta.status, tx_type, tx_params, tx_args,
-      base::TimeDelta::FromMilliseconds(meta.created_time.ToJavaTime()),
-      base::TimeDelta::FromMilliseconds(meta.submitted_time.ToJavaTime()),
-      base::TimeDelta::FromMilliseconds(meta.confirmed_time.ToJavaTime()));
+      base::Milliseconds(meta.created_time.ToJavaTime()),
+      base::Milliseconds(meta.submitted_time.ToJavaTime()),
+      base::Milliseconds(meta.confirmed_time.ToJavaTime()));
 }
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(

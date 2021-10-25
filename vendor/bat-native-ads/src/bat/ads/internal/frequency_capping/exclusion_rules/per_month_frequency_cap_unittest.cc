@@ -91,7 +91,7 @@ TEST_F(BatAdsPerMonthFrequencyCapTest, AllowAdIfDoesNotExceedCapAfter1Month) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(28));
+  FastForwardClockBy(base::Days(28));
 
   // Act
   PerMonthFrequencyCap frequency_cap(ad_events);
@@ -115,7 +115,7 @@ TEST_F(BatAdsPerMonthFrequencyCapTest, DoNotAllowAdIfExceedsCapWithin1Month) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  FastForwardClockBy(base::TimeDelta::FromDays(27));
+  FastForwardClockBy(base::Days(27));
 
   // Act
   PerMonthFrequencyCap frequency_cap(ad_events);

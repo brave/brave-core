@@ -291,7 +291,7 @@ void AdRewards::Retry() {
   }
 
   const base::Time time = retry_timer_.StartWithPrivacy(
-      base::TimeDelta::FromSeconds(kRetryAfterSeconds),
+      base::Seconds(kRetryAfterSeconds),
       base::BindOnce(&AdRewards::OnRetry, base::Unretained(this)));
 
   BLOG(1, "Retry reconciling ad rewards " << FriendlyDateAndTime(time));

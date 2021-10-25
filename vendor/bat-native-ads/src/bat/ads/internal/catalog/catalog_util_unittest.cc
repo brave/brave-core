@@ -51,7 +51,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasExpired) {
                                         NowAsTimestamp());
 
   // Act
-  AdvanceClock(base::TimeDelta::FromDays(1));
+  AdvanceClock(base::Days(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();
@@ -64,7 +64,7 @@ TEST_F(BatAdsCatalogUtilTest, CatalogHasNotExpired) {
                                         NowAsTimestamp());
 
   // Act
-  AdvanceClock(base::TimeDelta::FromDays(1) - base::TimeDelta::FromSeconds(1));
+  AdvanceClock(base::Days(1) - base::Seconds(1));
 
   // Assert
   const bool has_expired = HasCatalogExpired();

@@ -175,7 +175,7 @@ bool BraveNewTabMessageHandler::CanPromptBraveTalk(base::Time now) {
   // with the switches:kNoFirstRun flag, so we need to allow blocking for that.
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
-  base::Time talk_prompt_trigger_time = now - base::TimeDelta::FromDays(3);
+  base::Time talk_prompt_trigger_time = now - base::Days(3);
   return (time_first_run <= talk_prompt_trigger_time);
 }
 

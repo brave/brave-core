@@ -476,8 +476,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &meta.confirmed_time));
-  meta.submitted_time = meta.confirmed_time - base::TimeDelta::FromSeconds(3);
-  meta.created_time = meta.confirmed_time - base::TimeDelta::FromMinutes(1);
+  meta.submitted_time = meta.confirmed_time - base::Seconds(3);
+  meta.created_time = meta.confirmed_time - base::Minutes(1);
 
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);

@@ -19,15 +19,14 @@ const char kFeatureName[] = "UserActivity";
 const char kFieldTrialParameterTriggers[] = "triggers";
 const char kDefaultTriggers[] = "01=.5;02=.5;08=1;09=1;0D=1;0E=1";
 const char kFieldTrialParameterTimeWindow[] = "time_window";
-const base::TimeDelta kDefaultTimeWindow = base::TimeDelta::FromHours(1);
+const base::TimeDelta kDefaultTimeWindow = base::Hours(1);
 const char kFieldTrialParameterThreshold[] = "threshold";
 const double kDefaultTreshold = 2.0;
 
 const char kFieldTrialParameterIdleTimeThreshold[] = "idle_time_threshold";
-const base::TimeDelta kDefaultIdleTimeThreshold =
-    base::TimeDelta::FromSeconds(15);
+const base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(15);
 const char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
-const base::TimeDelta kDefaultMaximumIdleTime = base::TimeDelta::FromSeconds(0);
+const base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
 
 const char kFieldTrialParameterShouldDetectWasLocked[] =
     "should_detect_was_locked";

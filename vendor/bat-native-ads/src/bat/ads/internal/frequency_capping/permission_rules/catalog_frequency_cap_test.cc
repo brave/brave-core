@@ -54,8 +54,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
 
   InitializeAds();
 
-  AdvanceClock(base::TimeDelta::FromHours(23) +
-               base::TimeDelta::FromMinutes(59));
+  AdvanceClock(base::Hours(23) + base::Minutes(59));
 
   // Act
   CatalogFrequencyCap frequency_cap;
@@ -75,7 +74,7 @@ TEST_F(BatAdsCatalogFrequencyCapTest,
 
   InitializeAds();
 
-  AdvanceClock(base::TimeDelta::FromDays(1));
+  AdvanceClock(base::Days(1));
 
   // Act
   CatalogFrequencyCap frequency_cap;

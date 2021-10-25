@@ -41,7 +41,7 @@ class BatAdsConversionsTest : public UnitTestBase {
   }
 
   base::Time CalculateExpireAtTime(const int observation_window) {
-    return Now() + base::TimeDelta::FromDays(observation_window);
+    return Now() + base::Days(observation_window);
   }
 
   std::unique_ptr<Conversions> conversions_;
@@ -192,7 +192,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
                    conversion_1.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event_1);
 
-  AdvanceClock(base::TimeDelta::FromMinutes(1));
+  AdvanceClock(base::Minutes(1));
 
   const AdEventInfo ad_event_2 =
       BuildAdEvent("da2d3397-bc97-46d1-a323-d8723c0a6b33",
@@ -471,8 +471,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromDays(3) -
-                                  base::TimeDelta::FromMinutes(1));
+  task_environment_.FastForwardBy(base::Days(3) - base::Minutes(1));
 
   // Act
   conversions_->MaybeConvert({"https://foo.bar.com/qux"}, "", {});
@@ -512,7 +511,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  task_environment_.FastForwardBy(base::TimeDelta::FromDays(3));
+  task_environment_.FastForwardBy(base::Days(3));
 
   // Act
   conversions_->MaybeConvert({"https://www.foo.com/bar/qux"}, "", {});

@@ -34,7 +34,7 @@ void TorTabHelper::DidFinishNavigation(
       FROM_HERE,
       base::BindOnce(&TorTabHelper::ReloadTab, AsWeakPtr(),
                      navigation_handle->GetWebContents()),
-      base::TimeDelta::FromSeconds(1));
+      base::Seconds(1));
 }
 
 void TorTabHelper::ReloadTab(content::WebContents* web_contents) {

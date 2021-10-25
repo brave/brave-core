@@ -696,19 +696,19 @@ TEST_F(PrivacySandboxSettingsTest, GetFlocIdNextUpdateForDisplay) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
 
   std::map<base::TimeDelta, std::u16string> offsets_to_expected_string = {
-      {base::TimeDelta::FromHours(23),
+      {base::Hours(23),
        l10n_util::GetStringUTF16(
            IDS_PRIVACY_SANDBOX_FLOC_TIME_TO_NEXT_COMPUTE_INVALID)},
-      {base::TimeDelta::FromHours(25),
+      {base::Hours(25),
        l10n_util::GetStringUTF16(
            IDS_PRIVACY_SANDBOX_FLOC_TIME_TO_NEXT_COMPUTE_INVALID)},
-      {base::TimeDelta::FromDays(2),
+      {base::Days(2),
        l10n_util::GetStringUTF16(
            IDS_PRIVACY_SANDBOX_FLOC_TIME_TO_NEXT_COMPUTE_INVALID)},
-      {base::TimeDelta::FromHours(60),
+      {base::Hours(60),
        l10n_util::GetStringUTF16(
            IDS_PRIVACY_SANDBOX_FLOC_TIME_TO_NEXT_COMPUTE_INVALID)},
-      {base::TimeDelta::FromHours(167),  // 1 hour less than 7 days.
+      {base::Hours(167),  // 1 hour less than 7 days.
        l10n_util::GetStringUTF16(
            IDS_PRIVACY_SANDBOX_FLOC_TIME_TO_NEXT_COMPUTE_INVALID)}};
 

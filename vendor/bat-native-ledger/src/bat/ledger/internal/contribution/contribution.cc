@@ -84,9 +84,8 @@ void Contribution::Initialize() {
 
 void Contribution::CheckContributionQueue() {
   base::TimeDelta delay = ledger::is_testing
-      ? base::TimeDelta::FromSeconds(1)
-      : util::GetRandomizedDelay(
-          base::TimeDelta::FromSeconds(15));
+                              ? base::Seconds(1)
+                              : util::GetRandomizedDelay(base::Seconds(15));
 
   BLOG(1, "Queue timer set for " << delay);
 
@@ -206,7 +205,7 @@ void Contribution::SetReconcileTimer() {
 
   base::TimeDelta delay;
   if (next_reconcile_stamp > now) {
-    delay = base::TimeDelta::FromSeconds(next_reconcile_stamp - now);
+    delay = base::Seconds(next_reconcile_stamp - now);
   }
 
   BLOG(1, "Last reconcile timer set for " << delay);
@@ -594,15 +593,12 @@ void Contribution::Result(
     const type::Result result,
     const std::string& contribution_id) {
   if (result == type::Result::RETRY_SHORT) {
-    SetRetryTimer(contribution_id, base::TimeDelta::FromSeconds(5));
+    SetRetryTimer(contribution_id, base::Seconds(5));
     return;
   }
 
   if (result == type::Result::RETRY) {
-    SetRetryTimer(
-        contribution_id,
-        util::GetRandomizedDelay(
-            base::TimeDelta::FromSeconds(45)));
+    SetRetryTimer(contribution_id, util::GetRandomizedDelay(base::Seconds(45)));
     return;
   }
 
@@ -625,15 +621,11 @@ void Contribution::OnResult(
   if (result == type::Result::RETRY_LONG) {
     if (contribution->processor ==
         type::ContributionProcessor::BRAVE_TOKENS) {
-      SetRetryTimer(
-          contribution->contribution_id,
-          util::GetRandomizedDelay(
-              base::TimeDelta::FromSeconds(45)));
+      SetRetryTimer(contribution->contribution_id,
+                    util::GetRandomizedDelay(base::Seconds(45)));
     } else {
-      SetRetryTimer(
-          contribution->contribution_id,
-          util::GetRandomizedDelay(
-              base::TimeDelta::FromSeconds(450)));
+      SetRetryTimer(contribution->contribution_id,
+                    util::GetRandomizedDelay(base::Seconds(450)));
     }
 
     return;
@@ -651,7 +643,7 @@ void Contribution::SetRetryTimer(
   }
 
   if (ledger::retry_interval) {
-    delay = base::TimeDelta::FromSeconds(retry_interval);
+    delay = base::Seconds(retry_interval);
   }
 
   BLOG(1, "Timer for contribution retry (" << contribution_id << ") "

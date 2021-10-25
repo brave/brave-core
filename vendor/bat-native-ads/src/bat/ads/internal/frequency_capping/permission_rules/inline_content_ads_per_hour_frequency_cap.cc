@@ -37,7 +37,7 @@ std::string InlineContentAdsPerHourFrequencyCap::GetLastMessage() const {
 bool InlineContentAdsPerHourFrequencyCap::DoesRespectCap(
     const std::deque<base::Time>& history) {
   const base::TimeDelta time_constraint =
-      base::TimeDelta::FromSeconds(base::Time::kSecondsPerHour);
+      base::Seconds(base::Time::kSecondsPerHour);
 
   const int cap = features::GetMaximumInlineContentAdsPerHour();
 

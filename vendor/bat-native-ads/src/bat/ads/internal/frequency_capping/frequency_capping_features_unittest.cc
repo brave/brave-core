@@ -130,7 +130,7 @@ TEST(BatAdsFrequencyCappingFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
       features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(1);
+  const base::TimeDelta expected_time_window = base::Days(1);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -151,7 +151,7 @@ TEST(BatAdsFrequencyCappingFeaturesTest,
       features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(2);
+  const base::TimeDelta expected_time_window = base::Days(2);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -173,7 +173,7 @@ TEST(BatAdsFrequencyCappingFeaturesTest,
       features::frequency_capping::ExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(2);
+  const base::TimeDelta expected_time_window = base::Days(2);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -197,7 +197,7 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
       features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(1);
+  const base::TimeDelta expected_time_window = base::Days(1);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -218,7 +218,7 @@ TEST(BatAdsUserActivityFeaturesTest,
       features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(2);
+  const base::TimeDelta expected_time_window = base::Days(2);
   EXPECT_EQ(expected_time_window, time_window);
 }
 
@@ -240,7 +240,7 @@ TEST(BatAdsUserActivityFeaturesTest,
       features::frequency_capping::ExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::TimeDelta::FromDays(2);
+  const base::TimeDelta expected_time_window = base::Days(2);
   EXPECT_EQ(expected_time_window, time_window);
 }
 

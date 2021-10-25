@@ -137,7 +137,7 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
   if (is_random) {
     // Additional difference for is_random is that we only consider items from
     // the last 48hrs.
-    base::Time time_limit = base::Time::Now() - base::TimeDelta::FromDays(2);
+    base::Time time_limit = base::Time::Now() - base::Days(2);
     auto match_is_recent = [time_limit](mojom::Article* article) {
       return (article->data->publish_time >= time_limit);
     };

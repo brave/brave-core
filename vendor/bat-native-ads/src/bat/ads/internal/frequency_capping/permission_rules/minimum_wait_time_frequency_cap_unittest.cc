@@ -40,7 +40,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, AllowAdIfDoesNotExceedCap) {
 
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(12));
+  FastForwardClockBy(base::Minutes(12));
 
   // Act
   MinimumWaitTimeFrequencyCap frequency_cap;
@@ -56,7 +56,7 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest, DoNotAllowAdIfExceedsCap) {
 
   RecordAdEvent(AdType::kAdNotification, ConfirmationType::kServed);
 
-  FastForwardClockBy(base::TimeDelta::FromMinutes(11));
+  FastForwardClockBy(base::Minutes(11));
 
   // Act
   MinimumWaitTimeFrequencyCap frequency_cap;

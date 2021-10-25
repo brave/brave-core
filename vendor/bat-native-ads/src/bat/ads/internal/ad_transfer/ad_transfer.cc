@@ -75,8 +75,7 @@ void AdTransfer::TransferAd(const int32_t tab_id,
 
   transferring_ad_tab_id_ = tab_id;
 
-  const base::TimeDelta delay =
-      base::TimeDelta::FromSeconds(kTransferAdAfterSeconds);
+  const base::TimeDelta delay = base::Seconds(kTransferAdAfterSeconds);
 
   const base::Time time = timer_.Start(
       delay, base::BindOnce(&AdTransfer::OnTransferAd, base::Unretained(this),
