@@ -123,29 +123,6 @@ BraveWalletGetWalletSeedFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveWalletGetBitGoSeedFunction::Run() {
-  // make sure the passed in enryption key is 32 bytes.
-  std::unique_ptr<brave_wallet::GetBitGoSeed::Params> params(
-      brave_wallet::GetBitGoSeed::Params::Create(args()));
-  if (params->key.size() != 32) {
-    return RespondNow(Error("Invalid input key size"));
-  }
-
-  auto* service = GetEthereumRemoteClientService(browser_context());
-
-  base::Value::BlobStorage blob;
-  std::string derived = service->GetBitGoSeed(params->key);
-
-  if (derived.empty()) {
-    return RespondNow(Error("Error getting wallet seed"));
-  }
-
-  blob.assign(derived.begin(), derived.end());
-
-  return RespondNow(OneArgument(base::Value(blob)));
-}
-
-ExtensionFunction::ResponseAction
 BraveWalletGetProjectIDFunction::Run() {
   std::string project_id = extensions::GetInfuraProjectID();
   return RespondNow(OneArgument(base::Value(project_id)));
