@@ -91,25 +91,13 @@ function testProviderIsCryptoWallets() {
   ])
 }
 
-function testProviderIsMetaMask() {
+function testProviderIsBraveWalletPreferExtension() {
   chrome.test.runTests([
     function CryptoWalletsIsProvider() {
       chrome.braveWallet.getWeb3Provider((provider) => {
-        if (provider === 'nkbihfbeogaeaoehlefnkodbefgpgknn') {
-          chrome.test.succeed();
-        } else {
-          chrome.test.fail();
-        }
-      })
-    }
-  ])
-}
-
-function testProviderIsAsk() {
-  chrome.test.runTests([
-    function CryptoWalletsIsProvider() {
-      chrome.braveWallet.getWeb3Provider((provider) => {
-        if (provider.length === 0) {
+        // This is just a placeholder value to make CW think
+        // it is set. But really it prefers extensions
+        if (provider === 'odbfpeeihdkbihmopkbjmoonfanlbfcl') {
           chrome.test.succeed();
         } else {
           chrome.test.fail();

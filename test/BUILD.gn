@@ -805,10 +805,7 @@ if (!is_android) {
     }
 
     if (ethereum_remote_client_enabled) {
-      sources += [
-        "//brave/browser/extensions/api/brave_wallet_api_browsertest.cc",
-        "//brave/browser/extensions/brave_wallet_apitest.cc",
-      ]
+      sources += [ "//brave/browser/extensions/brave_wallet_apitest.cc" ]
 
       deps += [
         "//brave/browser/brave_wallet",

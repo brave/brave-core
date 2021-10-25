@@ -109,30 +109,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-    BraveWalletWeb3ProviderMetaMask) {
-  brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+                       BraveWalletWeb3ProviderIsBraveWalletPreferExtension) {
+  brave_wallet::SetDefaultWallet(
+      GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
   ASSERT_TRUE(extension);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ethereum_remote_client_extension_id,
-      "testProviderIsMetaMask()"));
-  ASSERT_TRUE(catcher.GetNextResult()) << message_;
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-    BraveWalletWeb3ProviderAsk) {
-  brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::Ask);
-  ResultCatcher catcher;
-  const Extension* extension =
-    LoadExtension(extension_dir_.AppendASCII("braveWallet"));
-  ASSERT_TRUE(extension);
-  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-      browser()->profile(), ethereum_remote_client_extension_id,
-      "testProviderIsAsk()"));
+      "testProviderIsBraveWalletPreferExtension()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 

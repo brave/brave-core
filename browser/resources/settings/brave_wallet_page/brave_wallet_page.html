@@ -30,12 +30,15 @@
           cursor: pointer;
           color: red;
         }
+        settings-dropdown-menu {
+          --md-select-width: 225px;
+        }
     </style>
     <template is="dom-if" if="[[!isNetworkEditor_]]">
       <div class="settings-box first">
         <div class="start">$i18n{defaultWalletDesc}</div>
           <settings-dropdown-menu id="defaultWalletType"
-                                  pref="{{prefs.brave.wallet.web3_provider}}"
+                                  pref="{{prefs.brave.wallet.default_wallet2}}"
                                   menu-options="[[wallets_]]">
           </settings-dropdown-menu>
       </div>

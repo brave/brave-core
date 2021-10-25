@@ -422,7 +422,7 @@ interface BraveWalletService {
 };
 
 enum DefaultWallet {
-  Ask,
+  AskDeprecated,
   None,
   CryptoWallets,
   BraveWalletPreferExtension,

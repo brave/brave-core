@@ -45,80 +45,107 @@ class BraveWalletPrefsUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
 };
 
-TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsEnabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kNativeBraveWalletFeature);
-
-  // Wallet remains wallet
+TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsWeb3Provider) {
+  // AskDeprecated changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::BraveWallet));
-  MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::BraveWallet,
-            static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
-
-  // MetaMask remains MetaMask
-  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+                         static_cast<int>(mojom::DefaultWallet::AskDeprecated));
   MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 
-  // Ask changes to BraveWallet
+  // BraveWallet changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::Ask));
+                         static_cast<int>(mojom::DefaultWallet::BraveWallet));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::BraveWallet,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 
-  // Crypto wallets changes to BraveWallet
+  // BraveWalletPreferExtension remains BraveWalletPreferExtension
+  GetPrefs()->SetInteger(
+      kBraveWalletWeb3ProviderDeprecated,
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // Ask changes to BraveWalletPreferExtension
+  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::AskDeprecated));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // CryptoWallets changes to BraveWalletPreferExtension
   GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
                          static_cast<int>(mojom::DefaultWallet::CryptoWallets));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::BraveWallet,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // None remains None
+  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::None));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::None,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 }
 
-TEST_F(BraveWalletPrefsUnitTest, MigrateObsoleteProfilePrefsDisabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
-      brave_wallet::features::kNativeBraveWalletFeature);
-
-  // Wallet changes to ask
-  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::BraveWallet));
-  MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::Ask,
-            static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
-
-  // MetaMask remains MetaMask
-  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+TEST_F(BraveWalletPrefsUnitTest,
+       MigrateObsoleteProfilePrefsDefaultWalletDeprecated) {
+  // AskDeprecated changes to BraveWalletPreferExtension
+  GetPrefs()->SetInteger(kDefaultWalletDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::AskDeprecated));
   MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 
-  // Ask stays at ask
-  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
-                         static_cast<int>(mojom::DefaultWallet::Ask));
+  // BraveWallet changes to BraveWalletPreferExtension
+  GetPrefs()->SetInteger(kDefaultWalletDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::BraveWallet));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::Ask,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 
-  // Crypto wallets remains Crypto wallets
-  GetPrefs()->SetInteger(kBraveWalletWeb3ProviderDeprecated,
+  // BraveWalletPreferExtension remains BraveWalletPreferExtension
+  GetPrefs()->SetInteger(
+      kDefaultWalletDeprecated,
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // Ask changes to BraveWalletPreferExtension
+  GetPrefs()->SetInteger(kDefaultWalletDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::AskDeprecated));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // CryptoWallets changes to BraveWalletPreferExtension
+  GetPrefs()->SetInteger(kDefaultWalletDeprecated,
                          static_cast<int>(mojom::DefaultWallet::CryptoWallets));
   MigrateObsoleteProfilePrefs(GetPrefs());
-  EXPECT_EQ(mojom::DefaultWallet::CryptoWallets,
+  EXPECT_EQ(mojom::DefaultWallet::BraveWalletPreferExtension,
             static_cast<mojom::DefaultWallet>(
-                GetPrefs()->GetInteger(kDefaultWallet)));
+                GetPrefs()->GetInteger(kDefaultWallet2)));
+
+  // None remains None
+  GetPrefs()->SetInteger(kDefaultWalletDeprecated,
+                         static_cast<int>(mojom::DefaultWallet::None));
+  MigrateObsoleteProfilePrefs(GetPrefs());
+  EXPECT_EQ(mojom::DefaultWallet::None,
+            static_cast<mojom::DefaultWallet>(
+                GetPrefs()->GetInteger(kDefaultWallet2)));
 }
 
 }  // namespace brave_wallet
