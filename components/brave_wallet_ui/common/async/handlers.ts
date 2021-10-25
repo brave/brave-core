@@ -524,27 +524,25 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
 })
 
 handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), async (store: Store, payload: UpdateUnapprovedTransactionSpendAllowanceType) => {
-  // const apiProxy = await getAPIProxy()
-  //
-  // TODO: implement setAllowanceForUnapprovedTransaction
-  // const result = await apiProxy.ethTxController.setAllowanceForUnapprovedTransaction(
-  //     payload.txMetaId,
-  //     payload.allowance
-  // )
-  //
-  // if (!result.success) {
-  //   console.error(
-  //     `Failed to update unapproved transaction: ` +
-  //     `id=${payload.txMetaId} ` +
-  //     `allowance=${payload.allowance}`
-  //   )
-  // }
+  const apiProxy = await getAPIProxy()
 
-  alert(
-    `Updated ERC20Approve allowance: ` +
-    `id=${payload.txMetaId} ` +
-    `allowance=${payload.allowance}`
-  )
+  const { data, success } = await apiProxy.ethTxController.makeERC20ApproveData(payload.spenderAddress, payload.allowance)
+  if (!success) {
+    console.error(
+      `Failed making ERC20 approve data, spender: ${payload.spenderAddress}` +
+      `, allowance: ${payload.allowance}`
+    )
+    return
+  }
+
+  const result = await apiProxy.ethTxController.setDataForUnapprovedTransaction(payload.txMetaId, data)
+  if (!result.success) {
+    console.error(
+      `Failed to update unapproved transaction: ` +
+      `id=${payload.txMetaId} ` +
+      `allowance=${payload.allowance}`
+    )
+  }
 })
 
 handler.on(WalletActions.removeSitePermission.getType(), async (store: Store, payload: RemoveSitePermissionPayloadType) => {
