@@ -69,8 +69,7 @@ export const BalanceColumn = styled.div`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto',
-  marginRight: '8px'
+  height: 'auto'
 })
 
 export const CheckboxRow = styled.div`

@@ -1,8 +1,5 @@
 import * as React from 'react'
 
-// Options
-import { ETH } from '../../../options/asset-options'
-
 // Styled Components
 import {
   StyledWrapper,
@@ -14,29 +11,34 @@ import {
   AssetIcon
 } from './style'
 import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
+import { withPlaceholderIcon } from '../../shared'
+import { TokenInfo } from '../../../constants/types'
+
 export interface Props {
   action?: () => void
-  name: string
-  symbol: string
-  logo?: string
   assetBalance: string
   fiatBalance: string
-  isVisible?: boolean
+  token: TokenInfo
 }
 
 const PortfolioAssetItem = (props: Props) => {
-  const { name, assetBalance, fiatBalance, logo, symbol, isVisible, action } = props
+  const { assetBalance, fiatBalance, action, token } = props
+
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [])
+
   return (
     <>
-      {isVisible &&
+      {token.visible &&
         <StyledWrapper onClick={action}>
           <NameAndIcon>
-            <AssetIcon icon={(symbol === 'ETH' ? ETH.asset.logo : logo) ?? ''} />
-            <AssetName>{name}</AssetName>
+            <AssetIconWithPlaceholder selectedAsset={token} />
+            <AssetName>{token.name}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
             <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
-            <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {symbol}</AssetBalanceText>
+            <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {token.symbol}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }
