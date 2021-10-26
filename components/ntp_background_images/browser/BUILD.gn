@@ -8,10 +8,10 @@ static_library("browser") {
     "ntp_background_images_component_installer.h",
     "ntp_background_images_service.cc",
     "ntp_background_images_service.h",
-    "ntp_background_images_source.cc",
-    "ntp_background_images_source.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
+    "ntp_sponsored_images_source.cc",
+    "ntp_sponsored_images_source.h",
     "sponsored_images_component_data.cc",
     "sponsored_images_component_data.h",
     "switches.cc",
@@ -27,6 +27,8 @@ static_library("browser") {
     sources += [
       "ntp_background_images_data.cc",
       "ntp_background_images_data.h",
+      "ntp_background_images_source.cc",
+      "ntp_background_images_source.h",
     ]
   }
 

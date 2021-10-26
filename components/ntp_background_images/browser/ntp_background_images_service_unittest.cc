@@ -67,7 +67,7 @@ constexpr char kTestBackgroundImages[] = R"(
       "images": [
         {
           "name": "ntp-2020/2021-1",
-          "source": "background-image-source.png",
+          "source": "background-image-source.webp",
           "author": "Brave Software",
           "link": "https://brave.com/",
           "originalUrl": "Contributor sent the hi-res version through email",
@@ -276,6 +276,10 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_EQ("https://brave.com/", bi_data->backgrounds[0].link);
   EXPECT_TRUE(observer.on_bi_updated_);
   EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
+  EXPECT_EQ("chrome://background-wallpaper/wallpaper-0.webp",
+            *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImageURLKey));
+  EXPECT_EQ("background-image-source.webp",
+            *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImagePathKey));
 #endif
 
   // Invalid schema version

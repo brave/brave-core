@@ -15,8 +15,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -32,10 +32,6 @@ absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
   return contents;
 }
 
-bool IsSuperReferralPath(const std::string& path) {
-  return path.rfind(kSuperReferralPath, 0) == 0;
-}
-
 }  // namespace
 
 NTPBackgroundImagesSource::NTPBackgroundImagesSource(
@@ -47,7 +43,7 @@ NTPBackgroundImagesSource::NTPBackgroundImagesSource(
 NTPBackgroundImagesSource::~NTPBackgroundImagesSource() = default;
 
 std::string NTPBackgroundImagesSource::GetSource() {
-  return kBrandedWallpaperHost;
+  return kBackgroundWallpaperHost;
 }
 
 void NTPBackgroundImagesSource::StartDataRequest(
@@ -57,41 +53,18 @@ void NTPBackgroundImagesSource::StartDataRequest(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   const std::string path = URLDataSource::URLToRequestPath(url);
-  if (!IsValidPath(path)) {
-    scoped_refptr<base::RefCountedMemory> bytes;
-    std::move(callback).Run(std::move(bytes));
-    return;
-  }
+  auto* images_data = service_->GetBackgroundImagesData();
+  const int index = GetWallpaperIndexFromPath(path);
 
-  // Favicon data is fetched from cached folder not from component data.
-  if (IsTopSiteFaviconPath(path)) {
-    GetImageFile(GetTopSiteFaviconFilePath(path), std::move(callback));
-    return;
-  }
-
-  auto* images_data = service_->GetBrandedImagesData(IsSuperReferralPath(path));
-
-  if (!images_data) {
+  if (!images_data || index == -1) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback),
                                   scoped_refptr<base::RefCountedMemory>()));
     return;
   }
 
-  base::FilePath image_file_path;
-  if (IsLogoPath(path)) {
-    if (IsDefaultLogoPath(path)) {
-      image_file_path = images_data->default_logo.image_file;
-    } else {
-      DCHECK(images_data->backgrounds[GetLogoIndexFromPath(path)].logo);
-      image_file_path =
-          images_data->backgrounds[GetLogoIndexFromPath(path)].logo->image_file;
-    }
-  } else {
-    DCHECK(IsWallpaperPath(path));
-    image_file_path =
-        images_data->backgrounds[GetWallpaperIndexFromPath(path)].image_file;
-  }
+  base::FilePath image_file_path =
+      images_data->backgrounds[GetWallpaperIndexFromPath(path)].image_file;
 
   GetImageFile(image_file_path, std::move(callback));
 }
@@ -119,109 +92,24 @@ void NTPBackgroundImagesSource::OnGotImageFile(
 }
 
 std::string NTPBackgroundImagesSource::GetMimeType(const std::string& path) {
-  if (IsLogoPath(path) || IsTopSiteFaviconPath(path))
-    return "image/png";
-  return "image/jpg";
-}
-
-bool NTPBackgroundImagesSource::AllowCaching() {
-  return false;
-}
-
-bool NTPBackgroundImagesSource::IsValidPath(const std::string& path) const {
-  if (IsLogoPath(path))
-    return true;
-
-  if (IsWallpaperPath(path))
-    return true;
-
-  if (IsTopSiteFaviconPath(path))
-    return true;
-
-  return false;
-}
-
-bool NTPBackgroundImagesSource::IsWallpaperPath(const std::string& path) const {
-  return GetWallpaperIndexFromPath(path) != -1;
-}
-
-bool NTPBackgroundImagesSource::IsDefaultLogoPath(
-    const std::string& path) const {
-  std::string target_logo_path =
-      IsSuperReferralPath(path) ? std::string(kSuperReferralPath)
-                                : std::string(kSponsoredImagesPath);
-  target_logo_path += kDefaultLogoFileName;
-  return target_logo_path.compare(path) == 0;
-}
-
-bool NTPBackgroundImagesSource::IsLogoPath(const std::string& path) const {
-  if (IsDefaultLogoPath(path))
-    return true;
-
-  return GetLogoIndexFromPath(path) != -1;
-}
-
-int NTPBackgroundImagesSource::GetLogoIndexFromPath(
-    const std::string& path) const {
-  const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
-  if (!images_data)
-    return -1;
-
-  const int wallpaper_count = images_data->backgrounds.size();
-  for (int i = 0; i < wallpaper_count; ++i) {
-    const std::string generated_path =
-        base::StringPrintf("%s%s%d.png",
-                           is_super_referral_path ? kSuperReferralPath
-                                                  : kSponsoredImagesPath,
-                           kLogoFileNamePrefix, i);
-    if (path.compare(generated_path) == 0)
-      return i;
-  }
-
-  return -1;
+  return "image/webp";
 }
 
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
     const std::string& path) const {
-  const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
+  auto* images_data = service_->GetBackgroundImagesData();
   if (!images_data)
     return -1;
 
   const int wallpaper_count = images_data->backgrounds.size();
   for (int i = 0; i < wallpaper_count; ++i) {
     const std::string generated_path =
-        base::StringPrintf("%s%s%d.jpg",
-                           is_super_referral_path ? kSuperReferralPath
-                                                  : kSponsoredImagesPath,
-                           kWallpaperPathPrefix, i);
+        base::StringPrintf("%s%d.webp", kWallpaperPathPrefix, i);
     if (path.compare(generated_path) == 0)
       return i;
   }
 
   return -1;
-}
-
-bool NTPBackgroundImagesSource::IsTopSiteFaviconPath(
-    const std::string& path) const {
-  // Top site is only used for super referral.
-  if (!IsSuperReferralPath(path))
-    return false;
-
-  return !GetTopSiteFaviconFilePath(path).empty();
-}
-
-base::FilePath NTPBackgroundImagesSource::GetTopSiteFaviconFilePath(
-    const std::string& path) const {
-  std::vector<std::string> list = service_->GetTopSitesFaviconList();
-  for (const auto& favicon_file : list) {
-    base::FilePath file_path = base::FilePath::FromUTF8Unsafe(favicon_file);
-    if (path.compare(kSuperReferralPath + file_path.BaseName().AsUTF8Unsafe())
-        == 0)
-      return file_path;
-  }
-  return base::FilePath();
 }
 
 }  // namespace ntp_background_images

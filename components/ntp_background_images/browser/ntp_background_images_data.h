@@ -47,6 +47,7 @@ struct NTPBackgroundImagesData {
   base::Value GetBackgroundAt(size_t index);
 
   std::vector<Background> backgrounds;
+  std::string url_prefix;
 };
 
 }  // namespace ntp_background_images

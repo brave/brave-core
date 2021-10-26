@@ -8,6 +8,7 @@
 
 namespace ntp_background_images {
 
+constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
 constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
 constexpr char kDefaultLogoFileName[] = "logo.png";
 constexpr char kLogoFileNamePrefix[] = "logo-";
