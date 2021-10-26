@@ -18,11 +18,17 @@ static_library("browser") {
     "skus_sdk_impl.cc",
     "skus_sdk_impl.h",
     "br-rs/brave-rewards-cxx/src/cxx.h",
-    "br-rs/brave-rewards-cxx/src/cxx.cc",
     "br-rs/brave-rewards-cxx/src/shim.hpp",
     "br-rs/brave-rewards-cxx/src/wrapper.cpp",
     "br-rs/brave-rewards-cxx/src/wrapper.hpp",
   ]
+
+  # TODO(bsclifton): troubleshoot why there are duplicate symbols on Windows
+  if (is_mac || is_linux) {
+    sources += [ "br-rs/brave-rewards-cxx/src/cxx.cc" ]
+  } else if (is_win) {
+    sources += [ "br-rs/brave-rewards-cxx/src/cxx_win.cc" ]
+  }
 
   deps = [
     "//brave/components/skus/common:mojom",

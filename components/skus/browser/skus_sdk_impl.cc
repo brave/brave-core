@@ -29,30 +29,6 @@ const int kMaxResponseSize = 1000000;  // 1Mb
 
 brave_rewards::SkusSdkImpl* g_SkusSdk = NULL;
 
-// START: hack code - remove me
-// rust::String's std::string operator gave linker errors :(
-// .c_str() not usable because function itself isn't const
-// .data is not terminating string
-std::string ruststring_2_stdstring(rust::String in) {
-  std::string out = "";
-  rust::String::iterator it = in.begin();
-  while (it != in.end()) {
-    out += static_cast<char>(*it);
-    it++;
-  }
-  return out;
-}
-std::string ruststr_2_stdstring(rust::cxxbridge1::Str in) {
-  std::string out = "";
-  rust::cxxbridge1::Str::iterator it = in.begin();
-  while (it != in.end()) {
-    out += static_cast<char>(*it);
-    it++;
-  }
-  return out;
-}
-// END: hack code - remove me
-
 class SkusSdkFetcher {
  public:
   explicit SkusSdkFetcher(scoped_refptr<network::SharedURLLoaderFactory>);
@@ -113,8 +89,8 @@ void SkusSdkFetcher::BeginFetch(
              brave_rewards::HttpResponse)> callback,
     rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = GURL(ruststring_2_stdstring(req.url));
-  resource_request->method = ruststring_2_stdstring(req.method).c_str();
+  resource_request->url = GURL(static_cast<std::string>(req.url));
+  resource_request->method = static_cast<std::string>(req.method).c_str();
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   // No cache read, always download from the network.
   resource_request->load_flags =
@@ -122,7 +98,7 @@ void SkusSdkFetcher::BeginFetch(
 
   for (size_t i = 0; i < req.headers.size(); i++) {
     resource_request->headers.AddHeaderFromString(
-        ruststring_2_stdstring(req.headers[i]));
+        static_cast<std::string>(req.headers[i]));
   }
 
   sku_sdk_loader_ = network::SimpleURLLoader::Create(
@@ -168,7 +144,7 @@ void SkusSdkFetcher::OnFetchComplete(
 void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
                     brave_rewards::RewardsResult result,
                     rust::cxxbridge1::Str order) {
-  std::string order_str = ruststr_2_stdstring(order);
+  std::string order_str = static_cast<std::string>(order);
   if (callback_state->cb) {
     std::move(callback_state->cb).Run(order_str);
   }
@@ -199,8 +175,8 @@ void shim_purge() {
 }
 
 void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
-  std::string key_string = ruststr_2_stdstring(key);
-  std::string value_string = ruststr_2_stdstring(value);
+  std::string key_string = static_cast<std::string>(key);
+  std::string value_string = static_cast<std::string>(value);
   LOG(ERROR) << "shim_set: `" << key_string << "` = `" << value_string << "`";
 
   ::prefs::ScopedDictionaryPrefUpdate update(g_SkusSdk->prefs_,
@@ -212,7 +188,7 @@ void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
 
 const std::string& shim_get(rust::cxxbridge1::Str key) {
   static const std::string empty = "";
-  std::string key_string = ruststr_2_stdstring(key);
+  std::string key_string = static_cast<std::string>(key);
   LOG(ERROR) << "shim_get: `" << key_string << "`";
 
   const base::Value* dictionary =
