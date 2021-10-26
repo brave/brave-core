@@ -18,7 +18,8 @@ import {
   RemoveHardwareAccountPayloadType,
   ViewPrivateKeyPayloadType,
   ImportAccountFromJsonPayloadType,
-  ImportFromExternalWalletPayloadType
+  ImportFromExternalWalletPayloadType,
+  ImportWalletErrorPayloadType
 } from '../constants/action_types'
 import {
   HardwareWalletAccount
@@ -42,7 +43,8 @@ export const privateKeyAvailable = createAction<PrivateKeyAvailablePayloadType>(
 export const walletBackupComplete = createAction('walletBackupComplete')
 export const hasMnemonicError = createAction<boolean>('hasMnemonicError')
 export const setShowAddModal = createAction<boolean>('setShowAddModal')
-export const setImportError = createAction<boolean>('setImportError')
+export const setImportAccountError = createAction<boolean>('setImportAccountError')
+export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
 export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset')

@@ -48,7 +48,7 @@ export interface Props {
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
-  onSetImportError: (hasError: boolean) => void
+  onSetImportError: (error: boolean) => void
   onAddUserAsset: (token: TokenInfo) => void
   onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
   onRemoveUserAsset: (token: TokenInfo) => void

@@ -16,8 +16,10 @@
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "ui/base/l10n/l10n_util.h"
 
 // kBraveWalletUserAssets
 // {
@@ -401,7 +403,8 @@ void BraveWalletService::ImportFromCryptoWallets(
                                  weak_ptr_factory_.GetWeakPtr(), new_password,
                                  std::move(callback)));
   else
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, l10n_util::GetStringUTF8(
+                                       IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 }
 
 void BraveWalletService::ImportFromMetaMask(
@@ -414,7 +417,8 @@ void BraveWalletService::ImportFromMetaMask(
                                  weak_ptr_factory_.GetWeakPtr(), new_password,
                                  std::move(callback)));
   else
-    std::move(callback).Run(false);
+    std::move(callback).Run(false, l10n_util::GetStringUTF8(
+                                       IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 }
 
 void BraveWalletService::GetDefaultWallet(GetDefaultWalletCallback callback) {
@@ -567,11 +571,30 @@ void BraveWalletService::OnActiveOriginChanged(const std::string& origin) {
 
 void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
-    base::OnceCallback<void(bool)> callback,
+    base::OnceCallback<void(bool, const absl::optional<std::string>&)> callback,
     bool result,
-    BraveWalletServiceDelegate::ImportInfo info) {
+    BraveWalletServiceDelegate::ImportInfo info,
+    BraveWalletServiceDelegate::ImportError error) {
   if (!result) {
-    std::move(callback).Run(false);
+    switch (error) {
+      case BraveWalletServiceDelegate::ImportError::kJsonError:
+        std::move(callback).Run(false, l10n_util::GetStringUTF8(
+                                           IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
+        break;
+      case BraveWalletServiceDelegate::ImportError::kPasswordError:
+        std::move(callback).Run(
+            false,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
+        break;
+      case BraveWalletServiceDelegate::ImportError::kInternalError:
+        std::move(callback).Run(
+            false,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
+        break;
+      case BraveWalletServiceDelegate::ImportError::kNone:
+      default:
+        NOTREACHED();
+    }
     return;
   }
 
@@ -585,7 +608,7 @@ void BraveWalletService::OnGetImportInfo(
               keyring_controller->AddAccountsWithDefaultName(
                   number_of_accounts - 1);
             }
-            std::move(callback).Run(is_valid_mnemonic);
+            std::move(callback).Run(is_valid_mnemonic, absl::nullopt);
           },
           std::move(callback), info.number_of_accounts, keyring_controller_));
 }

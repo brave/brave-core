@@ -26,9 +26,17 @@ class BraveWalletServiceDelegate {
     size_t number_of_accounts;
   };
 
+  enum class ImportError {
+    kNone = 0,
+    kJsonError,
+    kPasswordError,
+    kInternalError
+  };
+
   using IsCryptoWalletsInstalledCallback = base::OnceCallback<void(bool)>;
   using IsMetaMaskInstalledCallback = base::OnceCallback<void(bool)>;
-  using GetImportInfoCallback = base::OnceCallback<void(bool, ImportInfo)>;
+  using GetImportInfoCallback =
+      base::OnceCallback<void(bool, ImportInfo, ImportError)>;
   using HasEthereumPermissionCallback = base::OnceCallback<void(bool, bool)>;
   using ResetEthereumPermissionCallback = base::OnceCallback<void(bool)>;
   using GetActiveOriginCallback = base::OnceCallback<void(const std::string&)>;

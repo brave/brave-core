@@ -174,6 +174,11 @@ export interface SignMessageData {
   message: string
 }
 
+export interface ImportWalletError {
+  hasError: boolean
+  errorMessage?: string
+}
+
 export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
@@ -231,7 +236,8 @@ export interface PageState {
   isFetchingPriceHistory: boolean
   setupStillInProgress: boolean
   showIsRestoring: boolean
-  importError: boolean
+  importAccountError: boolean
+  importWalletError: ImportWalletError
   showAddModal: boolean
   isCryptoWalletsInstalled: boolean
   swapQuote?: SwapResponse

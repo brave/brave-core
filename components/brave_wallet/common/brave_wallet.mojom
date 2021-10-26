@@ -409,8 +409,10 @@ interface BraveWalletService {
   SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
   IsCryptoWalletsInstalled() => (bool installed);
   IsMetaMaskInstalled() => (bool installed);
-  ImportFromCryptoWallets(string password, string newPassword) => (bool success);
-  ImportFromMetaMask(string password, string newPassword) => (bool success);
+  ImportFromCryptoWallets(string password, string newPassword) => (bool success,
+  string? errorMessage);
+  ImportFromMetaMask(string password, string newPassword) => (bool success,
+  string? errorMessage);
   GetDefaultWallet() => (DefaultWallet default_wallet);
   SetDefaultWallet(DefaultWallet default_wallet);
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
