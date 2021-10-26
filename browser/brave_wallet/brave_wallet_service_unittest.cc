@@ -79,12 +79,12 @@ class TestBraveWalletServiceObserver
   }
 
   void Reset() {
-    default_wallet_ = mojom::DefaultWallet::BraveWallet;
     defaultWalletChangedFired_ = false;
   }
 
  private:
-  mojom::DefaultWallet default_wallet_ = mojom::DefaultWallet::BraveWallet;
+  mojom::DefaultWallet default_wallet_ =
+      mojom::DefaultWallet::BraveWalletPreferExtension;
   bool defaultWalletChangedFired_ = false;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
@@ -722,11 +722,15 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultWallet) {
   SetDefaultWallet(mojom::DefaultWallet::None);
   EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::None);
 
-  SetDefaultWallet(mojom::DefaultWallet::Metamask);
-  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Metamask);
+  SetDefaultWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
+  EXPECT_EQ(GetDefaultWallet(),
+            mojom::DefaultWallet::BraveWalletPreferExtension);
 
-  SetDefaultWallet(mojom::DefaultWallet::Ask);
-  EXPECT_EQ(GetDefaultWallet(), mojom::DefaultWallet::Ask);
+  // Setting the same value twice is ok
+  // SetDefaultWallet will check that the observer is not fired.
+  SetDefaultWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
+  EXPECT_EQ(GetDefaultWallet(),
+            mojom::DefaultWallet::BraveWalletPreferExtension);
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {

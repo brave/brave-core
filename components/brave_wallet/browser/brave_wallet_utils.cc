@@ -704,11 +704,13 @@ std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
 
 mojom::DefaultWallet GetDefaultWallet(PrefService* prefs) {
   return static_cast<brave_wallet::mojom::DefaultWallet>(
-      prefs->GetInteger(kDefaultWallet));
+      prefs->GetInteger(kDefaultWallet2));
 }
 
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
-  prefs->SetInteger(kDefaultWallet, static_cast<int>(default_wallet));
+  // We should not be using this value anymore
+  DCHECK(default_wallet != mojom::DefaultWallet::AskDeprecated);
+  prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
 }
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(

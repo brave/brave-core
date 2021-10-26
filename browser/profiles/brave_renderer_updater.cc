@@ -26,13 +26,13 @@ BraveRendererUpdater::BraveRendererUpdater(Profile* profile)
     : profile_(profile), is_wallet_allowed_for_context_(false) {
   PrefService* pref_service = profile->GetPrefs();
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  brave_wallet_web3_provider_.Init(kDefaultWallet, pref_service);
+  brave_wallet_web3_provider_.Init(kDefaultWallet2, pref_service);
 #endif
 
   pref_change_registrar_.Init(pref_service);
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   pref_change_registrar_.Add(
-      kDefaultWallet,
+      kDefaultWallet2,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
 #endif
@@ -93,14 +93,21 @@ void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  bool use_brave_web3_provider =
-      (static_cast<brave_wallet::mojom::DefaultWallet>(
-           brave_wallet_web3_provider_.GetValue()) ==
-       brave_wallet::mojom::DefaultWallet::BraveWallet) &&
+  auto default_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
+      brave_wallet_web3_provider_.GetValue());
+
+  bool brave_use_native_wallet =
+      (default_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
+       default_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet) &&
       is_wallet_allowed_for_context_;
 
+  bool allow_overwrite_window_ethereum =
+      default_wallet ==
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
+
   (*renderer_configuration)
-      ->SetConfiguration(
-          brave::mojom::DynamicParams::New(use_brave_web3_provider));
+      ->SetConfiguration(brave::mojom::DynamicParams::New(
+          brave_use_native_wallet, allow_overwrite_window_ethereum));
 #endif
 }

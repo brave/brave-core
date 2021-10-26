@@ -24,7 +24,8 @@ namespace brave_wallet {
 
 class BraveWalletJSHandler : public mojom::EventsListener {
  public:
-  explicit BraveWalletJSHandler(content::RenderFrame* render_frame);
+  explicit BraveWalletJSHandler(content::RenderFrame* render_frame,
+                                bool allow_overwrite_window_ethereum);
   ~BraveWalletJSHandler() override;
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
@@ -143,6 +144,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                     bool success);
 
   content::RenderFrame* render_frame_;
+  bool allow_overwrite_window_ethereum_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_;

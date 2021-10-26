@@ -60,10 +60,9 @@ namespace brave_wallet {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
-      kDefaultWallet,
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? brave_wallet::mojom::DefaultWallet::BraveWallet
-                           : brave_wallet::mojom::DefaultWallet::Ask));
+      kDefaultWallet2,
+      static_cast<int>(
+          brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
 
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
 
@@ -97,9 +96,12 @@ void RegisterProfilePrefsForMigration(
   // Added 09/2021
   registry->RegisterIntegerPref(
       kBraveWalletWeb3ProviderDeprecated,
-      static_cast<int>(brave_wallet::IsNativeWalletEnabled()
-                           ? mojom::DefaultWallet::BraveWallet
-                           : mojom::DefaultWallet::Ask));
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+
+  // Added 25/10/2021
+  registry->RegisterIntegerPref(
+      kDefaultWalletDeprecated,
+      static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
 }
 
 void ClearProfilePrefs(PrefService* prefs) {
@@ -122,17 +124,22 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
     mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
         prefs->GetInteger(kBraveWalletWeb3ProviderDeprecated));
-    mojom::DefaultWallet default_wallet = provider;
-    if (IsNativeWalletEnabled() &&
-        (provider == mojom::DefaultWallet::Ask ||
-         provider == mojom::DefaultWallet::CryptoWallets)) {
-      default_wallet = mojom::DefaultWallet::BraveWallet;
-    } else if (!IsNativeWalletEnabled() &&
-               provider == mojom::DefaultWallet::BraveWallet) {
-      default_wallet = mojom::DefaultWallet::Ask;
-    }
-    prefs->SetInteger(kDefaultWallet, static_cast<int>(default_wallet));
+    mojom::DefaultWallet default_wallet =
+        mojom::DefaultWallet::BraveWalletPreferExtension;
+    if (provider == mojom::DefaultWallet::None)
+      default_wallet = mojom::DefaultWallet::None;
+    prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
     prefs->ClearPref(kBraveWalletWeb3ProviderDeprecated);
+  }
+  if (prefs->HasPrefPath(kDefaultWalletDeprecated)) {
+    mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(
+        prefs->GetInteger(kDefaultWalletDeprecated));
+    mojom::DefaultWallet default_wallet =
+        mojom::DefaultWallet::BraveWalletPreferExtension;
+    if (provider == mojom::DefaultWallet::None)
+      default_wallet = mojom::DefaultWallet::None;
+    prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
+    prefs->ClearPref(kDefaultWalletDeprecated);
   }
 }
 
