@@ -454,6 +454,12 @@ extension UIWindowScene {
     var browserViewController: BrowserViewController? {
         return browserViewControllers.first
     }
+    
+    /// Returns window protection for the window scene
+    /// Used to handle biometric operations inside some controller
+    var windowProtection: WindowProtection? {
+        return windowProtection
+    }
 }
 
 extension UIView {

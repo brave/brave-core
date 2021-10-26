@@ -68,6 +68,16 @@ class WindowProtection {
         }
     }
     
+    var isPassCodeAvailable: Bool {
+        var error: NSError?
+        if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
+           (error as? LAError)?.code == .passcodeNotSet {
+            return false
+        }
+
+        return true
+    }
+    
     init?(window: UIWindow) {
         guard let scene = window.windowScene else { return nil }
         protectedWindow = window
@@ -106,7 +116,7 @@ class WindowProtection {
         presentLocalAuthentication()
     }
     
-    private func updateVisibleStatusForForeground() {
+    private func updateVisibleStatusForForeground(_ determineLockWithPasscode: Bool = true) {
         var error: NSError?
         if !context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error),
            (error as? LAError)?.code == .passcodeNotSet {
@@ -114,9 +124,15 @@ class WindowProtection {
             isVisible = false
             return
         }
-        let isLocked = Preferences.Privacy.lockWithPasscode.value
-        isVisible = isLocked
-        if isLocked {
+        
+        if determineLockWithPasscode {
+            let isLocked = Preferences.Privacy.lockWithPasscode.value
+            isVisible = isLocked
+            if isLocked {
+                presentLocalAuthentication()
+            }
+        } else {
+            isVisible = true
             presentLocalAuthentication()
         }
     }
@@ -143,5 +159,14 @@ class WindowProtection {
                 }
             }
         }
+    }
+    
+    func presentAuthenticationForViewController(determineLockWithPasscode: Bool = true) {
+        if isVisible {
+            return
+        }
+        
+        context = LAContext()
+        updateVisibleStatusForForeground(determineLockWithPasscode)
     }
 }

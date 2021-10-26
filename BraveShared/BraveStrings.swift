@@ -728,6 +728,7 @@ extension Strings {
     public static let bookmarksMenuItem = NSLocalizedString("BookmarksMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Bookmarks", comment: "Title for bookmarks menu item")
     public static let historyMenuItem = NSLocalizedString("HistortMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "History", comment: "Title for history menu item")
     public static let settingsMenuItem = NSLocalizedString("SettingsMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Settings", comment: "Title for settings menu item")
+    public static let passwordsMenuItem = NSLocalizedString("PasswordsMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Passwords", comment: "Title for passwords menu item")
     public static let addToMenuItem = NSLocalizedString("AddToMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add Bookmark", comment: "Title for the button to add a new website bookmark.")
     public static let shareWithMenuItem = NSLocalizedString("ShareWithMenuItem", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Share with...", comment: "Title for sharing url menu item")
     public static let openExternalAppURLTitle = NSLocalizedString("ExternalAppURLAlertTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Allow link to switch apps?", comment: "Allow link to switch apps?")
@@ -2315,6 +2316,83 @@ extension Strings {
             NSLocalizedString("history.historyPrivateModeOnlyStateTitle", tableName: "BraveShared", bundle: .braveShared,
                               value: "History is not available in Private Browsing Only mode.",
                               comment: "Title which is displayed on History screen as a overlay when Private Browsing Only enabled")
+    }
+}
+
+extension Strings {
+    public struct Login {
+        public static let loginListEmptyScreenTitle =
+            NSLocalizedString("login.loginListEmptyScreenTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "No logins found",
+                              comment: "The message displayed on the password list screen when there is not password found")
+        public static let loginListNavigationTitle =
+            NSLocalizedString("login.loginListNavigationTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Logins & Passwords",
+                              comment: "Title for navigation bar of the login list screen")
+        public static let loginListSearchBarPlaceHolderTitle =
+            NSLocalizedString("login.loginListSearchBarPlaceHolderTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Filter",
+                              comment: "The text for placeholder inside search bar in login list")
+        public static let loginListSavedLoginsHeaderTitle =
+            NSLocalizedString("login.loginListSavedLoginsHeaderTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Saved Logins",
+                              comment: "The header title displayed over the login list")
+        public static let loginInfoDetailsHeaderTitle =
+            NSLocalizedString("login.loginInfoDetailsHeaderTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Login Details",
+                              comment: "The header title displayed over the details of login entry")
+        public static let loginInfoDetailsWebsiteFieldTitle =
+            NSLocalizedString("login.loginInfoDetailsWebsiteFieldTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Website",
+                              comment: "Title for the website field in password detail page")
+        public static let loginInfoDetailsUsernameFieldTitle =
+            NSLocalizedString("login.loginInfoDetailsUsernameFieldTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Username",
+                              comment: "Title for the username field in password detail page")
+        public static let loginInfoDetailsPasswordFieldTitle =
+            NSLocalizedString("login.loginInfoDetailsPasswordFieldTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Password",
+                              comment: "Title for the password field in password detail page")
+        public static let loginEntryDeleteAlertMessage =
+            NSLocalizedString("login.loginEntryDeleteAlertMessage",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Saved Login will be removed permanently.",
+                              comment: "The message displayed in alert when a login entry deleted")
+        public static let loginInfoCreatedHeaderTitle =
+            NSLocalizedString("login.loginInfoCreatedHeaderTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Created %@",
+                              comment: "The message displayed in alert when a login entry deleted")
+        public static let loginInfoSetPasscodeAlertTitle =
+            NSLocalizedString("login.loginInfoSetPasscodeAlertTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Set a Passcode",
+                              comment: "The title displayed in alert when a user needs to set passcode")
+        public static let loginInfoSetPasscodeAlertDescription =
+            NSLocalizedString("login.loginInfoSetPasscodeAlertDescription",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "To see passwords, you must first set a passcode on your device.",
+                              comment: "The message displayed in alert when a user needs to set a passcode")
     }
 }
 

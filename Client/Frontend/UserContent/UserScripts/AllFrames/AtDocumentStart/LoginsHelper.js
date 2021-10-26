@@ -52,6 +52,11 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
 
     receiveMessage: function (msg) {
       var request = this._takeRequest(msg);
+      if (!request) {
+        log("Invalid Request");
+        return;
+      }
+        
       switch (msg.name) {
         case "RemoteLogins:loginsFound": {
           request.promise.resolve({ form: request.form,
@@ -640,10 +645,52 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
 
   window.addEventListener("submit", function(event) {
     try {
+      for (var i = 0; i < document.forms.length; i++) {
+        findLogins(document.forms[i]);
+      }
+      
       LoginManagerContent._onFormSubmit(event.target);
     } catch(ex) {
       // Eat errors to avoid leaking them to the page
       log(ex);
+    }
+  });
+    
+  window.addEventListener("pagehide", function(event) {
+    if (event.persisted) {
+      return;
+    }
+    
+    var isSubmittedForm = (form) => {
+      var fields = LoginManagerContent._getFormFields(form, false);
+      if (!fields[0] || !fields[1]) {
+        return false;
+      }
+      
+      var formOrigin = LoginUtils._getPasswordOrigin();
+      var actionOrigin = LoginUtils._getActionOrigin(form);
+      if (actionOrigin == null) {
+        return false;
+      }
+      
+      for (var field of fields) {
+        if (field && (!field.value || field.value.length == 0)) {
+          return false;
+        }
+      }
+      
+      return true;
+    };
+    
+    for (var form of document.forms) {
+      if (isSubmittedForm(form)) {
+        try {
+          LoginManagerContent._onFormSubmit(form);
+        } catch (ex) {
+          // Eat errors to avoid leaking them to the page
+          log(ex);
+        }
+      }
     }
   });
 
@@ -651,6 +698,13 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
     this.inject = function(msg) {
       try {
         LoginManagerContent.receiveMessage(msg);
+        for (var frame of document.querySelectorAll('iframe')) {
+          try {
+            frame.contentWindow.__firefox__.logins.inject(msg);
+          } catch(ex) {
+            log(ex);
+          }
+        }
       } catch(ex) {
         // Eat errors to avoid leaking them to the page
         // alert(ex);

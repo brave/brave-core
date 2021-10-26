@@ -58,6 +58,10 @@ class MockMalformableLogin: LoginData {
         // Not used for this mock
         return true
     }
+    
+    func update(password: String, username: String) {
+        // Not used for this mock
+    }
 }
 
 private let MainLoginColumns = "guid, username, password, hostname, httpRealm, formSubmitURL, usernameField, passwordField"
