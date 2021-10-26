@@ -135,6 +135,7 @@ function Container (props: Props) {
     exchangeRate,
     fromAmount,
     fromAsset,
+    isFetchingSwapQuote,
     isSwapButtonDisabled,
     orderExpiration,
     orderType,
@@ -635,6 +636,7 @@ function Container (props: Props) {
             buyAssetOptions={WyreAccountAssetOptions}
             sendAssetOptions={sendAssetOptions}
             swapAssetOptions={swapAssetOptions}
+            isFetchingSwapQuote={isFetchingSwapQuote}
             isSwapSubmitDisabled={isSwapButtonDisabled}
             customSlippageTolerance={customSlippageTolerance}
             onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}

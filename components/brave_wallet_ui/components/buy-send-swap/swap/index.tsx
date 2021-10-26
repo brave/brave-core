@@ -10,15 +10,18 @@ import {
   ToOrFromType,
   SwapValidationErrorType
 } from '../../../constants/types'
-import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 
 // Styled Components
 import {
   StyledWrapper,
   ArrowDownIcon,
-  ArrowButton
+  ArrowButton,
+  SwapNavButton,
+  SwapButtonText,
+  SwapButtonLoader
 } from './style'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 export interface Props {
   toAsset: AccountAssetOptionType
@@ -31,6 +34,7 @@ export interface Props {
   orderType: OrderTypes
   fromAssetBalance: string
   toAssetBalance: string
+  isFetchingQuote: boolean
   isSubmitDisabled: boolean
   validationError?: SwapValidationErrorType
   customSlippageTolerance: string
@@ -59,6 +63,7 @@ function Swap (props: Props) {
     orderExpiration,
     fromAssetBalance,
     toAssetBalance,
+    isFetchingQuote,
     isSubmitDisabled,
     validationError,
     customSlippageTolerance,
@@ -156,12 +161,17 @@ function Swap (props: Props) {
         customSlippageTolerance={customSlippageTolerance}
         onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
-      <NavButton
+      <SwapNavButton
         disabled={isSubmitDisabled}
         buttonType='primary'
-        text={submitText}
-        onSubmit={onSubmitSwap}
-      />
+        onClick={onSubmitSwap}
+      >
+        {
+          isFetchingQuote
+          ? <SwapButtonLoader><LoaderIcon /></SwapButtonLoader>
+          : <SwapButtonText>{submitText}</SwapButtonText>
+        }
+      </SwapNavButton>
     </StyledWrapper>
   )
 }

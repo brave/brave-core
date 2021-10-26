@@ -60,6 +60,7 @@ export default function useSwap (
   const [filteredAssetList, setFilteredAssetList] = React.useState<AccountAssetOptionType[]>(swapAssetOptions)
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     setFromAsset(swapAssetOptions[0])
@@ -297,6 +298,7 @@ export default function useSwap (
     /**
      * STEP 5: Fetch the swap quote asynchronously.
      */
+    setIsLoading(true)
     fetchSwapQuote({
       fromAsset: fromAssetNext,
       fromAssetAmount: fromAmountWei,
@@ -308,6 +310,9 @@ export default function useSwap (
       full
     })
   }, [selectedAccount, selectedNetwork, fromAsset, toAsset])
+
+  // Set isLoading to false as soon as quote has been fetched.
+  React.useEffect(() => setIsLoading(false), [quote])
 
   const onSwapQuoteRefresh = () => onSwapParamsChange(
     { toOrFrom: 'from' },
@@ -420,11 +425,12 @@ export default function useSwap (
   }
 
   const isSwapButtonDisabled = React.useMemo(() => (
+    isLoading ||
     quote === undefined ||
     (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
     toWei(toAmount, toAsset.asset.decimals) === '0' ||
     toWei(fromAmount, fromAsset.asset.decimals) === '0'
-  ), [toAmount, fromAmount, toAsset, fromAsset, quote, swapValidationError])
+  ), [toAmount, fromAmount, toAsset, fromAsset, quote, swapValidationError, isLoading])
 
   const onSelectTransactAsset = (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
@@ -465,6 +471,7 @@ export default function useSwap (
     filteredAssetList,
     fromAmount,
     fromAsset,
+    isFetchingSwapQuote: isLoading,
     isSwapButtonDisabled,
     orderExpiration,
     orderType,

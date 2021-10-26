@@ -137,6 +137,7 @@ function Container (props: Props) {
     filteredAssetList,
     fromAmount,
     fromAsset,
+    isFetchingSwapQuote,
     isSwapButtonDisabled,
     orderExpiration,
     orderType,
@@ -725,6 +726,7 @@ function Container (props: Props) {
                 orderType={orderType}
                 orderExpiration={orderExpiration}
                 slippageTolerance={slippageTolerance}
+                isFetchingQuote={isFetchingSwapQuote}
                 isSubmitDisabled={isSwapButtonDisabled}
                 validationError={swapValidationError}
                 fromAssetBalance={fromAssetBalance}
