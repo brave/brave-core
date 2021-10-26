@@ -9,6 +9,7 @@
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
 class Profile;
+class TestBraveWalletHandler;
 
 class BraveWalletHandler : public settings::SettingsPageUIHandler {
  public:
@@ -16,12 +17,17 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   ~BraveWalletHandler() override = default;
 
  private:
+  friend TestBraveWalletHandler;
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
   void GetAutoLockMinutes(base::Value::ConstListView args);
+  void RemoveEthereumChain(base::Value::ConstListView args);
+  void GetCustomNetworksList(base::Value::ConstListView args);
+  void AddEthereumChain(base::Value::ConstListView args);
+
   BraveWalletHandler(const BraveWalletHandler&) = delete;
   BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
 };

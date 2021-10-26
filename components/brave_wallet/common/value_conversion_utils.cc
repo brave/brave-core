@@ -51,6 +51,7 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
   }
   const base::Value* nativeCurrencyValue =
       params_dict->FindDictKey("nativeCurrency");
+  chain.decimals = 0;
   if (nativeCurrencyValue) {
     const std::string* symbol_name = nativeCurrencyValue->FindStringKey("name");
     if (symbol_name) {
