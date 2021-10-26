@@ -216,7 +216,7 @@ class BraveNewsAddSourceViewController: UITableViewController {
             let xpath = "//head//link[contains(@type, 'application/rss+xml') or contains(@type, 'application/atom+xml') or contains(@type, 'application/json')]"
             for link in root.xpath(xpath) {
                 guard let href = link["href"], let url = URL(string: href, relativeTo: url),
-                      url.isWebPage(includeDataURIs: false) else {
+                      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) else {
                     continue
                 }
                 feeds.append(.init(title: link["title"], url: url))

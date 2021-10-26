@@ -27,18 +27,24 @@ class MetadataParserHelper: TabEventHandler {
         // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
         // as possible.
         guard let webView = tab.webView,
-            let url = webView.url, url.isWebPage(includeDataURIs: false), !url.isLocal else {
-            return
+            let url = webView.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) else {
+                // TabEvent.post(.pageMetadataNotAvailable, for: tab)
+                tab.pageMetadata = nil
+                return
         }
 
         webView.evaluateSafeJavaScript(functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()", sandboxed: false, asFunction: false) { (result, error) in
             guard error == nil else {
+                // TabEvent.post(.pageMetadataNotAvailable, for: tab)
+                tab.pageMetadata = nil
                 return
             }
             
             guard let dict = result as? [String: Any],
                   let data = try? JSONSerialization.data(withJSONObject: dict, options: []) else {
                 log.debug("Page contains no metadata!")
+//                TabEvent.post(.pageMetadataNotAvailable, for: tab)
+                tab.pageMetadata = nil
                 return
             }
             

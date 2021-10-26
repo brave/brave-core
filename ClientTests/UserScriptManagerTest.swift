@@ -10,7 +10,7 @@ class UserScriptManagerTest: XCTestCase {
     func testisMessageHandlerTokenMissing() {
         var body: [String: Any] = [
             "data": 1,
-            "securitytoken": UserScriptManager.messageHandlerToken.uuidString
+            "securitytoken": UserScriptManager.messageHandlerTokenString
         ]
         XCTAssertFalse(UserScriptManager.isMessageHandlerTokenMissing(in: body))
 

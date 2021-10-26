@@ -2,40 +2,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import GCDWebServers
+import BraveUI
 
-/// Handles the page request to about/home/ so that the page loads and does not throw an error (404) on initialization
-struct AboutHomeHandler {
-    static func register(_ webServer: WebServer) {
-        webServer.registerHandlerForMethod("GET", module: "about", resource: "home") { (request: GCDWebServerRequest?) -> GCDWebServerResponse? in
-            return GCDWebServerResponse(statusCode: 200)
+class AboutHomeHandler: InternalSchemeResponse {
+    static let path = "about/home"
+
+    // Return a blank page, the webview delegate will look at the current URL and load the home panel based on that
+    func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+        guard let url = request.url else { return nil }
+        let response = InternalSchemeHandler.response(forUrl: url)
+        let bg = UIColor.braveBackground.toHexString()
+        // Blank page with a color matching the background of the panels which is displayed for a split-second until the panel shows.
+        let html = """
+            <!DOCTYPE html>
+            <html>
+              <body style='background-color:\(bg)'></body>
+            </html>
+        """
+        guard let data = html.data(using: .utf8) else {
+            return nil
         }
+        return (response, data)
     }
 }
 
-/// Handles the page request to about/license/ so that the page loads and does not throw an error (404) on initialization
-struct AboutLicenseHandler {
-    static func register(_ webServer: WebServer) {
-        webServer.registerHandlerForMethod("GET", module: "about", resource: "license") { (request: GCDWebServerRequest?) -> GCDWebServerResponse? in
-            let path = Bundle.main.path(forResource: "Licenses", ofType: "html")
-            do {
-                let html = try String(contentsOfFile: path!, encoding: .utf8)
-                return GCDWebServerDataResponse(html: html)
-            } catch {
-                print("Unable to register webserver \(error)")
-            }
-            return GCDWebServerResponse(statusCode: 200)
+class AboutLicenseHandler: InternalSchemeResponse {
+    static let path = "about/license"
+    
+    func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+        guard let url = request.url else { return nil }
+        let response = InternalSchemeHandler.response(forUrl: url)
+        guard let path = Bundle.main.path(forResource: "Licenses", ofType: "html"), let html = try? String(contentsOfFile: path, encoding: .utf8),
+            let data = html.data(using: .utf8) else {
+                return nil
         }
-    }
-}
-
-extension GCDWebServerDataResponse {
-    convenience init(XHTML: String) {
-        guard let data = XHTML.data(using: .utf8, allowLossyConversion: false) else {
-            assertionFailure("GCDWebServerDataResponse init, data is nil")
-            self.init()
-            return
-        }
-        self.init(data: data, contentType: "application/xhtml+xml; charset=utf-8")
+        return (response, data)
     }
 }

@@ -72,13 +72,20 @@ extension BrowserViewController {
     private func presentEducationalProductNotifications() {
         if Preferences.DebugFlag.skipEduPopups == true { return }
         
+        var isAboutHomeUrl = false
+        if let selectedTab = tabManager.selectedTab,
+           let url = selectedTab.url,
+           let internalURL = InternalURL(url) {
+            isAboutHomeUrl = internalURL.isAboutHomeURL
+        }
+        
         guard let selectedTab = tabManager.selectedTab,
               !benchmarkNotificationPresented,
               !Preferences.AppState.backgroundedCleanly.value,
               !topToolbar.inOverlayMode,
               !isTabTrayActive,
               selectedTab.webView?.scrollView.isDragging == false,
-              tabManager.selectedTab?.url?.isAboutHomeURL == false else {
+              isAboutHomeUrl == false else {
             return
         }
         

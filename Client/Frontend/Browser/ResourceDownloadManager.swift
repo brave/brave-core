@@ -58,7 +58,7 @@ class ResourceDownloadManager: TabContentScript {
     }
     
     static func downloadResource(for tab: Tab, url: URL) {        
-        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        let token = UserScriptManager.securityTokenString
 
         tab.webView?.evaluateSafeJavaScript(functionName: "D\(token).download", args: [url.absoluteString], sandboxed: false) { _, error in
             if let error = error {

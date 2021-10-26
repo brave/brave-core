@@ -1203,16 +1203,26 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
 
     func updateInContentHomePanel(_ url: URL?) {
+        let isAboutHomeURL = { () -> Bool in
+            if let url = url {
+                return InternalURL(url)?.isAboutHomeURL == true
+            }
+            return false
+        }()
+        
         if !topToolbar.inOverlayMode {
             guard let url = url else {
                 hideActiveNewTabPageController()
                 return
             }
-            if url.isAboutHomeURL && !url.isErrorPageURL {
+            
+            if isAboutHomeURL {
                 showNewTabPageController()
-            } else if !url.isLocalUtility || url.isReaderModeURL || url.isErrorPageURL {
+            } else if !url.absoluteString.hasPrefix("\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)") {
                 hideActiveNewTabPageController(url.isReaderModeURL)
             }
+        } else if isAboutHomeURL {
+            showNewTabPageController()
         }
     }
     
@@ -1329,7 +1339,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             guard tab === tabManager.selectedTab,
                   // `WKWebView.estimatedProgress` is a `Double` type so it must be casted as such
                 let progress = change?[.newKey] as? Double else { break }
-            if webView.url?.isLocalUtility == false {
+            if let url = webView.url, !InternalURL.isValid(url: url) {
                 topToolbar.updateProgressBar(Float(progress))
             } else {
                 topToolbar.hideProgressBar()
@@ -1418,7 +1428,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             
             guard let serverTrust = tab.webView?.serverTrust else {
                 if let url = tab.webView?.url ?? tab.url {
-                    if url.isAboutHomeURL || url.isAboutURL || url.scheme == "about" {
+                    if InternalURL.isValid(url: url),
+                        let internalUrl = InternalURL(url),
+                        (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
+                        
                         tab.secureContentState = .localHost
                         if tabManager.selectedTab === tab {
                             topToolbar.secureContentState = .localHost
@@ -1426,7 +1439,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         break
                     }
                     
-                    if url.isErrorPageURL {
+                    if InternalURL.isValid(url: url),
+                       let internalUrl = InternalURL(url),
+                        internalUrl.isErrorPage {
+                        
                         if ErrorPageHelper.certificateError(for: url) != 0 {
                             tab.secureContentState = .insecure
                             if tabManager.selectedTab === tab {
@@ -1436,7 +1452,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         }
                     }
                     
-                    if url.isReaderModeURL || url.isLocal {
+                    if url.isReaderModeURL || InternalURL.isValid(url: url) {
                         tab.secureContentState = .unknown
                         if tabManager.selectedTab === tab {
                             topToolbar.secureContentState = .unknown
@@ -1861,7 +1877,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             // Whether to show search icon or + icon
             toolbar?.setSearchButtonState(url: url)
             
-            if !url.isErrorPageURL, !url.isAboutHomeURL, !url.isFileURL {
+            if (!InternalURL.isValid(url: url) || url.isReaderModeURL), !url.isFileURL {
                 // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
                 // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -1872,7 +1888,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 runScriptsOnWebView(webView)
                 
                 // Only add history of a url which is not a localhost url
-                if !tab.isPrivate, !PrivilegedRequest.isWebServerRequest(url: url) {
+                if !tab.isPrivate {
                     // The visitType is checked If it is "typed" or not to determine the History object we are adding
                     // should be synced or not. This limitation exists on browser side so we are aligning with this
                     if let visitType =
@@ -2024,7 +2040,7 @@ extension BrowserViewController: TabDelegate {
             tab.addContentScript(logins, name: LoginsHelper.name(), sandboxed: false)
         }
 
-        let errorHelper = ErrorPageHelper()
+        let errorHelper = ErrorPageHelper(certStore: profile.certStore)
         tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), sandboxed: false)
 
         let sessionRestoreHelper = SessionRestoreHelper(tab: tab)
@@ -2214,7 +2230,12 @@ extension BrowserViewController: SearchViewControllerDelegate {
     }
     
     func searchViewControllerAllowFindInPage() -> Bool {
-        return tabManager.selectedTab?.webView?.url?.isAboutHomeURL == false
+        if let url = tabManager.selectedTab?.webView?.url,
+           let internalURL = InternalURL(url),
+           internalURL.isAboutHomeURL {
+            return false
+        }
+        return true
     }
 }
 
@@ -2234,7 +2255,7 @@ extension BrowserViewController: TabManagerDelegate {
         if let tab = selected, let webView = tab.webView {
             updateURLBar()
             
-            if let url = tab.url, !url.isLocalUtility {
+            if let url = tab.url, !InternalURL.isValid(url: url) {
                 let previousEstimatedProgress = previous?.webView?.estimatedProgress ?? 1.0
                 let selectedEstimatedProgress = webView.estimatedProgress
                 
@@ -2253,6 +2274,31 @@ extension BrowserViewController: TabManagerDelegate {
             webView.snp.remakeConstraints { make in
                 make.left.right.top.bottom.equalTo(self.webViewContainer)
             }
+            
+            // This is a terrible workaround for a bad iOS 12 bug where PDF
+            // content disappears any time the view controller changes (i.e.
+            // the user taps on the tabs tray). It seems the only way to get
+            // the PDF to redraw is to either reload it or revisit it from
+            // back/forward list. To try and avoid hitting the network again
+            // for the same PDF, we revisit the current back/forward item and
+            // restore the previous scrollview zoom scale and content offset
+            // after a short 100ms delay. *facepalm*
+            //
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=1516524
+            if tab.mimeType == MIMEType.PDF {
+                let previousZoomScale = webView.scrollView.zoomScale
+                let previousContentOffset = webView.scrollView.contentOffset
+
+                if let currentItem = webView.backForwardList.currentItem {
+                    webView.go(to: currentItem)
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                    webView.scrollView.setZoomScale(previousZoomScale, animated: false)
+                    webView.scrollView.setContentOffset(previousContentOffset, animated: false)
+                }
+            }
+            
             webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.accessibilityIdentifier = "contentView"
             webView.accessibilityElementsHidden = false
@@ -2285,8 +2331,8 @@ extension BrowserViewController: TabManagerDelegate {
         
         let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
         
-        if let selected = selected,
-            let readerMode = selected.getContentScript(name: ReaderMode.name()) as? ReaderMode, !shouldShowPlaylistURLBarButton {
+        if let readerMode = selected?.getContentScript(name: ReaderMode.name()) as? ReaderMode,
+           !shouldShowPlaylistURLBarButton {
             topToolbar.updateReaderModeState(readerMode.state)
             if readerMode.state == .active {
                 showReaderModeBar(animated: false)
@@ -2294,7 +2340,7 @@ extension BrowserViewController: TabManagerDelegate {
                 hideReaderModeBar(animated: false)
             }
             
-            updatePlaylistURLBar(tab: selected, state: selected.playlistItemState, item: selected.playlistItem)
+            updatePlaylistURLBar(tab: selected, state: selected?.playlistItemState ?? .none, item: selected?.playlistItem)
         } else {
             topToolbar.updateReaderModeState(ReaderModeState.unavailable)
         }
@@ -2376,7 +2422,8 @@ extension BrowserViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         guard let parentTab = tabManager[webView] else { return nil }
 
-        guard navigationAction.isAllowed, shouldRequestBeOpenedAsPopup(navigationAction.request) else {
+        guard !navigationAction.isInternalUnprivileged,
+                shouldRequestBeOpenedAsPopup(navigationAction.request) else {
             print("Denying popup from request: \(navigationAction.request)")
             return nil
         }
@@ -2507,13 +2554,13 @@ extension BrowserViewController: WKUIDelegate {
         }
 
         if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-            ErrorPageHelper().showPage(error, forUrl: url, inWebView: webView)
+            ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
             // If the local web server isn't working for some reason (Firefox cellular data is
             // disabled in settings, for example), we'll fail to load the session restore URL.
             // We rely on loading that page to get the restore callback to reset the restoring
             // flag, so if we fail to load that page, reset it here.
-            if url.aboutComponent == "sessionrestore" {
+            if InternalURL(url)?.aboutComponent == "sessionrestore" {
                 tabManager.allTabs.filter { $0.webView == webView }.first?.restoring = false
             }
         }

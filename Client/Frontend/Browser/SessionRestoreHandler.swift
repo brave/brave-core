@@ -7,38 +7,65 @@ import WebKit
 import GCDWebServers
 import Shared
 
+private let apostropheEncoded = "%27"
+
+extension WKWebView {
+    // Use JS to redirect the page without adding a history entry
+    func replaceLocation(with url: URL) {
+        let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
+        evaluateSafeJavaScript(functionName: "location.replace", args: [safeUrl], sandboxed: true, escapeArgs: false, asFunction: true, completion: nil)
+        
+        evaluateJavaScript("location.replace('\(safeUrl)')", in: nil, in: .defaultClient, completionHandler: nil) //swiftlint:disable:this safe_javascript
+    }
+}
+
+func generateResponseThatRedirects(toUrl url: URL) -> (URLResponse, Data) {
+    var urlString: String
+    if InternalURL.isValid(url: url), let authUrl = InternalURL.authorize(url: url) {
+        urlString = authUrl.absoluteString
+    } else {
+        urlString = url.absoluteString
+    }
+
+    urlString = urlString.replacingOccurrences(of: "'", with: apostropheEncoded)
+    
+    let startTags = "<!DOCTYPE html><html><head><script>"
+    let endTags = "</script></head></html>"
+    let html = startTags + "location.replace('\(urlString)');" + endTags
+
+    let data = html.data(using: .utf8)!
+    let response = InternalSchemeHandler.response(forUrl: url)
+    return (response, data)
+}
+
 /// Handles requests to /about/sessionrestore to restore session history.
-struct SessionRestoreHandler {
-    static func register(_ webServer: WebServer) {
-        // Register the handler that accepts /about/sessionrestore?history=...&currentpage=... requests.
-        webServer.registerHandlerForMethod("GET", module: "about", resource: "sessionrestore") { request in
-            
-            // Session Restore should only ever be called from a privileged request
-            // This is because we need to inject the `RESTORE_TOKEN` into the page.
-            // Therefore, we don't want to leak it to a malicious page
-            guard let query = request?.query,
-                      query[PrivilegedRequest.key] == PrivilegedRequest.token else {
-                return GCDWebServerResponse(statusCode: 404)
-            }
-            
-            if let sessionRestorePath = Bundle.main.path(forResource: "SessionRestore", ofType: "html") {
-                do {
-                    var sessionRestoreString = try String(contentsOfFile: sessionRestorePath)
+class SessionRestoreHandler: InternalSchemeResponse {
+    static let path = "sessionrestore"
 
-                    defer {
-                        NotificationCenter.default.post(name: .didRestoreSession, object: self)
-                    }
+    func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+        guard let _url = request.url, let url = InternalURL(_url) else { return nil }
 
-                    let securityToken = UserScriptManager.messageHandlerToken.uuidString
-                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SECURITY_TOKEN%", with: securityToken, options: .literal)
-                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SESSION_RESTORE_KEY%", with: PrivilegedRequest.key, options: .literal)
-                    sessionRestoreString = sessionRestoreString.replacingOccurrences(of: "%SESSION_RESTORE_TOKEN%", with: PrivilegedRequest.token, options: .literal)
-
-                    return GCDWebServerDataResponse(html: sessionRestoreString)
-                } catch _ {}
-            }
-
-            return GCDWebServerResponse(statusCode: 404)
+        // Handle the 'url='query param
+        if let urlParam = url.extractedUrlParam {
+            return generateResponseThatRedirects(toUrl: urlParam)
         }
+
+        // From here on, handle 'history=' query param
+        let response = InternalSchemeHandler.response(forUrl: url.url)
+        guard let sessionRestorePath = Bundle.main.path(forResource: "SessionRestore", ofType: "html"),
+              var html = try? String(contentsOfFile: sessionRestorePath) else {
+            assert(false)
+            return nil
+        }
+        
+        html = html.replacingOccurrences(of: "%INSERT_UUID_VALUE%", with: InternalURL.uuid)
+        html = html.replacingOccurrences(of: "%security_token%", with: UserScriptManager.securityTokenString)
+        
+        guard let data = html.data(using: .utf8) else {
+            assert(false)
+            return nil
+        }
+
+        return (response, data)
     }
 }

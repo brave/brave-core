@@ -54,7 +54,7 @@ class ClientTests: XCTestCase {
         let expectation = self.expectation(description: "Validate host for \(host)")
         let port = WebServer.sharedInstance.port
         
-        var request = URLRequest(url: URL(string: "http://\(host):\(port)/about/license")!)
+        var request = URLRequest(url: URL(string: "http://\(host):\(port)/reader-mode/page?url=https%3A%2F%2Fbrave.com")!)
         var response: HTTPURLResponse?
         
         let username = WebServer.sharedInstance.credentials.user ?? ""

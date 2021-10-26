@@ -33,6 +33,7 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
             configuration.processPool = WKProcessPool()
             configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+            configuration.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
             return configuration
         }()
         
@@ -78,7 +79,7 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
     }
     
     private func setupScripts() {
-        let errorHelper = ErrorPageHelper()
+        let errorHelper = ErrorPageHelper(certStore: profile.certStore)
         addScript(errorHelper, for: ErrorPageHelper.name())
     }
     
@@ -176,7 +177,7 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
         }
 
         if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-            ErrorPageHelper().showPage(error, forUrl: url, inWebView: webView)
+            ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
         }
     }
     
