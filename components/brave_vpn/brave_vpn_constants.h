@@ -23,6 +23,20 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnTryAgain", IDS_BRAVE_VPN_TRY_AGAIN},
     {"braveVpnChooseAnotherServer", IDS_BRAVE_VPN_CHOOSE_ANOTHER_SERVER},
     {"braveVpnUnableConnectInfo", IDS_BRAVE_VPN_UNABLE_CONNECT_INFO},
+    {"braveVpnBuy", IDS_BRAVE_VPN_BUY},
+    {"braveVpnPurchased", IDS_BRAVE_VPN_HAS_PURCHASED},
+    {"braveVpnPoweredBy", IDS_BRAVE_VPN_POWERED_BY},
+    {"braveVpnSettings", IDS_BRAVE_VPN_SETTINGS},
+    {"braveVpnStatus", IDS_BRAVE_VPN_STATUS},
+    {"braveVpnExpires", IDS_BRAVE_VPN_EXPIRES},
+    {"braveVpnManageSubscription", IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION},
+    {"braveVpnContactSupport", IDS_BRAVE_VPN_CONTACT_SUPPORT},
+    {"braveVpnAbout", IDS_BRAVE_VPN_ABOUT},
+    {"braveVpnFeature1", IDS_BRAVE_VPN_FEATURE_1},
+    {"braveVpnFeature2", IDS_BRAVE_VPN_FEATURE_2},
+    {"braveVpnFeature3", IDS_BRAVE_VPN_FEATURE_3},
+    {"braveVpnFeature4", IDS_BRAVE_VPN_FEATURE_4},
+    {"braveVpnFeature5", IDS_BRAVE_VPN_FEATURE_5},
 };
 }  // namespace brave_vpn
 

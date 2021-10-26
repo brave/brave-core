@@ -47,15 +47,17 @@ handler.on(Actions.connectionStateChanged.getType(), async (store) => {
 })
 
 handler.on(Actions.initialize.getType(), async (store) => {
-  const [{ state }, { currentRegion }, { regions }] = await Promise.all([
+  const [{ state }, { currentRegion }, { regions }, { urls }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getConnectionState(),
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
-    getPanelBrowserAPI().serviceHandler.getAllRegions()
+    getPanelBrowserAPI().serviceHandler.getAllRegions(),
+    getPanelBrowserAPI().serviceHandler.getProductUrls()
   ])
 
   store.dispatch(Actions.initialized({
     currentRegion,
     regions,
+    productUrls: urls,
     connectionStatus: ((state === ConnectionState.CONNECT_FAILED)
     ? ConnectionState.DISCONNECTED : state) /* Treat connection failure on startup as disconnected */
   }))

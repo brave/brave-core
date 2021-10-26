@@ -5,7 +5,7 @@
 
 import { createAction } from 'redux-act'
 
-import { ConnectionState, Region } from '../api/panel_browser_api'
+import { ConnectionState, Region, ProductUrls } from '../api/panel_browser_api'
 
 export type ToggleRegionSelectorPayload = {
   isSelectingRegion: boolean
@@ -23,6 +23,7 @@ export type InitializedPayload = {
   currentRegion: Region
   regions: Array<Region>
   connectionStatus: ConnectionState
+  productUrls: ProductUrls
 }
 
 export const connect = createAction('connect')
