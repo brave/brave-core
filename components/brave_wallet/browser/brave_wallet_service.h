@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/containers/queue.h"
+#include "base/containers/circular_deque.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -90,8 +90,8 @@ class BraveWalletService : public KeyedService,
       const std::string& account,
       ResetEthereumPermissionCallback callback) override;
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
-  void GetPendingSignMessageRequest(
-      GetPendingSignMessageRequestCallback callback) override;
+  void GetPendingSignMessageRequests(
+      GetPendingSignMessageRequestsCallback callback) override;
   void NotifySignMessageRequestProcessed(bool approved, int id) override;
   void NotifySignMessageHardwareRequestProcessed(
       bool approved,
@@ -104,12 +104,7 @@ class BraveWalletService : public KeyedService,
 
   void RecordWalletUsage(base::Time wallet_last_used);
 
-  struct SignMessageRequest {
-    int id;
-    std::string address;
-    std::string message;
-  };
-  void AddSignMessageRequest(SignMessageRequest&& request,
+  void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
 
  private:
@@ -133,8 +128,8 @@ class BraveWalletService : public KeyedService,
       BraveWalletServiceDelegate::ImportInfo info,
       BraveWalletServiceDelegate::ImportError error);
 
-  base::queue<SignMessageRequest> sign_message_requests_;
-  base::queue<SignMessageRequestCallback> sign_message_callbacks_;
+  base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
+  base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   KeyringController* keyring_controller_;

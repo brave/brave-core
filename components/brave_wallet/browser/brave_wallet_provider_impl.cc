@@ -305,17 +305,18 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     return;
   }
 
-  std::string message_to_request = std::string(message.begin(), message.end());
+  auto request = mojom::SignMessageRequest::New(
+      sign_message_id_++, address, std::string(message.begin(), message.end()));
   if (keyring_controller_->IsHardwareAccount(address)) {
     brave_wallet_service_->AddSignMessageRequest(
-        {sign_message_id_++, address, std::move(message_to_request)},
+        std::move(request),
         base::BindOnce(
             &BraveWalletProviderImpl::OnHardwareSignMessageRequestProcessed,
             weak_factory_.GetWeakPtr(), std::move(callback), address,
             std::move(message)));
   } else {
     brave_wallet_service_->AddSignMessageRequest(
-        {sign_message_id_++, address, std::move(message_to_request)},
+        std::move(request),
         base::BindOnce(&BraveWalletProviderImpl::OnSignMessageRequestProcessed,
                        weak_factory_.GetWeakPtr(), std::move(callback), address,
                        std::move(message)));
