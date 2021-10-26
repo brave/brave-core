@@ -435,7 +435,8 @@ public class BytecodeTest {
                 StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
-                OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class));
+                OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
+                boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -497,7 +498,7 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
                 Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class));
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
