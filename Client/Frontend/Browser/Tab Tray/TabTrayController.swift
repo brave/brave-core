@@ -623,7 +623,12 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
         if !tab.displayTitle.isEmpty {
             tabCell.accessibilityLabel = tab.displayTitle
         } else {
-            tabCell.accessibilityLabel = tab.url?.aboutComponent ?? "" // If there is no title we are most likely on a home panel.
+            // If there is no title we are most likely on a home panel.
+            if let url = tab.url {
+                tabCell.accessibilityLabel = InternalURL(url)?.aboutComponent ?? ""
+            } else {
+                tabCell.accessibilityLabel = ""
+            }
         }
         tabCell.isAccessibilityElement = true
         tabCell.accessibilityHint = Strings.tabTrayCellCloseAccessibilityHint

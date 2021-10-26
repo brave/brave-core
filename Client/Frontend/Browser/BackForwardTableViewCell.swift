@@ -4,6 +4,7 @@
 
 import UIKit
 import Storage
+import Shared
 
 class BackForwardTableViewCell: UITableViewCell {
     
@@ -64,7 +65,7 @@ class BackForwardTableViewCell: UITableViewCell {
     var site: Site? {
         didSet {
             if let s = site {
-                if s.tileURL.isLocal {
+                if InternalURL.isValid(url: s.tileURL) {
                     faviconView.backgroundColor = .white
                     faviconView.image = FaviconFetcher.defaultFaviconImage
                     faviconView.clearMonogramFavicon()

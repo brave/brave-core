@@ -32,7 +32,7 @@ class PaymentRequestExtension: NSObject {
     
     init(rewards: BraveRewards, tab: Tab, paymentRequested: @escaping PaymentRequestHandler) {
         self.paymentRequested = paymentRequested
-        token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        token = UserScriptManager.securityTokenString
         self.tab = tab
         self.rewards = rewards
     }

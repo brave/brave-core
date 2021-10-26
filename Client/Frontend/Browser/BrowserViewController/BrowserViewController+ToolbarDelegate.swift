@@ -111,8 +111,8 @@ extension BrowserViewController: TopToolbarDelegate {
     func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
         // use the initial value for the URL so we can do proper pattern matching with search URLs
         var searchURL = self.tabManager.selectedTab?.currentInitialURL
-        if searchURL?.isErrorPageURL ?? true {
-            searchURL = topToolbar
+        if let url = searchURL, InternalURL.isValid(url: url) {
+            searchURL = url
         }
         if let query = profile.searchEngines.queryForSearchURL(searchURL as URL?) {
             return (query, true)
@@ -233,12 +233,14 @@ extension BrowserViewController: TopToolbarDelegate {
     
     func presentBraveShieldsViewController() {
         guard let selectedTab = tabManager.selectedTab, var url = selectedTab.url else { return }
-        if url.isErrorPageURL, let originalURL = url.originalURLFromErrorURL {
+        if let internalUrl = InternalURL(url), internalUrl.isErrorPage, let originalURL = internalUrl.originalURLFromErrorPage {
             url = originalURL
         }
+        
         if url.isLocalUtility {
             return
         }
+        
         let shields = ShieldsViewController(tab: selectedTab)
         shields.shieldsSettingsChanged = { [unowned self] _ in
             // Update the shields status immediately

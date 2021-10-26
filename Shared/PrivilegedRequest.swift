@@ -5,6 +5,8 @@
 
 import Foundation
 
+private let REQUEST_KEY_PRIVILEGED = "privileged"
+
 /**
  Request that is allowed to load local resources.
 
@@ -16,66 +18,40 @@ import Foundation
  Be careful: creating a privileged request for an arbitrary URL provided
  by the page will break this model. Only use a privileged request when
  needed, and when you are sure the URL is from a trustworthy source!
+
+ TODO: Setting REQUEST_KEY_PRIVILEGED is not reliable, as the code has various session restoration
+ scenarios where internal URLs are loaded directly from the webview (only native code can set a request to be a PrivilegedRequest).
+ This method should be deprecated in favor of the uuid key url param which is added to valid internal
+ urls. The code currently has non-internal URLs which are loaded as PrivilegedRequest(), but the value of
+ doing this is not clear as these requests should work fine as regular URLRequest().
  **/
 public class PrivilegedRequest: NSMutableURLRequest {
-    public static let key = "brave_prv"
-    public static let token = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-
-    override init(url URL: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {
-        let modifyURL = { (url: URL) -> URL in
-            if PrivilegedRequest.isWebServerRequest(url: url),
-               let url = PrivilegedRequest.store(url: url) {
-                return url
+    override init(url: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {
+        func getUrl() -> URL {
+            if InternalURL.isValid(url: url), let result = InternalURL.authorize(url: url) {
+                return result
             }
             return url
         }
-
-        super.init(url: modifyURL(URL), cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
+        super.init(url: getUrl(), cachePolicy: cachePolicy, timeoutInterval: timeoutInterval)
+        setPrivileged()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        setPrivileged()
     }
 
-    private static func store(url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return nil }
-
-        var queryItems = (components.queryItems ?? []).filter({ $0.name != PrivilegedRequest.key })
-        queryItems.append(URLQueryItem(name: PrivilegedRequest.key,
-                                       value: PrivilegedRequest.token))
-
-        components.queryItems = queryItems
-        return components.url
-    }
-
-    public static func removePrivileges(url: URL) -> URL? {
-        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-                let items = components.queryItems else { return url }
-
-        components.queryItems = items.filter { $0.name != PrivilegedRequest.key }
-        if let items = components.queryItems,
-            items.isEmpty {
-            components.queryItems = nil
-        }
-        return components.url
-    }
-
-    public static func isPrivileged(url: URL?) -> Bool {
-        if let value = url?.getQuery()[PrivilegedRequest.key],
-           !value.isEmpty,
-           value == PrivilegedRequest.token {
-            return true
-        }
-        return false
-    }
-
-    public static func isWebServerRequest(url: URL) -> Bool {
-        url.host == "localhost" && url.port == AppConstants.webServerPort
+    fileprivate func setPrivileged() {
+        URLProtocol.setProperty(true, forKey: REQUEST_KEY_PRIVILEGED, in: self)
     }
 }
 
 extension URLRequest {
     public var isPrivileged: Bool {
-        return PrivilegedRequest.isPrivileged(url: url)
+        if let url = url, let internalUrl = InternalURL(url) {
+            return internalUrl.isAuthorized
+        }
+        return URLProtocol.property(forKey: REQUEST_KEY_PRIVILEGED, in: self) != nil
     }
 }

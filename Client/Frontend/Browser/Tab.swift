@@ -102,12 +102,18 @@ class Tab: NSObject {
     var pendingScreenshot = false
     var url: URL? {
         didSet {
-            if let _url = url,
-               PrivilegedRequest.isWebServerRequest(url: _url),
-               PrivilegedRequest.isPrivileged(url: _url) {
-                url = PrivilegedRequest.removePrivileges(url: _url)
+            if let _url = url, let internalUrl = InternalURL(_url), internalUrl.isAuthorized {
+                url = URL(string: internalUrl.stripAuthorization)
             }
         }
+    }
+    var lastKnownUrl: URL? {
+        // Tab url can be nil when user cold starts the app
+        // thus we check session data for last known url
+        guard self.url != nil else {
+            return self.sessionData?.urls.last
+        }
+        return self.url
     }
     var mimeType: String?
     var isEditing: Bool = false
@@ -226,12 +232,15 @@ class Tab: NSObject {
             configuration!.userContentController = WKUserContentController()
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
-            if #available(iOS 14.0, *) {
-                configuration!.preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
-            }
+            configuration!.preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
             configuration!.allowsInlineMediaPlayback = true
             // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
+            configuration!.mediaTypesRequiringUserActionForPlayback = Preferences.General.mediaAutoPlays.value ? [] : .all
+            
+            if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
+                configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+            }
             let webView = TabWebView(frame: .zero, configuration: configuration!, isPrivate: isPrivate)
             webView.delegate = self
             configuration = nil
@@ -299,46 +308,29 @@ class Tab: NSObject {
         // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
         // to trigger the session restore via custom handlers
         if let sessionData = restorationData {
-            lastTitle = sessionData.title
-            var updatedURLs = [String]()
-            var previous = ""
+            restoring = true
             
-            for urlString in sessionData.history {
-                guard let url = URL(string: urlString) else { continue }
-                let updatedURL = WebServer.sharedInstance.updateLocalURL(url)!.absoluteString
-                guard let current = try? updatedURL.regexReplacePattern("https?:..", with: "") else { continue }
-                if current.count > 1 && current == previous {
-                    updatedURLs.removeLast()
-                }
-                previous = current
-                updatedURLs.append(updatedURL)
+            lastTitle = sessionData.title
+            
+            var urls = [String]()
+            for url in sessionData.history {
+                guard let url = URL(string: url) else { continue }
+                urls.append(url.absoluteString)
             }
             
             let currentPage = sessionData.historyIndex
             self.sessionData = nil
-            
             var jsonDict = [String: AnyObject]()
-            jsonDict[SessionData.Keys.history] = updatedURLs as AnyObject
-            jsonDict[SessionData.Keys.currentPage] = Int(currentPage) as AnyObject
-            
-            // We escape everything, except alpha-numeric characters
-            // This is because when `URLSearchParams` in `SessionRestore.html`
-            // attempts to parse the URL query parameters, it will not properly parse
-            // the unescaped characters.. Therefore, we will get a blank screen,
-            // after restoring multiple times, because SessionRestore can be double
-            // percent-escaped (percent-encoded multiple times)!
-            // Especially if the original URL already has escaped query parameters.
-            let characterSet: CharacterSet = .alphanumerics
-            
-            guard let escapedJSON = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: characterSet),
-                  let restoreURL = URL(string: "\(WebServer.sharedInstance.base)/about/sessionrestore?timestamp=\(Int(Date().timeIntervalSince1970))&history=\(escapedJSON)") else {
+            jsonDict["history"] = urls as AnyObject?
+            jsonDict["currentPage"] = currentPage as AnyObject?
+            guard let json = JSON(jsonDict).rawString()?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                 return
             }
-            
-            lastRequest = PrivilegedRequest(url: restoreURL) as URLRequest
-            
-            if let request = lastRequest {
+
+            if let restoreURL = URL(string: "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)?history=\(json)") {
+                let request = PrivilegedRequest(url: restoreURL) as URLRequest
                 webView.load(request)
+                lastRequest = request
             }
         } else if let request = lastRequest {
             webView.load(request)
@@ -394,11 +386,26 @@ class Tab: NSObject {
     var displayTitle: String {
         if let title = webView?.title, !title.isEmpty {
             return title.contains("localhost") ? "" : title
-        } else if webView?.url?.isAboutHomeURL == true || self.url?.isAboutHomeURL == true {
+        }
+        
+        // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
+        // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
+        if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, sessionData == nil, !restoring {
             return Strings.newTabTitle
         }
         
+        //lets double check the sessionData in case this is a non-restored new tab
+        if let firstURL = sessionData?.urls.first, sessionData?.urls.count == 1, InternalURL(firstURL)?.isAboutHomeURL ?? false {
+            return Strings.newTabTitle
+        }
+        
+        if let url = self.url, !InternalURL.isValid(url: url), let shownUrl = url.displayURL?.absoluteString {
+            return shownUrl
+        }
+        
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
+            // FF uses url?.displayURL?.absoluteString ??  ""
+            // but we can grab the title from `TabMO`
             if let title = url?.absoluteString {
                 return title
             } else if let tab = TabMO.get(fromId: id) {
@@ -415,7 +422,7 @@ class Tab: NSObject {
     }
 
     var displayFavicon: Favicon? {
-        if url?.isAboutHomeURL == true { return nil }
+        if let url = url, InternalURL(url)?.isAboutHomeURL == true { return nil }
         return favicons.max { $0.width! < $1.width! }
     }
 
@@ -476,9 +483,9 @@ class Tab: NSObject {
             }
         }
         
-        // Refreshing error, safe browsing warning pages.
-        if let originalUrlFromErrorUrl = webView?.url?.originalURLFromErrorURL {
-            webView?.load(URLRequest(url: originalUrlFromErrorUrl))
+        // If the current page is an error page, and the reload button is tapped, load the original URL
+        if let url = webView?.url, let internalUrl = InternalURL(url), let page = internalUrl.originalURLFromErrorPage {
+            webView?.replaceLocation(with: page)
             return
         }
 

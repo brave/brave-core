@@ -12,14 +12,15 @@ private let log = Logger.browserLogger
 class UserScriptManager {
 
     // Scripts can use this to verify the app –not js on the page– is calling into them.
-    public static let securityToken = UUID()
+    private static let securityToken = UUID()
     
     // Ensures that the message handlers cannot be invoked by the page scripts
-    public static let messageHandlerToken = UUID()
+    private static let messageHandlerToken = UUID()
     
     // String representation of messageHandlerToken
     public static let messageHandlerTokenString = UserScriptManager.messageHandlerToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
 
+    // String representation of securityToken
     public static let securityTokenString = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
 
     private weak var tab: Tab?
@@ -111,7 +112,7 @@ class UserScriptManager {
     }
     
     public static func isMessageHandlerTokenMissing(in body: [String: Any]) -> Bool {
-        guard let token = body["securitytoken"] as? String, token == UserScriptManager.messageHandlerToken.uuidString else {
+        guard let token = body["securitytoken"] as? String, token == UserScriptManager.messageHandlerTokenString else {
             return true
         }
         return false
@@ -142,7 +143,7 @@ class UserScriptManager {
             let name = (mainFrameOnly ? "MainFrame" : "AllFrames") + "AtDocument" + (injectionTime == .atDocumentStart ? "Start" : "End") + (sandboxed ? "Sandboxed" : "")
             if let path = Bundle.main.path(forResource: name, ofType: "js"),
                 let source = try? NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String {
-                let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.messageHandlerToken)'; \(source) })()"
+                let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.messageHandlerTokenString)'; \(source) })()"
 
                 if sandboxed {
                     return WKUserScript.createInDefaultContentWorld(source: wrappedSource, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly)
@@ -284,7 +285,7 @@ class UserScriptManager {
         }
         
         var alteredSource = source
-        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        let token = UserScriptManager.securityTokenString
         
         let replacements = [
             "$<Playlist>": "Playlist_\(token)",
@@ -326,7 +327,7 @@ class UserScriptManager {
         }
         
         var alteredSource = source
-        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        let token = UserScriptManager.securityTokenString
         
         let replacements = [
             "$<MediaBackgrounding>": "MediaBackgrounding_\(token)",
