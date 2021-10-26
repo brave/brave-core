@@ -265,12 +265,9 @@ function Accounts (props: Props) {
           {selectedAccount.tokens.map((item) =>
             <PortfolioAssetItem
               key={item.asset.contractAddress}
-              name={item.asset.name}
               assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
               fiatBalance={item.fiatBalance}
-              symbol={item.asset.symbol}
-              logo={item.asset.logo}
-              isVisible={item.asset.visible}
+              token={item.asset}
             />
           )}
           <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>

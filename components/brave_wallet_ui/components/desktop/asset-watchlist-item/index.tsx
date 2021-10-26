@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { Checkbox } from 'brave-ui'
 import { TokenInfo } from '../../../constants/types'
-
-// Options
-import { ETH } from '../../../options/asset-options'
+import { withPlaceholderIcon } from '../../shared'
 
 // Styled Components
 import {
@@ -43,10 +41,14 @@ const AssetWatchlistItem = (props: Props) => {
     onRemoveAsset(token)
   }
 
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+  }, [])
+
   return (
     <StyledWrapper>
       <NameAndIcon>
-        <AssetIcon icon={(token.symbol === 'ETH' ? ETH.asset.logo : token.logo) ?? ''} />
+        <AssetIconWithPlaceholder selectedAsset={token} />
         <NameAndSymbol>
           <AssetName>{token.name}</AssetName>
           <AssetSymbol>{token.symbol}</AssetSymbol>
