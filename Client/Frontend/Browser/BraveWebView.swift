@@ -8,6 +8,9 @@ import Shared
 import BraveShared
 
 class BraveWebView: WKWebView {
+    lazy var findInPageDelegate: WKWebViewFindStringFindDelegate? = {
+        return WKWebViewFindStringFindDelegate(webView: self)
+    }()
     
     /// Stores last position when the webview was touched on.
     private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
