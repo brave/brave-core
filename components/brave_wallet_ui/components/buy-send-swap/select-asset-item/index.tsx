@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { AccountAssetOptionType } from '../../../constants/types'
+import { withPlaceholderIcon } from '../../shared'
 // Styled Components
 import {
   StyledWrapper,
@@ -17,9 +18,13 @@ export interface Props {
 function SelectAssetItem (props: Props) {
   const { asset, onSelectAsset } = props
 
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 0, marginRight: 8 })
+  }, [])
+
   return (
     <StyledWrapper onClick={onSelectAsset}>
-      <AssetIcon icon={asset.asset.logo} />
+      <AssetIconWithPlaceholder selectedAsset={asset.asset} />
       <AssetAndBalance>
         <AssetName>{asset.asset.name}</AssetName>
         <AssetBalance>{asset.asset.symbol}</AssetBalance>

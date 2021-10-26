@@ -20,10 +20,10 @@ import { formatBalance } from '../../../../utils/format-balances'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
-import { ETH } from '../../../../options/asset-options'
+// import { ETH } from '../../../../options/asset-options'
 
 // Components
-import { SearchBar, BackButton } from '../../../shared'
+import { SearchBar, BackButton, withPlaceholderIcon } from '../../../shared'
 import {
   ChartControlBar,
   LineChart,
@@ -247,6 +247,10 @@ const Portfolio = (props: Props) => {
     return filteredAssetList.find((asset) => asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase())
   }, [filteredAssetList, selectedAsset])
 
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
+  }, [])
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -277,7 +281,7 @@ const Portfolio = (props: Props) => {
       ) : (
         <InfoColumn>
           <AssetRow>
-            <AssetIcon icon={selectedAsset.symbol === 'ETH' ? ETH.asset.logo : selectedAsset.logo} />
+            <AssetIconWithPlaceholder selectedAsset={selectedAsset} />
             <AssetNameText>{selectedAsset.name}</AssetNameText>
           </AssetRow>
           <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
@@ -358,12 +362,9 @@ const Portfolio = (props: Props) => {
             <PortfolioAssetItem
               action={selectAsset(item.asset)}
               key={item.asset.contractAddress}
-              name={item.asset.name}
               assetBalance={item.assetBalance}
               fiatBalance={item.fiatBalance}
-              symbol={item.asset.symbol}
-              logo={item.asset.logo}
-              isVisible={item.asset.visible}
+              token={item.asset}
             />
           )}
           <ButtonRow>

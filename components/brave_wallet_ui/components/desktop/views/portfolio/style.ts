@@ -111,8 +111,7 @@ export const DetailText = styled.span`
 // Ref: https://styled-components.com/docs/advanced#style-objects
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
-  height: 'auto',
-  marginRight: '12px'
+  height: 'auto'
 })
 
 export const SubDivider = styled.div`

@@ -13,6 +13,7 @@ import { ExpirationPresetOptions } from '../../../options/expiration-preset-opti
 import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { withPlaceholderIcon } from '../../shared'
 
 // Styled Components
 import {
@@ -203,6 +204,10 @@ function SwapInputComponent (props: Props) {
     validationError === 'insufficientEthBalance'
   )
 
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 4, marginRight: 8 })
+  }, [])
+
   return (
     <BubbleContainer>
       {componentType !== 'selector' &&
@@ -249,7 +254,7 @@ function SwapInputComponent (props: Props) {
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton onClick={onShowSelection}>
-                <AssetIcon icon={selectedAsset?.asset.logo} />
+                <AssetIconWithPlaceholder selectedAsset={selectedAsset?.asset} />
                 <AssetTicker>{selectedAsset?.asset.symbol}</AssetTicker>
                 <CaratDownIcon />
               </AssetButton>
