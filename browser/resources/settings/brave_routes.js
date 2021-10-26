@@ -30,6 +30,7 @@ export default function addBraveRoutes(r) {
   }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WALLET = r.BASIC.createSection('/wallet', 'wallet')
+    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks');
   }
 
   r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')

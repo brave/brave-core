@@ -14,6 +14,9 @@ export class BraveWalletBrowserProxy {
    getWeb3ProviderList () {}
    isNativeWalletEnabled() {}
    getAutoLockMinutes() {}
+   getCustomNetworksList () {}
+   removeEthereumChain (chainId) {}
+   addEthereumChain (value) {}
 }
 
 /**
@@ -27,6 +30,18 @@ export class BraveWalletBrowserProxyImpl {
   /** @override */
   setBraveWalletEnabled (value) {
     chrome.send('setBraveWalletEnabled', [value])
+  }
+
+  getCustomNetworksList () {
+    return sendWithPromise('getCustomNetworksList')
+  }
+  
+  removeEthereumChain (chainId) {
+    return sendWithPromise('removeEthereumChain', chainId)
+  }
+
+  addEthereumChain (payload) {
+    return sendWithPromise('addEthereumChain', payload)
   }
 
   /** @override */
