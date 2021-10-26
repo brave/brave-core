@@ -92,10 +92,10 @@ handler.on(WalletPageActions.importAccount.getType(), async (store: Store, paylo
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.importAccount(payload.accountName, payload.privateKey)
   if (result.success) {
-    store.dispatch(WalletPageActions.setImportError(false))
+    store.dispatch(WalletPageActions.setImportAccountError(false))
     store.dispatch(WalletPageActions.setShowAddModal(false))
   } else {
-    store.dispatch(WalletPageActions.setImportError(true))
+    store.dispatch(WalletPageActions.setImportAccountError(true))
   }
 })
 
@@ -103,10 +103,10 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Stor
   const keyringController = (await getAPIProxy()).keyringController
   const result = await keyringController.importAccountFromJson(payload.accountName, payload.password, payload.json)
   if (result.success) {
-    store.dispatch(WalletPageActions.setImportError(false))
+    store.dispatch(WalletPageActions.setImportAccountError(false))
     store.dispatch(WalletPageActions.setShowAddModal(false))
   } else {
-    store.dispatch(WalletPageActions.setImportError(true))
+    store.dispatch(WalletPageActions.setImportAccountError(true))
   }
 })
 
@@ -159,17 +159,24 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
   if (result.success) {
     await keyringController.notifyWalletBackupComplete()
   }
-  store.dispatch(WalletPageActions.setImportError(!result.success))
+  store.dispatch(WalletPageActions.setImportWalletError({
+    hasError: !result.success,
+    errorMessage: result.errorMessage
+  }))
 })
 
 handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromMetaMask(payload.password, payload.newPassword)
+  console.log(result)
   if (result.success) {
     await keyringController.notifyWalletBackupComplete()
   }
-  store.dispatch(WalletPageActions.setImportError(!result.success))
+  store.dispatch(WalletPageActions.setImportWalletError({
+    hasError: !result.success,
+    errorMessage: result.errorMessage
+  }))
 })
 
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, payload: NewUnapprovedTxAdded) => {

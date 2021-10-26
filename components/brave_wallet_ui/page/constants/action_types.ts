@@ -76,3 +76,8 @@ export type ImportFromExternalWalletPayloadType = {
   password: string,
   newPassword: string
 }
+
+export type ImportWalletErrorPayloadType = {
+  hasError: boolean,
+  errorMessage?: string
+}

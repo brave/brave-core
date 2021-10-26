@@ -22,13 +22,13 @@ void BraveWalletServiceDelegate::IsMetaMaskInstalled(
 void BraveWalletServiceDelegate::GetImportInfoFromCryptoWallets(
     const std::string& password,
     GetImportInfoCallback callback) {
-  std::move(callback).Run(false, ImportInfo());
+  std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
 void BraveWalletServiceDelegate::GetImportInfoFromMetaMask(
     const std::string& password,
     GetImportInfoCallback callback) {
-  std::move(callback).Run(false, ImportInfo());
+  std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
 }
 
 void BraveWalletServiceDelegate::HasEthereumPermission(

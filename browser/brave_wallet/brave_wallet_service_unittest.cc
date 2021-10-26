@@ -20,11 +20,13 @@
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -95,6 +97,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
   BraveWalletServiceUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~BraveWalletServiceUnitTest() override = default;
+
+  using ImportInfo = BraveWalletServiceDelegate::ImportInfo;
+  using ImportError = BraveWalletServiceDelegate::ImportError;
 
  protected:
   void SetUp() override {
@@ -263,6 +268,27 @@ class BraveWalletServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return default_wallet;
+  }
+
+  void SimulateOnGetImportInfo(const std::string& new_password,
+                               bool result,
+                               const ImportInfo& info,
+                               ImportError error,
+                               bool* success_out,
+                               std::string* error_message_out) {
+    base::RunLoop run_loop;
+    service_->OnGetImportInfo(
+        new_password,
+        base::BindLambdaForTesting(
+            [&](bool success,
+                const absl::optional<std::string>& error_message) {
+              *success_out = success;
+              if (error_message)
+                *error_message_out = *error_message;
+              run_loop.Quit();
+            }),
+        result, info, error);
+    run_loop.Run();
   }
 
   void CheckPasswordAndMnemonic(const std::string& new_password,
@@ -901,30 +927,38 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
 
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
-  {
-    base::RunLoop run_loop;
-    service_->OnGetImportInfo(new_password,
-                              base::BindLambdaForTesting([&](bool success) {
-                                EXPECT_FALSE(success);
-                                run_loop.Quit();
-                              }),
-                              false, BraveWalletServiceDelegate::ImportInfo());
-    run_loop.Run();
-  }
+  bool success;
+  std::string error_message;
+  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
+                          ImportError::kJsonError, &success, &error_message);
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
 
+  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
+                          ImportError::kPasswordError, &success,
+                          &error_message);
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
+
+  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
+                          ImportError::kInternalError, &success,
+                          &error_message);
+  EXPECT_FALSE(success);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
+
+  error_message.clear();
   const char* valid_mnemonic =
       "drip caution abandon festival order clown oven regular absorb evidence "
       "crew where";
+  SimulateOnGetImportInfo(new_password, true,
+                          ImportInfo({valid_mnemonic, false, 3}),
+                          ImportError::kNone, &success, &error_message);
+  EXPECT_TRUE(success);
+  EXPECT_TRUE(error_message.empty());
   {
-    base::RunLoop run_loop;
-    service_->OnGetImportInfo(
-        new_password, base::BindLambdaForTesting([&](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }),
-        true,
-        BraveWalletServiceDelegate::ImportInfo({valid_mnemonic, false, 3}));
-    run_loop.Run();
     bool is_valid_password = false;
     bool is_valid_mnemonic = false;
     CheckPasswordAndMnemonic(new_password, valid_mnemonic, &is_valid_password,
@@ -947,17 +981,12 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
       "balance rose almost area busy among bring hidden bind later capable "
       "pulp "
       "laundry";
+  SimulateOnGetImportInfo(new_password, true,
+                          ImportInfo({valid_legacy_mnemonic, true, 4}),
+                          ImportError::kNone, &success, &error_message);
+  EXPECT_TRUE(success);
+  EXPECT_TRUE(error_message.empty());
   {
-    base::RunLoop run_loop;
-    service_->OnGetImportInfo(new_password,
-                              base::BindLambdaForTesting([&](bool success) {
-                                EXPECT_TRUE(success);
-                                run_loop.Quit();
-                              }),
-                              true,
-                              BraveWalletServiceDelegate::ImportInfo(
-                                  {valid_legacy_mnemonic, true, 4}));
-    run_loop.Run();
     bool is_valid_password = false;
     bool is_valid_mnemonic = false;
     CheckPasswordAndMnemonic(new_password, valid_legacy_mnemonic,

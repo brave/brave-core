@@ -208,12 +208,19 @@ void BraveWalletServiceDelegateImpl::GetImportInfoFromCryptoWallets(
   DCHECK(context_);
 
 #if !BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
-  std::move(callback).Run(false, ImportInfo());
+  std::move(callback).Run(false, ImportInfo(), ImportError::kNone);
   return;
 #endif
 
-  if (password.empty() || !IsCryptoWalletsInstalledInternal()) {
-    std::move(callback).Run(false, ImportInfo());
+  if (password.empty()) {
+    VLOG(1) << "password is empty";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
+    return;
+  }
+
+  if (!IsCryptoWalletsInstalledInternal()) {
+    VLOG(1) << "Crypto Wallets is not installed";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
     return;
   }
 
@@ -239,13 +246,15 @@ void BraveWalletServiceDelegateImpl::GetImportInfoFromMetaMask(
   DCHECK(context_);
 
   if (password.empty()) {
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "password is empty";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
     return;
   }
 
   const Extension* extension = GetMetaMask();
   if (!extension) {
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "Failed to load MetaMask extension";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
     return;
   }
 
@@ -258,7 +267,8 @@ void BraveWalletServiceDelegateImpl::OnCryptoWalletsLoaded(
     bool should_unload) {
   const Extension* extension = GetCryptoWallets();
   if (!extension) {
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "Failed to load Crypto Wallets extension";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
     return;
   }
 
@@ -286,7 +296,8 @@ void BraveWalletServiceDelegateImpl::GetLocalStorage(
 
   StorageFrontend* frontend = StorageFrontend::Get(context_);
   if (!frontend) {
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "Failed to read chrome.storage.local";
+    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
     return;
   }
 
@@ -311,7 +322,7 @@ void BraveWalletServiceDelegateImpl::OnGetLocalStorage(
 
   if (password.empty()) {
     VLOG(1) << "password is empty";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
     return;
   }
 
@@ -338,7 +349,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
 
   if (password.empty()) {
     VLOG(0) << "Failed to get password of legacy Crypto Wallets";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
     return;
   }
 
@@ -346,13 +357,13 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
       dict->FindStringPath("data.KeyringController.vault");
   if (!vault_str) {
     VLOG(0) << "cannot find data.KeyringController.vault";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
   auto vault = base::JSONReader::Read(*vault_str);
   if (!vault) {
-    VLOG(1) << "not a valid json: " << *vault_str;
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "not a valid JSON: " << *vault_str;
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
   auto* data_str = vault->FindStringKey("data");
@@ -360,26 +371,26 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
   auto* salt_str = vault->FindStringKey("salt");
   if (!data_str || !iv_str || !salt_str) {
     VLOG(1) << "data or iv or salt is missing";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
 
   std::string salt_decoded;
   if (!base::Base64Decode(*salt_str, &salt_decoded)) {
     VLOG(1) << "base64 decode failed: " << *salt_str;
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
   std::string iv_decoded;
   if (!base::Base64Decode(*iv_str, &iv_decoded)) {
     VLOG(1) << "base64 decode failed: " << *iv_str;
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
   std::string data_decoded;
   if (!base::Base64Decode(*data_str, &data_decoded)) {
     VLOG(1) << "base64 decode failed: " << *data_str;
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
 
@@ -392,7 +403,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
   if (!encryptor->DecryptForImporter(ToSpan(data_decoded), ToSpan(iv_decoded),
                                      &decrypted_keyrings)) {
     VLOG(0) << "Importer decryption failed";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kPasswordError);
     return;
   }
 
@@ -400,8 +411,8 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
       std::string(decrypted_keyrings.begin(), decrypted_keyrings.end());
   auto keyrings = base::JSONReader::Read(decrypted_keyrings_str);
   if (!keyrings) {
-    VLOG(1) << "not a valid json: " << decrypted_keyrings_str;
-    std::move(callback).Run(false, ImportInfo());
+    VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
     return;
   }
 
@@ -412,7 +423,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
     const auto* type = keyring.FindStringKey("type");
     if (!type) {
       VLOG(0) << "keyring.type is missing";
-      std::move(callback).Run(false, ImportInfo());
+      std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
       return;
     }
     if (*type != "HD Key Tree")
@@ -420,7 +431,7 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
     mnemonic = keyring.FindStringPath("data.mnemonic");
     if (!mnemonic) {
       VLOG(0) << "keyring.data.menmonic is missing";
-      std::move(callback).Run(false, ImportInfo());
+      std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
       return;
     }
     number_of_accounts = keyring.FindIntPath("data.numberOfAccounts");
@@ -429,14 +440,15 @@ void BraveWalletServiceDelegateImpl::GetMnemonic(
 
   if (!mnemonic) {
     VLOG(0) << "Failed to find mnemonic in decrypted keyrings";
-    std::move(callback).Run(false, ImportInfo());
+    std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
   }
 
   std::move(callback).Run(
       true,
       ImportInfo(
           {*mnemonic, is_legacy_crypto_wallets,
-           number_of_accounts ? static_cast<size_t>(*number_of_accounts) : 1}));
+           number_of_accounts ? static_cast<size_t>(*number_of_accounts) : 1}),
+      ImportError::kNone);
 }
 
 bool BraveWalletServiceDelegateImpl::IsCryptoWalletsInstalledInternal() const {
