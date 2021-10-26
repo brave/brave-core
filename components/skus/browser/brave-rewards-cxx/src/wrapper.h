@@ -941,6 +941,8 @@ namespace brave_rewards {
   struct WakeupContext;
   struct CppSDK;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
+  using FetchOrderCredentialsCallbackState = ::brave_rewards::FetchOrderCredentialsCallbackState;
+  using PrepareCredentialsPresentationCallbackState = ::brave_rewards::PrepareCredentialsPresentationCallbackState;
 }
 
 namespace brave_rewards {
@@ -1027,6 +1029,8 @@ private:
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 struct CppSDK final : public ::rust::Opaque {
   void refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept;
+  void fetch_order_credentials(::brave_rewards::FetchOrderCredentialsCallback callback, ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> callback_state, ::rust::String order_id) const noexcept;
+  void prepare_credentials_presentation(::brave_rewards::PrepareCredentialsPresentationCallback callback, ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> callback_state, ::rust::String domain, ::rust::String path) const noexcept;
   ~CppSDK() = delete;
 
 private:
