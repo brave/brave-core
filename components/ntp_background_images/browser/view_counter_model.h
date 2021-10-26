@@ -35,14 +35,13 @@ class ViewCounterModel {
   void set_total_image_count(int count) { total_image_count_ = count; }
 #endif
 
-  void set_ignore_count_to_branded_wallpaper(bool ignore) {
-    ignore_count_to_branded_wallpaper_ = ignore;
+  void set_always_show_branded_wallpaper(bool show) {
+    always_show_branded_wallpaper_ = show;
   }
 
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  void RegisterPageViewBackgroundImagesOnly();
   void ResetCurrentWallpaperImageIndex();
 #endif
   void ResetCurrentBrandedWallpaperImageIndex();
@@ -62,14 +61,18 @@ class ViewCounterModel {
 #endif
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 
+  void RegisterPageViewForBrandedImages();
+
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
+  void RegisterPageViewForBackgroundImages();
+
   int current_wallpaper_image_index_ = 0;
   int total_image_count_ = 0;
 #endif
   int current_branded_wallpaper_image_index_ = 0;
   int count_to_branded_wallpaper_ = 0;
   int total_branded_image_count_ = 0;
-  bool ignore_count_to_branded_wallpaper_ = false;
+  bool always_show_branded_wallpaper_ = false;
 };
 
 }  // namespace ntp_background_images

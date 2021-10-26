@@ -217,7 +217,7 @@ void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
   if (data) {
     model_.ResetCurrentBrandedWallpaperImageIndex();
     model_.set_total_branded_image_count(data->backgrounds.size());
-    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
+    model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
   }
 }
 
@@ -232,7 +232,7 @@ void ViewCounterService::ResetModel() {
   if (auto* data = GetCurrentBrandedWallpaperData()) {
     model_.Reset(false /* use_initial_count */);
     model_.set_total_branded_image_count(data->backgrounds.size());
-    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
+    model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
   }
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   // BI
@@ -259,19 +259,7 @@ void ViewCounterService::ResetNotificationState() {
 void ViewCounterService::RegisterPageView() {
   new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
-
-  // Don't do any counting if we will never be showing the data
-  // since we want the count to start at the point of data being available
-  // or the user opt-in status changing.
-  if (IsBrandedWallpaperActive()) {
-    model_.RegisterPageView();
-  } else {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-    if (IsBackgroundWallpaperActive()) {
-      model_.RegisterPageViewBackgroundImagesOnly();
-    }
-#endif
-  }
+  model_.RegisterPageView();
 }
 
 void ViewCounterService::BrandedWallpaperLogoClicked(

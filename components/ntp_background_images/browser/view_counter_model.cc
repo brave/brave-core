@@ -17,7 +17,7 @@ ViewCounterModel::ViewCounterModel() {
 ViewCounterModel::~ViewCounterModel() = default;
 
 bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
-  if (ignore_count_to_branded_wallpaper_)
+  if (always_show_branded_wallpaper_)
     return true;
 
   return count_to_branded_wallpaper_ == 0;
@@ -34,12 +34,19 @@ void ViewCounterModel::ResetCurrentBrandedWallpaperImageIndex() {
 }
 
 void ViewCounterModel::RegisterPageView() {
+  RegisterPageViewForBrandedImages();
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  DCHECK_NE(-1, total_image_count_);
+  if (!ShouldShowBrandedWallpaper()) {
+    RegisterPageViewForBackgroundImages();
+  }
 #endif
-  DCHECK_NE(-1, total_branded_image_count_);
+}
 
-  if (ignore_count_to_branded_wallpaper_) {
+void ViewCounterModel::RegisterPageViewForBrandedImages() {
+  if (total_branded_image_count_ == 0)
+    return;
+
+  if (always_show_branded_wallpaper_) {
     current_branded_wallpaper_image_index_++;
     current_branded_wallpaper_image_index_ %= total_branded_image_count_;
     return;
@@ -56,18 +63,14 @@ void ViewCounterModel::RegisterPageView() {
     count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
     current_branded_wallpaper_image_index_++;
     current_branded_wallpaper_image_index_ %= total_branded_image_count_;
-  } else {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-    // Increase background image index
-    current_wallpaper_image_index_++;
-    current_wallpaper_image_index_ %= total_image_count_;
-#endif
+    return;
   }
 }
 
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-void ViewCounterModel::RegisterPageViewBackgroundImagesOnly() {
-  DCHECK_NE(-1, total_image_count_);
+void ViewCounterModel::RegisterPageViewForBackgroundImages() {
+  if (total_image_count_ == 0)
+    return;
 
   // Increase background image index
   current_wallpaper_image_index_++;
@@ -81,11 +84,11 @@ void ViewCounterModel::Reset(bool use_initial_count) {
                         : kRegularCountToBrandedWallpaper;
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   current_wallpaper_image_index_ = 0;
-  total_image_count_ = -1;
+  total_image_count_ = 0;
 #endif
   current_branded_wallpaper_image_index_ = 0;
-  total_branded_image_count_ = -1;
-  ignore_count_to_branded_wallpaper_ = false;
+  total_branded_image_count_ = 0;
+  always_show_branded_wallpaper_ = false;
 }
 
 }  // namespace ntp_background_images

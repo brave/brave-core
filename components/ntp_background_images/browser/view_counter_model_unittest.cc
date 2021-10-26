@@ -16,11 +16,8 @@ namespace ntp_background_images {
 TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   ViewCounterModel model;
   model.set_total_branded_image_count(kTestImageCount);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  model.set_total_image_count(kTestImageCount);  // Otherwise DCHECK will fail
-#endif
 
-  EXPECT_FALSE(model.ignore_count_to_branded_wallpaper_);
+  EXPECT_FALSE(model.always_show_branded_wallpaper_);
 
   // Loading initial count times.
   for (int i = 0; i < ViewCounterModel::kInitialCountToBrandedWallpaper; ++i) {
@@ -107,7 +104,7 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
   for (int i = 0; i < kTestPageViewCount; ++i) {
     expected_wallpaper_index = i % model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
-    model.RegisterPageViewBackgroundImagesOnly();
+    model.RegisterPageView();
   }
 
   // Check branded wallpaper didn't count
@@ -117,11 +114,8 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
 
 TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   ViewCounterModel model;
-  model.set_ignore_count_to_branded_wallpaper(true);
+  model.set_always_show_branded_wallpaper(true);
   model.set_total_branded_image_count(kTestImageCount);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  model.set_total_image_count(kTestImageCount);  // Otherwise DCHECK will fail
-#endif
 
   // Loading any number of times and check branded wallpaper is visible always
   // with proper index from the start.
