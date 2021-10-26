@@ -1557,7 +1557,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Internal Error, unable to add network.
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_NATIVE_CURRENCY_ERROR" desc="The error text of the wallet network dialog for empty currencies">
-         Please fill all infromation about native currency
+         Please fill in all infromation about native currency
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_ITEM_DESC" desc="The description of networks item on wallet settings page">
         Wallet networks customization
@@ -1569,7 +1569,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Do you really want to delete <ph name="KEY_NAME">$1<ex>NetworkName</ex></ph>?
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_REPLACE" desc="The message for the wallet networks page to replace existing network">
-        Do you want to update existing network?
+        Do you want to update the existing network?
       </message>
     </messages>
   </release>
