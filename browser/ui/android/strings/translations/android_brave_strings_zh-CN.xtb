@@ -467,17 +467,15 @@
 <translation id="3769645103175790584">浏览时赚取代币并奖励创作者，以便能够获得精彩的内容。<ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">快速导览</translation>
 <translation id="1080013038789678738">我’要参与！</translation>
-<translation id="8037420924417098685">要开始免费通话，请开启 Brave Rewards</translation>
-<translation id="8961724619078500274">使用 Brave Rewards，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="8037420924417098685">要开始免费通话，请开启 Brave 奖励</translation>
+<translation id="8961724619078500274">使用 Brave 奖励，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
 <translation id="7307847920988946894">开启奖励</translation>
-<translation id="1186139901474936180">轻击即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。您可随时在“设置”中将其禁用。</translation>
-<translation id="6128511569382736135">要开始免费通话，请启用 Brave Private Ads</translation>
-<translation id="7930006085154756245">使用 Brave Private Ads，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡，或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
-<translation id="4992617448154987397">开启 Brave Private Ads</translation>
-<translation id="7314030474505546826">开启 Ads 即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
+<translation id="6128511569382736135">要开始免费通话，请启用 Brave 专属广告</translation>
+<translation id="7930006085154756245">使用 Brave 专属广告，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡，或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
+<translation id="4992617448154987397">开启 Brave 专属广告</translation>
 <translation id="3415016869273103668">你现在可以开始免费通话</translation>
-<translation id="6712250553966900750">点击屏幕上的任意位置，继续使用 Brave Talk。</translation>
-<translation id="626339649633171286">想要了解 Brave Rewards 更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
+<translation id="7073631403665023390">点击屏幕上的任意位置，继续使用 Brave 语聊。</translation>
+<translation id="626339649633171286">想要了解 Brave 奖励更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
 <translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
 <translation id="392587271502873865">请检查您的网络连接。</translation>
 <translation id="7889432931837317731">可能时自动打开</translation>
@@ -539,7 +537,6 @@
 <translation id="6146351434671268516">按正确顺序记下或复制这些密语，将他们保存在安全位置。</translation>
 <translation id="7408247683131762445">警告：切勿向他人透露您的备份密语。任何人一旦持有该密语，即可取走您的资金。</translation>
 <translation id="939275786514736244">我已将我的密语备份到某个安全位置</translation>
-<translation id="6896758677409633944">复制</translation>
 <translation id="2604744480284798833">立即备份您的钱包，以保护您的加密货币投资组合，并确保您不会失去访问权限。</translation>
 <translation id="1202920745614909195">使用 Apple Pay、信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
@@ -549,21 +546,19 @@
 <translation id="4450951602553063001">重新输入密码</translation>
 <translation id="1783870616707290226">密码必须为 7 个或更多字符</translation>
 <translation id="7383102760859258982">重新输入的密码不匹配</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 小时</translation>
 <translation id="8163269366661594721">1 天</translation>
 <translation id="7640956400175663828">1 周</translation>
 <translation id="9100647964747998533">1 个月</translation>
 <translation id="6366007539108097840">3 个月</translation>
 <translation id="6977728312178289892">1 年</translation>
 <translation id="6895566650974550243">全部</translation>
-<translation id="8892168913673237979">设置完成！</translation>
-<translation id="8331501996028380732">购买、交易或持有加密货币。如果您已有加密货币账户，可以在此添加。</translation>
 <translation id="2267753748892043616">添加账户</translation>
 <translation id="2632612428525029752">更新账户</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">启用指纹解锁功能？</translation>
 <translation id="5493402808936397665">启用生物识别，无需输入密码即可快速解锁您的钱包。</translation>
-<translation id="8488282162676695335">Brave 钱包</translation>
+<translation id="1544192797660353713">Brave 钱包</translation>
 <translation id="6901810042765869341">输入您的恢复密语，以恢复您的 Brave Wallet 加密货币账户。</translation>
 <translation id="1970161551843843564">恢复加密货币账户</translation>
 <translation id="4811736040444856406">显示恢复密语</translation>
@@ -580,7 +575,6 @@
 <translation id="745115390910697838">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/>市场价格</translation>
-<translation id="5593852897152820572">以 ETH 计算的价格</translation>
 <translation id="6748108480210050150">来自</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@
 <translation id="6159566011642056819">转换至（估计值）</translation>
 <translation id="6998989275928107238">至</translation>
 <translation id="6664416064035847539">地址或 URL</translation>
-<translation id="59223531494896848">限制</translation>
-<translation id="3567988240819868195">市场</translation>
 <translation id="632241521608275119">滑点公差</translation>
-<translation id="4500473291496079954">到期时间</translation>
 <translation id="1987317783729300807">帐号</translation>
 <translation id="3535654229833214438">交易</translation>
 <translation id="4636930964841734540">信息</translation>
@@ -649,7 +640,7 @@
 如果您不接受此请求，VPN 不会重新连接，您的互联网连接将不受到保护。</translation>
 <translation id="2429299231491852747">接受连接请求</translation>
 <translation id="3428909627460825679">创建 VPN 配置文件失败。请再试一次。</translation>
-<translation id="8584119457978684056">购买令牌验证失败。请再试一次。</translation>
+<translation id="8584119457978684056">购买代币验证失败。请再试一次。</translation>
 <translation id="8905950042180169719">VPN 正在后台运行</translation>
 <translation id="8681480718817027245">订阅</translation>
 <translation id="7805768142964895445">状态</translation>
@@ -665,7 +656,7 @@
 <translation id="5863914199331127413">VPN 主机名</translation>
 <translation id="5499653136178260315">订阅类型</translation>
 <translation id="4741058112780154119">应用版本</translation>
-<translation id="7286066816862208787">应用收据</translation>
+<translation id="7286066816862208787">应用接收</translation>
 <translation id="2552966063069741410">时区</translation>
 <translation id="4395361077929528480">网络类型</translation>
 <translation id="755448900483975096">移动网络服务提供商</translation>
@@ -695,10 +686,9 @@
 <translation id="7995708795274219641">数量 + Gas</translation>
 <translation id="1950052789869821983">交易</translation>
 <translation id="6122742277607781713">投资组合</translation>
-<translation id="2805756323405976993">应用</translation>
 <translation id="6083912983861746409">Gas 价格 (GWEI)</translation>
-<translation id="2499079593046817044">Gas Price (GWEI)</translation>
-<translation id="6389441740143786465">禁用 Sharing Hub</translation>
+<translation id="2499079593046817044">Gas 限制 (GWEI)</translation>
+<translation id="6389441740143786465">禁用分享库</translation>
 <translation id="9065203028668620118">编辑</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">账户更新失败。</translation>

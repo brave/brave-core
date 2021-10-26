@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "ነጻ የስልክ ጥሪ ለመጀመር፣ Brave Rewardsን ያብሩ",
+    "message": "ነጻ የስልክ ጥሪ ለመጀመር፣ Brave ሽልማቶችን ያብሩ",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "ከBrave Rewards ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም። ",
+    "message": "ከBrave ሽልማቶች ጋር፣ ግላዊ ማስታወቂያዎችን ስለተመለከቱ ቶክኖችን ያገኛሉ (ውሂብዎ ደህንነቱ የተጠበቀ ነው)። እነዚያን ቶክኖች ወደ ጥሬ ገንዘብ፣ የስጦታ ካርዶች... ይለውጡ ወይም ለሚወዱት የድር ጣቢያ ስጦታ ያበርኩት። ክትትል የለም። ቀስ ማለት የለም። ",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "ስለ Brave Rewards የበለጠ ማወቅ ይፈልጋሉ? $tour_link_begin$ፈጣን ጉብኝት ያድርጉ $tour_link_end$።",
+    "message": "ስለ Brave ሽልማቶችን የበለጠ ማወቅ ይፈልጋሉ? $tour_link_begin$ፈጣን ጉብኝት ያድርጉ $tour_link_end$።",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

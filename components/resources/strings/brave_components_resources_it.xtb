@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Tempo sulla pagina minimo prima di registrare una visita</translation>
 <translation id="4424486208397124985">Visite minime per pertinenza degli editori</translation>
 <translation id="6248554379744796526">Mostra siti non verificati in lista</translation>
-<translation id="5875669387851353511">Consenti il contributo ai video</translation>
+<translation id="5510618543889994434">Consenti il contributo ai video</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visite</translation>
 <translation id="3583700907990488238">10 visite</translation>
@@ -799,12 +799,12 @@
 <translation id="7619826778671319444">Impossibile ottenere il limite di gas per la transazione</translation>
 <translation id="4232775951515678071">Impossibile ottenere il tipo di transazione</translation>
 <translation id="7631054302129692654">Impossibile ottenere la stima di gas per la transazione EIP-1559</translation>
-<translation id="4958950550253325418">App Defi</translation>
+<translation id="4958950550253325418">App DeFi</translation>
 <translation id="735961408871282410">Mercati NFT</translation>
 <translation id="7740287852186792672">Risultati di ricerca</translation>
-<translation id="5140238928332244937">Sfoglia più Defi</translation>
+<translation id="5140238928332244937">Sfoglia più DeFi</translation>
 <translation id="6825869531314999449">Sfoglia più NFT</translation>
-<translation id="2744185997184360326">Composto</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Sblocca un universo di applicazioni finanziarie aperte.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">Maker: stablecoin, prestiti e governance...</translation>
@@ -833,7 +833,7 @@
 <translation id="2267753748892043616">Aggiungi conto</translation>
 <translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">non supportato</translation>
+<translation id="5420730209575475110">non supportata</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
 <translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
@@ -887,8 +887,8 @@
 <translation id="795667975304826397">Nessun file scelto</translation>
 <translation id="5891811606602061966">Impossibile importare l'account. Riprova.</translation>
 <translation id="5051929972046200722">Seleziona il dispositivo del tuo portafoglio hardware</translation>
-<translation id="6932355307691676490">Collega il tuo</translation>
-<translation id="4513956488935671725">portafoglio direttamente dal tuo computer.</translation>
+<translation id="6932355307691676490">Collega il tuo portafoglio</translation>
+<translation id="4513956488935671725">direttamente dal tuo computer.</translation>
 <translation id="5041211872515579638">Sblocca il tuo dispositivo e seleziona l'app Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Messaggio</translation>
 <translation id="3586752056660754651">Firma</translation>
 <translation id="7065157926159745595">Consenti a quest'app di spendere</translation>
-<translation id="2746256479706649252">Concedendo questa autorizzazione stai consentendo a quest'app di prelevare</translation>
-<translation id="3959778836307233598">e di automatizzare le transazioni per te.</translation>
 <translation id="8786100550345425552">Modifica autorizzazioni</translation>
 <translation id="7710469167917867539">Commissione per la transazione</translation>
 <translation id="9065203028668620118">Modifica</translation>
@@ -969,7 +967,7 @@
 <translation id="7163997622278957886">Offerta</translation>
 <translation id="1074360622426001342">Importo + gas</translation>
 <translation id="7084089311475827950">Nessun dato.</translation>
-<translation id="5821668936183240062">successiva</translation>
+<translation id="5821668936183240062">avanti</translation>
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">transazioni</translation>
 <translation id="4460220693591349571">TIPO DI FUNZIONE</translation>

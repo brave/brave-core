@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Minimalny czas spędzony na stronie przed zalogowaniem odwiedzin</translation>
 <translation id="4424486208397124985">Minimalna liczba wizyt określająca istotność wydawcy</translation>
 <translation id="6248554379744796526">Pokaż niezweryfikowane witryny na liście</translation>
-<translation id="5875669387851353511">Zezwalaj na wsparcie nagrań wideo</translation>
+<translation id="5510618543889994434">Zezwalaj na wsparcie nagrań wideo</translation>
 <translation id="8933202740471878108">1 wizyta</translation>
 <translation id="354797634123275103">5 wizyt</translation>
 <translation id="3583700907990488238">10 wizyt</translation>
@@ -576,7 +576,7 @@
 <translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
 <translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
 <translation id="3656941797339037856">Połącz Rewards z Gemini!</translation>
-<translation id="2383784987664887340">Gemini pozwala łatwo handlować swoimi BAT, przechowywać je i zarabiać na nich 3,49% APY. Zweryfikuj i połącz Twój portfel Brave Rewards z Gemini już teraz.</translation>
+<translation id="2383784987664887340">Gemini pozwala łatwo handlować swoimi BAT, przechowywać je i zarabiać na nich 3,49% APY. Zweryfikuj i połącz Twój portfel Nagród Brave z Gemini już teraz.</translation>
 <translation id="2237374144728570574">* Gemini Earn APY na dzień 15 września 2021 r.</translation>
 <translation id="7404779623219601861">Wymieniaj tokeny BAT na karty upominkowe</translation>
 <translation id="6215565499749144110">Dzięki sieci TAP możesz wymienić swoje tokeny BAT na popularne karty upominkowe znanych marek.</translation>
@@ -821,7 +821,7 @@
 <translation id="2805756323405976993">Aplikacje</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Konta</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 godz.</translation>
 <translation id="8163269366661594721">1 dzień</translation>
 <translation id="7640956400175663828">1 tydzień</translation>
 <translation id="9100647964747998533">1 miesiąc</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="3586752056660754651">Podpisz</translation>
 <translation id="7065157926159745595">Zezwól tej aplikacji na wydawanie</translation>
-<translation id="2746256479706649252">Przyznanie tego uprawnienia jest równoznaczne z pozwoleniem aplikacji na wypłacanie</translation>
-<translation id="3959778836307233598">i przeprowadzanie automatycznych transakcji w Twoim imieniu.</translation>
 <translation id="8786100550345425552">Edytuj uprawnienia</translation>
 <translation id="7710469167917867539">Opłata transakcyjna</translation>
 <translation id="9065203028668620118">Edytuj</translation>
@@ -967,7 +965,7 @@
 <translation id="4693057234255364395">Adres URL eksploratora bloków</translation>
 <translation id="3948067511324628726">Opłata za gaz</translation>
 <translation id="7163997622278957886">Oferta</translation>
-<translation id="1074360622426001342">Ilość + gaz</translation>
+<translation id="1074360622426001342">Kwota + gaz</translation>
 <translation id="7084089311475827950">Brak danych.</translation>
 <translation id="5821668936183240062">dalej</translation>
 <translation id="793994607260936590">początek</translation>

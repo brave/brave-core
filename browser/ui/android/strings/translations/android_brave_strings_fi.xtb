@@ -474,13 +474,11 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="8037420924417098685">Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön</translation>
 <translation id="8961724619078500274">Brave Rewardsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
 <translation id="7307847920988946894">Ota Rewards käyttöön</translation>
-<translation id="1186139901474936180">Napauttamalla hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>. Poista käytöstä milloin tahansa asetuksissa.</translation>
 <translation id="6128511569382736135">Aloita ilmainen puhelu ottamalla Brave Private Ads käyttöön</translation>
 <translation id="7930006085154756245">Brave Private Adsin kautta ansaitset tokeneita yksityisten mainosten katselusta (tietosi ovat turvassa). Muuta rahakkeet rahaksi, lahjakortteiksi voit jopa antaa suosikkisivustoillesi tipin. Ei seurantaa. Ei hidastuksia.</translation>
 <translation id="4992617448154987397">Ota Brave Private Ads käyttöön</translation>
-<translation id="7314030474505546826">Ottamalla Adsin käyttöön hyväksyt kohteen <ph name="TERMS_OF_SERVICE"/> ja kohteen <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Voit nyt aloittaa ilmaisen puhelun</translation>
-<translation id="6712250553966900750">Napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
+<translation id="7073631403665023390">Napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.</translation>
 <translation id="626339649633171286">Haluatko lisää tietoja Brave Rewardsista? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Muunsit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> arvoksi <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Valitse verkkoyhteytesi.</translation>
@@ -543,7 +541,6 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="6146351434671268516">Kirjoita ylös tai kopioi nämä sanat oikeassa järjestyksessä ja tallenna ne turvalliseen paikkaan.</translation>
 <translation id="7408247683131762445">VAROITUS: älä koskaan kerro varmuuskopiolausettasi kenellekään. Kuka tahansa tämän lauseen omaava voi napata varasi pysyvästi.</translation>
 <translation id="939275786514736244">Olen varmuuskopioinut lauseeni turvalliseen paikkaan</translation>
-<translation id="6896758677409633944">Kopioi</translation>
 <translation id="2604744480284798833">Varmuuskopioi lompakkosi nyt suojataksesi kryptoportfoliosi pääsyn menetykseltä.</translation>
 <translation id="1202920745614909195">Osta kryptoa Apple Payn, luottokortin tai pankkikortin avulla.</translation>
 <translation id="841880029259839903">Lähetä kryptoa tai siirrä sitä tililtä toiselle.</translation>
@@ -553,21 +550,19 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="4450951602553063001">Anna salasana uudelleen</translation>
 <translation id="1783870616707290226">Salasanan on oltava vähintään 7 merkkiä pitkä</translation>
 <translation id="7383102760859258982">Uudelleen kirjoitettu salasana ei täsmää</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1PÄIVÄ</translation>
 <translation id="7640956400175663828">1VIIKKO</translation>
 <translation id="9100647964747998533">1KK</translation>
 <translation id="6366007539108097840">3KK</translation>
 <translation id="6977728312178289892">1VUOSI</translation>
 <translation id="6895566650974550243">KAIKKI</translation>
-<translation id="8892168913673237979">Kaikki valmista!</translation>
-<translation id="8331501996028380732">Osta, vaihda tai pidä kryptoa. Jos sinulla on olemassa oleva kryptotili, voit lisätä sen nyt.</translation>
 <translation id="2267753748892043616">Lisää tili</translation>
 <translation id="2632612428525029752">Päivitä tili</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ota sormenjälkilukituksen poistaminen käyttöön?</translation>
 <translation id="5493402808936397665">Ota biometriset tiedot käyttöön, jotta voit nopeasti avata lompakkosi antamatta salasanaasi.</translation>
-<translation id="8488282162676695335">Brave-lompakko</translation>
+<translation id="1544192797660353713">Brave-lompakko</translation>
 <translation id="6901810042765869341">Anna palautuslauseesi, jotta voit palauttaa Brave Walletin kryptotilin.</translation>
 <translation id="1970161551843843564">Palauta kryptotili</translation>
 <translation id="4811736040444856406">Näytä palautuslause</translation>
@@ -584,7 +579,6 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="745115390910697838">Lauseet eivät täsmää. Yritä uudelleen.</translation>
 <translation id="2360588547830602174">Tilin palautus epäonnistui. Yritä uudelleen.</translation>
 <translation id="6392640873800632439">Markkinahinta: <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Hinta Ethereumeissa</translation>
 <translation id="6748108480210050150">Alkaen</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -592,10 +586,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="6159566011642056819">arvoon (arvio)</translation>
 <translation id="6998989275928107238">Kohde</translation>
 <translation id="6664416064035847539">osoite tai url</translation>
-<translation id="59223531494896848">Raja</translation>
-<translation id="3567988240819868195">Markkinat</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
-<translation id="4500473291496079954">Vanhenee:</translation>
 <translation id="1987317783729300807">Tilit</translation>
 <translation id="3535654229833214438">Liiketapahtumat</translation>
 <translation id="4636930964841734540">Tiedot</translation>
@@ -616,7 +607,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="5050890334032852465">Tallenna tilin seurantalista</translation>
 <translation id="7755766175599167100">Hae tokeneista</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="4449475351935531438">Brave Firewall ja VPN</translation>
+<translation id="4449475351935531438">Brave-palomuuri ja -VPN</translation>
 <translation id="719977489961414786">Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.</translation>
 <translation id="3435896845095436175">Ota käyttöön</translation>
 <translation id="8814357473522731680">Palvelun tarjoaa</translation>
@@ -699,7 +690,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7995708795274219641">Määrä + gas</translation>
 <translation id="1950052789869821983">Maksutapahtuma</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Sovellukset</translation>
 <translation id="6083912983861746409">Gas-hinta (GWEI)</translation>
 <translation id="2499079593046817044">Gas-raja (GWEI)</translation>
 <translation id="6389441740143786465">Poista jakamiskeskus käytöstä</translation>

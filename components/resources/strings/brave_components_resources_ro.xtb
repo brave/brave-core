@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
 <translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
 <translation id="6248554379744796526">Arată siteuri neverificate în listă</translation>
-<translation id="5875669387851353511">Permite contribuția pentru clipuri video</translation>
+<translation id="5510618543889994434">Permite contribuția pentru clipuri video</translation>
 <translation id="8933202740471878108">1 vizită</translation>
 <translation id="354797634123275103">5 vizite</translation>
 <translation id="3583700907990488238">10 vizite</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="3656941797339037856">Conectați Brave Rewards de Gemini!</translation>
-<translation id="2383784987664887340">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Confirmați portofelul dvs. Brave Rewards și conectați-l la Gemini acum!</translation>
-<translation id="2237374144728570574">* Randament oferit de Gemini începând cu 15 septembrie 2021</translation>
+<translation id="2383784987664887340">Gemini oferă un mod simplu de a tranzacționa și păstra BAT, precum și un randament anual de 3,49%. Confirmați portofelul dvs. cu recompense Brave și conectați-l la Gemini acum!</translation>
+<translation id="2237374144728570574">* Randament oferit de Gemini Earn începând cu 15 septembrie 2021</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
 <translation id="6915065518766963119">* Necesită verificare Uphold.</translation>
@@ -799,12 +799,12 @@
 <translation id="7619826778671319444">Nu s-a reușit obținerea limitei gas pentru tranzacție</translation>
 <translation id="4232775951515678071">Nu s-a reușit obținerea tipului tranzacției</translation>
 <translation id="7631054302129692654">Nu s-a reușit obținerea estimării gas pentru tranzacția EIP-1559</translation>
-<translation id="4958950550253325418">Aplicații Defi</translation>
+<translation id="4958950550253325418">Aplicații de finanțare descentralizată</translation>
 <translation id="735961408871282410">Piețe de token-uri nefungibile</translation>
 <translation id="7740287852186792672">Rezultatele căutării</translation>
-<translation id="5140238928332244937">Căutați mai multe DeFi</translation>
+<translation id="5140238928332244937">Căutați mai multe opțiuni de finanțare descentralizată</translation>
 <translation id="6825869531314999449">Căutați mai multe token-uri nefungibile</translation>
-<translation id="2744185997184360326">Compus</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Descoperiți un univers al aplicațiilor financiare deschise.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">Realizator - stablecoin, împrumuturi și guvernanță...</translation>
@@ -815,7 +815,7 @@
 <translation id="8375074247703832257">Rarible</translation>
 <translation id="7826627294887983832">Creați și vindeți lucrări de artă digitală</translation>
 <translation id="8767749833522980474">Cripto</translation>
-<translation id="944736176598169208">Rewards</translation>
+<translation id="944736176598169208">Recompense</translation>
 <translation id="6122742277607781713">Portofoliu</translation>
 <translation id="7020503656406658141">Prețurile</translation>
 <translation id="2805756323405976993">Aplicații</translation>
@@ -833,7 +833,7 @@
 <translation id="2267753748892043616">Adăugați un cont</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
-<translation id="5420730209575475110">nu este acceptată</translation>
+<translation id="5420730209575475110">nu este acceptat</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
 <translation id="8303434745767477417">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate web 3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii și nu trebuie să descărcați nimic.</translation>
@@ -888,7 +888,7 @@
 <translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
 <translation id="5051929972046200722">Selectați portofelul dvs. hardware</translation>
 <translation id="6932355307691676490">Conectați</translation>
-<translation id="4513956488935671725">portofelul direct la computerul dvs.</translation>
+<translation id="4513956488935671725">direct la computerul dvs.</translation>
 <translation id="5041211872515579638">Deblocați dispozitivul și selectați aplicația Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -935,7 +935,7 @@
 <translation id="6857856707736769720">Selectați din</translation>
 <translation id="6323024765179772761">Căutați monede</translation>
 <translation id="6998989275928107238">Către</translation>
-<translation id="1506421160138798546">estimare</translation>
+<translation id="1506421160138798546">valoarea estimată de</translation>
 <translation id="3567988240819868195">Piață</translation>
 <translation id="59223531494896848">Limită</translation>
 <translation id="8569380433211549748">Prețul în</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">Semnați</translation>
 <translation id="7065157926159745595">Permiteți acestei aplicații să cheltuiască</translation>
-<translation id="2746256479706649252">Prin acordarea acestei permisiuni, îi permiteți acestei aplicații să retragă</translation>
-<translation id="3959778836307233598">și automatizează tranzacțiile pentru dvs.</translation>
 <translation id="8786100550345425552">Editați permisiunile</translation>
 <translation id="7710469167917867539">Taxa tranzacției</translation>
 <translation id="9065203028668620118">Editează</translation>
@@ -966,7 +964,7 @@
 <translation id="7131971375297699539">Simbolul monedei</translation>
 <translation id="4693057234255364395">URL explorator blocuri</translation>
 <translation id="3948067511324628726">Taxă gas</translation>
-<translation id="7163997622278957886">Licitație</translation>
+<translation id="7163997622278957886">Sumă licitată</translation>
 <translation id="1074360622426001342">Valoare + gas</translation>
 <translation id="7084089311475827950">Nu există date.</translation>
 <translation id="5821668936183240062">înainte</translation>
@@ -977,7 +975,7 @@
 <translation id="2240831799756994975">BYȚI</translation>
 <translation id="4874303883488468190">Selectați contul(rile)</translation>
 <translation id="4015195974325151180">Vedeți adresele</translation>
-<translation id="3587259018193837508">conturi permise (obligatorii)</translation>
+<translation id="3587259018193837508">conturilor permise (obligatorii)</translation>
 <translation id="7029403458170657879">Conectați-vă cu Brave Wallet</translation>
 <translation id="7982184974053636367">Este necesară o parolă mai sigură pentru portofelul Brave</translation>
 <translation id="2372897697869224590">Setați o parolă pentru portofelul Brave</translation>
@@ -987,11 +985,11 @@
 <translation id="4428111176561355185">Importați</translation>
 <translation id="8929587248006013051">conturile MetaMask în portofelul Brave. Beneficiați de o modalitate mai rapidă și mai sigură de a gestiona activele de criptomonede și interacționați cu aplicațiile descentralizate web 3.</translation>
 <translation id="4237840336687249184">Parolă MetaMask</translation>
-<translation id="2381605201035323535">portofele de criptomonede</translation>
+<translation id="2381605201035323535">portofelele dvs. de criptomonede</translation>
 <translation id="2770851145415891830">S-au detectat portofele de criptomonede existente</translation>
 <translation id="4938145712652668388">Când dați clic pe „Începeți”, veți importa portofelul dvs. anterior de criptomonede în noul portofel Brave și veți avea parte de toate beneficiile prezentate mai sus. Încercați și spuneți-ne părerea dvs.!</translation>
-<translation id="913613743605881268">Dacă doriți să treceți peste importare și să rămâneți la vechea experiență cu portofelele de criptomonede, trebuie doar să navigați la browserul Brave.</translation>
-<translation id="5886242758142314994">și modificați opțiunea implicită înapoi la portofele de criptomonede. De asemenea, puteți realiza importarea, puteți încerca noul portofel Brave și puteți reveni oricând doriți.</translation>
+<translation id="913613743605881268">Dacă doriți să treceți peste importare și să rămâneți la vechea experiență cu portofelele de criptomonede, trebuie doar să navigați la browserul Brave</translation>
+<translation id="5886242758142314994">și să modificați opțiunea implicită înapoi la portofele de criptomonede. De asemenea, puteți realiza importarea, puteți încerca noul portofel Brave și puteți reveni oricând doriți.</translation>
 <translation id="3301259443293676544">Introduceți parola pentru portofelele existente de criptomonede pentru importarea în portofelul Brave. Beneficiați de o modalitate mai rapidă și mai sigură de a gestiona activele de criptomonede și interacționați cu aplicațiile descentralizate web 3.</translation>
 <translation id="9099900965604225657">Parola portofelelor de criptomonede</translation>
 <translation id="4020495774166914146">Am pierdut parola și expresia de recuperare. Creați un portofel nou.</translation>
@@ -1005,7 +1003,7 @@
 <translation id="4255623233927788178">Vedeți în exploratorul de blocuri</translation>
 <translation id="6383204195803840504">Tranzacțiile vor apărea aici</translation>
 <translation id="8941851657764077659">Taxa maximă pentru prioritate</translation>
-<translation id="8047527352810290817">Editați gas</translation>
+<translation id="8047527352810290817">Editare gas</translation>
 <translation id="9091334651803050473">Deși nu există garanții, probabil că minerii vor acorda prioritate tranzacției dvs. dacă plătiți o taxă mai mare.</translation>
 <translation id="2941112035454246133">Redusă</translation>
 <translation id="5431902940483264007">Optim</translation>
@@ -1018,7 +1016,7 @@
 <translation id="2445079431396622762">Taxa maximă</translation>
 <translation id="6152793706702141594">Taxa de bază actuală</translation>
 <translation id="8689322170423904690">Gwei</translation>
-<translation id="8685908198496503620">Setați opțiunea personalizată</translation>
+<translation id="8685908198496503620">Setați valoare personalizată</translation>
 <translation id="7400927223938424379">Setați valoarea sugerată</translation>
 <translation id="1118876217803190221">Sold insuficient</translation>
 <translation id="275990379543116961">Fonduri insuficiente pentru gas</translation>

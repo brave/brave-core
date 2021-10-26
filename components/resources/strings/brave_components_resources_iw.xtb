@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
 <translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
 <translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
-<translation id="5875669387851353511">אפשרו תרומות לסרטונים</translation>
+<translation id="5510618543889994434">אפשרו תרומות לסרטונים</translation>
 <translation id="8933202740471878108">ביקור אחד</translation>
 <translation id="354797634123275103">5 ביקורים</translation>
 <translation id="3583700907990488238">10 ביקורים</translation>
@@ -800,7 +800,7 @@
 <translation id="7619826778671319444">קבלת הגבלת הדלק לעסקה נכשל</translation>
 <translation id="4232775951515678071">קבלת הסוג של העסקה נכשלה</translation>
 <translation id="7631054302129692654">השגת אומדן הדלק לעסקת EIP-1559 נכשלה</translation>
-<translation id="4958950550253325418">אפליקציות Defl</translation>
+<translation id="4958950550253325418">אפליקציות DeFi</translation>
 <translation id="735961408871282410">שווקי NFT</translation>
 <translation id="7740287852186792672">תוצאות חיפוש</translation>
 <translation id="5140238928332244937">דפדף עוד Defi</translation>
@@ -950,8 +950,6 @@
 <translation id="5488357322146334497">הודעה</translation>
 <translation id="3586752056660754651">חתימה</translation>
 <translation id="7065157926159745595">אפשר לאפליקציה זו להוציא את</translation>
-<translation id="2746256479706649252">על-ידי מתן הרשאה זו, אתה מאפשר לאפליקציה זו למשוך את</translation>
-<translation id="3959778836307233598">ויבצע אוטומציה לעסקאות עבורך.</translation>
 <translation id="8786100550345425552">ערוך הרשאות</translation>
 <translation id="7710469167917867539">עמלת עסקה</translation>
 <translation id="9065203028668620118">עריכה</translation>
@@ -975,7 +973,7 @@
 <translation id="4709524402122994378">עסקאות</translation>
 <translation id="4460220693591349571">סוג פונקציה</translation>
 <translation id="838933475572692615">נתוני HEX</translation>
-<translation id="2240831799756994975">BYTES</translation>
+<translation id="2240831799756994975">בתים</translation>
 <translation id="4874303883488468190">בחר חשבונות</translation>
 <translation id="4015195974325151180">צפה בכתובות של</translation>
 <translation id="3587259018193837508">חשבונות מותרים (חובה)</translation>

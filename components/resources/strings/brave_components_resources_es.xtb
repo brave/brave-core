@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Tiempo de página mínimo antes de registrar una visita</translation>
 <translation id="4424486208397124985">Visitas mínimas por relevancia del editor</translation>
 <translation id="6248554379744796526">Mostrar las páginas no verificadas en la lista</translation>
-<translation id="5875669387851353511">Permitir contribución a vídeos</translation>
+<translation id="5510618543889994434">Permitir contribución a vídeos</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visitas</translation>
 <translation id="3583700907990488238">10 visitas</translation>
@@ -577,7 +577,7 @@
 <translation id="9200453331904391567">Desconectar de Brave Rewards</translation>
 <translation id="3656941797339037856">¡Vincula Brave Rewards con Gemini!</translation>
 <translation id="2383784987664887340">Con Gemini, puedes intercambiar, almacenar y obtener con facilidad un rendimiento porcentual anual* del 3,49 % por tus BAT. ¡Verifica y vincula tu monedero de Brave Rewards con Gemini!</translation>
-<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini a 15 de septiembre de 2021</translation>
+<translation id="2237374144728570574">* Rendimiento porcentual anual de Gemini Earn a 15 de septiembre de 2021</translation>
 <translation id="7404779623219601861">Canjear BAT para las tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
@@ -804,7 +804,7 @@
 <translation id="7740287852186792672">Resultados de búsqueda</translation>
 <translation id="5140238928332244937">Ver más operaciones DeFi</translation>
 <translation id="6825869531314999449">Ver más tokens NFT</translation>
-<translation id="2744185997184360326">Compuesto</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Entra en un universo de aplicaciones de finanzas abiertas.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">Maker: moneda estable, préstamos y control...</translation>
@@ -888,7 +888,7 @@
 <translation id="5891811606602061966">No se ha podido importar la cuenta. Inténtalo de nuevo.</translation>
 <translation id="5051929972046200722">Selecciona tu dispositivo de monedero físico</translation>
 <translation id="6932355307691676490">Conecta tu</translation>
-<translation id="4513956488935671725">monedero directamente a tu ordenador.</translation>
+<translation id="4513956488935671725">directamente a tu ordenador.</translation>
 <translation id="5041211872515579638">Desbloquea tu dispositivo y selecciona la aplicación de Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -948,9 +948,7 @@
 <translation id="3474375934783434676">Firme bajo tu propia responsabilidad</translation>
 <translation id="5488357322146334497">Mensaje</translation>
 <translation id="3586752056660754651">Firmar</translation>
-<translation id="7065157926159745595">Permite que esta aplicación gaste tu</translation>
-<translation id="2746256479706649252">Al conceder este permiso, permites que esta aplicación retire tus</translation>
-<translation id="3959778836307233598">y automatizar las transacciones por ti.</translation>
+<translation id="7065157926159745595">Permite que esta aplicación gaste tus</translation>
 <translation id="8786100550345425552">Editar permisos</translation>
 <translation id="7710469167917867539">Comisión de la transacción</translation>
 <translation id="9065203028668620118">Editar</translation>

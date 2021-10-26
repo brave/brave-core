@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "要开始免费通话，请打开 Brave Rewards",
+    "message": "要开始免费通话，请打开 Brave 奖励",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "使用 Brave Rewards，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
+    "message": "使用 Brave 奖励，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -627,15 +627,15 @@
     }
   },
   "braveTalkTurnOnPrivateAdsToStartCall": {
-    "message": "要开始免费通话，启用 Brave Private Ads",
+    "message": "要开始免费通话，启用 Brave 专属广告",
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "使用 Brave Private Ads，您可以通过查看私人广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
+    "message": "使用 Brave 专属广告，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "开启 Brave Private Ads",
+    "message": "开启 Brave专属广告",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "想要了解 Brave Rewards 的更多详细信息？$tour_link_begin$快速导览$tour_link_end$。",
+    "message": "想要了解 Brave 奖励的更多详细信息？$tour_link_begin$快速导览$tour_link_end$。",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

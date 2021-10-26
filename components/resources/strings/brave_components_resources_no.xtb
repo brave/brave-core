@@ -213,7 +213,7 @@
 <translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
 <translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
 <translation id="6248554379744796526">Vis ikke-verifiserte nettsteder på listen</translation>
-<translation id="5875669387851353511">Tillat donasjoner til videoer</translation>
+<translation id="5510618543889994434">Tillat donasjoner til videoer</translation>
 <translation id="8933202740471878108">1 besøk</translation>
 <translation id="354797634123275103">5 besøk</translation>
 <translation id="3583700907990488238">10 besøk</translation>
@@ -545,7 +545,7 @@
 <translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
 <translation id="9200453331904391567">Koble fra Brave Rewards</translation>
 <translation id="3656941797339037856">Knytt Rewards til Gemini!</translation>
-<translation id="2383784987664887340">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Rewards-lommeboken til Gemini nå!</translation>
+<translation id="2383784987664887340">Med Gemini kan du enkelt handle, lagre og tjene 3,49 % APY på BAT-ene dine. Verifiser og tilknytt Brave Belønninger-lommeboken til Gemini nå!</translation>
 <translation id="2237374144728570574">* Gemini Earn APY pr. Sept 15, 2021</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
@@ -790,7 +790,7 @@
 <translation id="2805756323405976993">Apper</translation>
 <translation id="3586775666459823714">NFT-er</translation>
 <translation id="1987317783729300807">Kontoer</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 t</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1U</translation>
 <translation id="9100647964747998533">1M</translation>
@@ -904,7 +904,7 @@
 <translation id="6857856707736769720">Velg fra</translation>
 <translation id="6323024765179772761">Søk mynter</translation>
 <translation id="6998989275928107238">Til</translation>
-<translation id="1506421160138798546">anslag</translation>
+<translation id="1506421160138798546">beregne</translation>
 <translation id="3567988240819868195">Marked</translation>
 <translation id="59223531494896848">Begrensning</translation>
 <translation id="8569380433211549748">Pris i</translation>
@@ -918,8 +918,6 @@
 <translation id="5488357322146334497">Melding</translation>
 <translation id="3586752056660754651">Undertegn</translation>
 <translation id="7065157926159745595">Tillat at denne appen bruker</translation>
-<translation id="2746256479706649252">Dette gir denne appen tillatelse til å ta ut</translation>
-<translation id="3959778836307233598">og auomatisere transaksjoner for deg.</translation>
 <translation id="8786100550345425552">Rediger tillatelser</translation>
 <translation id="7710469167917867539">Transaksjonsgebyr</translation>
 <translation id="9065203028668620118">Endre</translation>
@@ -946,7 +944,7 @@
 <translation id="2240831799756994975">BYTES</translation>
 <translation id="4874303883488468190">Velg konto(er)</translation>
 <translation id="4015195974325151180">Vis adressene til</translation>
-<translation id="3587259018193837508">tillatte kontoer (obigatorisk)</translation>
+<translation id="3587259018193837508">tillatte kontoer (obligatorisk)</translation>
 <translation id="7029403458170657879">Koble til Brave-lommeboken</translation>
 <translation id="7982184974053636367">Et sikrere passord kreves for Brave-lommeboken.</translation>
 <translation id="2372897697869224590">Angi et passord for Brave-lommeboken</translation>
@@ -956,7 +954,7 @@
 <translation id="4428111176561355185">Importer</translation>
 <translation id="8929587248006013051">MetaMask-kontoer til Brave-lommeboken. Opplev en raskere og sikrere måte å administrere kryptoressurser på og ha interaksjon med web 3 DApps.</translation>
 <translation id="4237840336687249184">MetaMask-passord</translation>
-<translation id="2381605201035323535">kryptolommebøker</translation>
+<translation id="2381605201035323535">kryptolommebøkene dine</translation>
 <translation id="2770851145415891830">Eksisterende kryptolommebøker funnet</translation>
 <translation id="4938145712652668388">Når du trykker på «Kom i gang», importerer du den tidligere kryptolommeboken din i den nye varsjonen av Brave-lommeboken, og får tilgang til alle fordelene beskrevet ovenfor. Prøv det ut og fortell oss hva du synes!</translation>
 <translation id="913613743605881268">Hvis du heller vil hoppe over importen og beholde den gamle utgaven av Crypto Wallets, kan du bare navigere til Brave-nettleseren</translation>
@@ -965,7 +963,7 @@
 <translation id="9099900965604225657">CryptoWallets-passord</translation>
 <translation id="4020495774166914146">Jeg har mistet passordet og sikkerhetsfrasen – opprett en ny lommebok.</translation>
 <translation id="480319080797177742">tilkoblet</translation>
-<translation id="4203566092423620442">frakoblet</translation>
+<translation id="4203566092423620442">er frakoblet</translation>
 <translation id="5317781812114905957">Instruksjoner</translation>
 <translation id="1952715382071350669">Maskinvarelommeboken krever bekreftelse av transaksjonen.</translation>
 <translation id="8687869982094542529">sendt</translation>

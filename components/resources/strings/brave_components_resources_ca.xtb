@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Temps mínim de pàgina oberta abans de registrar una visita</translation>
 <translation id="4424486208397124985">Visites mínimes per que l'editor mereixi rellevància</translation>
 <translation id="6248554379744796526">Mostra llocs no verificats en la llista</translation>
-<translation id="5875669387851353511">Permet contribució als vídeos</translation>
+<translation id="5510618543889994434">Permet contribució als vídeos</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visites</translation>
 <translation id="3583700907990488238">10 visites</translation>
@@ -577,7 +577,7 @@
 <translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
 <translation id="3656941797339037856">Enllaça Brave Rewards amb Gemini!</translation>
 <translation id="2383784987664887340">Gemini us permet comercialitzar, conservar i guanyar una taxa de rendiment anual del 3,49% en els vostres BAT fàcilment. Verifiqueu la vostra cartera de Brave Rewards i enllaceu-la amb Gemini ara!</translation>
-<translation id="2237374144728570574">* Taxa de rendiment anual de Gemini a partir del 15 de setembre de 2021</translation>
+<translation id="2237374144728570574">* Taxa de rendiment anual de Gemini Earn a partir del 15 de setembre de 2021</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
@@ -802,8 +802,8 @@
 <translation id="4958950550253325418">Aplicacions de DeFi</translation>
 <translation id="735961408871282410">Mercats web NFT</translation>
 <translation id="7740287852186792672">Resultats de cerca</translation>
-<translation id="5140238928332244937">Navegueu més DeFi</translation>
-<translation id="6825869531314999449">Exploreu més NFT</translation>
+<translation id="5140238928332244937">Exploreu més DeFi</translation>
+<translation id="6825869531314999449">Explora més NFT</translation>
 <translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Desbloquegeu un univers d'aplicacions financeres obertes.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
@@ -858,7 +858,7 @@
 <translation id="5168349973342709369">Introduïu la contrasenya per desbloquejar la cartera</translation>
 <translation id="9111102763498581341">Desbloqueja</translation>
 <translation id="5045550434625856497">Contrasenya incorrecta</translation>
-<translation id="7341660388388100491">Bloqueja la criptomoneda</translation>
+<translation id="7341660388388100491">Bloqueja la cartera de criptomonedes</translation>
 <translation id="765834632354589737">Còpia de seguretat del moneder</translation>
 <translation id="722307450061393855">Feu una còpia de seguretat de la vostra cartera ara per protegir els vostres actius en criptomoneda i assegurar-vos que mai perdeu l'accés.</translation>
 <translation id="1018806299114415224">Feu còpia de seguretat ara</translation>
@@ -887,7 +887,7 @@
 <translation id="795667975304826397">No s'ha seleccionat cap fitxer</translation>
 <translation id="5891811606602061966">No ha estat possible importar el compte. Torneu-ho a provar.</translation>
 <translation id="5051929972046200722">Seleccioneu el vostre dispositiu de cartera de maquinari</translation>
-<translation id="6932355307691676490">Connecteu el vostre</translation>
+<translation id="6932355307691676490">Connecteu la vostra</translation>
 <translation id="4513956488935671725">cartera directament al vostre ordinador.</translation>
 <translation id="5041211872515579638">Desbloquegeu el dispositiu i seleccioneu l'aplicació Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
@@ -921,7 +921,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="3512100619724810532">Tots</translation>
 <translation id="1530109021798294736">Mainnet</translation>
-<translation id="1613627717923045622">Verifiqueu la xarxa</translation>
+<translation id="1613627717923045622">Verifica la xarxa</translation>
 <translation id="4245123003308024264">Ropsten</translation>
 <translation id="2219337030359508039">Kovan</translation>
 <translation id="992469614838016642">Rinkeby</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Missatge</translation>
 <translation id="3586752056660754651">Signar</translation>
 <translation id="7065157926159745595">Permeteu que aquesta aplicació gasti les vostres</translation>
-<translation id="2746256479706649252">En concedir aquest permís, esteu permetent que aquesta aplicació retiri els vostres</translation>
-<translation id="3959778836307233598">i automatitzeu les transaccions.</translation>
 <translation id="8786100550345425552">Edita els permisos</translation>
 <translation id="7710469167917867539">Preu de la transacció</translation>
 <translation id="9065203028668620118">Edita</translation>
@@ -984,7 +982,7 @@
 <translation id="7739762330714405363">Utilitzeu la mateixa contrasenya</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="8449314044437208543">Importeu des de</translation>
-<translation id="4428111176561355185">Importeu el vostre</translation>
+<translation id="4428111176561355185">Importeu les vostres</translation>
 <translation id="8929587248006013051">comptes de MetaMask a la cartera de Brave. Gaudiu d'una manera més ràpida i segura de gestionar actius en criptomoneda i interactueu amb aplicacions descentralitzades de Web3.</translation>
 <translation id="4237840336687249184">Contrasenya de MetaMask</translation>
 <translation id="2381605201035323535">carteres de criptomoneda</translation>
@@ -999,15 +997,15 @@
 <translation id="4203566092423620442">desconnectat</translation>
 <translation id="5317781812114905957">Instruccions</translation>
 <translation id="1952715382071350669">La cartera de maquinari requereix confirmació de la transacció.</translation>
-<translation id="8687869982094542529">enviat</translation>
+<translation id="8687869982094542529">enviada</translation>
 <translation id="5013754027092416509">rebut</translation>
 <translation id="5867988533873716616">L'URL de l'explorador de blocs no està disponible.</translation>
 <translation id="4255623233927788178">Mostra a l'explorador de blocs</translation>
 <translation id="6383204195803840504">Les transaccions es mostraran aquí</translation>
 <translation id="8941851657764077659">Tarifa màx. de prioritat</translation>
-<translation id="8047527352810290817">Editeu el gas</translation>
+<translation id="8047527352810290817">Edita el gas</translation>
 <translation id="9091334651803050473">Tot i que no és una garantia, és probable que els miners prioritzin la vostra transacció si pagueu una tarifa més alta.</translation>
-<translation id="2941112035454246133">Baix</translation>
+<translation id="2941112035454246133">Baixa</translation>
 <translation id="5431902940483264007">Òptim</translation>
 <translation id="7304030187361489308">Alt</translation>
 <translation id="3275974034681834347">Límit de gas</translation>

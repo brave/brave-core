@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">ಭೇಟಿಗೆ ಲಾಗ್ ಮಾಡುವುದಕ್ಕೂ ಮುಂಚಿನ ಕನಿಷ್ಠ ಪುಟದ ಸಮಯ</translation>
 <translation id="4424486208397124985">ಪ್ರಕಾಶಕರ ಪ್ರಸ್ತುತತೆಗೆ ಕನಿಷ್ಠ ಭೇಟಿಗಳು</translation>
 <translation id="6248554379744796526">ಪಟ್ಟಿಯಲ್ಲಿ ಪರಿಶೀಲಿಸದ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="5875669387851353511">ವೀಡಿಯೊಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡಲು ಅನುಮತಿಸಿ</translation>
+<translation id="5510618543889994434">ವೀಡಿಯೊಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡಲು ಅನುಮತಿಸಿ</translation>
 <translation id="8933202740471878108">1 ಭೇಟಿ</translation>
 <translation id="354797634123275103">5 ಭೇಟಿಗಳು</translation>
 <translation id="3583700907990488238">10 ಭೇಟಿಗಳು</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಿ</translation>
 <translation id="9200453331904391567">Brave ರಿವಾರ್ಡ್‌ಗಳಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
 <translation id="3656941797339037856">Rewards ಅನ್ನು Gemini ಗೆ ಲಿಂಕ್ ಮಾಡಿ</translation>
-<translation id="2383784987664887340">ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಿಸಲು ಮತ್ತು 3.49% APY ಅನ್ನು ಗಳಿಸಲು Gemini ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದೀಗ Gemini ಮೂಲಕ ನಿಮ್ಮ Brave Rewards ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿ!</translation>
-<translation id="2237374144728570574">* ಸೆಪ್ಟೆಂಬರ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini ಗಳಿಕೆ APY</translation>
+<translation id="2383784987664887340">ನಿಮ್ಮ BAT ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಟ್ರೇಡ್ ಮಾಡಲು, ಸಂಗ್ರಹಿಸಲು ಮತ್ತು 3.49% APY ಅನ್ನು ಗಳಿಸಲು Gemini ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದೀಗ Gemini ಮೂಲಕ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿ!</translation>
+<translation id="2237374144728570574">* ಸೆಪ್ಟೆಂಬರ್ 15, 2021 ರ ಪ್ರಕಾರ Gemini Earn APY</translation>
 <translation id="7404779623219601861">ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ BAT ರೀಡಿಮ್ ಮಾಡಿ</translation>
 <translation id="6215565499749144110">TAP ನೆಟ್‌ವರ್ಕ್‌ನೊಂದಿಗೆ, ಜನಪ್ರಿಯ ಹೆಸರು-ಬ್ರಾಂಡ್ ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಿಗಾಗಿ ನಿಮ್ಮ BAT ಅನ್ನು ನೀವು ಪುನಃ ಪಡೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="6915065518766963119">* ಅಪ್‌ಹೋಲ್ಡ್ ಪರಿಶೀಲನೆಯ ಅಗತ್ಯವಿದೆ.</translation>
@@ -782,7 +782,7 @@
 <translation id="167698752210114155">ಒಂದು ಆಂತರಿಕ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
 <translation id="4641919696349069826">ವಿನಂತಿ ಈಗಾಗಲೇ ಪ್ರಗತಿಯಲ್ಲಿದೆ</translation>
 <translation id="872806943696014633">ವಹಿವಾಟು ಡೇಟಾ ಕಾಣೆಯಾಗಿದೆ</translation>
-<translation id="4805410229033541409">ವಹಿವಾಟುಗಳನ್ನು ಕಳುಹಿಸಲು 'ಇಂದ' ಅಧಿಕಾರ ಹೊಂದಿಲ್ಲ</translation>
+<translation id="4805410229033541409">ವಹಿವಾಟುಗಳನ್ನು ಕಳುಹಿಸಲು 'from' ಅಧಿಕಾರ ಹೊಂದಿಲ್ಲ</translation>
 <translation id="7068183357903252127">ವಹಿವಾಟು ಡೇಟಾ 'ಗೆ' ಅಥವಾ 'ಡೇಟಾ' ಅನ್ನು ನಿರ್ದಿಷ್ಟಪಡಿಸಬೇಕು</translation>
 <translation id="3087354946579878968">ವಹಿವಾಟು ಡೇಟಾ 'ನೋನ್ಸ್' ಅಮಾನ್ಯವಾಗಿದೆ</translation>
 <translation id="7577623631309755655">ವಹಿವಾಟು ಡೇಟಾ 'gasPrice' ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
@@ -804,7 +804,7 @@
 <translation id="7740287852186792672">ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು</translation>
 <translation id="5140238928332244937">ಹೆಚ್ಚು ಡೆಫಿ ಬ್ರೌಸ್ ಮಾಡಿ</translation>
 <translation id="6825869531314999449">ಹೆಚ್ಚು NFT ಬ್ರೌಸ್ ಮಾಡಿ</translation>
-<translation id="2744185997184360326">ಕಂಪೌಂಡ್</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">ಮುಕ್ತ ಫೈನಾನ್ಸ್ ಅಪ್ಲಿಕೇಶನ್‌ಗಳ ಜಗತ್ತನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">ಮೇಕರ್ - ಸ್ಟೇಬಲ್‌ಕಾಯ್ನ್, ಸಾಲಗಳು ಮತ್ತು ಆಡಳಿತ...</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">ಸಂದೇಶ</translation>
 <translation id="3586752056660754651">ಸಹಿ</translation>
 <translation id="7065157926159745595">ನಿಮ್ಮ ಇದನ್ನು ಖರ್ಚು ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
-<translation id="2746256479706649252">ಈ ಅನುಮತಿಯನ್ನು ನೀಡುವ ಮೂಲಕ, ನಿಮ್ಮ ಇದನ್ನು ಹಿಂಪಡೆಯುವುದಕ್ಕಾಗಿ ಈ ಆ್ಯಪ್‌ಗೆ ನೀವು ಅನುಮತಿಸುತ್ತಿರುವಿರಿ</translation>
-<translation id="3959778836307233598">ಮತ್ತು ನಿಮಗಾಗಿ ಸ್ವಯಂಚಾಲಿತ ವಹಿವಾಟುಗಳು.</translation>
 <translation id="8786100550345425552">ಅನುಮತಿಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="7710469167917867539">ವಹಿವಾಟು ಶುಲ್ಕ</translation>
 <translation id="9065203028668620118">ಎಡಿಟ್</translation>

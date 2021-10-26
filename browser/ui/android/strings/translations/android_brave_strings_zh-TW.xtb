@@ -469,16 +469,14 @@
 <translation id="6912901278692845878">快速瀏覽</translation>
 <translation id="1080013038789678738">算我一份！</translation>
 <translation id="8037420924417098685">要開始免費通話，請開啟 Brave Rewards</translation>
-<translation id="8961724619078500274">使用 Brave Rewards，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="8961724619078500274">使用 Brave 獎勵，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
 <translation id="7307847920988946894">開啟 Rewards</translation>
-<translation id="1186139901474936180">點擊即標示您同意 <ph name="TERMS_OF_SERVICE"/> 與 <ph name="PRIVACY_POLICY"/>。可在設定中隨時停用。</translation>
 <translation id="6128511569382736135">要開始免費通話，請開啟 Brave Private Ads</translation>
-<translation id="7930006085154756245">使用 Brave Private Ads，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
+<translation id="7930006085154756245">使用 Brave 私人廣告，您可以透過檢視私人廣告獲得代幣（您的資料是安全的）。把這些代幣變成現金、禮品卡，或是給您喜歡的網站小費。沒有追蹤。不會拖慢網站速度。</translation>
 <translation id="4992617448154987397">開啟 Brave Private Ads</translation>
-<translation id="7314030474505546826">開啟廣告，即表示您同意 <ph name="TERMS_OF_SERVICE"/> 與 <ph name="PRIVACY_POLICY"/>。</translation>
 <translation id="3415016869273103668">您現在可以開始免費通話了</translation>
-<translation id="6712250553966900750">點擊螢幕上的任何位置以繼續 Brave Talk。</translation>
-<translation id="626339649633171286">想要取得更多關於 Brave Rewards？<ph name="TAKE_QUICK_TOUR"/>。</translation>
+<translation id="7073631403665023390">點擊螢幕上的任何位置以繼續 Brave Talk。</translation>
+<translation id="626339649633171286">想要取得更多關於 Brave 獎勵？<ph name="TAKE_QUICK_TOUR"/>。</translation>
 <translation id="3604285424134705930">您已將 <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 轉換為 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
 <translation id="392587271502873865">請檢查您的網路連線。</translation>
 <translation id="7889432931837317731">可能的話自動開啟</translation>
@@ -540,7 +538,6 @@
 <translation id="6146351434671268516">按照正確的順序寫下或複製這些單字，並將它們保存在安全的地方。</translation>
 <translation id="7408247683131762445">警告：絕對不要洩漏您的備份短語。任何人只要知道這個短語就能永遠拿走您的資金。</translation>
 <translation id="939275786514736244">我已經在安全的地方備份了我的短語</translation>
-<translation id="6896758677409633944">複製</translation>
 <translation id="2604744480284798833">立刻備份您的錢包以保護您的加密資產，確保您不會失去存取權。</translation>
 <translation id="1202920745614909195">使用 Apple Pay、信用卡或簽帳金融卡購買加密貨幣。</translation>
 <translation id="841880029259839903">將加密貨幣從一個帳號傳送到另一個帳號。</translation>
@@ -550,21 +547,19 @@
 <translation id="4450951602553063001">重新輸入密碼</translation>
 <translation id="1783870616707290226">密碼必須有 7 個或更多字元</translation>
 <translation id="7383102760859258982">重新輸入的密碼不一致</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 小時</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">ALL</translation>
-<translation id="8892168913673237979">都設定好了！</translation>
-<translation id="8331501996028380732">購買、交易或是持有加密貨幣。如果您有既有的加密貨幣帳號，您可以在此新增。</translation>
 <translation id="2267753748892043616">新增帳號</translation>
 <translation id="2632612428525029752">更新帳號</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">啟用指紋解鎖？</translation>
 <translation id="5493402808936397665">啟用生物識別技術來快速解鎖您的錢包，不用輸入您的密碼。</translation>
-<translation id="8488282162676695335">Brave 錢包</translation>
+<translation id="1544192797660353713">Brave 錢包</translation>
 <translation id="6901810042765869341">輸入您的備援短語來復原您的 Brave 錢包加密貨幣帳號。</translation>
 <translation id="1970161551843843564">復原加密貨幣帳號</translation>
 <translation id="4811736040444856406">顯示備援短語</translation>
@@ -581,7 +576,6 @@
 <translation id="745115390910697838">短語不相符，請再試一次。</translation>
 <translation id="2360588547830602174">帳號復原失敗。請再試一次。</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/> 市場價格</translation>
-<translation id="5593852897152820572">以 ETH 計價的價格</translation>
 <translation id="6748108480210050150">來源帳戶</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -589,10 +583,7 @@
 <translation id="6159566011642056819">至 (預估值)</translation>
 <translation id="6998989275928107238">目的帳戶</translation>
 <translation id="6664416064035847539">地址或 URL</translation>
-<translation id="59223531494896848">上限</translation>
-<translation id="3567988240819868195">市場</translation>
 <translation id="632241521608275119">滑點容許範圍</translation>
-<translation id="4500473291496079954">到期時間</translation>
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="3535654229833214438">交易</translation>
 <translation id="4636930964841734540">資訊</translation>
@@ -696,7 +687,6 @@
 <translation id="7995708795274219641">數量 + Gas</translation>
 <translation id="1950052789869821983">交易</translation>
 <translation id="6122742277607781713">投資組合</translation>
-<translation id="2805756323405976993">應用程式</translation>
 <translation id="6083912983861746409">Gas 價格 (GWEI)</translation>
 <translation id="2499079593046817044">Gas 限制(GWEI)</translation>
 <translation id="6389441740143786465">停用共用中樞</translation>

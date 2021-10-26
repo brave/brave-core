@@ -475,13 +475,11 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="8037420924417098685">Per iniciar una trucada gratuïta, activeu Brave Rewards</translation>
 <translation id="8961724619078500274">Amb Brave Rewards guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
 <translation id="7307847920988946894">Activeu les recompenses</translation>
-<translation id="1186139901474936180">Si el toqueu, esteu acceptant els <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>. Desactiveu-lo en qualsevol moment a Configuració.</translation>
 <translation id="6128511569382736135">Per iniciar una trucada gratuïta, activeu Brave Private Ads</translation>
 <translation id="7930006085154756245">Amb Brave Private Ads guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
 <translation id="4992617448154987397">Activeu Brave Private Ads</translation>
-<translation id="7314030474505546826">Si activeu Brave Ads, esteu acceptant els <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Ara podeu iniciar una trucada gratuïta</translation>
-<translation id="6712250553966900750">Toqueu a qualsevol lloc de la pantalla per continuar cap a Brave Talk.</translation>
+<translation id="7073631403665023390">Toqueu a qualsevol lloc de la pantalla per continuar cap a la conversa de Brave.</translation>
 <translation id="626339649633171286">Voleu saber més sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Heu convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Si us plau, comproveu la connexió a la xarxa.</translation>
@@ -544,7 +542,6 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="6146351434671268516">Anoteu o copieu aquestes paraules en l'ordre correcte i deseu-les en algun lloc segur.</translation>
 <translation id="7408247683131762445">ADVERTÈNCIA: no reveleu mai la frase de seguretat. Qualsevol que obtingui aquesta frase podrà obtenir sempre més els vostres fons.</translation>
 <translation id="939275786514736244">He fet una còpia de seguretat de la meva frase en algun lloc segur</translation>
-<translation id="6896758677409633944">Còpiar</translation>
 <translation id="2604744480284798833">Feu una còpia de seguretat de la vostra cartera ara per protegir-la de la pèrdua d'accés.</translation>
 <translation id="1202920745614909195">Compreu criptomonedes amb Apple Pay, targeta de crèdit o dèbit.</translation>
 <translation id="841880029259839903">Envieu criptomonedes o transferiu-les d'un compte a un altre.</translation>
@@ -561,14 +558,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">TOT</translation>
-<translation id="8892168913673237979">Ja està tot a punt!</translation>
-<translation id="8331501996028380732">Compreu, comercialitzeu o conserveu criptomonedes. Si ja teniu un compte de criptomonedes existent, el podeu afegir ara.</translation>
 <translation id="2267753748892043616">Afegeix compte</translation>
 <translation id="2632612428525029752">Actualitzeu el compte</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Voleu permetre el desbloqueig de la identificació per empremta dactilar?</translation>
 <translation id="5493402808936397665">Permeteu que la biometria desbloquegi ràpidament la vostra cartera sense introduir la contrasenya.</translation>
-<translation id="8488282162676695335">Cartera Brave</translation>
+<translation id="1544192797660353713">Cartera Brave</translation>
 <translation id="6901810042765869341">Introduïu la frase de recuperació per restaurar el vostre compte de criptomonedes de la cartera de Brave.</translation>
 <translation id="1970161551843843564">Restaura el compte de criptomonedes</translation>
 <translation id="4811736040444856406">Mostra la frase de recuperació</translation>
@@ -585,7 +580,6 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="745115390910697838">Les frases no coincideixen. Torneu-ho a intentar.</translation>
 <translation id="2360588547830602174">S'ha produït un error en la recuperació del compte. Torneu-ho a intentar.</translation>
 <translation id="6392640873800632439">Preu de mercat en <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Preu en ETH</translation>
 <translation id="6748108480210050150">Des de</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -593,10 +587,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="6159566011642056819">A (estimació)</translation>
 <translation id="6998989275928107238">A</translation>
 <translation id="6664416064035847539">adreça o URL</translation>
-<translation id="59223531494896848">Límit</translation>
-<translation id="3567988240819868195">Mercat</translation>
 <translation id="632241521608275119">Tolerància a la disminució</translation>
-<translation id="4500473291496079954">Caduca en</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3535654229833214438">Transaccions</translation>
 <translation id="4636930964841734540">Informació</translation>
@@ -675,7 +666,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="4395361077929528480">Tipus de xarxa</translation>
 <translation id="755448900483975096">Operador de telefonia mòbil</translation>
 <translation id="1279441577056010362">Continueu cap al correu electrònic</translation>
-<translation id="2553687444159335134">Suport proporcionat amb l’ajut de l’equip de Guardian.\n\nSeleccioneu la informació que vulgueu compartir amb nosaltres.\n\nCom més informació compartiu inicialment amb nosaltres, més fàcil serà per al nostre personal de suport ajudar-vos a resoldre el vostre</translation>
+<translation id="2553687444159335134">Suport proporcionat amb l’ajuda de l’equip de Guardian.\n\nSeleccioneu la informació que vulgueu compartir amb nosaltres.\n\nCom més informació compartiu inicialment amb nosaltres, més fàcil serà per al nostre personal de suport ajudar-vos a resoldre el vostre</translation>
 <translation id="7999094850625689785">Se seleccionarà automàticament la regió del servidor que tingueu més a prop, segons la zona horària del vostre sistema. Es recomana això per garantir velocitats ràpides d'Internet.</translation>
 <translation id="8018707825009059641">Altres problemes</translation>
 <translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
@@ -689,7 +680,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="7475580600756356589">S'està connectant al vostre servidor. Només hauria de trigar un moment...</translation>
 <translation id="1342728075788541348">S'està desconnectant del vostre servidor. Només hauria de trigar un moment...</translation>
 <translation id="669072536454692117">La subscripció s'ha consumit correctament</translation>
-<translation id="1187506504156101449">No ha estat possible reconèixer la compra:</translation>
+<translation id="1187506504156101449">No ha estat possible acceptar la compra:</translation>
 <translation id="8420522105268941892">Ja esteu subscrits a la subscripció. Proveu de restaurar la subscripció.</translation>
 <translation id="74771564105268111">ERROR!!\nCausat per un usuari que ha cancel·lat el flux de compra.</translation>
 <translation id="3851978668258201962">ERROR!!\nS'ha produït un error en la compra...</translation>
@@ -700,10 +691,9 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="7995708795274219641">Quantitat + gas</translation>
 <translation id="1950052789869821983">Transacció</translation>
 <translation id="6122742277607781713">Cartera</translation>
-<translation id="2805756323405976993">Aplicacions</translation>
 <translation id="6083912983861746409">Preu del gas (gwei)</translation>
 <translation id="2499079593046817044">Límit de gas (gwei)</translation>
-<translation id="6389441740143786465">Desactiveu el Sharing Hub</translation>
+<translation id="6389441740143786465">Desactiva el Sharing Hub</translation>
 <translation id="9065203028668620118">Edita</translation>
 <translation id="473775607612524610">Actualitza</translation>
 <translation id="479795390141144417">S'ha produït un error en actualitzar el compte.</translation>
