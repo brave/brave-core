@@ -51,7 +51,8 @@ function SelectAsset (props: Props) {
       <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} />
       <SelectScrollSearchContainer>
         {
-          filteredAssetList.map((asset: AccountAssetOptionType) =>
+          // Temp filtering out erc721 tokens, sending will be handled in a different PR
+          filteredAssetList.filter((token) => !token.asset.isErc721).map((asset: AccountAssetOptionType) =>
             <SelectAssetItem
               key={asset.asset.contractAddress}
               asset={asset}
