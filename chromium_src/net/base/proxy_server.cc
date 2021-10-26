@@ -21,12 +21,18 @@ void ParseAuthInfoAndHostname(base::StringPiece* hostname,
                       &user_component, &password_component, &host_component,
                       &port_component);
 
+  // If host is not valid then extracting auth is meaningless since
+  // url::CanonicalizeHost in ProxyServer::FromSchemeHostAndPort will fail
+  // anyway.
+  if (!host_component.is_valid())
+    return;
+
   // Extract Auth info if it exists.
-  if (user_component.is_valid()) {
+  if (user_component.is_valid())
     *username = hostname->substr(user_component.begin, user_component.len);
+  if (password_component.is_valid())
     *password =
         hostname->substr(password_component.begin, password_component.len);
-  }
 
   // Make sure the hostname StringPiece only contains the hostname.
   *hostname = hostname->substr(host_component.begin, host_component.len);
