@@ -301,7 +301,8 @@ export enum TransactionType {
   ETHSend = 0,
   ERC20Transfer = 1,
   ERC20Approve = 2,
-  Other = 3
+  ERC721TransferFrom = 3,
+  Other = 4
 }
 
 export interface SwapParams {
