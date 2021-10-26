@@ -13,10 +13,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
+import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -46,6 +49,12 @@ public class BraveVpnUtils {
     public static boolean mIsServerLocationChanged;
     public static String selectedServerRegion;
     private static ProgressDialog mProgressDialog;
+
+    public enum AlwaysOnVpnType {
+        BRAVE_VPN,
+        OTHER_VPN,
+        NONE;
+    }
 
     public static boolean isBraveVpnFeatureEnable() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
@@ -214,5 +223,25 @@ public class BraveVpnUtils {
         BraveVpnPrefUtils.setHostnameDisplay("");
         BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
+    }
+
+    public static AlwaysOnVpnType getAlwaysOnVpn(Context context) {
+        String alwaysOnPackage =
+                Settings.Secure.getString(context.getContentResolver(), "always_on_vpn_app");
+        if (alwaysOnPackage != null) {
+            return context.getPackageName().equals(alwaysOnPackage) ? AlwaysOnVpnType.BRAVE_VPN
+                                                                    : AlwaysOnVpnType.OTHER_VPN;
+        } else {
+            return AlwaysOnVpnType.NONE;
+        }
+    }
+
+    public static void showVpnAlwaysOnErrorDialog(Activity activity) {
+        BraveVpnAlwaysOnErrorDialogFragment mBraveVpnAlwaysOnErrorDialogFragment =
+                new BraveVpnAlwaysOnErrorDialogFragment();
+        mBraveVpnAlwaysOnErrorDialogFragment.setCancelable(false);
+        mBraveVpnAlwaysOnErrorDialogFragment.show(
+                ((FragmentActivity) activity).getSupportFragmentManager(),
+                "BraveVpnAlwaysOnErrorDialogFragment");
     }
 }

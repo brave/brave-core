@@ -301,6 +301,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
+            if (BraveVpnUtils.getAlwaysOnVpn(BraveActivity.this)
+                    == BraveVpnUtils.AlwaysOnVpnType.OTHER_VPN) {
+                BraveVpnUtils.showVpnAlwaysOnErrorDialog(BraveActivity.this);
+                return false;
+            } else if (BraveVpnUtils.getAlwaysOnVpn(BraveActivity.this)
+                    == BraveVpnUtils.AlwaysOnVpnType.BRAVE_VPN) {
+                Toast.makeText(
+                             BraveActivity.this, R.string.always_on_brave_text, Toast.LENGTH_SHORT)
+                        .show();
+                return false;
+            }
             if (!InternetConnection.isNetworkAvailable(BraveActivity.this)) {
                 Toast.makeText(BraveActivity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
             } else {

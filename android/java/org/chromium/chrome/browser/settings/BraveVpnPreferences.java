@@ -151,6 +151,15 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 });
     }
 
+    private void disableControls() {
+        mVpnSwitch.setEnabled(false);
+        findPreference(PREF_SUPPORT_TECHNICAL).setEnabled(false);
+        findPreference(PREF_SUPPORT_VPN).setEnabled(false);
+        findPreference(PREF_SUBSCRIPTION_MANAGE).setEnabled(false);
+        findPreference(PREF_SERVER_RESET_CONFIGURATION).setEnabled(false);
+        findPreference(PREF_SERVER_CHANGE_LOCATION).setEnabled(false);
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -185,6 +194,17 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
     @Override
     public void onResume() {
         super.onResume();
+        if (BraveVpnUtils.getAlwaysOnVpn(getActivity())
+                == BraveVpnUtils.AlwaysOnVpnType.BRAVE_VPN) {
+            mVpnSwitch.setSummary(
+                    getActivity().getResources().getString(R.string.always_on_brave_text));
+            disableControls();
+        }
+        if (BraveVpnUtils.getAlwaysOnVpn(getActivity())
+                == BraveVpnUtils.AlwaysOnVpnType.OTHER_VPN) {
+            BraveVpnUtils.showVpnAlwaysOnErrorDialog(getActivity());
+            disableControls();
+        }
         if (BraveVpnUtils.mIsServerLocationChanged) {
             BraveVpnUtils.mIsServerLocationChanged = false;
             BraveVpnUtils.showProgressDialog(
