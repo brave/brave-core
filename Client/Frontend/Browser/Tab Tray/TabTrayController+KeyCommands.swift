@@ -8,6 +8,19 @@ import UIKit
 extension TabTrayController {
     override var keyCommands: [UIKeyCommand]? {
         let toggleText = privateMode ? Strings.switchToNonPBMKeyCodeTitle: Strings.switchToPBMKeyCodeTitle
+        
+        let arrowCommands: [UIKeyCommand] =
+        [UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+         UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+         UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+         UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:)))]
+        
+        arrowCommands.forEach {
+            if #available(iOS 15.0, *) {
+                $0.wantsPriorityOverSystemBehavior = true
+            }
+        }
+        
         return [
             UIKeyCommand(title: toggleText, action: #selector(didTogglePrivateModeKeyCommand), input: "`", modifierFlags: .command),
             UIKeyCommand(input: "w", modifierFlags: .command, action: #selector(didCloseTabKeyCommand)),
@@ -17,15 +30,11 @@ extension TabTrayController {
             UIKeyCommand(input: "\\", modifierFlags: [.command, .shift], action: #selector(didEnterTabKeyCommand)),
             UIKeyCommand(input: "\t", modifierFlags: [.command, .alternate], action: #selector(didEnterTabKeyCommand)),
             UIKeyCommand(title: Strings.openNewTabFromTabTrayKeyCodeTitle, action: #selector(didOpenNewTabKeyCommand), input: "t", modifierFlags: .command),
-            UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-            UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-            UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-            UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        ]
+        ] + arrowCommands
+        
     }
 
     @objc func didTogglePrivateModeKeyCommand() {
-        // NOTE: We cannot and should not capture telemetry here.
         didTogglePrivateMode()
     }
 
