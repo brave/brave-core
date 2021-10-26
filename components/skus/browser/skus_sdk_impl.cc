@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/skus/browser/br-rs/brave-rewards-cxx/src/wrapper.hpp"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/wrapper.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
@@ -27,8 +27,34 @@ namespace {
 // TODO(bsclifton): fix me. I set a completely arbitrary size!
 const int kMaxResponseSize = 1000000;  // 1Mb
 
+// TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
 brave_rewards::SkusSdkImpl* g_SkusSdk = NULL;
 
+void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
+                    brave_rewards::RewardsResult result,
+                    rust::cxxbridge1::Str order) {
+  std::string order_str = static_cast<std::string>(order);
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run(order_str);
+  }
+  delete callback_state;
+}
+
+// std::string GetEnvironment() {
+//   // TODO(bsclifton): implement similar to logic to
+//   // https://github.com/brave/brave-core/pull/10358/files#diff-2170e2d6e88ab6e0202eac0280482f5a45f468d0fcc8d9d4d48fc358812b4a0cR35
+//   return "development";
+// }
+
+void OnScheduleWakeup(rust::cxxbridge1::Fn<void()> done) {
+  done();
+}
+
+}  // namespace
+
+namespace brave_rewards {
+
+// TODO(bsclifton): move to a different file
 class SkusSdkFetcher {
  public:
   explicit SkusSdkFetcher(scoped_refptr<network::SharedURLLoaderFactory>);
@@ -73,8 +99,6 @@ class SkusSdkFetcher {
       rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx,
       std::unique_ptr<std::string> response_body);
 };
-
-std::unique_ptr<SkusSdkFetcher> fetcher;
 
 SkusSdkFetcher::SkusSdkFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -141,29 +165,9 @@ void SkusSdkFetcher::OnFetchComplete(
   callback(std::move(ctx), resp);
 }
 
-void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
-                    brave_rewards::RewardsResult result,
-                    rust::cxxbridge1::Str order) {
-  std::string order_str = static_cast<std::string>(order);
-  if (callback_state->cb) {
-    std::move(callback_state->cb).Run(order_str);
-  }
-  delete callback_state;
-}
 
-// std::string GetEnvironment() {
-//   // TODO(bsclifton): implement similar to logic to
-//   // https://github.com/brave/brave-core/pull/10358/files#diff-2170e2d6e88ab6e0202eac0280482f5a45f468d0fcc8d9d4d48fc358812b4a0cR35
-//   return "development";
-// }
-
-void OnScheduleWakeup(rust::cxxbridge1::Fn<void()> done) {
-  done();
-}
-
-}  // namespace
-
-namespace brave_rewards {
+// TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
+std::unique_ptr<SkusSdkFetcher> fetcher;
 
 void shim_purge() {
   LOG(ERROR) << "shim_purge";
@@ -186,8 +190,7 @@ void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
   dictionary->SetString(key_string, value_string);
 }
 
-const std::string& shim_get(rust::cxxbridge1::Str key) {
-  static const std::string empty = "";
+::rust::String shim_get(rust::cxxbridge1::Str key) {
   std::string key_string = static_cast<std::string>(key);
   LOG(ERROR) << "shim_get: `" << key_string << "`";
 
@@ -197,9 +200,9 @@ const std::string& shim_get(rust::cxxbridge1::Str key) {
   DCHECK(dictionary->is_dict());
   const base::Value* value = dictionary->FindKey(key_string);
   if (value) {
-    return value->GetString();
+    return ::rust::String(value->GetString());
   }
-  return empty;
+  return ::rust::String("{}");
 }
 
 void shim_scheduleWakeup(::std::uint64_t delay_ms,
@@ -216,6 +219,7 @@ void shim_executeRequest(
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
              brave_rewards::HttpResponse)> done,
     rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
+  // TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
   fetcher = std::make_unique<SkusSdkFetcher>(g_SkusSdk->url_loader_factory_);
   fetcher->BeginFetch(req, std::move(done), std::move(ctx));
 }
@@ -231,6 +235,7 @@ SkusSdkImpl::SkusSdkImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory), prefs_(prefs) {
+  // TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
   g_SkusSdk = this;
 }
 
@@ -242,6 +247,8 @@ void SkusSdkImpl::RefreshOrder(const std::string& order_id,
 
   std::unique_ptr<RefreshOrderCallbackState> cbs(new RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
+  cbs->instance = this;
+  // cbs->fetcher = std::make_unique<SkusSdkFetcher>(url_loader_factory_);
 
   sdk->refresh_order(OnRefreshOrder, std::move(cbs), order_id.c_str());
 }
