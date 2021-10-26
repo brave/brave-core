@@ -20,10 +20,28 @@ class RefreshOrderCallbackState {
   SkusSdkImpl* instance;
   SkusSdkFetcher* fetcher;
 };
+class FetchOrderCredentialsCallbackState {
+ public:
+  skus::mojom::SkusSdk::FetchOrderCredentialsCallback cb;
+  SkusSdkImpl* instance;
+  SkusSdkFetcher* fetcher;
+};
+class PrepareCredentialsPresentationCallbackState {
+ public:
+  skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback cb;
+  SkusSdkImpl* instance;
+  SkusSdkFetcher* fetcher;
+};
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
                                       RewardsResult result,
                                       rust::cxxbridge1::Str order);
+using FetchOrderCredentialsCallback = void (*)(FetchOrderCredentialsCallbackState* callback_state,
+                                      RewardsResult result);
+using PrepareCredentialsPresentationCallback = void (*)(PrepareCredentialsPresentationCallbackState* callback_state,
+                                      RewardsResult result,
+                                      rust::cxxbridge1::Str presentation);
+
 void shim_purge();
 void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value);
 ::rust::String shim_get(rust::cxxbridge1::Str key);
