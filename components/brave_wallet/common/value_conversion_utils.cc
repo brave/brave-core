@@ -51,6 +51,7 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
   }
   const base::Value* nativeCurrencyValue =
       params_dict->FindDictKey("nativeCurrency");
+  chain.decimals = 0;
   if (nativeCurrencyValue) {
     const std::string* symbol_name = nativeCurrencyValue->FindStringKey("name");
     if (symbol_name) {
@@ -61,7 +62,9 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
       chain.symbol = *symbol;
     }
     absl::optional<int> decimals = nativeCurrencyValue->FindIntKey("decimals");
-    chain.decimals = (decimals) ? decimals.value() : 0;
+    if (decimals) {
+      chain.decimals = decimals.value();
+    }
   }
 
   chain.is_eip1559 = params_dict->FindBoolKey("is_eip1559").value_or(false);

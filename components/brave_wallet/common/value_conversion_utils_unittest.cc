@@ -67,6 +67,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
     ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
     ASSERT_FALSE(chain->is_eip1559);
+    EXPECT_EQ(chain->decimals, 0);
   }
 
   {
