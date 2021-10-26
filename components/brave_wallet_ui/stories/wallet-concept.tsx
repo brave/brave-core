@@ -793,6 +793,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             toAddressOrUrl={toAddress}
             toAddress={toAddress}
             addressError=''
+            isFetchingSwapQuote={false}
             isSwapSubmitDisabled={false}
             customSlippageTolerance={customTolerance}
             onCustomSlippageToleranceChange={onSetCustomTolerance}

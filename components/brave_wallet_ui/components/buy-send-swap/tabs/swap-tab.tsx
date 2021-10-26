@@ -32,6 +32,7 @@ export interface Props {
   fromAssetBalance: string
   toAssetBalance: string
   assetOptions: AccountAssetOptionType[]
+  isFetchingQuote: boolean
   isSubmitDisabled: boolean
   validationError?: SwapValidationErrorType
   customSlippageTolerance: string
@@ -68,6 +69,7 @@ function SwapTab (props: Props) {
     fromAssetBalance,
     toAssetBalance,
     assetOptions,
+    isFetchingQuote,
     isSubmitDisabled,
     validationError,
     customSlippageTolerance,
@@ -153,6 +155,7 @@ function SwapTab (props: Props) {
             exchangeRate={exchangeRate}
             slippageTolerance={slippageTolerance}
             orderExpiration={orderExpiration}
+            isFetchingQuote={isFetchingQuote}
             isSubmitDisabled={isSubmitDisabled}
             validationError={validationError}
             customSlippageTolerance={customSlippageTolerance}

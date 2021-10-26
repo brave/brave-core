@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+import { StyledButton } from '../../extension/buttons/nav-button/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -31,4 +32,19 @@ export const ArrowButton = styled.button`
   &:hover {
     background-color: ${(p) => p.theme.color.divider01}
   }
+`
+
+export const SwapNavButton = styled(StyledButton)`
+  width: 100%;
+`
+
+export const SwapButtonText = styled.span`
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${(p) => p.theme.palette.white};
+`
+
+export const SwapButtonLoader = styled(SwapButtonText)`
+  width: 15px;
 `
