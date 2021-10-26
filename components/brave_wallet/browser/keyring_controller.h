@@ -132,6 +132,10 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
   void NotifyWalletBackupComplete() override;
   void GetDefaultKeyringInfo(GetDefaultKeyringInfoCallback callback) override;
   void Reset() override;
+  void SetDefaultKeyringHardwareAccountName(
+      const std::string& address,
+      const std::string& name,
+      SetDefaultKeyringHardwareAccountNameCallback callback) override;
   void SetDefaultKeyringDerivedAccountName(
       const std::string& address,
       const std::string& name,
@@ -225,7 +229,8 @@ class KeyringController : public KeyedService, public mojom::KeyringController {
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       const std::string& id);
-
+  bool UpdateNameForHardwareAccountSync(const std::string& address,
+                                        const std::string& name);
   const std::string GetMnemonicForDefaultKeyringImpl();
 
   bool GetPrefInBytesForKeyring(const std::string& key,

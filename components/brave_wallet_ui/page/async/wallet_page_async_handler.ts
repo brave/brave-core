@@ -20,6 +20,9 @@ import {
   ImportFromExternalWalletPayloadType
 } from '../constants/action_types'
 import {
+  findHardwareAccountInfo
+} from '../../common/async/lib'
+import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
@@ -126,6 +129,12 @@ handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payl
 
 handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, payload: UpdateAccountNamePayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
+  const hardwareAccount = await findHardwareAccountInfo(payload.address)
+  if (hardwareAccount && hardwareAccount.hardware) {
+    const result = await keyringController.setDefaultKeyringHardwareAccountName(payload.address, payload.name)
+    return result.success
+  }
+
   const result = payload.isDerived ?
     await keyringController.setDefaultKeyringDerivedAccountName(payload.address, payload.name)
     : await keyringController.setDefaultKeyringImportedAccountName(payload.address, payload.name)

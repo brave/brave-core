@@ -1982,4 +1982,110 @@ TEST_F(KeyringControllerUnitTest, GetSetAutoLockMinutes) {
   EXPECT_EQ(kAutoLockMinutesMax, GetAutoLockMinutes(&controller));
 }
 
+TEST_F(KeyringControllerUnitTest, SetDefaultKeyringHardwareAccountName) {
+  KeyringController controller(GetPrefs());
+
+  TestKeyringControllerObserver observer;
+  controller.AddObserver(observer.GetReceiver());
+
+  controller.CreateWallet("brave", base::DoNothing::Once<const std::string&>());
+  base::RunLoop().RunUntilIdle();
+
+  const struct {
+    const char* address;
+    const char* derivation_path;
+    const char* name;
+    const char* vendor;
+    const char* device_id;
+  } hardware_accounts[] = {
+      {"0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1"},
+      {"0x264", "m/44'/60'/2'/0/0", "name 2", "Ledger", "device1"},
+      {"0xEA0", "m/44'/60'/3'/0/0", "name 3", "Ledger", "device2"}};
+
+  std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
+  for (const auto& it : hardware_accounts) {
+    new_accounts.push_back(mojom::HardwareWalletAccount::New(
+        it.address, it.derivation_path, it.name, it.vendor, it.device_id));
+  }
+
+  const std::string kUpdatedName = "Updated ledger accoount 2";
+
+  // Fail when no hardware accounts.
+  bool callback_called = false;
+  controller.SetDefaultKeyringHardwareAccountName(
+      hardware_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  EXPECT_FALSE(observer.AccountsChangedFired());
+  controller.AddHardwareAccounts(std::move(new_accounts));
+  base::RunLoop().RunUntilIdle();
+
+  // Empty address should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringHardwareAccountName(
+      "", kUpdatedName, base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Empty name should fail.
+  callback_called = false;
+  controller.SetDefaultKeyringHardwareAccountName(
+      hardware_accounts[1].address, "",
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_FALSE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Update second hardware account's name.
+  callback_called = false;
+  controller.SetDefaultKeyringHardwareAccountName(
+      hardware_accounts[1].address, kUpdatedName,
+      base::BindLambdaForTesting([&](bool success) {
+        EXPECT_TRUE(success);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Only second hardware account's name is updated.
+  callback_called = false;
+  controller.GetDefaultKeyringInfo(
+      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_backed_up);
+        EXPECT_EQ(keyring_info->account_infos.size(), 4u);
+        EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
+        EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+        EXPECT_FALSE(keyring_info->account_infos[0]->hardware);
+        EXPECT_EQ(keyring_info->account_infos[1]->address,
+                  hardware_accounts[0].address);
+        EXPECT_EQ(keyring_info->account_infos[1]->name,
+                  hardware_accounts[0].name);
+        EXPECT_TRUE(keyring_info->account_infos[1]->hardware);
+        EXPECT_EQ(keyring_info->account_infos[2]->address,
+                  hardware_accounts[1].address);
+        EXPECT_EQ(keyring_info->account_infos[2]->name, kUpdatedName);
+        EXPECT_TRUE(keyring_info->account_infos[2]->hardware);
+        EXPECT_EQ(keyring_info->account_infos[3]->address,
+                  hardware_accounts[2].address);
+        EXPECT_EQ(keyring_info->account_infos[3]->name,
+                  hardware_accounts[2].name);
+        EXPECT_TRUE(keyring_info->account_infos[3]->hardware);
+        callback_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
 }  // namespace brave_wallet

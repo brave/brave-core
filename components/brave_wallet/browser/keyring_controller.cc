@@ -1203,6 +1203,36 @@ void KeyringController::SetDefaultKeyringDerivedAccountName(
   std::move(callback).Run(true);
 }
 
+bool KeyringController::UpdateNameForHardwareAccountSync(
+    const std::string& address,
+    const std::string& name) {
+  base::Value* hardware_keyrings = GetPrefForHardwareKeyringUpdate(prefs_);
+  for (auto devices : hardware_keyrings->DictItems()) {
+    base::Value* account_metas = devices.second.FindKey(kAccountMetas);
+    if (!account_metas)
+      continue;
+    base::Value* address_key = account_metas->FindKey(address);
+    if (!address_key)
+      continue;
+    address_key->SetStringKey(kAccountName, name);
+    NotifyAccountsChanged();
+    return true;
+  }
+  return false;
+}
+
+void KeyringController::SetDefaultKeyringHardwareAccountName(
+    const std::string& address,
+    const std::string& name,
+    SetDefaultKeyringHardwareAccountNameCallback callback) {
+  if (address.empty() || name.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  std::move(callback).Run(UpdateNameForHardwareAccountSync(address, name));
+}
+
 void KeyringController::SetDefaultKeyringImportedAccountName(
     const std::string& address,
     const std::string& name,
