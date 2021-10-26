@@ -994,6 +994,8 @@ namespace brave_rewards {
   struct WakeupContext;
   struct CppSDK;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
+  using FetchOrderCredentialsCallbackState = ::brave_rewards::FetchOrderCredentialsCallbackState;
+  using PrepareCredentialsPresentationCallbackState = ::brave_rewards::PrepareCredentialsPresentationCallbackState;
 }
 
 namespace brave_rewards {
@@ -1080,6 +1082,8 @@ private:
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 struct CppSDK final : public ::rust::Opaque {
   void refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept;
+  void fetch_order_credentials(::brave_rewards::FetchOrderCredentialsCallback callback, ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> callback_state, ::rust::String order_id) const noexcept;
+  void prepare_credentials_presentation(::brave_rewards::PrepareCredentialsPresentationCallback callback, ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> callback_state, ::rust::String domain, ::rust::String path) const noexcept;
   ~CppSDK() = delete;
 
 private:
@@ -1095,6 +1099,12 @@ private:
 static_assert(
     ::rust::IsRelocatable<::brave_rewards::RefreshOrderCallback>::value,
     "type brave_rewards::RefreshOrderCallback should be trivially move constructible and trivially destructible in C++ to be used as an argument of `refresh_order` in Rust");
+static_assert(
+    ::rust::IsRelocatable<::brave_rewards::FetchOrderCredentialsCallback>::value,
+    "type brave_rewards::FetchOrderCredentialsCallback should be trivially move constructible and trivially destructible in C++ to be used as an argument of `fetch_order_credentials` in Rust");
+static_assert(
+    ::rust::IsRelocatable<::brave_rewards::PrepareCredentialsPresentationCallback>::value,
+    "type brave_rewards::PrepareCredentialsPresentationCallback should be trivially move constructible and trivially destructible in C++ to be used as an argument of `prepare_credentials_presentation` in Rust");
 
 namespace brave_rewards {
 extern "C" {
@@ -1108,6 +1118,10 @@ extern "C" {
 ::brave_rewards::CppSDK *brave_rewards$cxxbridge1$initialize_sdk(::rust::String *env) noexcept;
 
 void brave_rewards$cxxbridge1$CppSDK$refresh_order(const ::brave_rewards::CppSDK &self, ::brave_rewards::RefreshOrderCallback *callback, ::brave_rewards::RefreshOrderCallbackState *callback_state, ::rust::String *order_id) noexcept;
+
+void brave_rewards$cxxbridge1$CppSDK$fetch_order_credentials(const ::brave_rewards::CppSDK &self, ::brave_rewards::FetchOrderCredentialsCallback *callback, ::brave_rewards::FetchOrderCredentialsCallbackState *callback_state, ::rust::String *order_id) noexcept;
+
+void brave_rewards$cxxbridge1$CppSDK$prepare_credentials_presentation(const ::brave_rewards::CppSDK &self, ::brave_rewards::PrepareCredentialsPresentationCallback *callback, ::brave_rewards::PrepareCredentialsPresentationCallbackState *callback_state, ::rust::String *domain, ::rust::String *path) noexcept;
 
 void brave_rewards$cxxbridge1$shim_executeRequest(const ::brave_rewards::HttpRequest &req, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)> done, ::brave_rewards::HttpRoundtripContext *ctx) noexcept {
   void (*shim_executeRequest$)(const ::brave_rewards::HttpRequest &, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)>, ::rust::Box<::brave_rewards::HttpRoundtripContext>) = ::brave_rewards::shim_executeRequest;
@@ -1179,6 +1193,16 @@ void CppSDK::refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std
   ::rust::ManuallyDrop<::brave_rewards::RefreshOrderCallback> callback$(::std::move(callback));
   brave_rewards$cxxbridge1$CppSDK$refresh_order(*this, &callback$.value, callback_state.release(), &order_id);
 }
+
+void CppSDK::fetch_order_credentials(::brave_rewards::FetchOrderCredentialsCallback callback, ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> callback_state, ::rust::String order_id) const noexcept {
+  ::rust::ManuallyDrop<::brave_rewards::FetchOrderCredentialsCallback> callback$(::std::move(callback));
+  brave_rewards$cxxbridge1$CppSDK$fetch_order_credentials(*this, &callback$.value, callback_state.release(), &order_id);
+}
+
+void CppSDK::prepare_credentials_presentation(::brave_rewards::PrepareCredentialsPresentationCallback callback, ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> callback_state, ::rust::String domain, ::rust::String path) const noexcept {
+  ::rust::ManuallyDrop<::brave_rewards::PrepareCredentialsPresentationCallback> callback$(::std::move(callback));
+  brave_rewards$cxxbridge1$CppSDK$prepare_credentials_presentation(*this, &callback$.value, callback_state.release(), &domain, &path);
+}
 } // namespace brave_rewards
 
 extern "C" {
@@ -1203,6 +1227,44 @@ const ::brave_rewards::RefreshOrderCallbackState *cxxbridge1$unique_ptr$brave_re
 }
 void cxxbridge1$unique_ptr$brave_rewards$RefreshOrderCallbackState$drop(::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> *ptr) noexcept {
   ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::RefreshOrderCallbackState>::value>{}(ptr);
+}
+
+static_assert(::rust::detail::is_complete<::brave_rewards::FetchOrderCredentialsCallbackState>::value, "definition of FetchOrderCredentialsCallbackState is required");
+static_assert(sizeof(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>) == sizeof(void *), "");
+static_assert(alignof(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>) == alignof(void *), "");
+void cxxbridge1$unique_ptr$brave_rewards$FetchOrderCredentialsCallbackState$null(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> *ptr) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>();
+}
+void cxxbridge1$unique_ptr$brave_rewards$FetchOrderCredentialsCallbackState$raw(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> *ptr, ::brave_rewards::FetchOrderCredentialsCallbackState *raw) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>(raw);
+}
+const ::brave_rewards::FetchOrderCredentialsCallbackState *cxxbridge1$unique_ptr$brave_rewards$FetchOrderCredentialsCallbackState$get(const ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>& ptr) noexcept {
+  return ptr.get();
+}
+::brave_rewards::FetchOrderCredentialsCallbackState *cxxbridge1$unique_ptr$brave_rewards$FetchOrderCredentialsCallbackState$release(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState>& ptr) noexcept {
+  return ptr.release();
+}
+void cxxbridge1$unique_ptr$brave_rewards$FetchOrderCredentialsCallbackState$drop(::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> *ptr) noexcept {
+  ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::FetchOrderCredentialsCallbackState>::value>{}(ptr);
+}
+
+static_assert(::rust::detail::is_complete<::brave_rewards::PrepareCredentialsPresentationCallbackState>::value, "definition of PrepareCredentialsPresentationCallbackState is required");
+static_assert(sizeof(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>) == sizeof(void *), "");
+static_assert(alignof(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>) == alignof(void *), "");
+void cxxbridge1$unique_ptr$brave_rewards$PrepareCredentialsPresentationCallbackState$null(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> *ptr) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>();
+}
+void cxxbridge1$unique_ptr$brave_rewards$PrepareCredentialsPresentationCallbackState$raw(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> *ptr, ::brave_rewards::PrepareCredentialsPresentationCallbackState *raw) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>(raw);
+}
+const ::brave_rewards::PrepareCredentialsPresentationCallbackState *cxxbridge1$unique_ptr$brave_rewards$PrepareCredentialsPresentationCallbackState$get(const ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>& ptr) noexcept {
+  return ptr.get();
+}
+::brave_rewards::PrepareCredentialsPresentationCallbackState *cxxbridge1$unique_ptr$brave_rewards$PrepareCredentialsPresentationCallbackState$release(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState>& ptr) noexcept {
+  return ptr.release();
+}
+void cxxbridge1$unique_ptr$brave_rewards$PrepareCredentialsPresentationCallbackState$drop(::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> *ptr) noexcept {
+  ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::PrepareCredentialsPresentationCallbackState>::value>{}(ptr);
 }
 
 ::brave_rewards::HttpRoundtripContext *cxxbridge1$box$brave_rewards$HttpRoundtripContext$alloc() noexcept;
