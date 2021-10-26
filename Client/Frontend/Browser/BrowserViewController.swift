@@ -2711,7 +2711,18 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate
 
     fileprivate func find(_ text: String, function: String) {
         guard let webView = tabManager.selectedTab?.webView else { return }
-        webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
+        
+        if let delegate = webView.findInPageDelegate {
+            let backwards = function == TextSearchDirection.previous.rawValue
+            
+            delegate.find(string: text, backwards: backwards) { [weak self] index, total in
+                guard let self = self else { return }
+                self.findInPageBar?.totalResults = Int(total)
+                self.findInPageBar?.currentResult = index
+            }
+        } else {
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
+        }
     }
 
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int) {
