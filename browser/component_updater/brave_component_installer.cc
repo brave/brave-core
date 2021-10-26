@@ -37,13 +37,13 @@ bool RewriteManifestFile(const base::FilePath& extension_root,
   // Add the public key
   DCHECK(!public_key.empty());
 
-  std::unique_ptr<base::Value> final_manifest(manifest.DeepCopy());
-  final_manifest->SetStringKey("key", public_key);
+  base::Value final_manifest = manifest.Clone();
+  final_manifest.SetStringKey("key", public_key);
 
   std::string manifest_json;
   JSONStringValueSerializer serializer(&manifest_json);
   serializer.set_pretty_print(true);
-  if (!serializer.Serialize(*final_manifest)) {
+  if (!serializer.Serialize(final_manifest)) {
     return false;
   }
 
