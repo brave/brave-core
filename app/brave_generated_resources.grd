@@ -388,6 +388,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Open Private Window with Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
+        Tor
+      </message>
+      <message name="IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT" desc="The tooltip text of tor button in location bar.">
         Open in Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_USING_IPFS" desc="Button in location bar to open ipfs available site.">
@@ -398,6 +401,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_LOCATION_BAR_ONION_AVAILABLE" desc="Button in location bar to indicate onion available site to open a new tab in tor window.">
         Onion Available
+      </message>
+      <message name="IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT" desc="The tooltip text for onion available button.">
+        Open using .onion address
       </message>
       <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS" desc="The name of the IPFS context menu item for renderer">
         Import to IPFS

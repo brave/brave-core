@@ -83,8 +83,13 @@ class OnionLocationButtonView : public views::LabelButton {
                                         base::Unretained(this)),
                     l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR)),
         profile_(profile) {
-    if (profile->IsTor())
+    SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT));
+    if (profile->IsTor()) {
       SetText(l10n_util::GetStringUTF16(IDS_LOCATION_BAR_ONION_AVAILABLE));
+      SetTooltipText(l10n_util::GetStringUTF16(
+          IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT));
+    }
     // Render vector icon
     const gfx::ImageSkia image =
         gfx::CreateVectorIcon(kOpenInTorIcon, kIconSize, kIconColor);
