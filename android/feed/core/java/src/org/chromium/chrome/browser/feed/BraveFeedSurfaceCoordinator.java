@@ -13,16 +13,18 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.feed.sections.SectionHeaderView;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
+import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.ntp.SnapScrollHelper;
-import org.chromium.chrome.browser.ntp.snippets.SectionHeaderView;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -42,10 +44,9 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
-            @Nullable View ntpHeader, @Nullable SectionHeaderView sectionHeaderView,
-            boolean showDarkBackground, FeedSurfaceDelegate delegate,
-            @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
-            boolean isPlaceholderShownInitially, BottomSheetController bottomSheetController,
+            @Nullable View ntpHeader, @Px int toolbarHeight, boolean showDarkBackground,
+            FeedSurfaceDelegate delegate, Profile profile, boolean isPlaceholderShownInitially,
+            BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
             @NewTabPageLaunchOrigin int launchOrigin,
@@ -53,13 +54,14 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @NonNull Supplier<Toolbar> toolbarSupplier,
             FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
             @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
-            @Nullable ViewGroup viewportView, @NonNull BookmarkBridge bookmarkBridge) {
-        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader,
-                sectionHeaderView, showDarkBackground, delegate, pageNavigationDelegate, profile,
-                isPlaceholderShownInitially, bottomSheetController, shareDelegateSupplier,
-                externalScrollableContainerDelegate, launchOrigin, privacyPreferencesManager,
-                toolbarSupplier, launchReliabilityLoggingState, swipeRefreshLayout,
-                overScrollDisabled, viewportView, bookmarkBridge);
+            @Nullable ViewGroup viewportView, FeedActionDelegate actionDelegate,
+            HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
+        super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
+                showDarkBackground, delegate, profile, isPlaceholderShownInitially,
+                bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
+                launchOrigin, privacyPreferencesManager, toolbarSupplier,
+                launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
+                actionDelegate, helpAndFeedbackLauncher);
     }
 
     @Override

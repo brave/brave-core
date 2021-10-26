@@ -50,8 +50,10 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
+    *** mBrowserControlsStateProvider;
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
+    *** mToolbarSupplier;
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {

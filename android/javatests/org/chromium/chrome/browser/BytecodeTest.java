@@ -538,10 +538,14 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/ntp/NewTabPage", "mBrowserControlsStateProvider"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mNewTabPageLayout"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mFeedSurfaceProvider"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mToolbarSupplier"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));
