@@ -29,6 +29,8 @@ class SequencedTaskRunner;
 
 namespace brave_wallet {
 
+class EthTxControllerUnitTest;
+
 class AssetRatioController;
 class EthJsonRpcController;
 class KeyringController;
@@ -122,6 +124,8 @@ class EthTxController : public KeyedService,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, TestSubmittedToConfirmed);
+  FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, RetryTransaction);
+  friend class EthTxControllerUnitTest;
 
   void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);

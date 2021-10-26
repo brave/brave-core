@@ -181,7 +181,7 @@ class EthTxControllerUnitTest : public testing::Test {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-                "\"0x595698248593c0000\"}");
+                "\"0x17fcf18321\"}");
           } else if (*method == "eth_getTransactionCount") {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
@@ -242,6 +242,83 @@ class EthTxControllerUnitTest : public testing::Test {
           url_loader_factory_.AddResponse(request.url.spec(), "",
                                           net::HTTP_REQUEST_TIMEOUT);
         }));
+  }
+
+  void DoSpeedupOrCancelTransactionSuccess(const std::string& nonce,
+                                           const std::string& gas_price,
+                                           const std::vector<uint8_t>& data,
+                                           const std::string& orig_meta_id,
+                                           mojom::TransactionStatus status,
+                                           bool cancel,
+                                           std::string* tx_meta_id) {
+    auto tx_data =
+        mojom::TxData::New(nonce, gas_price, "0x0974",
+                           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                           "0x016345785d8a0000", data);
+    auto tx = EthTransaction::FromTxData(tx_data, false);
+    ASSERT_TRUE(tx);
+
+    EthTxStateManager::TxMeta meta;
+    meta.id = orig_meta_id;
+    meta.from =
+        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
+    meta.status = status;
+    meta.tx = std::make_unique<EthTransaction>(*tx);
+    eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+    bool callback_called = false;
+    eth_tx_controller()->SpeedupOrCancelTransaction(
+        orig_meta_id, cancel,
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, tx_meta_id));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  void DoSpeedupOrCancel1559TransactionSuccess(
+      const std::string& nonce,
+      const std::vector<uint8_t>& data,
+      const std::string& max_priority_fee_per_gas,
+      const std::string& max_fee_per_gas,
+      const std::string& orig_meta_id,
+      mojom::TransactionStatus status,
+      bool cancel,
+      std::string* tx_meta_id) {
+    auto tx_data1559 = mojom::TxData1559::New(
+        mojom::TxData::New(nonce, "", "0x0974",
+                           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                           "0x016345785d8a0000", data),
+        "0x539", max_priority_fee_per_gas, max_fee_per_gas, nullptr);
+
+    auto tx1559 = Eip1559Transaction::FromTxData(tx_data1559, false);
+    ASSERT_TRUE(tx1559);
+
+    EthTxStateManager::TxMeta meta;
+    meta.id = orig_meta_id;
+    meta.from =
+        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
+    meta.status = status;
+    meta.tx = std::make_unique<Eip1559Transaction>(*tx1559);
+    eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+    bool callback_called = false;
+    eth_tx_controller()->SpeedupOrCancelTransaction(
+        orig_meta_id, cancel,
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, tx_meta_id));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
+  void DoSpeedupOrCancelTransactionFailure(const std::string& orig_meta_id,
+                                           bool cancel) {
+    bool callback_called = false;
+    eth_tx_controller()->SpeedupOrCancelTransaction(
+        orig_meta_id, false,
+        base::BindOnce(&AddUnapprovedTransactionFailureCallback,
+                       &callback_called));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
   }
 
  protected:
@@ -346,7 +423,7 @@ TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
   // Gas price should be filled by requesting eth_gasPrice.
-  EXPECT_TRUE(HexValueToUint256("0x595698248593c0000", &gas_price_value));
+  EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
@@ -382,7 +459,7 @@ TEST_F(EthTxControllerUnitTest,
 
   uint256_t gas_price_value;
   uint256_t gas_limit_value;
-  EXPECT_TRUE(HexValueToUint256("0x595698248593c0000", &gas_price_value));
+  EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
@@ -728,11 +805,10 @@ TEST_F(EthTxControllerUnitTest, ApproveHardwareTransaction) {
       base::BindLambdaForTesting([&](bool success, const std::string& result) {
         EXPECT_TRUE(success);
         EXPECT_EQ(result,
-                  "0xf87780890595698248593c000082960494be862ad9abfe6f22"
-                  "bcb087716c7d89a26051f74c88016345785d8a0000b844095ea7b3000000"
-                  "000000000000000000bfb30a082f650c2a15d0632f0e87be4f8e64460f00"
-                  "00000000000000000000000000000000000000000000003fffffffffffff"
-                  "ff8205398080");
+                  "0xf873808517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a2"
+                  "6051f74c88016345785d8a0000b844095ea7b30000000000000000000000"
+                  "00bfb30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000"
+                  "0000000000000000000000000000003fffffffffffffff8205398080");
         auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Approved);
@@ -1282,6 +1358,253 @@ TEST_F(EthTxControllerUnitTest, TestSubmittedToConfirmed) {
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
   tx_meta2 = eth_tx_controller()->GetTxForTesting("002");
   EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+}
+
+TEST_F(EthTxControllerUnitTest, SpeedupTransaction) {
+  // Speedup EthSend with gas price + 10% < default gas price should use
+  // default gas price for EthSend.
+  std::string orig_meta_id = "001";
+  std::string tx_meta_id;
+  DoSpeedupOrCancelTransactionSuccess(
+      "0x05", "0x1", std::vector<uint8_t>(), orig_meta_id,
+      mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+
+  auto expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(expected_tx_meta);
+  expected_tx_meta->tx->set_gas_price(150000000000ULL);  // 150 Gwei
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+
+  // Speedup with gas price + 10% < eth_getGasPrice, new gas_price should be
+  // 0x17fcf18321 from eth_getGasPrice
+  orig_meta_id = "002";
+  DoSpeedupOrCancelTransactionSuccess(
+      "0x06", "0x17fcf1832", data_, orig_meta_id,
+      mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+
+  expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(expected_tx_meta);
+  expected_tx_meta->tx->set_gas_price(103027933985ULL);  // 0x17fcf18321
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+
+  // Speedup with original gas price + 10% > eth_getGasPrice should use
+  // original gas price + 10% as the new gas price.
+  orig_meta_id = "003";
+  DoSpeedupOrCancelTransactionSuccess(
+      "0x07", "0x17fcf18322", data_, orig_meta_id,
+      mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+
+  expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(expected_tx_meta);
+  expected_tx_meta->tx->set_gas_price(113330727384ULL);  // 0x17fcf18322 * 1.1
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+
+  // Non-exist transaction should fail.
+  DoSpeedupOrCancelTransactionFailure("123", false);
+
+  // Unapproved transaction should fail.
+  DoSpeedupOrCancelTransactionFailure(tx_meta_id, false);
+
+  SetErrorInterceptor();
+  DoSpeedupOrCancelTransactionFailure(orig_meta_id, false);
+}
+
+TEST_F(EthTxControllerUnitTest, Speedup1559Transaction) {
+  // Speedup with original gas fees + 10% > avg gas fees should use
+  // original gas fees + 10%.
+  std::string orig_meta_id = "001";
+  std::string tx_meta_id;
+  DoSpeedupOrCancel1559TransactionSuccess(
+      "0x05", data_, "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */,
+      orig_meta_id, mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+
+  auto expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(expected_tx_meta);
+  auto* expected_tx1559_ptr =
+      reinterpret_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+  expected_tx1559_ptr->set_max_priority_fee_per_gas(
+      2200000000ULL);                                        // 2 * 1.1 gwei
+  expected_tx1559_ptr->set_max_fee_per_gas(52800000000ULL);  // 48 * 1.1 gwei
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
+
+  // Speedup with original gas fees + 10% < avg gas fees should use avg
+  // gas fees (2 gwei for priority fee and 48 gwei for max fee).
+  orig_meta_id = "002";
+  DoSpeedupOrCancel1559TransactionSuccess(
+      "0x06", data_, "0x7735940" /* 0.125 Gwei */, "0xb2d05e00" /* 3 Gwei */,
+      orig_meta_id, mojom::TransactionStatus::Submitted, false, &tx_meta_id);
+
+  expected_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(expected_tx_meta);
+  expected_tx1559_ptr =
+      reinterpret_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+  expected_tx1559_ptr->set_max_priority_fee_per_gas(2000000000ULL);  // 2 Gwei
+  expected_tx1559_ptr->set_max_fee_per_gas(48000000000ULL);          // 48 Gwei
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
+
+  // Non-exist transaction should fail.
+  DoSpeedupOrCancelTransactionFailure("123", false);
+
+  // Unapproved transaction should fail.
+  DoSpeedupOrCancelTransactionFailure(tx_meta_id, false);
+
+  SetErrorInterceptor();
+  DoSpeedupOrCancelTransactionFailure(orig_meta_id, false);
+}
+
+TEST_F(EthTxControllerUnitTest, CancelTransaction) {
+  // Cancel with original gas price + 10% > default gas price should use
+  // original gas price + 10% as the new gas price.
+  std::string orig_meta_id = "001";
+  std::string tx_meta_id;
+  DoSpeedupOrCancelTransactionSuccess(
+      "0x06", "0x2540BE4000" /* 160 gwei */, data_, orig_meta_id,
+      mojom::TransactionStatus::Submitted, true, &tx_meta_id);
+
+  auto orig_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(orig_tx_meta);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->nonce(), orig_tx_meta->tx->nonce());
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), "0x6");
+  EXPECT_EQ(tx_meta->tx->gas_price(), 176000000000ULL);  // 160*1.1 gwei
+  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
+  EXPECT_EQ(tx_meta->tx->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx->data().empty());
+
+  // Cancel with original gas price + 10% < default gas price should use
+  // default gas price as the new gas price.
+  orig_meta_id = "002";
+  DoSpeedupOrCancelTransactionSuccess("0x07", "0x1", data_, orig_meta_id,
+                                      mojom::TransactionStatus::Submitted, true,
+                                      &tx_meta_id);
+
+  orig_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(orig_tx_meta);
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->tx->nonce(), orig_tx_meta->tx->nonce());
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), "0x7");
+  EXPECT_EQ(tx_meta->tx->gas_price(), 150000000000ULL);  // 150 gwei
+  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
+  EXPECT_EQ(tx_meta->tx->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx->data().empty());
+
+  // EIP1559
+  // Cancel with original gas fees + 10% > avg gas fees should use
+  // original gas fees + 10%.
+  orig_meta_id = "003";
+  DoSpeedupOrCancel1559TransactionSuccess(
+      "0x08", data_, "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */,
+      orig_meta_id, mojom::TransactionStatus::Submitted, true, &tx_meta_id);
+
+  orig_tx_meta = eth_tx_controller_->GetTxForTesting(orig_meta_id);
+  ASSERT_TRUE(orig_tx_meta);
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  auto* orig_tx1559_ptr =
+      reinterpret_cast<Eip1559Transaction*>(orig_tx_meta->tx.get());
+  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx1559_ptr->nonce(), orig_tx1559_ptr->nonce());
+  EXPECT_EQ(Uint256ValueToHex(tx1559_ptr->nonce().value()), "0x8");
+  EXPECT_EQ(tx1559_ptr->max_priority_fee_per_gas(),
+            2200000000ULL);                                  // 2*1.1 gwei
+  EXPECT_EQ(tx1559_ptr->max_fee_per_gas(), 52800000000ULL);  // 48*1.1 gwei
+  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
+  EXPECT_EQ(tx_meta->tx->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx->data().empty());
+
+  // Non-exist transaction should fail.
+  DoSpeedupOrCancelTransactionFailure("123", true);
+
+  // Unapproved transaction should fail.
+  DoSpeedupOrCancelTransactionFailure(tx_meta_id, true);
+
+  SetErrorInterceptor();
+  DoSpeedupOrCancelTransactionFailure(orig_meta_id, true);
+}
+
+TEST_F(EthTxControllerUnitTest, RetryTransaction) {
+  auto tx_data =
+      mojom::TxData::New("0x07", "0x17fcf18322", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_);
+  auto tx = EthTransaction::FromTxData(tx_data, false);
+  ASSERT_TRUE(tx);
+
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  meta.from = EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
+  meta.status = mojom::TransactionStatus::Error;
+  meta.tx = std::make_unique<EthTransaction>(*tx);
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+  bool callback_called = false;
+  std::string tx_meta_id;
+
+  eth_tx_controller()->RetryTransaction(
+      "001", base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                            &callback_called, &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  auto tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(*tx_meta->tx, tx.value());
+
+  // EIP1559
+  callback_called = false;
+  auto tx_data1559 = mojom::TxData1559::New(
+      mojom::TxData::New("0x08", "", "0x0974",
+                         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                         "0x016345785d8a0000", data_),
+      "0x539", "0x77359400" /* 2 Gwei */, "0xb2d05e000" /* 48 Gwei */, nullptr);
+
+  auto tx1559 = Eip1559Transaction::FromTxData(tx_data1559, false);
+  ASSERT_TRUE(tx1559);
+
+  meta.id = "002";
+  meta.status = mojom::TransactionStatus::Error;
+  meta.tx = std::make_unique<Eip1559Transaction>(*tx1559);
+  eth_tx_controller()->tx_state_manager_->AddOrUpdateTx(meta);
+
+  eth_tx_controller()->RetryTransaction(
+      "002", base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                            &callback_called, &tx_meta_id));
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  ASSERT_TRUE(tx_meta);
+  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(*tx1559_ptr, tx1559.value());
+
+  // Non-exist transaction should fail.
+  callback_called = false;
+  eth_tx_controller()->RetryTransaction(
+      "123", base::BindOnce(&AddUnapprovedTransactionFailureCallback,
+                            &callback_called));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  // Retry unapproved transaction should fail.
+  callback_called = false;
+  eth_tx_controller()->RetryTransaction(
+      tx_meta_id, base::BindOnce(&AddUnapprovedTransactionFailureCallback,
+                                 &callback_called));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  //  namespace brave_wallet
