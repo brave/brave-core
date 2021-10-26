@@ -80,6 +80,19 @@ mod ffi {
             callback_state: UniquePtr<RefreshOrderCallbackState>,
             order_id: String,
         );
+        fn fetch_order_credentials(
+            self: &CppSDK,
+            callback: FetchOrderCredentialsCallback,
+            callback_state: UniquePtr<FetchOrderCredentialsCallbackState>,
+            order_id: String,
+        );
+        fn prepare_credentials_presentation(
+            self: &CppSDK,
+            callback: PrepareCredentialsPresentationCallback,
+            callback_state: UniquePtr<PrepareCredentialsPresentationCallbackState>,
+            domain: String,
+            path: String,
+        );
     }
 
     unsafe extern "C++" {
@@ -103,6 +116,10 @@ mod ffi {
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
+        type FetchOrderCredentialsCallbackState;
+        type FetchOrderCredentialsCallback = crate::FetchOrderCredentialsCallback;
+        type PrepareCredentialsPresentationCallbackState;
+        type PrepareCredentialsPresentationCallback = crate::PrepareCredentialsPresentationCallback;
     }
 }
 
@@ -159,6 +176,46 @@ impl CppSDK {
 
         self.sdk.client.pool.borrow_mut().run_until_stalled();
     }
+
+    fn fetch_order_credentials(
+        &self,
+        callback: FetchOrderCredentialsCallback,
+        callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
+        order_id: String,
+    ) {
+        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        spawner
+            .spawn_local(fetch_order_credentials_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                order_id,
+            ))
+            .unwrap();
+
+        self.sdk.client.pool.borrow_mut().run_until_stalled();
+    }
+
+    fn prepare_credentials_presentation(
+        &self,
+        callback: PrepareCredentialsPresentationCallback,
+        callback_state: UniquePtr<ffi::PrepareCredentialsPresentationCallbackState>,
+        domain: String,
+        path: String,
+    ) {
+        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        spawner
+            .spawn_local(prepare_credentials_presentation_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                domain,
+                path,
+            ))
+            .unwrap();
+
+        self.sdk.client.pool.borrow_mut().run_until_stalled();
+    }
 }
 
 #[repr(transparent)]
@@ -194,6 +251,82 @@ async fn refresh_order_task(
                 .unwrap()
                 .into(),
             "",
+        ),
+    }
+}
+
+#[repr(transparent)]
+pub struct FetchOrderCredentialsCallback(
+    pub  extern "C" fn(
+        callback_state: *mut ffi::FetchOrderCredentialsCallbackState,
+        result: ffi::RewardsResult,
+    ),
+);
+
+unsafe impl ExternType for FetchOrderCredentialsCallback {
+    type Id = type_id!("brave_rewards::FetchOrderCredentialsCallback");
+    type Kind = cxx::kind::Trivial;
+}
+
+async fn fetch_order_credentials_task(
+    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    callback: FetchOrderCredentialsCallback,
+    callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
+    order_id: String,
+) {
+    match sdk.fetch_order_credentials(&order_id).await {
+        Ok(_) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok),
+        Err(e) => callback.0(
+            callback_state.into_raw(),
+            e.source()
+                .unwrap()
+                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .unwrap()
+                .into(),
+        ),
+    }
+}
+
+#[repr(transparent)]
+pub struct PrepareCredentialsPresentationCallback(
+    pub  extern "C" fn(
+        callback_state: *mut ffi::PrepareCredentialsPresentationCallbackState,
+        result: ffi::RewardsResult,
+        presentation: String,
+    ),
+);
+
+unsafe impl ExternType for PrepareCredentialsPresentationCallback {
+    type Id = type_id!("brave_rewards::PrepareCredentialsPresentationCallback");
+    type Kind = cxx::kind::Trivial;
+}
+
+async fn prepare_credentials_presentation_task(
+    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    callback: PrepareCredentialsPresentationCallback,
+    callback_state: UniquePtr<ffi::PrepareCredentialsPresentationCallbackState>,
+    domain: String,
+    path: String,
+) {
+    match sdk.prepare_credentials_presentation(&domain, &path).await {
+        Ok(Some(presentation)) => callback.0(
+            callback_state.into_raw(),
+            ffi::RewardsResult::Ok,
+            presentation,
+        ),
+        Ok(None) => callback.0(
+            callback_state.into_raw(),
+            ffi::RewardsResult::Ok,
+            "".to_string(),
+        ),
+        Err(e) => callback.0(
+            callback_state.into_raw(),
+            e.source()
+                .unwrap()
+                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .unwrap()
+                .into(),
+            "".to_string(),
         ),
     }
 }
