@@ -17,9 +17,11 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
+import org.chromium.chrome.browser.feed.FeedLaunchReliabilityLoggingState;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.feed.shared.FeedFeatures;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
+import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -29,13 +31,16 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.chrome.browser.xsurface.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
-    private Supplier<Toolbar> mToolbarSupplier;
+    // To delete in bytecode, members from parent class will be used instead.
+    private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
     private FeedSurfaceProvider mFeedSurfaceProvider;
+    private Supplier<Toolbar> mToolbarSupplier;
 
     public BraveNewTabPage(Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
@@ -55,8 +60,6 @@ public class BraveNewTabPage extends NewTabPage {
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
         }
-
-        mToolbarSupplier = toolbarSupplier;
     }
 
     @Override
@@ -72,15 +75,15 @@ public class BraveNewTabPage extends NewTabPage {
         assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
                 windowAndroid, new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
-                mNewTabPageLayout, null, isInNightMode, this,
-                mNewTabPageManager.getNavigationDelegate(), profile,
+                mNewTabPageLayout, mBrowserControlsStateProvider.getTopControlsHeight(),
+                isInNightMode, this, profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
                 shareDelegateSupplier, /* externalScrollableContainerDelegate= */ null,
                 NewTabPageUtils.decodeOriginFromNtpUrl(url),
                 PrivacyPreferencesManagerImpl.getInstance(), mToolbarSupplier,
-                /* FeedLaunchReliabilityLoggingState */ null,
+                new FeedLaunchReliabilityLoggingState(SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs),
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
-                /* overScrollDisabled= */ false,
-                /* viewportView= */ null, new BookmarkBridge(profile));
+                /* overScrollDisabled= */ false, /* viewportView= */ null,
+                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance());
     }
 }
