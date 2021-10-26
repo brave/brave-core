@@ -147,9 +147,9 @@ bool ConfirmationsState::RemoveFailedConfirmation(
   DCHECK(is_initialized_);
 
   const auto iter =
-      std::find_if(failed_confirmations_.begin(), failed_confirmations_.end(),
+      std::find_if(failed_confirmations_.cbegin(), failed_confirmations_.cend(),
                    [&confirmation](const ConfirmationInfo& info) {
-                     return (info.id == confirmation.id);
+                     return info.id == confirmation.id;
                    });
 
   if (iter == failed_confirmations_.end()) {

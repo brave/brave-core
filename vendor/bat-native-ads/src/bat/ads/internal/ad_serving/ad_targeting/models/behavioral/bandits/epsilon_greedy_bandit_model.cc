@@ -83,7 +83,7 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
   EpsilonGreedyBanditArmMap eligible_arms;
 
   for (const auto& arm : arms) {
-    if (std::find(eligible_segments.begin(), eligible_segments.end(),
+    if (std::find(eligible_segments.cbegin(), eligible_segments.cend(),
                   arm.first) == eligible_segments.end()) {
       continue;
     }
@@ -95,11 +95,11 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 }
 
 ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
-  const ArmBucketList unsorted_buckets{arms.begin(), arms.end()};
+  const ArmBucketList unsorted_buckets{arms.cbegin(), arms.cend()};
   ArmBucketList sorted_buckets(arms.size());
   std::partial_sort_copy(
-      unsorted_buckets.begin(), unsorted_buckets.end(), sorted_buckets.begin(),
-      sorted_buckets.end(),
+      unsorted_buckets.cbegin(), unsorted_buckets.cend(),
+      sorted_buckets.begin(), sorted_buckets.end(),
       [](const ArmBucketPair& lhs, const ArmBucketPair& rhs) {
         return lhs.first > rhs.first;
       });
@@ -123,7 +123,7 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
       arms.resize(available_arms);
     }
 
-    top_arms.insert(top_arms.end(), arms.begin(), arms.end());
+    top_arms.insert(top_arms.cend(), arms.cbegin(), arms.cend());
   }
 
   return top_arms;

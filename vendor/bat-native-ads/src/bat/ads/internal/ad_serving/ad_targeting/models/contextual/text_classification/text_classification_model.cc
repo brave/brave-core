@@ -50,8 +50,8 @@ SegmentProbabilitiesList ToSortedSegmentProbabilitiesList(
   SegmentProbabilitiesList list(count);
 
   std::partial_sort_copy(
-      segment_probabilities.begin(), segment_probabilities.end(), list.begin(),
-      list.end(),
+      segment_probabilities.cbegin(), segment_probabilities.cend(),
+      list.begin(), list.end(),
       [](const SegmentProbabilityPair& lhs, const SegmentProbabilityPair& rhs) {
         return lhs.second > rhs.second;
       });

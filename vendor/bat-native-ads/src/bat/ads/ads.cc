@@ -28,7 +28,7 @@ bool IsSupportedLocale(const std::string& locale) {
   for (const auto& schema : kSupportedCountryCodes) {
     const SupportedCountryCodesSet country_codes = schema.second;
     const auto iter =
-        std::find(country_codes.begin(), country_codes.end(), country_code);
+        std::find(country_codes.cbegin(), country_codes.cend(), country_code);
     if (iter != country_codes.end()) {
       return true;
     }

@@ -60,7 +60,8 @@ EpsilonGreedyBanditArmMap MaybeDeleteArms(
   EpsilonGreedyBanditArmMap updated_arms = arms;
 
   for (const auto& arm : updated_arms) {
-    const auto iter = std::find(kSegments.begin(), kSegments.end(), arm.first);
+    const auto iter =
+        std::find(kSegments.cbegin(), kSegments.cend(), arm.first);
     if (iter != kSegments.end()) {
       continue;
     }

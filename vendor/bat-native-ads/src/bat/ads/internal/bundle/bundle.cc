@@ -93,7 +93,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(geo_targets.begin(), geo_targets.end(), code) !=
+      if (std::find(geo_targets.cbegin(), geo_targets.cend(), code) !=
           geo_targets.end()) {
         continue;
       }
@@ -414,8 +414,8 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
       }
 
       // Conversions
-      conversions.insert(conversions.end(), creative_set.conversions.begin(),
-                         creative_set.conversions.end());
+      conversions.insert(conversions.end(), creative_set.conversions.cbegin(),
+                         creative_set.conversions.cend());
     }
   }
 

@@ -87,7 +87,7 @@ bool AdNotifications::Get(const std::string& uuid,
   DCHECK(is_initialized_);
   DCHECK(ad_notification);
 
-  auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
+  auto iter = std::find_if(ad_notifications_.cbegin(), ad_notifications_.cend(),
                            [&uuid](const AdNotificationInfo& notification) {
                              return notification.uuid == uuid;
                            });
@@ -128,7 +128,7 @@ void AdNotifications::PopFront(const bool should_dismiss) {
 bool AdNotifications::Remove(const std::string& uuid) {
   DCHECK(is_initialized_);
 
-  auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
+  auto iter = std::find_if(ad_notifications_.cbegin(), ad_notifications_.cend(),
                            [&uuid](const AdNotificationInfo& notification) {
                              return notification.uuid == uuid;
                            });
@@ -163,7 +163,7 @@ void AdNotifications::CloseAndRemoveAll() {
 bool AdNotifications::Exists(const std::string& uuid) const {
   DCHECK(is_initialized_);
 
-  auto iter = std::find_if(ad_notifications_.begin(), ad_notifications_.end(),
+  auto iter = std::find_if(ad_notifications_.cbegin(), ad_notifications_.cend(),
                            [&uuid](const AdNotificationInfo& notification) {
                              return notification.uuid == uuid;
                            });

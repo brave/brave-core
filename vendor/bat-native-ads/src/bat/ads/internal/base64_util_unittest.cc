@@ -17,7 +17,7 @@ namespace ads {
 TEST(BatAdsBase64UtilTest, Base64ToBytesForEmptyString) {
   // Arrange
   const std::string text = "";
-  const std::vector<uint8_t> text_as_bytes(text.begin(), text.end());
+  const std::vector<uint8_t> text_as_bytes(text.cbegin(), text.cend());
   const std::string text_as_base64 = base::Base64Encode(text_as_bytes);
 
   // Act
@@ -30,7 +30,7 @@ TEST(BatAdsBase64UtilTest, Base64ToBytesForEmptyString) {
 TEST(BatAdsBase64UtilTest, Base64ToBytes) {
   // Arrange
   const std::string text = "The quick brown fox jumps over 13 lazy dogs.";
-  const std::vector<uint8_t> text_as_bytes(text.begin(), text.end());
+  const std::vector<uint8_t> text_as_bytes(text.cbegin(), text.cend());
   const std::string text_as_base64 = base::Base64Encode(text_as_bytes);
 
   // Act
