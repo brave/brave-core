@@ -156,7 +156,8 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull OneshotSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             @NonNull SnackbarManager snackbarManager, JankTracker jankTracker,
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
-                    merchantTrustSignalsCoordinatorSupplier) {
+                    merchantTrustSignalsCoordinatorSupplier,
+            boolean initializeWithIncognitoColors) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
@@ -169,7 +170,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
                 bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
                 overviewModeBehaviorSupplier, snackbarManager, jankTracker,
-                merchantTrustSignalsCoordinatorSupplier);
+
+                merchantTrustSignalsCoordinatorSupplier, initializeWithIncognitoColors);
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
         mActivity = activity;
