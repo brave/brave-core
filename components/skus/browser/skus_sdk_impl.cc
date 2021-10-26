@@ -46,8 +46,11 @@ void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
 //   return "development";
 // }
 
-void OnScheduleWakeup(rust::cxxbridge1::Fn<void()> done) {
-  done();
+void OnScheduleWakeup(
+    rust::cxxbridge1::Fn<
+        void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
+        rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx) {
+  done(std::move(ctx));
 }
 
 }  // namespace
@@ -205,11 +208,15 @@ void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
   return ::rust::String("{}");
 }
 
-void shim_scheduleWakeup(::std::uint64_t delay_ms,
-                         rust::cxxbridge1::Fn<void()> done) {
+void shim_scheduleWakeup(
+    ::std::uint64_t delay_ms,
+    rust::cxxbridge1::Fn<
+        void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
+    rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx) {
   LOG(ERROR) << "shim_scheduleWakeup " << delay_ms;
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-      FROM_HERE, base::BindOnce(&OnScheduleWakeup, std::move(done)),
+      FROM_HERE,
+      base::BindOnce(&OnScheduleWakeup, std::move(done), std::move(ctx)),
       base::TimeDelta::FromMilliseconds(delay_ms));
 }
 
