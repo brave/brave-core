@@ -146,8 +146,12 @@ class NewTabPageViewController: UIViewController {
         }
         #endif
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        collectionView.do {
+            $0.delegate = self
+            $0.dataSource = self
+            $0.dragDelegate = self
+            $0.dropDelegate = self
+        }
         
         background.changed = { [weak self] in
             self?.setupBackgroundImage()
@@ -907,6 +911,91 @@ extension NewTabPageViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDragDelegate & UICollectionViewDropDelegate
+
+extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        // Check If the item that is dragged is a favourite item
+        guard sections[indexPath.section] is FavoritesSectionProvider else {
+            return []
+        }
+        
+        let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
+        let dragItem = UIDragItem(itemProvider: itemProvider).then {
+            $0.previewProvider = { () -> UIDragPreview? in
+                guard let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {
+                    return nil
+                }
+                return UIDragPreview(view: cell.imageView)
+            }
+        }
+        
+        return [dragItem]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        guard let sourceIndexPath = coordinator.items.first?.sourceIndexPath else { return }
+        let destinationIndexPath: IndexPath
+        
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            let section = max(collectionView.numberOfSections - 1, 0)
+            let row = collectionView.numberOfItems(inSection: section)
+            destinationIndexPath = IndexPath(row: max(row - 1, 0), section: section)
+        }
+        
+        guard sourceIndexPath.section == destinationIndexPath.section else { return }
+        
+        if coordinator.proposal.operation == .move {
+            guard let item = coordinator.items.first else { return }
+            
+            Favorite.reorder(
+                sourceIndexPath: sourceIndexPath,
+                destinationIndexPath: destinationIndexPath,
+                isInteractiveDragReorder: true
+            )
+            _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        guard let destinationIndexSection = destinationIndexPath?.section,
+              let favouriteSection = sections[destinationIndexSection] as? FavoritesSectionProvider,
+              favouriteSection.hasMoreThanOneFavouriteItems else {
+            return .init(operation: .cancel)
+        }
+        
+        return .init(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+        fetchInteractionPreviewParameters(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+        fetchInteractionPreviewParameters(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+        return true
+    }
+    
+    private func fetchInteractionPreviewParameters(at indexPath: IndexPath) -> UIDragPreviewParameters {
+        let previewParameters = UIDragPreviewParameters().then {
+            $0.backgroundColor = .clear
+            
+            if let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell {
+                $0.visiblePath = UIBezierPath(roundedRect: cell.imageView.frame, cornerRadius: 8)
+            }
+        }
+        
+        return previewParameters
+    }
+}
+
 extension NewTabPageViewController {
     private class NewTabCollectionView: UICollectionView {
         override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -921,6 +1010,8 @@ extension NewTabPageViewController {
             showsVerticalScrollIndicator = false
             // Even on light mode we use a darker background now
             indicatorStyle = .white
+            // Drag should be enabled to rearrange favourite
+            dragInteractionEnabled = true
         }
         @available(*, unavailable)
         required init(coder: NSCoder) {
