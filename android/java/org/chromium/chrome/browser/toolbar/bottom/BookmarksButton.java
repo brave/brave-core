@@ -62,7 +62,9 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
         if (isBookmarked) {
             setImageResource(R.drawable.btn_bookmark_fill);
-            ApiCompatibilityUtils.setImageTintList(this, AppCompatResources.getColorStateList(getContext(), R.color.blue_mode_tint));
+            ApiCompatibilityUtils.setImageTintList(this,
+                    AppCompatResources.getColorStateList(
+                            getContext(), R.color.default_icon_color_accent1_tint_list));
             setContentDescription(getContext().getString(R.string.edit_bookmark));
         } else {
             setImageResource(R.drawable.btn_bookmark);
