@@ -552,6 +552,12 @@ export interface AddUnapproved1559TransactionReturnInfo {
   errorMessage: string
 }
 
+export interface SpeedupRetryCancelTransactionReturnInfo {
+  success: boolean
+  txMetaId: string
+  errorMessage: string
+}
+
 export interface SetGasPriceAndLimitForUnapprovedTransactionReturnInfo {
   success: boolean
 }
@@ -646,6 +652,8 @@ export interface EthTxController {
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
   approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
   processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
+  speedupOrCancelTransaction: (txMetaId: string, cancel: boolean) => Promise<SpeedupRetryCancelTransactionReturnInfo>
+  retryTransaction: (txMetaId: string) => Promise<SpeedupRetryCancelTransactionReturnInfo>
 }
 
 export interface EthJsonRpcController {
