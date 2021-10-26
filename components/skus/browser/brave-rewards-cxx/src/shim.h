@@ -2,7 +2,7 @@
 #include <memory>
 #include "cxx.h"
 
-//#include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 
 namespace brave_rewards {
 
