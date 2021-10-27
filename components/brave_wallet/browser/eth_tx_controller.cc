@@ -249,11 +249,7 @@ void EthTxController::ContinueAddUnapprovedTransaction(
     const std::string& result) {
   uint256_t gas_limit;
   if (!success || !HexValueToUint256(result, &gas_limit)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(
-            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_LIMIT_FAILED));
-    return;
+    gas_limit = 0;
   }
   tx->set_gas_limit(gas_limit);
 
