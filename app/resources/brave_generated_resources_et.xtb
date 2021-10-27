@@ -188,9 +188,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8488282162676695335">Brave'i rahakott</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="7701040980221191251">Mitte ükski</translation>
-<translation id="5655621391922317800">Krüptorahakotid</translation>
-<translation id="1696548911367097044">Ebasoovitatav krüptorahakottide laiend</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">Ebasoovitatav krüptorahakottide laiend</translation>
 <translation id="9131889008937672866">Krüptoraha vaikerahakott</translation>
 <translation id="1834467296210148203">Näita tööriistaribal Brave Walleti ikooni</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
@@ -306,7 +304,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
 <translation id="732814027519296280">Kas soovite Brave'i otsingu veel paremaks muuta?</translation>
-<translation id="2677865600861971449">Liituge projektiga Web Discovery, et anda anonüümselt otsingu- ja sirvimisandmeid ning muuta Brave'i otsingutulemused kõigi jaoks paremaks. Privaatsust säilitav. Ja vaevata. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="2677865600861971449">Liituge veebiavastusprojektiga, et anda anonüümselt otsingu- ja sirvimisandmeid ning muuta Brave'i otsingutulemused kõigi jaoks paremaks. Privaatsust säilitav. Ja vaevata. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">Lülita sisse</translation>
 <translation id="780301667611848630">Ei, aitäh</translation>
 <translation id="5039804452771397117">Luba</translation>

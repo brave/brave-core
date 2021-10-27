@@ -187,13 +187,11 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="8488282162676695335">Billetera de Brave</translation>
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="7701040980221191251">Ninguno</translation>
-<translation id="5655621391922317800">Billeteras de criptomonedas</translation>
-<translation id="1696548911367097044">Extensión de Crypto Wallets obsoleta</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">Extensión de Crypto Wallets obsoleta</translation>
 <translation id="9131889008937672866">Billetera de criptomonedas predeterminada</translation>
 <translation id="1834467296210148203">Mostrar el ícono de la billetera de Brave en la barra de herramientas</translation>
-<translation id="8239147115686034860">Bloquear automáticamente Brave Wallet</translation>
-<translation id="414639769490080648">La cantidad de minutos que debe esperar hasta que Brave Wallet se bloquee automáticamente</translation>
+<translation id="8239147115686034860">Bloquear automáticamente la billetera Brave</translation>
+<translation id="414639769490080648">La cantidad de minutos que debe esperar hasta que la billetera Brave se bloquee automáticamente</translation>
 <translation id="6864914031231797928">Permitir inicio de sesión de Google en extensiones</translation>
 <translation id="5927916530277631319">Método para resolver dominios imparables</translation>
 <translation id="5248318250177143470">Método para resolver Ethereum Name Service (ENS)</translation>
@@ -302,7 +300,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="9218430445555521422">Establecer como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
 <translation id="732814027519296280">¿Quiere mejorar aún más Brave Search?</translation>
-<translation id="2677865600861971449">Participe en el Web Discovery Project para contribuir de forma anónima con algunos datos de búsqueda y navegación. Así, podrá mejorar los resultados de Brave Search para todos. Con su privacidad protegida. Y cero ningún esfuerzo. <ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="2677865600861971449">Participe en el proyecto de descubrimiento web para contribuir de forma anónima con algunos datos de búsqueda y navegación. Así, podrá mejorar los resultados de Brave Search para todos. Con su privacidad protegida. Y ningún esfuerzo. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">Activar</translation>
 <translation id="780301667611848630">No, gracias</translation>
 <translation id="5039804452771397117">Permitir</translation>
@@ -314,7 +312,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="6873781976650514089">este ajuste</translation>
 <translation id="6040143037577758943">Cerrar</translation>
 <translation id="5600566490506283344">Notificación de anuncio de Brave</translation>
-<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
 <translation id="8659271182272561965">Contribuya con algunos datos de búsqueda y navegación anónimos para refinar Brave Search.</translation>
 <translation id="1516554614404600536">Información sobre herramientas de Brave</translation>
 <translation id="4877147287319222750">Agregar a la barra lateral</translation>

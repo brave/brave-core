@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Pour démarrer un appel gratuit, activez Brave Rewards",
+    "message": "Pour démarrer un appel gratuit, activez les récompenses Brave",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Avec Brave Rewards, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.",
+    "message": "Avec les récompenses Brave, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Vous souhaitez en apprendre davantage sur Brave Rewards ? $tour_link_begin$Faire une visite rapide$tour_link_end$.",
+    "message": "Vous souhaitez en apprendre davantage sur les récompenses Brave ? $tour_link_begin$Faire une visite rapide$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

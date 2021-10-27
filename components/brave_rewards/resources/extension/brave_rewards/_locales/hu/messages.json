@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Ingyenes hívás indításához kapcsolja be a Brave Rewardsot",
+    "message": "Ingyenes hívás indításához kapcsolja be a Brave jutalmakat",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "A Brave Rewards privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás. ",
+    "message": "A Brave jutalmak privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás. ",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Többet szeretne megtudni a Brave Rewards-ról?$tour_link_begin$Gyors bemutató indítása$tour_link_end$.",
+    "message": "Többet szeretne megtudni a Brave jutalmakról?$tour_link_begin$Gyors bemutató indítása$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

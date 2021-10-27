@@ -467,17 +467,15 @@ yok...</translation>
 <translation id="3769645103175790584">İnternette gezinirken jeton kazanın ve içerik üreticilerini harika içerikler için ödüllendirin. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Hızlı tur</translation>
 <translation id="1080013038789678738">Ben Varım!</translation>
-<translation id="8037420924417098685">Ücretsiz bir arama başlatmak için, Brave Rewards'u açın</translation>
-<translation id="8961724619078500274">Brave Rewards sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
+<translation id="8037420924417098685">Ücretsiz bir arama başlatmak için, Brave Ödülleri'ni açın</translation>
+<translation id="8961724619078500274">Brave Ödülleri sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
 <translation id="7307847920988946894">Rewards'ı Etkinleştir</translation>
-<translation id="1186139901474936180">Dokunarak <ph name="TERMS_OF_SERVICE"/> ve <ph name="PRIVACY_POLICY"/> hükümlerini kabul etmiş olursunuz. İstediğiniz zaman Ayarlar'dan devre dışı bırakabilirsiniz.</translation>
-<translation id="6128511569382736135">Ücretsiz bir arama başlatmak için, Brave Private Ads'i etkinleştirin</translation>
-<translation id="7930006085154756245">Brave Private Ads sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
-<translation id="4992617448154987397">Brave Private Ads'i Aç</translation>
-<translation id="7314030474505546826">Ads'i açarak <ph name="TERMS_OF_SERVICE"/> ve <ph name="PRIVACY_POLICY"/> hükümlerini kabul etmiş olursunuz.</translation>
+<translation id="6128511569382736135">Ücretsiz bir arama başlatmak için, Brave Özel Reklamlar'ı etkinleştirin</translation>
+<translation id="7930006085154756245">Brave Özel Reklamlar sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.</translation>
+<translation id="4992617448154987397">Brave Özel Reklamlar'ı Aç</translation>
 <translation id="3415016869273103668">Şimdi ücretsiz bir arama başlatabilirsiniz</translation>
-<translation id="6712250553966900750">Brave Talk'a devam etmek için ekranın herhangi bir yerine dokunun.</translation>
-<translation id="626339649633171286">Brave Rewards hakkında daha fazla bilgi edinmek mi istiyorsunuz? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun.</translation>
+<translation id="626339649633171286">Brave Ödülleri hakkında daha fazla bilgi edinmek mi istiyorsunuz? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!  çevirdiniz</translation>
 <translation id="392587271502873865">Lütfen ağ bağlantınızı kontrol edin.</translation>
 <translation id="7889432931837317731">Mümkün olduğunda otomatik olarak aç</translation>
@@ -539,7 +537,6 @@ yok...</translation>
 <translation id="6146351434671268516">Bu sözcükleri doğru sırayla yazın ya da kopyalayın ve güvenli bir yerde saklayın.</translation>
 <translation id="7408247683131762445">UYARI: Yedekleme ifadenizi asla ifşa etmeyin. Bu ifadeye sahip olanlar, fonlarınızı sonsuza dek ele geçirebilir.</translation>
 <translation id="939275786514736244">İfademi güvenli bir yere yedekledim</translation>
-<translation id="6896758677409633944">Kopyala</translation>
 <translation id="2604744480284798833">Kripto portföyünüzü erişim kaybına karşı korumak için cüzdanınızı hemen yedekleyin.</translation>
 <translation id="1202920745614909195">Apple Pay, kredi kartı veya bankamatik kartıyla kripto satın alın.</translation>
 <translation id="841880029259839903">Kripto gönderin veya bir hesaptan diğerine aktarın.</translation>
@@ -556,14 +553,12 @@ yok...</translation>
 <translation id="6366007539108097840">3A</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">TÜMÜ</translation>
-<translation id="8892168913673237979">Her şey hazır!</translation>
-<translation id="8331501996028380732">Kripto alın, satın veya saklayın. Mevcut bir kripto hesabınız varsa şimdi ekleyebilirsiniz.</translation>
 <translation id="2267753748892043616">Hesap Ekle</translation>
 <translation id="2632612428525029752">Hesabı Güncelle</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Parmak iziyle kilit açma etkinleştirilsin mi?</translation>
 <translation id="5493402808936397665">Şifrenizi girmeden cüzdanınızın kilidini hızlıca açmak için biyometriği etkinleştirin.</translation>
-<translation id="8488282162676695335">Brave Cüzdan</translation>
+<translation id="1544192797660353713">Brave Cüzdan</translation>
 <translation id="6901810042765869341">Brave Wallet kripto hesabınızı geri yüklemek için kurtarma ifadenizi girin.</translation>
 <translation id="1970161551843843564">Kripto Hesabını Geri Yükle</translation>
 <translation id="4811736040444856406">Kurtarma ifadesini göster</translation>
@@ -580,7 +575,6 @@ yok...</translation>
 <translation id="745115390910697838">İfadeler eşleşmedi. Lütfen tekrar deneyin.</translation>
 <translation id="2360588547830602174">Hesap kurtarılamadı. Lütfen tekrar deneyin.</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/> cinsinden Piyasa Fiyatı</translation>
-<translation id="5593852897152820572">ETH cinsinden fiyat</translation>
 <translation id="6748108480210050150">Kimden</translation>
 <translation id="3318280255740629162">%25</translation>
 <translation id="2636487255623744079">%50</translation>
@@ -588,10 +582,7 @@ yok...</translation>
 <translation id="6159566011642056819">Şuraya (Tahmini)</translation>
 <translation id="6998989275928107238">Kime</translation>
 <translation id="6664416064035847539">adres veya url</translation>
-<translation id="59223531494896848">Limit</translation>
-<translation id="3567988240819868195">Piyasa</translation>
 <translation id="632241521608275119">Slipaj toleransı</translation>
-<translation id="4500473291496079954">Süre dolumu:</translation>
 <translation id="1987317783729300807">Hesaplar</translation>
 <translation id="3535654229833214438">İşlemler</translation>
 <translation id="4636930964841734540">Bilgi</translation>
@@ -649,7 +640,7 @@ yok...</translation>
 Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız güvenli hale getirilmez.</translation>
 <translation id="2429299231491852747">Bağlantı talebini kabul et</translation>
 <translation id="3428909627460825679">VPN profile creation failed. Please try again.</translation>
-<translation id="8584119457978684056">Token Satın Alım doğrulaması başarısız. Lütfen tekrar deneyin.</translation>
+<translation id="8584119457978684056">Satın Alım Token doğrulaması başarısız. Lütfen tekrar deneyin.</translation>
 <translation id="8905950042180169719">VPN arka planda çalışıyor</translation>
 <translation id="8681480718817027245">Abonelik</translation>
 <translation id="7805768142964895445">Durum</translation>
@@ -665,7 +656,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="5863914199331127413">VPN Ana Makine Adı</translation>
 <translation id="5499653136178260315">Abonelik Türü</translation>
 <translation id="4741058112780154119">Uygulama Sürümü</translation>
-<translation id="7286066816862208787">Uygulama Makbuzu</translation>
+<translation id="7286066816862208787">Uygulamadan Alım</translation>
 <translation id="2552966063069741410">Saat dilimi</translation>
 <translation id="4395361077929528480">Ağ Tipi</translation>
 <translation id="755448900483975096">Hücresel Operatör</translation>
@@ -695,7 +686,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7995708795274219641">Tutar + Gas</translation>
 <translation id="1950052789869821983">İşlem</translation>
 <translation id="6122742277607781713">Portföy</translation>
-<translation id="2805756323405976993">Uygulamalar</translation>
 <translation id="6083912983861746409">Gas Fiyatı (GWEI)</translation>
 <translation id="2499079593046817044">GAS Limiti (GWEI)</translation>
 <translation id="6389441740143786465">Paylaşım Merkezini Devre Dışı Bırak</translation>

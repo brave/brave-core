@@ -473,13 +473,11 @@
 <translation id="8037420924417098685">За да започнете безплатно обаждане, активирайте Brave Rewards</translation>
 <translation id="8961724619078500274">С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
 <translation id="7307847920988946894">Включете Rewards</translation>
-<translation id="1186139901474936180">Чрез докосването вие се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>. Дезактивирайте по всяко време в настройките.</translation>
 <translation id="6128511569382736135">За да започнете безплатно обаждане, активирайте Brave Private Ads</translation>
 <translation id="7930006085154756245">С Brave Private Ads можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.</translation>
 <translation id="4992617448154987397">Включете Brave Private Ads</translation>
-<translation id="7314030474505546826">Включвайки рекламите, вие се съгласявате с <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Вече можете да започнете безплатно обаждане</translation>
-<translation id="6712250553966900750">Натиснете където и да е по екрана, за да продължите към Brave Talk.</translation>
+<translation id="7073631403665023390">Натиснете където и да е по екрана, за да продължите към Brave Обаждане.</translation>
 <translation id="626339649633171286">Искате ли да научите повече за Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Превърнахте <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Проверете вашата мрежова връзка.</translation>
@@ -542,7 +540,6 @@
 <translation id="6146351434671268516">Запишете или копирайте тези думи  в правилния ред и ги запазете на сигурно място.</translation>
 <translation id="7408247683131762445">ПРЕДУПРЕЖДЕНИЕ: никога не разкривайте резервната си фраза. Всеки с тази фраза може да вземе средствата ви завинаги.</translation>
 <translation id="939275786514736244">Архивирах фразата си на сигурно място</translation>
-<translation id="6896758677409633944">Копиране</translation>
 <translation id="2604744480284798833">Архивирайте портфейла си сега, за да защитите криптопортфолиото от загуба на достъп.</translation>
 <translation id="1202920745614909195">Купувайте криптовалути с Apple Pay, кредитна или дебитна карта.</translation>
 <translation id="841880029259839903">Изпращайте или прехвърляйте криптовалути от един акаунт в друг.</translation>
@@ -559,14 +556,12 @@
 <translation id="6366007539108097840">3 МЕСЕЦА</translation>
 <translation id="6977728312178289892">1 ГОДИНА</translation>
 <translation id="6895566650974550243">ВСИЧКИ</translation>
-<translation id="8892168913673237979">Всичко е настроено!</translation>
-<translation id="8331501996028380732">Купуивайте, търгувайте или управлявайте криптовалута. Ако имате съществуващ криптоакаунт, може да го добавите сега.</translation>
 <translation id="2267753748892043616">Добавяне на акаунт</translation>
 <translation id="2632612428525029752">Актуализиране на акаунт</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Активиране на отключването с пръстов отпечатък?</translation>
 <translation id="5493402808936397665">Активирайте биометричните данни, за да отключите бързо портфейла си, без да въвеждате паролата.</translation>
-<translation id="8488282162676695335">Портфейл в Brave</translation>
+<translation id="1544192797660353713">Портфейл в Brave</translation>
 <translation id="6901810042765869341">Въведете фразата за възстановяване, за да възстановите криптоакаунта си в портфейла на Brave.</translation>
 <translation id="1970161551843843564">Възстановяване на крипто акаунт</translation>
 <translation id="4811736040444856406">Показване на фразата за възстановяване</translation>
@@ -583,7 +578,6 @@
 <translation id="745115390910697838">Фразата не съвпада, опитайте отново.</translation>
 <translation id="2360588547830602174">Неуспешно възстановяване на акаунта. Опитайте отново.</translation>
 <translation id="6392640873800632439">Пазарна цена в <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Цена в ETH</translation>
 <translation id="6748108480210050150">От</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -591,10 +585,7 @@
 <translation id="6159566011642056819">До (приблизително)</translation>
 <translation id="6998989275928107238">На</translation>
 <translation id="6664416064035847539">адрес или url адрес</translation>
-<translation id="59223531494896848">Ограничение</translation>
-<translation id="3567988240819868195">Пазар</translation>
 <translation id="632241521608275119">Толерантност към слипидж</translation>
-<translation id="4500473291496079954">Изтича след</translation>
 <translation id="1987317783729300807">Акаунти</translation>
 <translation id="3535654229833214438">Транзакции</translation>
 <translation id="4636930964841734540">Информация</translation>
@@ -698,7 +689,6 @@
 <translation id="7995708795274219641">Количество + газ</translation>
 <translation id="1950052789869821983">Трансакция</translation>
 <translation id="6122742277607781713">Портфолио</translation>
-<translation id="2805756323405976993">Приложения</translation>
 <translation id="6083912983861746409">Цена на газа (GWEI)</translation>
 <translation id="2499079593046817044">Ограничение на газа (GWEI)</translation>
 <translation id="6389441740143786465">Дезактивиране на платформата за споделяне</translation>

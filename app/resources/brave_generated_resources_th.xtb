@@ -187,10 +187,11 @@
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
-<translation id="5655621391922317800">คริปโตวอลเล็ท</translation>
-<translation id="1696548911367097044">ส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้ว</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">ส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้ว</translation>
+<translation id="9131889008937672866">วอลเล็ตสกุลเงินคริปโตหลัก</translation>
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
+<translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
+<translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="5927916530277631319">วิธีการแปลงที่อยู่ของ Unstoppable Domains</translation>
 <translation id="5248318250177143470">วิธีการแปลงที่อยู่ของ Ethereum Name Service (ENS)</translation>
@@ -230,6 +231,7 @@
 <translation id="1251574393468476924">ขนาดแคชสูงสุดสำหรับ IPFS (GB)</translation>
 <translation id="2503497578400410320">ขีดจำกัดบนแบบซอฟต์สำหรับขนาดการจัดเก็บข้อมูลในที่เก็บ IPFS</translation>
 <translation id="7703184801853248830">ที่อยู่เกตเวย์ไม่ถูกต้อง</translation>
+<translation id="7690058578502751948">เฉพาะเกตเวย์ IPFS ซึ่งเปิดใช้งานการแยกต้นทางเท่านั้นที่สามารถใช้ได้ใน Brave</translation>
 <translation id="585868419599255817">ถอยกลับไปที่เกตเวย์สาธารนะ IPFS</translation>
 <translation id="207763736230883589">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนดเฉพาะที่ของคุณ</translation>
 <translation id="4107552920076294723">เปลี่ยนเส้นทางทรัพยากร IPFS ไปยังเกตเวย์ IPFS ที่กำหนดค่าไว้</translation>
@@ -298,6 +300,8 @@
 <translation id="1391855377994926460">ท่องเว็บได้เร็วขึ้น - สูงสุด 6 เท่าในเว็บไซต์ข่าวหลัก</translation>
 <translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
+<translation id="732814027519296280">ต้องการให้ Brave Search ทำงานได้ดีขึ้นใช่ไหม</translation>
+<translation id="2677865600861971449">เข้าร่วมใน โปรเจ็กต์การค้นพบบนเว็บ เพื่อร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน และช่วยปรับปรุงผลการค้นหาของ Brave Search ให้กับทุกๆ คน โดยรักษาความเป็นส่วนตัว และทำได้แบบง่ายๆ <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">เปิด</translation>
 <translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="5039804452771397117">อนุญาต</translation>
@@ -309,6 +313,8 @@
 <translation id="6873781976650514089">การตั้งค่านี้</translation>
 <translation id="6040143037577758943">ปิด</translation>
 <translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">เพิ่มลงในแถบด้านข้าง</translation>
 <translation id="4233010476457917696">แสดงแถบด้านข้าง</translation>

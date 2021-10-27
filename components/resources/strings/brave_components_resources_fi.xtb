@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Sivustolla vierailun vähimmäiskesto ennen vierailun kirjautumista</translation>
 <translation id="4424486208397124985">Vierailukertojan vähimmäismäärä julkaisijan kannalta</translation>
 <translation id="6248554379744796526">Näytä vahvistamattomat sivustot luettelossa</translation>
-<translation id="5875669387851353511">Salli lahjoitus videoihin</translation>
+<translation id="5510618543889994434">Salli lahjoitus videoihin</translation>
 <translation id="8933202740471878108">1 vierailu</translation>
 <translation id="354797634123275103">5 vierailua</translation>
 <translation id="3583700907990488238">10 vierailua</translation>
@@ -577,7 +577,7 @@
 <translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
 <translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
 <translation id="3656941797339037856">Linkitä Rewards Geminiin!</translation>
-<translation id="2383784987664887340">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave Rewards -lompakkosi Geminiin nyt!</translation>
+<translation id="2383784987664887340">Geminin avulla voit helposti vaihtaa, tallentaa ja ansaita 3,49 %:n vuotuisen prosentuaalisen tuoton BAT:stä. Vahvista ja linkitä Brave-palkintolompakkosi Geminiin nyt!</translation>
 <translation id="2237374144728570574">* Gemini Earn -tilin vuotuinen prosentuaalinen tuotto 15.09.2021 alkaen</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
@@ -805,7 +805,7 @@
 <translation id="7740287852186792672">Hakutulokset</translation>
 <translation id="5140238928332244937">Selaa enemmän Defi-sovelluksia</translation>
 <translation id="6825869531314999449">Selaa enemmän NFT-markkinapaikkoja</translation>
-<translation id="2744185997184360326">Yhdiste</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Hanki käyttöösi joukko avoimia rahoitussovelluksia.</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">Kehittäjä – stablecoin-valuutta, lainat ja hallinnointi...</translation>
@@ -822,7 +822,7 @@
 <translation id="2805756323405976993">Sovellukset</translation>
 <translation id="3586775666459823714">NFT:t</translation>
 <translation id="1987317783729300807">Tilit</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 t</translation>
 <translation id="8163269366661594721">1PÄIVÄ</translation>
 <translation id="7640956400175663828">1VIIKKO</translation>
 <translation id="9100647964747998533">1KK</translation>
@@ -836,7 +836,7 @@
 <translation id="538450413584738399">Swap</translation>
 <translation id="5420730209575475110">ei tueta</translation>
 <translation id="6518133107902771759">Vahvista</translation>
-<translation id="1420318137760245955">Tervetuloa uuteen Brave Wallet -lompakkoon</translation>
+<translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
 <translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
 <translation id="6972754398087986839">Aloitusopas</translation>
 <translation id="375882617301124395">Varmuuskopioi kryptolompakkosi</translation>
@@ -855,7 +855,7 @@
 <translation id="6901073872645365201">Salasanassa on oltava vähintään 7 merkkiä, yksi numero ja yksi erikoismerkki.</translation>
 <translation id="6657585470893396449">Salasana</translation>
 <translation id="692381016487372902">Kirjoita salasana uudelleen</translation>
-<translation id="3527905866577245691">Vahvistussalasana ei täsmää</translation>
+<translation id="3527905866577245691">Vahvista salasana -kentässä annettu salasana ei täsmää</translation>
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
@@ -949,9 +949,7 @@
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
 <translation id="5488357322146334497">Viesti</translation>
 <translation id="3586752056660754651">Allekirjoita</translation>
-<translation id="7065157926159745595">Anna tälle sovellukselle käyttöoikeuden käyttää</translation>
-<translation id="2746256479706649252">Antamalla tämän käyttöoikeuden annat tämän sovelluksen nostaa</translation>
-<translation id="3959778836307233598">ja automatisoida maksutapahtumia puolestasi.</translation>
+<translation id="7065157926159745595">Anna tälle sovellukselle käyttöoikeus käyttää kohdetta</translation>
 <translation id="8786100550345425552">Muokkaa käyttöoikeuksia</translation>
 <translation id="7710469167917867539">Maksutapahtumamaksu</translation>
 <translation id="9065203028668620118">Muokkaa</translation>
@@ -986,7 +984,7 @@
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="8449314044437208543">Tuo kohteesta</translation>
 <translation id="4428111176561355185">Tuo kohde</translation>
-<translation id="8929587248006013051">MetaMask-tilit Brave Wallet -lompakkoa varten. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="8929587248006013051">MetaMask-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
 <translation id="4237840336687249184">MetaMask-salasana</translation>
 <translation id="2381605201035323535">kryptolompakot</translation>
 <translation id="2770851145415891830">Olemassa olevat kryptolompakot havaittu</translation>

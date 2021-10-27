@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Lai sāktu bezmaksas zvanu, ieslēdziet Brave Rewards.",
+    "message": "Lai sāktu bezmaksas zvanu, ieslēdziet Brave balvas.",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Ar Brave Rewards jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
+    "message": "Ar Brave balvām jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -627,15 +627,15 @@
     }
   },
   "braveTalkTurnOnPrivateAdsToStartCall": {
-    "message": "Lai sāktu bezmaksas zvanu, iespējojiet Brave Private Ads.",
+    "message": "Lai sāktu bezmaksas zvanu, iespējojiet Brave privātās reklāmas.",
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "Ar Brave Private Ads jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
+    "message": "Ar Brave privātajām reklāmām jūs nopelnāt marķierus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos marķierus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "Ieslēdziet Brave Private Ads.",
+    "message": "Ieslēgt Brave privātās reklāmas.",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
@@ -661,11 +661,11 @@
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Noklikšķiniet jebkur ekrānā, lai turpinātu Brave Talk.",
+    "message": "Noklikšķiniet jebkur ekrānā, lai turpinātu Brave zvanus.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Vai vēlaties uzzināt vairāk par Brave Rewards? $tour_link_begin$Iziejiet ātru iepazīšanās kursu$tour_link_end$.",
+    "message": "Vai vēlaties uzzināt vairāk par Brave balvām? $tour_link_begin$Iziejiet ātru iepazīšanās kursu$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

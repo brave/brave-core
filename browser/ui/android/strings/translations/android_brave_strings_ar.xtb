@@ -470,13 +470,11 @@
 <translation id="8037420924417098685">للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.</translation>
 <translation id="8961724619078500274">مع Brave Rewards، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حول هذه الرموز المميزة إلى نقود أو بطاقات هدايا أو حتى إرشاد المواقع التي تحبها. لا يوجد هناك عمليات تتبع أو تباطؤ.</translation>
 <translation id="7307847920988946894">تشغيل المكافآت</translation>
-<translation id="1186139901474936180">من خلال النقر، فإنك توافق على <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. تعطيل في أي وقت في الإعدادات.</translation>
 <translation id="6128511569382736135">للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.</translation>
 <translation id="7930006085154756245">مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حول هذه الرموز المميزة إلى نقود أو بطاقات هدايا أو حتى إرشاد المواقع التي تحبها. لا يوجد هناك عمليات تتبع أو تباطؤ.</translation>
 <translation id="4992617448154987397">تشغيل Brave Private Ads</translation>
-<translation id="7314030474505546826">من خلال الضغط على "Ads"، فأنت توافق على <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
-<translation id="6712250553966900750">انقر في أي مكان على الشاشة لمتابعة Brave Talk.</translation>
+<translation id="7073631403665023390">انقر في أي مكان على الشاشة لمتابعة Brave Talk.</translation>
 <translation id="626339649633171286">هل ترغب في معرفة المزيد عن Brave Rewards؟<ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
@@ -539,7 +537,6 @@
 <translation id="6146351434671268516">قم بكتابة هذه الكلمات أو انسخها بالترتيب الصحيح واحفظها في مكان آمن.</translation>
 <translation id="7408247683131762445">تنبيه: لا تُفصح عن العبارة الاحتياطية خاصتك. حيث يمكن لأي شخص لديه هذه العبارة أن يستولي على أموالك إلى الأبد.</translation>
 <translation id="939275786514736244">لقد قمت بعمل نسخة احتياطية من عباراتي في مكان آمن</translation>
-<translation id="6896758677409633944">نسخ</translation>
 <translation id="2604744480284798833">قم بعمل نسخة احتياطية من محفظتك الآن لحماية محفظة العملات المشفرة الخاصة بك من فقدان الوصول.</translation>
 <translation id="1202920745614909195">قم بشراء وحدة crypto المشفرة باستخدام خدمة الدفع  Apple Pay أو بطاقة الائتمان أو بطاقة الخصم.</translation>
 <translation id="841880029259839903">إرسال وحدات crypto المشفرة أو قم بتحويلها من حساب إلى آخر.</translation>
@@ -549,21 +546,19 @@
 <translation id="4450951602553063001">إعادة إدخال كلمة المرور</translation>
 <translation id="1783870616707290226">يجب أن تتكون كلمة المرور من 7 أحرف أو أكثر</translation>
 <translation id="7383102760859258982">إعادة كتابة كلمة المرور غير متطابقة</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 ساعة</translation>
 <translation id="8163269366661594721">1ي</translation>
 <translation id="7640956400175663828">1أ</translation>
 <translation id="9100647964747998533">1ش</translation>
 <translation id="6366007539108097840">3ش</translation>
 <translation id="6977728312178289892">1س</translation>
 <translation id="6895566650974550243">الجميع</translation>
-<translation id="8892168913673237979">اكتمل الإعداد!</translation>
-<translation id="8331501996028380732">قم بشراء العملات المشفرة أو تداولها أو الاحتفاظ بها . إذا كان لديك حساب تشفير حالي، حيث يمكنك إضافته الآن.</translation>
 <translation id="2267753748892043616">إضافة حساب</translation>
 <translation id="2632612428525029752">تحديث الحساب</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">تفعيل إلغاء القفل ببصمة الإصبع</translation>
 <translation id="5493402808936397665">قم بتفعيل خيار الدخول بالبصمة لفتح محفظتك بسرعة دون إدخال كلمة المرور الخاصة بك.</translation>
-<translation id="8488282162676695335">محفظة Brave</translation>
+<translation id="1544192797660353713">محفظة Brave</translation>
 <translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لـ Brave Wallet الخاص بك.</translation>
 <translation id="1970161551843843564">استعادة حساب التشفير Crypto</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
@@ -580,7 +575,6 @@
 <translation id="745115390910697838">العبارات غير متطابقة، يرجى المحاولة مرة أخرى.</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
 <translation id="6392640873800632439">سعر السوق في <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">السعر في ETH</translation>
 <translation id="6748108480210050150">من</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@
 <translation id="6159566011642056819">إلى (مقدرًا)</translation>
 <translation id="6998989275928107238">إلى</translation>
 <translation id="6664416064035847539">العنوان أو عنوان URL</translation>
-<translation id="59223531494896848">الحد</translation>
-<translation id="3567988240819868195">السوق</translation>
 <translation id="632241521608275119">تحمُّل الانزلاق</translation>
-<translation id="4500473291496079954">ينتهي في</translation>
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="3535654229833214438">المعاملات</translation>
 <translation id="4636930964841734540">معلومات</translation>
@@ -695,7 +686,6 @@
 <translation id="7995708795274219641">المبلغ + الغاز</translation>
 <translation id="1950052789869821983">معاملة</translation>
 <translation id="6122742277607781713">ملف تعريف شخصي</translation>
-<translation id="2805756323405976993">التطبيقات</translation>
 <translation id="6083912983861746409">سعر الغاز (GWEI)</translation>
 <translation id="2499079593046817044">حد الغاز (GWEI)</translation>
 <translation id="6389441740143786465">تعطيل مركز المشاركة</translation>
