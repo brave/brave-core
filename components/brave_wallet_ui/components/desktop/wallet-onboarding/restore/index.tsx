@@ -16,6 +16,7 @@ import { PasswordInput, BackButton } from '../../../shared'
 import { NavButton } from '../../../extension'
 import { getLocale } from '../../../../../common/locale'
 import { Checkbox } from 'brave-ui'
+import { isStrongPassword } from '../../../../utils/password-utils'
 
 export interface Props {
   toggleShowRestore: () => void
@@ -84,11 +85,10 @@ function OnboardingRestore (props: Props) {
   }, [recoveryPhrase])
 
   const checkPassword = React.useMemo(() => {
-    const strongPassword = new RegExp('^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{7,})')
     if (password === '') {
       return false
     } else {
-      if (!strongPassword.test(password)) {
+      if (!isStrongPassword.test(password)) {
         return true
       }
       return false
