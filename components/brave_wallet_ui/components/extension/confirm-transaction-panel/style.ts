@@ -6,6 +6,7 @@ interface StyleProps {
   isDetails: boolean
   isApprove: boolean
   needsMargin: boolean
+  hasError: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -177,6 +178,14 @@ export const SectionRightColumn = styled.div`
   flex-direction: column;
 `
 
+export const TopColumn = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+`
+
 export const EditButton = styled.button`
   font-family: Poppins;
   font-style: normal;
@@ -193,12 +202,12 @@ export const EditButton = styled.button`
   padding: 0px;
 `
 
-export const TransactionText = styled.span`
+export const TransactionText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.hasError ? p.theme.color.errorText : p.theme.color.text03};
 `
 
 export const GrandTotalText = styled.span`

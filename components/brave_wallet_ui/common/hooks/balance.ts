@@ -18,7 +18,7 @@ export default function useBalance (selectedAccount: WalletAccountType) {
     }
 
     const token = selectedAccount.tokens.find(
-      (token) => token.asset.symbol === asset.asset.symbol
+      (token) => token.asset.symbol === asset?.asset.symbol
     )
     if (!token) {
       return { assetBalance, fiatBalance }
