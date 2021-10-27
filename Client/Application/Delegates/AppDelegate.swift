@@ -297,11 +297,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         AdblockResourceDownloader.shared.startLoading()
-        
-        // Setup Playlist
-        // This restores the playlist incomplete downloads. So if a download was started
-        // and interrupted on application death, we restart it on next launch.
-        PlaylistManager.shared.restoreSession()
       
         return shouldPerformAdditionalDelegateHandling
     }

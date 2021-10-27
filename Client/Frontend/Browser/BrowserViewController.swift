@@ -2185,15 +2185,9 @@ extension BrowserViewController: TabDelegate {
     }
     
     func stopMediaPlayback(_ tab: Tab) {
-        if #available(iOS 15, *) {
-            tabManager.allTabs.forEach({
-                $0.webView?.pauseAllMediaPlayback(completionHandler: nil)
-            })
-        } else {
-            tabManager.allTabs.forEach({
-                PlaylistHelper.stopPlayback(tab: $0)
-            })
-        }
+        tabManager.allTabs.forEach({
+            PlaylistHelper.stopPlayback(tab: $0)
+        })
     }
 }
 

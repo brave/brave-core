@@ -446,6 +446,15 @@ class PlaylistWebLoader: UIView {
         webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0))
     }
     
+    func stop() {
+        guard let webView = tab.webView else { return }
+        webView.stopLoading()
+        DispatchQueue.main.async {
+            self.handler(nil)
+            webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+        }
+    }
+    
     private class PlaylistWebLoaderContentHelper: TabContentScript {
         private weak var webLoader: PlaylistWebLoader?
         private var playlistItems = Set<String>()

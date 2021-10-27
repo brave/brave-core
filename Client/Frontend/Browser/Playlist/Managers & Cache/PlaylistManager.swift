@@ -26,6 +26,7 @@ protocol PlaylistManagerDelegate: AnyObject {
 class PlaylistManager: NSObject {
     static let shared = PlaylistManager()
     
+    private var assetInformation = [PlaylistAssetFetcher]()
     private let downloadManager = PlaylistDownloadManager()
     private let frc = PlaylistItem.frc()
     private var didRestoreSession = false
@@ -192,8 +193,12 @@ class PlaylistManager: NSObject {
     }
     
     func restoreSession() {
-        downloadManager.restoreSession() { [weak self] in
-            self?.reloadData()
+        if !didRestoreSession {
+            didRestoreSession = true
+            
+            downloadManager.restoreSession() { [weak self] in
+                self?.reloadData()
+            }
         }
     }
     
@@ -222,6 +227,11 @@ class PlaylistManager: NSObject {
     @discardableResult
     func delete(item: PlaylistInfo) -> Bool {
         cancelDownload(item: item)
+        
+        if let index = assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+            let assetFetcher = self.assetInformation.remove(at: index)
+            assetFetcher.cancelLoading()
+        }
         
         if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
            cacheItem.cachedData != nil {
@@ -289,6 +299,11 @@ class PlaylistManager: NSObject {
             if !cacheOnly {
                 PlaylistItem.removeItem(item)
             }
+        }
+        
+        if !cacheOnly {
+            assetInformation.forEach({ $0.cancelLoading() })
+            assetInformation.removeAll()
         }
         
         // Delete playlist directory.
@@ -423,6 +438,189 @@ extension PlaylistManager: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         onContentWillChange.send(())
+    }
+}
+
+extension PlaylistManager {
+    func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
+        if assetInformation.contains(where: { $0.itemId == item.pageSrc }) {
+            return
+        }
+        
+        fetchAssetDuration(item: item) { [weak self] duration in
+            guard let self = self else { return }
+            
+            if let index = self.assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+                let assetFetcher = self.assetInformation.remove(at: index)
+                assetFetcher.cancelLoading()
+            }
+            
+            completion(duration)
+        }
+    }
+    
+    private func fetchAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
+        let tolerance: Double = 0.00001
+        let distance = abs(item.duration.distance(to: 0.0))
+        
+        // If the database duration is live/indefinite
+        if item.duration.isInfinite ||
+            abs(item.duration.distance(to: TimeInterval.greatestFiniteMagnitude)) < tolerance {
+            completion(TimeInterval.infinity)
+            return
+        }
+        
+        // If the database duration is 0.0
+        if distance >= tolerance {
+            // Return the database duration
+            completion(item.duration)
+            return
+        }
+        
+        guard let index = index(of: item.pageSrc) else {
+            completion(item.duration) // Return the database duration
+            return
+        }
+        
+        // Attempt to retrieve the duration from the Asset file
+        guard let asset = assetAtIndex(index) else {
+            completion(item.duration) // Return the database duration
+            return
+        }
+        
+        // Accessing tracks blocks the main-thread if not already loaded
+        // So we first need to check the track status before attempting to access it!
+        var error: NSError?
+        let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
+        if let error = error {
+            log.error("AVAsset.statusOfValue error occurred: \(error)")
+        }
+        
+        if trackStatus == .loaded {
+            if !asset.tracks.isEmpty,
+               let track = asset.tracks(withMediaType: .video).first ??
+                            asset.tracks(withMediaType: .audio).first {
+                if track.timeRange.duration.isIndefinite {
+                    completion(TimeInterval.infinity)
+                } else {
+                    completion(track.timeRange.duration.seconds)
+                }
+                return
+            }
+        } else if trackStatus != .loading {
+            log.debug("AVAsset.statusOfValue not loaded. Status: \(trackStatus)")
+        }
+        
+        // Accessing duration or commonMetadata blocks the main-thread if not already loaded
+        // So we first need to check the track status before attempting to access it!
+        let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
+        if let error = error {
+            log.error("AVAsset.statusOfValue error occurred: \(error)")
+        }
+        
+        if durationStatus == .loaded {
+            // If it's live/indefinite
+            if asset.duration.isIndefinite {
+                completion(TimeInterval.infinity)
+                return
+            }
+            
+            // If it's a valid duration
+            if abs(asset.duration.seconds.distance(to: 0.0)) >= tolerance {
+                completion(asset.duration.seconds)
+                return
+            }
+        } else if durationStatus != .loading {
+            log.debug("AVAsset.statusOfValue not loaded. Status: \(durationStatus)")
+        }
+        
+        switch Reach().connectionStatus() {
+        case .offline, .unknown:
+            completion(item.duration) // Return the database duration
+            return
+        case .online:
+            break
+        }
+        
+        // We can't get the duration synchronously so we need to let the AVAsset load the media item
+        // and hopefully we get a valid duration from that.
+        DispatchQueue.global(qos: .userInitiated).async {
+            asset.loadValuesAsynchronously(forKeys: ["playable", "tracks", "duration"]) {
+                var error: NSError?
+                let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
+                if let error = error {
+                    log.error("AVAsset.statusOfValue error occurred: \(error)")
+                }
+                
+                let durationStatus = asset.statusOfValue(forKey: "tracks", error: &error)
+                if let error = error {
+                    log.error("AVAsset.statusOfValue error occurred: \(error)")
+                }
+                
+                if trackStatus == .cancelled || durationStatus == .cancelled {
+                    log.error("Asset Duration Fetch Cancelled")
+                    
+                    ensureMainThread {
+                        completion(nil)
+                    }
+                    return
+                }
+                
+                if trackStatus == .failed && durationStatus == .failed, let error = error {
+                    if error.code == NSURLErrorNoPermissionsToReadFile {
+                        // Media item is expired.. permission is denied
+                        log.debug("Playlist Media Item Expired: \(item.pageSrc)")
+                        
+                        ensureMainThread {
+                            completion(nil)
+                        }
+                    } else {
+                        log.error("An unknown error occurred while attempting to fetch track and duration information: \(error)")
+                        
+                        ensureMainThread {
+                            completion(nil)
+                        }
+                    }
+                    
+                    return
+                }
+                
+                var duration: CMTime = .zero
+                if trackStatus == .loaded {
+                    if let track = asset.tracks(withMediaType: .video).first ?? asset.tracks(withMediaType: .audio).first {
+                        duration = track.timeRange.duration
+                    } else {
+                        duration = asset.duration
+                    }
+                } else if durationStatus == .loaded {
+                    duration = asset.duration
+                }
+
+                ensureMainThread {
+                    if duration.isIndefinite {
+                        completion(TimeInterval.infinity)
+                    } else if abs(duration.seconds.distance(to: 0.0)) > tolerance {
+                        let newItem = PlaylistInfo(name: item.name,
+                                                   src: item.src,
+                                                   pageSrc: item.pageSrc,
+                                                   pageTitle: item.pageTitle,
+                                                   mimeType: item.mimeType,
+                                                   duration: duration.seconds,
+                                                   detected: item.detected,
+                                                   dateAdded: item.dateAdded,
+                                                   tagId: item.tagId)
+
+                        PlaylistItem.updateItem(newItem) {
+                            completion(duration.seconds)
+                        }
+                    } else {
+                        completion(duration.seconds)
+                    }
+                }
+            }
+        }
+        
+        assetInformation.append(PlaylistAssetFetcher(itemId: item.pageSrc, asset: asset))
     }
 }
 
