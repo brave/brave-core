@@ -33,7 +33,6 @@ class WalletButton : public ToolbarButton {
   bool IsBubbleClosedForTesting();
 
   void UpdateImageAndText();
-  void InitBubbleManagerAnchor();
   void UpdateVisibility();
 
   views::View* GetAsAnchorView();
