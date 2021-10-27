@@ -234,6 +234,7 @@ interface KeyringController {
   AddObserver(pending_remote<KeyringControllerObserver> observer);
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
   SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+  SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
   AddHardwareAccounts(array<HardwareWalletAccount> info);
   RemoveHardwareAccount(string address);
   NotifyUserInteraction();
