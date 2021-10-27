@@ -101,19 +101,23 @@ class EthTxController : public KeyedService,
   void ApproveHardwareTransaction(
       const std::string& tx_meta_id,
       ApproveHardwareTransactionCallback callback) override;
-  void ProcessLedgerSignature(const std::string& tx_meta_id,
-                              const std::string& v,
-                              const std::string& r,
-                              const std::string& s,
-                              ProcessLedgerSignatureCallback callback) override;
-
   void SpeedupOrCancelTransaction(
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
   void RetryTransaction(const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
-
+  void ProcessHardwareSignature(
+      const std::string& tx_meta_id,
+      const std::string& v,
+      const std::string& r,
+      const std::string& s,
+      ProcessHardwareSignatureCallback callback) override;
+  void GetTransactionInfo(const std::string& tx_meta_id,
+                          GetTransactionInfoCallback callback) override;
+  void GetTransactionMessageToSign(
+      const std::string& tx_meta_id,
+      GetTransactionMessageToSignCallback callback) override;
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxControllerObserver> observer) override;
 

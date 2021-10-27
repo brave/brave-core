@@ -14,6 +14,7 @@ export default class APIProxy implements APIProxyControllers {
   closeUI: () => {}
   connectToSite: (accounts: string[], origin: string, tabId: number) => {}
   cancelConnectToSite: (origin: string, tabId: number) => {}
+  closePanelOnDeactivate: (close: Boolean) => {}
   walletHandler: WalletAPIHandler
   ethJsonRpcController: EthJsonRpcController
   swapController: SwapController

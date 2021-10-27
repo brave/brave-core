@@ -68,6 +68,7 @@ interface PanelHandler {
 
   ConnectToSite(array<string> accounts, string origin, int32 tab_id);
   CancelConnectToSite(string origin, int32 tab_id);
+  ClosePanelOnDeactivate(bool close);
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -394,11 +395,12 @@ interface EthTxController {
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);
-  ApproveHardwareTransaction(string tx_meta_id) => (bool success, string message);
-  ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
-
   SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
   RetryTransaction(string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
+  ApproveHardwareTransaction(string tx_meta_id) => (bool success);
+  GetTransactionInfo(string tx_meta_id) => (TransactionInfo? info);
+  GetTransactionMessageToSign(string tx_meta_id) => (string message);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 
 interface BraveWalletServiceObserver {

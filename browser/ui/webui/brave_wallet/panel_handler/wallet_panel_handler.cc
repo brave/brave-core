@@ -7,15 +7,18 @@
 
 #include <utility>
 
+#include "base/callback.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller,
-    GetWebContentsForTabCallback get_web_contents_for_tab)
+    GetWebContentsForTabCallback get_web_contents_for_tab,
+    PanelCloseOnDeactivationCallback close_on_deactivation)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller),
-      get_web_contents_for_tab_(std::move(get_web_contents_for_tab)) {}
+      get_web_contents_for_tab_(std::move(get_web_contents_for_tab)),
+      close_on_deactivation_(std::move(close_on_deactivation)) {}
 
 WalletPanelHandler::~WalletPanelHandler() {}
 
@@ -51,4 +54,9 @@ void WalletPanelHandler::CancelConnectToSite(const std::string& origin,
     return;
 
   permissions::BraveEthereumPermissionContext::Cancel(contents);
+}
+
+void WalletPanelHandler::ClosePanelOnDeactivate(bool close) {
+  if (close_on_deactivation_)
+    close_on_deactivation_.Run(close);
 }
