@@ -56,9 +56,12 @@ async function getPendingChainRequest () {
 
 async function getPendingSignMessageRequest () {
   const braveWalletService = (await getAPIProxy()).braveWalletService
-  const request = await braveWalletService.getPendingSignMessageRequest()
-  if (request.id !== -1) {
-    return { id: request.id, address: request.address, message: request.message }
+  const requests =
+    (await braveWalletService.getPendingSignMessageRequests()).requests
+  if (requests && requests.length) {
+    if (requests[0].id !== -1) {
+      return requests[0]
+    }
   }
   return null
 }

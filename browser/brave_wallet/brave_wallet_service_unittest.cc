@@ -1013,33 +1013,34 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string expected_signature = std::string("0xSiGnEd");
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
-  std::string message_to_request = std::string(message.begin(), message.end());
+  auto request1 = mojom::SignMessageRequest::New(
+      1, address, std::string(message.begin(), message.end()));
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
-      {1, address, std::move(message_to_request)},
-      base::BindLambdaForTesting([&](bool approved,
-                                     const std::string& signature,
-                                     const std::string& error) {
-        ASSERT_TRUE(approved);
-        EXPECT_EQ(signature, expected_signature);
-        ASSERT_TRUE(error.empty());
-        callback_is_called = true;
-      }));
+      std::move(request1), base::BindLambdaForTesting(
+                               [&](bool approved, const std::string& signature,
+                                   const std::string& error) {
+                                 ASSERT_TRUE(approved);
+                                 EXPECT_EQ(signature, expected_signature);
+                                 ASSERT_TRUE(error.empty());
+                                 callback_is_called = true;
+                               }));
   service_->NotifySignMessageHardwareRequestProcessed(
       true, 1, expected_signature, std::string());
   ASSERT_TRUE(callback_is_called);
   callback_is_called = false;
   std::string expected_error = "error";
+  auto request2 = mojom::SignMessageRequest::New(
+      2, address, std::string(message.begin(), message.end()));
   service_->AddSignMessageRequest(
-      {2, address, std::move(message_to_request)},
-      base::BindLambdaForTesting([&](bool approved,
-                                     const std::string& signature,
-                                     const std::string& error) {
-        ASSERT_FALSE(approved);
-        EXPECT_EQ(signature, expected_signature);
-        EXPECT_EQ(error, expected_error);
-        callback_is_called = true;
-      }));
+      std::move(request2), base::BindLambdaForTesting(
+                               [&](bool approved, const std::string& signature,
+                                   const std::string& error) {
+                                 ASSERT_FALSE(approved);
+                                 EXPECT_EQ(signature, expected_signature);
+                                 EXPECT_EQ(error, expected_error);
+                                 callback_is_called = true;
+                               }));
   service_->NotifySignMessageHardwareRequestProcessed(
       false, 2, expected_signature, expected_error);
   ASSERT_TRUE(callback_is_called);
