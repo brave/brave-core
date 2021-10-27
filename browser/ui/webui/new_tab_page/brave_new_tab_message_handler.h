@@ -61,7 +61,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
       base::Value::ConstListView args);
   void HandleRegisterNewTabPageView(base::Value::ConstListView args);
   void HandleBrandedWallpaperLogoClicked(base::Value::ConstListView args);
-  void HandleGetBrandedWallpaperData(base::Value::ConstListView args);
+  void HandleGetWallpaperData(base::Value::ConstListView args);
   void HandleCustomizeClicked(base::Value::ConstListView args);
   // TODO(petemill): Today should get it's own message handler
   // or service.

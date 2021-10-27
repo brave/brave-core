@@ -15,7 +15,7 @@ import * as Actions from '../actions/new_tab_actions'
 // API
 import * as backgroundAPI from '../api/background'
 import { InitialData } from '../api/initialData'
-import { registerViewCount } from '../api/brandedWallpaper'
+import { registerViewCount } from '../api/wallpaper'
 import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { setMostVisitedSettings } from '../api/topSites'
@@ -42,7 +42,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         initialDataLoaded: true,
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
-        brandedWallpaperData: initialDataPayload.brandedWallpaperData,
+        backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+        brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper,
         ...initialDataPayload.privateTabData,
         ...initialDataPayload.torTabData,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
@@ -55,19 +56,17 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         // page view that the action occured on.
         braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
-      if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
+      // It's super referral when backgound is false and it's not sponsored.
+      if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
         state = {
           ...state,
           featureFlagBraveNTPSponsoredImagesWallpaper: false
         }
       }
-      // TODO(petemill): only get backgroundImage if no sponsored background this time.
-      // ...We would also have to set the value at the action
-      // the branded wallpaper is turned off. Since this is a cheap string API
-      // (no image will be downloaded), we can afford to leave this here for now.
-      if (initialDataPayload.preferences.showBackgroundImage) {
-        state.backgroundImage = backgroundAPI.randomBackgroundImage()
+      // Set default if we can't get both.
+      if (!state.backgroundWallpaper && !state.brandedWallpaper) {
+        state.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }
       console.timeStamp('reducer initial data received')
 
@@ -141,19 +140,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // or refreshed.
       newState.isBrandedWallpaperNotificationDismissed = state.isBrandedWallpaperNotificationDismissed
       // Remove branded wallpaper when opting out or turning wallpapers off
-      const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaperData
+      const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaper
       const hasTurnedWallpaperOff = !preferences.showBackgroundImage && state.showBackgroundImage
       // We always show SR images regardless of background options state.
-      const isSuperReferral = state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored
+      const isSuperReferral = state.brandedWallpaper && !state.brandedWallpaper.isSponsored
       if (!isSuperReferral &&
-          (hasTurnedBrandedWallpaperOff || (state.brandedWallpaperData && hasTurnedWallpaperOff))) {
-        newState.brandedWallpaperData = undefined
+          (hasTurnedBrandedWallpaperOff || (state.brandedWallpaper && hasTurnedWallpaperOff))) {
+        newState.brandedWallpaper = undefined
       }
       // Get a new wallpaper image if turning that feature on
       const shouldChangeBackgroundImage =
         !state.showBackgroundImage && preferences.showBackgroundImage
-      if (shouldChangeBackgroundImage) {
-        newState.backgroundImage = backgroundAPI.randomBackgroundImage()
+      if (shouldChangeBackgroundImage && !newState.backgroundWallpaper) {
+        newState.backgroundWallpaper = backgroundAPI.randomBackgroundImage()
       }
       // Handle updated widget prefs
       state = handleWidgetPrefsChange(newState, state)

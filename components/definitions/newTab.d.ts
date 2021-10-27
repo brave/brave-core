@@ -4,6 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare namespace NewTab {
+  export type BackgroundWallpaper = {
+    wallpaperImageUrl: string
+    author: string
+    link: string
+    originalUrl?: string
+    license?: string
+  }
 
   export type BrandedWallpaperLogo = {
     image: string
@@ -12,25 +19,22 @@ declare namespace NewTab {
     destinationUrl: string
   }
 
-  export interface BrandedWallpaper {
-    isSponsored: boolean
+  export type BrandedWallpaper = {
     wallpaperImageUrl: string
+    isSponsored: boolean
     creativeInstanceId: string
     wallpaperId: string
     logo: BrandedWallpaperLogo
   }
+
+  export interface Wallpaper {
+    backgroundWallpaper?: BackgroundWallpaper
+    brandedWallpaper?: BrandedWallpaper
+  }
+
   export interface ApplicationState {
     newTabData: State | undefined
     gridSitesData: GridSitesState | undefined
-  }
-
-  export interface Image {
-    name: string
-    source: string
-    author: string
-    link: string
-    originalUrl: string
-    license: string
   }
 
   export interface Site {
@@ -125,7 +129,7 @@ declare namespace NewTab {
     torInitProgress: string,
     isTor: boolean
     isQwant: boolean
-    backgroundImage?: Image
+    backgroundWallpaper?: BackgroundWallpaper
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
@@ -135,7 +139,7 @@ declare namespace NewTab {
     showFTX: boolean,
     stats: Stats,
     braveTalkPromptAllowed: boolean
-    brandedWallpaperData?: BrandedWallpaper
+    brandedWallpaper?: BrandedWallpaper
   }
 
   export interface RewardsWidgetState {

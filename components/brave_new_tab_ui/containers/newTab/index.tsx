@@ -23,7 +23,7 @@ import {
 import { FTXWidget as FTX } from '../../widgets/ftx/components'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
+import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import { SponsoredImageTooltip } from '../../components/default/rewards'
@@ -81,25 +81,25 @@ interface State {
 
 function GetBackgroundImageSrc (props: Props) {
   if (!props.newTabData.showBackgroundImage &&
-      (!props.newTabData.brandedWallpaperData || props.newTabData.brandedWallpaperData.isSponsored)) {
+      (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored)) {
     return undefined
   }
-  if (props.newTabData.brandedWallpaperData) {
-    const wallpaperData = props.newTabData.brandedWallpaperData
-    if (wallpaperData && wallpaperData.wallpaperImageUrl) {
+  if (props.newTabData.brandedWallpaper) {
+    const wallpaperData = props.newTabData.brandedWallpaper
+    if (wallpaperData.wallpaperImageUrl) {
       return wallpaperData.wallpaperImageUrl
     }
   }
-  if (props.newTabData.backgroundImage && props.newTabData.backgroundImage.source) {
-    return props.newTabData.backgroundImage.source
+  if (props.newTabData.backgroundWallpaper && props.newTabData.backgroundWallpaper.wallpaperImageUrl) {
+    return props.newTabData.backgroundWallpaper.wallpaperImageUrl
   }
   return undefined
 }
 
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
-  return (newTabData.brandedWallpaperData &&
-          newTabData.brandedWallpaperData.isSponsored) ? true : false
+  return (newTabData.brandedWallpaper &&
+          newTabData.brandedWallpaper.isSponsored) ? true : false
 }
 
 function GetShouldShowBrandedWallpaperNotification (props: Props) {
@@ -445,7 +445,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   onClickLogo = () => {
-    brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaperData)
+    brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaper)
   }
 
   openSettingsEditCards = () => {
@@ -1052,7 +1052,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
-    const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
+    const isShowingBrandedWallpaper = newTabData.brandedWallpaper ? true : false
     const cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1138,15 +1138,15 @@ class NewTabPage extends React.Component<Props, State> {
             {cryptoContent}
           <Page.Footer>
             <Page.FooterContent>
-            {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
-            newTabData.brandedWallpaperData.logo &&
+            {isShowingBrandedWallpaper && newTabData.brandedWallpaper &&
+            newTabData.brandedWallpaper.logo &&
             <Page.GridItemBrandedLogo>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
                 paddingType={'default'}
                 textDirection={newTabData.textDirection}
                 onClickLogo={this.onClickLogo}
-                data={newTabData.brandedWallpaperData.logo}
+                data={newTabData.brandedWallpaper.logo}
               />
               {this.renderBrandedWallpaperNotification()}
             </Page.GridItemBrandedLogo>}
@@ -1154,7 +1154,7 @@ class NewTabPage extends React.Component<Props, State> {
               textDirection={newTabData.textDirection}
               supportsBraveTalk={newTabData.braveTalkSupported}
               showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
-              backgroundImageInfo={newTabData.backgroundImage}
+              backgroundImageInfo={newTabData.backgroundWallpaper}
               showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
               onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}

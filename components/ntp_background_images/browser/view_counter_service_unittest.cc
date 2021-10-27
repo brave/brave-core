@@ -229,11 +229,11 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
   service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   view_counter_->OnUpdated(service_->sr_images_data_.get());
-  EXPECT_TRUE(view_counter_->model_.ignore_count_to_branded_wallpaper_);
+  EXPECT_TRUE(view_counter_->model_.always_show_branded_wallpaper_);
 
   service_->sr_images_data_.reset(new NTPSponsoredImagesData);
   view_counter_->OnSuperReferralEnded();
-  EXPECT_FALSE(view_counter_->model_.ignore_count_to_branded_wallpaper_);
+  EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
   const int expected_count = ViewCounterModel::kRegularCountToBrandedWallpaper;
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 }

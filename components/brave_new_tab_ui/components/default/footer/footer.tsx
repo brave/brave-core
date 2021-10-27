@@ -35,7 +35,7 @@ export interface Props {
   textDirection: string
   supportsBraveTalk: boolean
   showBraveTalkPrompt: boolean
-  backgroundImageInfo: any
+  backgroundImageInfo: NewTab.BackgroundWallpaper | undefined
   showPhotoInfo: boolean
   onClickSettings: () => any
   onDismissBraveTalkPrompt: OnDismissBraveTalkPrompt
