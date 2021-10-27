@@ -394,6 +394,9 @@ interface EthTxController {
   AddObserver(pending_remote<EthTxControllerObserver> observer);
   ApproveHardwareTransaction(string tx_meta_id) => (bool success, string message);
   ProcessLedgerSignature(string tx_meta_id, string v, string r, string s) => (bool status);
+
+  SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
+  RetryTransaction(string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
 };
 
 interface BraveWalletServiceObserver {

@@ -38,7 +38,7 @@ class EthTransaction {
 
   uint8_t type() const { return type_; }
 
-  uint256_t nonce() const { return nonce_; }
+  absl::optional<uint256_t> nonce() const { return nonce_; }
   uint256_t gas_price() const { return gas_price_; }
   uint256_t gas_limit() const { return gas_limit_; }
   EthAddress to() const { return to_; }
@@ -48,7 +48,9 @@ class EthTransaction {
   std::vector<uint8_t> r() const { return r_; }
   std::vector<uint8_t> s() const { return s_; }
 
-  void set_nonce(uint256_t nonce) { nonce_ = nonce; }
+  void set_to(EthAddress to) { to_ = to; }
+  void set_value(uint256_t value) { value_ = value; }
+  void set_nonce(absl::optional<uint256_t> nonce) { nonce_ = nonce; }
   void set_data(const std::vector<uint8_t>& data) { data_ = data; }
   void set_gas_price(uint256_t gas_price) { gas_price_ = gas_price; }
   void set_gas_limit(uint256_t gas_limit) { gas_limit_ = gas_limit; }
@@ -91,7 +93,7 @@ class EthTransaction {
   // type 0 would be LegacyTransaction
   uint8_t type_ = 0;
 
-  uint256_t nonce_;
+  absl::optional<uint256_t> nonce_;
   uint256_t gas_price_;
   uint256_t gas_limit_;
   EthAddress to_;
@@ -103,7 +105,7 @@ class EthTransaction {
   std::vector<uint8_t> s_;
 
  protected:
-  EthTransaction(uint256_t nonce,
+  EthTransaction(absl::optional<uint256_t> nonce,
                  uint256_t gas_price,
                  uint256_t gas_limit,
                  const EthAddress& to,

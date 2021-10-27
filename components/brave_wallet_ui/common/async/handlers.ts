@@ -261,7 +261,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
   const txData = isEIP1559
     ? apiProxy.makeEIP1559TxData(
       chainId,
-      '0x1',
+      '' /* nonce */,
 
       // Estimated by eth_tx_controller if value is ''
       payload.maxPriorityFeePerGas || '',
@@ -278,7 +278,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.data || []
     )
     : apiProxy.makeTxData(
-      '0x1' /* nonce */,
+      '' /* nonce */,
 
       // Estimated by eth_tx_controller if value is ''
       payload.gasPrice || '',

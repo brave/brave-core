@@ -237,10 +237,14 @@ TEST(EthTransactionUnitTest, FromTxData) {
   EXPECT_EQ(tx->value(), uint256_t(42));
   EXPECT_EQ(tx->data(), std::vector<uint8_t>{1});
 
-  // Missing values should not parse correctly
-  EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
+  // Empty nonce
+  tx = EthTransaction::FromTxData(mojom::TxData::New(
       "", "0x3E8", "0x989680", "0x3535353535353535353535353535353535353535",
-      "0x2A", std::vector<uint8_t>{1})));
+      "0x2A", std::vector<uint8_t>{1}));
+  ASSERT_TRUE(tx);
+  EXPECT_FALSE(tx->nonce());
+
+  // Missing values should not parse correctly
   EXPECT_FALSE(EthTransaction::FromTxData(mojom::TxData::New(
       "0x01", "", "0x989680", "0x3535353535353535353535353535353535353535",
       "0x2A", std::vector<uint8_t>{1})));
@@ -258,8 +262,9 @@ TEST(EthTransactionUnitTest, FromTxData) {
                          std::vector<uint8_t>{1}),
       false);
   ASSERT_TRUE(tx);
+  // Empty nonce should be absl::nullopt
+  EXPECT_FALSE(tx->nonce());
   // Unspecified value defaults to 0
-  EXPECT_EQ(tx->nonce(), uint256_t(0));
   EXPECT_EQ(tx->gas_limit(), uint256_t(0));
   EXPECT_EQ(tx->value(), uint256_t(0));
   // you can still get at other data that is specified
@@ -287,6 +292,7 @@ TEST(EthTransactionUnitTest, ProcessVRS) {
   EXPECT_EQ(tx.v(), (uint256_t)0);
   ASSERT_TRUE(tx.r().empty());
   ASSERT_TRUE(tx.s().empty());
+  tx.set_nonce(0u);
 
   std::string r =
       "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";

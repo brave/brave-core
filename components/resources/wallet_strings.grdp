@@ -27,7 +27,7 @@
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED" desc="Failed to get gas price">Failed to get the gas price for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_LIMIT_FAILED" desc="Failed to get gas limit">Failed to get the gas limit for the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED" desc="Failed to get tx type">Failed to get the type for the transaction</message>
-    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_ESTIMATION_FAILED" desc="Failed to get gas estimation">Failed to get the gas estimation for EIP-1559 transaction</message>
+    <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED" desc="Failed to get gas fees">Failed to get the gas fees for EIP-1559 transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED" desc="The text of the response for eth_sendTransaction">User rejected the transaction</message>
     <message name="IDS_WALLET_ETH_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction">Error processing the transaction</message>
     <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
@@ -277,6 +277,7 @@
     <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING" desc="Alert for when no block explorer is available">Block explorer URL is not available.</message>
     <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER" desc="View on block explorer button">View on block explorer</message>
     <message name="IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER" desc="Transactions placeholder">Transactions will appear here</message>
+    <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND" desc="Transaction not found error">Transaction not found</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE1" desc="Edit gas panel max fee label">Max priority fee</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE2" desc="Edit gas panel edit gas button">Edit gas</message>
     <message name="IDS_BRAVE_WALLET_EDIT_GAS_DESCRIPTION" desc="Edit gas panel description">While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.</message>

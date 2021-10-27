@@ -238,6 +238,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
+    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
 
     ApproveTransaction(infos[0]->id);
 
@@ -247,6 +248,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[0]->tx_status);
     EXPECT_FALSE(infos[0]->tx_hash.empty());
+    EXPECT_EQ(infos[0]->tx_data->base_data->nonce, "0x9604");
 
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionResult()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
@@ -282,6 +284,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
+    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
 
     RejectTransaction(infos[0]->id);
 
@@ -291,6 +294,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
     EXPECT_TRUE(infos[0]->tx_hash.empty());
+    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
 
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
