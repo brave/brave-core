@@ -48,6 +48,7 @@ impl From<&brave_rewards::errors::InternalError> for ffi::RewardsResult {
             brave_rewards::errors::InternalError::InvalidMerchantOrSku => {
                 ffi::RewardsResult::InvalidMerchantOrSku
             }
+            brave_rewards::errors::InternalError::BorrowFailed => ffi::RewardsResult::BorrowFailed,
         }
     }
 }
@@ -108,6 +109,7 @@ impl From<ffi::RewardsResult> for brave_rewards::errors::InternalError {
             ffi::RewardsResult::InvalidMerchantOrSku => {
                 brave_rewards::errors::InternalError::InvalidMerchantOrSku
             }
+            ffi::RewardsResult::BorrowFailed => brave_rewards::errors::InternalError::BorrowFailed,
             _ => brave_rewards::errors::InternalError::UnhandledVariant,
         }
     }

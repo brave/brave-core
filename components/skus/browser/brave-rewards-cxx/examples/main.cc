@@ -7,10 +7,11 @@ using namespace rust::cxxbridge1;
 using namespace brave_rewards;
 
 namespace brave_rewards {
-  void shim_executeRequest(
+  std::unique_ptr<brave_rewards::SkusSdkFetcher> shim_executeRequest(
+      const brave_rewards::SkusSdkImpl& ctx,
       const brave_rewards::HttpRequest& req, 
       rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>, brave_rewards::HttpResponse)> callback,
-      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> rt_ctx
     ) {
     cout<<"url: "<<req.url<<"\n";
 
@@ -25,19 +26,20 @@ namespace brave_rewards {
       body_bytes,
     };
 
-    callback(std::move(ctx), resp);
+    callback(std::move(rt_ctx), resp);
+    return nullptr;
   }
 
 
-void shim_purge() {
+void shim_purge(brave_rewards::SkusSdkImpl& ctx) {
     cout<<"shim_purge"<<"\n";
 }
 
-void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
+void shim_set(brave_rewards::SkusSdkImpl& ctx, rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
     cout<<"shim_set"<<"\n";
 }
 
-rust::String shim_get(rust::cxxbridge1::Str key) {
+rust::String shim_get(brave_rewards::SkusSdkImpl& ctx, rust::cxxbridge1::Str key) {
     cout<<"shim_get"<<"\n";
     //std::unique_ptr<std::string> empty(new std::string("{}"));
   //return empty;
@@ -64,7 +66,8 @@ void on_refresh_order(
 }
 
 int main() {
-  Box<CppSDK> sdk = initialize_sdk("local");
+  std::unique_ptr<brave_rewards::SkusSdkImpl> ctx(new brave_rewards::SkusSdkImpl());
+  Box<CppSDK> sdk = initialize_sdk(std::move(ctx), "local");
 
   std::unique_ptr<RefreshOrderCallbackState> cbs (new RefreshOrderCallbackState);
   //cbs->CbFunc = [](RewardsResult result, rust::cxxbridge1::Str order) {
