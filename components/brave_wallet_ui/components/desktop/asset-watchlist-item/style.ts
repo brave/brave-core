@@ -16,7 +16,7 @@ export const NameAndIcon = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  width: 42%;
+  width: 60%;
 `
 
 export const NameAndSymbol = styled.div`

@@ -171,6 +171,8 @@
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_NO_ASSET" desc="Visible assets modal no results placeholder">No assets named</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_SEARCH_PLACEHOLDER" desc="Visible assets modal search input placeholder">Search assets or contract address</message>
     <message name="IDS_BRAVE_WALLET_WATCH_LIST_ERROR" desc="Visible assets modal failed to add token error">Failed to add custom token, please try again.</message>
+    <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID" desc="Visible assets modal tokenId label">Token ID (only for ERC721)</message>
+    <message name="IDS_BRAVE_WALLET_WATCH_LIST_TOKEN_ID_ERROR" desc="Visible assets modal tokenId error">Token ID is required</message>
     <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER" desc="Account settings modal warning">WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.</message>
     <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_SHOW_KEY" desc="Account settings modal show key button">Show key</message>
     <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_HIDE_KEY" desc="Account settings modal hide key button">Hide key</message>

@@ -206,6 +206,8 @@ provideStrings({
   braveWalletAccountSettingsShowKey: 'Show key',
   braveWalletAccountSettingsHideKey: 'Hide key',
   braveWalletAccountSettingsUpdateError: 'Failed to update account name, please try again.',
+  braveWalletWatchListTokenId: 'Token ID (only for ERC721)',
+  braveWalletWatchListTokenIdError: 'Token ID is required',
 
   // AmountPresets
   braveWalletPreset25: '25%',

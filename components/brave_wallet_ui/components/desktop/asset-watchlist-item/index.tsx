@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Checkbox } from 'brave-ui'
 import { TokenInfo } from '../../../constants/types'
 import { withPlaceholderIcon } from '../../shared'
+import { hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -50,7 +51,7 @@ const AssetWatchlistItem = (props: Props) => {
       <NameAndIcon>
         <AssetIconWithPlaceholder selectedAsset={token} />
         <NameAndSymbol>
-          <AssetName>{token.name}</AssetName>
+          <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
           <AssetSymbol>{token.symbol}</AssetSymbol>
         </NameAndSymbol>
       </NameAndIcon>

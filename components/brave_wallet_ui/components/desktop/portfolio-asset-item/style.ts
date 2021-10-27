@@ -1,14 +1,18 @@
 import styled from 'styled-components'
 import { AssetIconProps, AssetIconFactory } from '../../shared/style'
 
-export const StyledWrapper = styled.button`
+interface StyleProps {
+  disabled: boolean
+}
+
+export const StyledWrapper = styled.button<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
   margin: 8px 0px;
-  cursor: pointer;
+  cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
   outline: none;
   background: none;
   border: none;
