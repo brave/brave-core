@@ -46,7 +46,6 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
       kShowWalletIconOnToolbar,
       base::BindRepeating(&WalletButton::OnPreferenceChanged,
                           base::Unretained(this)));
-  InitBubbleManagerAnchor();
   UpdateVisibility();
 
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
@@ -77,19 +76,11 @@ void WalletButton::UpdateImageAndText() {
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
 }
 
-void WalletButton::InitBubbleManagerAnchor() {
-  View* anchor_view = this;
-  if (!prefs_->GetBoolean(kShowWalletIconOnToolbar)) {
-    anchor_view = backup_anchor_view_;
-  }
-}
-
 void WalletButton::UpdateVisibility() {
   SetVisible(prefs_->GetBoolean(kShowWalletIconOnToolbar));
 }
 
 void WalletButton ::OnPreferenceChanged() {
-  InitBubbleManagerAnchor();
   UpdateVisibility();
 }
 
