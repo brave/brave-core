@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_IMPL_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_IMPL_H_
 
-#include <map>
 #include <string>
 
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -42,7 +41,12 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
 
   void RefreshOrder(const std::string& order_id,
                     RefreshOrderCallback callback) override;
-  void FetchOrderCredentials(const std::string& order_id) override;
+  void FetchOrderCredentials(const std::string& order_id,
+                             FetchOrderCredentialsCallback callback) override;
+  void PrepareCredentialsPresentation(
+      const std::string& domain,
+      const std::string& path,
+      PrepareCredentialsPresentationCallback callback) override;
 
   // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
