@@ -17,4 +17,7 @@
     </if>
   <if expr="not chromeos">
       </if>
+
+  <if expr="chromeos or lacros">
+    </if>
 </grit-part>
