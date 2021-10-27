@@ -11,6 +11,7 @@
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
@@ -119,6 +120,7 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
 
   // Ensure that the browser state is initialized.
   EnsureBrowserStateKeyedServiceFactoriesBuilt();
+  brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
   ios::ChromeBrowserStateManager* browser_state_manager =
       application_context_->GetChromeBrowserStateManager();
   ChromeBrowserState* last_used_browser_state =
