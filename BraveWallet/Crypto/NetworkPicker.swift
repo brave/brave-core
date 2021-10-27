@@ -42,6 +42,7 @@ struct NetworkPicker: View {
       )
       .clipShape(Capsule())
       .contentShape(Capsule())
+      .animation(nil, value: selectedNetwork)
     }
   }
 }

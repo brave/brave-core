@@ -8,6 +8,8 @@ import SwiftUI
 
 /// A data point for a chart
 protocol DataPoint {
+  /// The date associated with the value on the chart
+  var date: Date { get }
   /// The value to plot on a chart
   var value: CGFloat { get }
 }
@@ -39,8 +41,14 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     self.numberOfColumns = numberOfColumns
     let (min, max) = { () -> (CGFloat, CGFloat) in
       let filledData = data.map({ $0.value })
-      return (filledData.min() ?? 0.0,
-              filledData.max() ?? CGFloat.greatestFiniteMagnitude)
+      let min = filledData.min() ?? 0.0
+      let max = filledData.max() ?? CGFloat.greatestFiniteMagnitude
+      if min == max {
+        // If there's only 1 value then we want to make sure we include some space above it
+        // Also this will prevent dividing by 0 and causing NaN errors
+        return (min, min + 1)
+      }
+      return (min, max)
     }()
     self.points = data.enumerated().map { index, dataPoint -> CGPoint in
       // Swift needs this pre-definition where the type is specified on lhs to compile in a
@@ -94,7 +102,7 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
           previousPoint = scaledPoint
         }
       }
-      .strokedPath(StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+      .strokedPath(StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
     }
   }
   
@@ -162,13 +170,18 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
   
   @State private var dragValueSize: CGSize = .zero
   
+  private let dateFormatter = DateFormatter().then {
+    $0.dateStyle = .short
+    $0.timeStyle = .short
+  }
+  
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       Group {
         if let dragContext = dragContext, let dataPoint = dragContext.dataPoint {
           let offsetCenter = dragContext.location.x - (dragValueSize.width / 2.0)
           let offset = max(0, min(dragContext.size.width - dragValueSize.width, offsetCenter))
-          Text(String(format: "%d", Int(dataPoint.value)))
+          Text(dateFormatter.string(from: dataPoint.date))
             .padding(.horizontal, 8)
             .overlay(GeometryReader { proxy in
               Color.clear

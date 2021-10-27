@@ -8,11 +8,29 @@ import BraveCore
 
 public struct AssetViewModel: Identifiable, Equatable {
   var token: BraveWallet.ERCToken
-  var balance: String
+  var decimalBalance: Double
   var price: String
+  var history: [BraveWallet.AssetTimePrice]
   
   public var id: String {
     token.id
+  }
+  
+  var quantity: Double {
+    guard let priceValue = Double(price), priceValue > 0 else {
+      return 0
+    }
+    return decimalBalance / priceValue
+  }
+}
+
+struct BalanceTimePrice: DataPoint, Equatable {
+  var date: Date
+  var price: Double
+  var formattedPrice: String
+  
+  var value: CGFloat {
+    price
   }
 }
 
@@ -25,11 +43,15 @@ public class PortfolioStore: ObservableObject {
   /// The timeframe of the portfolio
   @Published var timeframe: BraveWallet.AssetPriceTimeframe = .oneDay {
     didSet {
-      update()
+      if timeframe != oldValue {
+        update()
+      }
     }
   }
   /// A set of balances of your portfolio's visible assets based on `timeframe`
-  @Published var historicalBalances: [BraveWallet.AssetTimePrice] = []
+  @Published private(set) var historicalBalances: [BalanceTimePrice] = []
+  /// Whether or not balances are still currently loading
+  @Published private(set) var isLoadingBalances: Bool = false
   
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
@@ -60,77 +82,127 @@ public class PortfolioStore: ObservableObject {
     self.keyringController.add(self)
   }
   
-  /// Balances for ETH accounts in Wei
-  private var balances: [String: String] = [:] // TODO: Convert to Fiat?
+  private let numberFormatter = NumberFormatter().then {
+    $0.numberStyle = .currency
+    $0.currencyCode = "USD"
+  }
   
-  func update() {
-    // Update ETH balances
-    keyringController.defaultKeyringInfo { [self] keyring in
-      for account in keyring.accountInfos {
-        rpcController.balance(account.address) { success, balance in
-          if success {
-            balances[account.address] = balance
-          } else {
-            balances[account.address] = nil
+  /// Fills the `userVisibleAssets` models with balances in decimal format
+  func fetchBalances(accounts: [BraveWallet.AccountInfo], completion: @escaping () -> Void) {
+    let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
+    let group = DispatchGroup()
+    for account in accounts {
+      for index in 0..<userVisibleAssets.count {
+        let token = userVisibleAssets[index].token
+        func updateBalance(_ success: Bool, _ balance: String) {
+          guard success, let decimalString = balanceFormatter.decimalString(
+            for: balance.removingHexPrefix,
+               radix: .hex,
+               decimals: Int(token.decimals)
+          ), !decimalString.isEmpty, let decimal = Double(decimalString) else {
+            return
+          }
+          userVisibleAssets[index].decimalBalance += decimal
+        }
+        if token.isETH {
+          group.enter()
+          rpcController.balance(account.address) { success, balance in
+            defer { group.leave() }
+            updateBalance(success, balance)
+          }
+        } else if token.isErc20 {
+          group.enter()
+          rpcController.erc20TokenBalance(token.contractAddress, address: account.address) { success, balance in
+            defer { group.leave() }
+            updateBalance(success, balance)
           }
         }
       }
     }
+    group.notify(queue: .main, execute: completion)
+  }
+  
+  func fetchPricesAndHistory(_ completion: @escaping () -> Void) {
+    let group = DispatchGroup()
+    // Fill prices for each asset
+    group.enter()
+    assetRatioController.price(
+      userVisibleAssets.map { $0.token.symbol.lowercased() },
+      toAssets: ["usd"], // TODO: Switch to users preferred currency
+      timeframe: timeframe
+    ) { [weak self] success, assetPrices in
+      defer { group.leave() }
+      guard let self = self, success else { return }
+      for assetPrice in assetPrices {
+        if let index = self.userVisibleAssets.firstIndex(where: {
+          $0.token.symbol.caseInsensitiveCompare(assetPrice.fromAsset) == .orderedSame
+        }) {
+          self.userVisibleAssets[index].price = assetPrice.price
+        }
+      }
+    }
+    for asset in userVisibleAssets {
+      group.enter()
+      assetRatioController.priceHistory(
+        asset.token.symbol,
+        timeframe: timeframe
+      ) { [weak self] success, history in
+        defer { group.leave() }
+        guard let self = self, success else { return }
+        if let index = self.userVisibleAssets.firstIndex(where: {
+          $0.token.symbol.caseInsensitiveCompare(asset.token.symbol) == .orderedSame
+        }) {
+          self.userVisibleAssets[index].history = history.sorted(by: { $0.date < $1.date })
+        }
+      }
+    }
+    group.notify(queue: .main, execute: completion)
+  }
+  
+  func update() {
+    isLoadingBalances = true
     rpcController.chainId { [self] chainId in
       // Get user assets for the selected chain
       walletService.userAssets(chainId) { [self] tokens in
         userVisibleAssets = tokens.map {
-          .init(token: $0, balance: "", price: "")
+          .init(token: $0, decimalBalance: 0, price: "", history: [])
         }
-        // Fill prices for each asset
-        assetRatioController.price(
-          tokens.map { $0.symbol.lowercased() },
-          toAssets: ["usd"], // TODO: Switch to users preferred currency
-          timeframe: timeframe
-        ) { success, assetPrices in
-          guard success else { return }
-          for assetPrice in assetPrices {
-            if let index = userVisibleAssets.firstIndex(where: {
-              $0.token.symbol.caseInsensitiveCompare(assetPrice.fromAsset) == .orderedSame
-            }) {
-              userVisibleAssets[index].price = assetPrice.price
-            }
-          }
-          // Get price history for each asset for consolidated portfolio history
-          struct AssetCandle {
-            var token: BraveWallet.ERCToken
-            var price: String
-          }
-          var assetHistoricalBalances: [Date: [AssetCandle]] = [:]
-          let group = DispatchGroup()
-          for asset in userVisibleAssets {
-            group.enter()
-            assetRatioController.priceHistory(asset.token.symbol, timeframe: timeframe) { success, history in
-              defer { group.leave() }
-              guard success else { return }
-              for candle in history {
-                assetHistoricalBalances[candle.date, default: []].append(.init(token: asset.token, price: candle.price))
-              }
-            }
-          }
-          group.notify(queue: .main) {
-            // Consolidate all balances per day into Fiat…
-          }
-        }
-        // Fill balances for erc20 tokens
+        let group = DispatchGroup()
+        group.enter()
         keyringController.defaultKeyringInfo { keyring in
-          for account in keyring.accountInfos {
-            for token in tokens where token.isErc20 {
-              rpcController.erc20TokenBalance(token.contractAddress, address: account.address) { success, balance in
-                guard success else { return }
-                if let index = userVisibleAssets.firstIndex(where: {
-                  $0.token.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-                }) {
-                  userVisibleAssets[index].balance = balance // TODO: Convert from Wei to Fiat
-                }
-              }
-            }
+          fetchBalances(accounts: keyring.accountInfos) {
+            group.leave()
           }
+        }
+        group.enter()
+        fetchPricesAndHistory {
+          group.leave()
+        }
+        group.notify(queue: .main) {
+          // Compute balance based on current prices
+          let currentBalance = userVisibleAssets
+            .compactMap {
+              if let price = Double($0.price) {
+                return $0.decimalBalance * price
+              }
+              return nil
+            }
+            .reduce(0.0, +)
+          balance = numberFormatter.string(from: NSNumber(value: currentBalance)) ?? "–"
+          // Compute historical balances based on historical prices and current balances
+          let assets = userVisibleAssets.filter { !$0.history.isEmpty } // [[AssetTimePrice]]
+          let minCount = assets.map(\.history.count).min() ?? 0 // Shortest array count
+          historicalBalances = (0..<minCount).map { index in
+            let value = assets.reduce(0.0, {
+              $0 + ((Double($1.history[index].price) ?? 0.0) * $1.decimalBalance)
+            })
+            return .init(
+              date: assets.map { $0.history[index].date }.max() ?? .init(),
+              price: value,
+              formattedPrice: numberFormatter.string(from: NSNumber(value: value)) ?? "0.00"
+            )
+          }
+          isLoadingBalances = false
         }
       }
     }
@@ -162,7 +234,9 @@ extension PortfolioStore: BraveWalletKeyringControllerObserver {
   public func locked() {
   }
   public func unlocked() {
-    update()
+    DispatchQueue.main.async { [self] in
+      update()
+    }
   }
   public func autoLockMinutesChanged() {
   }
