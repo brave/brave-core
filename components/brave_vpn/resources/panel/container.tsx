@@ -1,12 +1,19 @@
 import * as React from 'react'
 
 import MainPanel from './components/main-panel'
+import SellPanel from './components/sell-panel'
+import { ViewType } from './state/component_types'
+import { useSelector } from './state/hooks'
 
 function Main () {
-  // TODO(nullhook): Show the main ui after the initial data loads and
-  // if the purchased state is PURCHSED
+  const currentView = useSelector(state => state.currentView)
+
+  if (currentView === ViewType.Main) {
+    return (<MainPanel />)
+  }
+
   return (
-    <MainPanel />
+    <SellPanel />
   )
 }
 

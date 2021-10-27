@@ -7,6 +7,7 @@ import { createReducer } from 'redux-act'
 
 import { ConnectionState, Region, ProductUrls } from '../api/panel_browser_api'
 import * as Actions from './actions'
+import { ViewType } from './component_types'
 
 type RootState = {
   hasError: boolean
@@ -15,6 +16,7 @@ type RootState = {
   regions?: Array<Region>
   currentRegion?: Region
   productUrls?: ProductUrls
+  currentView: ViewType
 }
 
 const defaultState: RootState = {
@@ -22,7 +24,8 @@ const defaultState: RootState = {
   isSelectingRegion: false,
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: undefined,
-  currentRegion: undefined
+  currentRegion: undefined,
+  currentView: ViewType.Sell
 }
 
 const reducer = createReducer<RootState>({}, defaultState)
@@ -81,13 +84,14 @@ reducer.on(Actions.retryConnect, (state): RootState => {
 
 // TODO(nullhook): The handler doesnt throw an error unless if explicitly
 // defined. Update the type internally so it can be infered.
-reducer.on(Actions.initialized, (state, payload): RootState => {
+reducer.on(Actions.initUIMain, (state, payload): RootState => {
   return {
     ...state,
     currentRegion: payload.currentRegion,
     regions: payload.regions,
     connectionStatus: payload.connectionStatus,
-    productUrls: payload.productUrls
+    productUrls: payload.productUrls,
+    currentView: ViewType.Main
   }
 })
 

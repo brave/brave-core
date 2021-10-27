@@ -5,7 +5,7 @@
 
 import { MiddlewareAPI, Dispatch, AnyAction } from 'redux'
 import AsyncActionHandler from '../../../../common/AsyncActionHandler'
-import getPanelBrowserAPI, { ConnectionState } from '../api/panel_browser_api'
+import getPanelBrowserAPI, { ConnectionState, PurchasedState } from '../api/panel_browser_api'
 import * as Actions from './actions'
 import { RootState } from './store'
 
@@ -46,7 +46,7 @@ handler.on(Actions.connectionStateChanged.getType(), async (store) => {
   }
 })
 
-handler.on(Actions.initialize.getType(), async (store) => {
+handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
   const [{ state }, { currentRegion }, { regions }, { urls }] = await Promise.all([
     getPanelBrowserAPI().serviceHandler.getConnectionState(),
     getPanelBrowserAPI().serviceHandler.getSelectedRegion(),
@@ -54,13 +54,21 @@ handler.on(Actions.initialize.getType(), async (store) => {
     getPanelBrowserAPI().serviceHandler.getProductUrls()
   ])
 
-  store.dispatch(Actions.initialized({
+  store.dispatch(Actions.initUIMain({
     currentRegion,
     regions,
     productUrls: urls,
     connectionStatus: ((state === ConnectionState.CONNECT_FAILED)
     ? ConnectionState.DISCONNECTED : state) /* Treat connection failure on startup as disconnected */
   }))
+})
+
+handler.on(Actions.initialize.getType(), async (store) => {
+  const { state } = await getPanelBrowserAPI().serviceHandler.getPurchasedState()
+
+  if (state === PurchasedState.PURCHASED) {
+    store.dispatch(Actions.purchaseConfirmed())
+  }
 })
 
 export default handler.middleware
