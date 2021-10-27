@@ -157,9 +157,6 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_CHECK_FOR_UPDATES" desc="The button label to check for updates and apply (download and install) if found">
     Check for updates
   </message>
-  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL" desc="The message about current channel.">
-    Currently on <ph name="CHANNEL_NAME">$1<ex>stable</ex></ph>
-  </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_INFO" desc="The message about current channel.">
     Currently on <ph name="CHANNEL_NAME">$1<ex>stable</ex></ph> channel
   </message>
@@ -3766,9 +3763,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PEOPLE_CONFIGURE_PIN_CONFIRM_PIN_TITLE" desc="Message shown below the title that tells the user to confirm their initial PIN entry.">
     Confirm your PIN
-  </message>
-  <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_TITLE" desc="Title of the password prompt dialog popup.">
-    Confirm your password
   </message>
 
   <!-- Setup fingerprint dialog (OS settings) -->
