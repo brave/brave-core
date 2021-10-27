@@ -21,8 +21,10 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
-class SkusSdkImpl;
-class SkusSdkFetcher;
+class SkusSdkImpl {
+};
+class SkusSdkFetcher {
+};
 
 class RefreshOrderCallbackState {
  public:
@@ -54,9 +56,9 @@ using PrepareCredentialsPresentationCallback =
              RewardsResult result,
              rust::cxxbridge1::Str presentation);
 
-void shim_purge();
-void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value);
-::rust::String shim_get(rust::cxxbridge1::Str key);
+void shim_purge(SkusSdkImpl& ctx);
+void shim_set(SkusSdkImpl& ctx, rust::cxxbridge1::Str key, rust::cxxbridge1::Str value);
+::rust::String shim_get(SkusSdkImpl& ctx, rust::cxxbridge1::Str key);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
@@ -64,12 +66,13 @@ void shim_scheduleWakeup(
         void(rust::cxxbridge1::Box<brave_rewards::WakeupContext>)> done,
     rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx);
 
-void shim_executeRequest(
+std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
+    const brave_rewards::SkusSdkImpl& ctx,
     const brave_rewards::HttpRequest& req,
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
              brave_rewards::HttpResponse)> done,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx);
+    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> rt_ctx);
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_BRAVE_REWARDS_CXX_SRC_SHIM_H_
