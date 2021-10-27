@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use async_trait::async_trait;
 use brave_rewards::{errors, http::http, HTTPClient};
 use futures::channel::oneshot;
@@ -26,7 +28,13 @@ impl NativeClient {
             client: self.clone(),
         });
 
-        ffi::shim_executeRequest(
+        let fetcher = ffi::shim_executeRequest(
+            self.ctx
+                .0
+                .try_borrow()
+                .or(Err(errors::InternalError::BorrowFailed))?
+                .deref()
+                .deref(),
             &req,
             |context, resp| {
                 let resp = match resp.result {
@@ -60,7 +68,9 @@ impl NativeClient {
             context,
         );
 
-        rx.await.unwrap()
+        let ret = rx.await.unwrap();
+        drop(fetcher);
+        ret
     }
 }
 
