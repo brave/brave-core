@@ -84,7 +84,6 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   meta.id = EthTxStateManager::GenerateMetaID();
   meta.status = mojom::TransactionStatus::Submitted;
   meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
-  meta.last_gas_price = 0x1234;
   meta.created_time = base::Time::Now();
   meta.submitted_time = base::Time::Now();
   meta.confirmed_time = base::Time::Now();
@@ -111,7 +110,6 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
   EXPECT_EQ(meta_from_value->id, meta.id);
   EXPECT_EQ(meta_from_value->status, meta.status);
   EXPECT_EQ(meta_from_value->from, meta.from);
-  EXPECT_EQ(meta_from_value->last_gas_price, meta.last_gas_price);
   EXPECT_EQ(meta_from_value->created_time, meta.created_time);
   EXPECT_EQ(meta_from_value->submitted_time, meta.submitted_time);
   EXPECT_EQ(meta_from_value->confirmed_time, meta.confirmed_time);
@@ -445,7 +443,8 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti->from_address, meta.from.ToHex());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash);
   EXPECT_EQ(ti->tx_status, meta.status);
-  EXPECT_EQ(ti->tx_data->base_data->nonce, Uint256ValueToHex(meta.tx->nonce()));
+  EXPECT_EQ(ti->tx_data->base_data->nonce,
+            Uint256ValueToHex(meta.tx->nonce().value()));
   EXPECT_EQ(ti->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta.tx->gas_price()));
   EXPECT_EQ(ti->tx_data->base_data->gas_limit,
@@ -485,7 +484,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti1->tx_hash, meta1.tx_hash);
   EXPECT_EQ(ti1->tx_status, meta1.status);
   EXPECT_EQ(ti1->tx_data->base_data->nonce,
-            Uint256ValueToHex(meta1.tx->nonce()));
+            Uint256ValueToHex(meta1.tx->nonce().value()));
   EXPECT_EQ(ti1->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta1.tx->gas_price()));
   EXPECT_EQ(ti1->tx_data->base_data->gas_limit,
@@ -524,7 +523,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti2->tx_hash, meta2.tx_hash);
   EXPECT_EQ(ti2->tx_status, meta2.status);
   EXPECT_EQ(ti2->tx_data->base_data->nonce,
-            Uint256ValueToHex(meta2.tx->nonce()));
+            Uint256ValueToHex(meta2.tx->nonce().value()));
   EXPECT_EQ(ti2->tx_data->base_data->gas_price,
             Uint256ValueToHex(meta2.tx->gas_price()));
   EXPECT_EQ(ti2->tx_data->base_data->gas_limit,

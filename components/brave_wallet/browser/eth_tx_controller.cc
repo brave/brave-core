@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -343,7 +344,7 @@ void EthTxController::OnGetGasOracle(
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(
-            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_ESTIMATION_FAILED));
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED));
     return;
   }
   tx->set_gas_estimation(estimation.value());
@@ -372,14 +373,14 @@ void EthTxController::ApproveHardwareTransaction(
     std::move(callback).Run(false, "");
     return;
   }
-  if (!meta->last_gas_price) {
+  if (!meta->tx->nonce()) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
         from, base::BindOnce(&EthTxController::OnGetNextNonceForHardware,
                              weak_factory_.GetWeakPtr(), std::move(meta),
                              std::move(callback)));
   } else {
-    uint256_t nonce = meta->tx->nonce();
+    uint256_t nonce = meta->tx->nonce().value();
     OnGetNextNonceForHardware(std::move(meta), std::move(callback), true,
                               nonce);
   }
@@ -456,14 +457,14 @@ void EthTxController::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
-  if (!meta->last_gas_price) {
+  if (!meta->tx->nonce()) {
     auto from = EthAddress(meta->from);
     nonce_tracker_->GetNextNonce(
         from,
         base::BindOnce(&EthTxController::OnGetNextNonce,
                        weak_factory_.GetWeakPtr(), std::move(meta), chain_id));
   } else {
-    uint256_t nonce = meta->tx->nonce();
+    uint256_t nonce = meta->tx->nonce().value();
     OnGetNextNonce(std::move(meta), chain_id, true, nonce);
   }
 
@@ -832,6 +833,171 @@ void EthTxController::KeyringCreated() {
 
 void EthTxController::KeyringRestored() {
   UpdatePendingTransactions();
+}
+
+void EthTxController::SpeedupOrCancelTransaction(
+    const std::string& tx_meta_id,
+    bool cancel,
+    SpeedupOrCancelTransactionCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta || meta->status != mojom::TransactionStatus::Submitted) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  if (meta->tx->type() == 2) {  // EIP1559
+    auto tx = std::make_unique<Eip1559Transaction>(
+        *reinterpret_cast<Eip1559Transaction*>(meta->tx.get()));
+    if (cancel) {
+      tx->set_to(meta->from);
+      tx->set_value(0);
+      tx->set_data(std::vector<uint8_t>());
+    }
+
+    asset_ratio_controller_->GetGasOracle(base::BindOnce(
+        &EthTxController::ContinueSpeedupOrCancel1559Transaction,
+        weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
+        Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
+        std::move(callback)));
+  } else {
+    auto tx = std::make_unique<EthTransaction>(*meta->tx);
+    if (cancel) {
+      tx->set_to(meta->from);
+      tx->set_value(0);
+      tx->set_data(std::vector<uint8_t>());
+    }
+
+    mojom::TransactionType tx_type;
+    if (!GetTransactionInfoFromData(ToHex(tx->data()), &tx_type, nullptr,
+                                    nullptr)) {
+      std::move(callback).Run(
+          false, "",
+          l10n_util::GetStringUTF8(
+              IDS_WALLET_ETH_SEND_TRANSACTION_GET_TX_TYPE_FAILED));
+      return;
+    }
+
+    if (tx_type == mojom::TransactionType::ETHSend) {
+      ContinueSpeedupOrCancelTransaction(
+          meta->from.ToChecksumAddress(),
+          Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
+          std::move(callback), true,
+          Uint256ValueToHex(kDefaultSendEthGasPrice));
+    } else {
+      rpc_controller_->GetGasPrice(base::BindOnce(
+          &EthTxController::ContinueSpeedupOrCancelTransaction,
+          weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
+          Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
+          std::move(callback)));
+    }
+  }
+}
+
+void EthTxController::ContinueSpeedupOrCancelTransaction(
+    const std::string& from,
+    const std::string& gas_limit,
+    std::unique_ptr<EthTransaction> tx,
+    SpeedupOrCancelTransactionCallback callback,
+    bool success,
+    const std::string& result) {
+  uint256_t latest_estimate_gas_price;
+  if (!success || !HexValueToUint256(result, &latest_estimate_gas_price)) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED));
+    return;
+  }
+
+  // Update gas price to max(latest_estimate, original_gas_price + 10%).
+  // Original_gas_price * 11 / 10 is done using uint64_t because uint256_t does
+  // not support division. It's fairly safe to do so because it's unlikely the
+  // gas value will be larger than that, gas value is usually around 10^12 wei.
+  if (tx->gas_price() > std::numeric_limits<uint64_t>::max()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_PRICE_FAILED));
+    return;
+  }
+
+  uint256_t increased_gas_price =
+      static_cast<uint64_t>(tx->gas_price()) * 11ULL / 10ULL;
+  tx->set_gas_price(std::max(latest_estimate_gas_price, increased_gas_price));
+
+  ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
+                                   true, gas_limit);
+}
+
+void EthTxController::ContinueSpeedupOrCancel1559Transaction(
+    const std::string& from,
+    const std::string& gas_limit,
+    std::unique_ptr<Eip1559Transaction> tx,
+    SpeedupOrCancelTransactionCallback callback,
+    mojom::GasEstimation1559Ptr gas_estimation) {
+  auto estimation =
+      Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
+          std::move(gas_estimation));
+  if (!estimation) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED));
+    return;
+  }
+
+  // Update gas fees to max(latest_estimate, original_gas_fee + 10%).
+  // Original_gas_fee * 11 / 10 is done using uint64_t because uint256_t does
+  // not support division. It's fairly safe to do so because it's unlikely the
+  // gas fees will be larger than that, they are usually around 10^12 wei.
+  if (tx->max_priority_fee_per_gas() > std::numeric_limits<uint64_t>::max() ||
+      tx->max_fee_per_gas() > std::numeric_limits<uint64_t>::max()) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(
+            IDS_WALLET_ETH_SEND_TRANSACTION_GET_GAS_FEES_FAILED));
+    return;
+  }
+
+  uint256_t increased_max_priority_fee_per_gas =
+      static_cast<uint64_t>(tx->max_priority_fee_per_gas()) * 11ULL / 10ULL;
+  uint256_t increased_max_fee_per_gas =
+      static_cast<uint64_t>(tx->max_fee_per_gas()) * 11ULL / 10ULL;
+  tx->set_max_fee_per_gas(
+      std::max(estimation->avg_max_fee_per_gas, increased_max_fee_per_gas));
+  tx->set_max_priority_fee_per_gas(
+      std::max(estimation->avg_max_priority_fee_per_gas,
+               increased_max_priority_fee_per_gas));
+
+  ContinueAddUnapprovedTransaction(from, std::move(tx), std::move(callback),
+                                   true, gas_limit);
+}
+
+void EthTxController::RetryTransaction(const std::string& tx_meta_id,
+                                       RetryTransactionCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta || meta->status != mojom::TransactionStatus::Error) {
+    std::move(callback).Run(
+        false, "",
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  std::unique_ptr<EthTransaction> tx;
+  if (meta->tx->type() == 2) {  // EIP1559
+    tx = std::make_unique<Eip1559Transaction>(
+        *reinterpret_cast<Eip1559Transaction*>(meta->tx.get()));
+  } else {
+    tx = std::make_unique<EthTransaction>(*meta->tx);
+  }
+
+  ContinueAddUnapprovedTransaction(meta->from.ToChecksumAddress(),
+                                   std::move(tx), std::move(callback), true,
+                                   Uint256ValueToHex(meta->tx->gas_limit()));
 }
 
 }  // namespace brave_wallet

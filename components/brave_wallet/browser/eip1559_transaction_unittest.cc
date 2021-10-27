@@ -5,10 +5,10 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/hd_key.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -175,7 +175,7 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
                          std::vector<uint8_t>{1}),
       "0x15BE", "0x7B", "0x1C8", GetMojomGasEstimation()));
   ASSERT_TRUE(tx);
-  EXPECT_EQ(tx->nonce(), uint256_t(1));
+  EXPECT_EQ(tx->nonce().value(), uint256_t(1));
   EXPECT_EQ(tx->gas_price(), uint256_t(1000));
   EXPECT_EQ(tx->gas_limit(), uint256_t(10000000));
   EXPECT_EQ(tx->to(),
@@ -198,13 +198,24 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
             uint256_t(49) * uint256_t(1e9));
   EXPECT_EQ(tx->gas_estimation().base_fee_per_gas, uint256_t(46574033786ULL));
 
-  // Make sure nonce, chain id, and the max priority fee fields must all have
-  // fields when strict is true
-  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+  // Empty nonce should succeed.
+  tx = Eip1559Transaction::FromTxData(mojom::TxData1559::New(
       mojom::TxData::New("", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
                          std::vector<uint8_t>{1}),
+      "0x15BE", "0x7B", "0x1C8", nullptr));
+  ASSERT_TRUE(tx);
+  EXPECT_FALSE(tx->nonce());
+
+  // Invalid nonce should fail.
+  EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+      mojom::TxData::New("123", "0x3E8", "0x989680",
+                         "0x3535353535353535353535353535353535353535", "0x2A",
+                         std::vector<uint8_t>{1}),
       "0x15BE", "0x7B", "0x1C8", nullptr)));
+
+  // Make sure chain id, and the max priority fee fields must all have
+  // fields when strict is true
   EXPECT_FALSE(Eip1559Transaction::FromTxData(mojom::TxData1559::New(
       mojom::TxData::New("0x1", "0x3E8", "0x989680",
                          "0x3535353535353535353535353535353535353535", "0x2A",
@@ -230,8 +241,9 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
           "", "0x7B", "0x1C8", nullptr),
       false);
   ASSERT_TRUE(tx);
+  // Empty nonce will be absl::nullopt
+  EXPECT_FALSE(tx->nonce());
   // Unspecified value defaults to 0
-  EXPECT_EQ(tx->nonce(), uint256_t(0));
   EXPECT_EQ(tx->gas_limit(), uint256_t(0));
   EXPECT_EQ(tx->value(), uint256_t(0));
 
@@ -253,8 +265,9 @@ TEST(Eip1559TransactionUnitTest, FromTxData) {
           "0x15BE", "", "", nullptr),
       false);
   ASSERT_TRUE(tx);
+  // Empty nonce will be absl::nullopt
+  EXPECT_FALSE(tx->nonce());
   // Unspecified value defaults to 0
-  EXPECT_EQ(tx->nonce(), uint256_t(0));
   EXPECT_EQ(tx->gas_limit(), uint256_t(0));
   EXPECT_EQ(tx->value(), uint256_t(0));
   EXPECT_EQ(tx->max_priority_fee_per_gas(), uint256_t(0));

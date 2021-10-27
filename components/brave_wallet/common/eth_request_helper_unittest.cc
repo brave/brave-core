@@ -36,7 +36,8 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
           "gas": "0x146",
           "gasPrice": "0x123",
           "value": "0x25F38E9E0000000",
-          "data": "0x010203"
+          "data": "0x010203",
+          "nonce": "0x01"
         }]
       })");
   std::string from;
@@ -48,6 +49,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSendTransactionParams) {
   EXPECT_EQ(tx_data->gas_price, "0x123");
   EXPECT_EQ(tx_data->value, "0x25F38E9E0000000");
   EXPECT_EQ(tx_data->data, (std::vector<uint8_t>{1, 2, 3}));
+  EXPECT_TRUE(tx_data->nonce.empty());  // Should be ignored.
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
@@ -59,6 +61,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
           "gas": "0x146",
           "value": "0x25F38E9E0000000",
           "data": "0x010203",
+          "nonce": "0x01",
           "maxPriorityFeePerGas": "0x1",
           "maxFeePerGas": "0x2"
         }]
@@ -75,6 +78,7 @@ TEST(EthResponseHelperUnitTest, ParseEthSendTransaction1559Params) {
   EXPECT_EQ(tx_data->base_data->data, (std::vector<uint8_t>{1, 2, 3}));
   EXPECT_EQ(tx_data->max_priority_fee_per_gas, "0x1");
   EXPECT_EQ(tx_data->max_fee_per_gas, "0x2");
+  EXPECT_TRUE(tx_data->base_data->nonce.empty());  // Should be ignored.
 
   json =
       R"({

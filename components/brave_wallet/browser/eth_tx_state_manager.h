@@ -40,7 +40,6 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
     std::string id;
     mojom::TransactionStatus status = mojom::TransactionStatus::Unapproved;
     EthAddress from;
-    uint256_t last_gas_price = 0;
     base::Time created_time;
     base::Time submitted_time;
     base::Time confirmed_time;

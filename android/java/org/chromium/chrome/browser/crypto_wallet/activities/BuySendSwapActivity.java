@@ -358,7 +358,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         updateSwapControls(response, calculatePerSellAsset, null);
         if (sendTx) {
-            TxData data = Utils.getTxData("0x1", Utils.toWeiHex(response.gasPrice),
+            TxData data = Utils.getTxData("", Utils.toWeiHex(response.gasPrice),
                     Utils.toWeiHex(response.estimatedGas), response.to,
                     Utils.toWeiHex(response.value), Utils.hexStrToNumberArray(response.data));
             addUnapprovedTransaction(data, from);
@@ -676,8 +676,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                     return;
                 }
                 if (mCurrentErcToken == null || mCurrentErcToken.contractAddress.isEmpty()) {
-                    TxData data = Utils.getTxData(
-                            "0x1", "", "", to, Utils.toHexWei(value, 18), new byte[0]);
+                    TxData data =
+                            Utils.getTxData("", "", "", to, Utils.toHexWei(value, 18), new byte[0]);
                     addUnapprovedTransaction(data, from);
                 } else {
                     addUnapprovedTransactionERC20(to,
@@ -775,7 +775,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                         return;
                     }
                     TxData txData = Utils.getTxData(
-                            "0x1", "", "", mCurrentErcToken.contractAddress, "0x0", data);
+                            "", "", "", mCurrentErcToken.contractAddress, "0x0", data);
                     String from = mCustomAccountAdapter.getTitleAtPosition(
                             mAccountSpinner.getSelectedItemPosition());
                     addUnapprovedTransaction(txData, from);
@@ -806,7 +806,7 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             if (!success) {
                 return;
             }
-            TxData txData = Utils.getTxData("0x1", "", "", contractAddress, "0x0", data);
+            TxData txData = Utils.getTxData("", "", "", contractAddress, "0x0", data);
             addUnapprovedTransaction(txData, from);
         });
     }

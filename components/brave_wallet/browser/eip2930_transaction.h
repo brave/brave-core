@@ -69,7 +69,7 @@ class Eip2930Transaction : public EthTransaction {
   uint256_t GetDataFee() const override;
 
  protected:
-  Eip2930Transaction(uint256_t nonce,
+  Eip2930Transaction(absl::optional<uint256_t> nonce,
                      uint256_t gas_price,
                      uint256_t gas_limit,
                      const EthAddress& to,

@@ -89,7 +89,7 @@ Eip1559Transaction::Eip1559Transaction()
   type_ = 2;
 }
 
-Eip1559Transaction::Eip1559Transaction(uint256_t nonce,
+Eip1559Transaction::Eip1559Transaction(absl::optional<uint256_t> nonce,
                                        uint256_t gas_price,
                                        uint256_t gas_limit,
                                        const EthAddress& to,
@@ -247,6 +247,7 @@ absl::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
 
 std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
                                                           bool hash) const {
+  DCHECK(nonce_);
   std::vector<uint8_t> result;
   result.push_back(type_);
 
@@ -254,7 +255,7 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
   // deprecated
   base::ListValue list;
   list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlobValue(max_fee_per_gas_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
@@ -270,12 +271,13 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
 
 std::string Eip1559Transaction::GetSignedTransaction() const {
   DCHECK(IsSigned());
+  DCHECK(nonce_);
 
   // TODO(darkdh): Migrate to std::vector<base::Value>, base::ListValue is
   // deprecated
   base::ListValue list;
   list.Append(RLPUint256ToBlobValue(chain_id_));
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(max_priority_fee_per_gas_));
   list.Append(RLPUint256ToBlobValue(max_fee_per_gas_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
