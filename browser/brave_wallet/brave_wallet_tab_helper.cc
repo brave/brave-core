@@ -34,7 +34,7 @@ BraveWalletTabHelper::~BraveWalletTabHelper() {
 }
 
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
-void BraveWalletTabHelper::ClosePanelOnDeactivate(bool close) {
+void BraveWalletTabHelper::SetCloseOnDeactivate(bool close) {
   if (wallet_bubble_manager_delegate_)
     wallet_bubble_manager_delegate_->CloseOnDeactivate(close);
   close_on_deactivate_for_testing_ = close;
@@ -123,6 +123,10 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
 
 content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
   return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
+}
+
+const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
+  return wallet_bubble_manager_delegate_->GetPopupIdsForTesting();
 }
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {

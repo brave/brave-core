@@ -43,7 +43,6 @@ import { toWeiHex } from '../../utils/format-balances'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
 import getAPIProxy from './bridge'
 import {
-  findHardwareAccountInfo,
   refreshKeyringInfo,
   refreshNetworkInfo,
   refreshTokenPriceHistory,
@@ -53,9 +52,6 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
-
-import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
-import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 
 const handler = new AsyncActionHandler()
 
@@ -396,20 +392,6 @@ handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, p
 
 handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
   const apiProxy = getAPIProxy()
-  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
-  if (hardwareAccount && hardwareAccount.hardware) {
-    const { success, message } = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
-    if (success) {
-      let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-      if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
-        const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
-        await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
-        await refreshWalletInfo(store)
-      }
-    }
-    return
-  }
-
   await apiProxy.ethTxController.approveTransaction(txInfo.id)
   await refreshWalletInfo(store)
 })
