@@ -121,6 +121,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/help/BraveHelpAndFeedbackLauncher.java",
   "../../brave/android/java/org/chromium/chrome/browser/homepage/BraveHomepageManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettings.java",
+  "../../brave/android/java/org/chromium/chrome/browser/infobar/BraveInfoBarIdentifier.java",
   "../../brave/android/java/org/chromium/chrome/browser/informers/BraveAndroidSyncDisabledInformer.java",
   "../../brave/android/java/org/chromium/chrome/browser/language/settings/BraveLanguageSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/local_database/BraveStatsTable.java",
