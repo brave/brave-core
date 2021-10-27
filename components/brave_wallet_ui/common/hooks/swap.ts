@@ -331,7 +331,7 @@ export default function useSwap (
    */
   const onSwapParamsChangeDebounced = React.useCallback(
     // @ts-ignore
-    debounce(onSwapParamsChange, 400),
+    debounce(onSwapParamsChange, 1000),
     [onSwapParamsChange]
   )
 
