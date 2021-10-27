@@ -7,5 +7,6 @@ module skus.mojom;
 
 interface SkusSdk {
   RefreshOrder(string order_id) => (string response);
-  FetchOrderCredentials(string order_id);
+  FetchOrderCredentials(string order_id) => (string response);
+  PrepareCredentialsPresentation(string domain, string path) => (string response);
 };

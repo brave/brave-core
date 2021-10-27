@@ -20,6 +20,8 @@ static_library("browser") {
     "brave-rewards-cxx/src/wrapper.cc",
     "brave-rewards-cxx/src/wrapper.h",
     "pref_names.h",
+    "skus_sdk_fetcher.cc",
+    "skus_sdk_fetcher.h",
     "skus_sdk_impl.cc",
     "skus_sdk_impl.h",
     "skus_utils.cc",
