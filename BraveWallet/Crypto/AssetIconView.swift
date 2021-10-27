@@ -19,31 +19,60 @@ struct AssetIconView: View {
   var token: BraveWallet.ERCToken
   @ScaledMetric var length: CGFloat = 40
   
-  private var image: Image {
+  private var fallbackMonogram: some View {
+    Blockie(address: token.contractAddress)
+      .overlay(
+        Text(token.symbol.first?.uppercased() ?? "")
+          .font(.system(size: length / 2, weight: .bold, design: .rounded))
+          .foregroundColor(.white)
+          .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
+      )
+  }
+  
+  private var image: Image? {
     if token.isETH {
       // Use bundled ETH icon
       return Image("eth-icon")
     }
-    let fallbackImage = Image(uiImage: UIImage()) // TODO: Obtain a fallback image
     guard let baseURL = BraveWallet.TokenRegistryUtils.tokenLogoBaseURL,
           case let imageURL = baseURL.appendingPathComponent(token.logo),
           let image = UIImage(contentsOfFile: imageURL.path) else {
-            return fallbackImage
+            return nil
           }
     return Image(uiImage: image)
   }
   
   var body: some View {
-    image
-      .resizable()
-      .aspectRatio(contentMode: .fit)
-      .frame(width: length, height: length)
+    Group {
+      if let image = image {
+        image
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+      } else {
+        fallbackMonogram
+      }
+    }
+    .frame(width: length, height: length)
   }
 }
 
 struct AssetIconView_Previews: PreviewProvider {
   static var previews: some View {
     AssetIconView(token: .eth)
+      .previewLayout(.sizeThatFits)
+      .padding()
+      .previewSizeCategories()
+    AssetIconView(token: .init(
+      contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
+      name: "XY Oracle",
+      logo: "",
+      isErc20: true,
+      isErc721: false,
+      symbol: "XYO",
+      decimals: 18,
+      visible: false,
+      tokenId: ""
+    ))
       .previewLayout(.sizeThatFits)
       .padding()
       .previewSizeCategories()

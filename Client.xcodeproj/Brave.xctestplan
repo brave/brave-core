@@ -81,6 +81,13 @@
         "identifier" : "27756E9325AF6F5F00C129AF",
         "name" : "SPMLibrariesTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "277309E42721DF6D007643F6",
+        "name" : "BraveWalletTests"
+      }
     }
   ],
   "version" : 1

@@ -344,12 +344,18 @@
 		276A790A244660B100AC9446 /* SpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A7909244660B100AC9446 /* SpringButton.swift */; };
 		276A790C244660B500AC9446 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */; };
 		276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A790F24476FD200AC9446 /* StatsSectionProvider.swift */; };
+		276AADBA272850850034A0C2 /* Shimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AADB9272850850034A0C2 /* Shimmer.swift */; };
 		276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276E7A3B22F21DBE00939424 /* RewardsReporting.swift */; };
 		277046C22684CD2A001CB097 /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = 277046C12684CD2A001CB097 /* PanModal */; };
 		277190EA2702512900DC81D5 /* TestStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277190E92702512900DC81D5 /* TestStores.swift */; };
 		277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223712469B4FB0059A7EB /* FaviconFetcher.swift */; };
 		277223762469E7290059A7EB /* LargeFaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277223752469E7290059A7EB /* LargeFaviconView.swift */; };
 		27730993271E0807007643F6 /* BrowserViewController+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27730992271E0807007643F6 /* BrowserViewController+Wallet.swift */; };
+		277309DE2721DDFB007643F6 /* WeiFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277309DD2721DDFB007643F6 /* WeiFormatter.swift */; };
+		277309E02721DE2E007643F6 /* BigNumber in Frameworks */ = {isa = PBXBuildFile; productRef = 277309DF2721DE2E007643F6 /* BigNumber */; };
+		277309E82721DF6D007643F6 /* WeiFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277309E72721DF6D007643F6 /* WeiFormatterTests.swift */; };
+		277309E92721DF6D007643F6 /* BraveWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 271F683526EBD0E400AA2A50 /* BraveWallet.framework */; platformFilter = ios; };
+		277309F32721DF79007643F6 /* SPMLibraries.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; };
 		27733E5826977EC40086799A /* PasscodeMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E5726977EC40086799A /* PasscodeMigrationView.swift */; };
 		27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */; };
 		277568D425ACF91600C129AF /* SPMLibraries.h in Headers */ = {isa = PBXBuildFile; fileRef = 277568D225ACF91600C129AF /* SPMLibraries.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -478,6 +484,7 @@
 		27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */ = {isa = PBXBuildFile; fileRef = 27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */; };
 		27E0652824CB6AE300134946 /* BraveNewsErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */; };
 		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
+		27EA1B0E2729E6C8003C5CF9 /* AddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */; };
 		27EB6020244607DA00265C1B /* NewTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EB601F244607DA00265C1B /* NewTabPageViewController.swift */; };
 		27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */; };
 		27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
@@ -1213,6 +1220,13 @@
 			remoteGlobalIDString = 278C468523F1E6270083347F;
 			remoteInfo = BraveUI;
 		};
+		277309EA2721DF6D007643F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 271F683426EBD0E400AA2A50;
+			remoteInfo = BraveWallet;
+		};
 		277568D525ACF91600C129AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -1901,12 +1915,16 @@
 		276A7909244660B100AC9446 /* SpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringButton.swift; sourceTree = "<group>"; };
 		276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
 		276A790F24476FD200AC9446 /* StatsSectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSectionProvider.swift; sourceTree = "<group>"; };
+		276AADB9272850850034A0C2 /* Shimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shimmer.swift; sourceTree = "<group>"; };
 		276E7A2E22F21A7700939424 /* RewardsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = RewardsReporting.js; sourceTree = "<group>"; };
 		276E7A3B22F21DBE00939424 /* RewardsReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsReporting.swift; sourceTree = "<group>"; };
 		277190E92702512900DC81D5 /* TestStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStores.swift; sourceTree = "<group>"; };
 		277223712469B4FB0059A7EB /* FaviconFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconFetcher.swift; sourceTree = "<group>"; };
 		277223752469E7290059A7EB /* LargeFaviconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeFaviconView.swift; sourceTree = "<group>"; };
 		27730992271E0807007643F6 /* BrowserViewController+Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserViewController+Wallet.swift"; sourceTree = "<group>"; };
+		277309DD2721DDFB007643F6 /* WeiFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeiFormatter.swift; sourceTree = "<group>"; };
+		277309E52721DF6D007643F6 /* BraveWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraveWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		277309E72721DF6D007643F6 /* WeiFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeiFormatterTests.swift; sourceTree = "<group>"; };
 		27733E5726977EC40086799A /* PasscodeMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeMigrationView.swift; sourceTree = "<group>"; };
 		27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityEmbedInScrollViewViewModifier.swift; sourceTree = "<group>"; };
 		277568D025ACF91500C129AF /* SPMLibraries.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMLibraries.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2121,6 +2139,7 @@
 		27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "brave-today-welcome-graphic.json"; sourceTree = "<group>"; };
 		27E0652724CB6AE300134946 /* BraveNewsErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveNewsErrorView.swift; sourceTree = "<group>"; };
 		27EA04C1249D4336004F5D2E /* FeedCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardContent.swift; sourceTree = "<group>"; };
+		27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTests.swift; sourceTree = "<group>"; };
 		27EB601F244607DA00265C1B /* NewTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageViewController.swift; sourceTree = "<group>"; };
 		27EEEDB52507CE1C00024038 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		27EEEDB72507D51E00024038 /* Release (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Release (AppStore).entitlements"; sourceTree = "<group>"; };
@@ -3035,6 +3054,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		277309E22721DF6D007643F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277309F32721DF79007643F6 /* SPMLibraries.framework in Frameworks */,
+				277309E92721DF6D007643F6 /* BraveWallet.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		277568CD25ACF91500C129AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3055,6 +3083,7 @@
 				277568F925ACF92400C129AF /* SwiftKeychainWrapper in Frameworks */,
 				27F4798C25AF94B0004922E4 /* YubiKit in Frameworks */,
 				2F5B27D72698DBA8002BF5CF /* OrderedCollections in Frameworks */,
+				277309E02721DE2E007643F6 /* BigNumber in Frameworks */,
 				277568F325ACF92400C129AF /* Fuzi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3574,6 +3603,7 @@
 			children = (
 				270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */,
 				27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */,
+				277309DD2721DDFB007643F6 /* WeiFormatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3916,6 +3946,15 @@
 				277223752469E7290059A7EB /* LargeFaviconView.swift */,
 			);
 			path = Favicons;
+			sourceTree = "<group>";
+		};
+		277309E62721DF6D007643F6 /* BraveWalletTests */ = {
+			isa = PBXGroup;
+			children = (
+				277309E72721DF6D007643F6 /* WeiFormatterTests.swift */,
+				27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */,
+			);
+			path = BraveWalletTests;
 			sourceTree = "<group>";
 		};
 		277568D125ACF91600C129AF /* SPMLibraries */ = {
@@ -4329,6 +4368,7 @@
 				271F688826EBD27D00AA2A50 /* HostingTableViewCell.swift */,
 				270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */,
 				2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */,
+				276AADB9272850850034A0C2 /* Shimmer.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -5943,6 +5983,7 @@
 				27F443962135E11200296C58 /* ShareExtension */,
 				278C468723F1E6270083347F /* BraveUI */,
 				271F683626EBD0E400AA2A50 /* BraveWallet */,
+				277309E62721DF6D007643F6 /* BraveWalletTests */,
 				277568D125ACF91600C129AF /* SPMLibraries */,
 				27756E9525AF6F5F00C129AF /* SPMLibrariesTests */,
 				2F6931B5260CFB3700ECEB38 /* BrowserIntents */,
@@ -5980,6 +6021,7 @@
 				27756E9425AF6F5F00C129AF /* SPMLibrariesTests.xctest */,
 				2F6931B4260CFB3700ECEB38 /* BrowserIntents.appex */,
 				271F683526EBD0E400AA2A50 /* BraveWallet.framework */,
+				277309E52721DF6D007643F6 /* BraveWalletTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6410,6 +6452,24 @@
 			productReference = 271F683526EBD0E400AA2A50 /* BraveWallet.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		277309E42721DF6D007643F6 /* BraveWalletTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 277309EC2721DF6D007643F6 /* Build configuration list for PBXNativeTarget "BraveWalletTests" */;
+			buildPhases = (
+				277309E12721DF6D007643F6 /* Sources */,
+				277309E22721DF6D007643F6 /* Frameworks */,
+				277309E32721DF6D007643F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				277309EB2721DF6D007643F6 /* PBXTargetDependency */,
+			);
+			name = BraveWalletTests;
+			productName = BraveWalletTests;
+			productReference = 277309E52721DF6D007643F6 /* BraveWalletTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		277568CF25ACF91500C129AF /* SPMLibraries */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 277568D925ACF91600C129AF /* Build configuration list for PBXNativeTarget "SPMLibraries" */;
@@ -6443,6 +6503,7 @@
 				271F68E626EBD55D00AA2A50 /* Introspect */,
 				271F68E926EBD59F00AA2A50 /* Algorithms */,
 				271F68EF26EBDC3600AA2A50 /* Then */,
+				277309DF2721DE2E007643F6 /* BigNumber */,
 			);
 			productName = SPMLibraries;
 			productReference = 277568D025ACF91500C129AF /* SPMLibraries.framework */;
@@ -6745,13 +6806,16 @@
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Latest;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
 					271F683426EBD0E400AA2A50 = {
 						CreatedOnToolsVersion = 12.5.1;
 						LastSwiftMigration = 1250;
+					};
+					277309E42721DF6D007643F6 = {
+						CreatedOnToolsVersion = 13.1;
 					};
 					277568CF25ACF91500C129AF = {
 						CreatedOnToolsVersion = 12.2;
@@ -6883,6 +6947,7 @@
 				271F68E526EBD55D00AA2A50 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				271F68E826EBD59F00AA2A50 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 				271F68EE26EBDC3600AA2A50 /* XCRemoteSwiftPackageReference "Then" */,
+				277309DA2721DDD2007643F6 /* XCRemoteSwiftPackageReference "Swift-BigInt" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -6915,6 +6980,7 @@
 				E6F9650B1B2F1CF20034B023 /* SharedTests */,
 				5D1DC51A20AC9AFA00905E5A /* DataTests */,
 				5DE7688B20B3456E00FF5533 /* BraveSharedTests */,
+				277309E42721DF6D007643F6 /* BraveWalletTests */,
 				277568CF25ACF91500C129AF /* SPMLibraries */,
 				27756E9325AF6F5F00C129AF /* SPMLibrariesTests */,
 				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
@@ -7008,6 +7074,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				271F689526EBD27E00AA2A50 /* Preview Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		277309E32721DF6D007643F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7414,6 +7487,7 @@
 				7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
 				271F689D26EBD27E00AA2A50 /* AssetSearchView.swift in Sources */,
+				277309DE2721DDFB007643F6 /* WeiFormatter.swift in Sources */,
 				271F689926EBD27E00AA2A50 /* Address.swift in Sources */,
 				270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */,
 				271F68A526EBD27E00AA2A50 /* UnlockWalletView.swift in Sources */,
@@ -7424,6 +7498,15 @@
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		277309E12721DF6D007643F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27EA1B0E2729E6C8003C5CF9 /* AddressTests.swift in Sources */,
+				277309E82721DF6D007643F6 /* WeiFormatterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7481,6 +7564,7 @@
 				278C469623F1E8620083347F /* ActionButton.swift in Sources */,
 				271F68CC26EBD2DE00AA2A50 /* BraveTextFieldStyle.swift in Sources */,
 				270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */,
+				276AADBA272850850034A0C2 /* Shimmer.swift in Sources */,
 				271F68D026EBD31800AA2A50 /* FixedHeightHostingPanModalController.swift in Sources */,
 				278C46B623F4A9CF0083347F /* BasicAnimationController.swift in Sources */,
 			);
@@ -8332,6 +8416,12 @@
 			target = 278C468523F1E6270083347F /* BraveUI */;
 			targetProxy = 271F68E226EBD51100AA2A50 /* PBXContainerItemProxy */;
 		};
+		277309EB2721DF6D007643F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 271F683426EBD0E400AA2A50 /* BraveWallet */;
+			targetProxy = 277309EA2721DF6D007643F6 /* PBXContainerItemProxy */;
+		};
 		277568D625ACF91600C129AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 277568CF25ACF91500C129AF /* SPMLibraries */;
@@ -8950,6 +9040,210 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Beta;
+		};
+		277309ED2721DF6D007643F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		277309EE2721DF6D007643F6 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Dev;
+		};
+		277309EF2721DF6D007643F6 /* Enterprise */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Enterprise;
+		};
+		277309F02721DF6D007643F6 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		277309F12721DF6D007643F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		277309F22721DF6D007643F6 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.BraveWalletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Beta;
 		};
@@ -13698,6 +13992,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		277309EC2721DF6D007643F6 /* Build configuration list for PBXNativeTarget "BraveWalletTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				277309ED2721DF6D007643F6 /* Debug */,
+				277309EE2721DF6D007643F6 /* Dev */,
+				277309EF2721DF6D007643F6 /* Enterprise */,
+				277309F02721DF6D007643F6 /* Release (AppStore) */,
+				277309F12721DF6D007643F6 /* Release */,
+				277309F22721DF6D007643F6 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		277568D925ACF91600C129AF /* Build configuration list for PBXNativeTarget "SPMLibraries" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -13949,6 +14256,14 @@
 				revision = e4c07f8e6c5df937051fabc47e1e92901e1d068b;
 			};
 		};
+		277309DA2721DDD2007643F6 /* XCRemoteSwiftPackageReference "Swift-BigInt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mkrd/Swift-BigInt";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		2775685325ACF6CB00C129AF /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -14059,6 +14374,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 277046C02684CD1E001CB097 /* XCRemoteSwiftPackageReference "PanModal" */;
 			productName = PanModal;
+		};
+		277309DF2721DE2E007643F6 /* BigNumber */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 277309DA2721DDD2007643F6 /* XCRemoteSwiftPackageReference "Swift-BigInt" */;
+			productName = BigNumber;
 		};
 		277568EA25ACF92400C129AF /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;

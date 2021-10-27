@@ -7,6 +7,7 @@ import UIKit
 import SwiftUI
 import BraveCore
 import SnapKit
+import Introspect
 import struct Shared.Strings
 
 struct Currency {
@@ -14,10 +15,6 @@ struct Currency {
   var name: String
   var symbol: String
   var cost: Double
-}
-
-struct Candle: DataPoint, Equatable {
-  var value: CGFloat
 }
 
 struct PortfolioView: View {
@@ -52,18 +49,22 @@ struct PortfolioView: View {
         }
       }
       BalanceHeaderView(
-        balance: "$12,453.17",
+        balance: portfolioStore.balance,
+        historicalBalances: portfolioStore.historicalBalances,
+        isLoading: portfolioStore.isLoadingBalances,
         networkStore: networkStore,
         selectedDateRange: $portfolioStore.timeframe
       )
     }
   }
   
+  @State private var tableInset: CGFloat = -16.0
+  
   var body: some View {
     List {
       Section(
         header: listHeader
-          .padding(.horizontal, -16) // inset grouped layout margins workaround
+          .padding(.horizontal, tableInset) // inset grouped layout margins workaround
           .resetListHeaderStyle()
       ) {
       }
@@ -75,8 +76,8 @@ struct PortfolioView: View {
             image: AssetIconView(token: asset.token),
             title: asset.token.name,
             symbol: asset.token.symbol,
-            amount: asset.balance,
-            quantity: asset.price
+            amount: String(format: "%.04f", asset.decimalBalance),
+            quantity: String(format: "%.04f", asset.quantity)
           )
         }
         Button(action: { isPresentingEditUserAssets = true }) {
@@ -96,45 +97,27 @@ struct PortfolioView: View {
     }
     .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
+    .introspectTableView { tableView in
+      tableInset = -tableView.layoutMargins.left
+    }
   }
 }
 
 struct BalanceHeaderView: View {
   var balance: String
+  var historicalBalances: [BalanceTimePrice]
+  var isLoading: Bool
   @ObservedObject var networkStore: NetworkStore
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
   
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
   
-  @State private var selectedCandle: Candle?
-  
-  var data: [Candle] {
-    switch selectedDateRange {
-    case .oneDay:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    case .live:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init).reversed()
-    case .oneWeek:
-      return [10, 20, 30, 20, 10].map(Candle.init)
-    case .oneMonth:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100, 200, 100, 120].map(Candle.init)
-    case .threeMonths:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    case .oneYear:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    case .all:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    @unknown default:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    }
-  }
+  @State private var selectedBalance: BalanceTimePrice?
   
   private var balanceOrDataPointView: some View {
     HStack {
-      if let dataPoint = selectedCandle {
-        Text(verbatim: "\(dataPoint.value)")
-      } else {
+      Group {
         if sizeCategory.isAccessibilityCategory {
           VStack(alignment: .leading) {
             NetworkPicker(
@@ -154,6 +137,15 @@ struct BalanceHeaderView: View {
           }
         }
       }
+      .opacity(selectedBalance == nil ? 1 : 0)
+      .overlay(
+        Group {
+          if let dataPoint = selectedBalance {
+            Text(dataPoint.formattedPrice)
+          }
+        },
+        alignment: .leading
+      )
       if horizontalSizeClass == .regular {
         Spacer()
         DateRangeView(selectedRange: $selectedDateRange)
@@ -172,23 +164,13 @@ struct BalanceHeaderView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       balanceOrDataPointView
-      HStack(spacing: 4) {
-        Image(systemName: "triangle.fill")
-          .font(.system(size: 8))
-          .foregroundColor(.green)
-        Text(verbatim: "1.3%")
-          .foregroundColor(.green)
-        Text(Strings.Wallet.today)
-          .foregroundColor(.secondary)
-      }
-      .font(.subheadline)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      LineChartView(data: data, numberOfColumns: 12, selectedDataPoint: $selectedCandle) {
+      LineChartView(data: historicalBalances, numberOfColumns: historicalBalances.count, selectedDataPoint: $selectedBalance) {
         LinearGradient(braveGradient: .lightGradient02)
+          .shimmer(isLoading)
       }
       .frame(height: 148)
       .padding(.horizontal, -12)
-      .animation(.default, value: data)
+      .animation(.default, value: historicalBalances)
       if horizontalSizeClass == .compact {
         DateRangeView(selectedRange: $selectedDateRange)
       }

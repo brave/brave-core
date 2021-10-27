@@ -74,6 +74,15 @@
         }
       },
       {
+        "package": "BigNumber",
+        "repositoryURL": "https://github.com/mkrd/Swift-BigInt",
+        "state": {
+          "branch": null,
+          "revision": "0ec7214cacd8724fd94c2d829218edf023732fc8",
+          "version": "2.1.2"
+        }
+      },
+      {
         "package": "swift-collections",
         "repositoryURL": "https://github.com/apple/swift-collections",
         "state": {

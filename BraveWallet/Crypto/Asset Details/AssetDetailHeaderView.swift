@@ -9,6 +9,11 @@ import BraveCore
 import BraveUI
 import struct Shared.Strings
 
+struct Candle: DataPoint, Equatable {
+  var date: Date { Date() }
+  var value: CGFloat
+}
+
 struct AssetDetailHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
