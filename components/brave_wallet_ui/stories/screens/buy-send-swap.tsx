@@ -44,6 +44,7 @@ export interface Props {
   buyAssetOptions: AccountAssetOptionType[]
   sendAssetOptions: AccountAssetOptionType[]
   swapAssetOptions: AccountAssetOptionType[]
+  isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   customSlippageTolerance: string
   onCustomSlippageToleranceChange: (value: string) => void
@@ -95,6 +96,7 @@ function BuySendSwap (props: Props) {
     sendAssetOptions,
     swapAssetOptions,
     swapValidationError,
+    isFetchingSwapQuote,
     isSwapSubmitDisabled,
     customSlippageTolerance,
     onCustomSlippageToleranceChange,
@@ -165,6 +167,7 @@ function BuySendSwap (props: Props) {
           toAmount={toAmount}
           fromAssetBalance={fromAssetBalance}
           toAssetBalance={toAssetBalance}
+          isFetchingQuote={isFetchingSwapQuote}
           isSubmitDisabled={isSwapSubmitDisabled}
           validationError={swapValidationError}
           customSlippageTolerance={customSlippageTolerance}
