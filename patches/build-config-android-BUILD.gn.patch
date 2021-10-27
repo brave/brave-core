@@ -1,12 +1,12 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 3803fd4f18e616f2daf01f16ead09b5774d1ba0f..e06ee2ea069adc060e0892e17586d18fb4043d1c 100644
+index 4231cd1c29cc7a9728502378f868d74c59c3cc1a..1d1f7169451846921e75984dbcd76bc2105be318 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -50,6 +50,7 @@ config("compiler") {
+@@ -46,6 +46,7 @@ config("compiler") {
      # http://crbug.com/448386
      "-Wl,--exclude-libs=libvpx_assembly_arm.a",
    ]
 +  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
-   # TODO(crbug.com/1184398): Move to compiler-rt when we are ready.
-   ldflags += [ "--rtlib=libgcc" ]
+   if (current_cpu == "arm64") {
+     # For outline atomics on AArch64 (can't pass this unconditionally
