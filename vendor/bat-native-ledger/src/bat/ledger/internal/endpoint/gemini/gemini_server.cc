@@ -14,6 +14,8 @@ GeminiServer::GeminiServer(LedgerImpl* ledger)
     : get_transaction_(std::make_unique<gemini::GetTransaction>(ledger)),
       post_account_(std::make_unique<gemini::PostAccount>(ledger)),
       post_balance_(std::make_unique<gemini::PostBalance>(ledger)),
+      post_cancel_transaction_(
+          std::make_unique<gemini::PostCancelTransaction>(ledger)),
       post_oauth_(std::make_unique<gemini::PostOauth>(ledger)),
       post_recipient_id_(std::make_unique<gemini::PostRecipientId>(ledger)),
       post_transaction_(std::make_unique<gemini::PostTransaction>(ledger)) {}
@@ -30,6 +32,10 @@ gemini::PostAccount* GeminiServer::post_account() const {
 
 gemini::PostBalance* GeminiServer::post_balance() const {
   return post_balance_.get();
+}
+
+gemini::PostCancelTransaction* GeminiServer::post_cancel_transaction() const {
+  return post_cancel_transaction_.get();
 }
 
 gemini::PostOauth* GeminiServer::post_oauth() const {

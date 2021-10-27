@@ -39,11 +39,13 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   void SetReconcileInterval(const int32_t interval) override;
   void SetRetryInterval(int32_t interval) override;
   void SetTesting() override;
+  void SetGeminiRetries(int32_t retries) override;
 
   void GetEnvironment(GetEnvironmentCallback callback) override;
   void GetDebug(GetDebugCallback callback) override;
   void GetReconcileInterval(GetReconcileIntervalCallback callback) override;
   void GetRetryInterval(GetRetryIntervalCallback callback) override;
+  void GetGeminiRetries(GetGeminiRetriesCallback callback) override;
 
  private:
   mojo::Receiver<mojom::BatLedgerService> receiver_;

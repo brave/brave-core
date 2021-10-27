@@ -52,6 +52,7 @@ void GeminiTransfer::OnCreateTransaction(const type::Result result,
     return;
   }
 
+  BLOG(1, "Number of retries: " << ledger::gemini_retries);
   if (result == type::Result::RETRY) {
     StartTransactionStatusTimer(id, 0, callback);
     return;
@@ -69,6 +70,11 @@ void GeminiTransfer::StartTransactionStatusTimer(
     const std::string& id,
     const int attempts,
     client::TransactionCallback callback) {
+  if (attempts >= ledger::gemini_retries) {
+    CancelTransaction(id, callback);
+    return;
+  }
+
   size_t new_attempts = attempts + 1;
   size_t mins = 3 * new_attempts;
   base::TimeDelta delay = base::TimeDelta::FromMinutes(mins);
@@ -101,13 +107,14 @@ void GeminiTransfer::OnTransactionStatus(const type::Result result,
                                          const int attempts,
                                          client::TransactionCallback callback) {
   retry_timer_.erase(id);
-  BLOG(0, "Number of active retry timers: " << retry_timer_.size());
+  BLOG(1, "Number of active retry timers: " << retry_timer_.size());
+
   if (result == type::Result::LEDGER_OK) {
     callback(result, id);
     return;
   }
 
-  if (result == type::Result::LEDGER_ERROR || attempts > 3) {
+  if (result == type::Result::LEDGER_ERROR) {
     callback(type::Result::LEDGER_ERROR, "");
     return;
   }
@@ -116,6 +123,22 @@ void GeminiTransfer::OnTransactionStatus(const type::Result result,
     StartTransactionStatusTimer(id, attempts, callback);
     return;
   }
+}
+
+void GeminiTransfer::CancelTransaction(const std::string& id,
+                                       client::TransactionCallback callback) {
+  auto wallet = ledger_->gemini()->GetWallet();
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(type::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  gemini_server_->post_cancel_transaction()->Request(
+      wallet->token, id, [id, callback](const type::Result result) {
+        BLOG(0, "Gemini transaction id: " << id << " cancelled");
+        callback(type::Result::LEDGER_ERROR, "");
+      });
 }
 
 }  // namespace gemini

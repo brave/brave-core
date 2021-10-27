@@ -124,6 +124,14 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     WaitForCallback();
   }
 
+  void GetGeminiRetries() {
+    ResetWaitForCallback();
+    rewards_service_->GetGeminiRetries(
+        base::BindOnce(&RewardsFlagBrowserTest::OnGetGeminiRetriesWrapper,
+                       base::Unretained(this)));
+    WaitForCallback();
+  }
+
   void OnGetReconcileIntervalWrapper(int32_t interval) {
     OnGetReconcileInterval(interval);
     CallbackCalled();
@@ -144,10 +152,16 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
+  void OnGetGeminiRetriesWrapper(int32_t retries) {
+    OnGetGeminiRetries(retries);
+    CallbackCalled();
+  }
+
   MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));
+  MOCK_METHOD1(OnGetGeminiRetries, void(int32_t));
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -281,12 +295,34 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsRetryInterval) {
   GetRetryInterval();
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsGeminiRetries) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  EXPECT_CALL(*this, OnGetGeminiRetries(2));
+  EXPECT_CALL(*this, OnGetGeminiRetries(10));
+  EXPECT_CALL(*this, OnGetGeminiRetries(0));
+
+  testing::InSequence s;
+
+  rewards_service_->SetGeminiRetries(0);
+  rewards_service_->HandleFlags("gemini-retries=2");
+  GetGeminiRetries();
+
+  rewards_service_->SetGeminiRetries(0);
+  rewards_service_->HandleFlags("gemini-retries=10");
+  GetGeminiRetries();
+
+  rewards_service_->SetGeminiRetries(0);
+  rewards_service_->HandleFlags("gemini-retries=-1");
+  GetGeminiRetries();
+}
+
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_browsertest_util::StartProcess(rewards_service_);
   EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetRetryInterval(1));
+  EXPECT_CALL(*this, OnGetGeminiRetries(2));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
@@ -295,12 +331,14 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
   rewards_service_->SetRetryInterval(0);
 
   rewards_service_->HandleFlags(
-      "staging=true,debug=true,retry-interval=1,reconcile-interval=10");
+      "staging=true,debug=true,retry-interval=1,reconcile-interval=10,gemini-"
+      "retries=2");
 
   GetReconcileInterval();
   GetRetryInterval();
   GetEnvironment();
   GetDebug();
+  GetGeminiRetries();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
@@ -309,20 +347,23 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetRetryInterval(0));
+  EXPECT_CALL(*this, OnGetGeminiRetries(3));
 
   testing::InSequence s;
   rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetRetryInterval(0);
+  rewards_service_->SetGeminiRetries(3);
 
   rewards_service_->HandleFlags(
-      "staging=,debug=,retryinterval=true,reconcile-interval");
+      "staging=,debug=,retryinterval=true,reconcile-interval,gemini-retries");
 
   GetReconcileInterval();
   GetRetryInterval();
   GetDebug();
   GetEnvironment();
+  GetGeminiRetries();
 }
 
 }  // namespace rewards_browsertest

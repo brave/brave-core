@@ -50,6 +50,9 @@ class GeminiTransfer {
                                    const int attempts,
                                    client::TransactionCallback callback);
 
+  void CancelTransaction(const std::string& id,
+                         client::TransactionCallback callback);
+
   std::map<std::string, base::OneShotTimer> retry_timer_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::GeminiServer> gemini_server_;
