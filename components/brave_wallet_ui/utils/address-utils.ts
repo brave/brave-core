@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import {
+  WalletAccountType
+} from '../constants/types'
+
 export function isValidAddress (value: string, length: number): boolean {
   if (!value.match(/^0x[0-9A-Fa-f]*$/)) {
     return false
@@ -13,4 +17,13 @@ export function isValidAddress (value: string, length: number): boolean {
   }
 
   return true
+}
+
+export function isHardwareAccount (accounts: WalletAccountType[], address: string) {
+  for (const account of accounts) {
+    if (account.deviceId && account.address === address) {
+      return true
+    }
+  }
+  return false
 }

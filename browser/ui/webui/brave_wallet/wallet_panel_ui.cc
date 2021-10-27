@@ -89,6 +89,11 @@ void WalletPanelUI::BindInterface(
   panel_factory_receiver_.Bind(std::move(receiver));
 }
 
+void WalletPanelUI::SetDeactivationCallback(
+    base::RepeatingCallback<void(bool)> deactivation_callback) {
+  deactivation_callback_ = std::move(deactivation_callback);
+}
+
 void WalletPanelUI::CreatePanelHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
@@ -113,7 +118,8 @@ void WalletPanelUI::CreatePanelHandler(
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this,
-      base::BindRepeating(&GetWebContentsFromTabId));
+      base::BindRepeating(&GetWebContentsFromTabId),
+      std::move(deactivation_callback_));
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
@@ -36,6 +37,7 @@ class BraveWalletTabHelper
   void ClosePanelOnDeactivate(bool close);
   bool IsBubbleClosedForTesting();
   content::WebContents* GetBubbleWebContentsForTesting();
+  const std::vector<int32_t>& GetPopupIdsForTesting();
   void SetShowBubbleCallbackForTesting(base::OnceClosure callback) {
     show_bubble_callback_for_testing_ = std::move(callback);
   }

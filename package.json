@@ -293,6 +293,7 @@
     "enzyme-adapter-react-16": "1.15.6",
     "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",
     "ethereumjs-util": "7.0.9",
+    "ethereumjs-tx": "2.1.2",
     "trezor-connect": "8.1.5-extended",
     "file-loader": "1.1.11",
     "font-awesome": "4.7.0",

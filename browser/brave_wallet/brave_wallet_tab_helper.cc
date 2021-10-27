@@ -114,6 +114,10 @@ content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
   return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
 }
 
+const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
+  return wallet_bubble_manager_delegate_->GetPopupIdsForTesting();
+}
+
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {
   GURL webui_url = GURL(kBraveUIWalletPanelURL);
   url::Replacements<char> replacements;

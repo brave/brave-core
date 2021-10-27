@@ -362,6 +362,11 @@ export interface SwapResponseReturnInfo {
   errorResponse?: string
 }
 
+export interface SignHardwareTransactionType {
+  success: boolean
+  error?: string
+}
+
 export type SwapValidationErrorType =
   | 'insufficientBalance'
   | 'insufficientEthBalance'
@@ -575,7 +580,11 @@ export interface ApproveTransactionReturnInfo {
   status: boolean
 }
 
-export interface ProcessLedgerSignatureReturnInfo {
+export interface GetTransactionMessageToSignReturnInfo {
+  message: string
+}
+
+export interface ProcessHardwareSignatureReturnInfo {
   status: boolean
 }
 
@@ -625,6 +634,11 @@ export interface GetAllTransactionInfoReturnInfo {
   transactionInfos: TransactionInfo[]
 }
 
+export interface GetTransactionInfoReturnInfo {
+  [x: string]: any
+  transaction?: TransactionInfo
+}
+
 export interface GetSelectedAccountReturnInfo {
   address: string | undefined
 }
@@ -651,9 +665,11 @@ export interface EthTxController {
   makeERC721TransferFromData: (from: string, to: string, tokenId: string, contractAddress: string) => Promise<MakeERC721TransferFromDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
   approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
-  processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
   speedupOrCancelTransaction: (txMetaId: string, cancel: boolean) => Promise<SpeedupRetryCancelTransactionReturnInfo>
   retryTransaction: (txMetaId: string) => Promise<SpeedupRetryCancelTransactionReturnInfo>
+  getTransactionInfo: (txMetaId: string) => Promise<GetTransactionInfoReturnInfo>
+  getTransactionMessageToSign: (txMetaId: string) => Promise<GetTransactionMessageToSignReturnInfo>
+  processHardwareSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessHardwareSignatureReturnInfo>
 }
 
 export interface EthJsonRpcController {

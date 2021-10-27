@@ -17,10 +17,12 @@ import {
   TrezorFrameCommand,
   UnlockResponse,
   UnlockCommand,
-  GetAccountsCommand
+  GetAccountsCommand,
+  SignTransactionResponse
 } from '../../common/trezor/trezor-messages'
 import {
-  kTrezorHardwareVendor
+  kTrezorHardwareVendor,
+  TransactionInfo
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
@@ -34,7 +36,8 @@ window.crypto = {
 }
 
 const createTrezorTransport = (unlock: Boolean,
-                               accounts?: TrezorGetPublicKeyResponse) => {
+                               accounts?: TrezorGetPublicKeyResponse,
+                               signedPayload?: SignTransactionResponse) => {
   const hardwareTransport = new TrezorBridgeTransport(kTrezorBridgeUrl)
   hardwareTransport.windowListeners_ = {}
   hardwareTransport.getTrezorBridgeOrigin = () => {
@@ -83,6 +86,13 @@ const createTrezorTransport = (unlock: Boolean,
           id: message.id,
           command: TrezorCommand.GetAccounts,
           payload: accounts
+        })
+      }
+      if (message.command === TrezorCommand.SignTransaction) {
+        hardwareTransport.postResponse({
+          id: message.id,
+          command: TrezorCommand.SignTransaction,
+          payload: signedPayload
         })
       }
     }
@@ -214,9 +224,10 @@ test('isUnlocked', () => {
 })
 
 const createTrezorKeyringWithTransport = (unlock: Boolean,
-                                          accounts?: TrezorGetAccountsResponse) => {
+                                          accounts?: TrezorGetAccountsResponse,
+                                          signedPayload?: SignTransactionResponse) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
-  const transport = createTrezorTransport(unlock, accounts)
+  const transport = createTrezorTransport(unlock, accounts, signedPayload)
   hardwareKeyring.sendTrezorCommand = async (command: TrezorFrameCommand, listener: Function) => {
     return transport.sendCommandToTrezorFrame(command, listener)
   }
@@ -268,7 +279,7 @@ test('Extracting accounts from unlocked device returned fail', () => {
     .rejects.toStrictEqual(new Error(getLocale('braveWalletCreateBridgeError')))
 })
 
-test('Extracting accounts from unlocked device returned success', () => {
+test('Extract accounts from unlocked device returned success', () => {
   const accounts = [
     {
       publicKey: '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
@@ -389,4 +400,69 @@ test('Add multiple commands handlers', () => {
     { result: true },
     [ TrezorCommand.Unlock, TrezorCommand.GetAccounts,
       TrezorCommand.GetAccounts, TrezorCommand.Unlock]])
+})
+
+const getMockedTransactionInfo = (): TransactionInfo => {
+  return {
+    id: '1',
+    fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+    txHash: '',
+    txData: {
+      baseData: {
+        to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+        value: '0x01706a99bf354000',
+        data: new Uint8Array(0),
+        nonce: '0x03',
+        gasLimit: '0x5208',
+        gasPrice: '0x22ecb25c00'
+      },
+      chainId: '1337',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: ''
+    },
+    txStatus: 1,
+    txType: 5,
+    txParams: [],
+    txArgs: [],
+    createdTime: { microseconds: 0 },
+    submittedTime: { microseconds: 0 },
+    confirmedTime: { microseconds: 0 }
+  }
+}
+
+test('Sign transaction from unlocked device', () => {
+  const txInfo = getMockedTransactionInfo()
+  const signed = {
+    id: '1',
+    success: true,
+    payload: {
+      v: '0xV',
+      r: '0xR',
+      s: '0xS'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(true, undefined, signed)
+  hardwareKeyring._getBridge = () => {
+    return hardwareKeyring as any
+  }
+  return expect(hardwareKeyring.signTransaction('m/44\'/60\'/0\'/0', txInfo, '0x539'))
+    .resolves.toStrictEqual(signed)
+})
+
+test('Sign transaction failed from unlocked device', () => {
+  const txInfo = getMockedTransactionInfo()
+  const signed = {
+    id: '1',
+    success: false,
+    payload: {
+      error: 'Permissions not granted',
+      code: 'Method_PermissionsNotGranted'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(true, undefined, signed)
+  hardwareKeyring._getBridge = () => {
+    return hardwareKeyring as any
+  }
+  return expect(hardwareKeyring.signTransaction('m/44\'/60\'/0\'/0', txInfo, '0x539'))
+    .resolves.toStrictEqual(signed)
 })

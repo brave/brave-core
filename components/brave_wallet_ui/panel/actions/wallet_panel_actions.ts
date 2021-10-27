@@ -13,7 +13,7 @@ import {
   SignMessageProcessedPayload,
   SignMessageHardwareProcessedPayload
 } from '../constants/action_types'
-import { SwapErrorResponse, SwapResponse, SignMessageData } from '../../constants/types'
+import { SwapErrorResponse, SwapResponse, SignMessageData, TransactionInfo } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -37,3 +37,4 @@ export const signMessage = createAction<SignMessagePayload[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
 export const signMessageHardware = createAction<SignMessageData>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')
+export const approveHardwareTransaction = createAction<TransactionInfo>('approveHardwareTransaction')

@@ -367,7 +367,7 @@ void EthTxController::ApproveHardwareTransaction(
       tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
     LOG(ERROR) << "No transaction found";
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(false);
     return;
   }
   if (!meta->tx->nonce()) {
@@ -383,6 +383,39 @@ void EthTxController::ApproveHardwareTransaction(
   }
 }
 
+void EthTxController::GetTransactionMessageToSign(
+    const std::string& tx_meta_id,
+    GetTransactionMessageToSignCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run("");
+    return;
+  }
+  uint256_t chain_id = 0;
+  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
+    std::move(callback).Run("");
+    return;
+  }
+  auto message = meta->tx->GetMessageToSign(chain_id, false);
+  auto encoded = brave_wallet::ToHex(message);
+  std::move(callback).Run(encoded);
+}
+
+void EthTxController::GetTransactionInfo(const std::string& tx_meta_id,
+                                         GetTransactionInfoCallback callback) {
+  std::unique_ptr<EthTxStateManager::TxMeta> meta =
+      tx_state_manager_->GetTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(EthTxStateManager::TxMetaToTransactionInfo(*meta));
+}
+
 void EthTxController::OnGetNextNonceForHardware(
     std::unique_ptr<EthTxStateManager::TxMeta> meta,
     ApproveHardwareTransactionCallback callback,
@@ -392,29 +425,21 @@ void EthTxController::OnGetNextNonceForHardware(
     meta->status = mojom::TransactionStatus::Error;
     tx_state_manager_->AddOrUpdateTx(*meta);
     LOG(ERROR) << "GetNextNonce failed";
-    std::move(callback).Run(false, "");
+    std::move(callback).Run(false);
     return;
   }
   meta->tx->set_nonce(nonce);
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
-  uint256_t chain_id = 0;
-  if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  auto message = meta->tx->GetMessageToSign(chain_id, false);
-  auto encoded = brave_wallet::ToHex(message);
-  std::move(callback).Run(true, encoded);
+  std::move(callback).Run(true);
 }
 
-void EthTxController::ProcessLedgerSignature(
+void EthTxController::ProcessHardwareSignature(
     const std::string& tx_meta_id,
     const std::string& v,
     const std::string& r,
     const std::string& s,
-    ProcessLedgerSignatureCallback callback) {
+    ProcessHardwareSignatureCallback callback) {
   std::unique_ptr<EthTxStateManager::TxMeta> meta =
       tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {

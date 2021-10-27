@@ -8,19 +8,23 @@ import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { formatBalance } from '../../utils/format-balances'
-
 import {
   AccountTransactions,
   AssetPriceTimeframe,
   EthereumChain,
   TokenInfo,
-  WalletAccountType
+  WalletAccountType,
+  SignHardwareTransactionType,
+  TransactionInfo,
+  kLedgerHardwareVendor,
+  kTrezorHardwareVendor,
+  APIProxyControllers
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
-
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
+import { getLocale } from '../../../common/locale'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -285,4 +289,51 @@ export function refreshSitePermissions () {
     const accountsWithPermission: (WalletAccountType | undefined)[] = getAllPermissions.filter((account) => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
+}
+
+export async function signTrezorTransaction (apiProxy: APIProxyControllers, path: string, txInfo: TransactionInfo): Promise<SignHardwareTransactionType> {
+  const chainId = await apiProxy.ethJsonRpcController.getChainId()
+  const approved = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
+  if (!approved.success) {
+    return { success: false, error: getLocale('braveWalletApproveTransactionError') }
+  }
+  const transaction = await apiProxy.ethTxController.getTransactionInfo(txInfo.id)
+  if (!transaction) {
+    return { success: false, error: getLocale('braveWalletTransactionNotFoundSignError') }
+  }
+  txInfo.txData.baseData.nonce = transaction.info.txData.baseData.nonce
+  const deviceKeyring = await apiProxy.getKeyringsByType(kTrezorHardwareVendor)
+  const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
+  if (!signed || !signed.success) {
+    return { success: false, error: getLocale('braveWalletSignOnDeviceError') }
+  }
+  const { v, r, s } = signed.payload
+  const result =
+    await apiProxy.ethTxController.processHardwareSignature(txInfo.id, v, r.replace('0x', ''), s.replace('0x', ''))
+  if (!result.status) {
+    return { success: false, error: getLocale('braveWalletProcessTransactionError') }
+  }
+  return { success: result.status }
+}
+
+export async function signLedgerTransaction (apiProxy: APIProxyControllers, path: string, txInfo: TransactionInfo): Promise<SignHardwareTransactionType> {
+  const approved = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
+  if (!approved.success) {
+    return { success: false, error: getLocale('braveWalletApproveTransactionError') }
+  }
+  const data = await apiProxy.ethTxController.getTransactionMessageToSign(txInfo.id)
+  if (!data) {
+    return { success: false, error: getLocale('braveWalletNoMessageToSignError') }
+  }
+  const deviceKeyring = await apiProxy.getKeyringsByType(kLedgerHardwareVendor)
+  const signed = await deviceKeyring.signTransaction(path, data.message.replace('0x', ''))
+  if (!signed) {
+    return { success: false, error: getLocale('braveWalletSignOnDeviceError') }
+  }
+  const { v, r, s } = signed
+  const result = await apiProxy.ethTxController.processHardwareSignature(txInfo.id, '0x' + v, r, s)
+  if (!result || !result.status) {
+    return { success: false, error: getLocale('braveWalletProcessTransactionError') }
+  }
+  return { success: result.status }
 }

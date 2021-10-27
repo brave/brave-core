@@ -5,23 +5,29 @@
 /* global window */
 
 const { EventEmitter } = require('events')
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util'
+import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
+import { Transaction } from 'ethereumjs-tx'
 import {
   TrezorDerivationPaths, TrezorBridgeAccountsPayload
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
-  kTrezorHardwareVendor
+  kTrezorHardwareVendor,
+  TransactionInfo
 } from '../../constants/types'
 import {
   TrezorCommand,
   UnlockResponse,
   GetAccountsResponsePayload,
   TrezorAccount,
-  TrezorFrameCommand
+  SignTransactionCommandPayload,
+  SignTransactionResponse,
+  TrezorFrameCommand,
+  TrezorError
 } from '../../common/trezor/trezor-messages'
 import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
+import { EthereumSignedTx } from 'trezor-connect/lib/typescript/trezor/protobuf'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -55,6 +61,24 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       throw Error(accounts.error)
     }
     return accounts.accounts
+  }
+
+  signTransaction = async (path: string, txInfo: TransactionInfo, chainId: string): Promise<EthereumSignedTx | TrezorError> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { error: getLocale('braveWalletUnlockError') }
+    }
+    const data = await this.sendTrezorCommand<SignTransactionResponse>({
+      command: TrezorCommand.SignTransaction,
+      // @ts-ignore
+      id: crypto.randomUUID(),
+      payload: this.prepareTransactionPayload(path, txInfo, chainId),
+      origin: window.origin
+    })
+    if (!data) {
+      return { error: getLocale('braveWalletProcessTransactionError') }
+    }
+
+    return data.payload
   }
 
   isUnlocked = () => {
@@ -95,6 +119,34 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       return this.getHashFromAddress(address)
     }
     return ''
+  }
+
+  private normalize (buf: any) {
+    return bufferToHex(buf).toString()
+  }
+
+  private prepareTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    const txParams = {
+      nonce: txInfo.txData.baseData.nonce,
+      gasPrice: txInfo.txData.baseData.gasPrice,
+      gasLimit: txInfo.txData.baseData.gasLimit,
+      to: txInfo.txData.baseData.to,
+      value: txInfo.txData.baseData.value,
+      data: Buffer.from(txInfo.txData.baseData.data)
+    }
+    const tx = new Transaction(txParams)
+    return {
+      path: path,
+      transaction: {
+        to: this.normalize(tx.to),
+        value: this.normalize(tx.value),
+        data: this.normalize(tx.data).replace('0x', ''),
+        chainId: parseInt(chainId, 16),
+        nonce: this.normalize(tx.nonce),
+        gasLimit: this.normalize(tx.gasLimit),
+        gasPrice: this.normalize(tx.gasPrice)
+      }
+    }
   }
 
   private publicKeyToAddress = (key: string) => {
