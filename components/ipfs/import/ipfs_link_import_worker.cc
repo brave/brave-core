@@ -65,11 +65,9 @@ void IpfsLinkImportWorker::DownloadLinkContent(const GURL& url) {
 void IpfsLinkImportWorker::OnImportDataAvailable(base::FilePath path) {
   int error_code = url_loader_->NetError();
   int response_code = -1;
-  int64_t content_length = -1;
   std::string mime_type = kLinkMimeType;
   if (url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers) {
     response_code = url_loader_->ResponseInfo()->headers->response_code();
-    content_length = url_loader_->ResponseInfo()->headers->GetContentLength();
     url_loader_->ResponseInfo()->headers->GetMimeType(&mime_type);
   }
   bool success =
