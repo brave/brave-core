@@ -105,7 +105,7 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
 
   ASSERT_EQ(auth_manager->GetCredentials().access_token,
             std::string(kAccessToken) + "\r\n" + kBraveServerKeyHeaderString);
-  EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_primary);
+  EXPECT_TRUE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.account_id,
             CoreAccountId::FromString(kAccountId));
   EXPECT_EQ(auth_manager->GetActiveAccountInfo().account_info.email,
@@ -127,7 +127,7 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
 
   auth_manager->ResetKeys();
   EXPECT_TRUE(auth_manager->GetCredentials().access_token.empty());
-  EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_primary);
+  EXPECT_FALSE(auth_manager->GetActiveAccountInfo().is_sync_consented);
   EXPECT_TRUE(
       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
 }
