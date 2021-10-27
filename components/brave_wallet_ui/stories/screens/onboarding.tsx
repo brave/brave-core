@@ -10,6 +10,7 @@ import {
 } from '../../constants/types'
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
+import { isStrongPassword } from '../../utils/password-utils'
 
 export interface Props {
   recoveryPhrase: string[]
@@ -133,13 +134,11 @@ function Onboarding (props: Props) {
     }
   }, [onboardingStep])
 
-  const strongPassword = new RegExp('^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{7,})')
-
   const checkPassword = React.useMemo(() => {
     if (password === '') {
       return false
     } else {
-      if (!strongPassword.test(password)) {
+      if (!isStrongPassword.test(password)) {
         return true
       }
       return false
@@ -162,7 +161,7 @@ function Onboarding (props: Props) {
     if (useSamePassword) {
       setPassword(importPassword)
       setConfirmedPassword(importPassword)
-      if (!strongPassword.test(importPassword)) {
+      if (!isStrongPassword.test(importPassword)) {
         setNeedsNewPassword(true)
         setUseSamePasswordVerified(false)
       } else {
