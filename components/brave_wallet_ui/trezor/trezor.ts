@@ -1,7 +1,8 @@
 import TrezorConnect from 'trezor-connect'
 import {
   kTrezorUnlockCommand,
-  kTrezorGetAccountsCommand
+  kTrezorGetAccountsCommand,
+  kTrezorBridgeOwner
 } from '../common/trezor/constants'
 
 const unlock = async (responseId: string, source: any, owner: any) => {
@@ -28,7 +29,8 @@ const getAccounts = async (responseId: string, source: any, requestedPaths: any,
 }
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== event.data.owner || event.type !== 'message') {
+  if (event.origin !== event.data.owner || event.type !== 'message' ||
+      event.origin !== kTrezorBridgeOwner) {
     return
   }
   if (event.data.command === kTrezorUnlockCommand) {
