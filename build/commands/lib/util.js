@@ -651,6 +651,22 @@ const util = {
         }
       }
 
+      // re-checkout as the commit ref because otherwise gclient sync clobbers
+      // the branch for braveCoreRef and doesn't set it to the correct commit
+      // for some reason
+      if (fs.existsSync(config.braveCoreDir)) {
+        const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
+        Log.progress(`Resetting brave core to "${braveCoreSha}"...`)
+        util.runGit(config.braveCoreDir, ['reset', '--hard', 'HEAD'], true)
+        let checkoutResult = util.runGit(config.braveCoreDir, ['checkout', braveCoreSha], true)
+        // Handle checkout failure
+        if (checkoutResult === null) {
+          Log.error('Could not checkout: ' + braveCoreSha)
+        }
+        // Checkout was successful
+        Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
+      }
+
       args = args.concat(['--revision', 'src/brave@' + braveCoreRef])
       reset = true
     }
