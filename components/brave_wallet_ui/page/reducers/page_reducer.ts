@@ -11,7 +11,8 @@ import {
   AssetPriceTimeframe,
   TokenInfo,
   SwapResponse,
-  SwapErrorResponse
+  SwapErrorResponse,
+  ImportWalletError
 } from '../../constants/types'
 import {
   WalletCreatedPayloadType,
@@ -25,7 +26,8 @@ const defaultState: PageState = {
   showAddModal: false,
   showRecoveryPhrase: false,
   invalidMnemonic: false,
-  importError: false,
+  importAccountError: false,
+  importWalletError: { hasError: false },
   selectedTimeline: AssetPriceTimeframe.OneDay,
   selectedAsset: undefined,
   selectedUSDAssetPrice: undefined,
@@ -134,10 +136,17 @@ reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.setImportError, (state: PageState, payload: boolean) => {
+reducer.on(Actions.setImportAccountError, (state: PageState, payload: boolean) => {
   return {
     ...state,
-    importError: payload
+    importAccountError: payload
+  }
+})
+
+reducer.on(Actions.setImportWalletError, (state: PageState, payload: ImportWalletError) => {
+  return {
+    ...state,
+    importWalletError: payload
   }
 })
 

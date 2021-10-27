@@ -115,9 +115,9 @@ class BraveWalletService : public KeyedService,
  private:
   void OnDefaultWalletChanged();
   friend class BraveWalletProviderImplUnitTest;
+  friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, OnGetImportInfo);
 
   absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
@@ -125,10 +125,13 @@ class BraveWalletService : public KeyedService,
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
 
-  void OnGetImportInfo(const std::string& new_password,
-                       base::OnceCallback<void(bool)> callback,
-                       bool result,
-                       BraveWalletServiceDelegate::ImportInfo info);
+  void OnGetImportInfo(
+      const std::string& new_password,
+      base::OnceCallback<void(bool, const absl::optional<std::string>&)>
+          callback,
+      bool result,
+      BraveWalletServiceDelegate::ImportInfo info,
+      BraveWalletServiceDelegate::ImportError error);
 
   base::queue<SignMessageRequest> sign_message_requests_;
   base::queue<SignMessageRequestCallback> sign_message_callbacks_;
