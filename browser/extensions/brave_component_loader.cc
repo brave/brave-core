@@ -166,7 +166,9 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
 void BraveComponentLoader::AddEthereumRemoteClientExtensionOnStartup() {
   // Only load Crypto Wallets if it is set as the default wallet
   auto default_wallet = brave_wallet::GetDefaultWallet(profile_prefs_);
-  if (HasInfuraProjectID() &&
+  const bool is_opted_into_cw =
+      profile_prefs_->GetBoolean(kERCOptedIntoCryptoWallets);
+  if (HasInfuraProjectID() && is_opted_into_cw &&
       default_wallet == brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     AddEthereumRemoteClientExtension();
   }

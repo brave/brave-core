@@ -158,7 +158,7 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   const cwResult = await braveWalletService.isCryptoWalletsInstalled()
   const mmResult = await braveWalletService.isMetaMaskInstalled()
   store.dispatch(WalletPageActions.setCryptoWalletsInstalled(cwResult.installed))
-  store.dispatch(WalletPageActions.setMetaMaskInstalled(mmResult.installed))
+  store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
 })
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {

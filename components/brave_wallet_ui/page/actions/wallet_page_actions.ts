@@ -55,7 +55,6 @@ export const addHardwareAccounts = createAction<HardwareWalletAccount[]>('addHar
 export const removeHardwareAccount = createAction<RemoveHardwareAccountPayloadType>('removeHardwareAccount')
 export const checkWalletsToImport = createAction('checkWalletsToImport')
 export const setCryptoWalletsInstalled = createAction<boolean>('setCryptoWalletsInstalled')
-export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
 export const importFromCryptoWallets = createAction<ImportFromExternalWalletPayloadType>('importFromCryptoWallets')
 export const importFromMetaMask = createAction<ImportFromExternalWalletPayloadType>('importFromMetaMask')
 export const openWalletSettings = createAction('openWalletSettings')

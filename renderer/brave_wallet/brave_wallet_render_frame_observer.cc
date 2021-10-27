@@ -15,7 +15,8 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
     content::RenderFrame* render_frame,
     brave::mojom::DynamicParams dynamic_params)
     : RenderFrameObserver(render_frame), dynamic_params_(dynamic_params) {
-  native_javascript_handle_.reset(new BraveWalletJSHandler(render_frame));
+  native_javascript_handle_.reset(new BraveWalletJSHandler(
+      render_frame, dynamic_params.allow_overwrite_window_ethereum));
 }
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}

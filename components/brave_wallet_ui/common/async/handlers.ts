@@ -70,6 +70,9 @@ async function refreshWalletInfo (store: Store) {
   const defaultWallet = await braveWalletService.getDefaultWallet()
   store.dispatch(WalletActions.defaultWalletUpdated(defaultWallet.defaultWallet))
 
+  const mmResult = await braveWalletService.isMetaMaskInstalled()
+  store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.installed))
+
   await store.dispatch(refreshBalancesAndPrices(currentNetwork))
   await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   await store.dispatch(refreshTransactionHistory())

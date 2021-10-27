@@ -77,6 +77,7 @@ export interface Props {
   selectedNetwork: EthereumChain
   isFetchingPortfolioPriceHistory: boolean
   defaultWallet: DefaultWallet
+  isMetaMaskInstalled: boolean
 }
 
 const CryptoView = (props: Props) => {
@@ -128,7 +129,8 @@ const CryptoView = (props: Props) => {
     selectedBTCAssetPrice,
     isLoading,
     showAddModal,
-    isFetchingPortfolioPriceHistory
+    isFetchingPortfolioPriceHistory,
+    isMetaMaskInstalled
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -225,7 +227,9 @@ const CryptoView = (props: Props) => {
             hasMoreButtons={true}
             onLockWallet={onLockWallet}
           />
-          {defaultWallet !== DefaultWallet.BraveWallet && showDefaultWalletBanner &&
+          {(defaultWallet !== DefaultWallet.BraveWallet &&
+           (defaultWallet !== DefaultWallet.BraveWalletPreferExtension || (defaultWallet === DefaultWallet.BraveWalletPreferExtension && isMetaMaskInstalled))) &&
+           showDefaultWalletBanner &&
             <WalletBanner
               onDismiss={onDismissDefaultWalletBanner}
               onClick={onOpenWalletSettings}
