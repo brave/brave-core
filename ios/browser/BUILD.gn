@@ -28,6 +28,7 @@ source_set("browser") {
     "//base",
     "//brave/browser/sync",
     "//brave/chromium_src/ios/chrome/browser/prefs",
+    "//brave/ios/browser/browser_state",
     "//components/flags_ui",
     "//components/metrics_services_manager",
     "//components/variations",
