@@ -188,10 +188,8 @@
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="7701040980221191251">なし</translation>
-<translation id="5655621391922317800">仮想通貨ウォレット</translation>
-<translation id="1696548911367097044">非推奨のCryptoウォレット拡張機能</translation>
-<translation id="1085027414516521238">MetaMask</translation>
-<translation id="9131889008937672866">デフォルトの暗号通貨ウォレット</translation>
+<translation id="1274962333945373242">非推奨のCryptoウォレット拡張機能</translation>
+<translation id="9131889008937672866">デフォルトの暗号資産ウォレット</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
@@ -302,8 +300,8 @@
 <translation id="1391855377994926460">ウェブの閲覧をより高速に - 主要なニュースサイトよりも最大6倍速</translation>
 <translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
-<translation id="732814027519296280">Brave Search をさらに良くしたいですか？</translation>
-<translation id="2677865600861971449">Web Discovery Project にオプトインして、検索ブラウジングデータを匿名で提供し、すべての人の Brave Search 結果を改善します。プライバシーは保護され、労力がかかることはありません。<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="732814027519296280">Brave Search を改善したいですか？</translation>
+<translation id="2677865600861971449">Web Discovery Project にオプトインして、検索ブラウジングデータを匿名で提供し、すべての人の Brave Search 結果を改善します。プライバシーは保護され、あなたになにか作業が求められることはありません。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">オンにする</translation>
 <translation id="780301667611848630">利用しない</translation>
 <translation id="5039804452771397117">許可</translation>

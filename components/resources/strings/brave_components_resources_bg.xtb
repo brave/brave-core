@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Минимално време на страницата преди отчитане като посещение</translation>
 <translation id="4424486208397124985">Минимално количество посещения за съответствие на издателя</translation>
 <translation id="6248554379744796526">Показване на непроверени сайтове в списъка</translation>
-<translation id="5875669387851353511">Разреши принос към видеоклипове</translation>
+<translation id="5510618543889994434">Разреши принос към видеоклипове</translation>
 <translation id="8933202740471878108">1 посещение</translation>
 <translation id="354797634123275103">5 посещения</translation>
 <translation id="3583700907990488238">10 посещения</translation>
@@ -579,7 +579,7 @@
 <translation id="9200453331904391567">Прекъсване на връзката с Brave Rewards</translation>
 <translation id="3656941797339037856">Свържете Rewards към Gemini!</translation>
 <translation id="2383784987664887340">Gemini ви позволява лесно да търгувате, съхранявате и печелите 3,49% APY за BAT. Потвърдете и свържете вашия портфейл Brave Rewards с Gemini сега!</translation>
-<translation id="2237374144728570574">* Спечелете APY в Gemini от 15 септември 2021 г.</translation>
+<translation id="2237374144728570574">* APY с Gemini Earn от 15 септември 2021 г.</translation>
 <translation id="7404779623219601861">Осребряване на карти за подаръци</translation>
 <translation id="6215565499749144110">С TAP Network можете да осребрите BAT за популярни карти за подаръци с имена.</translation>
 <translation id="6915065518766963119">* Изисква поддържана проверка.</translation>
@@ -798,11 +798,11 @@
 <translation id="8809307000287364168">Данните за трансакция в полето „maxPriorityFeePerGas“ са невалидни</translation>
 <translation id="7381733147588397055">Данните за трансакция не могат да се конвертират</translation>
 <translation id="3829038878925630240">Данните за трансакция в полето „from“ трябва да бъдат посочени</translation>
-<translation id="4732386285392573809">Неуспешно получаване на цената на газа от трансакцията</translation>
+<translation id="4732386285392573809">Неуспешно получаване на цената за газ от трансакцията</translation>
 <translation id="7619826778671319444">Неуспешно получаване на ограничението за газ от трансакцията</translation>
 <translation id="4232775951515678071">Неуспешно получаване на типа трансакция</translation>
 <translation id="7631054302129692654">Неуспешно получаване на оценка на газа за трансакция EIP-1559</translation>
-<translation id="4958950550253325418">Приложения за Defi</translation>
+<translation id="4958950550253325418">Приложения за DeFi</translation>
 <translation id="735961408871282410">Пазари на NFT</translation>
 <translation id="7740287852186792672">Резултати от търсенето</translation>
 <translation id="5140238928332244937">Разгледайте още Defi</translation>
@@ -924,7 +924,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="3512100619724810532">Всички</translation>
 <translation id="1530109021798294736">Mainnet</translation>
-<translation id="1613627717923045622">Тестова мрежа</translation>
+<translation id="1613627717923045622">Тестване на мрежа</translation>
 <translation id="4245123003308024264">Ropsten</translation>
 <translation id="2219337030359508039">Kovan</translation>
 <translation id="992469614838016642">Rinkeby</translation>
@@ -952,8 +952,6 @@
 <translation id="5488357322146334497">Съобщение</translation>
 <translation id="3586752056660754651">Подпис</translation>
 <translation id="7065157926159745595">Позволете на приложението да харчи вашите</translation>
-<translation id="2746256479706649252">Предоставяйки това разрешение, вие позволявате на това приложение да изтегли вашите</translation>
-<translation id="3959778836307233598">и да автоматизира трансакциите за вас.</translation>
 <translation id="8786100550345425552">Редактиране на разрешенията</translation>
 <translation id="7710469167917867539">Такса за трансакция</translation>
 <translation id="9065203028668620118">Редактиране</translation>
@@ -999,7 +997,7 @@
 <translation id="9099900965604225657">Парола за криптопортфейли</translation>
 <translation id="4020495774166914146">Изгубих паролата и фразата за възстановяване. Създаване на нов портфейл.</translation>
 <translation id="480319080797177742">установена е връзка</translation>
-<translation id="4203566092423620442">връзката е прекъсната</translation>
+<translation id="4203566092423620442">– връзката е прекъсната</translation>
 <translation id="5317781812114905957">Инструкции</translation>
 <translation id="1952715382071350669">Хардуерният портфейл изисква потвърждаване на трансакцията.</translation>
 <translation id="8687869982094542529">изпратено</translation>

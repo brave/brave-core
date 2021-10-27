@@ -2374,22 +2374,22 @@
 <translation id="8794378783472961468">あらゆる場所に記録が一切残らないわけではありません。プライベートモードを使っても、雇用主、インターネット サービス プロバイダ、訪問先のウェブサイトに閲覧内容が知られる可能性はあります。</translation>
 <translation id="5673623523506565506">プライベートに閲覧できるようになりました。また、このデバイスを使用する他のプロフィールにあなたのアクティビティは表示されません。ただし、ダウンロードとブックマークは保存されます。</translation>
 <translation id="3812568169637430422">プライベートに閲覧できるようになりました。また、このデバイスを使用する他のプロフィールにあなたのアクティビティは表示されません。ただし、ダウンロードとブックマーク、リーディングリストは保存されます。</translation>
-<translation id="5186185447130319458">プライベート</translation>
-<translation id="3683567996395248272">プライベートがしてくれること</translation>
+<translation id="5186185447130319458">プライベートモード</translation>
+<translation id="3683567996395248272">プライベートモードによってできること</translation>
 <translation id="4912243263991194586">すべてのプライベートタブを閉じると、Brave は以下をクリアします。
        <ph name="BEGIN_LIST"/>
          <ph name="LIST_ITEM"/>このデバイスのブラウジングアクティビティ<ph name="END_LIST_ITEM"/>
          <ph name="LIST_ITEM"/>このデバイスの検索履歴<ph name="END_LIST_ITEM"/>
          <ph name="LIST_ITEM"/>フォームに入力された情報<ph name="END_LIST_ITEM"/>
        <ph name="END_LIST"/></translation>
-<translation id="137199123615682137">プライベートがしてくれないこと</translation>
+<translation id="137199123615682137">プライベートモードによってできないこと</translation>
 <translation id="6101678912379763265">プライベートでもオンライン上で自分が見えなくなるわけではありません。
        <ph name="BEGIN_LIST"/>
          <ph name="LIST_ITEM"/>アクセスすると、サイトにはそれがわかります<ph name="END_LIST_ITEM"/>
          <ph name="LIST_ITEM"/>雇用主や学校はブラウジングアクティビティを追跡できます<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>インターネットサービスプロバイダーはウェブトラフィックを監視する場合があります<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>インターネットサービスプロバイダーはウェブトラフィックを監視することができます<ph name="END_LIST_ITEM"/>
        <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>プライベートについてさらに詳しく<ph name="END_LINK"/></translation>
+<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>プライベートモードについてさらに詳しく<ph name="END_LINK"/></translation>
 <translation id="5549245478906381817">プライベートウィンドウを開く</translation>
 <translation id="5497977785983089120">新しいプライベートウィンドウを開いてブラウジングする</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>は、[Tab]、 [Enter] と順番にクリックすると、新しいプライベートウィンドウを開き、プライベートにブラウズすることが可能です</translation>

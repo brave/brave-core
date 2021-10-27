@@ -471,13 +471,11 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="8037420924417098685">Untuk memulai panggilan gratis, aktifkan Brave Rewards</translation>
 <translation id="8961724619078500274">Dengan Brave Rewards, Anda akan memperoleh token untuk melihat iklan privat (data Anda tetap aman). Tukarkan token-token tersebut dengan uang tunai, kartu hadiah…atau bahkan tip untuk situs web yang disukai. Tanpa pelacakan. Tanpa pelambatan.</translation>
 <translation id="7307847920988946894">Aktifkan Imbalan</translation>
-<translation id="1186139901474936180">Dengan mengetuk, Anda menyetujui <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>. Nonaktifkan kapan saja melalui Pengaturan.</translation>
 <translation id="6128511569382736135">Untuk memulai panggilan gratis, aktifkan Brave Private Ads</translation>
 <translation id="7930006085154756245">Dengan Brave Private Ads, Anda mendapatkan token untuk melihat iklan privat (data Anda tetap aman). Tukarkan token dengan uang tunai, kartu hadiah…atau bahkan memberikan tip ke situs web yang Anda sukai. Tanpa pelacakan. Tanpa pelambatan.</translation>
 <translation id="4992617448154987397">Aktifkan Brave Private Ads</translation>
-<translation id="7314030474505546826">Denganmengaktifkan Ads, Anda menyetujui <ph name="TERMS_OF_SERVICE"/>dan <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Kini Anda dapat mulai melakukan panggilan gratis</translation>
-<translation id="6712250553966900750">Ketuk layar di bagian mana pun untuk melanjutkan ke Brave Talk.</translation>
+<translation id="7073631403665023390">Ketuk layar di bagian mana pun untuk melanjutkan ke Brave Talk.</translation>
 <translation id="626339649633171286">Ingin mempelajari lebih lanjut tentang Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Anda mengonversi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ke <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Harap periksa koneksi jaringan Anda.</translation>
@@ -540,7 +538,6 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="6146351434671268516">Tuliskan atau salin kata-kata berikut dalam urutan yang benar dan simpan di tempat yang aman.</translation>
 <translation id="7408247683131762445">PERINGATAN: Dilarang membocorkan frasa cadangan Anda. Siapa pun yang mengetahui frasa ini dapat mengambil dana Anda selamanya.</translation>
 <translation id="939275786514736244">Saya telah menyimpan frasa saya di tempat aman</translation>
-<translation id="6896758677409633944">Salin</translation>
 <translation id="2604744480284798833">Cadangkan dompet Anda sekarang untuk melindungi portofolio kripto Anda dari kehilangan akses.</translation>
 <translation id="1202920745614909195">Beli kripto dengan Apple Pay, kartu kredit atau debit.</translation>
 <translation id="841880029259839903">Kirim kripto atau transfer dari satu akun ke akun lainnya.</translation>
@@ -557,14 +554,12 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="6366007539108097840">3B</translation>
 <translation id="6977728312178289892">1T</translation>
 <translation id="6895566650974550243">SEMUA</translation>
-<translation id="8892168913673237979">Semua siap!</translation>
-<translation id="8331501996028380732">Beli, tukar, atau simpan kripto. Jika Anda telah memiliki akun kripto, Anda dapat menambahkannya sekarang.</translation>
 <translation id="2267753748892043616">Tambahkan Akun</translation>
 <translation id="2632612428525029752">Perbarui Akun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktifkan buka kunci sidik jari?</translation>
 <translation id="5493402808936397665">Aktifkan biometrik untuk membuka kunci dompet Anda dengan cepat tanpa memasukkan kata sandi Anda.</translation>
-<translation id="8488282162676695335">Dompet Brave.</translation>
+<translation id="1544192797660353713">Dompet Brave.</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan Anda untuk memulihkan akun kripto Brave Wallet Anda.</translation>
 <translation id="1970161551843843564">Pulihkan Akun Kripto</translation>
 <translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
@@ -581,7 +576,6 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="745115390910697838">Frasa tidak sesuai. Silakan coba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akun gagal. Silakan coba lagi.</translation>
 <translation id="6392640873800632439">Harga Pasar di <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Harga ETH</translation>
 <translation id="6748108480210050150">Dari</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -589,10 +583,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="6159566011642056819">Ke (estimasi)</translation>
 <translation id="6998989275928107238">Ke</translation>
 <translation id="6664416064035847539">alamat atau URL</translation>
-<translation id="59223531494896848">Limit</translation>
-<translation id="3567988240819868195">Pasar</translation>
 <translation id="632241521608275119">Toleransi selip</translation>
-<translation id="4500473291496079954">Kedaluwarsa pada</translation>
 <translation id="1987317783729300807">Akun</translation>
 <translation id="3535654229833214438">Transaksi</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -671,7 +662,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4395361077929528480">Jenis Jaringan</translation>
 <translation id="755448900483975096">Operator Seluler</translation>
 <translation id="1279441577056010362">Lanjutkan ke Surel</translation>
-<translation id="2553687444159335134">Dukungan diberikan dengan bantuan tim Penjaga.\n\nSilakan pilih informasi yang Anda rasa nyaman untuk dibagikan kepada kami.\n\nSemakin banyak informasi yang awalnya Anda bagikan kepada kami, akan semakin mudah bagi staf dukungan kami untuk membantu Anda menyelesaikan</translation>
+<translation id="2553687444159335134">Dukungan diberikan dengan bantuan tim Penjaga.\n\nSilakan pilih informasi yang Anda rasa nyaman untuk dibagikan kepada kami.\n\nSemakin banyak informasi yang awalnya Anda bagikan kepada kami, akan semakin mudah bagi staf dukungan kami untuk membantu menyelesaikan ... Anda.</translation>
 <translation id="7999094850625689785">Wilayah peladen yang terdekat dengan Anda akan dipilih secara otomatis, berdasarkan zona waktu sistem Anda. Hal ini disarankan untuk memastikan internet berkecepatan tinggi.</translation>
 <translation id="8018707825009059641">Permasalahan Lain</translation>
 <translation id="6687228121145903051">Tidak dapat menyambung ke VPN (Kesalahan lain)</translation>
@@ -685,7 +676,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7475580600756356589">Menyambungkan ke peladen Anda. Harap menunggu...</translation>
 <translation id="1342728075788541348">Memutuskan sambungan dari peladen Anda. Harap menunggu...</translation>
 <translation id="669072536454692117">Langganan berhasil dilakukan</translation>
-<translation id="1187506504156101449">Gagal melakukan pembelian :</translation>
+<translation id="1187506504156101449">Gagal melakukan pembelian:</translation>
 <translation id="8420522105268941892">Anda sudah terdaftar sebagai langganan. Coba pulihkan langganan.</translation>
 <translation id="74771564105268111">KESALAHAN!! Disebabkan oleh pengguna yang membatalkan alur pembelian.</translation>
 <translation id="3851978668258201962">KESALAHAN!! Pembelian gagal..</translation>
@@ -696,7 +687,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7995708795274219641">Nominal + Bensin</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="6122742277607781713">Portofolio</translation>
-<translation id="2805756323405976993">Apl</translation>
 <translation id="6083912983861746409">Harga Bensin (GWEI)</translation>
 <translation id="2499079593046817044">Batas Bensin (GWEI)</translation>
 <translation id="6389441740143786465">Nonaktifkan Hub Berbagi</translation>

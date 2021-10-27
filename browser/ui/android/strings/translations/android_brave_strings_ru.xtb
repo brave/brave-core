@@ -473,13 +473,11 @@
 <translation id="8037420924417098685">Чтобы начать бесплатный звонок, включите Brave Rewards.</translation>
 <translation id="8961724619078500274">Brave Rewards позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
 <translation id="7307847920988946894">Включить Rewards</translation>
-<translation id="1186139901474936180">Продолжая, вы принимаете следующие документы: <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>. Функцию можно в любой момент отключить в настройках.</translation>
 <translation id="6128511569382736135">Чтобы начать бесплатный звонок, включите Brave Private Ads.</translation>
 <translation id="7930006085154756245">Brave Private Ads позволяет зарабатывать баллы за просмотр рекламы в режиме инкогнито. Ваши данные будут в полной безопасности. Обменивайте баллы на деньги и подарочные карты или перечисляйте их любимым сайтам. Работа в браузере не отслеживается и не замедляется!</translation>
 <translation id="4992617448154987397">Включить Brave Private Ads</translation>
-<translation id="7314030474505546826">Включая Brave Ads, вы принимаете следующие документы: <ph name="TERMS_OF_SERVICE"/> и <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Теперь вы можете начать бесплатный звонок</translation>
-<translation id="6712250553966900750">Чтобы перейти в Brave Talk, нажмите на любое место экрана.</translation>
+<translation id="7073631403665023390">Чтобы перейти в Brave Talk, нажмите на любое место экрана.</translation>
 <translation id="626339649633171286">Хотите узнать больше о Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Вы конвертировали <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> в <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Пожалуйста, проверьте ваше сетевое соединение.</translation>
@@ -542,7 +540,6 @@
 <translation id="6146351434671268516">Запишите или скопируйте эти слова в правильном порядке и храните их в безопасном месте.</translation>
 <translation id="7408247683131762445">ВНИМАНИЕ! Никому и никогда не сообщайте секретную фразу. Любой, кто ее знает, сможет безвозвратно снять средства с вашего счета.</translation>
 <translation id="939275786514736244">Фраза скопирована в безопасное место</translation>
-<translation id="6896758677409633944">Копировать</translation>
 <translation id="2604744480284798833">Выполните резервное копирование кошелька, чтобы не потерять доступ к криптовалютному портфелю.</translation>
 <translation id="1202920745614909195">Покупайте криптовалюту с помощью Apple Pay и кредитных или дебетовых карт.</translation>
 <translation id="841880029259839903">Отправляйте криптовалюту или переводите ее с одного счета на другой.</translation>
@@ -552,21 +549,19 @@
 <translation id="4450951602553063001">Введите пароль еще раз</translation>
 <translation id="1783870616707290226">Пароль должен содержать не менее 7 символов.</translation>
 <translation id="7383102760859258982">Пароли не совпадают.</translation>
-<translation id="3188963375823360044">1 ч.</translation>
+<translation id="3188963375823360044">1 Ч.</translation>
 <translation id="8163269366661594721">1 д.</translation>
 <translation id="7640956400175663828">1 нед.</translation>
 <translation id="9100647964747998533">1 мес.</translation>
 <translation id="6366007539108097840">3 мес.</translation>
 <translation id="6977728312178289892">1 г.</translation>
 <translation id="6895566650974550243">ВСЕ</translation>
-<translation id="8892168913673237979">Готово!</translation>
-<translation id="8331501996028380732">Покупайте, обменивайте или храните криптовалюту. Если у вас уже есть счет для криптовалюты, вы можете добавить его.</translation>
 <translation id="2267753748892043616">Добавить счет</translation>
 <translation id="2632612428525029752">Обновить аккаунт</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Включить распознавание отпечатка пальца?</translation>
 <translation id="5493402808936397665">Включите распознавание по отпечатку пальца, чтобы быстро открывать кошелек.</translation>
-<translation id="8488282162676695335">Кошелек Brave</translation>
+<translation id="1544192797660353713">Кошелек Brave</translation>
 <translation id="6901810042765869341">Введите секретную фразу, чтобы восстановить доступ к Brave Wallet.</translation>
 <translation id="1970161551843843564">Восстановить криптокошелек</translation>
 <translation id="4811736040444856406">Показать секретную фразу</translation>
@@ -583,7 +578,6 @@
 <translation id="745115390910697838">Фразы не совпадают. Повторите попытку.</translation>
 <translation id="2360588547830602174">Не удалось восстановить аккаунт. Повторите попытку.</translation>
 <translation id="6392640873800632439">Рыночная цена в <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Цена в ETH</translation>
 <translation id="6748108480210050150">Отправитель</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -591,10 +585,7 @@
 <translation id="6159566011642056819">В (приблизительно)</translation>
 <translation id="6998989275928107238">Получатель</translation>
 <translation id="6664416064035847539">адрес или URL</translation>
-<translation id="59223531494896848">Лимит</translation>
-<translation id="3567988240819868195">Рынок</translation>
 <translation id="632241521608275119">Допустимое проскальзывание</translation>
-<translation id="4500473291496079954">Срок действия истекает</translation>
 <translation id="1987317783729300807">Аккаунты</translation>
 <translation id="3535654229833214438">Операции</translation>
 <translation id="4636930964841734540">Информация</translation>
@@ -698,7 +689,6 @@
 <translation id="7995708795274219641">Сумма + газ</translation>
 <translation id="1950052789869821983">Транзакция</translation>
 <translation id="6122742277607781713">Портфель</translation>
-<translation id="2805756323405976993">Приложения</translation>
 <translation id="6083912983861746409">Цена на газ (Gwei)</translation>
 <translation id="2499079593046817044">Лимит газа (Gwei)</translation>
 <translation id="6389441740143786465">Отключить Sharing Hub</translation>

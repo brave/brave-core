@@ -472,13 +472,11 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="8037420924417098685">Če želite klicati brezplačno, vklopite Brave Rewards</translation>
 <translation id="8961724619078500274">Z Brave Rewards si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvorite te žetone v gotovino, darilne kartice ali celo napnite priljubljena spletna mesta. Brez sledenja. Brez upočasnitev.</translation>
 <translation id="7307847920988946894">Vklopite storitev Rewards</translation>
-<translation id="1186139901474936180">Z dotikom se strinjate z <ph name="TERMS_OF_SERVICE"/> in <ph name="PRIVACY_POLICY"/> To lahko kadarkoli onemogočite v nastavitvah.</translation>
 <translation id="6128511569382736135">Če želite klicati brezplačno, omogočite Brave Private Ads</translation>
 <translation id="7930006085154756245">Z zasebnimi oglasi Brave Private Ads si prislužite žetone za ogled zasebnih oglasov (vaši podatki so varni). Pretvorite te žetone v gotovino, darilne kartice ali celo napnite priljubljena spletna mesta. Brez sledenja. Brez upočasnitev.</translation>
 <translation id="4992617448154987397">Vklopi zasebne oglase Brave Private Ads</translation>
-<translation id="7314030474505546826">Če vklopite oglase, se strinjate z <ph name="TERMS_OF_SERVICE"/> in <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Zdaj lahko kličete brezplačno</translation>
-<translation id="6712250553966900750">Za nadaljevanje k Brave Talk se kjerkoli dotaknite zaslona.</translation>
+<translation id="7073631403665023390">Za nadaljevanje k Brave Talk se kjerkoli dotaknite zaslona.</translation>
 <translation id="626339649633171286">Želite izvedeti več o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> v <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Preverite vašo omrežno povezavo.</translation>
@@ -541,7 +539,6 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="6146351434671268516">Besede prepišite ali skopirajte v pravilnem vrstnem redu in jih shranite na varnem mestu.</translation>
 <translation id="7408247683131762445">OPOZORILO: nikoli ne razkrijte svoje varnostne fraze. Vsakdo s to fazo si lahko za vedno prilasti vaša sredstva.</translation>
 <translation id="939275786514736244">Na varnem mestu imam varnostno kopijo svoje fraze</translation>
-<translation id="6896758677409633944">Kopiraj</translation>
 <translation id="2604744480284798833">Varnostno kopirajte denarnico zdaj, da zaščitite svoj kripto portfelj pred izgubo dostopa.</translation>
 <translation id="1202920745614909195">Uporabite Apple Pay, kreditno kartico ali debetno kartico za nakup kripta.</translation>
 <translation id="841880029259839903">Pošljite kripto ali pa ga prenesite z enega računa na drugega.</translation>
@@ -558,14 +555,12 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 leto</translation>
 <translation id="6895566650974550243">VSE</translation>
-<translation id="8892168913673237979">Vse je pripravljeno!</translation>
-<translation id="8331501996028380732">Kupite kripto, trgujte s kriptom ali pa shranite svoj kripto. Če imate obstoječ kriptoračun, ga lahko dodate.</translation>
 <translation id="2267753748892043616">Dodaj račun</translation>
 <translation id="2632612428525029752">Posodobi račun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Omogoči odklepanje s prstnim odtisom?</translation>
 <translation id="5493402808936397665">Omogočite biometriko, da lahko svojo denarnico hitro odklenete brez vnosa gesla.</translation>
-<translation id="8488282162676695335">Denarnica Brave</translation>
+<translation id="1544192797660353713">Denarnica Brave</translation>
 <translation id="6901810042765869341">Vnesite svojo frazo za obnovitev, da obnovite svoj kriptoračun v denarnici Brave.</translation>
 <translation id="1970161551843843564">Obnovite kriptoračun</translation>
 <translation id="4811736040444856406">Oglejte si fazo obnovitve</translation>
@@ -582,7 +577,6 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="745115390910697838">Fraze se ne ujemajo, poskusite znova.</translation>
 <translation id="2360588547830602174">Obnovitev računa ni uspela. Poskusite znova.</translation>
 <translation id="6392640873800632439">Tržna cena v <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Cena v ETH</translation>
 <translation id="6748108480210050150">Od</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -590,10 +584,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="6159566011642056819">Do (ocena)</translation>
 <translation id="6998989275928107238">Za</translation>
 <translation id="6664416064035847539">naslov ali url</translation>
-<translation id="59223531494896848">Meja</translation>
-<translation id="3567988240819868195">Trg</translation>
 <translation id="632241521608275119">Toleranca padca</translation>
-<translation id="4500473291496079954">Poteče čez</translation>
 <translation id="1987317783729300807">Računi</translation>
 <translation id="3535654229833214438">Transakcije</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -697,7 +688,6 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="7995708795274219641">Znesek + Gas</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="6122742277607781713">Portfelj</translation>
-<translation id="2805756323405976993">Aplikacije</translation>
 <translation id="6083912983861746409">Cena plina(GWEI)</translation>
 <translation id="2499079593046817044">Omejitev plina(GWEI)</translation>
 <translation id="6389441740143786465">Onemogoči Središče za skupno rabo</translation>

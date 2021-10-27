@@ -470,13 +470,11 @@
 <translation id="8037420924417098685">무료 통화를 시작하려면 Brave Rewards를 켜세요.</translation>
 <translation id="8961724619078500274">Brave Rewards를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
 <translation id="7307847920988946894">리워드 켜기</translation>
-<translation id="1186139901474936180">탭하면 <ph name="TERMS_OF_SERVICE"/>, <ph name="PRIVACY_POLICY"/>에 동의하게 됩니다. 설정에서 언제든지 비활성할 수 있습니다.</translation>
 <translation id="6128511569382736135">무료 통화를 시작하려면 Brave Private Ads를 활성화하세요.</translation>
 <translation id="7930006085154756245">Brave Private Ads를 이용하면 프라이빗 광고를 보고 토큰을 적립할 수 있습니다(개인 데이터는 안전함). 토큰은 원하는 대로 현금, 기프트카드, 웹사이트 팁 등으로 전환할 수 있습니다. 추적도 없고, 느려지지도 않습니다.</translation>
 <translation id="4992617448154987397">Brave Private Ads 켜기</translation>
-<translation id="7314030474505546826">광고를 켜면 <ph name="TERMS_OF_SERVICE"/>, <ph name="PRIVACY_POLICY"/>에 동의하게 됩니다</translation>
 <translation id="3415016869273103668">이제 무료 통화 시작 가능</translation>
-<translation id="6712250553966900750">Brave Talk로 이동하려면 화면의 아무데나 탭하세요.</translation>
+<translation id="7073631403665023390">Brave Talk로 이동하려면 화면의 아무데나 탭하세요.</translation>
 <translation id="626339649633171286">Brave Rewards에 대해 자세히 알고 싶으신가요? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930"><ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/>에서 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>(으)로 바꿨습니다!</translation>
 <translation id="392587271502873865">네트워크 연결을 확인하세요.</translation>
@@ -539,7 +537,6 @@
 <translation id="6146351434671268516">여기 단어를 올바른 순서대로 적어서 안전한 곳에 보관해 두세요.</translation>
 <translation id="7408247683131762445">경고: 백업 문구를 절대 공개하지 마세요. 이 문구를 아는 누군가가 회원님의 자금을 탈취하면 되찾을 수 없습니다.</translation>
 <translation id="939275786514736244">내 구문을 안전한 곳에 보관해 두었음</translation>
-<translation id="6896758677409633944">복사</translation>
 <translation id="2604744480284798833">지금 월렛을 백업하여 암호화폐 포트폴리오 액세스를 잃어버리지 마세요.</translation>
 <translation id="1202920745614909195">Apple Pay, 신용/직불카드로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="841880029259839903">한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.</translation>
@@ -556,14 +553,12 @@
 <translation id="6366007539108097840">3개월</translation>
 <translation id="6977728312178289892">1년</translation>
 <translation id="6895566650974550243">전체</translation>
-<translation id="8892168913673237979">설정이 완료되었습니다!</translation>
-<translation id="8331501996028380732">암호화폐를 구입, 거래, 보유하세요. 기존 암호화폐 계정이 없으면 지금 새로 만드세요.</translation>
 <translation id="2267753748892043616">계정 추가</translation>
 <translation id="2632612428525029752">계정 업데이트</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">지문 잠금 해제를 활성화할까요?</translation>
 <translation id="5493402808936397665">생체인식을 활성화하면 비밀번호를 입력하지 않고도 월렛을 신속하게 잠금 해제할 수 있습니다.</translation>
-<translation id="8488282162676695335">Brave 월렛</translation>
+<translation id="1544192797660353713">Brave 월렛</translation>
 <translation id="6901810042765869341">Brave 월렛 암호화폐 계정을 복구하려면 복구 문구를 입력하세요.</translation>
 <translation id="1970161551843843564">암호화폐 계정 복구</translation>
 <translation id="4811736040444856406">복구 문구 표시</translation>
@@ -580,7 +575,6 @@
 <translation id="745115390910697838">문구가 일치하지 않습니다. 다시 시도하세요.</translation>
 <translation id="2360588547830602174">계정 복구에 실패했습니다. 다시 시도하세요.</translation>
 <translation id="6392640873800632439">시장 가격 - 단위: <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">가격(ETH 기준)</translation>
 <translation id="6748108480210050150">보내는 이</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@
 <translation id="6159566011642056819">최대(추산)</translation>
 <translation id="6998989275928107238">받는이</translation>
 <translation id="6664416064035847539">주소 또는 URL</translation>
-<translation id="59223531494896848">한도</translation>
-<translation id="3567988240819868195">시장</translation>
 <translation id="632241521608275119">슬리피지 허용 오차</translation>
-<translation id="4500473291496079954">만료까지 남은 기간</translation>
 <translation id="1987317783729300807">계정</translation>
 <translation id="3535654229833214438">트랜잭션</translation>
 <translation id="4636930964841734540">정보</translation>
@@ -695,7 +686,6 @@
 <translation id="7995708795274219641">수량 + 가스</translation>
 <translation id="1950052789869821983">트랜잭션</translation>
 <translation id="6122742277607781713">포트폴리오</translation>
-<translation id="2805756323405976993">앱</translation>
 <translation id="6083912983861746409">가스 가격(GWEI)</translation>
 <translation id="2499079593046817044">가스 한도(GWEI)</translation>
 <translation id="6389441740143786465">공유 허브 비활성화</translation>

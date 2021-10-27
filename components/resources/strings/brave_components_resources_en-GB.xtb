@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Minimum page time before logging a visit</translation>
 <translation id="4424486208397124985">Minimum visits for publisher relevancy</translation>
 <translation id="6248554379744796526">Show non-verified sites in list</translation>
-<translation id="5875669387851353511">Allow contribution to videos</translation>
+<translation id="5510618543889994434">Allow contribution to videos</translation>
 <translation id="8933202740471878108">1 visit</translation>
 <translation id="354797634123275103">5 visits</translation>
 <translation id="3583700907990488238">10 visits</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Sign</translation>
 <translation id="7065157926159745595">Allow this app to spend your</translation>
-<translation id="2746256479706649252">By granting this permission, you are allowing this app to withdraw your</translation>
-<translation id="3959778836307233598">and automate transactions for you.</translation>
 <translation id="8786100550345425552">Edit permissions</translation>
 <translation id="7710469167917867539">Transaction fee</translation>
 <translation id="9065203028668620118">Edit</translation>

@@ -473,13 +473,11 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="8037420924417098685">Ili kuanza simu ya bila malipo, washa Brave Rewards</translation>
 <translation id="8961724619078500274">Ukiwa na Brave Rewards, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.</translation>
 <translation id="7307847920988946894">Fungua Tuzo</translation>
-<translation id="1186139901474936180">Kwa kugusa, unakubali <ph name="TERMS_OF_SERVICE"/> na <ph name="PRIVACY_POLICY"/>. Lemaza wakati wowote katika Mipangilio.</translation>
 <translation id="6128511569382736135">Ili kuanza simu ya bila malipo, wezesha Brave Private Ads</translation>
 <translation id="7930006085154756245">Ukiwa na Brave Private Ads, unapata tokeni za kutazama matangazo ya faragha (data yako iko salama). Zibadilishe tokeni hizo ziwe pesa, kadi za zawadi au zipe tovuti unazopenda bahshishi. Hakuna kufuatilia. Hakuna kasi kupungua.</translation>
 <translation id="4992617448154987397">Washa Brave Private Ads</translation>
-<translation id="7314030474505546826">Kwa kuwasha Ads, unakubali <ph name="TERMS_OF_SERVICE"/> na <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Sasa unaweza kuanza simu ya bila malipo</translation>
-<translation id="6712250553966900750">Gusa popote kwenye skrini ili uende kwenye Brave Talk.</translation>
+<translation id="7073631403665023390">Gusa popote kwenye skrini ili uende kwenye Brave Talk.</translation>
 <translation id="626339649633171286">Ungependa kupata maelezo zaidi kuhusu Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ulibadilisha <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Tafadhali angalia muunganisho wako wa mtandao.</translation>
@@ -542,7 +540,6 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="6146351434671268516">Andika mahali au nakili maneno haya katika mpangilio sahihi na uyahifadhi mahali salama.</translation>
 <translation id="7408247683131762445">ONYO: Usiwahi kufichua kauli yako mbadala. Yeyote aliye na kauli hii anaweza kuchukua fedha zako milele.</translation>
 <translation id="939275786514736244">Nimehifadhi nakala ya kaulisi yangu mahali salama</translation>
-<translation id="6896758677409633944">Nakala</translation>
 <translation id="2604744480284798833">Hifadhi nakala ya pochi yako sasa ili kulinda potifolio yako ya crypto kutopteza uwezo wa ufikiaji.</translation>
 <translation id="1202920745614909195">Nunua crypto ukitumia kadi ya mikopo au ya malipo ya Apple Pay.</translation>
 <translation id="841880029259839903">Tuma crypto au hamisha kutoka kwenye akaunti moja hadi nyingine.</translation>
@@ -559,14 +556,12 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">ZOTE</translation>
-<translation id="8892168913673237979">Zote zimewekwa!</translation>
-<translation id="8331501996028380732">Nunua, uza au zuia crypto. Ikiwa una akaunti ya crypto kwa sasa unaweza kuiongeza sasa.</translation>
 <translation id="2267753748892043616">Ongeza akaunti</translation>
 <translation id="2632612428525029752">Sasisha Akaunti</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Washa kipengele cha kufungua kwa kutumia alama ya kidole?</translation>
 <translation id="5493402808936397665">Wezesha bayometriki kufungua haraka pochi yako bila kuweka nenosiri lako.</translation>
-<translation id="8488282162676695335">Pochi ya Brave</translation>
+<translation id="1544192797660353713">Pochi ya Brave</translation>
 <translation id="6901810042765869341">Weka kaulisiri yako ya urejeshaji ili kurejesha akaunti yako ya crypto ya Brave Wallet.</translation>
 <translation id="1970161551843843564">Rejesha Akaunti ya Crypto</translation>
 <translation id="4811736040444856406">Onyesha kaulisiri ya urejeshaji</translation>
@@ -583,7 +578,6 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="745115390910697838">Kaulisiri hazikulingana. Tafadhali jaribu tena.</translation>
 <translation id="2360588547830602174">Urejeshaji wa akaunti haujafaulu. Tafadhali jaribu tena.</translation>
 <translation id="6392640873800632439">Bei ya Soko <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Bei kwa ETH</translation>
 <translation id="6748108480210050150">Kutoka</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -591,10 +585,7 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="6159566011642056819">Kukadiria (kadirio)</translation>
 <translation id="6998989275928107238">Kwenda</translation>
 <translation id="6664416064035847539">anwani au url</translation>
-<translation id="59223531494896848">Kikomo</translation>
-<translation id="3567988240819868195">Soko</translation>
 <translation id="632241521608275119">Ustahimili wa Slippage</translation>
-<translation id="4500473291496079954">Itaisha baada ya</translation>
 <translation id="1987317783729300807">Akaunti</translation>
 <translation id="3535654229833214438">Miamala</translation>
 <translation id="4636930964841734540">Taarifa</translation>
@@ -698,7 +689,6 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7995708795274219641">Kiwango + Gesi</translation>
 <translation id="1950052789869821983">Muamala</translation>
 <translation id="6122742277607781713">Potifolio</translation>
-<translation id="2805756323405976993">Programu</translation>
 <translation id="6083912983861746409">Bei ya Gesi (GWEI)</translation>
 <translation id="2499079593046817044">Kikomo cha Gesi(GWEI)</translation>
 <translation id="6389441740143786465">Lemaza Kushiriki Hub</translation>
