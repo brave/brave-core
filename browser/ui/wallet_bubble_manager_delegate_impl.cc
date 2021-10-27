@@ -91,7 +91,9 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
           IDS_ACCNAME_BRAVE_WALLET_BUTTON, true);
 }
 
-WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() = default;
+WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
+  webui_bubble_manager_->CloseBubble();
+}
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {
   // Suppress request if not from active web_contents.

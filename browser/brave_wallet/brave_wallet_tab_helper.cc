@@ -49,6 +49,11 @@ void BraveWalletTabHelper::ShowBubble() {
 }
 
 void BraveWalletTabHelper::ShowApproveWalletBubble() {
+  // If the Wallet page is open, then it will try to open the UI.
+  // But the user may have already had the panel UI opened.
+  // We want to avoid a hiding / showing of the panel in that case.
+  if (IsShowingBubble())
+    return;
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, GetApproveBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
