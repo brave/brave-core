@@ -1,5 +1,5 @@
 diff --git a/base/threading/thread_restrictions.h b/base/threading/thread_restrictions.h
-index 0f02929b82492a165931f00034906ca29f7e521b..90969ef29f71ba31ad3b8a4ffbe84bbcfcc03c41 100644
+index aca174d15635fc46de0b4fa236c1316d2d326c08..24712862d2914a131f26a4bc338bba455faf8f5f 100644
 --- a/base/threading/thread_restrictions.h
 +++ b/base/threading/thread_restrictions.h
 @@ -530,6 +530,7 @@ class BASE_EXPORT ScopedDisallowBaseSyncPrimitives {
