@@ -64,6 +64,7 @@
 #include "chrome/browser/apps/app_discovery_service/app_discovery_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
+#include "components/translate/core/common/translate_util.h"
 #endif
 
 namespace {
@@ -230,7 +231,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   std::unordered_set<const char*> disabled_features = {
 #if !defined(OS_ANDROID)
     apps::kAppDiscoveryRemoteUrlSearch.name,
+    translate::kTFLiteLanguageDetectionEnabled.name,
 #endif
+
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kAdInterestGroupAPI.name,
