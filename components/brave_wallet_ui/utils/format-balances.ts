@@ -36,6 +36,18 @@ export const toWei = (value: string, decimals: number) => {
   return result.isNaN() ? '0' : result.toFixed(0)
 }
 
+export const toHex = (value: string) => {
+  const numberValue = Number(value)
+  return '0x' + numberValue.toString(16)
+}
+
+export const hexToNumber = (value: string) => {
+  if (value) {
+    return '#' + parseInt(value, 16)
+  }
+  return ''
+}
+
 export const toWeiHex = (value: string, decimals: number) => {
   const result = new BigNumber(value).multipliedBy(10 ** decimals)
   return (result.isNaN()) ? '0x0' : '0x' + result.toString(16)
@@ -43,7 +55,7 @@ export const toWeiHex = (value: string, decimals: number) => {
 
 export const toGWei = (value: string, decimals: number) => {
   const result = new BigNumber(value).dividedBy(10 ** decimals).multipliedBy(10 ** 9)
-  return result.isNaN() ? '0' : result.toFixed(2).replace(/\.00$/,'')
+  return result.isNaN() ? '0' : result.toFixed(2).replace(/\.00$/, '')
 }
 
 export const gWeiToWei = (value: string) => {

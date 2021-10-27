@@ -1,5 +1,9 @@
 import * as React from 'react'
 
+// Options
+import { TokenInfo } from '../../../constants/types'
+import { hexToNumber } from '../../../utils/format-balances'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -12,7 +16,6 @@ import {
 } from './style'
 import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { withPlaceholderIcon } from '../../shared'
-import { TokenInfo } from '../../../constants/types'
 
 export interface Props {
   action?: () => void
@@ -31,14 +34,17 @@ const PortfolioAssetItem = (props: Props) => {
   return (
     <>
       {token.visible &&
-        <StyledWrapper onClick={action}>
+        // Selecting a erc721 token is temp disabled until UI is ready for viewing NFT's
+        <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <AssetIconWithPlaceholder selectedAsset={token} />
-            <AssetName>{token.name}</AssetName>
+            <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
-            <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
-            <AssetBalanceText>{formatWithCommasAndDecimals(assetBalance)} {token.symbol}</AssetBalanceText>
+            {!token.isErc721 &&
+              <FiatBalanceText>${formatWithCommasAndDecimals(fiatBalance)}</FiatBalanceText>
+            }
+            <AssetBalanceText>{token.isErc721 ? assetBalance : formatWithCommasAndDecimals(assetBalance)} {token.symbol}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }

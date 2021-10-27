@@ -170,7 +170,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
     const { wallet: { accounts } } = getState()
 
     const result = await Promise.all(accounts.map(async (account) => {
-      return Promise.all(account.tokens.map(async (token) => {
+      return Promise.all(account.tokens.filter((t) => !t.asset.isErc721).map(async (token) => {
         return {
           token: token,
           history: await assetRatioController.getPriceHistory(
