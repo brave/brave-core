@@ -72,14 +72,14 @@ export const NoAssetButton = styled.button`
   border: none;
   background: none;
   padding: 0px;
-  margin: 0px;
+  margin: 10px 0px;
   font-family: Poppins;
   font-size: 14px;
   letter-spacing: 0.01em;
   line-height: 20px;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.palette.blurple500};
   @media (prefers-color-scheme: dark) {
-    color: ${(p) => p.theme.palette.white};
+    color: ${(p) => p.theme.color.interactive06};
   }
 `
 

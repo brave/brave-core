@@ -11,6 +11,7 @@ import {
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
 import { getLocale } from '../../../../../common/locale'
+import { toHex } from '../../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -58,6 +59,8 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
   const [tokenName, setTokenName] = React.useState<string>('')
+  const [tokenID, setTokenID] = React.useState<string>('')
+  const [showTokenIDRequired, setShowTokenIDRequired] = React.useState<boolean>(false)
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
@@ -69,6 +72,15 @@ const EditVisibleAssetsModal = (props: Props) => {
       setHasError(false)
     }
     setTokenName(event.target.value)
+  }
+
+  const handleTokenIDChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError || showTokenIDRequired) {
+      setHasError(false)
+      setShowTokenIDRequired(false)
+    }
+    setTokenDecimals('0')
+    setTokenID(event.target.value)
   }
 
   const handleTokenSymbolChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,15 +162,23 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   const onClickAddCustomToken = () => {
     if (foundToken) {
+      if (foundToken.isErc721) {
+        let token = foundToken
+        token.tokenId = tokenID ? toHex(tokenID) : ''
+        setIsLoading(true)
+        onAddUserAsset(token)
+        return
+      }
       onAddUserAsset(foundToken)
     } else {
       const newToken: TokenInfo = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
-        isErc20: true,
-        isErc721: false,
+        isErc20: tokenID ? false : true,
+        isErc721: tokenID ? true : false,
         name: tokenName,
         symbol: tokenSymbol,
+        tokenId: tokenID ? toHex(tokenID) : '',
         logo: '',
         visible: true
       }
@@ -167,14 +187,17 @@ const EditVisibleAssetsModal = (props: Props) => {
     setIsLoading(true)
   }
 
+  const isUserToken = (token: TokenInfo) => {
+    return userVisibleTokensInfo.map(e => e.contractAddress.toLowerCase()).includes(token.contractAddress.toLowerCase())
+  }
+
   const isAssetSelected = (token: TokenInfo): boolean => {
-    const isUserToken = userVisibleTokensInfo.map(e => e.contractAddress).includes(token.contractAddress)
-    return (isUserToken && token.visible) ?? false
+    return (isUserToken(token) && token.visible) ?? false
   }
 
   const isCustomToken = React.useCallback((token: TokenInfo): boolean => {
     const assetListContracts = fullAssetList.map((token) => token.contractAddress)
-    if (token.isErc20) {
+    if (token.isErc20 || token.isErc721) {
       return !assetListContracts.includes(token.contractAddress)
     } else {
       return false
@@ -182,14 +205,19 @@ const EditVisibleAssetsModal = (props: Props) => {
   }, [fullAssetList])
 
   const onCheckWatchlistItem = (key: string, selected: boolean, token: TokenInfo, isCustom: boolean) => {
-    const isUserToken = userVisibleTokensInfo.includes(token)
-    if (isUserToken) {
+    if (isUserToken(token)) {
       if (isCustom) {
         selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
       } else {
         selected ? onAddUserAsset(token) : onRemoveUserAsset(token)
       }
     } else {
+      if (token.isErc721) {
+        setTokenContractAddress(token.contractAddress)
+        setShowTokenIDRequired(true)
+        setShowAddCustomToken(true)
+        return
+      }
       onAddUserAsset(token)
     }
     setIsLoading(true)
@@ -228,6 +256,23 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [tokenContractAddress, fullAssetList])
 
+  React.useMemo(() => {
+    if (foundToken?.isErc721) {
+      if (tokenID === '') {
+        setShowTokenIDRequired(true)
+      }
+    }
+  }, [foundToken, tokenID])
+
+  const buttonDisabled = React.useMemo((): boolean => {
+    return tokenName === ''
+      || tokenSymbol === ''
+      || (tokenDecimals === '0' && tokenID === '')
+      || tokenDecimals === ''
+      || tokenContractAddress === ''
+      || !tokenContractAddress.toLowerCase().startsWith('0x')
+  }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress])
+
   return (
     <PopupModal title={showAddCustomToken ? getLocale('braveWalletWatchlistAddCustomAsset') : getLocale('braveWalletAccountsEditVisibleAssets')} onClose={onClose}>
       {showAddCustomToken &&
@@ -263,9 +308,19 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <Input
                   value={tokenDecimals}
                   onChange={handleTokenDecimalsChanged}
-                  disabled={isDisabled}
+                  disabled={isDisabled || tokenID !== ''}
                   type='number'
                 />
+                <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
+                <Input
+                  value={tokenID}
+                  onChange={handleTokenIDChanged}
+                  type='number'
+                  disabled={Number(tokenDecimals) > 0}
+                />
+                {showTokenIDRequired &&
+                  <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
+                }
                 {hasError &&
                   <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
                 }
@@ -279,13 +334,7 @@ const EditVisibleAssetsModal = (props: Props) => {
                     onSubmit={onClickAddCustomToken}
                     text={getLocale('braveWalletWatchListAdd')}
                     buttonType='primary'
-                    disabled={
-                      tokenName === ''
-                      || tokenSymbol === ''
-                      || tokenDecimals === ''
-                      || tokenContractAddress === ''
-                      || !tokenContractAddress.toLowerCase().startsWith('0x')
-                    }
+                    disabled={buttonDisabled}
                   />
                 </ButtonRow>
               </FormWrapper>
