@@ -940,6 +940,8 @@ namespace brave_rewards {
   struct HttpRoundtripContext;
   struct WakeupContext;
   struct CppSDK;
+  using SkusSdkImpl = ::brave_rewards::SkusSdkImpl;
+  using SkusSdkFetcher = ::brave_rewards::SkusSdkFetcher;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
   using FetchOrderCredentialsCallbackState = ::brave_rewards::FetchOrderCredentialsCallbackState;
   using PrepareCredentialsPresentationCallbackState = ::brave_rewards::PrepareCredentialsPresentationCallbackState;
@@ -970,6 +972,7 @@ enum class RewardsResult : ::std::uint8_t {
   ItemCredentialsExpired = 18,
   InvalidMerchantOrSku = 19,
   UnknownError = 20,
+  BorrowFailed = 21,
 };
 #endif // CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 
@@ -1042,5 +1045,5 @@ private:
 };
 #endif // CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 
-::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::rust::String env) noexcept;
+::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::std::unique_ptr<::brave_rewards::SkusSdkImpl> ctx, ::rust::String env) noexcept;
 } // namespace brave_rewards
