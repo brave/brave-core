@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
-const char kDefaultWallet[] = "brave.wallet.default_wallet";
+const char kDefaultWallet2[] = "brave.wallet.default_wallet2";
 const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
@@ -34,3 +34,4 @@ const char kBraveWalletDefaultKeyringAccountNum[] =
 const char kBraveWalletAccountNames[] = "brave.wallet.wallet_account_names";
 const char kBraveWalletBackupComplete[] = "brave.wallet.wallet_backup_complete";
 const char kBraveWalletWeb3ProviderDeprecated[] = "brave.wallet.web3_provider";
+const char kDefaultWalletDeprecated[] = "brave.wallet.default_wallet";

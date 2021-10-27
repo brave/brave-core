@@ -63,21 +63,6 @@ TEST_F(BraveWalletUnitTest, TestGetEthereumRemoteClientSeedFromRootSeed) {
                                  expected_derived_seed.end()));
 }
 
-TEST_F(BraveWalletUnitTest, TestBitGoSeedFromRootSeed) {
-  constexpr std::array<uint8_t, 32> seed = {
-      48, 196, 56,  174, 243, 75,  120, 235, 37,  174, 254,
-      97, 37,  205, 101, 93,  181, 23,  190, 82,  53,  180,
-      51, 198, 232, 187, 188, 220, 160, 187, 212, 28};
-  constexpr std::array<uint8_t, 32> expected_derived_seed = {
-      101, 6,   89,  61,  129, 81,  104, 13,  48,  59, 117,
-      46,  73,  177, 168, 248, 91,  84,  145, 54,  61, 157,
-      27,  254, 45,  203, 71,  123, 188, 29,  224, 203};
-  std::string derived = EthereumRemoteClientService::GetBitGoSeedFromRootSeed(
-      std::string(seed.begin(), seed.end()));
-  ASSERT_EQ(derived, std::string(expected_derived_seed.begin(),
-                                 expected_derived_seed.end()));
-}
-
 TEST_F(BraveWalletUnitTest, TestSealSeed) {
   constexpr std::array<uint8_t, 32> seed = {
       48, 196, 56,  174, 243, 75,  120, 235, 37,  174, 254,

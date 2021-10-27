@@ -79,22 +79,6 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-    BraveWalletAPIBitGoKnownValuesTest) {
-  GetPrefs()->SetString(kERCAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
-  GetPrefs()->SetString(
-      kERCEncryptedSeed,
-      "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
-  ResultCatcher catcher;
-  const Extension* extension =
-    LoadExtension(extension_dir_.AppendASCII("braveWallet"));
-  ASSERT_TRUE(extension);
-  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-      browser()->profile(), ethereum_remote_client_extension_id,
-      "testKnownBitGoSeedValuesEndToEnd()"));
-  ASSERT_TRUE(catcher.GetNextResult()) << message_;
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderCryptoWallets) {
   brave_wallet::SetDefaultWallet(
       GetPrefs(), brave_wallet::mojom::DefaultWallet::CryptoWallets);
@@ -109,30 +93,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-    BraveWalletWeb3ProviderMetaMask) {
-  brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::Metamask);
+                       BraveWalletWeb3ProviderIsBraveWalletPreferExtension) {
+  brave_wallet::SetDefaultWallet(
+      GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   ResultCatcher catcher;
   const Extension* extension =
     LoadExtension(extension_dir_.AppendASCII("braveWallet"));
   ASSERT_TRUE(extension);
   ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
       browser()->profile(), ethereum_remote_client_extension_id,
-      "testProviderIsMetaMask()"));
-  ASSERT_TRUE(catcher.GetNextResult()) << message_;
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
-    BraveWalletWeb3ProviderAsk) {
-  brave_wallet::SetDefaultWallet(GetPrefs(),
-                                 brave_wallet::mojom::DefaultWallet::Ask);
-  ResultCatcher catcher;
-  const Extension* extension =
-    LoadExtension(extension_dir_.AppendASCII("braveWallet"));
-  ASSERT_TRUE(extension);
-  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
-      browser()->profile(), ethereum_remote_client_extension_id,
-      "testProviderIsAsk()"));
+      "testProviderIsBraveWalletPreferExtension()"));
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
 }
 

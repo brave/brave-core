@@ -38,7 +38,6 @@ const defaultState: PageState = {
   showIsRestoring: false,
   setupStillInProgress: false,
   isCryptoWalletsInstalled: false,
-  isMetaMaskInstalled: false,
   swapQuote: undefined,
   swapError: undefined
 }
@@ -161,13 +160,6 @@ reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolea
   return {
     ...state,
     isCryptoWalletsInstalled: payload
-  }
-})
-
-reducer.on(Actions.setMetaMaskInstalled, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    isMetaMaskInstalled: payload
   }
 })
 

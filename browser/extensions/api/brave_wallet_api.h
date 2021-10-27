@@ -62,15 +62,6 @@ class BraveWalletGetWalletSeedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletGetBitGoSeedFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.getBitGoSeed", UNKNOWN)
-
- protected:
-  ~BraveWalletGetBitGoSeedFunction() override {}
-  ResponseAction Run() override;
-};
-
 class BraveWalletGetProjectIDFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.getProjectID", UNKNOWN)

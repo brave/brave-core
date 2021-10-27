@@ -70,10 +70,11 @@ const defaultState: WalletState = {
   networkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
-  defaultWallet: DefaultWallet.BraveWallet,
+  defaultWallet: DefaultWallet.BraveWalletPreferExtension,
   activeOrigin: '',
   gasEstimates: undefined,
-  connectedAccounts: []
+  connectedAccounts: [],
+  isMetaMaskInstalled: false
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -405,6 +406,13 @@ reducer.on(WalletActions.queueNextTransaction, (state: any) => {
   return {
     ...state,
     selectedPendingTransaction: newPendingTransaction
+  }
+})
+
+reducer.on(WalletActions.setMetaMaskInstalled, (state: WalletState, payload: boolean) => {
+  return {
+    ...state,
+    isMetaMaskInstalled: payload
   }
 })
 

@@ -112,9 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_EQ(brave_wallet::GetDefaultWallet(
                 chrome_test_utils::GetProfile(this)->GetPrefs()),
-            brave_wallet::IsNativeWalletEnabled()
-                ? brave_wallet::mojom::DefaultWallet::BraveWallet
-                : brave_wallet::mojom::DefaultWallet::Ask);
+            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kShowWalletIconOnToolbar));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(

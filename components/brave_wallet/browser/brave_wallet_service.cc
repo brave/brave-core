@@ -118,7 +118,7 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kDefaultWallet,
+      kDefaultWallet2,
       base::BindRepeating(&BraveWalletService::OnDefaultWalletChanged,
                           base::Unretained(this)));
   p3a_periodic_timer_.Start(

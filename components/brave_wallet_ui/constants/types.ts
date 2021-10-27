@@ -205,6 +205,7 @@ export interface WalletState {
   activeOrigin: string
   gasEstimates?: GasEstimation
   connectedAccounts: WalletAccountType[]
+  isMetaMaskInstalled: boolean
 }
 
 export interface PanelState {
@@ -239,7 +240,6 @@ export interface PageState {
   importWalletError: ImportWalletError
   showAddModal: boolean
   isCryptoWalletsInstalled: boolean
-  isMetaMaskInstalled: boolean
   swapQuote?: SwapResponse
   swapError?: SwapErrorResponse
 }
@@ -724,10 +724,10 @@ export interface SetUserAssetVisibleReturnInfo {
 }
 
 export enum DefaultWallet {
-  Ask,
+  AskDeprecated,
   None,
   CryptoWallets,
-  Metamask,
+  BraveWalletPreferExtension,
   BraveWallet
 }
 
@@ -754,6 +754,10 @@ export interface GetPendingSignMessageRequestReturnInfo {
   message: string
 }
 
+export interface IsMetaMaskInstalledReturnInfo {
+  installed: boolean
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
@@ -767,6 +771,7 @@ export interface BraveWalletService {
   getPendingSignMessageRequest: () => Promise<GetPendingSignMessageRequestReturnInfo>
   notifySignMessageRequestProcessed: (approved: boolean, id: number) => Promise<void>
   notifySignMessageHardwareRequestProcessed: (approved: boolean, id: number, signature: string, error: string) => Promise<void>
+  isMetaMaskInstalled: () => Promise<IsMetaMaskInstalledReturnInfo>
 }
 
 export interface RecoveryObject {
