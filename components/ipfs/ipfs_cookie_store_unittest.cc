@@ -6,7 +6,7 @@
 #include "net/cookies/cookie_monster_store_test.h"  // For CookieStore mock
 #include "net/cookies/cookie_store.h"
 #include "net/cookies/cookie_store_unittest.h"
-#include "net/log/test_net_log.h"
+#include "net/log/net_log.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -43,13 +43,12 @@ class IPFSCookieStoreTest : public CookieStoreTest<IPFSCookieStoreTestTraits> {
   GURL GetIPNSURL(const std::string& cid) {
     return GURL("http://" + cid + ".ipns.localhost:48080");
   }
-
-  RecordingTestNetLog net_log_;
 };
 
 TEST_F(IPFSCookieStoreTest, SetCookie) {
   scoped_refptr<MockPersistentCookieStore> store(new MockPersistentCookieStore);
-  std::unique_ptr<CookieMonster> cm(new CookieMonster(store.get(), &net_log_));
+  std::unique_ptr<CookieMonster> cm(
+      new CookieMonster(store.get(), net::NetLog::Get()));
 
   // Verify
   // 1. {CID}.ipfs.localhost can set cookies for itself
