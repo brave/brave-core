@@ -16,8 +16,12 @@ pub use brave_rewards;
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
 #[derive(Clone)]
+pub struct NativeClientContext(Rc<RefCell<UniquePtr<ffi::SkusSdkImpl>>>);
+
+#[derive(Clone)]
 pub struct NativeClient {
     pool: Rc<RefCell<LocalPool>>,
+    ctx: NativeClientContext,
 }
 
 impl fmt::Debug for NativeClient {
@@ -52,6 +56,7 @@ mod ffi {
         ItemCredentialsExpired,
         InvalidMerchantOrSku,
         UnknownError,
+        BorrowFailed,
     }
 
     pub struct HttpRequest {
@@ -73,7 +78,7 @@ mod ffi {
         type WakeupContext;
 
         type CppSDK;
-        fn initialize_sdk(env: String) -> Box<CppSDK>;
+        fn initialize_sdk(ctx: UniquePtr<SkusSdkImpl>, env: String) -> Box<CppSDK>;
         fn refresh_order(
             self: &CppSDK,
             callback: RefreshOrderCallback,
@@ -98,11 +103,15 @@ mod ffi {
     unsafe extern "C++" {
         include!("shim.h");
 
+        type SkusSdkImpl;
+        type SkusSdkFetcher;
+
         fn shim_executeRequest(
+            ctx: &SkusSdkImpl,
             req: &HttpRequest,
             done: fn(Box<HttpRoundtripContext>, resp: HttpResponse),
-            ctx: Box<HttpRoundtripContext>,
-        );
+            rt_ctx: Box<HttpRoundtripContext>,
+        ) -> UniquePtr<SkusSdkFetcher>;
 
         fn shim_scheduleWakeup(
             delay_ms: u64,
@@ -110,9 +119,9 @@ mod ffi {
             ctx: Box<WakeupContext>,
         );
 
-        fn shim_purge();
-        fn shim_set(key: &str, value: &str);
-        fn shim_get(key: &str) -> String;
+        fn shim_purge(ctx: Pin<&mut SkusSdkImpl>);
+        fn shim_set(ctx: Pin<&mut SkusSdkImpl>, key: &str, value: &str);
+        fn shim_get(ctx: Pin<&mut SkusSdkImpl>, key: &str) -> String;
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -127,7 +136,7 @@ pub struct CppSDK {
     sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
 }
 
-fn initialize_sdk(env: String) -> Box<CppSDK> {
+fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkImpl>, env: String) -> Box<CppSDK> {
     // FIXME replace with ffi logging
     tracing_subscriber::fmt::init();
 
@@ -135,6 +144,7 @@ fn initialize_sdk(env: String) -> Box<CppSDK> {
     let sdk = brave_rewards::sdk::SDK::new(
         NativeClient {
             pool: Rc::new(RefCell::new(LocalPool::new())),
+            ctx: NativeClientContext(Rc::new(RefCell::new(ctx))),
         },
         &env,
         None,
