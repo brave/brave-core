@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
 <translation id="4424486208397124985">প্রকাশকের প্রাসঙ্গিকতার জন্য ন্যুনতম সাক্ষাত</translation>
 <translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
-<translation id="5875669387851353511">ভিডিওতে অবদান করার অনুমতি দিন</translation>
+<translation id="5510618543889994434">ভিডিওতে অবদান করার অনুমতি দিন</translation>
 <translation id="8933202740471878108">1টি সাক্ষাত</translation>
 <translation id="354797634123275103">5টি সাক্ষাত</translation>
 <translation id="3583700907990488238">10টি সাক্ষাত</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">সম্পূর্ণ ওয়ালেট যাচাইকরণ</translation>
 <translation id="9200453331904391567">Brave পুরষ্কারগুলি থেকে সংযোগ বিচ্ছিন্ন করুন</translation>
 <translation id="3656941797339037856">Gemini-র সাথে Rewards লিঙ্ক করুন!</translation>
-<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave Rewards ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
-<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini আর্ন APY</translation>
+<translation id="2383784987664887340">Gemini আপনাকে আপনার BAT-এ আপনাকে সহজেই কেনাবেচা, স্টোর ও 3.49% APY উপার্জন করতে দেয়। এখনই Gemini -এর সাহায্যে আপনার Brave রিওয়ার্ডস ওয়ালেট যাচাই ও লিঙ্কযুক্ত করুন!</translation>
+<translation id="2237374144728570574">* 15ই সেপ্টেম্বর 2021 এর হিসাবে Gemini Earn APY</translation>
 <translation id="7404779623219601861">উপহার কার্ডের জন্য BAT রিডিম করুন</translation>
 <translation id="6215565499749144110">TAP নেটওয়ার্ক দিয়ে, আপনি জনপ্রিয় নাম-ব্র্যান্ড যুক্ত উপহার কার্ডের জন্য আপনার BAT রিডিম করে নিতে পারেন।</translation>
 <translation id="6915065518766963119">* অনুমোদিত যাচাইকরণের প্রয়োজন।</translation>
@@ -782,7 +782,7 @@
 <translation id="167698752210114155">একটি অভ্যন্তরীন ত্রুটি ঘটেছে</translation>
 <translation id="4641919696349069826">একটি অনুরোধ ইতিমধ্যে অগ্রগতিতে রয়েছে</translation>
 <translation id="872806943696014633">লেনদেনের ডেটা অনুপস্থিত</translation>
-<translation id="4805410229033541409">লেনদেনগুলো করতে 'থেকে' অনুমোদিত নয়</translation>
+<translation id="4805410229033541409">লেনদেনগুলো করতে 'from' অনুমোদিত নয়</translation>
 <translation id="7068183357903252127">লেনদেনের ডেটা 'প্রতি' বা 'ডেটা' অবশ্যই নির্দিষ্ট করতে হবে</translation>
 <translation id="3087354946579878968">লেনদেনের তথ্য 'নন্সে' বৈধ নয়</translation>
 <translation id="7577623631309755655">লেনদেনের ডেটা 'gasPrice' বৈধ নয়</translation>
@@ -804,7 +804,7 @@
 <translation id="7740287852186792672">অনুসন্ধানের ফলাফল</translation>
 <translation id="5140238928332244937">আরও Defi ব্রাউজ করুন</translation>
 <translation id="6825869531314999449">আরও NFT ব্রাউজ করুন</translation>
-<translation id="2744185997184360326">যৌগিক</translation>
+<translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">মুক্ত আর্থিক অ্যাপ্লিকেশনের একটি ইউনিভার্স আনলক করুন।</translation>
 <translation id="1614407808582616698">MakerDAO</translation>
 <translation id="8723680648033138705">নির্মাতা - স্থিতিশীল, ঋণ এবং পরিচালনা...</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">বার্তা</translation>
 <translation id="3586752056660754651">স্বাক্ষর করুন</translation>
 <translation id="7065157926159745595">এই অ্যাপটিকে আপনার খরচ করার অনুমতি দিন</translation>
-<translation id="2746256479706649252">এই অনুমতি প্রদান করে, আপনি এই অ্যাপটিকে আপনার প্রত্যাহারের অনুমতি দিচ্ছেন</translation>
-<translation id="3959778836307233598">এবং আপনার জন্য স্বয়ংক্রিয় লেনদেন।</translation>
 <translation id="8786100550345425552">অনুমতি সম্পাদনা করুন</translation>
 <translation id="7710469167917867539">লেনদেন ফি</translation>
 <translation id="9065203028668620118">সম্পাদনা</translation>

@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
 <translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
-<translation id="5875669387851353511">Cho phép đóng góp vào vidoe</translation>
+<translation id="5510618543889994434">Cho phép đóng góp vào vidoe</translation>
 <translation id="8933202740471878108">1 lượt truy cập</translation>
 <translation id="354797634123275103">5 lượt truy cập</translation>
 <translation id="3583700907990488238">10 lượt xem</translation>
@@ -576,7 +576,7 @@
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
-<translation id="2383784987664887340">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Brave Rewards của bạn với Gemini ngay bây giờ!</translation>
+<translation id="2383784987664887340">Gemini giúp bạn dễ dàng trao đổi, lưu trữ và kiếm được 3,49% APY trên BAT của bạn. Hãy xác thực và liên kết ví Phần thưởng Brave của bạn với Gemini ngay bây giờ!</translation>
 <translation id="2237374144728570574">* APY của Gemini Earn tính đến ngày 15 tháng 9 năm 2021</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
@@ -821,7 +821,7 @@
 <translation id="2805756323405976993">Ứng dụng</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Tài khoản</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 giờ</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
 <translation id="7065157926159745595">Cho phép ứng dụng này sử dụng</translation>
-<translation id="2746256479706649252">Với việc cấp quyền này, bạn đang cho phép ứng dụng này rút tiền của bạn</translation>
-<translation id="3959778836307233598">và tự động hóa các giao dịch cho bạn.</translation>
 <translation id="8786100550345425552">Sửa quyền</translation>
 <translation id="7710469167917867539">Phí giao dịch</translation>
 <translation id="9065203028668620118">Chỉnh sửa</translation>
@@ -966,7 +964,7 @@
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="4693057234255364395">URL trình khám phá khối</translation>
 <translation id="3948067511324628726">Giá xăng</translation>
-<translation id="7163997622278957886">Trả giá</translation>
+<translation id="7163997622278957886">Giá thầu</translation>
 <translation id="1074360622426001342">Số tiền + xăng</translation>
 <translation id="7084089311475827950">Không có dữ liệu.</translation>
 <translation id="5821668936183240062">tiếp theo</translation>

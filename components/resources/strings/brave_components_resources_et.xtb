@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Minimaalne külastusaeg, millest alates külastust logitakse</translation>
 <translation id="4424486208397124985">Minimaalne külastuste arv, millest alates väljaandjat välja tuuakse</translation>
 <translation id="6248554379744796526">Näidake kinnitamata veebilehti loendis</translation>
-<translation id="5875669387851353511">Luba videote premeerimine</translation>
+<translation id="5510618543889994434">Luba videote premeerimine</translation>
 <translation id="8933202740471878108">1 külastus</translation>
 <translation id="354797634123275103">5 külastust</translation>
 <translation id="3583700907990488238">10 külastust</translation>
@@ -577,7 +577,7 @@
 <translation id="3699674790322420653">Lõpetage rahakoti kinnitamine</translation>
 <translation id="9200453331904391567">Katkesta Brave Rewardsi ühendus</translation>
 <translation id="3656941797339037856">Siduge Rewards Geminiga!</translation>
-<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave Rewardsi rahakott ja siduge see kohe Geminiga.</translation>
+<translation id="2383784987664887340">Gemini võimaldab teil lihtsalt kaubelda ja säilitada ning teenida oma BAT-ide eest 3,49% aastatootlust. Kinnitage oma Brave'i preemiate rahakott ja siduge see kohe Geminiga.</translation>
 <translation id="2237374144728570574">* Programmi Gemini Earn protsentuaalne aastatootlus seisuga 15. september 2021</translation>
 <translation id="7404779623219601861">Lunasta BAT-d kinkekaartide vastu</translation>
 <translation id="6215565499749144110">TAP-võrgustikuga saad lunastada oma BAT-sid populaarsete kaubamärkide kinkekaartide vastu.</translation>
@@ -822,7 +822,7 @@
 <translation id="2805756323405976993">Rakendused</translation>
 <translation id="3586775666459823714">NFT-d</translation>
 <translation id="1987317783729300807">Kontod</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
@@ -855,7 +855,7 @@
 <translation id="6901073872645365201">Parool peab koosnema vähemalt 7 märgist, sisaldama vähemalt ühte numbrit ja ühte erimärki.</translation>
 <translation id="6657585470893396449">Parool</translation>
 <translation id="692381016487372902">Sisestage parool uuesti</translation>
-<translation id="3527905866577245691">Kinnitusparool ei sobi</translation>
+<translation id="3527905866577245691">Parooli kinnitus ei sobi</translation>
 <translation id="5168349973342709369">Rahakoti avamiseks sisestage parool</translation>
 <translation id="9111102763498581341">Ava lukk</translation>
 <translation id="5045550434625856497">Vale salasõna</translation>
@@ -922,7 +922,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="3512100619724810532">Kõik</translation>
 <translation id="1530109021798294736">Mainnet</translation>
-<translation id="1613627717923045622">Võrgu kontroll</translation>
+<translation id="1613627717923045622">Kontrolli võrku</translation>
 <translation id="4245123003308024264">Ropsten</translation>
 <translation id="2219337030359508039">Kovan</translation>
 <translation id="992469614838016642">Rinkeby</translation>
@@ -936,7 +936,7 @@
 <translation id="6857856707736769720">Valige järgmiste hulgast:</translation>
 <translation id="6323024765179772761">Otsi raha</translation>
 <translation id="6998989275928107238">Saaja</translation>
-<translation id="1506421160138798546">hinnang</translation>
+<translation id="1506421160138798546">hinnanguks</translation>
 <translation id="3567988240819868195">Turg</translation>
 <translation id="59223531494896848">Ülemmäär</translation>
 <translation id="8569380433211549748">Hind:</translation>
@@ -950,8 +950,6 @@
 <translation id="5488357322146334497">Sõnum</translation>
 <translation id="3586752056660754651">Allkirjasta</translation>
 <translation id="7065157926159745595">Luba sellel rakendusel kulutada</translation>
-<translation id="2746256479706649252">Selle loa andmisega lubate sellel rakendusel võtta välja teie</translation>
-<translation id="3959778836307233598">ja automatiseerida teie eest tehinguid.</translation>
 <translation id="8786100550345425552">Muuda lube</translation>
 <translation id="7710469167917867539">Tehingutasu</translation>
 <translation id="9065203028668620118">Muuda</translation>
@@ -977,7 +975,7 @@
 <translation id="838933475572692615">KUUETEISTKÜMNENDANDMED</translation>
 <translation id="2240831799756994975">BAIDID</translation>
 <translation id="4874303883488468190">Valige konto(d)</translation>
-<translation id="4015195974325151180">Vaadake aadresse oma</translation>
+<translation id="4015195974325151180">Vaadake aadresse:</translation>
 <translation id="3587259018193837508">lubatud kontode kohta (nõutav)</translation>
 <translation id="7029403458170657879">Ühendamine Brave'i rahakotiga</translation>
 <translation id="7982184974053636367">Brave'i rahakoti jaoks on vaja turvalisemat parooli</translation>
@@ -997,7 +995,7 @@
 <translation id="9099900965604225657">Krüptorahakoti parool</translation>
 <translation id="4020495774166914146">Olen kaotanud parooli ja taastefraasi, loo uus rahakott.</translation>
 <translation id="480319080797177742">ühendatud</translation>
-<translation id="4203566092423620442">ühenduseta</translation>
+<translation id="4203566092423620442">on ühenduseta</translation>
 <translation id="5317781812114905957">Juhised</translation>
 <translation id="1952715382071350669">Riistvararahakott nõuab tehingu kinnitamist.</translation>
 <translation id="8687869982094542529">saadetud</translation>
@@ -1019,7 +1017,7 @@
 <translation id="2445079431396622762">Maksimaalne tasu</translation>
 <translation id="6152793706702141594">Praegune põhitasu</translation>
 <translation id="8689322170423904690">Gwei</translation>
-<translation id="8685908198496503620">Määra kohandus</translation>
+<translation id="8685908198496503620">Määra kohandatud</translation>
 <translation id="7400927223938424379">Määra pakutud</translation>
 <translation id="1118876217803190221">Ebapiisav saldo</translation>
 <translation id="275990379543116961">Gaasi jaoks ei ole piisavalt rahalisi vahendeid</translation>

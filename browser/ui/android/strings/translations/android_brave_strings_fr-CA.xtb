@@ -469,17 +469,15 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="3769645103175790584">Gagnez des jetons et récompensez les créateurs pour leur contenu génial tout en navigant. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Viside rapide</translation>
 <translation id="1080013038789678738">J'embarque!</translation>
-<translation id="8037420924417098685">Pour démarrer un appel gratuit, activez Brave Rewards</translation>
-<translation id="8961724619078500274">Avec Brave Rewards, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes-cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.</translation>
+<translation id="8037420924417098685">Pour démarrer un appel gratuit, activez les récompenses Brave</translation>
+<translation id="8961724619078500274">Avec les récompenses Brave, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes-cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.</translation>
 <translation id="7307847920988946894">Activez les récompenses</translation>
-<translation id="1186139901474936180">En appuyant, vous acceptez les <ph name="TERMS_OF_SERVICE"/> et la <ph name="PRIVACY_POLICY"/>. En tout temps, vous pouvez procéder à la désactivation dans les paramètres.</translation>
 <translation id="6128511569382736135">Pour démarrer un appel gratuit, activez Brave Private Ads</translation>
 <translation id="7930006085154756245">Avec Brave Private Ads, vous gagnez des jetons en regardant des annonces privées (vos données sont en sécurité). Transformez ces jetons en espèces, en cartes-cadeaux… Vous pouvez même faire un don aux sites web que vous aimez. Sans suivi. Sans ralentissements.</translation>
 <translation id="4992617448154987397">Activer Brave Private Ads</translation>
-<translation id="7314030474505546826">En activant Ads, vous acceptez les <ph name="TERMS_OF_SERVICE"/> et la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Vous pouvez maintenant démarrer un appel gratuit</translation>
-<translation id="6712250553966900750">Touchez l'écran n'importe où pour continuer vers Brave Talk.</translation>
-<translation id="626339649633171286">Vous voulez en savoir plus sur Brave Rewards? <ph name="TAKE_QUICK_TOUR"/></translation>
+<translation id="7073631403665023390">Touchez l'écran n'importe où pour continuer vers Brave Talk.</translation>
+<translation id="626339649633171286">Vous voulez en savoir plus sur les récompenses Brave? <ph name="TAKE_QUICK_TOUR"/></translation>
 <translation id="3604285424134705930">Vous avez converti <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> en <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Veuillez vérifier votre connexion réseau.</translation>
 <translation id="7889432931837317731">Ouvrir automatiquement lorsque possible</translation>
@@ -541,7 +539,6 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="6146351434671268516">Écrivez ou copiez ces mots dans le bon ordre et conservez-les dans un endroit sûr.</translation>
 <translation id="7408247683131762445">ATTENTION : ne révélez jamais votre phrase de secours. N'importe qui avec cette phrase pourra voler vos fonds sans aucun recours possible.</translation>
 <translation id="939275786514736244">Ma phrase est stockée dans un endroit sûr</translation>
-<translation id="6896758677409633944">Copier</translation>
 <translation id="2604744480284798833">Sauvegardez votre portefeuille maintenant afin de protéger votre portefeuille crypto contre une perte d'accès.</translation>
 <translation id="1202920745614909195">Achetez des cryptos avec Apple Pay, une carte de crédit ou une carte de débit.</translation>
 <translation id="841880029259839903">Envoyez des cryptos ou transférez-les d'un compte à l'autre.</translation>
@@ -558,14 +555,12 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="6366007539108097840">3 mois</translation>
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6895566650974550243">TOUS</translation>
-<translation id="8892168913673237979">C'est fait!</translation>
-<translation id="8331501996028380732">Achetez, échangez ou conservez des cryptos. Si vous avez un compte crypto existant, vous pouvez l'ajouter maintenant.</translation>
 <translation id="2267753748892043616">Ajouter un compte</translation>
 <translation id="2632612428525029752">Mettre à jour le compte</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activer le déverrouillage par empreinte digitale?</translation>
 <translation id="5493402808936397665">Activez l'authentification biométrique pour accéder rapidement à votre portefeuille sans entrer votre mot de passe.</translation>
-<translation id="8488282162676695335">Portefeuille Brave</translation>
+<translation id="1544192797660353713">Portefeuille Brave</translation>
 <translation id="6901810042765869341">Entrez votre phrase de récupération pour restaurer votre portefeuille Brave.</translation>
 <translation id="1970161551843843564">Restaurer un compte crypto</translation>
 <translation id="4811736040444856406">Afficher la phrase de récupération</translation>
@@ -582,7 +577,6 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="745115390910697838">Les phrases ne correspondent pas. Veuillez réessayer.</translation>
 <translation id="2360588547830602174">La récupération du compte a échoué. Veuillez réessayer.</translation>
 <translation id="6392640873800632439">Prix du marché en <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Prix en ETH</translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -590,10 +584,7 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="6159566011642056819">À (estimation)</translation>
 <translation id="6998989275928107238">À</translation>
 <translation id="6664416064035847539">adresse ou URL</translation>
-<translation id="59223531494896848">Limite</translation>
-<translation id="3567988240819868195">Marché</translation>
 <translation id="632241521608275119">Tolérance de retard</translation>
-<translation id="4500473291496079954">Expire dans</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3535654229833214438">Transactions</translation>
 <translation id="4636930964841734540">Renseignements</translation>
@@ -697,7 +688,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7995708795274219641">Montant + gaz</translation>
 <translation id="1950052789869821983">Transaction</translation>
 <translation id="6122742277607781713">Portefeuille</translation>
-<translation id="2805756323405976993">Applications</translation>
 <translation id="6083912983861746409">Prix du gaz (GWEI)</translation>
 <translation id="2499079593046817044">Limite de gaz (GWEI)</translation>
 <translation id="6389441740143786465">Désactiver le centre de partage</translation>

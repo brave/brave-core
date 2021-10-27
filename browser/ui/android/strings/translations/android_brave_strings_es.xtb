@@ -473,13 +473,11 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="8037420924417098685">Para iniciar una llamada gratuita, activa Brave Rewards</translation>
 <translation id="8961724619078500274">Con Brave Rewards, ganas tokens por ver anuncios en modo privado (tus datos estarán protegidos). Puedes canjear esos tokens por efectivo o tarjetas de regalo, o bien dar una propina a los sitios web que más te gustan. Sin registro de datos ni demoras.</translation>
 <translation id="7307847920988946894">Activa Rewards</translation>
-<translation id="1186139901474936180">Al tocar esta opción, aceptas las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>. Puedes dar marcha atrás en cualquier momento desde la configuración.</translation>
 <translation id="6128511569382736135">Para iniciar una llamada gratuita, activa Brave Private Ads</translation>
 <translation id="7930006085154756245">Con Brave Private Ads, ganas tokens por ver anuncios en modo privado (tus datos estarán protegidos). Puedes canjear esos tokens por efectivo o tarjetas de regalo, o bien dar una propina a los sitios web que más te gustan. Sin registro de datos ni demoras.</translation>
 <translation id="4992617448154987397">Activar Brave Private Ads</translation>
-<translation id="7314030474505546826">Al activar Ads, aceptas las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Ya puedes iniciar una llamada gratuita</translation>
-<translation id="6712250553966900750">Toca en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
+<translation id="7073631403665023390">Toca en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
 <translation id="626339649633171286">¿Quieres obtener más información sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ha convertido <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> en <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Compruebe su conexión de red.</translation>
@@ -542,7 +540,6 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="6146351434671268516">Anota o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
 <translation id="7408247683131762445">ADVERTENCIA: No reveles nunca tu frase de recuperación. Cualquier persona que la tenga podría quedarse con tus fondos para siempre.</translation>
 <translation id="939275786514736244">He guardado la frase en un lugar seguro</translation>
-<translation id="6896758677409633944">Copiar</translation>
 <translation id="2604744480284798833">Haz una copia de seguridad de tu monedero para proteger tu cartera de criptomonedas y no quedarte sin acceso.</translation>
 <translation id="1202920745614909195">Compra criptomonedas con Apple Pay o tarjeta de crédito/débito.</translation>
 <translation id="841880029259839903">Envía criptomonedas o transfiere entre cuentas.</translation>
@@ -559,14 +556,12 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="6366007539108097840">3 meses</translation>
 <translation id="6977728312178289892">1 año</translation>
 <translation id="6895566650974550243">TODO</translation>
-<translation id="8892168913673237979">¡Todo listo!</translation>
-<translation id="8331501996028380732">Compra, intercambia o conserva criptomonedas. Si ya tienes una cuenta de criptomonedas, puedes añadirla ahora.</translation>
 <translation id="2267753748892043616">Añadir cuenta</translation>
 <translation id="2632612428525029752">Actualizar cuenta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Permitir el desbloqueo con huella?</translation>
 <translation id="5493402808936397665">Activa la biometría para desbloquear rápidamente tu monedero sin introducir la contraseña.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Introduce la frase de recuperación para recuperar tu cuenta de criptomonedas Brave Wallet.</translation>
 <translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperación</translation>
@@ -583,7 +578,6 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="745115390910697838">Las frases no coinciden. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">Error al recuperar la cuenta. Inténtalo de nuevo.</translation>
 <translation id="6392640873800632439">Precio de mercado en <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Precio en ETH</translation>
 <translation id="6748108480210050150">De:</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -591,10 +585,7 @@ hasta que sean verificados, o hasta que hayan transcurrido 90 días.</translatio
 <translation id="6159566011642056819">A (estimación)</translation>
 <translation id="6998989275928107238">Para</translation>
 <translation id="6664416064035847539">dirección o URL</translation>
-<translation id="59223531494896848">Límite</translation>
-<translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
-<translation id="4500473291496079954">Caduca dentro de</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="3535654229833214438">Transacciones</translation>
 <translation id="4636930964841734540">Información</translation>
@@ -673,7 +664,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="4395361077929528480">Tipo de red</translation>
 <translation id="755448900483975096">Proveedor de red móvi</translation>
 <translation id="1279441577056010362">Continuar con el correo electrónico</translation>
-<translation id="2553687444159335134">Asistencia proporcionada con la ayuda del equipo de Guardian.\n\nSelecciona qué información quieres compartir con nosotros.\n\nCuanta más compartas de primeras, más fácil será para nuestro personal de asistencia resolver tus</translation>
+<translation id="2553687444159335134">Asistencia proporcionada con la ayuda del equipo de Guardian.\n\nSelecciona qué información quieres compartir con nosotros.\n\nCuanta más compartas de primeras, más fácil será para nuestro personal de asistencia resolver tu</translation>
 <translation id="7999094850625689785">Se seleccionará automáticamente la región de servidor que tengas más cerca, según la zona horaria de tu sistema. Se recomienda que sea así para que la conexión de Internet sea rápida.</translation>
 <translation id="8018707825009059641">Otros problemas</translation>
 <translation id="6687228121145903051">No es posible conectarse a la VPN (otro error)</translation>
@@ -698,7 +689,6 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="7995708795274219641">Cantidad + Gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="6122742277607781713">Cartera</translation>
-<translation id="2805756323405976993">Aplicaciones</translation>
 <translation id="6083912983861746409">Precio de gas (GWEI)</translation>
 <translation id="2499079593046817044">Límite de gas (GWEI)</translation>
 <translation id="6389441740143786465">Desactivar el centro de difusión</translation>

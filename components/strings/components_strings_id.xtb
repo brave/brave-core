@@ -391,7 +391,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="2283340219607151381">Simpan dan isi alamat</translation>
 <translation id="2283447177162560884">'<ph name="PAGE_TITLE"/>' dihapus</translation>
 <translation id="2288422996159078444">Apa pun yang Anda ketik, halaman mana pun yang Anda lihat, atau aktivitas lain di web sedang dipantau. Konten di situs dapat berubah tanpa pemberitahuan sebelumnya.</translation>
-<translation id="2289385804009217824">Trim</translation>
+<translation id="2289385804009217824">Pangkas</translation>
 <translation id="2292556288342944218">Akses Internet Anda diblokir</translation>
 <translation id="2293443924986248631">Jika diaktifkan, situs tidak dapat menggunakan cookie yang akan melacak Anda di seluruh web. Fitur di beberapa situs mungkin error.</translation>
 <translation id="6148139222908395733">URL halaman yang Anda kunjungi akan dikirimkan ke Brave Cloud atau pihak ketiga untuk analisis. Misalnya, URL mungkin dipindai untuk mendeteksi situs yang tidak aman.</translation>
@@ -2369,7 +2369,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5673623523506565506">Sekarang Anda dapat menjelajah web secara pribadi, dan profil lain yang menggunakan perangkat ini tidak dapat melihat aktivitas Anda. Namun, unduhan dan bookmark akan disimpan.</translation>
 <translation id="3812568169637430422">Sekarang Anda dapat menjelajah web secara pribadi, dan profil lain yang menggunakan perangkat ini tidak dapat melihat aktivitas Anda. Namun, unduhan, bookmark, dan isi daftar bacaan akan disimpan.</translation>
 <translation id="5186185447130319458">Pribadi</translation>
-<translation id="3683567996395248272">Yang dilakukan Pribadi</translation>
+<translation id="3683567996395248272">Yang dilakukan Mode Pribadi</translation>
 <translation id="4912243263991194586">Setelah menutup seluruh tab Pribadi, Brave menghilangkan:
         <ph name="BEGIN_LIST"/>
           <ph name="LIST_ITEM"/>Aktivitas penjelajahan Anda dari perangkat ini<ph name="END_LIST_ITEM"/>

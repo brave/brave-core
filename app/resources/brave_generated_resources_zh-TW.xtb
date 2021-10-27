@@ -188,13 +188,11 @@
 <translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="7701040980221191251">無</translation>
-<translation id="5655621391922317800">加密錢包</translation>
-<translation id="1696548911367097044">不推薦使用的加密錢包擴充</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">不推薦使用的加密錢包擴充</translation>
 <translation id="9131889008937672866">預設加密幣錢包</translation>
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
-<translation id="8239147115686034860">自動鎖定 Brave Wallet</translation>
-<translation id="414639769490080648">Brave Wallet 自動鎖定前等待的分鐘數</translation>
+<translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
+<translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="5927916530277631319">處理 Unstoppable Domains 的方式</translation>
 <translation id="8412057160793088103"><ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/>關於基於 HTTPS 的 DNS  與以太坊隱私注意事項。</translation>
@@ -305,8 +303,8 @@
 <translation id="1391855377994926460">保持更快的瀏覽網路速度，在主要新聞網站上的瀏覽速度是六倍快。</translation>
 <translation id="9218430445555521422">設定為預設瀏覽器</translation>
 <translation id="3479552764303398839">現在不要</translation>
-<translation id="732814027519296280">想改進 Brave Search 嗎？</translation>
-<translation id="2677865600861971449">選擇加入 Web 發現專案，匿名貢獻一些搜尋與瀏覽資料，改進所有使用者的 Brave Search 結果。保護隱私。無需操作。<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="732814027519296280">想改進 Brave 搜尋嗎？</translation>
+<translation id="2677865600861971449">選擇加入 Web 發現專案，匿名貢獻一些搜尋與瀏覽資料，改進所有使用者的 Brave 搜尋結果。保護隱私。無需操作。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">啟用</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="5039804452771397117">允許</translation>
@@ -319,7 +317,7 @@
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5600566490506283344">Brave 廣告通知</translation>
 <translation id="4174337572777167894">Web 發現專案</translation>
-<translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave Search。</translation>
+<translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4877147287319222750">新增到側邊欄</translation>
 <translation id="4233010476457917696">顯示側邊欄</translation>

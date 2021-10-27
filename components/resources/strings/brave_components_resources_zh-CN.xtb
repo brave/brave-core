@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="5875669387851353511">允许对视频付款</translation>
+<translation id="5510618543889994434">允许对视频付款</translation>
 <translation id="8933202740471878108">访问量为 1 次</translation>
 <translation id="354797634123275103">访问量为5次</translation>
 <translation id="3583700907990488238">访问量为10次</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">完成钱包验证</translation>
 <translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
 <translation id="3656941797339037856">将 Rewards 与 Gemini 关联！</translation>
-<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave Rewards 钱包与 Gemini 关联！</translation>
-<translation id="2237374144728570574">* Gemini 自 2021 年 9 月 15 日赚取 APY</translation>
+<translation id="2383784987664887340">Gemini 让您轻松交易、储存和赚取 3.49% APY* 的 BAT。立即验证并将您的 Brave 奖励钱包与 Gemini 关联！</translation>
+<translation id="2237374144728570574">* Gemini Earn 自 2021 年 9 月 15 日赚取 APY</translation>
 <translation id="7404779623219601861">将 BAT 兑换为礼品卡</translation>
 <translation id="6215565499749144110">使用 TAP 网络，您可以将 BAT 兑换成流行的名牌礼品卡。</translation>
 <translation id="6915065518766963119">* 需要维护验证。</translation>
@@ -821,7 +821,7 @@
 <translation id="2805756323405976993">应用</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">帐号</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 小时</translation>
 <translation id="8163269366661594721">1 天</translation>
 <translation id="7640956400175663828">1 周</translation>
 <translation id="9100647964747998533">1 个月</translation>
@@ -939,7 +939,7 @@
 <translation id="3567988240819868195">市场</translation>
 <translation id="59223531494896848">限制</translation>
 <translation id="8569380433211549748">价格单位</translation>
-<translation id="2490428413101944234">测试水管</translation>
+<translation id="2490428413101944234">测试水龙头</translation>
 <translation id="6082785102488657349">从水管获取 Ether</translation>
 <translation id="7420359180991315365">继续前往 Wyre</translation>
 <translation id="2581671693710952401">获取 Ether</translation>
@@ -948,9 +948,7 @@
 <translation id="3474375934783434676">签名风险自担</translation>
 <translation id="5488357322146334497">消息</translation>
 <translation id="3586752056660754651">签名</translation>
-<translation id="7065157926159745595">允许此应用花您的</translation>
-<translation id="2746256479706649252">授予此权限即表示您允许该应用取出您的</translation>
-<translation id="3959778836307233598">并为您自动处理交易。</translation>
+<translation id="7065157926159745595">允许此应用消费您的</translation>
 <translation id="8786100550345425552">编辑权限</translation>
 <translation id="7710469167917867539">交易费用</translation>
 <translation id="9065203028668620118">编辑</translation>
@@ -974,7 +972,7 @@
 <translation id="4709524402122994378">交易</translation>
 <translation id="4460220693591349571">功能类型</translation>
 <translation id="838933475572692615">HEX 数据</translation>
-<translation id="2240831799756994975">字节数</translation>
+<translation id="2240831799756994975">字节</translation>
 <translation id="4874303883488468190">选择账户</translation>
 <translation id="4015195974325151180">查看已允许账户的</translation>
 <translation id="3587259018193837508">地址（必填）</translation>
@@ -991,7 +989,7 @@
 <translation id="2770851145415891830">检测到现有的加密货币钱包</translation>
 <translation id="4938145712652668388">点击“开始”后，您将把之前的加密钱包导入到新的 Brave 钱包中，并享受上面列出的所有福利。试试吧，让我们知道您的想法！</translation>
 <translation id="913613743605881268">如果想跳过导入，保留旧的 Crypto Wallets 体验，只需导航到 Brave 浏览器</translation>
-<translation id="5886242758142314994">将默认值改为 Crypto Wallets。您还可以导入、尝试新的 Brave Wallet，并能够随时改回去。</translation>
+<translation id="5886242758142314994">将默认值改为 Crypto Wallets。您还可以导入、尝试新的 Brave 钱包，并能够随时改回去。</translation>
 <translation id="3301259443293676544">输入您现有的加密钱包密码以导入到 Brave 钱包。享受以更快、更安全的方式管理加密资产并与 web 3 DApps 交互。</translation>
 <translation id="9099900965604225657">加密货币钱包密码</translation>
 <translation id="4020495774166914146">我丢失了密码和恢复短语，创建新钱包。</translation>

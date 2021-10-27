@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Waktu laman minimum sebelum kunjungan dicatat</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk relevansi penerbit</translation>
 <translation id="6248554379744796526">Tampilkan situs non-terverifikasi dalam daftar</translation>
-<translation id="5875669387851353511">Izinkan kontribusi ke video</translation>
+<translation id="5510618543889994434">Izinkan kontribusi ke video</translation>
 <translation id="8933202740471878108">1 kunjungan</translation>
 <translation id="354797634123275103">5 kunjungan</translation>
 <translation id="3583700907990488238">10 kunjungan</translation>
@@ -577,7 +577,7 @@
 <translation id="9200453331904391567">Putuskan dari Brave Reward</translation>
 <translation id="3656941797339037856">Tautkan Rewards ke Gemini!</translation>
 <translation id="2383784987664887340">Gemini memungkinkan Anda untuk dengan mudah menukarkan, menyimpan, dan mendapatkan 3,49% APY dengan BAT Anda. Verifikasi dan tautkan dompet Brave Rewards Anda dengan Gemini sekarang!</translation>
-<translation id="2237374144728570574">* APY Pendapatan Gemini sejak 15 September 2021</translation>
+<translation id="2237374144728570574">* APY Gemini Earn sejak 15 September 2021</translation>
 <translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
 <translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
 <translation id="6915065518766963119">* Harus Lolos Verifikasi</translation>
@@ -782,7 +782,7 @@
 <translation id="167698752210114155">Telah terjadi kesalahan internal</translation>
 <translation id="4641919696349069826">Sudah ada permintaan yang diproses</translation>
 <translation id="872806943696014633">Data transaksi tidak ditemukan</translation>
-<translation id="4805410229033541409">'dari' tidak memiliki otoritas untuk mengirimkan transaksi</translation>
+<translation id="4805410229033541409">'from' tidak memiliki otoritas untuk mengirimkan transaksi</translation>
 <translation id="7068183357903252127">Data transaksi 'ke' atau 'data' harus diperjelas</translation>
 <translation id="3087354946579878968">Data transaksi 'tidak pernah' tidak valid</translation>
 <translation id="7577623631309755655">Data transaksi 'gasPrice' tidak valid</translation>
@@ -796,7 +796,7 @@
 <translation id="7381733147588397055">Tidak dapat mengonversi data transaksi</translation>
 <translation id="3829038878925630240">Data transaksi 'dari' harus diperjelas</translation>
 <translation id="4732386285392573809">Gagal mendapatkan harga bensin untuk transaksi</translation>
-<translation id="7619826778671319444">Gagal mendapatkan batas bensin untuk transaksi</translation>
+<translation id="7619826778671319444">Gagal mendapatkan batas maksimum bensin untuk transaksi</translation>
 <translation id="4232775951515678071">Gagal mendapatkan jenis untuk transaksi</translation>
 <translation id="7631054302129692654">Gagal mendapatkan estimasi bensin untuk transaksi EIP-1559</translation>
 <translation id="4958950550253325418">Aplikasi DeFi</translation>
@@ -887,7 +887,7 @@
 <translation id="795667975304826397">Tidak ada berkas yang dipilih</translation>
 <translation id="5891811606602061966">Gagal mengimpor akun, silakan coba lagi.</translation>
 <translation id="5051929972046200722">Pilih perangkat dompet peranti keras Anda</translation>
-<translation id="6932355307691676490">Sambungkan</translation>
+<translation id="6932355307691676490">Sambungkan ... Anda</translation>
 <translation id="4513956488935671725">dompet Anda langsung ke komputer.</translation>
 <translation id="5041211872515579638">Buka kunci perangkat Anda dan pilih aplikasi Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
@@ -921,7 +921,7 @@
 <translation id="8654192805213365413">75%</translation>
 <translation id="3512100619724810532">Semua</translation>
 <translation id="1530109021798294736">Mainnet</translation>
-<translation id="1613627717923045622">Jaringan Pengujian</translation>
+<translation id="1613627717923045622">Uji jaringan</translation>
 <translation id="4245123003308024264">Ropsten</translation>
 <translation id="2219337030359508039">Kovan</translation>
 <translation id="992469614838016642">Rinkeby</translation>
@@ -935,7 +935,7 @@
 <translation id="6857856707736769720">Pilih dari</translation>
 <translation id="6323024765179772761">Cari koin</translation>
 <translation id="6998989275928107238">Ke</translation>
-<translation id="1506421160138798546">estimasi</translation>
+<translation id="1506421160138798546">memperkirakan</translation>
 <translation id="3567988240819868195">Pasar</translation>
 <translation id="59223531494896848">Limit</translation>
 <translation id="8569380433211549748">Harga dalam</translation>
@@ -948,9 +948,7 @@
 <translation id="3474375934783434676">Tanda tangani dengan menanggung risiko Anda sendiri</translation>
 <translation id="5488357322146334497">Pesan</translation>
 <translation id="3586752056660754651">Tanda tangani</translation>
-<translation id="7065157926159745595">Izinkan aplikasi ini untuk menggunakan</translation>
-<translation id="2746256479706649252">Dengan memberikan izin ini, Anda mengizinkan aplikasi ini untuk menarik</translation>
-<translation id="3959778836307233598">dan mengotomasi transaksi untuk Anda.</translation>
+<translation id="7065157926159745595">Izinkan aplikasi ini untuk menggunakan ... Anda</translation>
 <translation id="8786100550345425552">Sunting izin</translation>
 <translation id="7710469167917867539">Biaya transaksi</translation>
 <translation id="9065203028668620118">Edit</translation>
@@ -966,7 +964,7 @@
 <translation id="7131971375297699539">Simbol mata uang</translation>
 <translation id="4693057234255364395">Blokir URL penjelajah</translation>
 <translation id="3948067511324628726">Biaya bensin</translation>
-<translation id="7163997622278957886">Tawar</translation>
+<translation id="7163997622278957886">Penawaran</translation>
 <translation id="1074360622426001342">Jumlah + bensin</translation>
 <translation id="7084089311475827950">Tidak ada data.</translation>
 <translation id="5821668936183240062">berikutnya</translation>
@@ -976,16 +974,16 @@
 <translation id="838933475572692615">DATA HEX</translation>
 <translation id="2240831799756994975">BITA</translation>
 <translation id="4874303883488468190">Pilih akun</translation>
-<translation id="4015195974325151180">Tampilkan alamat</translation>
-<translation id="3587259018193837508">akun Anda yang diizinkan (wajib)</translation>
+<translation id="4015195974325151180">Tampilkan alamat akun</translation>
+<translation id="3587259018193837508">Anda yang diizinkan (wajib)</translation>
 <translation id="7029403458170657879">Sambungkan dengan Brave Wallet</translation>
 <translation id="7982184974053636367">Kata sandi yang lebih aman diwajibkan untuk Brave Wallet</translation>
 <translation id="2372897697869224590">Atur kata sandi dompet Brave</translation>
 <translation id="7739762330714405363">Gunakan kata sandi yang sama</translation>
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="8449314044437208543">Impor dari</translation>
-<translation id="4428111176561355185">Impor</translation>
-<translation id="8929587248006013051">Akun MetaMask Anda ke dalam Brave Wallet. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
+<translation id="4428111176561355185">Impor ... Anda</translation>
+<translation id="8929587248006013051">Impor akun MetaMask Anda ke dalam Brave Wallet. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
 <translation id="4237840336687249184">Kata sandi MetaMask</translation>
 <translation id="2381605201035323535">dompet kripto</translation>
 <translation id="2770851145415891830">Dompet kripto yang sudah ada terdeteksi</translation>
@@ -1018,7 +1016,7 @@
 <translation id="2445079431396622762">Biaya maksimal</translation>
 <translation id="6152793706702141594">Biaya dasar saat ini</translation>
 <translation id="8689322170423904690">Gwei</translation>
-<translation id="8685908198496503620">Atur pengkhususan</translation>
+<translation id="8685908198496503620">Atur ... khusus</translation>
 <translation id="7400927223938424379">Atur yang disarankan</translation>
 <translation id="1118876217803190221">Saldo tidak mencukupi</translation>
 <translation id="275990379543116961">Dana tidak mencukupi untuk membeli bensin</translation>

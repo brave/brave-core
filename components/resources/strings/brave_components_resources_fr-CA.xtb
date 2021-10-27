@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Temps minimum de page avant l'enregistrement d'une visite</translation>
 <translation id="4424486208397124985">Nombre minimal de visites pour s'assurer de la pertinence de l'éditeur</translation>
 <translation id="6248554379744796526">Affichez les sites non vérifiés dans la liste</translation>
-<translation id="5875669387851353511">Permettre la contribution aux vidéos</translation>
+<translation id="5510618543889994434">Permettre la contribution aux vidéos</translation>
 <translation id="8933202740471878108">Une visite</translation>
 <translation id="354797634123275103">5 visites</translation>
 <translation id="3583700907990488238">10 visites</translation>
@@ -576,8 +576,8 @@
 <translation id="3699674790322420653">Vérification complète du portefeuille</translation>
 <translation id="9200453331904391567">Se déconnecter des Récompenses de Brave</translation>
 <translation id="3656941797339037856">Associez Rewards à Gemini !</translation>
-<translation id="2383784987664887340">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY sur votre BAT. Vérifiez votre portefeuille Brave Rewards et associez-le à Gemini dès maintenant!</translation>
-<translation id="2237374144728570574">* Gain d'APY Gemini au 15 septembre 2021</translation>
+<translation id="2383784987664887340">Gemini vous permet d'échanger, de stocker et de gagner facilement jusqu'à 3,49 % d'APY sur votre BAT. Vérifiez votre portefeuille de récompenses Brave et associez-le à Gemini dès maintenant!</translation>
+<translation id="2237374144728570574">* APY Gemini Earn au 15 septembre 2021</translation>
 <translation id="7404779623219601861">Échange de BAT contre des cartes-cadeaux</translation>
 <translation id="6215565499749144110">Avec le TAP réseau, vous pouvez échanger votre BAT contre des cartes-cadeaux de marques connues.</translation>
 <translation id="6915065518766963119">* Nécessite une vérification de conformité.</translation>
@@ -799,10 +799,10 @@
 <translation id="7619826778671319444">Impossible d'obtenir la limite de gaz pour la transaction</translation>
 <translation id="4232775951515678071">Impossible d'obtenir le type pour la transaction</translation>
 <translation id="7631054302129692654">Impossible d'obtenir l'estimation du gaz pour la transaction EIP-1559</translation>
-<translation id="4958950550253325418">Applications DeFi</translation>
+<translation id="4958950550253325418">Applications FiDé</translation>
 <translation id="735961408871282410">Places de marché de NFT</translation>
 <translation id="7740287852186792672">Résultats de recherche</translation>
-<translation id="5140238928332244937">Parcourir d'autres DeFi</translation>
+<translation id="5140238928332244937">Parcourir d'autres FiDé</translation>
 <translation id="6825869531314999449">Parcourir d'autres NFT</translation>
 <translation id="2744185997184360326">Compound</translation>
 <translation id="7587986159645261196">Déverrouillez un univers d'applications financières ouvertes.</translation>
@@ -836,7 +836,7 @@
 <translation id="5420730209575475110">non compatible</translation>
 <translation id="6518133107902771759">Vérifier</translation>
 <translation id="1420318137760245955">Bienvenue dans le nouveau portefeuille Brave</translation>
-<translation id="8303434745767477417">Conservez les actifs cryptos que vous détenez. Suivez la performance de votre portefeuille et interagissez avec des DApps web3. Négociez, investissez, empruntez et prêtez avec DeFi. Tout cela directement depuis le navigateur privé Brave. Aucune extension ni aucun téléchargement requis.</translation>
+<translation id="8303434745767477417">Conservez les actifs cryptos que vous détenez. Suivez la performance de votre portefeuille et interagissez avec des DApps web3. Négociez, investissez, empruntez et prêtez avec FiDé. Tout cela directement depuis le navigateur privé Brave. Aucune extension ni aucun téléchargement requis.</translation>
 <translation id="6972754398087986839">Démarrer</translation>
 <translation id="375882617301124395">Sauvegarder votre portefeuille crypto</translation>
 <translation id="1078873179929044999">À l'étape suivante, vous verrez une phrase de récupération de 12 mots, que vous pouvez utiliser pour récupérer vos comptes cryptos principaux. Conservez-la en lieu sûr. Votre phrase de récupération est le seul moyen de retrouver l'accès à votre compte en cas d'oubli du mot de passe, de perte ou de vol de votre appareil, ou si vous souhaitez changer de portefeuille.</translation>
@@ -858,7 +858,7 @@
 <translation id="5168349973342709369">Entrer le mot de passe pour déverrouiller le portefeuille</translation>
 <translation id="9111102763498581341">Déverrouiller</translation>
 <translation id="5045550434625856497">Mot de passe incorrect</translation>
-<translation id="7341660388388100491">Verrouiller la cryptomonnaie</translation>
+<translation id="7341660388388100491">Verrouiller le portefeuille crypto</translation>
 <translation id="765834632354589737">Sauvegarder le portefeuille</translation>
 <translation id="722307450061393855">Sauvegardez votre portefeuille maintenant afin de protéger vos actifs cryptos et de vous assurer de ne jamais en perdre l'accès.</translation>
 <translation id="1018806299114415224">Sauvegarder maintenant</translation>
@@ -887,8 +887,8 @@
 <translation id="795667975304826397">Aucun fichier choisi</translation>
 <translation id="5891811606602061966">Échec de l'importation du compte, veuillez réessayer.</translation>
 <translation id="5051929972046200722">Sélectionner votre appareil de portefeuille physique</translation>
-<translation id="6932355307691676490">Connectez votre</translation>
-<translation id="4513956488935671725">portefeuille directement à votre ordinateur.</translation>
+<translation id="6932355307691676490">Connectez votre portefeuille</translation>
+<translation id="4513956488935671725">directement à votre ordinateur.</translation>
 <translation id="5041211872515579638">Déverrouillez votre appareil et sélectionnez l'application Ethereum.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -935,12 +935,12 @@
 <translation id="6857856707736769720">Sélectionner parmi</translation>
 <translation id="6323024765179772761">Rechercher des pièces</translation>
 <translation id="6998989275928107238">À</translation>
-<translation id="1506421160138798546">estimation</translation>
+<translation id="1506421160138798546">estimer</translation>
 <translation id="3567988240819868195">Marché</translation>
 <translation id="59223531494896848">Limite</translation>
 <translation id="8569380433211549748">Prix en</translation>
-<translation id="2490428413101944234">Tester le robinet</translation>
-<translation id="6082785102488657349">Obtenez Ether à partir d'un robinet pour</translation>
+<translation id="2490428413101944234">Tester le faucet</translation>
+<translation id="6082785102488657349">Obtenez Ether à partir d'un faucet pour</translation>
 <translation id="7420359180991315365">Continuer vers Wyre</translation>
 <translation id="2581671693710952401">Obtenir Ether</translation>
 <translation id="8009571545960303544">Votre signature est demandée</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Message</translation>
 <translation id="3586752056660754651">Signer</translation>
 <translation id="7065157926159745595">Autoriser cette application à dépenser vos</translation>
-<translation id="2746256479706649252">En accordant cette autorisation, vous autorisez cette application à retirer votre</translation>
-<translation id="3959778836307233598">et à automatiser les transactions pour vous.</translation>
 <translation id="8786100550345425552">Modifier les autorisations</translation>
 <translation id="7710469167917867539">Frais de transaction</translation>
 <translation id="9065203028668620118">Modifier</translation>
@@ -999,7 +997,7 @@
 <translation id="4203566092423620442">déconnecté</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="1952715382071350669">Le portefeuille physique nécessite une confirmation de transaction.</translation>
-<translation id="8687869982094542529">envoyée</translation>
+<translation id="8687869982094542529">envoyé</translation>
 <translation id="5013754027092416509">reçu</translation>
 <translation id="5867988533873716616">L'URL de l'explorateur de bloc n'est pas disponible.</translation>
 <translation id="4255623233927788178">Afficher sur l'explorateur de bloc</translation>

@@ -188,9 +188,7 @@
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="2356070529366658676">询问</translation>
 <translation id="7701040980221191251">无</translation>
-<translation id="5655621391922317800">Crypto Wallets</translation>
-<translation id="1696548911367097044">不建议使用的 Crypto Wallets 扩展程序</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">不建议使用的 Crypto Wallets 扩展程序</translation>
 <translation id="9131889008937672866">默认的加密货币钱包</translation>
 <translation id="1834467296210148203">在工具栏上显示 Brave Wallet 图标</translation>
 <translation id="8239147115686034860">自动锁定 Brave 钱包</translation>
@@ -305,8 +303,8 @@
 <translation id="1391855377994926460">保持浏览网页的速度更快——在主要的新闻网站上最多快6倍。</translation>
 <translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="3479552764303398839">以后再说</translation>
-<translation id="732814027519296280">想改进 Brave  Search 吗？</translation>
-<translation id="2677865600861971449">选择加入 Web 发现项目，匿名贡献一些搜索和浏览数据，为所有用户改进 Brave Search 结果。保护隐私。无需任何精力。<ph name="LEARN_MORE_TEXT"/></translation>
+<translation id="732814027519296280">想改进 Brave 搜索吗？</translation>
+<translation id="2677865600861971449">选择加入 Web 发现项目，匿名贡献一些搜索和浏览数据，为所有用户改进 Brave 搜索结果。保护隐私。无需任何精力。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="5860491529813859533">启用</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="5039804452771397117">允许</translation>
@@ -319,7 +317,7 @@
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5600566490506283344">Brave 广告通知</translation>
 <translation id="4174337572777167894">Web 发现项目</translation>
-<translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave Search。</translation>
+<translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4877147287319222750">添加到侧边栏</translation>
 <translation id="4233010476457917696">显示侧边栏</translation>

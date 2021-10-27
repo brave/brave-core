@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Minimum na oras sa page bago mag-log ng pagbisita</translation>
 <translation id="4424486208397124985">Minimum na bilang ng mga pagbisita para sa kaugnayan ng publisher</translation>
 <translation id="6248554379744796526">Magpakita ng mga hindi na-verify na site sa listahan</translation>
-<translation id="5875669387851353511">Payagan ang kontribusyon sa mga video</translation>
+<translation id="5510618543889994434">Payagan ang kontribusyon sa mga video</translation>
 <translation id="8933202740471878108">1 pagbisita</translation>
 <translation id="354797634123275103">5 pagbisita</translation>
 <translation id="3583700907990488238">10 pagbisita</translation>
@@ -935,7 +935,7 @@
 <translation id="6857856707736769720">Pumili mula sa</translation>
 <translation id="6323024765179772761">Maghanap ng mga coin</translation>
 <translation id="6998989275928107238">Para sa</translation>
-<translation id="1506421160138798546">tantsa</translation>
+<translation id="1506421160138798546">tinatantsang</translation>
 <translation id="3567988240819868195">Market</translation>
 <translation id="59223531494896848">Limitasyon</translation>
 <translation id="8569380433211549748">Presyo sa</translation>
@@ -949,8 +949,6 @@
 <translation id="5488357322146334497">Mensahe</translation>
 <translation id="3586752056660754651">I-sign</translation>
 <translation id="7065157926159745595">Pahintulutan ang app na ito na gastusin ang iyong</translation>
-<translation id="2746256479706649252">Sa pamamagitan ng pagpapahintulot na ito, pinapahintulutan mo ang app na bawiin ang iyong</translation>
-<translation id="3959778836307233598">at i-automate ang mga transaksyon para sa iyo.</translation>
 <translation id="8786100550345425552">I-edit ang mga pahintulot</translation>
 <translation id="7710469167917867539">Bayarin sa transaksyon</translation>
 <translation id="9065203028668620118">I-edit</translation>
@@ -985,7 +983,7 @@
 <translation id="1085027414516521238">MetaMask</translation>
 <translation id="8449314044437208543">I-import mula sa</translation>
 <translation id="4428111176561355185">I-import ang iyong</translation>
-<translation id="8929587248006013051">Ang MetaMask ay naa-account sa Brave Wallet. I-enjoy ang mas mabilis at mas ligtas na paraan para pamahalaan ang mga asset ng cryptocurrency at makipag-ugnayan sa mga web 3 DApp.</translation>
+<translation id="8929587248006013051">mga MetaMask account sa Brave Wallet. I-enjoy ang mas mabilis at mas ligtas na paraan para pamahalaan ang mga asset ng cryptocurrency at makipag-ugnayan sa mga web 3 DApp.</translation>
 <translation id="4237840336687249184">password sa MetaMask</translation>
 <translation id="2381605201035323535">mga wallet ng cryptocurrency</translation>
 <translation id="2770851145415891830">May mga na-detect na kasalukuyang wallet ng cryptocurrency</translation>
@@ -996,7 +994,7 @@
 <translation id="9099900965604225657">Password sa mga wallet ng cryptocurrency</translation>
 <translation id="4020495774166914146">Nawala ko ang aking password at parirala sa pag-recover, gumawa ng bagong wallet.</translation>
 <translation id="480319080797177742">nakakonekta</translation>
-<translation id="4203566092423620442">nakadiskonekta</translation>
+<translation id="4203566092423620442">ay nakadiskonekta</translation>
 <translation id="5317781812114905957">Mga Tagubilin</translation>
 <translation id="1952715382071350669">Nangangailangan ng pagkumpirma ng transaksyon ang hardware wallet.</translation>
 <translation id="8687869982094542529">naipadala</translation>

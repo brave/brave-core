@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Rewards",
+    "message": "Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave-Prämien",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Mit Brave Rewards verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.",
+    "message": "Mit Brave-Prämien verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Möchten Sie mehr über Brave Rewards erfahren? $tour_link_begin$Machen Sie eine kurze Tour$tour_link_end$.",
+    "message": "Möchten Sie mehr über Brave-Prämien erfahren? $tour_link_begin$Machen Sie eine kurze Tour$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

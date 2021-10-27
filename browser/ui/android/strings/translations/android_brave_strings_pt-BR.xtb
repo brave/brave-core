@@ -468,17 +468,15 @@
 <translation id="3769645103175790584">Ganhe tokens e recompense os criadores pelo seu conteúdo excelente enquanto você navega. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Tour rápido</translation>
 <translation id="1080013038789678738">Estou dentro!</translation>
-<translation id="8037420924417098685">Para iniciar uma chamada gratuita, ative o Brave Rewards</translation>
-<translation id="8961724619078500274">Com o Brave Rewards, você ganha tokens ao visualizar anúncios privados (seus dados ficam seguros). Transforme esses tokens em dinheiro, vale-presentes... ou em doações para os sites que você adora. Sem rastreamento nem lentidão.</translation>
+<translation id="8037420924417098685">Para iniciar uma chamada gratuita, ative as Recompensas do Brave</translation>
+<translation id="8961724619078500274">Com as Recompensas do Brave, você ganha tokens ao visualizar anúncios privados (seus dados ficam seguros). Transforme esses tokens em dinheiro, vale-presentes... ou em doações para os sites que você adora. Sem rastreamento nem lentidão.</translation>
 <translation id="7307847920988946894">Ativar o Rewards</translation>
-<translation id="1186139901474936180">Ao tocar, você concorda com os <ph name="TERMS_OF_SERVICE"/> e a <ph name="PRIVACY_POLICY"/>. Desative quando quiser nas Configurações.</translation>
 <translation id="6128511569382736135">Para iniciar uma chamada gratuita, ative os Anúncios privados do Brave</translation>
 <translation id="7930006085154756245">Com os Anúncios privados do Brave, você ganha tokens ao visualizar anúncios privados (seus dados ficam seguros). Transforme esses tokens em dinheiro, vale-presentes... ou em doações para os sites que você adora. Sem rastreamento nem lentidão.</translation>
 <translation id="4992617448154987397">Ativar os Anúncios privados do Brave</translation>
-<translation id="7314030474505546826">Ao ativar os Anúncios, você concorda com os <ph name="TERMS_OF_SERVICE"/> e a <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Agora você pode iniciar uma chamada gratuita</translation>
-<translation id="6712250553966900750">Toque em qualquer parte da tela para ir para o Brave Talk.</translation>
-<translation id="626339649633171286">Quer saber mais sobre o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Toque em qualquer parte da tela para ir para o Brave Talk.</translation>
+<translation id="626339649633171286">Quer saber mais sobre as Recompensas do Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Você converteu <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> para <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Por favor, verifique sua conexão de rede.</translation>
 <translation id="7889432931837317731">Abrir automaticamente quando possível</translation>
@@ -540,7 +538,6 @@
 <translation id="6146351434671268516">Anote ou copie essas palavras na ordem correta e salve-as em um lugar seguro.</translation>
 <translation id="7408247683131762445">ATENÇÃO: nunca revele sua frase de backup a ninguém. Qualquer pessoa com essa frase pode obter seus fundos para sempre.</translation>
 <translation id="939275786514736244">Fiz um backup da minha frase em um lugar seguro</translation>
-<translation id="6896758677409633944">Copiar</translation>
 <translation id="2604744480284798833">Faça backup da sua carteira agora para proteger seu portfólio de criptomoedas contra a perda de acesso.</translation>
 <translation id="1202920745614909195">Compre criptomoedas com o Apple Pay ou um cartão de crédito ou débito.</translation>
 <translation id="841880029259839903">Envie criptomoedas ou as transfira de uma conta para outra.</translation>
@@ -557,14 +554,12 @@
 <translation id="6366007539108097840">3 meses</translation>
 <translation id="6977728312178289892">1 ano</translation>
 <translation id="6895566650974550243">TODAS</translation>
-<translation id="8892168913673237979">Tudo pronto!</translation>
-<translation id="8331501996028380732">Compra, negocie ou guarde criptomoedas. Se você já tem uma conta de criptomoedas, pode adicioná-la agora.</translation>
 <translation id="2267753748892043616">Adicionar conta</translation>
 <translation id="2632612428525029752">Atualizar conta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ativar o desbloqueio por impressão digital?</translation>
 <translation id="5493402808936397665">Ative a biometria para desbloquear rapidamente sua carteira sem precisar inserir sua senha.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Insira sua frase de recuperação para restaurar sua conta de criptomoedas do Brave Wallet.</translation>
 <translation id="1970161551843843564">Restaurar conta de criptomoedas</translation>
 <translation id="4811736040444856406">Mostrar frase de recuperação</translation>
@@ -581,7 +576,6 @@
 <translation id="745115390910697838">As frases não correspondem. Tente novamente.</translation>
 <translation id="2360588547830602174">Houve uma falha na recuperação da conta. Tente novamente.</translation>
 <translation id="6392640873800632439">Preço de mercado em <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Preço em ETH</translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -589,10 +583,7 @@
 <translation id="6159566011642056819">Em (estimativa)</translation>
 <translation id="6998989275928107238">Para</translation>
 <translation id="6664416064035847539">endereço ou URL</translation>
-<translation id="59223531494896848">Limite</translation>
-<translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerância de slippage</translation>
-<translation id="4500473291496079954">Expira em</translation>
 <translation id="1987317783729300807">Contas</translation>
 <translation id="3535654229833214438">Transações</translation>
 <translation id="4636930964841734540">Informações</translation>
@@ -650,7 +641,7 @@
 Se você não aceitar essa solicitação, a VPN não se reconectará, e sua conexão de internet não será protegida.</translation>
 <translation id="2429299231491852747">Aceitar solicitação de conexão</translation>
 <translation id="3428909627460825679">Houve uma falha na criação do perfil de VPN. Tente novamente.</translation>
-<translation id="8584119457978684056">Houve uma falha na verificação da compra do token. Tente novamente.</translation>
+<translation id="8584119457978684056">Houve uma falha na verificação do token de compra. Tente novamente.</translation>
 <translation id="8905950042180169719">A VPN está em execução em segundo plano</translation>
 <translation id="8681480718817027245">Assinatura</translation>
 <translation id="7805768142964895445">Status</translation>
@@ -666,16 +657,16 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="5863914199331127413">Nome do host da VPN</translation>
 <translation id="5499653136178260315">Tipo de assinatura</translation>
 <translation id="4741058112780154119">Versão do app</translation>
-<translation id="7286066816862208787">Recibo do app</translation>
+<translation id="7286066816862208787">Recibo de app</translation>
 <translation id="2552966063069741410">Fuso horário</translation>
 <translation id="4395361077929528480">Tipo de rede</translation>
 <translation id="755448900483975096">Operadora de celular</translation>
 <translation id="1279441577056010362">Ir para o e-mail</translation>
-<translation id="2553687444159335134">Suporte oferecido com a ajuda da equipe da Guardian.\n\nSelecione as informações que você se sente à vontade para compartilhar conosco.\n\nQuanto mais informações você compartilhar inicialmente, mais fácil será para nossa equipe de suporte ajudar você a resolver</translation>
+<translation id="2553687444159335134">Suporte oferecido com a ajuda da equipe da Guardian.\n\nSelecione as informações que você se sente à vontade para compartilhar conosco.\n\nQuanto mais informações você compartilhar inicialmente, mais fácil será para nossa equipe de suporte ajudar você a resolver seu</translation>
 <translation id="7999094850625689785">A região de servidor mais próxima de você será selecionada automaticamente com base no fuso horário do seu sistema. Isso é recomendado para garantir velocidades de internet rápidas.</translation>
 <translation id="8018707825009059641">Outros problemas</translation>
 <translation id="6687228121145903051">Não foi possível se conectar à VPN (outro erro)</translation>
-<translation id="9184988385244077767">Sem internet quando conectado</translation>
+<translation id="9184988385244077767">Não há internet quando conectado à VPN</translation>
 <translation id="21570240866965662">Conexão lenta</translation>
 <translation id="1219475260382643267">O site não funciona</translation>
 <translation id="7138678301420049075">Outro</translation>
@@ -696,10 +687,9 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7995708795274219641">Quantidade + Gás</translation>
 <translation id="1950052789869821983">Transação</translation>
 <translation id="6122742277607781713">Portfólio</translation>
-<translation id="2805756323405976993">Apps</translation>
 <translation id="6083912983861746409">Preço do gás (GWEI)</translation>
 <translation id="2499079593046817044">Limite de gás (GWEI)</translation>
-<translation id="6389441740143786465">Desativar central de compartilhamento</translation>
+<translation id="6389441740143786465">Desativar barra de compartilhamento</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="473775607612524610">Atualizar</translation>
 <translation id="479795390141144417">Houve uma falha ao atualizar a conta.</translation>
