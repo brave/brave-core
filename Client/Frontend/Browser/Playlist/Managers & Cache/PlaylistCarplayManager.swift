@@ -63,6 +63,9 @@ class PlaylistCarplayManager: NSObject {
         // We must manually invoke the database initialization here.
         DataController.shared.initializeOnce()
         
+        // Setup Playlist Download Resume Session
+        PlaylistManager.shared.restoreSession()
+        
         // REFACTOR to support multiple windows.
         // OR find a way to get WebKit to load `Youtube` and other sites WITHOUT having to be in the view hierarchy..
         var currentWindow = browserController?.view.window

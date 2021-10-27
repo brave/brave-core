@@ -61,6 +61,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
         
+        // Setup Playlist
+        // This restores the playlist incomplete downloads. So if a download was started
+        // and interrupted on application death, we restart it on next launch.
+        PlaylistManager.shared.restoreSession()
+        
         // Setup Playlist Car-Play
         // TODO: Decide what to do if we have multiple windows
         // as it is only possible to have a single car-play instance.

@@ -185,6 +185,8 @@ extension PlaylistListViewController: UITableViewDelegate {
                 return
             }
             
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
+            PlaylistCarplayManager.shared.currentPlaylistItem = item
             self?.delegate?.playItem(item: item) { [weak self] error in
                 guard let self = self else {
                     PlaylistCarplayManager.shared.currentPlaylistItem = nil

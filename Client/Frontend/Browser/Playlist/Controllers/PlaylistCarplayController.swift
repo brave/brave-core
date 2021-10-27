@@ -227,6 +227,11 @@ class PlaylistCarplayController: NSObject {
         // an alert of CPNowPlayingTemplate.shared is being displayed
         //interfaceController.pop(to: tabBarTemplate, animated: true)
         
+        // Update Currently Playing Index before layout (so we can show the playing indicator)
+        if let pageSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc {
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: pageSrc) ?? -1
+        }
+        
         // Map all items to their IDs
         playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
         
@@ -457,9 +462,7 @@ extension PlaylistCarplayController {
         }
         
         // Reset Now Playing when playback is starting.
-        if !player.isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
-        }
+        PlaylistMediaStreamer.clearNowPlayingInfo()
         
         PlaylistCarplayManager.shared.currentPlaylistItem = item
         PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
@@ -778,7 +781,18 @@ extension PlaylistCarplayController {
                         if !isPlaying {
                             PlaylistMediaStreamer.clearNowPlayingInfo()
                         }
-                        completion?(.other(error))
+                        
+                        switch error as? MediaPlaybackError {
+                        case .cancelled:
+                            if !isPlaying {
+                                PlaylistMediaStreamer.clearNowPlayingInfo()
+                            }
+                            completion?(.cancelled)
+                        case .other(let err):
+                            completion?(.other(err))
+                        default:
+                            completion?(.other(error))
+                        }
                     case .finished:
                         break
                     }

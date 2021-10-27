@@ -113,12 +113,14 @@ extension BrowserViewController {
                                 }
                             } else {
                                 browserViewController.dismiss(animated: true) {
-                                    if let webView = browserViewController.tabManager.selectedTab?.webView {
+                                    let tab = browserViewController.tabManager.selectedTab
+                                    
+                                    if let webView = tab?.webView {
                                         PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak browserViewController] currentTime in
-                                            browserViewController?.openPlaylist(item: item, playbackOffset: currentTime)
+                                            browserViewController?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                                         }
                                     } else {
-                                        browserViewController.openPlaylist(item: item, playbackOffset: 0.0)
+                                        browserViewController.openPlaylist(tab: nil, item: item, playbackOffset: 0.0)
                                     }
                                 }
                             }

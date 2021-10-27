@@ -506,99 +506,107 @@ extension PlaylistListViewController {
 // MARK: - PlaylistManagerDelegate
 
 extension PlaylistListViewController: PlaylistManagerDelegate {
+    func updateCellDownloadStatus(indexPath: IndexPath, cell: PlaylistCell?, state: PlaylistDownloadManager.DownloadState, percentComplete: Double?) {
+        
+        guard let cell = cell ?? tableView.cellForRow(at: indexPath) as? PlaylistCell else {
+            return
+        }
+        
+        guard let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+            return
+        }
+        
+        switch state {
+        case .inProgress:
+            if let percentComplete = percentComplete {
+                getAssetDurationFormatted(item: item) { [weak cell] in
+                    cell?.detailLabel.text = "\($0) - \(Int(percentComplete))% \(Strings.PlayList.savedForOfflineLabelTitle)"
+                }
+            } else {
+                getAssetDurationFormatted(item: item) { [weak cell] in
+                    cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savingForOfflineLabelTitle)"
+                }
+            }
+            
+        case .downloaded:
+            if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.pageSrc) {
+                getAssetDurationFormatted(item: item) { [weak cell] in
+                    cell?.detailLabel.text = "\($0) - \(itemSize)"
+                }
+            } else {
+                getAssetDurationFormatted(item: item) { [weak cell] in
+                    cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savedForOfflineLabelTitle)"
+                }
+            }
+            
+        case .invalid:
+            getAssetDurationFormatted(item: item) { [weak cell] in
+                cell?.detailLabel.text = $0
+            }
+        }
+    }
+    
     func onDownloadProgressUpdate(id: String, percentComplete: Double) {
         guard let index = PlaylistManager.shared.index(of: id) else {
             return
         }
-         
-        let indexPath = IndexPath(row: index, section: 0)
-        guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? PlaylistCell else {
-            return
-        }
         
         // Cell is not visible, do not update percentages
+        let indexPath = IndexPath(row: index, section: 0)
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == false {
             return
         }
         
-        guard let item = PlaylistManager.shared.itemAtIndex(index) else {
-            return
-        }
-        
-        switch PlaylistManager.shared.state(for: id) {
-        case .inProgress:
-            cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                cell?.detailLabel.text = "\($0) - \(Int(percentComplete))% \(Strings.PlayList.savedForOfflineLabelTitle)"
-            }
-        case .downloaded:
-            if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.pageSrc) {
-                cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                    cell?.detailLabel.text = "\($0) - \(itemSize)"
-                }
-            } else {
-                cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                    cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savedForOfflineLabelTitle)"
-                }
-            }
-        case .invalid:
-            cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                cell?.detailLabel.text = $0
-            }
-        }
+        updateCellDownloadStatus(indexPath: indexPath,
+                                 cell: nil,
+                                 state: .inProgress,
+                                 percentComplete: percentComplete)
     }
     
     func onDownloadStateChanged(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?) {
         guard let index = PlaylistManager.shared.index(of: id) else {
             return
         }
-         
-        let indexPath = IndexPath(row: index, section: 0)
-        guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? PlaylistCell else {
-            return
-        }
         
         // Cell is not visible, do not update status
+        let indexPath = IndexPath(row: index, section: 0)
         if tableView.indexPathsForVisibleRows?.contains(indexPath) == false {
             return
         }
         
+        guard let error = error else {
+            updateCellDownloadStatus(indexPath: indexPath,
+                                     cell: nil,
+                                     state: state,
+                                     percentComplete: nil)
+            return
+        }
+        
+        // Some sort of error happened while downloading the playlist item
+        log.error("Error downloading playlist item: \(error)")
+        
         guard let item = PlaylistManager.shared.itemAtIndex(index) else {
             return
         }
-            
-        if let error = error {
-            log.error("Error downloading playlist item: \(error)")
-            
-            cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                cell?.detailLabel.text = $0
-            }
-            
-            let alert = UIAlertController(title: Strings.PlayList.playlistSaveForOfflineErrorTitle,
-                                          message: Strings.PlayList.playlistSaveForOfflineErrorMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            switch state {
-            case .inProgress:
-                cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                    cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savingForOfflineLabelTitle)"
-                }
-            case .downloaded:
-                if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.pageSrc) {
-                    cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                        cell?.detailLabel.text = "\($0) - \(itemSize)"
-                    }
-                } else {
-                    cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                        cell?.detailLabel.text = "\($0) - \(Strings.PlayList.savedForOfflineLabelTitle)"
-                    }
-                }
-            case .invalid:
-                cell.durationFetcher = getAssetDurationFormatted(item: item) { [weak cell] in
-                    cell?.detailLabel.text = $0
-                }
-            }
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else {
+            return
         }
+        
+        // Show only the item duration on the cell
+        getAssetDurationFormatted(item: item) { [weak cell] in
+            cell?.detailLabel.text = $0
+        }
+        
+        let alert = UIAlertController(title: Strings.PlayList.playlistSaveForOfflineErrorTitle,
+                                      message: Strings.PlayList.playlistSaveForOfflineErrorMessage,
+                                      preferredStyle: .alert).then {
+            
+            $0.addAction(UIAlertAction(title: Strings.PlayList.okayButtonTitle,
+                                       style: .default,
+                                       handler: nil))
+        }
+        self.present(alert, animated: true, completion: nil)
     }
     
     func controllerDidChange(_ anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
