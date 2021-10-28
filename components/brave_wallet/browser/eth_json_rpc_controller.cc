@@ -27,6 +27,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -163,7 +164,7 @@ void EthJsonRpcController::GetPendingChainRequests(
 void EthJsonRpcController::AddEthereumChain(mojom::EthereumChainPtr chain,
                                             const GURL& origin,
                                             AddEthereumChainCallback callback) {
-  DCHECK_EQ(origin, origin.DeprecatedGetOriginAsURL());
+  DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
       HasRequestFromOrigin(origin)) {

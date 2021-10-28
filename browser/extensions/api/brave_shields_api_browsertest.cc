@@ -27,6 +27,7 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
+#include "url/origin.h"
 
 namespace extensions {
 
@@ -82,13 +83,13 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
     function->set_has_callback(true);
 
     const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
-    const std::string allow_origin = url.DeprecatedGetOriginAsURL().spec();
+    url::Origin allow_origin = url::Origin::Create(url);
     int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
 
-    RunFunctionAndReturnSingleResult(
-        function.get(),
-        "[[\"" + allow_origin + "\"], " + std::to_string(tabId) + "]",
-        browser());
+    RunFunctionAndReturnSingleResult(function.get(),
+                                     "[[\"" + allow_origin.Serialize() +
+                                         "\"], " + std::to_string(tabId) + "]",
+                                     browser());
 
     // reload page with a.test temporarily allowed
     active_contents()->GetController().Reload(content::ReloadType::NORMAL,
@@ -103,12 +104,13 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
     function->set_has_callback(true);
 
     const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
-    const std::string allow_origin = url.DeprecatedGetOriginAsURL().spec();
+    url::Origin allow_origin = url::Origin::Create(url);
 
     int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
     RunFunctionAndReturnSingleResult(function.get(),
-                                     "[[\"" + allow_origin + "\",\"" + dataURL +
-                                         "\"], " + std::to_string(tabId) + "]",
+                                     "[[\"" + allow_origin.Serialize() +
+                                         "\",\"" + dataURL + "\"], " +
+                                         std::to_string(tabId) + "]",
                                      browser());
 
     // reload page with dataURL temporarily allowed

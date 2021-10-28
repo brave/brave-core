@@ -19,12 +19,14 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -43,11 +45,12 @@ void LoadNewTabURL(const GURL& url,
     return;
   }
 
-  GURL allowed_origin("https://exchange.gemini.com");
-  if (web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL() !=
-          allowed_origin ||
-      !initiating_origin.has_value() ||
-      initiating_origin.value().GetURL() != allowed_origin) {
+  url::Origin allowed_origin =
+      url::Origin::Create(GURL("https://exchange.gemini.com"));
+  url::Origin last_committed_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL());
+  if (last_committed_origin != allowed_origin ||
+      !initiating_origin.has_value() || initiating_origin != allowed_origin) {
     return;
   }
 

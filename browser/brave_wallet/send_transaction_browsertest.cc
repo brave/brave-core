@@ -173,10 +173,6 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
-  GURL GetLastCommitedOrigin() {
-    return web_contents()->GetLastCommittedURL().DeprecatedGetOriginAsURL();
-  }
-
   net::EmbeddedTestServer* https_server_for_files() {
     return &https_server_for_files_;
   }

@@ -15,6 +15,7 @@
 #include "net/base/net_errors.h"
 #include "net/url_request/url_request_job.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 using brave::ResponseCallback;
 
@@ -76,7 +77,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
     EXPECT_TRUE(brave_request_info->new_referrer.has_value());
     EXPECT_EQ(brave_request_info->new_referrer.value(),
-              original_referrer.DeprecatedGetOriginAsURL().spec());
+              url::Origin::Create(original_referrer).GetURL());
   }
 }
 
@@ -115,7 +116,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, OnionReferrerStripped) {
   // Cross-origin request to a .onion gets normal referrer.
   auto url2 = net::URLRequestJob::ComputeReferrerForPolicy(
       net::ReferrerPolicy::NEVER_CLEAR, destination, original_referrer);
-  EXPECT_EQ(url2, destination.GetOrigin());
+  EXPECT_EQ(url2, destination);
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {

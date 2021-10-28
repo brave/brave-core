@@ -23,6 +23,7 @@
 #include "net/base/url_util.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -137,11 +138,12 @@ bool IsDefaultGatewayURL(const GURL& url, PrefService* prefs) {
 bool IsAPIGateway(const GURL& url, version_info::Channel channel) {
   if (!url.is_valid())
     return false;
-  auto api_origin = ipfs::GetAPIServer(channel).DeprecatedGetOriginAsURL();
-  if (api_origin == url)
+  auto api_origin_url =
+      url::Origin::Create(ipfs::GetAPIServer(channel)).GetURL();
+  if (api_origin_url == url)
     return true;
-  if (net::IsLocalhost(api_origin) && net::IsLocalhost(url)) {
-    return api_origin.port() == url.port();
+  if (net::IsLocalhost(api_origin_url) && net::IsLocalhost(url)) {
+    return api_origin_url.port() == url.port();
   }
   return false;
 }
