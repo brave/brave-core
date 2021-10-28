@@ -31,12 +31,12 @@ private struct CreateWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   
   private enum ValidationError: LocalizedError, Equatable {
-    case passwordTooShort
+    case requirementsNotMet
     case inputsDontMatch
     
     var errorDescription: String? {
       switch self {
-      case .passwordTooShort:
+      case .requirementsNotMet:
         return Strings.Wallet.passwordDoesNotMeetRequirementsError
       case .inputsDontMatch:
         return Strings.Wallet.passwordsDontMatchError
@@ -68,8 +68,8 @@ private struct CreateWalletView: View {
   }
   
   private func validate() -> Bool {
-    if password.count < 7 {
-      validationError = .passwordTooShort
+    if !PasswordValidation.isValid(password) {
+      validationError = .requirementsNotMet
     } else if password != repeatedPassword {
       validationError = .inputsDontMatch
     } else {
@@ -79,7 +79,7 @@ private struct CreateWalletView: View {
   }
   
   private func handlePasswordChanged(_ value: String) {
-    if validationError == .passwordTooShort {
+    if validationError == .requirementsNotMet {
       // Reset validation on user changing
       validationError = nil
     }
@@ -105,7 +105,7 @@ private struct CreateWalletView: View {
             .fixedSize(horizontal: false, vertical: true)
           VStack {
             SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
-              .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .passwordTooShort))
+              .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .requirementsNotMet))
             SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword, onCommit: createWallet)
               .textFieldStyle(BraveValidatedTextFieldStyle(error: validationError, when: .inputsDontMatch))
           }
