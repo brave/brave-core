@@ -1,53 +1,30 @@
-use std::ops::DerefMut;
+use std::cell::RefMut;
 
 use crate::{ffi, NativeClient, NativeClientContext};
 use brave_rewards::{errors, KVClient, KVStore};
 
-pub struct RefMutNativeClientContext(NativeClientContext);
-
 impl KVClient for NativeClient {
-    type Store = RefMutNativeClientContext;
+    type Store = NativeClientContext;
 
-    fn get_store(&self) -> Result<RefMutNativeClientContext, errors::InternalError> {
-        Ok(RefMutNativeClientContext(self.ctx.to_owned()))
+    fn get_store<'a>(&'a self) -> Result<RefMut<'a, NativeClientContext>, errors::InternalError> {
+        Ok(self
+            .ctx
+            .try_borrow_mut()
+            .or(Err(errors::InternalError::BorrowFailed))?)
     }
 }
 
-impl KVStore for RefMutNativeClientContext {
+impl KVStore for NativeClientContext {
     fn purge(&mut self) -> Result<(), errors::InternalError> {
-        ffi::shim_purge(
-            self.0
-                 .0
-                .try_borrow_mut()
-                .or(Err(errors::InternalError::BorrowFailed))?
-                .deref_mut()
-                .pin_mut(),
-        );
+        ffi::shim_purge(self.0.pin_mut());
         Ok(())
     }
     fn set(&mut self, key: &str, value: &str) -> Result<(), errors::InternalError> {
-        ffi::shim_set(
-            self.0
-                 .0
-                .try_borrow_mut()
-                .or(Err(errors::InternalError::BorrowFailed))?
-                .deref_mut()
-                .pin_mut(),
-            key,
-            value,
-        );
+        ffi::shim_set(self.0.pin_mut(), key, value);
         Ok(())
     }
     fn get(&mut self, key: &str) -> Result<Option<String>, errors::InternalError> {
-        let ret = ffi::shim_get(
-            self.0
-                 .0
-                .try_borrow_mut()
-                .or(Err(errors::InternalError::BorrowFailed))?
-                .deref_mut()
-                .pin_mut(),
-            key,
-        );
+        let ret = ffi::shim_get(self.0.pin_mut(), key);
         Ok(if ret.len() > 0 {
             Some(ret.to_string())
         } else {
