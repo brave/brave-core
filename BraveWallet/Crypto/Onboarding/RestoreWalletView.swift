@@ -31,14 +31,14 @@ private struct RestoreWalletView: View {
   
   private enum RestoreWalletError: LocalizedError {
     case invalidPhrase
-    case passwordTooShort
+    case requirementsNotMet
     case inputsDontMatch
     
     var errorDescription: String? {
       switch self {
       case .invalidPhrase:
         return Strings.Wallet.restoreWalletPhraseInvalidError
-      case .passwordTooShort:
+      case .requirementsNotMet:
         return Strings.Wallet.passwordDoesNotMeetRequirementsError
       case .inputsDontMatch:
         return Strings.Wallet.passwordsDontMatchError
@@ -58,8 +58,8 @@ private struct RestoreWalletView: View {
   private func validate() -> Bool {
     if phrase.isEmpty {
       restoreError = .invalidPhrase
-    } else if password.count < 7 {
-      restoreError = .passwordTooShort
+    } else if !PasswordValidation.isValid(password) {
+      restoreError = .requirementsNotMet
     } else if password != repeatedPassword {
       restoreError = .inputsDontMatch
     } else {
@@ -95,7 +95,7 @@ private struct RestoreWalletView: View {
   }
   
   private func handlePasswordChanged(_ value: String) {
-    if restoreError == .passwordTooShort {
+    if restoreError == .requirementsNotMet {
       // Reset validation on user changing
       restoreError = nil
     }
@@ -171,7 +171,7 @@ private struct RestoreWalletView: View {
         Text(Strings.Wallet.restoreWalletNewPasswordTitle)
           .font(.subheadline.weight(.medium))
         SecureField(Strings.Wallet.passwordPlaceholder, text: $password)
-          .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .passwordTooShort))
+          .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .requirementsNotMet))
         SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword)
           .textFieldStyle(BraveValidatedTextFieldStyle(error: restoreError, when: .inputsDontMatch))
       }
