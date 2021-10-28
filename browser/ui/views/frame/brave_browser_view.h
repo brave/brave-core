@@ -15,7 +15,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/brave_vpn_panel_host.h"
+#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
@@ -92,7 +92,7 @@ class BraveBrowserView : public BrowserView {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNPanelHost vpn_panel_host_{this};
+  BraveVPNPanelController vpn_panel_controller_{this};
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

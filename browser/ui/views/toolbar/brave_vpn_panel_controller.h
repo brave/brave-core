@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_VPN_PANEL_HOST_H_
-#define BRAVE_BROWSER_UI_VIEWS_BRAVE_VPN_PANEL_HOST_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_PANEL_CONTROLLER_H_
+#define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_PANEL_CONTROLLER_H_
 
 #include <memory>
 
@@ -13,12 +13,12 @@
 
 class BraveBrowserView;
 
-class BraveVPNPanelHost {
+class BraveVPNPanelController {
  public:
-  explicit BraveVPNPanelHost(BraveBrowserView* browser_view);
-  ~BraveVPNPanelHost();
-  BraveVPNPanelHost(const BraveVPNPanelHost&) = delete;
-  BraveVPNPanelHost& operator=(const BraveVPNPanelHost&) = delete;
+  explicit BraveVPNPanelController(BraveBrowserView* browser_view);
+  ~BraveVPNPanelController();
+  BraveVPNPanelController(const BraveVPNPanelController&) = delete;
+  BraveVPNPanelController& operator=(const BraveVPNPanelController&) = delete;
 
   void ShowBraveVPNPanel();
   // Manager should be reset to use different anchor view for bubble.
@@ -29,4 +29,4 @@ class BraveVPNPanelHost {
   std::unique_ptr<WebUIBubbleManagerT<VPNPanelUI>> webui_bubble_manager_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_VPN_PANEL_HOST_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_PANEL_CONTROLLER_H_

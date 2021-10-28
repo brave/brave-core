@@ -762,8 +762,7 @@ if (!is_android) {
 
     if (enable_brave_vpn) {
       deps += [ "//brave/components/brave_vpn" ]
-      sources +=
-          [ "//brave/browser/ui/views/brave_vpn_panel_host_browsertest.cc" ]
+      sources += [ "//brave/browser/ui/views/toolbar/brave_vpn_panel_controller_browsertest.cc" ]
     }
 
     if (enable_crash_dialog) {

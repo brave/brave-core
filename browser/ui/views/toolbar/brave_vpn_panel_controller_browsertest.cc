@@ -11,13 +11,13 @@
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "content/public/test/browser_test.h"
 
-class BraveVPNPanelHostTest : public DialogBrowserTest {
+class BraveVPNPanelControllerTest : public DialogBrowserTest {
  public:
-  BraveVPNPanelHostTest() {
+  BraveVPNPanelControllerTest() {
     scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
   }
 
-  ~BraveVPNPanelHostTest() override = default;
+  ~BraveVPNPanelControllerTest() override = default;
 
   // TestBrowserUi:
   void ShowUi(const std::string& name) override {
@@ -27,6 +27,6 @@ class BraveVPNPanelHostTest : public DialogBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveVPNPanelHostTest, InvokeUi_Dialog) {
+IN_PROC_BROWSER_TEST_F(BraveVPNPanelControllerTest, InvokeUi_Dialog) {
   ShowAndVerifyUi();
 }
