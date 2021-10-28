@@ -29,12 +29,13 @@ impl NativeClient {
         });
 
         let fetcher = ffi::shim_executeRequest(
-            self.ctx
-                .0
+            &self
+                .ctx
                 .try_borrow()
                 .or(Err(errors::InternalError::BorrowFailed))?
                 .deref()
-                .deref(),
+                .deref()
+                .0,
             &req,
             |context, resp| {
                 let resp = match resp.result {
