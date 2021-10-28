@@ -23,7 +23,26 @@ namespace database {
 namespace table {
 
 namespace {
+
 const char kTableName[] = "segments";
+
+int BindParameters(mojom::DBCommand* command,
+                   const CreativeAdList& creative_ads) {
+  DCHECK(command);
+
+  int count = 0;
+
+  int index = 0;
+  for (const auto& creative_ad : creative_ads) {
+    BindString(command, index++, creative_ad.creative_set_id);
+    BindString(command, index++, base::ToLowerASCII(creative_ad.segment));
+
+    count++;
+  }
+
+  return count;
+}
+
 }  // namespace
 
 Segments::Segments() = default;
@@ -77,26 +96,11 @@ void Segments::Migrate(mojom::DBTransaction* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int Segments::BindParameters(mojom::DBCommand* command,
-                             const CreativeAdList& creative_ads) {
-  DCHECK(command);
-
-  int count = 0;
-
-  int index = 0;
-  for (const auto& creative_ad : creative_ads) {
-    BindString(command, index++, creative_ad.creative_set_id);
-    BindString(command, index++, base::ToLowerASCII(creative_ad.segment));
-
-    count++;
-  }
-
-  return count;
-}
-
 std::string Segments::BuildInsertOrUpdateQuery(
     mojom::DBCommand* command,
     const CreativeAdList& creative_ads) {
+  DCHECK(command);
+
   const int count = BindParameters(command, creative_ads);
 
   return base::StringPrintf(
@@ -107,30 +111,23 @@ std::string Segments::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::CreateTableV16(mojom::DBTransaction* transaction) {
+void Segments::MigrateToV16(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s "
+  util::Drop(transaction, "segments");
+
+  const std::string& query =
+      "CREATE TABLE segments "
       "(creative_set_id TEXT NOT NULL, "
       "segment TEXT NOT NULL, "
       "PRIMARY KEY (creative_set_id, segment), "
-      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)",
-      GetTableName().c_str());
+      "UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE)";
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::EXECUTE;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));
-}
-
-void Segments::MigrateToV16(mojom::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  util::Drop(transaction, GetTableName());
-
-  CreateTableV16(transaction);
 }
 
 }  // namespace table

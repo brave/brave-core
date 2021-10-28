@@ -70,10 +70,6 @@ class CreativeInlineContentAds final : public Table {
       mojom::DBTransaction* transaction,
       const CreativeInlineContentAdList& creative__inline_content_ads);
 
-  int BindParameters(
-      mojom::DBCommand* command,
-      const CreativeInlineContentAdList& creative__inline_content_ads);
-
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommand* command,
       const CreativeInlineContentAdList& creative__inline_content_ads);
@@ -94,13 +90,6 @@ class CreativeInlineContentAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeInlineContentAdsCallback callback);
 
-  CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
-  CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-  CreativeInlineContentAdList GetCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-
-  void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;

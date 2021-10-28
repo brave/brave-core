@@ -41,21 +41,13 @@ class Conversions final : public Table {
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionList& conversion);
 
-  int BindParameters(mojom::DBCommand* command,
-                     const ConversionList& conversion);
-
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const ConversionList& conversions);
 
   void OnGetConversions(mojom::DBCommandResponsePtr response,
                         GetConversionsCallback callback);
 
-  ConversionInfo GetConversionFromRecord(mojom::DBRecord* record) const;
-
-  void CreateTableV1(mojom::DBTransaction* transaction);
-  void CreateIndexV1(mojom::DBTransaction* transaction);
   void MigrateToV1(mojom::DBTransaction* transaction);
-
   void MigrateToV10(mojom::DBTransaction* transaction);
 };
 

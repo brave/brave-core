@@ -64,9 +64,6 @@ class CreativeNewTabPageAds final : public Table {
       mojom::DBTransaction* transaction,
       const CreativeNewTabPageAdList& creative_new_tab_page_ads);
 
-  int BindParameters(mojom::DBCommand* command,
-                     const CreativeNewTabPageAdList& creative_new_tab_page_ads);
-
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommand* command,
       const CreativeNewTabPageAdList& creative_new_tab_page_ads);
@@ -82,13 +79,6 @@ class CreativeNewTabPageAds final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeNewTabPageAdsCallback callback);
 
-  CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) const;
-  CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-  CreativeNewTabPageAdList GetCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-
-  void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;
