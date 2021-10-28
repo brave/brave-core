@@ -240,8 +240,15 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
-  if (!is_add)
+  if (!is_add) {
+    for (auto& observer : observers_)
+      observer.OnTransactionStatusChanged(TxMetaToTransactionInfo(meta));
     return;
+  }
+
+  for (auto& observer : observers_)
+    observer.OnNewUnapprovedTx(TxMetaToTransactionInfo(meta));
+
   // We only keep most recent 10 confirmed and rejected tx metas per network
   RetireTxByStatus(mojom::TransactionStatus::Confirmed, kMaxConfirmedTxNum);
   RetireTxByStatus(mojom::TransactionStatus::Rejected, kMaxRejectedTxNum);
@@ -346,6 +353,14 @@ void EthTxStateManager::OnGetChainId(const std::string& chain_id) {
       &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
   if (chain_callback_for_testing_)
     std::move(chain_callback_for_testing_).Run();
+}
+
+void EthTxStateManager::AddObserver(EthTxStateManager::Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void EthTxStateManager::RemoveObserver(EthTxStateManager::Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 }  // namespace brave_wallet

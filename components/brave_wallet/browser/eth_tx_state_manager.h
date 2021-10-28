@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_types.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
@@ -81,6 +82,15 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
     chain_callback_for_testing_ = std::move(callback);
   }
 
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
+    }
+    virtual void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {}
+  };
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
  private:
   // only support REJECTED and CONFIRMED
   void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
@@ -89,6 +99,7 @@ class EthTxStateManager : public mojom::EthJsonRpcControllerObserver {
   void OnGetNetworkUrl(const std::string& url);
   void OnGetChainId(const std::string& chain_id);
 
+  base::ObserverList<Observer> observers_;
   PrefService* prefs_;
   mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
   mojo::Receiver<mojom::EthJsonRpcControllerObserver> observer_receiver_{this};
