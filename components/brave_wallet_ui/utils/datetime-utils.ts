@@ -11,9 +11,7 @@ export function convertMojoTimeToJS (mojoTime: MojoTime) {
 
 const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-export function formatDateAsRelative (date: Date) {
-  const now = new Date()
-
+export function formatDateAsRelative (date: Date, now: Date = new Date()) {
   // the difference in milliseconds
   const diff = now.getTime() - date.getTime()
 
