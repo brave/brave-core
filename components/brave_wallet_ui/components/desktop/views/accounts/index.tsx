@@ -4,17 +4,17 @@ import {
   WalletAccountType,
   AccountSettingsNavTypes,
   UpdateAccountNamePayloadType,
-  TransactionListInfo,
+  AccountTransactions,
   EthereumChain,
   TokenInfo,
-  AssetPriceInfo,
-  TransactionInfo
+  AssetPriceInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import { getLocale } from '../../../../../common/locale'
 import { formatBalance } from '../../../../utils/format-balances'
+import { sortTransactionByDate } from '../../../../utils/tx-utils'
 
 // Styled Components
 import {
@@ -57,7 +57,7 @@ import {
 
 export interface Props {
   accounts: WalletAccountType[]
-  transactions: (TransactionListInfo | undefined)[]
+  transactions: AccountTransactions
   privateKey: string
   selectedNetwork: EthereumChain
   userVisibleTokensInfo: TokenInfo[]
@@ -158,10 +158,8 @@ function Accounts (props: Props) {
   }, [selectedAccount])
 
   const transactionList = React.useMemo(() => {
-    if (selectedAccount) {
-      const foundTransactions = transactions.find((account) => account?.account.address === selectedAccount.address)?.transactions ?? []
-      return [...foundTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
-        Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
+    if (selectedAccount?.address && transactions[selectedAccount.address]) {
+      return sortTransactionByDate(transactions[selectedAccount.address], 'descending')
     } else {
       return []
     }

@@ -21,7 +21,7 @@ import {
   ToOrFromType,
   EthereumChain,
   TokenInfo,
-  TransactionListInfo,
+  AccountTransactions,
   BuySendSwapTypes,
   WalletAccountType,
   ImportWalletError
@@ -57,168 +57,162 @@ export default {
   }
 }
 
-const transactionDummyData: TransactionListInfo[] = [
-  {
-    account: mockUserAccounts[0],
-    transactions: [
-      {
-        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec50000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
+const transactionDummyData: AccountTransactions = {
+  [mockUserAccounts[0].id]: [
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+          value: '0xb1a2bc2ec50000'
         },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 3,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
       },
-      {
-        fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-            value: '0xb1a2bc2ec90000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 3,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    },
+    {
+      fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+          value: '0xb1a2bc2ec90000'
         },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 4,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
       },
-      {
-        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 4,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    },
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+          value: '0xb1a2bc2ec90000'
         },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 2,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
       },
-      {
-        fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 2,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    },
+    {
+      fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+          value: '0xb1a2bc2ec90000'
         },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 1,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
-      }
-    ]
-  },
-  {
-    account: mockUserAccounts[1],
-    transactions: [
-      {
-        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
-        },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 0,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
       },
-      {
-        fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
-        id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-        txData: {
-          baseData: {
-            data: new Uint8Array(24),
-            gasLimit: '0xfde8',
-            gasPrice: '0x20000000000',
-            nonce: '0x1',
-            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-            value: '0xb1a2bc2ec90000'
-          },
-          chainId: '',
-          maxFeePerGas: '',
-          maxPriorityFeePerGas: ''
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 1,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    }
+  ],
+  [mockUserAccounts[1].id]: [
+    {
+      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+          value: '0xb1a2bc2ec90000'
         },
-        txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
-        txStatus: 5,
-        txArgs: [],
-        txParams: [],
-        txType: 0,
-        createdTime: { microseconds: 0 },
-        submittedTime: { microseconds: 0 },
-        confirmedTime: { microseconds: 0 }
-      }
-    ]
-  }
-]
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 0,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    },
+    {
+      fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txData: {
+        baseData: {
+          data: new Uint8Array(24),
+          gasLimit: '0xfde8',
+          gasPrice: '0x20000000000',
+          nonce: '0x1',
+          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+          value: '0xb1a2bc2ec90000'
+        },
+        chainId: '',
+        maxFeePerGas: '',
+        maxPriorityFeePerGas: ''
+      },
+      txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 5,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 }
+    }
+  ]
+}
 
 export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boolean }) => {
   const {

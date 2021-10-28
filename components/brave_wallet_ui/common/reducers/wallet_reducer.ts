@@ -6,37 +6,38 @@
 
 import { createReducer } from 'redux-act'
 import {
-  WalletAccountType,
-  WalletState,
-  GetAllTokensReturnInfo,
-  GetAllNetworksList,
-  TokenInfo,
-  GetNativeAssetBalancesPriceReturnInfo,
-  GetERC20TokenBalanceAndPriceReturnInfo,
   AccountInfo,
-  PortfolioTokenHistoryAndInfo,
-  GetPriceHistoryReturnInfo,
+  AccountTransactions,
   AssetPriceTimeframe,
+  DefaultWallet,
   EthereumChain,
+  GasEstimation,
+  GetAllNetworksList,
+  GetAllTokensReturnInfo,
+  GetERC20TokenBalanceAndPriceReturnInfo,
+  GetNativeAssetBalancesPriceReturnInfo,
+  GetPriceHistoryReturnInfo,
   kMainnetChainId,
+  PortfolioTokenHistoryAndInfo,
+  TokenInfo,
   TransactionInfo,
   TransactionStatus,
-  TransactionListInfo,
-  DefaultWallet,
-  GasEstimation
+  WalletAccountType,
+  WalletState
 } from '../../constants/types'
 import {
-  NewUnapprovedTxAdded,
-  UnapprovedTxUpdated,
-  TransactionStatusChanged,
   ActiveOriginChanged,
-  IsEip1559Changed,
   InitializedPayloadType,
-  SitePermissionsPayloadType
+  IsEip1559Changed,
+  NewUnapprovedTxAdded,
+  SitePermissionsPayloadType,
+  TransactionStatusChanged,
+  UnapprovedTxUpdated
 } from '../constants/action_types'
 import { convertMojoTimeToJS } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
+import { sortTransactionByDate } from '../../utils/tx-utils'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -59,7 +60,7 @@ const defaultState: WalletState = {
   } as EthereumChain,
   accounts: [],
   userVisibleTokensInfo: [],
-  transactions: [],
+  transactions: {},
   pendingTransactions: [],
   knownTransactions: [],
   fullTokenList: [],
@@ -84,12 +85,6 @@ const getAccountType = (info: AccountInfo) => {
     return info.hardware.vendor
   }
   return info.isImported ? 'Secondary' : 'Primary'
-}
-
-const sortTransactionByDate = (transactions: TransactionInfo[]) => {
-  return [...transactions].sort(function (x: TransactionInfo, y: TransactionInfo) {
-    return Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
-  })
 }
 
 reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
@@ -304,41 +299,47 @@ reducer.on(WalletActions.unapprovedTxUpdated, (state: any, payload: UnapprovedTx
   return newState
 })
 
-reducer.on(WalletActions.transactionStatusChanged, (state: any, payload: TransactionStatusChanged) => {
-  const newPendingTransactions =
-    state.pendingTransactions.filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
-  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
-  const newSelectedPendingTransaction = sortedTransactionList[0]
-  if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
-    payload.txInfo.txStatus === TransactionStatus.Rejected ||
-    payload.txInfo.txStatus === TransactionStatus.Approved) {
-    const newState = {
-      ...state,
-      pendingTransactions: sortedTransactionList,
-      selectedPendingTransaction: newSelectedPendingTransaction
-    }
-    return newState
-  }
-  return state
-})
+reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload: TransactionStatusChanged) => {
+  const newPendingTransactions = state.pendingTransactions
+    .filter((tx: TransactionInfo) => tx.id !== payload.txInfo.id)
+    .concat(payload.txInfo.txStatus === TransactionStatus.Unapproved ? [payload.txInfo] : [])
 
-reducer.on(WalletActions.knownTransactionsUpdated, (state: any, payload: TransactionInfo[]) => {
-  const newPendingTransactions =
-    payload.filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
-  const newSelectedPendingTransaction = sortedTransactionList[0]
+
+  const newTransactionEntries = Object.entries(state.transactions).map(([address, transactions]) => {
+    const hasTransaction = transactions.some(tx => tx.id === payload.txInfo.id)
+
+    return [
+      address,
+      hasTransaction
+        ? sortTransactionByDate([
+          ...transactions.filter(tx => tx.id !== payload.txInfo.id),
+          payload.txInfo
+        ])
+        : transactions
+    ]
+  })
+
   return {
     ...state,
     pendingTransactions: sortedTransactionList,
-    selectedPendingTransaction: newSelectedPendingTransaction,
-    knownTransactions: payload
+    selectedPendingTransaction: sortedTransactionList[0],
+    transactions: Object.fromEntries(newTransactionEntries)
   }
 })
 
-reducer.on(WalletActions.setTransactionList, (state: any, payload: TransactionListInfo[]) => {
+reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions) => {
+  const { selectedAccount } = state
+  const newPendingTransactions = payload[selectedAccount.address]
+    .filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
+
+  const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
+
   return {
     ...state,
-    transactions: payload
+    transactions: payload,
+    pendingTransactions: sortedTransactionList,
+    selectedPendingTransaction: sortedTransactionList[0]
   }
 })
 

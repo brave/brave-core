@@ -10,6 +10,7 @@ import {
 import { formatBalance } from '../../utils/format-balances'
 
 import {
+  AccountTransactions,
   AssetPriceTimeframe,
   EthereumChain,
   TokenInfo,
@@ -184,26 +185,28 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
   }
 }
 
-export function refreshTransactionHistory () {
+export function refreshTransactionHistory (address?: string) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = await getAPIProxy()
     const { ethTxController } = apiProxy
 
-    const { wallet: { accounts } } = getState()
+    const { wallet: { accounts, transactions } } = getState()
 
-    const transactionListInfo = await Promise.all(accounts.map(async (account) => {
-      const transactions = await ethTxController.getAllTransactionInfo(account.address)
-      return {
-        account: {
-          id: account.id,
-          address: account.address,
-          name: account.name
-        },
-        transactions: transactions.transactionInfos
-      }
+    const accountsToUpdate = address !== undefined
+      ? accounts.filter(account => account.address === address)
+      : accounts
+
+    const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
+      async (acc, account) => acc.then(async (obj) => {
+        const { transactionInfos } = await ethTxController.getAllTransactionInfo(account.address)
+        obj[account.address] = transactionInfos
+        return obj
+      }), Promise.resolve({}))
+
+    dispatch(WalletActions.setAccountTransactions({
+      ...transactions,
+      ...freshTransactions
     }))
-
-    await dispatch(WalletActions.setTransactionList(transactionListInfo))
   }
 }
 

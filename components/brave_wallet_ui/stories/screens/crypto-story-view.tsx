@@ -12,7 +12,7 @@ import {
   AppsListType,
   PriceDataObjectType,
   AccountAssetOptionType,
-  TransactionListInfo,
+  AccountTransactions,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
@@ -38,7 +38,7 @@ export interface Props {
   showAddModal: boolean
   isLoading: boolean
   userAssetList: AccountAssetOptionType[]
-  transactions: (TransactionListInfo | undefined)[]
+  transactions: AccountTransactions
   portfolioBalance: string
   selectedAsset: TokenInfo | undefined
   selectedBTCAssetPrice: AssetPriceInfo | undefined
