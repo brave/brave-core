@@ -22,6 +22,7 @@
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using content::Referrer;
 
@@ -450,9 +451,10 @@ bool MaybeChangeReferrer(bool allow_referrers,
   // Cap the referrer to "strict-origin-when-cross-origin". More restrictive
   // policies should be already applied.
   // See https://github.com/brave/brave-browser/issues/13464
+  url::Origin current_referrer_origin = url::Origin::Create(current_referrer);
   *output_referrer = Referrer::SanitizeForRequest(
       target_url,
-      Referrer(current_referrer.DeprecatedGetOriginAsURL(),
+      Referrer(current_referrer_origin.GetURL(),
                network::mojom::ReferrerPolicy::kStrictOriginWhenCrossOrigin));
 
   return true;

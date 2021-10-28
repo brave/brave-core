@@ -5,8 +5,8 @@
 
 #include "brave/browser/binance/binance_protocol_handler.h"
 
-#include <string>
 #include <map>
+#include <string>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -19,9 +19,11 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -42,11 +44,12 @@ void LoadNewTabURL(const GURL& url,
 
   // We should only allow binance scheme to be used from
   // https://accounts.binance.com
-  GURL allowed_origin("https://accounts.binance.com");
-  if (web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL() !=
-          allowed_origin ||
-      !initiating_origin.has_value() ||
-      initiating_origin.value().GetURL() != allowed_origin) {
+  url::Origin allowed_origin =
+      url::Origin::Create(GURL("https://accounts.binance.com"));
+  url::Origin last_committed_origin =
+      url::Origin::Create(web_contents->GetLastCommittedURL());
+  if (last_committed_origin != allowed_origin ||
+      !initiating_origin.has_value() || initiating_origin != allowed_origin) {
     return;
   }
 
@@ -58,13 +61,13 @@ void LoadNewTabURL(const GURL& url,
     std::string auth_token = parts["code"];
     Profile* profile =
         Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    BinanceServiceFactory::GetInstance()
-      ->GetForProfile(profile)
-      ->SetAuthToken(auth_token);
+    BinanceServiceFactory::GetInstance()->GetForProfile(profile)->SetAuthToken(
+        auth_token);
   }
 
   web_contents->GetController().LoadURL(GURL("chrome://newtab?binanceAuth=1"),
-      content::Referrer(), page_transition, std::string());
+                                        content::Referrer(), page_transition,
+                                        std::string());
 }
 
 }  // namespace

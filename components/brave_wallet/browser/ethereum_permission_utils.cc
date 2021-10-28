@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -38,7 +39,7 @@ void ExtractAddresses(const GURL& origin,
                       std::queue<std::string>* address_queue) {
   static const base::NoDestructor<re2::RE2> kAddrRegex(kAddrPattern);
   DCHECK(origin.is_valid() && address_queue);
-  DCHECK_EQ(origin, origin.DeprecatedGetOriginAsURL());
+  DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
 
   re2::StringPiece input(origin.spec());
   std::string match;
@@ -54,7 +55,7 @@ bool ParseRequestingOriginInternal(const GURL& origin,
                                    std::string* requesting_origin,
                                    std::string* account,
                                    std::queue<std::string>* address_queue) {
-  if (!origin.is_valid() || origin != origin.DeprecatedGetOriginAsURL())
+  if (!origin.is_valid() || origin != url::Origin::Create(origin).GetURL())
     return false;
 
   std::string scheme_host_group;

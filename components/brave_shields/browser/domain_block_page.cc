@@ -15,6 +15,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -74,8 +75,10 @@ void DomainBlockPage::PopulateInterstitialStrings(base::Value* load_time_data) {
   load_time_data->SetStringKey(
       "primaryParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH));
-  load_time_data->SetStringKey("domain",
-                               request_url().DeprecatedGetOriginAsURL().spec());
+
+  url::Origin request_url_origin = url::Origin::Create(request_url());
+  load_time_data->SetStringKey("domain", request_url_origin.Serialize());
+
   load_time_data->SetStringKey(
       "explanationParagraph",
       l10n_util::GetStringUTF16(IDS_DOMAIN_BLOCK_EXPLANATION));

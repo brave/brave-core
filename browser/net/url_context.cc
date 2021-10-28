@@ -16,8 +16,10 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -110,7 +112,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
         content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
     if (contents) {
       ctx->tab_origin =
-          contents->GetLastCommittedURL().DeprecatedGetOriginAsURL();
+          url::Origin::Create(contents->GetLastCommittedURL()).GetURL();
     }
   }
 
@@ -130,7 +132,7 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   if (ipfs::IsLocalGatewayConfigured(prefs) && ctx->tab_origin.is_empty() &&
       ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
     ctx->tab_url = ctx->initiator_url;
-    ctx->tab_origin = ctx->initiator_url.DeprecatedGetOriginAsURL();
+    ctx->tab_origin = url::Origin::Create(ctx->initiator_url).GetURL();
   }
 #endif
 

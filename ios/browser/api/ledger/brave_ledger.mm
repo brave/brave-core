@@ -33,6 +33,7 @@
 #include "components/os_crypt/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -783,7 +784,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
     return;
   }
 
-  auto origin = parsedUrl.DeprecatedGetOriginAsURL();
+  url::Origin origin = url::Origin::Create(parsedUrl);
   std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
@@ -795,7 +796,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   ledger::type::VisitDataPtr visitData = ledger::type::VisitData::New();
   visitData->domain = visitData->name = baseDomain;
   visitData->path = parsedUrl.PathForRequest();
-  visitData->url = origin.spec();
+  visitData->url = origin.Serialize();
 
   if (faviconURL.absoluteString) {
     visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
@@ -1303,7 +1304,7 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
   }
 
   GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-  auto origin = parsedUrl.DeprecatedGetOriginAsURL();
+  url::Origin origin = url::Origin::Create(parsedUrl);
   const std::string baseDomain = GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

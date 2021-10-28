@@ -22,6 +22,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -316,9 +317,9 @@ void BraveRenderViewContextMenu::BuildIPFSMenu() {
   }
 
   auto page_url = source_web_contents_->GetURL();
+  url::Origin page_origin = url::Origin::Create(page_url);
   if (page_url.SchemeIsHTTPOrHTTPS() &&
-      !ipfs::IsAPIGateway(page_url.DeprecatedGetOriginAsURL(),
-                          chrome::GetChannel())) {
+      !ipfs::IsAPIGateway(page_origin.GetURL(), chrome::GetChannel())) {
     ipfs_submenu_model_.AddItemWithStringId(
         IDC_CONTENT_CONTEXT_IMPORT_IPFS_PAGE,
         IDS_CONTENT_CONTEXT_IMPORT_IPFS_PAGE);

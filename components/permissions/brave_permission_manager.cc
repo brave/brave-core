@@ -9,6 +9,7 @@
 
 #include "components/permissions/permission_context_base.h"
 #include "content/public/browser/browser_thread.h"
+#include "url/origin.h"
 
 namespace permissions {
 
@@ -39,7 +40,7 @@ void BravePermissionManager::ResetPermissionViaContentSetting(
     return;
   context->ResetPermission(
       GetCanonicalOrigin(type, requesting_origin, embedding_origin),
-      embedding_origin.DeprecatedGetOriginAsURL());
+      url::Origin::Create(embedding_origin).GetURL());
 }
 
 }  // namespace permissions

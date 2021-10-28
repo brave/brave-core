@@ -26,6 +26,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace permissions {
 
@@ -75,7 +76,7 @@ class BraveEthereumPermissionContextBrowserTest : public InProcessBrowserTest {
   }
 
   GURL GetLastCommitedOrigin() {
-    return web_contents()->GetLastCommittedURL().DeprecatedGetOriginAsURL();
+    return url::Origin::Create(web_contents()->GetLastCommittedURL()).GetURL();
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }

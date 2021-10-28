@@ -83,6 +83,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_canon_stdstring.h"
 #include "url/url_util.h"
 
@@ -661,7 +662,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
     return;
   }
 
-  auto origin = url.DeprecatedGetOriginAsURL().host();
+  auto origin = url.host();
   std::string baseDomain =
       GetDomainAndRegistry(url.host(), INCLUDE_PRIVATE_REGISTRIES);
 #if BUILDFLAG(ENABLE_IPFS)
@@ -1791,7 +1792,7 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
     return;
   }
 
-  auto origin = parsed_url.DeprecatedGetOriginAsURL().spec();
+  auto origin = url::Origin::Create(parsed_url).Serialize();
   std::string baseDomain =
       GetDomainAndRegistry(parsed_url.host(), INCLUDE_PRIVATE_REGISTRIES);
   std::string path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
