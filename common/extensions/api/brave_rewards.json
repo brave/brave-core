@@ -323,6 +323,23 @@
     ],
     "functions": [
       {
+        "name": "getLocale",
+        "type": "function",
+        "description": "Retrieves the current locale",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "locale",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "openBrowserActionUI",
         "type": "function",
         "description": "Prompts the user with a popup UI",

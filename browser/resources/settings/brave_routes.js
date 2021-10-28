@@ -17,6 +17,7 @@ export default function addBraveRoutes(r) {
     r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
+  r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   if (pageVisibility.braveSync) {

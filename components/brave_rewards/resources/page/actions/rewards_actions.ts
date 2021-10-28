@@ -343,3 +343,7 @@ export const onEnabledInlineTippingPlatforms = (platforms: string[]) => action(t
 })
 
 export const restartBrowser = () => action(types.RESTART_BROWSER)
+
+export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
+  key
+})

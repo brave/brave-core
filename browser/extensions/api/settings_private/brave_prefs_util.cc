@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
+#include "bat/ads/pref_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -115,6 +116,34 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_shields::prefs::kTwitterEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_shields::prefs::kLinkedInEmbedControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+
+  // Rewards/Ads prefs
+  (*s_brave_allowlist)[ads::prefs::kEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[ads::prefs::kAdsPerHour] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[ads::prefs::kAdsSubdivisionTargetingCode] =
+      settings_api::PrefType::PREF_TYPE_STRING;
+  (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeAmount] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[brave_rewards::prefs::kMinVisitTime] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[brave_rewards::prefs::kMinVisits] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[brave_rewards::prefs::kAllowNonVerified] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kAllowVideoContribution] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipRedditEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipTwitterEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipGithubEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Search engine prefs

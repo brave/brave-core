@@ -221,6 +221,14 @@ RegisterPolymerTemplateModifications({
       'shields',
     )
     newTabEl.insertAdjacentElement('afterend', shieldsEl)
+    // Add Rewards item
+    const rewardsEl = createMenuElement(
+      loadTimeData.getString('braveRewards'),
+      '/rewards',
+      'brave_settings:rewards',
+      'rewards',
+    )
+    shieldsEl.insertAdjacentElement('afterend', rewardsEl)
     // Add Embed Blocking item
     const embedEl = createMenuElement(
       loadTimeData.getString('socialBlocking'),
@@ -228,7 +236,7 @@ RegisterPolymerTemplateModifications({
       'brave_settings:social-permissions',
       'socialBlocking',
     )
-    shieldsEl.insertAdjacentElement('afterend', embedEl)
+    rewardsEl.insertAdjacentElement('afterend', embedEl)
     // Add privacy
     const privacyEl = getMenuElement(templateContent, '/privacy')
     embedEl.insertAdjacentElement('afterend', privacyEl)

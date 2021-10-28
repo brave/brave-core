@@ -105,14 +105,9 @@
       "channel": "stable",
       "contexts": ["webui"],
       "matches": [
-        "chrome://newtab/*"
-      ]
-    },
-    {
-      "channel": "stable",
-      "contexts": ["webui"],
-      "matches": [
-        "chrome://rewards/*"
+        "chrome://newtab/*",
+        "chrome://rewards/*",
+        "chrome://settings/*"
       ]
     }
   ],

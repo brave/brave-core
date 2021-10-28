@@ -177,3 +177,7 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
 export const onInitialized = (result: boolean) => action(types.ON_INITIALIZED, {
   result
 })
+
+export const onPrefChanged = (key: string) => action(types.ON_PREF_CHANGED, {
+  key
+})

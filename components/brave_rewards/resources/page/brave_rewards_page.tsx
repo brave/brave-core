@@ -273,6 +273,10 @@ function externalWalletLogin (url: string) {
   window.open(url, '_self')
 }
 
+function onPrefChanged (key: string) {
+  getActions().onPrefChanged(key)
+}
+
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
 // @ts-ignore
@@ -324,7 +328,8 @@ window.brave_rewards = {
   walletPassphrase,
   onboardingStatus,
   enabledInlineTippingPlatforms,
-  externalWalletLogin
+  externalWalletLogin,
+  onPrefChanged
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

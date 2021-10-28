@@ -16,6 +16,16 @@
 namespace extensions {
 namespace api {
 
+class BraveRewardsGetLocaleFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getLocale", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetLocaleFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsOpenBrowserActionUIFunction :
     public ExtensionFunction {
  public:

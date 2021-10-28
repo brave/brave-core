@@ -16,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -33,6 +34,7 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
@@ -285,6 +287,9 @@ class RewardsDOMHandler
   // AdsServiceObserver implementation
   void OnAdRewardsChanged() override;
 
+  void InitPrefChangeRegistrar();
+  void OnPrefChanged(const std::string& key);
+
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   brave_ads::AdsService* ads_service_;              // NOT OWNED
 
@@ -293,6 +298,8 @@ class RewardsDOMHandler
       rewards_service_observation_{this};
   base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
       ads_service_observation_{this};
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
@@ -538,6 +545,74 @@ void RewardsDOMHandler::Init() {
   rewards_service_->StartProcess(base::DoNothing());
 
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+
+  // Configure a pref change registrar to update brave://rewards when settings
+  // are changed via brave://settings
+  InitPrefChangeRegistrar();
+}
+
+void RewardsDOMHandler::InitPrefChangeRegistrar() {
+  Profile* profile = Profile::FromWebUI(web_ui());
+  pref_change_registrar_.Init(profile->GetPrefs());
+
+  pref_change_registrar_.Add(
+      ads::prefs::kEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      ads::prefs::kAdsPerHour,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      ads::prefs::kAdsSubdivisionTargetingCode,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kAutoContributeEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kAutoContributeAmount,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kMinVisitTime,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kMinVisits,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kAllowNonVerified,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kAllowVideoContribution,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kInlineTipTwitterEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kInlineTipRedditEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kInlineTipGithubEnabled,
+      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
+                          base::Unretained(this)));
+}
+
+void RewardsDOMHandler::OnPrefChanged(const std::string& path) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+
+  CallJavascriptFunction("brave_rewards.onPrefChanged", base::Value(path));
 }
 
 void RewardsDOMHandler::RestartBrowser(base::Value::ConstListView args) {
