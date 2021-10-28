@@ -404,6 +404,12 @@ interface BraveWalletServiceObserver {
   OnDefaultWalletChanged(DefaultWallet wallet);
 };
 
+struct SignMessageRequest {
+  int32 id;
+  string address;
+  string message;
+};
+
 interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
@@ -421,7 +427,7 @@ interface BraveWalletService {
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
   ResetEthereumPermission(string origin, string account) => (bool success);
   GetActiveOrigin() => (string origin);
-  GetPendingSignMessageRequest() => (int32 id, string address, string message);
+  GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   // UI to native
   NotifySignMessageRequestProcessed(bool approved, int32 id);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
