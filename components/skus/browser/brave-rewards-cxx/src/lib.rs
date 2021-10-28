@@ -15,13 +15,12 @@ pub use brave_rewards;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
-#[derive(Clone)]
-pub struct NativeClientContext(Rc<RefCell<UniquePtr<ffi::SkusSdkImpl>>>);
+pub struct NativeClientContext(UniquePtr<ffi::SkusSdkImpl>);
 
 #[derive(Clone)]
 pub struct NativeClient {
     pool: Rc<RefCell<LocalPool>>,
-    ctx: NativeClientContext,
+    ctx: Rc<RefCell<NativeClientContext>>,
 }
 
 impl fmt::Debug for NativeClient {
@@ -144,7 +143,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkImpl>, env: String) -> Box<CppSDK> 
     let sdk = brave_rewards::sdk::SDK::new(
         NativeClient {
             pool: Rc::new(RefCell::new(LocalPool::new())),
-            ctx: NativeClientContext(Rc::new(RefCell::new(ctx))),
+            ctx: Rc::new(RefCell::new(NativeClientContext(ctx))),
         },
         &env,
         None,
