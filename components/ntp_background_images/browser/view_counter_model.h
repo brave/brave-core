@@ -39,16 +39,12 @@ class ViewCounterModel {
     always_show_branded_wallpaper_ = show;
   }
 
+  void set_show_branded_wallpaper(bool show) { show_branded_wallpaper_ = show; }
+
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-  void ResetCurrentWallpaperImageIndex();
-#endif
-  void ResetCurrentBrandedWallpaperImageIndex();
 
-  // If |true|, kInitialCountToBrandedWallpaper is set to
-  // |count_to_branded_wallpaper_|.
-  void Reset(bool use_initial_count = true);
+  void Reset();
 
  private:
   static const int kInitialCountToBrandedWallpaper = 1;
@@ -73,6 +69,7 @@ class ViewCounterModel {
   int count_to_branded_wallpaper_ = 0;
   int total_branded_image_count_ = 0;
   bool always_show_branded_wallpaper_ = false;
+  bool show_branded_wallpaper_ = true;
 };
 
 }  // namespace ntp_background_images

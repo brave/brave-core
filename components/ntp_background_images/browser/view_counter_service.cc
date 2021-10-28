@@ -90,6 +90,10 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
+      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
+                          base::Unretained(this)));
 
   OnUpdated(GetCurrentBrandedWallpaperData());
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
@@ -192,8 +196,7 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
 
   // Data is updated, reset any indexes.
   if (data) {
-    model_.ResetCurrentWallpaperImageIndex();
-    model_.set_total_image_count(data->backgrounds.size());
+    ResetModel();
   }
 }
 #endif
@@ -212,12 +215,8 @@ void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
 
   DVLOG(2) << __func__ << ": Active data is updated.";
 
-  // Data is updated, so change our stored data and reset any indexes.
-  // But keep view counter until branded content is seen.
   if (data) {
-    model_.ResetCurrentBrandedWallpaperImageIndex();
-    model_.set_total_branded_image_count(data->backgrounds.size());
-    model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
+    ResetModel();
   }
 }
 
@@ -229,10 +228,12 @@ void ViewCounterService::OnSuperReferralEnded() {
 
 void ViewCounterService::ResetModel() {
   // SR/SI
+  model_.Reset();
+
   if (auto* data = GetCurrentBrandedWallpaperData()) {
-    model_.Reset(false /* use_initial_count */);
     model_.set_total_branded_image_count(data->backgrounds.size());
     model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
+    model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
   }
 #if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   // BI
@@ -242,14 +243,16 @@ void ViewCounterService::ResetModel() {
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == prefs::kNewTabPageSuperReferralThemesOption) {
-    // Reset model because SI and SR use different policy.
-    ResetModel();
+  if (pref_name == ads::prefs::kEnabled) {
+    ResetNotificationState();
     return;
   }
 
-  // Other prefs changes are used for notification state.
-  ResetNotificationState();
+  // Reset model because SI and SR use different policy.
+  // Start from initial model state whenever
+  // prefs::kNewTabPageSuperReferralThemesOption or
+  // prefs::kNewTabPageShowSponsoredImagesBackgroundImage prefs are changed.
+  ResetModel();
 }
 
 void ViewCounterService::ResetNotificationState() {

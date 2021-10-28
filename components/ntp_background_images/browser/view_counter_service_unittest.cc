@@ -231,10 +231,20 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   view_counter_->OnUpdated(service_->sr_images_data_.get());
   EXPECT_TRUE(view_counter_->model_.always_show_branded_wallpaper_);
 
+  // Initial count is not changed because branded wallpaper is always
+  // visible in SR mode.
+  int expected_count = ViewCounterModel::kInitialCountToBrandedWallpaper;
+  view_counter_->RegisterPageView();
+  view_counter_->RegisterPageView();
+  EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
+
   service_->sr_images_data_.reset(new NTPSponsoredImagesData);
   view_counter_->OnSuperReferralEnded();
   EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
-  const int expected_count = ViewCounterModel::kRegularCountToBrandedWallpaper;
+  EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
+
+  view_counter_->RegisterPageView();
+  expected_count--;
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 }
 #endif
