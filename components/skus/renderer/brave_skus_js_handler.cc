@@ -85,9 +85,20 @@ void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
   }
 
   // window.brave.skus.refresh_order
+  BindFunctionToObject(isolate, skus_obj, "refresh_order",
+                       base::BindRepeating(&BraveSkusJSHandler::RefreshOrder,
+                                           base::Unretained(this), isolate));
+
+  // window.brave.skus.fetch_order_credentials
   BindFunctionToObject(
-      isolate, skus_obj, "refresh_order",
-      base::BindRepeating(&BraveSkusJSHandler::RefreshOrder,
+      isolate, skus_obj, "fetch_order_credentials",
+      base::BindRepeating(&BraveSkusJSHandler::FetchOrderCredentials,
+                          base::Unretained(this), isolate));
+
+  // window.brave.skus.prepare_credentials_presentation
+  BindFunctionToObject(
+      isolate, skus_obj, "prepare_credentials_presentation",
+      base::BindRepeating(&BraveSkusJSHandler::PrepareCredentialsPresentation,
                           base::Unretained(this), isolate));
 }
 
@@ -106,6 +117,7 @@ void BraveSkusJSHandler::BindFunctionToObject(
       .Check();
 }
 
+// window.brave.skus.refresh_order
 v8::Local<v8::Promise> BraveSkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                         std::string order_id) {
   if (!EnsureConnected())
@@ -132,6 +144,97 @@ v8::Local<v8::Promise> BraveSkusJSHandler::RefreshOrder(v8::Isolate* isolate,
 }
 
 void BraveSkusJSHandler::OnRefreshOrder(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    const std::string& response) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::String> result;
+  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+}
+
+// window.brave.skus.fetch_order_credentials
+v8::Local<v8::Promise> BraveSkusJSHandler::FetchOrderCredentials(
+    v8::Isolate* isolate,
+    std::string order_id) {
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context_old(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+
+  skus_sdk_->FetchOrderCredentials(
+      order_id,
+      base::BindOnce(&BraveSkusJSHandler::OnFetchOrderCredentials,
+                     base::Unretained(this), std::move(promise_resolver),
+                     isolate, std::move(context_old)));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void BraveSkusJSHandler::OnFetchOrderCredentials(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    const std::string& response) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::String> result;
+  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+}
+
+// window.brave.skus.prepare_credentials_presentation
+v8::Local<v8::Promise> BraveSkusJSHandler::PrepareCredentialsPresentation(
+    v8::Isolate* isolate,
+    std::string domain,
+    std::string path) {
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context_old(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+
+  skus_sdk_->PrepareCredentialsPresentation(
+      domain, path,
+      base::BindOnce(&BraveSkusJSHandler::OnPrepareCredentialsPresentation,
+                     base::Unretained(this), std::move(promise_resolver),
+                     isolate, std::move(context_old)));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void BraveSkusJSHandler::OnPrepareCredentialsPresentation(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,

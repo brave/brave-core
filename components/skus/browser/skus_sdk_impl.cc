@@ -21,9 +21,6 @@
 
 namespace {
 
-// TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
-brave_rewards::SkusSdkImpl* g_SkusSdk = NULL;
-
 // std::string GetEnvironment() {
 //   // TODO(bsclifton): implement similar to logic to
 //   // https://github.com/brave/brave-core/pull/10358/files#diff-2170e2d6e88ab6e0202eac0280482f5a45f468d0fcc8d9d4d48fc358812b4a0cR35
@@ -40,11 +37,24 @@ void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
   delete callback_state;
 }
 
-// void OnFetchOrderCredentials() {
-// }
+void OnFetchOrderCredentials(
+    brave_rewards::FetchOrderCredentialsCallbackState* callback_state,
+    brave_rewards::RewardsResult result) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run("");
+  }
+  delete callback_state;
+}
 
-// void OnPrepareCredentialsPresentation() {
-// }
+void OnPrepareCredentialsPresentation(
+    brave_rewards::PrepareCredentialsPresentationCallbackState* callback_state,
+    brave_rewards::RewardsResult result,
+    rust::cxxbridge1::Str presentation) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run(static_cast<std::string>(presentation));
+  }
+  delete callback_state;
+}
 
 void OnScheduleWakeup(
     rust::cxxbridge1::Fn<
@@ -57,43 +67,19 @@ void OnScheduleWakeup(
 
 namespace brave_rewards {
 
-// TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
-std::unique_ptr<SkusSdkFetcher> fetcher;
-
-void shim_purge() {
-  LOG(ERROR) << "shim_purge";
-  ::prefs::ScopedDictionaryPrefUpdate update(g_SkusSdk->prefs_,
-                                             prefs::kSkusDictionary);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
-  DCHECK(dictionary);
-  dictionary->Clear();
+void shim_purge(SkusSdkImpl& ctx) {
+  ctx.PurgeStore();
 }
 
-void shim_set(rust::cxxbridge1::Str key, rust::cxxbridge1::Str value) {
-  std::string key_string = static_cast<std::string>(key);
-  std::string value_string = static_cast<std::string>(value);
-  LOG(ERROR) << "shim_set: `" << key_string << "` = `" << value_string << "`";
-
-  ::prefs::ScopedDictionaryPrefUpdate update(g_SkusSdk->prefs_,
-                                             prefs::kSkusDictionary);
-  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
-  DCHECK(dictionary);
-  dictionary->SetString(key_string, value_string);
+void shim_set(SkusSdkImpl& ctx,
+              rust::cxxbridge1::Str key,
+              rust::cxxbridge1::Str value) {
+  ctx.UpdateStoreValue(static_cast<std::string>(key),
+                       static_cast<std::string>(value));
 }
 
-::rust::String shim_get(rust::cxxbridge1::Str key) {
-  std::string key_string = static_cast<std::string>(key);
-  LOG(ERROR) << "shim_get: `" << key_string << "`";
-
-  const base::Value* dictionary =
-      g_SkusSdk->prefs_->GetDictionary(prefs::kSkusDictionary);
-  DCHECK(dictionary);
-  DCHECK(dictionary->is_dict());
-  const base::Value* value = dictionary->FindKey(key_string);
-  if (value) {
-    return ::rust::String(value->GetString());
-  }
-  return ::rust::String("{}");
+::rust::String shim_get(SkusSdkImpl& ctx, rust::cxxbridge1::Str key) {
+  return ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)));
 }
 
 void shim_scheduleWakeup(
@@ -108,15 +94,16 @@ void shim_scheduleWakeup(
       base::TimeDelta::FromMilliseconds(delay_ms));
 }
 
-void shim_executeRequest(
+std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
+    const brave_rewards::SkusSdkImpl& ctx,
     const brave_rewards::HttpRequest& req,
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
              brave_rewards::HttpResponse)> done,
-    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) {
-  // TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
-  fetcher = std::make_unique<SkusSdkFetcher>(g_SkusSdk->url_loader_factory_);
-  fetcher->BeginFetch(req, std::move(done), std::move(ctx));
+    rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> rt_ctx) {
+  auto fetcher = ctx.CreateFetcher();
+  fetcher->BeginFetch(req, std::move(done), std::move(rt_ctx));
+  return fetcher;
 }
 
 // static
@@ -130,20 +117,57 @@ SkusSdkImpl::SkusSdkImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory), prefs_(prefs) {
-  // TODO(bsclifton): remove me in favor of storing in RefreshOrderCallbackState
-  g_SkusSdk = this;
+  // TODO(bsclifton): REMOVE ME (THIS IS A HACK)
+  unique_instance_.reset(this);
 }
 
-SkusSdkImpl::~SkusSdkImpl() {}
+SkusSdkImpl::~SkusSdkImpl() {
+  // TODO(bsclifton): REMOVE ME (THIS IS A HACK)
+  unique_instance_.release();
+}
+
+std::unique_ptr<SkusSdkFetcher> SkusSdkImpl::CreateFetcher() const {
+  return std::make_unique<SkusSdkFetcher>(url_loader_factory_);
+}
+
+std::string SkusSdkImpl::GetValueFromStore(std::string key) const {
+  LOG(ERROR) << "shim_get: `" << key << "`";
+  const base::Value* dictionary = prefs_->GetDictionary(prefs::kSkusDictionary);
+  DCHECK(dictionary);
+  DCHECK(dictionary->is_dict());
+  const base::Value* value = dictionary->FindKey(key);
+  if (value) {
+    return value->GetString();
+  }
+  return "{}";
+}
+
+void SkusSdkImpl::PurgeStore() const {
+  LOG(ERROR) << "shim_purge";
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
+  DCHECK(dictionary);
+  dictionary->Clear();
+}
+
+void SkusSdkImpl::UpdateStoreValue(std::string key,
+                                       std::string value) const {
+  LOG(ERROR) << "shim_set: `" << key << "` = `" << value << "`";
+  ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
+  std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
+  DCHECK(dictionary);
+  dictionary->SetString(key, value);
+}
 
 void SkusSdkImpl::RefreshOrder(const std::string& order_id,
                                RefreshOrderCallback callback) {
-  ::rust::Box<CppSDK> sdk = initialize_sdk("development");
+  // TODO(bsclifton): find a better way to pass this in :(
+  // basically experiencing a crash on exit
+  ::rust::Box<CppSDK> sdk =
+      initialize_sdk(std::move(unique_instance_), "development");
 
   std::unique_ptr<RefreshOrderCallbackState> cbs(new RefreshOrderCallbackState);
   cbs->cb = std::move(callback);
-  cbs->instance = this;
-  // cbs->fetcher = std::make_unique<SkusSdkFetcher>(url_loader_factory_);
 
   sdk->refresh_order(OnRefreshOrder, std::move(cbs), order_id.c_str());
 }
@@ -151,21 +175,34 @@ void SkusSdkImpl::RefreshOrder(const std::string& order_id,
 void SkusSdkImpl::FetchOrderCredentials(
     const std::string& order_id,
     FetchOrderCredentialsCallback callback) {
-  ::rust::Box<CppSDK> sdk = initialize_sdk("development");
+  // TODO(bsclifton): find a better way to pass this in :(
+  // basically experiencing a crash on exit
+  ::rust::Box<CppSDK> sdk =
+      initialize_sdk(std::move(unique_instance_), "development");
 
-  // TODO(bsclifton): fill me in
+  std::unique_ptr<FetchOrderCredentialsCallbackState> cbs(
+      new FetchOrderCredentialsCallbackState);
+  cbs->cb = std::move(callback);
 
-  // sdk->fetch_order_credentials(on_refresh_order, std::move(cbs),
-  // order_id.c_str());
+  sdk->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
+                               order_id.c_str());
 }
 
 void SkusSdkImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     PrepareCredentialsPresentationCallback callback) {
-  ::rust::Box<CppSDK> sdk = initialize_sdk("development");
+  // TODO(bsclifton): find a better way to pass this in :(
+  // basically experiencing a crash on exit
+  ::rust::Box<CppSDK> sdk =
+      initialize_sdk(std::move(unique_instance_), "development");
 
-  // TODO(bsclifton): fill me in
+  std::unique_ptr<PrepareCredentialsPresentationCallbackState> cbs(
+      new PrepareCredentialsPresentationCallbackState);
+  cbs->cb = std::move(callback);
+
+  sdk->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
+                                        std::move(cbs), domain, path);
 }
 
 }  // namespace brave_rewards
