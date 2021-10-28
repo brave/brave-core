@@ -74,6 +74,10 @@ class CreativeAdNotifications final : public Table {
                 GetCreativeAdNotificationsCallback callback);
 
   CreativeAdNotificationInfo GetFromRecord(mojom::DBRecord* record) const;
+  CreativeAdNotificationMap GroupCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
+  CreativeAdNotificationList GetCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
 
   void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
