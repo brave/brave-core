@@ -137,7 +137,7 @@ struct BuyTokenView_Previews: PreviewProvider {
         networkStore: .previewStore,
         buyTokenStore: .previewStore
       )
-      .previewColorSchemes()
+        .previewColorSchemes()
     }
 }
 #endif

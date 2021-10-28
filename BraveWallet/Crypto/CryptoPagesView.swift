@@ -52,12 +52,16 @@ struct CryptoPagesView: View {
         switch action {
         case .buy:
           BuyTokenView(
-            keyringStore: self.walletStore.keyringStore,
-            networkStore: self.walletStore.networkStore,
-            buyTokenStore: self.walletStore.buyTokenStore
+            keyringStore: walletStore.keyringStore,
+            networkStore: walletStore.networkStore,
+            buyTokenStore: walletStore.buyTokenStore
           )
         case .send:
-          EmptyView()
+          SendTokenView(
+            keyringStore: walletStore.keyringStore,
+            networkStore: walletStore.networkStore,
+            sendTokenStore: walletStore.sendTokenStore
+          )
         case .swap:
           SwapCryptoView(
             keyringStore: walletStore.keyringStore,

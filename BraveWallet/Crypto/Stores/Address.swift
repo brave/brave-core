@@ -17,4 +17,12 @@ extension String {
   var removingHexPrefix: String {
     hasPrefix("0x") ? String(dropFirst(2)) : self
   }
+  
+  /// Check if the string is a valid address
+  var isAddress: Bool {
+    // An address has to start with `0x`
+    guard starts(with: "0x") else { return false }
+    // Check the rest of the char is a hex digit
+    return dropFirst(2).allSatisfy(\.isHexDigit)
+  }
 }
