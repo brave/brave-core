@@ -27,6 +27,8 @@ class PrefRegistrySyncable;
 
 namespace brave_rewards {
 
+class SkusSdkFetcher;
+
 class SkusSdkImpl final : public skus::mojom::SkusSdk {
  public:
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
@@ -39,6 +41,12 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusSdkImpl() override;
 
+  std::unique_ptr<SkusSdkFetcher> CreateFetcher() const;
+
+  std::string GetValueFromStore(std::string key) const;
+  void PurgeStore() const;
+  void UpdateStoreValue(std::string key, std::string value) const;
+
   void RefreshOrder(const std::string& order_id,
                     RefreshOrderCallback callback) override;
   void FetchOrderCredentials(const std::string& order_id,
@@ -48,11 +56,15 @@ class SkusSdkImpl final : public skus::mojom::SkusSdk {
       const std::string& path,
       PrepareCredentialsPresentationCallback callback) override;
 
+ private:
   // used for making requests to SKU server
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   // used to store the credential
   PrefService* prefs_;
+
+  // TODO(bsclifton): REMOVE ME (THIS IS A HACK)
+  std::unique_ptr<SkusSdkImpl> unique_instance_;
 };
 
 }  // namespace brave_rewards
