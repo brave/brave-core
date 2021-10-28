@@ -78,10 +78,8 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
 
   if (auto* data = GetCurrentBrandedWallpaperData())
     model_.set_total_branded_image_count(data->backgrounds.size());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   if (auto* data = GetCurrentWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
-#endif
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(ads::prefs::kEnabled,
@@ -96,9 +94,7 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
                           base::Unretained(this)));
 
   OnUpdated(GetCurrentBrandedWallpaperData());
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   OnUpdated(GetCurrentWallpaperData());
-#endif
 }
 
 ViewCounterService::~ViewCounterService() = default;
@@ -120,11 +116,9 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   UpdateP3AValues();
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 NTPBackgroundImagesData* ViewCounterService::GetCurrentWallpaperData() const {
   return service_->GetBackgroundImagesData();
 }
-#endif
 
 NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
     const {
@@ -139,15 +133,10 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
   if (ShouldShowBrandedWallpaper()) {
     return GetCurrentBrandedWallpaper();
   } else {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     return GetCurrentWallpaper();
-#else
-    return base::Value();
-#endif
   }
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 base::Value ViewCounterService::GetCurrentWallpaper() const {
   if (IsBackgroundWallpaperActive()) {
     return GetCurrentWallpaperData()->GetBackgroundAt(
@@ -156,7 +145,6 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 
   return base::Value();
 }
-#endif
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
@@ -190,7 +178,6 @@ void ViewCounterService::Shutdown() {
   service_->RemoveObserver(this);
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   DVLOG(2) << __func__ << ": Active data is updated.";
 
@@ -199,7 +186,6 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
     ResetModel();
   }
 }
-#endif
 
 void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
   // We can get non effective component update because
@@ -227,19 +213,17 @@ void ViewCounterService::OnSuperReferralEnded() {
 }
 
 void ViewCounterService::ResetModel() {
-  // SR/SI
   model_.Reset();
 
+  // SR/SI
   if (auto* data = GetCurrentBrandedWallpaperData()) {
     model_.set_total_branded_image_count(data->backgrounds.size());
     model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
     model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
   }
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   // BI
   if (auto* data = GetCurrentWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
-#endif
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
@@ -305,7 +289,6 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
   return IsSponsoredImagesWallpaperOptedIn();
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 bool ViewCounterService::IsBackgroundWallpaperActive() const {
 #if !defined(OS_ANDROID)
   if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
@@ -314,7 +297,6 @@ bool ViewCounterService::IsBackgroundWallpaperActive() const {
 
   return !!GetCurrentWallpaperData();
 }
-#endif
 
 bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
   return prefs_->GetBoolean(

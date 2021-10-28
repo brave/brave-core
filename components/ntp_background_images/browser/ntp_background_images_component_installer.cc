@@ -25,7 +25,6 @@ namespace ntp_background_images {
 namespace {
 
 constexpr size_t kHashSize = 32;
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 constexpr char kNTPBIComponentPublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4L9XGAiVhCL8oi5aQhFrVllsw6VebX"
     "igTj5ow3e0fYeEztjM9FOgqMD6pl0AB8u05xKUPcdpIZqCguEzXyXh5vn+"
@@ -35,7 +34,6 @@ constexpr char kNTPBIComponentPublicKey[] =
     "qBt6VsZcejcQCd1KIpgHNyoVl5rodtBRj25o48SxYePrssMRTv9vAQmRUZZukOIL/"
     "HdeqjCHIOSQTrFEQIDAQAB";  // NOLINT
 constexpr char kNTPBIComponentID[] = "aoojcmojmmcbpfgoecoadbdpnagfchel";
-#endif
 
 class NTPBackgroundImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -151,7 +149,6 @@ void OnRegistered(const std::string& component_id) {
 
 }  // namespace
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback) {
@@ -165,7 +162,6 @@ void RegisterNTPBackgroundImagesComponent(
           callback));
   installer->Register(cus, base::BindOnce(&OnRegistered, kNTPBIComponentID));
 }
-#endif
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,

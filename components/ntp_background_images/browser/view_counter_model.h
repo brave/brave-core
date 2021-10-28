@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_MODEL_H_
 
 #include "base/gtest_prod_util.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 
 namespace ntp_background_images {
 
@@ -27,13 +26,11 @@ class ViewCounterModel {
     total_branded_image_count_ = count;
   }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   int current_wallpaper_image_index() const {
     return current_wallpaper_image_index_;
   }
 
   void set_total_image_count(int count) { total_image_count_ = count; }
-#endif
 
   void set_always_show_branded_wallpaper(bool show) {
     always_show_branded_wallpaper_ = show;
@@ -43,7 +40,6 @@ class ViewCounterModel {
 
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
-
   void Reset();
 
  private:
@@ -51,20 +47,16 @@ class ViewCounterModel {
   static const int kRegularCountToBrandedWallpaper = 3;
 
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesOnlyTest);
-#endif
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
 
   void RegisterPageViewForBrandedImages();
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void RegisterPageViewForBackgroundImages();
 
   int current_wallpaper_image_index_ = 0;
   int total_image_count_ = 0;
-#endif
   int current_branded_wallpaper_image_index_ = 0;
   int count_to_branded_wallpaper_ = 0;
   int total_branded_image_count_ = 0;

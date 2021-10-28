@@ -9,18 +9,14 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#endif
 
 namespace ntp_background_images {
 
@@ -34,10 +30,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(nullptr, &local_pref_));
     source_.reset(new NTPSponsoredImagesSource(service_.get()));
-
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     bg_source_.reset(new NTPBackgroundImagesSource(service_.get()));
-#endif
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
   }
@@ -46,10 +39,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
   TestingPrefServiceSimple local_pref_;
   std::unique_ptr<NTPBackgroundImagesService> service_;
   std::unique_ptr<NTPSponsoredImagesSource> source_;
-
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   std::unique_ptr<NTPBackgroundImagesSource> bg_source_;
-#endif
 };
 
 TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
@@ -92,7 +82,6 @@ TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
       source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
   const std::string test_json_string = R"(
       {
@@ -140,7 +129,6 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
   EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
   EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-4.webp"));
 }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 

@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -66,7 +65,6 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 TEST(ViewCounterModelTest, NTPBackgroundImagesTest) {
   ViewCounterModel model;
   model.set_total_branded_image_count(kTestImageCount);
@@ -110,7 +108,6 @@ TEST(ViewCounterModelTest, NTPBackgroundImagesOnlyTest) {
   // Check branded wallpaper didn't count
   EXPECT_EQ(0, model.current_branded_wallpaper_image_index());
 }
-#endif
 
 TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   ViewCounterModel model;

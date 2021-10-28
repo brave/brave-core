@@ -28,11 +28,9 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
 
 void ViewCounterModel::RegisterPageView() {
   RegisterPageViewForBrandedImages();
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   if (!ShouldShowBrandedWallpaper()) {
     RegisterPageViewForBackgroundImages();
   }
-#endif
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
@@ -60,7 +58,6 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
   }
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
   if (total_image_count_ == 0)
     return;
@@ -69,13 +66,10 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
   current_wallpaper_image_index_++;
   current_wallpaper_image_index_ %= total_image_count_;
 }
-#endif
 
 void ViewCounterModel::Reset() {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   current_wallpaper_image_index_ = 0;
   total_image_count_ = 0;
-#endif
   current_branded_wallpaper_image_index_ = 0;
   total_branded_image_count_ = 0;
   always_show_branded_wallpaper_ = false;

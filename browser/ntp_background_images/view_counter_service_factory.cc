@@ -13,9 +13,9 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -25,10 +25,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/url_data_source.h"
-
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-#include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#endif
 
 namespace ntp_background_images {
 
@@ -66,11 +62,9 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     if (ads_service) {
       is_supported_locale = ads_service->IsSupportedLocale();
     }
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPBackgroundImagesSource>(service));
-#endif
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
