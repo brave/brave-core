@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_NEW_TAB_PAGE_AD_INFO_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_NEW_TAB_PAGE_AD_INFO_ALIASES_H_
 
+#include <map>
+#include <string>
 #include <vector>
 
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
@@ -13,6 +15,7 @@
 namespace ads {
 
 using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;
+using CreativeNewTabPageAdMap = std::map<std::string, CreativeNewTabPageAdInfo>;
 
 }  // namespace ads
 

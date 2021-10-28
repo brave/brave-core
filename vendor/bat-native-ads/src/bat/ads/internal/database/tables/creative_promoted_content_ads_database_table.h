@@ -85,6 +85,10 @@ class CreativePromotedContentAds final : public Table {
                 GetCreativePromotedContentAdsCallback callback);
 
   CreativePromotedContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
+  CreativePromotedContentAdMap GroupCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
+  CreativePromotedContentAdList GetCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
 
   void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
