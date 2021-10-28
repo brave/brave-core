@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Za besplatan poziv uključite značajku Brave Rewards",
+    "message": "Za besplatan poziv uključite značajku Nagrade Brave",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Značajkom Brave Rewards zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.",
+    "message": "Značajkom Nagrade Brave zarađujete tokene za pregledavanje privatnih oglasa (vaši su podatci sigurni). Pretvorite te tokene u novac, darovne kartice ili čak u napojnice za mrežna mjesta koja vam se sviđaju. Nema praćenja. Nema usporavanja.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -661,11 +661,11 @@
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Kliknite bilo gdje na zaslonu za nastavak do usluge Brave Talk.",
+    "message": "Kliknite bilo gdje na zaslonu za nastavak do značajke Razgovor Brave.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Želite doznati više o značajki Brave Rewards? $tour_link_begin$Krenite u brzi obilazak$tour_link_end$.",
+    "message": "Želite doznati više o značajki Nagrade Brave? $tour_link_begin$Krenite u brzi obilazak$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

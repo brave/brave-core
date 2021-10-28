@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Ücretsiz bir arama başlatmak için, Brave Rewards'u açın",
+    "message": "Ücretsiz bir arama başlatmak için, Brave Ödülleri'ni açın",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Brave Rewards sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "message": "Brave Ödülleri sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -627,15 +627,15 @@
     }
   },
   "braveTalkTurnOnPrivateAdsToStartCall": {
-    "message": "Ücretsiz bir arama başlatmak için, Brave Private Ads'i etkinleştirin",
+    "message": "Ücretsiz bir arama başlatmak için, Brave Özel Reklamlar'ı etkinleştirin",
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "Brave Private Ads sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
+    "message": "Brave Özel Reklamlar sayesinde, özel reklamları görüntülemek karşılığında (verileriniz güvende tutularak) token kazanırsınız. Bu token'ları ister nakit paraya, ister hediye kartına, hatta isterseniz sevdiğiniz internet siteleri için bahşişe dönüştürebilirsiniz. İzleme yok. Yavaşlama yok.",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "Brave Private Ads'i Aç",
+    "message": "Brave Özel Reklamlar'ı Aç",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
@@ -661,11 +661,11 @@
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave Talk'a devam etmek için ekranın herhangi bir yerine tıklayın.",
+    "message": "Brave Sohbet'e devam etmek için ekranın herhangi bir yerine tıklayın.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Brave Rewards hakkında daha fazla bilgi edinmek mi istiyorsunuz? $tour_link_begin$Hızlandırılmış tura katılın$tour_link_end$.",
+    "message": "Brave Ödülleri hakkında daha fazla bilgi edinmek mi istiyorsunuz? $tour_link_begin$Hızlandırılmış tura katılın$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

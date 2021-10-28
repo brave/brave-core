@@ -597,7 +597,7 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "একটি বিনামূল্যে কল শুরু করতে Brave Rewards চালু করুন",
+    "message": "একটি বিনামূল্যে কল শুরু করতে Brave রিওয়ার্ডস চালু করুন",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Brave Rewards সম্পর্কে আরও জানতে চান? $tour_link_begin$একবার চটজলদি ঘুরে দেখুন$tour_link_end$।",
+    "message": "Brave রিওয়ার্ডস সম্পর্কে আরও জানতে চান? $tour_link_begin$একবার চটজলদি ঘুরে দেখুন$tour_link_end$।",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

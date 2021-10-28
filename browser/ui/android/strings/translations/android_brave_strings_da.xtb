@@ -471,13 +471,11 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
 <translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
 <translation id="7307847920988946894">Slå Rewards til</translation>
-<translation id="1186139901474936180">Ved at trykke acceptere du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>. Deaktivér til enhver tid i Indstillinger.</translation>
 <translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
 <translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
 <translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
-<translation id="7314030474505546826">Ved at aktivere Ads accepterer du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
-<translation id="6712250553966900750">Tryk hvor som helst på skærmen for at fortætte til Brave Talk.</translation>
+<translation id="7073631403665023390">Tryk hvor som helst på skærmen for at fortætte til Brave Talk.</translation>
 <translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
@@ -540,7 +538,6 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="6146351434671268516">Skriv ordene ned, eller kopiér dem i den rigtige rækkefølge, og gem dem et sikkert sted.</translation>
 <translation id="7408247683131762445">ADVARSEL: Oplys aldrig din backup-sætning. Personer i besiddelse af sætningen kan tage dine midler permanent.</translation>
 <translation id="939275786514736244">Jeg har lavet en backup af min sætning og gemt den et sikkert sted</translation>
-<translation id="6896758677409633944">Kopier</translation>
 <translation id="2604744480284798833">Backup din wallet nu for at beskytte din crypto-portefølje i tilfælde af mistet adgang.</translation>
 <translation id="1202920745614909195">Køb krypto med Apple Pay eller betalingskort.</translation>
 <translation id="841880029259839903">Send krypto, eller overfør fra én konto til en anden.</translation>
@@ -557,14 +554,12 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="6366007539108097840">3 m.</translation>
 <translation id="6977728312178289892">1 å.</translation>
 <translation id="6895566650974550243">ALLE</translation>
-<translation id="8892168913673237979">Så er vi klar!</translation>
-<translation id="8331501996028380732">Køb, sælg og opbevar kryptovaluta. Hvis du ikke har en eksisterende kryptokonto, kan du tilføje én nu.</translation>
 <translation id="2267753748892043616">Tilføj konto</translation>
 <translation id="2632612428525029752">Opdatér konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivér oplåsning via fingeraftryk?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
-<translation id="8488282162676695335">Brave-wallet</translation>
+<translation id="1544192797660353713">Brave-wallet</translation>
 <translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
 <translation id="1970161551843843564">Gendan kryptokonto</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
@@ -581,7 +576,6 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="745115390910697838">Sætningerne stemte ikke overens. Prøv igen.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
 <translation id="6392640873800632439">Markedspris i <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Pris i ETH</translation>
 <translation id="6748108480210050150">Fra</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -589,10 +583,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="6159566011642056819">Til (estimat)</translation>
 <translation id="6998989275928107238">Til</translation>
 <translation id="6664416064035847539">adresse eller url</translation>
-<translation id="59223531494896848">Grænse</translation>
-<translation id="3567988240819868195">Marked</translation>
 <translation id="632241521608275119">Afvigelsestolerance</translation>
-<translation id="4500473291496079954">Udløber om</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -696,7 +687,6 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="7995708795274219641">Beløb + Brændstof</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="6122742277607781713">Portefølje</translation>
-<translation id="2805756323405976993">Apps</translation>
 <translation id="6083912983861746409">Gaspris(GWEI)</translation>
 <translation id="2499079593046817044">Gasgrænse(GWEI)</translation>
 <translation id="6389441740143786465">Deaktivér Sharing Hub</translation>

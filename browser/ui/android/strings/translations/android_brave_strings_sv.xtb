@@ -472,13 +472,11 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="8037420924417098685">För att starta ett kostnadsfritt samtal, starta Brave Rewards</translation>
 <translation id="8961724619078500274">Med Brave Rewards tjänar du token för att se privata annonser (din data är säker). Gör dessa token till kontanter, presentkort…eller ge dricks till de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
 <translation id="7307847920988946894">Aktivera Rewards</translation>
-<translation id="1186139901474936180">Genom att trycka godkänner du<ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. Inaktivera när som helst i Inställningar.</translation>
 <translation id="6128511569382736135">För att starta ett kostnadsfritt samtal, aktivera Brave Private Ads</translation>
 <translation id="7930006085154756245">Med Brave Private Ads tjänar du token för att visa privata annonser (din data är säker). Gör dessa token till kontanter, presentkort…eller dricksa till och med de webbplatser som du älskar. Ingen spårning. Inga långsamma nedgångar.</translation>
 <translation id="4992617448154987397">Aktivera Brave privata annonser</translation>
-<translation id="7314030474505546826">Genom att aktivera annonser godkänner du <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Du kan nu starta ett kostnadsfritt samtal</translation>
-<translation id="6712250553966900750">Tryck var som helst på skärmen för att fortsätta till Brave Talk.</translation>
+<translation id="7073631403665023390">Tryck var som helst på skärmen för att fortsätta till Brave Talk.</translation>
 <translation id="626339649633171286">Vill du lära dig mer om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Du konverterade <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> till <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Kontrollera din nätverksanslutning.</translation>
@@ -541,7 +539,6 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="6146351434671268516">Skriv ner eller kopiera de här orden i rätt ordning och spara dem på en säker plats.</translation>
 <translation id="7408247683131762445">VARNING: Avslöja aldrig din återställningsfras. Den som känner till frasen kan ta dina medel för alltid.</translation>
 <translation id="939275786514736244">Jag har sparat frasen på en säker plats</translation>
-<translation id="6896758677409633944">Kopiera</translation>
 <translation id="2604744480284798833">Säkerhetskopiera din plånbok nu för att skydda din kryptoportfölj från förlust av åtkomst.</translation>
 <translation id="1202920745614909195">Köp krypto med Apple Pay eller betalkort</translation>
 <translation id="841880029259839903">Skicka krypto eller för över från ett konto till ett annat.</translation>
@@ -558,14 +555,12 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Å</translation>
 <translation id="6895566650974550243">ALLA</translation>
-<translation id="8892168913673237979">Allt klart!</translation>
-<translation id="8331501996028380732">Köp, sälj eller håll krypto. Om du redan har ett kryptokonto kan du lägga till det nu.</translation>
 <translation id="2267753748892043616">Lägg till konto</translation>
 <translation id="2632612428525029752">Uppdatera konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Vill du aktivera upplåsning med fingeravtryck?</translation>
 <translation id="5493402808936397665">Aktivera biometri för att snabbt låsa upp din plånbok utan att behöva ange ditt lösenord.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Ange din återställningsfras för att återställa ditt Brave Wallet-kryptokonto.</translation>
 <translation id="1970161551843843564">Återställ kryptoplånbok</translation>
 <translation id="4811736040444856406">Visa återställningsfras</translation>
@@ -582,7 +577,6 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="745115390910697838">Fraserna matchar inte. Försök igen.</translation>
 <translation id="2360588547830602174">Kontoåterställningen misslyckades. Försök igen.</translation>
 <translation id="6392640873800632439">Marknadspris i <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Pris i ETH</translation>
 <translation id="6748108480210050150">Från</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -590,10 +584,7 @@ försöka bidra tills de verifierar sig eller tills 90 dagar har gått.</transla
 <translation id="6159566011642056819">Till (beräknat)</translation>
 <translation id="6998989275928107238">Till</translation>
 <translation id="6664416064035847539">adress eller url</translation>
-<translation id="59223531494896848">Gräns</translation>
-<translation id="3567988240819868195">Marknad</translation>
 <translation id="632241521608275119">Tolererade transaktionskostnader</translation>
-<translation id="4500473291496079954">Löper ut om</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -697,7 +688,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="7995708795274219641">Belopp + bränsle</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Appar</translation>
 <translation id="6083912983861746409">Gaspris(GWEI)</translation>
 <translation id="2499079593046817044">Gasgräns(GWEI)</translation>
 <translation id="6389441740143786465">Inaktivera Sharing Hub</translation>

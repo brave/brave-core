@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
 <translation id="4424486208397124985">출판자 접합성을 위한 최소 방문 수</translation>
 <translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
-<translation id="5875669387851353511">동영상에 기부 허용</translation>
+<translation id="5510618543889994434">동영상에 기부 허용</translation>
 <translation id="8933202740471878108">1개의 방문</translation>
 <translation id="354797634123275103">5개의 방문</translation>
 <translation id="3583700907990488238">10개의 방문</translation>
@@ -576,7 +576,7 @@
 <translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
 <translation id="3656941797339037856">Rewards를 Gemini에 연결하세요!</translation>
 <translation id="2383784987664887340">Gemini는 거래와 보관이 쉽고 BAT에 3.49%의 APY* 수익을 낼 수 있습니다. 지금 Brave Rewards 월렛을 검증하고 Gemini와 연결하세요.</translation>
-<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini 수익 APY</translation>
+<translation id="2237374144728570574">* 2021년 9월 15일 기준 Gemini Earn APY</translation>
 <translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
 <translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
 <translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
@@ -797,7 +797,7 @@
 <translation id="4732386285392573809">트랜잭션에 대한 가스 가격 가져오기 실패</translation>
 <translation id="7619826778671319444">트랜잭션에 대한 가스 한도 가져오기 실패</translation>
 <translation id="4232775951515678071">트랜잭션에 대한 유형 가져오기 실패</translation>
-<translation id="7631054302129692654">EIP-1559 트랜잭션에 대한 가스 추산 가져오기 실패</translation>
+<translation id="7631054302129692654">EIP-1559 트랜잭션에 대한 가스 환전 예상액 가져오기 실패</translation>
 <translation id="4958950550253325418">DeFi 앱</translation>
 <translation id="735961408871282410">NFT 마켓플레이스</translation>
 <translation id="7740287852186792672">검색 결과</translation>
@@ -934,7 +934,7 @@
 <translation id="6857856707736769720">선택</translation>
 <translation id="6323024765179772761">코인 검색</translation>
 <translation id="6998989275928107238">받는이</translation>
-<translation id="1506421160138798546">추산</translation>
+<translation id="1506421160138798546">환전 예상액</translation>
 <translation id="3567988240819868195">시장</translation>
 <translation id="59223531494896848">한도</translation>
 <translation id="8569380433211549748">가격, 통화:</translation>
@@ -948,8 +948,6 @@
 <translation id="5488357322146334497">메시지</translation>
 <translation id="3586752056660754651">서명</translation>
 <translation id="7065157926159745595">이 앱이 다음을 지출할 수 있도록 허용</translation>
-<translation id="2746256479706649252">이 권한을 부여하면 이 앱이 귀하의</translation>
-<translation id="3959778836307233598">을(를) 인출하고 트랜잭션을 자동화할 수 있도록 허용합니다.</translation>
 <translation id="8786100550345425552">권한 편집</translation>
 <translation id="7710469167917867539">트랜잭션 수수료</translation>
 <translation id="9065203028668620118">수정</translation>

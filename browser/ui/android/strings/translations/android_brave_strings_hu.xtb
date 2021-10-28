@@ -467,17 +467,15 @@ hónapban...</translation>
 <translation id="3769645103175790584">Szerezzen tokeneket és jutalmazza meg a készítőket a kiváló tartalmakért.<ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Gyors bemutató</translation>
 <translation id="1080013038789678738">Benne vagyok!</translation>
-<translation id="8037420924417098685">Ingyenes hívás indításához kapcsolja be a Brave Rewardsot</translation>
-<translation id="8961724619078500274">A Brave Rewards privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
+<translation id="8037420924417098685">Ingyenes hívás indításához kapcsolja be a Brave jutalmakat</translation>
+<translation id="8961724619078500274">A Brave jutalmak privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
 <translation id="7307847920988946894">Rewards bekapcsolása</translation>
-<translation id="1186139901474936180">A koppintással beleegyezik ebbe: <ph name="TERMS_OF_SERVICE"/> és ebbe: <ph name="PRIVACY_POLICY"/>. Bármikor kikapcsolhatja a Beállításokban.</translation>
 <translation id="6128511569382736135">Ingyenes hívás indításához engedélyezze a Brave Private Adst.</translation>
 <translation id="7930006085154756245">A Brave Private Ads privát reklámainak megtekintése után tokeneket kap (az adatai biztonságban maradnak). Váltsa be ezeket a tokeneket készpénzre, ajándékutalványra… vagy adjon borravalót a kedvenc weboldalainak. Nincs nyomon követés. Nincs belassulás.</translation>
 <translation id="4992617448154987397">Brave Private Ads bekapcsolása</translation>
-<translation id="7314030474505546826">Az Ads bekapcsolásával beleegyezik ebbe: <ph name="TERMS_OF_SERVICE"/> és ebbe: <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Most már indíthat ingyenes hívást</translation>
-<translation id="6712250553966900750">Koppintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.</translation>
-<translation id="626339649633171286">Többet szeretne megtudni a Brave Rewards-ról? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Koppintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.</translation>
+<translation id="626339649633171286">Többet szeretne megtudni a Brave jutalmakról? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Átváltott <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to<ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Ellenőrizze a hálózati kapcsolatot.</translation>
 <translation id="7889432931837317731">Automatikus megnyitás, ha lehetséges</translation>
@@ -539,7 +537,6 @@ hónapban...</translation>
 <translation id="6146351434671268516">Írd fel vagy másold ki ezeket a szavakat a megfelelő sorrendben, és tárold őket biztonságos helyen.</translation>
 <translation id="7408247683131762445">FIGYELMEZTETÉS: Semmiképp ne oszd meg a helyreállítási kifejezést. Bárki, aki hozzáférést kap ehhez, hozzáférhet forrásaidhoz.</translation>
 <translation id="939275786514736244">Elmentettem a kifejezést biztonságos helyre</translation>
-<translation id="6896758677409633944">Másolás</translation>
 <translation id="2604744480284798833">Készítsen biztonsági mentést a tárcájáról, hogy megvédje a kriptoportfólióját, és ne veszítse el a hozzáférést.</translation>
 <translation id="1202920745614909195">Várásolj kriptót az Apple Pay-jel, hitel- vagy betéti kártyával.</translation>
 <translation id="841880029259839903">Küldj kriptót vagy indíts utalást egyik számláról a másikra.</translation>
@@ -549,21 +546,19 @@ hónapban...</translation>
 <translation id="4450951602553063001">Add meg a jelszót újból</translation>
 <translation id="1783870616707290226">A jelszónak legalább 7 karakterből kell állnia</translation>
 <translation id="7383102760859258982">Az újból beírt jelszó nem egyezik</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1Ó</translation>
 <translation id="8163269366661594721">1N</translation>
 <translation id="7640956400175663828">1HÉ</translation>
 <translation id="9100647964747998533">1HÓ</translation>
 <translation id="6366007539108097840">3HÓ</translation>
 <translation id="6977728312178289892">1É</translation>
 <translation id="6895566650974550243">ÖSSZES</translation>
-<translation id="8892168913673237979">Kész is van!</translation>
-<translation id="8331501996028380732">Vásárolj, kereskedj vagy tarts kriptót. Ha már van meglévő kriptoszámlád, hozzáadhatod most.</translation>
 <translation id="2267753748892043616">Számla hozzáadása</translation>
 <translation id="2632612428525029752">Fiók frissítése</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Engedélyezed az ujjlenyomatos feloldást?</translation>
 <translation id="5493402808936397665">Engedélyezd a biometrikát a pénztárca zárolásának gyors feloldásához anélkül, hogy beírnád a jelszót.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Add meg a helyreállítási kifejezést Brave Wallet kriptopénztárcád visszaállításához.</translation>
 <translation id="1970161551843843564">Kriptoszámla visszaállítása</translation>
 <translation id="4811736040444856406">Helyreállítási kifejezés megjelenítése</translation>
@@ -580,7 +575,6 @@ hónapban...</translation>
 <translation id="745115390910697838">A kifejezések nem egyeznek. Próbáld meg újra.</translation>
 <translation id="2360588547830602174">A fiók helyreállítása sikertelen volt. Próbáld meg újra.</translation>
 <translation id="6392640873800632439">Piaci ár ebben: <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Ár ETH-ban</translation>
 <translation id="6748108480210050150">Feladó</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@ hónapban...</translation>
 <translation id="6159566011642056819">Erre: (nagyjából)</translation>
 <translation id="6998989275928107238">Erre:</translation>
 <translation id="6664416064035847539">cím vagy URL</translation>
-<translation id="59223531494896848">Korlátozás</translation>
-<translation id="3567988240819868195">Piac</translation>
 <translation id="632241521608275119">Csúszási tolerancia</translation>
-<translation id="4500473291496079954">Lejár ennyi idő múlva:</translation>
 <translation id="1987317783729300807">Fiókok</translation>
 <translation id="3535654229833214438">Tranzakciók</translation>
 <translation id="4636930964841734540">Információ</translation>
@@ -612,7 +603,7 @@ hónapban...</translation>
 <translation id="5050890334032852465">Számla figyelőlistájának elmentése</translation>
 <translation id="7755766175599167100">Token keresése</translation>
 <translation id="3835223348537121988">Egyenleg:</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Brave tűzfal + VPN</translation>
 <translation id="719977489961414786">Váltson VPN-re, hogy megvédje a kapcsolatát és bárhonnan blokkolhassa az invazív nyomkövetőket.</translation>
 <translation id="3435896845095436175">Engedélyezés</translation>
 <translation id="8814357473522731680">Szolgáltató:</translation>
@@ -649,7 +640,7 @@ hónapban...</translation>
 Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internetkapcsolata nem lesz biztonságos.</translation>
 <translation id="2429299231491852747">Kapcsolódási kérelem elfogadása</translation>
 <translation id="3428909627460825679">A VPN profil létrehozása sikertelen volt. Próbálja újra!</translation>
-<translation id="8584119457978684056">A tokenvásárlás megerősítése sikertelen volt. Próbálja újra!</translation>
+<translation id="8584119457978684056">A beszerzési token hitelesítése sikertelen volt. Próbálja újra!</translation>
 <translation id="8905950042180169719">A VPN a háttérben fut</translation>
 <translation id="8681480718817027245">Előfizetés</translation>
 <translation id="7805768142964895445">Állapot</translation>
@@ -695,7 +686,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="7995708795274219641">Összeg + gáz</translation>
 <translation id="1950052789869821983">Tranzakció</translation>
 <translation id="6122742277607781713">Portfólió</translation>
-<translation id="2805756323405976993">Alkalmazások</translation>
 <translation id="6083912983861746409">Gázár(GWEI)</translation>
 <translation id="2499079593046817044">Gáz hatátértéke(GWEI)</translation>
 <translation id="6389441740143786465">Megosztás kikapcsolása</translation>

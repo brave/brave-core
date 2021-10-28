@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "送ったチップはウォレットに保留されたままになり、90 日間自動的に再試行されます。$link_begin$さらに詳しく$link_end$",
+    "message": "送ったチップはあなたのウォレット内で保留されたままになり、90 日間の間自動的に再試行されます。$link_begin$詳しく見る$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -32,11 +32,11 @@
     }
   },
   "pendingTipTitle": {
-    "message": "このクリエイターはまだサインアップしていません。",
+    "message": "このクリエイターはまだ登録していません。",
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "このクリエイターは現在、ウォレットからチップを受け取るように構成されていません。",
+    "message": "このクリエイターは現在、あなたのウォレットからチップを受け取るように設定を行っていません。",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -203,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ の支払いは $days$ で処理を開始します",
+    "message": "$amount$ の支払いは $days$以降に順次開始されます ",
     "description": "",
     "placeholders": {
       "amount": {
@@ -601,7 +601,7 @@
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Brave Rewards を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
+    "message": "Brave Rewards を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません。)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -631,7 +631,7 @@
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "Brave Private Ads を使用すると、プライベート広告を表示するためのトークンを獲得できます (データは安全です)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
+    "message": "Brave Private Ads を使用すると、プライバシーが保護された広告を表示してトークンを獲得できます (あなたのデータが漏洩することはありません)。そのトークンを現金やギフトカードに変えたり、お気に入りのウェブサイトにチップを渡したりすることもできます。これによって追跡や遅延が発生することはありません。",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
@@ -639,7 +639,7 @@
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
-    "message": "広告を有効にすることで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
+    "message": "広告を有効にすることで、あなたは$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -657,7 +657,7 @@
     }
   },
   "braveTalkCanStartFreeCall": {
-    "message": "これで無料通話を開始できます",
+    "message": "無料通話を開始できます",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {

@@ -470,17 +470,15 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="3769645103175790584">Nopelniet žetonus un atlīdziniet satura veidotājiem par lielisko saturu, kamēr veicat pārlūkošanu. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Ātrā tūre</translation>
 <translation id="1080013038789678738">Es piedalos!</translation>
-<translation id="8037420924417098685">Lai sāktu bezmaksas zvanu, ieslēdziet Brave Rewards.</translation>
-<translation id="8961724619078500274">Izmantojot Brave Rewards, jūs nopelnāt žetonus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos žetonus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="8037420924417098685">Lai sāktu bezmaksas zvanu, ieslēdziet Brave balvas.</translation>
+<translation id="8961724619078500274">Izmantojot Brave balvas, jūs nopelnāt žetonus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos žetonus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
 <translation id="7307847920988946894">Ieslēgt balvas</translation>
-<translation id="1186139901474936180">Pieskaroties jūs piekrītat <ph name="TERMS_OF_SERVICE"/> un <ph name="PRIVACY_POLICY"/>. Atspējojiet to iestatījumos jebkurā brīdī.</translation>
-<translation id="6128511569382736135">Lai sāktu bezmaksas zvanu, iespējojiet Brave Private Ads.</translation>
-<translation id="7930006085154756245">Izmantojot BravePrivate Ads, jūs nopelnāt žetonus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos žetonus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
-<translation id="4992617448154987397">Ieslēdziet Brave Private Ads.</translation>
-<translation id="7314030474505546826">Ieslēdzot Ads, jūs piekrītat <ph name="TERMS_OF_SERVICE"/> un <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="6128511569382736135">Lai sāktu bezmaksas zvanu, iespējojiet Brave privātās reklāmas.</translation>
+<translation id="7930006085154756245">Izmantojot Brave privātās reklāmas, jūs nopelnāt žetonus, skatoties privātas reklāmas (jūsu dati ir drošībā). Pārvērtiet šos žetonus naudā, dāvanu kartēs... vai pat nosūtiet dzeramnaudu vietnēm, kuras jums patīk. Bez izsekošanas. Bez palēninātas darbības.</translation>
+<translation id="4992617448154987397">Ieslēdziet Brave privātās reklāmas.</translation>
 <translation id="3415016869273103668">Tagad varat sākt bezmaksas zvanu.</translation>
-<translation id="6712250553966900750">Pieskarieties jebkur ekrānā, lai turpinātu Brave Talk.</translation>
-<translation id="626339649633171286">Vai vēlaties uzzināt vairāk par Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Pieskarieties jebkur ekrānā, lai turpinātu Brave zvanus.</translation>
+<translation id="626339649633171286">Vai vēlaties uzzināt vairāk par Brave balvām? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Jūs konvertējāt <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> uz <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Lūdzu, pārbaudiet savu tīkla savienojumu.</translation>
 <translation id="7889432931837317731">Kad vien iespējams, atvērt automātiski</translation>
@@ -542,7 +540,6 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="6146351434671268516">Pierakstiet vai nokopējiet šos vārdus pareizajā secībā un noglabājiet tos drošā vietā.</translation>
 <translation id="7408247683131762445">BRĪDINĀJUMS! Nekādā gadījumā neizpaudiet savu dublēšanas frāzi. Ikviens, kam pieejama šī frāze, var uz visiem laikiem pārņemt jūsu līdzekļus.</translation>
 <translation id="939275786514736244">Esmu saglabājis savu frāzi drošā vietā.</translation>
-<translation id="6896758677409633944">Kopēt</translation>
 <translation id="2604744480284798833">Dublējiet maku tagad, lai aizsargātu savu kripto portfeli no piekļuves zaudēšanas.</translation>
 <translation id="1202920745614909195">Pirkt kripto ar Apple Pay, kredītkarti vai debetkarti.</translation>
 <translation id="841880029259839903">Sūtīt kripto vai pārskaitīt to no viena konta uz citu kontu.</translation>
@@ -559,14 +556,12 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1G</translation>
 <translation id="6895566650974550243">VISI</translation>
-<translation id="8892168913673237979">Viss iestatīts!</translation>
-<translation id="8331501996028380732">Pērciet, pārdodiet vai glabājiet kripto. Ja jums jau ir kripto konts, jūs varat to pievienot tagad.</translation>
 <translation id="2267753748892043616">Pievienot kontu</translation>
 <translation id="2632612428525029752">Atjaunināt kontu</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Vai iespējot atbloķēšanu, izmantojot pirksta nospiedumu?</translation>
 <translation id="5493402808936397665">Iespējojiet biometriju, lai ātri atbloķētu savu maku, neievadot paroli.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Ievadiet savu atkopšanas frāzi, lai atjaunotu savu Brave Wallet kripto kontu.</translation>
 <translation id="1970161551843843564">Atjaunot kripto kontu</translation>
 <translation id="4811736040444856406">Rādīt atkopšanas frāzi</translation>
@@ -583,7 +578,6 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="745115390910697838">Frāzes nesakrīt. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="2360588547830602174">Kontu neizdevās atkopt. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="6392640873800632439">Tirgus cena <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">ETH cena</translation>
 <translation id="6748108480210050150">No</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -591,10 +585,7 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="6159566011642056819">Uz (aprēķināt)</translation>
 <translation id="6998989275928107238">Adresāts</translation>
 <translation id="6664416064035847539">adrese vai URL</translation>
-<translation id="59223531494896848">Limits</translation>
-<translation id="3567988240819868195">Tirgus</translation>
 <translation id="632241521608275119">Pieļaujamā novirze</translation>
-<translation id="4500473291496079954">Derīgums beidzas pēc</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3535654229833214438">Pārskaitījumi</translation>
 <translation id="4636930964841734540">Informācija</translation>
@@ -677,7 +668,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7999094850625689785">Pamatojoties uz jūsu sistēmas laika joslu, tiks automātiski izvēlēts tuvākais servera reģions. Tas ir ieteicams, lai varētu nodrošināt ātru internetu.</translation>
 <translation id="8018707825009059641">Citi jautājumi.</translation>
 <translation id="6687228121145903051">Nevar izveidot savienojumu ar VPN (cita kļūda).</translation>
-<translation id="9184988385244077767">Nav interneta, kad savienojums ir izveidots.</translation>
+<translation id="9184988385244077767">Nav interneta, kad ir izveidots savienojums.</translation>
 <translation id="21570240866965662">Lēns savienojums.</translation>
 <translation id="1219475260382643267">Vietne nedarbojas.</translation>
 <translation id="7138678301420049075">Cits</translation>
@@ -698,7 +689,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="7995708795274219641">Daudzums + Gas</translation>
 <translation id="1950052789869821983">Darījums</translation>
 <translation id="6122742277607781713">Portfelis</translation>
-<translation id="2805756323405976993">Lietotnes</translation>
 <translation id="6083912983861746409">Gas cena (GWEI)</translation>
 <translation id="2499079593046817044">Gas ierobežojums (GWEI)</translation>
 <translation id="6389441740143786465">Atspējot koplietošanas centrmezglu</translation>

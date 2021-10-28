@@ -2369,13 +2369,13 @@ Dodatkowe informacje:
 <translation id="6957624206566198865">Otwórz stronę w trybie prywatnym</translation>
 <translation id="8326104954595890674">Nowa karta prywatna</translation>
 <translation id="6417973700199526943">Przeszedłeś/-szłaś na tryb prywatny</translation>
-<translation id="375424491626359494">Strony przeglądane w zakładkach prywatnych nie pozostaną w historii przeglądarki, magazynie plików cookie ani historii wyszukiwania po zamknięciu wszystkich prywatnych zakładek. Wszelkie pobrane pliki lub utworzone zakładki zostaną zachowane.</translation>
+<translation id="375424491626359494">Strony przeglądane w kartach prywatnych nie pozostaną w historii przeglądarki, magazynie plików cookie ani historii wyszukiwania po zamknięciu wszystkich prywatnych kart. Wszelkie pobrane pliki lub utworzone zakładki zostaną zachowane.</translation>
 <translation id="8794378783472961468">Nie jesteś jednak niewidzialny/-na. Przejście do trybu prywatnego nie ukrywa. Twojego przeglądania przed pracodawcą, dostawcą usług internetowych ani odwiedzanymi witrynami.</translation>
 <translation id="5673623523506565506">Teraz możesz przeszukiwać prywatnie, a inne profile korzystające z tego urządzenia nie będą widziały Twojej aktywności. Zostaną jednak zapisane pobrania i zakładki.</translation>
 <translation id="3812568169637430422">Teraz możesz przeszukiwać prywatnie, a inne profile korzystające z tego urządzenia nie będą widziały Twojej aktywności. Zostaną jednak zapisane pobrania, zakładki i lista lektur.</translation>
 <translation id="5186185447130319458">Prywatna</translation>
 <translation id="3683567996395248272">Co zapewnia tryb prywatny</translation>
-<translation id="4912243263991194586">Po zamknięciu wszystkich okien prywatnych przeglądarka Brave usuwa:
+<translation id="4912243263991194586">Po zamknięciu wszystkich prywatnych kart przeglądarka Brave usuwa:
 <ph name="BEGIN_LIST"/>
 <ph name="LIST_ITEM"/>Informacje o odwiedzanych stronach z Twojego urządzenia<ph name="END_LIST_ITEM"/>
 <ph name="LIST_ITEM"/>Historię wyszukiwania z Twojego urządzenia<ph name="END_LIST_ITEM"/>

@@ -472,13 +472,11 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="8037420924417098685">Per avviare una chiamata gratuita, attiva Brave Rewards</translation>
 <translation id="8961724619078500274">Con Brave Rewards guadagni token per visualizzare annunci privati (i tuoi dati sono al sicuro). Trasforma questi token in denaro, carte regalo o addirittura in donazioni ai siti web che adori. Nessun tracciamento né rallentamenti.</translation>
 <translation id="7307847920988946894">Attiva Rewards</translation>
-<translation id="1186139901474936180">Toccando accetti i <ph name="TERMS_OF_SERVICE"/> e l'<ph name="PRIVACY_POLICY"/>. Disattiva in qualsiasi momento in Impostazioni.</translation>
 <translation id="6128511569382736135">Per avviare una chiamata gratuita, attiva Brave Private Ads</translation>
 <translation id="7930006085154756245">Con Brave Private Ads guadagni token per visualizzare annunci privati (i tuoi dati sono al sicuro). Trasforma questi token in denaro, carte regalo o addirittura in donazioni ai siti web che adori. Nessun tracciamento né rallentamenti.</translation>
 <translation id="4992617448154987397">Attiva Brave Private Ads</translation>
-<translation id="7314030474505546826">Attivando Ads accetti i <ph name="TERMS_OF_SERVICE"/> e l'<ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Ora puoi avviare una chiamata gratuita</translation>
-<translation id="6712250553966900750">Tocca un punto qualsiasi dello schermo per continuare in Brave Talk.</translation>
+<translation id="7073631403665023390">Tocca un punto qualsiasi dello schermo per continuare in Brave Talk.</translation>
 <translation id="626339649633171286">Vuoi saperne di più su Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Hai convertito <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Per favore controlla la tua connessione di rete</translation>
@@ -541,7 +539,6 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="6146351434671268516">Scrivi o copia queste parole in questo ordine e salvale in un posto sicuro.</translation>
 <translation id="7408247683131762445">ATTENZIONE: non condividere la tua frase di backup. Chiunque abbia questa frase può impossessarsi dei tuoi fondi per sempre.</translation>
 <translation id="939275786514736244">Ho salvato la frase in un posto sicuro</translation>
-<translation id="6896758677409633944">Copia</translation>
 <translation id="2604744480284798833">Esegui subito un backup del portafoglio per proteggere il tuo portafoglio di criptovalute dalla perdita di accesso.</translation>
 <translation id="1202920745614909195">Compra cripto con Apple Pay, carta di credito o di debito.</translation>
 <translation id="841880029259839903">Invia cripto o trasferiscile da un account a un altro.</translation>
@@ -558,14 +555,12 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="6366007539108097840">3 m</translation>
 <translation id="6977728312178289892">1 a</translation>
 <translation id="6895566650974550243">TUTTI</translation>
-<translation id="8892168913673237979">Fatto!</translation>
-<translation id="8331501996028380732">Compra, scambia o conserva cripto. Se hai già un account cripto puoi aggiungerlo adesso.</translation>
 <translation id="2267753748892043616">Aggiungi conto</translation>
 <translation id="2632612428525029752">Aggiorna l'account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Attiva sblocco basato su impronta digitale?</translation>
 <translation id="5493402808936397665">Attiva gli strumenti biometrici per sbloccare velocemente il tuo portafoglio senza inserire la password.</translation>
-<translation id="8488282162676695335">Portafoglio Brave</translation>
+<translation id="1544192797660353713">Portafoglio Brave</translation>
 <translation id="6901810042765869341">Inserisci la frase di recupero per ripristinare il tuo account cripto Brave Wallet.</translation>
 <translation id="1970161551843843564">Ripristina l’account cripto</translation>
 <translation id="4811736040444856406">Mostra la frase di recupero</translation>
@@ -582,7 +577,6 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="745115390910697838">Le frasi non corrispondono, riprova.</translation>
 <translation id="2360588547830602174">Recupero dell’account non riuscito. Riprova.</translation>
 <translation id="6392640873800632439">Prezzo di mercato in <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Prezzo in ETH</translation>
 <translation id="6748108480210050150">Da</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -590,10 +584,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="6159566011642056819">In (stima)</translation>
 <translation id="6998989275928107238">A</translation>
 <translation id="6664416064035847539">indirizzo o URL</translation>
-<translation id="59223531494896848">Limite</translation>
-<translation id="3567988240819868195">Mercato</translation>
 <translation id="632241521608275119">Tolleranza di slippage</translation>
-<translation id="4500473291496079954">Scade tra</translation>
 <translation id="1987317783729300807">Account</translation>
 <translation id="3535654229833214438">Transazioni</translation>
 <translation id="4636930964841734540">Informazioni</translation>
@@ -697,7 +688,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7995708795274219641">Importo + Gas</translation>
 <translation id="1950052789869821983">Transazione</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">App</translation>
 <translation id="6083912983861746409">Prezzo del gas (GWEI)</translation>
 <translation id="2499079593046817044">Limite di gas (GWEI)</translation>
 <translation id="6389441740143786465">Disattiva hub di condivisione</translation>

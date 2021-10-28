@@ -635,7 +635,7 @@
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "Lülita Brave Private Ads sisse",
+    "message": "Lülita Brave'i privaatreklaamid sisse",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
@@ -661,7 +661,7 @@
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave Talkis jätkamiseks klõpsake ekraanil suvalises kohas.",
+    "message": "Brave'i vestluses jätkamiseks klõpsake ekraanil suvalises kohas.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

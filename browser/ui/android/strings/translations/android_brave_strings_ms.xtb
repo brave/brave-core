@@ -471,13 +471,11 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="8037420924417098685">Untuk memulakan panggilan percuma, hidupkan Brave Rewards</translation>
 <translation id="8961724619078500274">Dengan Brave Rewards, anda memperoleh token untuk melihat iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah; atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tiada penangguhan.</translation>
 <translation id="7307847920988946894">Hidupkan Rewards</translation>
-<translation id="1186139901474936180">Dengan mengetik, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>. Matikan pada bila-bila masa dalam Tetapan.</translation>
 <translation id="6128511569382736135">Untuk memulakan panggilan percuma, dayakan Brave Private Ads</translation>
 <translation id="7930006085154756245">Dengan Brave Private Ads, anda memperoleh token untuk melihat iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah; atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tiada penangguhan.</translation>
 <translation id="4992617448154987397">Hidupkan Brave Private Ads</translation>
-<translation id="7314030474505546826">Dengan menghidupkan Ads, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/></translation>
 <translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
-<translation id="6712250553966900750">Ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
+<translation id="7073631403665023390">Ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
 <translation id="626339649633171286">Mahu mengetahui lebih lanjut mengenai Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Anda telah menukar <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> kepada <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Sila periksa sambuangan rangkaian anda.</translation>
@@ -540,7 +538,6 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="6146351434671268516">Tulis atau salin perkataan ini dengan susunan yang betul dan simpan ia di tempat yang selamat.</translation>
 <translation id="7408247683131762445">AMARAN: Jangan sekali-kali mendedahkan frasa sandaran anda. Sesiapa yang mempunyai frasa ini dapat mengambil dana anda selama-lamanya.</translation>
 <translation id="939275786514736244">Saya telah menyandarkan frasa saya di tempat yang selamat</translation>
-<translation id="6896758677409633944">Salin</translation>
 <translation id="2604744480284798833">Buat sandaran dompet anda sekarang untuk melindungi portfolio kripto anda daripada kehilangan akses.</translation>
 <translation id="1202920745614909195">Beli kripto dengan Apple Pay, kad kredit atau debit.</translation>
 <translation id="841880029259839903">Hantar kripto atau pindahkan dari satu akaun ke akaun lain.</translation>
@@ -557,14 +554,12 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">SEMUA</translation>
-<translation id="8892168913673237979">Semua sedia!</translation>
-<translation id="8331501996028380732">Beli, dagang atau pegang kripto. Sekiranya anda mempunyai akaun kripto sedia ada, anda boleh menambahnya sekarang.</translation>
 <translation id="2267753748892043616">Tambah Akaun</translation>
 <translation id="2632612428525029752">Kemas Kini Akaun</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Dayakan buka kunci cap jari?</translation>
 <translation id="5493402808936397665">Dayakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
-<translation id="8488282162676695335">Dompet Brave</translation>
+<translation id="1544192797660353713">Dompet Brave</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto Brave Wallet anda.</translation>
 <translation id="1970161551843843564">Pulihkan Akaun Kripto</translation>
 <translation id="4811736040444856406">Tunjukkan frasa pemulihan</translation>
@@ -581,7 +576,6 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="745115390910697838">Frasa tidak sepadan, Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
 <translation id="6392640873800632439">Harga Pasaran dalam <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Harga dalam ETH</translation>
 <translation id="6748108480210050150">Daripada</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -589,10 +583,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="6159566011642056819">Hingga (anggaran)</translation>
 <translation id="6998989275928107238">Kepada</translation>
 <translation id="6664416064035847539">alamat atau url</translation>
-<translation id="59223531494896848">Had</translation>
-<translation id="3567988240819868195">Pasaran</translation>
 <translation id="632241521608275119">Toleransi gelinciran</translation>
-<translation id="4500473291496079954">Tamat tempoh dalam</translation>
 <translation id="1987317783729300807">Akaun</translation>
 <translation id="3535654229833214438">Transaksi</translation>
 <translation id="4636930964841734540">Maklumat</translation>
@@ -696,7 +687,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7995708795274219641">Amaun + Gas</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Apl</translation>
 <translation id="6083912983861746409">Harga Gas(GWEI)</translation>
 <translation id="2499079593046817044">Had Gas(GWEI)</translation>
 <translation id="6389441740143786465">Nyahdayakan Hab Pengongsian</translation>
