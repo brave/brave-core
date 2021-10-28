@@ -19,6 +19,14 @@ export const SelectAddressContainer = styled.div`
   justify-content: center;
   width: 100%;
 `
+export const SelectAddressInnerContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`
 
 export const SelectAddressScrollContainer = styled.div`
   display: flex;
