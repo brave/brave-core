@@ -284,8 +284,6 @@
     "ethereum-blockies": "github:brave/blockies#07ebdfa3ed79fceec8234ef8c880ebdefd79bf0a",
     "ethereumjs-util": "^7.0.9",
     "trezor-connect": "8.1.5-extended",
-    "sharedworker-loader": "2.1.1",
-    "worker-loader": "2.0.0",
     "file-loader": "1.1.11",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
