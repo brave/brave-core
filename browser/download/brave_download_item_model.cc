@@ -17,6 +17,7 @@
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 using download::DownloadItem;
@@ -59,9 +60,16 @@ std::u16string BraveDownloadItemModel::GetOriginURLText(bool* is_secure) {
     if (gurl.SchemeIs(url::kAboutScheme)) {
       origin = gurl.spec();
     } else {
-      origin = gurl.DeprecatedGetOriginAsURL().spec();
-      if (!gurl.SchemeIsFile()) {
-        base::TrimString(origin, "/", &origin);
+      origin = url::Origin::Create(gurl).Serialize();
+      if (gurl.SchemeIsFile()) {
+        // url::Origin::Serialize() does an ASCII serialization of the Origin as
+        // per Section 6.2 of RFC 6454, with the addition that all Origins with
+        // a 'file' scheme serialize to "file://" (see url/origin.{h,cc}).
+        DCHECK_EQ(origin, "file://");
+
+        // However, we want to return 'file:///' (with a trailing '/') in this
+        // case, see the BraveDownloadItemModelTest.GetOriginUrlText unit test.
+        origin = "file:///";
       }
     }
   } else {

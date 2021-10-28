@@ -19,6 +19,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
+#include "url/origin.h"
 
 namespace permissions {
 
@@ -61,7 +62,7 @@ void BraveEthereumPermissionContext::RequestPermission(
     bool user_gesture,
     BrowserPermissionCallback callback) {
   const std::string id_str = id.ToString();
-  GURL requesting_origin = requesting_frame.DeprecatedGetOriginAsURL();
+  GURL requesting_origin = url::Origin::Create(requesting_frame).GetURL();
   std::string origin;
 
   // Parse address list from the requesting frame and save it to the map when
@@ -72,7 +73,7 @@ void BraveEthereumPermissionContext::RequestPermission(
   if (!brave_wallet::ParseRequestingOrigin(
           requesting_origin, &origin, is_new_id ? &address_queue : nullptr)) {
     GURL embedding_origin =
-        web_contents->GetLastCommittedURL().DeprecatedGetOriginAsURL();
+        url::Origin::Create(web_contents->GetLastCommittedURL()).GetURL();
     NotifyPermissionSet(id, requesting_origin, embedding_origin,
                         std::move(callback), /*persist=*/false,
                         CONTENT_SETTING_BLOCK, /*is_one_time=*/false);
@@ -143,10 +144,8 @@ void BraveEthereumPermissionContext::RequestPermissions(
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   // Fail the request came from 3p origin.
-  if (web_contents->GetMainFrame()
-          ->GetLastCommittedURL()
-          .DeprecatedGetOriginAsURL() !=
-      rfh->GetLastCommittedURL().DeprecatedGetOriginAsURL()) {
+  if (web_contents->GetMainFrame()->GetLastCommittedOrigin() !=
+      rfh->GetLastCommittedOrigin()) {
     std::move(callback).Run(std::vector<ContentSetting>());
     return;
   }
@@ -168,8 +167,7 @@ void BraveEthereumPermissionContext::RequestPermissions(
   // parameter to be passes in.
   GURL origin;
   if (!brave_wallet::GetConcatOriginFromWalletAddresses(
-          rfh->GetLastCommittedURL().DeprecatedGetOriginAsURL(), addresses,
-          &origin)) {
+          rfh->GetLastCommittedOrigin().GetURL(), addresses, &origin)) {
     std::move(callback).Run(std::vector<ContentSetting>());
     return;
   }
@@ -193,10 +191,8 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   // Fail the request came from 3p origin.
-  if (web_contents->GetMainFrame()
-          ->GetLastCommittedURL()
-          .DeprecatedGetOriginAsURL() !=
-      rfh->GetLastCommittedURL().DeprecatedGetOriginAsURL()) {
+  if (web_contents->GetMainFrame()->GetLastCommittedOrigin() !=
+      rfh->GetLastCommittedOrigin()) {
     std::move(callback).Run(false, std::vector<std::string>());
     return;
   }
@@ -216,7 +212,7 @@ void BraveEthereumPermissionContext::GetAllowedAccounts(
   }
 
   std::vector<std::string> allowed_accounts;
-  GURL origin = rfh->GetLastCommittedURL().DeprecatedGetOriginAsURL();
+  GURL origin = rfh->GetLastCommittedOrigin().GetURL();
   for (const auto& address : addresses) {
     GURL sub_request_origin;
     bool success =
@@ -249,7 +245,7 @@ bool BraveEthereumPermissionContext::HasEthereumPermission(
 
   GURL origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
-          GURL(origin_spec).DeprecatedGetOriginAsURL(), account,
+          url::Origin::Create(GURL(origin_spec)).GetURL(), account,
           &origin_wallet_address)) {
     return false;
   }
@@ -276,7 +272,7 @@ bool BraveEthereumPermissionContext::ResetEthereumPermission(
 
   GURL origin_wallet_address;
   if (!brave_wallet::GetSubRequestOrigin(
-          GURL(origin_spec).DeprecatedGetOriginAsURL(), account,
+          url::Origin::Create(GURL(origin_spec)).GetURL(), account,
           &origin_wallet_address)) {
     return false;
   }

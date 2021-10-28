@@ -27,6 +27,7 @@
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace content_settings {
@@ -99,7 +100,7 @@ bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
   return base::Contains(temporarily_allowed_scripts_,
-                        script_url.DeprecatedGetOriginAsURL().spec()) ||
+                        url::Origin::Create(script_url).Serialize()) ||
          base::Contains(temporarily_allowed_scripts_, script_url.spec());
 }
 

@@ -30,6 +30,7 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "url/origin.h"
 
 using brave_shields::ControlType;
 
@@ -78,6 +79,10 @@ const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
 
 const char kTitleScript[] = "domAutomationController.send(document.title);";
+
+GURL GetOriginURL(const GURL& url) {
+  return url::Origin::Create(url).GetURL();
+}
 
 }  // namespace
 
@@ -619,7 +624,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Same-origin iframe navigations get the page URL as referrer.
   NavigateIframe(same_origin_url());
@@ -629,9 +634,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateIframe(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Same-origin navigations get the original page origin as the referrer.
   NavigateDirectlyToPageWithLink(same_origin_url());
@@ -642,16 +646,14 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // referrer.
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()),
-            link_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link_url()).spec());
 
   // Cross-site navigations should follow the default referrer policy.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            link_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link_url()).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -674,21 +676,20 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        contents()),
       redirect_to_cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Cross-site navigations  should follow the default referrer policy.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            redirect_to_cross_site_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            redirect_to_cross_site_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
 
@@ -713,7 +714,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Same-origin iframe navigations get the page URL as referrer.
   NavigateIframe(same_origin_url());
@@ -723,9 +724,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateIframe(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Same-origin navigations get the original page URL as the referrer.
   NavigateDirectlyToPageWithLink(same_origin_url());
@@ -734,8 +734,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Same-site but cross-origin navigations get the original page origin as the
   // referrer.
-  const std::string expected_referrer =
-      link_url().DeprecatedGetOriginAsURL().spec();
+  const std::string expected_referrer = GetOriginURL(link_url()).spec();
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), expected_referrer);
   EXPECT_EQ(GetLastReferrer(same_site_url()), expected_referrer);
@@ -782,21 +781,20 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        contents()),
       redirect_to_cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Cross-site iframe navigations should follow the default referrer policy.
   NavigateCrossSiteRedirectIframe();
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Cross-site navigations should follow the default referrer policy.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            redirect_to_cross_site_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            redirect_to_cross_site_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(redirect_to_cross_site_url()).spec());
   // Intermidiate same-origin navigation gets full referrer.
   EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), link_url().spec());
 }
@@ -815,30 +813,27 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // A cross-site iframe navigation gets the origin of the first one as
   // referrer.
   NavigateIframe(cross_site_url());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()));
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Same-site but cross-origin navigations get the original page origin as the
   // referrer.
   NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link_url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()),
-            link_url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link_url()).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link_url()).spec());
 
   // Cross-site navigations get origin as a referrer.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 
   // Check that a less restrictive policy is respected.
   GURL link = NavigateDirectlyToPageWithLink(cross_site_url(),
@@ -867,28 +862,24 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   // Check that "strict-origin" policy is respected.
   link = NavigateDirectlyToPageWithLink(same_site_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(same_site_url()),
-            link.DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), GetOriginURL(link).spec());
 
   NavigateDirectlyToPageWithLink(same_origin_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(same_origin_url()),
-            link.DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(same_origin_url()), GetOriginURL(link).spec());
 
   NavigateDirectlyToPageWithLink(cross_site_url(), "strict-origin");
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            link.DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link).spec());
 
   // Check cross-site navigations with redirect.
   RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            link.DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            link.DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(link).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(link).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -906,22 +897,20 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // A cross-origin iframe navigation gets the origin of the first one as
   // referrer.
   NavigateIframe(cross_site_url());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()));
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
 
   // Cross-site navigations get origin as a referrer.
   NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()),
-            url().DeprecatedGetOriginAsURL().spec());
-  EXPECT_EQ(GetLastReferrer(cross_site_url()),
-            url().DeprecatedGetOriginAsURL().spec());
+            GetOriginURL(url()).spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), GetOriginURL(url()).spec());
 }
 
 IN_PROC_BROWSER_TEST_F(

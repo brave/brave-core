@@ -54,6 +54,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -273,7 +274,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
 
   GURL GetOrigin() {
-    return web_contents()->GetMainFrame()->GetLastCommittedURL().GetOrigin();
+    return web_contents()->GetMainFrame()->GetLastCommittedOrigin().GetURL();
   }
 
   void CreateBraveWalletTabHelper() {

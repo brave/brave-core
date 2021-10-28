@@ -14,10 +14,12 @@
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using content::WebContents;
 using content::WebUIMessageHandler;
@@ -100,9 +102,11 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
 }
 
 void OpenWebcompatReporterDialog(content::WebContents* initiator) {
-  GURL site_url = initiator->GetLastCommittedURL();
+  url::Origin site_url_origin =
+      url::Origin::Create(initiator->GetLastCommittedURL());
+
   auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("siteUrl", site_url.DeprecatedGetOriginAsURL().spec());
+  params_dict->SetString("siteUrl", site_url_origin.Serialize());
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);

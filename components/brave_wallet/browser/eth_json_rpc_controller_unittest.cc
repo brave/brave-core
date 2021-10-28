@@ -34,6 +34,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -374,8 +375,8 @@ TEST_F(EthJsonRpcControllerUnitTest, SetNetwork) {
     const std::string& expected_url = network->rpc_urls.front();
     rpc_controller_->GetNetworkUrl(base::BindLambdaForTesting(
         [&callback_is_called, &expected_url](const std::string& spec) {
-          EXPECT_EQ(GURL(spec).DeprecatedGetOriginAsURL(),
-                    GURL(expected_url).DeprecatedGetOriginAsURL());
+          EXPECT_EQ(url::Origin::Create(GURL(spec)),
+                    url::Origin::Create(GURL(expected_url)));
           callback_is_called = true;
         }));
     ASSERT_TRUE(callback_is_called);
@@ -411,8 +412,8 @@ TEST_F(EthJsonRpcControllerUnitTest, SetCustomNetwork) {
   const std::string& expected_url = chain1.rpc_urls.front();
   rpc_controller_->GetNetworkUrl(base::BindLambdaForTesting(
       [&callback_is_called, &expected_url](const std::string& spec) {
-        EXPECT_EQ(GURL(spec).DeprecatedGetOriginAsURL(),
-                  GURL(expected_url).DeprecatedGetOriginAsURL());
+        EXPECT_EQ(url::Origin::Create(GURL(spec)),
+                  url::Origin::Create(GURL(expected_url)));
         callback_is_called = true;
       }));
   ASSERT_TRUE(callback_is_called);
