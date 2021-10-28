@@ -110,7 +110,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   onMessageReceived = (event: any) => {
-    if (!event.origin.startsWith(kTrezorBridgeUrl) || event.type !== 'message') {
+    if (event.origin !== kTrezorBridgeUrl || event.type !== 'message') {
       return
     }
     if (!event.data || !this.pending_requests_ ||
