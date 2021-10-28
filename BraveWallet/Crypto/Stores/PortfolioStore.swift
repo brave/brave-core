@@ -15,13 +15,6 @@ public struct AssetViewModel: Identifiable, Equatable {
   public var id: String {
     token.id
   }
-  
-  var quantity: Double {
-    guard let priceValue = Double(price), priceValue > 0 else {
-      return 0
-    }
-    return decimalBalance / priceValue
-  }
 }
 
 struct BalanceTimePrice: DataPoint, Equatable {
