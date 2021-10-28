@@ -50,6 +50,16 @@ extension BuyTokenStore {
   }
 }
 
+extension SendTokenStore {
+  static var previewStore: SendTokenStore {
+    .init(
+      keyringController: TestKeyringController(),
+      rpcController: TestEthJsonRpcController(),
+      walletService: TestBraveWalletService()
+    )
+  }
+}
+
 class TestAssetRatioController: BraveWalletAssetRatioController {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),

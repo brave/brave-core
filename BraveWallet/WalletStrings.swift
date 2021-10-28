@@ -852,21 +852,21 @@ extension Strings {
       "wallet.enterAmount",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Enter amount",
+      value: "Enter amount", // TODO: Get real copy
       comment: "The header title for the textField users will input the dollar value of the crypto they want to buy"
     )
     public static let amountInCurrency = NSLocalizedString(
       "wallet.amountInCurrency",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Amount in %@",
+      value: "Amount in %@", // TODO: Get real copy
       comment: "The textField's placeholder for users to input dollar value of the crypto they want to buy. '%@' will be replaced with a currency such as 'USD' or 'EUR'"
     )
     public static let buyButtonTitle = NSLocalizedString(
       "wallet.buyButtonTitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Continue to Wyre",
+      value: "Continue to Wyre", // TODO: Get real copy
       comment: "The title of the button for users to click when they are ready to buy using Wyre payment"
     )
     public static let buyTestTitle = NSLocalizedString(
@@ -889,6 +889,48 @@ extension Strings {
       bundle: .braveWallet,
       value: "Get Ether",
       comment: "The title of the button for users to get ether if the test network has been chosen"
+    )
+    public static let sendCryptoFromTitle = NSLocalizedString(
+      "wallet.sendCryptoFromTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "From",
+      comment: "A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected"
+    )
+    public static let sendCryptoAmountTitle = NSLocalizedString(
+      "wallet.sendCryptoAmountTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter amount of %@ to send", // TODO: Get real copy
+      comment: "A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
+    )
+    public static let sendCryptoAmountPlaceholder = NSLocalizedString(
+      "wallet.sendCryptoAmountPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Amount in %@", // TODO: Get real copy
+      comment: "A placeholder of the amount text field. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT'"
+    )
+    public static let sendCryptoToTitle = NSLocalizedString(
+      "wallet.sendCryptoToTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "To",
+      comment: "A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side"
+    )
+    public static let sendCryptoAddressPlaceholder = NSLocalizedString(
+      "wallet.sendCryptoAddressPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter address or url",
+      comment: "A placeholder of the address text field."
+    )
+    public static let sendCryptoPreviewButtonTitle = NSLocalizedString(
+      "wallet.sendCryptoPreviewButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Preview", // TODO: Get real copy
+      comment: "The title of the button for users to click when they want to preview the sending-transaction"
     )
   }
 }
