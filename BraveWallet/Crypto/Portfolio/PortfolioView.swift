@@ -30,6 +30,11 @@ struct PortfolioView: View {
     !keyringStore.keyring.isBackedUp && !dismissedBackupBannerThisSession
   }
   
+  private let currencyFormatter = NumberFormatter().then {
+    $0.numberStyle = .currency
+    $0.currencyCode = "USD"
+  }
+  
   private var listHeader: some View {
     VStack(spacing: 0) {
       if isShowingBackupBanner {
@@ -76,8 +81,8 @@ struct PortfolioView: View {
             image: AssetIconView(token: asset.token),
             title: asset.token.name,
             symbol: asset.token.symbol,
-            amount: String(format: "%.04f", asset.decimalBalance),
-            quantity: String(format: "%.04f", asset.quantity)
+            amount: currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
+            quantity: String(format: "%.04f", asset.decimalBalance)
           )
         }
         Button(action: { isPresentingEditUserAssets = true }) {
