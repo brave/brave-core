@@ -200,10 +200,6 @@ public class PortfolioFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         assert getActivity() != null;
 
-        SmoothLineChartEquallySpaced chartES = view.findViewById(R.id.line_chart);
-        chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
-        chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
-
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
             String chainName = mSpinner.getSelectedItem().toString();
@@ -298,6 +294,17 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
+    private void updatePortfolioGraph(PortfolioHelper portfolioHelper) {
+        portfolioHelper.setFiatHistoryTimeframe(AssetPriceTimeframe.ONE_DAY);
+        portfolioHelper.calculateFiatHistory(() -> {
+            PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                SmoothLineChartEquallySpaced chartES = getView().findViewById(R.id.line_chart);
+                chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
+                chartES.setData(portfolioHelper.getFiatHistory());
+            });
+        });
+    }
+
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
         KeyringController keyringController = getKeyringController();
         assert keyringController != null;
@@ -322,6 +329,8 @@ public class PortfolioFragment extends Fragment
                     setUpCoinList(portfolioHelper.getUserAssets(),
                             portfolioHelper.getPerTokenCryptoSum(),
                             portfolioHelper.getPerTokenFiatSum());
+
+                    updatePortfolioGraph(portfolioHelper);
                 });
             });
             if (getPendingTx) {
