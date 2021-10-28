@@ -83,6 +83,10 @@ class CreativeNewTabPageAds final : public Table {
                 GetCreativeNewTabPageAdsCallback callback);
 
   CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecord* record) const;
+  CreativeNewTabPageAdMap GroupCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
+  CreativeNewTabPageAdList GetCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
 
   void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);

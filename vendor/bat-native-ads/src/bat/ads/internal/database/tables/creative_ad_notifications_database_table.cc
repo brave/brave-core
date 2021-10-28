@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -15,7 +14,8 @@
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/bundle/creative_ad_info_aliases.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
@@ -26,6 +26,7 @@
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 
 namespace ads {
@@ -356,16 +357,10 @@ void CreativeAdNotifications::OnGetForSegments(
     return;
   }
 
-  CreativeAdNotificationList creative_ad_notifications;
+  CreativeAdNotificationList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
 
-  for (const auto& record : response->result->get_records()) {
-    const CreativeAdNotificationInfo creative_ad_notification =
-        GetFromRecord(record.get());
-
-    creative_ad_notifications.push_back(creative_ad_notification);
-  }
-
-  callback(/* success */ true, segments, creative_ad_notifications);
+  callback(/* success */ true, segments, creative_ads);
 }
 
 void CreativeAdNotifications::OnGetAll(
@@ -378,24 +373,12 @@ void CreativeAdNotifications::OnGetAll(
     return;
   }
 
-  CreativeAdNotificationList creative_ad_notifications;
+  const CreativeAdNotificationList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
 
-  SegmentList segments;
+  const SegmentList segments = GetSegments(creative_ads);
 
-  for (const auto& record : response->result->get_records()) {
-    const CreativeAdNotificationInfo creative_ad_notification =
-        GetFromRecord(record.get());
-
-    creative_ad_notifications.push_back(creative_ad_notification);
-
-    segments.push_back(creative_ad_notification.segment);
-  }
-
-  std::sort(segments.begin(), segments.end());
-  const auto iter = std::unique(segments.begin(), segments.end());
-  segments.erase(iter, segments.end());
-
-  callback(/* success */ true, segments, creative_ad_notifications);
+  callback(/* success */ true, segments, creative_ads);
 }
 
 CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
@@ -433,6 +416,50 @@ CreativeAdNotificationInfo CreativeAdNotifications::GetFromRecord(
   creative_ad_notification.dayparts.push_back(daypart);
 
   return creative_ad_notification;
+}
+
+CreativeAdNotificationMap CreativeAdNotifications::GroupCreativeAdsFromResponse(
+    mojom::DBCommandResponsePtr response) {
+  DCHECK(response);
+
+  CreativeAdNotificationMap creative_ads;
+
+  for (const auto& record : response->result->get_records()) {
+    const CreativeAdNotificationInfo creative_ad = GetFromRecord(record.get());
+
+    const auto iter = creative_ads.find(creative_ad.creative_instance_id);
+    if (iter == creative_ads.end()) {
+      creative_ads.insert({creative_ad.creative_instance_id, creative_ad});
+      continue;
+    }
+
+    // Creative instance already exists, so append the geo targets and dayparts
+    // to the existing creative ad
+    iter->second.geo_targets.insert(creative_ad.geo_targets.begin(),
+                                    creative_ad.geo_targets.end());
+
+    iter->second.dayparts.insert(iter->second.dayparts.end(),
+                                 creative_ad.dayparts.begin(),
+                                 creative_ad.dayparts.end());
+  }
+
+  return creative_ads;
+}
+
+CreativeAdNotificationList CreativeAdNotifications::GetCreativeAdsFromResponse(
+    mojom::DBCommandResponsePtr response) {
+  DCHECK(response);
+
+  const CreativeAdNotificationMap grouped_creative_ads =
+      GroupCreativeAdsFromResponse(std::move(response));
+
+  CreativeAdNotificationList creative_ads;
+  for (const auto& grouped_creative_ad : grouped_creative_ads) {
+    const CreativeAdNotificationInfo creative_ad = grouped_creative_ad.second;
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
 }
 
 void CreativeAdNotifications::CreateTableV16(
