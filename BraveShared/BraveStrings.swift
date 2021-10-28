@@ -2334,6 +2334,10 @@ extension Strings {
             NSLocalizedString("history.historyPrivateModeOnlyStateTitle", tableName: "BraveShared", bundle: .braveShared,
                               value: "History is not available in Private Browsing Only mode.",
                               comment: "Title which is displayed on History screen as a overlay when Private Browsing Only enabled")
+        public static let historySearchBarTitle =
+            NSLocalizedString("history.historySearchBarTitle", tableName: "BraveShared", bundle: .braveShared,
+                              value: "Search History",
+                              comment: "Title displayed for placeholder inside Search Bar in History")
     }
 }
 
