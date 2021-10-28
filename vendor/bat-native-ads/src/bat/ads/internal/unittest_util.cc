@@ -517,17 +517,15 @@ void MockUrlRequest(const std::unique_ptr<AdsClientMock>& mock,
         if (GetNextUrlEndpointResponse(url_request->url, endpoints,
                                        &url_endpoint_response)) {
           status_code = url_endpoint_response.first;
-          if (status_code / 100 == 2) {
-            body = url_endpoint_response.second;
+          body = url_endpoint_response.second;
 
-            if (base::StartsWith(body, "/",
-                                 base::CompareCase::INSENSITIVE_ASCII)) {
-              const base::StringPiece filename = base::TrimString(
-                  body, "//", base::TrimPositions::TRIM_LEADING);
+          if (base::StartsWith(body, "/",
+                               base::CompareCase::INSENSITIVE_ASCII)) {
+            const base::StringPiece filename =
+                base::TrimString(body, "//", base::TrimPositions::TRIM_LEADING);
 
-              const base::FilePath path = GetTestPath().AppendASCII(filename);
-              ASSERT_TRUE(base::ReadFileToString(path, &body));
-            }
+            const base::FilePath path = GetTestPath().AppendASCII(filename);
+            ASSERT_TRUE(base::ReadFileToString(path, &body));
 
             ParseAndReplaceTagsForText(&body);
           }

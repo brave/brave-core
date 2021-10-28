@@ -112,37 +112,6 @@ void RefillUnblindedTokens::Refill() {
 
   nonce_ = "";
 
-  MaybeGetScheduledCaptcha();
-}
-
-void RefillUnblindedTokens::MaybeGetScheduledCaptcha() {
-#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  GetScheduledCaptcha();
-#else
-  RequestSignedTokens();
-#endif
-}
-
-void RefillUnblindedTokens::GetScheduledCaptcha() {
-  BLOG(1, "GetScheduledCaptcha");
-
-  AdsClientHelper::Get()->GetScheduledCaptcha(
-      wallet_.id, base::BindOnce(&RefillUnblindedTokens::OnGetScheduledCaptcha,
-                                 weak_ptr_factory_.GetWeakPtr()));
-}
-
-void RefillUnblindedTokens::OnGetScheduledCaptcha(
-    const std::string& captcha_id) {
-  BLOG(1, "OnGetScheduledCaptcha");
-
-  if (!captcha_id.empty()) {
-    if (delegate_) {
-      delegate_->OnCaptchaRequiredToRefillUnblindedTokens(captcha_id);
-    }
-
-    return;
-  }
-
   RequestSignedTokens();
 }
 
@@ -221,7 +190,8 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code != net::HTTP_OK) {
+  if (url_response.status_code != net::HTTP_OK &&
+      url_response.status_code != net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Failed to get signed tokens");
     OnFailedToRefillUnblindedTokens(/* should_retry */ true);
     return;
@@ -233,6 +203,23 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
     OnFailedToRefillUnblindedTokens(/* should_retry */ false);
+    return;
+  }
+
+  // Captcha required, retrieve captcha id from response
+  if (url_response.status_code == net::HTTP_UNAUTHORIZED) {
+    BLOG(1, "Captcha required");
+#if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
+    const std::string* captcha_id = dictionary->FindStringKey("captcha_id");
+    if (!captcha_id || captcha_id->empty()) {
+      BLOG(0, "Response is missing captcha_id");
+      OnFailedToRefillUnblindedTokens(/* should_retry */ false);
+      return;
+    }
+    if (delegate_) {
+      delegate_->OnCaptchaRequiredToRefillUnblindedTokens(*captcha_id);
+    }
+#endif
     return;
   }
 
@@ -384,7 +371,7 @@ void RefillUnblindedTokens::OnRetry() {
   }
 
   if (nonce_.empty()) {
-    MaybeGetScheduledCaptcha();
+    RequestSignedTokens();
   } else {
     GetSignedTokens();
   }
