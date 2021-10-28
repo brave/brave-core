@@ -279,7 +279,6 @@
 <translation id="1838374766361614909">ล้างการค้นหา</translation>
 <translation id="1839551713262164453">การตรวจสอบความถูกต้องของค่านโยบายมีข้อผิดพลาดและล้มเหลว</translation>
 <translation id="1842969606798536927">จ่าย</translation>
-<translation id="137199123615682137">สิ่งที่โหมดไม่ระบุตัวตนไม่ทำ</translation>
 <translation id="1871208020102129563">พร็อกซีถูกตั้งค่าให้ใช้พร็อกซีเซิร์ฟเวอร์แบบคงที่ ไม่ใช่ URL สคริปต์ .pac</translation>
 <translation id="1871284979644508959">ช่องที่ต้องกรอก</translation>
 <translation id="85321348617848915">Brave ฟอร์ม</translation>
@@ -1009,7 +1008,6 @@
 <translation id="4465818729556336129">เอกสารนี้เป็นความลับ ผู้ดูแลระบบจึงไม่แนะนำให้พิมพ์</translation>
 <translation id="4476953670630786061">ฟอร์มนี้ไม่ปลอดภัย ปิดการป้อนข้อความอัตโนมัติแล้ว</translation>
 <translation id="4477350412780666475">แทร็กถัดไป</translation>
-<translation id="3683567996395248272">สิ่งที่โหมดไม่ระบุตัวตนทำ</translation>
 <translation id="4481394504112738036">ไฟล์ลับ</translation>
 <translation id="4482953324121162758">ระบบจะไม่แปลเว็บไซต์นี้</translation>
 <translation id="4490717597759821841">A7</translation>
@@ -1107,12 +1105,6 @@
 <translation id="4819347708020428563">แก้ไขคำอธิบายประกอบในมุมมองเริ่มต้นใช่ไหม</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/> กด Tab ตามด้วย Enter เพื่อสร้างชีตใหม่ใน Brave ชีตอย่างรวดเร็ว</translation>
 <translation id="4825507807291741242">ทรงพลัง</translation>
-<translation id="6101678912379763265">โหมดไม่ระบุตัวตนไม่ได้ซ่อนการใช้งานออนไลน์ของคุณ
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>เว็บไซต์รู้เมื่อคุณเข้าชม<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>นายจ้างหรือโรงเรียนติดตามกิจกรรมการท่องเว็บได้<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>ผู้ให้บริการอินเทอร์เน็ตอาจตรวจสอบการเข้าชมเว็บ<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
 <translation id="4838327282952368871">ชวนฝัน</translation>
 <translation id="246176083348620700">ดูประวัติการเข้าชมใน Brave</translation>
 <translation id="484462545196658690">อัตโนมัติ</translation>
@@ -1647,7 +1639,6 @@
 <translation id="6757797048963528358">อุปกรณ์ของคุณเข้าสู่โหมดสลีปแล้ว</translation>
 <translation id="6767985426384634228">อัปเดตที่อยู่ไหม</translation>
 <translation id="6768213884286397650">Hagaki (โปสการ์ด)</translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับโหมดไม่ระบุตัวตน</translation>
 <translation id="6775759552199460396">JIS B2</translation>
 <translation id="67862343314499040">ม่วงอมน้ำเงิน</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
@@ -2104,12 +2095,6 @@
 <translation id="8390490312179389407">หน้านี้ดูน่าสงสัย (แจ้งโดย Brave)</translation>
 <translation id="831997045666694187">ตอนเย็น</translation>
 <translation id="8321476692217554900">การแจ้งเตือน</translation>
-<translation id="4912243263991194586">หลังจากที่ปิดแท็บที่ไม่ระบุตัวตนทั้งหมด Brave จะล้าง
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>กิจกรรมการท่องเว็บออกจากอุปกรณ์นี้<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>ประวัติการค้นหาออกจากอุปกรณ์นี้<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>ข้อมูลที่ป้อนในแบบฟอร์ม<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
 <translation id="8332188693563227489">การเข้าถึง <ph name="HOST_NAME"/> ถูกปฏิเสธ</translation>
 <translation id="833262891116910667">ไฮไลต์</translation>
 <translation id="8339163506404995330">ระบบจะไม่แปลหน้าเว็บภาษา<ph name="LANGUAGE"/></translation>
@@ -2389,6 +2374,21 @@
 <translation id="5673623523506565506">ตอนนี้คุณสามารถเรียกดูแบบส่วนตัวได้แล้วโปรไฟล์อื่น ๆ ที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ อย่างไรก็ตาม การดาวน์โหลด และบุ๊กมาร์ก จะถูกบันทึกไว้</translation>
 <translation id="3812568169637430422">ตอนนี้คุณสามารถเรียกดูแบบส่วนตัวได้แล้วโปรไฟล์อื่น ๆ ที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ อย่างไรก็ตาม การดาวน์โหลด บุ๊กมาร์ก และรายการเรื่องรออ่าน จะถูกบันทึกไว้</translation>
 <translation id="5186185447130319458">ส่วนตัว</translation>
+<translation id="3683567996395248272">โหมดส่วนตัวทำอะไรได้บ้าง</translation>
+<translation id="4912243263991194586">หลังจากปิดแท็บส่วนตัวทั้งหมดแล้ว Brave จะล้างข้อมูลต่อไปนี้:
+       <ph name="BEGIN_LIST"/>
+         <ph name="LIST_ITEM"/>กิจกรรมการท่องเว็บของคุณจากอุปกรณ์นี้<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>ประวัติการค้นหาของคุณจากอุปกรณ์นี้<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>ข้อมูลที่คุณป้อนในแบบฟอร์มต่างๆ<ph name="END_LIST_ITEM"/>
+       <ph name="END_LIST"/></translation>
+<translation id="137199123615682137">โหมดส่วนตัวทำอะไรไม่ได้บ้าง</translation>
+<translation id="6101678912379763265">โหมดส่วนตัวไม่ได้ทำให้ผู้อื่นไม่สามารถเห็นคุณบนออนไลน์ ดังต่อไปนี้:
+       <ph name="BEGIN_LIST"/>
+         <ph name="LIST_ITEM"/>เว็บไซต์ต่างๆ จะรู้ว่าคุณเข้าชมเว็บของพวกเขา<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>ผู้ว่าจ้างหรือโรงเรียนจะสามารถติดตามกิจกรรมการท่องเว็บได้<ph name="END_LIST_ITEM"/>
+         <ph name="LIST_ITEM"/>ผู้ให้บริการอินเทอร์เน็ตอาจติดตามตรวจสอบปริมาณการเข้าชมเว็บได้<ph name="END_LIST_ITEM"/>
+       <ph name="END_LIST"/></translation>
+<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>ดูเพิ่มเติม<ph name="END_LINK"/>เกี่ยวกับโหมดส่วนตัว</translation>
 <translation id="5549245478906381817">เปิดหน้าต่างส่วนตัว</translation>
 <translation id="5497977785983089120">เปิดหน้าต่างส่วนตัวใหม่เพื่อท่องเว็บแบบเป็นส่วนตัว</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, กด Tab และกด Enter เพื่อเปิดหน้าต่างส่วนตัวใหม่และท่องเว็บแบบเป็นส่วนตัว</translation>

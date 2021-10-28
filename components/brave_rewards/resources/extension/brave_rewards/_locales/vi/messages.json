@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Brave Rewards",
+    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Với Brave Rewards, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
+    "message": "Với Phần thưởng Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -627,19 +627,19 @@
     }
   },
   "braveTalkTurnOnPrivateAdsToStartCall": {
-    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Brave Private Ads",
+    "message": "Để bắt đầu một cuộc gọi miễn phí, hãy bật Quảng cáo Riêng tư Brave",
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "Với Brave Private Ads, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
+    "message": "Với Quảng cáo Riêng tư Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng... hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "Bật Brave Private Ads",
+    "message": "Bật Quảng cáo Riêng tư Brave",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
-    "message": "Với việc bật Ads, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$.",
+    "message": "Với việc bật Quảng cáo, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -661,11 +661,11 @@
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Brave Talk.",
+    "message": "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Muốn tìm hiểu thêm về Brave Rewards? $tour_link_begin$Hãy dạo nhanh một vòng$tour_link_end$.",
+    "message": "Muốn tìm hiểu thêm về Phần thưởng Brave? $tour_link_begin$Hãy dạo nhanh một vòng$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

@@ -470,13 +470,11 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="8037420924417098685">Para magsimula ng libreng tawag, i-on ang Brave Rewards</translation>
 <translation id="8961724619078500274">Sa Brave Rewards, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon…o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.</translation>
 <translation id="7307847920988946894">I-on ang Mga Reward</translation>
-<translation id="1186139901474936180">Sa pamamagitan ng pag-tap, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/> at <ph name="PRIVACY_POLICY"/>. I-off anumang oras sa Mga Setting.</translation>
 <translation id="6128511569382736135">Para magsimula ng libreng tawag, i-enable ang Brave Private Ads</translation>
 <translation id="7930006085154756245">Sa Brave Private Ads, kikita ka ng mga token sa panonood ng mga pribadong ad (ligtas ang iyong data). Gawing cash o mga gift card ang mga token na iyon…o kaya'y gamitin ang mga ito para mag-tip sa mga website na gusto mo. Walang pagta-track. Walang pagbagal.</translation>
 <translation id="4992617448154987397">I-on ang Brave Private Ads</translation>
-<translation id="7314030474505546826">Sa pamamagitan ng pag-on ng mga Ad, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/> at <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Pwede ka nang magsimula ng libreng tawag</translation>
-<translation id="6712250553966900750">Mag-tap kahit saan sa screen para magpatuloy sa Brave Talk.</translation>
+<translation id="7073631403665023390">Mag-tap kahit saan sa screen para magpatuloy sa Brave Talk.</translation>
 <translation id="626339649633171286">Gusto mo bang matuto pa tungkol sa Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Nag-convert ka ng <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> sa <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Pakitingnan ang iyong koneksyon sa network.</translation>
@@ -539,7 +537,6 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="6146351434671268516">Isulat o kopyahin ang mga salitang ito sa wastong pagkakasunod-sunod at i-save ang mga ito sa ligtas na lugar.</translation>
 <translation id="7408247683131762445">BABALA: Huwag na huwag ihahayag ang iyong parirala sa pag-back up. Magagawa ng sinumang taong alam ang pariralang ito na kunin habambuhay ang iyong pondo.</translation>
 <translation id="939275786514736244">Na-back up ko na ang aking parirala sa ligtas na lugar</translation>
-<translation id="6896758677409633944">Kopyahin</translation>
 <translation id="2604744480284798833">I-back up ang iyong wallet ngayon para protektahan ang iyong portfolio ng cryptocurrency sa pagkawala ng access.</translation>
 <translation id="1202920745614909195">Bumili ng crypto sa pamamagitan ng Apple Pay, credit o debit card.</translation>
 <translation id="841880029259839903">Magpadala ng crypto o maglipat mula sa isang account papunta sa isa pang account.</translation>
@@ -556,14 +553,12 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">LAHAT</translation>
-<translation id="8892168913673237979">Handa na!</translation>
-<translation id="8331501996028380732">Bumili, mag-trade, o magpanatili ng crypto. Kung mayroon ka nang crypto account, maaari mo itong idagdag ngayon.</translation>
 <translation id="2267753748892043616">Magdagdag ng Account</translation>
 <translation id="2632612428525029752">I-update ang Account</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">I-enable ang pag-unlock gamit ang fingerprint?</translation>
 <translation id="5493402808936397665">I-enable ang biometrics para mabilis na ma-unlock ang iyong wallet nang hindi inilalagay ang iyong password.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">I-enable ang iyong parirala sa pag-recover para ma-restore ang iyong Brave Wallet crypto account.</translation>
 <translation id="1970161551843843564">I-restore ang Crypto Account</translation>
 <translation id="4811736040444856406">Ipakita ang parirala sa pag-recover</translation>
@@ -580,7 +575,6 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="745115390910697838">Hindi nagtutugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
 <translation id="6392640873800632439">Presyo sa Market sa <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Presyo sa ETH</translation>
 <translation id="6748108480210050150">Mula sa</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="6159566011642056819">Patungong (estimate)</translation>
 <translation id="6998989275928107238">Para sa</translation>
 <translation id="6664416064035847539">address o url</translation>
-<translation id="59223531494896848">Limitasyon</translation>
-<translation id="3567988240819868195">Market</translation>
 <translation id="632241521608275119">Slippage tolerance</translation>
-<translation id="4500473291496079954">Mag-e-expire sa loob ng</translation>
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="3535654229833214438">Mga transaksyon</translation>
 <translation id="4636930964841734540">Impormasyon</translation>
@@ -674,7 +665,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7999094850625689785">Awtomatikong pipiliin ang rehiyon ng server na pinakamalapit sa iyo, batay sa timezone ng iyong system. Inirerekomenda ito para tiyaking mabilis ang internet.</translation>
 <translation id="8018707825009059641">Iba Pang isyu</translation>
 <translation id="6687228121145903051">Hindi makakonekta sa VPN (Iba pang error)</translation>
-<translation id="9184988385244077767">Walang internet nang kumonekta</translation>
+<translation id="9184988385244077767">Walang internet kapag nakakonekta</translation>
 <translation id="21570240866965662">Mabagal na koneksyon</translation>
 <translation id="1219475260382643267">Hindi gumagana ang website</translation>
 <translation id="7138678301420049075">Iba pa</translation>
@@ -695,7 +686,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7995708795274219641">Halaga + Gas</translation>
 <translation id="1950052789869821983">Transaksyon</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Mga App</translation>
 <translation id="6083912983861746409">Presyo ng Gas(GWEI)</translation>
 <translation id="2499079593046817044">Limit ng Gas(GWEI)</translation>
 <translation id="6389441740143786465">I-off ang Hub sa Pagbabahagi</translation>

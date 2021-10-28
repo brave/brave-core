@@ -472,13 +472,11 @@ Beschikbaar</translation>
 <translation id="8037420924417098685">Schakel Brave Rewards in om een gratis telefoongesprek te starten</translation>
 <translation id="8961724619078500274">Met Brave Rewards verdien je tokens door privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen…of zelfs in fooien voor de websites die je leuk vindt. Geen tracking. Geen vertragingen.</translation>
 <translation id="7307847920988946894">Beloningen inschakelen</translation>
-<translation id="1186139901474936180">Door te tikken, ga je akkoord met de <ph name="TERMS_OF_SERVICE"/> en het <ph name="PRIVACY_POLICY"/>. Dit kun je op elk gewenst moment uitschakelen in Instellingen.</translation>
 <translation id="6128511569382736135">Schakel Brave Private Ads in om een gratis telefoongesprek te starten</translation>
 <translation id="7930006085154756245">Met Brave Private Ads verdien je tokens door te privéadvertenties te bekijken (je gegevens zijn veilig). Zet die tokens om in geld, cadeaubonnen…of zelfs in fooi voor de websites die je leuk vindt. Geen tracking. Geen vertragingen.</translation>
 <translation id="4992617448154987397">Brave Private Ads inschakelen</translation>
-<translation id="7314030474505546826">Door Ads aan te zetten, ga je akkoord met de <ph name="TERMS_OF_SERVICE"/> en het <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Je kunt nu een gratis telefoongesprek starten</translation>
-<translation id="6712250553966900750">Tik op het scherm om door te gaan naar Brave Talk.</translation>
+<translation id="7073631403665023390">Tik op het scherm om door te gaan naar Brave Talk.</translation>
 <translation id="626339649633171286">Wil je meer informatie over Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">U converteerde <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> naar <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">gelieve uw netwerkverbinding te controleren.</translation>
@@ -541,7 +539,6 @@ Beschikbaar</translation>
 <translation id="6146351434671268516">Kopieer of noteer deze woorden in de juiste volgorde en bewaar deze op een veilige plek.</translation>
 <translation id="7408247683131762445">WAARSCHUWING: deel je back-upwoorden nooit met anderen. Iedereen met deze woorden kan toegang verkrijgen tot jouw saldo.</translation>
 <translation id="939275786514736244">Ik heb mijn herstelwoorden op een veilige plek opgeslagen</translation>
-<translation id="6896758677409633944">Kopiëren</translation>
 <translation id="2604744480284798833">Maak nu een back-up van je wallet om je cryptoassets te beschermen en om ervoor te zorgen dat je de toegang ertoe nooit verliest.</translation>
 <translation id="1202920745614909195">Koop crypto met Apple Pay of met een credit- of betaalkaart.</translation>
 <translation id="841880029259839903">Verzend of maak crypto over van het ene account naar het andere.</translation>
@@ -558,14 +555,12 @@ Beschikbaar</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1J</translation>
 <translation id="6895566650974550243">ALLE</translation>
-<translation id="8892168913673237979">Alles is ingesteld.</translation>
-<translation id="8331501996028380732">Koop, verhandel en bewaar crypto. Indien je een bestaand cryptoaccount hebt, kun je deze nu toevoegen.</translation>
 <translation id="2267753748892043616">Account toevoegen</translation>
 <translation id="2632612428525029752">Account bijwerken</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Ontgrendelen met vingerafdruk inschakelen?</translation>
 <translation id="5493402808936397665">Schakel biometrische gegevens in om snel zonder wachtwoord je wallet te ontgrendelen.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Voer je herstelwoorden in om het cryptoaccount van je Brave-wallet te herstellen.</translation>
 <translation id="1970161551843843564">Cryptoaccount herstellen</translation>
 <translation id="4811736040444856406">Herstelwoorden tonen</translation>
@@ -582,7 +577,6 @@ Beschikbaar</translation>
 <translation id="745115390910697838">Woorden komen niet overeen; probeer het opnieuw.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
 <translation id="6392640873800632439">Marktprijs in <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Prijs in ETH</translation>
 <translation id="6748108480210050150">Van</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -590,10 +584,7 @@ Beschikbaar</translation>
 <translation id="6159566011642056819">Naar (schatting)</translation>
 <translation id="6998989275928107238">Naar</translation>
 <translation id="6664416064035847539">adres of URL</translation>
-<translation id="59223531494896848">Begrenzing</translation>
-<translation id="3567988240819868195">Markt</translation>
 <translation id="632241521608275119">Risicotolerantie</translation>
-<translation id="4500473291496079954">Vervalt over</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="3535654229833214438">Transacties</translation>
 <translation id="4636930964841734540">Informatie</translation>
@@ -697,7 +688,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7995708795274219641">Bedrag + gas</translation>
 <translation id="1950052789869821983">Transactie</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Apps</translation>
 <translation id="6083912983861746409">Gasprijs (GWEI)</translation>
 <translation id="2499079593046817044">Gaslimiet (GWEI)</translation>
 <translation id="6389441740143786465">Sharing Hub uitschakelen</translation>

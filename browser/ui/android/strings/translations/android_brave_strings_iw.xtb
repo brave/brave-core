@@ -473,13 +473,11 @@
 <translation id="8037420924417098685">להתחלת שיחה שיחה בחינם, הפעל את Brave Rewards</translation>
 <translation id="8961724619078500274">עם Brave Rewards אתה מרוויח נקודות לצפייה במודעות פרטיות (הנתונים שלך מאובטחים). תוכל להפוך את הנקודות האלה למזומן, לכרטיסי מתנה או אפילו לתת כטיפ לאתרים שאתה אוהב. אין מעקב. אין הורדות איטיות.</translation>
 <translation id="7307847920988946894">הפעל את Rewards</translation>
-<translation id="1186139901474936180">על-ידי לחיצה הנך מסכים ל<ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. תוכל לכבות בכל עת שתרצה בהגדרות.</translation>
 <translation id="6128511569382736135">כדי להתחיל שיחה בחינם, יש להפעיל את Brave Private Ads</translation>
 <translation id="7930006085154756245">עם Brave Private Ads אתה מרוויח נקודות לצפייה במודעות פרטיות (הנתונים שלך מאובטחים). תוכל להפוך את הנקודות האלה למזומן, לכרטיסי מתנה או אפילו לתת כטיפ לאתרים שאתה אוהב. אין מעקב. אין הורדות איטיות.</translation>
 <translation id="4992617448154987397">הפעל את Brave Private Ads</translation>
-<translation id="7314030474505546826">על ידי המשך הנך מסכים ל<ph name="TERMS_OF_SERVICE"/> וכן <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">כעת תוכל להתחיל שיחה בחינם</translation>
-<translation id="6712250553966900750">הקש בכל מקום על המסך כדי להמשיך ל-Brave Talk.</translation>
+<translation id="7073631403665023390">הקש בכל מקום על המסך כדי להמשיך ל-Brave Talk.</translation>
 <translation id="626339649633171286">רוצה לדעת עוד על פרסים? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">המרתם <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> ל- <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">נא לבדוק את חיבור הרשת שלכם.</translation>
@@ -542,7 +540,6 @@
 <translation id="6146351434671268516">יש לרשום או להעתיק מילים אלה בסדר הנכון ולשמור אותן במקום בטוח.</translation>
 <translation id="7408247683131762445">אזהרה: לעולם אין לחשוף את ביטוי הגיבוי שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
 <translation id="939275786514736244">גיביתי את הסיסמה שלי במקום בטוח</translation>
-<translation id="6896758677409633944">העתקה</translation>
 <translation id="2604744480284798833">גבה כעת את ארנקך כעת כדי להגן על תיק הקריפטו שלך מפני אובדן גישה.</translation>
 <translation id="1202920745614909195">קנה מטבע קריפטו עם Apple Pay, כרטיס אשראי או חיוב</translation>
 <translation id="841880029259839903">שלח מטבע קריפטו או העבר מחשבון אחד לשני.</translation>
@@ -559,14 +556,12 @@
 <translation id="6366007539108097840">3 חודשים</translation>
 <translation id="6977728312178289892">שנה אחת</translation>
 <translation id="6895566650974550243">הכול</translation>
-<translation id="8892168913673237979">הכול מוכן!</translation>
-<translation id="8331501996028380732">קנייה, מסחר או החזקת מטבע קריפטו. אם יש לך חשבון מטבע קריפטו קיים באפשרותך להוסיף אותו עכשיו.</translation>
 <translation id="2267753748892043616">הוסף חשבון</translation>
 <translation id="2632612428525029752">עדכון חשבון</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">להפעיל ביטול נעילה בטביעת אצבע?</translation>
 <translation id="5493402808936397665">הפעלת ביומטריה כדי לבטל נעילה במהירות של הארנק שלך מבלי להזין סיסמה.</translation>
-<translation id="8488282162676695335">ארנק Brave</translation>
+<translation id="1544192797660353713">ארנק Brave</translation>
 <translation id="6901810042765869341">הזן את ביטוי השחזור שלך כדי לשחזר את חשבון הקריפטו של ארנק Brave שלך.</translation>
 <translation id="1970161551843843564">שחזר חשבון קריפטו</translation>
 <translation id="4811736040444856406">הצג ביטוי שחזור</translation>
@@ -583,7 +578,6 @@
 <translation id="745115390910697838">ביטויים לא תואמים, יש לנסות שוב.</translation>
 <translation id="2360588547830602174">שחזור חשבון נכשלה. נסה שוב.</translation>
 <translation id="6392640873800632439">מחיר שוק ב-<ph name="ASSET"/></translation>
-<translation id="5593852897152820572">מחיר ב- ETH</translation>
 <translation id="6748108480210050150">מאת</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -591,10 +585,7 @@
 <translation id="6159566011642056819">עד (הערכה)</translation>
 <translation id="6998989275928107238">אל</translation>
 <translation id="6664416064035847539">כתובת או url</translation>
-<translation id="59223531494896848">הגבלה (limit)</translation>
-<translation id="3567988240819868195">שוק</translation>
 <translation id="632241521608275119">רגישות למעידה</translation>
-<translation id="4500473291496079954">בתוקף עד</translation>
 <translation id="1987317783729300807">חשבונות</translation>
 <translation id="3535654229833214438">העברות</translation>
 <translation id="4636930964841734540">מידע</translation>
@@ -698,7 +689,6 @@
 <translation id="7995708795274219641">סכום + גז</translation>
 <translation id="1950052789869821983">עסקה</translation>
 <translation id="6122742277607781713">תיק השקעות</translation>
-<translation id="2805756323405976993">אפליקציות</translation>
 <translation id="6083912983861746409">מחיר דלק (GWEI)</translation>
 <translation id="2499079593046817044">הגבלת דלק(GWEI)</translation>
 <translation id="6389441740143786465">כבה את מרכז השיתוף</translation>

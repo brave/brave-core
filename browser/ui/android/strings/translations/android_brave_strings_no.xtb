@@ -458,13 +458,11 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8037420924417098685">Slå på Brave-belønninger for å starte et gratis anrop</translation>
 <translation id="8961724619078500274">Med Brave Rewards tjener du opp tokener ved å se på private annonser (dataene dine er trygge). Tokenene kan konverteres til kontanter, kavekort … eller tips til favoritt-nettstedene dine. Ingen sporing – ingen treghet.</translation>
 <translation id="7307847920988946894">Slå på Rewards</translation>
-<translation id="1186139901474936180">Ved å trykke her samtykker du i <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>. Du kan trekke tilbake samtykket når du vil, i innstillingene.</translation>
 <translation id="6128511569382736135">Slå på Brave Private Ads for å starte et gratis anrop</translation>
 <translation id="7930006085154756245">Med Brave Private Ads tjener du opp tokener for å se på private annonser (opplysningene dine er uansett trygge). Tokenene kan brukes på gaver, gavekort eller tips til favorittnettstedene dine. Ingen sporing – ingen forsinkelser.</translation>
 <translation id="4992617448154987397">Slå på Brave Private Ads</translation>
-<translation id="7314030474505546826">Ved å slå på Ads, samtykker du i <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Du kan nå starte et gratis anrop</translation>
-<translation id="6712250553966900750">Trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
+<translation id="7073631403665023390">Trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
 <translation id="626339649633171286">Vil du ha mer informasjon om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/></translation>
 <translation id="3604285424134705930">Du konverterte <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Vennligst sjekk nettverksforbindelsen din.</translation>
@@ -527,7 +525,6 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6146351434671268516">Skriv ned eller kopier disse ordene i korrekt rekkefølge, og oppbevar dem på et sikkert sted.</translation>
 <translation id="7408247683131762445">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen kan ta ut verdiene dine for alltid.</translation>
 <translation id="939275786514736244">Jeg har tatt sikkerhetskopi av frasen min og lagret den på et sikkert sted</translation>
-<translation id="6896758677409633944">Kopier</translation>
 <translation id="2604744480284798833">Sikkerhetskopier lommeboken din nå for å beskytte kryptolommeboken din fra tap av tilgang</translation>
 <translation id="1202920745614909195">Kjøp krypto med Apple Pay, kreditt- eller debetkort.</translation>
 <translation id="841880029259839903">Send krypto eller overfør fra en konto til en annen.</translation>
@@ -537,21 +534,19 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="4450951602553063001">Angi passord på nytt</translation>
 <translation id="1783870616707290226">Passordet må ha 7 tegn eller mer</translation>
 <translation id="7383102760859258982">Passordet som ble skrevet inn på nytt, stemmer ikke</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 t</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1U</translation>
 <translation id="9100647964747998533">1M</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Å</translation>
 <translation id="6895566650974550243">ALLE</translation>
-<translation id="8892168913673237979">Alt klart!</translation>
-<translation id="8331501996028380732">Kjøp, bytt eller ei krypto. Hvis du har en eksisterende kryptokonto, kan du legge til den nå.</translation>
 <translation id="2267753748892043616">Legg til konto</translation>
 <translation id="2632612428525029752">Oppdater konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivere åpning med fingeravtrykk?</translation>
 <translation id="5493402808936397665">Aktiver biometri for å raskt åpne lommeboken din uten bruk av passord.</translation>
-<translation id="8488282162676695335">Brave-lommebok</translation>
+<translation id="1544192797660353713">Brave-lommebok</translation>
 <translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
 <translation id="1970161551843843564">Gjenopprett kryptokonto</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
@@ -568,7 +563,6 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="745115390910697838">Frasene stemte ikke. Prøv igjen.</translation>
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
 <translation id="6392640873800632439">Markedspris i <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Pris i ETH</translation>
 <translation id="6748108480210050150">Fra</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -576,10 +570,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6159566011642056819">Til (anslag)</translation>
 <translation id="6998989275928107238">Til</translation>
 <translation id="6664416064035847539">adresse eller URL</translation>
-<translation id="59223531494896848">Begrensning</translation>
-<translation id="3567988240819868195">Marked</translation>
 <translation id="632241521608275119">Slingringstoleranse</translation>
-<translation id="4500473291496079954">Utløper om</translation>
 <translation id="1987317783729300807">Kontoer</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -600,7 +591,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="5050890334032852465">Lagre kontoliste</translation>
 <translation id="7755766175599167100">Søk etter tokener</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Brave brannmur + VPN</translation>
 <translation id="719977489961414786">Oppgrader til en VPN for å sikre tilkoblingen din og blokkere invaderende trackere hvor som helst.</translation>
 <translation id="3435896845095436175">Slå på</translation>
 <translation id="8814357473522731680">Driftet av</translation>
@@ -683,7 +674,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7995708795274219641">Beløp + Gass</translation>
 <translation id="1950052789869821983">Transaksjon</translation>
 <translation id="6122742277607781713">Portefølje</translation>
-<translation id="2805756323405976993">Apper</translation>
 <translation id="6083912983861746409">«Gas»-pris (GWEI)</translation>
 <translation id="2499079593046817044">«Gas»-grense (GWEI)</translation>
 <translation id="6389441740143786465">Deaktiver Sharing Hub</translation>

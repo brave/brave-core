@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending in your wallet and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "ทิปใดๆ ที่คุณให้จะยังคงรอดำเนินการอยู่ในวอลเล็ตของคุณและระบบจะลองดำเนินการใหม่โดยอัตโนมัติเป็นเวลา 90 วัน $link_begin$ดูเพิ่มเติม$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -32,11 +32,11 @@
     }
   },
   "pendingTipTitle": {
-    "message": "This creator is not signed up yet.",
+    "message": "ครีเอเตอร์รายนี้ยังไม่ได้ลงทะเบียน",
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your wallet.",
+    "message": "ครีเอเตอร์รายนี้ยังไม่ได้รับการกำหนดค่าให้รับทิปจากวอลเล็ตของคุณ",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -203,7 +203,7 @@
     "description": ""
   },
   "walletPendingRewardsText": {
-    "message": "$amount$ payout begins processing in $days$",
+    "message": "การจ่าย $amount$ จะเริ่มดำเนินการใน $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "To start a free call, turn on Brave Rewards",
+    "message": "หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave รีวอร์ด",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "With Brave Rewards, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.",
+    "message": "ด้วย Brave รีวอร์ด คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -609,7 +609,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "By clicking, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$. Disable any time in Settings.",
+    "message": "การคลิกหมายความว่า คุณยอมรับ $tos_link_begin$ข้อตกลงการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$ โดยคุณสามารถปิดการใช้งานได้ทุกเมื่อในการตั้งค่า",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -627,19 +627,19 @@
     }
   },
   "braveTalkTurnOnPrivateAdsToStartCall": {
-    "message": "To start a free call, enable Brave Private Ads",
+    "message": "หากต้องการเริ่มการโทรฟรี ให้เปิดใช้งาน Brave Private Ads",
     "description": ""
   },
   "braveTalkPrivateAdsDescription": {
-    "message": "With Brave Private Ads, you earn tokens for viewing private ads (your data is safe). Turn those tokens into cash, gift cards…or even tip the websites you love. No tracking. No slow downs.",
+    "message": "ด้วย Brave Private Ads คุณจะสามารถรับโทเค็นจากการดูโฆษณาแบบส่วนตัว (ข้อมูลของคุณจะปลอดภัย) เปลี่ยนโทเค็นเหล่านั้นเป็นเงินสด บัตรของขวัญ… หรือแม้แต่เป็นทิปให้แก่เว็บไซต์ที่คุณชื่นชอบ โดยไม่มีการติดตาม และไม่ทำให้การทำงานช้าลง",
     "description": ""
   },
   "braveTalkTurnOnPrivateAds": {
-    "message": "Turn on Brave Private Ads",
+    "message": "เปิดการทำงานของ Brave Private Ads",
     "description": ""
   },
   "braveTalkOptInAdsTerms": {
-    "message": "By turning on Ads, you agree to the $tos_link_begin$Terms of Service$tos_link_end$ and $pp_link_begin$Privacy Policy$pp_link_end$.",
+    "message": "การเปิดการทำงานของโฆษณาหมายความว่า คุณยอมรับ $tos_link_begin$ข้อตกลงการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -657,15 +657,15 @@
     }
   },
   "braveTalkCanStartFreeCall": {
-    "message": "You can now start a free call",
+    "message": "คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Click anywhere on the screen to continue to Brave Talk.",
+    "message": "คลิกที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk",
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Want to learn more about Brave Rewards? $tour_link_begin$Take a quick tour$tour_link_end$.",
+    "message": "ต้องการดูข้อมูลเพิ่มเติมเกี่ยวกับ Brave รีวอร์ดใช่ไหม $tour_link_begin$เข้าไปดูการแนะนำสั้นๆ$tour_link_end$",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

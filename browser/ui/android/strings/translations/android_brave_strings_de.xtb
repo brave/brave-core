@@ -466,17 +466,15 @@
 <translation id="3769645103175790584">Verdienen Sie beim Browsen Token und belohnen Sie Ersteller für tolle Inhalte. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Schnelleinführung</translation>
 <translation id="1080013038789678738">Ich bin dabei!</translation>
-<translation id="8037420924417098685">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Rewards</translation>
-<translation id="8961724619078500274">Mit Brave Rewards verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
+<translation id="8037420924417098685">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave-Prämien</translation>
+<translation id="8961724619078500274">Mit Brave-Prämien verdienen Sie Token für das Ansehen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
 <translation id="7307847920988946894">Rewards aktivieren</translation>
-<translation id="1186139901474936180">Durch Tippen erklären Sie sich einverstanden mit den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/>. In den Einstellungen können Sie dies jederzeit widerrufen.</translation>
 <translation id="6128511569382736135">Um einen kostenlosen Anruf zu starten, aktivieren Sie Brave Private Ads</translation>
 <translation id="7930006085154756245">Mit Brave Private Ads verdienen Sie Token für das Anzeigen privater Anzeigen (Ihre Daten sind sicher). Verwandeln Sie diese Token in Bargeld, Geschenkkarten … oder geben Sie sogar den Websites, die Sie lieben, Trinkgeld. Kein Tracking. Keine Verlangsamungen.</translation>
 <translation id="4992617448154987397">Brave Private Ads aktivieren</translation>
-<translation id="7314030474505546826">Wenn Sie Anzeigen aktivieren, stimmen Sie den <ph name="TERMS_OF_SERVICE"/> und der <ph name="PRIVACY_POLICY"/> zu.</translation>
 <translation id="3415016869273103668">Sie können jetzt einen kostenlosen Anruf starten</translation>
-<translation id="6712250553966900750">Tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
-<translation id="626339649633171286">Möchten Sie mehr über Brave Rewards erfahren? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.</translation>
+<translation id="626339649633171286">Möchten Sie mehr über Brave-Prämien erfahren? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Sie haben <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> in <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> konvertiert!</translation>
 <translation id="392587271502873865">Bitte prüfen Sie Ihre Netzwerkverbindung.</translation>
 <translation id="7889432931837317731">Wenn möglich automatisch öffnen</translation>
@@ -538,7 +536,6 @@
 <translation id="6146351434671268516">Diese Wörter musst du in der richtigen Reihenfolge niederschreiben oder kopieren und an einem sicheren Ort speichern.</translation>
 <translation id="7408247683131762445">WARNUNG: Lege niemals deine Sicherungsphrase offen. Wer diese Phrase besitzt, kann sich deine Einlagen aneignen.</translation>
 <translation id="939275786514736244">Ich habe meine Formulierung an einem sicheren Ort gespeichert.</translation>
-<translation id="6896758677409633944">Kopieren</translation>
 <translation id="2604744480284798833">Sichern Sie jetzt Ihre Wallet, um Ihr Krypto-Portfolio vor Zugriffsverlust zu schützen.</translation>
 <translation id="1202920745614909195">Mit Apple Pay, Kredit- oder Debitkarten Kryptowährungen kaufen.</translation>
 <translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
@@ -548,21 +545,19 @@
 <translation id="4450951602553063001">Passwort erneut eingeben</translation>
 <translation id="1783870616707290226">Passwörter müssen aus mindestens 7 Zeichen bestehen.</translation>
 <translation id="7383102760859258982">Das erneut eingegebene Passwort stimmte nicht überein.</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 Std.</translation>
 <translation id="8163269366661594721">1 T</translation>
 <translation id="7640956400175663828">1 W</translation>
 <translation id="9100647964747998533">1 M</translation>
 <translation id="6366007539108097840">3 M</translation>
 <translation id="6977728312178289892">1 J</translation>
 <translation id="6895566650974550243">ALLE</translation>
-<translation id="8892168913673237979">Fertig!</translation>
-<translation id="8331501996028380732">Kryptowährungen kaufen, handeln und halten. Wenn du bereits über ein Krypto-Konto verfügst, kannst du es jetzt hinzufügen.</translation>
 <translation id="2267753748892043616">Konto hinzufügen</translation>
 <translation id="2632612428525029752">Konto aktualisieren</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Entsperren per Fingerabdruck aktivieren?</translation>
 <translation id="5493402808936397665">Biometrie aktivieren, um ohne Passwort Zugriff auf dein Wallet zu haben.</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
+<translation id="1544192797660353713">Brave Wallet</translation>
 <translation id="6901810042765869341">Gib deine Formulierung zur Wiederherstellung ein, um dein Brave Wallet Krypto-Konto wiederherzustellen.</translation>
 <translation id="1970161551843843564">Krypto-Konto wiederherstellen</translation>
 <translation id="4811736040444856406">Formulierung zur Wiederherstellung anzeigen</translation>
@@ -579,7 +574,6 @@
 <translation id="745115390910697838">Die Formulierungen stimmen nicht überein. Bitte erneut versuchen.</translation>
 <translation id="2360588547830602174">Die Wiederherstellung des Kontos schlug fehl. Bitte erneut versuchen.</translation>
 <translation id="6392640873800632439">Marktpreis in <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Preis in ETH</translation>
 <translation id="6748108480210050150">Von</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -587,10 +581,7 @@
 <translation id="6159566011642056819">Bis (Schätzung)</translation>
 <translation id="6998989275928107238">An</translation>
 <translation id="6664416064035847539">Adresse oder URL</translation>
-<translation id="59223531494896848">Limit</translation>
-<translation id="3567988240819868195">Markt</translation>
 <translation id="632241521608275119">Schlupftoleranz</translation>
-<translation id="4500473291496079954">Läuft ab in</translation>
 <translation id="1987317783729300807">Konten</translation>
 <translation id="3535654229833214438">Transaktionen</translation>
 <translation id="4636930964841734540">Info</translation>
@@ -694,9 +685,8 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7995708795274219641">Betrag + Gas</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Apps</translation>
-<translation id="6083912983861746409">Gaspreis (GWEI)</translation>
-<translation id="2499079593046817044">Gaslimit (GWEI)</translation>
+<translation id="6083912983861746409">Preis für Gebühr (GWEI)</translation>
+<translation id="2499079593046817044">Gebührlimit (GWEI)</translation>
 <translation id="6389441740143786465">Freigabe-Hub deaktivieren</translation>
 <translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="473775607612524610">Aktualisieren</translation>
@@ -706,7 +696,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1367951781824006909">Datei auswählen</translation>
 <translation id="8648684608605749476">Cookies von Drittanbietern im Inkognitomodus blockieren</translation>
 <translation id="1118876217803190221">Guthaben reicht nicht aus.</translation>
-<translation id="275990379543116961">Unzureichende Mittel für Gas</translation>
+<translation id="275990379543116961">Unzureichende Mittel für Gebühr</translation>
 <translation id="3292453499915466604">Unzureichende Liquidität</translation>
 <translation id="3380365263193509176">Unbekannter Fehler</translation>
 <translation id="1538774398124896437">Live</translation>

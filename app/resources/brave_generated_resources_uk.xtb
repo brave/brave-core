@@ -80,6 +80,7 @@
 <translation id="7895302206188277628">Пов’язаний вміст</translation>
 <translation id="3654831858282189202">Публікувати з ключами IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Імпортувати вибраний текст до IPFS</translation>
 <translation id="6925604404524625582">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
@@ -186,15 +187,14 @@
 <translation id="8488282162676695335">Гаманець Brave</translation>
 <translation id="2356070529366658676">Запитати</translation>
 <translation id="7701040980221191251">Немає</translation>
-<translation id="5655621391922317800">Криптогаманці</translation>
-<translation id="1696548911367097044">Застаріле розширення Crypto Wallets</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1274962333945373242">Застаріле розширення Crypto Wallets</translation>
 <translation id="9131889008937672866">Гаманець криптовалюти за замовчуванням</translation>
 <translation id="1834467296210148203">Показувати значок Brave Wallet на панелі інструментів</translation>
 <translation id="8239147115686034860">Автоматично блокувати гаманець Brave</translation>
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
 <translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
 <translation id="5927916530277631319">Метод вирішення Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/> про DNS over HTTPS та визначення приватності Ethereum.</translation>
 <translation id="5248318250177143470">Спосіб вирішення Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Налаштуйте ключі IPNS</translation>
 <translation id="951216659045543447">Підпишіть вміст відповідним закритим ключем та опублікуйте його в IPNS</translation>
@@ -208,6 +208,7 @@
 <translation id="6476061084931271248">Перезапустіть вузол, щоб застосувати зміни</translation>
 <translation id="3754226427671882382">Перезапустити вузол</translation>
 <translation id="949667118776341807">Повернути</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Це ім’я неприпустиме</translation>
 <translation id="6758961763875471084">Змінити перелік вузлів</translation>
 <translation id="1295874070797049002">Експортувати ключ</translation>
@@ -225,6 +226,7 @@
 <translation id="1327977588028644528">Шлюз</translation>
 <translation id="80225669816651290">Локальний вузол</translation>
 <translation id="4927734062756955434">Адреса відкритого шлюзу IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Докладніше<ph name="END_LINK_MPL"/> про локальний вузол IPFS та визначення приватності шлюзу.</translation>
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="557281710253742286">Задати шлюз IPFS</translation>
 <translation id="8571837315037233299">Адреса шлюзу</translation>

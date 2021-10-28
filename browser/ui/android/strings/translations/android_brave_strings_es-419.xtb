@@ -458,17 +458,15 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="3769645103175790584">Gana tokens y recompensa a los creadores por contenido excelente mientras navegas. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Recorrido rápido</translation>
 <translation id="1080013038789678738">¡Acepto!</translation>
-<translation id="8037420924417098685">Para iniciar una llamada gratuita, active Brave Rewards</translation>
-<translation id="8961724619078500274">Con Brave Rewards, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
+<translation id="8037420924417098685">Para iniciar una llamada gratuita, active Recompensas Brave</translation>
+<translation id="8961724619078500274">Con Recompensas Brave, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
 <translation id="7307847920988946894">Activar Rewards</translation>
-<translation id="1186139901474936180">Al tocar, acepta las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>. Puede desactivar esto en cualquier momento desde la configuración.</translation>
 <translation id="6128511569382736135">Para iniciar una llamada gratuita, active Brave Private Ads</translation>
 <translation id="7930006085154756245">Con Brave Private Ads, gane tokens por ver anuncios privados (sus datos están protegidos). Puede convertir esos tokens en efectivo o tarjetas de regalo, o bien dar propina a los sitios web que más le gustan. Sin seguimiento alguno ni demoras.</translation>
 <translation id="4992617448154987397">Activar Brave Private Ads</translation>
-<translation id="7314030474505546826">Al activar Ads, acepta las <ph name="TERMS_OF_SERVICE"/> y la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Ya puede iniciar una llamada gratuita</translation>
-<translation id="6712250553966900750">Toque en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
-<translation id="626339649633171286">¿Quiere obtener más información sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Toque en cualquier lugar de la pantalla para continuar con Brave Talk.</translation>
+<translation id="626339649633171286">¿Quiere obtener más información sobre Recompensas Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">¡Convertiste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> a <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verifica la conexión de tu red.</translation>
 <translation id="7889432931837317731">Abrir de forma automática cuando sea posible</translation>
@@ -530,7 +528,6 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="6146351434671268516">Escribe o copia estas palabras en el orden correcto y guárdalas en un lugar seguro.</translation>
 <translation id="7408247683131762445">ADVERTENCIA: Nunca reveles tu frase de copia de seguridad. Cualquier persona que tenga acceso a esta frase puede llevarse tus fondos permanentemente.</translation>
 <translation id="939275786514736244">He guardado mi copia en un lugar seguro</translation>
-<translation id="6896758677409633944">Copiar</translation>
 <translation id="2604744480284798833">Haga una copia de seguridad de su billetera ahora para evitar perder el acceso a su cartera de criptomonedas.</translation>
 <translation id="1202920745614909195">Compra criptomonedas con Apple Pay, tarjeta de crédito o tarjeta de débito.</translation>
 <translation id="841880029259839903">Envía criptomonedas o transfiere de una cuenta a otra.</translation>
@@ -540,21 +537,19 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="4450951602553063001">Vuelve a introducir la contraseña</translation>
 <translation id="1783870616707290226">La contraseña debe tener 7 caracteres o más</translation>
 <translation id="7383102760859258982">La contraseña reescrita no coincide</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1 D</translation>
 <translation id="7640956400175663828">1 S</translation>
 <translation id="9100647964747998533">1 M</translation>
 <translation id="6366007539108097840">3 M</translation>
 <translation id="6977728312178289892">1 A</translation>
 <translation id="6895566650974550243">TODO</translation>
-<translation id="8892168913673237979">¡Todo listo!</translation>
-<translation id="8331501996028380732">Compra, intercambia o conserva criptomonedas. Si tienes una cuenta de criptomonedas existente, puedes agregarla ahora.</translation>
 <translation id="2267753748892043616">Agregar cuenta</translation>
 <translation id="2632612428525029752">Actualizar cuenta</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">¿Habilitar desbloqueo mediante huella digital?</translation>
 <translation id="5493402808936397665">Habilita los datos biométricos para desbloquear rápidamente tu billetera sin introducir la contraseña.</translation>
-<translation id="8488282162676695335">Billetera de Brave</translation>
+<translation id="1544192797660353713">Billetera de Brave</translation>
 <translation id="6901810042765869341">Introduce tu frase de recuperación para restaurar la cuenta de criptomonedas de tu billetera de Brave.</translation>
 <translation id="1970161551843843564">Restaurar cuenta de criptomonedas</translation>
 <translation id="4811736040444856406">Mostrar la frase de recuperación</translation>
@@ -571,7 +566,6 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="745115390910697838">Las frases no coincidieron. Inténtalo de nuevo.</translation>
 <translation id="2360588547830602174">La recuperación de la cuenta ha fallado. Inténtalo de nuevo.</translation>
 <translation id="6392640873800632439">Precio de mercado en <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Precio en ETH</translation>
 <translation id="6748108480210050150">De</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -579,10 +573,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="6159566011642056819">Para (estimación)</translation>
 <translation id="6998989275928107238">A</translation>
 <translation id="6664416064035847539">dirección o URL</translation>
-<translation id="59223531494896848">Límite</translation>
-<translation id="3567988240819868195">Mercado</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
-<translation id="4500473291496079954">Caduca en</translation>
 <translation id="1987317783729300807">Cuentas</translation>
 <translation id="3535654229833214438">Transacciones</translation>
 <translation id="4636930964841734540">Información</translation>
@@ -603,7 +594,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5050890334032852465">Guardar lista de seguimiento de la cuenta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Cortafuegos + VPN de Brave</translation>
 <translation id="719977489961414786">Actualice a una VPN para proteger su conexión y bloquear rastreadores invasivos en todas partes.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
 <translation id="8814357473522731680">Con la tecnología de</translation>
@@ -661,7 +652,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="4395361077929528480">Tipo de red</translation>
 <translation id="755448900483975096">Proveedor de red celular</translation>
 <translation id="1279441577056010362">Continuar al correo electrónico</translation>
-<translation id="2553687444159335134">Asistencia proporcionada con la ayuda del equipo de Guardian.\n\nSeleccione la información que pueda compartir con nosotros de forma segura.\n\nMientras más información comparta inicialmente con nosotros, más fácil será para nuestro personal de asistencia brindarle ayuda a fin de resolver su</translation>
+<translation id="2553687444159335134">Asistencia proporcionada con la ayuda del equipo de Guardian.\n\nSeleccione la información que pueda compartir con nosotros de forma segura.\n\nMientras más información comparta inicialmente con nosotros, más fácil será para nuestro personal de asistencia resolver su</translation>
 <translation id="7999094850625689785">Se seleccionará automáticamente la región de servidor más cercana a usted, según la zona horaria de su sistema. Esto se recomienda para garantizar velocidades de Internet que sean rápidas.</translation>
 <translation id="8018707825009059641">Otros problemas</translation>
 <translation id="6687228121145903051">No se puede conectar a la VPN (otro error)</translation>
@@ -686,7 +677,6 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="7995708795274219641">Monto + gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="6122742277607781713">Cartera</translation>
-<translation id="2805756323405976993">Aplicaciones</translation>
 <translation id="6083912983861746409">Precio de gas (GWEI)</translation>
 <translation id="2499079593046817044">Limite de gas (GWEI)</translation>
 <translation id="6389441740143786465">Desactivar centro de difusión</translation>

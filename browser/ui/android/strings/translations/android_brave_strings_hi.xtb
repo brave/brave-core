@@ -470,13 +470,11 @@
 <translation id="8037420924417098685">फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें</translation>
 <translation id="8961724619078500274">Brave Rewards के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, गिफ़्ट कार्ड…या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
 <translation id="7307847920988946894">रिवॉर्ड शुरू करें</translation>
-<translation id="1186139901474936180">टैप करके, आप <ph name="TERMS_OF_SERVICE"/> and <ph name="PRIVACY_POLICY"/>. से सहमत हैं. सेटिंग में जाकर कभी भी बंद करें.</translation>
 <translation id="6128511569382736135">फ़्री कॉल शुरू करने के लिए,  Brave Private Ads चालू करें</translation>
 <translation id="7930006085154756245">Brave Private Ads के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, गिफ़्ट कार्ड… या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
 <translation id="4992617448154987397">Brave Private Ads को शुरू करें.</translation>
-<translation id="7314030474505546826">Ads शुरू करके, आप <ph name="TERMS_OF_SERVICE"/> और <ph name="PRIVACY_POLICY"/> से सहमत हैं.</translation>
 <translation id="3415016869273103668">अब आप फ़्री कॉल  शुरू कर सकते हैं</translation>
-<translation id="6712250553966900750">Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.</translation>
+<translation id="7073631403665023390">Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.</translation>
 <translation id="626339649633171286">के बारे में अधिक जानना चाहते हैं? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">आपने <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> से <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> में बदला है!</translation>
 <translation id="392587271502873865">कृपया अपना नेटवर्क कनेक्शन जांचें।</translation>
@@ -539,7 +537,6 @@
 <translation id="6146351434671268516">इन शब्दों को सही क्रम में लिखें या कॉपी करके कहीं सुरक्षित रख लें.</translation>
 <translation id="7408247683131762445">चेतावनी: अपने बैकअप फ़्रेज़ को कभी भी ज़ाहिर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपके पैसे को हमेशा के लिए ले सकता है.</translation>
 <translation id="939275786514736244">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
-<translation id="6896758677409633944">कॉपी</translation>
 <translation id="2604744480284798833">अपने क्रिप्टो पोर्टफ़ोलिओ को एक्सेस के नुकसान से बचाने के लिए अभी अपने वॉलेट का बैकअप लें.</translation>
 <translation id="1202920745614909195">Apple Pay, क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
 <translation id="841880029259839903">क्रिप्टो भेजें या एक अकाउंट से दूसरे अकॉउंट में ट्रांसफर करें.</translation>
@@ -556,14 +553,12 @@
 <translation id="6366007539108097840">3 महीने</translation>
 <translation id="6977728312178289892">1 साल</translation>
 <translation id="6895566650974550243">सब</translation>
-<translation id="8892168913673237979">सब सेट</translation>
-<translation id="8331501996028380732">क्रिप्टो खरीदें, ट्रेड करें या होल्ड करें. यदि आपके पास एक मौजूदा क्रिप्टो अकाउंट है तो आप इसे अभी जोड़ सकते हैं.</translation>
 <translation id="2267753748892043616">अकाउंट जोड़ें</translation>
 <translation id="2632612428525029752">अकाउंट अपडेट करें</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
+<translation id="1544192797660353713">Brave वॉलेट</translation>
 <translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
 <translation id="1970161551843843564">क्रिप्टो अकाउंट रिस्टोर करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
@@ -580,7 +575,6 @@
 <translation id="745115390910697838">वाक्यांश नहीं मेल खा रहे. कृपया दोबारा कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/> में बाजार मूल्य</translation>
-<translation id="5593852897152820572">ETH में मूल्य</translation>
 <translation id="6748108480210050150">से\n\n</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@
 <translation id="6159566011642056819">(अंदाज़ा) लगाने के लिए</translation>
 <translation id="6998989275928107238">सेवा में</translation>
 <translation id="6664416064035847539">पता या url</translation>
-<translation id="59223531494896848">सीमा</translation>
-<translation id="3567988240819868195">मार्किट</translation>
 <translation id="632241521608275119">फिसलन सहनशीलता</translation>
-<translation id="4500473291496079954">में समाप्त होने वाला है</translation>
 <translation id="1987317783729300807">खाते</translation>
 <translation id="3535654229833214438">लेन-देन</translation>
 <translation id="4636930964841734540">जानकारी</translation>
@@ -695,7 +686,6 @@
 <translation id="7995708795274219641">मात्रा + गैस</translation>
 <translation id="1950052789869821983">लेन-देन</translation>
 <translation id="6122742277607781713">पोर्टफ़ोलियो</translation>
-<translation id="2805756323405976993">ऐप्स</translation>
 <translation id="6083912983861746409">गैस की कीमत(GWEI)</translation>
 <translation id="2499079593046817044">गैस की सीमा(GWEI)</translation>
 <translation id="6389441740143786465">शेयरिंग हब बंद करें</translation>

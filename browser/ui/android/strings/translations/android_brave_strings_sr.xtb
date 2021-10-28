@@ -467,17 +467,15 @@ meseca...</translation>
 <translation id="3769645103175790584">Zaradite tokene i nagradite kreatore za sjajan sadržaj dok pregledavate. <ph name="QUICK_TOUR"/>.</translation>
 <translation id="6912901278692845878">Brza tura</translation>
 <translation id="1080013038789678738">Ulazim!</translation>
-<translation id="8037420924417098685">Da biste započeli besplatan poziv, uključite Brave Rewards</translation>
-<translation id="8961724619078500274">Zahvaljujući opciji Brave Rewards, možete dobiti tokene za gledanje privatnih oglasa (vaši podaci su bezbedni). Pretvorite tokene u gotovinu, poklon kartice... ili čak možete dati napojnicu veb-sajtu koji volite. Bez praćenja. Bez usporavanja.</translation>
+<translation id="8037420924417098685">Da biste započeli besplatan poziv, uključite Brave nagrade</translation>
+<translation id="8961724619078500274">Zahvaljujući opciji Brave nagrade, možete dobiti tokene za gledanje privatnih oglasa (vaši podaci su bezbedni). Pretvorite tokene u gotovinu, poklon kartice... ili čak možete dati napojnicu veb-sajtu koji volite. Bez praćenja. Bez usporavanja.</translation>
 <translation id="7307847920988946894">Uključi nagrade</translation>
-<translation id="1186139901474936180">Dodirom na odgovarajuće mesto pristajete na <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>. Možete onemogućiti kad god poželite u podešavanjima.</translation>
 <translation id="6128511569382736135">Da biste započeli besplatan poziv, uključite Brave Private Ads</translation>
 <translation id="7930006085154756245">Zahvaljujući opciji Brave Private Ads, možete dobiti tokene za gledanje privatnih oglasa (vaši podaci su bezbedni). Pretvorite tokene u gotovinu, poklon kartice... ili čak možete dati napojnicu veb-sajtu koji volite. Bez praćenja. Bez usporavanja.</translation>
 <translation id="4992617448154987397">Uključi Brave Private Ads</translation>
-<translation id="7314030474505546826">Uključivanjem opcije Ads pristajete na <ph name="TERMS_OF_SERVICE"/> i <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Sada možete započeti besplatan poziv</translation>
-<translation id="6712250553966900750">Dodirnite bilo koje mesto na ekranu da biste nastavili do Brave Talk.</translation>
-<translation id="626339649633171286">Da li želite da saznate više o Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
+<translation id="7073631403665023390">Dodirnite bilo koje mesto na ekranu da biste nastavili do Brave video poziva.</translation>
+<translation id="626339649633171286">Da li želite da saznate više o Brave nagradama? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Pretvorili ste <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> u <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Proverite svoju mrežnu vezu.</translation>
 <translation id="7889432931837317731">Automatski otvori kada je to moguće</translation>
@@ -539,7 +537,6 @@ meseca...</translation>
 <translation id="6146351434671268516">Upišite ili kopirajte te reči kako biste ih sačuvali na nekom bezbednom mestu.</translation>
 <translation id="7408247683131762445">UPOZORENJE: nikada ne otkrivajte svoju rezervnu frazu. Svako sa ovom frazom može zauvek da vam uzme vaš novac.</translation>
 <translation id="939275786514736244">Frazu sa sačuvao/la na nekom bezbednom mestu</translation>
-<translation id="6896758677409633944">Kopiraj</translation>
 <translation id="2604744480284798833">Napravite rezervnu kopiju novčanika da biste zaštitili svoj kripto portfolio od gubitka pristupa.</translation>
 <translation id="1202920745614909195">Kupujte kriptovalute uz Apple Pay, kreditnu ili debitnu karticu.</translation>
 <translation id="841880029259839903">Šaljite kriptovalute ili ih prebacujte sa jednog naloga na drugi.</translation>
@@ -549,21 +546,19 @@ meseca...</translation>
 <translation id="4450951602553063001">Unesite lozinku ponovo</translation>
 <translation id="1783870616707290226">Lozinka mora da sadrži 7 ili više znakova</translation>
 <translation id="7383102760859258982">Ponovljena lozinka se ne poklapa</translation>
-<translation id="3188963375823360044">Prvi semestar</translation>
+<translation id="3188963375823360044">1 sat</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">SVE</translation>
-<translation id="8892168913673237979">Sve je spremno!</translation>
-<translation id="8331501996028380732">Kupujte, trgujte ili čuvajte kriptovalute. Ako imate postojeći kripto nalog sada možete da ga dodate.</translation>
 <translation id="2267753748892043616">Dodaj nalog</translation>
 <translation id="2632612428525029752">Ažuriranje naloga</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Omogući otključavanje otiskom prsta?</translation>
 <translation id="5493402808936397665">Aktivirajte biometrijske podatke da biste mogli brzo da otključate svoj novčanik bez unošenja lozinke.</translation>
-<translation id="8488282162676695335">Brave novčanik</translation>
+<translation id="1544192797660353713">Brave novčanik</translation>
 <translation id="6901810042765869341">Unesite frazu za obnavljanje da biste vratili svoj kripto nalog za Brave novčanik</translation>
 <translation id="1970161551843843564">Obnovi kripto nalog</translation>
 <translation id="4811736040444856406">prikaži frazu za obnavljanje</translation>
@@ -580,7 +575,6 @@ meseca...</translation>
 <translation id="745115390910697838">Fraze se ne poklapaju, pokušajte ponovo.</translation>
 <translation id="2360588547830602174">Obnavljanje naloga nije uspelo. Pokušajte ponovo.</translation>
 <translation id="6392640873800632439">Tržišna cena u <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Cena u ETH</translation>
 <translation id="6748108480210050150">Od</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@ meseca...</translation>
 <translation id="6159566011642056819">Do (procena)</translation>
 <translation id="6998989275928107238">Za</translation>
 <translation id="6664416064035847539">adresa ili url</translation>
-<translation id="59223531494896848">Ograničenje</translation>
-<translation id="3567988240819868195">Tržište</translation>
 <translation id="632241521608275119">Tolerancija propusta</translation>
-<translation id="4500473291496079954">Ističe za</translation>
 <translation id="1987317783729300807">Налози</translation>
 <translation id="3535654229833214438">Transakcije</translation>
 <translation id="4636930964841734540">Informacije</translation>
@@ -612,7 +603,7 @@ meseca...</translation>
 <translation id="5050890334032852465">Sačuvajte listu za pregled naloga</translation>
 <translation id="7755766175599167100">Pretražite tokene</translation>
 <translation id="3835223348537121988">Bilans:</translation>
-<translation id="4449475351935531438">Brave Firewall + VPN</translation>
+<translation id="4449475351935531438">Brave zaštitni zid + VPN</translation>
 <translation id="719977489961414786">Izvršite nadogradnju na VPN da biste zaštitili svoju vezu i svuda blokirali invazivno praćenje.</translation>
 <translation id="3435896845095436175">Омогући</translation>
 <translation id="8814357473522731680">Omogućava</translation>
@@ -649,7 +640,7 @@ meseca...</translation>
 Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza sa internetom neće biti zaštićena.</translation>
 <translation id="2429299231491852747">Prihvati zahtev za uspostavljanje veze</translation>
 <translation id="3428909627460825679">Kreiranje VPN profila nije uspelo. Pokušajte ponovo.</translation>
-<translation id="8584119457978684056">Verifikacija kupovine tokena nije uspela. Pokušajte ponovo.</translation>
+<translation id="8584119457978684056">Verifikacija tokena za kupovinu nije uspela. Pokušajte ponovo.</translation>
 <translation id="8905950042180169719">VPN radi u pozadini</translation>
 <translation id="8681480718817027245">Pretplata</translation>
 <translation id="7805768142964895445">Статус</translation>
@@ -665,12 +656,12 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="5863914199331127413">VPN ime hosta</translation>
 <translation id="5499653136178260315">Vrsta pretplate</translation>
 <translation id="4741058112780154119">Verzija aplikacije</translation>
-<translation id="7286066816862208787">Potvrda aplikacije</translation>
+<translation id="7286066816862208787">Primitak aplikacije</translation>
 <translation id="2552966063069741410">Vremenska zona</translation>
 <translation id="4395361077929528480">Vrsta mreže</translation>
 <translation id="755448900483975096">Mobilni operater</translation>
 <translation id="1279441577056010362">Pređite na imejl</translation>
-<translation id="2553687444159335134">Podrška je obezbeđena uz pomoć Guardian tima.\n\nIzaberite informacije koje možete da podelite s nama.\n\nŠto više informacija nam dostavite u početku to će našoj tehničkoj podršci biti lakše da vam pomogne da rešite problem.</translation>
+<translation id="2553687444159335134">Podrška je obezbeđena uz pomoć Guardian tima.\n\nIzaberite informacije koje možete da podelite s nama.\n\nŠto više informacija nam dostavite u početku to će našoj tehničkoj podršci biti lakše da vam pomogne da rešite</translation>
 <translation id="7999094850625689785">Na osnovu vremenske zone vašeg sistema, automatski će biti izabran region servera koji vam je najbliži. Ovo se preporučuje da bi se omogućile velike brzine interneta.</translation>
 <translation id="8018707825009059641">Drugi problemi</translation>
 <translation id="6687228121145903051">Nije moguće povezivanje na VPN (druga greška)</translation>
@@ -695,7 +686,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="7995708795274219641">Iznos + gas</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="2805756323405976993">Апликације</translation>
 <translation id="6083912983861746409">Cena gasa (GWEI)</translation>
 <translation id="2499079593046817044">Limit gasa (GWEI)</translation>
 <translation id="6389441740143786465">Onemogući čvorište za deljenje</translation>

@@ -474,13 +474,11 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="8037420924417098685">Tasuta kõne alustamiseks lülitage sisse Brave Rewards</translation>
 <translation id="8961724619078500274">Brave Rewardsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks…või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
 <translation id="7307847920988946894">Lülita Rewards sisse</translation>
-<translation id="1186139901474936180">Puudutamisega nõustute dokumentidega <ph name="TERMS_OF_SERVICE"/> ja <ph name="PRIVACY_POLICY"/>. Keelata saate suvalisel ajal seadetest.</translation>
 <translation id="6128511569382736135">Tasuta kõne alustamiseks lubage Brave Private Ads</translation>
 <translation id="7930006085154756245">Brave Private Adsiga teenite privaatse reklaami vaatamise eest tokeneid (teie andmed on kaitstud). Need tokenid saate muuta sularahaks või kinkekaartideks…või koguni anda preemiat oma lemmikveebisaitidele. Ei mingit jälgimist. Ei mingit aeglasemaks muutumist.</translation>
 <translation id="4992617448154987397">Lülita Brave Private Ads sisse</translation>
-<translation id="7314030474505546826">Adsi sisselülitamisega nõustute dokumentidega <ph name="TERMS_OF_SERVICE"/> ja <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Saate nüüd alustada tasuta kõnet</translation>
-<translation id="6712250553966900750">Brave Talkis jätkamiseks puudutage mis tahes kohta ekraanil.</translation>
+<translation id="7073631403665023390">Brave'i vestluses jätkamiseks puudutage mis tahes kohta ekraanil.</translation>
 <translation id="626339649633171286">Kas soovite lisateavet Brave Rewardsi kohta? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Konverteerisite <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> vääringusse <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Kontrollige oma võrguühendust.</translation>
@@ -543,7 +541,6 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6146351434671268516">Märkige või kopeerige need sõnad õiges järjekorras ja talletage need kindlasse kohta.</translation>
 <translation id="7408247683131762445">HOIATUS: Mitte kunagi ei tohi avaldada oma turvalauset. Igaüks, kellel on see lause, võib teie raha igaveseks ära võtta.</translation>
 <translation id="939275786514736244">Ma olen oma lause talletanud kindlasse kohta</translation>
-<translation id="6896758677409633944">Kopeeri</translation>
 <translation id="2604744480284798833">Varundage rahakott kohe, et kaitsta oma krüptoportfelli juurdepääsu kaotsimineku eest.</translation>
 <translation id="1202920745614909195">Ostke krüptot Apple Pay, krediit- või deebetkaardiga.</translation>
 <translation id="841880029259839903">Saatke krüptot või tehke ülekandeid ühelt kontolt teisele.</translation>
@@ -553,21 +550,19 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="4450951602553063001">Sisestage parool uuesti</translation>
 <translation id="1783870616707290226">Parooli pikkus peab olema 7 või enam tähemärki</translation>
 <translation id="7383102760859258982">Uuesti sisestatud parool ei ühtinud</translation>
-<translation id="3188963375823360044">1H</translation>
+<translation id="3188963375823360044">1 h</translation>
 <translation id="8163269366661594721">1D</translation>
 <translation id="7640956400175663828">1W</translation>
 <translation id="9100647964747998533">1M</translation>
 <translation id="6366007539108097840">3M</translation>
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6895566650974550243">KÕIK</translation>
-<translation id="8892168913673237979">Valmis!</translation>
-<translation id="8331501996028380732">Ostke, kaubelge või hoidke krüptot. Kui teil on juba kasutusel olev krüptokonto, võite selle kohe lisada.</translation>
 <translation id="2267753748892043616">Lisage konto</translation>
 <translation id="2632612428525029752">Uuenda konto</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Kas lubada sõrmejäljeluku avamine?</translation>
 <translation id="5493402808936397665">Lubage biomeetriliste andmete kasutamine, et avada oma rahakott kiiresti ilma parooli sisestamata.</translation>
-<translation id="8488282162676695335">Brave'i rahakott</translation>
+<translation id="1544192797660353713">Brave'i rahakott</translation>
 <translation id="6901810042765869341">Sisestage oma taastamise lause, et taastada oma Brave'i rahakoti krüptokonto.</translation>
 <translation id="1970161551843843564">Krüptokonto taastamine</translation>
 <translation id="4811736040444856406">Näita taastamise lauset</translation>
@@ -584,7 +579,6 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="745115390910697838">Laused ei ühildunud, palun proovige uuesti.</translation>
 <translation id="2360588547830602174">Konto taastamine ebaõnnestus. Palun proovige uuesti.</translation>
 <translation id="6392640873800632439">Turuhind <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Hind ETH-des</translation>
 <translation id="6748108480210050150">Saatja</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -592,10 +586,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6159566011642056819">Kuni (hinnanguliselt)</translation>
 <translation id="6998989275928107238">Saaja</translation>
 <translation id="6664416064035847539">aadress või URL</translation>
-<translation id="59223531494896848">Ülemmäär</translation>
-<translation id="3567988240819868195">Turg</translation>
 <translation id="632241521608275119">Varieeruvuse tolerants</translation>
-<translation id="4500473291496079954">Aegumisaeg</translation>
 <translation id="1987317783729300807">Kontod</translation>
 <translation id="3535654229833214438">Tehingud</translation>
 <translation id="4636930964841734540">Teave</translation>
@@ -639,7 +630,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="6277055349883621705">Uuendatakse kord aastas, kokkuhoid 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> aastas</translation>
 <translation id="4487678670820292781">$119,88</translation>
-<translation id="5867778679088331977">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaani hind. Kõik tellimused uuendatakse automaatselt, kuid neid enne uuendamist saab tühistada.</translation>
+<translation id="5867778679088331977">Proovige 7 päeva tasuta. Pärast 7 päeva möödumist võetakse teilt plaanile vastav tasu. Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab neid tühistada.</translation>
 <translation id="6053992191006521518">Proovige TASUTA</translation>
 <translation id="721747358270435486">Installige VPN</translation>
 <translation id="836074276610740314">Installige VPN-i profiil</translation>
@@ -669,7 +660,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5863914199331127413">VPN-i hostinimi</translation>
 <translation id="5499653136178260315">Tellimuse tüüp</translation>
 <translation id="4741058112780154119">Rakenduse versioon</translation>
-<translation id="7286066816862208787">Rakenduse vastuvõtt</translation>
+<translation id="7286066816862208787">Rakenduselt saadud</translation>
 <translation id="2552966063069741410">Ajavöönd</translation>
 <translation id="4395361077929528480">Võrgu tüüp</translation>
 <translation id="755448900483975096">Mobiilsideoperaator</translation>
@@ -699,7 +690,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7995708795274219641">Kogus + gaas</translation>
 <translation id="1950052789869821983">Tehing</translation>
 <translation id="6122742277607781713">Portfell</translation>
-<translation id="2805756323405976993">Rakendused</translation>
 <translation id="6083912983861746409">Gaasi hind (GWEI)</translation>
 <translation id="2499079593046817044">Gaasi limiit (GWEI)</translation>
 <translation id="6389441740143786465">Keela jagamiskeskus</translation>

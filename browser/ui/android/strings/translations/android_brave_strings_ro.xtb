@@ -470,13 +470,11 @@ lună...</translation>
 <translation id="8037420924417098685">Pentru a iniția un apel gratuit, activați Brave Rewards</translation>
 <translation id="8961724619078500274">Cu Brave Rewards, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori puteți susține site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
 <translation id="7307847920988946894">Activare Rewards</translation>
-<translation id="1186139901474936180">Atingerea presupune că acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>. Puteți dezactiva opțiunea în orice moment în Setări.</translation>
 <translation id="6128511569382736135">Pentru a iniția un apel gratuit, activați Brave Private Ads</translation>
 <translation id="7930006085154756245">Cu Brave Private Ads, câștigați token-uri când afișați reclame (datele dvs. sunt în siguranță). Transformați acele token-uri în bani sau carduri cadou ori susțineți site-urile care vă plac. Nu sunteți urmărit, iar viteza de încărcare nu este redusă!</translation>
 <translation id="4992617448154987397">Activați Brave Private Ads</translation>
-<translation id="7314030474505546826">Dacă activați Brave Ads, acceptați <ph name="TERMS_OF_SERVICE"/> și <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3415016869273103668">Acum puteți iniția un apel gratuit</translation>
-<translation id="6712250553966900750">Atingeți în orice loc pe ecran pentru a continua la Brave Talk.</translation>
+<translation id="7073631403665023390">Atingeți în orice loc pe ecran pentru a continua la Brave Talk.</translation>
 <translation id="626339649633171286">Doriți să aflați mai multe despre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Ați convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Verificați conexiunea la rețea.</translation>
@@ -539,7 +537,6 @@ lună...</translation>
 <translation id="6146351434671268516">Scrieți sau copiați aceste cuvinte în ordinea corectă și salvați-le într-un loc sigur!</translation>
 <translation id="7408247683131762445">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua fondurile definitiv.</translation>
 <translation id="939275786514736244">Am realizat o copie de rezervă după expresia mea într-un loc sigur</translation>
-<translation id="6896758677409633944">Copiază</translation>
 <translation id="2604744480284798833">Realizați o copie de rezervă după portofel, pentru a vă proteja portofoliul de criptomonede în cazul pierderii accesului.</translation>
 <translation id="1202920745614909195">Cumpărați criptomonede folosind Apple Pay, un card de credit ori un card de debit</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
@@ -556,14 +553,12 @@ lună...</translation>
 <translation id="6366007539108097840">3 luni</translation>
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6895566650974550243">TOATĂ PERIOADA</translation>
-<translation id="8892168913673237979">Totul e în regulă!</translation>
-<translation id="8331501996028380732">Cumpărați, tranzacționați sau păstrați criptomonede! Dacă aveți deja un cont pentru criptomonede, îl puteți adăuga acum.</translation>
 <translation id="2267753748892043616">Adăugați un cont</translation>
 <translation id="2632612428525029752">Actualizați contul</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Activați deblocarea cu amprentă?</translation>
 <translation id="5493402808936397665">Activați datele biometrice, pentru a debloca rapid portofelul fără a introduce parola.</translation>
-<translation id="8488282162676695335">Portofelul Brave</translation>
+<translation id="1544192797660353713">Portofelul Brave</translation>
 <translation id="6901810042765869341">Introduceți expresia de recuperare, pentru a restabili contul dvs. de criptomonede Brave Wallet.</translation>
 <translation id="1970161551843843564">Restabiliți contul pentru criptomonede</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
@@ -580,7 +575,6 @@ lună...</translation>
 <translation id="745115390910697838">Expresiile nu corespund. Încercați din nou!</translation>
 <translation id="2360588547830602174">Recuperarea contului nu a reușit. Încercați din nou!</translation>
 <translation id="6392640873800632439">Prețul pieței în <ph name="ASSET"/></translation>
-<translation id="5593852897152820572">Prețul în ETH</translation>
 <translation id="6748108480210050150">De la</translation>
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
@@ -588,10 +582,7 @@ lună...</translation>
 <translation id="6159566011642056819">Până la (estimare)</translation>
 <translation id="6998989275928107238">Către</translation>
 <translation id="6664416064035847539">adresă sau url</translation>
-<translation id="59223531494896848">Limită</translation>
-<translation id="3567988240819868195">Piață</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
-<translation id="4500473291496079954">Expiră în</translation>
 <translation id="1987317783729300807">Conturi</translation>
 <translation id="3535654229833214438">Tranzacții</translation>
 <translation id="4636930964841734540">Informații</translation>
@@ -649,7 +640,7 @@ lună...</translation>
 Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, iar conexiunea la internet nu va fi securizată.</translation>
 <translation id="2429299231491852747">Acceptați cererea de conexiune</translation>
 <translation id="3428909627460825679">Nu a reușit crearea profilului VPN. Încercați din nou.</translation>
-<translation id="8584119457978684056">Nu s-a reușit confirmarea achiziției de token. Încercați din nou!</translation>
+<translation id="8584119457978684056">Nu s-a reușit confirmarea token-ului pentru achiziții. Încercați din nou!</translation>
 <translation id="8905950042180169719">VPN-ul rulează în fundal</translation>
 <translation id="8681480718817027245">Abonament</translation>
 <translation id="7805768142964895445">Stare</translation>
@@ -665,7 +656,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5863914199331127413">Nume gazdă VPN</translation>
 <translation id="5499653136178260315">Tipul abonamentului</translation>
 <translation id="4741058112780154119">Versiunea aplicației</translation>
-<translation id="7286066816862208787">Confirmare aplicație</translation>
+<translation id="7286066816862208787">Token de la aplicație</translation>
 <translation id="2552966063069741410">Fus orar</translation>
 <translation id="4395361077929528480">Tip de rețea</translation>
 <translation id="755448900483975096">Furnizor de date mobile</translation>
@@ -695,10 +686,9 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7995708795274219641">Suma + Gas</translation>
 <translation id="1950052789869821983">Tranzacție</translation>
 <translation id="6122742277607781713">Portofoliu</translation>
-<translation id="2805756323405976993">Aplicații</translation>
 <translation id="6083912983861746409">Preț gas (GWEI)</translation>
 <translation id="2499079593046817044">Limită gas (GWEI)</translation>
-<translation id="6389441740143786465">Dezactivați hub-ul de distribuire</translation>
+<translation id="6389441740143786465">Dezactivați bara de distribuire</translation>
 <translation id="9065203028668620118">Editează</translation>
 <translation id="473775607612524610">Actualizează</translation>
 <translation id="479795390141144417">Eroare la actualizarea contului.</translation>

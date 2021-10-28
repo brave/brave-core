@@ -597,11 +597,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave Rewards ಆನ್ ಮಾಡಿ",
+    "message": "ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಲು, Brave ರಿವಾರ್ಡ್ಸ್ ಆನ್ ಮಾಡಿ",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "Brave Rewards ಮೂಲಕ, ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.",
+    "message": "Brave ರಿವಾರ್ಡ್ಸ್ ಮೂಲಕ, ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸುತ್ತೀರಿ (ನಿಮ್ಮ ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರುತ್ತದೆ). ಆ ಟೋಕನ್‌ಗಳನ್ನು ನಗದು, ಉಡುಗೊರೆ ಕಾರ್ಡ್‌ಗಳಾಗಿ ಪರಿವರ್ತಿಸಿ…ಅಥವಾ ನೀವು ಇಷ್ಟಪಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸಲಹೆ ನೀಡಿ. ಟ್ರ್ಯಾಕಿಂಗ್ ಇಲ್ಲ. ಯಾವುದೇ ಸ್ಧಗಿತಗಳಿಲ್ಲ.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +665,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Brave Rewards ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? $tour_link_begin$ತ್ವರಿತ ಪ್ರಯಾಣ ಕೈಗೊಳ್ಳಿ$tour_link_end$.",
+    "message": "Brave ರಿವಾರ್ಡ್ಸ್ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಲು ಬಯಸುವಿರಾ? $tour_link_begin$ತ್ವರಿತ ಪ್ರಯಾಣ ಕೈಗೊಳ್ಳಿ$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {
