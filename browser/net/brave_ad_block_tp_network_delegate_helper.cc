@@ -247,7 +247,10 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
 // If only particular types of network traffic are being proxied, or if no
 // proxy is configured, it should be safe to continue making unproxied DNS
 // queries. However, in SingleProxy mode all types of network traffic should go
-// through the proxy, so additional DNS queries should be avoided.
+// through the proxy, so additional DNS queries should be avoided. Also, in the
+// case of per-scheme proxy configurations, a fallback for any non-matching
+// request can be configured, in which case additional DNS queries should be
+// avoided as well.
 bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
   DCHECK(browser_context);
 
@@ -269,7 +272,10 @@ bool ProxySettingsAllowUncloaking(content::BrowserContext* browser_context) {
       net::ProxyConfigService::ConfigAvailability::CONFIG_VALID) {
     // PROXY_LIST corresponds to SingleProxy mode.
     if (config.value().proxy_rules().type ==
-        net::ProxyConfig::ProxyRules::Type::PROXY_LIST) {
+            net::ProxyConfig::ProxyRules::Type::PROXY_LIST ||
+        (config.value().proxy_rules().type ==
+             net::ProxyConfig::ProxyRules::Type::PROXY_LIST_PER_SCHEME &&
+         !config.value().proxy_rules().fallback_proxies.IsEmpty())) {
       can_uncloak = false;
     }
   }
