@@ -85,6 +85,19 @@ async function refreshWalletInfo (store: Store) {
   await store.dispatch(refreshSitePermissions())
 }
 
+async function updateAccountInfo (store: Store) {
+  const state = getWalletState(store)
+  const apiProxy = await getAPIProxy()
+  const { walletHandler } = apiProxy
+  const walletInfo = await walletHandler.getWalletInfo()
+  if (state.accounts.length === walletInfo.accountInfos.length) {
+    await store.dispatch(WalletActions.refreshAccountInfo(walletInfo))
+  } else {
+    await refreshWalletInfo(store)
+  }
+
+}
+
 handler.on(WalletActions.refreshBalancesAndPrices.getType(), async (store: Store) => {
   const state = getWalletState(store)
 
@@ -124,7 +137,7 @@ handler.on(WalletActions.backedUp.getType(), async (store) => {
 })
 
 handler.on(WalletActions.accountsChanged.getType(), async (store) => {
-  await refreshWalletInfo(store)
+  await updateAccountInfo(store)
 })
 
 handler.on(WalletActions.selectedAccountChanged.getType(), async (store) => {

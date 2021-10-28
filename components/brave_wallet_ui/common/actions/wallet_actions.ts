@@ -101,3 +101,4 @@ export const removeSitePermission = createAction<RemoveSitePermissionPayloadType
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
 export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
+export const refreshAccountInfo = createAction<InitializedPayloadType>('refreshAccountInfo')
