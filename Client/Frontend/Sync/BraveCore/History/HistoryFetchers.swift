@@ -38,7 +38,7 @@ protocol HistoryV2FetchResultsController {
     
     var sectionCount: Int { get }
     
-    func performFetch(_ completion: @escaping () -> Void)
+    func performFetch(withQuery: String, _ completion: @escaping () -> Void)
     
     func object(at indexPath: IndexPath) -> HistoryNode?
     
@@ -114,10 +114,10 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
         return sectionDetails.elements.filter { $0.value > 0 }.count
     }
     
-    func performFetch(_ completion: @escaping () -> Void) {
+    func performFetch(withQuery: String, _ completion: @escaping () -> Void) {
         clearHistoryData()
         
-        historyAPI?.search(withQuery: "", maxCount: 200, completion: { [weak self] historyNodeList in
+        historyAPI?.search(withQuery: withQuery, maxCount: 200, completion: { [weak self] historyNodeList in
             guard let self = self else { return }
             
             self.historyList = historyNodeList.map { [unowned self] historyItem in
