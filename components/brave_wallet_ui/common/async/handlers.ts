@@ -54,6 +54,12 @@ function getWalletState (store: Store): WalletState {
   return store.getState().wallet
 }
 
+async function refreshBalancesPricesAndHistory (store: Store) {
+  const state = getWalletState(store)
+  await store.dispatch(refreshBalancesAndPrices(state.selectedNetwork))
+  await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
+}
+
 async function refreshWalletInfo (store: Store) {
   const apiProxy = await getAPIProxy()
   const state = getWalletState(store)
@@ -191,19 +197,19 @@ handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: A
   const braveWalletService = (await getAPIProxy()).braveWalletService
   const result = await braveWalletService.addUserAsset(payload.token, payload.chainId)
   store.dispatch(WalletActions.addUserAssetError(!result.success))
-  await refreshWalletInfo(store)
+  await refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.removeUserAsset.getType(), async (store: Store, payload: RemoveUserAssetPayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   await braveWalletService.removeUserAsset(payload.token, payload.chainId)
-  await refreshWalletInfo(store)
+  await refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
   const braveWalletService = (await getAPIProxy()).braveWalletService
   await braveWalletService.setUserAssetVisible(payload.token, payload.chainId, payload.isVisible)
-  await refreshWalletInfo(store)
+  await refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store: Store, payload: AssetPriceTimeframe) => {
