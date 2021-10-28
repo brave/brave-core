@@ -395,10 +395,15 @@ TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   callback_called = false;
   eth_tx_controller_->AddUnapprovedTransaction(
       std::move(tx_data), from(),
-      base::BindOnce(&AddUnapprovedTransactionFailureCallback,
-                     &callback_called));
+      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
+                     &tx_meta_id));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+  EXPECT_TRUE(tx_meta);
+  EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
+  EXPECT_TRUE(HexValueToUint256("0x0", &gas_limit_value));
+  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
 }
 
 TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
