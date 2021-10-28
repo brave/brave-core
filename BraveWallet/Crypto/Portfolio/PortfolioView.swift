@@ -166,13 +166,20 @@ struct BalanceHeaderView: View {
     .padding(.top, 12)
   }
   
+  private var emptyBalanceData: [BalanceTimePrice] {
+    // About 300 points added so it doesn't animate funny
+    (0..<300).map { _ in .init(date: Date(), price: 0.0, formattedPrice: "") }
+  }
+  
   var body: some View {
+    let chartData = historicalBalances.isEmpty ? emptyBalanceData : historicalBalances
     VStack(alignment: .leading, spacing: 4) {
       balanceOrDataPointView
-      LineChartView(data: historicalBalances, numberOfColumns: historicalBalances.count, selectedDataPoint: $selectedBalance) {
+      LineChartView(data: chartData, numberOfColumns: chartData.count, selectedDataPoint: $selectedBalance) {
         LinearGradient(braveGradient: .lightGradient02)
           .shimmer(isLoading)
       }
+      .disabled(historicalBalances.isEmpty)
       .frame(height: 148)
       .padding(.horizontal, -12)
       .animation(.default, value: historicalBalances)
