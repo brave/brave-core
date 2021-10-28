@@ -235,11 +235,15 @@ class PlaylistViewController: UIViewController {
     
     private func observePlayerStates() {
         player.publisher(for: .play).sink { [weak self] event in
-            self?.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
+            guard let self = self else { return }
+            self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_pause"), for: .normal)
             
             if !PlaylistCarplayManager.shared.isCarPlayAvailable {
                 MPNowPlayingInfoCenter.default().playbackState = .playing
                 PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
+            } else if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+                self.playerView.setVideoInfo(videoDomain: item.pageSrc,
+                                             videoTitle: item.pageTitle)
             }
         }.store(in: &playerStateObservers)
         
