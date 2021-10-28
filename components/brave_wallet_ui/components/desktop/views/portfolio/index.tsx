@@ -3,7 +3,7 @@ import * as React from 'react'
 // Constants
 import {
   PriceDataObjectType,
-  TransactionListInfo,
+  AccountTransactions,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
@@ -17,6 +17,7 @@ import { getLocale } from '../../../../../common/locale'
 // Utils
 import { formatWithCommasAndDecimals } from '../../../../utils/format-prices'
 import { formatBalance } from '../../../../utils/format-balances'
+import { sortTransactionByDate } from '../../../../utils/tx-utils'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -88,7 +89,7 @@ export interface Props {
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
-  transactions: (TransactionListInfo | undefined)[]
+  transactions: AccountTransactions
   isLoading: boolean
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
@@ -230,13 +231,12 @@ const Portfolio = (props: Props) => {
   }, [portfolioHistory, portfolioBalance])
 
   const selectedAssetTransactions = React.useMemo((): TransactionInfo[] => {
-    const filteredTransactions = transactions.flatMap((txListInfo) =>
-      (txListInfo?.transactions ?? []).flatMap((tx) =>
+    const filteredTransactions = Object.values(transactions).flatMap((txInfo) =>
+      txInfo.flatMap((tx) =>
         parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-      ))
+    ))
 
-    return [...filteredTransactions].sort((a: TransactionInfo, b: TransactionInfo) =>
-      Number(b.createdTime.microseconds) - Number(a.createdTime.microseconds))
+    return sortTransactionByDate(filteredTransactions, 'descending')
   }, [selectedAsset, transactions])
 
   const findAccount = (address: string): WalletAccountType | undefined => {

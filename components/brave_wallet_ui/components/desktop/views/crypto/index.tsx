@@ -5,7 +5,7 @@ import {
   TopTabNavTypes,
   PriceDataObjectType,
   AccountAssetOptionType,
-  TransactionListInfo,
+  AccountTransactions,
   AssetPriceInfo,
   WalletAccountType,
   AssetPriceTimeframe,
@@ -70,7 +70,7 @@ export interface Props {
   selectedBTCAssetPrice: AssetPriceInfo | undefined
   selectedAsset: TokenInfo | undefined
   portfolioBalance: string
-  transactions: (TransactionListInfo | undefined)[]
+  transactions: AccountTransactions
   userAssetList: AccountAssetOptionType[]
   isLoading: boolean
   showAddModal: boolean
