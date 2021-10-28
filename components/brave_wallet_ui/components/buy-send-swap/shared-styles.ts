@@ -48,3 +48,12 @@ export const SelectScrollContainer = styled.div`
   left: 18px;
   right: 18px;
 `
+
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  letter-spacing: 0.01em;
+  font-size: 12px;
+  color: ${(p) => p.theme.color.errorText};
+  word-break: break-word;
+  margin-bottom: 12px;
+`

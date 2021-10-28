@@ -11,6 +11,7 @@ import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
 import useAddressLabels from './address-labels'
 import usePricing from './pricing'
+import usePreset from './selectPreset'
 
 export {
   useAssets,
@@ -21,5 +22,6 @@ export {
   useTransactionFeesParser,
   usePricing,
   useAddressLabels,
-  useSend
+  useSend,
+  usePreset
 }
