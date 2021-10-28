@@ -34,7 +34,9 @@ import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.EthTxController;
 import org.chromium.brave_wallet.mojom.KeyringController;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.ERCTokenRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -42,7 +44,9 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -53,11 +57,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class PortfolioFragment
-        extends Fragment implements OnWalletListItemClick, AdapterView.OnItemSelectedListener {
+public class PortfolioFragment extends Fragment
+        implements OnWalletListItemClick, AdapterView.OnItemSelectedListener, ApprovedTxObserver {
     private static String TAG = "PortfolioFragment";
     private Spinner mSpinner;
     private TextView mBalance;
+    private HashMap<String, TransactionInfo[]> mPendingTxInfos;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -67,6 +72,15 @@ public class PortfolioFragment
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getEthJsonRpcController();
+        }
+
+        return null;
+    }
+
+    private EthTxController getEthTxController() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getEthTxController();
         }
 
         return null;
@@ -118,7 +132,7 @@ public class PortfolioFragment
         mBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePortfolio();
+                updatePortfolioGetPendingTx(false);
             }
         });
 
@@ -126,6 +140,7 @@ public class PortfolioFragment
         NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
                 Utils.getNetworksList(getActivity()), Utils.getNetworksAbbrevList(getActivity()));
         mSpinner.setAdapter(dataAdapter);
+        updatePortfolioGetPendingTx(true);
 
         return view;
     }
@@ -134,8 +149,12 @@ public class PortfolioFragment
         EthJsonRpcController ethJsonRpcController = getEthJsonRpcController();
         if (ethJsonRpcController != null) {
             ethJsonRpcController.getChainId(chain_id -> {
+                String chainName = mSpinner.getSelectedItem().toString();
+                String chainId = Utils.getNetworkConst(getActivity(), chainName);
+                if (chainId.equals(chain_id)) {
+                    return;
+                }
                 mSpinner.setSelection(getIndexOf(mSpinner, chain_id));
-                updatePortfolio();
             });
         }
     }
@@ -166,9 +185,10 @@ public class PortfolioFragment
                     Utils.getNetworkConst(getActivity(), item), (success) -> {
                         if (!success) {
                             Log.e(TAG, "Could not set network");
+                            return;
                         }
+                        updatePortfolioGetPendingTx(true);
                     });
-            updatePortfolio();
         }
     }
 
@@ -199,7 +219,7 @@ public class PortfolioFragment
                         @Override
                         public void onDismiss(Boolean isAssetsListChanged) {
                             if (isAssetsListChanged != null && isAssetsListChanged) {
-                                updatePortfolio();
+                                updatePortfolioGetPendingTx(false);
                             }
                         }
                     });
@@ -278,24 +298,90 @@ public class PortfolioFragment
         return null;
     }
 
-    private void updatePortfolio() {
-        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                getAssetRatioController(), getKeyringController(), getEthJsonRpcController());
+    private void updatePortfolioGetPendingTx(boolean getPendingTx) {
+        KeyringController keyringController = getKeyringController();
+        assert keyringController != null;
+        keyringController.getDefaultKeyringInfo(keyringInfo -> {
+            AccountInfo[] accountInfos = new AccountInfo[] {};
+            if (keyringInfo != null) {
+                accountInfos = keyringInfo.accountInfos;
+            }
+            PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                    getAssetRatioController(), getEthJsonRpcController(), accountInfos);
 
-        String chainName = mSpinner.getSelectedItem().toString();
-        String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        portfolioHelper.setChainId(chainId);
-        portfolioHelper.calculateBalances(() -> {
-            final String fiatSumString =
-                    String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
-            PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                mBalance.setText(fiatSumString);
-                mBalance.invalidate();
+            String chainName = mSpinner.getSelectedItem().toString();
+            String chainId = Utils.getNetworkConst(getActivity(), chainName);
+            portfolioHelper.setChainId(chainId);
+            portfolioHelper.calculateBalances(() -> {
+                final String fiatSumString = String.format(
+                        Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+                PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                    mBalance.setText(fiatSumString);
+                    mBalance.invalidate();
 
-                setUpCoinList(portfolioHelper.getUserAssets(),
-                        portfolioHelper.getPerTokenCryptoSum(),
-                        portfolioHelper.getPerTokenFiatSum());
+                    setUpCoinList(portfolioHelper.getUserAssets(),
+                            portfolioHelper.getPerTokenCryptoSum(),
+                            portfolioHelper.getPerTokenFiatSum());
+                });
             });
+            if (getPendingTx) {
+                getPendingTx(accountInfos);
+            }
+        });
+    }
+
+    @Override
+    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
+        assert mPendingTxInfos != null;
+        if (mPendingTxInfos == null) {
+            return;
+        }
+        TransactionInfo[] txInfos = mPendingTxInfos.get(accountName);
+        if (txInfos == null) {
+            return;
+        }
+        int index = -1;
+        for (int i = 0; i < txInfos.length; i++) {
+            if (txInfos[i].id.equals(txId)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            TransactionInfo[] copy = new TransactionInfo[txInfos.length - 1];
+            // copy elements from original array from beginning till index into copy
+            System.arraycopy(txInfos, 0, copy, 0, index);
+            // copy elements from original array from index + 1 till end into copy
+            System.arraycopy(txInfos, index + 1, copy, index, txInfos.length - index - 1);
+            mPendingTxInfos.put(accountName, copy);
+        }
+        callAnotherApproveDialog();
+    }
+
+    private void callAnotherApproveDialog() {
+        assert mPendingTxInfos != null;
+        if (mPendingTxInfos == null) {
+            return;
+        }
+        for (String key : mPendingTxInfos.keySet()) {
+            TransactionInfo[] txInfos = mPendingTxInfos.get(key);
+            if (txInfos.length == 0) {
+                continue;
+            }
+            ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
+                    ApproveTxBottomSheetDialogFragment.newInstance(txInfos[0], key);
+            approveTxBottomSheetDialogFragment.setApprovedTxObserver(this);
+            approveTxBottomSheetDialogFragment.show(
+                    getFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+            break;
+        }
+    }
+
+    private void getPendingTx(AccountInfo[] accountInfos) {
+        PendingTxHelper pendingTxHelper = new PendingTxHelper(getEthTxController(), accountInfos);
+        pendingTxHelper.fetchTransactions(() -> {
+            mPendingTxInfos = pendingTxHelper.getTransactions();
+            callAnotherApproveDialog();
         });
     }
 }
