@@ -5,7 +5,6 @@
 
 #include "bat/ads/internal/database/tables/creative_promoted_content_ads_database_table.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <utility>
 
@@ -15,6 +14,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/container_util.h"
 #include "bat/ads/internal/database/database_statement_util.h"
@@ -26,6 +26,7 @@
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/database/tables/segments_database_table.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/segments/segments_util.h"
 #include "bat/ads/internal/time_formatting_util.h"
 
 namespace ads {
@@ -450,19 +451,18 @@ void CreativePromotedContentAds::OnGetForCreativeInstanceId(
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
+  CreativePromotedContentAdList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
+
+  if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative new tab page ad");
     callback(/* success */ false, creative_instance_id, {});
     return;
   }
 
-  mojom::DBRecord* record = response->result->get_records().at(0).get();
+  const CreativePromotedContentAdInfo creative_ad = creative_ads.front();
 
-  const CreativePromotedContentAdInfo creative_promoted_content_ad =
-      GetFromRecord(record);
-
-  callback(/* success */ true, creative_instance_id,
-           creative_promoted_content_ad);
+  callback(/* success */ true, creative_instance_id, creative_ad);
 }
 
 void CreativePromotedContentAds::OnGetForSegments(
@@ -476,16 +476,10 @@ void CreativePromotedContentAds::OnGetForSegments(
     return;
   }
 
-  CreativePromotedContentAdList creative_promoted_content_ads;
+  const CreativePromotedContentAdList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
 
-  for (const auto& record : response->result->get_records()) {
-    const CreativePromotedContentAdInfo creative_promoted_content_ad =
-        GetFromRecord(record.get());
-
-    creative_promoted_content_ads.push_back(creative_promoted_content_ad);
-  }
-
-  callback(/* success */ true, segments, creative_promoted_content_ads);
+  callback(/* success */ true, segments, creative_ads);
 }
 
 void CreativePromotedContentAds::OnGetAll(
@@ -498,24 +492,12 @@ void CreativePromotedContentAds::OnGetAll(
     return;
   }
 
-  CreativePromotedContentAdList creative_promoted_content_ads;
+  const CreativePromotedContentAdList creative_ads =
+      GetCreativeAdsFromResponse(std::move(response));
 
-  SegmentList segments;
+  const SegmentList segments = GetSegments(creative_ads);
 
-  for (const auto& record : response->result->get_records()) {
-    const CreativePromotedContentAdInfo creative_promoted_content_ad =
-        GetFromRecord(record.get());
-
-    creative_promoted_content_ads.push_back(creative_promoted_content_ad);
-
-    segments.push_back(creative_promoted_content_ad.segment);
-  }
-
-  std::sort(segments.begin(), segments.end());
-  const auto iter = std::unique(segments.begin(), segments.end());
-  segments.erase(iter, segments.end());
-
-  callback(/* success */ true, segments, creative_promoted_content_ads);
+  callback(/* success */ true, segments, creative_ads);
 }
 
 CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
@@ -550,6 +532,55 @@ CreativePromotedContentAdInfo CreativePromotedContentAds::GetFromRecord(
   creative_promoted_content_ad.dayparts.push_back(daypart);
 
   return creative_promoted_content_ad;
+}
+
+CreativePromotedContentAdMap
+CreativePromotedContentAds::GroupCreativeAdsFromResponse(
+    mojom::DBCommandResponsePtr response) {
+  DCHECK(response);
+
+  CreativePromotedContentAdMap creative_ads;
+
+  for (const auto& record : response->result->get_records()) {
+    const CreativePromotedContentAdInfo creative_ad =
+        GetFromRecord(record.get());
+
+    const auto iter = creative_ads.find(creative_ad.creative_instance_id);
+    if (iter == creative_ads.end()) {
+      creative_ads.insert({creative_ad.creative_instance_id, creative_ad});
+      continue;
+    }
+
+    // Creative instance already exists, so append the geo targets and dayparts
+    // to the existing creative ad
+    iter->second.geo_targets.insert(iter->second.geo_targets.end(),
+                                    creative_ad.geo_targets.begin(),
+                                    creative_ad.geo_targets.end());
+
+    iter->second.dayparts.insert(iter->second.dayparts.end(),
+                                 creative_ad.dayparts.begin(),
+                                 creative_ad.dayparts.end());
+  }
+
+  return creative_ads;
+}
+
+CreativePromotedContentAdList
+CreativePromotedContentAds::GetCreativeAdsFromResponse(
+    mojom::DBCommandResponsePtr response) {
+  DCHECK(response);
+
+  const CreativePromotedContentAdMap grouped_creative_ads =
+      GroupCreativeAdsFromResponse(std::move(response));
+
+  CreativePromotedContentAdList creative_ads;
+  for (const auto& grouped_creative_ad : grouped_creative_ads) {
+    const CreativePromotedContentAdInfo creative_ad =
+        grouped_creative_ad.second;
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
 }
 
 void CreativePromotedContentAds::CreateTableV16(

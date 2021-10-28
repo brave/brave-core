@@ -91,6 +91,10 @@ class CreativeInlineContentAds : public Table {
                 GetCreativeInlineContentAdsCallback callback);
 
   CreativeInlineContentAdInfo GetFromRecord(mojom::DBRecord* record) const;
+  CreativeInlineContentAdMap GroupCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
+  CreativeInlineContentAdList GetCreativeAdsFromResponse(
+      mojom::DBCommandResponsePtr response);
 
   void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
