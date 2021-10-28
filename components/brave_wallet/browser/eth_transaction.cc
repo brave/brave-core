@@ -25,11 +25,10 @@ constexpr uint256_t kTxDataZeroCostPerByte = 4;
 constexpr uint256_t kTxDataCostPerByte = 16;
 }  // namespace
 
-EthTransaction::EthTransaction()
-    : nonce_(0), gas_price_(0), gas_limit_(0), value_(0) {}
+EthTransaction::EthTransaction() : gas_price_(0), gas_limit_(0), value_(0) {}
 
 EthTransaction::EthTransaction(const EthTransaction&) = default;
-EthTransaction::EthTransaction(uint256_t nonce,
+EthTransaction::EthTransaction(absl::optional<uint256_t> nonce,
                                uint256_t gas_price,
                                uint256_t gas_limit,
                                const EthAddress& to,
@@ -56,8 +55,15 @@ absl::optional<EthTransaction> EthTransaction::FromTxData(
     const mojom::TxDataPtr& tx_data,
     bool strict) {
   EthTransaction tx;
-  if (!HexValueToUint256(tx_data->nonce, &tx.nonce_) && strict)
-    return absl::nullopt;
+  if (!tx_data->nonce.empty()) {
+    uint256_t nonce_uint;
+    if (HexValueToUint256(tx_data->nonce, &nonce_uint)) {
+      tx.nonce_ = nonce_uint;
+    } else if (strict) {
+      return absl::nullopt;
+    }
+  }
+
   if (!HexValueToUint256(tx_data->gas_price, &tx.gas_price_) && strict)
     return absl::nullopt;
   if (!HexValueToUint256(tx_data->gas_limit, &tx.gas_limit_) && strict)
@@ -76,8 +82,13 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
   const std::string* nonce = value.FindStringKey("nonce");
   if (!nonce)
     return absl::nullopt;
-  if (!HexValueToUint256(*nonce, &tx.nonce_))
-    return absl::nullopt;
+
+  if (!nonce->empty()) {
+    uint256_t nonce_uint;
+    if (!HexValueToUint256(*nonce, &nonce_uint))
+      return absl::nullopt;
+    tx.nonce_ = nonce_uint;
+  }
 
   const std::string* gas_price = value.FindStringKey("gas_price");
   if (!gas_price)
@@ -141,8 +152,9 @@ absl::optional<EthTransaction> EthTransaction::FromValue(
 
 std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
                                                       bool hash) const {
+  DCHECK(nonce_);
   base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(gas_price_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
   list.Append(base::Value(to_.bytes()));
@@ -160,8 +172,9 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
+  DCHECK(nonce_);
   base::ListValue list;
-  list.Append(RLPUint256ToBlobValue(nonce_));
+  list.Append(RLPUint256ToBlobValue(nonce_.value()));
   list.Append(RLPUint256ToBlobValue(gas_price_));
   list.Append(RLPUint256ToBlobValue(gas_limit_));
   list.Append(base::Value(to_.bytes()));
@@ -228,7 +241,7 @@ bool EthTransaction::IsSigned() const {
 
 base::Value EthTransaction::ToValue() const {
   base::Value dict(base::Value::Type::DICTIONARY);
-  dict.SetStringKey("nonce", Uint256ValueToHex(nonce_));
+  dict.SetStringKey("nonce", nonce_ ? Uint256ValueToHex(nonce_.value()) : "");
   dict.SetStringKey("gas_price", Uint256ValueToHex(gas_price_));
   dict.SetStringKey("gas_limit", Uint256ValueToHex(gas_limit_));
   dict.SetStringKey("to", to_.ToHex());

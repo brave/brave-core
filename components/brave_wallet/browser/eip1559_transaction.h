@@ -76,7 +76,7 @@ class Eip1559Transaction : public Eip2930Transaction {
   uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const override;
 
  protected:
-  Eip1559Transaction(uint256_t nonce,
+  Eip1559Transaction(absl::optional<uint256_t> nonce,
                      uint256_t gas_price,
                      uint256_t gas_limit,
                      const EthAddress& to,
