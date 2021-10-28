@@ -165,19 +165,17 @@ handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: 
 })
 
 handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
-  const apiProxy = await getAPIProxy()
-  await apiProxy.keyringController.setSelectedAccount(payload.address)
-  store.dispatch(WalletActions.setSelectedAccount(payload))
-  const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.address)
-  store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
+  const { keyringController } = await getAPIProxy()
+
+  await keyringController.setSelectedAccount(payload.address)
+  await store.dispatch(WalletActions.setSelectedAccount(payload))
+  await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: InitializedPayloadType) => {
-  const apiProxy = await getAPIProxy()
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
-    const result = await apiProxy.ethTxController.getAllTransactionInfo(payload.selectedAccount)
-    store.dispatch(WalletActions.knownTransactionsUpdated(result.transactionInfos))
+    await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
   }
 })
 
@@ -309,7 +307,8 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
     return
   }
 
-  await refreshWalletInfo(store)
+  // Refresh the transaction history of the origin account.
+  await store.dispatch(refreshTransactionHistory(payload.from))
 })
 
 handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, payload: ER20TransferParams) => {
