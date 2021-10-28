@@ -529,7 +529,7 @@ TEST_F(EthJsonRpcControllerUnitTest, ResetCustomChains) {
 TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url1.com"}, "symbol", "symbol_name", 11, false);
 
   base::RunLoop loop;
   std::unique_ptr<TestEthJsonRpcControllerObserver> observer(
@@ -557,6 +557,29 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
   loop.Run();
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+
+  // Prefs should be updated.
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_EQ(custom_chains.size(), 1u);
+  EXPECT_EQ(custom_chains[0], chain.Clone());
+
+  const base::DictionaryValue* assets_pref =
+      prefs()->GetDictionary(kBraveWalletUserAssets);
+  const base::Value* list = assets_pref->FindKey("url1.com");
+  ASSERT_TRUE(list->is_list());
+  base::Value::ConstListView asset_list = list->GetList();
+  ASSERT_EQ(asset_list.size(), 1u);
+
+  EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
+
   callback_is_called = false;
   rpc_controller_->AddEthereumChainRequestCompleted("0x111", true);
   ASSERT_FALSE(callback_is_called);

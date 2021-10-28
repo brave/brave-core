@@ -11,6 +11,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/erc_token_list_parser.h"
 #include "brave/components/brave_wallet/browser/erc_token_registry.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
@@ -80,9 +81,7 @@ class TestBraveWalletServiceObserver
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
 
-  void Reset() {
-    defaultWalletChangedFired_ = false;
-  }
+  void Reset() { defaultWalletChangedFired_ = false; }
 
  private:
   mojom::DefaultWallet default_wallet_ =
@@ -390,7 +389,7 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_TRUE(success);
 
   // Adding token with lower case contract address should be converted to
-  // checksum address..
+  // checksum address.
   auto unchecked_token = token1.Clone();
   unchecked_token->contract_address =
       base::ToLowerASCII(unchecked_token->contract_address);
@@ -472,7 +471,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAsset) {
   callback_called = false;
   mojom::ERCTokenPtr token = GetToken1();
 
-  // Token with empty contract address with symbol that's not eth will fail.
+  // Add token with empty contract address when there exists native asset
+  // already should fail, in this case, it was eth.
   auto token_with_empty_contract_address = token.Clone();
   token_with_empty_contract_address->contract_address = "";
   AddUserAsset(std::move(token_with_empty_contract_address), "0x4",
@@ -809,6 +809,61 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(GetEthToken(), tokens[0]);
+}
+
+TEST_F(BraveWalletServiceUnitTest,
+       CustomChainNativeAssetAddRemoveSetUserAssetVisible) {
+  brave_wallet::mojom::EthereumChain chain(
+      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  AddCustomNetwork(GetPrefs(), chain.Clone());
+
+  auto native_asset = mojom::ERCToken::New("", "Test Coin", "https://url1.com",
+                                           false, false, "TC", 11, true, "");
+
+  bool success = false;
+  bool callback_called = false;
+  std::vector<mojom::ERCTokenPtr> tokens;
+
+  GetUserAssets("0x5566", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(native_asset.Clone(), tokens[0]);
+
+  // Add native asset again will fail.
+  AddUserAsset(native_asset.Clone(), "0x5566", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_FALSE(success);
+
+  // Test setting visibility of ETH.
+  SetUserAssetVisible(native_asset.Clone(), "0x5566", false, &callback_called,
+                      &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  GetUserAssets("0x5566", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_FALSE(tokens[0]->visible);
+
+  // Test removing native asset from user asset list.
+  RemoveUserAsset(native_asset.Clone(), "0x5566", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  GetUserAssets("0x5566", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(tokens.empty());
+
+  // Add native asset again
+  AddUserAsset(native_asset.Clone(), "0x5566", &callback_called, &success);
+  EXPECT_TRUE(callback_called);
+  EXPECT_TRUE(success);
+
+  GetUserAssets("0x5566", &callback_called, &tokens);
+  EXPECT_TRUE(callback_called);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(native_asset.Clone(), tokens[0]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
