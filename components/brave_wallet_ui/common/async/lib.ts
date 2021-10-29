@@ -84,7 +84,7 @@ export async function findHardwareAccountInfo (address: string) {
     if (!account.hardware) {
       continue
     }
-    if (account.address.toLowerCase() === address.toLowerCase()) {
+    if (account.address === address) {
       return account
     }
   }

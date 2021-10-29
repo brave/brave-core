@@ -116,7 +116,7 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
 
 bool EthPendingTxTracker::ShouldTxDropped(
     const EthTxStateManager::TxMeta& meta) {
-  const std::string hex_address = meta.from.ToHex();
+  const std::string hex_address = meta.from.ToChecksumAddress();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
     rpc_controller_->GetTransactionCount(
         hex_address,
