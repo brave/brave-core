@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -64,6 +66,11 @@ public class PortfolioFragment extends Fragment
     private TextView mBalance;
     private HashMap<String, TransactionInfo[]> mPendingTxInfos;
 
+    private String mFiatSumString;
+
+    private int mPreviousCheckedRadioId;
+    private int mCurrentTimeframeType;
+
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
     }
@@ -108,8 +115,11 @@ public class PortfolioFragment extends Fragment
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX(), null);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    chartES.drawLine(event.getRawX(), mBalance);
+                } else if (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    mBalance.setText(mFiatSumString);
+                    mBalance.invalidate();
                     chartES.drawLine(-1, null);
                 }
 
@@ -223,6 +233,21 @@ public class PortfolioFragment extends Fragment
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
         });
+
+        RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
+        mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
+        mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(mPreviousCheckedRadioId);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int leftDot = R.drawable.ic_live_dot;
+            ((RadioButton) view.findViewById(mPreviousCheckedRadioId))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            RadioButton button = view.findViewById(checkedId);
+            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
+            mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
+            mPreviousCheckedRadioId = checkedId;
+            // TODO(AlexeyBarabash): run updatePortfolioGraph() and re-use PortfolioHelper
+            updatePortfolio();
+        });
     }
 
     private void setUpCoinList(ErcToken[] userAssets, HashMap<String, Double> perTokenCryptoSum,
@@ -295,7 +320,8 @@ public class PortfolioFragment extends Fragment
     }
 
     private void updatePortfolioGraph(PortfolioHelper portfolioHelper) {
-        portfolioHelper.setFiatHistoryTimeframe(AssetPriceTimeframe.ONE_DAY);
+        AssetPriceTimeframe.validate(mCurrentTimeframeType);
+        portfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
         portfolioHelper.calculateFiatHistory(() -> {
             PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
                 SmoothLineChartEquallySpaced chartES = getView().findViewById(R.id.line_chart);
@@ -323,7 +349,8 @@ public class PortfolioFragment extends Fragment
                 final String fiatSumString = String.format(
                         Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
                 PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                    mBalance.setText(fiatSumString);
+                    mFiatSumString = fiatSumString;
+                    mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
                     setUpCoinList(portfolioHelper.getUserAssets(),

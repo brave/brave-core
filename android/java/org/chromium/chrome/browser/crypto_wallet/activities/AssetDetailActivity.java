@@ -100,22 +100,7 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             RadioButton button = findViewById(checkedId);
             button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
-            int timeframeType;
-            if (checkedId == R.id.live_radiobutton) {
-                timeframeType = AssetPriceTimeframe.LIVE;
-            } else if (checkedId == R.id.day_1_radiobutton) {
-                timeframeType = AssetPriceTimeframe.ONE_DAY;
-            } else if (checkedId == R.id.week_1_radiobutton) {
-                timeframeType = AssetPriceTimeframe.ONE_WEEK;
-            } else if (checkedId == R.id.month_1_radiobutton) {
-                timeframeType = AssetPriceTimeframe.ONE_MONTH;
-            } else if (checkedId == R.id.month_3_radiobutton) {
-                timeframeType = AssetPriceTimeframe.THREE_MONTHS;
-            } else if (checkedId == R.id.year_1_radiobutton) {
-                timeframeType = AssetPriceTimeframe.ONE_YEAR;
-            } else {
-                timeframeType = AssetPriceTimeframe.ALL;
-            }
+            int timeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             getPriceHistory("eth", timeframeType);
             checkedTimeframeType = checkedId;
         });

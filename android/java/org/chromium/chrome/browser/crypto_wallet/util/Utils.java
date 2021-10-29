@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.Predicate;
+import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
@@ -643,5 +644,23 @@ public class Utils {
         }
 
         return contractAddress;
+    }
+
+    public static int getTimeframeFromRadioButtonId(int radioButtonId) {
+        if (radioButtonId == R.id.live_radiobutton) {
+            return AssetPriceTimeframe.LIVE;
+        } else if (radioButtonId == R.id.day_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_DAY;
+        } else if (radioButtonId == R.id.week_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_WEEK;
+        } else if (radioButtonId == R.id.month_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_MONTH;
+        } else if (radioButtonId == R.id.month_3_radiobutton) {
+            return AssetPriceTimeframe.THREE_MONTHS;
+        } else if (radioButtonId == R.id.year_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_YEAR;
+        } else {
+            return AssetPriceTimeframe.ALL;
+        }
     }
 }
