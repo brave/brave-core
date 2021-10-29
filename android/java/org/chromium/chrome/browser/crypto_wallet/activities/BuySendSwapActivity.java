@@ -812,38 +812,23 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     }
 
     public void showApproveTransactionDialog(TransactionInfo txInfo) {
-        if (mEthJsonRpcController == null) {
-            assert mEthJsonRpcController != null;
-            return;
-        }
-        mEthJsonRpcController.getChainId(chainId -> {
-            String chainName = Utils.getNetworkText(this, chainId).toString();
-            String accountName = mCustomAccountAdapter.getNameAtPosition(
-                    mAccountSpinner.getSelectedItemPosition());
-            int accountPic = mCustomAccountAdapter.getPictureAtPosition(
-                    mAccountSpinner.getSelectedItemPosition());
-            String txType = getText(R.string.send).toString();
-            if (mActivityType == ActivityType.SWAP) {
-                txType = getText(R.string.swap).toString();
-                if (mCurrentErcToken != null) {
-                    Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
-                    String btnText = btnBuySendSwap.getText().toString();
-                    String toCompare = String.format(
-                            getString(R.string.activate_erc20), mCurrentErcToken.symbol);
-                    if (btnText.equals(toCompare)) {
-                        txType = toCompare;
-                        mActivateAllowanceTxId = txInfo.id;
-                    }
+        String accountName =
+                mCustomAccountAdapter.getNameAtPosition(mAccountSpinner.getSelectedItemPosition());
+        if (mActivityType == ActivityType.SWAP) {
+            if (mCurrentErcToken != null) {
+                Button btnBuySendSwap = findViewById(R.id.btn_buy_send_swap);
+                String btnText = btnBuySendSwap.getText().toString();
+                String toCompare =
+                        String.format(getString(R.string.activate_erc20), mCurrentErcToken.symbol);
+                if (btnText.equals(toCompare)) {
+                    mActivateAllowanceTxId = txInfo.id;
                 }
             }
-            TextView assetFromDropDown = findViewById(R.id.from_asset_text);
-            String asset = assetFromDropDown.getText().toString();
-            ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
-                    ApproveTxBottomSheetDialogFragment.newInstance(
-                            chainName, txInfo, accountName, accountPic, txType, asset);
-            approveTxBottomSheetDialogFragment.show(
-                    getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
-        });
+        }
+        ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
+                ApproveTxBottomSheetDialogFragment.newInstance(txInfo, accountName);
+        approveTxBottomSheetDialogFragment.show(
+                getSupportFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     public void showSwapButtonText() {
@@ -856,13 +841,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assetFromDropDown.setText(asset);
         mCurrentErcToken = ercToken;
         // Replace USDC and DAI contract addresses for Ropsten network
-        if (mCurrentChainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
-            if (mCurrentErcToken.symbol.equals("USDC")) {
-                mCurrentErcToken.contractAddress = "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
-            } else if (mCurrentErcToken.symbol.equals("DAI")) {
-                mCurrentErcToken.contractAddress = "0xad6d458402f60fd3bd25163575031acdce07538d";
-            }
-        }
+        mCurrentErcToken.contractAddress = Utils.getContractAddress(
+                mCurrentChainId, mCurrentErcToken.symbol, mCurrentErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         String iconPath =
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
@@ -882,15 +862,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         assetToDropDown.setText(asset);
         mCurrentSwapToErcToken = ercToken;
         // Replace USDC and DAI contract addresses for Ropsten network
-        if (mCurrentChainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
-            if (mCurrentSwapToErcToken.symbol.equals("USDC")) {
-                mCurrentSwapToErcToken.contractAddress =
-                        "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
-            } else if (mCurrentSwapToErcToken.symbol.equals("DAI")) {
-                mCurrentSwapToErcToken.contractAddress =
-                        "0xad6d458402f60fd3bd25163575031acdce07538d";
-            }
-        }
+        mCurrentSwapToErcToken.contractAddress = Utils.getContractAddress(mCurrentChainId,
+                mCurrentSwapToErcToken.symbol, mCurrentSwapToErcToken.contractAddress);
         String tokensPath = ERCTokenRegistryFactory.getInstance().getTokensIconsLocation();
         String iconPath =
                 ercToken.logo.isEmpty() ? null : ("file://" + tokensPath + "/" + ercToken.logo);
@@ -950,6 +923,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     public EthTxController getEthTxController() {
         return mEthTxController;
+    }
+
+    public EthJsonRpcController getEthJsonRpcController() {
+        return mEthJsonRpcController;
     }
 
     private void InitAssetRatioController() {

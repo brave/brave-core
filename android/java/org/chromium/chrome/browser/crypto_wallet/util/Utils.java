@@ -85,6 +85,7 @@ public class Utils {
     public static final String ADDRESS = "address";
     public static final String NAME = "name";
     public static final String ISIMPORTED = "isImported";
+    public static final String SWAP_EXCHANGE_PROXY = "0xdef1c0ded9bec7f1a1670819833240f027b25eff";
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -610,5 +611,18 @@ public class Utils {
             return map.get(key);
         }
         return defaultValue;
+    }
+
+    public static String getContractAddress(String chainId, String symbol, String contractAddress) {
+        if (!chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
+            return contractAddress;
+        }
+        if (symbol.equals("USDC")) {
+            return "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
+        } else if (symbol.equals("DAI")) {
+            return "0xad6d458402f60fd3bd25163575031acdce07538d";
+        }
+
+        return contractAddress;
     }
 }
