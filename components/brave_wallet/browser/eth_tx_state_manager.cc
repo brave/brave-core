@@ -65,7 +65,7 @@ base::Value EthTxStateManager::TxMetaToValue(const TxMeta& meta) {
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("id", meta.id);
   dict.SetIntKey("status", static_cast<int>(meta.status));
-  dict.SetStringKey("from", meta.from.ToHex());
+  dict.SetStringKey("from", meta.from.ToChecksumAddress());
   dict.SetKey("created_time", base::TimeToValue(meta.created_time));
   dict.SetKey("submitted_time", base::TimeToValue(meta.submitted_time));
   dict.SetKey("confirmed_time", base::TimeToValue(meta.confirmed_time));
@@ -111,13 +111,14 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
   }
 
   return mojom::TransactionInfo::New(
-      meta.id, meta.from.ToHex(), meta.tx_hash,
+      meta.id, meta.from.ToChecksumAddress(), meta.tx_hash,
       mojom::TxData1559::New(
           mojom::TxData::New(
               meta.tx->nonce() ? Uint256ValueToHex(meta.tx->nonce().value())
                                : "",
               Uint256ValueToHex(meta.tx->gas_price()),
-              Uint256ValueToHex(meta.tx->gas_limit()), meta.tx->to().ToHex(),
+              Uint256ValueToHex(meta.tx->gas_limit()),
+              meta.tx->to().ToChecksumAddress(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
           chain_id, max_priority_fee_per_gas, max_fee_per_gas,
           std::move(gas_estimation_1559_ptr)),

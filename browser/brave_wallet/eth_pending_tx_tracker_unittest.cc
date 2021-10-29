@@ -97,7 +97,8 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
-  pending_tx_tracker.network_nonce_map_[addr.ToHex()] = uint256_t(3);
+  pending_tx_tracker.network_nonce_map_[addr.ToChecksumAddress()] =
+      uint256_t(3);
 
   EthTxStateManager::TxMeta meta;
   meta.from = addr;
@@ -106,8 +107,9 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
   meta.tx->set_nonce(uint256_t(1));
   EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_TRUE(pending_tx_tracker.network_nonce_map_.find(addr.ToHex()) ==
-              pending_tx_tracker.network_nonce_map_.end());
+  EXPECT_TRUE(
+      pending_tx_tracker.network_nonce_map_.find(addr.ToChecksumAddress()) ==
+      pending_tx_tracker.network_nonce_map_.end());
 
   meta.tx->set_nonce(uint256_t(4));
   EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));

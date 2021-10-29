@@ -240,7 +240,7 @@ const Portfolio = (props: Props) => {
   }, [selectedAsset, transactions])
 
   const findAccount = (address: string): WalletAccountType | undefined => {
-    return accounts.find((account) => address.toLowerCase() === account.address.toLowerCase())
+    return accounts.find((account) => address === account.address)
   }
 
   const fullAssetBalances = React.useMemo(() => {
