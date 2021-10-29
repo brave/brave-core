@@ -87,22 +87,34 @@ struct WeiFormatter {
   ///
   /// - parameters:
   ///     - decimalValue: The decimal representation of some wei value such as `3.14159`
+  ///     - radix: The radix you want to output the Wei string in
   ///     - decimals: The number of decimal precision to convert to. For example, ETH and
   ///                 ERC20 tokens will have 18 decimals by default
-  func weiString(from decimalValue: String, decimals: Int) -> String? {
+  func weiString(from decimalValue: String, radix: Radix = .decimal, decimals: Int) -> String? {
     guard let value = BDouble(decimalValue, radix: 10) else {
       return nil
     }
-    return (value * (BDouble(10) ** decimals)).description
+    let weiValue = (value * (BDouble(10) ** decimals))
+    // Ensure that wei value is a whole number
+    if weiValue.denominator != [1] {
+      return nil
+    }
+    return weiValue.rounded().asString(radix: radix.rawValue)
   }
   
   /// Get a wei string from a decimal value
   ///
   /// - parameters:
   ///     - decimalValue: The decimal representation of some wei value such as `3.14159`
+  ///     - radix: The radix you want to output the Wei string in
   ///     - decimals: The number of decimal precision to convert to. For example, ETH and
   ///                 ERC20 tokens will have 18 decimals by default
-  func weiString(from decimalValue: Double, decimals: Int) -> String {
-    return (BDouble(decimalValue) * (BDouble(10) ** decimals)).description
+  func weiString(from decimalValue: Double, radix: Radix = .decimal, decimals: Int) -> String? {
+    let weiValue = (decimalValue * (BDouble(10) ** decimals))
+    // Ensure that wei value is a whole number
+    if weiValue.denominator != [1] {
+      return nil
+    }
+    return weiValue.rounded().asString(radix: radix.rawValue)
   }
 }
