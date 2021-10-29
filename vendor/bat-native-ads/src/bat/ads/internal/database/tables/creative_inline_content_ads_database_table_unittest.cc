@@ -33,7 +33,7 @@ class BatAdsCreativeInlineContentAdsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        SaveEmptyCreativeInlineContentAds) {
   // Arrange
-  CreativeInlineContentAdList creative_ads = {};
+  const CreativeInlineContentAdList creative_ads = {};
 
   // Act
   Save(creative_ads);
@@ -252,7 +252,6 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
 TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
        GetForSegmentsAndDimensions) {
   // Arrange
-
   CreativeInlineContentAdList creative_ads;
 
   CreativeDaypartInfo daypart_info;

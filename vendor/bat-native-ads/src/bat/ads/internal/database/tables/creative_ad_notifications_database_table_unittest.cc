@@ -35,7 +35,7 @@ class BatAdsCreativeAdNotificationsDatabaseTableTest : public UnitTestBase {
 TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
        SaveEmptyCreativeAdNotifications) {
   // Arrange
-  CreativeAdNotificationList creative_ads = {};
+  const CreativeAdNotificationList creative_ads = {};
 
   // Act
   Save(creative_ads);

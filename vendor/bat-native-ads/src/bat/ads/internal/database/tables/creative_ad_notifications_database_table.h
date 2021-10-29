@@ -58,10 +58,6 @@ class CreativeAdNotifications final : public Table {
       mojom::DBTransaction* transaction,
       const CreativeAdNotificationList& creative_ad_notifications);
 
-  int BindParameters(
-      mojom::DBCommand* command,
-      const CreativeAdNotificationList& creative_ad_notifications);
-
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommand* command,
       const CreativeAdNotificationList& creative_ad_notifications);
@@ -73,13 +69,6 @@ class CreativeAdNotifications final : public Table {
   void OnGetAll(mojom::DBCommandResponsePtr response,
                 GetCreativeAdNotificationsCallback callback);
 
-  CreativeAdNotificationInfo GetFromRecord(mojom::DBRecord* record) const;
-  CreativeAdNotificationMap GroupCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-  CreativeAdNotificationList GetCreativeAdsFromResponse(
-      mojom::DBCommandResponsePtr response);
-
-  void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
 
   int batch_size_;

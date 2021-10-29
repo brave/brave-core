@@ -35,13 +35,9 @@ class CreativeAds final : public Table {
                const int to_version) override;
 
  private:
-  int BindParameters(mojom::DBCommand* command,
-                     const CreativeAdList& creative_ads);
-
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const CreativeAdList& creative_ads);
 
-  void CreateTableV16(mojom::DBTransaction* transaction);
   void MigrateToV16(mojom::DBTransaction* transaction);
 };
 

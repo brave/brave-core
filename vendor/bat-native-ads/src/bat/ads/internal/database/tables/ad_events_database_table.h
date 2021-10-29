@@ -44,22 +44,14 @@ class AdEvents final : public Table {
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const AdEventList& ad_event);
 
-  int BindParameters(mojom::DBCommand* command, const AdEventList& ad_events);
-
   std::string BuildInsertOrUpdateQuery(mojom::DBCommand* command,
                                        const AdEventList& ad_events);
 
   void OnGetAdEvents(mojom::DBCommandResponsePtr response,
                      GetAdEventsCallback callback);
 
-  AdEventInfo GetFromRecord(mojom::DBRecord* record) const;
-
-  void CreateTableV5(mojom::DBTransaction* transaction);
   void MigrateToV5(mojom::DBTransaction* transaction);
-
-  void CreateTableV13(mojom::DBTransaction* transaction);
   void MigrateToV13(mojom::DBTransaction* transaction);
-
   void MigrateToV17(mojom::DBTransaction* transaction);
 };
 

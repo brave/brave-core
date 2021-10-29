@@ -54,9 +54,6 @@ class ConversionQueue final : public Table {
   void InsertOrUpdate(mojom::DBTransaction* transaction,
                       const ConversionQueueItemList& conversion_queue_items);
 
-  int BindParameters(mojom::DBCommand* command,
-                     const ConversionQueueItemList& conversion_queue_items);
-
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommand* command,
       const ConversionQueueItemList& conversion_queue_items);
@@ -69,13 +66,8 @@ class ConversionQueue final : public Table {
       const std::string& creative_instance_id,
       GetConversionQueueForCreativeInstanceIdCallback callback);
 
-  ConversionQueueItemInfo GetFromRecord(mojom::DBRecord* record) const;
-
-  void CreateTableV10(mojom::DBTransaction* transaction);
   void MigrateToV10(mojom::DBTransaction* transaction);
-
   void MigrateToV11(mojom::DBTransaction* transaction);
-
   void MigrateToV17(mojom::DBTransaction* transaction);
 
   int batch_size_;
