@@ -55,24 +55,30 @@ class PrConfig:
                     npm_cmd = 'npm'
                     if sys.platform.startswith('win'):
                         npm_cmd = 'npm.cmd'
-                    result = execute([npm_cmd, 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
+                    result = execute(
+                        [npm_cmd, 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
                     if result == 'undefined':
-                        raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
+                        raise Exception(
+                            '`BRAVE_GITHUB_TOKEN` value not found!')
                     self.github_token = result
                 except Exception as e:
                     print('[ERROR] no valid GitHub token was found either in npmrc or ' +
                           'via environment variables (BRAVE_GITHUB_TOKEN)')
                     return 1
             # if `--owners` is not provided, fall back to user owning token
-            self.parsed_owners = parse_user_logins(self.github_token, args.owners, verbose=self.is_verbose)
+            self.parsed_owners = parse_user_logins(
+                self.github_token, args.owners, verbose=self.is_verbose)
             if len(self.parsed_owners) == 0:
-                self.parsed_owners = [get_authenticated_user_login(self.github_token)]
-            self.labels = parse_labels(self.github_token, BRAVE_CORE_REPO, args.labels, verbose=self.is_verbose)
+                self.parsed_owners = [
+                    get_authenticated_user_login(self.github_token)]
+            self.labels = parse_labels(self.github_token, BRAVE_CORE_REPO,
+                                       args.labels, verbose=self.is_verbose)
             if self.is_verbose:
                 print('[INFO] config: ' + str(vars(self)))
             return 0
         except Exception as e:
-            print('[ERROR] error returned from GitHub API while initializing config: ' + str(e))
+            print(
+                '[ERROR] error returned from GitHub API while initializing config: ' + str(e))
             return 1
 
 
@@ -131,7 +137,8 @@ def validate_channel(channel):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='create PRs for all branches given branch against master')
+    parser = argparse.ArgumentParser(
+        description='create PRs for all branches given branch against master')
     parser.add_argument('-g', '--gpgsign',
                         help='GPG sign GitHub commit', action='store_true')
     parser.add_argument('--owners',
@@ -162,7 +169,8 @@ def parse_args():
 
 def get_remote_version(branch_to_compare):
     global config
-    decoded_file = get_file_contents(config.github_token, BRAVE_REPO, 'package.json', branch_to_compare)
+    decoded_file = get_file_contents(config.github_token, BRAVE_REPO,
+                                     'package.json', branch_to_compare)
     json_file = json.loads(decoded_file)
     return json_file['version']
 
@@ -210,7 +218,8 @@ def main():
             start_index = config.channel_names.index(args.start_from)
             config.channels_to_process = config.channel_names[start_index:]
         except Exception as e:
-            print('[ERROR] specified `start-from` value "' + args.start_from + '" not found in channel list')
+            print('[ERROR] specified `start-from` value "' +
+                  args.start_from + '" not found in channel list')
             return 1
 
     # optionally (instead of having a local branch), allow uplifting a specific PR
@@ -258,7 +267,8 @@ def main():
         with scoped_cwd(BRAVE_CORE_ROOT):
             # check if branch exists already
             try:
-                branch_sha = execute(['git', 'rev-parse', '-q', '--verify', local_branch])
+                branch_sha = execute(
+                    ['git', 'rev-parse', '-q', '--verify', local_branch])
             except Exception as e:
                 branch_sha = ''
             if len(branch_sha) > 0:
@@ -269,27 +279,32 @@ def main():
                 execute(['git', 'reset', '--hard', head_sha])
             else:
                 # create the branch
-                print('creating branch "' + local_branch + '" using origin/' + head['ref'] + ' (' + head_sha + ')')
+                print('creating branch "' + local_branch +
+                      '" using origin/' + head['ref'] + ' (' + head_sha + ')')
                 execute(['git', 'checkout', '-b', local_branch, head_sha])
 
     # If title isn't set already, generate one from first commit
     local_branch = get_local_branch_name(BRAVE_CORE_ROOT)
     if not config.title and not args.uplift_using_pr:
-        config.title = get_title_from_first_commit(BRAVE_CORE_ROOT, top_level_base)
+        config.title = get_title_from_first_commit(
+            BRAVE_CORE_ROOT, top_level_base)
 
     # Create a branch for each channel
     print('\nCreating branches...')
-    fancy_print('NOTE: Commits are being detected by diffing "' + local_branch + '" against "' + top_level_base + '"')
+    fancy_print('NOTE: Commits are being detected by diffing "' +
+                local_branch + '" against "' + top_level_base + '"')
     local_branches = {}
     branch = ''
     try:
         for channel in config.channels_to_process:
-            branch = create_branch(channel, top_level_base, remote_branches[channel], local_branch, args)
+            branch = create_branch(channel, top_level_base,
+                                   remote_branches[channel], local_branch, args)
             local_branches[channel] = branch
             if channel == args.uplift_to:
                 break
     except Exception as e:
-        print('[ERROR] cherry-pick failed for branch "' + branch + '". Please resolve manually:\n' + str(e))
+        print('[ERROR] cherry-pick failed for branch "' +
+              branch + '". Please resolve manually:\n' + str(e))
         return 1
 
     print('\nPushing local branches to remote...')
@@ -349,14 +364,16 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
-        sha_list = execute(['git', 'log', compare_from + '..HEAD', '--pretty=format:%h', '--reverse'])
+        sha_list = execute(['git', 'log', compare_from + '..HEAD',
+                           '--pretty=format:%h', '--reverse'])
         sha_list = sha_list.split('\n')
         if len(sha_list) == 0:
             raise Exception('No changes detected!')
         try:
             # check if branch exists already
             try:
-                branch_sha = execute(['git', 'rev-parse', '-q', '--verify', channel_branch])
+                branch_sha = execute(
+                    ['git', 'rev-parse', '-q', '--verify', channel_branch])
             except Exception as e:
                 branch_sha = ''
 
@@ -368,7 +385,8 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'reset', '--hard', 'origin/' + remote_base])
             else:
                 # create the branch
-                print('(' + channel + ') creating "' + channel_branch + '" from ' + remote_base)
+                print('(' + channel + ') creating "' +
+                      channel_branch + '" from ' + remote_base)
                 execute(['git', 'checkout', remote_base])
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
@@ -381,16 +399,19 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
             # squash all commits into one
             # NOTE: master is not squashed. This only runs for uplifts.
             execute(['git', 'reset', '--soft', remote_base])
-            squash_message = 'Squash of commits from branch "' + str(local_branch) + '" to ' + channel
+            squash_message = 'Squash of commits from branch "' + \
+                str(local_branch) + '" to ' + channel
             if int(config.master_pr_number) > 0:
-                squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed) to ' + channel
+                squash_message = 'Uplift of #' + \
+                    str(config.master_pr_number) + ' (squashed) to ' + channel
             if args.gpgsign:
                 cmdline = ['git', 'commit', '-S', '-m', squash_message]
             else:
                 cmdline = ['git', 'commit', '-m', squash_message]
             execute(cmdline)
             squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
-            print('- squashed all commits into ' + squash_hash + ' with message: "' + squash_message + '"')
+            print('- squashed all commits into ' + squash_hash +
+                  ' with message: "' + squash_message + '"')
 
         finally:
             # switch back to original branch
@@ -405,7 +426,8 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 def get_milestone_for_branch(channel_branch):
     global config
     if not config.milestones:
-        config.milestones = get_milestones(config.github_token, BRAVE_CORE_REPO)
+        config.milestones = get_milestones(
+            config.github_token, BRAVE_CORE_REPO)
     for milestone in config.milestones:
         if (milestone['title'].startswith(channel_branch + ' - ') or
            milestone['title'].startswith('Android ' + channel_branch + ' - ')):

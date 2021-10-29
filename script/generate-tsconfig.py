@@ -27,6 +27,7 @@ def parse_args():
     # args are valid
     return args
 
+
 def generate_tsconfig(root_gen_dir, env=None):
     if env is None:
         env = os.environ.copy()
@@ -38,6 +39,7 @@ def generate_tsconfig(root_gen_dir, env=None):
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):
         execute_stdout(args, env)
+
 
 if __name__ == '__main__':
     sys.exit(main())

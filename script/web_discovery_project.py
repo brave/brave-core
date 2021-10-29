@@ -7,7 +7,8 @@ import sys
 from lib.config import PLATFORM, SOURCE_ROOT, enable_verbose_mode
 from lib.util import execute_stdout, scoped_cwd
 
-WEB_DISCOVERY_DIR = os.path.join(SOURCE_ROOT, 'vendor', 'web-discovery-project')
+WEB_DISCOVERY_DIR = os.path.join(
+    SOURCE_ROOT, 'vendor', 'web-discovery-project')
 
 NPM = 'npm'
 if PLATFORM in ['win32', 'cygwin']:
@@ -26,6 +27,7 @@ def main():
         if args.build:
             execute_stdout([NPM, 'run', 'build-module'], env=env)
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Web Discovery Project setup')
     parser.add_argument('-v', '--verbose', action='store_true',
@@ -38,6 +40,7 @@ def parse_args():
                         help='Build Web Discovery Project')
 
     return parser.parse_args()
+
 
 if __name__ == '__main__':
     sys.exit(main())

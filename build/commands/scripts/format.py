@@ -16,6 +16,7 @@ import sys
 
 import git_cl
 
+
 def main(args):
     """Runs clang-format and gn format on the current changelist."""
     parser = git_cl.OptionParser()
@@ -38,6 +39,7 @@ def main(args):
         os.chdir(previous_cwd)
     print('Formatting done.')
     return 0
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

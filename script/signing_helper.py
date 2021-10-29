@@ -7,12 +7,14 @@
 
 """ This helper is a collection of functions used for signing on MacOS """
 
+import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
+import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 import collections
 import os
 import subprocess
 import sys
 
-from signing import model # pylint: disable=import-error
+from signing import model  # pylint: disable=import-error
 
 # Construct path to signing modules in chrome/installer/mac/signing
 signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
@@ -21,14 +23,13 @@ signing_path = os.path.realpath(os.path.join(
 sys.path.append(signing_path)
 
 # Import the entire module to avoid circular dependencies in the functions
-import signing.model    # pylint: disable=import-error, reimported, wrong-import-position, unused-import
-import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
 
 brave_channel = os.environ.get('BRAVE_CHANNEL')
 sign_widevine_cert = os.environ.get('SIGN_WIDEVINE_CERT')
 sign_widevine_key = os.environ.get('SIGN_WIDEVINE_KEY')
 sign_widevine_passwd = os.environ.get('SIGN_WIDEVINE_PASSPHRASE')
-sig_generator_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
+sig_generator_path = os.path.realpath(
+    os.path.dirname(os.path.realpath(__file__)))
 sig_generator_path = os.path.realpath(
     os.path.join(sig_generator_path, os.pardir, os.pardir, 'third_party',
                  'widevine', 'scripts', 'signature_generator.py'))
@@ -41,7 +42,8 @@ def file_exists(path):
 
 def run_command(args, **kwargs):
     """ Runs the given executable with the given arguments """
-    print('Running command: {}'.format(args)) # pylint: disable=superfluous-parens
+    print('Running command: {}'.format(args)
+          )  # pylint: disable=superfluous-parens
     subprocess.check_call(args, **kwargs)
 
 
@@ -52,16 +54,18 @@ def GenerateBraveWidevineSigFile(paths, config, part):
         # file. The calling script will re-sign it after Widevine signature
         # file has been added (see signing.py from where this function is
         # called).
-        from signing.signing import sign_part # pylint: disable=import-error
+        from signing.signing import sign_part  # pylint: disable=import-error
         sign_part(paths, config, part)
         # Generate signature file
         chrome_framework_name = config.app_product + ' Framework'
         chrome_framework_version_path = os.path.join(paths.work, part.path,
                                                      'Versions', config.version)
-        sig_source_file = os.path.join(chrome_framework_version_path, chrome_framework_name)
+        sig_source_file = os.path.join(
+            chrome_framework_version_path, chrome_framework_name)
         sig_target_file = os.path.join(chrome_framework_version_path, 'Resources',
                                        chrome_framework_name + '.sig')
-        assert file_exists(sig_source_file), 'Wrong source path for sig generation'
+        assert file_exists(
+            sig_source_file), 'Wrong source path for sig generation'
 
         command = ['python', sig_generator_path, '--input_file', sig_source_file,
                    '--output_file', sig_target_file, '--flags', '1',
@@ -76,7 +80,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
 def AddBravePartsForSigning(parts, config):
     """ Inserts Brave specific parts that need to be signed """
     parts = collections.OrderedDict(parts)
-    from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions # pylint: disable=import-error
+    from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions  # pylint: disable=import-error
 
     development = True if config.provisioning_profile_basename is None else False
 
@@ -100,14 +104,14 @@ def AddBravePartsForSigning(parts, config):
     if not development:
         # Add Sparkle binaries
         parts['sparkle-framework-fileop'] = CodeSignedProduct(
-            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop' # pylint: disable=line-too-long
+            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # pylint: disable=line-too-long
             .format(config, config),
             'fileop',
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
         parts['sparkle-framework-fileop'].options = full_hardened_runtime_options
 
         parts['sparkle-framework-autoupdate'] = CodeSignedProduct(
-            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate' # pylint: disable=line-too-long
+            '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # pylint: disable=line-too-long
             .format(config, config),
             'org.sparkle-project.Sparkle.Autoupdate',
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
@@ -130,7 +134,7 @@ def AddBravePartsForSigning(parts, config):
 
 def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
     """ Creates Brave specific config used for signing """
-    class ConfigNonChromeBranded(config_class): # pylint: disable=too-few-public-methods
+    class ConfigNonChromeBranded(config_class):  # pylint: disable=too-few-public-methods
         """ Config that overrides is_chrome_branded """
 
         @staticmethod

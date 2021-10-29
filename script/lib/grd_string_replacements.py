@@ -5,8 +5,10 @@ import re
 
 # Strings we want to replace but that we also replace automatically for XTB files
 branding_replacements = [
-    (r'The Chromium Authors. All rights reserved.', r'The Brave Authors. All rights reserved.'),
-    (r'Google LLC. All rights reserved.', r'The Brave Authors. All rights reserved.'),
+    (r'The Chromium Authors. All rights reserved.',
+     r'The Brave Authors. All rights reserved.'),
+    (r'Google LLC. All rights reserved.',
+     r'The Brave Authors. All rights reserved.'),
     (r'The Chromium Authors', r'Brave Software Inc'),
     (r'Google Chrome', r'Brave'),
     (r'(Google)(?! Play)', r'Brave'),
@@ -50,7 +52,8 @@ fixup_replacements = [
     (r'Brave Safe Browsing', r'Google Safe Browsing'),
     (r'Safe Browsing \(protects you and your device from dangerous sites\)',
      r'Google Safe Browsing (protects you and your device from dangerous sites)'),
-    (r'Sends URLs of some pages you visit to Brave', r'Sends URLs of some pages you visit to Google'),
+    (r'Sends URLs of some pages you visit to Brave',
+     r'Sends URLs of some pages you visit to Google'),
     (r'Google Google', r'Google'),
     (r'Brave Account', r'Brave sync chain'),
 ]
@@ -82,13 +85,16 @@ def braveify_grd_text(text, is_main_text, branding_replacements_only):
 def generate_braveified_node(elem, is_comment, branding_replacements_only):
     """Replaces a node and attributes to Brave wording"""
     if elem.text:
-        elem.text = braveify_grd_text(elem.text, not is_comment, branding_replacements_only)
+        elem.text = braveify_grd_text(
+            elem.text, not is_comment, branding_replacements_only)
 
     if elem.tail:
-        elem.tail = braveify_grd_text(elem.tail, not is_comment, branding_replacements_only)
+        elem.tail = braveify_grd_text(
+            elem.tail, not is_comment, branding_replacements_only)
 
     if 'desc' in elem.keys():
-        elem.attrib['desc'] = braveify_grd_text(elem.attrib['desc'], False, branding_replacements_only)
+        elem.attrib['desc'] = braveify_grd_text(
+            elem.attrib['desc'], False, branding_replacements_only)
     for child in elem:
         generate_braveified_node(child, is_comment, branding_replacements_only)
 

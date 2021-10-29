@@ -59,7 +59,7 @@ def _get_xcode_version():
         elif line.startswith(b'Build version '):
             build = str(line[len(b'Build version '):], 'utf8')
             version.append(build)
-    
+
     return '.'.join(version)
 
 
@@ -73,7 +73,7 @@ def _get_install_path():
     return {
         'version': xcode_version,
         'path': os.path.abspath(
-            os.path.join(developer_dir, os.pardir, os.pardir))        
+            os.path.join(developer_dir, os.pardir, os.pardir))
     }
 
 

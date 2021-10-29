@@ -61,5 +61,6 @@ def CopyExtensionLocalization(extension_name, locales_src_dir_path, config, stag
         for name in files:
             rel_dir = os.path.relpath(root, locales_dest_path)
             rel_file = os.path.join(rel_dir, name)
-            candidate = os.path.join('.', 'resources', extension_name, '_locales', rel_file)
+            candidate = os.path.join(
+                '.', 'resources', extension_name, '_locales', rel_file)
             g_archive_inputs.append(candidate)

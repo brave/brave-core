@@ -25,9 +25,9 @@ NPM_EXCLUDE_PATHS = [
 # Tag @sec-team before adding any advisory to this list
 # Ignore these rust advisories
 IGNORED_CARGO_ADVISORIES = [
-# Remove when:
-# https://github.com/chronotope/chrono/issues/602 is resolved
-# Tracking issue: https://github.com/brave/brave-browser/issues/18838
+    # Remove when:
+    # https://github.com/chronotope/chrono/issues/602 is resolved
+    # Tracking issue: https://github.com/brave/brave-browser/issues/18838
     'RUSTSEC-2020-0071',
     'RUSTSEC-2020-0159'
 ]
@@ -51,6 +51,7 @@ ignored_npm_advisories = [
     1002655,    # https://github.com/advisories/GHSA-w8qv-6jwh-64r5
     1002775     # https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
 ]
+
 
 def main():
     """Audit a specified path, or the whole project."""
@@ -79,15 +80,15 @@ def audit_path(path, args):
     if os.path.isfile(os.path.join(path, 'package.json')) and \
        os.path.isfile(os.path.join(path, 'package-lock.json')) and \
        os.path.isdir(os.path.join(path, 'node_modules')) and \
-       not any(full_path.startswith(os.path.join(args.source_root, p, "")) \
+       not any(full_path.startswith(os.path.join(args.source_root, p, ""))
                for p in NPM_EXCLUDE_PATHS):
         print(f'Auditing (npm) {path}')
         return npm_audit_deps(path, args)
 
     if os.path.isfile(os.path.join(path, 'Cargo.toml')) and \
-         os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
-         any(full_path.startswith(os.path.join(args.source_root, p, "")) \
-             for p in CARGO_INCLUDE_PATHS):
+        os.path.isfile(os.path.join(path, 'Cargo.lock')) and \
+        any(full_path.startswith(os.path.join(args.source_root, p, ""))
+            for p in CARGO_INCLUDE_PATHS):
         print(f'Auditing (cargo) {path}')
         return cargo_audit_deps(path, args)
 
@@ -106,7 +107,8 @@ def npm_audit_deps(path, args):
     if not args.audit_dev_deps:
         npm_args.append('--production')
         print('WARNING: Ignoring npm devDependencies')
-    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
+    audit_process = subprocess.Popen(
+        npm_args, stdout=subprocess.PIPE, cwd=path)
     output, _ = audit_process.communicate()
 
     try:
@@ -120,7 +122,8 @@ def npm_audit_deps(path, args):
         return 1
 
     if len(ignored_npm_advisories) > 0:
-        print('Ignoring NPM advisories ' + ','.join(map(str, ignored_npm_advisories)))
+        print('Ignoring NPM advisories ' +
+              ','.join(map(str, ignored_npm_advisories)))
 
     resolutions = extract_resolutions(result)
 

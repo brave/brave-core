@@ -1,7 +1,7 @@
 import argparse
 import os.path
 import sys
-from lxml import etree # pylint: disable=import-error
+from lxml import etree  # pylint: disable=import-error
 from lib.grd_string_replacements import (write_xml_file_from_tree,
                                          write_braveified_grd_override,
                                          update_braveified_grd_tree_override,
@@ -20,11 +20,13 @@ def parse_args():
 def generate_overrides_and_replace_strings(source_string_path):
     # pylint: disable=too-many-locals
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
-    update_braveified_grd_tree_override(original_xml_tree_with_branding_fixes, True)
+    update_braveified_grd_tree_override(
+        original_xml_tree_with_branding_fixes, True)
     write_braveified_grd_override(source_string_path)
     modified_xml_tree = etree.parse(source_string_path)
 
-    original_messages = original_xml_tree_with_branding_fixes.xpath('//message')
+    original_messages = original_xml_tree_with_branding_fixes.xpath(
+        '//message')
     modified_messages = modified_xml_tree.xpath('//message')
     assert len(original_messages) == len(modified_messages)
     for i in range(0, len(original_messages)):

@@ -47,7 +47,8 @@ def get_releases_by_tag(repo, tag_name, include_drafts=False):
     next_request = ""
     headers = {'Accept': 'application/vnd.github+json',
                'Authorization': 'token ' + get_env_var('GITHUB_TOKEN')}
-    release_url = GITHUB_URL + "/repos/" + BRAVE_REPO + "/releases?page=1&per_page=100"
+    release_url = GITHUB_URL + "/repos/" + \
+        BRAVE_REPO + "/releases?page=1&per_page=100"
     r = call_github_api(release_url, headers=headers)
     next_request = ""
     # The GitHub API returns paginated results of 100 items maximum per

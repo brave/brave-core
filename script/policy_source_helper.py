@@ -58,4 +58,5 @@ def AddBravePolicies(template_file_contents):
         template_file_contents['policy_definitions'].append(policy)
 
     # Update highest id
-    template_file_contents['highest_id_currently_used'] = highest_id + len(policies)
+    template_file_contents['highest_id_currently_used'] = highest_id + \
+        len(policies)

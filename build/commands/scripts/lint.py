@@ -34,10 +34,9 @@ def HasFormatErrors():
         git_cl.RunGit(['cl', 'format'])
         git_diff = git_common.run('diff').encode('utf-8')
         if git_diff:
-        print(git_diff)
-        print('Format errors have been auto-fixed. Please review and commit these'
-              ' changes if lint was run locally. Otherwise run npm format to fix.'
-             )
+            print(git_diff)
+            print('Format errors have been auto-fixed. Please review and commit these'
+                ' changes if lint was run locally. Otherwise run npm format to fix.')
         return True
     return False
 

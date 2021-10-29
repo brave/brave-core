@@ -170,7 +170,7 @@ def safe_mkdir(path):
             raise
 
 
-def execute(argv, env=os.environ): # pylint: disable=dangerous-default-value
+def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
     try:
@@ -179,7 +179,7 @@ def execute(argv, env=os.environ): # pylint: disable=dangerous-default-value
                 argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 universal_newlines=True)
         else:
-            process = subprocess.Popen( # pylint: disable=unexpected-keyword-arg
+            process = subprocess.Popen(  # pylint: disable=unexpected-keyword-arg
                 argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 encoding='utf-8', universal_newlines=True)
         stdout, stderr = process.communicate()
@@ -190,17 +190,18 @@ def execute(argv, env=os.environ): # pylint: disable=dangerous-default-value
             # Most useful erroroutput from typescript / webpack is in stdout
             # and not stderr.
             print(stdout)
-            raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)), stderr)
+            raise RuntimeError('Command \'%s\' failed' %
+                               (' '.join(argv)), stderr)
         return stdout
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')
         print(' '.join(argv))
         if sys.version_info.major > 2:
-            print(e.stderr) # pylint: disable=no-member
+            print(e.stderr)  # pylint: disable=no-member
         raise e
 
 
-def execute_stdout(argv, env=os.environ): # pylint: disable=dangerous-default-value
+def execute_stdout(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     if is_verbose_mode():
         print(' '.join(argv))
         try:

@@ -10,7 +10,7 @@ import requests
 from lib.config import get_env_var
 from lib.grd_string_replacements import (generate_braveified_node,
                                          get_override_file_path)
-import lxml.etree # pylint: disable=import-error
+import lxml.etree  # pylint: disable=import-error
 import FP
 
 # pylint: disable=too-many-locals
@@ -143,7 +143,8 @@ def get_transifex_translation_file_content(source_file_path, filename,
         json.loads(content)
     elif ext == '.grd':
         # For .grd and .json files, for some reason Transifex puts a \\" and \'
-        content = content.replace('\\\\"', '"').replace('\\"', '"').replace("\\'", "'")
+        content = content.replace('\\\\"', '"').replace(
+            '\\"', '"').replace("\\'", "'")
         # Make sure it's parseable
         lxml.etree.fromstring(content)
     return content
@@ -176,7 +177,8 @@ def fixup_bad_ph_tags_from_raw_transifex_string(xml_content):
             return xml_content
         before_part = xml_content[:string_index]
         ending_part = xml_content[string_end_index:]
-        val = process_bad_ph_tags_for_one_string(xml_content[string_index:string_end_index])
+        val = process_bad_ph_tags_for_one_string(
+            xml_content[string_index:string_end_index])
         xml_content = before_part + val + ending_part
         begin_index = xml_content.find('</string>', begin_index)
         if begin_index != -1:
@@ -189,7 +191,8 @@ def validate_elements_tags(elements):
     errors = None
     for element in elements:
         if element.tag not in allowed_html_tags:
-            error = ("ERROR: Element <{0}> is not allowed.\n").format(element.tag)
+            error = ("ERROR: Element <{0}> is not allowed.\n").format(
+                element.tag)
             errors = (errors or '') + error
         rec_errors = validate_elements_tags(list(element))
         if rec_errors is not None:
@@ -206,12 +209,14 @@ def validate_tags_in_one_string(string_tag):
                    .replace('&gt;', '>'))
     # print 'Validating: {}'.format(string_text.encode('utf-8'))
     try:
-        string_xml = lxml.etree.fromstring('<string>' + string_text + '</string>')
+        string_xml = lxml.etree.fromstring(
+            '<string>' + string_text + '</string>')
     except lxml.etree.XMLSyntaxError as e:
         errors = ("\n--------------------\n"
                   "{0}\nERROR: {1}\n").format(string_text.encode('utf-8'), str(e))
         print errors
-        cont = raw_input('Enter C to ignore and continue. Enter anything else to exit : ')
+        cont = raw_input(
+            'Enter C to ignore and continue. Enter anything else to exit : ')
         if cont == 'C' or cont == 'c':
             return None
         return errors
@@ -221,7 +226,7 @@ def validate_tags_in_one_string(string_tag):
                   "{0}\n").format(
                       lxml.etree.tostring(
                           string_tag, method='xml', encoding='utf-8', pretty_print=True)
-                  ) + errors
+        ) + errors
     return errors
 
 
@@ -238,6 +243,7 @@ def validate_tags_in_transifex_strings(xml_content):
     if errors is not None:
         errors = ("\n") + errors
     return errors
+
 
 def trim_ph_tags_in_xtb_file_content(xml_content):
     """Removes all children of <ph> tags including text inside ph tag"""
@@ -439,8 +445,10 @@ def get_grd_strings(grd_file_path, validate_tags=True):
         if dupe_dict[message_name] > 1:
             message_name += "_%s" % dupe_dict[message_name]
         if validate_tags:
-            message_xml = lxml.etree.tostring(message_tag, method='xml', encoding='utf-8')
-            errors = validate_tags_in_one_string(lxml.etree.fromstring(message_xml))
+            message_xml = lxml.etree.tostring(
+                message_tag, method='xml', encoding='utf-8')
+            errors = validate_tags_in_one_string(
+                lxml.etree.fromstring(message_xml))
             assert errors is None, '\n' + errors
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
@@ -639,7 +647,8 @@ def upload_missing_json_translations_to_transifex(source_string_path):
     for lang_code in lang_codes:
         l10n_path = os.path.join(langs_dir_path, lang_code, 'messages.json')
         l10n_strings = get_json_strings(l10n_path)
-        l10n_dict = {string_name: string_value for (string_name, string_value, _) in l10n_strings}
+        l10n_dict = {string_name: string_value for (
+            string_name, string_value, _) in l10n_strings}
         for (string_name, string_value, _) in source_strings:
             if string_name not in l10n_dict:
                 # print 'Skipping string name %s for lang %s, not existing' % (
@@ -762,7 +771,8 @@ def pull_source_files_from_transifex(source_file_path, filename):
             print 'Updating: ', xtb_file_path, lang_code
             xml_content = get_transifex_translation_file_content(
                 source_file_path, filename, lang_code)
-            xml_content = fixup_bad_ph_tags_from_raw_transifex_string(xml_content)
+            xml_content = fixup_bad_ph_tags_from_raw_transifex_string(
+                xml_content)
             errors = validate_tags_in_transifex_strings(xml_content)
             assert errors is None, errors
             xml_content = trim_ph_tags_in_xtb_file_content(xml_content)
@@ -816,12 +826,14 @@ def upload_source_strings_desc(source_file_path, filename):
         json_strings = get_json_strings(source_file_path)
         for (string_name, _, string_desc) in json_strings:
             if len(string_desc) > 0:
-                upload_string_desc(source_file_path, filename, string_name, string_desc)
+                upload_string_desc(source_file_path, filename,
+                                   string_name, string_desc)
     else:
         grd_strings = get_grd_strings(source_file_path)
         for (string_name, _, _, string_desc) in grd_strings:
             if len(string_desc) > 0:
-                upload_string_desc(source_file_path, filename, string_name, string_desc)
+                upload_string_desc(source_file_path, filename,
+                                   string_name, string_desc)
 
 
 def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
@@ -851,7 +863,8 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
 
     # Update XTB FPs so it uses the branded source string
     grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
-    chromium_grd_strings = get_grd_strings(chromium_grd_file_path, validate_tags=False)
+    chromium_grd_strings = get_grd_strings(
+        chromium_grd_file_path, validate_tags=False)
     assert len(grd_strings) == len(chromium_grd_strings)
 
     fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
@@ -904,12 +917,14 @@ def combine_override_xtb_into_original(source_string_path):
         assert lang == override_lang
 
         xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))
-        override_xtb_tree = lxml.etree.parse(os.path.join(override_base_path, override_xtb_path))
+        override_xtb_tree = lxml.etree.parse(
+            os.path.join(override_base_path, override_xtb_path))
         translationbundle = xtb_tree.xpath('//translationbundle')[0]
         override_translations = override_xtb_tree.xpath('//translation')
         translations = xtb_tree.xpath('//translation')
 
-        override_translation_fps = [t.attrib['id'] for t in override_translations]
+        override_translation_fps = [t.attrib['id']
+                                    for t in override_translations]
         translation_fps = [t.attrib['id'] for t in translations]
 
         # Remove translations that we have a matching FP for
