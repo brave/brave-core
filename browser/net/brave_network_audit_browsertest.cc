@@ -5,8 +5,8 @@
 #include "base/base_paths.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/json/json_file_value_serializer.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -161,12 +161,8 @@ bool PerformNetworkAuditProcess(base::ListValue* events) {
 void WriteNetworkAuditResultsToDisk(const base::DictionaryValue& results_dic,
                                     const base::FilePath& path) {
   std::string results;
-  base::JSONWriter::Write(results_dic, &results);
-
-  FILE* fp = base::OpenFile(path, "wb");
-  ASSERT_TRUE(fp);
-  fwrite(results.data(), results.size(), 1, fp);
-  fclose(fp);
+  JSONFileValueSerializer serializer(path);
+  serializer.Serialize(results_dic);
 
   LOG(INFO) << "Network audit results stored in " << path << std::endl;
 }
