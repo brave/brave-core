@@ -336,7 +336,6 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   // Arrange
   CreativeInlineContentAdList creative_inline_content_ads;
 
-  CreativeDaypartInfo daypart_info;
   CreativeInlineContentAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -350,8 +349,10 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableTest,
   info.total_max = 4;
   info.value = 1.0;
   info.segment = "food & drink";
+  CreativeDaypartInfo daypart_info;
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = {"US"};
+  info.dayparts.push_back(daypart_info);
+  info.geo_targets = {"US-FL", "US-CA"};
   info.target_url = "https://brave.com";
   info.title = "Test Ad Title";
   info.description = "Test Ad Description";
