@@ -180,13 +180,8 @@ void EthJsonRpcController::AddEthereumChainRequestCompleted(
   if (!add_chain_pending_requests_.contains(chain_id))
     return;
   if (approved) {
-    ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    base::ListValue* list = update.Get();
-    const auto& request = add_chain_pending_requests_.at(chain_id).request;
-    absl::optional<base::Value> value =
-        brave_wallet::EthereumChainToValue(request.Clone());
-    if (value)
-      list->Append(std::move(value).value());
+    AddCustomNetwork(prefs_,
+                     add_chain_pending_requests_.at(chain_id).request.Clone());
   }
   std::string error =
       approved ? std::string()
