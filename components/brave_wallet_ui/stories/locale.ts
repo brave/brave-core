@@ -111,9 +111,9 @@ provideStrings({
   braveWalletCreatePasswordTitle: 'Secure your crypto assets with a password',
   braveWalletCreatePasswordDescription: 'Passwords must be at least 7 characters, and contain at least one number and one special character.',
   braveWalletCreatePasswordInput: 'Password',
-  braveWalletConfirmPasswordInput: 'Re-Type Password',
+  braveWalletConfirmPasswordInput: 'Confirm password',
   braveWalletCreatePasswordError: 'Passwords must be at least 7 characters, and contain at least one number and one special character.',
-  braveWalletConfirmPasswordError: 'Verify password does not match',
+  braveWalletConfirmPasswordError: 'Passwords do not match',
 
   // Lock Screen
   braveWalletLockScreenTitle: 'Enter password to unlock wallet',
