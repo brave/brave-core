@@ -51,7 +51,7 @@ void OnPrepareCredentialsPresentation(
     brave_rewards::RewardsResult result,
     rust::cxxbridge1::Str presentation) {
   if (callback_state->cb) {
-    std::move(callback_state->cb).Run("");
+    std::move(callback_state->cb).Run(static_cast<std::string>(presentation));
   }
   delete callback_state;
 }
