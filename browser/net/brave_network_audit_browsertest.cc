@@ -68,8 +68,9 @@ bool isPrivateURL(const GURL& url) {
   return false;
 }
 
-bool PerformNetworkAuditProcess(base::ListValue* events) {
-  DCHECK(events);
+bool PerformNetworkAuditProcess(base::Value* events) {
+  DCHECK(events && events->is_list());
+
   bool failed = false;
   events->EraseListValueIf([&failed](base::Value& event_value) {
     base::DictionaryValue* event_dict;
@@ -229,21 +230,21 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
         << "Could not read: " << net_log_path_;
 
     // Parse it as JSON.
-    auto parsed = base::JSONReader::ReadDeprecated(file_contents);
-    ASSERT_TRUE(parsed);
+    auto parsed = base::JSONReader::Read(file_contents);
+    ASSERT_TRUE(parsed.has_value());
 
     // Ensure the root value is a dictionary.
     base::DictionaryValue* main;
     ASSERT_TRUE(parsed->GetAsDictionary(&main));
 
     // Ensure it has a "constants" property.
-    base::DictionaryValue* constants;
-    ASSERT_TRUE(main->GetDictionary("constants", &constants));
+    base::Value* constants = main->FindDictPath("constants");
+    ASSERT_TRUE(constants && constants->is_dict());
     ASSERT_FALSE(constants->DictEmpty());
 
     // Ensure it has an "events" property.
-    base::ListValue* events;
-    ASSERT_TRUE(main->GetList("events", &events));
+    base::Value* events = main->FindListPath("events");
+    ASSERT_TRUE(events && events->is_list());
     ASSERT_FALSE(events->GetList().empty());
 
     EXPECT_TRUE(PerformNetworkAuditProcess(events))
