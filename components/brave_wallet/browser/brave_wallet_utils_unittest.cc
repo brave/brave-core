@@ -905,4 +905,61 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   EXPECT_EQ(GetNetworkId(&prefs, "chain_id2"), "url2.com");
 }
 
+TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
+  TestingPrefServiceSimple prefs;
+  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
+
+  brave_wallet::mojom::EthereumChain chain1(
+      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol", "symbol_name", 11, false);
+
+  brave_wallet::mojom::EthereumChain chain2(
+      "chain_id2", "chain_name2", {"https://url2.com"}, {} /* icon_urls */,
+      {"https://url2.com"}, "symbol2", "symbol_name2", 22, true);
+
+  AddCustomNetwork(&prefs, chain1.Clone());
+  AddCustomNetwork(&prefs, chain2.Clone());
+
+  // kBraveWalletCustomNetworks should be updated with new chains.
+  std::vector<mojom::EthereumChainPtr> result;
+  GetAllCustomChains(&prefs, &result);
+  EXPECT_EQ(result.size(), 2u);
+  EXPECT_EQ(result[0], chain1.Clone());
+  EXPECT_EQ(result[1], chain2.Clone());
+
+  // Asset list of new custom chains should have native asset in
+  // kBraveWalletUserAssets.
+  const base::DictionaryValue* assets_pref =
+      prefs.GetDictionary(kBraveWalletUserAssets);
+  const base::Value* list1 = assets_pref->FindKey("url1.com");
+  ASSERT_TRUE(list1->is_list());
+  base::Value::ConstListView asset_list1 = list1->GetList();
+  ASSERT_EQ(asset_list1.size(), 1u);
+
+  EXPECT_EQ(*asset_list1[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list1[0].FindStringKey("name"), "symbol_name");
+  EXPECT_EQ(*asset_list1[0].FindStringKey("symbol"), "symbol");
+  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc20"), false);
+  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list1[0].FindIntKey("decimals"), 11);
+  EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
+
+  const base::Value* list2 = assets_pref->FindKey("url2.com");
+  ASSERT_TRUE(list2->is_list());
+  base::Value::ConstListView asset_list2 = list2->GetList();
+  ASSERT_EQ(asset_list2.size(), 1u);
+
+  EXPECT_EQ(*asset_list2[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list2[0].FindStringKey("name"), "symbol_name2");
+  EXPECT_EQ(*asset_list2[0].FindStringKey("symbol"), "symbol2");
+  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc20"), false);
+  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list2[0].FindIntKey("decimals"), 22);
+  EXPECT_EQ(*asset_list2[0].FindStringKey("logo"), "");
+  EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);
+}
+
 }  // namespace brave_wallet

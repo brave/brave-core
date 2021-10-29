@@ -101,6 +101,9 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
+// Append chain value to kBraveWalletCustomNetworks list pref.
+void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

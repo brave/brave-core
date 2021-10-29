@@ -253,11 +253,8 @@ void BraveWalletService::AddUserAsset(mojom::ERCTokenPtr token,
     return;
   }
 
+  // Can be empty string for native asset.
   const std::string checksum_address = optional_checksum_address.value();
-  if (checksum_address.empty() && base::ToLowerASCII(token->symbol) != "eth") {
-    std::move(callback).Run(false);
-    return;
-  }
 
   const std::string network_id = GetNetworkId(prefs_, chain_id);
   if (network_id.empty()) {
