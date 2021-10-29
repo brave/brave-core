@@ -37,11 +37,24 @@ void OnRefreshOrder(brave_rewards::RefreshOrderCallbackState* callback_state,
   delete callback_state;
 }
 
-// void OnFetchOrderCredentials() {
-// }
+void OnFetchOrderCredentials(
+    brave_rewards::FetchOrderCredentialsCallbackState* callback_state,
+    brave_rewards::RewardsResult result) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run("");
+  }
+  delete callback_state;
+}
 
-// void OnPrepareCredentialsPresentation() {
-// }
+void OnPrepareCredentialsPresentation(
+    brave_rewards::PrepareCredentialsPresentationCallbackState* callback_state,
+    brave_rewards::RewardsResult result,
+    rust::cxxbridge1::Str presentation) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run("");
+  }
+  delete callback_state;
+}
 
 void OnScheduleWakeup(
     rust::cxxbridge1::Fn<
@@ -162,21 +175,34 @@ void SkusSdkImpl::RefreshOrder(const std::string& order_id,
 void SkusSdkImpl::FetchOrderCredentials(
     const std::string& order_id,
     FetchOrderCredentialsCallback callback) {
-  // ::rust::Box<CppSDK> sdk = initialize_sdk("development");
+  // TODO(bsclifton): find a better way to pass this in :(
+  // basically experiencing a crash on exit
+  ::rust::Box<CppSDK> sdk =
+      initialize_sdk(std::move(unique_instance_), "development");
 
-  // TODO(bsclifton): fill me in
+  std::unique_ptr<FetchOrderCredentialsCallbackState> cbs(
+      new FetchOrderCredentialsCallbackState);
+  cbs->cb = std::move(callback);
 
-  // sdk->fetch_order_credentials(on_refresh_order, std::move(cbs),
-  // order_id.c_str());
+  sdk->fetch_order_credentials(OnFetchOrderCredentials, std::move(cbs),
+                               order_id.c_str());
 }
 
 void SkusSdkImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     PrepareCredentialsPresentationCallback callback) {
-  // ::rust::Box<CppSDK> sdk = initialize_sdk("development");
+  // TODO(bsclifton): find a better way to pass this in :(
+  // basically experiencing a crash on exit
+  ::rust::Box<CppSDK> sdk =
+      initialize_sdk(std::move(unique_instance_), "development");
 
-  // TODO(bsclifton): fill me in
+  std::unique_ptr<PrepareCredentialsPresentationCallbackState> cbs(
+      new PrepareCredentialsPresentationCallbackState);
+  cbs->cb = std::move(callback);
+
+  sdk->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
+                                        std::move(cbs), domain, path);
 }
 
 }  // namespace brave_rewards
