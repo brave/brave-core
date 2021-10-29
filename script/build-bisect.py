@@ -4,17 +4,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
-import errno
-import hashlib
 import math
 import os
 import platform
-import requests
 import re
-import shutil
-import subprocess
 import sys
-import json
 
 from io import StringIO
 from lib.config import get_env_var

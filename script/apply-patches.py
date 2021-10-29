@@ -24,7 +24,7 @@ def main():
 
 
 def apply_patches_for_dir(directory):
-    for root, dirs, files in os.walk(directory):
+    for root, files in os.walk(directory):
         prefix = os.path.relpath(root, directory)
         target = os.path.join(SRC_DIR, prefix)
         args = [sys.executable, PATCH_PY, '--directory', target, '--quiet']
@@ -37,7 +37,7 @@ def apply_patches_for_dir(directory):
 
 
 def revert_changes_for_dir(directory):
-    for root, dirs, files in reversed(list(os.walk(directory))):
+    for root, files in reversed(list(os.walk(directory))):
         prefix = os.path.relpath(root, directory)
         target = os.path.join(SRC_DIR, prefix)
         args = [sys.executable, PATCH_PY, '--directory', target, '--quiet',
