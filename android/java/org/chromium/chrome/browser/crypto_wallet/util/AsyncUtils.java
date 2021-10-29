@@ -9,6 +9,8 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
+import org.chromium.brave_wallet.mojom.EthTxController;
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 
 public class AsyncUtils {
     // Helper to track multiple wallet controllers responses
@@ -20,6 +22,7 @@ public class AsyncUtils {
 
         public MultiResponseHandler(int totalElements) {
             synchronized (mLock) {
+                mCurrentElements = 0;
                 mTotalElements = totalElements;
             }
         }
@@ -117,6 +120,24 @@ public class AsyncUtils {
         public void call(Boolean success, AssetPrice[] prices) {
             this.success = success;
             this.prices = prices;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
+            implements EthTxController.GetAllTransactionInfoResponse {
+        public TransactionInfo[] txInfos;
+        public String name;
+
+        public GetAllTransactionInfoResponseContext(
+                Runnable responseCompleteCallback, String name) {
+            super(responseCompleteCallback);
+            this.name = name;
+        }
+
+        @Override
+        public void call(TransactionInfo[] txInfos) {
+            this.txInfos = txInfos;
             super.fireResponseCompleteCallback();
         }
     }
