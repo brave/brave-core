@@ -20,6 +20,7 @@
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/brave_vpn/url_constants.h"
 #include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
@@ -60,16 +61,21 @@ bool IsValidRegion(const brave_vpn::mojom::Region& region) {
 }
 
 std::string GetBraveVPNPaymentsEnv() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNPaymentsEnv)) {
-#if defined(OFFICIAL_BUILD)
+  const std::string env = brave_rewards::GetEnvironment();
+  if (env == brave_rewards::kEnvProduction)
     return "";
-#else
-    return "development";
-#endif
-  }
+  // Use same value.
+  if (env == brave_rewards::kEnvStaging ||
+      env == brave_rewards::kEnvDevelopment)
+    return env;
 
-  return cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNPaymentsEnv);
+  NOTREACHED();
+
+#if defined(OFFICIAL_BUILD)
+  return "";
+#else
+  return "development";
+#endif
 }
 
 }  // namespace
@@ -167,6 +173,7 @@ void BraveVpnServiceDesktop::OnRemoved() {
 
 void BraveVpnServiceDesktop::UpdateAndNotifyConnectionStateChange(
     ConnectionState state) {
+  // this is a simple state machine for handling connection state
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (connection_state_ == state)
     return;
@@ -410,6 +417,7 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
 
 void BraveVpnServiceDesktop::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
   if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
     skus_credential_ =
@@ -417,6 +425,7 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
     SetPurchasedState(PurchasedState::PURCHASED);
     return;
   }
+#endif
 
   const std::string credential =
       prefs_->GetString(brave_rewards::prefs::kSkusVPNCredential);

@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
-#include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/components/brave_vpn/features.h"
-#include "brave/components/brave_vpn/switches.h"
 #include "brave/components/brave_vpn/url_constants.h"
+#include "brave/components/skus/browser/skus_utils.h"
 
 namespace brave_vpn {
 
@@ -18,22 +17,12 @@ bool IsBraveVPNEnabled() {
 }
 
 std::string GetManageUrl() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNAccountHost)) {
-#if defined(OFFICIAL_BUILD)
+  const std::string env = brave_rewards::GetEnvironment();
+  if (env == brave_rewards::kEnvProduction)
     return brave_vpn::kManageUrlProd;
-#else
-    return brave_vpn::kManageUrlDev;
-#endif
-  }
-
-  const std::string value =
-      cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNAccountHost);
-  if (value == "prod")
-    return brave_vpn::kManageUrlProd;
-  if (value == "staging")
+  if (env == brave_rewards::kEnvStaging)
     return brave_vpn::kManageUrlStaging;
-  if (value == "dev")
+  if (env == brave_rewards::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
   NOTREACHED();

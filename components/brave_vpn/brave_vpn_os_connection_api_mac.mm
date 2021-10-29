@@ -39,7 +39,7 @@ std::string NEVPNStatusToString(NEVPNStatus status) {
     default:
       NOTREACHED();
   }
-  return std::string();
+  return "NEVPNStatusInvalid";
 }
 
 NSData* GetPasswordRefForAccount() {
