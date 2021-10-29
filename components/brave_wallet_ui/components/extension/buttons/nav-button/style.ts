@@ -12,7 +12,7 @@ export const StyledButton = styled.button<StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${(p) => p.disabled ? 'default' : 'pointer'};
   border-radius: 40px;
   padding: 10px 22px;
   outline: none;

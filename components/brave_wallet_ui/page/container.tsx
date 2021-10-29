@@ -7,7 +7,6 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
 
 import * as WalletPageActions from './actions/wallet_page_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -61,7 +60,7 @@ import {
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
-import { useSwap, useAssets, useTimeout, useBalance, useSend } from '../common/hooks'
+import { useSwap, useAssets, useTimeout, useBalance, useSend, usePreset } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
@@ -189,6 +188,8 @@ function Container (props: Props) {
   const getSelectedAccountBalance = useBalance(selectedAccount)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
   const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
+
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, onSetFromAmount, onSetSendAmount)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -341,23 +342,6 @@ function Container (props: Props) {
     })
     return formated
   }, [selectedAssetPriceHistory])
-
-  const onSelectPresetAmountFactory = (sendOrSwap: 'send' | 'swap') => (percent: number) => {
-    const asset = selectedAccount.tokens.find(
-      (token) => (
-        token.asset.contractAddress === fromAsset.asset.contractAddress ||
-        token.asset.symbol === fromAsset.asset.symbol
-      )
-    )
-    const amount = new BigNumber(asset?.assetBalance || '0').times(percent).toString()
-    const formattedAmount = formatBalance(amount.toString(), asset?.asset.decimals ?? 18)
-
-    if (sendOrSwap === 'send') {
-      onSetSendAmount(formattedAmount)
-    } else {
-      onSetFromAmount(formattedAmount)
-    }
-  }
 
   const onShowAddModal = () => {
     props.walletPageActions.setShowAddModal(true)

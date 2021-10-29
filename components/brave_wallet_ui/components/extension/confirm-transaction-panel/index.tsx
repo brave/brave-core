@@ -52,7 +52,8 @@ import {
   URLText,
   QueueStepText,
   QueueStepRow,
-  QueueStepButton
+  QueueStepButton,
+  TopColumn
 } from './style'
 
 import {
@@ -296,20 +297,25 @@ function ConfirmTransactionPanel (props: Props) {
           <>
             {transactionInfo.txType === TransactionType.ERC20Approve &&
               <>
-                <SectionRow>
-                  <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
-                  <SectionRightColumn>
-                    <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
+                <TopColumn>
+                  <EditButton onClick={onToggleEditGas}>{getLocale('braveWalletAllowSpendEditButton')}</EditButton>
+                  <SectionRow>
+                    <TransactionTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionTitle>
                     <TransactionTypeText>{transactionDetails.gasFee} {selectedNetwork.symbol}</TransactionTypeText>
-                    <TransactionText>${transactionDetails.gasFeeFiat}</TransactionText>
-                  </SectionRightColumn>
-                </SectionRow>
+                  </SectionRow>
+                  <TransactionText
+                    hasError={transactionDetails.insufficientFundsError}
+                  >
+                    {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
+                    ${transactionDetails.gasFeeFiat}
+                  </TransactionText>
+                </TopColumn>
                 <Divider />
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletAllowSpendCurrentAllowance')}</TransactionTitle>
                   <SectionRightColumn>
                     <TransactionTypeText>{currentTokenAllowance} {transactionDetails.symbol}</TransactionTypeText>
-                    <TransactionText/>
+                    <TransactionText />
                   </SectionRightColumn>
                 </SectionRow>
                 <Divider />
@@ -317,7 +323,7 @@ function ConfirmTransactionPanel (props: Props) {
                   <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
                   <SectionRightColumn>
                     <TransactionTypeText>{transactionDetails.value} {transactionDetails.symbol}</TransactionTypeText>
-                    <TransactionText/>
+                    <TransactionText />
                   </SectionRightColumn>
                 </SectionRow>
               </>
@@ -338,7 +344,12 @@ function ConfirmTransactionPanel (props: Props) {
                   <SectionRightColumn>
                     <TransactionText>{getLocale('braveWalletConfirmTransactionAmountGas')}</TransactionText>
                     <GrandTotalText>{transactionDetails.value} {transactionDetails.symbol} + {transactionDetails.gasFee} {selectedNetwork.symbol}</GrandTotalText>
-                    <TransactionText>${transactionDetails.fiatTotal}</TransactionText>
+                    <TransactionText
+                      hasError={transactionDetails.insufficientFundsError}
+                    >
+                      {transactionDetails.insufficientFundsError ? `${getLocale('braveWalletSwapInsufficientBalance')} ` : ''}
+                      ${transactionDetails.fiatTotal}
+                    </TransactionText>
                   </SectionRightColumn>
                 </SectionRow>
               </>
@@ -364,6 +375,8 @@ function ConfirmTransactionPanel (props: Props) {
           buttonType='confirm'
           text={getLocale('braveWalletAllowSpendConfirmButton')}
           onSubmit={onConfirm}
+          disabled={transactionDetails.insufficientFundsError}
+
         />
       </ButtonRow>
     </StyledWrapper>

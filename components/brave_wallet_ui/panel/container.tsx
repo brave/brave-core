@@ -63,8 +63,7 @@ import {
   getERC20Allowance
 } from '../common/async/lib'
 
-import { formatBalance } from '../utils/format-balances'
-import { useAssets, useBalance, useSwap, useSend, useTimeout } from '../common/hooks'
+import { useAssets, useBalance, useSwap, useSend, useTimeout, usePreset } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -152,6 +151,7 @@ function Container (props: Props) {
     toAmount,
     toAsset,
     customSlippageTolerance,
+    onSetFromAmount,
     setFromAsset,
     setSwapToOrFrom,
     onToggleOrderType,
@@ -200,6 +200,8 @@ function Container (props: Props) {
   const getSelectedAccountBalance = useBalance(selectedAccount)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
   const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
+
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, onSetFromAmount, onSetSendAmount)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -254,12 +256,6 @@ function Container (props: Props) {
     } else {
       onSetSendAmount(value)
     }
-  }
-
-  const onSelectPresetSendAmount = (percent: number) => {
-    const amount = Number(fromAsset.assetBalance) * percent
-    const formatedAmmount = formatBalance(amount.toString(), fromAsset.asset.decimals)
-    onSetSendAmount(formatedAmmount)
   }
 
   const [readyToConnect, setReadyToConnect] = React.useState<boolean>(false)
@@ -670,7 +666,7 @@ function Container (props: Props) {
               <Send
                 onChangeSendView={onChangeSendView}
                 onInputChange={onInputChange}
-                onSelectPresetAmount={onSelectPresetSendAmount}
+                onSelectPresetAmount={onSelectPresetAmountFactory('send')}
                 onSubmit={onSubmitSend}
                 selectedAsset={fromAsset}
                 selectedAssetAmount={sendAmount}
@@ -744,7 +740,7 @@ function Container (props: Props) {
                 onFlipAssets={flipSwapAssets}
                 onSubmitSwap={onSubmitSwap}
                 onQuoteRefresh={onSwapQuoteRefresh}
-                onSelectPresetAmount={onSelectPresetSendAmount}
+                onSelectPresetAmount={onSelectPresetAmountFactory('swap')}
                 onInputChange={onSwapInputChange}
                 onFilterAssetList={onFilterAssetList}
                 onChangeSwapView={onChangeSwapView}

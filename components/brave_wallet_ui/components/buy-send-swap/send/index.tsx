@@ -7,6 +7,7 @@ import {
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
+import { ErrorText } from '../shared-styles'
 // Styled Components
 import {
   StyledWrapper
@@ -48,6 +49,13 @@ function Send (props: Props) {
     onInputChange(address, 'address')
   }
 
+  const insuficientFundsError = React.useMemo((): boolean => {
+    if (parseFloat(selectedAssetAmount) === 0) {
+      return false
+    }
+    return selectedAssetAmount > selectedAssetBalance
+  }, [selectedAssetBalance, selectedAssetAmount])
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -69,8 +77,16 @@ function Send (props: Props) {
         inputName='address'
         onPaste={onPasteFromClipboard}
       />
+      {insuficientFundsError &&
+        <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
+      }
       <NavButton
-        disabled={addressError !== '' || toAddressOrUrl === ''}
+        disabled={addressError !== ''
+          || toAddressOrUrl === ''
+          || parseFloat(selectedAssetAmount) === 0
+          || selectedAssetAmount === ''
+          || insuficientFundsError
+        }
         buttonType='primary'
         text={getLocale('braveWalletSend')}
         onSubmit={onSubmit}

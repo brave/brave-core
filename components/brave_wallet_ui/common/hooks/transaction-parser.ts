@@ -50,6 +50,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   value: string
   symbol: string
   decimals: number
+  insufficientFundsError: boolean
 
   // Token approvals
   approvalTarget?: string
@@ -93,9 +94,11 @@ export function useTransactionParser (
   }, [visibleTokens])
 
   return React.useCallback((transactionInfo: TransactionInfo) => {
-    const { txArgs, txData } = transactionInfo
+    const { txArgs, txData, fromAddress } = transactionInfo
     const { baseData } = txData
     const { value, to } = baseData
+    const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
+    const accountsNativeFiatBalance = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())?.fiatBalance
 
     switch (true) {
       // transfer(address recipient, uint256 amount) → bool
@@ -108,6 +111,9 @@ export function useTransactionParser (
         const feeDetails = parseTransactionFees(transactionInfo)
         const { gasFeeFiat } = feeDetails
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
+        const accountsTokenFiatBalance = account?.tokens.find((token) => token.asset.contractAddress.toLowerCase() === to.toLowerCase())?.fiatBalance
+        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
+        const insufficientTokenFunds = Number(sendAmountFiat) > Number(accountsTokenFiatBalance)
 
         return {
           hash: transactionInfo.txHash,
@@ -123,6 +129,7 @@ export function useTransactionParser (
           value: formatBalance(amount, token?.decimals ?? 18),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
+          insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
           ...feeDetails
         } as ParsedTransaction
       }
@@ -134,6 +141,7 @@ export function useTransactionParser (
         const feeDetails = parseTransactionFees(transactionInfo)
         const { gasFeeFiat } = feeDetails
         const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
+        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
 
         return {
           hash: transactionInfo.txHash,
@@ -151,6 +159,7 @@ export function useTransactionParser (
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
+          insufficientFundsError: insufficientNativeFunds,
           ...feeDetails
         } as ParsedTransaction
       }
@@ -180,6 +189,7 @@ export function useTransactionParser (
           value: formatBalance(value, selectedNetwork.decimals),
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
+          insufficientFundsError: Number(totalAmountFiat) > Number(accountsNativeFiatBalance),
           ...feeDetails
         } as ParsedTransaction
       }
