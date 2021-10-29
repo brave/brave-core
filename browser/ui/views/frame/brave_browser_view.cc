@@ -184,7 +184,7 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (pref_name == brave_vpn::prefs::kBraveVPNShowButton) {
-    vpn_panel_host_.ResetBubbleManager();
+    vpn_panel_controller_.ResetBubbleManager();
     return;
   }
 #endif
@@ -224,7 +224,7 @@ ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
 
 void BraveBrowserView::ShowBraveVPNBubble() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_host_.ShowBraveVPNPanel();
+  vpn_panel_controller_.ShowBraveVPNPanel();
 #endif
 }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/brave_vpn_panel_host.h"
+#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/webui_url_constants.h"
@@ -11,14 +11,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "url/gurl.h"
 
-BraveVPNPanelHost::BraveVPNPanelHost(BraveBrowserView* browser_view)
+BraveVPNPanelController::BraveVPNPanelController(BraveBrowserView* browser_view)
     : browser_view_(browser_view) {
   DCHECK(browser_view_);
 }
 
-BraveVPNPanelHost::~BraveVPNPanelHost() = default;
+BraveVPNPanelController::~BraveVPNPanelController() = default;
 
-void BraveVPNPanelHost::ShowBraveVPNPanel() {
+void BraveVPNPanelController::ShowBraveVPNPanel() {
   auto* anchor_view = browser_view_->GetAnchorViewForBraveVPNPanel();
   if (!anchor_view)
     return;
@@ -37,6 +37,6 @@ void BraveVPNPanelHost::ShowBraveVPNPanel() {
   webui_bubble_manager_->ShowBubble();
 }
 
-void BraveVPNPanelHost::ResetBubbleManager() {
+void BraveVPNPanelController::ResetBubbleManager() {
   webui_bubble_manager_.reset();
 }
