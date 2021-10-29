@@ -30,6 +30,7 @@
 #include "ui/events/event.h"
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
@@ -157,7 +158,8 @@ void BraveToolbarView::Init() {
   bookmark_->UpdateImageAndText();
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (brave_wallet::IsNativeWalletEnabled()) {
+  if (brave_wallet::IsNativeWalletEnabled() &&
+      brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = new WalletButton(GetAppMenuButton(), profile->GetPrefs());
     wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
