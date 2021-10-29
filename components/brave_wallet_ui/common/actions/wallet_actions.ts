@@ -37,7 +37,7 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   TransactionInfo,
-  TransactionListInfo,
+  AccountTransactions,
   DefaultWallet,
   GasEstimation,
   ApproveERC20Params
@@ -86,8 +86,7 @@ export const transactionStatusChanged = createAction<TransactionStatusChanged>('
 export const approveTransaction = createAction<TransactionInfo>('approveTransaction')
 export const rejectTransaction = createAction<TransactionInfo>('rejectTransaction')
 export const rejectAllTransactions = createAction('rejectAllTransactions')
-export const knownTransactionsUpdated = createAction<TransactionInfo[]>('knownTransactionsUpdated')
-export const setTransactionList = createAction<TransactionListInfo[]>('setTransactionList')
+export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
 export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')
 export const notifyUserInteraction = createAction('notifyUserInteraction')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')

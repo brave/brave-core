@@ -189,7 +189,7 @@ export interface WalletState {
   selectedAccount: WalletAccountType
   selectedNetwork: EthereumChain
   accounts: WalletAccountType[]
-  transactions: TransactionListInfo[]
+  transactions: AccountTransactions
   userVisibleTokensInfo: TokenInfo[]
   fullTokenList: TokenInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
@@ -616,9 +616,8 @@ export interface TransactionInfo {
   confirmedTime: MojoTime
 }
 
-export interface TransactionListInfo {
-  account: UserAccountType
-  transactions: TransactionInfo[]
+export type AccountTransactions = {
+  [accountId: string]: TransactionInfo[]
 }
 
 export interface GetAllTransactionInfoReturnInfo {
