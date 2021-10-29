@@ -92,6 +92,10 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kNewTabPageShowBackgroundImage,
+      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
+                          base::Unretained(this)));
 
   OnUpdated(GetCurrentBrandedWallpaperData());
   OnUpdated(GetCurrentWallpaperData());
@@ -215,15 +219,19 @@ void ViewCounterService::OnSuperReferralEnded() {
 void ViewCounterService::ResetModel() {
   model_.Reset();
 
+  model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
+  model_.set_show_wallpaper(
+      prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage));
+
   // SR/SI
   if (auto* data = GetCurrentBrandedWallpaperData()) {
     model_.set_total_branded_image_count(data->backgrounds.size());
     model_.set_always_show_branded_wallpaper(data->IsSuperReferral());
-    model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
   }
   // BI
-  if (auto* data = GetCurrentWallpaperData())
+  if (auto* data = GetCurrentWallpaperData()) {
     model_.set_total_image_count(data->backgrounds.size());
+  }
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {

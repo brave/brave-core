@@ -37,6 +37,7 @@ class ViewCounterModel {
   }
 
   void set_show_branded_wallpaper(bool show) { show_branded_wallpaper_ = show; }
+  void set_show_wallpaper(bool show) { show_wallpaper_ = show; }
 
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
@@ -50,6 +51,8 @@ class ViewCounterModel {
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesOnlyTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           PrefsWithModelTest);
 
   void RegisterPageViewForBrandedImages();
 
@@ -62,6 +65,8 @@ class ViewCounterModel {
   int total_branded_image_count_ = 0;
   bool always_show_branded_wallpaper_ = false;
   bool show_branded_wallpaper_ = true;
+  // For NTP BI.
+  bool show_wallpaper_ = true;
 };
 
 }  // namespace ntp_background_images

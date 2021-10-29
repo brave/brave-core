@@ -28,20 +28,24 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
 
 void ViewCounterModel::RegisterPageView() {
   RegisterPageViewForBrandedImages();
-  if (!ShouldShowBrandedWallpaper()) {
-    RegisterPageViewForBackgroundImages();
-  }
+  RegisterPageViewForBackgroundImages();
 }
 
 void ViewCounterModel::RegisterPageViewForBrandedImages() {
+  // NTP BI component is not ready.
   if (total_branded_image_count_ == 0)
     return;
 
+  // In SR mode, SR image is always visible regardless of
   if (always_show_branded_wallpaper_) {
     current_branded_wallpaper_image_index_++;
     current_branded_wallpaper_image_index_ %= total_branded_image_count_;
     return;
   }
+
+  // User turned off "Show Sponsored Images" option.
+  if (!show_branded_wallpaper_)
+    return;
 
   // When count is `0` then UI is free to show
   // the branded wallpaper, until the next time `RegisterPageView`
@@ -59,7 +63,19 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
+  // NTP BI component is not ready.
   if (total_image_count_ == 0)
+    return;
+
+  if (!show_wallpaper_)
+    return;
+
+  // We don't show NTP BI in SR mode.
+  if (always_show_branded_wallpaper_)
+    return;
+
+  // Don't count when SI will be visible.
+  if (show_branded_wallpaper_ && count_to_branded_wallpaper_ == 0)
     return;
 
   // Increase background image index

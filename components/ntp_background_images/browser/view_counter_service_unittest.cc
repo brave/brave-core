@@ -200,6 +200,22 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
 #endif
 }
 
+TEST_F(NTPBackgroundImagesViewCounterTest, PrefsWithModelTest) {
+  auto& model = view_counter_->model_;
+  EXPECT_TRUE(model.show_wallpaper_);
+  EXPECT_TRUE(model.show_branded_wallpaper_);
+  EXPECT_FALSE(model.always_show_branded_wallpaper_);
+
+  EnableSRPref(true);
+  EXPECT_FALSE(model.always_show_branded_wallpaper_);
+
+  EnableSIPref(false);
+  EXPECT_FALSE(model.show_branded_wallpaper_);
+
+  EnableNTPBGImagesPref(false);
+  EXPECT_FALSE(model.show_wallpaper_);
+}
+
 TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {
   // Sanity check that the default is still to be opted-in.
   // If this gets manually changed, then this test should be manually changed
