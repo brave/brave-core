@@ -78,7 +78,6 @@ public class PortfolioHelper {
     }
 
     public AssetTimePrice[] getFiatHistory() {
-        Log.e("HELPER", "getFiatHistory mFiatHistory.length=" + mFiatHistory.length);
         return mFiatHistory;
     }
 
