@@ -70,10 +70,10 @@ class LoginInfoViewController: LoginAuthViewController {
     
     // MARK: Lifecycle
 
-    init(profile: Profile, loginEntry: Login) {
+    init(profile: Profile, loginEntry: Login, windowProtection: WindowProtection?) {
         self.loginEntry = loginEntry
         self.profile = profile
-        super.init()
+        super.init(windowProtection: windowProtection)
     }
 
     required init?(coder aDecoder: NSCoder) {

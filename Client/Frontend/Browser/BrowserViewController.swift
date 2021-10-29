@@ -161,6 +161,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     
     let vpnProductInfo = VPNProductInfo()
     
+    /// Window Protection instance which will be used for controller requires biometric authentication
+    var windowProtection: WindowProtection?
+    
     // Product Notification Related Properties
     
     /// Boolean which is tracking If a product notification is presented

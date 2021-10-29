@@ -59,19 +59,22 @@ class SettingsViewController: TableViewController {
     private let legacyWallet: BraveLedger?
     private let feedDataSource: FeedDataSource
     private let historyAPI: BraveHistoryAPI
-    
+    private let windowProtection: WindowProtection?
+
     init(profile: Profile,
          tabManager: TabManager,
          feedDataSource: FeedDataSource,
          rewards: BraveRewards? = nil,
          legacyWallet: BraveLedger? = nil,
-         historyAPI: BraveHistoryAPI) {
+         historyAPI: BraveHistoryAPI,
+         windowProtection: WindowProtection?) {
         self.profile = profile
         self.tabManager = tabManager
         self.feedDataSource = feedDataSource
         self.rewards = rewards
         self.legacyWallet = legacyWallet
         self.historyAPI = historyAPI
+        self.windowProtection = windowProtection
         
         super.init(style: .insetGrouped)
     }
@@ -423,7 +426,9 @@ class SettingsViewController: TableViewController {
             rows: [
                 .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
                 Row(text: Strings.Login.loginListNavigationTitle, selection: { [unowned self] in
-                    let loginsPasswordsViewController = LoginListViewController(profile: self.profile)
+                    let loginsPasswordsViewController = LoginListViewController(
+                        profile: self.profile,
+                        windowProtection: self.windowProtection)
                     loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
                     self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-save-logins").template, accessory: .disclosureIndicator)
