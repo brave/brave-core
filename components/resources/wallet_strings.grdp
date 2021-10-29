@@ -101,9 +101,9 @@
     <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Secure your crypto assets with a password</message>
     <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_DESCRIPTION" desc="Create Password screen description">Passwords must be at least 7 characters, and contain at least one number and one special character.</message>
     <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_INPUT" desc="Create Password screen password input">Password</message>
-    <message name="IDS_BRAVE_WALLET_CONFIRM_PASSWORD_INPUT" desc="Create Password screen confirm password input">Re-Type Password</message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_PASSWORD_INPUT" desc="Create Password screen confirm password input">Confirm password</message>
     <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_ERROR" desc="Create Password screen password input error">Passwords must be at least 7 characters, and contain at least one number and one special character.</message>
-    <message name="IDS_BRAVE_WALLET_CONFIRM_PASSWORD_ERROR" desc="Create Password screen confirm password input error">Verify password does not match</message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_PASSWORD_ERROR" desc="Create Password screen confirm password input error">Passwords do not match</message>
     <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_TITLE" desc="Lock screen title">Enter password to unlock wallet</message>
     <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_BUTTON" desc="Lock screen unlock button">Unlock</message>
     <message name="IDS_BRAVE_WALLET_LOCK_SCREEN_ERROR" desc="Lock screen wrong password error">Incorrect password</message>
