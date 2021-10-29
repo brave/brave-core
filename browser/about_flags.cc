@@ -25,6 +25,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "net/base/features.h"
+#include "third_party/blink/public/common/features.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/components/brave_vpn/features.h"
@@ -224,6 +225,12 @@ constexpr char kBraveTranslateGoDescription[] =
     "and brave translation backed. Also disables suggestions to install google "
     "translate extension.";
 
+// A blink feature.
+constexpr char kFileSystemAccessAPIName[] = "File System Access API";
+constexpr char kFileSystemAccessAPIDescription[] =
+    "Enables the File System Access API, giving websites access to the file "
+    "system";
+
 }  // namespace
 
 }  // namespace flag_descriptions
@@ -403,6 +410,10 @@ constexpr char kBraveTranslateGoDescription[] =
       flag_descriptions::kBraveSyncName,                                    \
       flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
       FEATURE_VALUE_TYPE(brave_sync::features::kBraveSync)},                \
+    {"file-system-access-api",                                              \
+      flag_descriptions::kFileSystemAccessAPIName,                          \
+      flag_descriptions::kFileSystemAccessAPIDescription, kOsDesktop,       \
+      FEATURE_VALUE_TYPE(blink::features::kFileSystemAccessAPI)},           \
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \

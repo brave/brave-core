@@ -16,6 +16,7 @@
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "url/gurl.h"
@@ -37,9 +38,12 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString(
-      "FileSystemAccessAPIExperimental", false);
+  if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
+    blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccess",
+                                                       false);
+    blink::WebRuntimeFeatures::EnableFeatureFromString(
+        "FileSystemAccessAPIExperimental", false);
+  }
   blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
 }
 
