@@ -79,7 +79,6 @@ class SPEEDREADER_EXPORT Rewriter {
 class SPEEDREADER_EXPORT SpeedReader {
  public:
   SpeedReader();
-  /// New instance of SpeedReader using serialized whitelist
   ~SpeedReader();
   SpeedReader(const SpeedReader&) = delete;
   void operator=(const SpeedReader&) = delete;

@@ -9,19 +9,15 @@ At a high level, SpeedReader:
 
 ## Structure
 
-SpeedReader has two methods of deciding whether a page is readable:
+SpeedReader decides whether a page is suitable for distillation,
+or 'readable', based on a `classifier` that analyses HTML content
+of a page and applies a pre-trained model to decide whether the page
+is article-style, text-oriented, and so on.
 
-* `classifier` that analyses HTML content of a page and applies a pre-trained
-  classifier to decide whether the page is article-style, text-oriented
-* `whitelist` that uses adblock-style rules that explciitly whitelist pages that
-  should be distilled
-
-Any page that is readable should then be passed to an instance of `SpeedReader`
-. Internally it uses the `whitelist` to determine whether to apply streaming,
-rule-based rewriting (using [lol_html](https://github.com/cloudflare/lol-html)
-to support output streaming), or heuristics approach loosely based on [Mozilla's
-Readability](https://github.com/mozilla/readability) and Rust implementation
-improved from https://github.com/kumabook/readability.
+Any page that is readable should then be passed to an instance of
+`SpeedReader`. Internally it uses heuristics to determine whether
+to apply streaming, rule-based rewriting (using [lol_html](https://github.com/cloudflare/lol-html)), or an approach derived from the [readability](https://github.com/kumabook/readability)
+crate, itself loosely based on [Mozilla's Readability.js](https://github.com/mozilla/readability).
 
 ## Running the tests
 
@@ -29,6 +25,6 @@ You need to clone the speedreader test data to the
 `components/speedreader/rust/lib` directory.
 
 ```
-$ git@github.com:brave-experiments/speedreader-test-data.git data
+$ git clone https://github.com/brave-experiments/speedreader-test-data data
 $ cargo test
 ```
