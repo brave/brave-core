@@ -271,10 +271,7 @@ class SettingsViewController: TableViewController {
                      image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
             .boolRow(title: Strings.mediaAutoBackgrounding,
                      option: Preferences.General.mediaAutoBackgrounding,
-                     image: #imageLiteral(resourceName: "background_play_settings_icon").template),
-            .boolRow(title: Strings.mediaAutoPlays,
-                     option: Preferences.General.mediaAutoPlays,
-                     image: #imageLiteral(resourceName: "settings-autoplay").template)
+                     image: #imageLiteral(resourceName: "background_play_settings_icon").template)
         ])
         
         if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {

@@ -236,7 +236,6 @@ class Tab: NSObject {
             configuration!.allowsInlineMediaPlayback = true
             // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
-            configuration!.mediaTypesRequiringUserActionForPlayback = Preferences.General.mediaAutoPlays.value ? [] : .all
             
             if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
                 configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
