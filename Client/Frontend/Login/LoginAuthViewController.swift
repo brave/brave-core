@@ -10,9 +10,12 @@ import Shared
 
 class LoginAuthViewController: UITableViewController {
         
+    private let windowProtection: WindowProtection?
+
     // MARK: Lifecycle
     
-    init(requiresAuthentication: Bool = false) {
+    init(windowProtection: WindowProtection?, requiresAuthentication: Bool = false) {
+        self.windowProtection = windowProtection
         self.requiresAuthentication = requiresAuthentication
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,7 +53,7 @@ class LoginAuthViewController: UITableViewController {
     
     @discardableResult
     func askForAuthentication() -> Bool {
-        guard let windowProtection = self.currentScene?.windowProtection else {
+        guard let windowProtection = windowProtection else {
             return false
         }
 

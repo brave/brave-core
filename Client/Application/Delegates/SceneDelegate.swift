@@ -165,6 +165,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if let scene = scene as? UIWindowScene {
             scene.browserViewController?.showWalletTransferExpiryPanelIfNeeded()
+            scene.browserViewController?.windowProtection = windowProtection
         }
     }
 
@@ -458,12 +459,6 @@ extension UIWindowScene {
     /// Returns the first instance of `BrowserViewController` that is found in the current scene
     var browserViewController: BrowserViewController? {
         return browserViewControllers.first
-    }
-    
-    /// Returns window protection for the window scene
-    /// Used to handle biometric operations inside some controller
-    var windowProtection: WindowProtection? {
-        return windowProtection
     }
 }
 

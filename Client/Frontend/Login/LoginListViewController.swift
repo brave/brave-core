@@ -37,6 +37,8 @@ class LoginListViewController: LoginAuthViewController {
     // MARK: Private
     
     private let profile: Profile
+    private let windowProtection: WindowProtection?
+    
     private var loginEntries = [Login]()
     private var isFetchingLoginEntries = false
     private var searchLoginTimer: Timer?
@@ -46,9 +48,10 @@ class LoginListViewController: LoginAuthViewController {
     
     // MARK: Lifecycle
     
-    init(profile: Profile) {
+    init(profile: Profile, windowProtection: WindowProtection?) {
         self.profile = profile
-        super.init(requiresAuthentication: true)
+        self.windowProtection = windowProtection
+        super.init(windowProtection: windowProtection, requiresAuthentication: true)
     }
     
     required init?(coder: NSCoder) {
@@ -244,7 +247,10 @@ extension LoginListViewController {
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == Section.savedLogins.rawValue, let loginEntry = loginEntries[safe: indexPath.row] {
-            let loginDetailsViewController = LoginInfoViewController(profile: profile, loginEntry: loginEntry)
+            let loginDetailsViewController = LoginInfoViewController(
+                profile: profile,
+                loginEntry: loginEntry,
+                windowProtection: windowProtection)
             loginDetailsViewController.settingsDelegate = settingsDelegate
             navigationController?.pushViewController(loginDetailsViewController, animated: true)
             
