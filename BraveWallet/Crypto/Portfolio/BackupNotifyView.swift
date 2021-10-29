@@ -35,7 +35,7 @@ struct BackupNotifyView: View {
       }
     }
     .frame(maxWidth: .infinity)
-    .background(Color(.braveWarningBackground))
+    .background(Color(.braveErrorBackground))
     .clipShape(backgroundShape)
   }
 }
