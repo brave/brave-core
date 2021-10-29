@@ -334,7 +334,6 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 
-  CreativeDaypartInfo daypart_info;
   CreativeNewTabPageAdInfo info;
   info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
   info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
@@ -350,8 +349,10 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
   info.total_max = 6;
   info.value = 1.0;
   info.segment = "technology & computing-software";
+  CreativeDaypartInfo daypart_info;
   info.dayparts.push_back(daypart_info);
-  info.geo_targets = {"US"};
+  info.dayparts.push_back(daypart_info);
+  info.geo_targets = {"US-FL", "US-CA"};
   info.target_url = "https://brave.com";
   info.company_name = "Test Ad 1 Title";
   info.alt = "Test Ad 1 Body";
@@ -472,7 +473,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
 }
 
 TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableTest,
-       GetCreativeNewTabPageAdsForNonExistentCategory) {
+       GetCreativeNewTabPageAdsForNonExistentSegment) {
   // Arrange
   CreativeNewTabPageAdList creative_new_tab_page_ads;
 

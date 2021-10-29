@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_INFO_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_NOTIFICATION_INFO_ALIASES_H_
 
+#include <map>
+#include <string>
 #include <vector>
 
 #include "bat/ads/internal/bundle/creative_ad_notification_info.h"
@@ -13,6 +15,8 @@
 namespace ads {
 
 using CreativeAdNotificationList = std::vector<CreativeAdNotificationInfo>;
+using CreativeAdNotificationMap =
+    std::map<std::string, CreativeAdNotificationInfo>;
 
 }  // namespace ads
 
