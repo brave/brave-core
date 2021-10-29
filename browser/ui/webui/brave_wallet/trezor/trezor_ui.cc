@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/trezor_bridge/resources/grit/trezor_bridge_generated_map.h"
 #include "components/grit/brave_components_resources.h"

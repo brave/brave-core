@@ -66,10 +66,7 @@ module.exports = async function (env, argv) {
         }]
     },
     node: {
-      fs: 'empty',
-      child_process: 'empty',
-      net: 'empty',
-      tls: 'empty'
+      fs: 'empty'
     }
   }
 }
