@@ -71,6 +71,8 @@ public class PortfolioFragment extends Fragment
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
 
+    PortfolioHelper mPortfolioHelper;
+
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
     }
@@ -245,8 +247,8 @@ public class PortfolioFragment extends Fragment
             button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             mPreviousCheckedRadioId = checkedId;
-            // TODO(AlexeyBarabash): run updatePortfolioGraph() and re-use PortfolioHelper
-            updatePortfolio();
+
+            updatePortfolioGraph();
         });
     }
 
@@ -319,14 +321,20 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
-    private void updatePortfolioGraph(PortfolioHelper portfolioHelper) {
+    private void updatePortfolioGraph() {
         AssetPriceTimeframe.validate(mCurrentTimeframeType);
-        portfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
-        portfolioHelper.calculateFiatHistory(() -> {
+
+        if (mPortfolioHelper == null) {
+            updatePortfolio();
+            return;
+        }
+
+        mPortfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
+        mPortfolioHelper.calculateFiatHistory(() -> {
             PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
                 SmoothLineChartEquallySpaced chartES = getView().findViewById(R.id.line_chart);
                 chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
-                chartES.setData(portfolioHelper.getFiatHistory());
+                chartES.setData(mPortfolioHelper.getFiatHistory());
             });
         });
     }
@@ -339,25 +347,29 @@ public class PortfolioFragment extends Fragment
             if (keyringInfo != null) {
                 accountInfos = keyringInfo.accountInfos;
             }
-            PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                    getAssetRatioController(), getEthJsonRpcController(), accountInfos);
+
+            if (mPortfolioHelper == null) {
+                mPortfolioHelper =
+                        new PortfolioHelper(getBraveWalletService(), getAssetRatioController(),
+                                getKeyringController(), getEthJsonRpcController());
+            }
 
             String chainName = mSpinner.getSelectedItem().toString();
             String chainId = Utils.getNetworkConst(getActivity(), chainName);
-            portfolioHelper.setChainId(chainId);
-            portfolioHelper.calculateBalances(() -> {
+            mPortfolioHelper.setChainId(chainId);
+            mPortfolioHelper.calculateBalances(() -> {
                 final String fiatSumString = String.format(
-                        Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+                        Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
                 PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
                     mFiatSumString = fiatSumString;
                     mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
-                    setUpCoinList(portfolioHelper.getUserAssets(),
-                            portfolioHelper.getPerTokenCryptoSum(),
-                            portfolioHelper.getPerTokenFiatSum());
+                    setUpCoinList(mPortfolioHelper.getUserAssets(),
+                            mPortfolioHelper.getPerTokenCryptoSum(),
+                            mPortfolioHelper.getPerTokenFiatSum());
 
-                    updatePortfolioGraph(portfolioHelper);
+                    updatePortfolioGraph();
                 });
             });
             if (getPendingTx) {
