@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
 
 import { getLocale } from '../../../../common/locale'
-import { toProperCase } from '../../../utils/string-utils'
 import { TransactionPopup } from '../'
 import {
   AssetPriceInfo,
@@ -13,6 +12,12 @@ import {
   TransactionType,
   WalletAccountType
 } from '../../../constants/types'
+
+// Utils
+import { toProperCase } from '../../../utils/string-utils'
+import { convertMojoTimeToJS, formatDateAsRelative } from '../../../utils/datetime-utils'
+
+// Hooks
 import { useTransactionParser } from '../../../common/hooks'
 import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 
@@ -20,7 +25,9 @@ import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 import {
   AddressOrAsset,
   ArrowIcon,
-  BalanceColumn, CoinsButton, CoinsIcon,
+  BalanceColumn,
+  CoinsButton,
+  CoinsIcon,
   DetailColumn,
   DetailRow,
   DetailTextDark,
@@ -66,15 +73,18 @@ const PortfolioTransactionItem = (props: Props) => {
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
-  const transactionDetails = parseTransaction(transaction)
+  const transactionDetails = React.useMemo(
+    () => parseTransaction(transaction),
+    [transaction]
+  )
 
   const fromOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.sender.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails])
+  }, [transactionDetails.sender])
 
   const toOrb = React.useMemo(() => {
     return EthereumBlockies.create({ seed: transactionDetails.recipient.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [transactionDetails, transactionSpotPrices, visibleTokens])
+  }, [transactionDetails.recipient])
 
   const onShowTransactionPopup = () => {
     setShowTransactionPopup(true)
@@ -250,7 +260,7 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionIntentLocale}
             </DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
-            <DetailTextDarkBold>{transactionDetails.relativeDate}</DetailTextDarkBold>
+            <DetailTextDarkBold>{formatDateAsRelative(convertMojoTimeToJS(transactionDetails.createdTime))}</DetailTextDarkBold>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>
