@@ -15,6 +15,8 @@ class WeiFormatterTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(formatter.decimalString(for: "50382080585020020", decimals: 18)), "0.05038")
         // Different decimals
         XCTAssertEqual(try XCTUnwrap(formatter.decimalString(for: "50382080585020020", decimals: 10)), "5038208.05850")
+        // Hex
+        XCTAssertEqual(try XCTUnwrap(formatter.decimalString(for: "16345785d8a0000", radix: .hex, decimals: 18)), "0.10000")
     }
     func testWeiToBalance() throws {
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
@@ -32,5 +34,16 @@ class WeiFormatterTests: XCTestCase {
         XCTAssertNil(formatter.decimalString(for: "0x429d069189e0000", radix: .decimal, decimals: 18))
         XCTAssertNil(formatter.decimalString(for: "", decimals: 18))
         XCTAssertNil(formatter.decimalString(for: "hello, world", radix: .hex, decimals: 18))
+    }
+    func testDecimalToWei() throws {
+        let formatter = WeiFormatter(decimalFormatStyle: .balance)
+        XCTAssertEqual(try XCTUnwrap(formatter.weiString(from: "1", radix: .decimal, decimals: 18)), "1000000000000000000")
+        XCTAssertEqual(try XCTUnwrap(formatter.weiString(from: 1.0, radix: .decimal, decimals: 18)), "1000000000000000000")
+        // Maximum number of digits
+        XCTAssertEqual(try XCTUnwrap(formatter.weiString(from: "0.000000000000000001", radix: .decimal, decimals: 18)), "1")
+        // Invalid number of digits
+        XCTAssertNil(formatter.weiString(from: "0.000000000000000001", radix: .decimal, decimals: 10))
+        // Hex
+        XCTAssertEqual(try XCTUnwrap(formatter.weiString(from: 0.1, radix: .hex, decimals: 18)), "16345785d8a0000")
     }
 }
