@@ -417,4 +417,17 @@ reducer.on(WalletActions.setMetaMaskInstalled, (state: WalletState, payload: boo
   }
 })
 
+reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: InitializedPayloadType) => {
+  const accounts = state.accounts
+  const updatedAccounts = payload.accountInfos.map((info: AccountInfo) => {
+    let account = accounts.find((account: WalletAccountType) => account.address === info.address)
+    account.name = info.name
+    return account
+  })
+  return {
+    ...state,
+    accounts: updatedAccounts
+  }
+})
+
 export default reducer
