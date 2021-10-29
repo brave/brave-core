@@ -171,25 +171,28 @@ function Container (props: Props) {
     onSetSendAmount,
     onSetToAddressOrUrl,
     onSubmitSend,
+    onSelectSendAsset,
     sendAmount,
     toAddressOrUrl,
     toAddress,
-    addressError
+    addressError,
+    selectedSendAsset
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
+    sendAssetOptions,
     selectedAccount,
-    fromAsset,
     props.walletActions.sendERC20Transfer,
     props.walletActions.sendTransaction,
     props.walletActions.sendERC721TransferFrom
   )
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: sendAssetBalance } = getSelectedAccountBalance(selectedSendAsset)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
   const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
@@ -623,6 +626,8 @@ function Container (props: Props) {
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
             buyAssetOptions={WyreAccountAssetOptions}
+            selectedSendAsset={selectedSendAsset}
+            sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}
             swapAssetOptions={swapAssetOptions}
             isFetchingSwapQuote={isFetchingSwapQuote}
@@ -649,6 +654,7 @@ function Container (props: Props) {
             onSelectAsset={onSelectTransactAsset}
             onSelectTab={setSelectedWidgetTab}
             onSwapQuoteRefresh={onSwapQuoteRefresh}
+            onSelectSendAsset={onSelectSendAsset}
           />
         </WalletWidgetStandIn>
       }
