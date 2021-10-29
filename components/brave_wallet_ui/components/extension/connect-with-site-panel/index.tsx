@@ -12,6 +12,7 @@ import {
 import {
   StyledWrapper,
   SelectAddressContainer,
+  SelectAddressInnerContainer,
   NewAccountTitle,
   SelectAddressScrollContainer,
   Details,
@@ -68,6 +69,22 @@ function ConnectWithSite (props: Props) {
     }
   }
 
+  const refs = React.useRef<Array<HTMLDivElement | null>>([])
+  React.useEffect(() => {
+    // Scroll to the first element that was selected
+    refs.current.every((ref) => {
+      if (ref) {
+        ref.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        })
+        return false
+      }
+      return true
+    })
+  }, [])
+
   return (
     <StyledWrapper>
       <ConnectHeader url={siteURL} />
@@ -84,13 +101,17 @@ function ConnectWithSite (props: Props) {
             <NewAccountTitle>{getLocale('braveWalletAccounts')}</NewAccountTitle>
             <DividerLine />
             <SelectAddressScrollContainer>
-              {accounts.map((account) => (
-                <SelectAddress
-                  action={toggleSelected(account)}
-                  key={account.id}
-                  account={account}
-                  isSelected={checkIsSelected(account)}
-                />
+              {accounts.map((account, index) => (
+                <SelectAddressInnerContainer
+                   ref={(ref) => refs.current[index] = (checkIsSelected(account) ? ref : null)}
+                >
+                  <SelectAddress
+                    action={toggleSelected(account)}
+                    key={account.id}
+                    account={account}
+                    isSelected={checkIsSelected(account)}
+                  />
+                </SelectAddressInnerContainer>
               ))}
             </SelectAddressScrollContainer>
             <DividerLine />
