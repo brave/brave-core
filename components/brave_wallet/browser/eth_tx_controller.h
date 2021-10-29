@@ -38,7 +38,8 @@ class KeyringController;
 class EthTxController : public KeyedService,
                         public mojom::EthTxController,
                         public mojom::KeyringControllerObserver,
-                        public EthBlockTracker::Observer {
+                        public EthBlockTracker::Observer,
+                        public EthTxStateManager::Observer {
  public:
   explicit EthTxController(
       EthJsonRpcController* eth_json_rpc_controller,
@@ -127,7 +128,6 @@ class EthTxController : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(EthTxControllerUnitTest, RetryTransaction);
   friend class EthTxControllerUnitTest;
 
-  void NotifyTransactionStatusChanged(EthTxStateManager::TxMeta* meta);
   void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
   void OnConnectionError();
   void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
@@ -197,6 +197,10 @@ class EthTxController : public KeyedService,
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override {}
   void OnNewBlock(uint256_t block_num) override;
+
+  // EthTxStateManager::Observer
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
   EthJsonRpcController* rpc_controller_;          // NOT OWNED
   KeyringController* keyring_controller_;         // NOT OWNED

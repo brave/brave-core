@@ -125,12 +125,14 @@ EthTxController::EthTxController(
   DCHECK(keyring_controller_);
   CheckIfBlockTrackerShouldRun();
   eth_block_tracker_->AddObserver(this);
+  tx_state_manager_->AddObserver(this);
   keyring_controller_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 EthTxController::~EthTxController() {
   eth_block_tracker_->RemoveObserver(this);
+  tx_state_manager_->RemoveObserver(this);
 }
 
 mojo::PendingRemote<mojom::EthTxController> EthTxController::MakeRemote() {
@@ -394,7 +396,6 @@ void EthTxController::OnGetNextNonceForHardware(
   if (!success) {
     meta->status = mojom::TransactionStatus::Error;
     tx_state_manager_->AddOrUpdateTx(*meta);
-    NotifyTransactionStatusChanged(meta.get());
     LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(false, "");
     return;
@@ -402,7 +403,6 @@ void EthTxController::OnGetNextNonceForHardware(
   meta->tx->set_nonce(nonce);
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
-  NotifyTransactionStatusChanged(meta.get());
   uint256_t chain_id = 0;
   if (!HexValueToUint256(rpc_controller_->GetChainId(), &chain_id)) {
     std::move(callback).Run(false, "");
@@ -431,7 +431,6 @@ void EthTxController::ProcessLedgerSignature(
     LOG(ERROR) << "Could not initialize a transaction with v,r,s";
     meta->status = mojom::TransactionStatus::Error;
     tx_state_manager_->AddOrUpdateTx(*meta);
-    NotifyTransactionStatusChanged(meta.get());
     std::move(callback).Run(false);
     return;
   }
@@ -482,7 +481,6 @@ void EthTxController::RejectTransaction(const std::string& tx_meta_id,
   }
   meta->status = mojom::TransactionStatus::Rejected;
   tx_state_manager_->AddOrUpdateTx(*meta);
-  NotifyTransactionStatusChanged(meta.get());
   std::move(callback).Run(true);
 }
 
@@ -494,7 +492,6 @@ void EthTxController::OnGetNextNonce(
   if (!success) {
     meta->status = mojom::TransactionStatus::Error;
     tx_state_manager_->AddOrUpdateTx(*meta);
-    NotifyTransactionStatusChanged(meta.get());
     LOG(ERROR) << "GetNextNonce failed";
     return;
   }
@@ -504,7 +501,6 @@ void EthTxController::OnGetNextNonce(
       meta->from.ToChecksumAddress(), meta->tx.get(), chain_id);
   meta->status = mojom::TransactionStatus::Approved;
   tx_state_manager_->AddOrUpdateTx(*meta);
-  NotifyTransactionStatusChanged(meta.get());
   if (!meta->tx->IsSigned()) {
     LOG(ERROR) << "Transaction must be signed first";
     return;
@@ -540,7 +536,6 @@ void EthTxController::OnPublishTransaction(std::string tx_meta_id,
   }
 
   tx_state_manager_->AddOrUpdateTx(*meta);
-  NotifyTransactionStatusChanged(meta.get());
 
   if (status) {
     UpdatePendingTransactions();
@@ -655,11 +650,15 @@ void EthTxController::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void EthTxController::NotifyTransactionStatusChanged(
-    EthTxStateManager::TxMeta* meta) {
+void EthTxController::OnTransactionStatusChanged(
+    mojom::TransactionInfoPtr tx_info) {
   for (const auto& observer : observers_)
-    observer->OnTransactionStatusChanged(
-        EthTxStateManager::TxMetaToTransactionInfo(*meta));
+    observer->OnTransactionStatusChanged(tx_info->Clone());
+}
+
+void EthTxController::OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {
+  for (const auto& observer : observers_)
+    observer->OnNewUnapprovedTx(tx_info->Clone());
 }
 
 void EthTxController::NotifyUnapprovedTxUpdated(
