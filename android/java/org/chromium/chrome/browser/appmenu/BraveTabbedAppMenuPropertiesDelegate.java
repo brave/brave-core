@@ -47,7 +47,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
-    AppMenuDelegate mAppMenuDelegate;
+    private AppMenuDelegate mAppMenuDelegate;
+    private ObservableSupplier<BookmarkBridge> mBookmarkBridgeSupplier;
 
     public BraveTabbedAppMenuPropertiesDelegate(Context context,
             ActivityTabProvider activityTabProvider,
@@ -65,6 +66,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 snackbarManager);
 
         mAppMenuDelegate = appMenuDelegate;
+        mBookmarkBridgeSupplier = bookmarkBridgeSupplier;
     }
 
     @Override
@@ -147,11 +149,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             shareItem.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
         }
 
-        // By this we forcibly initialize mBookmarkBridge
+        // By this we forcibly initialize BookmarkBridge
         MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
         Tab currentTab = mActivityTabProvider.get();
         if (bookmarkItem != null && currentTab != null) {
-            updateBookmarkMenuItem(bookmarkItem, currentTab);
+            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab);
         }
     }
 
@@ -170,7 +172,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     @Override
     public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
         // If it's still null, just hide the whole view
-        if (mBookmarkBridge == null) {
+        if (mBookmarkBridgeSupplier.get() == null) {
             if (view != null) {
                 view.setVisibility(View.GONE);
             }
@@ -182,8 +184,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         if (view instanceof AppMenuIconRowFooter) {
             ((AppMenuIconRowFooter) view)
-                    .initialize(appMenuHandler, mBookmarkBridge, mActivityTabProvider.get(),
-                            mAppMenuDelegate);
+                    .initialize(appMenuHandler, mBookmarkBridgeSupplier.get(),
+                            mActivityTabProvider.get(), mAppMenuDelegate);
         }
 
         // Hide bookmark button if bottom toolbar is enabled
