@@ -116,6 +116,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/download/settings/BraveDownloadSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/firstrun/BraveFirstRunFlowSequencer.java",
   "../../brave/android/java/org/chromium/chrome/browser/firstrun/BraveFreIntentCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/firstrun/P3aOnboardingActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/help/BraveHelpAndFeedbackLauncher.java",
