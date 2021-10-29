@@ -612,4 +612,17 @@ public class Utils {
         }
         return defaultValue;
     }
+
+    public static String getContractAddress(String chainId, String symbol, String contractAddress) {
+        if (!chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
+            return contractAddress;
+        }
+        if (symbol.equals("USDC")) {
+            return "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
+        } else if (symbol.equals("DAI")) {
+            return "0xad6d458402f60fd3bd25163575031acdce07538d";
+        }
+
+        return contractAddress;
+    }
 }

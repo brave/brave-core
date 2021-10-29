@@ -165,25 +165,21 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 assert ercTokenRegistry != null;
                 ercTokenRegistry.getAllTokens(tokens -> {
                     for (ErcToken token : tokens) {
-                        if (chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
-                            if (token.symbol.equals("USDC")) {
-                                token.contractAddress =
-                                        "0x07865c6e87b9f70255377e024ace6630c1eaa37f";
-                            } else if (token.symbol.equals("DAI")) {
-                                token.contractAddress =
-                                        "0xad6d458402f60fd3bd25163575031acdce07538d";
-                            }
-                        }
+                        // Replace USDC and DAI contract addresses for Ropsten network
+                        token.contractAddress = Utils.getContractAddress(
+                                chainId, token.symbol, token.contractAddress);
                         String symbol = token.symbol;
+                        int decimals = token.decimals;
                         if (mTxInfo.txType == TransactionType.ERC20_APPROVE) {
                             txType.setText(String.format(
                                     getResources().getString(R.string.activate_erc20), symbol));
                             symbol = "ETH";
+                            decimals = 18;
                         }
                         if (token.contractAddress.toLowerCase(Locale.getDefault())
                                         .equals(mTxInfo.txData.baseData.to.toLowerCase(
                                                 Locale.getDefault()))) {
-                            fillAssetDependentControls(symbol, view);
+                            fillAssetDependentControls(symbol, view, decimals);
                             break;
                         }
                     }
@@ -194,7 +190,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                         Locale.getDefault()))) {
                     txType.setText(getResources().getString(R.string.swap));
                 }
-                fillAssetDependentControls("ETH", view);
+                fillAssetDependentControls("ETH", view, 18);
             }
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
@@ -217,7 +213,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         });
     }
 
-    private void fillAssetDependentControls(String asset, View view) {
+    private void fillAssetDependentControls(String asset, View view, int decimals) {
         String valueToConvert = mTxInfo.txData.baseData.value;
         String to = mTxInfo.txData.baseData.to;
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
@@ -228,10 +224,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         fromTo.setText(String.format(getResources().getString(R.string.crypto_wallet_from_to),
                 mAccountName, Utils.stripAccountAddress(to)));
         TextView amountAsset = view.findViewById(R.id.amount_asset);
-        amountAsset.setText(String.format(
-                getResources().getString(R.string.crypto_wallet_amount_asset),
-                String.format(Locale.getDefault(), "%.4f", Utils.fromHexWei(valueToConvert, 18)),
-                asset));
+        amountAsset.setText(
+                String.format(getResources().getString(R.string.crypto_wallet_amount_asset),
+                        String.format(Locale.getDefault(), "%.4f",
+                                Utils.fromHexWei(valueToConvert, decimals)),
+                        asset));
         AssetRatioController assetRatioController = getAssetRatioController();
         assert assetRatioController != null;
         String[] assets = {asset.toLowerCase(Locale.getDefault())};
@@ -247,7 +244,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                             && mTxInfo.txArgs.length > 1) {
                         valueAsset = mTxInfo.txArgs[1];
                     }
-                    double value = Utils.fromHexWei(valueAsset, 18);
+                    double value = Utils.fromHexWei(valueAsset, decimals);
                     double price = Double.valueOf(valueFiat);
                     mTotalPrice = value * price;
                     TextView amountFiat = view.findViewById(R.id.amount_fiat);
