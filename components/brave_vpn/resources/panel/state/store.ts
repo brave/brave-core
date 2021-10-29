@@ -8,7 +8,7 @@ import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducer'
 import asyncHandler from './async'
 import * as Actions from './actions'
-import getPanelBrowserAPI, { ServiceObserverReceiver, ConnectionState } from '../api/panel_browser_api'
+import getPanelBrowserAPI, { ServiceObserverReceiver, ConnectionState, PurchasedState } from '../api/panel_browser_api'
 
 const store = createStore(
   reducer,
@@ -22,7 +22,9 @@ const observer = {
   onConnectionStateChanged: (connectionStatus: ConnectionState) => {
     store.dispatch(Actions.connectionStateChanged({ connectionStatus }))
   },
-  onPurchasedStateChanged: () => {/**/}
+  onPurchasedStateChanged: (state: PurchasedState) => {
+    if (state === PurchasedState.PURCHASED) store.dispatch(Actions.purchaseConfirmed())
+  }
 }
 const serviceObserver = new ServiceObserverReceiver(observer)
 getPanelBrowserAPI().serviceHandler.addObserver(
