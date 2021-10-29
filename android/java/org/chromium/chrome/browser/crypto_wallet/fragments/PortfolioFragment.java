@@ -247,7 +247,6 @@ public class PortfolioFragment extends Fragment
             button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
             mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
             mPreviousCheckedRadioId = checkedId;
-
             updatePortfolioGraph();
         });
     }
@@ -325,7 +324,7 @@ public class PortfolioFragment extends Fragment
         AssetPriceTimeframe.validate(mCurrentTimeframeType);
 
         if (mPortfolioHelper == null) {
-            updatePortfolio();
+            updatePortfolioGetPendingTx(false);
             return;
         }
 
@@ -349,9 +348,8 @@ public class PortfolioFragment extends Fragment
             }
 
             if (mPortfolioHelper == null) {
-                mPortfolioHelper =
-                        new PortfolioHelper(getBraveWalletService(), getAssetRatioController(),
-                                getKeyringController(), getEthJsonRpcController());
+                mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                        getAssetRatioController(), getEthJsonRpcController(), accountInfos);
             }
 
             String chainName = mSpinner.getSelectedItem().toString();
