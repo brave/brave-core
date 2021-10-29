@@ -27,6 +27,7 @@
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
@@ -39,6 +40,7 @@
 namespace brave_wallet {
 
 namespace {
+
 std::string GenerateMnemonicInternal(uint8_t* entropy, size_t size) {
   char* words = nullptr;
   std::string result;
@@ -724,6 +726,41 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
   if (kEnsRegistryContractAddressMap.contains(chain_id))
     return kEnsRegistryContractAddressMap.at(chain_id);
   return "";
+}
+
+void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
+  DCHECK(prefs);
+
+  absl::optional<base::Value> value = brave_wallet::EthereumChainToValue(chain);
+  if (!value)
+    return;
+
+  {  // Update needs to be done before GetNetworkId below.
+    ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+    base::ListValue* list = update.Get();
+    list->Append(std::move(value.value()));
+  }
+
+  const std::string network_id = GetNetworkId(prefs, chain->chain_id);
+  DCHECK(!network_id.empty());  // Not possible for a custom network.
+
+  DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* asset_list = user_assets_pref->SetKey(
+      network_id, base::Value(base::Value::Type::LIST));
+
+  base::Value native_asset(base::Value::Type::DICTIONARY);
+  native_asset.SetStringKey("contract_address", "");
+  native_asset.SetStringKey("name", chain->symbol_name);
+  native_asset.SetStringKey("symbol", chain->symbol);
+  native_asset.SetBoolKey("is_erc20", false);
+  native_asset.SetBoolKey("is_erc721", false);
+  native_asset.SetIntKey("decimals", chain->decimals);
+  native_asset.SetBoolKey("visible", true);
+  native_asset.SetStringKey(
+      "logo", chain->icon_urls.empty() ? "" : chain->icon_urls[0]);
+
+  asset_list->Append(std::move(native_asset));
 }
 
 }  // namespace brave_wallet

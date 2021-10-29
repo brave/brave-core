@@ -126,7 +126,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   TestBraveWalletHandler handler;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url1.com"}, "symbol", "symbol_name", 11, false);
   auto chain_ptr1 = chain1.Clone();
 
   {
@@ -148,6 +148,22 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
     EXPECT_EQ(result.size(), 1u);
     EXPECT_EQ(result[0], chain1.Clone());
   }
+
+  const base::DictionaryValue* assets_pref =
+      handler.prefs()->GetDictionary(kBraveWalletUserAssets);
+  const base::Value* list = assets_pref->FindKey("url1.com");
+  ASSERT_TRUE(list->is_list());
+  base::Value::ConstListView asset_list = list->GetList();
+  ASSERT_EQ(asset_list.size(), 1u);
+
+  EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
 
   auto args2 = base::ListValue();
   args2.Append(base::Value("id"));

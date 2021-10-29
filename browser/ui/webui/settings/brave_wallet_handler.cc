@@ -51,7 +51,10 @@ bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
   }
 
   const auto& value_to_add = records_v.value();
-  auto chain = brave_wallet::ValueToEthereumChain(value_to_add);
+
+  // Saving converted value to initialize missing field with default values.
+  absl::optional<brave_wallet::mojom::EthereumChain> chain =
+      brave_wallet::ValueToEthereumChain(value_to_add);
   if (!chain) {
     return false;
   }
@@ -63,15 +66,7 @@ bool AddEthereumChain(PrefService* prefs, const std::string& payload) {
       return false;
   }
 
-  // Saving converted value to initialized missed by user field with default
-  // values
-  auto value =
-      brave_wallet::EthereumChainToValue(std::move(chain).value().Clone());
-  {
-    ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::ListValue* list = update.Get();
-    list->Append(std::move(value));
-  }
+  brave_wallet::AddCustomNetwork(prefs, chain.value().Clone());
   return true;
 }
 
