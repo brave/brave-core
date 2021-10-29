@@ -28,14 +28,14 @@ import androidx.appcompat.widget.Toolbar;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
-import org.chromium.chrome.browser.firstrun.FirstRunFlowSequencer;
+import org.chromium.chrome.browser.firstrun.BraveFirstRunFlowSequencer;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.vpn.BraveVpnPrefUtils;
 
 import java.util.TimeZone;
 
 public class BraveVpnSupportActivity extends AsyncInitializationActivity {
-    private FirstRunFlowSequencer mFirstRunFlowSequencer;
+    private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_support);
@@ -135,7 +135,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
 
     @Override
     protected void triggerLayoutInflation() {
-        mFirstRunFlowSequencer = new FirstRunFlowSequencer(this) {
+        mFirstRunFlowSequencer = new BraveFirstRunFlowSequencer(this) {
             @Override
             public void onFlowIsKnown(Bundle freProperties) {
                 initializeViews();
