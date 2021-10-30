@@ -82,6 +82,10 @@ Polymer({
       type: Boolean,
       value: true,
     },
+    submissionErrorMessage_: {
+      type: String,
+      value: true
+    },
     selected: {
       type: Object,
       value: {}
@@ -263,19 +267,20 @@ Polymer({
     }, null)
   },
   showCurrencyError: function() {
-    this.isSubmissionErrorHidden_ = true;
+    this.isSubmissionErrorHidden_ = true
     this.isCurrencyErrorHidden_ = false
   },
-  setSubmissionResult: function(success) {
-    this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true;
+  setSubmissionResult: function(success, errorMessage) {
+    this.isCurrencyErrorHidden_ = this.isSubmissionErrorHidden_ = true
     if (!success) {
       this.isSubmissionErrorHidden_ = false
+      this.submissionErrorMessage_ = errorMessage
     }
   },
   addNewNetwork: function(payload) {
     this.browserProxy_.addEthereumChain(JSON.stringify(payload))
-      .then(success => {
-        this.setSubmissionResult(success)
+      .then(([success, errorMessage]) => {
+        this.setSubmissionResult(success, errorMessage)
         if (success) {
           this.fire('close');
           return

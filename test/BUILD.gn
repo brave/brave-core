@@ -337,6 +337,7 @@ test("brave_unit_tests") {
       "//brave/components/omnibox/browser/suggested_sites_provider_unittest.cc",
       "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     ]
+    deps += [ "//brave/app:brave_generated_resources_grit" ]
   }
 
   if (!is_android && !is_ios) {
