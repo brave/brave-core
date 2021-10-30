@@ -30,6 +30,51 @@
 
 namespace brave_wallet {
 
+class TestEthTxStateManagerObserver : public EthTxStateManager::Observer {
+ public:
+  TestEthTxStateManagerObserver() = default;
+
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
+    new_unapproved_tx_fired_ = true;
+    tx_status_ = tx->tx_status;
+    tx_id_ = tx->id;
+  }
+
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx) override {
+    tx_status_changed_fired_ = true;
+    tx_status_ = tx->tx_status;
+    tx_id_ = tx->id;
+  }
+
+  void ExpectMatch(const std::string& expected_tx_id,
+                   mojom::TransactionStatus expected_status) {
+    base::RunLoop().RunUntilIdle();
+    EXPECT_EQ(expected_tx_id, tx_id_);
+    EXPECT_EQ(expected_status, tx_status_);
+  }
+
+  void Reset() {
+    new_unapproved_tx_fired_ = false;
+    tx_status_changed_fired_ = false;
+  }
+
+  bool NewUnapprovedTxFired() const {
+    base::RunLoop().RunUntilIdle();
+    return new_unapproved_tx_fired_;
+  }
+
+  bool TxStatusChangedFired() const {
+    base::RunLoop().RunUntilIdle();
+    return tx_status_changed_fired_;
+  }
+
+ private:
+  std::string tx_id_;
+  mojom::TransactionStatus tx_status_;
+  bool new_unapproved_tx_fired_ = false;
+  bool tx_status_changed_fired_ = false;
+};
+
 class EthTxStateManagerUnitTest : public testing::Test {
  public:
   EthTxStateManagerUnitTest()
@@ -556,6 +601,30 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
             Uint256ValueToHex(tx1559->gas_estimation().fast_max_fee_per_gas));
   EXPECT_EQ(ti2->tx_data->gas_estimation->base_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
+}
+
+TEST_F(EthTxStateManagerUnitTest, Observer) {
+  TestEthTxStateManagerObserver observer;
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
+  // Wait for network info
+  base::RunLoop().RunUntilIdle();
+  tx_state_manager.AddObserver(&observer);
+
+  EthTxStateManager::TxMeta meta;
+  meta.id = "001";
+  // Add
+  tx_state_manager.AddOrUpdateTx(meta);
+  observer.ExpectMatch("001", mojom::TransactionStatus::Unapproved);
+  EXPECT_TRUE(observer.NewUnapprovedTxFired());
+  EXPECT_FALSE(observer.TxStatusChangedFired());
+  observer.Reset();
+  // Modify
+  meta.status = mojom::TransactionStatus::Approved;
+  tx_state_manager.AddOrUpdateTx(meta);
+  observer.ExpectMatch("001", mojom::TransactionStatus::Approved);
+  EXPECT_FALSE(observer.NewUnapprovedTxFired());
+  EXPECT_TRUE(observer.TxStatusChangedFired());
+  observer.Reset();
 }
 
 }  // namespace brave_wallet
