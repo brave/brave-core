@@ -152,7 +152,7 @@
     </div>
   <div slot="button-container" class="button-separator">
     <div class="error-text" id="currency-error" hidden="{{isCurrencyErrorHidden_}}">$i18n{walletAddNetworkDialogFillNativeCurrencyInfo}</div>
-    <div class="error-text" id="submission-error" hidden="{{isSubmissionErrorHidden_}}">$i18n{walletAddNetworkDialogSubmissionFailed}</div>
+    <div class="error-text" id="submission-error" hidden="{{isSubmissionErrorHidden_}}">{{submissionErrorMessage_}}</div>
     <cr-button class="action-button" on-click="onAddNetworkTap_" disabled="{{!isSubmitButtonEnabled_}}">
       $i18n{walletNetworkAdd}
     </cr-button>
