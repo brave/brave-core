@@ -77,7 +77,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Assign each browser a navigation controller
         let navigationController = UINavigationController(rootViewController: browserViewController).then {
-            $0.delegate = self
             $0.isNavigationBarHidden = true
             $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         }
@@ -311,20 +310,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
         return nil
-    }
-}
-
-// MARK: - Root View Controller Animations
-extension SceneDelegate: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch operation {
-        case .push:
-            return BrowserToTrayAnimator()
-        case .pop:
-            return TrayToBrowserAnimator()
-        default:
-            return nil
-        }
     }
 }
 
