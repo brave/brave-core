@@ -788,6 +788,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             sendAmount={sendAmount}
             fromAmount={fromAmount}
             toAmount={toAmount}
+            selectedSendAsset={fromAsset}
+            sendAssetBalance={fromAssetBalance}
             fromAssetBalance={fromAssetBalance}
             toAssetBalance={toAssetBalance}
             toAddressOrUrl={toAddress}
@@ -821,6 +823,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             swapAssetOptions={AccountAssetOptions}
             networkList={mockNetworks}
             onSwapQuoteRefresh={onSwapQuoteRefresh}
+            onSelectSendAsset={onSelectTransactAsset}
           />
         </WalletWidgetStandIn>
       }

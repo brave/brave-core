@@ -20,16 +20,26 @@ import { toWeiHex } from '../../utils/format-balances'
 export default function useSend (
   findENSAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
   findUnstoppableDomainAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
+  sendAssetOptions: AccountAssetOptionType[],
   selectedAccount: WalletAccountType,
-  fromAsset: AccountAssetOptionType,
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>
 ) {
+
+  const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [addressError, setAddressError] = React.useState('')
   const [sendAmount, setSendAmount] = React.useState('')
+
+  React.useEffect(() => {
+    setSelectedSendAsset(sendAssetOptions[0])
+  }, [sendAssetOptions])
+
+  const onSelectSendAsset = (asset: AccountAssetOptionType) => {
+    setSelectedSendAsset(asset)
+  }
 
   const supportedENSExtensions = ['.eth']
   const supportedUDExtensions = ['.crypto']
@@ -104,25 +114,25 @@ export default function useSend (
   }, [toAddressOrUrl])
 
   const onSubmitSend = () => {
-    fromAsset.asset.isErc20 && sendERC20Transfer({
+    selectedSendAsset.asset.isErc20 && sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals),
-      contractAddress: fromAsset.asset.contractAddress
+      value: toWeiHex(sendAmount, selectedSendAsset.asset.decimals),
+      contractAddress: selectedSendAsset.asset.contractAddress
     })
 
-    fromAsset.asset.isErc721 && sendERC721TransferFrom({
+    selectedSendAsset.asset.isErc721 && sendERC721TransferFrom({
       from: selectedAccount.address,
       to: toAddress,
       value: '',
-      contractAddress: fromAsset.asset.contractAddress,
-      tokenId: fromAsset.asset.tokenId ?? ''
+      contractAddress: selectedSendAsset.asset.contractAddress,
+      tokenId: selectedSendAsset.asset.tokenId ?? ''
     })
 
-    !fromAsset.asset.isErc721 && !fromAsset.asset.isErc20 && sendTransaction({
+    !selectedSendAsset.asset.isErc721 && !selectedSendAsset.asset.isErc20 && sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, fromAsset.asset.decimals)
+      value: toWeiHex(sendAmount, selectedSendAsset.asset.decimals)
     })
 
     setToAddressOrUrl('')
@@ -133,9 +143,11 @@ export default function useSend (
     onSetSendAmount,
     onSetToAddressOrUrl,
     onSubmitSend,
+    onSelectSendAsset,
     toAddressOrUrl,
     toAddress,
     sendAmount,
-    addressError
+    addressError,
+    selectedSendAsset
   }
 }
