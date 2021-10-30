@@ -31,7 +31,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     const bg = React.useMemo(() => {
       if (selectedAsset?.symbol !== 'ETH' && stripERC20TokenImageURL(selectedAsset?.logo) === '') {
-        return background({ seed: selectedAsset?.contractAddress.toLowerCase() })
+        return background({ seed: selectedAsset.contractAddress ? selectedAsset?.contractAddress.toLowerCase() : selectedAsset.name })
       }
     }, [selectedAsset])
 
