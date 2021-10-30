@@ -266,10 +266,9 @@ void BraveNewTabMessageHandler::RegisterMessages() {
           &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getBrandedWallpaperData",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
-          base::Unretained(this)));
+      "getWallpaperData",
+      base::BindRepeating(&BraveNewTabMessageHandler::HandleGetWallpaperData,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "customizeClicked",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
@@ -588,22 +587,42 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
   }
 }
 
-void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
+void BraveNewTabMessageHandler::HandleGetWallpaperData(
     base::Value::ConstListView args) {
   AllowJavascript();
 
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  auto data =
-      service ? service->GetCurrentWallpaperForDisplay() : base::Value();
-  if (!data.is_none()) {
-    DCHECK(data.is_dict());
+  base::Value wallpaper(base::Value::Type::DICTIONARY);
 
-    const std::string wallpaper_id = base::GenerateGUID();
-    data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
-    service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
+  if (!service) {
+    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    return;
   }
 
-  ResolveJavascriptCallback(args[0], std::move(data));
+  auto data = service->GetCurrentWallpaperForDisplay();
+
+  if (!data.is_dict()) {
+    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    return;
+  }
+
+  const auto is_background =
+      data.FindBoolKey(ntp_background_images::kIsBackgroundKey);
+  DCHECK(is_background);
+
+  if (is_background.value()) {
+    constexpr char kBackgroundWallpaperKey[] = "backgroundWallpaper";
+    wallpaper.SetKey(kBackgroundWallpaperKey, std::move(data));
+    ResolveJavascriptCallback(args[0], std::move(wallpaper));
+    return;
+  }
+
+  constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
+  const std::string wallpaper_id = base::GenerateGUID();
+  data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
+  wallpaper.SetKey(kBrandedWallpaperKey, std::move(data));
+  service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
+  ResolveJavascriptCallback(args[0], std::move(wallpaper));
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(

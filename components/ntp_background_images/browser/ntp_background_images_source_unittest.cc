@@ -9,9 +9,11 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,7 +29,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     NTPBackgroundImagesService::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(nullptr, &local_pref_));
-    source_.reset(new NTPBackgroundImagesSource(service_.get()));
+    source_.reset(new NTPSponsoredImagesSource(service_.get()));
+    bg_source_.reset(new NTPBackgroundImagesSource(service_.get()));
     local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
                     base::Value(base::Value::Type::DICTIONARY));
   }
@@ -35,10 +38,11 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
   base::test::SingleThreadTaskEnvironment task_environment;
   TestingPrefServiceSimple local_pref_;
   std::unique_ptr<NTPBackgroundImagesService> service_;
-  std::unique_ptr<NTPBackgroundImagesSource> source_;
+  std::unique_ptr<NTPSponsoredImagesSource> source_;
+  std::unique_ptr<NTPBackgroundImagesSource> bg_source_;
 };
 
-TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
+TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
   const std::string test_json_string_referral = R"(
       {
         "schemaVersion": 1,
@@ -76,6 +80,54 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
   EXPECT_EQ(
       -1,
       source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
+}
+
+TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
+  const std::string test_json_string = R"(
+      {
+        "schemaVersion": 1,
+        "images": [
+          {
+            "name": "background-1.jpg",
+            "source": "brave-bg-1.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-2.jpg",
+            "source": "brave-bg-2.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-3.jpg",
+            "source": "brave-bg-3.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          },
+          {
+            "name": "background-4.jpg",
+            "source": "brave-bg-4.webp",
+            "author": "Brave software",
+            "link": "https://www.brave.com/",
+            "originalUrl": "Contributor sent the hi-res version",
+            "license": "used with permission"
+          }
+        ]
+      })";
+  service_->OnGetComponentJsonData(test_json_string);
+  EXPECT_TRUE(bg_source_->AllowCaching());
+  EXPECT_EQ("image/webp", bg_source_->GetMimeType("wallpaper-2.webp"));
+  EXPECT_EQ(0, bg_source_->GetWallpaperIndexFromPath("wallpaper-0.webp"));
+  EXPECT_EQ(3, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.webp"));
+  EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
+  EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-4.webp"));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)

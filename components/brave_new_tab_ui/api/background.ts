@@ -7,8 +7,8 @@ import { images as backgrounds } from '../data/backgrounds'
 /**
  * Generates a random image for new tab backgrounds
  */
-export const randomBackgroundImage = (): NewTab.Image => {
+export const randomBackgroundImage = (): NewTab.BackgroundWallpaper => {
   const randomIndex: number = Math.floor(Math.random() * backgrounds.length)
-  const image: NewTab.Image = Object.assign({}, backgrounds[randomIndex])
+  const image: NewTab.BackgroundWallpaper = Object.assign({}, backgrounds[randomIndex])
   return image
 }

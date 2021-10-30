@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -32,9 +31,7 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 struct NTPBackgroundImagesData;
-#endif
 struct NTPSponsoredImagesData;
 struct TopSite;
 
@@ -64,9 +61,7 @@ class ViewCounterService : public KeyedService,
                                    const std::string& wallpaper_id);
 
   base::Value GetCurrentWallpaperForDisplay() const;
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   base::Value GetCurrentWallpaper() const;
-#endif
   base::Value GetCurrentBrandedWallpaper() const;
   std::vector<TopSite> GetTopSitesVectorForWebUI() const;
   std::vector<TopSite> GetTopSitesVectorData() const;
@@ -77,9 +72,7 @@ class ViewCounterService : public KeyedService,
 
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   NTPBackgroundImagesData* GetCurrentWallpaperData() const;
-#endif
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
@@ -108,14 +101,14 @@ class ViewCounterService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveWithNTPBackgoundOptionOptedOut);
-#endif
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           PrefsWithModelTest);
 
   void OnPreferenceChanged(const std::string& pref_name);
 
@@ -123,9 +116,7 @@ class ViewCounterService : public KeyedService,
   void Shutdown() override;
 
   // NTPBackgroundImagesService::Observer
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnUpdated(NTPBackgroundImagesData* data) override;
-#endif
   void OnUpdated(NTPSponsoredImagesData* data) override;
   void OnSuperReferralEnded() override;
 
@@ -135,10 +126,8 @@ class ViewCounterService : public KeyedService,
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   // Should we show background image.
   bool IsBackgroundWallpaperActive() const;
-#endif
   // Should we show the branded wallpaper right now, in addition
   // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;

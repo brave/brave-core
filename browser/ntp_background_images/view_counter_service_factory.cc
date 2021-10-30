@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -64,6 +65,8 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPBackgroundImagesSource>(service));
+    content::URLDataSource::Add(
+        browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
     return new ViewCounterService(service, ads_service, profile->GetPrefs(),
                                   g_browser_process->local_state(),

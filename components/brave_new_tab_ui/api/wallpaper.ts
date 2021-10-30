@@ -5,8 +5,8 @@
 
 import { sendWithPromise } from 'chrome://resources/js/cr.m'
 
-export function getBrandedWallpaper (): Promise<undefined | NewTab.BrandedWallpaper> {
-  return sendWithPromise('getBrandedWallpaperData')
+export function getWallpaper (): Promise<undefined | NewTab.Wallpaper> {
+  return sendWithPromise('getWallpaperData')
 }
 
 export function registerViewCount (): Promise<void> {

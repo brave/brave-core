@@ -5,13 +5,13 @@ import dummyBrandedWallpaper from './brandedWallpaper'
 import { defaultState } from '../../../storage/new_tab_storage'
 import { initialGridSitesState } from '../../../storage/grid_sites_storage'
 
-function generateStaticImages (images: NewTab.Image[]) {
+function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
   const staticImages = {}
   for (const image of images) {
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
-        source: require('../../../../img/newtab/backgrounds/' + image.source)
+        wallpaperImageUrl: require('../../../../img/newtab/backgrounds/' + image.wallpaperImageUrl)
       }
     })
   }
@@ -34,15 +34,9 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
   return staticTopSites
 }
 
-function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper {
+function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper | undefined {
   if (shouldShow === false) {
-    return {
-      wallpaperImageUrl: '',
-      isSponsored: false,
-      creativeInstanceId: '12345abcde',
-      wallpaperId: 'abcde12345',
-      logo: { image: '', companyName: '', alt: '', destinationUrl: '' }
-    }
+    return undefined
   }
   return dummyBrandedWallpaper
 }
@@ -58,10 +52,10 @@ function getWidgetStackOrder (firstWidget: string): NewTab.StackWidget[] {
 
 export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State => ({
   ...state,
-  brandedWallpaperData: shouldShowBrandedWallpaperData(
+  brandedWallpaper: shouldShowBrandedWallpaperData(
     boolean('Show branded background image?', true)
   ),
-  backgroundImage: select(
+  backgroundWallpaper: select(
     'Background image',
     generateStaticImages(images),
     generateStaticImages(images)['SpaceX']

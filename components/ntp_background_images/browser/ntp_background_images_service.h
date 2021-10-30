@@ -16,7 +16,6 @@
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/prefs/pref_change_registrar.h"
 
 namespace component_updater {
@@ -28,9 +27,7 @@ class PrefService;
 
 namespace ntp_background_images {
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 struct NTPBackgroundImagesData;
-#endif
 struct NTPSponsoredImagesData;
 
 class NTPBackgroundImagesService {
@@ -38,9 +35,7 @@ class NTPBackgroundImagesService {
   class Observer {
    public:
     // Called whenever ntp background images component is updated.
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
-#endif
     virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
     // Called when SR campaign ended.
     virtual void OnSuperReferralEnded() = 0;
@@ -65,9 +60,7 @@ class NTPBackgroundImagesService {
   void RemoveObserver(Observer* observer);
   bool HasObserver(Observer* observer);
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
-#endif
   NTPSponsoredImagesData* GetBrandedImagesData(bool super_referral) const;
 
   bool test_data_used() const { return test_data_used_; }
@@ -113,26 +106,23 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveOptedInWithNTPBackgoundOption);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest, ModelTest);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveWithBadData);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            BINotActiveWithNTPBackgoundOptionOptedOut);
-#endif
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
 
   void OnSponsoredComponentReady(bool is_super_referral,
                                  const base::FilePath& installed_dir);
   void OnGetSponsoredComponentJsonData(bool is_super_referral,
                                        const std::string& json_string);
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
-#endif
   void OnMappingTableComponentReady(const base::FilePath& installed_dir);
   void OnPreferenceChanged(const std::string& pref_name);
   void OnGetMappingTableData(const std::string& json_string);
@@ -146,9 +136,7 @@ class NTPBackgroundImagesService {
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   virtual void RegisterBackgroundImagesComponent();
-#endif
   virtual void RegisterSponsoredImagesComponent();
   virtual void RegisterSuperReferralComponent();
   virtual void DownloadSuperReferralMappingTable();
@@ -161,10 +149,8 @@ class NTPBackgroundImagesService {
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;
   PrefService* local_pref_;
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   base::FilePath bi_installed_dir_;
   std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;
-#endif
   base::FilePath si_installed_dir_;
   base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;

@@ -1,3 +1,0 @@
-declare_args() {
-  enable_ntp_background_images = is_android
-}

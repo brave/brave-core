@@ -72,14 +72,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
 #if !defined(OS_ANDROID)
-        { "alex-plesovskich.avif", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
-        { "andre-benz.avif", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
-        { "corwin-prescott_olympic.avif", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
-        { "dylan-malval_alps.avif", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
-        { "sora-sagano.avif", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
-        { "spencer-moore_lake.avif", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
-        { "su-san-lee.avif", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
-        { "zane-lee.avif", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
+        { "spencer-moore_lake.avif", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
 #endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT

@@ -13,19 +13,15 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
-#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#endif
 
 namespace ntp_background_images {
 
@@ -55,7 +51,6 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(
   return demo;
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
   auto demo = std::make_unique<NTPBackgroundImagesData>();
   demo->backgrounds = {
@@ -65,7 +60,6 @@ std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
 
   return demo;
 }
-#endif
 
 class NTPBackgroundImagesViewCounterTest : public testing::Test {
  public:
@@ -123,12 +117,10 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveInitially) {
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveInitially) {
   // By default, data is bad and BI wallpaper is not active.
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 }
-#endif
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   // Set some bad data explicitly.
@@ -137,13 +129,11 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveWithBadData) {
   // Set some bad data explicitly.
   service_->bi_images_data_.reset(new NTPBackgroundImagesData);
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 }
-#endif
 
 TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
   // Even with good data, wallpaper should not be active if user pref is off.
@@ -173,7 +163,6 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 TEST_F(NTPBackgroundImagesViewCounterTest,
        BINotActiveWithNTPBackgoundOptionOptedOut) {
   EnableNTPBGImagesPref(false);
@@ -186,7 +175,6 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 #endif
 }
-#endif
 
 // Branded wallpaper is active if one of them is available.
 TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
@@ -212,6 +200,22 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
 #endif
 }
 
+TEST_F(NTPBackgroundImagesViewCounterTest, PrefsWithModelTest) {
+  auto& model = view_counter_->model_;
+  EXPECT_TRUE(model.show_wallpaper_);
+  EXPECT_TRUE(model.show_branded_wallpaper_);
+  EXPECT_FALSE(model.always_show_branded_wallpaper_);
+
+  EnableSRPref(true);
+  EXPECT_FALSE(model.always_show_branded_wallpaper_);
+
+  EnableSIPref(false);
+  EXPECT_FALSE(model.show_branded_wallpaper_);
+
+  EnableNTPBGImagesPref(false);
+  EXPECT_FALSE(model.show_wallpaper_);
+}
+
 TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {
   // Sanity check that the default is still to be opted-in.
   // If this gets manually changed, then this test should be manually changed
@@ -229,12 +233,22 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
   service_->si_images_data_ = GetDemoBrandedWallpaper(false);
   view_counter_->OnUpdated(service_->sr_images_data_.get());
-  EXPECT_TRUE(view_counter_->model_.ignore_count_to_branded_wallpaper_);
+  EXPECT_TRUE(view_counter_->model_.always_show_branded_wallpaper_);
+
+  // Initial count is not changed because branded wallpaper is always
+  // visible in SR mode.
+  int expected_count = ViewCounterModel::kInitialCountToBrandedWallpaper;
+  view_counter_->RegisterPageView();
+  view_counter_->RegisterPageView();
+  EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 
   service_->sr_images_data_.reset(new NTPSponsoredImagesData);
   view_counter_->OnSuperReferralEnded();
-  EXPECT_FALSE(view_counter_->model_.ignore_count_to_branded_wallpaper_);
-  const int expected_count = ViewCounterModel::kRegularCountToBrandedWallpaper;
+  EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
+  EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
+
+  view_counter_->RegisterPageView();
+  expected_count--;
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 }
 #endif

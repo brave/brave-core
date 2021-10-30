@@ -45,7 +45,10 @@ Background::Background(const base::FilePath& image_file_path,
 Background::Background(const Background&) = default;
 Background::~Background() = default;
 
-NTPBackgroundImagesData::NTPBackgroundImagesData() {}
+NTPBackgroundImagesData::NTPBackgroundImagesData()
+    : url_prefix(base::StringPrintf("%s://%s/",
+                                    content::kChromeUIScheme,
+                                    kBackgroundWallpaperHost)) {}
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
@@ -102,6 +105,12 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   if (!IsValid())
     return data;
 
+  const std::string wallpaper_image_url =
+      url_prefix +
+      base::StringPrintf("%s%zu.webp", kWallpaperPathPrefix, index);
+  // URL is used by NTP WebUI.
+  data.SetStringKey(kWallpaperImageURLKey, wallpaper_image_url);
+  // Path is used by android NTP.
   data.SetStringKey(kWallpaperImagePathKey,
                     backgrounds[index].image_file.AsUTF8Unsafe());
 

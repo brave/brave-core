@@ -10,7 +10,6 @@
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -21,11 +20,9 @@ namespace ntp_background_images {
 using OnComponentReadyCallback =
       base::RepeatingCallback<void(const base::FilePath& install_path)>;
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* cus,
     OnComponentReadyCallback callback);
-#endif
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,

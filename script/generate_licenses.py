@@ -132,8 +132,9 @@ def list_ntp_backgrounds(metadata_file):
         # Strip out copyright header
         metadata = file_handle.readlines()[3:]
         # Hack to turn this TypeScript file into valid JSON
-        json_metadata = ''.join(metadata).replace('export const images: NewTab.Image[] = [', '[') \
-                                         .replace('"', '\"').replace("'", '"')
+        json_metadata = "".join(metadata) \
+            .replace("export const images: NewTab.BackgroundWallpaper[] = [", "[") \
+            .replace('"', '"').replace("'", '"')
 
     images = json.loads(json_metadata)
     return images
@@ -156,7 +157,7 @@ def generate_backgrounds_license(preamble, backgrounds):
         if notices:
             notices += '\n'
 
-        filename = validated_data_field(background, 'source')
+        filename = validated_data_field(background, 'wallpaperImageUrl')
         author_name = validated_data_field(background, 'author')
         # Don't validate link. it can be empty.
         author_link = background['link']
