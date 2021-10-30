@@ -136,7 +136,8 @@ def do_check_defines(override_filepath, original_filepath):
             # Adjust target name for BUILDFLAG_INTERNAL_*() cases for
             # function-like matches.
             if match['is_func'] and target.startswith('BUILDFLAG_INTERNAL_'):
-                buildflag_match = re.search(r'BUILDFLAG_INTERNAL_(\S*)', target)
+                buildflag_match = re.search(
+                    r'BUILDFLAG_INTERNAL_(\S*)', target)
                 target = buildflag_match.group(1)
 
             # Report ERROR if target can't be found in the original file.

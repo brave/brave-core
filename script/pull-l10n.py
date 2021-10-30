@@ -29,7 +29,8 @@ def check_args():
 def main():
     args = parse_args()
     check_args()
-    source_string_path = os.path.join(BRAVE_SOURCE_ROOT, args.source_string_path[0])
+    source_string_path = os.path.join(
+        BRAVE_SOURCE_ROOT, args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
     if should_use_transifex(source_string_path, filename):
         print('Transifex: ', source_string_path)

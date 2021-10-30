@@ -14,9 +14,11 @@ from lib.config import SOURCE_ROOT
 
 KNOWN_MISSING = [
     # Emailed author (henrik@schack.dk) on 2019-11-05.
-    os.path.join('components', 'third_party', 'adblock', 'lists', 'adblock_dk'),
+    os.path.join('components', 'third_party',
+                 'adblock', 'lists', 'adblock_dk'),
     # https://github.com/gfmaster/adblock-korea-contrib/issues/47
-    os.path.join('components', 'third_party', 'adblock', 'lists', 'adblock_korea_contrib'),
+    os.path.join('components', 'third_party', 'adblock',
+                 'lists', 'adblock_korea_contrib'),
 ]
 
 
@@ -89,7 +91,8 @@ def external_component_license_file(preamble, components):
             # Custom license
             license_id += '-' + component['slug']
 
-        component_notices += 'Name: %s\nURL: %s\nLicense: %s\n' % (component['Name'], component['URL'], license_id)
+        component_notices += 'Name: %s\nURL: %s\nLicense: %s\n' % (
+            component['Name'], component['URL'], license_id)
 
         if license_id == 'unknown':
             continue
@@ -98,7 +101,8 @@ def external_component_license_file(preamble, components):
             if license_text:
                 licenses[license_id] = license_text
             else:
-                licenses[license_id] = read_license_text(component['License File'])
+                licenses[license_id] = read_license_text(
+                    component['License File'])
 
     for license_id in licenses:
         component_licenses += '--------------------------------------------------------------------------------\n'
@@ -138,7 +142,8 @@ def list_ntp_backgrounds(metadata_file):
 def validated_data_field(data, field_name):
     field_value = data[field_name]
     if not field_value:
-        print('Missing %s for background image %s' % (field_name, data['name']))
+        print('Missing %s for background image %s' %
+              (field_name, data['name']))
         sys.exit(1)
 
     return field_value
@@ -185,8 +190,10 @@ def main():
                        'The Brave Browser and such lists are separate and independent works.'
 
     adblock_components = list_sub_components(adblock_lists_dir)
-    write_license_file(adblock_dir, external_component_license_file(adblock_preamble, adblock_components))
-    print('  - %s sub-components added in adblock/LICENSE' % len(adblock_components))
+    write_license_file(adblock_dir, external_component_license_file(
+        adblock_preamble, adblock_components))
+    print('  - %s sub-components added in adblock/LICENSE' %
+          len(adblock_components))
 
     # Brave Local Data component
     local_data_dir = os.path.join(third_party_dir, 'local_data')
@@ -196,8 +203,10 @@ def main():
                           'The Brave Browser and such data files are separate and independent works.'
 
     local_data_components = list_sub_components(local_data_lists_dir)
-    write_license_file(local_data_dir, external_component_license_file(local_data_preamble, local_data_components))
-    print('  - %s sub-components added in local_data/LICENSE' % len(local_data_components))
+    write_license_file(local_data_dir, external_component_license_file(
+        local_data_preamble, local_data_components))
+    print('  - %s sub-components added in local_data/LICENSE' %
+          len(local_data_components))
 
     # Brave New Tab UI component
     ntp_data_dir = os.path.join(components_dir, 'brave_new_tab_ui', 'data')
@@ -205,8 +214,10 @@ def main():
                                'instead apply to background images used on the new tab page. The Brave Browser and ' \
                                'such data files are separate and independent works.'
 
-    ntp_backgrounds = list_ntp_backgrounds(os.path.join(ntp_data_dir, 'backgrounds.ts'))
-    write_license_file(ntp_data_dir, generate_backgrounds_license(ntp_backgrounds_preamble, ntp_backgrounds))
+    ntp_backgrounds = list_ntp_backgrounds(
+        os.path.join(ntp_data_dir, 'backgrounds.ts'))
+    write_license_file(ntp_data_dir, generate_backgrounds_license(
+        ntp_backgrounds_preamble, ntp_backgrounds))
     print('  - %s sub-components added in brave_new_tab_ui/data/LICENSE' %
           len(ntp_backgrounds))
 

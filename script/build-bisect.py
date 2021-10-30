@@ -4,17 +4,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import argparse
-import errno
-import hashlib
 import math
 import os
 import platform
-import requests
 import re
-import shutil
-import subprocess
 import sys
-import json
 
 from io import StringIO
 from lib.config import get_env_var
@@ -29,7 +23,8 @@ is_mac_os = True
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='create PRs for all branches given branch against master')
+    parser = argparse.ArgumentParser(
+        description='create PRs for all branches given branch against master')
     parser.add_argument('--bad',
                         help='optional version which is known to be bad',
                         default=None)
@@ -93,7 +88,8 @@ def get_releases(repo):
             releases[tag_name] = release
         page = page + 1
 
-    print('fetch complete; ' + str(len(tag_names)) + ' versions found (excluding ' + str(draft_count) + ' drafts)')
+    print('fetch complete; ' + str(len(tag_names)) +
+          ' versions found (excluding ' + str(draft_count) + ' drafts)')
 
 
 def filter_releases(args):
@@ -115,7 +111,8 @@ def filter_releases(args):
 
         # remove entries which don't match optional branch (if present)
         if args.branch is not None and branch_version != args.branch:
-            print(' - skipping "' + tag + '" (' + branch_version + ' != ' + args.branch + ')')
+            print(' - skipping "' + tag +
+                  '" (' + branch_version + ' != ' + args.branch + ')')
             continue
 
         # remove entries which don't have installer binary
@@ -126,12 +123,14 @@ def filter_releases(args):
         if args.channel:
             channel = get_release_channel(tag)
             if args.channel != channel:
-                print(' - skipping "' + tag + '" (not in channel "' + args.channel + '")')
+                print(' - skipping "' + tag +
+                      '" (not in channel "' + args.channel + '")')
                 continue
 
         filtered_tag_names.append(tag)
 
-    print('filtering complete (' + str(len(tag_names) - len(filtered_tag_names)) + ' versions removed)')
+    print('filtering complete (' + str(len(tag_names) -
+          len(filtered_tag_names)) + ' versions removed)')
     tag_names = filtered_tag_names
 
 
@@ -141,7 +140,8 @@ def get_release_asset(version, verbose=True):
 
     release_id = releases[version]['id']
     if verbose:
-        print('getting installer for  "' + version + '" (release id ' + str(release_id) + ')...')
+        print('getting installer for  "' + version +
+              '" (release id ' + str(release_id) + ')...')
 
     # find correct asset for platform
     for asset in releases[version]['assets']:
@@ -196,7 +196,8 @@ def install(download_dir, path):
 
         # in case volumes are already mounted, remove trailing " 1" or " 2" (etc)
         binary_name = volume.replace("/Volumes/", "")
-        binary_name = re.sub("^\\d+\\s|\\s\\d+\\s|\\s\\d+$", "", binary_name) + '.app'
+        binary_name = re.sub("^\\d+\\s|\\s\\d+\\s|\\s\\d+$",
+                             "", binary_name) + '.app'
         volume_path = os.path.join(volume, binary_name)
 
         # copy binary to a temp folder
@@ -292,7 +293,8 @@ def test_version(args, attempt, tag):
 def get_github_token():
     github_token = get_env_var('GITHUB_TOKEN')
     if len(github_token) == 0:
-        result = execute(['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
+        result = execute(
+            ['npm', 'config', 'get', 'BRAVE_GITHUB_TOKEN']).strip()
         if result == 'undefined':
             raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
         return result
@@ -312,7 +314,8 @@ def get_nearest_index(version, index_to_get, default):
             return default
 
         versions.pop()
-        results = [i for i in tag_names if i.startswith('.'.join(versions) + '.')]
+        results = [i for i in tag_names if i.startswith(
+            '.'.join(versions) + '.')]
         if len(results) == 0:
             return default
 
@@ -357,7 +360,8 @@ def find_first_broken_version(args):
         result = test_version(args, attempt_number, left_tag)
         attempt_number = attempt_number + 1
         if result is False:
-            raise Exception('[ERROR] Version "' + left_tag + '" is expected to work but doesn\'t')
+            raise Exception('[ERROR] Version "' + left_tag +
+                            '" is expected to work but doesn\'t')
 
     # right should be NOT working
     if not args.bad:
@@ -365,7 +369,8 @@ def find_first_broken_version(args):
         result = test_version(args, attempt_number, right_tag)
         attempt_number = attempt_number + 1
         if result is True:
-            raise Exception('[ERROR] Version "' + right_tag + '" is expected to fail but doesn\'t')
+            raise Exception('[ERROR] Version "' + right_tag +
+                            '" is expected to fail but doesn\'t')
 
     # perform search
     works_from = left_index
@@ -414,7 +419,8 @@ def main():
 
     args = parse_args()
     if args.real_profile and args.use_profile:
-        print('[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.')
+        print(
+            '[ERROR] you can\'t use both `--fresh-profile` AND `--use-profile` at the same time.')
         return 1
 
     github_token = get_github_token()
@@ -425,7 +431,8 @@ def main():
 
     filter_releases(args)
     first_broken_version, attempts = find_first_broken_version(args)
-    print('DONE: issue first appeared in "' + str(first_broken_version) + '" (found in ' + str(attempts) + ' attempts)')
+    print('DONE: issue first appeared in "' + str(first_broken_version) +
+          '" (found in ' + str(attempts) + ' attempts)')
 
     try:
         broken_index = tag_names.index(first_broken_version)
@@ -433,10 +440,13 @@ def main():
             previous_release = tag_names[broken_index - 1]
             versions = 'v' + previous_release + '..v' + first_broken_version
             if args.verbose:
-                print('[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
-            commits = execute(['git', 'log', '--pretty=oneline', versions]).strip()
+                print(
+                    '[INFO] finding commits using "git log --pretty=oneline ' + versions + '"')
+            commits = execute(
+                ['git', 'log', '--pretty=oneline', versions]).strip()
             commit_lines = commits.split('\n')
-            print('Commits specific to tag "v' + first_broken_version + '" (' + str(len(commit_lines)) + ' commit(s)):')
+            print('Commits specific to tag "v' + first_broken_version +
+                  '" (' + str(len(commit_lines)) + ' commit(s)):')
             print(commits)
     except Exception as e:
         print('[ERROR] ' + str(e))

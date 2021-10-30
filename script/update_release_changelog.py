@@ -19,7 +19,6 @@ if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
 
 
 def main():
-
     """
     Download the brave-browser/CHANGELOG.md file, parse it and
     convert to markdown, then update the release notes for the
@@ -31,7 +30,8 @@ def main():
     if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
         logging.basicConfig(level=logging.DEBUG)
         logging.getLogger("urllib3").setLevel(logging.DEBUG)
-        logging.debug("DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
+        logging.debug(
+            "DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
         debug_requests_on()
 
     args = parse_args()
@@ -44,7 +44,8 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain {} or {}".format("\"refs/tags/\"", "\"v\""))
+        logging.error(" Tag prefix must contain {} or {}".format(
+            "\"refs/tags/\"", "\"v\""))
         exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
@@ -67,7 +68,8 @@ def main():
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
     release = get_release(repo, tag, allow_published_release_updates=True)
 
-    logging.debug("Release body before update: \n\'{}\'".format(release['body']))
+    logging.debug(
+        "Release body before update: \n\'{}\'".format(release['body']))
 
     logging.info("Merging original release body with changelog")
     new_body = release['body'] + '\n\n' + tag_changelog_txt
@@ -80,7 +82,8 @@ def main():
         lambda run: repo.releases.__call__(f'{id}').patch(data=data),
         catch=requests.exceptions.ConnectionError, retries=3
     )
-    logging.debug("Release body after update: \n\'{}\'".format(release['body']))
+    logging.debug(
+        "Release body after update: \n\'{}\'".format(release['body']))
 
 
 def debug_requests_on():
@@ -117,7 +120,8 @@ def parse_args():
     parser.add_argument('-t', '--tag',
                         help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
                         required=True)
-    parser.add_argument('-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+    parser.add_argument(
+        '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
     return parser.parse_args()
 
 

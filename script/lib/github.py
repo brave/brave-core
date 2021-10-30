@@ -118,11 +118,13 @@ def parse_user_logins(token, login_csv, verbose=False):
                 print('[INFO] Login "' + login + '" found: ' + str(response))
         except Exception as e:
             if verbose:
-                print('[INFO] Login "' + login + '" does not appear to be valid. ' + str(e))
+                print('[INFO] Login "' + login +
+                      '" does not appear to be valid. ' + str(e))
             invalid_logins.append(login)
 
     if len(invalid_logins) > 0:
-        raise Exception('Invalid logins found. Are they misspelled? ' + ','.join(invalid_logins))
+        raise Exception(
+            'Invalid logins found. Are they misspelled? ' + ','.join(invalid_logins))
 
     return parsed_logins
 
@@ -146,11 +148,13 @@ def parse_labels(token, repo_name, label_csv, verbose=False):
                 print('[INFO] Label "' + label + '" found: ' + str(response))
         except Exception as e:
             if verbose:
-                print('[INFO] Label "' + label + '" does not appear to be valid. ' + str(e))
+                print('[INFO] Label "' + label +
+                      '" does not appear to be valid. ' + str(e))
             invalid_labels.append(label)
 
     if len(invalid_labels) > 0:
-        raise Exception('Invalid labels found. Are they misspelled? ' + ','.join(invalid_labels))
+        raise Exception(
+            'Invalid labels found. Are they misspelled? ' + ','.join(invalid_labels))
 
     return parsed_labels
 
@@ -184,7 +188,8 @@ def add_reviewers_to_pull_request(token, repo_name, pr_number, reviewers=[], tea
         return
     response = repo.pulls(pr_number).requested_reviewers.post(data=patch_data)
     if verbose:
-        print('repo.pulls(' + str(pr_number) + ').requested_reviewers.post(data) response:\n' + str(response))
+        print('repo.pulls(' + str(pr_number) +
+              ').requested_reviewers.post(data) response:\n' + str(response))
     return response
 
 
@@ -238,12 +243,14 @@ def set_issue_details(token, repo_name, issue_number, milestone_number=None,
     # add milestone and assignee to issue / pull request
     # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
     if dryrun:
-        print('[INFO] would call `repo.issues(' + str(issue_number) + ').patch(' + str(patch_data) + ')`')
+        print('[INFO] would call `repo.issues(' +
+              str(issue_number) + ').patch(' + str(patch_data) + ')`')
         return
     repo = GitHub(token).repos(repo_name)
     response = repo.issues(issue_number).patch(data=patch_data)
     if verbose:
-        print('repo.issues(' + str(issue_number) + ').patch(data) response:\n' + str(response))
+        print('repo.issues(' + str(issue_number) +
+              ').patch(data) response:\n' + str(response))
 
 
 def fetch_origin_check_staged(path):
@@ -266,28 +273,34 @@ def get_local_branch_name(path):
 def get_title_from_first_commit(path, branch_to_compare):
     """get the first commit subject (useful for the title of a pull request)"""
     with scoped_cwd(path):
-        local_branch = execute(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
+        local_branch = execute(
+            ['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
         title_list = execute(['git', 'log', 'origin/' + branch_to_compare +
                              '..HEAD', '--pretty=format:%s', '--reverse'])
         title_list = title_list.split('\n')
         if len(title_list) == 0:
-            raise Exception('No commits found! Local branch matches "' + branch_to_compare + '"')
+            raise Exception(
+                'No commits found! Local branch matches "' + branch_to_compare + '"')
         return title_list[0]
 
 
 def push_branches_to_remote(path, branches_to_push, dryrun=False, token=None):
     if dryrun:
-        print('[INFO] would push the following local branches to remote: ' + str(branches_to_push))
+        print('[INFO] would push the following local branches to remote: ' +
+              str(branches_to_push))
     else:
         with scoped_cwd(path):
             for branch_to_push in branches_to_push:
                 print('- pushing ' + branch_to_push + '...')
                 # TODO: if they already exist, force push?? or error??
-                response = execute(['git', 'remote', 'get-url', '--push', 'origin']).strip()
+                response = execute(
+                    ['git', 'remote', 'get-url', '--push', 'origin']).strip()
                 if response.startswith('https://'):
                     if len(str(token)) == 0:
-                        raise Exception('GitHub token cannot be null or empty!')
-                    remote = response.replace('https://', 'https://' + token + ':x-oauth-basic@')
+                        raise Exception(
+                            'GitHub token cannot be null or empty!')
+                    remote = response.replace(
+                        'https://', 'https://' + token + ':x-oauth-basic@')
                     execute(['git', 'push', '-u', remote, branch_to_push])
                 else:
                     execute(['git', 'push', '-u', 'origin', branch_to_push])

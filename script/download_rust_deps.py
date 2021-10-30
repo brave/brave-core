@@ -140,7 +140,8 @@ def cargo_install(tool):
     env['CARGO_HOME'] = RUSTUP_HOME
 
     rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
-    cargo_bin = os.path.join(rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
+    cargo_bin = os.path.join(
+        rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
 
     # Install the tool
     cargo_args = []
