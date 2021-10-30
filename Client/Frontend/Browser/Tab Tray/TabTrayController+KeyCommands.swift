@@ -35,7 +35,7 @@ extension TabTrayController {
     }
 
     @objc func didTogglePrivateModeKeyCommand() {
-        didTogglePrivateMode()
+        togglePrivateModeAction()
     }
 
     @objc func didCloseTabKeyCommand() {
@@ -45,20 +45,23 @@ extension TabTrayController {
     }
 
     @objc func didCloseAllTabsKeyCommand() {
-        closeTabsForCurrentTray()
+        removeAllTabs()
     }
 
     @objc func didEnterTabKeyCommand() {
-        _ = self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
 
     @objc func didOpenNewTabKeyCommand() {
-        openNewTab()
+        newTabAction()
     }
 
     @objc func didChangeSelectedTabKeyCommand(sender: UIKeyCommand) {
         let step: Int
         guard let input = sender.input else { return }
+        
+        let numberOfColumns = tabTrayView.numberOfColumns
+        
         switch input {
         case UIKeyCommand.inputLeftArrow:
             step = -1
@@ -72,16 +75,20 @@ extension TabTrayController {
             step = 0
         }
 
-        let tabs = self.tabs
-        let currentIndex: Int
-        if let selected = tabManager.selectedTab {
-            currentIndex = tabs.firstIndex(of: selected) ?? 0
-        } else {
-            currentIndex = 0
-        }
+        guard let selectedTab = tabManager.selectedTab,
+              let currentIndex = dataSource.indexPath(for: selectedTab) else { return }
 
-        let nextIndex = max(0, min(currentIndex + step, tabs.count - 1))
-        let nextTab = tabs[nextIndex]
+        let tabsCount = tabTrayView.collectionView.numberOfItems(inSection: 0)
+        let nextItem = max(0, min(currentIndex.row + step, tabsCount - 1))
+        let nextTab = dataSource.itemIdentifier(for: .init(row: nextItem, section: currentIndex.section))
         tabManager.selectTab(nextTab)
+        if nextTab != nil {
+            // Small hack here to update UI.
+            // At the moment `isSelected` flag is not part of Tab's hashable implementation.
+            // So to update UI we force reload on the collection view.
+            // In all other cases when a tab selection changes, the tab tray is dismissed.
+            forceReload()
+        }
+        
     }
 }

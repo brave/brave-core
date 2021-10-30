@@ -2,11 +2,10 @@
 #define Client_Client_Bridging_Header_h
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <CommonCrypto/CommonCrypto.h>
 
 #import "Try.h"
-
-#import "ThirdParty/UIImageViewAligned/UIImageViewAligned.h"
 
 #import "Shared-Bridging-Header.h"
 #import "Storage-Bridging-Header.h"

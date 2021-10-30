@@ -21,8 +21,6 @@ extension BrowserViewController: TopToolbarDelegate {
         }
         updateFindInPageVisibility(visible: false)
         
-        let tabTrayController = TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
-        
         if tabManager.selectedTab == nil {
             tabManager.selectTab(tabManager.tabsForCurrentMode.first)
         }
@@ -32,8 +30,9 @@ extension BrowserViewController: TopToolbarDelegate {
         
         isTabTrayActive = true
         
-        navigationController?.pushViewController(tabTrayController, animated: true)
-        self.tabTrayController = tabTrayController
+        let vc = TabTrayController(tabManager: tabManager)
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
