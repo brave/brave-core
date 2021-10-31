@@ -30,6 +30,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/skus/skus_sdk_mojom_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
@@ -59,7 +60,6 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/skus/browser/skus_sdk_impl.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
@@ -335,9 +335,7 @@ void BindSkuSdkImpl(
   auto* profile = Profile::FromBrowserContext(context);
   if (brave::IsRegularProfile(profile)) {
     mojo::MakeSelfOwnedReceiver(
-        std::make_unique<brave_rewards::SkusSdkImpl>(
-            profile->GetPrefs(), context->GetDefaultStoragePartition()
-                                     ->GetURLLoaderFactoryForBrowserProcess()),
+        std::make_unique<brave_rewards::SkusSdkMojomImpl>(context),
         std::move(receiver));
   } else {
     // TODO(bsclifton) - finish me

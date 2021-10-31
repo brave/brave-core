@@ -993,7 +993,7 @@ namespace brave_rewards {
   struct HttpRoundtripContext;
   struct WakeupContext;
   struct CppSDK;
-  using SkusSdkImpl = ::brave_rewards::SkusSdkImpl;
+  using SkusSdkContext = ::brave_rewards::SkusSdkContext;
   using SkusSdkFetcher = ::brave_rewards::SkusSdkFetcher;
   using RefreshOrderCallbackState = ::brave_rewards::RefreshOrderCallbackState;
   using FetchOrderCredentialsCallbackState = ::brave_rewards::FetchOrderCredentialsCallbackState;
@@ -1118,7 +1118,7 @@ extern "C" {
 ::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$sizeof() noexcept;
 ::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$alignof() noexcept;
 
-::brave_rewards::CppSDK *brave_rewards$cxxbridge1$initialize_sdk(::brave_rewards::SkusSdkImpl *ctx, ::rust::String *env) noexcept;
+::brave_rewards::CppSDK *brave_rewards$cxxbridge1$initialize_sdk(::brave_rewards::SkusSdkContext *ctx, ::rust::String *env) noexcept;
 
 void brave_rewards$cxxbridge1$CppSDK$refresh_order(const ::brave_rewards::CppSDK &self, ::brave_rewards::RefreshOrderCallback *callback, ::brave_rewards::RefreshOrderCallbackState *callback_state, ::rust::String *order_id) noexcept;
 
@@ -1126,8 +1126,8 @@ void brave_rewards$cxxbridge1$CppSDK$fetch_order_credentials(const ::brave_rewar
 
 void brave_rewards$cxxbridge1$CppSDK$prepare_credentials_presentation(const ::brave_rewards::CppSDK &self, ::brave_rewards::PrepareCredentialsPresentationCallback *callback, ::brave_rewards::PrepareCredentialsPresentationCallbackState *callback_state, ::rust::String *domain, ::rust::String *path) noexcept;
 
-::brave_rewards::SkusSdkFetcher *brave_rewards$cxxbridge1$shim_executeRequest(const ::brave_rewards::SkusSdkImpl &ctx, const ::brave_rewards::HttpRequest &req, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)> done, ::brave_rewards::HttpRoundtripContext *rt_ctx) noexcept {
-  ::std::unique_ptr<::brave_rewards::SkusSdkFetcher> (*shim_executeRequest$)(const ::brave_rewards::SkusSdkImpl &, const ::brave_rewards::HttpRequest &, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)>, ::rust::Box<::brave_rewards::HttpRoundtripContext>) = ::brave_rewards::shim_executeRequest;
+::brave_rewards::SkusSdkFetcher *brave_rewards$cxxbridge1$shim_executeRequest(const ::brave_rewards::SkusSdkContext &ctx, const ::brave_rewards::HttpRequest &req, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)> done, ::brave_rewards::HttpRoundtripContext *rt_ctx) noexcept {
+  ::std::unique_ptr<::brave_rewards::SkusSdkFetcher> (*shim_executeRequest$)(const ::brave_rewards::SkusSdkContext &, const ::brave_rewards::HttpRequest &, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)>, ::rust::Box<::brave_rewards::HttpRoundtripContext>) = ::brave_rewards::shim_executeRequest;
   return shim_executeRequest$(ctx, req, done, ::rust::Box<::brave_rewards::HttpRoundtripContext>::from_raw(rt_ctx)).release();
 }
 
@@ -1148,18 +1148,18 @@ void brave_rewards$cxxbridge1$shim_scheduleWakeup$done$0(::rust::Box<::brave_rew
   brave_rewards$cxxbridge1$shim_scheduleWakeup$done$1(arg0.into_raw(), extern$);
 }
 
-void brave_rewards$cxxbridge1$shim_purge(::brave_rewards::SkusSdkImpl &ctx) noexcept {
-  void (*shim_purge$)(::brave_rewards::SkusSdkImpl &) = ::brave_rewards::shim_purge;
+void brave_rewards$cxxbridge1$shim_purge(::brave_rewards::SkusSdkContext &ctx) noexcept {
+  void (*shim_purge$)(::brave_rewards::SkusSdkContext &) = ::brave_rewards::shim_purge;
   shim_purge$(ctx);
 }
 
-void brave_rewards$cxxbridge1$shim_set(::brave_rewards::SkusSdkImpl &ctx, ::rust::Str key, ::rust::Str value) noexcept {
-  void (*shim_set$)(::brave_rewards::SkusSdkImpl &, ::rust::Str, ::rust::Str) = ::brave_rewards::shim_set;
+void brave_rewards$cxxbridge1$shim_set(::brave_rewards::SkusSdkContext &ctx, ::rust::Str key, ::rust::Str value) noexcept {
+  void (*shim_set$)(::brave_rewards::SkusSdkContext &, ::rust::Str, ::rust::Str) = ::brave_rewards::shim_set;
   shim_set$(ctx, key, value);
 }
 
-void brave_rewards$cxxbridge1$shim_get(::brave_rewards::SkusSdkImpl &ctx, ::rust::Str key, ::rust::String *return$) noexcept {
-  ::rust::String (*shim_get$)(::brave_rewards::SkusSdkImpl &, ::rust::Str) = ::brave_rewards::shim_get;
+void brave_rewards$cxxbridge1$shim_get(::brave_rewards::SkusSdkContext &ctx, ::rust::Str key, ::rust::String *return$) noexcept {
+  ::rust::String (*shim_get$)(::brave_rewards::SkusSdkContext &, ::rust::Str) = ::brave_rewards::shim_get;
   new (return$) ::rust::String(shim_get$(ctx, key));
 }
 } // extern "C"
@@ -1188,7 +1188,7 @@ void brave_rewards$cxxbridge1$shim_get(::brave_rewards::SkusSdkImpl &ctx, ::rust
   return brave_rewards$cxxbridge1$CppSDK$operator$alignof();
 }
 
-::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::std::unique_ptr<::brave_rewards::SkusSdkImpl> ctx, ::rust::String env) noexcept {
+::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::std::unique_ptr<::brave_rewards::SkusSdkContext> ctx, ::rust::String env) noexcept {
   return ::rust::Box<::brave_rewards::CppSDK>::from_raw(brave_rewards$cxxbridge1$initialize_sdk(ctx.release(), &env));
 }
 
@@ -1209,23 +1209,23 @@ void CppSDK::prepare_credentials_presentation(::brave_rewards::PrepareCredential
 } // namespace brave_rewards
 
 extern "C" {
-static_assert(::rust::detail::is_complete<::brave_rewards::SkusSdkImpl>::value, "definition of SkusSdkImpl is required");
-static_assert(sizeof(::std::unique_ptr<::brave_rewards::SkusSdkImpl>) == sizeof(void *), "");
-static_assert(alignof(::std::unique_ptr<::brave_rewards::SkusSdkImpl>) == alignof(void *), "");
-void cxxbridge1$unique_ptr$brave_rewards$SkusSdkImpl$null(::std::unique_ptr<::brave_rewards::SkusSdkImpl> *ptr) noexcept {
-  ::new (ptr) ::std::unique_ptr<::brave_rewards::SkusSdkImpl>();
+static_assert(::rust::detail::is_complete<::brave_rewards::SkusSdkContext>::value, "definition of SkusSdkContext is required");
+static_assert(sizeof(::std::unique_ptr<::brave_rewards::SkusSdkContext>) == sizeof(void *), "");
+static_assert(alignof(::std::unique_ptr<::brave_rewards::SkusSdkContext>) == alignof(void *), "");
+void cxxbridge1$unique_ptr$brave_rewards$SkusSdkContext$null(::std::unique_ptr<::brave_rewards::SkusSdkContext> *ptr) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::SkusSdkContext>();
 }
-void cxxbridge1$unique_ptr$brave_rewards$SkusSdkImpl$raw(::std::unique_ptr<::brave_rewards::SkusSdkImpl> *ptr, ::brave_rewards::SkusSdkImpl *raw) noexcept {
-  ::new (ptr) ::std::unique_ptr<::brave_rewards::SkusSdkImpl>(raw);
+void cxxbridge1$unique_ptr$brave_rewards$SkusSdkContext$raw(::std::unique_ptr<::brave_rewards::SkusSdkContext> *ptr, ::brave_rewards::SkusSdkContext *raw) noexcept {
+  ::new (ptr) ::std::unique_ptr<::brave_rewards::SkusSdkContext>(raw);
 }
-const ::brave_rewards::SkusSdkImpl *cxxbridge1$unique_ptr$brave_rewards$SkusSdkImpl$get(const ::std::unique_ptr<::brave_rewards::SkusSdkImpl>& ptr) noexcept {
+const ::brave_rewards::SkusSdkContext *cxxbridge1$unique_ptr$brave_rewards$SkusSdkContext$get(const ::std::unique_ptr<::brave_rewards::SkusSdkContext>& ptr) noexcept {
   return ptr.get();
 }
-::brave_rewards::SkusSdkImpl *cxxbridge1$unique_ptr$brave_rewards$SkusSdkImpl$release(::std::unique_ptr<::brave_rewards::SkusSdkImpl>& ptr) noexcept {
+::brave_rewards::SkusSdkContext *cxxbridge1$unique_ptr$brave_rewards$SkusSdkContext$release(::std::unique_ptr<::brave_rewards::SkusSdkContext>& ptr) noexcept {
   return ptr.release();
 }
-void cxxbridge1$unique_ptr$brave_rewards$SkusSdkImpl$drop(::std::unique_ptr<::brave_rewards::SkusSdkImpl> *ptr) noexcept {
-  ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::SkusSdkImpl>::value>{}(ptr);
+void cxxbridge1$unique_ptr$brave_rewards$SkusSdkContext$drop(::std::unique_ptr<::brave_rewards::SkusSdkContext> *ptr) noexcept {
+  ::rust::deleter_if<::rust::detail::is_complete<::brave_rewards::SkusSdkContext>::value>{}(ptr);
 }
 
 ::brave_rewards::CppSDK *cxxbridge1$box$brave_rewards$CppSDK$alloc() noexcept;
