@@ -22,7 +22,8 @@ struct HttpRoundtripContext;
 
 class SkusSdkFetcher {
  public:
-  explicit SkusSdkFetcher(scoped_refptr<network::SharedURLLoaderFactory>);
+  explicit SkusSdkFetcher(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~SkusSdkFetcher();
 
   void BeginFetch(
