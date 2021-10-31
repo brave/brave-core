@@ -15,10 +15,12 @@ static_library("browser") {
 
   sources = [
     "pref_names.h",
+    "skus_sdk_context.cc",
+    "skus_sdk_context.h",
     "skus_sdk_fetcher.cc",
     "skus_sdk_fetcher.h",
-    "skus_sdk_impl.cc",
-    "skus_sdk_impl.h",
+    "skus_sdk_service.cc",
+    "skus_sdk_service.h",
     "brave-rewards-cxx/src/cxx.h",
     "brave-rewards-cxx/src/shim.h",
     "brave-rewards-cxx/src/wrapper.cc",
@@ -34,6 +36,7 @@ static_library("browser") {
 
   deps = [
     "//brave/components/skus/common:mojom",
+    "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//net",
