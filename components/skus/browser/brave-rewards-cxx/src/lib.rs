@@ -15,7 +15,7 @@ pub use brave_rewards;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 
-pub struct NativeClientContext(UniquePtr<ffi::SkusSdkImpl>);
+pub struct NativeClientContext(UniquePtr<ffi::SkusSdkContext>);
 
 #[derive(Clone)]
 pub struct NativeClient {
@@ -77,7 +77,7 @@ mod ffi {
         type WakeupContext;
 
         type CppSDK;
-        fn initialize_sdk(ctx: UniquePtr<SkusSdkImpl>, env: String) -> Box<CppSDK>;
+        fn initialize_sdk(ctx: UniquePtr<SkusSdkContext>, env: String) -> Box<CppSDK>;
         fn refresh_order(
             self: &CppSDK,
             callback: RefreshOrderCallback,
@@ -102,11 +102,11 @@ mod ffi {
     unsafe extern "C++" {
         include!("shim.h");
 
-        type SkusSdkImpl;
+        type SkusSdkContext;
         type SkusSdkFetcher;
 
         fn shim_executeRequest(
-            ctx: &SkusSdkImpl,
+            ctx: &SkusSdkContext,
             req: &HttpRequest,
             done: fn(Box<HttpRoundtripContext>, resp: HttpResponse),
             rt_ctx: Box<HttpRoundtripContext>,
@@ -118,9 +118,9 @@ mod ffi {
             ctx: Box<WakeupContext>,
         );
 
-        fn shim_purge(ctx: Pin<&mut SkusSdkImpl>);
-        fn shim_set(ctx: Pin<&mut SkusSdkImpl>, key: &str, value: &str);
-        fn shim_get(ctx: Pin<&mut SkusSdkImpl>, key: &str) -> String;
+        fn shim_purge(ctx: Pin<&mut SkusSdkContext>);
+        fn shim_set(ctx: Pin<&mut SkusSdkContext>, key: &str, value: &str);
+        fn shim_get(ctx: Pin<&mut SkusSdkContext>, key: &str) -> String;
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -135,7 +135,7 @@ pub struct CppSDK {
     sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
 }
 
-fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkImpl>, env: String) -> Box<CppSDK> {
+fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSDK> {
     // FIXME replace with ffi logging
     tracing_subscriber::fmt::init();
 

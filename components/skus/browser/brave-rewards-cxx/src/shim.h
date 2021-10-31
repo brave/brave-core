@@ -13,13 +13,13 @@
 // `BRAVE_CORE_SHIM` define (please don't commit that change).
 #define BRAVE_CORE_SHIM
 #ifdef BRAVE_CORE_SHIM
-#include "brave/components/skus/browser/skus_sdk_impl.h"
+#include "brave/components/skus/browser/skus_sdk_context.h"
 #include "brave/components/skus/browser/skus_sdk_fetcher.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #else
 #include "cxx.h"
 namespace brave_rewards {
-class SkusSdkImpl {};
+class SkusSdkContext {};
 class SkusSdkFetcher {};
 }  // namespace brave_rewards
 #endif  // BRAVE_CORE_SHIM
@@ -31,7 +31,6 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
-class SkusSdkImpl;
 class SkusSdkFetcher;
 
 class RefreshOrderCallbackState {
@@ -64,9 +63,12 @@ using PrepareCredentialsPresentationCallback =
              RewardsResult result,
              rust::cxxbridge1::Str presentation);
 
-void shim_purge(SkusSdkImpl& ctx);
-void shim_set(SkusSdkImpl& ctx, rust::cxxbridge1::Str key, rust::cxxbridge1::Str value);
-::rust::String shim_get(SkusSdkImpl& ctx, rust::cxxbridge1::Str key);
+void shim_purge(brave_rewards::SkusSdkContext& ctx);
+void shim_set(brave_rewards::SkusSdkContext& ctx,
+              rust::cxxbridge1::Str key,
+              rust::cxxbridge1::Str value);
+::rust::String shim_get(brave_rewards::SkusSdkContext& ctx,
+                        rust::cxxbridge1::Str key);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,
@@ -75,7 +77,7 @@ void shim_scheduleWakeup(
     rust::cxxbridge1::Box<brave_rewards::WakeupContext> ctx);
 
 std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
-    const brave_rewards::SkusSdkImpl& ctx,
+    const brave_rewards::SkusSdkContext& ctx,
     const brave_rewards::HttpRequest& req,
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,

@@ -1,0 +1,32 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+source_set("skus") {
+  sources = [
+      "//brave/browser/skus/skus_sdk_mojom_impl.cc",
+      "//brave/browser/skus/skus_sdk_mojom_impl.h",
+      "//brave/browser/skus/skus_sdk_service_factory.cc",
+      "//brave/browser/skus/skus_sdk_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+
+  # TODO: this config should only be applying to the
+  # auto-generated rust files (wrapper.cpp, etc)
+  #
+  # I've tried making a separate target for those files but
+  # it still complains :/
+  configs -= [ "//build/config/clang:find_bad_constructs" ]
+}
