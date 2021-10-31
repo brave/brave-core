@@ -57,6 +57,6 @@ void BaseBraveShieldsService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* mock_data_url) {}
+    std::string* adblock_replacement_url) {}
 
 }  // namespace brave_shields

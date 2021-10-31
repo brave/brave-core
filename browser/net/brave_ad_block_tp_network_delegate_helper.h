@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_NET_BRAVE_AD_BLOCK_TP_NETWORK_DELEGATE_HELPER_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/net/url_context.h"
 
@@ -24,6 +25,8 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
 // from being affected.
 void SetAdblockCnameHostResolverForTesting(
     network::HostResolver* host_resolver);
+
+void SetRedirectUrlAllowedDomainForTesting(std::string domain);
 
 }  // namespace brave
 

@@ -19,6 +19,7 @@
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
@@ -284,13 +285,11 @@ void BraveRequestHandler::RunNextCallback(
         IsRequestIdentifierValid(ctx->request_identifier)) {
       *ctx->new_url = GURL(ctx->new_url_spec);
     }
-    if (ctx->blocked_by == brave::kAdBlocked ||
-        ctx->blocked_by == brave::kOtherBlocked) {
-      if (!ctx->ShouldMockRequest()) {
-        RunCallbackForRequestIdentifier(ctx->request_identifier,
-                                        net::ERR_BLOCKED_BY_CLIENT);
-        return;
-      }
+
+    if (ctx->ShouldBlockRequest()) {
+      RunCallbackForRequestIdentifier(ctx->request_identifier,
+                                      net::ERR_BLOCKED_BY_CLIENT);
+      return;
     }
   }
   RunCallbackForRequestIdentifier(ctx->request_identifier, rv);
