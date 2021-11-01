@@ -150,6 +150,9 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
 
   base::Value meta_value = EthTxStateManager::TxMetaToValue(meta);
+  const std::string* from = meta_value.FindStringKey("from");
+  ASSERT_TRUE(from);
+  EXPECT_EQ(*from, "0x2F015C60E0be116B1f0CD534704Db9c92118FB6A");
   auto meta_from_value = EthTxStateManager::ValueToTxMeta(meta_value);
   ASSERT_NE(meta_from_value, nullptr);
   EXPECT_EQ(meta_from_value->id, meta.id);
@@ -477,6 +480,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
                              "0x3535353535353535353535353535353535353535",
                              "0x0de0b6b3a7640000", std::vector<uint8_t>())));
   EthTxStateManager::TxMeta meta(std::move(tx));
+  meta.from = EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   EXPECT_TRUE(base::Time::FromUTCExploded(x, &meta.confirmed_time));
   meta.submitted_time = meta.confirmed_time - base::TimeDelta::FromSeconds(3);
@@ -485,7 +489,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   mojom::TransactionInfoPtr ti =
       EthTxStateManager::TxMetaToTransactionInfo(meta);
   EXPECT_EQ(ti->id, meta.id);
-  EXPECT_EQ(ti->from_address, meta.from.ToHex());
+  EXPECT_EQ(ti->from_address, meta.from.ToChecksumAddress());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash);
   EXPECT_EQ(ti->tx_status, meta.status);
   EXPECT_EQ(ti->tx_data->base_data->nonce,
@@ -522,10 +526,12 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   item_a.storage_keys.push_back(storage_key_0);
   access_list->push_back(item_a);
   EthTxStateManager::TxMeta meta1(std::move(tx1));
+  meta1.from =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   mojom::TransactionInfoPtr ti1 =
       EthTxStateManager::TxMetaToTransactionInfo(meta1);
   EXPECT_EQ(ti1->id, meta1.id);
-  EXPECT_EQ(ti1->from_address, meta1.from.ToHex());
+  EXPECT_EQ(ti1->from_address, meta1.from.ToChecksumAddress());
   EXPECT_EQ(ti1->tx_hash, meta1.tx_hash);
   EXPECT_EQ(ti1->tx_status, meta1.status);
   EXPECT_EQ(ti1->tx_data->base_data->nonce,
@@ -561,10 +567,12 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
                   "0xb68a0aa00" /* Hex of 49 * 1e9 */,
                   "0xad8075b7a" /* Hex of 46574033786 */))));
   EthTxStateManager::TxMeta meta2(std::move(tx2));
+  meta2.from =
+      EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   mojom::TransactionInfoPtr ti2 =
       EthTxStateManager::TxMetaToTransactionInfo(meta2);
   EXPECT_EQ(ti2->id, meta2.id);
-  EXPECT_EQ(ti2->from_address, meta2.from.ToHex());
+  EXPECT_EQ(ti2->from_address, meta2.from.ToChecksumAddress());
   EXPECT_EQ(ti2->tx_hash, meta2.tx_hash);
   EXPECT_EQ(ti2->tx_status, meta2.status);
   EXPECT_EQ(ti2->tx_data->base_data->nonce,
