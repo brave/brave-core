@@ -165,9 +165,9 @@ void BraveMainDelegate::PreSandboxStartup() {
 #endif  // defined(OS_LINUX) || defined(OS_MAC)
 
 #if defined(OS_POSIX) && !defined(OS_MAC)
-  base::PathService::Override(
+  base::PathService::OverrideAndCreateIfNeeded(
       chrome::DIR_POLICY_FILES,
-      base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")));
+      base::FilePath(FILE_PATH_LITERAL("/etc/brave/policies")), true, false);
 #endif
 
   if (brave::SubprocessNeedsResourceBundle()) {
