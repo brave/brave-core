@@ -166,6 +166,12 @@ class EthJsonRpcController : public KeyedService,
                              const std::string& account_address,
                              GetERC721TokenBalanceCallback callback) override;
 
+  using GetSupportsInterfaceCallback =
+      base::OnceCallback<void(bool success, bool is_supported)>;
+  void GetSupportsInterface(const std::string& contract_address,
+                            const std::string& interface_id,
+                            GetSupportsInterfaceCallback callback);
+
  private:
   void FireNetworkChanged();
   void FirePendingRequestCompleted(const std::string& chain_id,
@@ -290,6 +296,12 @@ class EthJsonRpcController : public KeyedService,
                                      GetERC721TokenBalanceCallback callback,
                                      bool success,
                                      const std::string& owner_address);
+
+  void OnGetSupportsInterface(
+      GetSupportsInterfaceCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   GURL network_url_;

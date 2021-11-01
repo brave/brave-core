@@ -1188,4 +1188,45 @@ TEST_F(EthJsonRpcControllerUnitTest, GetERC721Balance) {
   EXPECT_TRUE(callback_called);
 }
 
+TEST_F(EthJsonRpcControllerUnitTest, GetSupportsInterface) {
+  bool callback_called = false;
+  SetInterceptor("eth_call", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                 "\"0x000000000000000000000000000000000000000000000000000000000"
+                 "0000001\"}");
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called, true, true));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInterceptor("eth_call", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                 "\"0x000000000000000000000000000000000000000000000000000000000"
+                 "0000000\"}");
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called, true, false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInterceptor("eth_call", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called, false, false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetErrorInterceptor();
+  rpc_controller_->GetSupportsInterface(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "0x80ac58cd",
+      base::BindOnce(&OnBoolResponse, &callback_called, false, false));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
 }  // namespace brave_wallet
