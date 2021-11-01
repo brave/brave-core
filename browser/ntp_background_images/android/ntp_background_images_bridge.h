@@ -14,7 +14,6 @@
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -22,16 +21,12 @@
 class Profile;
 
 namespace ntp_background_images {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 struct NTPBackgroundImagesData;
-#endif
 struct NTPSponsoredImagesData;
 class ViewCounterService;
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 using ntp_background_images::NTPBackgroundImagesData;
-#endif
 using ntp_background_images::NTPBackgroundImagesService;
 using ntp_background_images::NTPSponsoredImagesData;
 using ntp_background_images::ViewCounterService;
@@ -67,15 +62,11 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
  private:
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   void OnUpdated(NTPBackgroundImagesData* data) override;
-#endif
   void OnUpdated(NTPSponsoredImagesData* data) override;
   void OnSuperReferralEnded() override;
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(base::Value* data);
-#endif
   base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
       base::Value* data);
 

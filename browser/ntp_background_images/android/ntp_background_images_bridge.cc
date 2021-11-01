@@ -23,9 +23,7 @@
 #include "brave/build/android/jni_headers/NTPBackgroundImagesBridge_jni.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#endif
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -131,7 +129,6 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
   }
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::CreateWallpaper(base::Value* data) {
   JNIEnv* env = AttachCurrentThread();
@@ -146,7 +143,6 @@ NTPBackgroundImagesBridge::CreateWallpaper(base::Value* data) {
       ConvertUTF8ToJavaString(env, author ? *author : ""),
       ConvertUTF8ToJavaString(env, link ? *link : ""));
 }
-#endif
 
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
@@ -253,20 +249,14 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
   if (!is_background) {
     return CreateBrandedWallpaper(&data);
   } else {
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
     return CreateWallpaper(&data);
-#else
-    return base::android::ScopedJavaLocalRef<jobject>();
-#endif
   }
 }
 
-#if BUILDFLAG(ENABLE_NTP_BACKGROUND_IMAGES)
 void NTPBackgroundImagesBridge::OnUpdated(NTPBackgroundImagesData* data) {
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }
-#endif
 
 void NTPBackgroundImagesBridge::OnUpdated(NTPSponsoredImagesData* data) {
   // Don't have interest about in-effective component data update.
