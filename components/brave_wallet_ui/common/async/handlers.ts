@@ -348,7 +348,7 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, paylo
 
 handler.on(WalletActions.sendERC721TransferFrom.getType(), async (store: Store, payload: ERC721TransferFromParams) => {
   const apiProxy = await getAPIProxy()
-  const { data, success } = await apiProxy.ethTxController.makeERC721TransferFromData(payload.from, payload.to, payload.tokenId)
+  const { data, success } = await apiProxy.ethTxController.makeERC721TransferFromData(payload.from, payload.to, payload.tokenId, payload.contractAddress)
   if (!success) {
     console.log('Failed making ERC721 transferFrom data, from: ', payload.from, ', to: ', payload.to, ', tokenId: ', payload.tokenId)
     return
