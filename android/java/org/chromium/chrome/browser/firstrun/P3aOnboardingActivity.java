@@ -36,6 +36,8 @@ import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.PackageUtils;
 
+import java.lang.Math;
+
 public class P3aOnboardingActivity extends FirstRunActivityBase {
     // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
     // from the same thread, so no need to use extra locks
@@ -86,10 +88,7 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
                         getResources().getString(R.string.private_product_analysis_text)));
         int productAnalysisIndex = productAnalysisString.indexOf(
                 getResources().getString(R.string.private_product_analysis_text));
-        Spanned productAnalysisSpanned =
-                BraveRewardsHelper.spannedFromHtmlString(productAnalysisString);
-        SpannableString productAnalysisTextSS =
-                new SpannableString(productAnalysisSpanned.toString());
+        SpannableString productAnalysisTextSS = new SpannableString(productAnalysisString);
 
         ClickableSpan productAnalysisClickableSpan = new ClickableSpan() {
             @Override
@@ -104,14 +103,20 @@ public class P3aOnboardingActivity extends FirstRunActivityBase {
         };
 
         productAnalysisTextSS.setSpan(productAnalysisClickableSpan, productAnalysisIndex,
-                productAnalysisIndex
-                        + getResources().getString(R.string.private_product_analysis_text).length(),
+                Math.min(productAnalysisIndex
+                                + getResources()
+                                          .getString(R.string.private_product_analysis_text)
+                                          .length(),
+                        productAnalysisTextSS.length()),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         productAnalysisTextSS.setSpan(
                 new ForegroundColorSpan(getResources().getColor(R.color.brave_blue_tint_color)),
                 productAnalysisIndex,
-                productAnalysisIndex
-                        + getResources().getString(R.string.private_product_analysis_text).length(),
+                Math.min(productAnalysisIndex
+                                + getResources()
+                                          .getString(R.string.private_product_analysis_text)
+                                          .length(),
+                        productAnalysisTextSS.length()),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         p3aOnboardingText.setMovementMethod(LinkMovementMethod.getInstance());
         p3aOnboardingText.setText(productAnalysisTextSS);
