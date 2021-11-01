@@ -24,18 +24,11 @@ source_set("ntp_background_images") {
   ]
 
   if (is_android) {
-    # Remove when https://github.com/brave/brave-browser/issues/10658 is resolved
-    check_includes = false
-
     sources += [
       "android/ntp_background_images_bridge.cc",
       "android/ntp_background_images_bridge.h",
     ]
 
-    deps += [
-      "//brave/build/android:jni_headers",
-      "//components/keyed_service/content",
-      "//components/keyed_service/core",
-    ]
+    deps += [ "//brave/build/android:jni_headers" ]
   }
 }

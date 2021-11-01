@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 
-#include <memory>
-#include <string>
-
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -16,7 +13,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 class Profile;
 
@@ -24,7 +20,7 @@ namespace ntp_background_images {
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 class ViewCounterService;
-}
+}  // namespace ntp_background_images
 
 using ntp_background_images::NTPBackgroundImagesData;
 using ntp_background_images::NTPBackgroundImagesService;
@@ -32,10 +28,13 @@ using ntp_background_images::NTPSponsoredImagesData;
 using ntp_background_images::ViewCounterService;
 
 class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
-                                 public KeyedService {
+                                  public KeyedService {
  public:
   explicit NTPBackgroundImagesBridge(Profile* profile);
   ~NTPBackgroundImagesBridge() override;
+  NTPBackgroundImagesBridge(const NTPBackgroundImagesBridge&) = delete;
+  NTPBackgroundImagesBridge& operator=(const NTPBackgroundImagesBridge&) =
+      delete;
 
   void RegisterPageView(JNIEnv* env,
                         const base::android::JavaParamRef<jobject>& obj);
@@ -48,7 +47,7 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
   void GetTopSites(JNIEnv* env,
-                        const base::android::JavaParamRef<jobject>& obj);
+                   const base::android::JavaParamRef<jobject>& obj);
   bool IsSuperReferral(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj);
   base::android::ScopedJavaLocalRef<jstring>
@@ -74,8 +73,6 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
   ViewCounterService* view_counter_service_;
   NTPBackgroundImagesService* background_images_service_;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
-
-  DISALLOW_COPY_AND_ASSIGN(NTPBackgroundImagesBridge);
 };
 
 namespace ntp_background_images {
@@ -91,13 +88,15 @@ class NTPBackgroundImagesBridgeFactory
 
   NTPBackgroundImagesBridgeFactory();
   ~NTPBackgroundImagesBridgeFactory() override;
+  NTPBackgroundImagesBridgeFactory(const NTPBackgroundImagesBridgeFactory&) =
+      delete;
+  NTPBackgroundImagesBridgeFactory& operator=(
+      const NTPBackgroundImagesBridgeFactory&) = delete;
 
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(NTPBackgroundImagesBridgeFactory);
 };
 
 }  // namespace ntp_background_images
