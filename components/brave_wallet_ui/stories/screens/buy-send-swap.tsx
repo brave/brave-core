@@ -23,6 +23,8 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: EthereumChain[]
   orderType: OrderTypes
+  selectedSendAsset: AccountAssetOptionType
+  sendAssetBalance: string
   swapToAsset: AccountAssetOptionType
   swapFromAsset: AccountAssetOptionType
   selectedNetwork: EthereumChain
@@ -68,6 +70,7 @@ export interface Props {
   onSelectPresetSendAmount: (percent: number) => void
   onSelectTab: (tab: BuySendSwapTypes) => void
   onSwapQuoteRefresh: () => void
+  onSelectSendAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -88,6 +91,8 @@ function BuySendSwap (props: Props) {
     fromAmount,
     toAmount,
     addressError,
+    selectedSendAsset,
+    sendAssetBalance,
     fromAssetBalance,
     toAssetBalance,
     toAddress,
@@ -119,7 +124,8 @@ function BuySendSwap (props: Props) {
     onSelectPresetFromAmount,
     onSelectPresetSendAmount,
     onSelectTab,
-    onSwapQuoteRefresh
+    onSwapQuoteRefresh,
+    onSelectSendAsset
   } = props
 
   React.useMemo(() => {
@@ -194,19 +200,19 @@ function BuySendSwap (props: Props) {
           accounts={accounts}
           networkList={networkList}
           selectedAssetAmount={sendAmount}
-          selectedAssetBalance={fromAssetBalance}
+          selectedAssetBalance={sendAssetBalance}
           toAddressOrUrl={toAddressOrUrl}
           toAddress={toAddress}
           onSelectAccount={onSelectAccount}
           onSelectNetwork={onSelectNetwork}
           onSelectPresetAmount={onSelectPresetSendAmount}
-          onSelectAsset={onSelectAsset}
+          onSelectAsset={onSelectSendAsset}
           onSetSendAmount={onSetSendAmount}
           onSetToAddressOrUrl={onSetToAddressOrUrl}
           onSubmit={onSubmitSend}
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
-          selectedAsset={swapFromAsset}
+          selectedAsset={selectedSendAsset}
           showHeader={true}
           assetOptions={sendAssetOptions}
         />

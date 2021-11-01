@@ -50,16 +50,17 @@ export default function useAssets (
     [userVisibleTokensInfo]
   )
 
-  const sendAssetOptions = selectedAccount?.tokens?.map((token) => ({
-    ...token,
-    asset: {
-      ...token.asset,
-      logo:
-        token.asset.symbol === 'ETH'
-          ? ETH.asset.logo
-          : token.asset.logo
-    }
-  }))
+  const sendAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
+    const assets = userVisibleTokenOptions
+      .map((token) => ({
+        asset: token,
+        assetBalance: '0',
+        fiatBalance: '0'
+      }))
+    return assets
+  },
+    [userVisibleTokenOptions]
+  )
 
   return {
     tokenOptions,

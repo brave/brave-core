@@ -9,15 +9,17 @@ import { WalletAccountType, AccountAssetOptionType } from '../../constants/types
 
 export default function usePreset (
   selectedAccount: WalletAccountType,
-  fromAsset: AccountAssetOptionType,
+  swapAsset: AccountAssetOptionType,
+  sendAsset: AccountAssetOptionType,
   onSetFromAmount: (value: string) => void,
   onSetSendAmount: (value: string) => void
 ) {
   return (sendOrSwap: 'send' | 'swap') => (percent: number) => {
+    const selectedAsset = sendOrSwap === 'send' ? sendAsset : swapAsset
     const asset = selectedAccount.tokens.find(
       (token) => (
-        token.asset.contractAddress === fromAsset.asset.contractAddress ||
-        token.asset.symbol === fromAsset.asset.symbol
+        token.asset.contractAddress === selectedAsset.asset.contractAddress ||
+        token.asset.symbol === selectedAsset.asset.symbol
       )
     )
     const amount = new BigNumber(asset?.assetBalance || '0').times(percent).toString()

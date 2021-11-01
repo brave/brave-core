@@ -152,7 +152,6 @@ function Container (props: Props) {
     toAsset,
     customSlippageTolerance,
     onSetFromAmount,
-    setFromAsset,
     setSwapToOrFrom,
     onToggleOrderType,
     onSwapQuoteRefresh,
@@ -179,15 +178,17 @@ function Container (props: Props) {
     onSetSendAmount,
     onSetToAddressOrUrl,
     onSubmitSend,
+    onSelectSendAsset,
     sendAmount,
     toAddressOrUrl,
     toAddress,
-    addressError
+    addressError,
+    selectedSendAsset
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
+    sendAssetOptions,
     selectedAccount,
-    fromAsset,
     props.walletActions.sendERC20Transfer,
     props.walletActions.sendTransaction,
     props.walletActions.sendERC721TransferFrom
@@ -198,10 +199,11 @@ function Container (props: Props) {
   }, [selectedAccount])
 
   const getSelectedAccountBalance = useBalance(selectedAccount)
+  const { assetBalance: sendAssetBalance } = getSelectedAccountBalance(selectedSendAsset)
   const { assetBalance: fromAssetBalance } = getSelectedAccountBalance(fromAsset)
   const { assetBalance: toAssetBalance } = getSelectedAccountBalance(toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(selectedAccount, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
@@ -244,7 +246,7 @@ function Container (props: Props) {
     } else if (selectedPanel === 'swap') {
       onSelectTransactAsset(asset, swapToOrFrom)
     } else {
-      setFromAsset(asset)
+      onSelectSendAsset(asset)
     }
 
     setShowSelectAsset(false)
@@ -668,9 +670,9 @@ function Container (props: Props) {
                 onInputChange={onInputChange}
                 onSelectPresetAmount={onSelectPresetAmountFactory('send')}
                 onSubmit={onSubmitSend}
-                selectedAsset={fromAsset}
+                selectedAsset={selectedSendAsset}
                 selectedAssetAmount={sendAmount}
-                selectedAssetBalance={fromAssetBalance}
+                selectedAssetBalance={sendAssetBalance}
                 addressError={addressError}
                 toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
