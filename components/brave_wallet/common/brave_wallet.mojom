@@ -355,6 +355,7 @@ enum TransactionType {
   ERC20Transfer,
   ERC20Approve,
   ERC721TransferFrom,
+  ERC721SafeTransferFrom,
   Other
 };
 
