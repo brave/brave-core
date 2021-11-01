@@ -366,28 +366,28 @@ function Container (props: Props) {
   }
 
   const onCancelSigning = () => {
-    if (isHardwareAccount(signMessageData.address)) {
+    if (isHardwareAccount(signMessageData[0].address)) {
       props.walletPanelActions.signMessageHardwareProcessed({
         success: false,
-        id: signMessageData.id,
+        id: signMessageData[0].id,
         signature: '',
         error: ''
       })
     } else {
       props.walletPanelActions.signMessageProcessed({
         approved: false,
-        id: signMessageData.id
+        id: signMessageData[0].id
       })
     }
   }
 
   const onSignData = () => {
-    if (isHardwareAccount(signMessageData.address)) {
-      props.walletPanelActions.signMessageHardware(signMessageData)
+    if (isHardwareAccount(signMessageData[0].address)) {
+      props.walletPanelActions.signMessageHardware(signMessageData[0])
     } else {
       props.walletPanelActions.signMessageProcessed({
         approved: true,
-        id: signMessageData.id
+        id: signMessageData[0].id
       })
     }
   }
@@ -543,7 +543,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={true}>
         <LongWrapper>
           <SignPanel
-            message={signMessageData.message}
+            signMessageData={signMessageData}
             onCancel={onCancelSigning}
             onSign={onSignData}
             selectedAccount={selectedAccount}

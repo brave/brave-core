@@ -106,7 +106,7 @@ export const WarningBox = styled.div`
   width: 255px;
   padding: 10px;
   margin-bottom: 14px;
-  background-color: ${(p) => p.theme.color.errorBackground}
+  background-color: ${(p) => p.theme.color.errorBackground};
 `
 
 export const WarningTitleRow = styled.div`
