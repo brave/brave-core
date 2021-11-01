@@ -44,6 +44,7 @@ export const NavButton = styled.button<StyleProps>`
   outline: none;
   border: none;
   background: none;
+  pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
 `
 
 export const NavButtonText = styled.span<StyleProps>`
