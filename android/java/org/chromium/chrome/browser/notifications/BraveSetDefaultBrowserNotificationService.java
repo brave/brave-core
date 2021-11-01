@@ -151,7 +151,7 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         intent.putExtra(NOTIFICATION_ID_EXTRA, notification_id);
 
         return PendingIntent.getBroadcast(context, notification_id, intent,
-                0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                IntentUtils.getPendingIntentMutabilityFlag(true));
     }
 
     private boolean hasAskedAt1122() {
