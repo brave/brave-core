@@ -38,6 +38,11 @@ export default function useSend (
   }, [sendAssetOptions])
 
   const onSelectSendAsset = (asset: AccountAssetOptionType) => {
+    if (asset.asset.isErc721) {
+      setSendAmount('1')
+    } else {
+      setSendAmount('')
+    }
     setSelectedSendAsset(asset)
   }
 

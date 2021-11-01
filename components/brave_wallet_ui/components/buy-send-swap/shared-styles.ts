@@ -57,3 +57,23 @@ export const ErrorText = styled.span`
   word-break: break-word;
   margin-bottom: 12px;
 `
+
+export const DivderTextWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  border-bottom: 2px solid ${(p) => p.theme.color.divider01};
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+`
+
+export const DividerText = styled.span`
+  font-family: Poppins;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.text01};
+`
