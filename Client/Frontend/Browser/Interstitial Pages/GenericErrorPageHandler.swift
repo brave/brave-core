@@ -89,7 +89,7 @@ class GenericErrorPageHandler: InterstitialPageHandler {
             "page_title": model.originalURL.normalizedHost(stripWWWSubdomainOnly: true) ?? model.originalHost,
             "error_code": "\(model.errorCode)",
             "error_title": "This site can't be reached",
-            "error_description": model.description,
+            "error_description": model.description + "<br><br>\(Strings.errorPageCantBeReachedTry)",
             "error_domain": domain,
             "security_token": UserScriptManager.messageHandlerTokenString,
             "actions": action

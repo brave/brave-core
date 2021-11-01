@@ -163,6 +163,12 @@ extension Strings {
 extension Strings {
     public static let errorPageReloadButtonTitle = NSLocalizedString("ErrorPageReloadButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Reload", comment: "Shown in error pages on a button that will try to load the page again")
     public static let errorPageOpenInSafariButtonTitle = NSLocalizedString("ErrorPageOpenInSafariButtonTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open in Safari", comment: "Shown in error pages for files that can't be shown and need to be downloaded.")
+    public static let errorPageCantBeReachedTry =
+    NSLocalizedString("errorPageCantBeReachedTry",
+                      tableName: "BraveShared",
+                      bundle: Bundle.braveShared,
+                      value: "Try re-typing the URL, or opening a search engine and searching for the new URL.",
+                      comment: "Shown in error pages to suggest a fix to the user.")
 }
 
 // MARK:-  FindInPageBar.swift
@@ -509,9 +515,9 @@ extension Strings {
     
     public static let errorPagesProceedAnywayButton = NSLocalizedString("ErrorPagesProceedAnywayButton", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Proceed to %@ (unsafe)", comment: "Button label to temporarily continue to the site from the certificate error page")
     
-    public static let errorPagesNoInternetTitle = NSLocalizedString("ErrorPagesNoInternetTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "No Internet", comment: "Title of the No Internet error page")
+    public static let errorPagesNoInternetTitle = NSLocalizedString("ErrorPagesNoInternetTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "No internet access", comment: "Title of the No Internet error page")
     
-    public static let errorPagesNoInternetTry = NSLocalizedString("ErrorPagesNoInternetTry", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Try", comment: "Text telling the user to Try: The following list of things")
+    public static let errorPagesNoInternetTry = NSLocalizedString("ErrorPagesNoInternetTry", tableName: "BraveShared", bundle: Bundle.braveShared, value: "It appears you're not online. To fix this, try", comment: "Text telling the user to Try: The following list of things")
     
     public static let errorPagesNoInternetTryItem1 = NSLocalizedString("ErrorPagesNoInternetTryItem1", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Checking the network cables, modem, and router", comment: "List of things to try when internet is not working")
     
