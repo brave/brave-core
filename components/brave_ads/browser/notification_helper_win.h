@@ -11,7 +11,11 @@
 #include <windows.ui.notifications.h>
 #include <wrl/event.h>
 
+#include <string>
+#include <utility>
+
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 
 namespace brave_ads {
 
@@ -30,9 +34,9 @@ class NotificationHelperWin
   NotificationHelperWin();
   ~NotificationHelperWin() override;
 
-  bool IsFocusAssistEnabled() const;
+  std::pair<bool, std::string> IsFocusAssistEnabled() const;
 
-  bool IsNotificationsEnabled();
+  std::pair<bool, std::string> IsNotificationsEnabled();
 
   std::wstring GetAppId() const;
 
@@ -51,6 +55,10 @@ class NotificationHelperWin
   bool CanShowBackgroundNotifications() const override;
 
   bool ShowMyFirstAdNotification() override;
+
+  void LogConfigurationInfo();
+
+  base::RepeatingTimer timer_;
 };
 
 }  // namespace brave_ads

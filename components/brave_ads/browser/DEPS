@@ -51,6 +51,7 @@ specific_include_rules = {
     "+chrome/browser/ui/browser_window.h",
     "+ui/aura/window.h",
     "+ui/aura/window_tree_host.h",
+    "+ui/display/screen.h",
     "+ui/gfx/x/x11_atom_cache.h",
     "+ui/gfx/win/singleton_hwnd_observer.h",
     "+ui/views/win/hwnd_util.h",

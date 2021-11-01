@@ -7,16 +7,68 @@
 
 #include <Windows.h>
 
+#include <vector>
+
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
+#include "bat/ads/configuration_info_log.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/shell_util.h"
 
 namespace brave_ads {
+
+namespace {
+
+using WindowParamsContainer = std::vector<ads::WindowParams>;
+
+std::string GetWindowTextAsString(HWND hwnd) {
+  const size_t num_chars = ::GetWindowTextLength(hwnd);
+  if (!num_chars)
+    return {};
+  std::vector<wchar_t> tmp(num_chars + 1);
+  if (!::GetWindowText(hwnd, &tmp.front(), tmp.size()))
+    return {};
+
+  return base::WideToUTF8(base::WStringPiece(&tmp.front(), num_chars));
+}
+
+BOOL CALLBACK FillContainer(HWND hwnd, LPARAM lparam) {
+  if (!IsWindowVisible(hwnd)) {
+    return TRUE;
+  }
+  WindowParamsContainer* params_container =
+      reinterpret_cast<WindowParamsContainer*>(lparam);
+  ads::WindowParams params;
+  params.title = GetWindowTextAsString(hwnd);
+
+  if (params.title.empty()) {
+    return TRUE;
+  }
+
+  params_container->push_back(params);
+
+  return TRUE;
+}
+
+BOOL CALLBACK TopWindowsEnumProc(HWND hwnd, LPARAM lparam) {
+  FillContainer(hwnd, lparam);
+
+  return TRUE;
+}
+
+void LogOsWindows() {
+  WindowParamsContainer params_container;
+  ::EnumWindows(TopWindowsEnumProc,
+                reinterpret_cast<LPARAM>(&params_container));
+  ads::WriteConfigurationInfoLog(params_container);
+}
+
+}  // namespace
 
 // Copied from ntdef.h as not available in the Windows SDK and is required to
 // detect if Focus Assist is enabled. Focus Assist is currently undocumented
@@ -58,9 +110,28 @@ enum FocusAssistResult {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-NotificationHelperWin::NotificationHelperWin() = default;
+NotificationHelperWin::NotificationHelperWin() {
+  timer_.Start(FROM_HERE, base::TimeDelta::FromMinutes(1), this,
+               &NotificationHelperWin::LogConfigurationInfo);
+}
 
 NotificationHelperWin::~NotificationHelperWin() = default;
+
+void NotificationHelperWin::LogConfigurationInfo() {
+  std::pair<bool, std::string> status = IsNotificationsEnabled();
+  ads::NativeNotificationsStatus notifications_status;
+  notifications_status.enabled = status.first;
+  notifications_status.reason = status.second;
+  ads::WriteConfigurationInfoLog(notifications_status);
+
+  status = IsFocusAssistEnabled();
+  ads::FocusAssistStatus focus_assist_status;
+  focus_assist_status.enabled = status.first;
+  focus_assist_status.reason = status.second;
+  ads::WriteConfigurationInfoLog(focus_assist_status);
+
+  LogOsWindows();
+}
 
 bool NotificationHelperWin::CanShowNativeNotifications() {
   if (!base::FeatureList::IsEnabled(::features::kNativeNotifications)) {
@@ -79,11 +150,11 @@ bool NotificationHelperWin::CanShowNativeNotifications() {
     return false;
   }
 
-  if (!IsNotificationsEnabled()) {
+  if (!IsNotificationsEnabled().first) {
     return false;
   }
 
-  if (IsFocusAssistEnabled()) {
+  if (IsFocusAssistEnabled().first) {
     return false;
   }
 
@@ -108,7 +179,9 @@ NotificationHelper* NotificationHelper::GetInstanceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool NotificationHelperWin::IsFocusAssistEnabled() const {
+std::pair<bool, std::string> NotificationHelperWin::IsFocusAssistEnabled()
+    const {
+  std::string reason;
   const auto nt_query_wnf_state_data_func =
       GetProcAddress(GetModuleHandle(L"ntdll"), "NtQueryWnfStateData");
 
@@ -116,8 +189,9 @@ bool NotificationHelperWin::IsFocusAssistEnabled() const {
       PNTQUERYWNFSTATEDATA(nt_query_wnf_state_data_func);
 
   if (!nt_query_wnf_state_data) {
-    LOG(ERROR) << "Failed to get pointer to NtQueryWnfStateData function";
-    return false;
+    reason = "Failed to get pointer to NtQueryWnfStateData function";
+    LOG(ERROR) << reason;
+    return std::make_pair(false, reason);
   }
 
   // State name for Focus Assist
@@ -133,82 +207,96 @@ bool NotificationHelperWin::IsFocusAssistEnabled() const {
   if (!NT_SUCCESS(nt_query_wnf_state_data(
           &WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, nullptr, nullptr,
           &change_stamp, &buffer, &buffer_size))) {
-    LOG(ERROR) << "Failed to get status of Focus Assist";
-    return false;
+    reason = "Failed to get status of Focus Assist";
+    LOG(ERROR) << reason;
+    return std::make_pair(false, reason);
   }
 
   auto result = (FocusAssistResult)buffer;
 
   switch (result) {
     case NOT_SUPPORTED: {
-      LOG(WARNING) << "Focus Assist is unsupported";
-      return false;
+      reason = "Focus Assist is unsupported";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
 
     case FAILED: {
-      LOG(WARNING) << "Failed to determine Focus Assist status";
-      return false;
+      reason = "Failed to determine Focus Assist status";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
 
     case OFF: {
-      LOG(INFO) << "Focus Assist is disabled";
-      return false;
+      reason = "Focus Assist is disabled";
+      LOG(INFO) << reason;
+      return std::make_pair(false, reason);
     }
 
     case PRIORITY_ONLY: {
-      LOG(INFO) << "Focus Assist is set to priority only";
-      return true;
+      reason = "Focus Assist is set to priority only";
+      LOG(INFO) << reason;
+      return std::make_pair(true, reason);
     }
 
     case ALARMS_ONLY: {
-      LOG(INFO) << "Focus Assist is set to alarms only";
-      return true;
+      reason = "Focus Assist is set to alarms only";
+      LOG(INFO) << reason;
+      return std::make_pair(true, reason);
     }
   }
 }
 
-bool NotificationHelperWin::IsNotificationsEnabled() {
+std::pair<bool, std::string> NotificationHelperWin::IsNotificationsEnabled() {
+  std::string reason;
   HRESULT hr = InitializeToastNotifier();
   auto* notifier = notifier_.Get();
   if (!notifier || FAILED(hr)) {
-    LOG(ERROR) << "Failed to initialize toast notifier";
-    return true;
+    reason = "Failed to initialize toast notifier";
+    LOG(ERROR) << reason;
+    return std::make_pair(true, reason);
   }
 
   ABI::Windows::UI::Notifications::NotificationSetting setting;
   hr = notifier->get_Setting(&setting);
   if (FAILED(hr)) {
-    LOG(ERROR) << "Failed to get notification settings from toast notifier";
-    return true;
+    reason = "Failed to get notification settings from toast notifier";
+    LOG(ERROR) << reason;
+    return std::make_pair(true, reason);
   }
 
   switch (setting) {
     case ABI::Windows::UI::Notifications::NotificationSetting_Enabled: {
-      LOG(INFO) << "Notifications are enabled";
-      return true;
+      reason = "Notifications are enabled";
+      LOG(INFO) << reason;
+      return std::make_pair(true, reason);
     }
 
     case ABI::Windows::UI::Notifications::NotificationSetting_DisabledForUser: {
-      LOG(WARNING) << "Notifications disabled for user";
-      return false;
+      reason = "Notifications disabled for user";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledForApplication: {
-      LOG(WARNING) << "Notifications disabled for application";
-      return false;
+      reason = "Notifications disabled for application";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledByGroupPolicy: {
-      LOG(WARNING) << "Notifications disabled by group policy";
-      return false;
+      reason = "Notifications disabled by group policy";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
 
     case ABI::Windows::UI::Notifications::
         NotificationSetting_DisabledByManifest: {
-      LOG(WARNING) << "Notifications disabled by manifest";
-      return false;
+      reason = "Notifications disabled by manifest";
+      LOG(WARNING) << reason;
+      return std::make_pair(false, reason);
     }
   }
 }

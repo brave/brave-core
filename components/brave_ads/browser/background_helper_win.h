@@ -10,6 +10,7 @@
 
 #include "base/macros.h"
 #include "base/memory/singleton.h"
+#include "base/timer/timer.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "ui/gfx/win/singleton_hwnd_observer.h"
@@ -35,6 +36,8 @@ class BackgroundHelperWin : public BackgroundHelper {
 
   // BackgroundHelper impl
   bool IsForeground() const override;
+
+  base::RepeatingTimer timer_;
 };
 
 }  // namespace brave_ads

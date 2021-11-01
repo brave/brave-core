@@ -6,6 +6,7 @@
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 
 #include "base/check_op.h"
+#include "bat/ads/configuration_info_log.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 
@@ -55,6 +56,8 @@ void BrowserManager::OnActive() {
 
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserWindowIsActive);
+
+  WriteConfigurationInfoLog(ConfigurationInfoEvent::kBrowserActivated);
 }
 
 void BrowserManager::OnInactive() {
@@ -68,6 +71,8 @@ void BrowserManager::OnInactive() {
 
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserWindowIsInactive);
+
+  WriteConfigurationInfoLog(ConfigurationInfoEvent::kBrowserInactivated);
 }
 
 void BrowserManager::SetForegrounded(const bool is_foregrounded) {
@@ -89,6 +94,8 @@ void BrowserManager::OnForegrounded() {
 
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserDidBecomeActive);
+
+  WriteConfigurationInfoLog(ConfigurationInfoEvent::kBrowserForegrounded);
 }
 
 void BrowserManager::OnBackgrounded() {
@@ -102,6 +109,8 @@ void BrowserManager::OnBackgrounded() {
 
   UserActivity::Get()->RecordEvent(
       UserActivityEventType::kBrowserDidEnterBackground);
+
+  WriteConfigurationInfoLog(ConfigurationInfoEvent::kBrowserBackgrounded);
 }
 
 }  // namespace ads
