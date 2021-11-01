@@ -12,6 +12,7 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
@@ -20,6 +21,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -36,6 +38,8 @@ public class PortfolioHelper {
     private Double mTotalFiatSum;
     private HashMap<String, Double> mPerTokenFiatSum;
     private HashMap<String, Double> mPerTokenCryptoSum;
+    private AssetTimePrice[] mFiatHistory;
+    private int mFiatHistoryTimeframe;
 
     public PortfolioHelper(BraveWalletService braveWalletService,
             AssetRatioController assetRatioController, KeyringController keyringController,
@@ -55,6 +59,10 @@ public class PortfolioHelper {
         mChainId = chainId;
     }
 
+    public void setFiatHistoryTimeframe(int timeframe) {
+        mFiatHistoryTimeframe = timeframe;
+    }
+
     public ErcToken[] getUserAssets() {
         return mUserAssets;
     }
@@ -69,6 +77,10 @@ public class PortfolioHelper {
 
     public HashMap<String, Double> getPerTokenCryptoSum() {
         return mPerTokenCryptoSum;
+    }
+
+    public AssetTimePrice[] getFiatHistory() {
+        return mFiatHistory;
     }
 
     public void calculateBalances(Runnable runWhenDone) {
@@ -197,5 +209,75 @@ public class PortfolioHelper {
         mTotalFiatSum = 0.0d;
         mPerTokenFiatSum = new HashMap<String, Double>();
         mPerTokenCryptoSum = new HashMap<String, Double>();
+        mFiatHistory = new AssetTimePrice[0];
+    }
+
+    public void calculateFiatHistory(Runnable runWhenDone) {
+        mFiatHistory = new AssetTimePrice[0];
+
+        AsyncUtils.MultiResponseHandler historyMultiResponse =
+                new AsyncUtils.MultiResponseHandler(mUserAssets.length);
+
+        ArrayList<AsyncUtils.GetPriceHistoryResponseContext> pricesHistoryContexts =
+                new ArrayList<AsyncUtils.GetPriceHistoryResponseContext>();
+
+        for (ErcToken userAsset : mUserAssets) {
+            AsyncUtils.GetPriceHistoryResponseContext priceHistoryContext =
+                    new AsyncUtils.GetPriceHistoryResponseContext(
+                            historyMultiResponse.singleResponseComplete);
+
+            priceHistoryContext.userAsset = userAsset;
+            pricesHistoryContexts.add(priceHistoryContext);
+
+            mAssetRatioController.getPriceHistory(userAsset.symbol.toLowerCase(Locale.getDefault()),
+                    mFiatHistoryTimeframe, priceHistoryContext);
+        }
+
+        historyMultiResponse.setWhenAllCompletedAction(() -> {
+            // Algorithm is taken from the desktop:
+            // components/brave_wallet_ui/common/reducers/wallet_reducer.ts
+            // WalletActions.portfolioPriceHistoryUpdated:
+            // 1. Exclude price history responses of zero length
+            // 2. Choose the price history of the shortest length
+            // 3. Per user selected token:
+            //    3.1 multiply each token history-entry price by current tokens amount
+            //    3.2 so have the history of per-date fiat balance per token
+            // 4. Base on shortest history consolidate fiat history.
+            //    4.1 take first date from shortest history prices, it may not
+            //        the dates from the others tokens histories
+            //    4.2 take first-entries from all tokens and sum them
+            //    4.3 go through 4.1 and 4.2 till there are entries in shortest
+            //        history. Some histories may have more entries - they are just ignored.
+
+            Utils.removeIf(pricesHistoryContexts, phc -> phc.timePrices.length == 0);
+
+            AsyncUtils.GetPriceHistoryResponseContext shortestPriceHistoryContext =
+                    Collections.min(pricesHistoryContexts, (l, r) -> {
+                        return Integer.compare(l.timePrices.length, r.timePrices.length);
+                    });
+
+            int shortestPricesLength = shortestPriceHistoryContext.timePrices.length;
+
+            mFiatHistory = new AssetTimePrice[shortestPricesLength];
+
+            // Go over the selected userAssets
+            for (int i = 0; i < shortestPricesLength; ++i) {
+                mFiatHistory[i] = new AssetTimePrice();
+                mFiatHistory[i].date = shortestPriceHistoryContext.timePrices[i].date;
+
+                Double thisDateFiatSum = 0.0d;
+                for (AsyncUtils.GetPriceHistoryResponseContext priceHistoryContext :
+                        pricesHistoryContexts) {
+                    thisDateFiatSum += Float.parseFloat(priceHistoryContext.timePrices[i].price)
+                            * Utils.getOrDefault(mPerTokenCryptoSum,
+                                    priceHistoryContext.userAsset.symbol.toLowerCase(
+                                            Locale.getDefault()),
+                                    0.0d);
+                }
+                mFiatHistory[i].price = Double.toString(thisDateFiatSum);
+            }
+
+            runWhenDone.run();
+        });
     }
 }

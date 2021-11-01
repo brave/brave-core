@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -59,6 +61,13 @@ public class PortfolioFragment
     private Spinner mSpinner;
     private TextView mBalance;
 
+    private String mFiatSumString;
+
+    private int mPreviousCheckedRadioId;
+    private int mCurrentTimeframeType;
+
+    PortfolioHelper mPortfolioHelper;
+
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
     }
@@ -94,8 +103,11 @@ public class PortfolioFragment
                 }
                 if (event.getAction() == MotionEvent.ACTION_MOVE
                         || event.getAction() == MotionEvent.ACTION_DOWN) {
-                    chartES.drawLine(event.getRawX(), null);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    chartES.drawLine(event.getRawX(), mBalance);
+                } else if (event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    mBalance.setText(mFiatSumString);
+                    mBalance.invalidate();
                     chartES.drawLine(-1, null);
                 }
 
@@ -180,10 +192,6 @@ public class PortfolioFragment
         super.onViewCreated(view, savedInstanceState);
         assert getActivity() != null;
 
-        SmoothLineChartEquallySpaced chartES = view.findViewById(R.id.line_chart);
-        chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
-        chartES.setData(new float[] {15, 21, 9, 21, 25, 35, 24, 28});
-
         Button editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
         editVisibleAssets.setOnClickListener(v -> {
             String chainName = mSpinner.getSelectedItem().toString();
@@ -206,6 +214,20 @@ public class PortfolioFragment
 
             bottomSheetDialogFragment.show(
                     getFragmentManager(), EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
+        });
+
+        RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
+        mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
+        mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(mPreviousCheckedRadioId);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int leftDot = R.drawable.ic_live_dot;
+            ((RadioButton) view.findViewById(mPreviousCheckedRadioId))
+                    .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            RadioButton button = view.findViewById(checkedId);
+            button.setCompoundDrawablesWithIntrinsicBounds(leftDot, 0, 0, 0);
+            mCurrentTimeframeType = Utils.getTimeframeFromRadioButtonId(checkedId);
+            mPreviousCheckedRadioId = checkedId;
+            updatePortfolioGraph();
         });
     }
 
@@ -278,23 +300,55 @@ public class PortfolioFragment
         return null;
     }
 
-    private void updatePortfolio() {
-        PortfolioHelper portfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                getAssetRatioController(), getKeyringController(), getEthJsonRpcController());
+    private void updatePortfolioGraph() {
+        AssetPriceTimeframe.validate(mCurrentTimeframeType);
 
-        String chainName = mSpinner.getSelectedItem().toString();
-        String chainId = Utils.getNetworkConst(getActivity(), chainName);
-        portfolioHelper.setChainId(chainId);
-        portfolioHelper.calculateBalances(() -> {
-            final String fiatSumString =
-                    String.format(Locale.getDefault(), "$%,.2f", portfolioHelper.getTotalFiatSum());
+        if (mPortfolioHelper == null) {
+            updatePortfolioGetPendingTx(false);
+            return;
+        }
+
+        mPortfolioHelper.setFiatHistoryTimeframe(mCurrentTimeframeType);
+        mPortfolioHelper.calculateFiatHistory(() -> {
             PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                mBalance.setText(fiatSumString);
-                mBalance.invalidate();
+                SmoothLineChartEquallySpaced chartES = getView().findViewById(R.id.line_chart);
+                chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
+                chartES.setData(mPortfolioHelper.getFiatHistory());
+            });
+        });
+    }
 
-                setUpCoinList(portfolioHelper.getUserAssets(),
-                        portfolioHelper.getPerTokenCryptoSum(),
-                        portfolioHelper.getPerTokenFiatSum());
+    private void updatePortfolioGetPendingTx(boolean getPendingTx) {
+        KeyringController keyringController = getKeyringController();
+        assert keyringController != null;
+        keyringController.getDefaultKeyringInfo(keyringInfo -> {
+            AccountInfo[] accountInfos = new AccountInfo[] {};
+            if (keyringInfo != null) {
+                accountInfos = keyringInfo.accountInfos;
+            }
+
+            if (mPortfolioHelper == null) {
+                mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                        getAssetRatioController(), getEthJsonRpcController(), accountInfos);
+            }
+
+            String chainName = mSpinner.getSelectedItem().toString();
+            String chainId = Utils.getNetworkConst(getActivity(), chainName);
+            mPortfolioHelper.setChainId(chainId);
+            mPortfolioHelper.calculateBalances(() -> {
+                final String fiatSumString = String.format(
+                        Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
+                PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
+                    mFiatSumString = fiatSumString;
+                    mBalance.setText(mFiatSumString);
+                    mBalance.invalidate();
+
+                    setUpCoinList(mPortfolioHelper.getUserAssets(),
+                            mPortfolioHelper.getPerTokenCryptoSum(),
+                            mPortfolioHelper.getPerTokenFiatSum());
+
+                    updatePortfolioGraph();
+                });
             });
         });
     }
