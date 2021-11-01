@@ -202,13 +202,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onResumeWithNative() {
         super.onResumeWithNative();
         BraveActivityJni.get().restartStatsUpdater();
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
-        BraveVpnNativeWorker.getInstance().addObserver(this);
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(BraveActivity.this);
+            BraveVpnNativeWorker.getInstance().addObserver(this);
+        }
     }
 
     @Override
     public void onPauseWithNative() {
-        BraveVpnNativeWorker.getInstance().removeObserver(this);
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            BraveVpnNativeWorker.getInstance().removeObserver(this);
+        }
         super.onPauseWithNative();
     }
 

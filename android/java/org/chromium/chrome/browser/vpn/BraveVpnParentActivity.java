@@ -41,8 +41,10 @@ public abstract class BraveVpnParentActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
-                BraveVpnParentActivity.this);
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(
+                    BraveVpnParentActivity.this);
+        }
     }
 
     protected void verifySubscription() {
