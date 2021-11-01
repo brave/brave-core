@@ -151,7 +151,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
 
   const base::DictionaryValue* assets_pref =
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindKey("url1.com");
+  const base::Value* list = assets_pref->FindKey("chain_id");
   ASSERT_TRUE(list->is_list());
   base::Value::ConstListView asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
