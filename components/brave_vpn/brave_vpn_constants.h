@@ -37,6 +37,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveVpnFeature3", IDS_BRAVE_VPN_FEATURE_3},
     {"braveVpnFeature4", IDS_BRAVE_VPN_FEATURE_4},
     {"braveVpnFeature5", IDS_BRAVE_VPN_FEATURE_5},
+    {"braveVpnLoading", IDS_BRAVE_VPN_LOADING},
 };
 }  // namespace brave_vpn
 

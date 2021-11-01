@@ -95,4 +95,8 @@
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
     24/7 support
   </message>
+
+  <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
+    One moment while loading…
+  </message>
 </grit-part>
