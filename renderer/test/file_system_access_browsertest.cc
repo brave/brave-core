@@ -66,7 +66,8 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
-  EXPECT_EQ(IsFileSystemAccessAPIEnabled(),
+  EXPECT_EQ(
+      IsFileSystemAccessAPIEnabled(),
       base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI));
 
   const GURL url = https_server_.GetURL("/simple.html");
@@ -75,13 +76,11 @@ IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
   if (IsFileSystemAccessAPIEnabled()) {
     auto result =
         content::EvalJs(main_frame(), "typeof self.showOpenFilePicker");
-    EXPECT_TRUE(*result.value.GetIfString() == "function")
-        << "Value: " << result.value.DebugString();
+    EXPECT_EQ(result.value.GetString(), "function");
   } else {
     auto result = content::EvalJs(main_frame(), "self.showOpenFilePicker()");
-    EXPECT_TRUE(
-        result.error.find("self.showOpenFilePicker is not a function") !=
-        std::string::npos)
+    EXPECT_TRUE(base::Contains(result.error,
+                               "self.showOpenFilePicker is not a function"))
         << result.error;
   }
 }

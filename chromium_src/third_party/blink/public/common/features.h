@@ -16,5 +16,4 @@ BLINK_COMMON_EXPORT extern const base::Feature kFileSystemAccessAPI;
 }  // namespace features
 }  // namespace blink
 
-
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_FEATURES_H_
