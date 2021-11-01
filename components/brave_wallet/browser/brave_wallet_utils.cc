@@ -693,11 +693,7 @@ std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
   for (const auto& network : custom_chains) {
     if (network->chain_id != chain_id)
       continue;
-    if (network->rpc_urls.size()) {
-      id = GURL(network->rpc_urls.front()).host();
-    } else {
-      id = chain_id;
-    }
+    id = chain_id;
     break;
   }
 

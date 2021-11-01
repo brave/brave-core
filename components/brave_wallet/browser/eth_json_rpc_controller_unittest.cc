@@ -566,7 +566,7 @@ TEST_F(EthJsonRpcControllerUnitTest, AddEthereumChainApproved) {
 
   const base::DictionaryValue* assets_pref =
       prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindKey("url1.com");
+  const base::Value* list = assets_pref->FindKey("0x111");
   ASSERT_TRUE(list->is_list());
   base::Value::ConstListView asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);

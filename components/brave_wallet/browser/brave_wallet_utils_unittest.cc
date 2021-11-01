@@ -901,8 +901,8 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   EXPECT_EQ(GetNetworkId(&prefs, mojom::kMainnetChainId), "mainnet");
   EXPECT_EQ(GetNetworkId(&prefs, mojom::kLocalhostChainId),
             "http://localhost:7545/");
-  EXPECT_EQ(GetNetworkId(&prefs, "chain_id"), "url1.com");
-  EXPECT_EQ(GetNetworkId(&prefs, "chain_id2"), "url2.com");
+  EXPECT_EQ(GetNetworkId(&prefs, "chain_id"), "chain_id");
+  EXPECT_EQ(GetNetworkId(&prefs, "chain_id2"), "chain_id2");
 }
 
 TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
@@ -933,7 +933,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   // kBraveWalletUserAssets.
   const base::DictionaryValue* assets_pref =
       prefs.GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list1 = assets_pref->FindKey("url1.com");
+  const base::Value* list1 = assets_pref->FindKey("chain_id");
   ASSERT_TRUE(list1->is_list());
   base::Value::ConstListView asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
@@ -947,7 +947,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
 
-  const base::Value* list2 = assets_pref->FindKey("url2.com");
+  const base::Value* list2 = assets_pref->FindKey("chain_id2");
   ASSERT_TRUE(list2->is_list());
   base::Value::ConstListView asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);
