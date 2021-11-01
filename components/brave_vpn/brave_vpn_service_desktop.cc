@@ -6,7 +6,6 @@
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 
 #include <algorithm>
-#include <memory>
 #include <utility>
 
 #include "base/bind.h"
@@ -20,6 +19,8 @@
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
 #include "brave/components/brave_vpn/url_constants.h"
+#include "brave/components/skus/browser/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
@@ -32,30 +33,49 @@ constexpr char kRegionContinentKey[] = "continent";
 constexpr char kRegionNameKey[] = "name";
 constexpr char kRegionNamePrettyKey[] = "name-pretty";
 
-bool GetVPNCredentialsFromSwitch(brave_vpn::BraveVPNConnectionInfo* info) {
-  DCHECK(info);
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (!cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestCredentials))
-    return false;
-
-  std::string value =
-      cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestCredentials);
-  std::vector<std::string> tokens = base::SplitString(
-      value, ":", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  if (tokens.size() == 4) {
-    info->SetConnectionInfo(tokens[0], tokens[1], tokens[2], tokens[3]);
-    return true;
+std::string GetStringFor(ConnectionState state) {
+  switch (state) {
+    case ConnectionState::CONNECTED:
+      return "Connected";
+    case ConnectionState::CONNECTING:
+      return "Connecting";
+    case ConnectionState::DISCONNECTED:
+      return "Disconnected";
+    case ConnectionState::DISCONNECTING:
+      return "Disconnecting";
+    case ConnectionState::CONNECT_FAILED:
+      return "Connect failed";
+    default:
+      NOTREACHED();
   }
 
-  LOG(ERROR) << __func__ << ": Invalid credentials";
-  return false;
+  return std::string();
 }
 
-brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() {
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNSimulation))
-    return brave_vpn::BraveVPNOSConnectionAPI::GetInstanceForTest();
-  return brave_vpn::BraveVPNOSConnectionAPI::GetInstance();
+bool IsValidRegion(const brave_vpn::mojom::Region& region) {
+  if (region.continent.empty() || region.name.empty() ||
+      region.name_pretty.empty())
+    return false;
+
+  return true;
+}
+
+std::string GetBraveVPNPaymentsEnv() {
+  const std::string env = brave_rewards::GetEnvironment();
+  if (env == brave_rewards::kEnvProduction)
+    return "";
+  // Use same value.
+  if (env == brave_rewards::kEnvStaging ||
+      env == brave_rewards::kEnvDevelopment)
+    return env;
+
+  NOTREACHED();
+
+#if defined(OFFICIAL_BUILD)
+  return "";
+#else
+  return "development";
+#endif
 }
 
 }  // namespace
@@ -65,127 +85,263 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     PrefService* prefs)
     : BraveVpnService(url_loader_factory), prefs_(prefs) {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
+  DETACH_FROM_SEQUENCE(sequence_checker_);
 
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  is_simulation_ = cmd->HasSwitch(brave_vpn::switches::kBraveVPNSimulation);
   observed_.Observe(GetBraveVPNConnectionAPI());
 
   GetBraveVPNConnectionAPI()->set_target_vpn_entry_name(kBraveVPNEntryName);
-  GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
 
+  // Load cached data.
   LoadCachedRegionData();
-  FetchRegionData();
-  CheckPurchasedStatus();
+  LoadPurchasedState();
+  LoadSelectedRegion();
 
+  // If already in purchased state, there is a high probability that
+  // the user has previously connected. So, try connection checking.
+  if (is_purchased_user())
+    GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
+
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kSkusVPNCredential,
+      base::BindRepeating(&BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated,
+                          base::Unretained(this)));
+}
+
+BraveVpnServiceDesktop::~BraveVpnServiceDesktop() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
+
+void BraveVpnServiceDesktop::ScheduleFetchRegionDataIfNeeded() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!is_purchased_user())
+    return;
+
+  if (region_data_update_timer_.IsRunning())
+    return;
+
+  // Try to update region list every 5h.
+  FetchRegionData();
   constexpr int kRegionDataUpdateIntervalInHours = 5;
   region_data_update_timer_.Start(
       FROM_HERE, base::TimeDelta::FromHours(kRegionDataUpdateIntervalInHours),
       this, &BraveVpnServiceDesktop::FetchRegionData);
 }
 
-BraveVpnServiceDesktop::~BraveVpnServiceDesktop() = default;
-
 void BraveVpnServiceDesktop::Shutdown() {
   BraveVpnService::Shutdown();
+
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   observed_.Reset();
   receivers_.Clear();
   observers_.Clear();
+  pref_change_registrar_.RemoveAll();
 }
 
-void BraveVpnServiceDesktop::OnCreated(const std::string& name) {
+void BraveVpnServiceDesktop::OnCreated() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  if (cancel_connecting_) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+    return;
+  }
+
   for (const auto& obs : observers_)
     obs->OnConnectionCreated();
+
+  // It's time to ask connecting to os after vpn entry is created.
+  GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
 }
 
-void BraveVpnServiceDesktop::OnRemoved(const std::string& name) {
+void BraveVpnServiceDesktop::OnCreateFailed() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+}
+
+void BraveVpnServiceDesktop::OnRemoved() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
   for (const auto& obs : observers_)
     obs->OnConnectionRemoved();
 }
 
-void BraveVpnServiceDesktop::OnConnected(const std::string& name) {
-  if (connection_state_ == ConnectionState::CONNECTED)
+void BraveVpnServiceDesktop::UpdateAndNotifyConnectionStateChange(
+    ConnectionState state) {
+  // this is a simple state machine for handling connection state
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (connection_state_ == state)
     return;
 
-  connection_state_ = ConnectionState::CONNECTED;
+  // On Windows, we get disconnected status update twice.
+  // When user connects to different region while connected,
+  // we disconnect current connection and connect to newly selected
+  // region. To do that we monitor |DISCONNECTED| state and start
+  // connect when we get that state. But, Windows sends disconnected state
+  // noti again. So, ignore second one.
+  // On exception - we allow from connecting to disconnected in canceling
+  // scenario.
+  if (connection_state_ == ConnectionState::CONNECTING &&
+      state == ConnectionState::DISCONNECTED && !cancel_connecting_) {
+    VLOG(2) << __func__ << ": Ignore disconnected state while connecting";
+    return;
+  }
 
+  // On Windows, we could get disconnected state after connect failed.
+  // To make connect failed state as a last state, ignore disconnected state.
+  if (connection_state_ == ConnectionState::CONNECT_FAILED &&
+      state == ConnectionState::DISCONNECTED) {
+    VLOG(2) << __func__ << ": Ignore disconnected state after connect failed";
+    return;
+  }
+
+  VLOG(2) << __func__ << " : changing from " << GetStringFor(connection_state_)
+          << " to " << GetStringFor(state);
+
+  connection_state_ = state;
   for (const auto& obs : observers_)
-    obs->OnConnectionStateChanged(ConnectionState::CONNECTED);
+    obs->OnConnectionStateChanged(connection_state_);
 }
 
-void BraveVpnServiceDesktop::OnIsConnecting(const std::string& name) {
-  if (connection_state_ == ConnectionState::CONNECTING)
+void BraveVpnServiceDesktop::OnConnected() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+
+  if (cancel_connecting_) {
+    // As connect is done, we don't need more for cancelling.
+    // Just start normal Disconenct() process.
+    cancel_connecting_ = false;
+    GetBraveVPNConnectionAPI()->Disconnect(kBraveVPNEntryName);
     return;
+  }
 
-  connection_state_ = ConnectionState::CONNECTING;
-
-  for (const auto& obs : observers_)
-    obs->OnConnectionStateChanged(ConnectionState::CONNECTING);
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTED);
 }
 
-void BraveVpnServiceDesktop::OnConnectFailed(const std::string& name) {
-  if (connection_state_ == ConnectionState::CONNECT_FAILED)
-    return;
+void BraveVpnServiceDesktop::OnIsConnecting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
 
-  connection_state_ = ConnectionState::CONNECT_FAILED;
-
-  for (const auto& obs : observers_)
-    obs->OnConnectionStateChanged(ConnectionState::CONNECT_FAILED);
+  if (!cancel_connecting_)
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
 }
 
-void BraveVpnServiceDesktop::OnDisconnected(const std::string& name) {
-  if (connection_state_ == ConnectionState::DISCONNECTED)
-    return;
+void BraveVpnServiceDesktop::OnConnectFailed() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
 
-  connection_state_ = ConnectionState::DISCONNECTED;
-
-  for (const auto& obs : observers_)
-    obs->OnConnectionStateChanged(ConnectionState::DISCONNECTED);
+  cancel_connecting_ = false;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-void BraveVpnServiceDesktop::OnIsDisconnecting(const std::string& name) {
-  if (connection_state_ == ConnectionState::DISCONNECTING)
-    return;
+void BraveVpnServiceDesktop::OnDisconnected() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
 
-  connection_state_ = ConnectionState::DISCONNECTING;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
 
-  for (const auto& obs : observers_)
-    obs->OnConnectionStateChanged(ConnectionState::DISCONNECTING);
+  if (needs_connect_) {
+    needs_connect_ = false;
+    Connect();
+  }
+}
+
+void BraveVpnServiceDesktop::OnIsDisconnecting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
 void BraveVpnServiceDesktop::CreateVPNConnection() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (cancel_connecting_) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+    return;
+  }
+
+  VLOG(2) << __func__;
   GetBraveVPNConnectionAPI()->CreateVPNConnection(GetConnectionInfo());
 }
 
 void BraveVpnServiceDesktop::RemoveVPNConnnection() {
-  GetBraveVPNConnectionAPI()->RemoveVPNConnection(
-      GetConnectionInfo().connection_name());
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  GetBraveVPNConnectionAPI()->RemoveVPNConnection(kBraveVPNEntryName);
 }
 
 void BraveVpnServiceDesktop::Connect() {
-  if (connection_state_ == ConnectionState::CONNECTING)
-    return;
-
-  GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
-}
-
-void BraveVpnServiceDesktop::Disconnect() {
-  if (connection_state_ == ConnectionState::DISCONNECTING)
-    return;
-
-  GetBraveVPNConnectionAPI()->Disconnect(GetConnectionInfo().connection_name());
-}
-
-void BraveVpnServiceDesktop::CheckPurchasedStatus() {
-  brave_vpn::BraveVPNConnectionInfo info;
-  if (GetVPNCredentialsFromSwitch(&info)) {
-    SetPurchasedState(PurchasedState::PURCHASED);
-    CreateVPNConnection();
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (connection_state_ == ConnectionState::DISCONNECTING ||
+      connection_state_ == ConnectionState::CONNECTING) {
+    VLOG(2) << __func__
+            << ": Current state: " << GetStringFor(connection_state_)
+            << " : prevent connecting while previous operation is in-progress";
     return;
   }
 
-  NOTIMPLEMENTED();
+  DCHECK(!cancel_connecting_);
+
+  // User can ask connect again when user want to change region.
+  if (connection_state_ == ConnectionState::CONNECTED) {
+    // Disconnect first and then create again to setup for new region.
+    needs_connect_ = true;
+    Disconnect();
+    return;
+  }
+
+  VLOG(2) << __func__ << " : start connecting!";
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
+
+  if (is_simulation_ || connection_info_.IsValid()) {
+    VLOG(2) << __func__
+            << " : direct connect as we already have valid connection info.";
+    GetBraveVPNConnectionAPI()->Connect(GetConnectionInfo().connection_name());
+    return;
+  }
+
+  // If user doesn't select region explicitely, use default device region.
+  std::string target_region_name = device_region_.name;
+  if (IsValidRegion(selected_region_)) {
+    target_region_name = selected_region_.name;
+    VLOG(2) << __func__ << " : start connecting with valid selected_region: "
+            << target_region_name;
+  }
+
+  FetchHostnamesForRegion(target_region_name);
+}
+
+void BraveVpnServiceDesktop::Disconnect() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (connection_state_ == ConnectionState::DISCONNECTED) {
+    VLOG(2) << __func__ << " : already disconnected";
+    return;
+  }
+
+  if (connection_state_ == ConnectionState::DISCONNECTING) {
+    VLOG(2) << __func__ << " : disconnecting in progress";
+    return;
+  }
+
+  if (is_simulation_ || connection_state_ != ConnectionState::CONNECTING) {
+    VLOG(2) << __func__ << " : start disconnecting!";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
+    GetBraveVPNConnectionAPI()->Disconnect(kBraveVPNEntryName);
+    return;
+  }
+
+  cancel_connecting_ = true;
+  VLOG(2) << __func__ << " : Start cancelling connect request";
+  UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTING);
 }
 
 void BraveVpnServiceDesktop::ToggleConnection() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const bool can_disconnect =
       (connection_state_ == ConnectionState::CONNECTED ||
        connection_state_ == ConnectionState::CONNECTING);
@@ -194,45 +350,52 @@ void BraveVpnServiceDesktop::ToggleConnection() {
 
 void BraveVpnServiceDesktop::AddObserver(
     mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   observers_.Add(std::move(observer));
 }
 
 brave_vpn::BraveVPNConnectionInfo BraveVpnServiceDesktop::GetConnectionInfo() {
-  brave_vpn::BraveVPNConnectionInfo info;
-  if (GetVPNCredentialsFromSwitch(&info))
-    return info;
-
-  // TODO(simonhong): Get real credentials from payment service.
-  NOTIMPLEMENTED();
-  return info;
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return connection_info_;
 }
 
 void BraveVpnServiceDesktop::BindInterface(
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   receivers_.Add(this, std::move(receiver));
 }
 
 void BraveVpnServiceDesktop::GetConnectionState(
     GetConnectionStateCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__ << " : " << static_cast<int>(connection_state_);
   std::move(callback).Run(connection_state_);
 }
 
 void BraveVpnServiceDesktop::GetPurchasedState(
     GetPurchasedStateCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
   std::move(callback).Run(purchased_state_);
 }
 
 void BraveVpnServiceDesktop::FetchRegionData() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__ << " : Start fetching region data";
   // Unretained is safe here becasue this class owns request helper.
   GetAllServerRegions(base::BindOnce(&BraveVpnServiceDesktop::OnFetchRegionList,
                                      base::Unretained(this)));
 }
 
 void BraveVpnServiceDesktop::LoadCachedRegionData() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto* preference =
       prefs_->FindPreference(brave_vpn::prefs::kBraveVPNRegionList);
-  if (preference && !preference->IsDefaultValue())
+  if (preference && !preference->IsDefaultValue()) {
     ParseAndCacheRegionList(preference->GetValue()->Clone());
+    VLOG(2) << __func__ << " : "
+            << "Loaded cached region list";
+  }
 
   preference = prefs_->FindPreference(brave_vpn::prefs::kBraveVPNDeviceRegion);
   if (preference && !preference->IsDefaultValue()) {
@@ -246,12 +409,62 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
       device_region_.continent = *continent;
       device_region_.name = *name;
       device_region_.name_pretty = *name_pretty;
+      VLOG(2) << __func__ << " : "
+              << "Loaded cached device region";
+    }
+  }
+}
+
+void BraveVpnServiceDesktop::LoadPurchasedState() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if !defined(OFFICIAL_BUILD)
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
+    skus_credential_ =
+        cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestMonthlyPass);
+    SetPurchasedState(PurchasedState::PURCHASED);
+    return;
+  }
+#endif
+
+  const std::string credential =
+      prefs_->GetString(brave_rewards::prefs::kSkusVPNCredential);
+  if (skus_credential_ == credential)
+    return;
+
+  skus_credential_ = credential;
+
+  if (!skus_credential_.empty()) {
+    VLOG(2) << __func__ << " : "
+            << "Loaded cached skus credentials";
+    SetPurchasedState(PurchasedState::PURCHASED);
+  }
+}
+
+void BraveVpnServiceDesktop::LoadSelectedRegion() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto* preference =
+      prefs_->FindPreference(brave_vpn::prefs::kBraveVPNSelectedRegion);
+  if (preference && !preference->IsDefaultValue()) {
+    auto* region_value = preference->GetValue();
+    const std::string* continent =
+        region_value->FindStringKey(kRegionContinentKey);
+    const std::string* name = region_value->FindStringKey(kRegionNameKey);
+    const std::string* name_pretty =
+        region_value->FindStringKey(kRegionNamePrettyKey);
+    if (continent && name && name_pretty) {
+      selected_region_.continent = *continent;
+      selected_region_.name = *name;
+      selected_region_.name_pretty = *name_pretty;
+      VLOG(2) << __func__ << " : "
+              << "Loaded selected region";
     }
   }
 }
 
 void BraveVpnServiceDesktop::OnFetchRegionList(const std::string& region_list,
                                                bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!success) {
     // TODO(simonhong): Re-try?
     VLOG(2) << "Failed to get region list";
@@ -274,6 +487,7 @@ void BraveVpnServiceDesktop::OnFetchRegionList(const std::string& region_list,
 }
 
 bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(region_value.is_list());
   if (!region_value.is_list())
     return false;
@@ -301,17 +515,18 @@ bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
               return (a.name_pretty < b.name_pretty);
             });
 
+  VLOG(2) << __func__ << " : has regionlist: " << !regions_.empty();
+
   // If we can't get region list, we can't determine device region.
   if (regions_.empty())
     return false;
-
   return true;
 }
 
 void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
                                               bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!success) {
-    // TODO(simonhong): Re-try?
     VLOG(2) << "Failed to get timezones list";
     SetFallbackDeviceRegion();
     return;
@@ -323,12 +538,12 @@ void BraveVpnServiceDesktop::OnFetchTimezones(const std::string& timezones_list,
     return;
   }
 
-  // TODO(simonhong): Re-try?
   SetFallbackDeviceRegion();
 }
 
 void BraveVpnServiceDesktop::ParseAndCacheDeviceRegionName(
     base::Value timezones_value) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(timezones_value.is_list());
 
   if (!timezones_value.is_list()) {
@@ -371,6 +586,7 @@ void BraveVpnServiceDesktop::ParseAndCacheDeviceRegionName(
 }
 
 void BraveVpnServiceDesktop::SetDeviceRegion(const std::string& name) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto it =
       std::find_if(regions_.begin(), regions_.end(),
                    [&name](const auto& region) { return region.name == name; });
@@ -380,6 +596,7 @@ void BraveVpnServiceDesktop::SetDeviceRegion(const std::string& name) {
 }
 
 void BraveVpnServiceDesktop::SetFallbackDeviceRegion() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Set first item in the region list as a |device_region_| as a fallback.
   DCHECK(!regions_.empty());
   if (regions_.empty())
@@ -390,6 +607,7 @@ void BraveVpnServiceDesktop::SetFallbackDeviceRegion() {
 
 void BraveVpnServiceDesktop::SetDeviceRegion(
     const brave_vpn::mojom::Region& region) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   device_region_ = region;
 
   DictionaryPrefUpdate update(prefs_, brave_vpn::prefs::kBraveVPNDeviceRegion);
@@ -400,6 +618,7 @@ void BraveVpnServiceDesktop::SetDeviceRegion(
 }
 
 std::string BraveVpnServiceDesktop::GetCurrentTimeZone() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!test_timezone_.empty())
     return test_timezone_;
 
@@ -412,6 +631,7 @@ std::string BraveVpnServiceDesktop::GetCurrentTimeZone() {
 }
 
 void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::vector<brave_vpn::mojom::RegionPtr> regions;
   for (const auto& region : regions_) {
     regions.push_back(region.Clone());
@@ -420,37 +640,40 @@ void BraveVpnServiceDesktop::GetAllRegions(GetAllRegionsCallback callback) {
 }
 
 void BraveVpnServiceDesktop::GetDeviceRegion(GetDeviceRegionCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
   std::move(callback).Run(device_region_.Clone());
 }
 
 void BraveVpnServiceDesktop::GetSelectedRegion(
     GetSelectedRegionCallback callback) {
-  auto* preference =
-      prefs_->FindPreference(brave_vpn::prefs::kBraveVPNSelectedRegion);
-  if (preference->IsDefaultValue()) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+
+  if (!IsValidRegion(selected_region_)) {
     // Gives device region if there is no cached selected region.
+    VLOG(2) << __func__ << " : give device region instead.";
     std::move(callback).Run(device_region_.Clone());
     return;
   }
 
-  auto* region_value = preference->GetValue();
-  const std::string* continent =
-      region_value->FindStringKey(kRegionContinentKey);
-  const std::string* name = region_value->FindStringKey(kRegionNameKey);
-  const std::string* name_pretty =
-      region_value->FindStringKey(kRegionNamePrettyKey);
-  if (!continent || !name || !name_pretty) {
-    // Gives device region if invalid data is cached.
-    std::move(callback).Run(device_region_.Clone());
-    return;
-  }
-
-  brave_vpn::mojom::Region region(*continent, *name, *name_pretty);
-  std::move(callback).Run(region.Clone());
+  VLOG(2) << __func__ << " : Give " << selected_region_.name_pretty;
+  std::move(callback).Run(selected_region_.Clone());
 }
 
 void BraveVpnServiceDesktop::SetSelectedRegion(
     brave_vpn::mojom::RegionPtr region_ptr) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (connection_state_ == ConnectionState::DISCONNECTING ||
+      connection_state_ == ConnectionState::CONNECTING) {
+    VLOG(2) << __func__
+            << ": Current state: " << GetStringFor(connection_state_)
+            << " : prevent changing selected region while previous operation "
+               "is in-progress";
+    return;
+  }
+
+  VLOG(2) << __func__ << " : " << region_ptr->name_pretty;
   DictionaryPrefUpdate update(prefs_,
                               brave_vpn::prefs::kBraveVPNSelectedRegion);
   base::Value* dict = update.Get();
@@ -458,11 +681,15 @@ void BraveVpnServiceDesktop::SetSelectedRegion(
   dict->SetStringKey(kRegionNameKey, region_ptr->name);
   dict->SetStringKey(kRegionNamePrettyKey, region_ptr->name_pretty);
 
-  // Start hostname fetching for selected region.
-  FetchHostnamesForRegion(region_ptr->name);
+  selected_region_.continent = region_ptr->continent;
+  selected_region_.name = region_ptr->name;
+  selected_region_.name_pretty = region_ptr->name_pretty;
+
+  connection_info_.Reset();
 }
 
 void BraveVpnServiceDesktop::GetProductUrls(GetProductUrlsCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   brave_vpn::mojom::ProductUrls urls;
   urls.feedback = brave_vpn::kFeedbackUrl;
   urls.about = brave_vpn::kAboutUrl;
@@ -471,6 +698,11 @@ void BraveVpnServiceDesktop::GetProductUrls(GetProductUrlsCallback callback) {
 }
 
 void BraveVpnServiceDesktop::FetchHostnamesForRegion(const std::string& name) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  // Hostname will be replaced with latest one.
+  hostname_.reset();
+
   // Unretained is safe here becasue this class owns request helper.
   GetHostnamesForRegion(
       base::BindOnce(&BraveVpnServiceDesktop::OnFetchHostnames,
@@ -481,8 +713,17 @@ void BraveVpnServiceDesktop::FetchHostnamesForRegion(const std::string& name) {
 void BraveVpnServiceDesktop::OnFetchHostnames(const std::string& region,
                                               const std::string& hostnames,
                                               bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(2) << __func__;
+  if (cancel_connecting_) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+    return;
+  }
+
   if (!success) {
-    // TODO(simonhong): Retry?
+    VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
   }
 
@@ -492,20 +733,26 @@ void BraveVpnServiceDesktop::OnFetchHostnames(const std::string& region,
     return;
   }
 
-  // TODO(simonhong): Retry?
+  VLOG(2) << __func__ << " : failed to fetch hostnames for " << region;
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
 void BraveVpnServiceDesktop::ParseAndCacheHostnames(
     const std::string& region,
     base::Value hostnames_value) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(hostnames_value.is_list());
-  if (!hostnames_value.is_list())
+  if (!hostnames_value.is_list()) {
+    VLOG(2) << __func__ << " : failed to parse hostnames for " << region;
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
     return;
+  }
 
   constexpr char kHostnameKey[] = "hostname";
   constexpr char kDisplayNameKey[] = "display-name";
   constexpr char kOfflineKey[] = "offline";
   constexpr char kCapacityScoreKey[] = "capacity-score";
+
   std::vector<brave_vpn::Hostname> hostnames;
   for (const auto& value : hostnames_value.GetList()) {
     DCHECK(value.is_dict());
@@ -524,10 +771,42 @@ void BraveVpnServiceDesktop::ParseAndCacheHostnames(
                                             *offline, *capacity_score});
   }
 
-  hostnames_[region] = std::move(hostnames);
+  VLOG(2) << __func__ << " : has hostname: " << !hostnames.empty();
+
+  if (hostnames.empty()) {
+    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  hostname_ = PickBestHostname(hostnames);
+  if (hostname_->hostname.empty()) {
+    VLOG(2) << __func__ << " : got empty hostnames list for " << region;
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  VLOG(2) << __func__ << " : Picked " << hostname_->hostname << ", "
+          << hostname_->display_name << ", " << hostname_->is_offline << ", "
+          << hostname_->capacity_score;
+
+  if (skus_credential_.empty()) {
+    VLOG(2) << __func__ << " : skus_credential is empty";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  // Get subscriber credentials and then get EAP credentials with it to create
+  // OS VPN entry.
+  VLOG(2) << __func__ << " : request subsriber credential";
+  GetSubscriberCredentialV12(
+      base::BindOnce(&BraveVpnServiceDesktop::OnGetSubscriberCredential,
+                     base::Unretained(this)),
+      GetBraveVPNPaymentsEnv(), skus_credential_);
 }
 
 void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (purchased_state_ == state)
     return;
 
@@ -535,4 +814,105 @@ void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
 
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_);
+
+  ScheduleFetchRegionDataIfNeeded();
+}
+
+void BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LoadPurchasedState();
+}
+
+void BraveVpnServiceDesktop::OnGetSubscriberCredential(
+    const std::string& subscriber_credential,
+    bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (cancel_connecting_) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+    return;
+  }
+
+  if (!success) {
+    VLOG(2) << __func__ << " : failed to get subscriber credential";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  VLOG(2) << __func__ << " : received subscriber credential";
+
+  GetProfileCredentials(
+      base::BindOnce(&BraveVpnServiceDesktop::OnGetProfileCredentials,
+                     base::Unretained(this)),
+      subscriber_credential, hostname_->hostname);
+}
+
+void BraveVpnServiceDesktop::OnGetProfileCredentials(
+    const std::string& profile_credential,
+    bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (cancel_connecting_) {
+    UpdateAndNotifyConnectionStateChange(ConnectionState::DISCONNECTED);
+    cancel_connecting_ = false;
+    return;
+  }
+
+  if (!success) {
+    VLOG(2) << __func__ << " : failed to get profile credential";
+    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+    return;
+  }
+
+  VLOG(2) << __func__ << " : received profile credential";
+
+  absl::optional<base::Value> value =
+      base::JSONReader::Read(profile_credential);
+  if (value && value->is_dict()) {
+    constexpr char kUsernameKey[] = "eap-username";
+    constexpr char kPasswordKey[] = "eap-password";
+    const std::string* username = value->FindStringKey(kUsernameKey);
+    const std::string* password = value->FindStringKey(kPasswordKey);
+    if (!username || !password) {
+      VLOG(2) << __func__ << " : it's invalid profile credential";
+      UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+      return;
+    }
+
+    connection_info_.SetConnectionInfo(kBraveVPNEntryName, hostname_->hostname,
+                                       *username, *password);
+    // Let's create os vpn entry with |connection_info_|.
+    CreateVPNConnection();
+    return;
+  }
+
+  VLOG(2) << __func__ << " : it's invalid profile credential";
+  UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
+}
+
+std::unique_ptr<brave_vpn::Hostname> BraveVpnServiceDesktop::PickBestHostname(
+    const std::vector<brave_vpn::Hostname>& hostnames) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::vector<brave_vpn::Hostname> filtered_hostnames;
+  std::copy_if(
+      hostnames.begin(), hostnames.end(),
+      std::back_inserter(filtered_hostnames),
+      [](const brave_vpn::Hostname& hostname) { return !hostname.is_offline; });
+
+  std::sort(filtered_hostnames.begin(), filtered_hostnames.end(),
+            [](const brave_vpn::Hostname& a, const brave_vpn::Hostname& b) {
+              return a.capacity_score > b.capacity_score;
+            });
+
+  if (filtered_hostnames.empty())
+    return std::make_unique<brave_vpn::Hostname>();
+
+  // Pick highest capacity score.
+  return std::make_unique<brave_vpn::Hostname>(filtered_hostnames[0]);
+}
+
+brave_vpn::BraveVPNOSConnectionAPI*
+BraveVpnServiceDesktop::GetBraveVPNConnectionAPI() {
+  if (is_simulation_)
+    return brave_vpn::BraveVPNOSConnectionAPI::GetInstanceForTest();
+  return brave_vpn::BraveVPNOSConnectionAPI::GetInstance();
 }

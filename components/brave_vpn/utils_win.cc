@@ -26,6 +26,7 @@ HANDLE g_disconnecting_event_handle = NULL;
 
 void WINAPI RasDialFunc(UINT, RASCONNSTATE rasconnstate, DWORD error) {
   if (error) {
+    SetEvent(g_connect_failed_event_handle);
     internal::PrintRasError(error);
     return;
   }
@@ -198,12 +199,15 @@ bool DisconnectEntry(const std::wstring& entry_name) {
 
     // If successful, print the names of the active connections.
     if (ERROR_SUCCESS == dw_ret) {
-      DVLOG(2) << "The following RAS connections are currently active:";
+      VLOG(2) << __func__
+              << " : The following RAS connections are currently active:"
+              << dw_connections;
       for (DWORD i = 0; i < dw_connections; i++) {
         std::wstring name(lp_ras_conn[i].szEntryName);
         std::wstring type(lp_ras_conn[i].szDeviceType);
+        VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
-          DVLOG(2) << "Disconnect... " << entry_name;
+          VLOG(2) << __func__ << " : Disconnect... " << entry_name;
           SetEvent(g_disconnecting_event_handle);
           dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
           break;
@@ -223,7 +227,7 @@ bool DisconnectEntry(const std::wstring& entry_name) {
     return false;
   }
 
-  DVLOG(2) << "There are no active RAS connections.";
+  VLOG(2) << "There are no active RAS connections.";
   return true;
 }
 
@@ -260,7 +264,7 @@ bool ConnectEntry(const std::wstring& entry_name) {
   wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
   wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
 
-  DVLOG(2) << "Connecting to " << entry_name;
+  VLOG(2) << __func__ << " : Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
   dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0,
                    (LPVOID)(&RasDialFunc), &h_ras_conn);
@@ -270,7 +274,7 @@ bool ConnectEntry(const std::wstring& entry_name) {
     SetEvent(g_connect_failed_event_handle);
     return false;
   }
-  DVLOG(2) << "SUCCESS!";
+  VLOG(2) << "SUCCESS!";
 
   HeapFree(GetProcessHeap(), 0, (LPVOID)lp_ras_dial_params);
 

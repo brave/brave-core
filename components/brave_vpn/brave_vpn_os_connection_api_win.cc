@@ -136,19 +136,19 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
   for (Observer& obs : observers_) {
     switch (result) {
       case CheckConnectionResult::CONNECTED:
-        obs.OnConnected(name);
+        obs.OnConnected();
         break;
       case CheckConnectionResult::CONNECTING:
-        obs.OnIsConnecting(name);
+        obs.OnIsConnecting();
         break;
       case CheckConnectionResult::CONNECT_FAILED:
-        obs.OnConnectFailed(name);
+        obs.OnConnectFailed();
         break;
       case CheckConnectionResult::DISCONNECTED:
-        obs.OnDisconnected(name);
+        obs.OnDisconnected();
         break;
       case CheckConnectionResult::DISCONNECTING:
-        obs.OnIsDisconnecting(name);
+        obs.OnIsDisconnecting();
         break;
       default:
         break;
@@ -158,11 +158,14 @@ void BraveVPNOSConnectionAPIWin::OnCheckConnection(
 
 void BraveVPNOSConnectionAPIWin::OnCreated(const std::string& name,
                                            bool success) {
-  if (!success)
+  if (!success) {
+    for (Observer& obs : observers_)
+      obs.OnCreateFailed();
     return;
+  }
 
   for (Observer& obs : observers_)
-    obs.OnCreated(name);
+    obs.OnCreated();
 }
 
 void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
@@ -171,7 +174,7 @@ void BraveVPNOSConnectionAPIWin::OnRemoved(const std::string& name,
     return;
 
   for (Observer& obs : observers_)
-    obs.OnRemoved(name);
+    obs.OnRemoved();
 }
 
 void BraveVPNOSConnectionAPIWin::StartVPNConnectionChangeMonitoring() {

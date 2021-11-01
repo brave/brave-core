@@ -9,7 +9,13 @@ static_library("browser") {
     "pref_names.h",
     "skus_sdk_impl.cc",
     "skus_sdk_impl.h",
+    "skus_utils.cc",
+    "skus_utils.h",
+    "switches.h",
   ]
 
-  deps = [ "//components/pref_registry" ]
+  deps = [
+    "//base",
+    "//components/pref_registry",
+  ]
 }

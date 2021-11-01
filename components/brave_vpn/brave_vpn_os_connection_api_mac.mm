@@ -22,6 +22,26 @@ namespace {
 
 const NSString* kBraveVPNKey = @"BraveVPNKey";
 
+std::string NEVPNStatusToString(NEVPNStatus status) {
+  switch (status) {
+    case NEVPNStatusInvalid:
+      return "NEVPNStatusInvalid";
+    case NEVPNStatusDisconnected:
+      return "NEVPNStatusDisconnected";
+    case NEVPNStatusConnecting:
+      return "NEVPNStatusConnecting";
+    case NEVPNStatusConnected:
+      return "NEVPNStatusConnected";
+    case NEVPNStatusReasserting:
+      return "NEVPNStatusReasserting";
+    case NEVPNStatusDisconnecting:
+      return "NEVPNStatusDisconnecting";
+    default:
+      NOTREACHED();
+  }
+  return "NEVPNStatusInvalid";
+}
+
 NSData* GetPasswordRefForAccount() {
   NSString* bundle_id = [[NSBundle mainBundle] bundleIdentifier];
   CFTypeRef copy_result = NULL;
@@ -172,11 +192,14 @@ void BraveVPNOSConnectionAPIMac::CreateVPNConnection(
       if (error) {
         LOG(ERROR) << "Create - saveToPrefs error: "
                    << base::SysNSStringToUTF8([error localizedDescription]);
+        for (Observer& obs : observers_)
+          obs.OnCreateFailed();
+
         return;
       }
       VLOG(2) << "Create - saveToPrefs success";
       for (Observer& obs : observers_)
-        obs.OnCreated(std::string());
+        obs.OnCreated();
     }];
   }];
 }
@@ -201,7 +224,7 @@ void BraveVPNOSConnectionAPIMac::RemoveVPNConnection(const std::string& name) {
         }
         VLOG(2) << "RemoveVPNConnection - successfully removed";
         for (Observer& obs : observers_)
-          obs.OnRemoved(std::string());
+          obs.OnRemoved();
       }];
     }
     RemoveKeychainItemForAccount();
@@ -264,25 +287,25 @@ void BraveVPNOSConnectionAPIMac::CheckConnection(const std::string& name) {
     }
 
     NEVPNStatus current_status = [[vpn_manager connection] status];
-    VLOG(2) << "CheckConnection: " << current_status;
+    VLOG(2) << "CheckConnection: " << NEVPNStatusToString(current_status);
     switch (current_status) {
       case NEVPNStatusConnected:
         for (Observer& obs : observers_)
-          obs.OnConnected(name);
+          obs.OnConnected();
         break;
       case NEVPNStatusConnecting:
       case NEVPNStatusReasserting:
         for (Observer& obs : observers_)
-          obs.OnIsConnecting(name);
+          obs.OnIsConnecting();
         break;
       case NEVPNStatusDisconnected:
       case NEVPNStatusInvalid:
         for (Observer& obs : observers_)
-          obs.OnDisconnected(name);
+          obs.OnDisconnected();
         break;
       case NEVPNStatusDisconnecting:
         for (Observer& obs : observers_)
-          obs.OnIsDisconnecting(name);
+          obs.OnIsDisconnecting();
         break;
       default:
         break;

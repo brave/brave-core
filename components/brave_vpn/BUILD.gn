@@ -74,6 +74,7 @@ static_library("brave_vpn") {
       ":brave_vpn_internal",
       ":mojom",
       "//brave/components/resources:strings",
+      "//brave/components/skus/browser",
       "//components/prefs",
       "//third_party/icu",
       "//ui/base",
@@ -112,7 +113,9 @@ source_set("unit_tests") {
     deps = [
       ":brave_vpn",
       "//base",
+      "//brave/components/skus/browser",
       "//components/prefs:test_support",
+      "//components/sync_preferences:test_support",
       "//content/test:test_support",
       "//services/network:test_support",
       "//testing/gtest",

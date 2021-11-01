@@ -15,6 +15,13 @@ BraveVPNConnectionInfo::BraveVPNConnectionInfo(
 BraveVPNConnectionInfo& BraveVPNConnectionInfo::operator=(
     const BraveVPNConnectionInfo& info) = default;
 
+void BraveVPNConnectionInfo::Reset() {
+  connection_name_.clear();
+  hostname_.clear();
+  username_.clear();
+  password_.clear();
+}
+
 bool BraveVPNConnectionInfo::IsValid() const {
   // TODO(simonhong): Improve credentials validation.
   return !hostname_.empty() && !username_.empty() && !password_.empty();

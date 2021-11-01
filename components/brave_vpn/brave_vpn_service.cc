@@ -22,6 +22,8 @@ constexpr char kCreateSubscriberCredential[] =
     "api/v1/subscriber-credential/create";
 constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
+constexpr char kCreateSubscriberCredentialV12[] =
+    "api/v1.2/subscriber-credential/create";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -81,12 +83,14 @@ BraveVpnService::~BraveVpnService() = default;
 
 void BraveVpnService::Shutdown() {}
 
-void BraveVpnService::OAuthRequest(const GURL& url,
-                                   const std::string& method,
-                                   const std::string& post_data,
-                                   URLRequestCallback callback) {
+void BraveVpnService::OAuthRequest(
+    const GURL& url,
+    const std::string& method,
+    const std::string& post_data,
+    URLRequestCallback callback,
+    const base::flat_map<std::string, std::string>& headers) {
   api_request_helper_.Request(method, url, post_data, "application/json", false,
-                              std::move(callback));
+                              std::move(callback), headers);
 }
 
 void BraveVpnService::GetAllServerRegions(ResponseCallback callback) {
@@ -195,4 +199,22 @@ void BraveVpnService::OnGetSubscriberCredential(
     subscriber_credential = GetSubscriberCredentialFromJson(body);
   }
   std::move(callback).Run(subscriber_credential, success);
+}
+
+void BraveVpnService::GetSubscriberCredentialV12(
+    ResponseCallback callback,
+    const std::string& payments_environment,
+    const std::string& monthly_pass) {
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnGetSubscriberCredential,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  const GURL base_url =
+      GetURLWithPath(kVpnHost, kCreateSubscriberCredentialV12);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("validation-method", "brave-premium");
+  dict.SetStringKey("brave-vpn-premium-monthly-pass", monthly_pass);
+  std::string request_body = CreateJSONRequestBody(dict);
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
+               {{"Brave-Payments-Environment", payments_environment}});
 }
