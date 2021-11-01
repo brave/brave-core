@@ -64,7 +64,8 @@ public class NotificationIntent {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
         intent.putExtra(BravePreferenceKeys.BRAVE_UPDATE_EXTRA_PARAM, true);
         intent.setPackage(context.getPackageName());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, 0, intent, IntentUtils.getPendingIntentMutabilityFlag(true));
 
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);
