@@ -5,6 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -16,9 +17,11 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 
-class FileSystemAccessBrowserTest : public InProcessBrowserTest {
+class FileSystemAccessBrowserTest : public InProcessBrowserTest,
+                                    public ::testing::WithParamInterface<bool> {
  public:
   FileSystemAccessBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
@@ -30,6 +33,16 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest {
   }
 
   ~FileSystemAccessBrowserTest() override = default;
+
+  bool IsFileSystemAccessAPIEnabled() { return GetParam(); }
+
+  void SetUp() override {
+    if (IsFileSystemAccessAPIEnabled()) {
+      scoped_feature_list_.InitAndEnableFeature(
+          blink::features::kFileSystemAccessAPI);
+    }
+    InProcessBrowserTest::SetUp();
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -49,14 +62,29 @@ class FileSystemAccessBrowserTest : public InProcessBrowserTest {
 
  protected:
   net::EmbeddedTestServer https_server_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(FileSystemAccessBrowserTest, FilePicker) {
+IN_PROC_BROWSER_TEST_P(FileSystemAccessBrowserTest, FilePicker) {
+  EXPECT_EQ(
+      IsFileSystemAccessAPIEnabled(),
+      base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI));
+
   const GURL url = https_server_.GetURL("/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  auto result = content::EvalJs(main_frame(), "self.showOpenFilePicker()");
-  EXPECT_TRUE(result.error.find("self.showOpenFilePicker is not a function") !=
-              std::string::npos)
-      << result.error;
+  if (IsFileSystemAccessAPIEnabled()) {
+    auto result =
+        content::EvalJs(main_frame(), "typeof self.showOpenFilePicker");
+    EXPECT_EQ(result.value.GetString(), "function");
+  } else {
+    auto result = content::EvalJs(main_frame(), "self.showOpenFilePicker()");
+    EXPECT_TRUE(base::Contains(result.error,
+                               "self.showOpenFilePicker is not a function"))
+        << result.error;
+  }
 }
+
+INSTANTIATE_TEST_SUITE_P(FileSystemAccessBrowserTest,
+                         FileSystemAccessBrowserTest,
+                         ::testing::Bool());
