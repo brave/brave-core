@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioController;
+import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.brave_wallet.mojom.EthTxController;
@@ -138,6 +139,24 @@ public class AsyncUtils {
         @Override
         public void call(TransactionInfo[] txInfos) {
             this.txInfos = txInfos;
+            super.fireResponseCompleteCallback();
+        }
+    }
+
+    public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
+            implements AssetRatioController.GetPriceHistoryResponse {
+        public Boolean success;
+        public AssetTimePrice[] timePrices;
+        public ErcToken userAsset;
+
+        public GetPriceHistoryResponseContext(Runnable responseCompleteCallback) {
+            super(responseCompleteCallback);
+        }
+
+        @Override
+        public void call(Boolean success, AssetTimePrice[] timePrices) {
+            this.success = success;
+            this.timePrices = timePrices;
             super.fireResponseCompleteCallback();
         }
     }
