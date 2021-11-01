@@ -262,11 +262,6 @@ void EthTxController::ContinueAddUnapprovedTransaction(
   meta.created_time = base::Time::Now();
   meta.status = mojom::TransactionStatus::Unapproved;
   tx_state_manager_->AddOrUpdateTx(meta);
-
-  for (const auto& observer : observers_)
-    observer->OnNewUnapprovedTx(
-        EthTxStateManager::TxMetaToTransactionInfo(meta));
-
   std::move(callback).Run(true, meta.id, "");
 }
 
