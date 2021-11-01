@@ -28,6 +28,13 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
+        // These strings are not used in Brave, but we get them from automated string translation
+        // process. These checks are just making sure that strings are still used in Chromium to
+        // avoid lint issues.
+        assert R.string.chrome_additional_terms_of_service_title > 0
+            : "Something has changed in the upstream!";
+        assert R.string.google_privacy_policy_url > 0 : "Something has changed in the upstream!";
+
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_license_preferences);
         getActivity().setTitle(R.string.brave_license_text);
         BraveLicensePreference licenseText =
