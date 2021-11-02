@@ -2,7 +2,6 @@ import TrezorConnect, { Success, Unsuccessful } from 'trezor-connect'
 import { HDNodeResponse } from 'trezor-connect/lib/typescript/trezor/protobuf'
 import {
   TrezorCommand,
-  kTrezorBridgeOwner,
   UnlockCommand,
   postResponseToWallet,
   UnlockResponse,
@@ -30,7 +29,8 @@ const unlock = async (command: UnlockCommand, source: Window) => {
     }
   }).then(() => {
     postResponseToWallet(source, createUnlockResponse(command, true))
-  }).catch((error) => {
+  }).catch((error: any) => {
+    console.log(error)
     postResponseToWallet(source, createUnlockResponse(command, false, error))
   })
 }
@@ -38,14 +38,11 @@ const unlock = async (command: UnlockCommand, source: Window) => {
 const getAccounts = async (command: GetAccountsCommand, source: Window) => {
   TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
     postResponseToWallet(source, createGetAccountsResponse(command, result))
-  }).catch((error) => {
-    postResponseToWallet(source, createGetAccountsResponse(command, error))
   })
 }
 
 window.addEventListener('message', (event: any/* MessageEvent<TrezorFrameCommand>*/) => {
-  if (event.origin !== event.data.origin || event.type !== 'message' ||
-      event.origin !== kTrezorBridgeOwner || !event.source) {
+  if (event.origin !== event.data.origin || event.type !== 'message' || !event.source) {
     return
   }
   if (event.data.command === TrezorCommand.Unlock) {
