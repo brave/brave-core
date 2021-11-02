@@ -34,7 +34,7 @@
           --md-select-width: 225px;
         }
     </style>
-    <template is="dom-if" if="[[!isNetworkEditor_]]">
+    <div hidden="[[isNetworkEditor_]]">
       <div class="settings-box first">
         <div class="start">$i18n{defaultWalletDesc}</div>
           <settings-dropdown-menu id="defaultWalletType"
@@ -64,7 +64,7 @@
         >
         </cr-input>
       </div>
-    </template>
+    </div>
     <settings-animated-pages id="wallet-networks" section="wallet">
       <div route-path="default">
         <cr-link-row id="walletNetworksLinkRow"
