@@ -25,8 +25,8 @@ import {
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 interface ParamsType {
-  category: TopTabNavTypes
-  id: string
+  category?: TopTabNavTypes
+  id?: string
 }
 
 export interface Props {
@@ -146,7 +146,7 @@ const CryptoView = (props: Props) => {
   React.useEffect(() => {
     if (category === 'portfolio') {
       if (id !== undefined) {
-        const asset = userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id.toLowerCase())
+        const asset = userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
         onSelectAsset(asset)
         setHideNav(true)
       } else {
@@ -159,7 +159,7 @@ const CryptoView = (props: Props) => {
         if (id === 'add-account') {
           onShowAddModal()
         } else {
-          const account = accounts.find((a) => a.address.toLowerCase() === id.toLowerCase())
+          const account = accounts.find((a) => a.address.toLowerCase() === id?.toLowerCase())
           setSelectedAccount(account)
           setHideNav(true)
         }

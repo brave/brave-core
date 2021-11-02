@@ -238,6 +238,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       return
     }
 
+    // tslint:disable
+    const isWindows = window.navigator.platform === 'Win32'
+
     return (
       <GrantWrapper
         isPanel={true}
@@ -251,7 +254,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           onSolution={this.onSolution.bind(this, grant.promotionId)}
           captchaImage={grant.captchaImage}
           hint={grant.hint}
-          isWindows={window.navigator.platform === 'Win32'}
+          isWindows={isWindows}
         />
       </GrantWrapper>
     )

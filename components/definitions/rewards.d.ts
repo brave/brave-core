@@ -253,7 +253,7 @@ declare namespace Rewards {
   export enum RewardsType {
     AUTO_CONTRIBUTE = 2,
     ONE_TIME_TIP = 8,
-    RECURRING_TIP = 21
+    RECURRING_TIP = 16
   }
 
   export interface ContributionSaved {
@@ -289,7 +289,8 @@ declare namespace Rewards {
     CONNECTED = 1,
     VERIFIED = 2,
     DISCONNECTED_NOT_VERIFIED = 3,
-    DISCONNECTED_VERIFIED = 4
+    DISCONNECTED_VERIFIED = 4,
+    PENDING = 5
   }
 
   export interface ExternalWallet {

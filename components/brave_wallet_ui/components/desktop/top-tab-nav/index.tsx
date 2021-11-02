@@ -21,7 +21,7 @@ import { TopTabNavButton } from '../'
 
 export interface Props {
   tabList: TopTabNavObjectType[]
-  selectedTab: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
+  selectedTab?: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes
   onSubmit: (id: TopTabNavTypes | AddAccountNavTypes | AccountSettingsNavTypes) => void
   onLockWallet?: () => void
   hasMoreButtons?: boolean

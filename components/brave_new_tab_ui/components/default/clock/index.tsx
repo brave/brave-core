@@ -39,7 +39,7 @@ class Clock extends React.PureComponent<Props, ClockState> {
 
   get dateTimeFormat (): any {
     // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-    const options = { hour: 'numeric', minute: 'numeric' }
+    const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric' }
     if (this.props.clockFormat === '24') {
       options['hourCycle'] = 'h23'
     } else if (this.props.clockFormat === '12') {
