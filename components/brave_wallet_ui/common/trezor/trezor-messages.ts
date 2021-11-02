@@ -1,8 +1,7 @@
 import { Unsuccessful } from 'trezor-connect'
-
+import { loadTimeData } from '../../../common/loadTimeData'
 export const kTrezorBridgeFrameId = 'trezor-untrusted-frame'
-export const kTrezorBridgeUrl = 'chrome-untrusted://trezor-bridge'
-export const kTrezorBridgeOwner = 'chrome://wallet'
+export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
@@ -50,5 +49,6 @@ export function postResponseToWallet (target: Window, message: TrezorFrameRespon
 }
 
 export function postToTrezorFrame (target: Window, message: TrezorFrameCommand) {
+  console.log(kTrezorBridgeUrl)
   target.postMessage(message, kTrezorBridgeUrl)
 }

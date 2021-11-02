@@ -26,6 +26,7 @@ import {
   TrezorError
 } from '../../common/trezor/trezor-messages'
 import { getLocale } from '../../../common/locale'
+const trezorBridgeOrigin = (new URL(kTrezorBridgeUrl)).origin
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -119,7 +120,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   private onMessageReceived = (event: any /* MessageEvent<TrezorFrameResponse> */) => {
-    if (event.origin !== kTrezorBridgeUrl || event.type !== 'message') {
+    if (event.origin !== trezorBridgeOrigin || event.type !== 'message') {
       return
     }
     if (!event.data || !this.pending_requests_ ||
