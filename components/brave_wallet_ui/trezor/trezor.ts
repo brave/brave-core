@@ -1,11 +1,26 @@
-import TrezorConnect from 'trezor-connect'
+import TrezorConnect, { Success, Unsuccessful } from 'trezor-connect'
+import { HDNodeResponse } from 'trezor-connect/lib/typescript/trezor/protobuf'
 import {
-  kTrezorUnlockCommand,
-  kTrezorGetAccountsCommand,
-  kTrezorBridgeOwner
-} from '../common/trezor/constants'
+  TrezorCommand,
+  kTrezorBridgeOwner,
+  UnlockCommand,
+  postResponseToWallet,
+  UnlockResponse,
+  GetAccountsCommand,
+  TrezorGetAccountsResponse,
+  GetAccountsResponsePayload
+} from '../common/trezor/trezor-messages'
 
-const unlock = async (responseId: string, source: any, owner: any) => {
+type TrezorGetPublicKeyResponse = Unsuccessful | Success<HDNodeResponse[]>
+const createUnlockResponse = (command: UnlockCommand, result: Boolean, error?: Unsuccessful): UnlockResponse => {
+  return { id: command.id, command: command.command, result: result, origin: command.origin, error: error }
+}
+
+const createGetAccountsResponse = (command: GetAccountsCommand, result: TrezorGetPublicKeyResponse): GetAccountsResponsePayload => {
+  return { id: command.id, command: command.command, payload: result as TrezorGetAccountsResponse, origin: command.origin }
+}
+
+const unlock = async (command: UnlockCommand, source: Window) => {
   TrezorConnect.init({
     connectSrc: 'https://connect.trezor.io/8/',
     lazyLoad: false,
@@ -14,30 +29,30 @@ const unlock = async (responseId: string, source: any, owner: any) => {
       appUrl: 'https://brave.com'
     }
   }).then(() => {
-    source.postMessage({ id: responseId, command: kTrezorUnlockCommand, result: true }, owner)
-  }).catch(error => {
-    source.postMessage({ id: responseId, command: kTrezorUnlockCommand, result: false, error: error }, owner)
-  })
-}
-
-const getAccounts = async (responseId: string, source: any, requestedPaths: any, owner: any) => {
-  TrezorConnect.getPublicKey({ bundle: requestedPaths }).then((result) => {
-    source.postMessage({ id: responseId, command: kTrezorGetAccountsCommand, payload: result }, owner)
+    postResponseToWallet(source, createUnlockResponse(command, true))
   }).catch((error) => {
-    source.postMessage({ id: responseId, command: kTrezorGetAccountsCommand, payload: error }, owner)
+    postResponseToWallet(source, createUnlockResponse(command, false, error))
   })
 }
 
-window.addEventListener('message', (event) => {
-  if (event.origin !== event.data.owner || event.type !== 'message' ||
-      event.origin !== kTrezorBridgeOwner) {
+const getAccounts = async (command: GetAccountsCommand, source: Window) => {
+  TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
+    postResponseToWallet(source, createGetAccountsResponse(command, result))
+  }).catch((error) => {
+    postResponseToWallet(source, createGetAccountsResponse(command, error))
+  })
+}
+
+window.addEventListener('message', (event: any/* MessageEvent<TrezorFrameCommand>*/) => {
+  if (event.origin !== event.data.origin || event.type !== 'message' ||
+      event.origin !== kTrezorBridgeOwner || !event.source) {
     return
   }
-  if (event.data.command === kTrezorUnlockCommand) {
-    return unlock(event.data.id, event.source, event.data.owner)
+  if (event.data.command === TrezorCommand.Unlock) {
+    return unlock(event.data, event.source as Window)
   }
-  if (event.data.command === kTrezorGetAccountsCommand) {
-    return getAccounts(event.data.id, event.source, event.data.paths, event.data.owner)
+  if (event.data.command === TrezorCommand.GetAccounts) {
+    return getAccounts(event.data, event.source as Window)
   }
   return
 })
