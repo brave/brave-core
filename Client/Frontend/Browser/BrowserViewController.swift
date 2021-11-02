@@ -16,6 +16,7 @@ import Data
 import BraveShared
 import SwiftKeychainWrapper
 import BraveCore
+import CoreData
 import StoreKit
 import SafariServices
 import BraveUI
@@ -177,6 +178,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     /// So user will not be introduced with a pop-over directly
     let benchmarkCurrentSessionAdCount = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
     
+    /// Navigation Helper used for Brave Widgets
+    private(set) lazy var navigationHelper = BrowserNavigationHelper(self)
+    
     /// Boolean tracking  if Tab Tray is active on the screen
     /// Used to determine If pop-over should be presented
     var isTabTrayActive = false
@@ -188,6 +192,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
     
+    private(set) var widgetBookmarksFRC: NSFetchedResultsController<Favorite>?
+    var widgetFaviconFetchers: [FaviconFetcher] = []
+    let deviceCheckClient: DeviceCheckClient?
+
     init(profile: Profile,
          diskImageStore: DiskImageStore?,
          historyAPI: BraveHistoryAPI,
@@ -461,9 +469,15 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 }
             }
         }
+        
+        // Setup Widgets FRC
+        widgetBookmarksFRC = Favorite.frc()
+        widgetBookmarksFRC?.fetchRequest.fetchLimit = 16
+        widgetBookmarksFRC?.delegate = self
+        try? widgetBookmarksFRC?.performFetch()
+        
+        updateWidgetFavoritesData()
     }
-    
-    let deviceCheckClient: DeviceCheckClient?
     
     private func setupAdsNotificationHandler() {
         notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)

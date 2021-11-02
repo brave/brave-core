@@ -3088,3 +3088,92 @@ extension Strings {
     public static let recentSearchScannerDescriptionBody = NSLocalizedString("RecentSearchScannerDescriptionBody", bundle: .braveShared, value: "To search by QR Code, align the QR Code in the center of the frame.", comment: "Scanning a QR Code for searching body")
     public static let recentSearchClearAlertButton = NSLocalizedString("RecentSearchClearAlertButton", bundle: .braveShared, value: "Clear Recent", comment: "The button title that shows when you clear all recent searches")
 }
+
+// MARK: - Widgets
+extension Strings {
+    public struct Widgets {
+        public static let noFavoritesFound = NSLocalizedString(
+            "widgets.noFavoritesFound",
+            bundle: .braveShared,
+            value: "Please open Brave to view your favorites here",
+            comment: "This shows when you add a widget but have no favorites added in your app")
+        
+        public static let favoritesWidgetTitle = NSLocalizedString(
+            "widgets.favoritesWidgetTitle",
+            bundle: .braveShared,
+            value: "Favorites",
+            comment: "Title for favorites widget on 'add widget' screen.")
+        
+        public static let favoritesWidgetDescription = NSLocalizedString(
+            "widgets.favoritesWidgetDescription",
+            bundle: .braveShared,
+            value: "Quickly access your favorite websites.",
+            comment: "Description for favorites widget on 'add widget' screen.")
+        
+        public static let shortcutsWidgetTitle = NSLocalizedString(
+            "widgets.shortcutsWidgetTitle",
+            bundle: .braveShared,
+            value: "Shortcuts",
+            comment: "Title for shortcuts widget on 'add widget' screen.")
+        
+        public static let shortcutsWidgetDescription = NSLocalizedString(
+            "widgets.shortcutsWidgetDescription",
+            bundle: .braveShared,
+            value: "Quick access to search the web or open web pages in Brave.",
+            comment: "Description for shortcuts widget on 'add widget' screen.")
+        
+        public static let shortcutsNewTabButton = NSLocalizedString(
+            "widgets.shortcutsNewTabButton",
+            bundle: .braveShared,
+            value: "New Tab",
+            comment: "Button to open new browser tab.")
+        
+        public static let shortcutsPrivateTabButton = NSLocalizedString(
+            "widgets.shortcutsPrivateTabButton",
+            bundle: .braveShared,
+            value: "Private Tab",
+            comment: "Button to open new private browser tab.")
+        
+        public static let shortcutsPlaylistButton = NSLocalizedString(
+            "widgets.shortcutsPlaylistButton",
+            bundle: .braveShared,
+            value: "Playlist",
+            comment: "Button to open video playlist window.")
+        
+        public static let shortcutsEnterURLButton = NSLocalizedString(
+            "widgets.shortcutsEnterURLButton",
+            bundle: .braveShared,
+            value: "Search or type a URL",
+            comment: "Button to the browser and enter URL or make a search query there.")
+        
+        public static let shieldStatsTitle = NSLocalizedString(
+            "widgets.shieldStatsTitle",
+            bundle: .braveShared,
+            value: "Privacy Stats",
+            comment: "Title for Brave Shields widget on 'add widget' screen.")
+        
+        public static let shieldStatsDescription = NSLocalizedString(
+            "widgets.shieldStatsDescription",
+            bundle: .braveShared,
+            value: "A summary of how Brave saves you time and protects you online.",
+            comment: "Description for Brave Shields widget on 'add widget' screen.")
+        
+        public static let shieldStatsWidgetTitle = NSLocalizedString(
+            "widgets.shieldStatsWidgetTitle",
+            bundle: .braveShared,
+            value: "Privacy Stats",
+            comment: "Title of Brave Shields widget shown above stat numbers.")
+        
+        public static let singleStatTitle = NSLocalizedString(
+            "widgets.singleStatTitle",
+            bundle: .braveShared,
+            value: "Privacy Stat",
+            comment: "Title for Brave Shields single stat widget on 'add widget' screen.")
+        
+        public static let singleStatDescription = NSLocalizedString(
+            "widgets.singleStatDescription",
+            bundle: .braveShared,
+            value: "A summary of how Brave has protected you online.",
+            comment: "Description for Brave Shields single stat widget on 'add widget' screen.")
+    }
+}
