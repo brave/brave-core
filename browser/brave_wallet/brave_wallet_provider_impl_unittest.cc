@@ -147,6 +147,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         content::TestWebContents::Create(browser_context(), nullptr);
     eth_json_rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, prefs()));
+    SetNetwork("0x1");
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
     asset_ratio_controller_.reset(
@@ -175,7 +176,6 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
     observer_.reset(new TestEventsListener());
     provider_->Init(observer_->GetReceiver());
-    SetNetwork("0x1");
   }
 
   void SetInterceptor(const std::string& content) {
@@ -495,7 +495,9 @@ TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
-  bool callback_is_called = false;
+  GURL url("https://brave.com");
+  Navigate(url);
+  base::RunLoop run_loop;
   provider()->AddEthereumChain(
       R"({"params": [{
         "chainId": "0x111",
@@ -503,21 +505,22 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](int error_code,
-                                const std::string& error_message) {
+          [&run_loop](int error_code, const std::string& error_message) {
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             ASSERT_FALSE(error_message.empty());
-            callback_is_called = true;
+            run_loop.Quit();
           }));
-  ASSERT_FALSE(callback_is_called);
   provider()->OnAddEthereumChain("0x111", false);
-  ASSERT_TRUE(callback_is_called);
+  run_loop.Run();
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,
        OnAddEthereumChainRequestCompletedError) {
-  int callback_is_called = 0;
+  GURL url("https://brave.com");
+  Navigate(url);
+  base::RunLoop run_loop;
+  size_t callback_called = 0;
   provider()->AddEthereumChain(
       R"({"params": [{
         "chainId": "0x111",
@@ -525,18 +528,17 @@ TEST_F(BraveWalletProviderImplUnitTest,
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](int error_code,
-                                const std::string& error_message) {
+          [&](int error_code, const std::string& error_message) {
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             EXPECT_EQ(error_message, "test message");
-            callback_is_called++;
+            ++callback_called;
+            run_loop.Quit();
           }));
-  EXPECT_EQ(callback_is_called, 0);
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  EXPECT_EQ(callback_is_called, 1);
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  EXPECT_EQ(callback_is_called, 1);
+  run_loop.Run();
+  EXPECT_EQ(callback_called, 1u);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
