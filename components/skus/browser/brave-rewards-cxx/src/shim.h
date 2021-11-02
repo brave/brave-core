@@ -48,6 +48,12 @@ class PrepareCredentialsPresentationCallbackState {
   skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback cb;
 #endif  // NOT_BRAVE_CORE_SHIM
 };
+class CredentialSummaryCallbackState {
+#ifndef NOT_BRAVE_CORE_SHIM
+ public:
+  skus::mojom::SkusSdk::CredentialSummaryCallback cb;
+#endif  // NOT_BRAVE_CORE_SHIM
+};
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
                                       RewardsResult result,
@@ -59,6 +65,10 @@ using PrepareCredentialsPresentationCallback =
     void (*)(PrepareCredentialsPresentationCallbackState* callback_state,
              RewardsResult result,
              rust::cxxbridge1::Str presentation);
+using CredentialSummaryCallback =
+    void (*)(CredentialSummaryCallbackState* callback_state,
+             RewardsResult result,
+             rust::cxxbridge1::Str summary);
 
 void shim_purge(brave_rewards::SkusSdkContext& ctx);
 void shim_set(brave_rewards::SkusSdkContext& ctx,
