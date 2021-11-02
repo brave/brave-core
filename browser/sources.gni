@@ -6,6 +6,7 @@
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/binance/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
+import("//brave/browser/brave_ads/sources.gni")
 import("//brave/browser/brave_rewards/sources.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_stats/sources.gni")
@@ -24,6 +25,7 @@ import("//brave/browser/greaselion/sources.gni")
 import("//brave/browser/importer/sources.gni")
 import("//brave/browser/ipfs/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
+import("//brave/browser/ntp_background_images/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
@@ -94,14 +96,11 @@ brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
-  "//brave/browser/brave_ads",
-  "//brave/browser/brave_ads/notifications",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/gcm_driver",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/net",
-  "//brave/browser/ntp_background_images",
   "//brave/browser/profiles",
   "//brave/browser/renderer_context_menu",
   "//brave/browser/search",
@@ -354,6 +353,7 @@ brave_chrome_browser_defines = []
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_binance_sources
 brave_chrome_browser_sources += brave_browser_brave_adaptive_captcha_sources
+brave_chrome_browser_sources += brave_browser_brave_ads_sources
 brave_chrome_browser_sources += brave_browser_brave_vpn_sources
 brave_chrome_browser_sources += brave_browser_brave_rewards_sources
 brave_chrome_browser_sources += brave_browser_brave_shields_sources
@@ -370,6 +370,7 @@ brave_chrome_browser_sources += brave_browser_greaselion_sources
 brave_chrome_browser_sources += brave_browser_importer_sources
 brave_chrome_browser_sources += brave_browser_ipfs_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
+brave_chrome_browser_sources += brave_browser_ntp_background_images_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
@@ -379,6 +380,7 @@ brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
 brave_chrome_browser_deps += brave_browser_binance_deps
 brave_chrome_browser_deps += brave_browser_brave_adaptive_captcha_deps
+brave_chrome_browser_deps += brave_browser_brave_ads_deps
 brave_chrome_browser_deps += brave_browser_brave_vpn_deps
 brave_chrome_browser_deps += brave_browser_brave_rewards_deps
 brave_chrome_browser_deps += brave_browser_brave_shields_deps
@@ -395,6 +397,7 @@ brave_chrome_browser_deps += brave_browser_greaselion_deps
 brave_chrome_browser_deps += brave_browser_importer_deps
 brave_chrome_browser_deps += brave_browser_ipfs_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
+brave_chrome_browser_deps += brave_browser_ntp_background_images_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_speedreader_deps

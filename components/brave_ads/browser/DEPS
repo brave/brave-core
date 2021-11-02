@@ -67,9 +67,4 @@ specific_include_rules = {
     "+chrome/installer/util/install_util.h",
     "+chrome/installer/util/shell_util.h",
   ],
-  "test_util.cc": [
-    "+chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h",
-    "+chrome/browser/prefs/browser_prefs.h",
-    "+chrome/test",
-  ],
 }
