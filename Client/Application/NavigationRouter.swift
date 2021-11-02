@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import Intents
 
 // Used by the App to navigate to different views.
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
@@ -27,6 +28,7 @@ enum NavigationPath: Equatable {
     case url(webURL: URL?, isPrivate: Bool)
     case deepLink(DeepLink)
     case text(String)
+    case widgetShortcutURL(WidgetShortcut)
     
     init?(url: URL) {
         let urlString = url.absoluteString
@@ -63,6 +65,11 @@ enum NavigationPath: Equatable {
         } else if urlString.starts(with: "\(scheme)://search") {
             let text = components.valueForQuery("q")
             self = .text(text ?? "")
+        } else if urlString.starts(with: "\(scheme)://shortcut"),
+                  let valueString = components.valueForQuery("path"),
+                  let value = WidgetShortcut.RawValue(valueString),
+                  let path = WidgetShortcut(rawValue: value) {
+            self = .widgetShortcutURL(path)
         } else {
             return nil
         }
@@ -73,6 +80,7 @@ enum NavigationPath: Equatable {
         case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
         case .url(let url, let isPrivate): NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
         case .text(let text): NavigationPath.handleText(text: text, with: bvc)
+        case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
         }
     }
 
@@ -93,5 +101,28 @@ enum NavigationPath: Equatable {
         bvc.openBlankNewTab(attemptLocationFieldFocus: true,
                             isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing,
                             searchFor: text)
+    }
+    
+    private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
+        switch path {
+        case .unknown:
+            // Search
+            bvc.focusURLBar()
+        case .newTab:
+            bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        case .newPrivateTab:
+            bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
+        case .bookmarks:
+            bvc.navigationHelper.openBookmarks()
+        case .history:
+            bvc.navigationHelper.openHistory()
+        case .downloads:
+            bvc.navigationHelper.openDownloads()
+        case .playlist:
+            bvc.navigationHelper.openPlaylist()
+        @unknown default:
+            assertionFailure()
+            break
+        }
     }
 }

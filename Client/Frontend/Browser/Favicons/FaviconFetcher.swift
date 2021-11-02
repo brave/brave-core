@@ -10,6 +10,7 @@ import Shared
 import SwiftyJSON
 import Fuzi
 import SDWebImage
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -35,13 +36,6 @@ class FaviconFetcher {
             case .favicon: return .icon
             }
         }
-    }
-    
-    struct FaviconAttributes {
-        var image: UIImage?
-        var backgroundColor: UIColor?
-        var contentMode: UIView.ContentMode = .scaleAspectFit
-        var includePadding: Bool = false
     }
     
     private let url: URL

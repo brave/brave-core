@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SERVICES_KEY</key>
-	<string>$(BRAVE_SERVICES_KEY)</string>
 	<key>API_KEY</key>
 	<string>$(BRAVE_API_KEY)</string>
 	<key>AdjustAppToken</key>
@@ -98,8 +96,12 @@
 		<string>OpenBookmarkWebsiteIntent</string>
 		<string>OpenHistoryWebsiteIntent</string>
 		<string>OpenWebsiteIntent</string>
+		<string>ShortcutsConfigurationIntent</string>
+		<string>StatsConfigurationIntent</string>
 		<string>org.mozilla.ios.firefox.browsing</string>
 	</array>
+	<key>SERVICES_KEY</key>
+	<string>$(BRAVE_SERVICES_KEY)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>CharisSILB.ttf</string>
@@ -116,6 +118,36 @@
 		<string>FiraSans-SemiBold.ttf</string>
 		<string>FiraSans-UltraLight.ttf</string>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>CPTemplateApplicationSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>CPTemplateApplicationScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>CPTemplateSceneConfiguration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).CarplayTemplateApplicationSceneDelegate</string>
+				</dict>
+			</array>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -188,35 +220,5 @@
 		<string>A000000527471117</string>
 		<string>A0000006472F0001</string>
 	</array>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-                    <key>UISceneClassName</key>
-                    <string>UIWindowScene</string>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-				</dict>
-			</array>
-			<key>CPTemplateApplicationSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneClassName</key>
-					<string>CPTemplateApplicationScene</string>
-					<key>UISceneConfigurationName</key>
-					<string>CPTemplateSceneConfiguration</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).CarplayTemplateApplicationSceneDelegate</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
 </dict>
 </plist>

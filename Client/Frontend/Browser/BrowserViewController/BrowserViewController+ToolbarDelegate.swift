@@ -280,7 +280,7 @@ extension BrowserViewController: TopToolbarDelegate {
     // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
     // See: https://github.com/brave/brave-ios/issues/1452
     func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-        showBookmarkController()
+        navigationHelper.openBookmarks()
     }
     
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
@@ -512,31 +512,7 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressShare() {
-        func share(url: URL) {
-            presentActivityViewController(
-                url,
-                tab: url.isFileURL ? nil : tabManager.selectedTab,
-                sourceView: view,
-                sourceRect: view.convert(topToolbar.menuButton.frame, from: topToolbar.menuButton.superview),
-                arrowDirection: [.up]
-            )
-        }
-        
-        guard let tab = tabManager.selectedTab, let url = tab.url else { return }
-        
-        if let temporaryDocument = tab.temporaryDocument {
-            temporaryDocument.getURL().uponQueue(.main, block: { tempDocURL in
-                // If we successfully got a temp file URL, share it like a downloaded file,
-                // otherwise present the ordinary share menu for the web URL.
-                if tempDocURL.isFileURL {
-                    share(url: tempDocURL)
-                } else {
-                    share(url: url)
-                }
-            })
-        } else {
-            share(url: url)
-        }
+        navigationHelper.openShareSheet()
     }
     
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
