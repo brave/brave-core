@@ -88,7 +88,7 @@
 
     <color name="shield_toggle_button_tint">#5E6175</color>
     <color name="shield_toggle_bg_color">#F8F9FA</color>
-    
+
     <color name="shield_secondary_color">#868E96</color>
     <color name="shield_divider_color">#c8c7cc</color>
     <color name="shield_option_text_color">#777777</color>
@@ -154,10 +154,11 @@
     <color name="recovery_phrase_warning_text_color">#868E96</color>
     <color name="brave_action_color">#4C54D2</color>
     <color name="wallet_positive_trend_color">#51CF66</color>
+    <color name="wallet_negative_trend_color">#CF5159</color>
     <color name="wallet_asset_graph_color">#12A378</color>
     <color name="wallet_top_banner_color">#33E32444</color>
     <color name="wallet_top_banner_text_color">#FF4B6A</color>
-    
+
     <color name="vpn_callout_bg_color">#381E85</color>
     <color name="brave_plan_bg">#27155E</color>
 </resources>

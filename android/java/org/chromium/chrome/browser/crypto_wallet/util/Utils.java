@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -676,6 +677,31 @@ public class Utils {
             return AssetPriceTimeframe.ONE_YEAR;
         } else {
             return AssetPriceTimeframe.ALL;
+        }
+    }
+
+    public static String getTimeframeString(int assetPriceTimeframe) {
+        Resources resources = ContextUtils.getApplicationContext().getResources();
+        assert resources != null;
+
+        switch (assetPriceTimeframe) {
+            case AssetPriceTimeframe.LIVE:
+                return resources.getString(R.string.trend_1h_text);
+            case AssetPriceTimeframe.ONE_DAY:
+                return resources.getString(R.string.trend_1d_text);
+            case AssetPriceTimeframe.ONE_WEEK:
+                return resources.getString(R.string.trend_1w_text);
+            case AssetPriceTimeframe.ONE_MONTH:
+                return resources.getString(R.string.trend_1m_text);
+            case AssetPriceTimeframe.THREE_MONTHS:
+                return resources.getString(R.string.trend_3m_text);
+            case AssetPriceTimeframe.ONE_YEAR:
+                return resources.getString(R.string.trend_1y_text);
+            case AssetPriceTimeframe.ALL:
+                return resources.getString(R.string.trend_all_text);
+            default:
+                assert false;
+                return "N/A";
         }
     }
 }

@@ -81,6 +81,27 @@ public class PortfolioHelper {
         return mFiatHistory;
     }
 
+    public boolean isFiatHistoryEmpty() {
+        if (mFiatHistory == null || mFiatHistory.length == 0) {
+            return true;
+        }
+
+        for (AssetTimePrice assetTimePrice : mFiatHistory) {
+            if (Double.valueOf(assetTimePrice.price) > 0.001d) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Double getMostPreviousFiatSum() {
+        if (mFiatHistory == null || mFiatHistory.length == 0) {
+            return 0.0d;
+        }
+        return Double.valueOf(mFiatHistory[mFiatHistory.length - 1].price);
+    }
+
     public void calculateBalances(Runnable runWhenDone) {
         resetResultData();
 

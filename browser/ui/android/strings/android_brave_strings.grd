@@ -1996,6 +1996,27 @@ until they verify, or until 90 days have passed.
     <message name="IDS_INFO" desc="Brave Wallet section text">
       Info
     </message>
+    <message name="IDS_TREND_1H_TEXT" desc="Brave Wallet assets 1 hour trend text">
+      1 Hour
+    </message>
+    <message name="IDS_TREND_1D_TEXT" desc="Brave Wallet assets 1 day trend text">
+      1 Day
+    </message>
+    <message name="IDS_TREND_1W_TEXT" desc="Brave Wallet assets 1 week trend text">
+      1 Week
+    </message>
+    <message name="IDS_TREND_1M_TEXT" desc="Brave Wallet assets 1 month trend text">
+      1 Month
+    </message>
+    <message name="IDS_TREND_3M_TEXT" desc="Brave Wallet assets 3 months trend text">
+      3 Months
+    </message>
+    <message name="IDS_TREND_1Y_TEXT" desc="Brave Wallet assets 1 year trend text">
+      1 Year
+    </message>
+    <message name="IDS_TREND_ALL_TEXT" desc="Brave Wallet assets all time trend text">
+      All time
+    </message>
     <!-- Stats -->
     <message name="IDS_BRAVE_STATS_USAGE_PING_TITLE" desc="Description that shows in settings for toggling stats usage pings">
       Automatically send daily usage ping to Brave

@@ -320,6 +320,39 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
+    private void AdjustTrendControls() {
+        TextView trendTimeframe = getView().findViewById(R.id.trend_timeframe);
+        TextView trendPercentage = getView().findViewById(R.id.trend_percentage);
+
+        if (mPortfolioHelper.isFiatHistoryEmpty()) {
+            trendTimeframe.setVisibility(View.GONE);
+            trendPercentage.setVisibility(View.GONE);
+        } else {
+            trendTimeframe.setText(Utils.getTimeframeString(mCurrentTimeframeType));
+
+            Double currentFiatSum = mPortfolioHelper.getTotalFiatSum();
+            Double mostPreviousFiatSum = mPortfolioHelper.getMostPreviousFiatSum();
+
+            Double percents = ((currentFiatSum - mostPreviousFiatSum) / mostPreviousFiatSum) * 100;
+            trendPercentage.setText(
+                    String.format(Locale.getDefault(), "%.2f%%", Math.abs(percents)));
+            if (mostPreviousFiatSum > currentFiatSum) {
+                trendPercentage.setTextColor(
+                        getResources().getColor(R.color.wallet_negative_trend_color));
+                trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_down_icon, 0, 0, 0);
+            } else {
+                trendPercentage.setTextColor(
+                        getResources().getColor(R.color.wallet_positive_trend_color));
+                trendPercentage.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_up_icon, 0, 0, 0);
+            }
+
+            trendTimeframe.setVisibility(View.VISIBLE);
+            trendPercentage.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void updatePortfolioGraph() {
         AssetPriceTimeframe.validate(mCurrentTimeframeType);
 
@@ -334,6 +367,8 @@ public class PortfolioFragment extends Fragment
                 SmoothLineChartEquallySpaced chartES = getView().findViewById(R.id.line_chart);
                 chartES.setColors(new int[] {0xFFF73A1C, 0xFFBF14A2, 0xFF6F4CD2});
                 chartES.setData(mPortfolioHelper.getFiatHistory());
+
+                AdjustTrendControls();
             });
         });
     }
