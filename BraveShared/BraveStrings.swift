@@ -87,6 +87,8 @@ extension Strings {
     public static let searchSuggestionSectionTitleFormat = NSLocalizedString("SearchSuggestionSectionTitleFormat", tableName: "BraveShared", bundle: Bundle.braveShared, value: "%@ Search", comment: "Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search")
     public static let turnOnSearchSuggestions = NSLocalizedString("Turn on search suggestions?", bundle: Bundle.braveShared, comment: "Prompt shown before enabling provider search queries")
     public static let searchSuggestionSectionTitleNoSearchFormat = NSLocalizedString("SearchSuggestionSectionTitleNoSearchFormat", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search", comment: "Section Title when showing search suggestions and the engine does not contain the word 'Search'.")
+    public static let noSearchResultsfound = NSLocalizedString("noSearchResultsfound", tableName: "BraveShared", bundle: .braveShared, value: "No search results found.", comment: "The information title displayed when there is no search reault found")
+    public static let searchBookmarksTitle = NSLocalizedString("searchBookmarksTitle", tableName: "BraveShared", bundle: .braveShared, value: "Search Bookmarks", comment: "The placeholder text for bookmark search")
 }
 
 // MARK:-  Authenticator.swift
