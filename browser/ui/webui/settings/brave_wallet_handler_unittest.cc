@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -29,6 +30,7 @@
 #include "content/public/test/test_web_ui.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -173,8 +175,13 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   const auto& data = *handler.web_ui()->call_data()[1];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
-  ASSERT_TRUE(data.arg3()->is_bool());
-  ASSERT_FALSE(data.arg3()->GetBool());
+
+  auto arg3_list = data.arg3()->GetList();
+  ASSERT_EQ(arg3_list.size(), 2UL);
+  EXPECT_EQ(arg3_list[0].GetBool(), false);
+  std::string error_message =
+      l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
+  EXPECT_EQ(arg3_list[1].GetString(), error_message);
   {
     std::vector<brave_wallet::mojom::EthereumChainPtr> result;
     brave_wallet::GetAllCustomChains(handler.prefs(), &result);
@@ -210,8 +217,13 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
-  ASSERT_TRUE(data.arg3()->is_bool());
-  ASSERT_FALSE(data.arg3()->GetBool());
+
+  auto arg3_list = data.arg3()->GetList();
+  ASSERT_EQ(arg3_list.size(), 2UL);
+  EXPECT_EQ(arg3_list[0].GetBool(), false);
+  std::string error_message =
+      l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
+  EXPECT_EQ(arg3_list[1].GetString(), error_message);
 
   {
     std::vector<brave_wallet::mojom::EthereumChainPtr> result;
