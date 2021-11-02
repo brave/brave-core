@@ -12,7 +12,7 @@ import {
   Panel,
   WelcomePanel,
   SignPanel,
-  AllowAddNetworkPanel,
+  AllowAddChangeNetworkPanel,
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
   SitePermissions
@@ -396,6 +396,10 @@ function Container (props: Props) {
     props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
   }
 
+  const onApproveChangeNetwork = () => {
+    // Logic here to approve changing networks
+  }
+
   const onCancelAddNetwork = () => {
     props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: false })
   }
@@ -527,11 +531,14 @@ function Container (props: Props) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <AllowAddNetworkPanel
-            onApprove={onApproveAddNetwork}
+          <AllowAddChangeNetworkPanel
+            siteOrigin={activeOrigin}
+            onApproveAddNetwork={onApproveAddNetwork}
+            onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
             networkPayload={networkPayload}
+            panelType='add'
           />
         </LongWrapper>
       </PanelWrapper>
