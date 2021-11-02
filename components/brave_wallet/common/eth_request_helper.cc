@@ -18,7 +18,8 @@ namespace {
 
 absl::optional<base::Value::ListStorage> GetParamsList(
     const std::string& json) {
-  auto json_value = base::JSONReader::Read(json);
+  auto json_value =
+      base::JSONReader::Read(json, base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict())
     return absl::nullopt;
 

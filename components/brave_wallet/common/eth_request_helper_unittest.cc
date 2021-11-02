@@ -24,6 +24,8 @@ TEST(EthRequestHelperUnitTest, CommonParseErrors) {
     std::string address;
     std::string message;
     EXPECT_FALSE(ParseEthSignParams(error_case, &address, &message));
+    std::string chain_id;
+    EXPECT_FALSE(ParseSwitchEthereumChainParams(error_case, &chain_id));
   }
 }
 
@@ -324,6 +326,10 @@ TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
   std::string chain_id;
   EXPECT_TRUE(ParseSwitchEthereumChainParams(
       "{\"params\": [{\"chain_id\": \"0x1\"}]}", &chain_id));
+  EXPECT_EQ(chain_id, "0x1");
+  // trailing comma should be accepted
+  EXPECT_TRUE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": \"0x1\",},]}", &chain_id));
   EXPECT_EQ(chain_id, "0x1");
 
   EXPECT_FALSE(ParseSwitchEthereumChainParams(

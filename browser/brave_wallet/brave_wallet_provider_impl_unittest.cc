@@ -502,8 +502,8 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
       R"({"params": [{
         "chainId": "0x111",
         "chainName": "Binance1 Smart Chain",
-        "rpcUrls": ["https://bsc-dataseed.binance.org/"]
-      }]})",
+        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+      },]})",
       base::BindLambdaForTesting(
           [&run_loop](int error_code, const std::string& error_message) {
             EXPECT_EQ(error_code,

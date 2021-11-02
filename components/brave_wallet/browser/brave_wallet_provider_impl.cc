@@ -77,7 +77,8 @@ void BraveWalletProviderImpl::AddEthereumChain(
     return;
   }
 
-  auto json_value = base::JSONReader::Read(json_payload);
+  auto json_value =
+      base::JSONReader::Read(json_payload, base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value) {
     std::move(callback).Run(
         static_cast<int>(ProviderErrors::kInvalidParams),
