@@ -17,7 +17,8 @@ import {
   SwapParamsPayloadType,
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
-  UpdateUnapprovedTransactionSpendAllowanceType
+  UpdateUnapprovedTransactionSpendAllowanceType,
+  TransactionStatusChanged
 } from '../constants/action_types'
 import {
   AppObjectType,
@@ -31,7 +32,8 @@ import {
   SwapResponse,
   TransactionInfo,
   WalletAccountType,
-  WalletState
+  WalletState,
+  TransactionStatus
 } from '../../constants/types'
 import { toWeiHex } from '../../utils/format-balances'
 import getSwapConfig from '../../constants/swap.config'
@@ -570,6 +572,13 @@ handler.on(WalletActions.removeSitePermission.getType(), async (store: Store, pa
   const braveWalletService = (await getAPIProxy()).braveWalletService
   await braveWalletService.resetEthereumPermission(payload.origin, payload.account)
   await refreshWalletInfo(store)
+})
+
+handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
+  const status = payload.txInfo.txStatus
+  if (status === TransactionStatus.Confirmed || status === TransactionStatus.Error) {
+    await refreshBalancesPricesAndHistory(store)
+  }
 })
 
 export default handler.middleware
