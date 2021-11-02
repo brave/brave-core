@@ -53,6 +53,8 @@ const std::string& GetQueryStringTrackers() {
            "ml_subscriber", "ml_subscriber_hash",
            // https://github.com/brave/brave-browser/issues/18020
            "twclid",
+           // https://github.com/brave/brave-browser/issues/18758
+           "gbraid", "wbraid",
            // https://github.com/brave/brave-browser/issues/9019
            "_hsenc", "__hssc", "__hstc", "__hsfp", "hsCtaTracking"}),
       "|"));
