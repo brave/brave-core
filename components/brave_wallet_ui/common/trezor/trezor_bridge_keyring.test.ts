@@ -24,6 +24,9 @@ const createTrezorKeyring = (unlock: Boolean,
                              accounts?: TrezorGetAccountsResponse) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   hardwareKeyring.windowListeners_ = {}
+  hardwareKeyring.getTrezorBridgeOrigin = () => {
+    return 'braveWalletTrezorBridgeUrl'
+  }
   hardwareKeyring.addWindowMessageListener = () => {
     hardwareKeyring.expectWindowMessageSubscribers(0)
 

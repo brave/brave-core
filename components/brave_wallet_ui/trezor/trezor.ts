@@ -19,7 +19,7 @@ const createGetAccountsResponse = (command: GetAccountsCommand, result: TrezorGe
   return { id: command.id, command: command.command, payload: result as TrezorGetAccountsResponse, origin: command.origin }
 }
 
-const unlock = async (command: UnlockCommand, source: Window) => {
+const unlock = (command: UnlockCommand, source: Window) => {
   TrezorConnect.init({
     connectSrc: 'https://connect.trezor.io/8/',
     lazyLoad: false,
@@ -35,7 +35,7 @@ const unlock = async (command: UnlockCommand, source: Window) => {
   })
 }
 
-const getAccounts = async (command: GetAccountsCommand, source: Window) => {
+const getAccounts = (command: GetAccountsCommand, source: Window) => {
   TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
     postResponseToWallet(source, createGetAccountsResponse(command, result))
   })
