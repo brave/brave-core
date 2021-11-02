@@ -54,15 +54,25 @@ TEST(EthCallDataBuilderTest, Allowance) {
 
 namespace erc721 {
 
-TEST(EthCallDataBuilderTest, TransferFrom) {
+TEST(EthCallDataBuilderTest, TransferFromOrSafeTransferFrom) {
   std::string data;
   uint256_t token_id;
   ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
-  TransferFrom("0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
-               "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", token_id, &data);
+  TransferFromOrSafeTransferFrom(
+      false, "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", token_id, &data);
   ASSERT_EQ(
       data,
       "0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
+      "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
+      "000000000000000000000000000000000000000000000000000000000f");
+
+  TransferFromOrSafeTransferFrom(
+      true, "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", token_id, &data);
+  ASSERT_EQ(
+      data,
+      "0x42842e0e000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e6446"
       "0f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a000000"
       "000000000000000000000000000000000000000000000000000000000f");
 }
@@ -78,6 +88,22 @@ TEST(EthCallDataBuilderTest, OwnerOf) {
 }
 
 }  // namespace erc721
+
+namespace erc165 {
+
+TEST(EthCallDataBuilderTest, SupportsInterface) {
+  std::string data;
+  EXPECT_TRUE(SupportsInterface("0xffffffff", &data));
+  EXPECT_EQ(data,
+            "0x01ffc9a7ffffffff000000000000000000000000000000000000000000000000"
+            "00000000");
+
+  EXPECT_FALSE(SupportsInterface("", &data));
+  EXPECT_FALSE(SupportsInterface("123", &data));
+  EXPECT_FALSE(SupportsInterface("0xff", &data));
+}
+
+}  // namespace erc165
 
 namespace unstoppable_domains {
 

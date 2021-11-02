@@ -34,15 +34,22 @@ bool Allowance(const std::string& owner_address,
 namespace erc721 {
 
 // Transfer ownership of an NFT.
-bool TransferFrom(const std::string& from,
-                  const std::string& to,
-                  uint256_t token_id,
-                  std::string* data);
+bool TransferFromOrSafeTransferFrom(bool is_safe_transfer_from,
+                                    const std::string& from,
+                                    const std::string& to,
+                                    uint256_t token_id,
+                                    std::string* data);
 
 // Find the owner of an NFT.
 bool OwnerOf(uint256_t token_id, std::string* data);
 
 }  // namespace erc721
+
+namespace erc165 {
+
+bool SupportsInterface(const std::string& interface_id, std::string* data);
+
+}  // namespace erc165
 
 namespace unstoppable_domains {
 

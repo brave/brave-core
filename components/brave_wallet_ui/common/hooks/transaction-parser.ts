@@ -137,7 +137,8 @@ export function useTransactionParser (
         } as ParsedTransaction
       }
 
-      case transactionInfo.txType === TransactionType.ERC721TransferFrom: {
+      case transactionInfo.txType === TransactionType.ERC721TransferFrom:
+      case transactionInfo.txType === TransactionType.ERC721SafeTransferFrom: {
         const [fromAddress, toAddress, tokenID] = txArgs
         const token = findToken(to)
 
