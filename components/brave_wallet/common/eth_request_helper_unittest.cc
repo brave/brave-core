@@ -320,4 +320,21 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
       "There is only one thing we say to death: Not today.", &output_json));
 }
 
+TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
+  std::string chain_id;
+  EXPECT_TRUE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": \"0x1\"}]}", &chain_id));
+  EXPECT_EQ(chain_id, "0x1");
+
+  EXPECT_FALSE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": 0x1}]}", &chain_id));
+  EXPECT_FALSE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": \"123\"}]}", &chain_id));
+  EXPECT_FALSE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": [123]}]}", &chain_id));
+  EXPECT_FALSE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_idea\": \"0x1\"}]}", &chain_id));
+  EXPECT_FALSE(ParseSwitchEthereumChainParams("{\"params\": [{}]}", &chain_id));
+}
+
 }  // namespace brave_wallet

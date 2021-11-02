@@ -62,15 +62,13 @@ void ValidateErrorCode(BraveWalletProviderImpl* provider,
                        ProviderErrors expected) {
   bool callback_is_called = false;
   provider->AddEthereumChain(
-      payload,
-      base::BindLambdaForTesting(
-          [&callback_is_called, &expected](bool success, int error_code,
-                                           const std::string& error_message) {
-            ASSERT_FALSE(success);
-            EXPECT_EQ(error_code, static_cast<int>(expected));
-            ASSERT_FALSE(error_message.empty());
-            callback_is_called = true;
-          }));
+      payload, base::BindLambdaForTesting(
+                   [&callback_is_called, &expected](
+                       int error_code, const std::string& error_message) {
+                     EXPECT_EQ(error_code, static_cast<int>(expected));
+                     ASSERT_FALSE(error_message.empty());
+                     callback_is_called = true;
+                   }));
   ASSERT_TRUE(callback_is_called);
 }
 
@@ -168,7 +166,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
             browser_context());
 
     provider_ = std::make_unique<BraveWalletProviderImpl>(
-        host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
+        host_content_settings_map(), eth_json_rpc_controller(),
         eth_tx_controller()->MakeRemote(), keyring_controller_,
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
@@ -421,6 +419,20 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return success;
   }
 
+  void SwitchEthereumChain(const std::string& chain_id,
+                           int* error_out,
+                           std::string* error_message_out) {
+    base::RunLoop run_loop;
+    provider_->SwitchEthereumChain(
+        chain_id, base::BindLambdaForTesting(
+                      [&](int error, const std::string& error_message) {
+                        *error_out = error;
+                        *error_message_out = error_message;
+                        run_loop.Quit();
+                      }));
+    run_loop.Run();
+  }
+
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   BraveWalletService* brave_wallet_service_;
@@ -470,7 +482,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(
-      host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
+      host_content_settings_map(), eth_json_rpc_controller(),
       eth_tx_controller()->MakeRemote(), keyring_controller(),
       brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
@@ -491,9 +503,8 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, int error_code,
+          [&callback_is_called](int error_code,
                                 const std::string& error_message) {
-            ASSERT_FALSE(success);
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             ASSERT_FALSE(error_message.empty());
@@ -514,9 +525,8 @@ TEST_F(BraveWalletProviderImplUnitTest,
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, int error_code,
+          [&callback_is_called](int error_code,
                                 const std::string& error_message) {
-            ASSERT_FALSE(success);
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             EXPECT_EQ(error_message, "test message");
@@ -1104,6 +1114,23 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
   SignMessageHardware(false, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
+  int error = -1;
+  std::string error_message;
+
+  SwitchEthereumChain("0x111", &error, &error_message);
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // TODO(darkdh): test positive case along with observer when UI is ready for
+  // hooked up
+  SwitchEthereumChain("0x1", &error, &error_message);
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));

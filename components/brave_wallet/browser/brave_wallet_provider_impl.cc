@@ -31,7 +31,7 @@ namespace brave_wallet {
 
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
-    mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
+    EthJsonRpcController* rpc_controller,
     mojo::PendingRemote<mojom::EthTxController> tx_controller,
     KeyringController* keyring_controller,
     BraveWalletService* brave_wallet_service,
@@ -39,15 +39,12 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
     PrefService* prefs)
     : host_content_settings_map_(host_content_settings_map),
       delegate_(std::move(delegate)),
+      rpc_controller_(rpc_controller),
       keyring_controller_(keyring_controller),
       brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
       weak_factory_(this) {
   DCHECK(rpc_controller);
-  rpc_controller_.Bind(std::move(rpc_controller));
-  DCHECK(rpc_controller_);
-  rpc_controller_.set_disconnect_handler(base::BindOnce(
-      &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
   rpc_controller_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
@@ -75,7 +72,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
     AddEthereumChainCallback callback) {
   if (json_payload.empty()) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -83,7 +80,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
   auto json_value = base::JSONReader::Read(json_payload);
   if (!json_value) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -91,27 +88,27 @@ void BraveWalletProviderImpl::AddEthereumChain(
   const base::Value* params = json_value->FindListPath(brave_wallet::kParams);
   if (!params || !params->is_list()) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
   const auto list = params->GetList();
   if (list.empty()) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
     return;
   }
   auto chain = brave_wallet::ValueToEthereumChain(list.front());
   if (!chain) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
 
   if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
-    std::move(callback).Run(true, 0, std::string());
+    std::move(callback).Run(0, std::string());
     return;
   }
   // By https://eips.ethereum.org/EIPS/eip-3085 only chain id is required
@@ -120,19 +117,19 @@ void BraveWalletProviderImpl::AddEthereumChain(
   if (chain->chain_id.empty() || chain->rpc_urls.empty() ||
       chain->chain_name.empty()) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInvalidParams),
+        static_cast<int>(ProviderErrors::kInvalidParams),
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
   if (chain_callbacks_.contains(chain->chain_id)) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        static_cast<int>(ProviderErrors::kUserRejectedRequest),
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
   if (!delegate_) {
     std::move(callback).Run(
-        false, static_cast<int>(ProviderErrors::kInternalError),
+        static_cast<int>(ProviderErrors::kInternalError),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
@@ -150,13 +147,50 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
     return;
   if (!accepted) {
     std::move(chain_callbacks_[chain_id])
-        .Run(false, static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest),
              l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
 
     chain_callbacks_.erase(chain_id);
     return;
   }
   delegate_->ShowBubble();
+}
+
+void BraveWalletProviderImpl::SwitchEthereumChain(
+    const std::string& chain_id,
+    SwitchEthereumChainCallback callback) {
+  if (!GetNetworkURL(prefs_, chain_id).is_valid()) {
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kInvalidParams),
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // reject the request until UI is ready
+  OnSwitchEthereumChain(std::move(callback), chain_id, false);
+}
+
+void BraveWalletProviderImpl::OnSwitchEthereumChain(
+    SwitchEthereumChainCallback callback,
+    const std::string& chain_id,
+    bool approved) {
+  if (!approved) {
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+    return;
+  }
+
+  // We already check chain id validiy in
+  // BraveWalletProviderImpl::SwitchEthereumChain so this should always be
+  // successful unless chain id differs or we add more check other than chain id
+  if (!rpc_controller_->SetNetwork(chain_id)) {
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kInvalidParams),
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  std::move(callback).Run(0, "");
 }
 
 void BraveWalletProviderImpl::AddAndApproveTransaction(
@@ -387,11 +421,10 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
   if (!chain_callbacks_.contains(chain_id))
     return;
   if (error.empty()) {
-    std::move(chain_callbacks_[chain_id]).Run(true, 0, std::string());
+    std::move(chain_callbacks_[chain_id]).Run(0, std::string());
   } else {
     std::move(chain_callbacks_[chain_id])
-        .Run(false, static_cast<int>(ProviderErrors::kUserRejectedRequest),
-             error);
+        .Run(static_cast<int>(ProviderErrors::kUserRejectedRequest), error);
   }
   chain_callbacks_.erase(chain_id);
 }
@@ -476,7 +509,6 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 }
 
 void BraveWalletProviderImpl::OnConnectionError() {
-  rpc_controller_.reset();
   tx_controller_.reset();
   rpc_observer_receiver_.reset();
   tx_observer_receiver_.reset();

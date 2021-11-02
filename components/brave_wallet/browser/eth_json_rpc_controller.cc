@@ -190,12 +190,10 @@ void EthJsonRpcController::AddEthereumChainRequestCompleted(
   add_chain_pending_requests_.erase(chain_id);
 }
 
-void EthJsonRpcController::SetNetwork(const std::string& chain_id,
-                                      SetNetworkCallback callback) {
+bool EthJsonRpcController::SetNetwork(const std::string& chain_id) {
   auto network_url = GetNetworkURL(prefs_, chain_id);
   if (!network_url.is_valid()) {
-    std::move(callback).Run(false);
-    return;
+    return false;
   }
 
   chain_id_ = chain_id;
@@ -204,7 +202,15 @@ void EthJsonRpcController::SetNetwork(const std::string& chain_id,
 
   FireNetworkChanged();
   MaybeUpdateIsEip1559(chain_id);
-  std::move(callback).Run(true);
+  return true;
+}
+
+void EthJsonRpcController::SetNetwork(const std::string& chain_id,
+                                      SetNetworkCallback callback) {
+  if (!SetNetwork(chain_id))
+    std::move(callback).Run(false);
+  else
+    std::move(callback).Run(true);
 }
 
 void EthJsonRpcController::MaybeUpdateIsEip1559(const std::string& chain_id) {

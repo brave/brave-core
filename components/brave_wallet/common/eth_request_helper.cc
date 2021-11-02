@@ -250,4 +250,25 @@ bool ParsePersonalSignParams(const std::string& json,
   return true;
 }
 
+bool ParseSwitchEthereumChainParams(const std::string& json,
+                                    std::string* chain_id) {
+  if (!chain_id)
+    return false;
+
+  auto param_obj = GetObjectFromParamsList(json);
+  if (!param_obj || !param_obj->is_dict())
+    return false;
+
+  const std::string* chain_id_str = param_obj->FindStringKey("chain_id");
+  if (!chain_id_str)
+    return false;
+
+  if (!IsValidHexString(*chain_id_str))
+    return false;
+
+  *chain_id = *chain_id_str;
+
+  return true;
+}
+
 }  // namespace brave_wallet
