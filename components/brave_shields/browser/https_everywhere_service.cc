@@ -89,7 +89,8 @@ HTTPSEverywhereService::HTTPSEverywhereService(
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
-  GetTaskRunner()->DeleteSoon(FROM_HERE, level_db_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CloseDatabase();
 }
 
 bool HTTPSEverywhereService::Init() {
@@ -362,9 +363,11 @@ void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
-    BraveComponent::Delegate* delegate) {
-  return std::make_unique<HTTPSEverywhereService>(delegate);
+std::unique_ptr<HTTPSEverywhereService, base::OnTaskRunnerDeleter>
+HTTPSEverywhereServiceFactory(BraveComponent::Delegate* delegate) {
+  return std::unique_ptr<HTTPSEverywhereService, base::OnTaskRunnerDeleter>(
+      new HTTPSEverywhereService(delegate),
+      base::OnTaskRunnerDeleter(delegate->GetTaskRunner()));
 }
 
 }  // namespace brave_shields

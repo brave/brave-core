@@ -85,8 +85,8 @@ class HTTPSEverywhereService : public BaseBraveShieldsService,
 };
 
 // Creates the HTTPSEverywhereService
-std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
-    BraveComponent::Delegate* delegate);
+std::unique_ptr<HTTPSEverywhereService, base::OnTaskRunnerDeleter>
+HTTPSEverywhereServiceFactory(BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 
