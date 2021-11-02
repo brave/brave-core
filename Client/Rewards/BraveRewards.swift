@@ -274,7 +274,7 @@ extension BraveRewards {
             .init(
                 storageURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!,
                 ledgerEnvironment: .development,
-                adsEnvironment: .development
+                adsEnvironment: .staging
             )
         }
         static var staging: Configuration {
@@ -293,7 +293,7 @@ extension BraveRewards {
             .init(
                 storageURL: URL(fileURLWithPath: NSTemporaryDirectory()),
                 ledgerEnvironment: .development,
-                adsEnvironment: .development,
+                adsEnvironment: .staging,
                 isTesting: true,
                 overridenNumberOfSecondsBetweenReconcile: 30,
                 retryInterval: 30

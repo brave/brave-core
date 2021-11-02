@@ -349,8 +349,8 @@ extension SceneDelegate {
         let browserViewController = BrowserViewController(
             profile: profile,
             diskImageStore: diskImageStore,
-            historyAPI: appDelegate.braveCore.historyAPI!,
-            bookmarksAPI: appDelegate.braveCore.bookmarksAPI!,
+            historyAPI: appDelegate.braveCore.historyAPI,
+            bookmarksAPI: appDelegate.braveCore.bookmarksAPI,
             crashedLastSession: crashedLastSession)
         
         browserViewController.do {
