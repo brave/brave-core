@@ -81,11 +81,11 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   private addWindowMessageListener = () => {
-    window.addEventListener('message', this.onMessageReceived.bind(this))
+    window.addEventListener('message', this.onMessageReceived)
   }
 
   private removeWindowMessageListener = () => {
-    window.removeEventListener('message', this.onMessageReceived.bind(this))
+    window.removeEventListener('message', this.onMessageReceived)
   }
   private getTrezorBridgeOrigin = () => {
     return (new URL(kTrezorBridgeUrl)).origin
@@ -114,16 +114,18 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return true
   }
 
-  private onMessageReceived = (event: any /* MessageEvent<TrezorFrameResponse> */) => {
-    if (event.origin !== this.getTrezorBridgeOrigin() || event.type !== 'message') {
+  private onMessageReceived = (event: MessageEvent) => {
+    if (event.origin !== this.getTrezorBridgeOrigin() ||
+        event.type !== 'message' ||
+        !this.pending_requests_) {
       return
     }
-    if (!event.data || !this.pending_requests_ ||
-        !this.pending_requests_.hasOwnProperty(event.data.id)) {
+    const message = event.data as TrezorFrameCommand
+    if (!message || !this.pending_requests_.hasOwnProperty(message.id)) {
       return
     }
-    const callback = this.pending_requests_[event.data.id] as Function
-    callback.call(this, event.data)
+    const callback = this.pending_requests_[message.id] as Function
+    callback.call(this, message)
     this.removeEventListener(event.data.id)
   }
 
