@@ -135,6 +135,20 @@ public final class TabMO: NSManagedObject, CRUD {
         }
         
     }
+
+    public class func selectTabAndDeselectOthers(selectedTabId: String) {
+        DataController.perform { context in
+            guard let tabToUpdate = getInternal(fromId: selectedTabId, context: context) else { return }
+            
+            let predicate = NSPredicate(format: "isSelected == true")
+            all(where: predicate, context: context)?
+                .forEach {
+                    $0.isSelected = false
+                }
+            
+            tabToUpdate.isSelected = true
+        }
+    }
     
     // Deletes the Tab History by removing items except the last one from historysnapshot and setting current index
     public class func removeHistory(with tabID: String) {

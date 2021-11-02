@@ -269,6 +269,10 @@ class TabManager: NSObject {
             log.error("Expected tab (\(String(describing: tab?.url))) is not selected. Selected index: \(selectedIndex)")
             return
         }
+        
+        if let tabId = tab?.id {
+            TabMO.selectTabAndDeselectOthers(selectedTabId: tabId)
+        }
     
         UIImpactFeedbackGenerator(style: .light).bzzt()
         selectedTab?.createWebview()
