@@ -5,9 +5,6 @@ export const StyledWrapper = styled('div') <{}>`
   align-items: flex-start;
   justify-content: center;
   background-color: ${(p) => p.theme.color.background02};
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
   width: 100%;
   min-width: 500px;
  `

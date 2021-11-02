@@ -11,6 +11,7 @@ import {
 import { BackButton } from '../../components/shared'
 import BackupWallet from './backup-wallet'
 import { isStrongPassword } from '../../utils/password-utils'
+import { OnboardingWrapper } from '../style'
 
 export interface Props {
   recoveryPhrase: string[]
@@ -183,7 +184,7 @@ function Onboarding (props: Props) {
   const isImportDisabled = isCreateWalletDisabled || importPassword === ''
 
   return (
-    <>
+    <OnboardingWrapper>
       {showBackButton &&
         <BackButton onSubmit={onBack} />
       }
@@ -238,7 +239,7 @@ function Onboarding (props: Props) {
           />
         }
       </>
-    </>
+    </OnboardingWrapper>
   )
 }
 
