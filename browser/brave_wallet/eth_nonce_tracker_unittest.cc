@@ -87,7 +87,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
 
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
   SetTransactionCount(2);
@@ -176,7 +176,7 @@ TEST_F(EthNonceTrackerUnitTest, NonceLock) {
       brave_wallet::mojom::kLocalhostChainId,
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
 
   SetTransactionCount(4);

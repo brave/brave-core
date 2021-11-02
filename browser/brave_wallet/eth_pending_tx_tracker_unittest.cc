@@ -67,7 +67,7 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
@@ -93,7 +93,7 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   EthAddress addr =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
@@ -124,7 +124,7 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
 
 TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);
@@ -143,7 +143,7 @@ TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
   EthAddress addr2 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
   EthJsonRpcController controller(shared_url_loader_factory(), GetPrefs());
-  EthTxStateManager tx_state_manager(GetPrefs(), controller.MakeRemote());
+  EthTxStateManager tx_state_manager(GetPrefs(), &controller);
   EthNonceTracker nonce_tracker(&tx_state_manager, &controller);
   EthPendingTxTracker pending_tx_tracker(&tx_state_manager, &controller,
                                          &nonce_tracker);

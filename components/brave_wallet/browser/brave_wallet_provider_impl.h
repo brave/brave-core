@@ -40,7 +40,7 @@ class BraveWalletProviderImpl final
   BraveWalletProviderImpl& operator=(const BraveWalletProviderImpl&) = delete;
   BraveWalletProviderImpl(
       HostContentSettingsMap* host_content_settings_map,
-      mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller,
+      EthJsonRpcController* rpc_controller,
       mojo::PendingRemote<mojom::EthTxController> tx_controller,
       KeyringController* keyring_controller,
       BraveWalletService* brave_wallet_service,
@@ -60,6 +60,8 @@ class BraveWalletProviderImpl final
   void GetAllowedAccounts(GetAllowedAccountsCallback callback) override;
   void AddEthereumChain(const std::string& json_payload,
                         AddEthereumChainCallback callback) override;
+  void SwitchEthereumChain(const std::string& chain_id,
+                           SwitchEthereumChainCallback callback) override;
   void AddAndApproveTransaction(
       mojom::TxDataPtr tx_data,
       const std::string& from,
@@ -98,6 +100,9 @@ class BraveWalletProviderImpl final
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
 
   void OnAddEthereumChain(const std::string& chain_id, bool accepted);
+  void OnSwitchEthereumChain(SwitchEthereumChainCallback callback,
+                             const std::string& chain_id,
+                             bool approved);
   void OnChainApprovalResult(const std::string& chain_id,
                              const std::string& error);
   void OnConnectionError();
@@ -165,7 +170,7 @@ class BraveWalletProviderImpl final
   HostContentSettingsMap* host_content_settings_map_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  mojo::Remote<mojom::EthJsonRpcController> rpc_controller_;
+  EthJsonRpcController* rpc_controller_;
   mojo::Remote<mojom::EthTxController> tx_controller_;
   KeyringController* keyring_controller_;
   BraveWalletService* brave_wallet_service_;

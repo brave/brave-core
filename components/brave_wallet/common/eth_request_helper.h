@@ -31,6 +31,9 @@ bool ParsePersonalSignParams(const std::string& json,
                              std::string* address,
                              std::string* message);
 
+bool ParseSwitchEthereumChainParams(const std::string& json,
+                                    std::string* chain_id);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_REQUEST_HELPER_H_
