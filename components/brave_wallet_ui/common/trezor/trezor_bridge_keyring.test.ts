@@ -20,6 +20,13 @@ import {
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 
+let uuid = 0
+window.crypto = {
+  randomUUID () {
+    return uuid++
+  }
+}
+
 const createTrezorKeyring = (unlock: Boolean,
                              accounts?: TrezorGetAccountsResponse) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
@@ -100,20 +107,20 @@ test('Wait for responses', () => {
 
   // Unknown id
   keyring.postResponse({
-    id: 4,
+    id: '4',
     command: TrezorCommand.Unlock,
     result: true
   })
 
   expect(Object.keys(keyring.pending_requests_).length).toStrictEqual(3)
   keyring.postResponse({
-    id: 2,
+    id: '2',
     command: TrezorCommand.Unlock,
     result: true
   })
   expect(Object.keys(keyring.pending_requests_).length).toStrictEqual(2)
   keyring.postResponse({
-    id: 1,
+    id: '1',
     command: TrezorCommand.Unlock,
     result: true
   })
@@ -121,14 +128,14 @@ test('Wait for responses', () => {
 
   // same id twice
   keyring.postResponse({
-    id: 1,
+    id: '1',
     command: TrezorCommand.Unlock,
     result: true
   })
   expect(Object.keys(keyring.pending_requests_).length).toStrictEqual(1)
 
   keyring.postResponse({
-    id: 3,
+    id: '3',
     command: TrezorCommand.Unlock,
     result: false
   })

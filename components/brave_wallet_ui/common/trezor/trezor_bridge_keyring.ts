@@ -53,7 +53,8 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
   unlock = () => {
     return new Promise(async (resolve, reject) => {
-      const messageId = new Date().getTime()
+      // @ts-ignore
+      const messageId: string = crypto.randomUUID()
       this.addEventListener(messageId, (data: UnlockResponse) => {
         this.unlocked_ = data.result
         if (data.result) {
@@ -89,7 +90,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   private getTrezorBridgeOrigin = () => {
     return (new URL(kTrezorBridgeUrl)).origin
   }
-  private addEventListener = (id: number, listener: Function) => {
+  private addEventListener = (id: string, listener: Function) => {
     if (!this.pending_requests_) {
       this.addWindowMessageListener()
       this.pending_requests_ = {}
@@ -136,7 +137,8 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       for (const path of paths) {
         requestedPaths.push({ path: path })
       }
-      const messageId = new Date().getTime()
+      // @ts-ignore
+      const messageId: string = crypto.randomUUID()
       this.addEventListener(messageId, (data: GetAccountsResponsePayload) => {
         if (data.payload.success) {
           let accounts = []

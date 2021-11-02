@@ -9,7 +9,7 @@ export enum TrezorCommand {
 }
 export type CommandMessage = {
   command: TrezorCommand
-  id: number
+  id: string
   origin: string
 }
 export type TrezorAccountPath = {
