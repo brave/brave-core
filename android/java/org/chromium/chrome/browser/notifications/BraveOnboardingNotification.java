@@ -84,11 +84,8 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public static PendingIntentProvider getDeepLinkIntent(Context context) {
         Intent intent = new Intent(context, BraveOnboardingNotification.class);
         intent.setAction(DEEP_LINK);
-        return new PendingIntentProvider(
-                PendingIntent.getBroadcast(context, 0, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                                | IntentUtils.getPendingIntentMutabilityFlag(true)),
-                0, 0);
+        return PendingIntentProvider.getBroadcast(
+                context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT, true);
     }
 
     @Override
