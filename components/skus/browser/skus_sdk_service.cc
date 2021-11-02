@@ -42,6 +42,16 @@ void OnPrepareCredentialsPresentation(
   delete callback_state;
 }
 
+void OnCredentialSummary(
+    brave_rewards::CredentialSummaryCallbackState* callback_state,
+    brave_rewards::RewardsResult result,
+    rust::cxxbridge1::Str summary) {
+  if (callback_state->cb) {
+    std::move(callback_state->cb).Run(static_cast<std::string>(summary));
+  }
+  delete callback_state;
+}
+
 }  // namespace
 
 SkusSdkService::SkusSdkService(
@@ -50,6 +60,7 @@ SkusSdkService::SkusSdkService(
     : context_(
           std::make_unique<brave_rewards::SkusSdkContext>(prefs,
                                                           url_loader_factory)),
+      // TODO(bsclifton): load environment properly (don't hardcode)
       sdk_(initialize_sdk(std::move(context_), "development")),
       weak_factory_(this) {}
 
@@ -86,4 +97,14 @@ void SkusSdkService::PrepareCredentialsPresentation(
 
   sdk_->prepare_credentials_presentation(OnPrepareCredentialsPresentation,
                                          std::move(cbs), domain, path);
+}
+
+void SkusSdkService::CredentialSummary(
+    const std::string& domain,
+    skus::mojom::SkusSdk::CredentialSummaryCallback callback) {
+  std::unique_ptr<brave_rewards::CredentialSummaryCallbackState> cbs(
+      new brave_rewards::CredentialSummaryCallbackState);
+  cbs->cb = std::move(callback);
+
+  sdk_->credential_summary(OnCredentialSummary, std::move(cbs), domain);
 }
