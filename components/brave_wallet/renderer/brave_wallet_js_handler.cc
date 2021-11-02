@@ -617,6 +617,9 @@ void BraveWalletJSHandler::SendAsync(gin::Arguments* args) {
           isolate, true)) {
     base::Value id;
     std::string input_json;
+    input_value =
+        content::V8ValueConverter::Create()->FromV8Value(
+            input, isolate->GetCurrentContext());
     if (base::JSONWriter::Write(*input_value, &input_json)) {
       std::string method;
       ALLOW_UNUSED_LOCAL(
