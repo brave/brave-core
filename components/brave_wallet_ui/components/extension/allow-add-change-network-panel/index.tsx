@@ -2,8 +2,9 @@ import * as React from 'react'
 import { create } from 'ethereum-blockies'
 import { EthereumChain } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
+import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { getLocale } from '../../../../common/locale'
-import { NavButton, PanelTab } from '../'
+import { NavButton, PanelTab } from '..'
 
 // Styled Components
 import {
@@ -33,17 +34,23 @@ import {
 export type tabs = 'network' | 'details'
 
 export interface Props {
+  siteOrigin: string
   networkPayload: EthereumChain
+  panelType: 'add' | 'change'
   onCancel: () => void
-  onApprove: () => void
+  onApproveAddNetwork: () => void
+  onApproveChangeNetwork: () => void
   onLearnMore: () => void
 }
 
-function AllowAddNetworkPanel (props: Props) {
+function AllowAddChangeNetworkPanel (props: Props) {
   const {
+    siteOrigin,
     networkPayload,
+    panelType,
     onCancel,
-    onApprove,
+    onApproveAddNetwork,
+    onApproveChangeNetwork,
     onLearnMore
   } = props
   const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
@@ -61,17 +68,33 @@ function AllowAddNetworkPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{networkPayload.chainName}</NetworkText>
+        <NetworkText>{reduceNetworkDisplayName(networkPayload.chainName)}</NetworkText>
         <AddressAndOrb>
           <AddressText>{reduceAddress(rpcUrl)}</AddressText>
           <AccountCircle orb={orb} />
         </AddressAndOrb>
       </TopRow>
       <CenterColumn>
-        <FavIcon src='' />
-        <URLText>{rpcUrl}</URLText>
-        <PanelTitle>{getLocale('braveWalletAllowAddNetworkTitle')}</PanelTitle>
-        <Description>{getLocale('braveWalletAllowAddNetworkDescription')} <DetailsButton onClick={onLearnMore}>{getLocale('braveWalletAllowAddNetworkLearnMoreButton')}</DetailsButton></Description>
+        <FavIcon src={`chrome://favicon/size/64@1x/${siteOrigin}`} />
+        <URLText>{siteOrigin}</URLText>
+        <PanelTitle>
+          {panelType === 'change'
+            ? getLocale('braveWalletAllowChangeNetworkTitle')
+            : getLocale('braveWalletAllowAddNetworkTitle')
+          }
+        </PanelTitle>
+        <Description>
+          {panelType === 'change'
+            ? getLocale('braveWalletAllowChangeNetworkDescription')
+            : getLocale('braveWalletAllowAddNetworkDescription')}{' '}
+          {panelType === 'add' &&
+            <DetailsButton
+              onClick={onLearnMore}
+            >
+              {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+            </DetailsButton>
+          }
+        </Description>
         <TabRow>
           <PanelTab
             isSelected={selectedTab === 'network'}
@@ -119,12 +142,20 @@ function AllowAddNetworkPanel (props: Props) {
         />
         <NavButton
           buttonType='confirm'
-          text={getLocale('braveWalletAllowAddNetworkApproveButton')}
-          onSubmit={onApprove}
+          text={
+            panelType === 'change'
+              ? getLocale('braveWalletAllowChangeNetworkButton')
+              : getLocale('braveWalletAllowAddNetworkButton')
+          }
+          onSubmit={
+            panelType === 'add'
+              ? onApproveAddNetwork
+              : onApproveChangeNetwork
+          }
         />
       </ButtonRow>
     </StyledWrapper>
   )
 }
 
-export default AllowAddNetworkPanel
+export default AllowAddChangeNetworkPanel
