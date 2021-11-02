@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { ArrowRightIcon } from 'brave-ui/components/icons'
+import { AssetIconProps, AssetIconFactory } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -285,3 +286,8 @@ export const QueueStepButton = styled.button<Partial<StyleProps>>`
   padding: 0px;
   margin-bottom: ${(p) => p.needsMargin ? '12px' : '0px'};
 `
+
+export const AssetIcon = AssetIconFactory<AssetIconProps>({
+  width: '40px',
+  height: 'auto'
+})
