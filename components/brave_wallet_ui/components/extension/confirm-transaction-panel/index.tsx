@@ -282,8 +282,8 @@ function ConfirmTransactionPanel (props: Props) {
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
           <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
-          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
-            transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
+          {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
+            transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
             <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721TokenInfo} />
           }
           <TransactionAmmountBig>
