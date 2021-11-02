@@ -6,6 +6,7 @@
 import SwiftUI
 import struct Shared.Strings
 import BraveUI
+import BigNumber
 
 struct SendTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -17,8 +18,24 @@ struct SendTokenView: View {
   @State private var amountInput = ""
   @State private var sendAddress = ""
   @State private var isShowingScanner = false
+  @State private var isShowingError = false
   
   @ScaledMetric private var length: CGFloat = 16.0
+  
+  private var isSendDisabled: Bool {
+    guard let sendAmount = BDouble(amountInput),
+          let balance = sendTokenStore.selectedSendTokenBalance,
+          let token = sendTokenStore.selectedSendToken else {
+      return true
+    }
+    
+    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
+    if weiFormatter.weiString(from: amountInput, radix: .decimal, decimals: Int(token.decimals)) == nil {
+      return true
+    }
+    
+    return sendAmount > balance || amountInput.isEmpty || !sendAddress.isETHAddress
+  }
   
   var body: some View {
     NavigationView {
@@ -46,7 +63,7 @@ struct SendTokenView: View {
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
               Spacer()
-              Text(sendTokenStore.selectedSendTokenBalance ?? "")
+              Text(String(format: "%.04f", sendTokenStore.selectedSendTokenBalance ?? 0))
                 .font(.title3.weight(.semibold))
                 .foregroundColor(Color(.braveLabel))
             }
@@ -62,7 +79,7 @@ struct SendTokenView: View {
                         )
             ),
           footer: ShortcutAmountGrid(action: { amount in
-            // TODO: compute using `sendTokenStore.selectedSendTokenBalance` and `amount` if there is one and update `amountInput`
+            amountInput = "\((sendTokenStore.selectedSendTokenBalance ?? 0) * amount.rawValue)"
           })
           .listRowInsets(.zero)
           .padding(.bottom, 8)
@@ -104,16 +121,32 @@ struct SendTokenView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header:
-            Button(action: {}) {
-              Text(Strings.Wallet.sendCryptoPreviewButtonTitle)
+            Button(action: {
+              sendTokenStore.sendToken(
+                from: keyringStore.selectedAccount,
+                to: sendAddress,
+                amount: amountInput
+              ) { success in
+                isShowingError = !success
+              }
+            }) {
+              Text(Strings.Wallet.sendCryptoSendButtonTitle)
             }
             .buttonStyle(BraveFilledButtonStyle(size: .normal))
+            .disabled(isSendDisabled)
             .frame(maxWidth: .infinity)
             .resetListHeaderStyle()
             .listRowBackground(Color(.clear))
         ) {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      .alert(isPresented: $isShowingError) {
+        Alert(
+          title: Text(""),
+          message: Text(Strings.Wallet.sendCryptoSendError),
+          dismissButton: .cancel(Text(Strings.OKString))
+        )
       }
       .sheet(isPresented: $isShowingScanner) {
         AddressQRCodeScannerView(address: $sendAddress)

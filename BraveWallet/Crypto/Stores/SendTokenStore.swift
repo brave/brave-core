@@ -17,24 +17,23 @@ public class SendTokenStore: ObservableObject {
     }
   }
   /// The current selected token balance. Default with nil value.
-  @Published var selectedSendTokenBalance: String? {
-    didSet {
-      // TODO: convert from wei Ref: https://github.com/brave/brave-ios/issues/4370
-    }
-  }
+  @Published var selectedSendTokenBalance: Double?
   
   private let keyringController: BraveWalletKeyringController
   private let rpcController: BraveWalletEthJsonRpcController
   private let walletService: BraveWalletBraveWalletService
+  private let transactionController: BraveWalletEthTxController
   
   public init(
     keyringController: BraveWalletKeyringController,
     rpcController: BraveWalletEthJsonRpcController,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    transactionController: BraveWalletEthTxController
   ) {
     self.keyringController = keyringController
     self.rpcController = rpcController
     self.walletService = walletService
+    self.transactionController = transactionController
     
     self.keyringController.add(self)
     self.rpcController.add(self)
@@ -81,6 +80,19 @@ public class SendTokenStore: ObservableObject {
         self.selectedSendTokenBalance = nil
         return
       }
+      
+      let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
+      func updateBalance(_ success: Bool, _ balance: String) {
+        guard success, let decimalString = balanceFormatter.decimalString(
+          for: balance.removingHexPrefix,
+             radix: .hex,
+             decimals: Int(token.decimals)
+        ), !decimalString.isEmpty, let decimal = Double(decimalString) else {
+          return
+        }
+        selectedSendTokenBalance = decimal
+      }
+      
       // Get balance for ETH token
       if token.isETH {
         self.rpcController.balance(accountAddress) { success, balance in
@@ -88,7 +100,7 @@ public class SendTokenStore: ObservableObject {
             self.selectedSendTokenBalance = nil
             return
           }
-          self.selectedSendTokenBalance = balance
+          updateBalance(success, balance)
         }
       }
       // Get balance for erc20 token
@@ -99,7 +111,7 @@ public class SendTokenStore: ObservableObject {
             self.selectedSendTokenBalance = nil
             return
           }
-          self.selectedSendTokenBalance = balance
+          updateBalance(success, balance)
         }
       }
       // Get balance for erc721 token
@@ -111,7 +123,37 @@ public class SendTokenStore: ObservableObject {
             self.selectedSendTokenBalance = nil
             return
           }
-          self.selectedSendTokenBalance = balance
+          updateBalance(success, balance)
+        }
+      }
+    }
+  }
+  
+  func sendToken(
+    from account: BraveWallet.AccountInfo,
+    to address: String,
+    amount: String,
+    completion: @escaping (_ success: Bool) -> Void
+  ) {
+    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    guard let token = selectedSendToken, let weiHexString = weiFormatter.weiString(from: amount, radix: .hex, decimals: 18) else { return }
+    
+    if token.isETH {
+      let data = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: address, value: "0x\(weiHexString)", data: .init())
+      transactionController.addUnapprovedTransaction(data, from: account.address) { success, txMetaId, errorMessage in
+        completion(success)
+      }
+    } else {
+      transactionController.makeErc20TransferData(account.address, amount: "0x\(weiHexString)") { [self] success, data in
+        guard success else {
+          completion(false)
+          return
+        }
+        rpcController.chainId { [self] chainId in
+          let txData = BraveWallet.TxData(nonce: "", gasPrice: "", gasLimit: "", to: token.contractAddress, value: "0x0", data: data)
+          transactionController.addUnapprovedTransaction(txData, from: account.address) { success, txMetaId, errorMessage in
+            completion(success)
+          }
         }
       }
     }

@@ -925,12 +925,19 @@ extension Strings {
       value: "Enter address or url",
       comment: "A placeholder of the address text field."
     )
-    public static let sendCryptoPreviewButtonTitle = NSLocalizedString(
-      "wallet.sendCryptoPreviewButtonTitle",
+    public static let sendCryptoSendButtonTitle = NSLocalizedString(
+      "wallet.sendCryptoSendButtonTitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Preview", // TODO: Get real copy
-      comment: "The title of the button for users to click when they want to preview the sending-transaction"
+      value: "Send",
+      comment: "The title of the button for users to click when they want to send the sending-transaction"
+    )
+    public static let sendCryptoSendError = NSLocalizedString(
+      "wallet.sendCryptoSendError",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "We currently cannot proceed with your transaction",
+      comment: "The error message will appear when there is any error occurs during unpproved transaction"
     )
   }
 }

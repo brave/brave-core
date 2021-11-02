@@ -55,7 +55,8 @@ extension SendTokenStore {
     .init(
       keyringController: TestKeyringController(),
       rpcController: TestEthJsonRpcController(),
-      walletService: TestBraveWalletService()
+      walletService: TestBraveWalletService(),
+      transactionController: TestEthTxController()
     )
   }
 }

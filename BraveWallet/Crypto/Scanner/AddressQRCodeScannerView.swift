@@ -219,7 +219,7 @@ private class AddressQRCodeScannerViewController: UIViewController {
 
 extension AddressQRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    if let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue, stringValue.isAddress {
+    if let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue, stringValue.isETHAddress {
       address = stringValue
       dismiss()
     } else {
