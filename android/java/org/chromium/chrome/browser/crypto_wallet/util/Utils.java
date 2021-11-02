@@ -33,6 +33,8 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.Predicate;
+import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
@@ -55,6 +57,7 @@ import java.math.MathContext;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -613,6 +616,23 @@ public class Utils {
         return defaultValue;
     }
 
+    public static <T> void removeIf(ArrayList<T> arrayList, Predicate<T> filter) {
+        // Can't use java.util.ArrayList#removeIf with API level 21
+        ArrayList<Integer> indexesToRemove = new ArrayList<Integer>();
+        for (int i = 0; i < arrayList.size(); ++i) {
+            if (filter.test(arrayList.get(i))) {
+                indexesToRemove.add(i);
+            }
+        }
+        if (indexesToRemove.isEmpty()) {
+            return;
+        }
+        Collections.sort(indexesToRemove, Collections.reverseOrder());
+        for (int i : indexesToRemove) {
+            arrayList.remove(i);
+        }
+    }
+
     public static String getContractAddress(String chainId, String symbol, String contractAddress) {
         if (!chainId.equals(BraveWalletConstants.ROPSTEN_CHAIN_ID)) {
             return contractAddress;
@@ -624,5 +644,23 @@ public class Utils {
         }
 
         return contractAddress;
+    }
+
+    public static int getTimeframeFromRadioButtonId(int radioButtonId) {
+        if (radioButtonId == R.id.live_radiobutton) {
+            return AssetPriceTimeframe.LIVE;
+        } else if (radioButtonId == R.id.day_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_DAY;
+        } else if (radioButtonId == R.id.week_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_WEEK;
+        } else if (radioButtonId == R.id.month_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_MONTH;
+        } else if (radioButtonId == R.id.month_3_radiobutton) {
+            return AssetPriceTimeframe.THREE_MONTHS;
+        } else if (radioButtonId == R.id.year_1_radiobutton) {
+            return AssetPriceTimeframe.ONE_YEAR;
+        } else {
+            return AssetPriceTimeframe.ALL;
+        }
     }
 }

@@ -92,6 +92,7 @@
 
                 <RadioGroup
                     tools:ignore="UselessParent"
+                    android:id="@+id/portfolio_duration_radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -116,7 +117,6 @@
                         android:button="@null"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_live_dot"
                         android:drawablePadding="4dp"
                         android:text="@string/live" />
 
@@ -138,6 +138,7 @@
                         android:textSize="14sp"
                         android:textStyle="bold"
                         android:checked="true"
+                        app:drawableStartCompat="@drawable/ic_live_dot"
                         android:text="@string/day_1" />
 
                     <RadioButton
