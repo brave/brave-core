@@ -88,20 +88,8 @@ extension BrowserViewController {
               isAboutHomeUrl == false else {
             return
         }
-        
-        let contentBlockerStats = selectedTab.contentBlocker.stats
-        
-        // Step 1: First Time Block Notification
-        if !Preferences.ProductNotificationBenchmarks.firstTimeBlockingShown.value,
-           contentBlockerStats.total > 0 {
-            
-            notifyFirstTimeBlock()
-            Preferences.ProductNotificationBenchmarks.firstTimeBlockingShown.value = true
-            
-            return
-        }
 
-        // Step 2: Load a video on a streaming site
+        // Step 1: Load a video on a streaming site
         if !Preferences.ProductNotificationBenchmarks.videoAdBlockShown.value,
            selectedTab.url?.isVideoSteamingSiteURL == true {
 
@@ -111,23 +99,11 @@ extension BrowserViewController {
             return
         }
         
-        // Step 3: Pre-determined # of Trackers and Ads Blocked
-        if !Preferences.ProductNotificationBenchmarks.privacyProtectionBlockShown.value,
-           contentBlockerStats.total > benchmarkNumberOfTrackers {
-            
-            notifyPrivacyProtectBlock()
-            Preferences.ProductNotificationBenchmarks.privacyProtectionBlockShown.value = true
-
-            return
-        }
-        
-        // Step 4: Share Brave Benchmark Tiers
-        // Benchmark Tier Pop-Over only exist in JP locale
-        if Locale.current.regionCode == "JP" {
-            let numOfTrackerAds = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
-            guard numOfTrackerAds > benchmarkCurrentSessionAdCount + 20 else { return }
-                
-            let existingTierList = BenchmarkTrackerCountTier.allCases.filter({ Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.value})
+        // Step 2: Share Brave Benchmark Tiers
+        let numOfTrackerAds = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+        if numOfTrackerAds > benchmarkCurrentSessionAdCount + 20 {
+            let existingTierList = BenchmarkTrackerCountTier.allCases.filter {
+                Preferences.ProductNotificationBenchmarks.trackerTierCount.value < $0.value}
             
             if !existingTierList.isEmpty {
                 guard let firstExistingTier = existingTierList.first else { return }
@@ -140,7 +116,7 @@ extension BrowserViewController {
             }
         }
         
-        // Step 5: Domain Specific Data Saved
+        // Step 3: Domain Specific Data Saved
         // Data Saved Pop-Over only exist in JP locale
         if Locale.current.regionCode == "JP" {
             if !benchmarkNotificationPresented,
@@ -160,27 +136,9 @@ extension BrowserViewController {
         }
     }
     
-    private func notifyFirstTimeBlock() {
-        let shareTrackersViewController = ShareTrackersController(trackingType: .trackerAdWarning)
-        
-        shareTrackersViewController.actionHandler = { [weak self] action in
-            guard let self = self, action == .takeALookTapped else { return }
-            
-            self.showShieldsScreen()
-        }
-        
-        showBenchmarkNotificationPopover(controller: shareTrackersViewController)
-    }
-    
     private func notifyVideoAdsBlocked() {
         let shareTrackersViewController = ShareTrackersController(trackingType: .videoAdBlock)
         
-        dismiss(animated: true)
-        showBenchmarkNotificationPopover(controller: shareTrackersViewController)
-    }
-    
-    private func notifyPrivacyProtectBlock() {
-        let shareTrackersViewController = ShareTrackersController(trackingType: .trackerAdCountBlock(count: benchmarkNumberOfTrackers))
         dismiss(animated: true)
         showBenchmarkNotificationPopover(controller: shareTrackersViewController)
     }
@@ -221,12 +179,6 @@ extension BrowserViewController {
     }
     
     // MARK: Actions
-    
-    func showShieldsScreen() {
-        dismiss(animated: true) {
-            self.presentBraveShieldsViewController()
-        }
-    }
     
     func showShareScreen() {
         dismiss(animated: true) {

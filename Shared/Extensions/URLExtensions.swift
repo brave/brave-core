@@ -422,7 +422,8 @@ extension URL {
             return false
         }
         
-        var siteList = ["youtube", "vimeo", "twitch"]
+        /// Video domains that should show ad block video pop-up
+        var siteList = ["vimeo", "twitch"]
         
         /// Additional sites for Japanese locale
         if Locale.current.regionCode == "JP" {
