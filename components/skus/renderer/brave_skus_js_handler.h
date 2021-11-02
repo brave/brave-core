@@ -23,8 +23,7 @@ class BraveSkusJSHandler {
  public:
   explicit BraveSkusJSHandler(content::RenderFrame* render_frame);
   BraveSkusJSHandler(const BraveSkusJSHandler&) = delete;
-  BraveSkusJSHandler& operator=(const BraveSkusJSHandler&) =
-      delete;
+  BraveSkusJSHandler& operator=(const BraveSkusJSHandler&) = delete;
   ~BraveSkusJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
@@ -66,6 +65,14 @@ class BraveSkusJSHandler {
       v8::Isolate* isolate,
       v8::Global<v8::Context> context_old,
       const std::string& response);
+
+  // window.brave.skus.credential_summary
+  v8::Local<v8::Promise> CredentialSummary(v8::Isolate* isolate,
+                                           std::string domain);
+  void OnCredentialSummary(v8::Global<v8::Promise::Resolver> promise_resolver,
+                           v8::Isolate* isolate,
+                           v8::Global<v8::Context> context_old,
+                           const std::string& response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusSdk> skus_sdk_;

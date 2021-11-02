@@ -100,6 +100,12 @@ void BraveSkusJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
       isolate, skus_obj, "prepare_credentials_presentation",
       base::BindRepeating(&BraveSkusJSHandler::PrepareCredentialsPresentation,
                           base::Unretained(this), isolate));
+
+  // window.brave.skus.credential_summary
+  BindFunctionToObject(
+      isolate, skus_obj, "credential_summary",
+      base::BindRepeating(&BraveSkusJSHandler::CredentialSummary,
+                          base::Unretained(this), isolate));
 }
 
 template <typename Sig>
@@ -235,6 +241,51 @@ v8::Local<v8::Promise> BraveSkusJSHandler::PrepareCredentialsPresentation(
 }
 
 void BraveSkusJSHandler::OnPrepareCredentialsPresentation(
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    v8::Global<v8::Context> context_old,
+    const std::string& response) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
+  v8::Local<v8::String> result;
+  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+
+  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+}
+
+// window.brave.skus.credential_summary
+v8::Local<v8::Promise> BraveSkusJSHandler::CredentialSummary(
+    v8::Isolate* isolate,
+    std::string domain) {
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  auto context_old(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+
+  skus_sdk_->CredentialSummary(
+      domain,
+      base::BindOnce(&BraveSkusJSHandler::OnCredentialSummary,
+                     base::Unretained(this), std::move(promise_resolver),
+                     isolate, std::move(context_old)));
+
+  return resolver.ToLocalChecked()->GetPromise();
+}
+
+void BraveSkusJSHandler::OnCredentialSummary(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,

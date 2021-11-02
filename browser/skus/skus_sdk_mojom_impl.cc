@@ -37,4 +37,9 @@ void SkusSdkMojomImpl::PrepareCredentialsPresentation(
   service_->PrepareCredentialsPresentation(domain, path, std::move(callback));
 }
 
+void SkusSdkMojomImpl::CredentialSummary(const std::string& domain,
+                                         CredentialSummaryCallback callback) {
+  service_->CredentialSummary(domain, std::move(callback));
+}
+
 }  // namespace brave_rewards
