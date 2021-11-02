@@ -174,7 +174,7 @@ void BraveTooltipPopup::OnWorkAreaChanged() {
 void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   DCHECK(canvas);
 
-  gfx::RectF bounds(GetWidget()->GetLayer()->bounds());
+  gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
   const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
@@ -224,6 +224,12 @@ void BraveTooltipPopup::OnWidgetDestroyed(views::Widget* widget) {
   if (delegate) {
     delegate->OnTooltipWidgetDestroyed(tooltip_->id());
   }
+}
+
+void BraveTooltipPopup::OnWidgetBoundsChanged(views::Widget* widget,
+                                              const gfx::Rect& new_bounds) {
+  DCHECK(widget);
+  widget_origin_ = new_bounds.origin();
 }
 
 void BraveTooltipPopup::AnimationEnded(const gfx::Animation* animation) {
@@ -309,12 +315,13 @@ gfx::Point BraveTooltipPopup::GetDefaultOriginForSize(const gfx::Size& size) {
   return bounds.origin();
 }
 
-gfx::Rect BraveTooltipPopup::CalculateBounds() {
+gfx::Rect BraveTooltipPopup::CalculateBounds(bool use_default_origin) {
   DCHECK(tooltip_view_);
   gfx::Size size = tooltip_view_->size();
   DCHECK(!size.IsEmpty());
 
-  const gfx::Point origin = GetDefaultOriginForSize(size);
+  const gfx::Point origin =
+      use_default_origin ? GetDefaultOriginForSize(size) : widget_origin_;
   return gfx::Rect(origin, size);
 }
 
@@ -352,7 +359,7 @@ void BraveTooltipPopup::CreateWidgetView() {
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
-  params.bounds = CalculateBounds();
+  params.bounds = CalculateBounds(true);
 
   views::Widget* widget = new views::Widget();
   widget->set_focus_on_creation(false);
