@@ -49,7 +49,7 @@
 
       <!-- Imagery links -->
       <if expr="not is_android">
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/spencer-moore_lake.avif" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/dylan-malval_sea-min.webp" type="BINDATA" />
       </if>
 
       <!-- WebUI private new tab resources -->

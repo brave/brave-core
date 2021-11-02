@@ -4,9 +4,9 @@
 
 export const images: NewTab.BackgroundWallpaper[] = [
   {
-    'wallpaperImageUrl': 'spencer-moore_lake.avif',
-    'author': 'Spencer M. Moore',
-    'link': 'https://www.smoorevisuals.com/landscapes',
+    'wallpaperImageUrl': 'dylan-malval_sea-min.webp',
+    'author': 'Dylan Malval',
+    'link': 'https://www.instagram.com/vass_captures/',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   }

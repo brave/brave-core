@@ -72,7 +72,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
 #if !defined(OS_ANDROID)
-        { "spencer-moore_lake.avif", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
+        { "dylan-malval_sea-min.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
 #endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
