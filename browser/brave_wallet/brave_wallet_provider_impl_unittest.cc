@@ -152,8 +152,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         KeyringControllerFactory::GetControllerForContext(browser_context());
     asset_ratio_controller_.reset(
         new AssetRatioController(shared_url_loader_factory_));
-    auto tx_state_manager = std::make_unique<EthTxStateManager>(
-        prefs(), eth_json_rpc_controller()->MakeRemote());
+    auto tx_state_manager =
+        std::make_unique<EthTxStateManager>(prefs(), eth_json_rpc_controller());
     auto nonce_tracker = std::make_unique<EthNonceTracker>(
         tx_state_manager.get(), eth_json_rpc_controller());
     auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
@@ -542,8 +542,6 @@ TEST_F(BraveWalletProviderImplUnitTest,
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
   CreateWallet();
@@ -591,9 +589,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   // We don't need to check every error type since that is checked by
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
@@ -620,9 +615,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   bool callback_called = false;
   provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
@@ -641,8 +633,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
   CreateWallet();
@@ -692,8 +682,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   std::string tx_hash;
   CreateWallet();
   AddAccount();
@@ -741,9 +729,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   // We don't need to check every error type since that is checked by
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
@@ -774,9 +759,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
 
 TEST_F(BraveWalletProviderImplUnitTest,
        AddAndApprove1559TransactionNoPermission) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   bool callback_called = false;
   provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(

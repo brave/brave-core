@@ -130,6 +130,7 @@ class EthJsonRpcController : public KeyedService,
   void GetPendingChainRequests(
       GetPendingChainRequestsCallback callback) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
+  std::string GetNetworkUrl() const;
   void GetNetworkUrl(
       mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
   void SetCustomNetworkForTesting(const std::string& chain_id,

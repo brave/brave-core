@@ -286,9 +286,13 @@ void EthJsonRpcController::GetAllNetworks(GetAllNetworksCallback callback) {
   std::move(callback).Run(std::move(all_chains));
 }
 
+std::string EthJsonRpcController::GetNetworkUrl() const {
+  return network_url_.spec();
+}
+
 void EthJsonRpcController::GetNetworkUrl(
     mojom::EthJsonRpcController::GetNetworkUrlCallback callback) {
-  std::move(callback).Run(network_url_.spec());
+  std::move(callback).Run(GetNetworkUrl());
 }
 
 void EthJsonRpcController::SetCustomNetworkForTesting(

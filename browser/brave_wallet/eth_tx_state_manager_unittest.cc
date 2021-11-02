@@ -220,9 +220,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaAndValue) {
 
 TEST_F(EthTxStateManagerUnitTest, TxOperations) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
 
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -306,9 +304,7 @@ TEST_F(EthTxStateManagerUnitTest, TxOperations) {
 
 TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
 
   auto addr1 =
       EthAddress::FromHex("0x3535353535353535353535353535353535353535");
@@ -386,9 +382,7 @@ TEST_F(EthTxStateManagerUnitTest, GetTransactionsByStatus) {
 
 TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
 
   EthTxStateManager::TxMeta meta;
   meta.id = "001";
@@ -427,9 +421,7 @@ TEST_F(EthTxStateManagerUnitTest, SwitchNetwork) {
 
 TEST_F(EthTxStateManagerUnitTest, RetireOldTxMeta) {
   GetPrefs()->ClearPref(kBraveWalletTransactions);
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
 
   for (size_t i = 0; i < 20; ++i) {
     EthTxStateManager::TxMeta meta;
@@ -613,9 +605,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
 
 TEST_F(EthTxStateManagerUnitTest, Observer) {
   TestEthTxStateManagerObserver observer;
-  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_->MakeRemote());
-  // Wait for network info
-  base::RunLoop().RunUntilIdle();
+  EthTxStateManager tx_state_manager(GetPrefs(), rpc_controller_.get());
   tx_state_manager.AddObserver(&observer);
 
   EthTxStateManager::TxMeta meta;
