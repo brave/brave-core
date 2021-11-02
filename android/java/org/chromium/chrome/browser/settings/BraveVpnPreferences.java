@@ -74,7 +74,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
         getActivity().setTitle(R.string.brave_firewall_vpn);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_vpn_preferences);
 
-        InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity());
+        if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
+            InAppPurchaseWrapper.getInstance().startBillingServiceConnection(getActivity());
+        }
 
         mVpnSwitch = (ChromeSwitchPreference) findPreference(PREF_VPN_SWITCH);
         mVpnSwitch.setChecked(BraveVpnProfileUtils.getInstance(getActivity()).isVPNConnected());
