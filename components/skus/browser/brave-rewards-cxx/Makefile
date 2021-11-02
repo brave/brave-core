@@ -1,3 +1,5 @@
+CFLAGS := -DNOT_BRAVE_CORE_SHIM=1
+
 all: examples/out
 
 src/wrapper.h: src/lib.rs
