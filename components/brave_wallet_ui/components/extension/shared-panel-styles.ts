@@ -70,6 +70,7 @@ export const PanelTitle = styled.span`
   line-height: 20px;
   letter-spacing: 0.04em;
   text-align: center;
+  width: 90%;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
   margin-bottom: 6px;

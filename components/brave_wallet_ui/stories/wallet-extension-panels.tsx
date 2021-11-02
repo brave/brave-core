@@ -7,7 +7,7 @@ import {
   Panel,
   WelcomePanel,
   SignPanel,
-  AllowAddNetworkPanel,
+  AllowAddChangeNetworkPanel,
   ConfirmTransactionPanel,
   ConnectHardwareWalletPanel,
   SitePermissions
@@ -194,10 +194,10 @@ _ConfirmTransaction.story = {
   name: 'Confirm Transaction'
 }
 
-export const _AllowAddNetwork = () => {
+export const _AllowAddChangeNetwork = () => {
 
   const onApprove = () => {
-    alert('Approved Adding Network')
+    alert('Will Approve adding or chainging networks')
   }
 
   const onCancel = () => {
@@ -210,8 +210,11 @@ export const _AllowAddNetwork = () => {
 
   return (
     <StyledExtensionWrapperLonger>
-      <AllowAddNetworkPanel
-        onApprove={onApprove}
+      <AllowAddChangeNetworkPanel
+        siteOrigin='https://app.uniswap.org'
+        panelType='change'
+        onApproveAddNetwork={onApprove}
+        onApproveChangeNetwork={onApprove}
         onCancel={onCancel}
         networkPayload={mockNetworks[0]}
         onLearnMore={onLearnMore}
@@ -220,8 +223,8 @@ export const _AllowAddNetwork = () => {
   )
 }
 
-_AllowAddNetwork.story = {
-  name: 'Allow Add Network'
+_AllowAddChangeNetwork.story = {
+  name: 'Allow Add or Change Network'
 }
 
 export const _SignData = () => {
