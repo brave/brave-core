@@ -18,7 +18,8 @@ namespace {
 
 absl::optional<base::Value::ListStorage> GetParamsList(
     const std::string& json) {
-  auto json_value = base::JSONReader::Read(json);
+  auto json_value =
+      base::JSONReader::Read(json, base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict())
     return absl::nullopt;
 
@@ -246,6 +247,27 @@ bool ParsePersonalSignParams(const std::string& json,
   } else {
     *message = ToHex(*message_str);
   }
+
+  return true;
+}
+
+bool ParseSwitchEthereumChainParams(const std::string& json,
+                                    std::string* chain_id) {
+  if (!chain_id)
+    return false;
+
+  auto param_obj = GetObjectFromParamsList(json);
+  if (!param_obj || !param_obj->is_dict())
+    return false;
+
+  const std::string* chain_id_str = param_obj->FindStringKey("chain_id");
+  if (!chain_id_str)
+    return false;
+
+  if (!IsValidHexString(*chain_id_str))
+    return false;
+
+  *chain_id = *chain_id_str;
 
   return true;
 }

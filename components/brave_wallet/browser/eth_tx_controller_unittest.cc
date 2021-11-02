@@ -198,8 +198,8 @@ class EthTxControllerUnitTest : public testing::Test {
     asset_ratio_controller_.reset(
         new AssetRatioController(shared_url_loader_factory_));
 
-    auto tx_state_manager = std::make_unique<EthTxStateManager>(
-        &prefs_, rpc_controller_->MakeRemote());
+    auto tx_state_manager =
+        std::make_unique<EthTxStateManager>(&prefs_, rpc_controller_.get());
     auto nonce_tracker = std::make_unique<EthNonceTracker>(
         tx_state_manager.get(), rpc_controller_.get());
     auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(

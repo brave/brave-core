@@ -29,18 +29,13 @@ constexpr size_t kMaxConfirmedTxNum = 10;
 constexpr size_t kMaxRejectedTxNum = 10;
 }  // namespace
 
-EthTxStateManager::EthTxStateManager(
-    PrefService* prefs,
-    mojo::PendingRemote<mojom::EthJsonRpcController> rpc_controller)
-    : prefs_(prefs), weak_factory_(this) {
-  DCHECK(rpc_controller);
-  rpc_controller_.Bind(std::move(rpc_controller));
+EthTxStateManager::EthTxStateManager(PrefService* prefs,
+                                     EthJsonRpcController* rpc_controller)
+    : prefs_(prefs), rpc_controller_(rpc_controller), weak_factory_(this) {
   DCHECK(rpc_controller_);
-  rpc_controller_.set_disconnect_handler(base::BindOnce(
-      &EthTxStateManager::OnConnectionError, weak_factory_.GetWeakPtr()));
   rpc_controller_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
-  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
-                                             weak_factory_.GetWeakPtr()));
+  chain_id_ = rpc_controller_->GetChainId();
+  network_url_ = rpc_controller_->GetNetworkUrl();
 }
 EthTxStateManager::~EthTxStateManager() = default;
 
@@ -297,8 +292,8 @@ EthTxStateManager::GetTransactionsByStatus(
 }
 
 void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
-  rpc_controller_->GetChainId(base::BindOnce(&EthTxStateManager::OnGetChainId,
-                                             weak_factory_.GetWeakPtr()));
+  chain_id_ = chain_id;
+  network_url_ = rpc_controller_->GetNetworkUrl();
 }
 
 void EthTxStateManager::OnAddEthereumChainRequestCompleted(
@@ -328,23 +323,6 @@ void EthTxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
     }
     DeleteTx(oldest_meta->id);
   }
-}
-
-void EthTxStateManager::OnConnectionError() {
-  rpc_controller_.reset();
-  observer_receiver_.reset();
-}
-
-void EthTxStateManager::OnGetNetworkUrl(const std::string& url) {
-  network_url_ = url;
-}
-
-void EthTxStateManager::OnGetChainId(const std::string& chain_id) {
-  chain_id_ = chain_id;
-  rpc_controller_->GetNetworkUrl(base::BindOnce(
-      &EthTxStateManager::OnGetNetworkUrl, weak_factory_.GetWeakPtr()));
-  if (chain_callback_for_testing_)
-    std::move(chain_callback_for_testing_).Run();
 }
 
 void EthTxStateManager::AddObserver(EthTxStateManager::Observer* observer) {

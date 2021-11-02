@@ -62,15 +62,13 @@ void ValidateErrorCode(BraveWalletProviderImpl* provider,
                        ProviderErrors expected) {
   bool callback_is_called = false;
   provider->AddEthereumChain(
-      payload,
-      base::BindLambdaForTesting(
-          [&callback_is_called, &expected](bool success, int error_code,
-                                           const std::string& error_message) {
-            ASSERT_FALSE(success);
-            EXPECT_EQ(error_code, static_cast<int>(expected));
-            ASSERT_FALSE(error_message.empty());
-            callback_is_called = true;
-          }));
+      payload, base::BindLambdaForTesting(
+                   [&callback_is_called, &expected](
+                       int error_code, const std::string& error_message) {
+                     EXPECT_EQ(error_code, static_cast<int>(expected));
+                     ASSERT_FALSE(error_message.empty());
+                     callback_is_called = true;
+                   }));
   ASSERT_TRUE(callback_is_called);
 }
 
@@ -149,12 +147,13 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
         content::TestWebContents::Create(browser_context(), nullptr);
     eth_json_rpc_controller_.reset(
         new EthJsonRpcController(shared_url_loader_factory_, prefs()));
+    SetNetwork("0x1");
     keyring_controller_ =
         KeyringControllerFactory::GetControllerForContext(browser_context());
     asset_ratio_controller_.reset(
         new AssetRatioController(shared_url_loader_factory_));
-    auto tx_state_manager = std::make_unique<EthTxStateManager>(
-        prefs(), eth_json_rpc_controller()->MakeRemote());
+    auto tx_state_manager =
+        std::make_unique<EthTxStateManager>(prefs(), eth_json_rpc_controller());
     auto nonce_tracker = std::make_unique<EthNonceTracker>(
         tx_state_manager.get(), eth_json_rpc_controller());
     auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
@@ -168,7 +167,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
             browser_context());
 
     provider_ = std::make_unique<BraveWalletProviderImpl>(
-        host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
+        host_content_settings_map(), eth_json_rpc_controller(),
         eth_tx_controller()->MakeRemote(), keyring_controller_,
         brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
@@ -177,7 +176,6 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
     observer_.reset(new TestEventsListener());
     provider_->Init(observer_->GetReceiver());
-    SetNetwork("0x1");
   }
 
   void SetInterceptor(const std::string& content) {
@@ -421,6 +419,20 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     return success;
   }
 
+  void SwitchEthereumChain(const std::string& chain_id,
+                           int* error_out,
+                           std::string* error_message_out) {
+    base::RunLoop run_loop;
+    provider_->SwitchEthereumChain(
+        chain_id, base::BindLambdaForTesting(
+                      [&](int error, const std::string& error_message) {
+                        *error_out = error;
+                        *error_message_out = error_message;
+                        run_loop.Quit();
+                      }));
+    run_loop.Run();
+  }
+
  protected:
   content::BrowserTaskEnvironment browser_task_environment_;
   BraveWalletService* brave_wallet_service_;
@@ -470,7 +482,7 @@ TEST_F(BraveWalletProviderImplUnitTest, ValidateBrokenPayloads) {
 
 TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
   BraveWalletProviderImpl provider_impl(
-      host_content_settings_map(), eth_json_rpc_controller()->MakeRemote(),
+      host_content_settings_map(), eth_json_rpc_controller(),
       eth_tx_controller()->MakeRemote(), keyring_controller(),
       brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
@@ -483,30 +495,32 @@ TEST_F(BraveWalletProviderImplUnitTest, EmptyDelegate) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
-  bool callback_is_called = false;
+  GURL url("https://brave.com");
+  Navigate(url);
+  base::RunLoop run_loop;
   provider()->AddEthereumChain(
       R"({"params": [{
         "chainId": "0x111",
         "chainName": "Binance1 Smart Chain",
-        "rpcUrls": ["https://bsc-dataseed.binance.org/"]
-      }]})",
+        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+      },]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, int error_code,
-                                const std::string& error_message) {
-            ASSERT_FALSE(success);
+          [&run_loop](int error_code, const std::string& error_message) {
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             ASSERT_FALSE(error_message.empty());
-            callback_is_called = true;
+            run_loop.Quit();
           }));
-  ASSERT_FALSE(callback_is_called);
   provider()->OnAddEthereumChain("0x111", false);
-  ASSERT_TRUE(callback_is_called);
+  run_loop.Run();
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,
        OnAddEthereumChainRequestCompletedError) {
-  int callback_is_called = 0;
+  GURL url("https://brave.com");
+  Navigate(url);
+  base::RunLoop run_loop;
+  size_t callback_called = 0;
   provider()->AddEthereumChain(
       R"({"params": [{
         "chainId": "0x111",
@@ -514,24 +528,20 @@ TEST_F(BraveWalletProviderImplUnitTest,
         "rpcUrls": ["https://bsc-dataseed.binance.org/"]
       }]})",
       base::BindLambdaForTesting(
-          [&callback_is_called](bool success, int error_code,
-                                const std::string& error_message) {
-            ASSERT_FALSE(success);
+          [&](int error_code, const std::string& error_message) {
             EXPECT_EQ(error_code,
                       static_cast<int>(ProviderErrors::kUserRejectedRequest));
             EXPECT_EQ(error_message, "test message");
-            callback_is_called++;
+            ++callback_called;
+            run_loop.Quit();
           }));
-  EXPECT_EQ(callback_is_called, 0);
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  EXPECT_EQ(callback_is_called, 1);
   provider()->OnAddEthereumChainRequestCompleted("0x111", "test message");
-  EXPECT_EQ(callback_is_called, 1);
+  run_loop.Run();
+  EXPECT_EQ(callback_called, 1u);
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
   CreateWallet();
@@ -579,9 +589,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransaction) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   // We don't need to check every error type since that is checked by
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
@@ -608,9 +615,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionError) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   bool callback_called = false;
   provider()->AddAndApproveTransaction(
       mojom::TxData::New("0x06", "0x09184e72a000", "0x0974",
@@ -629,8 +633,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApproveTransactionNoPermission) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   bool callback_called = false;
   std::string tx_hash;
   CreateWallet();
@@ -680,8 +682,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559Transaction) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
   std::string tx_hash;
   CreateWallet();
   AddAccount();
@@ -729,9 +729,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   // We don't need to check every error type since that is checked by
   // eth_tx_controller_unittest but make sure an error type is handled
   // correctly.
@@ -762,9 +759,6 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {
 
 TEST_F(BraveWalletProviderImplUnitTest,
        AddAndApprove1559TransactionNoPermission) {
-  // This makes sure the state manager gets the chain ID
-  browser_task_environment_.RunUntilIdle();
-
   bool callback_called = false;
   provider()->AddAndApprove1559Transaction(
       mojom::TxData1559::New(
@@ -1104,6 +1098,23 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
   SignMessageHardware(false, address, "0x1234", expected_signature, "",
                       &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
+  int error = -1;
+  std::string error_message;
+
+  SwitchEthereumChain("0x111", &error, &error_message);
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // TODO(darkdh): test positive case along with observer when UI is ready for
+  // hooked up
+  SwitchEthereumChain("0x1", &error, &error_message);
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));

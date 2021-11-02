@@ -106,15 +106,15 @@ class BraveWalletJSHandler : public mojom::EventsListener {
                             bool force_json_response,
                             bool success,
                             const std::vector<std::string>& accounts);
-  void OnAddEthereumChain(base::Value id,
-                          v8::Global<v8::Context> global_context,
-                          std::unique_ptr<v8::Global<v8::Function>> callback,
-                          v8::Global<v8::Promise::Resolver> promise_resolver,
-                          v8::Isolate* isolate,
-                          bool force_json_response,
-                          bool success,
-                          int provider_error,
-                          const std::string& error_message);
+  void OnAddOrSwitchEthereumChain(
+      base::Value id,
+      v8::Global<v8::Context> global_context,
+      std::unique_ptr<v8::Global<v8::Function>> callback,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      bool force_json_response,
+      int provider_error,
+      const std::string& error_message);
   void OnAddAndApproveTransaction(
       base::Value id,
       v8::Global<v8::Context> global_context,
