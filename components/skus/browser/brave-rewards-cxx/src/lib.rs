@@ -97,6 +97,12 @@ mod ffi {
             domain: String,
             path: String,
         );
+        fn credential_summary(
+            self: &CppSDK,
+            callback: CredentialSummaryCallback,
+            callback_state: UniquePtr<CredentialSummaryCallbackState>,
+            domain: String,
+        );
     }
 
     unsafe extern "C++" {
@@ -128,6 +134,8 @@ mod ffi {
         type FetchOrderCredentialsCallback = crate::FetchOrderCredentialsCallback;
         type PrepareCredentialsPresentationCallbackState;
         type PrepareCredentialsPresentationCallback = crate::PrepareCredentialsPresentationCallback;
+        type CredentialSummaryCallbackState;
+        type CredentialSummaryCallback = crate::CredentialSummaryCallback;
     }
 }
 
@@ -220,6 +228,25 @@ impl CppSDK {
                 callback_state,
                 domain,
                 path,
+            ))
+            .unwrap();
+
+        self.sdk.client.pool.borrow_mut().run_until_stalled();
+    }
+
+    fn credential_summary(
+        &self,
+        callback: CredentialSummaryCallback,
+        callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
+        domain: String,
+    ) {
+        let mut spawner = self.sdk.client.pool.borrow_mut().spawner();
+        spawner
+            .spawn_local(credential_summary_task(
+                self.sdk.clone(),
+                callback,
+                callback_state,
+                domain,
             ))
             .unwrap();
 
@@ -323,6 +350,48 @@ async fn prepare_credentials_presentation_task(
             ffi::RewardsResult::Ok,
             presentation,
         ),
+        Ok(None) => callback.0(
+            callback_state.into_raw(),
+            ffi::RewardsResult::Ok,
+            "".to_string(),
+        ),
+        Err(e) => callback.0(
+            callback_state.into_raw(),
+            e.source()
+                .unwrap()
+                .downcast_ref::<brave_rewards::errors::InternalError>()
+                .unwrap()
+                .into(),
+            "".to_string(),
+        ),
+    }
+}
+
+#[repr(transparent)]
+pub struct CredentialSummaryCallback(
+    pub  extern "C" fn(
+        callback_state: *mut ffi::CredentialSummaryCallbackState,
+        result: ffi::RewardsResult,
+        summary: String,
+    ),
+);
+
+unsafe impl ExternType for CredentialSummaryCallback {
+    type Id = type_id!("brave_rewards::CredentialSummaryCallback");
+    type Kind = cxx::kind::Trivial;
+}
+
+async fn credential_summary_task(
+    sdk: Rc<brave_rewards::sdk::SDK<NativeClient>>,
+    callback: CredentialSummaryCallback,
+    callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
+    domain: String,
+) {
+    match sdk.matching_credential_summary(&domain).await {
+        Ok(Some(summary)) => {
+            let summary = serde_json::to_string(&summary).unwrap();
+            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, summary)
+        }
         Ok(None) => callback.0(
             callback_state.into_raw(),
             ffi::RewardsResult::Ok,
