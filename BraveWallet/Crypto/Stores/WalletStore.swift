@@ -58,7 +58,8 @@ public class WalletStore {
     self.sendTokenStore = .init(
       keyringController: keyringController,
       rpcController: rpcController,
-      walletService: walletService
+      walletService: walletService,
+      transactionController: transactionController
     )
   }
 }
