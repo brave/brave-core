@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.vpn.activities.BraveVpnPlansActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
 import org.chromium.chrome.browser.vpn.fragments.BraveVpnAlwaysOnErrorDialogFragment;
+import org.chromium.chrome.browser.vpn.fragments.BraveVpnConfirmDialogFragment;
 import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
 import org.chromium.chrome.browser.vpn.models.BraveVpnServerRegion;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -82,8 +83,8 @@ public class BraveVpnUtils {
         context.startActivity(braveVpnSupportIntent);
     }
 
-    public static void showProgressDialog(Context context, String message) {
-        mProgressDialog = ProgressDialog.show(context, "", message, true);
+    public static void showProgressDialog(Activity activity, String message) {
+        mProgressDialog = ProgressDialog.show(activity, "", message, true);
     }
 
     public static void dismissProgressDialog() {
@@ -228,6 +229,7 @@ public class BraveVpnUtils {
     public static AlwaysOnVpnType getAlwaysOnVpn(Context context) {
         String alwaysOnPackage =
                 Settings.Secure.getString(context.getContentResolver(), "always_on_vpn_app");
+        Log.e("BraveVPN", "alwaysOnPackage : " + alwaysOnPackage);
         if (alwaysOnPackage != null) {
             return context.getPackageName().equals(alwaysOnPackage) ? AlwaysOnVpnType.BRAVE_VPN
                                                                     : AlwaysOnVpnType.OTHER_VPN;
@@ -243,5 +245,14 @@ public class BraveVpnUtils {
         mBraveVpnAlwaysOnErrorDialogFragment.show(
                 ((FragmentActivity) activity).getSupportFragmentManager(),
                 "BraveVpnAlwaysOnErrorDialogFragment");
+    }
+
+    public static void showVpnConfirmDialog(Activity activity) {
+        BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
+                new BraveVpnConfirmDialogFragment();
+        braveVpnConfirmDialogFragment.setCancelable(false);
+        braveVpnConfirmDialogFragment.show(
+                ((FragmentActivity) activity).getSupportFragmentManager(),
+                "BraveVpnConfirmDialogFragment");
     }
 }

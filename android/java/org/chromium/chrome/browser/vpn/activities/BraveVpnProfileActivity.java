@@ -118,11 +118,7 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnProfileUtils.getInstance().startVpn(BraveVpnProfileActivity.this);
-            BraveVpnConfirmDialogFragment braveVpnConfirmDialogFragment =
-                    new BraveVpnConfirmDialogFragment();
-            braveVpnConfirmDialogFragment.setCancelable(false);
-            braveVpnConfirmDialogFragment.show(
-                    getSupportFragmentManager(), "BraveVpnConfirmDialogFragment");
+            BraveVpnUtils.showVpnConfirmDialog(BraveVpnProfileActivity.this);
         } else if (resultCode == RESULT_CANCELED) {
             mProfileTitle.setText(getResources().getString(R.string.some_context));
             mProfileText.setText(getResources().getString(R.string.some_context_text));

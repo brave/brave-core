@@ -20,6 +20,7 @@ import android.os.Build;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.ui.widget.Toast;
@@ -76,15 +77,19 @@ public class BraveVpnProfileUtils {
 
     public void startStopVpn(Context context) {
         if (!isVPNConnected(context)) {
+            Log.e("BraveVPN", "startStopVpn : 1");
             try {
+                Log.e("BraveVPN", "startStopVpn : 2");
                 startVpn(context);
             } catch (SecurityException securityException) {
+                Log.e("BraveVPN", "startStopVpn : 3");
                 Toast.makeText(context, R.string.vpn_profile_is_not_created, Toast.LENGTH_SHORT)
                         .show();
                 BraveVpnUtils.dismissProgressDialog();
                 BraveVpnUtils.openBraveVpnProfileActivity(context);
             }
         } else {
+            Log.e("BraveVPN", "startStopVpn : 4");
             stopVpn(context);
         }
     }
@@ -114,13 +119,18 @@ public class BraveVpnProfileUtils {
 
     public void createVpnProfile(
             Activity activity, String hostname, String username, String password) {
+        Log.e("BraveVPN", "createVpnProfile : 1");
         Ikev2VpnProfile ikev2VpnProfile = getVpnProfile(hostname, username, password);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ikev2VpnProfile != null) {
             Intent intent = getVpnManager(activity).provisionVpnProfile(ikev2VpnProfile);
+            Log.e("BraveVPN", "createVpnProfile : 2");
             if (intent != null) {
+                Log.e("BraveVPN", "createVpnProfile : 3");
                 activity.startActivityForResult(intent, BRAVE_VPN_PROFILE_REQUEST_CODE);
             } else {
+                Log.e("BraveVPN", "createVpnProfile : 4");
                 startVpn(activity);
+                BraveVpnUtils.showVpnConfirmDialog(activity);
             }
         }
     }

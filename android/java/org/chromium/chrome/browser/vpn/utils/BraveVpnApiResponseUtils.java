@@ -27,7 +27,7 @@ import java.util.TimeZone;
 
 public class BraveVpnApiResponseUtils {
     public static void queryPurchaseFailed(Activity activity) {
-        Log.e("BraveVPN", "BraveVpnApiResponseUtils 4");
+        Log.e("BraveVPN", "queryPurchaseFailed : 1");
         BraveVpnPrefUtils.setPurchaseToken("");
         BraveVpnPrefUtils.setProductId("");
         BraveVpnPrefUtils.setPurchaseExpiry(0L);
@@ -39,11 +39,12 @@ public class BraveVpnApiResponseUtils {
         Toast.makeText(activity, R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
                 .show();
         BraveVpnUtils.dismissProgressDialog();
-        BraveVpnUtils.openBraveVpnPlansActivity(activity);
+        Log.e("BraveVPN", "queryPurchaseFailed : 2");
     }
 
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
+            Log.e("BraveVPN", "handleOnGetSubscriberCredential : 1");
             InAppPurchaseWrapper.getInstance().processPurchases(
                     activity, InAppPurchaseWrapper.getInstance().queryPurchases());
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
@@ -58,9 +59,10 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetTimezonesForRegions(Activity activity,
             BraveVpnPrefModel braveVpnPrefModel, String jsonTimezones, boolean isSuccess) {
         if (isSuccess) {
+            Log.e("BraveVPN", "handleOnGetTimezonesForRegions : 1");
             String region = BraveVpnUtils.getRegionForTimeZone(
                     jsonTimezones, TimeZone.getDefault().getID());
-
+            Log.e("BraveVPN", "handleOnGetTimezonesForRegions : 2");
             if (!TextUtils.isEmpty(BraveVpnUtils.selectedServerRegion)
                     && BraveVpnUtils.selectedServerRegion != null) {
                 region = BraveVpnUtils.selectedServerRegion.equals(
@@ -75,8 +77,12 @@ public class BraveVpnApiResponseUtils {
                         : serverRegion;
             }
 
+            Log.e("BraveVPN", "handleOnGetTimezonesForRegions : 3");
+
             BraveVpnNativeWorker.getInstance().getHostnamesForRegion(region);
             braveVpnPrefModel.setServerRegion(region);
+
+            Log.e("BraveVPN", "handleOnGetTimezonesForRegions : 4");
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
@@ -89,6 +95,7 @@ public class BraveVpnApiResponseUtils {
             BraveVpnPrefModel braveVpnPrefModel, String jsonHostNames, boolean isSuccess) {
         Pair<String, String> host = new Pair<String, String>("", "");
         if (isSuccess && braveVpnPrefModel != null) {
+            Log.e("BraveVPN", "handleOnGetHostnamesForRegion : 1");
             host = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
             BraveVpnNativeWorker.getInstance().getProfileCredentials(
                     braveVpnPrefModel.getSubscriberCredential(), host.first);
@@ -104,19 +111,22 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetProfileCredentials(Activity activity,
             BraveVpnPrefModel braveVpnPrefModel, String jsonProfileCredentials, boolean isSuccess) {
         if (isSuccess && braveVpnPrefModel != null) {
+            Log.e("BraveVPN", "handleOnGetProfileCredentials : 1");
             BraveVpnProfileCredentials braveVpnProfileCredentials =
                     BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
             if (BraveVpnProfileUtils.getInstance().isVPNConnected(activity)) {
                 BraveVpnProfileUtils.getInstance().stopVpn(activity);
             }
+            Log.e("BraveVPN", "handleOnGetProfileCredentials : 2");
             BraveVpnPrefUtils.setPrefModel(braveVpnPrefModel);
             try {
+                Log.e("BraveVPN", "handleOnGetProfileCredentials : 3");
                 BraveVpnProfileUtils.getInstance().createVpnProfile(activity,
                         braveVpnPrefModel.getHostname(), braveVpnProfileCredentials.getUsername(),
                         braveVpnProfileCredentials.getPassword());
             } catch (Exception securityException) {
+                Log.e("BraveVPN", "handleOnGetProfileCredentials : 4");
                 BraveVpnProfileUtils.getInstance().startVpn(activity);
-                activity.finish();
             }
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)

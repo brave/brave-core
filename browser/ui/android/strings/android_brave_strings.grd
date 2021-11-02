@@ -2312,7 +2312,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Vpn profile creation failed. Please try again.
     </message>
     <message name="IDS_PURCHASE_TOKEN_VERIFICATION_FAILED" desc="Brave VPN profile text">
-      Purchase Token verification failed. Please try again.
+      Purchase verification failed. Please try again.
     </message>
     <message name="IDS_BRAVE_VPN_NOTIFICATION_MESSAGE" desc="Brave VPN notification message">
       VPN is running in the background
@@ -2432,7 +2432,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       ERROR!!\nCaused by a user cancelling the purchase flow.
     </message>
     <message name="IDS_PURCHASED_FAILED" desc="Brave Vpn in app purchase message">
-      ERROR!!\nPurchased failed..
+      ERROR!!\nPurchase failed..
     </message>
     <message name="IDS_REJECT" desc="Brave crypto wallet button reject">
       Reject

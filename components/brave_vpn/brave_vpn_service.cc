@@ -1154,7 +1154,6 @@ void BraveVpnService::OnGetSanitizedJsonResponse(
 
   if (success)
     json_response = sanitized_json_response.value.value();
-
   std::move(callback).Run(json_response, success);
 }
 
