@@ -13,21 +13,15 @@ import Shared
  
 enum TrackingType: Equatable {
     case trackerCountShare(count: Int, description: String)
-    case trackerAdWarning
     case videoAdBlock
-    case trackerAdCountBlock(count: Int)
     case domainSpecificDataSaved(dataSaved: String)
     
     var title: String {
         switch self {
             case .trackerCountShare(let count, _):
                 return String(format: Strings.ShieldEducation.trackerCountShareTitle, count)
-            case .trackerAdWarning:
-                return Strings.ShieldEducation.trackerAdWarningTitle
             case .videoAdBlock:
                 return Strings.ShieldEducation.videoAdBlockTitle
-            case .trackerAdCountBlock(let count):
-                return String(format: Strings.ShieldEducation.trackerAdCountBlockTitle, count)
             case .domainSpecificDataSaved:
                 return Strings.ShieldEducation.domainSpecificDataSavedTitle
         }
@@ -37,12 +31,8 @@ enum TrackingType: Equatable {
         switch self {
             case .trackerCountShare(_, let description):
                 return description
-            case .trackerAdWarning:
-                return Strings.ShieldEducation.trackerAdWarningSubtitle
             case .videoAdBlock:
                 return Strings.ShieldEducation.videoAdBlockSubtitle
-            case .trackerAdCountBlock:
-                return Strings.ShieldEducation.trackerAdCountBlockSubtitle
             case .domainSpecificDataSaved(let dataSaved):
                 return String(format: Strings.ShieldEducation.domainSpecificDataSavedSubtitle, dataSaved)
         }
@@ -56,7 +46,6 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
     // MARK: Action
     
     enum Action {
-        case takeALookTapped
         case shareTheNewsTapped
         case dontShowAgainTapped
     }
@@ -66,9 +55,7 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
     private let trackingType: TrackingType
     
     private let shareTrackersView: ShareTrackersView
-    
-    private lazy var gradientView = BraveGradientView.gradient03
-    
+        
     var actionHandler: ((Action) -> Void)?
 
     // MARK: Lifecycle
@@ -90,7 +77,7 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .braveInfoLabel
+        view.backgroundColor = .braveBackground
         
         shareTrackersView.actionHandler = { [weak self] action in
             guard let self = self else { return }
@@ -98,8 +85,6 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
             switch action {
                 case .didShareTheNewsTapped:
                     self.actionHandler?(.shareTheNewsTapped)
-                case .didTakeALookTapped:
-                    self.actionHandler?(.takeALookTapped)
                 case .didDontShowAgainTapped:
                     self.actionHandler?(.dontShowAgainTapped)
             }
@@ -119,14 +104,6 @@ class ShareTrackersController: UIViewController, PopoverContentComponent {
         shareTrackersView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
-        if case .trackerAdWarning = trackingType {
-            shareTrackersView.insertSubview(gradientView, at: 0)
-            
-            gradientView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-        }
     }
 }
 
@@ -145,7 +122,6 @@ private class ShareTrackersView: UIView {
     
     enum Action {
         case didShareTheNewsTapped
-        case didTakeALookTapped
         case didDontShowAgainTapped
     }
     
@@ -164,25 +140,24 @@ private class ShareTrackersView: UIView {
         $0.backgroundColor = .clear
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         $0.numberOfLines = 0
-        $0.textColor = .white
+        $0.textColor = .bravePrimary
     }
     
     private let subtitleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
-        $0.textColor = .white
+        $0.textColor = .bravePrimary
     }
     
     private lazy var actionButton: InsetButton = {
         let actionButton = InsetButton().then {
             $0.addTarget(self, action: #selector(tappedActionButton), for: .touchUpInside)
-
+            
+            $0.backgroundColor = .braveDarkerBlurple
             $0.contentEdgeInsets = UX.actionButtonInsets
             $0.layer.cornerRadius = 20
             $0.layer.cornerCurve = .continuous
             $0.clipsToBounds = true
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.white.cgColor
             $0.titleLabel?.adjustsFontSizeToFitWidth = true
             $0.titleLabel?.allowsDefaultTighteningForTruncation = true
             $0.setTitleColor(.white, for: .normal)
@@ -236,7 +211,7 @@ private class ShareTrackersView: UIView {
         )
         
         switch trackingType {
-            case .trackerCountShare, .trackerAdWarning, .domainSpecificDataSaved:
+            case .trackerCountShare, .domainSpecificDataSaved:
                 stackView.addArrangedSubview(actionButton)
             default:
                 return
@@ -266,8 +241,6 @@ private class ShareTrackersView: UIView {
         subtitleLabel.attributedText = NSAttributedString(string: trackingType.subTitle).withLineSpacing(2)
         
         switch trackingType {
-            case .trackerAdWarning:
-                actionButton.setTitle(Strings.ShieldEducation.educationInspectTitle, for: .normal)
             case .trackerCountShare:
                 actionButton.setTitle(Strings.ShieldEducation.shareTheNewsTitle, for: .normal)
                 actionButton.addTrailingImageIcon(image: #imageLiteral(resourceName: "shields-share"))
@@ -281,8 +254,6 @@ private class ShareTrackersView: UIView {
     // MARK: Action
     @objc func tappedActionButton() {
         switch trackingType {
-            case .trackerAdWarning:
-                actionHandler?(.didTakeALookTapped)
             case .trackerCountShare:
                 actionHandler?(.didShareTheNewsTapped)
             case .domainSpecificDataSaved:

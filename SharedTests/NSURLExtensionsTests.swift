@@ -698,14 +698,14 @@ class NSURLExtensionsTests: XCTestCase {
     
     func testVideoSteamingSiteURL() {
         let streamingSiteURLs = [
-            "https://www.youtube.com",
             "https://www.vimeo.com",
-            "https://m.youtube.com",
             "https://m.twitch.tv",
             "https://www.twitch.tv"
         ]
         
         let notSteamingSiteUrls = [
+            "https://m.youtube.com",
+            "https://www.youtube.com",
             "https://xyz.com",
             "https://tube.tube",
             "https://www.google.com",

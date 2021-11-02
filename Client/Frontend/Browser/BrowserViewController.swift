@@ -170,9 +170,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     /// in order to not to try to present another one over existing popover
     var benchmarkNotificationPresented = false
     
-    /// Number of Ads/Trackers used a limit to show benchmark notification
-    let benchmarkNumberOfTrackers = 10
-    
     /// Used to determine when to present benchmark pop-overs
     /// Current session ad count is compared with live ad count
     /// So user will not be introduced with a pop-over directly
@@ -189,7 +186,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     var shouldShowNTPEducation = false
 
     /// Data Source object used to determine blocking stats
-    //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
     
     private(set) var widgetBookmarksFRC: NSFetchedResultsController<Favorite>?
