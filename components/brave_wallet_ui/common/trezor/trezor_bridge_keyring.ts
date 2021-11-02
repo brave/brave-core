@@ -26,7 +26,6 @@ import {
   TrezorError
 } from '../../common/trezor/trezor-messages'
 import { getLocale } from '../../../common/locale'
-const trezorBridgeOrigin = (new URL(kTrezorBridgeUrl)).origin
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -38,21 +37,14 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return kTrezorHardwareVendor
   }
 
-  getAccounts = (from: number, to: number, scheme: string) => {
-    return new Promise(async (resolve, reject) => {
-      if (from < 0) {
-        from = 0
-      }
-      try {
-        if (!this.isUnlocked() && !(await this.unlock())) {
-          return reject(new Error(getLocale('braveWalletUnlockError')))
-        }
-      } catch (e) {
-        reject(e)
-        return
-      }
-      this._getAccounts(from, to, scheme).then(resolve).catch(reject)
-    })
+  getAccounts = async (from: number, to: number, scheme: string) => {
+    if (from < 0) {
+      from = 0
+    }
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return new Error(getLocale('braveWalletUnlockError'))
+    }
+    return this._getAccounts(from, to, scheme)
   }
 
   isUnlocked = () => {
@@ -94,7 +86,9 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   private removeWindowMessageListener = () => {
     window.removeEventListener('message', this.onMessageReceived.bind(this))
   }
-
+  private getTrezorBridgeOrigin = () => {
+    return (new URL(kTrezorBridgeUrl)).origin
+  }
   private addEventListener = (id: number, listener: Function) => {
     if (!this.pending_requests_) {
       this.addWindowMessageListener()
@@ -120,7 +114,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   private onMessageReceived = (event: any /* MessageEvent<TrezorFrameResponse> */) => {
-    if (event.origin !== trezorBridgeOrigin || event.type !== 'message') {
+    if (event.origin !== this.getTrezorBridgeOrigin() || event.type !== 'message') {
       return
     }
     if (!event.data || !this.pending_requests_ ||
@@ -169,8 +163,8 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     })
   }
 
-  private _createBridge = async () => {
-    return new Promise(async (resolve, reject) => {
+  private _createBridge = () => {
+    return new Promise((resolve) => {
       let element = document.createElement('iframe')
       element.id = kTrezorBridgeFrameId
       element.src = kTrezorBridgeUrl

@@ -49,6 +49,5 @@ export function postResponseToWallet (target: Window, message: TrezorFrameRespon
 }
 
 export function postToTrezorFrame (target: Window, message: TrezorFrameCommand) {
-  console.log(kTrezorBridgeUrl)
   target.postMessage(message, kTrezorBridgeUrl)
 }
