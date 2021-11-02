@@ -282,16 +282,19 @@ function ConfirmTransactionPanel (props: Props) {
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
           <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
-          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
+          {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
+            transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
             <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721TokenInfo} />
           }
           <TransactionAmmountBig>
-            {transactionInfo.txType === TransactionType.ERC721TransferFrom
+            {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
+             transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
               ? transactionDetails.erc721TokenInfo?.name + ' ' + transactionDetails.erc721TokenId
               : transactionDetails.value + ' ' + transactionDetails.symbol
             }
           </TransactionAmmountBig>
           {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
+            transactionInfo.txType !== TransactionType.ERC721SafeTransferFrom &&
             <TransactionFiatAmountBig>${transactionDetails.fiatValue}</TransactionFiatAmountBig>
           }
         </>

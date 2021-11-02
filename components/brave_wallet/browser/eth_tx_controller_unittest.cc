@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -24,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -68,6 +70,26 @@ mojom::GasEstimation1559Ptr GetMojomGasEstimation() {
       "0x77359400" /* Hex of 2 * 1e9 */, "0xb2d05e000" /* Hex of 48 * 1e9 */,
       "0xb2d05e00" /* Hex of 3 * 1e9 */, "0xb68a0aa00" /* Hex of 49 * 1e9 */,
       "0xad8075b7a" /* Hex of 46574033786 */);
+}
+
+void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
+                                        bool expected_success,
+                                        mojom::TransactionType expected_type,
+                                        bool success,
+                                        const std::vector<uint8_t>& data) {
+  ASSERT_EQ(expected_success, success);
+
+  // Verify tx type.
+  if (success) {
+    mojom::TransactionType tx_type;
+    std::vector<std::string> tx_params;
+    std::vector<std::string> tx_args;
+    ASSERT_TRUE(
+        GetTransactionInfoFromData(ToHex(data), &tx_type, nullptr, nullptr));
+    EXPECT_EQ(expected_type, tx_type);
+  }
+
+  run_loop->Quit();
 }
 
 }  // namespace
@@ -1610,6 +1632,64 @@ TEST_F(EthTxControllerUnitTest, RetryTransaction) {
                                  &callback_called));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(EthTxControllerUnitTest, MakeERC721TransferFromDataTxType) {
+  const std::string contract_safe_transfer_from =
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ef";
+  const std::string contract_transfer_from =
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ee";
+
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        base::StringPiece request_string(request.request_body->elements()
+                                             ->at(0)
+                                             .As<network::DataElementBytes>()
+                                             .AsStringPiece());
+        if (request_string.find(contract_safe_transfer_from) !=
+            std::string::npos) {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+              "\"0x0000000000000000000000000000000000000000000000000000000000"
+              "000001\"}");
+        } else if (request_string.find(contract_transfer_from) !=
+                   std::string::npos) {
+          url_loader_factory_.AddResponse(
+              request.url.spec(),
+              "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+              "\"0x0000000000000000000000000000000000000000000000000000000000"
+              "000000\"}");
+        }
+      }));
+
+  auto run_loop = std::make_unique<base::RunLoop>();
+  eth_tx_controller()->MakeERC721TransferFromData(
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+      contract_safe_transfer_from,
+      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), true,
+                     mojom::TransactionType::ERC721SafeTransferFrom));
+  run_loop->Run();
+
+  run_loop.reset(new base::RunLoop());
+  eth_tx_controller()->MakeERC721TransferFromData(
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "0xf",
+      contract_transfer_from,
+      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), true,
+                     mojom::TransactionType::ERC721TransferFrom));
+  run_loop->Run();
+
+  // Invalid token ID should fail.
+  run_loop.reset(new base::RunLoop());
+  eth_tx_controller()->MakeERC721TransferFromData(
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
+      "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460a", "1",
+      "0x0d8775f648430679a709e98d2b0cb6250d2887ee",
+      base::BindOnce(&MakeERC721TransferFromDataCallback, run_loop.get(), false,
+                     mojom::TransactionType::Other));
+  run_loop->Run();
 }
 
 }  //  namespace brave_wallet

@@ -67,6 +67,7 @@ bool GetTransactionInfoFromData(const std::string& data,
       {{"0xa9059cbb", mojom::TransactionType::ERC20Transfer},
        {"0x095ea7b3", mojom::TransactionType::ERC20Approve},
        {"0x23b872dd", mojom::TransactionType::ERC721TransferFrom},
+       {"0x42842e0e", mojom::TransactionType::ERC721SafeTransferFrom},
        {"0x70a08231", mojom::TransactionType::Other}};
 
   if (data.empty() || data == "0x0") {
@@ -111,7 +112,8 @@ bool GetTransactionInfoFromData(const std::string& data,
       tx_params->push_back("address");
       tx_params->push_back("uint256");
     }
-  } else if (*tx_type == mojom::TransactionType::ERC721TransferFrom) {
+  } else if (*tx_type == mojom::TransactionType::ERC721TransferFrom ||
+             *tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
     std::string from, to, token_id;
     std::string left_over_data = data.substr(10);
     // Intentional copy of left_over_data
