@@ -9,8 +9,9 @@
 #include "src/chrome/browser/component_updater/registration.cc"
 #undef RegisterComponentsForUpdate
 
-#include "chrome/browser/browser_process.h"
+#include "brave/browser/brave_shields/https_everywhere_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "chrome/browser/browser_process.h"
 
 namespace component_updater {
 
@@ -18,6 +19,7 @@ void RegisterComponentsForUpdate() {
   RegisterComponentsForUpdate_ChromiumImpl();
   ComponentUpdateService* cus = g_browser_process->component_updater();
   brave_wallet::RegisterWalletDataFilesComponent(cus);
+  brave_shields::RegisterHTTPSEverywhereComponent(cus);
 }
 
 }  // namespace component_updater

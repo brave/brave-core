@@ -79,23 +79,7 @@ std::string leveldbGet(leveldb::DB* db, const std::string &key) {
 
 namespace brave_shields {
 
-const char kHTTPSEverywhereComponentName[] = "Brave HTTPS Everywhere Updater";
-const char kHTTPSEverywhereComponentId[] = "oofiananboodjbbmdelgdommihjbkfag";
-const char kHTTPSEverywhereComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvn9zSMjTmhkQyrZu5UdN"
-    "350nPqLoSeCYngcC7yDFwaUHjoBQXCZqGeDC69ciCQ2mlRhcV2nxXqlUDkiC6+7m"
-    "651nI+gi4oVqHagc7EFUyGA0yuIk7qIMvCBdH7wbET27de0rzbRzRht9EKzEjIhC"
-    "BtoPnmyrO/8qPrH4XR4cPfnFPuJssBBxC1B35H7rh0Br9qePhPDDe9OjyqYxPuio"
-    "+YcC9obL4g5krVrfrlKLfFNpIewUcJyBpSlCgfxEyEhgDkK9cILTMUi5vC7GxS3P"
-    "OtZqgfRg8Da4i+NwmjQqrz0JFtPMMSyUnmeMj+mSOL4xZVWr8fU2/GOCXs9gczDp"
-    "JwIDAQAB";
-
 bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
-std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
-    kHTTPSEverywhereComponentId);
-std::string
-HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
-    kHTTPSEverywhereComponentBase64PublicKey);
 
 HTTPSEverywhereService::HTTPSEverywhereService(
     BraveComponent::Delegate* delegate)
@@ -109,9 +93,6 @@ HTTPSEverywhereService::~HTTPSEverywhereService() {
 }
 
 bool HTTPSEverywhereService::Init() {
-  Register(kHTTPSEverywhereComponentName,
-           g_https_everywhere_component_id_,
-           g_https_everywhere_component_base64_public_key_);
   return true;
 }
 
@@ -141,15 +122,6 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
     CloseDatabase();
     return;
   }
-}
-
-void HTTPSEverywhereService::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&HTTPSEverywhereService::InitDB, AsWeakPtr(),
-                                install_dir));
 }
 
 bool HTTPSEverywhereService::GetHTTPSURL(
@@ -379,14 +351,6 @@ void HTTPSEverywhereService::CloseDatabase() {
     delete level_db_;
     level_db_ = nullptr;
   }
-}
-
-// static
-void HTTPSEverywhereService::SetComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  g_https_everywhere_component_id_ = component_id;
-  g_https_everywhere_component_base64_public_key_ = component_base64_public_key;
 }
 
 // static
