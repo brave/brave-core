@@ -14,16 +14,14 @@ import {
 } from '../../constants/types'
 import {
   TrezorCommand,
-  TrezorFrameCommand,
-  kTrezorBridgeFrameId,
-  kTrezorBridgeUrl,
   UnlockCommand,
   GetAccountsCommand,
   UnlockResponse,
   GetAccountsResponsePayload,
   TrezorAccount,
-  postToTrezorFrame,
-  TrezorError
+
+  TrezorError,
+  TrezorBridgeTransport
 } from '../../common/trezor/trezor-messages'
 import { getLocale } from '../../../common/locale'
 
@@ -31,6 +29,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
     super()
     this.unlocked_ = false
+    this.transport_ = new TrezorBridgeTransport()
   }
 
   type = () => {
@@ -64,7 +63,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return new Promise(async (resolve, reject) => {
       // @ts-ignore
       const messageId: string = crypto.randomUUID()
-      this.addEventListener(messageId, (data: UnlockResponse) => {
+      this.getTransport().addEventListener(messageId, (data: UnlockResponse) => {
         this.unlocked_ = data.result
         if (data.result) {
           resolve(true)
@@ -74,74 +73,12 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       })
       const message: UnlockCommand = { id: messageId, origin: window.origin,
         command: TrezorCommand.Unlock }
-      await this.postMessage(message)
+      await this.getTransport().postMessage(message)
     })
   }
-
-  private postMessage = async (command: TrezorFrameCommand) => {
-    let bridge = this.getBridge() as HTMLIFrameElement
-    if (!bridge) {
-      bridge = await this.createBridge() as HTMLIFrameElement
-    }
-    if (!bridge.contentWindow) {
-      throw Error(getLocale('braveWalletCreateBridgeError'))
-    }
-    postToTrezorFrame(bridge.contentWindow, command)
+  getTransport = () => {
+    return this.transport_
   }
-
-  private addWindowMessageListener = () => {
-    window.addEventListener('message', this.onMessageReceived)
-  }
-
-  private removeWindowMessageListener = () => {
-    window.removeEventListener('message', this.onMessageReceived)
-  }
-  private getTrezorBridgeOrigin = () => {
-    return (new URL(kTrezorBridgeUrl)).origin
-  }
-  private addEventListener = (id: string, listener: Function) => {
-    if (!this.pending_requests_) {
-      this.addWindowMessageListener()
-      this.pending_requests_ = {}
-    }
-    if (this.pending_requests_.hasOwnProperty(id)) {
-      return false
-    }
-    this.pending_requests_[id] = listener
-    return true
-  }
-
-  private removeEventListener = (id: number) => {
-    if (!this.pending_requests_.hasOwnProperty(id)) {
-      return false
-    }
-    delete this.pending_requests_[id]
-    if (!Object.keys(this.pending_requests_).length) {
-      this.pending_requests_ = null
-      this.removeWindowMessageListener()
-    }
-    return true
-  }
-
-  private onMessageReceived = (event: MessageEvent) => {
-    if (event.origin !== this.getTrezorBridgeOrigin() ||
-        event.type !== 'message' ||
-        !this.pending_requests_) {
-      return
-    }
-    const message = event.data as TrezorFrameCommand
-    if (!message || !this.pending_requests_.hasOwnProperty(message.id)) {
-      return
-    }
-    const callback = this.pending_requests_[message.id] as Function
-    callback.call(this, message)
-    this.removeEventListener(event.data.id)
-  }
-
-  private getBridge = () => {
-    return document.getElementById(kTrezorBridgeFrameId)
-  }
-
   private getAccountsFromDevice = async (paths: string[]): Promise<TrezorBridgeAccountsPayload> => {
     return new Promise(async (resolve, reject) => {
       const requestedPaths = []
@@ -150,7 +87,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       }
       // @ts-ignore
       const messageId: string = crypto.randomUUID()
-      this.addEventListener(messageId, (data: GetAccountsResponsePayload) => {
+      this.getTransport().addEventListener(messageId, (data: GetAccountsResponsePayload) => {
         if (data.payload.success) {
           let accounts = []
           for (const value of data.payload.payload as TrezorAccount[]) {
@@ -172,20 +109,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       })
       const message: GetAccountsCommand = { command: TrezorCommand.GetAccounts,
         id: messageId, paths: requestedPaths, origin: window.origin }
-      await this.postMessage(message)
-    })
-  }
-
-  private createBridge = () => {
-    return new Promise((resolve) => {
-      let element = document.createElement('iframe')
-      element.id = kTrezorBridgeFrameId
-      element.src = kTrezorBridgeUrl
-      element.style.display = 'none'
-      element.onload = () => {
-        resolve(element)
-      }
-      document.body.appendChild(element)
+      await this.getTransport().postMessage(message)
     })
   }
 
