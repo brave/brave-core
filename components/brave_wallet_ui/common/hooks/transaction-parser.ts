@@ -20,7 +20,8 @@ import {
   formatFiatBalance,
   formatFiatGasFee,
   formatGasFee,
-  formatGasFeeFromFiat
+  formatGasFeeFromFiat,
+  hexToNumber
 } from '../../utils/format-balances'
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
@@ -51,6 +52,8 @@ interface ParsedTransaction extends ParsedTransactionFees {
   symbol: string
   decimals: number
   insufficientFundsError: boolean
+  erc721TokenInfo?: TokenInfo
+  erc721TokenId?: string
 
   // Token approvals
   approvalTarget?: string
@@ -130,6 +133,36 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          ...feeDetails
+        } as ParsedTransaction
+      }
+
+      case transactionInfo.txType === TransactionType.ERC721TransferFrom: {
+        const [fromAddress, toAddress, tokenID] = txArgs
+        const token = findToken(to)
+
+        const feeDetails = parseTransactionFees(transactionInfo)
+        const { gasFeeFiat } = feeDetails
+        const totalAmountFiat = gasFeeFiat
+        const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
+
+        return {
+          hash: transactionInfo.txHash,
+          createdTime: transactionInfo.createdTime,
+          status: transactionInfo.txStatus,
+          sender: fromAddress,
+          senderLabel: getAddressLabel(transactionInfo.fromAddress),
+          recipient: toAddress,
+          recipientLabel: getAddressLabel(toAddress),
+          fiatValue: '0.00', // Display NFT values in the future
+          fiatTotal: totalAmountFiat,
+          nativeCurrencyTotal: formatGasFeeFromFiat(totalAmountFiat, findSpotPrice(selectedNetwork.symbol)),
+          value: '1', // Can only send 1 erc721 at a time
+          symbol: token?.symbol ?? '',
+          decimals: 0,
+          insufficientFundsError: insufficientNativeFunds,
+          erc721TokenInfo: token,
+          erc721TokenId: hexToNumber(tokenID ?? ''),
           ...feeDetails
         } as ParsedTransaction
       }

@@ -43,7 +43,7 @@ import {
   TransactionPlaceholderContainer
 } from './style'
 
-import { TransactionPlaceholderText } from '../portfolio/style'
+import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
 
 // Components
 import { BackButton, Tooltip } from '../../../shared'
@@ -165,6 +165,8 @@ function Accounts (props: Props) {
     }
   }, [selectedAccount, transactions])
 
+  const erc271Tokens = React.useMemo(() => selectedAccount?.tokens.filter((token) => token.asset.isErc721), [selectedAccount])
+
   return (
     <StyledWrapper>
       {selectedAccount &&
@@ -260,7 +262,7 @@ function Accounts (props: Props) {
           </WalletInfoRow>
           <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
           <SubDivider />
-          {selectedAccount.tokens.map((item) =>
+          {selectedAccount.tokens.filter((token) => !token.asset.isErc721).map((item) =>
             <PortfolioAssetItem
               key={item.asset.contractAddress}
               assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
@@ -268,6 +270,22 @@ function Accounts (props: Props) {
               token={item.asset}
             />
           )}
+          {erc271Tokens?.length !== 0 &&
+            <>
+              <Spacer />
+              <SubviewSectionTitle>{getLocale('braveWalletTopNavNFTS')}</SubviewSectionTitle>
+              <SubDivider />
+              {erc271Tokens?.map((item) =>
+                <PortfolioAssetItem
+                  key={item.asset.contractAddress}
+                  assetBalance={formatBalance(item.assetBalance, item.asset.decimals)}
+                  fiatBalance={item.fiatBalance}
+                  token={item.asset}
+                />
+              )}
+              <Spacer />
+            </>
+          }
           <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>
           <SubDivider />
           {transactionList.length !== 0 ? (

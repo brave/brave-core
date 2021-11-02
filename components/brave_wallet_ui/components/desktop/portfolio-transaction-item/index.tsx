@@ -168,15 +168,22 @@ const PortfolioTransactionItem = (props: Props) => {
 
       case transaction.txType === TransactionType.ETHSend:
       case transaction.txType === TransactionType.ERC20Transfer:
+      case transaction.txType === TransactionType.ERC721TransferFrom:
       default: {
         const text = getLocale('braveWalletTransactionSent')
         return (
-            <>
-              {displayAccountName ? text : toProperCase(text)}{` `}
-              <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
-                {transactionDetails.symbol}
-              </AddressOrAsset>
-            </>
+          <>
+            {displayAccountName ? text : toProperCase(text)}{` `}
+            <AddressOrAsset
+              // Disabled for ERC721 tokens until we have NFT meta data
+              disabled={transaction.txType === TransactionType.ERC721TransferFrom}
+              onClick={onAssetClick(transactionDetails.symbol)}
+            >
+              {transactionDetails.symbol}
+              {transaction.txType === TransactionType.ERC721TransferFrom
+                ? ` ` + transactionDetails.erc721TokenId : ''}
+            </AddressOrAsset>
+          </>
         )
       }
     }
@@ -223,6 +230,7 @@ const PortfolioTransactionItem = (props: Props) => {
 
       case transaction.txType === TransactionType.ETHSend:
       case transaction.txType === TransactionType.ERC20Transfer:
+      case transaction.txType === TransactionType.ERC721TransferFrom:
       default: {
         return (
           <DetailRow>
@@ -252,9 +260,9 @@ const PortfolioTransactionItem = (props: Props) => {
           <DetailRow>
             { // Display account name only if rendered under Portfolio view
               displayAccountName &&
-                <DetailTextLight>
-                  {account?.name}
-                </DetailTextLight>
+              <DetailTextLight>
+                {account?.name}
+              </DetailTextLight>
             }
             <DetailTextDark>
               {transactionIntentLocale}

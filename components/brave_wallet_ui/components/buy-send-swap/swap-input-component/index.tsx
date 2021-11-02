@@ -14,6 +14,7 @@ import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { withPlaceholderIcon } from '../../shared'
+import { hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -34,7 +35,8 @@ import {
   PasteButton,
   SlippageInput,
   WarningText,
-  AddressConfirmationText
+  AddressConfirmationText,
+  ButtonLeftSide
 } from './style'
 
 import { BubbleContainer } from '../shared-styles'
@@ -212,38 +214,42 @@ function SwapInputComponent (props: Props) {
     <BubbleContainer>
       {componentType !== 'selector' &&
         <>
-          <Row>
-            <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
+          {!selectedAsset?.asset.isErc721 &&
+            <Row>
+              <FromBalanceText componentType={componentType}>{getTitle()}</FromBalanceText>
 
-            {/* Limit orders on Swap are currently disabled.
+              {/* Limit orders on Swap are currently disabled.
               componentType === 'exchange' &&
                 <MarketLimitButton onClick={onToggleOrderType}>{orderType === 'market' ? locale.swapLimit : locale.swapMarket}</MarketLimitButton>
             */}
 
-            {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
-              <FromBalanceText>{getLocale('braveWalletBalance')}: {formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')}</FromBalanceText>
-            }
-            {componentType === 'toAddress' &&
-              <PasteButton onClick={onPaste}>
-                <PasteIcon />
-              </PasteButton>
-            }
-          </Row>
+              {componentType !== 'exchange' && componentType !== 'toAddress' && componentType !== 'buyAmount' &&
+                <FromBalanceText>{getLocale('braveWalletBalance')}: {formatWithCommasAndDecimals(selectedAssetBalance?.toString() ?? '')}</FromBalanceText>
+              }
+              {componentType === 'toAddress' &&
+                <PasteButton onClick={onPaste}>
+                  <PasteIcon />
+                </PasteButton>
+              }
+            </Row>
+          }
           <Row componentType={componentType}>
             {componentType === 'buyAmount' &&
               <AssetTicker>$</AssetTicker>
             }
-            <Input
-              componentType={componentType}
-              type={componentType === 'toAddress' ? 'text' : 'number'}
-              placeholder={componentType === 'toAddress' ? getLocale('braveWalletSendPlaceholder') : '0'}
-              value={componentType === 'toAddress' ? toAddressOrUrl : selectedAssetInputAmount}
-              name={inputName}
-              onChange={onInputChanged}
-              spellCheck={false}
-              hasError={componentType === 'fromAmount' && fromAmountHasErrors}
-              disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
-            />
+            {!selectedAsset?.asset.isErc721 &&
+              <Input
+                componentType={componentType}
+                type={componentType === 'toAddress' ? 'text' : 'number'}
+                placeholder={componentType === 'toAddress' ? getLocale('braveWalletSendPlaceholder') : '0'}
+                value={componentType === 'toAddress' ? toAddressOrUrl : selectedAssetInputAmount}
+                name={inputName}
+                onChange={onInputChanged}
+                spellCheck={false}
+                hasError={componentType === 'fromAmount' && fromAmountHasErrors}
+                disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
+              />
+            }
             {componentType === 'exchange' && orderType === 'market' &&
               <RefreshButton onClick={refresh}>
                 <RefreshIcon
@@ -253,14 +259,16 @@ function SwapInputComponent (props: Props) {
               </RefreshButton>
             }
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
-              <AssetButton onClick={onShowSelection}>
-                <AssetIconWithPlaceholder selectedAsset={selectedAsset?.asset} />
-                <AssetTicker>{selectedAsset?.asset.symbol}</AssetTicker>
+              <AssetButton isERC721={selectedAsset?.asset.isErc721} onClick={onShowSelection}>
+                <ButtonLeftSide>
+                  <AssetIconWithPlaceholder selectedAsset={selectedAsset?.asset} />
+                  <AssetTicker>{selectedAsset?.asset.symbol} {selectedAsset?.asset.isErc721 ? hexToNumber(selectedAsset?.asset.tokenId ?? '') : ''}</AssetTicker>
+                </ButtonLeftSide>
                 <CaratDownIcon />
               </AssetButton>
             }
           </Row>
-          {componentType === 'fromAmount' &&
+          {componentType === 'fromAmount' && !selectedAsset?.asset.isErc721 &&
             <PresetRow>
               {AmountPresetOptions().map((preset, idx) =>
                 <PresetButton

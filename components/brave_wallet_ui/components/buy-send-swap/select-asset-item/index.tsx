@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { AccountAssetOptionType } from '../../../constants/types'
 import { withPlaceholderIcon } from '../../shared'
+import { hexToNumber } from '../../../utils/format-balances'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -26,7 +28,7 @@ function SelectAssetItem (props: Props) {
     <StyledWrapper onClick={onSelectAsset}>
       <AssetIconWithPlaceholder selectedAsset={asset.asset} />
       <AssetAndBalance>
-        <AssetName>{asset.asset.name}</AssetName>
+        <AssetName>{asset.asset.name} {asset.asset.isErc721 ? hexToNumber(asset.asset.tokenId ?? '') : ''}</AssetName>
         <AssetBalance>{asset.asset.symbol}</AssetBalance>
       </AssetAndBalance>
     </StyledWrapper>

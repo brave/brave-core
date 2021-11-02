@@ -11,6 +11,7 @@ interface StyleProps {
   hasError: boolean
   isSelected: boolean
   isSlippage: boolean
+  isERC721: boolean
 }
 
 export const Row = styled.div<Partial<StyleProps>>`
@@ -30,17 +31,25 @@ export const FromBalanceText = styled.span<Partial<StyleProps>>`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const AssetButton = styled.button`
+export const AssetButton = styled.button<Partial<StyleProps>>`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  width: ${(p) => p.isERC721 ? '100%' : 'auto'};
   cursor: pointer;
   outline: none;
   background: none;
   border: none;
   padding: 0px;
   margin: 0px;
+`
+
+export const ButtonLeftSide = styled.div<Partial<StyleProps>>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `
 
 // Construct styled-component using JS object instead of string, for editor

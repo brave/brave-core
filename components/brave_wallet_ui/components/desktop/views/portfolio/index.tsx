@@ -62,7 +62,8 @@ import {
   EmptyTransactionContainer,
   TransactionPlaceholderText,
   AssetBalanceDisplay,
-  DividerRow
+  DividerRow,
+  Spacer
 } from './style'
 
 export interface Props {
@@ -234,7 +235,7 @@ const Portfolio = (props: Props) => {
     const filteredTransactions = Object.values(transactions).flatMap((txInfo) =>
       txInfo.flatMap((tx) =>
         parseTransaction(tx).symbol === selectedAsset?.symbol ? tx : []
-    ))
+      ))
 
     return sortTransactionByDate(filteredTransactions, 'descending')
   }, [selectedAsset, transactions])
@@ -250,6 +251,8 @@ const Portfolio = (props: Props) => {
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
   }, [])
+
+  const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
 
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
@@ -358,7 +361,7 @@ const Portfolio = (props: Props) => {
       {!selectedAsset &&
         <>
           <SearchBar placeholder={getLocale('braveWalletSearchText')} action={filterAssets} />
-          {filteredAssetList.map((item) =>
+          {filteredAssetList.filter((asset) => !asset.asset.isErc721).map((item) =>
             <PortfolioAssetItem
               action={selectAsset(item.asset)}
               key={item.asset.contractAddress}
@@ -367,6 +370,22 @@ const Portfolio = (props: Props) => {
               token={item.asset}
             />
           )}
+          {erc271Tokens.length !== 0 &&
+            <>
+              <Spacer />
+              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+              <SubDivider />
+              {erc271Tokens.map((item) =>
+                <PortfolioAssetItem
+                  action={selectAsset(item.asset)}
+                  key={item.asset.contractAddress}
+                  assetBalance={item.assetBalance}
+                  fiatBalance={item.fiatBalance}
+                  token={item.asset}
+                />
+              )}
+            </>
+          }
           <ButtonRow>
             <AddButton
               buttonType='secondary'
