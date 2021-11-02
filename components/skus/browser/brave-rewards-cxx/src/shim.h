@@ -9,10 +9,7 @@
 #include <functional>
 #include <memory>
 
-// NOTE: when running cxxbridge or examples/main.cc, comment out the following
-// `BRAVE_CORE_SHIM` define (please don't commit that change).
-#define BRAVE_CORE_SHIM
-#ifdef BRAVE_CORE_SHIM
+#ifndef NOT_BRAVE_CORE_SHIM
 #include "brave/components/skus/browser/skus_sdk_context.h"
 #include "brave/components/skus/browser/skus_sdk_fetcher.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -22,7 +19,7 @@ namespace brave_rewards {
 class SkusSdkContext {};
 class SkusSdkFetcher {};
 }  // namespace brave_rewards
-#endif  // BRAVE_CORE_SHIM
+#endif  // NOT_BRAVE_CORE_SHIM
 
 namespace brave_rewards {
 
@@ -34,22 +31,22 @@ struct WakeupContext;
 class SkusSdkFetcher;
 
 class RefreshOrderCallbackState {
-#ifdef BRAVE_CORE_SHIM
+#ifndef NOT_BRAVE_CORE_SHIM
  public:
   skus::mojom::SkusSdk::RefreshOrderCallback cb;
-#endif  // BRAVE_CORE_SHIM
+#endif  // NOT_BRAVE_CORE_SHIM
 };
 class FetchOrderCredentialsCallbackState {
-#ifdef BRAVE_CORE_SHIM
+#ifndef NOT_BRAVE_CORE_SHIM
  public:
   skus::mojom::SkusSdk::FetchOrderCredentialsCallback cb;
-#endif  // BRAVE_CORE_SHIM
+#endif  // NOT_BRAVE_CORE_SHIM
 };
 class PrepareCredentialsPresentationCallbackState {
-#ifdef BRAVE_CORE_SHIM
+#ifndef NOT_BRAVE_CORE_SHIM
  public:
   skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback cb;
-#endif  // BRAVE_CORE_SHIM
+#endif  // NOT_BRAVE_CORE_SHIM
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
