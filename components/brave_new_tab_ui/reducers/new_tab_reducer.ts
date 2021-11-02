@@ -42,8 +42,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         initialDataLoaded: true,
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
-        backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
-        brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper,
         ...initialDataPayload.privateTabData,
         ...initialDataPayload.torTabData,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
@@ -56,6 +54,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         // page view that the action occured on.
         braveTalkPromptDismissed: state.braveTalkPromptDismissed || state.braveTalkPromptAutoDismissed
       }
+
+      if (initialDataPayload.wallpaperData) {
+        state = {
+          ...state,
+          backgroundWallpaper: initialDataPayload.wallpaperData.backgroundWallpaper,
+          brandedWallpaper: initialDataPayload.wallpaperData.brandedWallpaper
+        }
+      }
+
       // It's super referral when backgound is false and it's not sponsored.
       if (state.brandedWallpaper && !state.brandedWallpaper.isSponsored) {
         // Update feature flag if this is super referral wallpaper.
