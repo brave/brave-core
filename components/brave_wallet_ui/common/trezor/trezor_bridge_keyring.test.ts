@@ -82,7 +82,7 @@ const createTrezorKeyring = (unlock: Boolean,
       }
     }
   }
-  hardwareKeyring._createBridge = async () => {
+  hardwareKeyring.createBridge = async () => {
     return hardwareKeyring
   }
 
@@ -190,7 +190,7 @@ test('Extracting accounts from unlocked device returned fail', () => {
   const error: TrezorError = { error: getLocale('braveWalletCreateBridgeError'),
     code: 'code' }
   const hardwareKeyring = createTrezorKeyring(true, { success: false, payload: error })
-  hardwareKeyring._getBridge = () => {
+  hardwareKeyring.getBridge = () => {
     return hardwareKeyring as any
   }
   const expected: TrezorBridgeAccountsPayload = {
@@ -214,7 +214,7 @@ test('Extracting accounts from unlocked device returned success', () => {
     }
   ]
   const hardwareKeyring = createTrezorKeyring(true, { success: true, payload: accounts })
-  hardwareKeyring._getBridge = () => {
+  hardwareKeyring.getBridge = () => {
     return hardwareKeyring as any
   }
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))

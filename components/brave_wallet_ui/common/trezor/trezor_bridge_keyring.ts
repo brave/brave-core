@@ -44,7 +44,16 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     if (!this.isUnlocked() && !(await this.unlock())) {
       return new Error(getLocale('braveWalletUnlockError'))
     }
-    return this._getAccounts(from, to, scheme)
+    const paths = []
+    for (let i = from; i <= to; i++) {
+      paths.push(this.getPathForIndex(i, scheme))
+    }
+
+    const accounts = await this.getAccountsFromDevice(paths)
+    if (!accounts.success) {
+      throw Error(accounts.error)
+    }
+    return accounts.accounts
   }
 
   isUnlocked = () => {
@@ -72,7 +81,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   private postMessage = async (command: TrezorFrameCommand) => {
     let bridge = this.getBridge() as HTMLIFrameElement
     if (!bridge) {
-      bridge = await this._createBridge() as HTMLIFrameElement
+      bridge = await this.createBridge() as HTMLIFrameElement
     }
     if (!bridge.contentWindow) {
       throw Error(getLocale('braveWalletCreateBridgeError'))
@@ -133,7 +142,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return document.getElementById(kTrezorBridgeFrameId)
   }
 
-  private getTrezorAccounts = async (paths: string[]): Promise<TrezorBridgeAccountsPayload> => {
+  private getAccountsFromDevice = async (paths: string[]): Promise<TrezorBridgeAccountsPayload> => {
     return new Promise(async (resolve, reject) => {
       const requestedPaths = []
       for (const path of paths) {
@@ -167,7 +176,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     })
   }
 
-  private _createBridge = () => {
+  private createBridge = () => {
     return new Promise((resolve) => {
       let element = document.createElement('iframe')
       element.id = kTrezorBridgeFrameId
@@ -180,7 +189,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     })
   }
 
-  private _getPathForIndex = (index: number, scheme: string) => {
+  private getPathForIndex = (index: number, scheme: string) => {
     if (scheme === TrezorDerivationPaths.Default) {
       return `m/44'/60'/0'/${index}`
     } else {
@@ -188,16 +197,4 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     }
   }
 
-  private _getAccounts = async (from: number, to: number, scheme: string) => {
-    const paths = []
-    for (let i = from; i <= to; i++) {
-      paths.push(this._getPathForIndex(i, scheme))
-    }
-
-    const accounts = await this.getTrezorAccounts(paths)
-    if (!accounts.success) {
-      throw Error(accounts.error)
-    }
-    return accounts.accounts
-  }
 }
