@@ -49,6 +49,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_p2a.h"
+#include "brave/components/brave_ads/browser/ads_storage_cleanup.h"
 #include "brave/components/brave_ads/browser/frequency_capping_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "brave/components/brave_ads/browser/service_sandbox_type.h"
@@ -702,6 +703,12 @@ void AdsServiceImpl::OnInitialize(const bool success) {
   MaybeOpenNewTabWithAd();
 
   StartCheckIdleStateTimer();
+
+  if (!deprecated_data_files_removed_) {
+    deprecated_data_files_removed_ = true;
+    file_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
+  }
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
