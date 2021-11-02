@@ -192,3 +192,10 @@ export const DividerRow = styled.div`
   flex-direction: row;
   width: 100%;
 `
+
+export const Spacer = styled.div`
+  display: flex;
+  height: 2px;
+  width: 100%;
+  margin-top: 10px;
+`

@@ -20,6 +20,7 @@ import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { formatBalance, toWeiHex } from '../../../utils/format-balances'
 import { getLocale } from '../../../../common/locale'
 import { usePricing, useTransactionParser } from '../../../common/hooks'
+import { withPlaceholderIcon } from '../../shared'
 
 import { NavButton, PanelTab, TransactionDetailBox } from '../'
 import EditGas, { MaxPriorityPanels } from '../edit-gas'
@@ -53,7 +54,8 @@ import {
   QueueStepText,
   QueueStepRow,
   QueueStepButton,
-  TopColumn
+  TopColumn,
+  AssetIcon
 } from './style'
 
 import {
@@ -202,6 +204,10 @@ function ConfirmTransactionPanel (props: Props) {
     })
   }
 
+  const AssetIconWithPlaceholder = React.useMemo(() => {
+    return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
+  }, [])
+
   if (isEditing) {
     return (
       <EditGas
@@ -276,8 +282,18 @@ function ConfirmTransactionPanel (props: Props) {
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
           <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
-          <TransactionAmmountBig>{transactionDetails.value} {transactionDetails.symbol}</TransactionAmmountBig>
-          <TransactionFiatAmountBig>${transactionDetails.fiatValue}</TransactionFiatAmountBig>
+          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
+            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721TokenInfo} />
+          }
+          <TransactionAmmountBig>
+            {transactionInfo.txType === TransactionType.ERC721TransferFrom
+              ? transactionDetails.erc721TokenInfo?.name + ' ' + transactionDetails.erc721TokenId
+              : transactionDetails.value + ' ' + transactionDetails.symbol
+            }
+          </TransactionAmmountBig>
+          {transactionInfo.txType !== TransactionType.ERC721TransferFrom &&
+            <TransactionFiatAmountBig>${transactionDetails.fiatValue}</TransactionFiatAmountBig>
+          }
         </>
       )}
       <TabRow>

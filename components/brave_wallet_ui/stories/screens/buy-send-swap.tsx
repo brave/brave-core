@@ -128,7 +128,10 @@ function BuySendSwap (props: Props) {
     onSelectSendAsset
   } = props
 
-  React.useMemo(() => {
+  // Switched this to useLayoutEffect to fix bad setState call error
+  // that was accouring when you would switch to a network that doesn't
+  // support swap and buy.
+  React.useLayoutEffect(() => {
     if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
       onSelectTab('send')
     }

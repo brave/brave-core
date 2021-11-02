@@ -9,7 +9,9 @@ import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
   SelectWrapper,
-  SelectScrollSearchContainer
+  SelectScrollSearchContainer,
+  DivderTextWrapper,
+  DividerText
 } from '../shared-styles'
 
 export interface Props {
@@ -45,6 +47,8 @@ function SelectAsset (props: Props) {
     }
   }, [fuse, assets])
 
+  const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.asset.isErc721), [filteredAssetList])
+
   return (
     <SelectWrapper>
       <Header title={getLocale('braveWalletSelectAsset')} onBack={onBack} />
@@ -59,6 +63,21 @@ function SelectAsset (props: Props) {
               onSelectAsset={onSelectAsset(asset)}
             />
           )
+        }
+        {erc271Tokens.length > 0 &&
+          <>
+            <DivderTextWrapper>
+              <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+            </DivderTextWrapper>
+            {erc271Tokens.map((asset: AccountAssetOptionType) =>
+              <SelectAssetItem
+                key={asset.asset.contractAddress}
+                asset={asset}
+                onSelectAsset={onSelectAsset(asset)}
+              />
+            )
+            }
+          </>
         }
       </SelectScrollSearchContainer>
     </SelectWrapper>
