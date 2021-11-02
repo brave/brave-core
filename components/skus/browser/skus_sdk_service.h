@@ -16,15 +16,14 @@
 
 class PrefService;
 
-// namespace brave_rewards {
-// class SkusSdkContext;
-// }  // namespace brave_rewards
-
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-// TODO(bsclifton): description here
+// This service is wrapping the calls to our SKU SDK
+//
+// For more information, please see:
+// https://github.com/brave-intl/br-rs/tree/skus
 class SkusSdkService : public KeyedService {
  public:
   explicit SkusSdkService(
@@ -44,6 +43,9 @@ class SkusSdkService : public KeyedService {
       const std::string& domain,
       const std::string& path,
       skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback callback);
+  void CredentialSummary(
+      const std::string& domain,
+      skus::mojom::SkusSdk::CredentialSummaryCallback callback);
 
  private:
   std::unique_ptr<brave_rewards::SkusSdkContext> context_;

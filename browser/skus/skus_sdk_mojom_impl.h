@@ -34,6 +34,8 @@ class SkusSdkMojomImpl final : public skus::mojom::SkusSdk {
       const std::string& domain,
       const std::string& path,
       PrepareCredentialsPresentationCallback callback) override;
+  void CredentialSummary(const std::string& domain,
+                         CredentialSummaryCallback callback) override;
 
  private:
   SkusSdkService* service_;
