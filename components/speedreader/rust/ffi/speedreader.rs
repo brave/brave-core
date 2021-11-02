@@ -68,8 +68,7 @@ pub struct CRewriter {
     _private: [u8; 0],
 }
 
-/// New instance of SpeedReader. Loads the default configuration and rewriting
-/// whitelists. Must be freed by calling `speedreader_free`.
+/// New instance of SpeedReader. Must be freed by calling `speedreader_free`.
 #[no_mangle]
 pub extern "C" fn speedreader_new() -> *mut SpeedReader {
     to_ptr_mut(SpeedReader::default())
@@ -81,12 +80,15 @@ pub extern "C" fn speedreader_free(speedreader: *mut SpeedReader) {
     drop(to_box!(speedreader));
 }
 
-/// Returns SpeedReader rewriter instance for the given URL. If provided
-/// `rewriter_type` is `RewriterUnknown`, will look it up in the whitelist
-/// and default to heuristics-based rewriter if none found in the whitelist.
+/// Returns SpeedReader rewriter instance for the given URL.
+///
+/// If the provided `rewriter_type` is `RewriterUnknown`, it will default
+/// to the heuristics-based rewriter.
+///
 /// Returns NULL if no URL provided or initialization fails.
-/// Results of rewriting sent to `output_sink` callback function.
-/// MUST be finished with `rewriter_end` which will free
+///
+/// Results of rewriting are sent to `output_sink` callback function.
+/// MUST be finished with `rewriter_end` which will free the
 /// associated memory.
 #[no_mangle]
 pub extern "C" fn rewriter_new(
