@@ -27,6 +27,7 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
@@ -45,6 +46,8 @@ public class TxFragment extends Fragment {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
             return ((BuySendSwapActivity) activity).getAssetRatioController();
+        } else if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getAssetRatioController();
         }
 
         return null;
@@ -54,6 +57,8 @@ public class TxFragment extends Fragment {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
             return ((BuySendSwapActivity) activity).getEthTxController();
+        } else if (activity instanceof BraveWalletActivity) {
+            return ((BraveWalletActivity) activity).getEthTxController();
         }
 
         return null;
