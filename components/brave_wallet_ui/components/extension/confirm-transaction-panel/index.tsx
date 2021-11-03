@@ -208,6 +208,13 @@ function ConfirmTransactionPanel (props: Props) {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
   }, [])
 
+  const transactionTitle = React.useMemo(
+    (): string =>
+      transactionDetails.isSwap
+        ? getLocale('braveWalletSwap')
+        : getLocale('braveWalletSend')
+    , [transactionDetails])
+
   if (isEditing) {
     return (
       <EditGas
@@ -281,14 +288,14 @@ function ConfirmTransactionPanel (props: Props) {
             <ArrowIcon />
             <AccountNameText>{reduceAddress(transactionDetails.recipient)}</AccountNameText>
           </FromToRow>
-          <TransactionTypeText>{getLocale('braveWalletSend')}</TransactionTypeText>
+          <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
             <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721TokenInfo} />
           }
           <TransactionAmmountBig>
             {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-             transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
+              transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
               ? transactionDetails.erc721TokenInfo?.name + ' ' + transactionDetails.erc721TokenId
               : transactionDetails.value + ' ' + transactionDetails.symbol
             }

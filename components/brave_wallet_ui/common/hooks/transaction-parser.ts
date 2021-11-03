@@ -54,6 +54,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   insufficientFundsError: boolean
   erc721TokenInfo?: TokenInfo
   erc721TokenId?: string
+  isSwap?: boolean
 
   // Token approvals
   approvalTarget?: string
@@ -224,6 +225,7 @@ export function useTransactionParser (
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: Number(totalAmountFiat) > Number(accountsNativeFiatBalance),
+          isSwap: transactionInfo.txData.baseData.to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
         } as ParsedTransaction
       }
