@@ -109,7 +109,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_recovery_phrase_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

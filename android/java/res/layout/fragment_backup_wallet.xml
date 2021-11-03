@@ -68,7 +68,7 @@
             android:layout_marginBottom="40dp"/>
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_backup_wallet_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -429,7 +429,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_buy_send_swap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -132,7 +132,7 @@
             android:textColorHint="@color/wallet_edittext_outline_color" />
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_restore_wallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
