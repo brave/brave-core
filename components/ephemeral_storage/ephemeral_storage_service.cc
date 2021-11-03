@@ -13,6 +13,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/site_instance.h"
 #include "net/base/features.h"
 
 namespace ephemeral_storage {
@@ -32,12 +33,13 @@ EphemeralStorageService::~EphemeralStorageService() {}
 void EphemeralStorageService::CanEnable1PESForUrl(
     const GURL& url,
     base::OnceCallback<void(bool can_enable_1pes)> callback) const {
+  auto site_instance = content::SiteInstance::CreateForURL(context_, url);
+  auto* storage_partition = context_->GetStoragePartition(site_instance.get());
   base::SequencedTaskRunnerHandle::Get()->PostTask(
       FROM_HERE,
       base::BindOnce(&UrlStorageChecker::StartCheck,
                      base::MakeRefCounted<UrlStorageChecker>(
-                         context_->GetStoragePartitionForUrl(url, true), url,
-                         std::move(callback))));
+                         storage_partition, url, std::move(callback))));
 }
 
 void EphemeralStorageService::Set1PESEnabledForUrl(const GURL& url,
