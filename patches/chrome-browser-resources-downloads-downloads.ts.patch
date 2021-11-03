@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/downloads/downloads.ts b/chrome/browser/resources/downloads/downloads.ts
-index 9f65f8a15761c67888eba6c64a9677b12470de6c..ff6d557774dcefc7a3a5914f900448f5788becd6 100644
+index 5eb97207ad0a632d34a960f064c2a55be267baeb..a80a5062d53eea16434b65f5ecea8a69b8e96768 100644
 --- a/chrome/browser/resources/downloads/downloads.ts
 +++ b/chrome/browser/resources/downloads/downloads.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index 9f65f8a15761c67888eba6c64a9677b12470de6c..ff6d557774dcefc7a3a5914f900448f5
 +import 'chrome://brave-resources/polymer_overriding.js'
  import './manager.js';
  
- export {BrowserProxy} from './browser_proxy.js';
+ export {CrToastManagerElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast_manager.js';
