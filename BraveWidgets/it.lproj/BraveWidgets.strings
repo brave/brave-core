@@ -6,11 +6,11 @@
 
 "5ixvGX-xcI3h9" = "There are ${count} options matching ‘Ads Blocked’.";
 
-"7JYzOv" = "Stat Kind";
+"7JYzOv" = "Type";
 
-"8vyYRy" = "Slot 3";
+"8vyYRy" = "#3";
 
-"9E2oRR" = "Slot 1";
+"9E2oRR" = "#1";
 
 "AGMpus" = "Shortcuts Configuration";
 
@@ -74,7 +74,7 @@
 
 "gpCwrM" = "Stats Configuration";
 
-"joEZJM" = "Slot 2";
+"joEZJM" = "#2";
 
 "nthxSL" = "Downloads";
 
@@ -108,6 +108,8 @@
 
 "tNCrcE-vs094F" = "There are ${count} options matching ‘New Private Tab’.";
 
+"tVvJ9c" = "Stats Configuration Widget";
+
 "tYwiRd" = "Est. Time Saved";
 
 "vjA5pZ" = "Est. Data Saved";
@@ -115,4 +117,6 @@
 "vs094F" = "New Private Tab";
 
 "xcI3h9" = "Ads Blocked";
+
+"ziTvSZ" = "Stats Configuration Widget";
 
