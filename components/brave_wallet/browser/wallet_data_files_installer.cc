@@ -49,6 +49,40 @@ static_assert(base::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
 
 absl::optional<base::Version> last_installed_wallet_version;
 
+std::vector<mojom::ERCTokenPtr> TokenListReady(
+    const base::FilePath& install_dir,
+    base::Value manifest) {
+  std::vector<mojom::ERCTokenPtr> erc_tokens;
+  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
+  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
+  // requires IO so it can only be done in this function.
+  const base::FilePath absolute_install_dir =
+      base::MakeAbsoluteFilePath(install_dir);
+
+  if (absolute_install_dir.empty()) {
+    LOG(ERROR) << "Failed to get absolute install path.";
+    return erc_tokens;
+  }
+
+  const base::FilePath token_list_json_path =
+      absolute_install_dir.AppendASCII("contract-map.json");
+  std::string token_list_json;
+  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
+    LOG(ERROR) << "Can't read token list file.";
+  }
+
+  if (!ParseTokenList(token_list_json, &erc_tokens)) {
+    LOG(ERROR) << "Can't parse token list.";
+    erc_tokens.clear();
+  }
+
+  return erc_tokens;
+}
+
+void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr> erc_tokens) {
+  ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
+}
+
 }  // namespace
 
 class WalletDataFilesInstallerPolicy
@@ -74,11 +108,6 @@ class WalletDataFilesInstallerPolicy
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
-
-  std::vector<mojom::ERCTokenPtr> TokenListReady(
-      const base::FilePath& install_dir,
-      base::Value manifest);
-  void UpdateTokenRegistry(std::vector<mojom::ERCTokenPtr>);
 
   WalletDataFilesInstallerPolicy(const WalletDataFilesInstallerPolicy&) =
       delete;
@@ -113,10 +142,8 @@ void WalletDataFilesInstallerPolicy::ComponentReady(
   last_installed_wallet_version = version;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(&WalletDataFilesInstallerPolicy::TokenListReady,
-                     base::Unretained(this), path, std::move(manifest)),
-      base::BindOnce(&WalletDataFilesInstallerPolicy::UpdateTokenRegistry,
-                     base::Unretained(this)));
+      base::BindOnce(TokenListReady, path, std::move(manifest)),
+      base::BindOnce(UpdateTokenRegistry));
 }
 
 bool WalletDataFilesInstallerPolicy::VerifyInstallation(
@@ -143,41 +170,6 @@ std::string WalletDataFilesInstallerPolicy::GetName() const {
 update_client::InstallerAttributes
 WalletDataFilesInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
-}
-
-std::vector<mojom::ERCTokenPtr> WalletDataFilesInstallerPolicy::TokenListReady(
-    const base::FilePath& install_dir,
-    base::Value manifest) {
-  std::vector<mojom::ERCTokenPtr> erc_tokens;
-  // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
-  // absolute paths to avoid unexpected failure. base::MakeAbsoluteFilePath()
-  // requires IO so it can only be done in this function.
-  const base::FilePath absolute_install_dir =
-      base::MakeAbsoluteFilePath(install_dir);
-
-  if (absolute_install_dir.empty()) {
-    LOG(ERROR) << "Failed to get absolute install path.";
-    return erc_tokens;
-  }
-
-  const base::FilePath token_list_json_path =
-      absolute_install_dir.AppendASCII("contract-map.json");
-  std::string token_list_json;
-  if (!base::ReadFileToString(token_list_json_path, &token_list_json)) {
-    LOG(ERROR) << "Can't read token list file.";
-  }
-
-  if (!ParseTokenList(token_list_json, &erc_tokens)) {
-    LOG(ERROR) << "Can't parse token list.";
-    erc_tokens.clear();
-  }
-
-  return erc_tokens;
-}
-
-void WalletDataFilesInstallerPolicy::UpdateTokenRegistry(
-    std::vector<mojom::ERCTokenPtr> erc_tokens) {
-  ERCTokenRegistry::GetInstance()->UpdateTokenList(std::move(erc_tokens));
 }
 
 void RegisterWalletDataFilesComponent(
