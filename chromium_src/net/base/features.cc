@@ -5,8 +5,14 @@
 
 #include "../../../../net/base/features.cc"
 
+#include "base/feature_override.h"
+
 namespace net {
 namespace features {
+
+ENABLE_FEATURE_BY_DEFAULT(kLegacyTLSEnforced);
+
+DISABLE_FEATURE_BY_DEFAULT(kFirstPartySets);
 
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
                                            base::FEATURE_ENABLED_BY_DEFAULT};
