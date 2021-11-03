@@ -24,45 +24,23 @@
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
-#include "components/autofill/core/common/autofill_features.h"
-#include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
-#include "components/federated_learning/features/features.h"
-#include "components/feed/feed_feature_list.h"
-#include "components/language/core/common/language_experiments.h"
-#include "components/network_time/network_time_tracker.h"
-#include "components/offline_pages/core/offline_page_feature.h"
-#include "components/omnibox/common/omnibox_features.h"
-#include "components/password_manager/core/common/password_manager_features.h"
-#include "components/reading_list/features/reading_list_switches.h"
-#include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
-#include "components/translate/core/browser/translate_prefs.h"
 #include "components/variations/variations_switches.h"
-#include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
-#include "media/base/media_switches.h"
-#include "net/base/features.h"
-#include "services/device/public/cpp/device_features.h"
-#include "services/network/public/cpp/features.h"
-#include "third_party/blink/public/common/features.h"
-#include "ui/base/ui_base_features.h"
 
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #else
-#include "chrome/browser/apps/app_discovery_service/app_discovery_features.h"
-#include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #endif
 
@@ -210,76 +188,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
                                  kVariationsServerURL.c_str());
 
-  // Enabled features.
-  std::unordered_set<const char*> enabled_features = {
-    // Upgrade all mixed content
-    blink::features::kMixedContentAutoupgrade.name,
-    password_manager::features::kPasswordImport.name,
-    net::features::kLegacyTLSEnforced.name,
-    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
-    // on this feature.
-    features::kWebUIDarkMode.name,
-    blink::features::kPrefetchPrivacyChanges.name,
-    blink::features::kReducedReferrerGranularity.name,
-#if defined(OS_WIN)
-    features::kWinrtGeolocationImplementation.name,
-#endif
-    security_state::features::kSafetyTipUI.name,
-  };
+  // Runtime-enabled features. To override Chromium features default state
+  // please see: brave/chromium_src/base/feature_override.h
+  std::unordered_set<const char*> enabled_features = {};
 
-  // Disabled features.
-  std::unordered_set<const char*> disabled_features = {
-#if !defined(OS_ANDROID)
-    apps::kAppDiscoveryRemoteUrlSearch.name,
-#endif
-    autofill::features::kAutofillEnableAccountWalletStorage.name,
-    autofill::features::kAutofillServerCommunication.name,
-    blink::features::kAdInterestGroupAPI.name,
-    blink::features::kComputePressure.name,
-    blink::features::kConversionMeasurement.name,
-    blink::features::kFledge.name,
-    blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
-    blink::features::kInterestCohortAPIOriginTrial.name,
-    blink::features::kInterestCohortFeaturePolicy.name,
-    blink::features::kInterestGroupStorage.name,
-    blink::features::kNavigatorPluginsFixed.name,
-    blink::features::kParakeet.name,
-    blink::features::kPrerender2.name,
-    blink::features::kReportAllJavaScriptFrameworks.name,
-    blink::features::kSpeculationRulesPrefetchProxy.name,
-    blink::features::kTextFragmentAnchor.name,
-    blink::features::kWebSQLInThirdPartyContextEnabled.name,
-#if !defined(OS_ANDROID)
-    features::kCopyLinkToText.name,
-#endif
-    features::kDirectSockets.name,
-    features::kIdleDetection.name,
-    features::kNotificationTriggers.name,
-    features::kSignedExchangeSubresourcePrefetch.name,
-    features::kSubresourceWebBundles.name,
-#if defined(OS_ANDROID)
-    features::kWebNfc.name,
-#endif
-    features::kWebOTP.name,
-    features::kTabGroupsFeedback.name,
-    federated_learning::kFederatedLearningOfCohorts.name,
-    federated_learning::kFlocIdComputedEventLogging.name,
-#if defined(OS_ANDROID)
-    feed::kInterestFeedContentSuggestions.name,
-    feed::kInterestFeedV2.name,
-#endif
-    media::kLiveCaption.name,
-    net::features::kFirstPartySets.name,
-    network::features::kTrustTokens.name,
-    network_time::kNetworkTimeServiceQuerying.name,
-#if defined(OS_ANDROID)
-    offline_pages::kPrefetchingOfflinePagesFeature.name,
-#endif
-    reading_list::switches::kReadLater.name,
-#if defined(OS_ANDROID)
-    translate::kTranslate.name,
-#endif
-  };
+  // Runtime-disabled features. To override Chromium features default state
+  // please see: brave/chromium_src/base/feature_override.h
+  std::unordered_set<const char*> disabled_features = {};
 
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableDnsOverHttps)) {

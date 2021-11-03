@@ -6,6 +6,7 @@ include_rules = [
   "+../../../../../../chrome/browser/android/omnibox",
   "+../../../../../../chrome/browser/android/preferences",
   "+../../../../../../chrome/browser/android/signin",
+  "+../../../../../../chrome/browser/apps/app_discovery_service",
   "+../../../../../chrome/browser/autocomplete",
   "+../../../../../chrome/browser/bitmap_fetcher",
   "+../../../../../chrome/browser/bookmarks",
