@@ -15,7 +15,7 @@
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -43,9 +43,6 @@
 #include "brave/components/ipfs/features.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/features.h"
-#endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #include "brave/components/decentralized_dns/features.h"
@@ -298,16 +295,12 @@ constexpr char kFileSystemAccessAPIDescription[] =
 #define BRAVE_IPFS_FEATURE_ENTRIES
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                  \
     {"native-brave-wallet",                                                  \
      flag_descriptions::kNativeBraveWalletName,                              \
      flag_descriptions::kNativeBraveWalletDescription,                       \
      kOsDesktop | flags_ui::kOsAndroid,                                      \
      FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},
-#else
-#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
-#endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                           \

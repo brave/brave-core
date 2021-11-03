@@ -19,7 +19,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -33,9 +32,6 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#endif
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -85,7 +81,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(ENABLE_IPFS)
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
   } else if (host == kWalletPageHost) {
     if (brave_wallet::IsNativeWalletEnabled()) {
       auto default_wallet = brave_wallet::GetDefaultWallet(profile->GetPrefs());
@@ -98,7 +94,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #endif
   } else if (host == kWalletPanelHost) {
     return new WalletPanelUI(web_ui);
-#endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
+#endif  // BUILDFLAG(OS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   } else if (host == kVPNPanelHost) {
     if (brave_vpn::IsBraveVPNEnabled()) {
@@ -143,7 +139,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
       (url.host_piece() == kVPNPanelHost && brave_vpn::IsBraveVPNEnabled()) ||
 #endif
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && !defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
       url.host_piece() == kWalletPageHost ||
 #endif

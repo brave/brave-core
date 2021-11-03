@@ -16,7 +16,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/features.h"
@@ -132,9 +131,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   const bool is_guest_session = browser_->profile()->IsGuestSession();
   if (!is_guest_session) {
     UpdateCommandForBraveRewards();
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
     UpdateCommandForBraveWallet();
-#endif
     if (switches::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
   }

@@ -5,17 +5,12 @@
 
 #include "../../../../../chrome/browser/permissions/chrome_permissions_client.cc"
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#endif
 
 bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
     const GURL& requesting_origin,
     const GURL& embedding_origin,
     ContentSettingsType type) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   // Since requesting_origin has been overwritten by us to add address info,
   // it will fail Chromium's origin check because requesting_origin is now
   // different from the embedding_origin. To address this, we get the original
@@ -29,7 +24,6 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
       GURL(original_requesting_origin) == embedding_origin) {
     return true;
   }
-#endif
 
   return CanBypassEmbeddingOriginCheck(requesting_origin, embedding_origin);
 }

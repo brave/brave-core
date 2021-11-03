@@ -24,7 +24,6 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -80,7 +79,7 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
-#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED) && BUILDFLAG(BRAVE_WALLET_ENABLED)
+#if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
   callback = base::BindRepeating(
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);

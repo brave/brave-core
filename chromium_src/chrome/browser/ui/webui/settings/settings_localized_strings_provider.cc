@@ -11,7 +11,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
@@ -22,10 +21,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#endif
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -464,11 +460,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
               GURL(extension_urls::GetWebstoreExtensionsCategoryURL()),
               g_browser_process->GetApplicationLocale())
               .spec()));
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   html_source->AddString("autoLockMinutesValue",
                          std::to_string(profile->GetPrefs()->GetInteger(
                              kBraveWalletAutoLockMinutes)));
-#endif
   html_source->AddString(
       "ipfsStorageMaxValue",
       std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));

@@ -9,7 +9,6 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -119,11 +118,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#else
-  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
@@ -155,10 +150,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   else
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
-
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
@@ -193,10 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
-
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
@@ -232,10 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(tor_browser);
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
-
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(

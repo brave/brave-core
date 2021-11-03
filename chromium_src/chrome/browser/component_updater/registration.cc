@@ -9,12 +9,8 @@
 #include "../../../../../chrome/browser/component_updater/registration.cc"  // NOLINT
 #undef RegisterComponentsForUpdate
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#endif
 
 namespace component_updater {
 
@@ -23,10 +19,8 @@ void RegisterComponentsForUpdate(bool is_off_the_record_profile,
                                  const base::FilePath& profile_path) {
   RegisterComponentsForUpdate_ChromiumImpl(is_off_the_record_profile,
                                            profile_prefs, profile_path);
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   ComponentUpdateService* cus = g_browser_process->component_updater();
   brave_wallet::RegisterWalletDataFilesComponent(cus);
-#endif
 }
 
 }  // namespace component_updater

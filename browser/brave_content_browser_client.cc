@@ -18,6 +18,11 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
+#include "brave/browser/brave_wallet/keyring_controller_factory.h"
+#include "brave/browser/brave_wallet/rpc_controller_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
@@ -42,7 +47,9 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
@@ -152,24 +159,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_drm_tab_helper.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
-#include "brave/browser/brave_wallet/keyring_controller_factory.h"
-#include "brave/browser/brave_wallet/rpc_controller_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#if !defined(OS_ANDROID)
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#else
-#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
-#endif
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_ui.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
@@ -183,11 +172,15 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #endif
 
 #if defined(OS_ANDROID)
 #include "brave/browser/brave_ads/brave_ads_host_android.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_android.h"
 #elif BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/brave_ads/brave_ads_host.h"
 #endif  // defined(OS_ANDROID)
@@ -245,7 +238,6 @@ void BindCosmeticFiltersResources(
                                 std::move(receiver)));
 }
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
@@ -291,7 +283,6 @@ void MaybeBindBraveWalletProvider(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
       std::move(receiver));
 }
-#endif
 
 void BindBraveSearchFallbackHost(
     int process_id,
@@ -439,7 +430,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveAdsHost));
   }
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled()) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
@@ -449,7 +439,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_wallet::mojom::PanelHandlerFactory, WalletPanelUI>(map);
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, WalletPageUI>(map);
-#endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
   if (brave_vpn::IsBraveVPNEnabled()) {

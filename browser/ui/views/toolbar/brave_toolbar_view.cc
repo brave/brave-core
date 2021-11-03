@@ -14,7 +14,6 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
@@ -28,12 +27,9 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/event.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -157,7 +153,6 @@ void BraveToolbarView::Init() {
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImageAndText();
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (brave_wallet::IsNativeWalletEnabled() &&
       brave_wallet::IsAllowedForContext(profile)) {
     wallet_ = new WalletButton(GetAppMenuButton(), profile->GetPrefs());
@@ -169,7 +164,6 @@ void BraveToolbarView::Init() {
     AddChildViewAt(wallet_, GetIndexOf(GetAppMenuButton()) - 1);
     wallet_->UpdateImageAndText();
   }
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled()) {
