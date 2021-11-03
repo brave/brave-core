@@ -541,14 +541,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          R"(
                            new Promise(function (resolve, reject) {
                              var s = document.createElement('script');
@@ -575,14 +575,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  EXPECT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   // Check also an explicit request for a script since it is a common real-world
   // scenario.
-  EXPECT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  EXPECT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          R"(
                            new Promise(function (resolve, reject) {
                              var s = document.createElement('script');
@@ -1205,7 +1205,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 1, 0);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -1214,7 +1214,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   contents = browser()->tab_strip_model()->GetActiveWebContents();
 
-  ASSERT_EQ(true, EvalJs(contents->GetAllFrames()[1],
+  ASSERT_EQ(true, EvalJs(ChildFrameAt(contents, 0),
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js?1')"));
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
