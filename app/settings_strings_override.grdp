@@ -95,7 +95,7 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="not chromeos">
+  <if expr="not chromeos and not lacros">
     </if>
 
   <if expr="not chromeos and not lacros">
