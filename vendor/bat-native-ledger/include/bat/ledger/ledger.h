@@ -330,6 +330,8 @@ class LEDGER_EXPORT Ledger {
   virtual void DisconnectWallet(const std::string& wallet_type,
                                 ResultCallback callback) = 0;
 
+  virtual void DisconnectExternalWallets(ResultCallback callback) = 0;
+
   virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
 
   virtual void GetAnonWalletStatus(ResultCallback callback) = 0;

@@ -887,6 +887,19 @@ void BatLedgerImpl::DisconnectWallet(
                 _1));
 }
 
+void BatLedgerImpl::DisconnectExternalWallets(
+    DisconnectExternalWalletsCallback callback) {
+  auto weak_self = AsWeakPtr();
+  auto shared_callback =
+      std::make_shared<DisconnectExternalWalletsCallback>(std::move(callback));
+
+  ledger_->DisconnectExternalWallets(
+      [weak_self, shared_callback](ledger::type::Result result) {
+        if (weak_self)
+          std::move(*shared_callback).Run(result);
+      });
+}
+
 // static
 void BatLedgerImpl::OnGetAnonWalletStatus(
     CallbackHolder<GetAnonWalletStatusCallback>* holder,

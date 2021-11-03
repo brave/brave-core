@@ -1786,6 +1786,7 @@ void RewardsDOMHandler::ProcessRewardsPageUrl(base::Value::ConstListView args) {
   AllowJavascript();
   const std::string path = args[0].GetString();
   const std::string query = args[1].GetString();
+  LOG(ERROR) << "ZENPARSING: " << path << " # " << query;
   rewards_service_->ProcessRewardsPageUrl(
       path, query,
       base::BindOnce(&RewardsDOMHandler::OnProcessRewardsPageUrl,

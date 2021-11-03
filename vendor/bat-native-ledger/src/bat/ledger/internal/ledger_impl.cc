@@ -805,6 +805,10 @@ void LedgerImpl::DisconnectWallet(const std::string& wallet_type,
   });
 }
 
+void LedgerImpl::DisconnectExternalWallets(ResultCallback callback) {
+  WhenReady([this, callback]() { wallet()->DisconnectAllWallets(callback); });
+}
+
 void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
   WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
 }

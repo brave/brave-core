@@ -471,4 +471,27 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {
   EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DisconnectOnAuthorization) {
+  response_->SetVerifiedWallet(true);
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
+
+  base::RunLoop run_loop;
+
+  rewards_service_->ProcessRewardsPageUrl(
+      "/uphold/authorization", "?code=deadbeef",
+      base::BindLambdaForTesting(
+          [&run_loop](const ledger::type::Result result,
+                      const std::string& wallet_type, const std::string& action,
+                      const base::flat_map<std::string, std::string>& args) {
+            run_loop.Quit();
+          }));
+
+  // TODO(zenparsing): Test to make sure that the previous wallet has been
+  // disconnected.
+
+  run_loop.Run();
+}
+
 }  // namespace rewards_browsertest

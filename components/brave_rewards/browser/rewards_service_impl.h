@@ -500,6 +500,12 @@ class RewardsServiceImpl : public RewardsService,
     const ledger::type::Result result,
     const base::flat_map<std::string, std::string>& args);
 
+  void OnDisconnectWalletsForAuthorization(
+      const std::string& wallet_type,
+      const base::flat_map<std::string, std::string>& args,
+      ExternalWalletAuthorizationCallback callback,
+      ledger::type::Result result);
+
   void OnDisconnectWallet(
     const std::string& wallet_type,
     const ledger::type::Result result);

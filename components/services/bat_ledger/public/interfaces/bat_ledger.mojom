@@ -137,6 +137,8 @@ interface BatLedger {
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
 
+  DisconnectExternalWallets() => (ledger.mojom.Result result);
+
   GetAnonWalletStatus() => (ledger.mojom.Result result);
 
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);

@@ -265,6 +265,8 @@ class LedgerImpl : public Ledger {
   void DisconnectWallet(const std::string& wallet_type,
                         ResultCallback callback) override;
 
+  void DisconnectExternalWallets(ResultCallback callback) override;
+
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
   void GetAnonWalletStatus(ResultCallback callback) override;

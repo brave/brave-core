@@ -212,6 +212,9 @@ class BatLedgerImpl :
     const std::string& wallet_type,
     DisconnectWalletCallback callback) override;
 
+  void DisconnectExternalWallets(
+      DisconnectExternalWalletsCallback callback) override;
+
   void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
   void GetTransactionReport(
