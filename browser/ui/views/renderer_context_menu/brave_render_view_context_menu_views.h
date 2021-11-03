@@ -18,13 +18,17 @@ class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
 
   // Factory function to create an instance.
   static RenderViewContextMenuViews* Create(
-      content::RenderFrameHost* render_frame_host,
+      // Non-const reference passed in the parent class upstream
+      // NOLINTNEXTLINE(runtime/references)
+      content::RenderFrameHost& render_frame_host,
       const content::ContextMenuParams& params);
 
   void Show() override;
 
  protected:
-  BraveRenderViewContextMenuViews(content::RenderFrameHost* render_frame_host,
+  // Non-const reference passed in the parent class upstream
+  // NOLINTNEXTLINE(runtime/references)
+  BraveRenderViewContextMenuViews(content::RenderFrameHost& render_frame_host,
                                   const content::ContextMenuParams& params);
 };
 
