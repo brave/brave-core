@@ -6,6 +6,7 @@ body {
 
 .interstitial-wrapper {
   text-align: center;
+  padding-bottom: 136px;
 }
 
 .interstitial-wrapper span, p, button {
