@@ -181,14 +181,13 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
                force_json_response, std::move(formed_response), success);
 }
 
-void BraveWalletJSHandler::OnAddEthereumChain(
+void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
     base::Value id,
     v8::Global<v8::Context> global_context,
     std::unique_ptr<v8::Global<v8::Function>> global_callback,
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    bool success,
     int provider_error,
     const std::string& error_message) {
   v8::HandleScope handle_scope(isolate);
@@ -196,7 +195,7 @@ void BraveWalletJSHandler::OnAddEthereumChain(
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
 
   std::unique_ptr<base::Value> formed_response;
-  if (success) {
+  if (!provider_error) {
     formed_response = base::Value::ToUniquePtrValue(base::Value());
   } else {
     formed_response = GetProviderErrorDictionary(
@@ -205,7 +204,8 @@ void BraveWalletJSHandler::OnAddEthereumChain(
   }
   SendResponse(std::move(id), std::move(global_context),
                std::move(global_callback), std::move(promise_resolver), isolate,
-               force_json_response, std::move(formed_response), success);
+               force_json_response, std::move(formed_response),
+               !provider_error);
 }
 
 void BraveWalletJSHandler::OnAddAndApproveTransaction(
@@ -446,7 +446,18 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
   } else if (method == kAddEthereumChainMethod) {
     brave_wallet_provider_->AddEthereumChain(
         normalized_json_request,
-        base::BindOnce(&BraveWalletJSHandler::OnAddEthereumChain,
+        base::BindOnce(&BraveWalletJSHandler::OnAddOrSwitchEthereumChain,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(id),
+                       std::move(global_context), std::move(global_callback),
+                       std::move(promise_resolver), isolate,
+                       force_json_response));
+  } else if (method == kSwitchEthereumChainMethod) {
+    std::string chain_id;
+    if (!ParseSwitchEthereumChainParams(normalized_json_request, &chain_id))
+      return false;
+    brave_wallet_provider_->SwitchEthereumChain(
+        chain_id,
+        base::BindOnce(&BraveWalletJSHandler::OnAddOrSwitchEthereumChain,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),
                        std::move(promise_resolver), isolate,

@@ -41,6 +41,7 @@ constexpr char kId[] = "id";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
 constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
+constexpr char kSwitchEthereumChainMethod[] = "wallet_switchEthereumChain";
 
 }  // namespace brave_wallet
 

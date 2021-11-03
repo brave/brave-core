@@ -248,8 +248,9 @@ void BindCosmeticFiltersResources(
 void MaybeBindBraveWalletProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletProvider> receiver) {
-  auto rpc_controller = brave_wallet::RpcControllerFactory::GetForContext(
-      frame_host->GetBrowserContext());
+  auto* rpc_controller =
+      brave_wallet::RpcControllerFactory::GetControllerForContext(
+          frame_host->GetBrowserContext());
 
   if (!rpc_controller)
     return;
@@ -277,8 +278,8 @@ void MaybeBindBraveWalletProvider(
       std::make_unique<brave_wallet::BraveWalletProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          std::move(rpc_controller), std::move(tx_controller),
-          keyring_controller, brave_wallet_service,
+          rpc_controller, std::move(tx_controller), keyring_controller,
+          brave_wallet_service,
 #if defined(OS_ANDROID)
           std::make_unique<
               brave_wallet::BraveWalletProviderDelegateImplAndroid>(

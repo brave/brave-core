@@ -20,7 +20,7 @@ std::unique_ptr<EthTxController> BuildEthTxController(
     AssetRatioController* asset_ratio_controller,
     PrefService* prefs) {
   auto tx_state_manager =
-      std::make_unique<EthTxStateManager>(prefs, rpc_controller->MakeRemote());
+      std::make_unique<EthTxStateManager>(prefs, rpc_controller);
   auto eth_nonce_tracker =
       std::make_unique<EthNonceTracker>(tx_state_manager.get(), rpc_controller);
   auto eth_pending_tx_tracker = std::make_unique<EthPendingTxTracker>(

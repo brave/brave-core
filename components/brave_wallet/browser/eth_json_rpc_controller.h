@@ -112,6 +112,7 @@ class EthJsonRpcController : public KeyedService,
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
 
+  bool SetNetwork(const std::string& chain_id);
   void SetNetwork(const std::string& chain_id,
                   SetNetworkCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
@@ -129,6 +130,7 @@ class EthJsonRpcController : public KeyedService,
   void GetPendingChainRequests(
       GetPendingChainRequestsCallback callback) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
+  std::string GetNetworkUrl() const;
   void GetNetworkUrl(
       mojom::EthJsonRpcController::GetNetworkUrlCallback callback) override;
   void SetCustomNetworkForTesting(const std::string& chain_id,
