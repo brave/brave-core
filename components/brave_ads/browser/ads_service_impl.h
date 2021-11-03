@@ -476,6 +476,8 @@ class AdsServiceImpl : public AdsService,
 
   bool is_initialized_ = false;
 
+  bool deprecated_data_files_removed_ = false;
+
   bool is_upgrading_from_pre_brave_ads_build_;
 
   // This is needed to check if current ads service init become stale as
