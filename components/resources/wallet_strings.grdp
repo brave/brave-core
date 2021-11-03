@@ -226,10 +226,13 @@
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_NAME" desc="Add network panel name label">Network name</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_URL" desc="Add network panel url label">Network URL</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_DETAILS_BUTTON" desc="Add network panel all details button">View all details</message>
-    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_APPROVE_BUTTON" desc="Add network panel approve button">Approve</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_BUTTON" desc="Add network panel button">Approve</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CHAIN_I_D" desc="Add network panel chain id label">Chain ID</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_CURRENCY_SYMBOL" desc="Add network panel symbol label">Currency symbol</message>
     <message name="IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_EXPLORER" desc="Add network explorer label">Block explorer URL</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_TITLE" desc="Change network panel title">Allow this site to switch the network?</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_DESCRIPTION" desc="Change network panel description">This will switch the network to a previously added network.</message>
+    <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">Switch network</message> 
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TOTAL" desc="Confirm transaction panel total label">Total</message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_GAS_FEE" desc="Confirm transaction panel label">Gas fee</message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_BID" desc="Confirm transaction panel bid label">Bid</message>

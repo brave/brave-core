@@ -270,17 +270,20 @@ provideStrings({
   braveWalletAllowSpendRejectButton: 'Reject',
   braveWalletAllowSpendConfirmButton: 'Confirm',
 
-  // Allow Add Network Panel
+  // Allow Add or Change Network Panel
   braveWalletAllowAddNetworkTitle: 'Allow this site to add a network?',
   braveWalletAllowAddNetworkDescription: 'This will allow this network to be used within Brave Wallet.',
   braveWalletAllowAddNetworkLearnMoreButton: 'Learn more.',
   braveWalletAllowAddNetworkName: 'Network name',
   braveWalletAllowAddNetworkUrl: 'Network URL',
   braveWalletAllowAddNetworkDetailsButton: 'View all details',
-  braveWalletAllowAddNetworkApproveButton: 'Approve',
+  braveWalletAllowAddNetworkButton: 'Approve',
   braveWalletAllowAddNetworkChainID: 'Chain ID',
   braveWalletAllowAddNetworkCurrencySymbol: 'Currency symbol',
   braveWalletAllowAddNetworkExplorer: 'Block explorer URL',
+  braveWalletAllowChangeNetworkTitle: 'Allow this site to switch the network?',
+  braveWalletAllowChangeNetworkDescription: 'This will switch the network to a previously added network.',
+  braveWalletAllowChangeNetworkButton: 'Switch network',
 
   // Confirm Transaction Panel
   braveWalletConfirmTransactionTotal: 'Total',
