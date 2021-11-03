@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
-index d62f30cff84e32fdde6cfed9b67d54c731d7b440..58f3d9ccdb480938eb6228e6b5031fee2dc6639e 100644
+index fd92ce2cb5c68f9ecea2091950f0626625f56369..66602ba467db75e370a81c8610f804c1b927bd98 100644
 --- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 +++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
 @@ -319,6 +319,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(

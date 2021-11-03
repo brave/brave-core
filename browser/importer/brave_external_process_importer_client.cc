@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
-#include "chrome/browser/service_sandbox_type.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/service_process_host.h"
 
@@ -21,6 +20,12 @@ bool ShouldUseBraveImporter(importer::ImporterType type) {
   return false;
 }
 }  // namespace
+
+template <>
+inline sandbox::policy::SandboxType
+content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
+  return sandbox::policy::SandboxType::kNoSandbox;
+}
 
 BraveExternalProcessImporterClient::BraveExternalProcessImporterClient(
     base::WeakPtr<ExternalProcessImporterHost> importer_host,

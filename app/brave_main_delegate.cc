@@ -234,26 +234,27 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
     autofill::features::kAutofillEnableAccountWalletStorage.name,
     autofill::features::kAutofillServerCommunication.name,
+    blink::features::kAdInterestGroupAPI.name,
     blink::features::kComputePressure.name,
     blink::features::kConversionMeasurement.name,
-    blink::features::kFledgeInterestGroupAPI.name,
-    blink::features::kFledgeInterestGroups.name,
+    blink::features::kFledge.name,
     blink::features::kHandwritingRecognitionWebPlatformApiFinch.name,
     blink::features::kInterestCohortAPIOriginTrial.name,
     blink::features::kInterestCohortFeaturePolicy.name,
+    blink::features::kInterestGroupStorage.name,
     blink::features::kNavigatorPluginsFixed.name,
+    blink::features::kParakeet.name,
+    blink::features::kPrerender2.name,
+    blink::features::kReportAllJavaScriptFrameworks.name,
+    blink::features::kSpeculationRulesPrefetchProxy.name,
     blink::features::kTextFragmentAnchor.name,
+    blink::features::kWebSQLInThirdPartyContextEnabled.name,
 #if !defined(OS_ANDROID)
     features::kCopyLinkToText.name,
 #endif
     features::kDirectSockets.name,
     features::kIdleDetection.name,
     features::kNotificationTriggers.name,
-    features::kPrivacySandboxSettings2.name,
-#if !defined(OS_ANDROID)
-    features::kSettingsLandingPageRedesign.name,
-#endif
-    features::kSignedExchangePrefetchCacheForNavigations.name,
     features::kSignedExchangeSubresourcePrefetch.name,
     features::kSubresourceWebBundles.name,
 #if defined(OS_ANDROID)
@@ -280,17 +281,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif
   };
 
-#if defined(OS_WIN) || defined(OS_MAC) || defined(OS_ANDROID)
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableDnsOverHttps)) {
     disabled_features.insert(features::kDnsOverHttps.name);
   }
-#else
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    enabled_features.insert(features::kDnsOverHttps.name);
-  }
-#endif
 
   command_line.AppendFeatures(enabled_features, disabled_features);
 

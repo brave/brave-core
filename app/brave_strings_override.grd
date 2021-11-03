@@ -180,7 +180,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="toolkit_views">
         </if>
 
-      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
+      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
         </if>
 
       <if expr="not chromeos">

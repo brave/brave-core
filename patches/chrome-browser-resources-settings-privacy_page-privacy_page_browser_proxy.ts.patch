@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
+index 753132cb493a793d95d8cccd7effd40fae356ece..4dc846aa2607b79bd2c3ce904b830778402302fe 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
+@@ -46,7 +46,7 @@ export type SecureDnsSetting = {
+ };
+ 
+ export interface PrivacyPageBrowserProxy {
+-  // <if expr="_google_chrome and not chromeos">
++  // <if expr="_chromium and not chromeos">
+   getMetricsReporting(): Promise<MetricsReporting>;
+   setMetricsReportingEnabled(enabled: boolean): void;
+ 
+@@ -83,7 +83,7 @@ export interface PrivacyPageBrowserProxy {
+ }
+ 
+ export class PrivacyPageBrowserProxyImpl implements PrivacyPageBrowserProxy {
+-  // <if expr="_google_chrome and not chromeos">
++  // <if expr="_chromium and not chromeos">
+   getMetricsReporting() {
+     return sendWithPromise('getMetricsReporting');
+   }

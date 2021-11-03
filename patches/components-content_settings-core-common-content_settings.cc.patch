@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index f09911e191160ad2f24bc47eeb63a3f6b0031990..d78420d0a3b9aa344a747efd2c48ea26fc3f7b0d 100644
+index 7006397be6f0d348dfe670baf730896eb85a1540..894fd2353a785e2bf1884a4d21ff15b563a06857 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -101,6 +101,7 @@ constexpr HistogramValue kHistogramValue[] = {
-     {ContentSettingsType::HTTP_ALLOWED, 80},
-     {ContentSettingsType::FORMFILL_METADATA, 81},
+@@ -103,6 +103,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::FEDERATED_IDENTITY_ACTIVE_SESSION, 82},
+     {ContentSettingsType::AUTO_DARK_WEB_CONTENT, 83},
+     {ContentSettingsType::REQUEST_DESKTOP_SITE, 84},
 +    BRAVE_HISTOGRAM_VALUE_LIST
  };
  

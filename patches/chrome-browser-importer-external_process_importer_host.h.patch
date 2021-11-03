@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_host.h b/chrome/browser/importer/external_process_importer_host.h
-index d6d2ad0e41581c001d1364a9833ca46dee0d0668..171ac72ca757a9cc55b23afda22a467d88d7af0b 100644
+index c3c717d53dc2827069b7b35e0dc9920ba20d4f00..cfff5957da63cb2f27ad0c9a964ad7a855110c33 100644
 --- a/chrome/browser/importer/external_process_importer_host.h
 +++ b/chrome/browser/importer/external_process_importer_host.h
-@@ -72,6 +72,7 @@ class ExternalProcessImporterHost
+@@ -76,6 +76,7 @@ class ExternalProcessImporterHost
    void NotifyImportItemEnded(importer::ImportItem item);
    void NotifyImportEnded();
  

@@ -1,8 +1,8 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index 1895dfb66544f8e51f7cce980a76cea4980d4ac0..0dd67f2eab3f57841713959f51b1e14b81f281dd 100644
+index 497d16a88560e90989c7c45989f75700acdec035..665d44c4582ed248533bbc3900e3503ddf9afb19 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
-@@ -23,6 +23,7 @@ source_set("dns") {
+@@ -24,6 +24,7 @@ source_set("dns") {
      "//net/*",
      "//services/network/*",
    ]
@@ -10,7 +10,7 @@ index 1895dfb66544f8e51f7cce980a76cea4980d4ac0..0dd67f2eab3f57841713959f51b1e14b
  
    public = []
    sources = [
-@@ -209,6 +210,7 @@ source_set("host_resolver") {
+@@ -210,6 +211,7 @@ source_set("host_resolver") {
      "//net/*",
      "//services/network/*",
    ]
@@ -18,7 +18,7 @@ index 1895dfb66544f8e51f7cce980a76cea4980d4ac0..0dd67f2eab3f57841713959f51b1e14b
  
    sources = [
      "dns_config.h",
-@@ -304,6 +306,7 @@ source_set("dns_client") {
+@@ -305,6 +307,7 @@ source_set("dns_client") {
      "//net/*",
      "//services/network/*",
    ]

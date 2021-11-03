@@ -94,8 +94,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <part file="profiles_strings_override.grdp" />
 
-      <if expr="not is_android">
-        </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
 
@@ -195,11 +193,17 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="not is_android">
         <if expr="not use_titlecase">
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
+            New Private &amp;tab
+          </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
             New &amp;Private window
           </message>
           </if>
         <if expr="use_titlecase">
+          <message name="IDS_NEW_INCOGNITO_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
+            New Private &amp;Tab
+          </message>
           <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new Private window">
             New &amp;Private Window
           </message>
@@ -227,6 +231,10 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -372,6 +380,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win">
         </if>
 
+      <if expr="is_win or is_linux">
+        </if>
+
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
         Most profiles block notifications from this site
       </message>
@@ -489,7 +500,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_android">
         </if>
 
-      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
+      <if expr="is_win or is_macosx or is_fuchsia or (is_linux and not chromeos)">
         </if>
 
       <if expr="is_win">
@@ -606,7 +617,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not is_macosx">
         </if>
       <if expr="not use_titlecase">
-        <if expr="chromeos">
+        <if expr="chromeos or lacros">
           </if>
       </if>
       <if expr="use_titlecase">
@@ -618,6 +629,9 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           </if>
       </if>
+
+      <if expr="enable_side_search">
+        </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -868,7 +882,6 @@ are declared in tools/grit/grit_rule.gni.
 
       <if expr="toolkit_views">
         </if>
-
       <if expr="chromeos">
         </if>
       <if expr="is_macosx">
@@ -893,7 +906,15 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
     <if expr="not is_android">
+      <if expr="use_titlecase">
       </if>
+      <if expr="not use_titlecase">
+      </if>
+    </if>
+
+  <if expr="not is_android">
+      </if>
+
 
     <if expr="not is_android">
       </if>

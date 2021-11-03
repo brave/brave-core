@@ -189,12 +189,13 @@ void SidebarControlView::AddChildViews() {
   sidebar_items_view_ =
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
 
-  sidebar_item_add_view_ =
-      AddChildView(std::make_unique<SidebarItemAddButton>(browser_));
+  sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
+      browser_, l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
   sidebar_item_add_view_->set_context_menu_controller(this);
 
-  sidebar_settings_view_ =
-      AddChildView(std::make_unique<SidebarButtonView>(this));
+  sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
+      this, l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,
                           base::Unretained(this), sidebar_settings_view_));

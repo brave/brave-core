@@ -1403,6 +1403,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         <message name="IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT" desc="Text for vpn button in toolbar.">
           VPN
         </message>
+        <message name="IDS_BRAVE_VPN_TOGGLE_MENU_ITEM_TEXT" desc="Text for vpn toggle button in app menu.">
+          Toggle VPN
+        </message>
         <message name="IDS_BRAVE_VPN_MENU" desc="The Brave VPN item (app menu)">
           Brave VPN
         </message>

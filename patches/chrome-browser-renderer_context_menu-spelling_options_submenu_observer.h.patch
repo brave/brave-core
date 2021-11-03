@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index 8757b7f3deee5bdd6942123e2740cda44c1bae6f..0de51ce0d0406855bf891b39b763a8d4374f5503 100644
+index 573c2178adce19bca86591c84d593497a8e34252..fdd896c8c70bb77a0702544bfc6957c6d33df8b9 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 @@ -15,10 +15,12 @@

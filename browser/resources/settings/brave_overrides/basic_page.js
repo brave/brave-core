@@ -8,11 +8,11 @@ import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_default_extensions_page/brave_default_extensions_page.m.js'
 import '../brave_help_tips_page/brave_help_tips_page.m.js'
-import '../brave_ipfs_page/brave_ipfs_page.m.js'
+import '../brave_ipfs_page/brave_ipfs_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.m.js'
 import '../brave_search_engines_page/brave_search_engines_page.m.js'
 import '../brave_sync_page/brave_sync_page.js'
-import '../brave_wallet_page/brave_wallet_page.m.js'
+import '../brave_wallet_page/brave_wallet_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.m.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.m.js'
@@ -233,11 +233,16 @@ RegisterPolymerTemplateModifications({
       const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
       sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
       // Move safety check after downloads
-      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
-      const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
-      sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
       // Move help tips after safety check
-      sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
+      const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
+      if (loadTimeData.getBoolean('enableLandingPageRedesign')) {
+        // Safety check is grouped under privacy, so only move Help Tips
+        sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
+      } else {
+        const sectionSafetyCheck = getSectionElement(actualTemplate.content, 'safetyCheck')
+        sectionDownloads.insertAdjacentElement('afterend', sectionSafetyCheck)
+        sectionSafetyCheck.insertAdjacentElement('afterend', sectionHelpTips)
+      }
     }
   }
 })
