@@ -103,8 +103,7 @@ using content::BrowserThread;
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {}
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
-    : BrowserProcessImpl(startup_data),
-      https_everywhere_service_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {
+    : BrowserProcessImpl(startup_data) {
   g_browser_process = this;
   g_brave_browser_process = this;
 
@@ -263,9 +262,11 @@ BraveBrowserProcessImpl::debounce_component_installer() {
 
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
-  if (!https_everywhere_service_)
+  if (!created_https_everywhere_service_) {
     https_everywhere_service_ = brave_shields::HTTPSEverywhereServiceFactory(
         brave_component_updater_delegate());
+    created_https_everywhere_service_ = true;
+  }
   return https_everywhere_service_.get();
 }
 

@@ -155,8 +155,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
-  std::unique_ptr<brave_shields::HTTPSEverywhereService,
-                  base::OnTaskRunnerDeleter>
+  bool created_https_everywhere_service_ = false;
+  std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)

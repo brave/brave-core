@@ -43,50 +43,67 @@ struct HTTPSE_REDIRECTS_COUNT_ST {
   unsigned int redirects_;
 };
 
-class HTTPSEverywhereService : public BaseBraveShieldsService,
-                         public base::SupportsWeakPtr<HTTPSEverywhereService> {
+class HTTPSEverywhereService : public BaseBraveShieldsService {
  public:
   explicit HTTPSEverywhereService(BraveComponent::Delegate* delegate);
   HTTPSEverywhereService(const HTTPSEverywhereService&) = delete;
   HTTPSEverywhereService& operator=(const HTTPSEverywhereService&) = delete;
   ~HTTPSEverywhereService() override;
 
+  class Engine : public base::SupportsWeakPtr<Engine> {
+   public:
+    Engine(HTTPSEverywhereService* service);
+    Engine(const Engine&) = delete;
+    Engine& operator=(const Engine&) = delete;
+
+    void Init(const base::FilePath& base_dir);
+    bool GetHTTPSURL(const GURL* url,
+                     const uint64_t& request_id,
+                     std::string* new_url);
+
+   private:
+    std::string ApplyHTTPSRule(const std::string& originalUrl,
+                               const std::string& rule);
+    std::string CorrecttoRuleToRE2Engine(const std::string& to);
+    void CloseDatabase();
+
+    leveldb::DB* level_db_;
+    HTTPSEverywhereService* service_;  // not owned
+    SEQUENCE_CHECKER(sequence_checker_);
+  };
+
   void InitDB(const base::FilePath& install_dir);
 
-  bool GetHTTPSURL(const GURL* url,
-                   const uint64_t& request_id,
-                   std::string* new_url);
   bool GetHTTPSURLFromCacheOnly(const GURL* url,
                                 const uint64_t& request_id,
                                 std::string* cached_url);
 
+  base::WeakPtr<Engine> engine() { return engine_->AsWeakPtr(); }
+
  protected:
   bool Init() override;
 
-  void AddHTTPSEUrlToRedirectList(const uint64_t& request_id);
-  bool ShouldHTTPSERedirect(const uint64_t& request_id);
-  std::string ApplyHTTPSRule(const std::string& originalUrl,
-      const std::string& rule);
-  std::string CorrecttoRuleToRE2Engine(const std::string& to);
-
  private:
   friend class ::HTTPSEverywhereServiceTest;
+  friend class Engine;
   static bool g_ignore_port_for_test_;
   static void SetIgnorePortForTest(bool ignore);
 
-  void CloseDatabase();
+  void AddHTTPSEUrlToRedirectList(const uint64_t& request_id);
+  bool ShouldHTTPSERedirect(const uint64_t& request_id);
+  HTTPSERecentlyUsedCache<std::string>& recently_used_cache();
 
   base::Lock httpse_get_urls_redirects_count_mutex_;
   std::vector<HTTPSE_REDIRECTS_COUNT_ST> httpse_urls_redirects_count_;
   HTTPSERecentlyUsedCache<std::string> recently_used_cache_;
-  leveldb::DB* level_db_;
+  std::unique_ptr<Engine, base::OnTaskRunnerDeleter> engine_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
 // Creates the HTTPSEverywhereService
-std::unique_ptr<HTTPSEverywhereService, base::OnTaskRunnerDeleter>
-HTTPSEverywhereServiceFactory(BraveComponent::Delegate* delegate);
+std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 

@@ -69,16 +69,13 @@ class HTTPSEverywhereComponentInstallerPolicy
  private:
   const std::string component_id_;
   const std::string component_name_;
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   uint8_t component_hash_[kHashSize];
 };
 
 HTTPSEverywhereComponentInstallerPolicy::
     HTTPSEverywhereComponentInstallerPolicy()
     : component_id_(kHTTPSEverywhereComponentId),
-      component_name_(kHTTPSEverywhereComponentName),
-      task_runner_(g_brave_browser_process->https_everywhere_service()
-                       ->GetTaskRunner()) {
+      component_name_(kHTTPSEverywhereComponentName) {
   // Generate hash from public key.
   std::string decoded_public_key;
   base::Base64Decode(kHTTPSEverywhereComponentBase64PublicKey,
@@ -115,12 +112,7 @@ void HTTPSEverywhereComponentInstallerPolicy::ComponentReady(
   if (g_browser_process->IsShuttingDown())
     return;
 
-  task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &HTTPSEverywhereService::InitDB,
-          g_brave_browser_process->https_everywhere_service()->AsWeakPtr(),
-          path));
+  g_brave_browser_process->https_everywhere_service()->InitDB(path);
 }
 
 bool HTTPSEverywhereComponentInstallerPolicy::VerifyInstallation(
