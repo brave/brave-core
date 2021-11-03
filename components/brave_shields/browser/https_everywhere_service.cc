@@ -284,7 +284,8 @@ bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 HTTPSEverywhereService::HTTPSEverywhereService(
     BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
-      engine_(nullptr, base::OnTaskRunnerDeleter(nullptr)) {}
+      engine_(new Engine(this),
+              base::OnTaskRunnerDeleter(delegate->GetTaskRunner())) {}
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -296,9 +297,6 @@ bool HTTPSEverywhereService::Init() {
 
 void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  engine_ = std::unique_ptr<Engine, base::OnTaskRunnerDeleter>(
-      new Engine(this), base::OnTaskRunnerDeleter(GetTaskRunner()));
-
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&Engine::Init, engine_->AsWeakPtr(), install_dir));
