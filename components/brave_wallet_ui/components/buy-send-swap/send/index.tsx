@@ -53,7 +53,7 @@ function Send (props: Props) {
     if (parseFloat(selectedAssetAmount) === 0) {
       return false
     }
-    return selectedAssetAmount > selectedAssetBalance
+    return Number(selectedAssetAmount) > Number(selectedAssetBalance)
   }, [selectedAssetBalance, selectedAssetAmount])
 
   return (
