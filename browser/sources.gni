@@ -199,6 +199,8 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
+brave_chrome_browser_libs = []
+
 if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
@@ -318,9 +320,17 @@ if (enable_brave_translate_go || enable_brave_translate_extension) {
 
 if (is_win) {
   brave_chrome_browser_sources += [
+    "//brave/browser/default_protocol_handler_utils_win.cc",
+    "//brave/browser/default_protocol_handler_utils_win.h",
     "//brave/browser/microsoft_edge_protocol_util.cc",
     "//brave/browser/microsoft_edge_protocol_util.h",
   ]
+  brave_chrome_browser_deps += [
+    "//chrome/install_static:install_static_util",
+    "//chrome/installer/util:with_no_strings",
+  ]
+
+  brave_chrome_browser_libs += [ "bcrypt.lib" ]
 }
 
 if (is_win && is_official_build) {

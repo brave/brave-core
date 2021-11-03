@@ -12,6 +12,7 @@ include_rules = [
   "+chrome/common",
   "+chrome/grit",
   "+chrome/installer/util",
+  "+chrome/install_static",
   "+chrome/test",
   "+content/browser/service_worker",
   "+content/public/browser",
