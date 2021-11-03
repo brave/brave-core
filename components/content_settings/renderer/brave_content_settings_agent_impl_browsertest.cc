@@ -335,7 +335,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   void NavigateToPageWithIframe() {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url()));
-    ASSERT_EQ(contents()->GetAllFrames().size(), 2u)
+    ASSERT_EQ(CollectAllRenderFrameHosts(contents()).size(), 2u)
         << "Two frames (main + iframe) should be created.";
     content::RenderFrameHost* main_frame = contents()->GetMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), url());
@@ -1139,14 +1139,14 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockScripts) {
   BlockScripts();
 
   NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowScripts) {
   AllowScripts();
 
   NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1155,7 +1155,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   ShieldsDown();
 
   NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 4u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1168,5 +1168,5 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
 
   NavigateToURLUntilLoadStop("b.test", "/load_js_from_origins.html");
-  EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
+  EXPECT_EQ(CollectAllRenderFrameHosts(contents()).size(), 1u);
 }

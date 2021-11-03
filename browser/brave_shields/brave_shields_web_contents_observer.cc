@@ -59,21 +59,27 @@ BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 // npm run test -- brave_browser_tests
 // --filter=BraveContentSettingsAgentImplBrowserTest.*
 void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
-  for (content::RenderFrameHost* frame : web_contents->GetAllFrames()) {
-    Profile* profile =
-        Profile::FromBrowserContext(web_contents->GetBrowserContext());
-    const HostContentSettingsMap* map =
-        HostContentSettingsMapFactory::GetForProfile(profile);
-    RendererContentSettingRules rules;
-    GetRendererContentSettingRules(map, &rules);
-    IPC::ChannelProxy* channel = frame->GetProcess()->GetChannel();
-    // channel might be NULL in tests.
-    if (channel) {
-      mojo::AssociatedRemote<chrome::mojom::RendererConfiguration> rc_interface;
-      channel->GetRemoteAssociatedInterface(&rc_interface);
-      rc_interface->SetContentSettingRules(rules);
-    }
-  }
+  web_contents->GetMainFrame()->ForEachRenderFrameHost(
+      base::BindRepeating([](content::RenderFrameHost* frame) {
+        content::WebContents* web_contents =
+            WebContents::FromRenderFrameHost(frame);
+        DCHECK(web_contents);
+
+        Profile* profile =
+            Profile::FromBrowserContext(web_contents->GetBrowserContext());
+        const auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+
+        RendererContentSettingRules rules;
+        GetRendererContentSettingRules(map, &rules);
+        IPC::ChannelProxy* channel = frame->GetProcess()->GetChannel();
+        // channel might be NULL in tests.
+        if (channel) {
+          mojo::AssociatedRemote<chrome::mojom::RendererConfiguration>
+              rc_interface;
+          channel->GetRemoteAssociatedInterface(&rc_interface);
+          rc_interface->SetContentSettingRules(rules);
+        }
+      }));
 }
 
 }  // namespace
@@ -249,11 +255,15 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
     }
   }
 
-  auto render_frame_hosts = navigation_handle->GetWebContents()->GetAllFrames();
-  for (content::RenderFrameHost* rfh : render_frame_hosts) {
-    GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-        allowed_script_origins_);
-  }
+  navigation_handle->GetWebContents()->ForEachRenderFrameHost(
+      base::BindRepeating(
+          [](BraveShieldsWebContentsObserver* observer,
+             content::RenderFrameHost* rfh) {
+            observer->GetBraveShieldsRemote(rfh)
+                ->SetAllowScriptsFromOriginsOnce(
+                    observer->allowed_script_origins_);
+          },
+          base::Unretained(this)));
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
