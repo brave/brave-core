@@ -447,6 +447,7 @@ source_set("ui") {
       ]
 
       deps += [
+        "//brave/browser/ethereum_remote_client/buildflags",
         "//brave/components/ipfs/buildflags",
         "//third_party/widevine/cdm:buildflags",
       ]
