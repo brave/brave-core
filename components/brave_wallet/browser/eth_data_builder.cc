@@ -81,12 +81,15 @@ bool Allowance(const std::string& owner_address,
 
 namespace erc721 {
 
-bool TransferFrom(const std::string& from,
-                  const std::string& to,
-                  uint256_t token_id,
-                  std::string* data) {
+bool TransferFromOrSafeTransferFrom(bool is_safe_transfer_from,
+                                    const std::string& from,
+                                    const std::string& to,
+                                    uint256_t token_id,
+                                    std::string* data) {
   const std::string function_hash =
-      GetFunctionHash("transferFrom(address,address,uint256)");
+      is_safe_transfer_from
+          ? GetFunctionHash("safeTransferFrom(address,address,uint256)")
+          : GetFunctionHash("transferFrom(address,address,uint256)");
 
   std::string padded_from;
   if (!brave_wallet::PadHexEncodedParameter(from, &padded_from)) {
@@ -120,6 +123,21 @@ bool OwnerOf(uint256_t token_id, std::string* data) {
 }
 
 }  // namespace erc721
+
+namespace erc165 {
+
+bool SupportsInterface(const std::string& interface_id, std::string* data) {
+  if (!IsValidHexString(interface_id) || interface_id.length() != 10)
+    return false;
+  std::string padded_interface_id = interface_id + std::string(56, '0');
+
+  const std::string function_hash =
+      GetFunctionHash("supportsInterface(bytes4)");
+
+  return ConcatHexStrings(function_hash, padded_interface_id, data);
+}
+
+}  // namespace erc165
 
 namespace unstoppable_domains {
 

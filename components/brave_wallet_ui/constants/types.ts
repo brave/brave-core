@@ -314,7 +314,8 @@ export enum TransactionType {
   ERC20Transfer = 1,
   ERC20Approve = 2,
   ERC721TransferFrom = 3,
-  Other = 4
+  ERC721SafeTransferFrom = 4,
+  Other = 5
 }
 
 export interface SwapParams {
@@ -647,7 +648,7 @@ export interface EthTxController {
   rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
   makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
   makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
-  makeERC721TransferFromData: (from: string, to: string, tokenId: string) => Promise<MakeERC721TransferFromDataReturnInfo>
+  makeERC721TransferFromData: (from: string, to: string, tokenId: string, contractAddress: string) => Promise<MakeERC721TransferFromDataReturnInfo>
   getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
   approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
   processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>

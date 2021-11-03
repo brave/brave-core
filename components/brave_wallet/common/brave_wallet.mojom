@@ -356,6 +356,7 @@ enum TransactionType {
   ERC20Transfer,
   ERC20Approve,
   ERC721TransferFrom,
+  ERC721SafeTransferFrom,
   Other
 };
 
@@ -389,7 +390,7 @@ interface EthTxController {
   SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
-  MakeERC721TransferFromData(string from, string to, string token_id) => (bool success, array<uint8> data);
+  MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
   AddObserver(pending_remote<EthTxControllerObserver> observer);

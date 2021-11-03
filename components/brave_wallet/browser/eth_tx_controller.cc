@@ -609,6 +609,7 @@ void EthTxController::MakeERC721TransferFromData(
     const std::string& from,
     const std::string& to,
     const std::string& token_id,
+    const std::string& contract_address,
     MakeERC721TransferFromDataCallback callback) {
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
@@ -617,15 +618,33 @@ void EthTxController::MakeERC721TransferFromData(
     return;
   }
 
+  // Check if safeTransferFrom is supported first.
+  rpc_controller_->GetSupportsInterface(
+      contract_address, kERC721InterfaceId,
+      base::BindOnce(&EthTxController::ContinueMakeERC721TransferFromData,
+                     weak_factory_.GetWeakPtr(), from, to, token_id_uint,
+                     std::move(callback)));
+}
+
+void EthTxController::ContinueMakeERC721TransferFromData(
+    const std::string& from,
+    const std::string& to,
+    uint256_t token_id,
+    MakeERC721TransferFromDataCallback callback,
+    bool success,
+    bool is_safe_transfer_from_supported) {
   std::string data;
-  if (!erc721::TransferFrom(from, to, token_id_uint, &data)) {
-    VLOG(1) << __FUNCTION__ << ": Could not make transfer from data";
+  if (!erc721::TransferFromOrSafeTransferFrom(is_safe_transfer_from_supported,
+                                              from, to, token_id, &data)) {
+    VLOG(1) << __FUNCTION__
+            << ": Could not make transferFrom/safeTransferFrom data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   if (!base::StartsWith(data, "0x")) {
-    VLOG(1) << __FUNCTION__ << ": Invalid format returned from TransferFrom";
+    VLOG(1) << __FUNCTION__
+            << ": Invalid format returned from TransferFromOrSafeTransferFrom";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }

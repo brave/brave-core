@@ -950,4 +950,39 @@ void EthJsonRpcController::ContinueGetERC721TokenBalance(
   std::move(callback).Run(true, is_owner ? "0x1" : "0x0");
 }
 
+void EthJsonRpcController::GetSupportsInterface(
+    const std::string& contract_address,
+    const std::string& interface_id,
+    GetSupportsInterfaceCallback callback) {
+  std::string data;
+  if (!erc165::SupportsInterface(interface_id, &data)) {
+    std::move(callback).Run(false, false);
+  }
+
+  auto internal_callback =
+      base::BindOnce(&EthJsonRpcController::OnGetSupportsInterface,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  Request(eth_call("", contract_address, "", "", "", data, "latest"), true,
+          std::move(internal_callback));
+}
+
+void EthJsonRpcController::OnGetSupportsInterface(
+    GetSupportsInterfaceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  bool is_supported = false;
+  if (!ParseBoolResult(body, &is_supported)) {
+    std::move(callback).Run(false, false);
+    return;
+  }
+
+  std::move(callback).Run(true, is_supported);
+}
+
 }  // namespace brave_wallet

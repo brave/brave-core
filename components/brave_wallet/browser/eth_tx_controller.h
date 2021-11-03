@@ -77,6 +77,7 @@ class EthTxController : public KeyedService,
   void MakeERC721TransferFromData(const std::string& from,
                                   const std::string& to,
                                   const std::string& token_id,
+                                  const std::string& contract_address,
                                   MakeERC721TransferFromDataCallback) override;
 
   void GetAllTransactionInfo(const std::string& from,
@@ -183,6 +184,14 @@ class EthTxController : public KeyedService,
       std::unique_ptr<Eip1559Transaction> tx,
       SpeedupOrCancelTransactionCallback callback,
       mojom::GasEstimation1559Ptr gas_estimation);
+
+  void ContinueMakeERC721TransferFromData(
+      const std::string& from,
+      const std::string& to,
+      uint256_t token_id,
+      MakeERC721TransferFromDataCallback callback,
+      bool success,
+      bool is_safe_transfer_from_supported);
 
   // KeyringControllerObserver:
   void KeyringCreated() override;

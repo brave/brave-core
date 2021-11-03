@@ -169,6 +169,7 @@ const PortfolioTransactionItem = (props: Props) => {
       case transaction.txType === TransactionType.ETHSend:
       case transaction.txType === TransactionType.ERC20Transfer:
       case transaction.txType === TransactionType.ERC721TransferFrom:
+      case transaction.txType === TransactionType.ERC721SafeTransferFrom:
       default: {
         const text = getLocale('braveWalletTransactionSent')
         return (
@@ -176,11 +177,11 @@ const PortfolioTransactionItem = (props: Props) => {
             {displayAccountName ? text : toProperCase(text)}{` `}
             <AddressOrAsset
               // Disabled for ERC721 tokens until we have NFT meta data
-              disabled={transaction.txType === TransactionType.ERC721TransferFrom}
+              disabled={transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom}
               onClick={onAssetClick(transactionDetails.symbol)}
             >
               {transactionDetails.symbol}
-              {transaction.txType === TransactionType.ERC721TransferFrom
+              {transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom
                 ? ` ` + transactionDetails.erc721TokenId : ''}
             </AddressOrAsset>
           </>
@@ -231,6 +232,7 @@ const PortfolioTransactionItem = (props: Props) => {
       case transaction.txType === TransactionType.ETHSend:
       case transaction.txType === TransactionType.ERC20Transfer:
       case transaction.txType === TransactionType.ERC721TransferFrom:
+      case transaction.txType === TransactionType.ERC721SafeTransferFrom:
       default: {
         return (
           <DetailRow>

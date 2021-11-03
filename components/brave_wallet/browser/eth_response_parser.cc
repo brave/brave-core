@@ -60,6 +60,27 @@ bool ParseResult(const std::string& json, base::Value* result) {
   return true;
 }
 
+bool ParseBoolResult(const std::string& json, bool* value) {
+  DCHECK(value);
+
+  std::string result;
+  if (!ParseSingleStringResult(json, &result))
+    return false;
+
+  if (result ==
+      "0x0000000000000000000000000000000000000000000000000000000000000001") {
+    *value = true;
+    return true;
+  } else if (result ==
+             "0x000000000000000000000000000000000000000000000000000000000000000"
+             "0") {
+    *value = false;
+    return true;
+  }
+
+  return false;
+}
+
 bool ParseAddressResult(const std::string& json, std::string* address) {
   DCHECK(address);
 

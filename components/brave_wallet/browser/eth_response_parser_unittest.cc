@@ -259,4 +259,27 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
   EXPECT_TRUE(value.empty());
 }
 
+TEST(EthResponseParserUnitTest, ParseBoolResult) {
+  std::string json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
+  bool value;
+  EXPECT_TRUE(ParseBoolResult(json, &value));
+  EXPECT_TRUE(value);
+
+  json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x0000000000000000000000000000000000000000000000000000000000000000\"}";
+  EXPECT_TRUE(ParseBoolResult(json, &value));
+  EXPECT_FALSE(value);
+
+  json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"0x00000000000000000000000000000000000000000\"}";
+  EXPECT_FALSE(ParseBoolResult(json, &value));
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}";
+  EXPECT_FALSE(ParseBoolResult(json, &value));
+}
+
 }  // namespace brave_wallet
