@@ -237,12 +237,18 @@ export const _SignData = () => {
     alert('Canceled Signing Data')
   }
 
+  const signMessageDataPayload = [{
+    id: 0,
+    address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+    message: 'To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
+  }]
+
   return (
     <StyledExtensionWrapperLonger>
       <SignPanel
+        signMessageData={signMessageDataPayload}
         selectedAccount={accounts[0]}
         selectedNetwork={mockNetworks[0]}
-        message='To avoid digital cat burglars, sign below to authenticate with CryptoKitties.'
         onCancel={onCancel}
         onSign={onSign}
         showWarning={true}
