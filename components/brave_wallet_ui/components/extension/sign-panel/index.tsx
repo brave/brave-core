@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { create } from 'ethereum-blockies'
 import { WalletAccountType, EthereumChain } from '../../../constants/types'
+import { SignMessagePayload } from '../../../panel/constants/action_types'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale } from '../../../../common/locale'
 import { NavButton, PanelTab } from '../'
@@ -22,12 +23,19 @@ import {
   WarningIcon,
   LearnMoreButton
 } from './style'
+
+import {
+  QueueStepRow,
+  QueueStepButton,
+  QueueStepText
+} from '../confirm-transaction-panel/style'
+
 import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
   selectedAccount: WalletAccountType
   selectedNetwork: EthereumChain
-  message: string
+  signMessageData: SignMessagePayload[]
   onSign: () => void
   onCancel: () => void
   showWarning: boolean
@@ -42,15 +50,20 @@ function SignPanel (props: Props) {
   const {
     selectedAccount,
     selectedNetwork,
-    message,
+    signMessageData,
     onSign,
     onCancel,
     showWarning
   } = props
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
+  const [selectedQueueData, setSelectedQueueData] = React.useState<SignMessagePayload>(signMessageData[0])
   const orb = React.useMemo(() => {
     return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [selectedAccount.address])
+
+  React.useEffect(() => {
+    setSelectedQueueData(signMessageData[0])
+  }, [signMessageData])
 
   React.useMemo(() => {
     if (showWarning) {
@@ -66,10 +79,44 @@ function SignPanel (props: Props) {
     window.open('https://support.brave.com/hc/en-us/articles/4409513799693', '_blank')
   }
 
+  const signMessageQueueInfo = React.useMemo(() => {
+    return {
+      queueLength: signMessageData.length,
+      queueNumber: signMessageData.findIndex((data) => data.id === selectedQueueData.id) + 1
+    }
+  }, [signMessageData, selectedQueueData])
+
+  const onQueueNextSignMessage = () => {
+    if (signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength) {
+      setSelectedQueueData(signMessageData[0])
+      return
+    }
+    setSelectedQueueData(signMessageData[signMessageQueueInfo.queueNumber])
+  }
+
+  const isDisabled = React.useMemo((): boolean => signMessageData.findIndex(
+    (data) =>
+      data.id === selectedQueueData.id) !== 0
+    , [signMessageData, selectedQueueData]
+  )
+
   return (
     <StyledWrapper>
       <TopRow>
         <NetworkText>{selectedNetwork.chainName}</NetworkText>
+        {signMessageQueueInfo.queueLength > 1 &&
+          <QueueStepRow>
+            <QueueStepText>{signMessageQueueInfo.queueNumber} {getLocale('braveWalletQueueOf')} {signMessageQueueInfo.queueLength}</QueueStepText>
+            <QueueStepButton
+              onClick={onQueueNextSignMessage}
+            >
+              {signMessageQueueInfo.queueNumber === signMessageQueueInfo.queueLength
+                ? getLocale('braveWalletQueueFirst')
+                : getLocale('braveWalletQueueNext')
+              }
+            </QueueStepButton>
+          </QueueStepRow>
+        }
       </TopRow>
       <AccountCircle orb={orb} />
       <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
@@ -93,7 +140,7 @@ function SignPanel (props: Props) {
             />
           </TabRow>
           <MessageBox>
-            <MessageText>{message}</MessageText>
+            <MessageText>{selectedQueueData.message}</MessageText>
           </MessageBox>
         </>
       }
@@ -102,11 +149,13 @@ function SignPanel (props: Props) {
           buttonType='secondary'
           text={getLocale('braveWalletBackupButtonCancel')}
           onSubmit={onCancel}
+          disabled={isDisabled}
         />
         <NavButton
           buttonType={signStep === SignDataSteps.SignData ? 'sign' : 'danger'}
           text={signStep === SignDataSteps.SignData ? getLocale('braveWalletSignTransactionButton') : getLocale('braveWalletButtonContinue')}
           onSubmit={signStep === SignDataSteps.SignRisk ? onContinueSigning : onSign}
+          disabled={isDisabled}
         />
       </ButtonRow>
     </StyledWrapper>

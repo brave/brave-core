@@ -28,11 +28,11 @@ const defaultState: PanelState = {
   },
   swapQuote: undefined,
   swapError: undefined,
-  signMessageData: {
+  signMessageData: [{
     id: -1,
     address: '',
     message: ''
-  }
+  }]
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -78,7 +78,7 @@ reducer.on(PanelActions.setPanelSwapError, (state: any, payload?: SwapErrorRespo
   }
 })
 
-reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload) => {
+reducer.on(PanelActions.signMessage, (state: any, payload: SignMessagePayload[]) => {
   return {
     ...state,
     signMessageData: payload

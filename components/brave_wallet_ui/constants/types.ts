@@ -218,7 +218,7 @@ export interface PanelState {
   networkPayload: EthereumChain
   swapQuote?: SwapResponse
   swapError?: SwapErrorResponse
-  signMessageData: SignMessageData
+  signMessageData: SignMessageData[]
 }
 
 export interface PageState {
