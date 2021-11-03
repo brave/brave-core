@@ -59,9 +59,7 @@ async function getPendingSignMessageRequest () {
   const requests =
     (await braveWalletService.getPendingSignMessageRequests()).requests
   if (requests && requests.length) {
-    if (requests[0].id !== -1) {
-      return requests[0]
-    }
+    return requests
   }
   return null
 }
@@ -164,7 +162,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: SignMessagePayload) => {
+handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: SignMessagePayload[]) => {
   store.dispatch(PanelActions.navigateTo('signData'))
   const apiProxy = await getAPIProxy()
   apiProxy.showUI()
@@ -173,7 +171,12 @@ handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: Sig
 handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
+  await braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
+  const signMessageRequest = await getPendingSignMessageRequest()
+  if (signMessageRequest) {
+    store.dispatch(PanelActions.signMessage(signMessageRequest))
+    return
+  }
   apiProxy.closeUI()
 })
 
@@ -192,14 +195,24 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
     return
   }
   await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
-      '', getLocale('braveWalletHardwareAccountNotFound'))
+    '', getLocale('braveWalletHardwareAccountNotFound'))
+  const signMessageRequest = await getPendingSignMessageRequest()
+  if (signMessageRequest) {
+    store.dispatch(PanelActions.signMessage(signMessageRequest))
+    return
+  }
   apiProxy.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  await braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  const signMessageRequest = await getPendingSignMessageRequest()
+  if (signMessageRequest) {
+    store.dispatch(PanelActions.signMessage(signMessageRequest))
+    return
+  }
   apiProxy.closeUI()
 })
 
