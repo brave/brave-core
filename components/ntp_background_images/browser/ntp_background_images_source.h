@@ -33,6 +33,8 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
+                           BackgroundImagesFormatTest);
 
   // content::URLDataSource overrides:
   std::string GetSource() override;
