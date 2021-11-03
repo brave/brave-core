@@ -61,6 +61,17 @@ extension SendTokenStore {
   }
 }
 
+extension AssetDetailStore {
+  static var previewStore: AssetDetailStore {
+    .init(
+      assetRatioController: TestAssetRatioController(),
+      keyringController: TestKeyringController(),
+      rpcController: TestEthJsonRpcController(),
+      token: .eth
+    )
+  }
+}
+
 class TestAssetRatioController: BraveWalletAssetRatioController {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
@@ -95,6 +106,15 @@ class TestSwapController: BraveWalletSwapController {
 }
 
 class TestEthTxController: BraveWalletEthTxController {
+  func setDataForUnapprovedTransaction(_ txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
+  }
+  
+  func speedupOrCancelTransaction(_ txMetaId: String, cancel: Bool, completion: @escaping (Bool, String, String) -> Void) {
+  }
+  
+  func retryTransaction(_ txMetaId: String, completion: @escaping (Bool, String, String) -> Void) {
+  }
+  
   func approveHardwareTransaction(_ txMetaId: String, completion: @escaping (Bool, String) -> Void) {
   }
   

@@ -819,9 +819,6 @@ extension Strings {
 
 // MARK: - User Wallet
 extension Strings {
-    public static let userWalletBATNotAllowedTitle = NSLocalizedString("UserWalletDetailsDisconnectButtonTitle", bundle: Bundle.braveShared, value: "Region not supported", comment: "")
-    public static let userWalletBATNotAllowedMessage = NSLocalizedString("UserWalletBATNotAllowedMessage", bundle: Bundle.braveShared, value: "BAT is not currently supported in your region based on the location your account is opened. Check back later for availability.", comment: "")
-    public static let userWalletBATNotAllowedLearnMore = NSLocalizedString("UserWalletBATNotAllowedLearnMore", bundle: Bundle.braveShared, value: "Learn more", comment: "")
     public static let userWalletCloseButtonTitle = NSLocalizedString("UserWalletCloseButtonTitle", bundle: Bundle.braveShared, value: "Close", comment: "")
     public static let userWalletGenericErrorTitle = NSLocalizedString("UserWalletGenericErrorTitle", bundle: Bundle.braveShared, value: "Sorry, something went wrong", comment: "")
     public static let userWalletGenericErrorMessage = NSLocalizedString("UserWalletGenericErrorMessage", bundle: Bundle.braveShared, value: "There was a problem logging into your Uphold account. Please try again", comment: "")

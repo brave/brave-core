@@ -28,9 +28,7 @@ private struct TokenView: View {
 }
 
 struct AssetSearchView: View {
-  var tokenRegistry: BraveWalletERCTokenRegistry
-  var keyringStore: KeyringStore
-  var networkStore: NetworkStore
+  var walletStore: WalletStore
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   
@@ -41,9 +39,9 @@ struct AssetSearchView: View {
       TokenList(tokens: allTokens) { token in
         NavigationLink(
           destination: AssetDetailView(
-            keyringStore: keyringStore,
-            networkStore: networkStore,
-            token: token
+            assetDetailStore: walletStore.assetDetailStore(for: token),
+            keyringStore: walletStore.keyringStore,
+            networkStore: walletStore.networkStore
           )
         ) {
           TokenView(token: token)
@@ -64,7 +62,7 @@ struct AssetSearchView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
-      tokenRegistry.allTokens { tokens in
+      walletStore.tokenRegistry.allTokens { tokens in
         self.allTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
       }
     }
