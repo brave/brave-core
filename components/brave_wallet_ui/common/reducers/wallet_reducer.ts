@@ -330,8 +330,8 @@ reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload:
 
 reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions) => {
   const { selectedAccount } = state
-  const newPendingTransactions = payload[selectedAccount.address]
-    .filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved)
+  const newPendingTransactions = selectedAccount ?
+    payload[selectedAccount.address].filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved) : []
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
