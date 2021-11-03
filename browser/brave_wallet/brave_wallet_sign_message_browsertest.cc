@@ -103,6 +103,9 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
 
  protected:
   BraveWalletService* brave_wallet_service_;
+  std::vector<std::string> methods_{"signMessage", "signMessageViaSend",
+                                    "signMessageViaSend2",
+                                    "signMessageViaSendAsync"};
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -113,28 +116,34 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
   RestoreWallet();
   GURL url = https_server()->GetURL("a.com", "/sign_message.html");
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   WaitForLoadStop(web_contents());
-
   EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   UserGrantPermission(true);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "signMessage('0x084DCb94038af1715963F149079cE011C4B22961',"
-                     " '0xdeadbeef')"));
-  // Wait for BraveWalletProviderImpl::ContinueSignMessage
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
-  brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0);
-  EXPECT_EQ(
-      EvalJs(web_contents(), "getSignMessageResult()",
-             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-          .ExtractString(),
-      "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e2a6a345a"
-      "4f84615c591c1a47260e798babe8f2f0cce03a09dac09df79c55d8e4401b");
+  size_t request_index = 0;
+  for (const std::string& method : methods_) {
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
+                           " '0xdeadbeef')",
+                           method.c_str())));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    brave_wallet_service_->NotifySignMessageRequestProcessed(true,
+                                                             request_index++);
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              "0x670651c072cac2a3f93cb862a17378f6849c66b4516e5d5a30210868a2840e"
+              "2a6a345a"
+              "4f84615c591c1a47260e798babe8f2f0cce03a09dac09df79c55d8e4401b");
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
@@ -147,22 +156,29 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   UserGrantPermission(true);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "signMessage('0x084DCb94038af1715963F149079cE011C4B22961',"
-                     " '0xdeadbeef')"));
-  // Wait for BraveWalletProviderImpl::ContinueSignMessage
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
-  brave_wallet_service_->NotifySignMessageRequestProcessed(false, 0);
-  EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+
+  size_t request_index = 0;
+  for (const std::string& method : methods_) {
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
+                           " '0xdeadbeef')",
+                           method.c_str())));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    brave_wallet_service_->NotifySignMessageRequestProcessed(false,
+                                                             request_index++);
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddress) {
+IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
   RestoreWallet();
   GURL url = https_server()->GetURL("a.com", "/sign_message.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
@@ -172,21 +188,52 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddress) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   UserGrantPermission(true);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "signMessage('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
-                     " '0xdeadbeef')"));
-  // Wait for BraveWalletProviderImpl::ContinueSignMessage
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(
+  for (const std::string& method : methods_) {
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        base::StringPrintf("%s('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
+                           " '0xdeadbeef')",
+                           method.c_str())));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    base::RunLoop().RunUntilIdle();
+    EXPECT_FALSE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              l10n_util::GetStringFUTF8(
+                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                  base::ASCIIToUTF16(std::string(
+                      "0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"))));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
+  RestoreWallet();
+  GURL url = https_server()->GetURL("a.com", "/sign_message.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(web_contents());
+
+  EXPECT_TRUE(
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
-  EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            l10n_util::GetStringFUTF8(
-                IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                base::ASCIIToUTF16(std::string(
-                    "0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909"))));
+  UserGrantPermission(true);
+  for (const std::string& method : methods_) {
+    ASSERT_TRUE(ExecJs(web_contents(), base::StringPrintf("%s(null,"
+                                                          " '0xdeadbeef')",
+                                                          method.c_str())));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    base::RunLoop().RunUntilIdle();
+    EXPECT_FALSE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              // This one is not localized
+              "Generic processing error");
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
@@ -199,21 +246,25 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
       brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
           ->IsShowingBubble());
   UserGrantPermission(false);
-  ASSERT_TRUE(ExecJs(web_contents(),
-                     "signMessage('0x084DCb94038af1715963F149079cE011C4B22961',"
-                     " '0xdeadbeef')"));
-  // Wait for BraveWalletProviderImpl::ContinueSignMessage
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
-          ->IsShowingBubble());
-  EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
-                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
-                .ExtractString(),
-            l10n_util::GetStringFUTF8(
-                IDS_WALLET_ETH_SIGN_NOT_AUTHED,
-                base::ASCIIToUTF16(std::string(
-                    "0x084DCb94038af1715963F149079cE011C4B22961"))));
+  for (const std::string& method : methods_) {
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
+                           " '0xdeadbeef')",
+                           method.c_str())));
+    // Wait for BraveWalletProviderImpl::ContinueSignMessage
+    base::RunLoop().RunUntilIdle();
+    EXPECT_FALSE(
+        brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+            ->IsShowingBubble());
+    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              l10n_util::GetStringFUTF8(
+                  IDS_WALLET_ETH_SIGN_NOT_AUTHED,
+                  base::ASCIIToUTF16(std::string(
+                      "0x084DCb94038af1715963F149079cE011C4B22961"))));
+  }
 }
 
 }  // namespace brave_wallet
