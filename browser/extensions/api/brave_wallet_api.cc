@@ -8,11 +8,13 @@
 #include <memory>
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
+#include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
 #include "brave/browser/extensions/ethereum_remote_client_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
@@ -24,6 +26,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
+#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -172,10 +175,15 @@ BraveWalletGetWeb3ProviderListFunction::Run() {
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
       ::brave_wallet::mojom::DefaultWallet::BraveWallet));
 
-  list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(
-          IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED),
-      ::brave_wallet::mojom::DefaultWallet::CryptoWallets));
+  if (base::FeatureList::IsEnabled(ethereum_remote_client::features::
+                                       kCryptoWalletsForNewInstallsFeature) ||
+      extensions::ExtensionPrefs::Get(browser_context())
+          ->HasPrefForExtension(ethereum_remote_client_extension_id)) {
+    list.Append(MakeSelectValue(
+        l10n_util::GetStringUTF16(
+            IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED),
+        ::brave_wallet::mojom::DefaultWallet::CryptoWallets));
+  }
 
   list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),

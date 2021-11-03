@@ -19,6 +19,8 @@ source_set("ethereum_remote_client") {
     "ethereum_remote_client_delegate.h",
     "ethereum_remote_client_service.cc",
     "ethereum_remote_client_service.h",
+    "features.cc",
+    "features.h",
     "pref_names.cc",
     "pref_names.h",
   ]
