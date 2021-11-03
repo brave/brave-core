@@ -247,7 +247,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kNavigatorPluginsFixed.name,
     blink::features::kParakeet.name,
     blink::features::kPrerender2.name,
-    blink::features::kReportAllJavaScriptFrameworks.name,
     blink::features::kSpeculationRulesPrefetchProxy.name,
     blink::features::kTextFragmentAnchor.name,
     blink::features::kWebSQLInThirdPartyContextEnabled.name,

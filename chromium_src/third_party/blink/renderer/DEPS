@@ -6,6 +6,7 @@ include_rules = [
   "+../../../../../../../third_party/blink/renderer/core/frame",
   "+../../../../../../../third_party/blink/renderer/core/origin_trials",
   "+../../../../../../../third_party/blink/renderer/core/page",
+  "+../../../../../../../third_party/blink/renderer/core/script",
   "+../../../../../../../../third_party/blink/renderer/core/html/canvas",
   "+../../../../../../../../third_party/blink/renderer/core/html/media",
   "+../../../../../../../third_party/blink/renderer/modules/broadcastchannel",
