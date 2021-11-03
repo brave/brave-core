@@ -20,7 +20,7 @@ void ResetSync(syncer::BraveSyncServiceImpl* sync_service_impl,
                base::OnceClosure on_reset_done) {
   if (sync_service_impl->GetTransportState() !=
       syncer::SyncService::TransportState::ACTIVE) {
-    std::move(on_reset_done).Run();
+    sync_service_impl->OnSelfDeviceInfoDeleted(std::move(on_reset_done));
     return;
   }
   syncer::DeviceInfoTracker* tracker =
