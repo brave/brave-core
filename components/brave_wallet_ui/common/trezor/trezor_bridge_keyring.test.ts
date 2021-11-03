@@ -215,7 +215,7 @@ test('Extracting accounts from unlocked device returned success', () => {
       fingerprint: 5454545
     },
     {
-      publicKey: '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+      publicKey: '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
       serializedPath: 'm/44\'/60\'/0\'/1',
       fingerprint: 5454545
     }
@@ -225,6 +225,9 @@ test('Extracting accounts from unlocked device returned success', () => {
   hardwareKeyring.getBridge = () => {
     return hardwareKeyring as any
   }
+  hardwareKeyring.getHashFromAddress = async (address: string) => {
+    return address === '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A' ? '5454545' : '111'
+  }
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))
     .resolves.toStrictEqual([
       { 'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
@@ -232,7 +235,37 @@ test('Extracting accounts from unlocked device returned success', () => {
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
         'name': 'Trezor' },
-      { 'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
+      { 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
+        'derivationPath': 'm/44\'/60\'/0\'/1',
+        'deviceId': '5454545',
+        'hardwareVendor': 'Trezor',
+        'name': 'Trezor' }])
+})
+
+test('Extracting accounts from unlocked device returned success without zero index', () => {
+  const accounts = [
+    {
+      publicKey: '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
+      serializedPath: 'm/44\'/60\'/0\'/0',
+      fingerprint: 5454545
+    },
+    {
+      publicKey: '20d55983d1707ff6e9ce32d583ad0f7acb3b0beb601927c4ff05f780787f377afe463d329f4535c82457f87df56d0a70e16a9442c6ff6d59b8f113d6073e9744',
+      serializedPath: 'm/44\'/60\'/0\'/1',
+      fingerprint: 5454545
+    }
+  ]
+  const hardwareKeyring = new TrezorBridgeKeyring()
+  hardwareKeyring.transport_ = createTrezorTransport(true, { success: true, payload: accounts })
+  hardwareKeyring.getBridge = () => {
+    return hardwareKeyring as any
+  }
+  hardwareKeyring.getHashFromAddress = async (address: string) => {
+    return address === '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A' ? '5454545' : '111'
+  }
+  return expect(hardwareKeyring.getAccounts(1, 2, TrezorDerivationPaths.Default))
+    .resolves.toStrictEqual([
+      { 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
         'derivationPath': 'm/44\'/60\'/0\'/1',
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',

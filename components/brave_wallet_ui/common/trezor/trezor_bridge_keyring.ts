@@ -24,6 +24,7 @@ import {
   TrezorBridgeTransport
 } from '../../common/trezor/trezor-messages'
 import { getLocale } from '../../../common/locale'
+import { hardwareDeviceIdFromAddress } from '../async/lib'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -44,11 +45,16 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       return new Error(getLocale('braveWalletUnlockError'))
     }
     const paths = []
+
+    const addZeroPath = (from > 0 || to < 0)
+    if (addZeroPath) {
+      // Add zero address to calculate device id.
+      paths.push(this.getPathForIndex(0, TrezorDerivationPaths.Default))
+    }
     for (let i = from; i <= to; i++) {
       paths.push(this.getPathForIndex(i, scheme))
     }
-
-    const accounts = await this.getAccountsFromDevice(paths)
+    const accounts = await this.getAccountsFromDevice(paths, addZeroPath)
     if (!accounts.success) {
       throw Error(accounts.error)
     }
@@ -76,10 +82,34 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       await this.getTransport().postMessage(message)
     })
   }
+
   getTransport = () => {
     return this.transport_
   }
-  private getAccountsFromDevice = async (paths: string[]): Promise<TrezorBridgeAccountsPayload> => {
+
+  private getHashFromAddress = async (address: string) => {
+    return hardwareDeviceIdFromAddress(address)
+  }
+
+  private getDeviceIdFromAccountsList = async (accountsList: TrezorAccount[]) => {
+    const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
+    for (const value of accountsList) {
+      if (value.serializedPath !== zeroPath) {
+        continue
+      }
+      const address = this.publicKeyToAddress(value.publicKey)
+      return this.getHashFromAddress(address)
+    }
+    return ''
+  }
+
+  private publicKeyToAddress = (key: string) => {
+    const buffer = Buffer.from(key, 'hex')
+    const address = publicToAddress(buffer, true).toString('hex')
+    return toChecksumAddress(`0x${address}`)
+  }
+
+  private getAccountsFromDevice = async (paths: string[], skipZeroPath: Boolean): Promise<TrezorBridgeAccountsPayload> => {
     return new Promise(async (resolve, reject) => {
       const requestedPaths = []
       for (const path of paths) {
@@ -87,18 +117,25 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       }
       // @ts-ignore
       const messageId: string = crypto.randomUUID()
-      this.getTransport().addEventListener(messageId, (data: GetAccountsResponsePayload) => {
+      this.getTransport().addEventListener(messageId, async (data: GetAccountsResponsePayload) => {
         if (data.payload.success) {
           let accounts = []
-          for (const value of data.payload.payload as TrezorAccount[]) {
-            const buffer = Buffer.from(value.publicKey, 'hex')
-            const address = publicToAddress(buffer, true).toString('hex')
+          const accountsList = data.payload.payload as TrezorAccount[]
+          this.deviceId_ = await this.getDeviceIdFromAccountsList(accountsList)
+          const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
+          for (const value of accountsList) {
+            // If requested addresses do not have zero indexed adress we add it
+            // intentionally to calculate device id and should not add it to
+            // returned accounts
+            if (skipZeroPath && (value.serializedPath === zeroPath)) {
+              continue
+            }
             accounts.push({
-              address: toChecksumAddress(`0x${address}`),
+              address: this.publicKeyToAddress(value.publicKey),
               derivationPath: value.serializedPath,
               name: this.type(),
               hardwareVendor: this.type(),
-              deviceId: String(value.fingerprint)
+              deviceId: this.deviceId_
             })
           }
           resolve({ success: true, accounts: [...accounts] })

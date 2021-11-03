@@ -286,3 +286,12 @@ export function refreshSitePermissions () {
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
 }
+
+export async function hardwareDeviceIdFromAddress (address: string) {
+  const utf8 = new TextEncoder()
+  const msgBuffer = utf8.encode(address)
+  const hashBuffer = await Promise.resolve(crypto.subtle.digest('SHA-256', msgBuffer))
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
+}
