@@ -16,10 +16,9 @@ struct CryptoPagesView: View {
   
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
-  @State private var buySendSwapDestination: BuySendSwapDestination?
   
   var body: some View {
-    _CryptoPagesView(walletStore: walletStore, buySendSwapDestination: $buySendSwapDestination)
+    _CryptoPagesView(walletStore: walletStore)
       .ignoresSafeArea()
       .navigationTitle(Strings.Wallet.cryptoTitle)
       .navigationBarTitleDisplayMode(.inline)
@@ -48,33 +47,8 @@ struct CryptoPagesView: View {
         }
         .hidden()
       )
-      .sheet(item: $buySendSwapDestination) { action in
-        switch action {
-        case .buy:
-          BuyTokenView(
-            keyringStore: walletStore.keyringStore,
-            networkStore: walletStore.networkStore,
-            buyTokenStore: walletStore.buyTokenStore
-          )
-        case .send:
-          SendTokenView(
-            keyringStore: walletStore.keyringStore,
-            networkStore: walletStore.networkStore,
-            sendTokenStore: walletStore.sendTokenStore
-          )
-        case .swap:
-          SwapCryptoView(
-            keyringStore: walletStore.keyringStore,
-            ethNetworkStore: walletStore.networkStore
-          )
-        }
-      }
       .sheet(isPresented: $isShowingSearch) {
-        AssetSearchView(
-          tokenRegistry: walletStore.tokenRegistry,
-          keyringStore: walletStore.keyringStore,
-          networkStore: walletStore.networkStore
-        )
+        AssetSearchView(walletStore: walletStore)
       }
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -106,10 +80,12 @@ struct CryptoPagesView: View {
   
   struct _CryptoPagesView: UIViewControllerRepresentable {
     var walletStore: WalletStore
-    @Binding var buySendSwapDestination: BuySendSwapDestination?
     
     func makeUIViewController(context: Context) -> some UIViewController {
-      CryptoPagesViewController(walletStore: walletStore, buySendSwapDestination: _buySendSwapDestination)
+      CryptoPagesViewController(
+        walletStore: walletStore,
+        buySendSwapDestination: context.environment.buySendSwapDestination
+      )
     }
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
     }
@@ -140,7 +116,12 @@ private class CryptoPagesViewController: TabbedPageViewController {
     view.backgroundColor = .braveGroupedBackground
     
     pages = [
-      UIHostingController(rootView: PortfolioView(keyringStore: walletStore.keyringStore, networkStore: walletStore.networkStore, portfolioStore: walletStore.portfolioStore)).then {
+      UIHostingController(rootView: PortfolioView(
+        walletStore: walletStore,
+        keyringStore: walletStore.keyringStore,
+        networkStore: walletStore.networkStore,
+        portfolioStore: walletStore.portfolioStore
+      )).then {
         $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(rootView: AccountsView(keyringStore: walletStore.keyringStore)).then {

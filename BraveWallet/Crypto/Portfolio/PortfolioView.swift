@@ -10,14 +10,8 @@ import SnapKit
 import Introspect
 import struct Shared.Strings
 
-struct Currency {
-  var image: UIImage
-  var name: String
-  var symbol: String
-  var cost: Double
-}
-
 struct PortfolioView: View {
+  var walletStore: WalletStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var portfolioStore: PortfolioStore
@@ -77,13 +71,21 @@ struct PortfolioView: View {
         header: WalletListHeaderView(title: Text(Strings.Wallet.assetsTitle))
       ) {
         ForEach(portfolioStore.userVisibleAssets) { asset in
-          PortfolioAssetView(
-            image: AssetIconView(token: asset.token),
-            title: asset.token.name,
-            symbol: asset.token.symbol,
-            amount: currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
-            quantity: String(format: "%.04f", asset.decimalBalance)
-          )
+          NavigationLink(
+            destination: AssetDetailView(
+              assetDetailStore: walletStore.assetDetailStore(for: asset.token),
+              keyringStore: keyringStore,
+              networkStore: networkStore
+            )
+          ) {
+            PortfolioAssetView(
+              image: AssetIconView(token: asset.token),
+              title: asset.token.name,
+              symbol: asset.token.symbol,
+              amount: currencyFormatter.string(from: NSNumber(value: (Double(asset.price) ?? 0) * asset.decimalBalance)) ?? "",
+              quantity: String(format: "%.04f", asset.decimalBalance)
+            )
+          }
         }
         Button(action: { isPresentingEditUserAssets = true }) {
           Text(Strings.Wallet.editVisibleAssetsButtonTitle)
@@ -103,7 +105,9 @@ struct PortfolioView: View {
     .animation(.default, value: portfolioStore.userVisibleAssets)
     .listStyle(InsetGroupedListStyle())
     .introspectTableView { tableView in
-      tableInset = -tableView.layoutMargins.left
+      withAnimation(nil) {
+        tableInset = -tableView.layoutMargins.left
+      }
     }
   }
 }
@@ -196,6 +200,7 @@ struct PortfolioViewController_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       PortfolioView(
+        walletStore: .previewStore,
         keyringStore: WalletStore.previewStore.keyringStore,
         networkStore: WalletStore.previewStore.networkStore,
         portfolioStore: WalletStore.previewStore.portfolioStore

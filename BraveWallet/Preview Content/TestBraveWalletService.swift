@@ -39,12 +39,12 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
   
-  func `import`(fromCryptoWallets password: String, newPassword: String, completion: @escaping (Bool) -> Void) {
-    completion(false)
+  func `import`(fromCryptoWallets password: String, newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+    completion(false, nil)
   }
   
-  func `import`(fromMetaMask password: String, newPassword: String, completion: @escaping (Bool) -> Void) {
-    completion(false)
+  func `import`(fromMetaMask password: String, newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+    completion(false, nil)
   }
   
   func defaultWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
@@ -74,6 +74,14 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
     completion(0, "", "")
   }
   
+  func pendingSignMessageRequests(_ completion: @escaping ([BraveWallet.SignMessageRequest]) -> Void) {
+    completion([])
+  }
+  
   func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32) {
+  }
+  
+  func notifySignMessageHardwareRequestProcessed(_ approved: Bool, id: Int32, signature: String, error: String) {
+    // Hardware wallets not supported on iOS
   }
 }

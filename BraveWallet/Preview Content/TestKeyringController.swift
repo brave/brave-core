@@ -235,6 +235,11 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     completion(false)
   }
   
+  func setDefaultKeyringHardwareAccountName(_ address: String, name: String, completion: @escaping (Bool) -> Void) {
+    // Hardware wallets not supported on iOS
+    completion(false)
+  }
+  
   func addHardwareAccounts(_ info: [BraveWallet.HardwareWalletAccount]) {
     // Hardware wallets not supported on iOS
   }

@@ -20,6 +20,8 @@ public struct CryptoView: View {
   
   var openWalletURLAction: ((URL) -> Void)?
   
+  @State private var buySendSwapDestination: BuySendSwapDestination?
+  
   public init(
     walletStore: WalletStore,
     keyringStore: KeyringStore
@@ -66,6 +68,27 @@ public struct CryptoView: View {
               dismissButtonToolbarContents
             }
         }
+        .sheet(item: $buySendSwapDestination) { action in
+          switch action {
+          case .buy:
+            BuyTokenView(
+              keyringStore: walletStore.keyringStore,
+              networkStore: walletStore.networkStore,
+              buyTokenStore: walletStore.buyTokenStore
+            )
+          case .send:
+            SendTokenView(
+              keyringStore: walletStore.keyringStore,
+              networkStore: walletStore.networkStore,
+              sendTokenStore: walletStore.sendTokenStore
+            )
+          case .swap:
+            SwapCryptoView(
+              keyringStore: walletStore.keyringStore,
+              ethNetworkStore: walletStore.networkStore
+            )
+          }
+        }
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
       case .unlock:
         UIKitNavigationView {
@@ -92,5 +115,6 @@ public struct CryptoView: View {
     .environment(\.openWalletURLAction, .init(action: { url in
       openWalletURLAction?(url)
     }))
+    .environment(\.buySendSwapDestination, $buySendSwapDestination)
   }
 }

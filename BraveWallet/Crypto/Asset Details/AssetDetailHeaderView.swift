@@ -9,54 +9,41 @@ import BraveCore
 import BraveUI
 import struct Shared.Strings
 
-struct Candle: DataPoint, Equatable {
-  var date: Date { Date() }
-  var value: CGFloat
+extension BraveWallet.AssetTimePrice: DataPoint {
+  var value: CGFloat {
+    Double(price) ?? 0
+  }
 }
 
 struct AssetDetailHeaderView: View {
+  @ObservedObject var assetDetailStore: AssetDetailStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  var currency: Currency
+  @Binding var buySendSwapDestination: BuySendSwapDestination?
   
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  @State private var selectedDateRange: BraveWallet.AssetPriceTimeframe = .oneDay
-  @State private var selectedCandle: Candle?
-  
-  var data: [Candle] {
-    switch selectedDateRange {
-    case .oneDay:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100] as [CGFloat]).map(Candle.init)
-    case .live:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100] as [CGFloat]).map(Candle.init).reversed()
-    case .oneWeek:
-      return ([10, 20, 30, 20, 10] as [CGFloat]).map(Candle.init)
-    case .oneMonth:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100, 200, 100, 120] as [CGFloat]).map(Candle.init)
-    case .threeMonths:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100] as [CGFloat]).map(Candle.init)
-    case .oneYear:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100] as [CGFloat]).map(Candle.init)
-    case .all:
-      return ([10, 20, 30, 20, 10, 40, 50, 80, 100] as [CGFloat]).map(Candle.init)
-    @unknown default:
-      return [10, 20, 30, 20, 10, 40, 50, 80, 100].map(Candle.init)
-    }
-  }
+  @State private var selectedCandle: BraveWallet.AssetTimePrice?
   
   private var deltaText: some View {
     HStack(spacing: 2) {
-      Image(systemName: "arrow.up")
-      Text(verbatim: "0.46%")
+      Image(systemName: assetDetailStore.priceIsDown ? "arrow.down" : "arrow.up")
+      Text(assetDetailStore.priceDelta)
     }
     .foregroundColor(.white)
     .font(.caption2)
     .padding(5)
     .background(
-      Color(.braveSuccessLabel)
+      Color(
+        assetDetailStore.priceIsDown ? .walletRed : .walletGreen
+      )
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     )
+  }
+  
+  private var emptyData: [BraveWallet.AssetTimePrice] {
+    // About 300 points added so it doesn't animate funny
+    (0..<300).map { _ in .init(date: Date(), price: "0.0") }
   }
   
   var body: some View {
@@ -71,7 +58,7 @@ struct AssetDetailHeaderView: View {
               )
               if horizontalSizeClass == .regular {
                 Spacer()
-                DateRangeView(selectedRange: $selectedDateRange)
+                DateRangeView(selectedRange: $assetDetailStore.timeframe)
                   .padding(6)
                   .overlay(
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -80,8 +67,8 @@ struct AssetDetailHeaderView: View {
               }
             }
             HStack {
-              Circle().frame(width: 40, height: 40) // TODO: Swap this with an AssetIconView
-              Text(currency.name)
+              AssetIconView(token: assetDetailStore.token)
+              Text(assetDetailStore.token.name)
                 .fixedSize(horizontal: false, vertical: true)
                 .font(.title3.weight(.semibold))
             }
@@ -89,8 +76,8 @@ struct AssetDetailHeaderView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         } else {
           HStack {
-            Circle().frame(width: 40, height: 40) // TODO: Swap this with an AssetIconView
-            Text(currency.name)
+            AssetIconView(token: assetDetailStore.token)
+            Text(assetDetailStore.token.name)
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))
             NetworkPicker(
@@ -99,7 +86,7 @@ struct AssetDetailHeaderView: View {
             )
             if horizontalSizeClass == .regular {
               Spacer()
-              DateRangeView(selectedRange: $selectedDateRange)
+              DateRangeView(selectedRange: $assetDetailStore.timeframe)
                 .padding(6)
                 .overlay(
                   RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -109,39 +96,54 @@ struct AssetDetailHeaderView: View {
           }
         }
         Text(String.localizedStringWithFormat(Strings.Wallet.assetDetailSubtitle,
-                                              currency.name, currency.symbol))
+                                              assetDetailStore.token.name,
+                                              assetDetailStore.token.symbol))
           .font(.footnote)
           .foregroundColor(Color(.secondaryBraveLabel))
-        HStack {
-          Text(verbatim: "$1,812.31")
+        VStack(alignment: .leading) {
+          HStack {
+            Group {
+              if let selectedCandle = selectedCandle,
+                 let formattedString = AssetDetailStore.priceFormatter.string(from: NSNumber(value: selectedCandle.value)) {
+                Text(formattedString)
+              } else {
+                Text(assetDetailStore.price)
+              }
+            }
             .font(.title2.bold())
-          deltaText
-          Spacer()
+            deltaText
+            Spacer()
+          }
+          Text(assetDetailStore.btcRatio)
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryBraveLabel))
         }
-        Text(verbatim: "0.03265 BTC")
-          .font(.footnote)
-          .foregroundColor(Color(.secondaryBraveLabel))
-        LineChartView(data: data, numberOfColumns: 12, selectedDataPoint: $selectedCandle) {
-          Color(.braveSuccessLabel)
+        .redacted(reason: assetDetailStore.isInitialState ? .placeholder : [])
+        .shimmer(assetDetailStore.isLoadingPrice)
+        let data = assetDetailStore.priceHistory.isEmpty ? emptyData : assetDetailStore.priceHistory
+        LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
+          Color(.walletGreen)
+            .shimmer(assetDetailStore.isLoadingChart)
         }
+        .disabled(data.isEmpty)
         .frame(height: 128)
         .padding(.horizontal, -16)
         .animation(.default, value: data)
         if horizontalSizeClass == .compact {
-          DateRangeView(selectedRange: $selectedDateRange)
+          DateRangeView(selectedRange: $assetDetailStore.timeframe)
         }
       }
       .padding(16)
       Divider()
         .padding(.bottom)
       HStack {
-        Button(action: { }) {
+        Button(action: { buySendSwapDestination = .buy }) {
           Text(Strings.Wallet.buy)
         }
-        Button(action: { }) {
+        Button(action: { buySendSwapDestination = .send }) {
           Text(Strings.Wallet.send)
         }
-        Button(action: { }) {
+        Button(action: { buySendSwapDestination = .swap }) {
           Text(Strings.Wallet.swap)
         }
       }
@@ -154,9 +156,10 @@ struct AssetDetailHeaderView: View {
 struct CurrencyDetailHeaderView_Previews: PreviewProvider {
   static var previews: some View {
     AssetDetailHeaderView(
+      assetDetailStore: .previewStore,
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      currency: .init(image: UIImage(), name: "Basic Attention Token", symbol: "BAT", cost: 2.00)
+      buySendSwapDestination: .constant(nil)
     )
     .padding(.vertical)
     .previewLayout(.sizeThatFits)

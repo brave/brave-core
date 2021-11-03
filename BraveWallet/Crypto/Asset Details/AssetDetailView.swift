@@ -11,20 +11,27 @@ import BraveUI
 import struct Shared.Strings
 
 struct AssetDetailView: View {
+  @ObservedObject var assetDetailStore: AssetDetailStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  var token: BraveWallet.ERCToken
+  
+  @State private var tableInset: CGFloat = -16.0
+  @State private var isShowingAddAccount: Bool = false
+  
+  @Environment(\.buySendSwapDestination)
+  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
 
   var body: some View {
     List {
       Section(
         header: AssetDetailHeaderView(
+          assetDetailStore: assetDetailStore,
           keyringStore: keyringStore,
           networkStore: networkStore,
-          currency: Currency(image: .init(), name: "Basic Attention Token", symbol: "BAT", cost: 0.999444)
+          buySendSwapDestination: buySendSwapDestination
         )
         .resetListHeaderStyle()
-        .padding(.horizontal, -16) // inset grouped layout margins workaround
+        .padding(.horizontal, tableInset) // inset grouped layout margins workaround
       ) {
       }
       Section(
@@ -36,29 +43,64 @@ struct AssetDetailView: View {
               content
             }
           },
-        footer: Button(action: {}) {
+        footer: Button(action: {
+          isShowingAddAccount = true
+        }) {
           Text(Strings.Wallet.addAccountTitle)
         }
         .listRowInsets(.zero)
         .buttonStyle(BraveOutlineButtonStyle(size: .small))
         .padding(.vertical, 8)
       ) {
-        Text(Strings.Wallet.noAccounts)
+        if assetDetailStore.accounts.isEmpty {
+          Text(Strings.Wallet.noAccounts)
+            .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
+            .shimmer(assetDetailStore.isLoadingAccountBalances)
+            .font(.footnote)
+        } else {
+          ForEach(assetDetailStore.accounts) { viewModel in
+            HStack {
+              AccountView(address: viewModel.account.address, name: viewModel.account.name)
+              let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
+              let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
+              VStack(alignment: .trailing) {
+                Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
+                  .redacted(reason: showFiatPlaceholder ? .placeholder : [])
+                  .shimmer(assetDetailStore.isLoadingPrice)
+                Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.token.symbol)" : "\(viewModel.balance) \(assetDetailStore.token.symbol)")
+                  .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+                  .shimmer(assetDetailStore.isLoadingAccountBalances)
+              }
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+            }
+          }
+        }
       }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
         header: WalletListHeaderView(title: Text(Strings.Wallet.transactionsTitle))
       ) {
         Text(Strings.Wallet.noTransactions)
+          .font(.footnote)
       }
-      Section(
-        header: WalletListHeaderView(title: Text(Strings.Wallet.infoTitle))
-      ) {
-        Text(verbatim: "No info") // TODO: Just hide the info section when there isn't any available
-      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listStyle(InsetGroupedListStyle())
-    .navigationTitle("Basic Attention Token") // TODO: Replace by actual currency
+    .navigationTitle(assetDetailStore.token.name)
     .navigationBarTitleDisplayMode(.inline)
+    .onAppear {
+      assetDetailStore.update()
+    }
+    .introspectTableView { tableView in
+      tableInset = -tableView.layoutMargins.left
+    }
+    .sheet(isPresented: $isShowingAddAccount) {
+      NavigationView {
+        AddAccountView(keyringStore: keyringStore)
+      }
+      .navigationViewStyle(StackNavigationViewStyle())
+    }
   }
 }
 
@@ -67,19 +109,9 @@ struct CurrencyDetailView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       AssetDetailView(
+        assetDetailStore: .previewStore,
         keyringStore: .previewStore,
-        networkStore: .previewStore,
-        token: .init(
-          contractAddress: "",
-          name: "Ethereum",
-          logo: "",
-          isErc20: false,
-          isErc721: false,
-          symbol: "ETH",
-          decimals: 18,
-          visible: true,
-          tokenId: ""
-        )
+        networkStore: .previewStore
       )
         .navigationBarTitleDisplayMode(.inline)
     }

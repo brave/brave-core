@@ -218,6 +218,7 @@
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
 		2718016D272B05110047EB15 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718016C272B05110047EB15 /* PasswordValidation.swift */; };
 		2718017A272B05400047EB15 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27180179272B053F0047EB15 /* PasswordValidationTests.swift */; };
+		2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
 		2719DA00249AAC2A0080AB48 /* FeedContextMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */; };
@@ -361,6 +362,7 @@
 		277309F32721DF79007643F6 /* SPMLibraries.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; };
 		27733E5826977EC40086799A /* PasscodeMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E5726977EC40086799A /* PasscodeMigrationView.swift */; };
 		27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */; };
+		2774300A2733126000183725 /* WalletColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277430092733126000183725 /* WalletColors.swift */; };
 		277568D425ACF91600C129AF /* SPMLibraries.h in Headers */ = {isa = PBXBuildFile; fileRef = 277568D225ACF91600C129AF /* SPMLibraries.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		277568D725ACF91600C129AF /* SPMLibraries.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; };
 		277568D825ACF91600C129AF /* SPMLibraries.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1799,6 +1801,7 @@
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
 		2718016C272B05110047EB15 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		27180179272B053F0047EB15 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
+		2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailStore.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContextMenuDelegate.swift; sourceTree = "<group>"; };
@@ -1937,6 +1940,7 @@
 		277309E72721DF6D007643F6 /* WeiFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeiFormatterTests.swift; sourceTree = "<group>"; };
 		27733E5726977EC40086799A /* PasscodeMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeMigrationView.swift; sourceTree = "<group>"; };
 		27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityEmbedInScrollViewViewModifier.swift; sourceTree = "<group>"; };
+		277430092733126000183725 /* WalletColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletColors.swift; sourceTree = "<group>"; };
 		277568D025ACF91500C129AF /* SPMLibraries.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMLibraries.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		277568D225ACF91600C129AF /* SPMLibraries.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMLibraries.h; sourceTree = "<group>"; };
 		277568D325ACF91600C129AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3619,6 +3623,7 @@
 				27F3AEF3271DDE0C00F75B7F /* OpenWalletURLAction.swift */,
 				277309DD2721DDFB007643F6 /* WeiFormatter.swift */,
 				275C6FB32731D1A500AB2FC7 /* RpcControllerExtensions.swift */,
+				277430092733126000183725 /* WalletColors.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3714,6 +3719,7 @@
 				2766848A270CDA3500DF45C5 /* UserAssetsStore.swift */,
 				7D758914271A17AF00B643C3 /* BuyTokenStore.swift */,
 				7D49CDDE271FB359008AB67E /* SendTokenStore.swift */,
+				2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -7484,6 +7490,7 @@
 				271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */,
 				7DAC597B2726524E00E735A2 /* AddressQRCodeScannerView.swift in Sources */,
 				271F68B226EBD27E00AA2A50 /* RestoreWalletView.swift in Sources */,
+				2774300A2733126000183725 /* WalletColors.swift in Sources */,
 				27DDE88A26FE1A7700A70C3A /* TestBraveWalletService.swift in Sources */,
 				271F68F826EBE92900AA2A50 /* WalletHostingViewController.swift in Sources */,
 				7D49CDDF271FB359008AB67E /* SendTokenStore.swift in Sources */,
@@ -7533,6 +7540,7 @@
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
+				2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

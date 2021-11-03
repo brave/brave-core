@@ -62,4 +62,19 @@ public class WalletStore {
       transactionController: transactionController
     )
   }
+  
+  private var assetDetailStore: AssetDetailStore?
+  func assetDetailStore(for token: BraveWallet.ERCToken) -> AssetDetailStore {
+    if let store = assetDetailStore, store.token.id == token.id {
+      return store
+    }
+    let store = AssetDetailStore(
+      assetRatioController: assetRatioController,
+      keyringController: keyringController,
+      rpcController: rpcController,
+      token: token
+    )
+    assetDetailStore = store
+    return store
+  }
 }
