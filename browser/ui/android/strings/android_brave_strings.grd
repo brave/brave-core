@@ -2395,6 +2395,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACTIVATE_ERC20" desc="A button to activate an ERC20 token">
       Activate <ph name="TOKEN">%1$s<ex>BAT</ex></ph>
     </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE" desc="Brave wallet function type">
+      FUNCTION TYPE: <ph name="FTYPE">%1$s<ex>ERC20Transfer</ex></ph>
+    </message>
+    <message name="IDS_WALLET_DETAILS_NO_DATA" desc="Brave wallet no data to show">
+      No data
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_OTHER" desc="Brave wallet function type other">
+      Other
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20TRANSFER" desc="Brave wallet function type ERC20Transfer" translateable="false">
+      ERC20Transfer
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC721TRANSFER" desc="Brave wallet function type ERC721Transfer" translateable="false">
+      ERC721Transfer
+    </message>
+    <message name="IDS_WALLET_DETAILS_FUNCTION_TYPE_ERC20APPROVE" desc="Brave wallet function type ERC20Approve" translateable="false">
+      ERC20Approve
+    </message>
     </messages>
   </release>
 </grit>

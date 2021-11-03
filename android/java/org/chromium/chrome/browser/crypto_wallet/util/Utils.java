@@ -487,6 +487,18 @@ public class Utils {
         return data;
     }
 
+    public static String numberArrayToHexStr(byte[] value) {
+        if (value.length == 0) {
+            return "";
+        }
+        String res = "0x";
+        for (int n = 0; n < value.length; n++) {
+            res += String.format("%02x", value[n]);
+        }
+
+        return res;
+    }
+
     public static TxData getTxData(
             String nonce, String gasPrice, String gasLimit, String to, String value, byte[] data) {
         TxData res = new TxData();
