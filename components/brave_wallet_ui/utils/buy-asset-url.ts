@@ -13,7 +13,7 @@ export function BuyAssetUrl (networkChainId: string, asset: AccountAssetOptionTy
     case kMainnetChainId:
       return `https://pay.sendwyre.com/?dest=ethereum:${account.address}&destCurrency=${asset.asset.symbol}&amount=${buyAmount}&accountId=${wyreID}&paymentMethod=debit-card`
     case kRopstenChainId:
-      return 'https://faucet.metamask.io/'
+      return 'https://faucet.ropsten.be/'
     case kKovanChainId:
       return 'https://github.com/kovan-testnet/faucet'
     case kRinkebyChainId:
