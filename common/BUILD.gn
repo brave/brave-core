@@ -139,7 +139,6 @@ source_set("common") {
 
     deps += [
       "//brave/components/brave_component_updater/browser",
-      "//brave/components/brave_wallet/common/buildflags",
       "//extensions/common:common_constants",
     ]
 

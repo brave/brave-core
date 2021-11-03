@@ -4,56 +4,53 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_wallet_unit_tests") {
   testonly = true
-  if (brave_wallet_enabled) {
-    sources = [
-      "//brave/components/brave_wallet/browser/asset_ratio_controller_unittest.cc",
-      "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
-      "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
-      "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
-      "//brave/components/brave_wallet/browser/eip1559_transaction_unittest.cc",
-      "//brave/components/brave_wallet/browser/eip2930_transaction_unittest.cc",
-      "//brave/components/brave_wallet/browser/erc_token_list_parser_unittest.cc",
-      "//brave/components/brave_wallet/browser/erc_token_registry_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_address_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_block_tracker_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_data_builder_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_data_parser_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_json_rpc_controller_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
-      "//brave/components/brave_wallet/browser/eth_tx_controller_unittest.cc",
-      "//brave/components/brave_wallet/browser/ethereum_permission_utils_unittest.cc",
-      "//brave/components/brave_wallet/browser/hd_key_unittest.cc",
-      "//brave/components/brave_wallet/browser/hd_keyring_unittest.cc",
-      "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
-      "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
-      "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
-      "//brave/components/brave_wallet/browser/swap_controller_unittest.cc",
-      "//brave/components/brave_wallet/browser/swap_response_parser_unittest.cc",
-    ]
+  sources = [
+    "//brave/components/brave_wallet/browser/asset_ratio_controller_unittest.cc",
+    "//brave/components/brave_wallet/browser/asset_ratio_response_parser_unittest.cc",
+    "//brave/components/brave_wallet/browser/brave_wallet_types_unittest.cc",
+    "//brave/components/brave_wallet/browser/brave_wallet_utils_unittest.cc",
+    "//brave/components/brave_wallet/browser/eip1559_transaction_unittest.cc",
+    "//brave/components/brave_wallet/browser/eip2930_transaction_unittest.cc",
+    "//brave/components/brave_wallet/browser/erc_token_list_parser_unittest.cc",
+    "//brave/components/brave_wallet/browser/erc_token_registry_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_address_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_block_tracker_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_data_builder_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_data_parser_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_json_rpc_controller_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_requests_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_response_parser_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_transaction_unittest.cc",
+    "//brave/components/brave_wallet/browser/eth_tx_controller_unittest.cc",
+    "//brave/components/brave_wallet/browser/ethereum_permission_utils_unittest.cc",
+    "//brave/components/brave_wallet/browser/hd_key_unittest.cc",
+    "//brave/components/brave_wallet/browser/hd_keyring_unittest.cc",
+    "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
+    "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
+    "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
+    "//brave/components/brave_wallet/browser/swap_controller_unittest.cc",
+    "//brave/components/brave_wallet/browser/swap_response_parser_unittest.cc",
+  ]
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:ethereum_permission_utils",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/ipfs",
-      "//components/prefs",
-      "//components/prefs:test_support",
-      "//components/sync_preferences:test_support",
-      "//components/user_prefs",
-      "//content/test:test_support",
-      "//net:test_support",
-      "//services/network:test_support",
-      "//testing/gtest",
-      "//url",
-    ]
-  }  # if (brave_wallet_enabled)
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/ipfs",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//components/user_prefs",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
 }  # source_set("brave_wallet_unit_tests")

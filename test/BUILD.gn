@@ -5,7 +5,6 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_adaptive_captcha/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/crypto_dot_com/browser/buildflags/buildflags.gni")
@@ -155,6 +154,7 @@ test("brave_unit_tests") {
     "//brave/base:base_unittests",
     "//brave/browser",
     "//brave/browser:unit_tests",
+    "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/browser/content_settings:unit_tests",
     "//brave/browser/ethereum_remote_client/buildflags",
@@ -194,9 +194,11 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:network_time_helper",
+    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:unit_tests",
-    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wallet/renderer/test:unit_tests",
     "//brave/components/child_process_monitor:unittests",
     "//brave/components/ipfs/buildflags",
@@ -265,15 +267,6 @@ test("brave_unit_tests") {
 
   if (decentralized_dns_enabled) {
     deps += [ "//brave/browser/decentralized_dns/test:unit_tests" ]
-  }
-
-  if (brave_wallet_enabled) {
-    deps += [
-      "//brave/browser/brave_wallet",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:mojom",
-    ]
   }
 
   if (toolkit_views) {
@@ -611,6 +604,12 @@ if (!is_android) {
       "//brave/browser/brave_shields/cookie_pref_service_browsertest.cc",
       "//brave/browser/brave_shields/domain_block_page_browsertest.cc",
       "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc",
+      "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
+      "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
+      "//brave/browser/brave_wallet/brave_wallet_service_browsertest.cc",
+      "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
+      "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
+      "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
       "//brave/browser/debounce/debounce_browsertest.cc",
       "//brave/browser/devtools/brave_devtools_ui_bindings_browsertest.cc",
       "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
@@ -650,6 +649,8 @@ if (!is_android) {
       "//brave/browser/ui/views/profiles/brave_profile_menu_view_browsertest.cc",
       "//brave/browser/ui/views/tabs/brave_tab_context_menu_contents_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
+      "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
+      "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
       "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
       "//brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_browsertest.cc",
       "//brave/chromium_src/chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
@@ -708,6 +709,7 @@ if (!is_android) {
 
     deps = [
       "//brave/browser/autoplay:browser_tests",
+      "//brave/browser/brave_wallet",
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/browsing_data:browser_tests",
       "//brave/browser/farbling:browser_tests",
@@ -732,8 +734,12 @@ if (!is_android) {
       "//brave/components/brave_search/common",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_vpn/buildflags",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
+      "//brave/components/resources:strings_grit",
       "//brave/renderer/test:browser_tests",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
@@ -779,27 +785,6 @@ if (!is_android) {
       deps += [
         "//brave/components/greaselion/browser",
         "//chrome/browser",
-      ]
-    }
-
-    if (brave_wallet_enabled) {
-      sources += [
-        "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
-        "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
-        "//brave/browser/brave_wallet/brave_wallet_service_browsertest.cc",
-        "//brave/browser/brave_wallet/brave_wallet_sign_message_browsertest.cc",
-        "//brave/browser/brave_wallet/brave_wallet_tab_helper_browsertest.cc",
-        "//brave/browser/brave_wallet/send_transaction_browsertest.cc",
-        "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
-        "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
-      ]
-
-      deps += [
-        "//brave/browser/brave_wallet",
-        "//brave/components/brave_wallet/browser",
-        "//brave/components/brave_wallet/common",
-        "//brave/components/brave_wallet/common:mojom",
-        "//brave/components/resources:strings_grit",
       ]
     }
 
@@ -910,7 +895,6 @@ if (!is_android) {
       "//brave/components/brave_shields/browser",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_sync:prefs",
-      "//brave/components/brave_wallet/common/buildflags",
       "//brave/components/brave_wayback_machine",
       "//brave/components/brave_wayback_machine:buildflags",
       "//brave/components/content_settings/renderer",
