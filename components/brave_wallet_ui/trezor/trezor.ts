@@ -1,55 +1,50 @@
-import TrezorConnect, { Success, Unsuccessful } from 'trezor-connect'
-import { HDNodeResponse } from 'trezor-connect/lib/typescript/trezor/protobuf'
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import TrezorConnect, { Unsuccessful } from 'trezor-connect'
+
 import {
   TrezorCommand,
   UnlockCommand,
-  postResponseToWallet,
   UnlockResponse,
   GetAccountsCommand,
-  TrezorGetAccountsResponse,
-  GetAccountsResponsePayload
+  GetAccountsResponsePayload,
+  TrezorGetPublicKeyResponse
 } from '../common/trezor/trezor-messages'
 
-type TrezorGetPublicKeyResponse = Unsuccessful | Success<HDNodeResponse[]>
+import { addTrezorCommandHandler } from '../common/trezor/trezor-command-handler'
+
 const createUnlockResponse = (command: UnlockCommand, result: Boolean, error?: Unsuccessful): UnlockResponse => {
   return { id: command.id, command: command.command, result: result, origin: command.origin, error: error }
 }
 
 const createGetAccountsResponse = (command: GetAccountsCommand, result: TrezorGetPublicKeyResponse): GetAccountsResponsePayload => {
-  return { id: command.id, command: command.command, payload: result as TrezorGetAccountsResponse, origin: command.origin }
+  return { id: command.id, command: command.command, payload: result, origin: command.origin }
 }
 
-const unlock = (command: UnlockCommand, source: Window) => {
-  TrezorConnect.init({
-    connectSrc: 'https://connect.trezor.io/8/',
-    lazyLoad: false,
-    manifest: {
-      email: 'support@brave.com',
-      appUrl: 'https://brave.com'
-    }
-  }).then(() => {
-    postResponseToWallet(source, createUnlockResponse(command, true))
-  }).catch((error: any) => {
-    console.log(error)
-    postResponseToWallet(source, createUnlockResponse(command, false, error))
+addTrezorCommandHandler(TrezorCommand.Unlock, (command: UnlockCommand): Promise<UnlockResponse> => {
+  return new Promise(async (resolve) => {
+    TrezorConnect.init({
+      connectSrc: 'https://connect.trezor.io/8/',
+      lazyLoad: false,
+      manifest: {
+        email: 'support@brave.com',
+        appUrl: 'https://brave.com'
+      }
+    }).then(() => {
+      resolve(createUnlockResponse(command, true))
+    }).catch((error: any) => {
+      resolve(createUnlockResponse(command, false, error))
+    })
   })
-}
+})
 
-const getAccounts = (command: GetAccountsCommand, source: Window) => {
-  TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
-    postResponseToWallet(source, createGetAccountsResponse(command, result))
+addTrezorCommandHandler(TrezorCommand.GetAccounts, (command: GetAccountsCommand, source: Window): Promise<GetAccountsResponsePayload> => {
+  return new Promise(async (resolve) => {
+    TrezorConnect.getPublicKey({ bundle: command.paths }).then((result: TrezorGetPublicKeyResponse) => {
+      resolve(createGetAccountsResponse(command, result))
+    })
   })
-}
-
-window.addEventListener('message', (event: any/* MessageEvent<TrezorFrameCommand>*/) => {
-  if (event.origin !== event.data.origin || event.type !== 'message' || !event.source) {
-    return
-  }
-  if (event.data.command === TrezorCommand.Unlock) {
-    return unlock(event.data, event.source as Window)
-  }
-  if (event.data.command === TrezorCommand.GetAccounts) {
-    return getAccounts(event.data, event.source as Window)
-  }
-  return
 })

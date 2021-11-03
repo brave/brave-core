@@ -1,8 +1,12 @@
-import { Unsuccessful } from 'trezor-connect'
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import { loadTimeData } from '../../../common/loadTimeData'
-export const kTrezorBridgeFrameId = 'trezor-untrusted-frame'
+import { Unsuccessful, Success } from 'trezor-connect'
+import { HDNodeResponse } from 'trezor-connect/lib/typescript/trezor/protobuf'
 export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
-import { getLocale } from '../../../common/locale'
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
@@ -36,40 +40,48 @@ export type TrezorError = {
   error: string,
   code: string
 }
-export type TrezorGetAccountsResponse = {
-  success: Boolean
-  payload: TrezorAccount[] | TrezorError
-}
+export type TrezorGetPublicKeyResponse = Unsuccessful | Success<HDNodeResponse[]>
 export type GetAccountsResponsePayload = CommandMessage & {
-  payload: TrezorGetAccountsResponse
+  payload: TrezorGetPublicKeyResponse
 }
 export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand
 export type TrezorFrameResponse = UnlockResponse | GetAccountsResponsePayload
-export function postResponseToWallet (target: Window, message: TrezorFrameResponse) {
-  target.postMessage(message, message.origin)
-}
 
-export function postToTrezorFrame (target: Window, message: TrezorFrameCommand) {
-  target.postMessage(message, kTrezorBridgeUrl)
-}
-
-export class TrezorBridgeTransport {
+// Trezor library is loaded inside the chrome-untrusted webui page
+// and communication is going through posting messages between parent window
+// and frame window. This class handles low level messages transport to add,
+// remove callbacks and allows to process messages for childrens.
+export abstract class MessagingTransport {
   constructor () {
-    this.pendingRequests = new Map<string, Function>()
+    this.handlers = new Map<string, Function>()
   }
 
-  pendingRequests: Map<string, Function>
+  protected handlers: Map<string, Function>
 
-  postMessage = async (command: TrezorFrameCommand) => {
-    let bridge = this.getBridge() as HTMLIFrameElement
-    if (!bridge) {
-      bridge = await this.createBridge() as HTMLIFrameElement
+  addCommandHandler = (id: string, listener: Function): Boolean => {
+    if (!this.handlers.size) {
+      this.addWindowMessageListener()
+      this.handlers.clear()
     }
-    if (!bridge.contentWindow) {
-      throw Error(getLocale('braveWalletCreateBridgeError'))
+    if (this.handlers.has(id)) {
+      return false
     }
-    postToTrezorFrame(bridge.contentWindow, command)
+    this.handlers.set(id, listener)
+    return true
   }
+
+  protected removeCommandHandler = (id: string) => {
+    if (!this.handlers.has(id)) {
+      return false
+    }
+    this.handlers.delete(id)
+    if (!this.handlers.size) {
+      this.removeWindowMessageListener()
+    }
+    return true
+  }
+
+  protected abstract onMessageReceived (event: MessageEvent): unknown
 
   private addWindowMessageListener = () => {
     window.addEventListener('message', this.onMessageReceived)
@@ -77,62 +89,5 @@ export class TrezorBridgeTransport {
 
   private removeWindowMessageListener = () => {
     window.removeEventListener('message', this.onMessageReceived)
-  }
-  private getTrezorBridgeOrigin = () => {
-    return (new URL(kTrezorBridgeUrl)).origin
-  }
-
-  private createBridge = () => {
-    return new Promise((resolve) => {
-      let element = document.createElement('iframe')
-      element.id = kTrezorBridgeFrameId
-      element.src = kTrezorBridgeUrl
-      element.style.display = 'none'
-      element.onload = () => {
-        resolve(element)
-      }
-      document.body.appendChild(element)
-    })
-  }
-  addEventListener = (id: string, listener: Function) => {
-    if (!this.pendingRequests.size) {
-      this.addWindowMessageListener()
-      this.pendingRequests.clear()
-    }
-    if (this.pendingRequests.has(id)) {
-      return false
-    }
-    this.pendingRequests.set(id, listener)
-    return true
-  }
-
-  private removeEventListener = (id: string) => {
-    if (!this.pendingRequests.has(id)) {
-      return false
-    }
-    this.pendingRequests.delete(id)
-    if (!this.pendingRequests.size) {
-      this.removeWindowMessageListener()
-    }
-    return true
-  }
-
-  private getBridge = () => {
-    return document.getElementById(kTrezorBridgeFrameId)
-  }
-
-  private onMessageReceived = (event: MessageEvent) => {
-    if (event.origin !== this.getTrezorBridgeOrigin() ||
-        event.type !== 'message' ||
-        !this.pendingRequests.size) {
-      return
-    }
-    const message = event.data as TrezorFrameCommand
-    if (!message || !this.pendingRequests.has(message.id)) {
-      return
-    }
-    const callback = this.pendingRequests.get(message.id) as Function
-    callback.call(this, message)
-    this.removeEventListener(event.data.id)
   }
 }

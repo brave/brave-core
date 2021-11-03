@@ -20,7 +20,7 @@ import {
 } from './style'
 
 // Custom types
-import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, ErrorMessage } from './types'
+import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
 
 import {
   kLedgerHardwareVendor,
@@ -118,7 +118,7 @@ export default function (props: Props) {
 
   const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)
 
-  if (connectionError !== '') {
+  if (connectionError) {
     console.error(connectionError)
   }
 
