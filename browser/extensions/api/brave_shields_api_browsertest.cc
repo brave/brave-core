@@ -128,19 +128,19 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
 
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginOnce("a.com");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
       << "Scripts from a.com should be temporarily allowed.";
 
   // reload page again
   active_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
       << "Scripts from a.com should be temporarily allowed after reload.";
 
   // same doc navigation
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       browser(), embedded_test_server()->GetURL(
                      "a.com", "/load_js_from_origins.html#foo")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
       << "Scripts from a.com should be temporarily allowed for same doc "
          "navigation.";
 
@@ -157,20 +157,20 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       browser(),
       embedded_test_server()->GetURL("b.com", "/load_js_from_origins.html")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
       << "All script loadings should be blocked after navigating away.";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 4u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 4u)
       << "All script loadings should not be blocked by default.";
 
   BlockScripts();
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 1u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginAndDataURLOnce("a.com",
@@ -179,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
       "50LmJvZHkuYXBwZW5kQ2hpbGQoZnJhbWUpOw==");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 3u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 3u)
       << "Scripts from a.com and data URL should be temporarily allowed.";
 }
 
@@ -187,13 +187,13 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
   BlockScripts();
 
   EXPECT_TRUE(NavigateToURLUntilLoadStop("a.com", "/remote_iframe.html"));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginOnce("b.com");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(active_contents()->GetAllFrames().size(), 3u)
+  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 3u)
       << "Scripts from b.com should be temporarily allowed.";
 }
 
