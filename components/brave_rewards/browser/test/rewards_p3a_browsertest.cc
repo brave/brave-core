@@ -11,6 +11,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
@@ -19,8 +20,11 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -36,7 +40,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     contribution_ = std::make_unique<RewardsBrowserTestContribution>();
     promotion_ = std::make_unique<RewardsBrowserTestPromotion>();
     response_ = std::make_unique<RewardsBrowserTestResponse>();
-    histogram_tester_.reset(new base::HistogramTester);
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
 
   void SetUpOnMainThread() override {
@@ -47,8 +51,8 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
 
     // HTTP resolver
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_.reset(new net::EmbeddedTestServer(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_->RegisterRequestHandler(
         base::BindRepeating(&rewards_browsertest_util::HandleRequest));
@@ -106,8 +110,24 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
       return;
     }
 
-    wait_for_rewards_initialization_loop_.reset(new base::RunLoop);
+    wait_for_rewards_initialization_loop_ = std::make_unique<base::RunLoop>();
     wait_for_rewards_initialization_loop_->Run();
+  }
+
+  // Enabling ads needs to round-trip through the ledger process
+  // before the preference change propagates and triggers P3A
+  // measurements. Call this to wait until that happens.
+  void WaitForRewardsEnable() {
+    // Verify the ads state enable change has propagated.
+    if (ads_enabled_) {
+      return;
+    }
+
+    // Execute pending tasks until we reach the Quit sentinel
+    // inserted by OnAdsEnabled.
+    wait_for_rewards_enabled_loop_ = std::make_unique<base::RunLoop>();
+    wait_for_rewards_enabled_loop_->Run();
+    return;
   }
 
   content::WebContents* contents() {
@@ -117,6 +137,17 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   void OnRewardsInitialized(
       brave_rewards::RewardsService* rewards_service) override {
     rewards_initialized_ = true;
+    if (wait_for_rewards_initialization_loop_) {
+      wait_for_rewards_initialization_loop_->Quit();
+    }
+  }
+
+  void OnAdsEnabled(brave_rewards::RewardsService* service,
+                    bool ads_enabled) override {
+    ads_enabled_ = ads_enabled;
+    if (ads_enabled && wait_for_rewards_enabled_loop_) {
+      wait_for_rewards_enabled_loop_->Quit();
+    }
   }
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
@@ -129,7 +160,11 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
 
   bool rewards_initialized_ = false;
   std::unique_ptr<base::RunLoop> wait_for_rewards_initialization_loop_;
+  std::unique_ptr<base::RunLoop> wait_for_rewards_enabled_loop_;
+  bool ads_enabled_ = false;
 };
+
+using brave_rewards::p3a::RewardsEnabledDuration;
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
   rewards_browsertest_util::StartProcess(rewards_service_);
@@ -140,6 +175,164 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AutoContributionsState.2",
                                        1, 1);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.TipsState.2", 1, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kNever, 1);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, EnabledHours) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+
+  // Turn rewards on.
+  rewards_service_->SetAdsEnabled(true);
+  WaitForRewardsEnable();
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kStillEnabled,
+                                       1);
+
+  // Adjust the stored timestamp to measure a longer duration.
+  auto earlier = base::Time::Now() - base::Minutes(90);
+  LOG(INFO) << "Backdating timestamp to " << earlier;
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, earlier);
+
+  // Turn rewards off.
+  rewards_service_->SetAdsEnabled(false);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kHours, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kDays, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kWeeks, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kLonger, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, EnabledDays) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+
+  // Turn rewards on.
+  rewards_service_->SetAdsEnabled(true);
+  WaitForRewardsEnable();
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kStillEnabled,
+                                       1);
+
+  // Adjust the stored timestamp to measure a longer duration.
+  auto yesterday = base::Time::Now() - base::Days(1);
+  LOG(INFO) << "Backdating timestamp to " << yesterday;
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, yesterday);
+
+  // Turn rewards off.
+  rewards_service_->SetAdsEnabled(false);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kHours, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kDays, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kWeeks, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kLonger, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, EnabledWeeks) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+
+  // Turn rewards on.
+  rewards_service_->SetAdsEnabled(true);
+  WaitForRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kStillEnabled,
+                                       1);
+
+  // Adjust the stored timestamp to measure a longer duration.
+  auto weeks_ago = base::Time::Now() - base::Days(12);
+  LOG(INFO) << "Backdating timestamp to " << weeks_ago;
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, weeks_ago);
+  // Turn rewards off.
+  rewards_service_->SetAdsEnabled(false);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kHours, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kDays, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kWeeks, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kLonger, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, EnabledMonths) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+
+  // Turn rewards on.
+  rewards_service_->SetAdsEnabled(true);
+  WaitForRewardsEnable();
+
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kStillEnabled,
+                                       1);
+
+  // Adjust the stored timestamp to measure a longer duration.
+  auto months_ago = base::Time::Now() - base::Days(40);
+  LOG(INFO) << "Backdating timestamp to " << months_ago;
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, months_ago);
+  // Turn rewards off.
+  rewards_service_->SetAdsEnabled(false);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kHours, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kDays, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kWeeks, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kLonger, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, EnabledLonger) {
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  WaitForRewardsInitialization();
+
+  // Turn rewards on.
+  rewards_service_->SetAdsEnabled(true);
+  WaitForRewardsEnable();
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kStillEnabled,
+                                       1);
+
+  // Adjust the stored timestamp to measure a longer duration.
+  auto a_long_time_ago = base::Time::Now() - base::Days(128);
+  LOG(INFO) << "Backdating timestamp to " << a_long_time_ago;
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  prefs->SetTime(brave_rewards::prefs::kEnabledTimestamp, a_long_time_ago);
+  // Turn rewards off.
+  rewards_service_->SetAdsEnabled(false);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kHours, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kDays, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kWeeks, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kMonths, 0);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.EnabledDuration",
+                                       RewardsEnabledDuration::kLonger, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest,

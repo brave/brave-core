@@ -209,6 +209,7 @@ void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
       constexpr auto days_per_week = 7;
       constexpr auto days_per_month = 30.44;  // average length
       auto duration = base::Time::Now() - enabled_timestamp;
+      DLOG(INFO) << "Rewards disabled after " << duration;
       if (duration < base::Hours(threshold)) {
         value = RewardsEnabledDuration::kHours;
       } else if (duration < base::Days(threshold)) {
