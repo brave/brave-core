@@ -551,9 +551,9 @@ function Container (props: Props) {
         <LongWrapper>
           <SignPanel
             signMessageData={signMessageData}
+            accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedAccount={selectedAccount}
             selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
