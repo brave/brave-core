@@ -101,7 +101,7 @@ void BraveWebMainParts::SetupFieldTrials() {
   std::vector<std::string> variation_ids;
   RegisterAllFeatureVariationParameters(&flags_storage, feature_list.get());
 
-  application_context_->GetVariationsService()->SetupFieldTrials(
+  application_context_->GetVariationsService()->SetUpFieldTrials(
       variation_ids, std::vector<base::FeatureList::FeatureOverrideInfo>(),
       std::move(feature_list), &ios_field_trials_);
 }
