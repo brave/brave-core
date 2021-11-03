@@ -1,11 +1,11 @@
 diff --git a/tools/clang/pylib/clang/compile_db.py b/tools/clang/pylib/clang/compile_db.py
-index 8b019f70d8baff26e5aecc108443dfe9a13474e0..134cde87cb45c7de6df79fb6ca4ba8ec5dcbafe4 100755
+index 9cea148ee9a06df045f2237bf5745032d00d2ab2..56b96e3de27289b15de38c430ab9ce64b5a84d12 100755
 --- a/tools/clang/pylib/clang/compile_db.py
 +++ b/tools/clang/pylib/clang/compile_db.py
-@@ -14,7 +14,7 @@ import shutil
+@@ -12,7 +12,7 @@ import sys
  
  _RSP_RE = re.compile(r' (@(.+?\.rsp)) ')
- _CMD_LINE_RE = re.compile(
+ _GOMA_CMD_LINE_RE = re.compile(
 -    r'^(?P<gomacc>.*gomacc(\.exe)?"?\s+)?(?P<clang>\S*clang\S*)\s+(?P<args>.*)$'
 +    r'^(?P<gomacc>.*(gomacc|redirect-cc)(\.exe|\.py)?"?\s+)?(?P<clang>\S*clang\S*)\s+(?P<args>.*)$'
  )
