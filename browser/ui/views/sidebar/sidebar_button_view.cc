@@ -7,12 +7,18 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/views/controls/focus_ring.h"
 
-SidebarButtonView::SidebarButtonView(Delegate* delegate) : delegate_(delegate) {
+SidebarButtonView::SidebarButtonView(Delegate* delegate,
+                                     const std::u16string& accessible_name)
+    : delegate_(delegate) {
   // Locate image at center of the button.
   SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
   SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
   DCHECK(GetInstallFocusRingOnFocus());
   views::FocusRing::Get(this)->SetColor(gfx::kBraveBlurple300);
+
+  // Views resulting in focusable nodes later on in the accessibility tree need
+  // to have an accessible name for screen readers to see what they are about.
+  SetAccessibleName(accessible_name);
 }
 
 SidebarButtonView::~SidebarButtonView() = default;

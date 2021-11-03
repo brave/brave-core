@@ -4,9 +4,12 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/style/typography.h"
+#include "ui/views/view.h"
 
 // Comes after the above includes.
 #include "chrome/browser/ui/views/chrome_typography_provider.h"
@@ -18,19 +21,21 @@ namespace {
 // the Harmony colors to native theme. Trying to override colors there would be
 // more inconvenient. Instead, restoring this function here so that we know when
 // to fall onto Chromium code.
-bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
+bool ShouldIgnoreHarmonySpec(const views::View& view) {
+  const ui::NativeTheme* theme = view.GetNativeTheme();
+  DCHECK(theme);
 #if defined(OS_MAC)
   return false;
 #else
-  if (theme.UserHasContrastPreference())
+  if (theme->UserHasContrastPreference())
     return true;
-  if (theme.ShouldUseDarkColors())
+  if (theme->ShouldUseDarkColors())
     return false;
 
   // TODO(pbos): Revisit this check. Both GG900 and black are considered
   // "default black" as the common theme uses GG900 as primary color.
   const SkColor test_color =
-      theme.GetSystemColor(ui::NativeTheme::kColorId_LabelEnabledColor);
+      view.GetColorProvider()->GetColor(ui::kColorLabelForeground);
   const bool label_color_is_black =
       test_color == SK_ColorBLACK || test_color == gfx::kGoogleGrey900;
   return !label_color_is_black;
@@ -46,9 +51,7 @@ bool ShouldIgnoreHarmonySpec(const ui::NativeTheme& theme) {
 SkColor ChromeTypographyProvider::GetColor(const views::View& view,
                                            int context,
                                            int style) const {
-  const ui::NativeTheme* native_theme = view.GetNativeTheme();
-  DCHECK(native_theme);
-  if (ShouldIgnoreHarmonySpec(*native_theme)) {
+  if (ShouldIgnoreHarmonySpec(view)) {
     return ChromeTypographyProvider_ChromiumImpl::GetColor(view, context,
                                                            style);
   }
@@ -65,6 +68,8 @@ SkColor ChromeTypographyProvider::GetColor(const views::View& view,
         // See GetColorId in typography_provider.cc for the order in which the
         // color is selected. This case matches style == style::STYLE_LINK and
         // context == style::CONTEXT_BUTTON_MD.
+        const ui::NativeTheme* native_theme = view.GetNativeTheme();
+        DCHECK(native_theme);
         return native_theme->ShouldUseDarkColors() ? SK_ColorWHITE
                                                    : gfx::kBraveGrey800;
     }

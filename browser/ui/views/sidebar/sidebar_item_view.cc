@@ -11,8 +11,9 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 
-SidebarItemView::SidebarItemView(Delegate* delegate)
-    : SidebarButtonView(delegate) {}
+SidebarItemView::SidebarItemView(Delegate* delegate,
+                                 const std::u16string& accessible_name)
+    : SidebarButtonView(delegate, accessible_name) {}
 
 SidebarItemView::~SidebarItemView() = default;
 

@@ -110,8 +110,11 @@
     <message name="IDS_MANAGEMENT_LOG_UPLOAD_ENABLED" desc="Message stating that administrators have access to system logs on user's device.">
       Detailed system logs
     </message>
-    <message name="IDS_MANAGEMENT_REPORT_DEVICE_NETWORK_INTERFACES" desc="Message stating that administrators see device network interfaces.">
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_NETWORK_DATA" desc="Message stating that administrators see device network interfaces.">
       Network addresses
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_HARDWARE_DATA" desc="Message stating that administrators see device hardware status.">
+      Device statistics such as CPU/RAM usage and hardware specifications
     </message>
     <message name="IDS_MANAGEMENT_REPORT_DEVICE_CRASH_REPORTS" desc="Message stating that administrators see the numbers and causes of the crashes that occurred on the device recently.">
       Numbers and causes of the crashes that occurred recently
@@ -125,8 +128,10 @@
     <message name="IDS_MANAGEMENT_REPORT_PRINT_JOBS" desc="Message stating that administrators can see printing history associated with user, device, and printer.">
       Printing history
     </message>
-    <message name="IDS_MANAGEMENT_REPORT_DLP_EVENTS" desc="Message show the users of DLP reporting enabled devices that events are being reported.">
-      Actions taken with data flagged as confidential
+    <message name="IDS_MANAGEMENT_REPORT_DLP_EVENTS" desc="Message stating that administrators can see attempts at prohibited actions on restricted data. Also shows the number of actions reported since login, and provides a 'Learn more' link.">
+      {COUNT, plural,
+      =1 {Actions taken with data flagged as confidential (1 action since login). <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://support.google.com/chrome/a/?p=chromeos_datacontrols"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>}
+      other {Actions taken with data flagged as confidential (# actions since login). <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://support.google.com/chrome/a/?p=chromeos_datacontrols"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>}}
     </message>
     <message name="IDS_MANAGEMENT_REPORT_LOGIN_LOGOUT" desc="Message stating that administrators can see device Login and Logout events.">
       Device login/logout history, including timestamps and failed attempts

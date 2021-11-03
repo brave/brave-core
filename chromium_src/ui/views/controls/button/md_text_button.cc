@@ -5,6 +5,8 @@
 
 #include "ui/views/controls/button/md_text_button.h"
 
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
@@ -53,8 +55,7 @@ void MdTextButtonBase::UpdateColorsForBrave() {
     // First, get the same background fill color that MdTextButtonBase does.
     // It is undfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
-    SkColor bg_color =
-        theme->GetSystemColor(ui::NativeTheme::kColorId_DialogBackground);
+    SkColor bg_color = GetColorProvider()->GetColor(ui::kColorDialogBackground);
     if (GetBgColorOverride()) {
       bg_color = *GetBgColorOverride();
     }

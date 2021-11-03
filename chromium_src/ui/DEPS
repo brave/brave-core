@@ -1,8 +1,10 @@
 include_rules = [
+  "+../../../../ui/color",
   "+../../../../ui/gfx",
   "+../../../../ui/native_theme",
   "+../../../../../ui/accessibility/platform",
   "+../../../../../ui/base/resource",
+  "+../../../../../ui/color/mac",
   "+../../../../../ui/base/webui",
   "+../../../../../ui/views/bubble",
   "+../../../../../ui/views/controls",

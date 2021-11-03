@@ -9,14 +9,16 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/themes/theme_properties.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/events/event.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/label.h"
@@ -135,7 +137,6 @@ void BookmarkBarInstructionsView::UpdateColors() {
   if (!import_link_)
     return;
 
-  SkColor link_color =
-      GetNativeTheme()->GetSystemColor(ui::NativeTheme::kColorId_LinkEnabled);
+  SkColor link_color = GetColorProvider()->GetColor(ui::kColorLinkForeground);
   import_link_->SetEnabledColor(link_color);
 }

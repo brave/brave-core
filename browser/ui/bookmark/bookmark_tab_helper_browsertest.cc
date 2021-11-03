@@ -48,7 +48,10 @@ void AddBookmarkNode(Profile* profile) {
   bookmark_model->GetNodesByURL(url, &nodes);
   EXPECT_EQ(0UL, nodes.size());
 
-  bookmarks::AddIfNotBookmarked(bookmark_model, url, std::u16string());
+  // We need to pass a non-empty title when creating a bookmark so that an
+  // accessible name is also available, otherwise we'll hit a CHECK() and
+  // the test will crash (see accessibility_paint_checks.cc).
+  bookmarks::AddIfNotBookmarked(bookmark_model, url, u"brave");
   bookmark_model->GetNodesByURL(url, &nodes);
   EXPECT_EQ(1UL, nodes.size());
 }

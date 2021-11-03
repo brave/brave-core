@@ -420,3 +420,13 @@
 -keep class org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
+    *** getTitleTextColor(...);
+    *** getActionButtonTintList(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
+    *** getTitleTextColor(...);
+    *** getActionButtonTintList(...);
+}

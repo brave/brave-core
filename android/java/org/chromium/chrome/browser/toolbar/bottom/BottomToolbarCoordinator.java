@@ -86,6 +86,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private BookmarksButton mBookmarksButton;
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
+    private View mBottomContainerTopShadow;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -120,6 +121,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mBottomControlsMediator = bottomControlsMediator;
         mOriginalHomeButtonRunnable = openHomepageAction;
         mScrollingBottomView = (BraveScrollingBottomViewResourceFrameLayout) scrollingBottomView;
+
+        mBottomContainerTopShadow =
+                mScrollingBottomView.findViewById(R.id.bottom_container_top_shadow);
     }
 
     /**
@@ -189,6 +193,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
                         browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.VISIBLE);
                     }
+
+                    mBottomContainerTopShadow.setVisibility(View.GONE);
                 }
 
                 @Override
@@ -217,6 +223,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                     if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
                         browsingModeCoordinator.getNewTabButtonParent().setVisibility(View.GONE);
                     }
+
+                    mBottomContainerTopShadow.setVisibility(View.VISIBLE);
                 }
             };
         }

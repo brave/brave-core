@@ -200,8 +200,10 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                                            int index,
                                            bool user_gesture) {
-  auto* item_view =
-      AddChildViewAt(std::make_unique<SidebarItemView>(this), index);
+  auto* item_view = AddChildViewAt(
+      std::make_unique<SidebarItemView>(
+          this, sidebar_model_->GetAllSidebarItems()[index].title),
+      index);
   item_view->set_context_menu_controller(this);
   item_view->set_paint_background_on_hovered(true);
   item_view->SetCallback(
