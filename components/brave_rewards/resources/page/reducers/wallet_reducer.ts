@@ -163,6 +163,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
+      if (action.payload.result === 9) { // type::Result::NOT_FOUND
+        state.ui.modalRedirect = 'kycRequiredModal'
+        break
+      }
+
       if (action.payload.result === 25) { // type::Result::UPHOLD_BAT_NOT_ALLOWED
         state.ui.modalRedirect = 'upholdBATNotAllowedModal'
         break
@@ -190,6 +195,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
 
       if (action.payload.result === 40) { // type::Result::UPHOLD_RESTRICTED_USER
         state.ui.modalRedirect = 'upholdRestrictedUserModal'
+        break
+      }
+
+      if (action.payload.result === 41) { // type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE
+        state.ui.modalRedirect = 'walletOwnershipVerificationFailureModal'
         break
       }
 

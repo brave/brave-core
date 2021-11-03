@@ -60,7 +60,9 @@ class PostClaimUphold {
                  const std::string& address,
                  PostClaimUpholdCallback callback) const;
 
-  type::Result CheckStatusCode(const int status_code) const;
+  type::Result ProcessResponse(const type::UrlResponse& response) const;
+
+  type::Result ParseBody(const std::string& body) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

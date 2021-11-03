@@ -83,6 +83,7 @@ declare namespace Rewards {
         | 'upholdBlockedUserModal'
         | 'upholdPendingUserModal'
         | 'upholdRestrictedUserModal'
+        | 'walletOwnershipVerificationFailureModal'
       paymentIdCheck: boolean
       promosDismissed?: {
         [key: string]: boolean

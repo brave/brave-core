@@ -19,6 +19,7 @@ import { getLocale, splitStringForTag } from '../../../../../common/locale'
 export interface Props {
   id?: string
   errorText?: string
+  errorTextLink?: string
   buttonText?: string
   titleText?: string
   learnMore?: string
@@ -44,15 +45,10 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, errorText, titleText, learnMore, walletType, displayCloseButton, onClose } = this.props
-    let tags = null
-    if (errorText && errorText.includes('$1')) {
-      tags = splitStringForTag(errorText)
-    }
-
-    let supportURL = ''
-    if (walletType === 'uphold') {
-      supportURL = 'https://uphold.com/en/brave/support'
+    const { id, errorText, errorTextLink, titleText, learnMore, displayCloseButton, onClose } = this.props
+    let errorTextLinkTags = null
+    if (errorText && errorText.includes('$2')) {
+      errorTextLinkTags = splitStringForTag(errorText, 2)
     }
 
     return (
@@ -66,15 +62,19 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
             ? <StyledError>
               <p>
               {
-                tags
-                ? <>
-                  {
-                    supportURL
-                    ? <a href={supportURL} target='_blank' rel='noopener noreferrer'>
-                        {tags.duringTag}
-                      </a>
-                    : tags.duringTag
-                  }
+                errorTextLinkTags
+                ?
+                  <>
+                    {errorTextLinkTags.beforeTag}
+                      {
+                        errorTextLink
+                        ?
+                          <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
+                            {errorTextLinkTags.duringTag}
+                          </a>
+                        : errorTextLinkTags.duringTag
+                      }
+                    {errorTextLinkTags.afterTag}
                   </>
                 : errorText
               }

@@ -542,6 +542,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalUpholdPendingUserTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_PENDING_USER_TITLE},     // NOLINT
         { "redirectModalUpholdRestrictedUserText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_RESTRICTED_USER_TEXT},     // NOLINT
         { "redirectModalUpholdRestrictedUserTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_RESTRICTED_USER_TITLE},     // NOLINT
+        { "redirectModalWalletOwnershipVerificationFailureText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TEXT},     // NOLINT
+        { "redirectModalWalletOwnershipVerificationFailureTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_WALLET_OWNERSHIP_VERIFICATION_FAILURE_TITLE},     // NOLINT
         { "tosAndPp", IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP},     // NOLINT
 
         { "click",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK },

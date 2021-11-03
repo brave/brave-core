@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
@@ -256,30 +257,22 @@ void UpholdWallet::OnLinkWallet(const type::Result result,
   DCHECK(uphold_wallet->address.empty());
   DCHECK(!id.empty());
 
-  if (result == type::Result::DEVICE_LIMIT_REACHED) {
-    // Entering NOT_CONNECTED.
-    ledger_->uphold()->DisconnectWallet("");
-
-    ledger_->database()->SaveEventLog(
-        log::kDeviceLimitReached,
-        constant::kWalletUphold + std::string("/") + id.substr(0, 5));
-
-    return callback(type::Result::DEVICE_LIMIT_REACHED);
-  }
-
-  if (result == type::Result::MISMATCHED_PROVIDER_ACCOUNTS) {
-    // Entering NOT_CONNECTED.
-    ledger_->uphold()->DisconnectWallet("");
-
-    ledger_->database()->SaveEventLog(
-        log::kMismatchedProviderAccounts,
-        constant::kWalletUphold + std::string("/") + id.substr(0, 5));
-
-    return callback(type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
-  }
-
-  if (result != type::Result::LEDGER_OK) {
-    return callback(type::Result::CONTINUE);
+  switch (result) {
+    case type::Result::DEVICE_LIMIT_REACHED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case type::Result::NOT_FOUND:  // KYC required
+    case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
+      // Entering NOT_CONNECTED.
+      ledger_->uphold()->DisconnectWallet("");
+      ledger_->database()->SaveEventLog(
+          log::GetEventLogKeyForLinkingResult(result),
+          constant::kWalletUphold + std::string("/") + id.substr(0, 5));
+      return callback(result);
+    default:
+      if (result != type::Result::LEDGER_OK) {
+        BLOG(0, "Couldn't claim wallet!");
+        return callback(type::Result::CONTINUE);
+      }
   }
 
   const auto from = uphold_wallet->status;

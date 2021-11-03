@@ -7,8 +7,10 @@
 
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -56,6 +58,8 @@ void UpholdAuthorization::Authorize(
     const std::string message = args.at("error_description");
     BLOG(1, message);
     if (message == "User does not meet minimum requirements") {
+      ledger_->database()->SaveEventLog(log::kKYCRequired,
+                                        constant::kWalletUphold);
       return callback(type::Result::NOT_FOUND, {});
     }
 
