@@ -328,7 +328,7 @@ pub struct PrepareCredentialsPresentationCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::PrepareCredentialsPresentationCallbackState,
         result: ffi::RewardsResult,
-        presentation: String,
+        presentation: &str,
     ),
 );
 
@@ -348,13 +348,9 @@ async fn prepare_credentials_presentation_task(
         Ok(Some(presentation)) => callback.0(
             callback_state.into_raw(),
             ffi::RewardsResult::Ok,
-            presentation,
+            &presentation,
         ),
-        Ok(None) => callback.0(
-            callback_state.into_raw(),
-            ffi::RewardsResult::Ok,
-            "".to_string(),
-        ),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
         Err(e) => callback.0(
             callback_state.into_raw(),
             e.source()
@@ -362,7 +358,7 @@ async fn prepare_credentials_presentation_task(
                 .downcast_ref::<brave_rewards::errors::InternalError>()
                 .unwrap()
                 .into(),
-            "".to_string(),
+            "",
         ),
     }
 }
@@ -372,7 +368,7 @@ pub struct CredentialSummaryCallback(
     pub  extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
         result: ffi::RewardsResult,
-        summary: String,
+        summary: &str,
     ),
 );
 
@@ -390,13 +386,9 @@ async fn credential_summary_task(
     match sdk.matching_credential_summary(&domain).await {
         Ok(Some(summary)) => {
             let summary = serde_json::to_string(&summary).unwrap();
-            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, summary)
+            callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, &summary)
         }
-        Ok(None) => callback.0(
-            callback_state.into_raw(),
-            ffi::RewardsResult::Ok,
-            "".to_string(),
-        ),
+        Ok(None) => callback.0(callback_state.into_raw(), ffi::RewardsResult::Ok, ""),
         Err(e) => callback.0(
             callback_state.into_raw(),
             e.source()
@@ -404,7 +396,7 @@ async fn credential_summary_task(
                 .downcast_ref::<brave_rewards::errors::InternalError>()
                 .unwrap()
                 .into(),
-            "".to_string(),
+            "",
         ),
     }
 }
