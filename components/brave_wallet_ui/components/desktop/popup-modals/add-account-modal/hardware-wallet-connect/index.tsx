@@ -15,7 +15,8 @@ import {
   HardwareTitle,
   LedgerIcon,
   TrezorIcon,
-  ErrorText
+  ErrorText,
+  LoadIcon
 } from './style'
 
 // Custom types
@@ -157,6 +158,7 @@ export default function (props: Props) {
 
       {isConnecting ? (
         <ConnectingButton>
+          <LoadIcon size='small' />
           <ConnectingButtonText>{getLocale('braveWalletConnectingHardwareWallet')}</ConnectingButtonText>
         </ConnectingButton>
       ) : (
