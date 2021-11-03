@@ -16,7 +16,7 @@ import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
 
-import { WalletWidgetStandIn } from '../stories/style'
+import { WalletWidgetStandIn, OnboardingWrapper } from '../stories/style'
 import {
   // SideNav,
   WalletPageLayout,
@@ -505,11 +505,13 @@ function Container (props: Props) {
         <WalletSubViewLayout>
           <Route path={WalletRoutes.Restore} exact={true}>
             {isWalletLocked &&
-              <OnboardingRestore
-                onRestore={restoreWallet}
-                toggleShowRestore={onToggleShowRestore}
-                hasRestoreError={restorError}
-              />
+              <OnboardingWrapper>
+                <OnboardingRestore
+                  onRestore={restoreWallet}
+                  toggleShowRestore={onToggleShowRestore}
+                  hasRestoreError={restorError}
+                />
+              </OnboardingWrapper>
             }
           </Route>
           <Route path={WalletRoutes.Onboarding} exact={true}>
@@ -528,22 +530,26 @@ function Container (props: Props) {
           </Route>
           <Route path={WalletRoutes.Unlock} exact={true}>
             {isWalletLocked &&
-              <LockScreen
-                onSubmit={unlockWallet}
-                disabled={inputValue === ''}
-                onPasswordChanged={handlePasswordChanged}
-                hasPasswordError={hasIncorrectPassword}
-                onShowRestore={onToggleShowRestore}
-              />
+              <OnboardingWrapper>
+                <LockScreen
+                  onSubmit={unlockWallet}
+                  disabled={inputValue === ''}
+                  onPasswordChanged={handlePasswordChanged}
+                  hasPasswordError={hasIncorrectPassword}
+                  onShowRestore={onToggleShowRestore}
+                />
+              </OnboardingWrapper>
             }
           </Route>
           <Route path={WalletRoutes.Backup} exact={true}>
-            <BackupWallet
-              isOnboarding={false}
-              onCancel={onHideBackup}
-              onSubmit={onBackupWallet}
-              recoveryPhrase={recoveryPhrase}
-            />
+            <OnboardingWrapper>
+              <BackupWallet
+                isOnboarding={false}
+                onCancel={onHideBackup}
+                onSubmit={onBackupWallet}
+                recoveryPhrase={recoveryPhrase}
+              />
+            </OnboardingWrapper>
           </Route>
           <Route path={WalletRoutes.CryptoPage} exact={true}>
             {hideMainComponents &&
