@@ -1,8 +1,7 @@
-import { Unsuccessful } from 'trezor-connect'
 import { loadTimeData } from '../../../common/loadTimeData'
-export const kTrezorBridgeFrameId = 'trezor-untrusted-frame'
+import { Unsuccessful } from 'trezor-connect'
+
 export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
-import { getLocale } from '../../../common/locale'
 
 export enum TrezorCommand {
   Unlock = 'trezor-unlock',
@@ -45,31 +44,42 @@ export type GetAccountsResponsePayload = CommandMessage & {
 }
 export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand
 export type TrezorFrameResponse = UnlockResponse | GetAccountsResponsePayload
-export function postResponseToWallet (target: Window, message: TrezorFrameResponse) {
-  target.postMessage(message, message.origin)
-}
 
-export function postToTrezorFrame (target: Window, message: TrezorFrameCommand) {
-  target.postMessage(message, kTrezorBridgeUrl)
-}
-
-export class TrezorBridgeTransport {
+// Trezor library is loaded inside the chrome-untrusted webui page
+// and communication is going through posting messages between parent window
+// and frame window. This class handles low level messages transport to add,
+// remove callbacks and allows to process messages for childrens.
+abstract class MessagingTransport {
   constructor () {
-    this.pendingRequests = new Map<string, Function>()
+    this.handlers = new Map<string, Function>()
   }
 
-  pendingRequests: Map<string, Function>
+  handlers: Map<string, Function>
 
-  postMessage = async (command: TrezorFrameCommand) => {
-    let bridge = this.getBridge() as HTMLIFrameElement
-    if (!bridge) {
-      bridge = await this.createBridge() as HTMLIFrameElement
+  addCommandHandler = (id: string, listener: Function): Boolean => {
+    if (!this.handlers.size) {
+      this.addWindowMessageListener()
+      this.handlers.clear()
     }
-    if (!bridge.contentWindow) {
-      throw Error(getLocale('braveWalletCreateBridgeError'))
+    if (this.handlers.has(id)) {
+      return false
     }
-    postToTrezorFrame(bridge.contentWindow, command)
+    this.handlers.set(id, listener)
+    return true
   }
+
+  removeCommandHandler = (id: string) => {
+    if (!this.handlers.has(id)) {
+      return false
+    }
+    this.handlers.delete(id)
+    if (!this.handlers.size) {
+      this.removeWindowMessageListener()
+    }
+    return true
+  }
+
+  abstract onMessageReceived (event: MessageEvent): unknown
 
   private addWindowMessageListener = () => {
     window.addEventListener('message', this.onMessageReceived)
@@ -78,15 +88,61 @@ export class TrezorBridgeTransport {
   private removeWindowMessageListener = () => {
     window.removeEventListener('message', this.onMessageReceived)
   }
+}
+
+// Handles sending messages to the Trezor library, creates untrusted iframe,
+// loads library and allows to send commans to the library and subscribe
+// for responses.
+export class TrezorBridgeTransport extends MessagingTransport {
+  constructor (bridgeFrameUrl: string) {
+    super()
+    this.bridgeFrameUrl = bridgeFrameUrl
+    // @ts-ignore
+    this.frameId = crypto.randomUUID()
+  }
+
+  frameId: string
+  bridgeFrameUrl: string
+
+  sendCommandToTrezorFrame = async (command: TrezorFrameCommand, listener: Function): Promise<Boolean> => {
+    let bridge = this.getBridge() as HTMLIFrameElement
+    if (!bridge) {
+      bridge = await this.createBridge() as HTMLIFrameElement
+    }
+    if (!bridge.contentWindow) {
+      return false
+    }
+    this.addCommandHandler(command.id, listener)
+
+    bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
+    return true
+  }
+
+  onMessageReceived = (event: MessageEvent) => {
+    if (event.origin !== this.getTrezorBridgeOrigin() ||
+        event.type !== 'message' ||
+        !this.handlers.size) {
+      return
+    }
+
+    const message = event.data as TrezorFrameCommand
+    if (!message || !this.handlers.has(message.id)) {
+      return
+    }
+    const callback = this.handlers.get(message.id) as Function
+    callback.call(this, message)
+    this.removeCommandHandler(event.data.id)
+  }
+
   private getTrezorBridgeOrigin = () => {
-    return (new URL(kTrezorBridgeUrl)).origin
+    return (new URL(this.bridgeFrameUrl)).origin
   }
 
   private createBridge = () => {
     return new Promise((resolve) => {
       let element = document.createElement('iframe')
-      element.id = kTrezorBridgeFrameId
-      element.src = kTrezorBridgeUrl
+      element.id = this.frameId
+      element.src = this.bridgeFrameUrl
       element.style.display = 'none'
       element.onload = () => {
         resolve(element)
@@ -94,45 +150,43 @@ export class TrezorBridgeTransport {
       document.body.appendChild(element)
     })
   }
-  addEventListener = (id: string, listener: Function) => {
-    if (!this.pendingRequests.size) {
-      this.addWindowMessageListener()
-      this.pendingRequests.clear()
-    }
-    if (this.pendingRequests.has(id)) {
-      return false
-    }
-    this.pendingRequests.set(id, listener)
-    return true
-  }
-
-  private removeEventListener = (id: string) => {
-    if (!this.pendingRequests.has(id)) {
-      return false
-    }
-    this.pendingRequests.delete(id)
-    if (!this.pendingRequests.size) {
-      this.removeWindowMessageListener()
-    }
-    return true
-  }
 
   private getBridge = () => {
-    return document.getElementById(kTrezorBridgeFrameId)
+    return document.getElementById(this.frameId)
   }
+}
 
-  private onMessageReceived = (event: MessageEvent) => {
-    if (event.origin !== this.getTrezorBridgeOrigin() ||
-        event.type !== 'message' ||
-        !this.pendingRequests.size) {
+// Handles commands forwarding to the Trezor library inside the iframe.
+export class TrezorCommandHandler extends MessagingTransport {
+  onMessageReceived = async (event: MessageEvent) => {
+    if (event.origin !== event.data.origin || event.type !== 'message' || !event.source) {
       return
     }
     const message = event.data as TrezorFrameCommand
-    if (!message || !this.pendingRequests.has(message.id)) {
+    if (!message || !this.handlers.has(message.command)) {
       return
     }
-    const callback = this.pendingRequests.get(message.id) as Function
-    callback.call(this, message)
-    this.removeEventListener(event.data.id)
+    const callback = this.handlers.get(message.command) as Function
+    const response = await callback.call(this, event.data)
+    const target = event.source as Window
+    target.postMessage(response, response.origin)
   }
+}
+
+let handler: TrezorCommandHandler | undefined = undefined
+
+export function addTrezorCommandHandler (command: TrezorCommand, listener: Function): Boolean {
+  if (!handler) {
+    handler = new TrezorCommandHandler()
+  }
+  return handler.addCommandHandler(command, listener)
+}
+
+let transport: TrezorBridgeTransport | undefined = undefined
+
+export async function sendTrezorCommand (command: TrezorFrameCommand, listener: Function): Promise<Boolean> {
+  if (!transport) {
+    transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
+  }
+  return transport.sendCommandToTrezorFrame(command, listener)
 }

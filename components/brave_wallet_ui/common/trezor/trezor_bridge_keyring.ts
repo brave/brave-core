@@ -19,9 +19,9 @@ import {
   UnlockResponse,
   GetAccountsResponsePayload,
   TrezorAccount,
-
   TrezorError,
-  TrezorBridgeTransport
+  sendTrezorCommand,
+  TrezorFrameCommand
 } from '../../common/trezor/trezor-messages'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../async/lib'
@@ -30,7 +30,6 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
     super()
     this.unlocked_ = false
-    this.transport_ = new TrezorBridgeTransport()
   }
 
   type = () => {
@@ -67,9 +66,12 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
   unlock = () => {
     return new Promise(async (resolve, reject) => {
-      // @ts-ignore
-      const messageId: string = crypto.randomUUID()
-      this.getTransport().addEventListener(messageId, (data: UnlockResponse) => {
+      const message: UnlockCommand = {
+        // @ts-ignore
+        id: crypto.randomUUID(),
+        origin: window.origin,
+        command: TrezorCommand.Unlock }
+      const result = await this.sendTrezorCommand(message, (data: UnlockResponse) => {
         this.unlocked_ = data.result
         if (data.result) {
           resolve(true)
@@ -77,14 +79,14 @@ export default class TrezorBridgeKeyring extends EventEmitter {
           reject(false)
         }
       })
-      const message: UnlockCommand = { id: messageId, origin: window.origin,
-        command: TrezorCommand.Unlock }
-      await this.getTransport().postMessage(message)
+      if (!result) {
+        reject(false)
+      }
     })
   }
 
-  getTransport = () => {
-    return this.transport_
+  private sendTrezorCommand = async (command: TrezorFrameCommand, listener: Function) => {
+    return sendTrezorCommand(command, listener)
   }
 
   private getHashFromAddress = async (address: string) => {
@@ -115,9 +117,13 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       for (const path of paths) {
         requestedPaths.push({ path: path })
       }
-      // @ts-ignore
-      const messageId: string = crypto.randomUUID()
-      this.getTransport().addEventListener(messageId, async (data: GetAccountsResponsePayload) => {
+      const message: GetAccountsCommand = {
+        command: TrezorCommand.GetAccounts,
+        // @ts-ignore
+        id: crypto.randomUUID(),
+        paths: requestedPaths,
+        origin: window.origin }
+      const result = await this.sendTrezorCommand(message, async (data: GetAccountsResponsePayload) => {
         if (data.payload.success) {
           let accounts = []
           const accountsList = data.payload.payload as TrezorAccount[]
@@ -144,9 +150,9 @@ export default class TrezorBridgeKeyring extends EventEmitter {
           reject({ success: false, error: error.error, accounts: [] })
         }
       })
-      const message: GetAccountsCommand = { command: TrezorCommand.GetAccounts,
-        id: messageId, paths: requestedPaths, origin: window.origin }
-      await this.getTransport().postMessage(message)
+      if (!result) {
+        reject({ success: false, error: getLocale('braveWalletCreateBridgeError'), accounts: [] })
+      }
     })
   }
 
@@ -157,5 +163,4 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       throw Error(getLocale('braveWalletDeviceUnknownScheme'))
     }
   }
-
 }
