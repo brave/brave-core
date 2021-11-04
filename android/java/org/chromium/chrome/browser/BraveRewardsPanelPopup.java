@@ -122,7 +122,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final String REWARDS_NOTIFICATION_NO_INTERNET_ID = "29d835c2-5752-4152-93c3-8a1ded9dd4ec";
     private static final int REWARDS_PROMOTION_CLAIM_ERROR = REWARDS_NOTIFICATION_NO_INTERNET + 1;
     private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID = "rewards_promotion_claim_error_id";
-    //
 
     // Auto contribute results
     private static final String AUTO_CONTRIBUTE_SUCCESS = "0";
@@ -1636,7 +1635,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         // mBraveRewardsNativeWorker.GetExternalWallet();
     }
 
-
     /**
      * OnRecurringDonationUpdated is fired after a publisher was added or removed to/from
      * recurrent donation list
@@ -1703,7 +1701,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 Button btnVerifyWallet = (Button) root.findViewById(R.id.btn_verify_wallet);
                 btnVerifyWallet.setBackgroundResource(R.drawable.wallet_verify_button);
                 if (mExternalWallet != null
-                        && mExternalWallet.getType().equals(BraveUphold.BITFLYER)) {
+                        && mExternalWallet.getType().equals(BraveWalletProvider.BITFLYER)) {
                     btnVerifyWallet.setVisibility(View.INVISIBLE);
                 }
             }
@@ -1833,7 +1831,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.PENDING:
                 case BraveRewardsExternalWallet.VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
@@ -1848,7 +1846,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
                 case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
                     if (walletBalance < WALLET_BALANCE_LIMIT
-                            && mExternalWallet.getType().equals(BraveUphold.UPHOLD)
+                            && mExternalWallet.getType().equals(BraveWalletProvider.UPHOLD)
                             && !isVerifyWalletEnabled()) {
                         showUpholdLoginPopupWindow(btnVerifyWallet);
                     } else {
@@ -1908,6 +1906,12 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }
         }
         SetVerifyWalletControl(walletStatus);
+    }
+
+    @Override
+    public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
+            int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
+        // TODO: Implement
     }
 
     /**

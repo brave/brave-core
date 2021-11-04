@@ -115,10 +115,9 @@
             android:contentDescription="@null"/>
 
         <Button
-            android:id="@+id/user_wallet_go_to_uphold"
+            android:id="@+id/user_wallet_go_to_provider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_wallet_goto_uphold"
             android:background="?android:attr/selectableItemBackground"
             android:textAlignment="textStart"
             android:textAllCaps="false"

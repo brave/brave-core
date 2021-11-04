@@ -23,10 +23,6 @@ export const convertBalance = (tokens: number, rate: number): string => {
   return converted.toFixed(2)
 }
 
-export const getWalletProviderName = (wallet?: Rewards.ExternalWallet) => {
-  return lookupExternalWalletProviderName(wallet ? wallet.type : '')
-}
-
 export const formatConverted = (converted: string, currency: string = 'USD'): string | null => {
   return `${converted} ${currency}`
 }
@@ -61,11 +57,11 @@ export const constructBackupString = (backupKey: string) => {
 }
 
 export const isPublisherVerified = (status: Rewards.PublisherStatus) => {
-  return status === 2
+  return status > 1
 }
 
 export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) => {
-  return status === 2 || status === 1
+  return status > 0
 }
 
 export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
@@ -77,4 +73,12 @@ export const getCurrentBalanceReport = () => {
     new Date().getMonth() + 1,
     new Date().getFullYear()
   ])
+}
+
+export const getWalletProviderName = (wallet?: Rewards.ExternalWallet | string) => {
+  if (!wallet) {
+    return ''
+  }
+  return lookupExternalWalletProviderName(
+    typeof wallet === 'string' ? wallet : wallet.type)
 }

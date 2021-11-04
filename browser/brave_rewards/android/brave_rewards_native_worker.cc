@@ -251,6 +251,40 @@ BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
   return base::android::ConvertUTF8ToJavaString(env, json_balance);
 }
 
+base::android::ScopedJavaLocalRef<jstring>
+BraveRewardsNativeWorker::GetExternalWalletType(JNIEnv* env) {
+  std::string wallet_type;
+  if (brave_rewards_service_) {
+    wallet_type = brave_rewards_service_->GetExternalWalletType();
+  }
+
+  return base::android::ConvertUTF8ToJavaString(env, wallet_type);
+}
+
+void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
+  if (!ads_service) {
+    return;
+  }
+  ads_service->GetAccountStatement(
+      base::BindOnce(&BraveRewardsNativeWorker::OnGetAdsAccountStatement,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
+    bool success,
+    double next_payment_date,
+    int ads_received_this_month,
+    double earnings_this_month,
+    double earnings_last_month) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(
+      env, weak_java_brave_rewards_native_worker_.get(env), success,
+      next_payment_date * 1000, ads_received_this_month, earnings_this_month,
+      earnings_last_month);
+}
+
 double BraveRewardsNativeWorker::GetWalletRate(JNIEnv* env) {
   return parameters_.rate;
 }

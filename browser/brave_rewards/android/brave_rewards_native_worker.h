@@ -47,6 +47,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env);
 
+    base::android::ScopedJavaLocalRef<jstring> GetExternalWalletType(
+        JNIEnv* env);
+
+    void GetAdsAccountStatement(JNIEnv* env);
+
     double GetWalletRate(JNIEnv* env);
 
     base::android::ScopedJavaLocalRef<jstring> GetPublisherURL(JNIEnv* env,
@@ -222,6 +227,12 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         ledger::type::BalancePtr balance);
 
     void OnStartProcess();
+
+    void OnGetAdsAccountStatement(bool success,
+                                  double next_payment_date,
+                                  int ads_received_this_month,
+                                  double earnings_this_month,
+                                  double earnings_last_month);
 
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;
