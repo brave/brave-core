@@ -1112,6 +1112,7 @@ private:
 #ifndef CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 struct CppSDK final : public ::rust::Opaque {
+  void shutdown() const noexcept;
   void refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept;
   void fetch_order_credentials(::brave_rewards::FetchOrderCredentialsCallback callback, ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> callback_state, ::rust::String order_id) const noexcept;
   void prepare_credentials_presentation(::brave_rewards::PrepareCredentialsPresentationCallback callback, ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> callback_state, ::rust::String domain, ::rust::String path) const noexcept;
@@ -1151,6 +1152,8 @@ extern "C" {
 ::std::size_t brave_rewards$cxxbridge1$CppSDK$operator$alignof() noexcept;
 
 ::brave_rewards::CppSDK *brave_rewards$cxxbridge1$initialize_sdk(::brave_rewards::SkusSdkContext *ctx, ::rust::String *env) noexcept;
+
+void brave_rewards$cxxbridge1$CppSDK$shutdown(const ::brave_rewards::CppSDK &self) noexcept;
 
 void brave_rewards$cxxbridge1$CppSDK$refresh_order(const ::brave_rewards::CppSDK &self, ::brave_rewards::RefreshOrderCallback *callback, ::brave_rewards::RefreshOrderCallbackState *callback_state, ::rust::String *order_id) noexcept;
 
@@ -1229,6 +1232,10 @@ void brave_rewards$cxxbridge1$shim_get(::brave_rewards::SkusSdkContext &ctx, ::r
 
 ::rust::Box<::brave_rewards::CppSDK> initialize_sdk(::std::unique_ptr<::brave_rewards::SkusSdkContext> ctx, ::rust::String env) noexcept {
   return ::rust::Box<::brave_rewards::CppSDK>::from_raw(brave_rewards$cxxbridge1$initialize_sdk(ctx.release(), &env));
+}
+
+void CppSDK::shutdown() const noexcept {
+  brave_rewards$cxxbridge1$CppSDK$shutdown(*this);
 }
 
 void CppSDK::refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept {
