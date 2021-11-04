@@ -64,7 +64,7 @@ class TabCell: UICollectionViewCell {
                 guard url == loadedURL else { return }
                 self?.favicon.image = image ?? FaviconFetcher.defaultFaviconImage
             })
-        } else if let url = tab.url, !url.isLocal {
+        } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
             favicon.loadFavicon(for: url)
         } else {
             favicon.image = #imageLiteral(resourceName: "defaultFavicon")
