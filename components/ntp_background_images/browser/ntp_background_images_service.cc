@@ -41,7 +41,6 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr int kSIComponentUpdateCheckIntervalHours = 1;
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
@@ -175,10 +174,11 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
           weak_factory_.GetWeakPtr(), false));
   // SI component checks update more frequently than other components.
   // By default, browser check update status every 5 hours.
-  // However, this background interval is too long for SI. Use 1 hour interval.
+  // However, this background interval is too long for SI. Use 15mins interval.
+  constexpr int kSIComponentUpdateCheckIntervalMins = 15;
   si_update_check_timer_.Start(
       FROM_HERE,
-      base::TimeDelta::FromHours(kSIComponentUpdateCheckIntervalHours),
+      base::TimeDelta::FromMinutes(kSIComponentUpdateCheckIntervalMins),
       base::BindRepeating(
           &NTPBackgroundImagesService::CheckImagesComponentUpdate,
           base::Unretained(this), data->component_id));
