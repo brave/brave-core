@@ -6,6 +6,7 @@
 import Foundation
 import SwiftUI
 import BraveUI
+import BraveShared
 import Shared
 import Data
 
@@ -29,7 +30,71 @@ extension BrowserViewController {
         }
     }
     
-    func destinationMenuSection(_ menuController: MenuViewController) -> some View {
+    func privacyFeaturesMenuSection(_ menuController: MenuViewController) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(Strings.PrivacyFeature.menuSectionTitle.uppercased())
+                .font(.callout.weight(.semibold))
+                .foregroundColor(Color(.braveLabel))
+                .padding(.horizontal, 14)
+                .padding(.bottom, 5)
+                        
+            VPNMenuButton(
+                vpnProductInfo: self.vpnProductInfo,
+                description: Strings.PrivacyFeature.braveVPNItemDescription,
+                displayVPNDestination: { [unowned self] vc in
+                    (self.presentedViewController as? MenuViewController)?
+                        .pushInnerMenu(vc)
+                },
+                enableInstalledVPN: { [unowned menuController] in
+                    /// Donate Enable VPN Activity for suggestions
+                    let enableVPNActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .enableBraveVPN)
+                    menuController.userActivity = enableVPNActivity
+                    enableVPNActivity.becomeCurrent()
+                }
+            )
+            
+            // Add Brave Talk and News options only in normal browsing
+            if !PrivateBrowsingManager.shared.isPrivateBrowsing {
+                MenuItemButton(
+                    icon: #imageLiteral(resourceName: "menu-brave-talk").template,
+                    title: Strings.BraveTalk.braveTalkTitle,
+                    subtitle: Strings.PrivacyFeature.braveTalkItemDescription) { [weak self] in
+                    guard let self = self, let url = URL(string: "https://talk.brave.com/") else { return }
+                    
+                    self.popToBVC()
+                    self.finishEditingAndSubmit(url, visitType: .typed)
+                }
+                
+                // Show Brave News if it is first launch and after first launch If the new is enabled
+                if Preferences.General.isFirstLaunch.value || (!Preferences.General.isFirstLaunch.value && Preferences.BraveNews.isEnabled.value) {
+                    MenuItemButton(
+                        icon: #imageLiteral(resourceName: "menu_brave_news").template,
+                        title: Strings.BraveNews.braveNews,
+                        subtitle: Strings.PrivacyFeature.braveNewsItemDescription) { [weak self] in
+                        guard let self = self, let newTabPageController = self.tabManager.selectedTab?.newTabPageViewController  else {
+                            return
+                        }
+
+                        self.popToBVC()
+                        newTabPageController.scrollToBraveNews()
+                    }
+                }
+            }
+            
+            MenuItemButton(
+                icon: #imageLiteral(resourceName: "playlist_menu").template,
+                title: Strings.PlayList.playlistCarplayTitle,
+                subtitle: Strings.PrivacyFeature.bravePlaylistItemDescription) { [weak self] in
+                guard let self = self else { return }
+
+                self.presentPlaylistController()
+            }
+        }
+        .padding(.top, 10)
+        .padding(.bottom, 5)
+    }
+    
+    func destinationMenuSection(_ menuController: MenuViewController, isShownOnWebPage: Bool) -> some View {
         VStack(spacing: 0) {
             MenuItemButton(icon: #imageLiteral(resourceName: "menu_bookmarks").template, title: Strings.bookmarksMenuItem) { [unowned self, unowned menuController] in
                 let vc = BookmarksViewController(folder: self.bookmarkManager.lastVisitedFolder(), bookmarkManager: self.bookmarkManager, isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
@@ -46,26 +111,11 @@ extension BrowserViewController {
                 let vc = DownloadsPanel(profile: self.profile)
                 menuController.pushInnerMenu(vc)
             }
-            MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
-                guard let self = self else { return }
+            if isShownOnWebPage {
+                MenuItemButton(icon: #imageLiteral(resourceName: "playlist_menu").template, title: Strings.playlistMenuItem) { [weak self] in
+                    guard let self = self else { return }
 
-                // Present existing playlist controller
-                if let playlistController = PlaylistCarplayManager.shared.playlistController {
-                    self.dismiss(animated: true) {
-                        self.present(playlistController, animated: true)
-                    }
-                } else {
-                    // Retrieve the item and offset-time from the current tab's webview.
-                    let tab = self.tabManager.selectedTab
-                    PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { [weak self] playlistController in
-                        guard let self = self else { return }
-                        
-                        playlistController.modalPresentationStyle = .fullScreen
-                        
-                        self.dismiss(animated: true) {
-                            self.present(playlistController, animated: true)
-                        }
-                    }
+                    self.presentPlaylistController()
                 }
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
@@ -78,6 +128,27 @@ extension BrowserViewController {
                                                 windowProtection: self.windowProtection)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
+            }
+        }
+    }
+    
+    private func presentPlaylistController() {
+        // Present existing playlist controller
+        if let playlistController = PlaylistCarplayManager.shared.playlistController {
+            dismiss(animated: true) {
+                self.present(playlistController, animated: true)
+            }
+        } else {
+            // Retrieve the item and offset-time from the current tab's webview.
+            let tab = self.tabManager.selectedTab
+            PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { [weak self] playlistController in
+                guard let self = self else { return }
+                
+                playlistController.modalPresentationStyle = .fullScreen
+                
+                self.dismiss(animated: true) {
+                    self.present(playlistController, animated: true)
+                }
             }
         }
     }
