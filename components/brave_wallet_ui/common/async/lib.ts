@@ -18,7 +18,8 @@ import {
   TransactionInfo,
   kLedgerHardwareVendor,
   kTrezorHardwareVendor,
-  APIProxyControllers
+  APIProxyControllers,
+  SignHardwareMessageOperationResult
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
@@ -336,4 +337,13 @@ export async function signLedgerTransaction (apiProxy: APIProxyControllers, path
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
   return { success: result.status }
+}
+
+export async function signMessageWithHardwareKeyring (apiProxy: APIProxyControllers, vendor: string, path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+  const deviceKeyring = await apiProxy.getKeyringsByType(vendor)
+  if (vendor === kLedgerHardwareVendor) {
+    return deviceKeyring.signPersonalMessage(path, address, message)
+  }
+
+  return deviceKeyring.signPersonalMessage(path, message)
 }

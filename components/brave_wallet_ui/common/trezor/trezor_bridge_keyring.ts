@@ -12,6 +12,7 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
   kTrezorHardwareVendor,
+  SignHardwareMessageOperationResult,
   TransactionInfo
 } from '../../constants/types'
 import {
@@ -21,8 +22,10 @@ import {
   TrezorAccount,
   SignTransactionCommandPayload,
   SignTransactionResponse,
+  TrezorError,
   TrezorFrameCommand,
-  TrezorError
+  SignMessageCommandPayload,
+  SignMessageResponsePayload
 } from '../../common/trezor/trezor-messages'
 import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
@@ -81,6 +84,27 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return data.payload
   }
 
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    const data = await this.sendTrezorCommand<SignMessageResponsePayload>({
+      command: TrezorCommand.SignMessage,
+      // @ts-ignore
+      id: crypto.randomUUID(),
+      payload: this.prepareSignMessagePayload(path, message),
+      origin: window.origin
+    })
+    if (!data) {
+      return { success: false, error: getLocale('braveWalletProcessMessageError') }
+    }
+    if (!data.payload.success) {
+      const unsuccess = data.payload
+      return { success: false, error: unsuccess.payload.error, code: unsuccess.payload.code }
+    }
+    return { success: true, payload: data.payload.payload.signature }
+  }
+
   isUnlocked = () => {
     return this.unlocked_
   }
@@ -124,7 +148,9 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   private normalize (buf: any) {
     return bufferToHex(buf).toString()
   }
-
+  private prepareSignMessagePayload = (path: string, message: string): SignMessageCommandPayload => {
+    return { path: path, message: message }
+  }
   private prepareTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
     const txParams = {
       nonce: txInfo.txData.baseData.nonce,

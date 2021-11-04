@@ -11,7 +11,8 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
-  kLedgerHardwareVendor, SignatureVRS
+  kLedgerHardwareVendor, SignatureVRS,
+  SignHardwareMessageOperationResult
 } from '../../constants/types'
 
 import Eth from '@ledgerhq/hw-app-eth'
@@ -69,25 +70,24 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return this.app.signTransaction(path, rawTxHex)
   }
 
-  signPersonalMessage = async (path: string, address: string, message: string) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!this.isUnlocked() && !(await this.unlock())) {
-          return new Error(getLocale('braveWalletUnlockError'))
-        }
-        return this.app.signPersonalMessage(path,
-          Buffer.from(message)).then((result: SignatureVRS) => {
-            const signature = this._createMessageSignature(result, message, address)
-            if (!signature) {
-              return reject(new Error(getLocale('braveWalletLedgerValidationError')))
-            }
-            resolve(signature)
-          }).catch(reject)
-      } catch (e) {
-        reject(e)
+  signPersonalMessage = async (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    try {
+      const data = await this.app.signPersonalMessage(path,
+        Buffer.from(message))
+      const signature = this._createMessageSignature(data, message, address)
+      if (!signature) {
+        return { success: false, error: getLocale('braveWalletLedgerValidationError') }
       }
-    })
+      return { success: true, payload: signature }
+    } catch (e) {
+      console.log(e)
+      return { success: false, error: e.message }
+    }
   }
+
   _createMessageSignature = (result: SignatureVRS, message: string, address: string) => {
     let v = (result.v - 27).toString()
     if (v.length < 2) {
