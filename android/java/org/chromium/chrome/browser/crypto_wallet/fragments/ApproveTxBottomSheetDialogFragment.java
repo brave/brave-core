@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
+import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Locale;
@@ -194,7 +195,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             }
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
-        icon.setImageResource(R.drawable.ic_eth_24);
+        icon.setImageBitmap(Blockies.createIcon(mTxInfo.fromAddress));
 
         Button reject = view.findViewById(R.id.reject);
         reject.setOnClickListener(new View.OnClickListener() {

@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingStart="5dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -25,7 +28,7 @@
             android:id="@+id/account_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/wallet_text_color"
+            android:textColor="@color/wallet_secondary_text_color"
             android:textSize="14sp"/>
 
         <TextView

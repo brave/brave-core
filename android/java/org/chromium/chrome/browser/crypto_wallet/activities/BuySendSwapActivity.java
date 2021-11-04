@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -55,6 +56,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -216,12 +218,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         }
         if (mKeyringController != null) {
             mKeyringController.getDefaultKeyringInfo(keyring -> {
-                int[] pictures = new int[keyring.accountInfos.length];
+                Bitmap[] pictures = new Bitmap[keyring.accountInfos.length];
                 String[] accountNames = new String[keyring.accountInfos.length];
                 String[] accountTitles = new String[keyring.accountInfos.length];
                 int currentPos = 0;
                 for (AccountInfo info : keyring.accountInfos) {
-                    pictures[currentPos] = R.drawable.ic_eth_24;
+                    pictures[currentPos] = Blockies.createIcon(info.address);
                     accountNames[currentPos] = info.name;
                     accountTitles[currentPos] = info.address;
                     currentPos++;
