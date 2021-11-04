@@ -17,10 +17,11 @@ import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
+import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.feed.FeedLaunchReliabilityLoggingState;
+import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
-import org.chromium.chrome.browser.feed.shared.FeedFeatures;
-import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
+import org.chromium.chrome.browser.feed.hooks.FeedHooksImpl;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
@@ -74,7 +75,7 @@ public class BraveNewTabPage extends NewTabPage {
 
         assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
-                windowAndroid, new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
+                windowAndroid, new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
                 mNewTabPageLayout, mBrowserControlsStateProvider.getTopControlsHeight(),
                 isInNightMode, this, profile,
                 /* isPlaceholderShownInitially= */ false, bottomSheetController,
@@ -84,6 +85,7 @@ public class BraveNewTabPage extends NewTabPage {
                 new FeedLaunchReliabilityLoggingState(SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs),
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
-                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance());
+                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance(),
+                FeedHooksImpl.getInstance());
     }
 }
