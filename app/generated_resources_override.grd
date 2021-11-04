@@ -153,7 +153,7 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="not is_macosx">
           </if>
-      </if>
+        </if>
 
        <if expr="not is_android">
         <if expr="not use_titlecase">
@@ -223,7 +223,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_posix and not is_macosx">
         </if>
 
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         </if>
 
       <if expr="not use_titlecase">
