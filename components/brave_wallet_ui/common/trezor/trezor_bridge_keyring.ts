@@ -17,12 +17,14 @@ import {
   TrezorAccount,
   SignTransactionCommandPayload,
   TrezorFrameCommand,
-  SignTransactionResponsePayload
+  SignTransactionResponsePayload,
+  SignMessageCommandPayload,
+  SignMessageResponsePayload
 } from '../../common/trezor/trezor-messages'
 import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
-import { SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
+import { SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -78,6 +80,27 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return { success: true, payload: data.payload.payload }
   }
 
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    const data = await this.sendTrezorCommand<SignMessageResponsePayload>({
+      command: TrezorCommand.SignMessage,
+      // @ts-expect-error
+      id: crypto.randomUUID(),
+      payload: this.prepareSignMessagePayload(path, message),
+      origin: window.origin
+    })
+    if (!data) {
+      return { success: false, error: getLocale('braveWalletProcessMessageError') }
+    }
+    if (!data.payload.success) {
+      const unsuccess = data.payload
+      return { success: false, error: unsuccess.payload.error, code: unsuccess.payload.code }
+    }
+    return { success: true, payload: data.payload.payload.signature }
+  }
+
   isUnlocked = () => {
     return this.unlocked_
   }
@@ -88,7 +111,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       id: crypto.randomUUID(),
       origin: window.origin,
       command: TrezorCommand.Unlock
-})
+    })
     if (!data) {
       return false
     }
@@ -156,6 +179,10 @@ export default class TrezorBridgeKeyring extends EventEmitter {
         gasPrice: txInfo.txData.baseData.gasPrice
       }
     }
+  }
+
+  private readonly prepareSignMessagePayload = (path: string, message: string): SignMessageCommandPayload => {
+    return { path: path, message: message }
   }
 
   private readonly publicKeyToAddress = (key: string) => {

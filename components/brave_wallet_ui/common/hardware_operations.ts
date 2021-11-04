@@ -4,7 +4,11 @@ export interface SignHardwareTransactionType {
   success: boolean
   error?: string
 }
-
+export interface SignatureVRS {
+  v: number
+  r: string
+  s: string
+}
 export type HardwareOperationResult = {
   success: boolean
   error?: string
@@ -13,4 +17,8 @@ export type HardwareOperationResult = {
 
 export type SignHardwareTransactionOperationResult = HardwareOperationResult & {
   payload?: EthereumSignedTx
+}
+
+export type SignHardwareMessageOperationResult = HardwareOperationResult & {
+  payload?: string
 }
