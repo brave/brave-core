@@ -19,12 +19,11 @@ import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.feed.hooks.FeedHooks;
 import org.chromium.chrome.browser.feed.sections.SectionHeaderView;
-import org.chromium.chrome.browser.feed.shared.FeedSurfaceDelegate;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncher;
 import org.chromium.chrome.browser.native_page.NativePageNavigationDelegate;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
-import org.chromium.chrome.browser.ntp.SnapScrollHelper;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -55,13 +54,13 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             FeedLaunchReliabilityLoggingState launchReliabilityLoggingState,
             @Nullable FeedSwipeRefreshLayout swipeRefreshLayout, boolean overScrollDisabled,
             @Nullable ViewGroup viewportView, FeedActionDelegate actionDelegate,
-            HelpAndFeedbackLauncher helpAndFeedbackLauncher) {
+            HelpAndFeedbackLauncher helpAndFeedbackLauncher, FeedHooks feedHooks) {
         super(activity, snackbarManager, windowAndroid, snapScrollHelper, ntpHeader, toolbarHeight,
                 showDarkBackground, delegate, profile, isPlaceholderShownInitially,
                 bottomSheetController, shareDelegateSupplier, externalScrollableContainerDelegate,
                 launchOrigin, privacyPreferencesManager, toolbarSupplier,
                 launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
-                actionDelegate, helpAndFeedbackLauncher);
+                actionDelegate, helpAndFeedbackLauncher, feedHooks);
     }
 
     @Override
