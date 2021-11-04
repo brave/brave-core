@@ -1059,6 +1059,7 @@ private:
 #ifndef CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 #define CXXBRIDGE1_STRUCT_brave_rewards$CppSDK
 struct CppSDK final : public ::rust::Opaque {
+  void shutdown() const noexcept;
   void refresh_order(::brave_rewards::RefreshOrderCallback callback, ::std::unique_ptr<::brave_rewards::RefreshOrderCallbackState> callback_state, ::rust::String order_id) const noexcept;
   void fetch_order_credentials(::brave_rewards::FetchOrderCredentialsCallback callback, ::std::unique_ptr<::brave_rewards::FetchOrderCredentialsCallbackState> callback_state, ::rust::String order_id) const noexcept;
   void prepare_credentials_presentation(::brave_rewards::PrepareCredentialsPresentationCallback callback, ::std::unique_ptr<::brave_rewards::PrepareCredentialsPresentationCallbackState> callback_state, ::rust::String domain, ::rust::String path) const noexcept;
