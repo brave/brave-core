@@ -7,7 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +19,25 @@ import android.widget.TextView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
-public class AccountSpinnerAdapter extends BaseAdapter {
-    Context context;
-    Bitmap[] pictures;
-    String[] accountNames;
-    String[] accountTitles;
-    LayoutInflater inflater;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-    public AccountSpinnerAdapter(Context applicationContext, Bitmap[] pictures,
-            String[] accountNames, String[] accountTitles) {
+public class AccountSpinnerAdapter extends BaseAdapter {
+    private Context context;
+    private String[] accountNames;
+    private String[] accountTitles;
+    private LayoutInflater inflater;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
+
+    public AccountSpinnerAdapter(
+            Context applicationContext, String[] accountNames, String[] accountTitles) {
         this.context = applicationContext;
-        this.pictures = pictures;
         this.accountNames = accountNames;
         this.accountTitles = accountTitles;
         inflater = (LayoutInflater.from(applicationContext));
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public String getNameAtPosition(int position) {
@@ -48,14 +54,6 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         }
 
         return "";
-    }
-
-    public Bitmap getPictureAtPosition(int position) {
-        if (position < pictures.length) {
-            return pictures[position];
-        }
-
-        return null;
     }
 
     @Override
@@ -84,7 +82,7 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         TextView name = (TextView) view.findViewById(R.id.account_name_text);
         TextView value = (TextView) view.findViewById(R.id.account_value_text);
-        icon.setImageBitmap(pictures[i]);
+        Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, accountTitles[i], true);
         name.setText(accountNames[i]);
         value.setText(Utils.stripAccountAddress(accountTitles[i]));
 

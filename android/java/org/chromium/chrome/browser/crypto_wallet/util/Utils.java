@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivit
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.widget.Toast;
@@ -599,6 +600,18 @@ public class Utils {
             } catch (IllegalArgumentException exc) {
                 org.chromium.base.Log.e("Utils", exc.getMessage());
             }
+        });
+    }
+
+    public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
+            ImageView iconImg, String source, boolean makeLowerCase) {
+        executor.execute(() -> {
+            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase);
+            handler.post(() -> {
+                if (iconImg != null) {
+                    iconImg.setImageBitmap(bitmap);
+                }
+            });
         });
     }
 
