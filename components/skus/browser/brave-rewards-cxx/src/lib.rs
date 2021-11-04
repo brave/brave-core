@@ -12,6 +12,8 @@ use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::LocalPool;
 use futures::task::LocalSpawnExt;
 
+use tracing::debug;
+
 pub use brave_rewards;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
@@ -20,6 +22,7 @@ pub struct NativeClientContext(UniquePtr<ffi::SkusSdkContext>);
 
 #[derive(Clone)]
 pub struct NativeClient {
+    is_shutdown: Rc<RefCell<bool>>,
     pool: Rc<RefCell<LocalPool>>,
     ctx: Rc<RefCell<NativeClientContext>>,
 }
@@ -27,6 +30,18 @@ pub struct NativeClient {
 impl fmt::Debug for NativeClient {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("NativeClient").finish()
+    }
+}
+
+impl NativeClient {
+    fn try_run_until_stalled(&self) {
+        if *self.is_shutdown.borrow() {
+            debug!("sdk is shutdown, exiting");
+            return;
+        }
+        if let Ok(mut pool) = self.pool.try_borrow_mut() {
+            pool.run_until_stalled();
+        }
     }
 }
 
@@ -103,6 +118,7 @@ mod ffi {
 
         type CppSDK;
         fn initialize_sdk(ctx: UniquePtr<SkusSdkContext>, env: String) -> Box<CppSDK>;
+        fn shutdown(self: &CppSDK);
         fn refresh_order(
             self: &CppSDK,
             callback: RefreshOrderCallback,
@@ -179,6 +195,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
     // FIXME
     let sdk = brave_rewards::sdk::SDK::new(
         NativeClient {
+            is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(LocalPool::new())),
             ctx: Rc::new(RefCell::new(NativeClientContext(ctx))),
         },
@@ -204,6 +221,10 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
 }
 
 impl CppSDK {
+    fn shutdown(&self) {
+        *self.sdk.client.is_shutdown.borrow_mut() = true
+    }
+
     fn refresh_order(
         &self,
         callback: RefreshOrderCallback,
