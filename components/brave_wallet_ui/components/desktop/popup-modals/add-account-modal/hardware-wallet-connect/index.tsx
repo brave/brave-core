@@ -19,7 +19,7 @@ import {
 } from './style'
 
 // Custom types
-import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths } from './types'
+import { HardwareWalletAccount, HardwareWalletConnectOpts, LedgerDerivationPaths, ErrorMessage } from './types'
 
 import {
   kLedgerHardwareVendor,
@@ -42,19 +42,25 @@ export default function (props: Props) {
   const [isConnected, setIsConnected] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<Array<HardwareWalletAccount>>([])
   const [selectedDerivationPaths, setSelectedDerivationPaths] = React.useState<string[]>([])
-  const [connectionError, setConnectionError] = React.useState<string>('')
+  const [connectionError, setConnectionError] = React.useState<ErrorMessage | undefined>(undefined)
   const [selectedDerivationScheme, setSelectedDerivationScheme] = React.useState<string>(
     LedgerDerivationPaths.LedgerLive.toString()
   )
 
   const getErrorMessage = (error: any) => {
-    if (error.statusCode && error.statusCode === 27404) {
-      return getLocale('braveWalletConnectHardwareInfo3')
+    if (error.statusCode && error.statusCode === 27404) {  // Unknown Error
+      return { error: getLocale('braveWalletConnectHardwareInfo3'), userHint: '' }
     }
+
+    if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) {  // INCORRECT_LENGTH or INS_NOT_SUPPORTED
+      return { error: error.message, userHint: getLocale('braveWalletConnectHardwareWrongApplicationUserHint') }
+    }
+
     if (!error || !error.message) {
-      return getLocale('braveWalletUnknownInternalError')
+      return { error: getLocale('braveWalletUnknownInternalError'), userHint: '' }
     }
-    return error.message
+
+    return { error: error.message, userHint: '' }
   }
 
   const onSelectedDerivationScheme = (scheme: string) => {
@@ -111,10 +117,6 @@ export default function (props: Props) {
 
   const onSubmit = () => onConnectHardwareWallet(selectedHardwareWallet)
 
-  if (connectionError !== '') {
-    console.error(connectionError)
-  }
-
   if (isConnected) {
     return (
       <HardwareWalletAccountsList
@@ -151,8 +153,11 @@ export default function (props: Props) {
           <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo3')}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
-      {connectionError !== '' &&
-        <ErrorText>{connectionError}</ErrorText>
+      {connectionError &&
+        <>
+          <ErrorText>{connectionError.error}</ErrorText>
+          <ErrorText>{connectionError.userHint}</ErrorText>
+        </>
       }
 
       {isConnecting ? (

@@ -207,6 +207,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2},
     {"braveWalletConnectHardwareInfo3",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO3},
+    {"braveWalletConnectHardwareWrongApplicationUserHint",
+     IDS_BRAVE_WALLET_CONNECT_HARDWARE_WRONG_APPLICATION_USER_HINT},
     {"braveWalletConnectHardwareTrezor",
      IDS_BRAVE_WALLET_CONNECT_HARDWARE_TREZOR},
     {"braveWalletConnectHardwareLedger",
