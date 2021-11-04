@@ -987,6 +987,7 @@ template <> struct deleter_if<true> {
 } // namespace rust
 
 namespace brave_rewards {
+  enum class TracingLevel : ::std::uint8_t;
   enum class RewardsResult : ::std::uint8_t;
   struct HttpRequest;
   struct HttpResponse;
@@ -1002,6 +1003,32 @@ namespace brave_rewards {
 }
 
 namespace brave_rewards {
+#ifndef CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+#define CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+enum class TracingLevel : ::std::uint8_t {
+  // The "trace" level.
+  //
+  // Designates very low priority, often extremely verbose, information.
+  Trace = 0,
+  // The "debug" level.
+  //
+  // Designates lower priority information.
+  Debug = 1,
+  // The "info" level.
+  //
+  // Designates useful information.
+  Info = 2,
+  // The "warn" level.
+  //
+  // Designates hazardous situations.
+  Warn = 3,
+  // The "error" level.
+  //
+  // Designates very serious errors.
+  Error = 4,
+};
+#endif // CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+
 #ifndef CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 #define CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 enum class RewardsResult : ::std::uint8_t {
@@ -1132,6 +1159,11 @@ void brave_rewards$cxxbridge1$CppSDK$fetch_order_credentials(const ::brave_rewar
 void brave_rewards$cxxbridge1$CppSDK$prepare_credentials_presentation(const ::brave_rewards::CppSDK &self, ::brave_rewards::PrepareCredentialsPresentationCallback *callback, ::brave_rewards::PrepareCredentialsPresentationCallbackState *callback_state, ::rust::String *domain, ::rust::String *path) noexcept;
 
 void brave_rewards$cxxbridge1$CppSDK$credential_summary(const ::brave_rewards::CppSDK &self, ::brave_rewards::CredentialSummaryCallback *callback, ::brave_rewards::CredentialSummaryCallbackState *callback_state, ::rust::String *domain) noexcept;
+
+void brave_rewards$cxxbridge1$shim_logMessage(::rust::Str file, ::std::uint32_t line, ::brave_rewards::TracingLevel level, ::rust::Str message) noexcept {
+  void (*shim_logMessage$)(::rust::Str, ::std::uint32_t, ::brave_rewards::TracingLevel, ::rust::Str) = ::brave_rewards::shim_logMessage;
+  shim_logMessage$(file, line, level, message);
+}
 
 ::brave_rewards::SkusSdkFetcher *brave_rewards$cxxbridge1$shim_executeRequest(const ::brave_rewards::SkusSdkContext &ctx, const ::brave_rewards::HttpRequest &req, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)> done, ::brave_rewards::HttpRoundtripContext *rt_ctx) noexcept {
   ::std::unique_ptr<::brave_rewards::SkusSdkFetcher> (*shim_executeRequest$)(const ::brave_rewards::SkusSdkContext &, const ::brave_rewards::HttpRequest &, ::rust::Fn<void(::rust::Box<::brave_rewards::HttpRoundtripContext>, ::brave_rewards::HttpResponse)>, ::rust::Box<::brave_rewards::HttpRoundtripContext>) = ::brave_rewards::shim_executeRequest;

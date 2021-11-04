@@ -934,6 +934,7 @@ std::size_t align_of() {
 } // namespace rust
 
 namespace brave_rewards {
+  enum class TracingLevel : ::std::uint8_t;
   enum class RewardsResult : ::std::uint8_t;
   struct HttpRequest;
   struct HttpResponse;
@@ -949,6 +950,32 @@ namespace brave_rewards {
 }
 
 namespace brave_rewards {
+#ifndef CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+#define CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+enum class TracingLevel : ::std::uint8_t {
+  // The "trace" level.
+  //
+  // Designates very low priority, often extremely verbose, information.
+  Trace = 0,
+  // The "debug" level.
+  //
+  // Designates lower priority information.
+  Debug = 1,
+  // The "info" level.
+  //
+  // Designates useful information.
+  Info = 2,
+  // The "warn" level.
+  //
+  // Designates hazardous situations.
+  Warn = 3,
+  // The "error" level.
+  //
+  // Designates very serious errors.
+  Error = 4,
+};
+#endif // CXXBRIDGE1_ENUM_brave_rewards$TracingLevel
+
 #ifndef CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 #define CXXBRIDGE1_ENUM_brave_rewards$RewardsResult
 enum class RewardsResult : ::std::uint8_t {

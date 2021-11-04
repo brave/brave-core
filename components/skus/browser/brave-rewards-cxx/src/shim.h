@@ -24,6 +24,7 @@ class SkusSdkFetcher {};
 namespace brave_rewards {
 
 enum class RewardsResult : uint8_t;
+enum class TracingLevel : uint8_t;
 struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
@@ -69,6 +70,11 @@ using CredentialSummaryCallback =
     void (*)(CredentialSummaryCallbackState* callback_state,
              RewardsResult result,
              rust::cxxbridge1::Str summary);
+
+void shim_logMessage(rust::cxxbridge1::Str file,
+              uint32_t line,
+              TracingLevel level,
+              rust::cxxbridge1::Str message);
 
 void shim_purge(brave_rewards::SkusSdkContext& ctx);
 void shim_set(brave_rewards::SkusSdkContext& ctx,

@@ -1,5 +1,6 @@
 mod errors;
 mod httpclient;
+mod log;
 mod storage;
 
 use std::cell::RefCell;
@@ -32,6 +33,30 @@ impl fmt::Debug for NativeClient {
 #[allow(unused)]
 #[cxx::bridge(namespace = brave_rewards)]
 mod ffi {
+    #[derive(Debug)]
+    pub enum TracingLevel {
+        /// The "trace" level.
+        ///
+        /// Designates very low priority, often extremely verbose, information.
+        Trace = 0,
+        /// The "debug" level.
+        ///
+        /// Designates lower priority information.
+        Debug = 1,
+        /// The "info" level.
+        ///
+        /// Designates useful information.
+        Info = 2,
+        /// The "warn" level.
+        ///
+        /// Designates hazardous situations.
+        Warn = 3,
+        /// The "error" level.
+        ///
+        /// Designates very serious errors.
+        Error = 4,
+    }
+
     #[derive(Debug)]
     pub enum RewardsResult {
         Ok,
@@ -111,6 +136,8 @@ mod ffi {
         type SkusSdkContext;
         type SkusSdkFetcher;
 
+        fn shim_logMessage(file: &str, line: u32, level: TracingLevel, message: &str);
+
         fn shim_executeRequest(
             ctx: &SkusSdkContext,
             req: &HttpRequest,
@@ -144,8 +171,10 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSDK> {
-    // FIXME replace with ffi logging
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt()
+        .event_format(log::CppFormatter::new())
+        .with_max_level(tracing::Level::TRACE)
+        .init();
 
     // FIXME
     let sdk = brave_rewards::sdk::SDK::new(
