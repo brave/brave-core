@@ -82,6 +82,13 @@ TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
       source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
 }
 
+TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesFormatTest) {
+  EXPECT_EQ("image/jpeg", bg_source_->GetMimeType("wallpaper-0.jpg"));
+  EXPECT_EQ("image/webp", bg_source_->GetMimeType("wallpaper-0.webp"));
+  EXPECT_EQ("image/png", bg_source_->GetMimeType("wallpaper-0.png"));
+  EXPECT_EQ("image/avif", bg_source_->GetMimeType("wallpaper-0.avif"));
+}
+
 TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
   const std::string test_json_string = R"(
       {
@@ -123,11 +130,11 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
       })";
   service_->OnGetComponentJsonData(test_json_string);
   EXPECT_TRUE(bg_source_->AllowCaching());
-  EXPECT_EQ("image/webp", bg_source_->GetMimeType("wallpaper-2.webp"));
-  EXPECT_EQ(0, bg_source_->GetWallpaperIndexFromPath("wallpaper-0.webp"));
-  EXPECT_EQ(3, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.webp"));
+  EXPECT_EQ(0, bg_source_->GetWallpaperIndexFromPath("brave-bg-1.webp"));
+  EXPECT_EQ(1, bg_source_->GetWallpaperIndexFromPath("brave-bg-2.webp"));
+  EXPECT_EQ(2, bg_source_->GetWallpaperIndexFromPath("brave-bg-3.webp"));
+  EXPECT_EQ(3, bg_source_->GetWallpaperIndexFromPath("brave-bg-4.webp"));
   EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
-  EXPECT_EQ(-1, bg_source_->GetWallpaperIndexFromPath("wallpaper-4.webp"));
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -185,8 +192,8 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
   EXPECT_EQ("image/png", source_->GetMimeType("super-referral/logo.png"));
-  EXPECT_EQ(
-      "image/jpg", source_->GetMimeType("super-referral/wallpaper-2.jpg"));
+  EXPECT_EQ("image/jpg",
+            source_->GetMimeType("super-referral/wallpaper-2.jpg"));
   EXPECT_EQ(
       0, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-0.jpg"));
   EXPECT_EQ(

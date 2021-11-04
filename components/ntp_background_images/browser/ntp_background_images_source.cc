@@ -92,7 +92,19 @@ void NTPBackgroundImagesSource::OnGotImageFile(
 }
 
 std::string NTPBackgroundImagesSource::GetMimeType(const std::string& path) {
-  return "image/webp";
+  const auto file_path = base::FilePath::FromUTF8Unsafe(path);
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg"))) {
+    return "image/jpeg";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
+    return "image/png";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
+    return "image/webp";
+  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
+    return "image/avif";
+  } else {
+    NOTREACHED();
+    return "image/jpeg";
+  }
 }
 
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
@@ -103,9 +115,9 @@ int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
 
   const int wallpaper_count = images_data->backgrounds.size();
   for (int i = 0; i < wallpaper_count; ++i) {
-    const std::string generated_path =
-        base::StringPrintf("%s%d.webp", kWallpaperPathPrefix, i);
-    if (path.compare(generated_path) == 0)
+    const std::string image_name =
+        images_data->backgrounds[i].image_file.BaseName().AsUTF8Unsafe();
+    if (path.compare(image_name) == 0)
       return i;
   }
 

@@ -67,6 +67,14 @@ constexpr char kTestBackgroundImages[] = R"(
           "link": "https://brave.com/",
           "originalUrl": "Contributor sent the hi-res version through email",
           "license": "https://brave.com/about/"
+        },
+        {
+          "name": "ntp-2020/2021-2",
+          "source": "background-image-source.avif",
+          "author": "Brave Software",
+          "link": "https://brave.com/",
+          "originalUrl": "Contributor sent the hi-res version through email",
+          "license": "https://brave.com/about/"
         }
       ]
     })";
@@ -249,18 +257,22 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   bi_data = service_->GetBackgroundImagesData();
   EXPECT_TRUE(bi_data);
   EXPECT_TRUE(bi_data->IsValid());
-  // Above json data has 1 wallpapers.
-  const size_t bi_image_count = 1;
+  // Above json data has 2 wallpapers.
+  const size_t bi_image_count = 2;
   EXPECT_EQ(bi_image_count, bi_data->backgrounds.size());
   // Check values are loaded correctly
   EXPECT_EQ("Brave Software", bi_data->backgrounds[0].author);
   EXPECT_EQ("https://brave.com/", bi_data->backgrounds[0].link);
   EXPECT_TRUE(observer.on_bi_updated_);
   EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBoolKey(kIsBackgroundKey));
-  EXPECT_EQ("chrome://background-wallpaper/wallpaper-0.webp",
+  EXPECT_EQ("chrome://background-wallpaper/background-image-source.webp",
             *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImageURLKey));
   EXPECT_EQ("background-image-source.webp",
             *bi_data->GetBackgroundAt(0).FindStringKey(kWallpaperImagePathKey));
+  EXPECT_EQ("chrome://background-wallpaper/background-image-source.avif",
+            *bi_data->GetBackgroundAt(1).FindStringKey(kWallpaperImageURLKey));
+  EXPECT_EQ("background-image-source.avif",
+            *bi_data->GetBackgroundAt(1).FindStringKey(kWallpaperImagePathKey));
 
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(
