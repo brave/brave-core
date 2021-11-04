@@ -113,6 +113,8 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
   prefs->ClearPref(kBraveWalletSelectedAccount);
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+  prefs->ClearPref(kDefaultBaseCurrency);
+  prefs->ClearPref(kDefaultBaseCryptocurrency);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
