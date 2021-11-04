@@ -58,7 +58,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
             boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
-            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader) {
+            BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
+            boolean initializeWithIncognitoColors) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
@@ -70,12 +71,12 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
-                partnerHomepageEnabledSupplier, offlineDownloader);
+                partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors);
 
         mBraveToolbarLayout = toolbarLayout;
 
         if (isToolbarPhone()) {
-            if (!StartSurfaceConfiguration.isStartSurfaceEnabled()) {
+            if (!isStartSurfaceEnabled) {
                 mTabSwitcherModeCoordinatorPhone = new BraveTabSwitcherModeTTCoordinatorPhone(
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         overviewModeMenuButtonCoordinator, isGridTabSwitcherEnabled,
