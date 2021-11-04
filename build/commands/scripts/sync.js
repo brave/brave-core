@@ -24,6 +24,7 @@ program
   .option('--all', 'This flag is deprecated and no longer has any effect')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--create', 'create a new branch if needed for [ref]')
+  .option('--ignore_chromium', 'do not update chromium version even if it is stale')
 
 const installDepotTools = (options = config.defaultOptions) => {
   options.cwd = config.braveCoreDir
@@ -99,7 +100,7 @@ async function RunCommand () {
   }
 
   Log.progress('Running gclient sync...')
-  const result = util.gclientSync(program.init || program.force, program.init, braveCoreRef)
+  const result = util.gclientSync(program.init || program.force, program.init, braveCoreRef, !program.ignore_chromium)
   const postSyncBraveCoreRef = util.getGitReadableLocalRef(config.braveCoreDir)
   Log.status(`Brave Core is now at ${postSyncBraveCoreRef || '[unknown]'}`)
   if (result.didUpdateChromium) {
