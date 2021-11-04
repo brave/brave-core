@@ -54,7 +54,7 @@ abstract class MessagingTransport {
     this.handlers = new Map<string, Function>()
   }
 
-  handlers: Map<string, Function>
+  protected handlers: Map<string, Function>
 
   addCommandHandler = (id: string, listener: Function): Boolean => {
     if (!this.handlers.size) {
@@ -68,7 +68,7 @@ abstract class MessagingTransport {
     return true
   }
 
-  removeCommandHandler = (id: string) => {
+  protected removeCommandHandler = (id: string) => {
     if (!this.handlers.has(id)) {
       return false
     }
@@ -79,7 +79,7 @@ abstract class MessagingTransport {
     return true
   }
 
-  abstract onMessageReceived (event: MessageEvent): unknown
+  protected abstract onMessageReceived (event: MessageEvent): unknown
 
   private addWindowMessageListener = () => {
     window.addEventListener('message', this.onMessageReceived)
@@ -91,7 +91,7 @@ abstract class MessagingTransport {
 }
 
 // Handles sending messages to the Trezor library, creates untrusted iframe,
-// loads library and allows to send commans to the library and subscribe
+// loads library and allows to send commands to the library and subscribe
 // for responses.
 export class TrezorBridgeTransport extends MessagingTransport {
   constructor (bridgeFrameUrl: string) {
@@ -101,24 +101,26 @@ export class TrezorBridgeTransport extends MessagingTransport {
     this.frameId = crypto.randomUUID()
   }
 
-  frameId: string
-  bridgeFrameUrl: string
+  private frameId: string
+  private bridgeFrameUrl: string
 
-  sendCommandToTrezorFrame = async (command: TrezorFrameCommand, listener: Function): Promise<Boolean> => {
-    let bridge = this.getBridge() as HTMLIFrameElement
-    if (!bridge) {
-      bridge = await this.createBridge() as HTMLIFrameElement
-    }
-    if (!bridge.contentWindow) {
-      return false
-    }
-    this.addCommandHandler(command.id, listener)
-
-    bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
-    return true
+  // T is response type, e.g. UnlockResponse. Resolves as `false` if transport errro
+  sendCommandToTrezorFrame = async<T> (command: TrezorFrameCommand): Promise<T | false> => {
+    return new Promise<T>(async (resolve) => {
+      let bridge = this.getBridge()
+      if (!bridge) {
+        bridge = await this.createBridge()
+      }
+      if (!bridge.contentWindow) {
+        Promise.resolve(false)
+        return
+      }
+      this.addCommandHandler(command.id, resolve)
+      bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
+    })
   }
 
-  onMessageReceived = (event: MessageEvent) => {
+  protected onMessageReceived = (event: MessageEvent) => {
     if (event.origin !== this.getTrezorBridgeOrigin() ||
         event.type !== 'message' ||
         !this.handlers.size) {
@@ -139,7 +141,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
   }
 
   private createBridge = () => {
-    return new Promise((resolve) => {
+    return new Promise<HTMLIFrameElement>((resolve) => {
       let element = document.createElement('iframe')
       element.id = this.frameId
       element.src = this.bridgeFrameUrl
@@ -151,14 +153,14 @@ export class TrezorBridgeTransport extends MessagingTransport {
     })
   }
 
-  private getBridge = () => {
-    return document.getElementById(this.frameId)
+  private getBridge = (): HTMLIFrameElement | null => {
+    return document.getElementById(this.frameId) as HTMLIFrameElement | null
   }
 }
 
 // Handles commands forwarding to the Trezor library inside the iframe.
 export class TrezorCommandHandler extends MessagingTransport {
-  onMessageReceived = async (event: MessageEvent) => {
+  protected onMessageReceived = async (event: MessageEvent) => {
     if (event.origin !== event.data.origin || event.type !== 'message' || !event.source) {
       return
     }
@@ -173,7 +175,8 @@ export class TrezorCommandHandler extends MessagingTransport {
   }
 }
 
-let handler: TrezorCommandHandler | undefined = undefined
+let handler: TrezorCommandHandler
+let transport: TrezorBridgeTransport
 
 export function addTrezorCommandHandler (command: TrezorCommand, listener: Function): Boolean {
   if (!handler) {
@@ -182,11 +185,21 @@ export function addTrezorCommandHandler (command: TrezorCommand, listener: Funct
   return handler.addCommandHandler(command, listener)
 }
 
-let transport: TrezorBridgeTransport | undefined = undefined
-
-export async function sendTrezorCommand (command: TrezorFrameCommand, listener: Function): Promise<Boolean> {
+export async function sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | false> {
   if (!transport) {
     transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
   }
-  return transport.sendCommandToTrezorFrame(command, listener)
+  return transport.sendCommandToTrezorFrame<T>(command)
 }
+
+// Caller example:
+// async function doSomething () {
+//   const transport = new TrezorBridgeTransport()
+//   const data = await transport.sendTrezorCommand<UnlockResponse>({command: TrezorCommand.Unlock, id: '1', origin: 'a'})
+//   if (data == false) {
+//     // error
+//     return
+//   }
+//   // ts knows data is UnlockResponse
+//   data
+// }
