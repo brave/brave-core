@@ -6,6 +6,7 @@ import { DisclaimerWrapper as DisclaimerWrapperBase } from '../style'
 
 interface StyleProps {
   isSelected: boolean
+  size: 'big' | 'small'
 }
 
 export const HardwareTitle = styled.span`
@@ -27,7 +28,7 @@ export const HardwareButtonRow = styled.div`
   margin-bottom: 35px;
 `
 
-export const HardwareButton = styled.button<StyleProps>`
+export const HardwareButton = styled.button<Partial<StyleProps>>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,16 +77,14 @@ export const HardwareInfoColumn = styled.div`
 
 export const ConnectingButton = styled.button`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 10px 22px;
   border: 1px solid ${(p) => p.theme.color.interactive08};
   box-sizing: border-box;
   border-radius: 48px;
-
-  // Added manually
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: transparent;
 `
 
 export const ConnectingButtonText = styled.span`
@@ -204,9 +203,9 @@ export const LoadingWrapper = styled.div`
   height: 100%;
 `
 
-export const LoadIcon = styled(LoaderIcon)`
+export const LoadIcon = styled(LoaderIcon) <Partial<StyleProps>>`
   color: ${p => p.theme.color.interactive08};
-  height: 70px;
-  width: 70px;
+  height: ${(p) => p.size === 'small' ? '25px' : '70px'};
+  width: ${(p) => p.size === 'small' ? '25px' : '70px'};
   opacity: .4;
 `
