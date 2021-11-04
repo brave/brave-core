@@ -222,7 +222,10 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusSdkContext>, env: String) -> Box<CppSD
 
 impl CppSDK {
     fn shutdown(&self) {
-        *self.sdk.client.is_shutdown.borrow_mut() = true
+        // drop any existing futures
+        drop(self.sdk.client.pool.take());
+        // ensure lingering callbacks passed to c++ are short circuited
+        *self.sdk.client.is_shutdown.borrow_mut() = true;
     }
 
     fn refresh_order(
