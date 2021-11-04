@@ -404,6 +404,8 @@ interface EthTxController {
 interface BraveWalletServiceObserver {
   OnActiveOriginChanged(string origin);
   OnDefaultWalletChanged(DefaultWallet wallet);
+  OnDefaultBaseCurrencyChanged(string currency);
+  OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
 };
 
 struct SignMessageRequest {
@@ -426,6 +428,10 @@ interface BraveWalletService {
   string? errorMessage);
   GetDefaultWallet() => (DefaultWallet default_wallet);
   SetDefaultWallet(DefaultWallet default_wallet);
+  GetDefaultBaseCurrency() => (string currency);
+  SetDefaultBaseCurrency(string currency);
+  GetDefaultBaseCryptocurrency() => (string cryptocurrency);
+  SetDefaultBaseCryptocurrency(string cryptocurrency);
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
   ResetEthereumPermission(string origin, string account) => (bool success);
   GetActiveOrigin() => (string origin);

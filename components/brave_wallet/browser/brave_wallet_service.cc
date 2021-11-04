@@ -121,6 +121,15 @@ BraveWalletService::BraveWalletService(
       kDefaultWallet2,
       base::BindRepeating(&BraveWalletService::OnDefaultWalletChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kDefaultBaseCurrency,
+      base::BindRepeating(&BraveWalletService::OnDefaultBaseCurrencyChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kDefaultBaseCryptocurrency,
+      base::BindRepeating(
+          &BraveWalletService::OnDefaultBaseCryptocurrencyChanged,
+          base::Unretained(this)));
   p3a_periodic_timer_.Start(
       FROM_HERE, base::TimeDelta::FromHours(kRefreshP3AFrequencyHours), this,
       &BraveWalletService::OnP3ATimerFired);
@@ -429,10 +438,50 @@ void BraveWalletService::SetDefaultWallet(mojom::DefaultWallet default_wallet) {
   }
 }
 
+void BraveWalletService::GetDefaultBaseCurrency(
+    GetDefaultBaseCurrencyCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetDefaultBaseCurrency(prefs_));
+}
+
+void BraveWalletService::SetDefaultBaseCurrency(const std::string& currency) {
+  auto old_default_currency = ::brave_wallet::GetDefaultBaseCurrency(prefs_);
+  if (old_default_currency != currency) {
+    ::brave_wallet::SetDefaultBaseCurrency(prefs_, currency);
+  }
+}
+
+void BraveWalletService::GetDefaultBaseCryptocurrency(
+    GetDefaultBaseCryptocurrencyCallback callback) {
+  std::move(callback).Run(::brave_wallet::GetDefaultBaseCryptocurrency(prefs_));
+}
+
+void BraveWalletService::SetDefaultBaseCryptocurrency(
+    const std::string& cryptocurrency) {
+  auto old_default_cryptocurrency =
+      ::brave_wallet::GetDefaultBaseCryptocurrency(prefs_);
+  if (old_default_cryptocurrency != cryptocurrency) {
+    ::brave_wallet::SetDefaultBaseCryptocurrency(prefs_, cryptocurrency);
+  }
+}
+
 void BraveWalletService::OnDefaultWalletChanged() {
   auto default_wallet = ::brave_wallet::GetDefaultWallet(prefs_);
   for (const auto& observer : observers_) {
     observer->OnDefaultWalletChanged(default_wallet);
+  }
+}
+
+void BraveWalletService::OnDefaultBaseCurrencyChanged() {
+  auto value = ::brave_wallet::GetDefaultBaseCurrency(prefs_);
+  for (const auto& observer : observers_) {
+    observer->OnDefaultBaseCurrencyChanged(value);
+  }
+}
+
+void BraveWalletService::OnDefaultBaseCryptocurrencyChanged() {
+  auto value = ::brave_wallet::GetDefaultBaseCryptocurrency(prefs_);
+  for (const auto& observer : observers_) {
+    observer->OnDefaultBaseCryptocurrencyChanged(value);
   }
 }
 

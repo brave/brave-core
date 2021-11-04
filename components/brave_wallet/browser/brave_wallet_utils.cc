@@ -711,6 +711,23 @@ void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet) {
   prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
 }
 
+void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency) {
+  prefs->SetString(kDefaultBaseCurrency, currency);
+}
+
+std::string GetDefaultBaseCurrency(PrefService* prefs) {
+  return prefs->GetString(kDefaultBaseCurrency);
+}
+
+void SetDefaultBaseCryptocurrency(PrefService* prefs,
+                                  const std::string& cryptocurrency) {
+  prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
+}
+
+std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
+  return prefs->GetString(kDefaultBaseCryptocurrency);
+}
+
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id) {
   if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(chain_id))

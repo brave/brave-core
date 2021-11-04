@@ -72,6 +72,9 @@ class TestBraveWalletServiceObserver
     defaultWalletChangedFired_ = true;
   }
   void OnActiveOriginChanged(const std::string& origin) override {}
+  void OnDefaultBaseCurrencyChanged(const std::string& currency override {}
+  void OnDefaultBaseCryptocurrencyChanged(
+      const std::string& cryptocurrency override {}
 
   mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
   bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }
