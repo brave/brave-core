@@ -1246,6 +1246,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
 
   if (!token_received) {
     std::move(callback).Run(ledger::type::Result::LEDGER_ERROR, nullptr);
+    return;
   }
 
   base::Value solution(base::Value::Type::DICTIONARY);

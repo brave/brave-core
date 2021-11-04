@@ -21,15 +21,23 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity {
     public static final String DISCONNECT_WALLET_URL = "chrome://rewards/#disconnect-wallet";
 
+    private String walletType = BraveRewardsNativeWorker.getInstance().getExternalWalletType();
+    private String walletTypeString;
+
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.user_wallet_activity);
+
+        walletTypeString = walletType.equals(BraveWalletProvider.UPHOLD)
+                ? getResources().getString(R.string.uphold)
+                : getResources().getString(R.string.bitflyer);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +58,9 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
         TextView txtUserStatus = (TextView) findViewById(R.id.user_status);
         Button btn1 = (Button) findViewById(R.id.user_wallet_btn1);
         Button btn2 = null;
-        Button btnGotoUphold = (Button) findViewById(R.id.user_wallet_go_to_uphold);
+        Button btnGotoProvider = (Button) findViewById(R.id.user_wallet_go_to_provider);
+        btnGotoProvider.setText(String.format(
+                getResources().getString(R.string.user_wallet_goto_provider), walletTypeString));
 
         if (status < BraveRewardsExternalWallet.NOT_CONNECTED
                 || status > BraveRewardsExternalWallet.PENDING) {
@@ -64,7 +74,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
             // Buttons:
             // Add funds
             // Withdraw
-            // Go to uphold
+            // Go to provider
             // Disconnect
             btn1.setText(getResources().getString(R.string.brave_rewards_local_panel_add_funds));
             btn2.setText(getResources().getString(R.string.user_wallet_withdraw_funds));
@@ -78,7 +88,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
             // CONNECTED or PENDING
             // Buttons:
             // Complete verification
-            // Go to uphold
+            // Go to provider
             // Disconnect
             btn1.setText(getResources().getString(R.string.user_wallet_complete_verification));
             SetBtnOpenUrlClickHandler(
@@ -86,7 +96,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
         }
 
         SetBtnOpenUrlClickHandler(
-                btnGotoUphold, intent.getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL));
+                btnGotoProvider, intent.getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL));
 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);

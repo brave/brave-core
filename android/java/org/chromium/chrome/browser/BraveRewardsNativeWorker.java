@@ -191,6 +191,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public String getExternalWalletType() {
+        synchronized (lock) {
+            return BraveRewardsNativeWorkerJni.get().getExternalWalletType(
+                    mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     public double GetWalletRate() {
         synchronized(lock) {
             return BraveRewardsNativeWorkerJni.get().getWalletRate(mNativeBraveRewardsNativeWorker);
@@ -588,6 +595,15 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
+    public void OnGetAdsAccountStatement(boolean success, double next_payment_date,
+            int ads_received_this_month, double earnings_this_month, double earnings_last_month) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnGetAdsAccountStatement(success, next_payment_date, ads_received_this_month,
+                    earnings_this_month, earnings_last_month);
+        }
+    }
+
+    @CalledByNative
     public void OnDisconnectWallet(int error_code, String external_wallet) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.OnDisconnectWallet(error_code, external_wallet);
@@ -623,6 +639,7 @@ public class BraveRewardsNativeWorker {
         void init(BraveRewardsNativeWorker caller);
         void destroy(long nativeBraveRewardsNativeWorker);
         String getWalletBalance(long nativeBraveRewardsNativeWorker);
+        String getExternalWalletType(long nativeBraveRewardsNativeWorker);
         double getWalletRate(long nativeBraveRewardsNativeWorker);
         void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);

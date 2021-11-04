@@ -48,6 +48,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/verify_wallet_benefit_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -57,11 +58,11 @@
         android:gravity="start"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:text="@string/verify_wallet_benefits1"
         android:textColor="@android:color/white"
         android:textSize="@dimen/verify_wallet_header3_font_size"/>
 
     <TextView
+        android:id="@+id/verify_wallet_benefit_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -71,11 +72,11 @@
         android:gravity="start"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:text="@string/verify_wallet_benefits2"
         android:textColor="@android:color/white"
         android:textSize="@dimen/verify_wallet_header3_font_size"/>
 
     <TextView
+        android:id="@+id/verify_wallet_benefit_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -85,7 +86,6 @@
         android:gravity="start"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:text="@string/verify_wallet_benefits3"
         android:textColor="@android:color/white"
         android:textSize="@dimen/verify_wallet_header3_font_size"/>
 
@@ -118,21 +118,21 @@
         android:textSize="@dimen/verify_wallet_header4_font_size"/>
 
     <TextView
+        android:id="@+id/verify_wallet_provider_note_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/verify_wallet_margin3"
-        android:text="@string/verify_wallet_uphold_note1"
         android:textAlignment="textStart"
         android:textColor="@color/user_wallet_dimmed_note"
         android:textSize="@dimen/verify_wallet_header4_font_size"/>
 
     <TextView
+        android:id="@+id/verify_wallet_brave_note_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="@dimen/verify_wallet_margin3"
-        android:text="@string/verify_wallet_brave_note1"
         android:textAlignment="textStart"
         android:textColor="@color/user_wallet_dimmed_note"
         android:textSize="@dimen/verify_wallet_header4_font_size"/>

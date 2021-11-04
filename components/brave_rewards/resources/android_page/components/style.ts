@@ -4,6 +4,18 @@
 
 import styled from 'styled-components'
 
+export const TourPromoWrapper = styled('div')<{}>`
+  margin-top: 30px;
+`
+
+export const PageWalletWrapper = styled.div`
+  width: 373px;
+
+  @media screen and (max-width: 700px) {
+    margin-bottom: 10px;
+  }
+`
+
 export const StyledListContent = styled('div')<{}>`
   padding: 0 25px;
 `
