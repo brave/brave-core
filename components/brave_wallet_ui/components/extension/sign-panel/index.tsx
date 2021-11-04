@@ -33,7 +33,7 @@ import {
 import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
-  selectedAccount: WalletAccountType
+  accounts: WalletAccountType[]
   selectedNetwork: EthereumChain
   signMessageData: SignMessagePayload[]
   onSign: () => void
@@ -48,7 +48,7 @@ enum SignDataSteps {
 
 function SignPanel (props: Props) {
   const {
-    selectedAccount,
+    accounts,
     selectedNetwork,
     signMessageData,
     onSign,
@@ -57,9 +57,14 @@ function SignPanel (props: Props) {
   } = props
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
   const [selectedQueueData, setSelectedQueueData] = React.useState<SignMessagePayload>(signMessageData[0])
+
+  const findAccountName = (address: string) => {
+    return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
+  }
+
   const orb = React.useMemo(() => {
-    return create({ seed: selectedAccount.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
-  }, [selectedAccount.address])
+    return create({ seed: selectedQueueData.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
+  }, [selectedQueueData.address])
 
   React.useEffect(() => {
     setSelectedQueueData(signMessageData[0])
@@ -119,7 +124,7 @@ function SignPanel (props: Props) {
         }
       </TopRow>
       <AccountCircle orb={orb} />
-      <AccountNameText>{reduceAccountDisplayName(selectedAccount.name, 14)}</AccountNameText>
+      <AccountNameText>{reduceAccountDisplayName(findAccountName(selectedQueueData.address) ?? '', 14)}</AccountNameText>
       <PanelTitle>{getLocale('braveWalletSignTransactionTitle')}</PanelTitle>
       {signStep === SignDataSteps.SignRisk &&
         <WarningBox>
