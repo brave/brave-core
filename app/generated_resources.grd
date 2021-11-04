@@ -285,7 +285,7 @@ are declared in tools/grit/grit_rule.gni.
       <part file="media_router_strings.grdp" />
 
       <!-- Global Media Controls specific strings -->
-      <part file="global_media_controls_strings.grdp" />
+      <part file="gmc_strings.grdp" />
 
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
@@ -519,6 +519,12 @@ are declared in tools/grit/grit_rule.gni.
             This dialog is not currently focused. Press Alt-Shift A to focus this dialog.
           </message>
         </if>
+        <message name="IDS_FOCUS_HELP_BUBBLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when a general help bubble is shown.">
+          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this help bubble.
+        </message>
+        <message name="IDS_FOCUS_HELP_BUBBLE_TOGGLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader when a help bubble pointing to a specific element is shown.">
+          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to toggle focus between this help bubble and the element it is pointing to.
+        </message>
       </if>
 
        <!-- content area context menus. Android does not use it -->
@@ -1367,7 +1373,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
 
       <!-- App menu -->
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_TOGGLE_REQUEST_TABLET_SITE" desc="The toggle to request mobile version site on a touch dev.">
           Request mobile site
         </message>
@@ -4937,6 +4943,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEB_APP_DISABLE_WINDOW_CONTROLS_OVERLAY_TOOLTIP">
         Show title bar
       </message>
+      <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_ENABLED_ALERT" desc="Status change notification that the title bar is hidden after window controls overlay is enabled">
+        Title bar is now hidden
+      </message>
+      <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_DISABLED_ALERT" desc="Status change notification that the title bar is showing after window controls overlay is disabled">
+        Title bar is now showing
+      </message>
 
       <!-- Components -->
       <message name="IDS_COMPONENTS_TITLE" desc="Title for the chrome://components page.">
@@ -6263,8 +6275,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARK_PROMO_2" desc="Text shown on promotional UI appearing next to the Bookmarks button, which encourages users to use it.">
         Get back here fast by bookmarking this tab
       </message>
-      <message name="IDS_CLOSE_TUTORIAL" desc="Accessible name used by a screen reader for the in-product-help bubble close button." is_accessibility_with_no_ui="true">
+      <message name="IDS_CHROME_TIP" desc="Accessible name used by a screen reader for the in-product-help or tutorial bubble icon." is_accessibility_with_no_ui="true">
+        Brave tip
+      </message>
+      <message name="IDS_CLOSE_TUTORIAL" desc="Accessible name used by a screen reader for the tutorial bubble close button." is_accessibility_with_no_ui="true">
         Close tutorial
+      </message>
+      <message name="IDS_CLOSE_PROMO" desc="Accessible name used by a screen reader for the in-product-help bubble close button." is_accessibility_with_no_ui="true">
+        Close help bubble
       </message>
       <message name="IDS_GLOBAL_MEDIA_CONTROLS_PROMO" desc="Text shown on promotional UI appearing next to the global media controls toolbar button.">
         New! Control your music, videos, and more.
@@ -7003,6 +7021,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="The label of the 'New Tab to the Right' Tab context menu item.">
           New tab to the right
         </message>
+        <message name="IDS_TAB_CXMENU_NEWTABTOLEFT" desc="The label of the 'New Tab to the Left' Tab context menu item.">
+          New tab to the left
+        </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="The label of the 'Reload' Tab context menu item.">
           Reload
         </message>
@@ -7017,6 +7038,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT" desc="The label of the 'Close Tabs to the Right' Tab context menu item.">
           Close tabs to the right
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSTOLEFT" desc="The label of the 'Close Tabs to the Left' Tab context menu item.">
+          Close tabs to the left
         </message>
         <message name="IDS_TAB_CXMENU_FOCUS_THIS_TAB" desc="The label of the 'Focus this tab' Tab context menu item.">
           Focus this tab
@@ -7083,6 +7107,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
           New Tab to the Right
         </message>
+        <message name="IDS_TAB_CXMENU_NEWTABTOLEFT" desc="In Title Case: The label of the 'New Tab to the Left' Tab context menu item.">
+          New Tab to the Left
+        </message>
         <message name="IDS_TAB_CXMENU_RELOAD" desc="In Title Case: The label of the 'Reload' Tab context menu item.">
           Reload
         </message>
@@ -7097,6 +7124,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT" desc="In Title Case: The label of the 'Close Tabs to the Right' Tab context menu item.">
           Close Tabs to the Right
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSTOLEFT" desc="In Title Case: The label of the 'Close Tabs to the Left' Tab context menu item.">
+          Close Tabs to the Left
         </message>
         <message name="IDS_TAB_CXMENU_FOCUS_THIS_TAB" desc="In Title Case: The label of the 'Focus This Tab' Tab context menu item.">
           Focus This Tab
@@ -8593,9 +8623,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_DIRECTORY_LISTING_DATE_MODIFIED" desc="When viewing a local directory, this is the text for the column above the last modified dates.">
         Date Modified
-      </message>
-      <message name="IDS_DIRECTORY_LISTING_PARSING_ERROR_BOX_TEXT" desc="Text to show in a box when we failed to parse FTP directory listing.">
-        Oh, no! This server is sending data <ph name="PRODUCT_NAME">$1<ex>Brave</ex></ph> can't understand. Please <ph name="BEGIN_LINK">&lt;a href="http://code.google.com/p/chromium/issues/entry"&gt;</ph>report a bug<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>, and include the <ph name="BEGIN2_LINK">&lt;a href="LOCATION"&gt;</ph>raw listing<ph name="END2_LINK">&lt;/a&gt;</ph>.
       </message>
 
       <!-- Saving Page-->
@@ -11670,6 +11697,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <!-- Lens Region Search bubble dialog -->
     <message name="IDS_LENS_REGION_SEARCH_BUBBLE_TEXT" desc="Text that is shown in the Lens Region Search education bubble when starting the feature. Informs the user to drag over the screen to select a region to search with Brave Lens.">
       Drag over any image to search
+    </message>
+    <!-- BraveLabs Thumbnail Tab Strip -->
+    <message name="IDS_THUMBNAIL_TAB_STRIP_EXPERIMENT_NAME" desc="Name for Thumbnail Tab Strip experiment">
+      Thumbnail tab strip for tablet mode
+    </message>
+    <message name="IDS_THUMBNAIL_TAB_STRIP_EXPERIMENT_DESCRIPTION" desc="Description for Thumbnail Tab Strip experiment">
+      In tablet mode, tap on the tab counter toolbar button to open the new tab strip that shows thumbnails of each tab.
     </message>
 
     <if expr="is_cfm">

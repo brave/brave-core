@@ -228,20 +228,11 @@
   </message>
 
   <!-- Profiles (OS settings) -->
-  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
-    Profiles
-  </message>
   <message name="IDS_OS_SETTINGS_PEOPLE_V2" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
     Accounts
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
     Currently signed in as <ph name="NAME">$1<ex>John</ex></ph>
-  </message>
-  <message name="IDS_OS_SETTINGS_PROFILE_LABEL" desc="Label underneath the profile's real name, listing the email address and optionally the number of additional accounts">
-    {COUNT, plural,
-     =0 {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>}
-     =1 {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +1 more account}
-     other {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> more accounts}}
   </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL_V2" desc="Label underneath the profile's real name, listing the number of accounts">
     {COUNT, plural,
@@ -1131,7 +1122,7 @@ and Ctrl+Alt+Brightness down to zoom out.
     Downloading speech recognition files... <ph name="PERCENT">$1<ex>17</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_SUBTITLE_SODA_DOWNLOAD_ERROR" desc="Description explaining that there was an error with the speech recognition library download.">
-    Couldn’t download <ph name="language">$1<ex>English</ex></ph> speech files. Download will be attempted later. Speech is sent to Brave for processing for now.
+    Couldn’t download <ph name="language">$1<ex>English</ex></ph> speech files. Download will be attempted later. Speech is sent to Brave for processing until download is completed.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_MENU_LABEL" desc="Description of a drop-down menu to select the language to use for Dictation's speech recognition.">
     Language
@@ -1140,7 +1131,7 @@ and Ctrl+Alt+Brightness down to zoom out.
     <ph name="language">$1<ex>English</ex></ph> is processed locally and works offline
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_LOCALE_SUB_LABEL_NETWORK" desc="Sub-label for a drop-down menu to select the language to use for Dictation. Describes how speech will be sent over the network to Brave for processing to create text.">
-    <ph name="language">$1<ex>English</ex></ph> speech is sent to Brave for processing.
+    <ph name="language">$1<ex>English</ex></ph> speech is sent to Brave for processing
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_DICTATION_CHANGE_LANGUAGE_BUTTON" desc="Text on a button to open a dialog to change the Dictation language.">
     Change
@@ -1563,12 +1554,6 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Account Manager (OS settings) -->
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-    Manage your signed-in accounts. Websites, apps, and extensions in Brave and Google Play may use these accounts to customize your experience, depending on permissions. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
-    Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_V2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
     This page allows you to manage your signed-in Brave sync chains. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
@@ -1605,9 +1590,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
     Remove this account
   </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_ACCOUNT_LABEL" desc="Label of the Add account button in Account Manager.">
-    Add account
-  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_ACCOUNT_LABEL_V2" desc="Label of the Add account button in Account Manager.">
     Add Brave sync chain
   </message>
@@ -1616,9 +1598,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_SCHOOL_ACCOUNT_LABEL_2" desc="Label of the button to add a school/EDU account in Account Manager.">
     School Account
-  </message>
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT" desc="Text for 'secondary accounts disabled' message in Settings page.">
-    Your administrator has disabled the addition of more Brave sync chains
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT_V2" desc="Tooltip text for 'secondary accounts disabled' message in Settings page.">
    Your administrator doesn’t allow additional Brave sync chains.
@@ -2038,6 +2017,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTED_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current device is connected.">
     Connected to <ph name="DEVICE">$1<ex>Beats</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTING_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing, the current device is being connected to.">
+    Connecting to <ph name="DEVICE">$1<ex>Beats</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTION_FAILURE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing, the current device could not be connected to.">
+    Could not connect to <ph name="DEVICE">$1<ex>Beats</ex></ph>. Try again.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTION_FAILURE_LABEL" desc="Bluetooth device details page: Message informing, the current device could not be connected to.">
+    Couldn't connect. Try again.
+  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_DISCONNECTED_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current device is disconnected.">
     Disconnected from <ph name="DEVICE">$1<ex>Beats</ex></ph>
   </message>
@@ -2173,6 +2161,13 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_MANAGED" desc="Tooltip description for icon notifying user that the Bluetooth device is managed by an enterprise policy and may have restricted functionality.">
     Your administrator has blocked some functionality for this device
   </message>
+  <message name="IDS_BLUETOOTH_ENABLE_FAST_PAIR_LABEL" desc="Label for the toggle that enables Fast Pair on the Bluetooth settings page.">
+    Scan for new devices
+  </message>
+  <message name="IDS_BLUETOOTH_ENABLE_FAST_PAIR_SUBTITLE" desc="Subtitle that describes the toggle that enables Fast Pair on the Bluetooth settings page.">
+    Easily connect and set up devices close by
+  </message>
+
 
   <!-- Parental Controls -->
   <message name="IDS_SETTINGS_PARENTAL_CONTROLS_PAGE_TITLE" desc="Name of the settings page which manages BraveOS's parental controls.">
@@ -2260,6 +2255,18 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MOUSE_AND_TOUCHPAD_TITLE" desc="In Device Settings, the title of the mouse and touchpad settings subpage (when the user has both types of devices).">
     Mouse and touchpad
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FEEDBACK_LABEL" desc="In Device Settings, the text next to the toggle for enabling touchpad haptic feedback.">
+    Enable haptic feedback. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_CLICK_SENSITIVITY_LABEL" translateable="false" desc="In Device Settings, the text next to the slider for setting the touchpad haptic click sensitivity.">
+    Click feedback
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_LIGHT_CLICK_LABEL" desc="In Device Settings, the text under the left (less sensitive) side of the slider for the touchpad haptic click sensitivity.">
+    Light
+  </message>
+  <message name="IDS_SETTINGS_TOUCHPAD_HAPTIC_FIRM_CLICK_LABEL" desc="In Device Settings, the text under the right (more sensitive) side of the slider for the touchpad haptic click sensitivity.">
+    Firm
   </message>
 
   <!-- Printing Page (OS Settings)-->
@@ -3081,6 +3088,15 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Bravebook.">
     Connecting to your phone
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
+    Set a PIN or password to continue
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
+    Protect your phone's data when this Bravebook wakes from sleep.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog containing the smart lock will log in when the phone is nearby.">
+    Smart lock will automatically log you in when your phone is nearby.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
     Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
@@ -4089,6 +4105,34 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DISABLE_BUTTON_LABEL" desc="The label of the confirmation button to disable data access protection">
     Disable
   </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Do not translate (string not final). Text on the privacy page that opens up the smart privacy section.">
+    Smart privacy protections
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SUBTEXT" desc="Do not translate (string not final). The sub-label describing the purpose of the smart privacy section.">
+    Smart display lock and detect if others peeking from behind
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="Do not translate (string not final). The text explaining to the user the manner in which their presence is sensed and data usage policy.">
+    This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_TITLE" desc="Do not translate (string not final). The name of the smart screen lock feature shown as the label of a toggle in the smart privacy subpage.">
+    Smart screen lock
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of smart screen locking.">
+    Screen locks automatically if you walk off, and won't turn off if you're in front of it
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Do not translate (string not final). Text in the smart privacy section which is the subheader for snooping protection options.">
+    Snooping protection
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of snooping protection.">
+    Notify you or temporary dim your screen when someone is snooping from behind
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting an eye icon when a snooper is detected.">
+    Show me an eye icon in the status area
+  </message>
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting screen dim when a snooper is detected.">
+    Temporary dim screen
+  </message>
+
 
   <!-- On Startup (OS settings) -->
   <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">

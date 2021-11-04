@@ -508,11 +508,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <!-- Print Preview -->
-      <message name="IDS_PRINT_PREVIEW_NO_PLUGIN" desc="Message to display when the PDF viewer is missing.">
-        Brave cannot show the print preview when the built-in PDF viewer is missing.
-      </message>
-
       <!-- Download Shelf Items -->
       <message name="IDS_DOWNLOAD_STATUS_CRX_INSTALL_RUNNING" desc="Message shown when a CRX has been downloaded and is being unpacked.">
         Adding to Brave...
@@ -624,10 +619,7 @@ Brave is unable to recover your settings.
         <message name="IDS_ABOUT" desc="In Title Case: The text label of the About Brave menu item">
           About &amp;Brave
         </message>
-        <message name="IDS_UPDATE_NOW" desc="In Title Case: The text label of the Update Brave Now menu item">
-          Update &amp;Brave
-        </message>
-        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="In Title Case: The text label of the relaunch to update Brave menu item">
           Relaunch to Update &amp;Brave
         </message>
       </if>
@@ -635,10 +627,7 @@ Brave is unable to recover your settings.
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
           About &amp;Brave
         </message>
-        <message name="IDS_UPDATE_NOW" desc="The text label of the Update Brave Now menu item">
-          Update &amp;Brave
-        </message>
-        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Brave menu item, when relaunch to update experiment is enabled">
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update Brave menu item">
           Relaunch to update &amp;Brave
         </message>
       </if>
@@ -646,10 +635,7 @@ Brave is unable to recover your settings.
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
           About &amp;Brave
         </message>
-        <message name="IDS_UPDATE_NOW" desc="The text label of the Update Chrome OS Now menu item">
-          Update &amp;Chrome OS
-        </message>
-        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the Update Chrome OS menu item, when relaunch to update experiment is enabled">
+        <message name="IDS_RELAUNCH_TO_UPDATE" desc="The text label of the relaunch to update Chrome OS menu item">
           Relaunch to update &amp;Chrome OS
         </message>
       </if>
