@@ -40,6 +40,8 @@ class TestBraveWalletServiceObserver
   void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
   void OnDefaultBaseCryptocurrencyChanged(
       const std::string& cryptocurrency) override {}
+  void OnNetworkListChanged(
+      std::vector<mojom::EthereumChainPtr> networks) override {}
 
   void OnActiveOriginChanged(const std::string& origin) override {
     active_origin_ = origin;

@@ -82,6 +82,12 @@ class TestBraveWalletServiceObserver
     defaultBaseCryptocurrencyChangedFired_ = true;
   }
 
+  void OnNetworkListChanged(
+      std::vector<mojom::EthereumChainPtr> networks) override {
+    networks_ = std::move(networks);
+    networkListChangedFired_ = true;
+  }
+
   mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
   bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }
   std::string GetDefaultBaseCurrency() { return currency_; }
@@ -92,6 +98,8 @@ class TestBraveWalletServiceObserver
   bool DefaultBaseCryptocurrencyChangedFired() {
     return defaultBaseCryptocurrencyChangedFired_;
   }
+  bool OnNetworkListChangedFired() { return networkListChangedFired_; }
+  std::vector<mojom::EthereumChainPtr>* Networks() { return &networks_; }
 
   mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
   GetReceiver() {
@@ -102,6 +110,7 @@ class TestBraveWalletServiceObserver
     defaultWalletChangedFired_ = false;
     defaultBaseCurrencyChangedFired_ = false;
     defaultBaseCryptocurrencyChangedFired_ = false;
+    networkListChangedFired_ = false;
   }
 
  private:
@@ -110,8 +119,10 @@ class TestBraveWalletServiceObserver
   bool defaultWalletChangedFired_ = false;
   bool defaultBaseCurrencyChangedFired_ = false;
   bool defaultBaseCryptocurrencyChangedFired_ = false;
+  bool networkListChangedFired_ = false;
   std::string currency_;
   std::string cryptocurrency_;
+  std::vector<mojom::EthereumChainPtr> networks_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
 };
@@ -906,6 +917,39 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(GetEthToken(), tokens[0]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
+  std::vector<mojom::EthereumChainPtr> expected_networks;
+  GetAllChains(GetPrefs(), &expected_networks);
+  mojom::EthereumChain chain(
+      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+
+  AddCustomNetwork(GetPrefs(), chain.Clone());
+  expected_networks.push_back(chain.Clone());
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer_->OnNetworkListChangedFired());
+  EXPECT_EQ(expected_networks, *observer_->Networks());
+
+  // Remove network.
+  observer_->Reset();
+  {
+    ListPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
+    base::ListValue* list = update.Get();
+    list->EraseListValueIf([&](const base::Value& v) {
+      auto* chain_id_value = v.FindStringKey("chainId");
+      if (!chain_id_value)
+        return false;
+      return *chain_id_value == "0x5566";
+    });
+  }
+  expected_networks.pop_back();
+
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer_->OnNetworkListChangedFired());
+  EXPECT_EQ(expected_networks, *observer_->Networks());
 }
 
 TEST_F(BraveWalletServiceUnitTest,
