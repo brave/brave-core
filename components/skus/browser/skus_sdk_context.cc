@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/logging.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/skus/browser/brave-rewards-cxx/src/wrapper.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -26,9 +27,39 @@ void OnScheduleWakeup(
   done(std::move(ctx));
 }
 
+logging::LogSeverity getLogSeverity(brave_rewards::TracingLevel level) {
+  switch (level) {
+    case brave_rewards::TracingLevel::Trace:
+      return -2;
+    case brave_rewards::TracingLevel::Debug:
+      return logging::LOGGING_VERBOSE;
+    case brave_rewards::TracingLevel::Info:
+      return logging::LOGGING_INFO;
+    case brave_rewards::TracingLevel::Warn:
+      return logging::LOGGING_WARNING;
+    case brave_rewards::TracingLevel::Error:
+      return logging::LOGGING_ERROR;
+  }
+  return logging::LOGGING_INFO;
+}
+
 }  // namespace
 
 namespace brave_rewards {
+
+void shim_logMessage(rust::cxxbridge1::Str file,
+                     uint32_t line,
+                     brave_rewards::TracingLevel level,
+                     rust::cxxbridge1::Str message) {
+  const logging::LogSeverity severity = getLogSeverity(level);
+  const std::string file_str = static_cast<std::string>(file);
+  const int vlog_level =
+      ::logging::GetVlogLevelHelper(file_str.c_str(), file_str.length() + 1);
+  if (severity <= vlog_level) {
+    logging::LogMessage(file_str.c_str(), line, severity).stream()
+        << static_cast<std::string>(message);
+  }
+}
 
 void shim_purge(brave_rewards::SkusSdkContext& ctx) {
   ctx.PurgeStore();
