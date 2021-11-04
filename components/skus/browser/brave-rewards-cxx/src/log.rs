@@ -13,6 +13,7 @@ impl CppFormatter {
         CppFormatter(
             tracing_subscriber::fmt::format()
                 .without_time()
+                .with_ansi(false)
                 .with_level(false)
                 .pretty(),
         )
@@ -39,7 +40,7 @@ where
         let file = event.metadata().file().unwrap_or("lib.rs");
         let line = event.metadata().line().unwrap_or(0);
 
-        ffi::shim_logMessage(file, line, level.into(), &buf);
+        ffi::shim_logMessage(file, line, level.into(), buf.trim_end());
 
         res
     }
