@@ -62,9 +62,7 @@ impl NativeClient {
 
                 let _ = context.tx.send(resp);
 
-                if let Ok(mut pool) = context.client.pool.try_borrow_mut() {
-                    pool.run_until_stalled();
-                }
+                context.client.try_run_until_stalled();
             },
             context,
         );
@@ -107,9 +105,7 @@ impl HTTPClient for NativeClient {
             delay_ms,
             |context| {
                 debug!("woke up!");
-                if let Ok(mut pool) = context.client.pool.try_borrow_mut() {
-                    pool.run_until_stalled();
-                }
+                context.client.try_run_until_stalled();
             },
             Box::new(WakeupContext {
                 client: self.clone(),
