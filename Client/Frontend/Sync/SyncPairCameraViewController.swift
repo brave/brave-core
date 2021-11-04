@@ -44,12 +44,8 @@ class SyncPairCameraViewController: SyncViewController {
         cameraView.layer.cornerRadius = 4
         cameraView.layer.cornerCurve = .continuous
         cameraView.layer.masksToBounds = true
-        cameraView.scanCallback = { data in
-            
-            if !DeviceInfo.hasConnectivity() {
-                self.present(SyncAlerts.noConnection, animated: true)
-                return
-            }
+        cameraView.scanCallback = { [weak self] data in
+            guard let self = self else { return }
             
             // TODO: Functional, but needs some cleanup
             struct Scanner { static var lock = false }
@@ -60,27 +56,47 @@ class SyncPairCameraViewController: SyncViewController {
             }
             
             Scanner.lock = true
-            self.cameraView.cameraOverlaySucess()
-            // Freezing the camera frame after QR has been scanned.
-            self.cameraView.captureSession?.stopRunning()
             
-            // Vibrate.
-            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-
-            // Forced timeout
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
-                Scanner.lock = false
-                self.cameraView.cameraOverlayError()
+            let alert = UIAlertController(title: Strings.syncJoinChainWarningTitle,
+                                          message: Strings.syncJoinChainCameraWarning,
+                                          preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: Strings.yes, style: .default, handler: { _ in
+                if !DeviceInfo.hasConnectivity() {
+                    self.present(SyncAlerts.noConnection, animated: true)
+                    return
+                }
+                self.cameraView.cameraOverlaySucess()
+                // Freezing the camera frame after QR has been scanned.
+                self.cameraView.captureSession?.stopRunning()
+                
+                // Vibrate.
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                
+                // Forced timeout
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
+                    Scanner.lock = false
+                    self.cameraView.cameraOverlayError()
+                })
+                
+                // If multiple calls get in here due to race conditions it isn't a big deal
+                
+                let codeWords = BraveSyncAPI.shared.syncCode(fromHexSeed: data)
+                if codeWords.isEmpty {
+                    self.cameraView.cameraOverlayError()
+                } else {
+                    self.syncHandler?(codeWords)
+                }
             })
             
-            // If multiple calls get in here due to race conditions it isn't a big deal
-            
-            let codeWords = BraveSyncAPI.shared.syncCode(fromHexSeed: data)
-            if codeWords.isEmpty {
-                self.cameraView.cameraOverlayError()
-            } else {
-                self.syncHandler?(codeWords)
+            let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel) { _ in
+                Scanner.lock = false
             }
+            
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            
+            self.present(alert, animated: true)
         }
 
         stackView.addArrangedSubview(cameraView)
