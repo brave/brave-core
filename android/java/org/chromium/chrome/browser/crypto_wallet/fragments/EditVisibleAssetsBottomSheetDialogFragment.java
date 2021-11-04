@@ -196,8 +196,10 @@ public class EditVisibleAssetsBottomSheetDialogFragment
                 assert mChainId != null && !mChainId.isEmpty();
 
                 braveWalletService.getUserAssets(mChainId, (userAssets) -> {
-                    ercTokenRegistry.getAllTokens(
-                            tokens -> { setUpAssetsList(view, tokens, userAssets); });
+                    ercTokenRegistry.getAllTokens(tokens -> {
+                        tokens = Utils.fixupTokensRegistry(tokens, mChainId);
+                        setUpAssetsList(view, tokens, userAssets);
+                    });
                 });
             } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_ASSETS_LIST) {
@@ -210,16 +212,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         }
     }
 
-    private ErcToken createEthereumErcToken() {
-        ErcToken eth = new ErcToken();
-        eth.name = "Ethereum";
-        eth.symbol = "ETH";
-        eth.contractAddress = "";
-        eth.logo = "eth.png";
-        eth.decimals = 18;
-        return eth;
-    }
-
     private void setUpAssetsList(View view, ErcToken[] tokens, ErcToken[] userSelectedTokens) {
         HashSet<String> selectedTokensSymbols = new HashSet<String>();
         for (ErcToken userSelectedToken : userSelectedTokens) {
@@ -230,7 +222,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         // Add ETH as a first item always
-        ErcToken eth = createEthereumErcToken();
+        ErcToken eth = Utils.createEthereumErcToken();
         WalletListItemModel itemModelEth =
                 new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
         itemModelEth.setIsUserSelected(

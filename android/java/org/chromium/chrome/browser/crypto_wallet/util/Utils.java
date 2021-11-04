@@ -38,6 +38,7 @@ import org.chromium.base.Log;
 import org.chromium.base.Predicate;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
@@ -703,5 +704,23 @@ public class Utils {
                 assert false;
                 return "N/A";
         }
+    }
+
+    public static ErcToken createEthereumErcToken() {
+        ErcToken eth = new ErcToken();
+        eth.name = "Ethereum";
+        eth.symbol = "ETH";
+        eth.contractAddress = "";
+        eth.logo = "eth.png";
+        eth.decimals = 18;
+        return eth;
+    }
+
+    public static ErcToken[] fixupTokensRegistry(ErcToken[] tokens, String chainId) {
+        for (ErcToken token : tokens) {
+            token.contractAddress =
+                    getContractAddress(chainId, token.symbol, token.contractAddress);
+        }
+        return tokens;
     }
 }
