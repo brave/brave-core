@@ -14,7 +14,7 @@ export type InitialData = {
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
   torTabData: torTabDataAPI.TorTabData
-  wallpaperData: NewTab.Wallpaper
+  wallpaperData?: NewTab.Wallpaper
   braveTalkSupported: boolean
   geminiSupported: boolean
   binanceSupported: boolean
