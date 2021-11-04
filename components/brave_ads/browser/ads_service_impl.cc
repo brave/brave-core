@@ -120,6 +120,8 @@ namespace brave_ads {
 
 namespace {
 
+const base::Feature kAdServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
+
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
@@ -540,9 +542,6 @@ bool AdsServiceImpl::ShouldStart() const {
 int64_t AdsServiceImpl::GetAdsPerHour() const {
   int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
-    const base::Feature kAdServing{"AdServing",
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
-
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kAdServing, "default_ad_notifications_per_hour",
         ads::kDefaultAdNotificationsPerHour);
