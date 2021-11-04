@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//testing/test.gni")
 import("//tools/grit/preprocess_if_expr.gni")
@@ -8,7 +7,6 @@ preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("common") {
-  public_deps = [ "buildflags" ]
   sources = [
     "eth_request_helper.cc",
     "eth_request_helper.h",
@@ -54,19 +52,17 @@ mojom("mojom") {
 
 source_set("unit_tests") {
   testonly = true
-  if (brave_wallet_enabled) {
-    sources = [
-      "eth_request_helper_unittest.cc",
-      "hex_utils_unittest.cc",
-      "value_conversion_utils_unittest.cc",
-    ]
+  sources = [
+    "eth_request_helper_unittest.cc",
+    "hex_utils_unittest.cc",
+    "value_conversion_utils_unittest.cc",
+  ]
 
-    deps = [
-      ":common",
-      ":mojom",
-      "//base/test:test_support",
-      "//testing/gtest",
-      "//url",
-    ]
-  }  # if (brave_wallet_enabled)
+  deps = [
+    ":common",
+    ":mojom",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
 }  # source_set("brave_wallet_common_unit_tests")

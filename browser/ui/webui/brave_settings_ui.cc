@@ -17,9 +17,10 @@
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -42,16 +43,8 @@
 #include "brave/components/speedreader/features.h"
 #endif
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/components/brave_wallet/common/features.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
-#endif
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -66,12 +59,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
 #if BUILDFLAG(ENABLE_SPARKLE)
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());
-#endif
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
 #endif
 }
 
@@ -110,10 +101,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
 #endif
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
-#endif
 }

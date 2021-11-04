@@ -11,7 +11,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -158,20 +157,20 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 }
 
 void ShowWalletBubble(Browser* browser) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
+#if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CreateWalletBubble();
 #endif
 }
 
 void ShowApproveWalletBubble(Browser* browser) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
+#if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())
       ->CreateApproveWalletBubble();
 #endif
 }
 
 void CloseWalletBubble(Browser* browser) {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED) && defined(TOOLKIT_VIEWS)
+#if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
 #endif
 }

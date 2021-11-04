@@ -1,4 +1,3 @@
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -17,15 +16,9 @@ source_set("renderer") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search/renderer",
     "//brave/components/brave_shields/common",
-    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/brave_wallet/renderer",
     "//brave/components/cosmetic_filters/renderer",
+    "//brave/renderer/brave_wallet/",
     "//v8",
   ]
-
-  if (brave_wallet_enabled) {
-    deps += [
-      "//brave/components/brave_wallet/renderer",
-      "//brave/renderer/brave_wallet/",
-    ]
-  }
 }

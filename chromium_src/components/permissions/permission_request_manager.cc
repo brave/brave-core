@@ -5,15 +5,9 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
-#endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
-
 #include "../../../../components/permissions/permission_request_manager.cc"
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 namespace permissions {
 
 bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
@@ -77,4 +71,3 @@ void PermissionRequestManager::AcceptDenyCancel(
 }
 
 }  // namespace permissions
-#endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)

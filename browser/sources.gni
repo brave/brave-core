@@ -35,7 +35,6 @@ import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
@@ -96,6 +95,9 @@ brave_chrome_browser_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
+  "//brave/browser/brave_wallet",
+  "//brave/browser/brave_wallet:brave_wallet_delegate",
+  "//brave/browser/brave_wallet:tab_helper",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
   "//brave/browser/gcm_driver",
@@ -127,7 +129,9 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
   "//brave/components/brave_vpn/buildflags",
-  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/brave_wallet/browser",
+  "//brave/components/brave_wallet/common",
+  "//brave/components/brave_wallet/common:mojom",
   "//brave/components/brave_wayback_machine:buildflags",
   "//brave/components/brave_webtorrent/browser/buildflags",
   "//brave/components/cosmetic_filters/browser",
@@ -209,17 +213,6 @@ if (enable_sparkle) {
   ]
 }
 
-if (brave_wallet_enabled) {
-  brave_chrome_browser_deps += [
-    "//brave/browser/brave_wallet",
-    "//brave/browser/brave_wallet:brave_wallet_delegate",
-    "//brave/browser/brave_wallet:tab_helper",
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:mojom",
-  ]
-}
-
 if (enable_brave_vpn) {
   brave_chrome_browser_deps += [ "//brave/components/brave_vpn" ]
 }
@@ -236,9 +229,7 @@ if (is_android) {
     "//brave/browser/sync/brave_sync_devices_android.h",
   ]
 
-  if (brave_wallet_enabled) {
-    brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
-  }
+  brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",

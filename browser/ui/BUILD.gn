@@ -1,7 +1,6 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/buildflags/buildflags.gni")
-import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/decentralized_dns/buildflags/buildflags.gni")
 import("//brave/components/ftx/browser/buildflags/buildflags.gni")
@@ -115,16 +114,11 @@ source_set("ui") {
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_sync_handler.cc",
       "webui/settings/brave_sync_handler.h",
+      "webui/settings/brave_wallet_handler.cc",
+      "webui/settings/brave_wallet_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
     ]
-
-    if (brave_wallet_enabled) {
-      sources += [
-        "webui/settings/brave_wallet_handler.cc",
-        "webui/settings/brave_wallet_handler.h",
-      ]
-    }
 
     if (is_mac) {
       sources += [ "webui/settings/brave_import_data_handler_mac.mm" ]
@@ -266,7 +260,6 @@ source_set("ui") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_vpn/buildflags",
-    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/crypto_dot_com/browser/buildflags:buildflags",
@@ -538,7 +531,7 @@ source_set("ui") {
     deps += [ "//brave/components/tor/resources:internals_generated_resources" ]
   }
 
-  if (brave_wallet_enabled && !is_android && !is_ios) {
+  if (!is_android && !is_ios) {
     sources += [
       "views/permission_bubble/ethereum_permission_prompt_impl.cc",
       "views/permission_bubble/ethereum_permission_prompt_impl.h",

@@ -11,7 +11,6 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -20,11 +19,8 @@
 #include "third_party/blink/public/platform/web_runtime_features.h"
 #include "third_party/blink/public/web/modules/service_worker/web_service_worker_context_proxy.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
-#endif
 
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
@@ -68,13 +64,11 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature)) {
     new brave_wallet::BraveWalletRenderFrameObserver(
         render_frame, BraveRenderThreadObserver::GetDynamicParams());
   }
-#endif
 
   if (brave_search::IsDefaultAPIEnabled()) {
     new brave_search::BraveSearchRenderFrameObserver(

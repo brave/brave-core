@@ -10,8 +10,8 @@
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -51,10 +51,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION) || \
     BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 #include "brave/browser/translate/brave_translate_utils.h"
-#endif
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
 #endif
 
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
@@ -309,21 +305,13 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 WalletButton* BraveBrowserView::GetWalletButton() {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
-#else
-  return nullptr;
-#endif
 }
 
 views::View* BraveBrowserView::GetWalletButtonAnchorView() {
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   return static_cast<BraveToolbarView*>(toolbar())
       ->wallet_button()
       ->GetAsAnchorView();
-#else
-  return nullptr;
-#endif
 }
 
 void BraveBrowserView::CreateWalletBubble() {
