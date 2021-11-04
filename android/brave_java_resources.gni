@@ -599,6 +599,7 @@ brave_java_resources = [
   "java/res/drawable/ic_crypto_wallets.xml",
   "java/res/drawable/ic_custom_tabs.xml",
   "java/res/drawable/ic_discount.xml",
+  "java/res/drawable/ic_down_icon.xml",
   "java/res/drawable/ic_downloads.xml",
   "java/res/drawable/ic_edit.xml",
   "java/res/drawable/ic_embellishments.xml",

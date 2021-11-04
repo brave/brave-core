@@ -239,7 +239,7 @@
             android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
                 android:textColor="@android:color/white"
                 style="?android:attr/borderlessButtonStyle"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,7 +275,7 @@
                 android:textColor="@android:color/white"
                 style="?android:attr/borderlessButtonStyle"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_swap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

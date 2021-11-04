@@ -96,7 +96,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/reject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
             android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/approve"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
