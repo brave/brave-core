@@ -127,7 +127,8 @@ platform :ios do
         provisioningProfiles: { 
           "com.brave.ios.enterprise.Browser" => "BraveEnt",
           "com.brave.ios.enterprise.Browser.ShareExtension" => "Ent-ShareTo",
-          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents"
+          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents",
+          "com.brave.ios.enterprise.Browser.BraveWidgetsExtension" => "BraveEntWidgets"
         },
         manageAppVersionAndBuildNumber: false
       },
