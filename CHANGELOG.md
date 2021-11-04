@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.32.1](https://github.com/brave/brave-ios/releases/tag/v1.32.1)
+
+- Added CarPlay support for playlist. ([#3673](https://github.com/brave/brave-ios/3673))
+- Added a new section in history for entries older than last month. ([#4040](https://github.com/brave/brave-ios/4040))
+- Added support for sharing playlist items. ([#4191](https://github.com/brave/brave-ios/4191))
+- Added an option to disable "Add to playlist" button in toolbar.  ([#4234](https://github.com/brave/brave-ios/4234))
+- Implemented 'Bookmark all tabs' feature. ([#4132](https://github.com/brave/brave-ios/4132))
+- Updated default browser notification to display device's iOS version. ([#3899](https://github.com/brave/brave-ios/3899))
+- [Security] Fixed address bar spoofing via interstitial content as reported on HackerOne by dogeshark. ([#4396](https://github.com/brave/brave-ios/4396))
+- Fixed app freeze when Rewards are enabled. ([#3941](https://github.com/brave/brave-ios/3941))
+- Fixed favorites title when there are no favorites. ([#4128](https://github.com/brave/brave-ios/4128))
+- Fixed black screen on tabs when launching Brave app. ([#4190](https://github.com/brave/brave-ios/4190))
+
 ## [1.32](https://github.com/brave/brave-ios/releases/tag/v1.32)
 
 - Updated default search engine to "Brave Search" for selected regions on new install. ([#4221](https://github.com/brave/brave-ios/issues/4221))
