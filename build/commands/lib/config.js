@@ -30,10 +30,11 @@ const run = (cmd, args = []) => {
 }
 
 // this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
-var packageConfig = function (key) {
-  let packages = { config: {} }
-  if (fs.existsSync(path.join(rootDir, 'package.json'))) {
-    packages = require(path.relative(__dirname, path.join(rootDir, 'package.json')))
+var packageConfig = function(key, sourceDir = rootDir){
+  let packages = { config: {}}
+  const configAbsolutePath = path.join(sourceDir, 'package.json')
+  if (fs.existsSync(configAbsolutePath)) {
+    packages = require(path.relative(__dirname, configAbsolutePath))
   }
 
   // packages.config should include version string.
@@ -47,13 +48,17 @@ var packageConfig = function (key) {
   return obj
 }
 
-const getNPMConfig = (key) => {
+var packageConfigBraveCore = function(key) {
+  return packageConfig(key, path.join(rootDir, 'src', 'brave'))
+}
+
+const getNPMConfig = (key, fallbackToBraveCoreOnly) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key)
+  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key) || packageConfigBraveCore(key)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
