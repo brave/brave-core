@@ -72,24 +72,46 @@ class TestBraveWalletServiceObserver
     defaultWalletChangedFired_ = true;
   }
   void OnActiveOriginChanged(const std::string& origin) override {}
-  void OnDefaultBaseCurrencyChanged(const std::string& currency override {}
+  void OnDefaultBaseCurrencyChanged(const std::string& currency) override {
+    currency_ = currency;
+    defaultBaseCurrencyChangedFired_ = true;
+  }
   void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency override {}
+      const std::string& cryptocurrency) override {
+    cryptocurrency_ = cryptocurrency;
+    defaultBaseCryptocurrencyChangedFired_ = true;
+  }
 
   mojom::DefaultWallet GetDefaultWallet() { return default_wallet_; }
   bool DefaultWalletChangedFired() { return defaultWalletChangedFired_; }
+  std::string GetDefaultBaseCurrency() { return currency_; }
+  std::string GetDefaultBaseCryptocurrency() { return cryptocurrency_; }
+  bool DefaultBaseCurrencyChangedFired() {
+    return defaultBaseCurrencyChangedFired_;
+  }
+  bool DefaultBaseCryptocurrencyChangedFired() {
+    return defaultBaseCryptocurrencyChangedFired_;
+  }
 
   mojo::PendingRemote<brave_wallet::mojom::BraveWalletServiceObserver>
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
 
-  void Reset() { defaultWalletChangedFired_ = false; }
+  void Reset() {
+    defaultWalletChangedFired_ = false;
+    defaultBaseCurrencyChangedFired_ = false;
+    defaultBaseCryptocurrencyChangedFired_ = false;
+  }
 
  private:
   mojom::DefaultWallet default_wallet_ =
       mojom::DefaultWallet::BraveWalletPreferExtension;
   bool defaultWalletChangedFired_ = false;
+  bool defaultBaseCurrencyChangedFired_ = false;
+  bool defaultBaseCryptocurrencyChangedFired_ = false;
+  std::string currency_;
+  std::string cryptocurrency_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
 };
@@ -260,6 +282,34 @@ class BraveWalletServiceUnitTest : public testing::Test {
     observer_->Reset();
   }
 
+  void SetDefaultBaseCurrency(const std::string& currency) {
+    auto old_currency = observer_->GetDefaultBaseCurrency();
+    EXPECT_FALSE(observer_->DefaultBaseCurrencyChangedFired());
+    service_->SetDefaultBaseCurrency(currency);
+    base::RunLoop().RunUntilIdle();
+    if (old_currency != currency) {
+      EXPECT_TRUE(observer_->DefaultBaseCurrencyChangedFired());
+    } else {
+      EXPECT_FALSE(observer_->DefaultBaseCurrencyChangedFired());
+    }
+    EXPECT_EQ(currency, observer_->GetDefaultBaseCurrency());
+    observer_->Reset();
+  }
+
+  void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) {
+    auto old_cryptocurrency = observer_->GetDefaultBaseCryptocurrency();
+    EXPECT_FALSE(observer_->DefaultBaseCryptocurrencyChangedFired());
+    service_->SetDefaultBaseCryptocurrency(cryptocurrency);
+    base::RunLoop().RunUntilIdle();
+    if (old_cryptocurrency != cryptocurrency) {
+      EXPECT_TRUE(observer_->DefaultBaseCryptocurrencyChangedFired());
+    } else {
+      EXPECT_FALSE(observer_->DefaultBaseCryptocurrencyChangedFired());
+    }
+    EXPECT_EQ(cryptocurrency, observer_->GetDefaultBaseCryptocurrency());
+    observer_->Reset();
+  }
+
   mojom::DefaultWallet GetDefaultWallet() {
     base::RunLoop run_loop;
     mojom::DefaultWallet default_wallet;
@@ -270,6 +320,30 @@ class BraveWalletServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return default_wallet;
+  }
+
+  std::string GetDefaultBaseCurrency() {
+    base::RunLoop run_loop;
+    std::string default_currency;
+    service_->GetDefaultBaseCurrency(
+        base::BindLambdaForTesting([&](const std::string& v) {
+          default_currency = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return default_currency;
+  }
+
+  std::string GetDefaultBaseCryptocurrency() {
+    base::RunLoop run_loop;
+    std::string default_cryptocurrency;
+    service_->GetDefaultBaseCryptocurrency(
+        base::BindLambdaForTesting([&](const std::string& v) {
+          default_cryptocurrency = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return default_cryptocurrency;
   }
 
   void SimulateOnGetImportInfo(const std::string& new_password,
@@ -760,6 +834,26 @@ TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultWallet) {
   SetDefaultWallet(mojom::DefaultWallet::BraveWalletPreferExtension);
   EXPECT_EQ(GetDefaultWallet(),
             mojom::DefaultWallet::BraveWalletPreferExtension);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCurrency) {
+  SetDefaultBaseCurrency("CAD");
+  EXPECT_EQ(GetDefaultBaseCurrency(), "CAD");
+
+  // Setting the same value twice is ok
+  // SetDefaultBaseCurrency will check that the observer is not fired.
+  SetDefaultBaseCurrency("CAD");
+  EXPECT_EQ(GetDefaultBaseCurrency(), "CAD");
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetAndSetDefaultBaseCryptocurrency) {
+  SetDefaultBaseCryptocurrency("ETH");
+  EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
+
+  // Setting the same value twice is ok
+  // SetDefaultBaseCryptocurrency will check that the observer is not fired.
+  SetDefaultBaseCryptocurrency("ETH");
+  EXPECT_EQ(GetDefaultBaseCryptocurrency(), "ETH");
 }
 
 TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
