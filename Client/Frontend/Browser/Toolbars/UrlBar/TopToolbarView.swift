@@ -603,7 +603,6 @@ extension TopToolbarView: TabLocationViewDelegate {
     
     func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
         delegate?.topToolbarDidLongPressReloadButton(self, from: button)
-        delegate?.topToolbarDidLongPressLocation(self)
     }
 
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView) {
