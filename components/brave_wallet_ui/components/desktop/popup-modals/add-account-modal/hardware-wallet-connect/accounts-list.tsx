@@ -109,7 +109,7 @@ export default function (props: Props) {
       <HardwareWalletAccountsList>
         {filteredAccountList?.length === 0 ? (
           <LoadingWrapper>
-            <LoadIcon />
+            <LoadIcon size='big' />
           </LoadingWrapper>
         ) : (
           <>
