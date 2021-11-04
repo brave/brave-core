@@ -16,6 +16,8 @@ import {
   SetUserAssetVisiblePayloadType,
   SwapParamsPayloadType,
   UnlockWalletPayloadType,
+  // DefaultBaseCurrencyChanged,
+  // DefaultBaseCryptocurrencyChanged,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType,
   TransactionStatusChanged
@@ -149,6 +151,9 @@ handler.on(WalletActions.selectedAccountChanged.getType(), async (store) => {
 handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
+
+// handler.on(WalletActions.defaultBaseCurrencyChanged.getType(), async (store, payload: DefaultBaseCurrencyChanged) => {})
+// handler.on(WalletActions.defaultBaseCryptocurrencyChanged.getType(), async (store, payload: DefaultBaseCryptocurrencyChanged) => {})
 
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
