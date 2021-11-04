@@ -288,7 +288,7 @@ function ConfirmTransactionPanel (props: Props) {
           }
           <TransactionAmmountBig>
             {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
-             transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
+              transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
               ? transactionDetails.erc721TokenInfo?.name + ' ' + transactionDetails.erc721TokenId
               : transactionDetails.value + ' ' + transactionDetails.symbol
             }
@@ -394,8 +394,7 @@ function ConfirmTransactionPanel (props: Props) {
           buttonType='confirm'
           text={getLocale('braveWalletAllowSpendConfirmButton')}
           onSubmit={onConfirm}
-          disabled={transactionDetails.insufficientFundsError}
-
+          disabled={parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError}
         />
       </ButtonRow>
     </StyledWrapper>
