@@ -247,7 +247,7 @@ export const _SignData = () => {
     <StyledExtensionWrapperLonger>
       <SignPanel
         signMessageData={signMessageDataPayload}
-        selectedAccount={accounts[0]}
+        accounts={accounts}
         selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onSign={onSign}
