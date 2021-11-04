@@ -9,6 +9,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +44,11 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragment {
     public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
@@ -56,6 +59,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     private boolean mApproved;
     private double mTotalPrice;
     private ApprovedTxObserver mApprovedTxObserver;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
 
     public static ApproveTxBottomSheetDialogFragment newInstance(
             TransactionInfo txInfo, String accountName) {
@@ -67,6 +72,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mAccountName = accountName;
         mRejected = false;
         mApproved = false;
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
@@ -195,7 +202,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             }
         });
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
-        icon.setImageBitmap(Blockies.createIcon(mTxInfo.fromAddress));
+        Utils.setBlockiesBitmapResource(mExecutor, mHandler, icon, mTxInfo.fromAddress, true);
 
         Button reject = view.findViewById(R.id.reject);
         reject.setOnClickListener(new View.OnClickListener() {

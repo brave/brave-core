@@ -25,8 +25,16 @@ public class Blockies {
             "#67D4B4", "#AFCE57", "#F0CB44", "#F28A29", "#FC798F", "#C1226E", "#FAB5EE", "#9677EE",
             "#5433B0"};
 
-    public static Bitmap createIcon(String address) {
-        seedrand(address.toLowerCase(Locale.getDefault()));
+    public static Bitmap createIcon(String address, boolean lowerCase) {
+        if (lowerCase) {
+            return createIcon(address.toLowerCase(Locale.getDefault()));
+        }
+
+        return createIcon(address);
+    }
+
+    private static Bitmap createIcon(String address) {
+        seedrand(address);
 
         String color = createColor();
         String bgColor = createColor();

@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,16 @@ import android.widget.TextView;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-    Context context;
-    String[] networkNames;
-    String[] networkShortNames;
-    LayoutInflater inflater;
+    private Context context;
+    private String[] networkNames;
+    private String[] networkShortNames;
+    private LayoutInflater inflater;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
 
     public NetworkSpinnerAdapter(
             Context applicationContext, String[] networkNames, String[] networkShortNames) {
@@ -31,6 +38,8 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         this.networkNames = networkNames;
         this.networkShortNames = networkShortNames;
         inflater = (LayoutInflater.from(applicationContext));
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public String getNameAtPosition(int position) {
@@ -74,6 +83,9 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         view = inflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
         name.setText(networkShortNames[i]);
+        ImageView networkPicture = view.findViewById(R.id.network_picture);
+        networkPicture.setVisibility(View.GONE);
+        name.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
 
         return view;
     }
@@ -83,6 +95,9 @@ public class NetworkSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
         view = inflater.inflate(R.layout.network_spinner_items, null);
         TextView name = (TextView) view.findViewById(R.id.network_name_text);
         name.setText(networkNames[i]);
+        ImageView networkPicture = view.findViewById(R.id.network_picture);
+        Utils.setBlockiesBitmapResource(
+                mExecutor, mHandler, networkPicture, networkNames[i], false);
 
         return view;
     }

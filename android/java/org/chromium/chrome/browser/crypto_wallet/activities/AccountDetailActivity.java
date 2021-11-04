@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,12 +24,13 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AccountDetailActivity
         extends AsyncInitializationActivity implements OnWalletListItemClick {
@@ -35,10 +38,15 @@ public class AccountDetailActivity
     private String mName;
     private boolean mIsImported;
     private TextView mAccountText;
+    private ExecutorService mExecutor;
+    private Handler mHandler;
+
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_detail);
 
+        mExecutor = Executors.newSingleThreadExecutor();
+        mHandler = new Handler(Looper.getMainLooper());
         if (getIntent() != null) {
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
@@ -51,7 +59,7 @@ public class AccountDetailActivity
         getSupportActionBar().setTitle("");
 
         ImageView accountPicture = findViewById(R.id.account_picture);
-        accountPicture.setImageBitmap(Blockies.createIcon(mAddress));
+        Utils.setBlockiesBitmapResource(mExecutor, mHandler, accountPicture, mAddress, true);
 
         mAccountText = findViewById(R.id.account_text);
         mAccountText.setText(mName);
