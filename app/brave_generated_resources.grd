@@ -1533,7 +1533,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         RPC URLs
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_URL_PLACEHOLDER" desc="The placeholder of the urls for the wallet network dialog">
-        Enter url
+        Enter URL
       </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_ICONS_TITLE" desc="The title of the icons urls for the wallet network dialog">
         Icon URLs
