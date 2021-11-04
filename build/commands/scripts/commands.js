@@ -58,6 +58,7 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
+  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .arguments('[build_config]')
   .action(gnCheck)
 
@@ -73,6 +74,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android SDK level for apk or aab  (classic, modern, mono)', 'classic')
   .option('--target_android_output_format <target_android_output_format>', 'target Android output format (apk, aab)')
+  .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .option('--android_override_version_name <android_override_version_name>', 'Android version number')
   .option('--mac_signing_identifier <id>', 'The identifier to use for signing')
   .option('--mac_signing_keychain <keychain>', 'The identifier to use for signing', 'login')
