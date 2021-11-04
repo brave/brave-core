@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
+#include <iomanip>
 #include "wrapper.h"
 
 using namespace std;
@@ -30,6 +32,35 @@ namespace brave_rewards {
     return nullptr;
   }
 
+void shim_logMessage(rust::cxxbridge1::Str file,
+              uint32_t line,
+              TracingLevel level,
+              rust::cxxbridge1::Str message) {
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::string path = std::string(file);
+    std::string base_filename = path.substr(path.find_last_of("/\\") + 1);
+
+    cout << "[";
+    cout << std::put_time(&tm, "%b %d, %Y %I:%M:%S.0 %p");
+    cout << ":";
+    if (level == TracingLevel::Trace) {
+      cout << "TRACE";
+    }
+    if (level == TracingLevel::Debug) {
+      cout << "DEBUG";
+    }
+    if (level == TracingLevel::Info) {
+      cout << "INFO";
+    }
+    if (level == TracingLevel::Warn) {
+      cout << "WARN";
+    }
+    if (level == TracingLevel::Error) {
+      cout << "ERROR";
+    }
+    cout<< ":" << base_filename << "(" << line << ")]" << message;
+}
 
 void shim_purge(brave_rewards::SkusSdkContext& ctx) {
     cout<<"shim_purge"<<"\n";
