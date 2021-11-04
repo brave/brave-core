@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,13 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class AccountSpinnerAdapter extends BaseAdapter {
     Context context;
-    int[] pictures;
+    Bitmap[] pictures;
     String[] accountNames;
     String[] accountTitles;
     LayoutInflater inflater;
 
-    public AccountSpinnerAdapter(Context applicationContext, int[] pictures, String[] accountNames,
-            String[] accountTitles) {
+    public AccountSpinnerAdapter(Context applicationContext, Bitmap[] pictures,
+            String[] accountNames, String[] accountTitles) {
         this.context = applicationContext;
         this.pictures = pictures;
         this.accountNames = accountNames;
@@ -49,12 +50,12 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         return "";
     }
 
-    public int getPictureAtPosition(int position) {
+    public Bitmap getPictureAtPosition(int position) {
         if (position < pictures.length) {
             return pictures[position];
         }
 
-        return -1;
+        return null;
     }
 
     @Override
@@ -83,7 +84,7 @@ public class AccountSpinnerAdapter extends BaseAdapter {
         ImageView icon = (ImageView) view.findViewById(R.id.account_picture);
         TextView name = (TextView) view.findViewById(R.id.account_name_text);
         TextView value = (TextView) view.findViewById(R.id.account_value_text);
-        icon.setImageResource(pictures[i]);
+        icon.setImageBitmap(pictures[i]);
         name.setText(accountNames[i]);
         value.setText(Utils.stripAccountAddress(accountTitles[i]));
 

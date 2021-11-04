@@ -26,6 +26,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -148,6 +149,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         if (mType != AdapterType.ACCOUNTS_LIST) {
             Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
                     walletListItemModel.getIcon(), holder.iconImg, null);
+        } else if (mType == AdapterType.ACCOUNTS_LIST) {
+            holder.iconImg.setImageBitmap(Blockies.createIcon(walletListItemModel.getSubTitle()));
         }
     }
 

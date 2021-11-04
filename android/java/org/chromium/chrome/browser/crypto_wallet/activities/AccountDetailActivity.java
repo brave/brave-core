@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 
@@ -47,6 +49,9 @@ public class AccountDetailActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
+
+        ImageView accountPicture = findViewById(R.id.account_picture);
+        accountPicture.setImageBitmap(Blockies.createIcon(mAddress));
 
         mAccountText = findViewById(R.id.account_text);
         mAccountText.setText(mName);
@@ -88,7 +93,7 @@ public class AccountDetailActivity
     private void setUpAssetList() {
         RecyclerView rvAssets = findViewById(R.id.rv_assets);
         WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         walletListItemModelList.add(new WalletListItemModel(R.drawable.ic_eth,
                 "Basic Attention Token", "BAT", "$10,810.03", "10,037.9028 BAT"));
