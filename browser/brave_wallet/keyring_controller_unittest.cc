@@ -159,6 +159,20 @@ class KeyringControllerUnitTest : public testing::Test {
     return success;
   }
 
+  static bool RemoveImportedAccount(KeyringController* controller,
+                                    const std::string& address) {
+    bool success;
+    base::RunLoop run_loop;
+    controller->RemoveImportedAccount(
+        "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
+        base::BindLambdaForTesting([&](bool v) {
+          success = v;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return success;
+  }
+
   static absl::optional<std::string> ImportAccount(
       KeyringController* controller,
       const std::string& name,
@@ -1857,12 +1871,24 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   EXPECT_TRUE(Unlock(&controller, "brave"));
   absl::optional<std::string> imported_account = ImportAccount(
       &controller, "Best Evil Son",
+      // 0xDc06aE500aD5ebc5972A0D8Ada4733006E905976
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5");
   ASSERT_TRUE(imported_account.has_value());
   EXPECT_TRUE(Lock(&controller));
   EXPECT_TRUE(SetSelectedAccount(&controller, &observer, *imported_account));
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(*imported_account, GetSelectedAccount(&controller));
+
+  // Removing the imported account resets to no selected account
+  observer.Reset();
+  EXPECT_TRUE(Unlock(&controller, "brave"));
+  EXPECT_TRUE(RemoveImportedAccount(
+      &controller, "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"));
+  EXPECT_TRUE(Lock(&controller));
+  EXPECT_EQ(absl::nullopt, GetSelectedAccount(&controller));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.SelectedAccountChangedFired());
+  observer.Reset();
 
   // Can set hardware account
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
@@ -1872,6 +1898,15 @@ TEST_F(KeyringControllerUnitTest, SetSelectedAccount) {
   AddHardwareAccount(&controller, std::move(new_accounts));
   EXPECT_TRUE(SetSelectedAccount(&controller, &observer, hardware_account));
   EXPECT_EQ(hardware_account, GetSelectedAccount(&controller));
+
+  // Removing a hardware account resets to no selected account
+  observer.Reset();
+  controller.RemoveHardwareAccount(
+      "0x1111111111111111111111111111111111111111");
+  EXPECT_EQ(absl::nullopt, GetSelectedAccount(&controller));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(observer.SelectedAccountChangedFired());
+  observer.Reset();
 }
 
 TEST_F(KeyringControllerUnitTest, AddAccountsWithDefaultName) {

@@ -718,6 +718,9 @@ void KeyringController::RemoveImportedAccount(
   RemoveImportedAccountForKeyring(prefs_, address, kDefaultKeyringId);
 
   NotifyAccountsChanged();
+  if (address == prefs_->GetString(kBraveWalletSelectedAccount)) {
+    prefs_->ClearPref(kBraveWalletSelectedAccount);
+  }
   std::move(callback).Run(true);
 }
 
@@ -904,6 +907,9 @@ void KeyringController::RemoveHardwareAccount(const std::string& address) {
       hardware_keyrings->RemoveKey(devices.first);
 
     NotifyAccountsChanged();
+    if (address == prefs_->GetString(kBraveWalletSelectedAccount)) {
+      prefs_->ClearPref(kBraveWalletSelectedAccount);
+    }
     return;
   }
 }
