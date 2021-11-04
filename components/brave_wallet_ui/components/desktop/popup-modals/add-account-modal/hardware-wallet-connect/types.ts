@@ -43,3 +43,8 @@ export interface HardwareWalletAccount {
   hardwareVendor: string
   deviceId: string
 }
+
+export interface ErrorMessage {
+  error: string
+  userHint: string
+}
