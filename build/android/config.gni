@@ -43,8 +43,10 @@ brave_chrome_java_srcjar_deps = [
   "//brave/browser/android/preferences:java_pref_names_srcjar",
 ]
 
-brave_chrome_app_java_resources_deps =
-    [ "//brave/build/android:android_brave_strings_grd" ]
+brave_chrome_app_java_resources_deps = [
+  "//brave/build/android:android_brave_strings_grd",
+  "//brave/build/android:brave_java_xml_preprocess_resources"
+]
 
 brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]
