@@ -7,6 +7,8 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_features_internal_names.h"
+#include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
+#include "brave/browser/ethereum_remote_client/features.h"
 #include "brave/common/brave_features.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -216,6 +218,12 @@ constexpr char kNativeBraveWalletName[] = "Enable Brave Wallet";
 constexpr char kNativeBraveWalletDescription[] =
     "Native cryptocurrency wallet support without the use of extensions";
 
+constexpr char kCryptoWalletsForNewInstallsName[] =
+    "Enable Crypto Wallets option in settings";
+constexpr char kCryptoWalletsForNewInstallsDescription[] =
+    "Crypto Wallets extension is deprecated but with this option it can still "
+    "be enabled in settings. If it was previously used, this flag is ignored.";
+
 constexpr char kUseDevUpdaterUrlName[] = "Use dev updater url";
 constexpr char kUseDevUpdaterUrlDescription[] =
     "Use the dev url for the component updater. "
@@ -301,6 +309,18 @@ constexpr char kFileSystemAccessAPIDescription[] =
      flag_descriptions::kNativeBraveWalletDescription,                       \
      kOsDesktop | flags_ui::kOsAndroid,                                      \
      FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},
+
+#if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
+#define CRYPTO_WALLETS_FEATURE_ENTRIES                                       \
+    {"ethereum_remote-client_new-installs",                                  \
+     flag_descriptions::kCryptoWalletsForNewInstallsName,                    \
+     flag_descriptions::kCryptoWalletsForNewInstallsDescription,             \
+     kOsDesktop,                                                             \
+     FEATURE_VALUE_TYPE(                                                     \
+       ethereum_remote_client::features::kCryptoWalletsForNewInstallsFeature)},
+#else
+#define CRYPTO_WALLETS_FEATURE_ENTRIES
+#endif
 
 #if BUILDFLAG(DECENTRALIZED_DNS_ENABLED)
 #define BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                           \
@@ -420,6 +440,7 @@ constexpr char kFileSystemAccessAPIDescription[] =
     BRAVE_DECENTRALIZED_DNS_FEATURE_ENTRIES                                 \
     BRAVE_IPFS_FEATURE_ENTRIES                                              \
     BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                     \
+    CRYPTO_WALLETS_FEATURE_ENTRIES                                          \
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     SIDEBAR_FEATURE_ENTRIES                                                 \
