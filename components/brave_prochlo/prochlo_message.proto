@@ -9,20 +9,7 @@ option optimize_for = LITE_RUNTIME;
 
 package brave_pyxis;
 
-message PyxisValue {
-  bytes ciphertext = 1;
-  bytes tag = 2;
-  bytes nonce = 3;
-  fixed64 metric_id = 4;
-
-  bytes client_public_key = 5;
-}
-
 message RawP3AValue {
   fixed64 metric_id = 1;
   bytes p3a_info = 2;
-}
-
-message PyxisMessage {
-  repeated PyxisValue pyxis_values = 1;
 }

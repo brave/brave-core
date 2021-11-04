@@ -15,8 +15,8 @@
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_prochlo/brave_prochlo_message.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
+#include "brave/components/p3a/p3a_message.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -64,10 +64,10 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   void MaybeOverrideSettingsFromCommandLine();
 
-  void InitPyxisMeta();
+  void InitMessageMeta();
 
   // Updates things that change over time: week of survey, etc.
-  void UpdatePyxisMeta();
+  void UpdateMessageMeta();
 
   void StartScheduledUpload();
 
@@ -105,7 +105,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   base::TimeDelta rotation_interval_;
   GURL upload_server_url_;
 
-  prochlo::MessageMetainfo pyxis_meta_;
+  MessageMetainfo message_meta_;
 
   // Components:
   std::unique_ptr<BraveP3ALogStore> log_store_;

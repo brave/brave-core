@@ -248,7 +248,7 @@ void BraveP3AService::Init(
           << ", upload_server_url_ = " << upload_server_url_.spec()
           << ", rotation_interval_ = " << rotation_interval_;
 
-  InitPyxisMeta();
+  InitMessageMeta();
 
   // Init log store.
   log_store_.reset(new BraveP3ALogStore(this, local_state_));
@@ -300,15 +300,9 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   // point when the actual histogram is not ready yet.
   const uint64_t histogram_name_hash = base::HashMetricName(histogram_name);
 
-  // TODO(iefremov): Restore when PROCHLO/PYXIS is ready.
-  //  brave_pyxis::PyxisMessage message;
-  //  prochlo::GenerateProchloMessage(histogram_name_hash, value, pyxis_meta_,
-  //                                  &message);
-
-  UpdatePyxisMeta();
+  UpdateMessageMeta();
   brave_pyxis::RawP3AValue message;
-  prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
-                              &message);
+  GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
   return message.SerializeAsString();
 }
 
@@ -354,35 +348,37 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   }
 }
 
-void BraveP3AService::InitPyxisMeta() {
-  pyxis_meta_.platform = brave_stats::GetPlatformIdentifier();
-  pyxis_meta_.channel = channel_;
-  pyxis_meta_.version =
+void BraveP3AService::InitMessageMeta() {
+  message_meta_.platform = brave_stats::GetPlatformIdentifier();
+  message_meta_.channel = channel_;
+  message_meta_.version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   if (!week_of_install_.empty()) {
-    pyxis_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install_);
+    message_meta_.date_of_install = brave_stats::GetYMDAsDate(week_of_install_);
   } else {
-    pyxis_meta_.date_of_install = base::Time::Now();
+    message_meta_.date_of_install = base::Time::Now();
   }
-  pyxis_meta_.woi = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_install);
+  message_meta_.woi =
+      brave_stats::GetIsoWeekNumber(message_meta_.date_of_install);
 
-  pyxis_meta_.country_code =
+  message_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
-  pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);
-  MaybeStripRefcodeAndCountry(&pyxis_meta_);
+  message_meta_.refcode = local_state_->GetString(kReferralPromoCode);
+  MaybeStripRefcodeAndCountry(&message_meta_);
 
-  UpdatePyxisMeta();
+  UpdateMessageMeta();
 
-  VLOG(2) << "Pyxis meta: " << pyxis_meta_.platform << " "
-          << pyxis_meta_.channel << " " << pyxis_meta_.version << " "
-          << pyxis_meta_.woi << " " << pyxis_meta_.wos << " "
-          << pyxis_meta_.country_code << " " << pyxis_meta_.refcode;
+  VLOG(2) << "Message meta: " << message_meta_.platform << " "
+          << message_meta_.channel << " " << message_meta_.version << " "
+          << message_meta_.woi << " " << message_meta_.wos << " "
+          << message_meta_.country_code << " " << message_meta_.refcode;
 }
 
-void BraveP3AService::UpdatePyxisMeta() {
-  pyxis_meta_.date_of_survey = base::Time::Now();
-  pyxis_meta_.wos = brave_stats::GetIsoWeekNumber(pyxis_meta_.date_of_survey);
+void BraveP3AService::UpdateMessageMeta() {
+  message_meta_.date_of_survey = base::Time::Now();
+  message_meta_.wos =
+      brave_stats::GetIsoWeekNumber(message_meta_.date_of_survey);
 }
 
 void BraveP3AService::StartScheduledUpload() {
