@@ -473,7 +473,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletLedgerValidationError",
      IDS_BRAVE_WALLET_LEDGER_VALIDATION_ERROR},
     {"braveWalletHardwareAccountNotFound",
-     IDS_BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR}};
+     IDS_BRAVE_WALLET_HARDWARE_ACCOUNT_NOT_FOUND_ERROR},
+    {"braveWalletCreateBridgeError",
+     IDS_BRAVE_WALLET_HARDWARE_CREATE_BRIDGE_ERROR},
+    {"braveWalletImportingAccountsError",
+     IDS_BRAVE_WALLET_HARDWARE_ACCOUNTS_IMPORT_ERROR}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";

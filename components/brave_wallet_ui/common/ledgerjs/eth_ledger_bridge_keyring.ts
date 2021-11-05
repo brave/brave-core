@@ -17,6 +17,7 @@ import {
 import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { getLocale } from '../../../common/locale'
+import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -56,7 +57,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     if (this.app) {
       const zeroPath = this._getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
       const address = await this._getAddress(zeroPath)
-      this.deviceId_ = await this._getDeviceId(address)
+      this.deviceId_ = await hardwareDeviceIdFromAddress(address)
     }
     return this.isUnlocked()
   }
@@ -97,15 +98,6 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   /* PRIVATE METHODS */
-  _getDeviceId = async (address: string) => {
-    const utf8 = new TextEncoder()
-    const msgBuffer = utf8.encode(address)
-    const hashBuffer = await Promise.resolve(crypto.subtle.digest('SHA-256', msgBuffer))
-    const hashArray = Array.from(new Uint8Array(hashBuffer))
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-    return hashHex
-  }
-
   _getPathForIndex = (index: number, scheme: string) => {
     if (scheme === LedgerDerivationPaths.LedgerLive) {
       return `m/44'/60'/${index}'/0/0`

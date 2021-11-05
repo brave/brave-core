@@ -121,4 +121,7 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_vpn_panel/brave_vpn_panel.grd": {
     "includes": [51000]
   },
+  "<(ROOT_GEN_DIR)/brave/web-ui-trezor_bridge/trezor_bridge.grd": {
+    "includes": [51250]
+  },
 }
