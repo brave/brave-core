@@ -1,0 +1,57 @@
+# Copyright 2021 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/android/rules.gni")
+import("//build/config/python.gni")
+
+template("brave_xml_preprocessor") {
+  forward_variables_from(invoker, [ "testonly" ])
+
+  _preprocess_target_name = "${target_name}__preprocess"
+
+  _xml_sources_path = "${target_gen_dir}/${target_name}.xml.sources"
+  _module_sources_path = "${target_gen_dir}/${target_name}.py.sources"
+  _xml_output_zip = "${target_out_dir}/${target_name}.resources.zip"
+
+  action_with_pydeps(_preprocess_target_name) {
+    script = "//brave/android/xml_processor.py"
+
+    # Input files
+    sources = invoker.sources
+    modules = invoker.modules
+    inputs = modules  # so gn will rebuild upon changes
+
+    outputs = [ _xml_output_zip ]
+
+    # Rebase path
+    _rebased_xml_source_files = rebase_path(sources, root_build_dir)
+    _rebased_module_source_files = rebase_path(modules, root_build_dir)
+
+    # Write sources to file
+    write_file(_xml_sources_path, _rebased_xml_source_files)
+    write_file(_module_sources_path, _rebased_module_source_files)
+
+    # Rebase file paths for python
+    _rebased_xml_sources_path = rebase_path(_xml_sources_path, root_build_dir)
+    _rebased_module_sources_path =
+        rebase_path(_module_sources_path, root_build_dir)
+
+    args = [
+      "--outputs-zip",
+      rebase_path(_xml_output_zip, root_build_dir),
+      "--xml-sources-path=${_rebased_xml_sources_path}",
+      "--module-sources-path=${_rebased_module_sources_path}",
+    ]
+  }
+
+  android_generated_resources(target_name) {
+    forward_variables_from(invoker,
+                           TESTONLY_AND_VISIBILITY + [
+                                 "deps",
+                                 "resource_overlay",
+                               ])
+    generating_target = ":$_preprocess_target_name"
+    generated_resources_zip = _xml_output_zip
+  }
+}

@@ -899,3 +899,7 @@ brave_java_resources = [
   "java/res/xml/unstoppable_domains_preferences.xml",
   "java/res/xml/use_custom_tabs_brave_preference.xml",
 ]
+
+# XML preprocessing
+brave_java_preprocess_xml_sources = []
+brave_java_preprocess_module_sources = []
