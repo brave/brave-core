@@ -103,7 +103,7 @@ function ConnectWithSite (props: Props) {
             <SelectAddressScrollContainer>
               {accounts.map((account, index) => (
                 <SelectAddressInnerContainer
-                   ref={(ref) => refs.current[index] = (checkIsSelected(account) ? ref : null)}
+                  ref={(ref) => refs.current[index] = (checkIsSelected(account) ? ref : null)}
                 >
                   <SelectAddress
                     action={toggleSelected(account)}
@@ -120,8 +120,7 @@ function ConnectWithSite (props: Props) {
           <ConfirmTextRow>
             <ConfirmIcon />
             <ConfirmTextColumn>
-              <ConfirmText>{getLocale('braveWalletConnectWithSiteDescription1')}</ConfirmText>
-              <ConfirmText>{getLocale('braveWalletConnectWithSiteDescription2')}</ConfirmText>
+              <ConfirmText>{getLocale('braveWalletConnectWithSiteDescription')}</ConfirmText>
             </ConfirmTextColumn>
           </ConfirmTextRow>
         )}
