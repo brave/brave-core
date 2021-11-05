@@ -43,10 +43,6 @@ const grantNotification = {
   text: <span>Free 30 BAT have been awarded to you.</span>
 }
 
-const dummyOptInAction = () => {
-  console.log(dummyOptInAction)
-}
-
 storiesOf('Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => {
@@ -97,10 +93,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
 
     const doNothing = () => {
       console.log('do nothing')
-    }
-
-    const onCloseNotification = () => {
-      console.log(onCloseNotification)
     }
 
     const onFetchCaptcha = () => {

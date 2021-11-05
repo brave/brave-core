@@ -9,10 +9,10 @@ chrome.webNavigation.onCommitted.addListener(
     tabActions.tabUpdated(details.tabId, details)
   },
   {
- url: [
-    { pathSuffix: '.torrent' },
-    // have a magnet scheme
-    { schemes: ['magnet'] }]
+    url: [
+      { pathSuffix: '.torrent' },
+      // have a magnet scheme
+      { schemes: ['magnet'] }]
   }
  )
 

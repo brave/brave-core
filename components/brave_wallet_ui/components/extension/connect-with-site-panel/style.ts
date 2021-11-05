@@ -45,12 +45,12 @@ export const SelectAddressScrollContainer = styled.div`
 `
 
 export const MiddleWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
-	height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 `
 
 export const NewAccountTitle = styled.span`
@@ -67,58 +67,58 @@ export const NewAccountTitle = styled.span`
 `
 
 export const AccountListWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `
 
 export const ConfirmTextRow = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 `
 
 export const ConfirmTextColumn = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   width: 70%;
 `
 
 export const ConfirmText = styled.span`
-	font-family: Poppins;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 13px;
-	line-height: 20px;
-	letter-spacing: 0.01em;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const Details = styled.span`
-	font-family: Poppins;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 11px;
-	line-height: 17px;
-	text-align: center;
-	letter-spacing: 0.01em;
-	opacity: 0.7;
-	word-wrap: wrap;
-	max-width: 75%;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  opacity: 0.7;
+  word-wrap: wrap;
+  max-width: 75%;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const ConfirmIcon = styled.div`
-	width: 24px;
-	height: 24px;
-	background: url(${CheckIcon});
-	margin-right: 12px;
-	fill: blue;
+  width: 24px;
+  height: 24px;
+  background: url(${CheckIcon});
+  margin-right: 12px;
+  fill: blue;
 `

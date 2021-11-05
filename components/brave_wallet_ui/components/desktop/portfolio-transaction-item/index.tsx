@@ -44,10 +44,7 @@ import {
   TransactionFeeTooltipTitle
 } from './style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
-import {
-  default as TransactionPopup,
-  TransactionPopupItem
-} from '../transaction-popup'
+import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 
 export interface Props {
   selectedNetwork: EthereumChain

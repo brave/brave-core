@@ -122,14 +122,14 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
       {
         content: getLocale('amount'),
         customStyle: {
-...customStyle,
+          ...customStyle,
           'text-align': 'right'
         }
       },
       {
         content: getLocale('remove'),
         customStyle: {
-...customStyle,
+          ...customStyle,
           'text-align': 'center',
           'padding': '0 10px'
         }

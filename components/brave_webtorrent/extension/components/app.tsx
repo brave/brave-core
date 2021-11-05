@@ -31,10 +31,6 @@ interface Props {
 export class BraveWebtorrentPage extends React.Component<Props, {}> {
   render () {
     const { actions, torrentState, torrentObj } = this.props
-    let torrentId = decodeURIComponent(window.location.search.substring(1))
-    torrentId = window.location.hash
-      ? torrentId + window.location.hash
-      : torrentId
 
     if (!torrentState) return null
 

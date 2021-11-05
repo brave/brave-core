@@ -1,11 +1,11 @@
 import {
- AccountAssetOptionType,
-         UserAccountType,
-         MAINNET_CHAIN_ID,
-         ROPSTEN_CHAIN_ID,
-         KOVAN_CHAIN_ID,
-         RINKEBY_CHAIN_ID,
-         GOERLI_CHAIN_ID
+  AccountAssetOptionType,
+  UserAccountType,
+  MAINNET_CHAIN_ID,
+  ROPSTEN_CHAIN_ID,
+  KOVAN_CHAIN_ID,
+  RINKEBY_CHAIN_ID,
+  GOERLI_CHAIN_ID
 } from '../constants/types'
 
 const wyreID = 'AC_MGNVBGHPA9T'

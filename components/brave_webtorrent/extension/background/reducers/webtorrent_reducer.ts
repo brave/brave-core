@@ -141,20 +141,19 @@ const updateProgress = (state: TorrentsState, torrent: Torrent) => {
   }
 
   const {
- downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio,
-    numPeers, timeRemaining
-} = torrent
+    downloaded, uploaded, downloadSpeed, uploadSpeed, progress, ratio, numPeers, timeRemaining
+  } = torrent
   torrentObjMap[torrent.infoHash] = {
- ...torrentObjMap[torrent.infoHash],
+    ...torrentObjMap[torrent.infoHash],
     downloaded,
-uploaded,
-downloadSpeed,
-uploadSpeed,
-progress,
-ratio,
+    uploaded,
+    downloadSpeed,
+    uploadSpeed,
+    progress,
+    ratio,
     numPeers,
-timeRemaining
-}
+    timeRemaining
+  }
 
   return { ...state, torrentObjMap }
 }
@@ -180,20 +179,20 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
     )
 
   torrentObjMap[torrent.infoHash] = {
- ...torrentObjMap[torrent.infoHash],
+    ...torrentObjMap[torrent.infoHash],
     files,
-name,
-downloaded,
-uploaded,
-downloadSpeed,
-uploadSpeed,
-progress,
-ratio,
+    name,
+    downloaded,
+    uploaded,
+    downloadSpeed,
+    uploadSpeed,
+    progress,
+    ratio,
     numPeers,
-timeRemaining,
-length,
-tabClients
-}
+    timeRemaining,
+    length,
+    tabClients
+  }
 
   return { ...state, torrentStateMap, torrentObjMap }
 }

@@ -89,10 +89,6 @@ const isHTMLElement = (node: Node): boolean => {
   return ('innerText' in node)
 }
 
-const asHTMLElement = (node: Node): HTMLElement | null => {
-  return isHTMLElement(node) ? node as HTMLElement : null
-}
-
 const fetchNewClassIdRules = () => {
   if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
     (!notYetQueriedIds || notYetQueriedIds.length === 0)) {

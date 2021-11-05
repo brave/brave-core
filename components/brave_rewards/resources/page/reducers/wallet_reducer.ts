@@ -237,7 +237,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.monthlyReportIds = action.payload
       break
     }
-    case types.GET_WALLET_PASSPHRASE:	{
+    case types.GET_WALLET_PASSPHRASE: {
       chrome.send('brave_rewards.getWalletPassphrase')
       break
     }

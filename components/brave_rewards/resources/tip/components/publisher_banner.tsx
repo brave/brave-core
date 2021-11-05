@@ -121,6 +121,7 @@ function isValidSocialLink (url: string) {
     // string that is not an absolute URL. If the URL constuctor
     // does not throw, consider it a valid social link URL.
     // tslint:disable-next-line:no-unused-expression
+    // eslint-disable-next-line no-new
     new URL(url)
     return true
   } catch (_) {
