@@ -70,7 +70,7 @@ def _ProcessFile(output_filename, output):
 
 def _XMLTransform(source_pairs, outputs_zip):
   """
-  Apply module codes to imput sources.
+  Apply module codes to input sources.
   """
   with build_utils.TempDir() as temp_dir:
     path_info = resource_utils.ResourceInfoFile()

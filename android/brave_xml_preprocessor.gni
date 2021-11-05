@@ -20,7 +20,7 @@ template("brave_xml_preprocessor") {
     # Input files
     sources = invoker.sources
     modules = invoker.modules
-    inputs = modules    # so gn will rebuild upon changes
+    inputs = modules  # so gn will rebuild upon changes
 
     outputs = [ _xml_output_zip ]
 
@@ -33,10 +33,9 @@ template("brave_xml_preprocessor") {
     write_file(_module_sources_path, _rebased_module_source_files)
 
     # Rebase file paths for python
-    _rebased_xml_sources_path =
-          rebase_path(_xml_sources_path, root_build_dir)
+    _rebased_xml_sources_path = rebase_path(_xml_sources_path, root_build_dir)
     _rebased_module_sources_path =
-          rebase_path(_module_sources_path, root_build_dir)
+        rebase_path(_module_sources_path, root_build_dir)
 
     args = [
       "--outputs-zip",
