@@ -8,9 +8,10 @@ import './add_wallet_network_dialog.js';
 import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.m.js';
 import {I18nMixin} from 'chrome://resources/js/i18n_mixin.js';
 import {PolymerElement, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {BaseMixin} from '../base_mixin.js';
 import {PrefsMixin} from '../prefs/prefs_mixin.js';
 
-const SettingsWalletNetworksSubpageBase = PrefsMixin(I18nMixin(PolymerElement))
+const SettingsWalletNetworksSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 /**
 * @fileoverview
