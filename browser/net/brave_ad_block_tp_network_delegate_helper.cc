@@ -90,7 +90,6 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     network::mojom::ResolveHostParametersPtr optional_parameters =
         network::mojom::ResolveHostParameters::New();
     optional_parameters->include_canonical_name = true;
-    optional_parameters->initial_priority = net::RequestPriority::HIGHEST;
 
     SecureDnsConfig secure_dns_config =
         SystemNetworkContextManager::GetStubResolverConfigReader()
