@@ -18,6 +18,7 @@ import org.chromium.brave_wallet.mojom.ErcToken;
 import org.chromium.brave_wallet.mojom.EthJsonRpcController;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -221,6 +222,22 @@ public class PortfolioHelper {
         mFiatHistory = new AssetTimePrice[0];
     }
 
+    private AssetTimePrice getZeroHistoryEntry(long microseconds) {
+        AssetTimePrice historyEntry = new AssetTimePrice();
+        historyEntry.price = "0";
+        historyEntry.date = new TimeDelta();
+        historyEntry.date.microseconds = microseconds;
+        return historyEntry;
+    }
+
+    private AssetTimePrice[] getZeroPortfolioHistory() {
+        // Gives two points of zero balance to make a chart
+        AssetTimePrice[] history = new AssetTimePrice[2];
+        history[0] = getZeroHistoryEntry((new java.util.Date()).getTime() * 1000);
+        history[1] = getZeroHistoryEntry(history[0].date.microseconds - 1000 * 1000);
+        return history;
+    }
+
     public void calculateFiatHistory(Runnable runWhenDone) {
         mFiatHistory = new AssetTimePrice[0];
 
@@ -243,6 +260,13 @@ public class PortfolioHelper {
         }
 
         historyMultiResponse.setWhenAllCompletedAction(() -> {
+            if (pricesHistoryContexts.isEmpty()) {
+                // All history price requests failed
+                mFiatHistory = getZeroPortfolioHistory();
+                runWhenDone.run();
+                return;
+            }
+
             // Algorithm is taken from the desktop:
             // components/brave_wallet_ui/common/reducers/wallet_reducer.ts
             // WalletActions.portfolioPriceHistoryUpdated:
@@ -259,6 +283,8 @@ public class PortfolioHelper {
             //        history. Some histories may have more entries - they are just ignored.
 
             Utils.removeIf(pricesHistoryContexts, phc -> phc.timePrices.length == 0);
+
+            assert !pricesHistoryContexts.isEmpty();
 
             AsyncUtils.GetPriceHistoryResponseContext shortestPriceHistoryContext =
                     Collections.min(pricesHistoryContexts, (l, r) -> {
