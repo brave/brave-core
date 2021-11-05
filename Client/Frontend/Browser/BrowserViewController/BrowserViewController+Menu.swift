@@ -90,6 +90,7 @@ extension BrowserViewController {
                 self.presentPlaylistController()
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
         .padding(.top, 10)
         .padding(.bottom, 5)
     }
