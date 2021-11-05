@@ -148,7 +148,7 @@ export default class WalletApiProxy {
         store.dispatch(WalletActions.defaultBaseCryptocurrencyChanged({cryptocurrency}))
       },
       onNetworkListChanged: function (networks) {
-        store.dispatch(WalletActions.setAllNetworks({networks}))
+        store.dispatch(WalletActions.getAllNetworks({networks}))
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote());

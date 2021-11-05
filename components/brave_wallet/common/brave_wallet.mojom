@@ -406,7 +406,7 @@ interface BraveWalletServiceObserver {
   OnDefaultWalletChanged(DefaultWallet wallet);
   OnDefaultBaseCurrencyChanged(string currency);
   OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
-  OnNetworkListChanged(array<EthereumChain> networks);
+  OnNetworkListChanged();
 };
 
 struct SignMessageRequest {

@@ -491,11 +491,8 @@ void BraveWalletService::OnDefaultBaseCryptocurrencyChanged() {
 }
 
 void BraveWalletService::OnNetworkListChanged() {
-  std::vector<mojom::EthereumChainPtr> chains;
-  brave_wallet::GetAllChains(prefs_, &chains);
-
   for (const auto& observer : observers_) {
-    observer->OnNetworkListChanged(chains.Clone());
+    observer->OnNetworkListChanged();
   }
 }
 
