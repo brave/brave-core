@@ -130,6 +130,11 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(
           &BraveWalletService::OnDefaultBaseCryptocurrencyChanged,
           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      kBraveWalletCustomNetworks,
+      base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
+                          base::Unretained(this)));
+
   p3a_periodic_timer_.Start(
       FROM_HERE, base::TimeDelta::FromHours(kRefreshP3AFrequencyHours), this,
       &BraveWalletService::OnP3ATimerFired);
@@ -482,6 +487,12 @@ void BraveWalletService::OnDefaultBaseCryptocurrencyChanged() {
   auto value = ::brave_wallet::GetDefaultBaseCryptocurrency(prefs_);
   for (const auto& observer : observers_) {
     observer->OnDefaultBaseCryptocurrencyChanged(value);
+  }
+}
+
+void BraveWalletService::OnNetworkListChanged() {
+  for (const auto& observer : observers_) {
+    observer->OnNetworkListChanged();
   }
 }
 

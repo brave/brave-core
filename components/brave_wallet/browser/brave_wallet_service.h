@@ -113,13 +113,15 @@ class BraveWalletService : public KeyedService,
                              SignMessageRequestCallback callback);
 
  private:
-  void OnDefaultWalletChanged();
-  void OnDefaultBaseCurrencyChanged();
-  void OnDefaultBaseCryptocurrencyChanged();
   friend class BraveWalletProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 
   FRIEND_TEST_ALL_PREFIXES(BraveWalletServiceUnitTest, GetChecksumAddress);
+
+  void OnDefaultWalletChanged();
+  void OnDefaultBaseCurrencyChanged();
+  void OnDefaultBaseCryptocurrencyChanged();
+  void OnNetworkListChanged();
 
   absl::optional<std::string> GetChecksumAddress(
       const std::string& contract_address,
