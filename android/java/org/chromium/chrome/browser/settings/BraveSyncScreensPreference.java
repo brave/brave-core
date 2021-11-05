@@ -642,7 +642,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 mCodephrase = codephraseCandidate;
                 seedWordsReceived(mCodephrase);
                 setAppropriateView();
-            });
+            }, () -> {});
         } else if (mEnterCodeWordsButton == v) {
             getActivity().getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -738,7 +738,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private enum FinalWarningFor { QR_CODE, CODE_WORDS }
-    private void showFinalSecurityWarning(FinalWarningFor warningFor, Runnable runWhenYes) {
+    private void showFinalSecurityWarning(
+            FinalWarningFor warningFor, Runnable runWhenYes, Runnable runWhenCancel) {
         ThreadUtils.assertOnUiThread();
         AlertDialog.Builder confirmDialog = new AlertDialog.Builder(getActivity());
         confirmDialog.setTitle(
@@ -763,7 +764,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 });
         confirmDialog.setNegativeButton(
                 getActivity().getResources().getString(android.R.string.cancel),
-                (dialog, which) -> { dialog.dismiss(); });
+                (dialog, which) -> {
+                    runWhenCancel.run();
+                    dialog.dismiss();
+                });
         confirmDialog.show();
     }
 
@@ -944,6 +948,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return true;
     }
 
+    private final Object mQrInProcessingLock = new Object();
+    private boolean mQrInProcessing;
+
     @Override
     public void onDetectedQrCode(Barcode barcode) {
         if (barcode != null) {
@@ -960,14 +967,51 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 return;
             }
 
+            synchronized (mQrInProcessingLock) {
+                // If camera looks on the QR image and final security warning is shown,
+                // we could arrive here again and show 2nd alert while the 1st is not yet closed
+                if (mQrInProcessing) {
+                    return;
+                }
+
+                mQrInProcessing = true;
+            }
+
             String seedHex = barcodeValue;
 
+            // It is supposed to be
+            // getActivity().runOnUiThread(() -> {
+            //     showFinalSecurityWarning(... ,
+            //         () -> {},
+            //         () -> {}
+            //     )
+            // })
+            // but cl format then makes a glitchy formatting and lint does not
+            // accept the well-formatted change. So use the full syntax for Runnable.
+
             getActivity().runOnUiThread(() -> {
-                showFinalSecurityWarning(FinalWarningFor.QR_CODE, () -> {
-                    // We have the confirmation from user
-                    // seedHexReceived will call setAppropriateView
-                    seedHexReceived(seedHex);
-                });
+                showFinalSecurityWarning(FinalWarningFor.QR_CODE,
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (mQrInProcessingLock) {
+                                    assert mQrInProcessing;
+                                    mQrInProcessing = false;
+                                    // We have the confirmation from user
+                                    // seedHexReceived will call setAppropriateView
+                                    seedHexReceived(seedHex);
+                                }
+                            }
+                        },
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (mQrInProcessingLock) {
+                                    assert mQrInProcessing;
+                                    mQrInProcessing = false;
+                                }
+                            }
+                        });
             });
         }
     }
