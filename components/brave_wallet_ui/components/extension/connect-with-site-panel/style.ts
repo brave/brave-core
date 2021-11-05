@@ -88,6 +88,7 @@ export const ConfirmTextColumn = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
+  width: 70%;
 `
 
 export const ConfirmText = styled.span`

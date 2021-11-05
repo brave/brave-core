@@ -42,7 +42,7 @@ function BuySendSwapLayout (props: Props) {
           <Tooltip
             isDisabled={isBuyDisabled && option.id === 'buy' || isSwapDisabled && option.id === 'swap'}
             key={option.id}
-            text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
+            text={getLocale('braveWalletBssToolTip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
           >
             <TabButton
               isSelected={selectedTab === option.id}

@@ -50,7 +50,7 @@ export default function (props: Props) {
 
   const getErrorMessage = (error: any) => {
     if (error.statusCode && error.statusCode === 27404) {  // Unknown Error
-      return { error: getLocale('braveWalletConnectHardwareInfo3'), userHint: '' }
+      return { error: getLocale('braveWalletConnectHardwareInfo2'), userHint: '' }
     }
 
     if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) {  // INCORRECT_LENGTH or INS_NOT_SUPPORTED
@@ -149,9 +149,9 @@ export default function (props: Props) {
         <InfoIcon />
         <HardwareInfoColumn>
           <DisclaimerText>
-            {getLocale('braveWalletConnectHardwareInfo1')} {selectedHardwareWallet} {getLocale('braveWalletConnectHardwareInfo2')}
+            {getLocale('braveWalletConnectHardwareInfo1').replace('$1', selectedHardwareWallet)}
           </DisclaimerText>
-          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo3')}</DisclaimerText>
+          <DisclaimerText>{getLocale('braveWalletConnectHardwareInfo2')}</DisclaimerText>
         </HardwareInfoColumn>
       </HardwareInfoRow>
       {connectionError &&

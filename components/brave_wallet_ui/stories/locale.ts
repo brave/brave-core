@@ -158,6 +158,7 @@ provideStrings({
   braveWalletAddAccountHardware: 'Hardware',
   braveWalletAddAccountConnect: 'Connect',
   braveWalletAddAccountPlaceholder: 'Account name',
+  braveWalletCreateAccountButton: 'Create account',
 
   // Import Account
   braveWalletImportAccountDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
@@ -170,9 +171,8 @@ provideStrings({
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
-  braveWalletConnectHardwareInfo1: 'Connect your',
-  braveWalletConnectHardwareInfo2: 'wallet directly to your computer.',
-  braveWalletConnectHardwareInfo3: 'Unlock your device and select the Ethereum app.',
+  braveWalletConnectHardwareInfo1: 'Connect your $1 wallet directly to your computer.',
+  braveWalletConnectHardwareInfo2: 'Unlock your device and select the Ethereum app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
   braveWalletConnectingHardwareWallet: 'Connecting...',
@@ -198,7 +198,7 @@ provideStrings({
   braveWalletWatchListTokenDecimals: 'Decimals of percision',
   braveWalletWatchListAdd: 'Add',
   braveWalletWatchListDoneButton: 'Done',
-  braveWalletWatchListSuggestion: 'as a custtom token',
+  braveWalletWatchListSuggestion: 'Add $1 as a custom token',
   braveWalletWatchListNoAsset: 'No assets named',
   braveWalletWatchListSearchPlaceholder: 'Search assets or contract address',
   braveWalletWatchListError: 'Failed to add custom token, please try again.',
@@ -249,7 +249,7 @@ provideStrings({
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
-  braveWalletBuyDescription: 'Get Ether from a faucet for',
+  braveWalletBuyDescription: 'Get Ether from a faucet for $1',
   braveWalletBuyWyreButton: 'Continue to Wyre',
   braveWalletBuyFaucetButton: 'Get Ether',
 
@@ -261,7 +261,7 @@ provideStrings({
   braveWalletSignTransactionButton: 'Sign',
 
   // Allow Spend ERC20 Panel
-  braveWalletAllowSpendTitle: 'Allow this app to spend your',
+  braveWalletAllowSpendTitle: 'Allow this app to spend your $1?',
   braveWalletAllowSpendDescription: 'By granting this permission, you are allowing this app to withdraw your $1 and automate transactions for you.',
   braveWalletAllowSpendBoxTitle: 'Edit permissions',
   braveWalletAllowSpendTransactionFee: 'Transaction fee',
@@ -302,7 +302,7 @@ provideStrings({
 
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',
-  braveWalletSitePermissionsAccounts: 'accounts connected',
+  braveWalletSitePermissionsAccounts: '$1 accounts connected',
   braveWalletSitePermissionsDisconnect: 'Disconnect',
 
   // Transaction Detail Box
@@ -312,8 +312,7 @@ provideStrings({
 
   // Connect With Site Panel
   braveWalletConnectWithSiteTitle: 'Select accounts(s)',
-  braveWalletConnectWithSiteDescription1: 'View the addressess of your',
-  braveWalletConnectWithSiteDescription2: 'permitted accounts (required)',
+  braveWalletConnectWithSiteDescription: 'View the addressess of your permitted accounts (required)',
   braveWalletConnectWithSiteNext: 'Next',
   braveWalletConnectWithSiteHeaderTitle: 'Connect with Brave Wallet',
 
@@ -323,28 +322,26 @@ provideStrings({
   braveWalletImportFromExternalPasswordCheck: 'Use the same password',
 
   // Import from MetaMask
-  braveWalletImportTitle: 'Import from',
+  braveWalletImportTitle: 'Import from $1',
   braveWalletImportMetaMaskTitle: 'MetaMask',
-  braveWalletImportDescriptionOne: 'Import your',
-  braveWalletImportDescriptionTwo: 'accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
+  braveWalletImportDescription: 'Import your $1 accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
   braveWalletImportMetaMaskInput: 'MetaMask password',
 
   // Import from Legacy Wallet
   braveWalletImportBraveLegacyTitle: 'crypto wallets',
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
   braveWalletCryptoWalletsDescriptionOne: 'When you click Get started youll import your previous Crypto Wallet to the new Brave Wallet experience, and enjoy all the benefits outlined above. Give it a try, and let us know what you think!',
-  braveWalletCryptoWalletsDescriptionTwoFirst: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser',
-  braveWalletCryptoWalletsDescriptionTwoSecond: 'and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
+  braveWalletCryptoWalletsDescriptionTwo: 'If youd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser $1Settings$2 and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.',
   braveWalletImportBraveLegacyDescription: 'Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.',
   braveWalletImportBraveLegacyInput: 'Crypto wallets password',
   braveWalletImportBraveLegacyAltButton: 'I’ve lost my password and recovery phrase, create a new wallet.',
 
   // Connect Hardware Wallet Panel
-  braveWalletConnectHardwarePanelConnected: 'connected',
-  braveWalletConnectHardwarePanelDisconnected: 'disconnected',
+  braveWalletConnectHardwarePanelConnected: '$1 connected',
+  braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
   braveWalletConnectHardwarePanelInstructions: 'Instructions',
-  braveWalletConnectHardwarePanelConnect: 'Connect your',
-  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation.',
+  braveWalletConnectHardwarePanelConnect: 'Connect your $1',
+  braveWalletConnectHardwarePanelConfirmation: 'Hardware wallet requires transaction confirmation. $1',
 
   // Transaction List Item
   braveWalletTransactionSent: 'sent',

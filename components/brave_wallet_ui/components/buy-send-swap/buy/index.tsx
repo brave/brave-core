@@ -60,7 +60,7 @@ function Buy (props: Props) {
       ) : (
         <FaucetWrapper>
           <FaucetTitle>{getLocale('braveWalletBuyTitle')}</FaucetTitle>
-          <FaucetDescription>{getLocale('braveWalletBuyDescription')} {networkName}</FaucetDescription>
+          <FaucetDescription>{getLocale('braveWalletBuyDescription').replace('$1', networkName)}</FaucetDescription>
         </FaucetWrapper>
       )}
       <NavButton

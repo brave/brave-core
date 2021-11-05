@@ -16,7 +16,7 @@ import {
   CryptoWalletsAlertDescription
 } from './style'
 import { NavButton } from '../../../extension'
-import { getLocale } from '../../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 export interface Props {
   onSetup: () => void
@@ -37,6 +37,9 @@ function OnboardingWelcome (props: Props) {
     })
   }
 
+  const walletAlertText = getLocale('braveWalletCryptoWalletsDescriptionTwo')
+  const { beforeTag, duringTag, afterTag } = splitStringForTag(walletAlertText)
+
   return (
     <StyledWrapper>
       <PageIcon />
@@ -49,7 +52,7 @@ function OnboardingWelcome (props: Props) {
           <Divider />
           <ImportButton onClick={onClickImportMetaMask}>
             <MetaMaskIcon />
-            <ImportButtonText>{getLocale('braveWalletImportTitle')} {getLocale('braveWalletImportMetaMaskTitle')}</ImportButtonText>
+            <ImportButtonText>{getLocale('braveWalletImportTitle').replace('$1', getLocale('braveWalletImportMetaMaskTitle'))}</ImportButtonText>
           </ImportButton>
         </>
       }
@@ -58,9 +61,9 @@ function OnboardingWelcome (props: Props) {
           <CryptoWalletsAlertTitle>{getLocale('braveWalletCryptoWalletsDetected')}</CryptoWalletsAlertTitle>
           <CryptoWalletsAlertDescription>{getLocale('braveWalletCryptoWalletsDescriptionOne')}</CryptoWalletsAlertDescription>
           <CryptoWalletsAlertDescription>
-            {getLocale('braveWalletCryptoWalletsDescriptionTwoFirst')}{` `}
-            <SettingsButton onClick={onClickSettings}>{getLocale('braveWalletWalletPopupSettings')}</SettingsButton>{` `}
-            {getLocale('braveWalletCryptoWalletsDescriptionTwoSecond')}
+            {beforeTag}
+            <SettingsButton onClick={onClickSettings}>{duringTag}</SettingsButton>
+            {afterTag}
           </CryptoWalletsAlertDescription>
         </CryptoWalletsAlertBox>
       }
