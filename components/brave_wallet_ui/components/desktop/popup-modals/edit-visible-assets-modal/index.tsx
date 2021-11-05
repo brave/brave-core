@@ -367,7 +367,7 @@ const EditVisibleAssetsModal = (props: Props) => {
                     {filteredTokenList.length === 0 &&
                       <NoAssetRow>
                         {searchValue.toLowerCase().startsWith('0x') ? (
-                          <NoAssetButton onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListAdd')} {searchValue} {getLocale('braveWalletWatchListSuggestion')}</NoAssetButton>
+                          <NoAssetButton onClick={onClickSuggestAdd}>{getLocale('braveWalletWatchListSuggestion').replace('$1', searchValue)}</NoAssetButton>
                         ) : (
                           <NoAssetText>{getLocale('braveWalletWatchListNoAsset')} {searchValue}</NoAssetText>
                         )}

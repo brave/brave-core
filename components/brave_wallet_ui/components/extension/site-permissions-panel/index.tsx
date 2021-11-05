@@ -33,7 +33,7 @@ const SitePermissions = (props: Props) => {
     <StyledWrapper>
       <ConnectHeader hideTitle={true} url={siteURL} />
       <AddressContainer>
-        <AccountsTitle>{connectedAccounts.length} {getLocale('braveWalletSitePermissionsAccounts')}</AccountsTitle>
+        <AccountsTitle>{getLocale('braveWalletSitePermissionsAccounts').replace('$1', connectedAccounts.length.toString())}</AccountsTitle>
         {connectedAccounts.length !== 0 &&
           <>
             <DividerLine />

@@ -273,7 +273,7 @@ function ConfirmTransactionPanel (props: Props) {
         <>
           <FavIcon src={`chrome://favicon/size/64@1x/${siteURL}`} />
           <URLText>{siteURL}</URLText>
-          <PanelTitle>{getLocale('braveWalletAllowSpendTitle')} {transactionDetails.symbol}?</PanelTitle>
+          <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', transactionDetails.symbol)}</PanelTitle>
           <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', transactionDetails.symbol)}</Description>
           <EditButton onClick={onToggleEditAllowance}>{getLocale('braveWalletEditPermissionsButton')}</EditButton>
         </>

@@ -230,7 +230,7 @@ const AddAccountModal = (props: Props) => {
               disabled={isDisabled}
               text={
                 tab === 'create' ?
-                  `${getLocale('braveWalletAddAccountCreate')} ${getLocale('braveWalletAccount')}`
+                  getLocale('braveWalletCreateAccountButton')
                   : getLocale('braveWalletAddAccountImport')
               }
               buttonType='primary'
