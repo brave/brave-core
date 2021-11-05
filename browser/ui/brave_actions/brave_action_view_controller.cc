@@ -113,6 +113,7 @@ bool BraveActionViewController::TriggerPopupWithUrl(
 
   popup_host_ = host.get();
   popup_host_observation_.Observe(popup_host_);
+  extensions_container_->SetPopupOwner(this);
   ShowPopup(std::move(host), grant_tab_permissions, show_action);
   return true;
 }
@@ -121,6 +122,7 @@ void BraveActionViewController::OnPopupClosed() {
   DCHECK(popup_host_observation_.IsObservingSource(popup_host_));
   popup_host_observation_.Reset();
   popup_host_ = nullptr;
+  extensions_container_->SetPopupOwner(nullptr);
   view_delegate_->OnPopupClosed();
 }
 
