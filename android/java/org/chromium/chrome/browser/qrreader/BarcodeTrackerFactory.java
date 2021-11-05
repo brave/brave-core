@@ -15,6 +15,8 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
+import android.app.Activity;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.gms.vision.MultiProcessor;
@@ -27,13 +29,22 @@ import com.google.android.gms.vision.barcode.Barcode;
  */
 public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
     private PreferenceFragmentCompat mContext;
+    private Activity mActivityContext;
 
     public BarcodeTrackerFactory(PreferenceFragmentCompat context) {
         mContext = context;
     }
 
+    public BarcodeTrackerFactory(Activity context) {
+        mActivityContext = context;
+    }
+
     @Override
     public Tracker<Barcode> create(Barcode barcode) {
+        if (mActivityContext != null) {
+            return new BarcodeTracker(mActivityContext);
+        }
+
         return new BarcodeTracker(mContext);
     }
 }

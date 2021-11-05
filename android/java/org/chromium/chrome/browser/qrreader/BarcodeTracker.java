@@ -15,6 +15,8 @@
  */
 package org.chromium.chrome.browser.qrreader;
 
+import android.app.Activity;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.gms.vision.Tracker;
@@ -28,6 +30,10 @@ public class BarcodeTracker extends Tracker<Barcode> {
     }
 
     BarcodeTracker(PreferenceFragmentCompat listener) {
+        mListener = (BarcodeGraphicTrackerCallback) listener;
+    }
+
+    BarcodeTracker(Activity listener) {
         mListener = (BarcodeGraphicTrackerCallback) listener;
     }
 

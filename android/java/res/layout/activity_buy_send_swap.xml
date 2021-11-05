@@ -214,6 +214,40 @@
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/ic_arrow_downward"/>
 
+        <RelativeLayout android:id="@+id/camera_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:visibility="gone"
+            android:layout_weight="3.5" >
+
+            <org.chromium.chrome.browser.qrreader.CameraSourcePreview
+                android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:paddingStart="11dip"
+                android:paddingEnd="11dip"
+                android:paddingTop="11dip"
+                android:paddingBottom="11dip" />
+
+            <RelativeLayout android:id="@+id/camera_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_shape" >
+
+                <ImageView android:id="@+id/camera_overlay_image"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/camera"
+                   android:scaleType="center"
+                   android:contentDescription="@null"
+                   android:background="@android:color/transparent" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/to_section"
             android:layout_width="match_parent"
@@ -251,6 +285,35 @@
                     android:inputType="number"
                     android:textColor="@color/wallet_text_color"
                     android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:id="@+id/to_send_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/to_send_value_text"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:inputType="textMultiLine"
+                        android:gravity="top"
+                        android:minLines="2"
+                        android:textColor="@color/wallet_text_color"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:id="@+id/qr_code"
+                        android:padding="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_qr_code_18"
+                        android:layout_height="wrap_content"
+                        tools:ignore="contentDescription" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
