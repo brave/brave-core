@@ -76,6 +76,8 @@ export const MessageBox = styled.div`
   height: 140px;
   padding: 8px 14px;
   margin-bottom: 14px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 `
 
 export const MessageText = styled.span`
@@ -85,6 +87,7 @@ export const MessageText = styled.span`
   letter-spacing: 0.01em;
   text-align: left;
   color: ${(p) => p.theme.color.text02};
+  word-break: break-word;
 `
 
 export const ButtonRow = styled.div`
