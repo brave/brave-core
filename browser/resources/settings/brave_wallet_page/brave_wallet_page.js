@@ -54,6 +54,72 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.getAutoLockMinutes().then(val => {
       this.$.walletAutoLockMinutes.value = val
     })
+
+    this.cryptocurrency_list_ = [
+      { value: "BTC" },
+      { value: "ETH" },
+      { value: "LTC" },
+      { value: "BCH" },
+      { value: "BNB" },
+      { value: "EOS" },
+      { value: "XRP" },
+      { value: "XLM" },
+      { value: "LINK" },
+      { value: "DOT" },
+      { value: "YFI" }
+    ]
+    this.cryptocurrency_list_.every((x) => x.name = x.value);
+
+    this.currency_list_ = [
+      { value: 'AED' },
+      { value: 'ARS' },
+      { value: 'AUD' },
+      { value: 'BDT' },
+      { value: 'BHD' },
+      { value: 'BMD' },
+      { value: 'BRL' },
+      { value: 'CAD' },
+      { value: 'CHF' },
+      { value: 'CLP' },
+      { value: 'CZK' },
+      { value: 'DKK' },
+      { value: 'EUR' },
+      { value: 'GBP' },
+      { value: 'HKD' },
+      { value: 'HUF' },
+      { value: 'IDR' },
+      { value: 'ILS' },
+      { value: 'INR' },
+      { value: 'JPY' },
+      { value: 'KRW' },
+      { value: 'KWD' },
+      { value: 'LKR' },
+      { value: 'MMK' },
+      { value: 'MXN' },
+      { value: 'MYR' },
+      { value: 'NGN' },
+      { value: 'NOK' },
+      { value: 'NZD' },
+      { value: 'PHP' },
+      { value: 'PKR' },
+      { value: 'PLN' },
+      { value: 'RUB' },
+      { value: 'SAR' },
+      { value: 'SEK' },
+      { value: 'SGD' },
+      { value: 'THB' },
+      { value: 'TRY' },
+      { value: 'TWD' },
+      { value: 'UAH' },
+      { value: 'USD' },
+      { value: 'VEF' },
+      { value: 'VND' },
+      { value: 'ZAR' },
+      { value: 'XAG' },
+      { value: 'XAU' },
+      { value: 'XDR' }
+    ]
+    this.currency_list_.every((x) => x.name = x.value);
   }
 
   onBraveWalletEnabledChange_() {

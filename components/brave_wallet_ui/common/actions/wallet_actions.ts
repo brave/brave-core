@@ -14,6 +14,8 @@ import {
   TransactionStatusChanged,
   ActiveOriginChanged,
   DefaultWalletChanged,
+  DefaultBaseCurrencyChanged,
+  DefaultBaseCryptocurrencyChanged,
   AddUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
   RemoveUserAssetPayloadType,
@@ -96,6 +98,8 @@ export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
+export const defaultBaseCurrencyChanged = createAction<DefaultBaseCurrencyChanged>('defaultBaseCurrencyChanged')
+export const defaultBaseCryptocurrencyChanged = createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged')
 export const setSitePermissions = createAction<SitePermissionsPayloadType>('setSitePermissions')
 export const removeSitePermission = createAction<RemoveSitePermissionPayloadType>('removeSitePermission')
 export const queueNextTransaction = createAction('queueNextTransaction')

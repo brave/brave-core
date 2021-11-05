@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
 
 extern const char kDefaultWallet2[];
+extern const char kDefaultBaseCurrency[];
+extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
 extern const char kBraveWalletLastUnlockTime[];

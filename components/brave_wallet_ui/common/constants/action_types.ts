@@ -98,6 +98,14 @@ export type DefaultWalletChanged = {
   defaultWallet: DefaultWallet
 }
 
+export type DefaultBaseCurrencyChanged = {
+  currency: string
+}
+
+export type DefaultBaseCryptocurrencyChanged = {
+  cryptocurrency: string
+}
+
 export type SitePermissionsPayloadType = {
   accounts: (WalletAccountType | undefined)[]
 }

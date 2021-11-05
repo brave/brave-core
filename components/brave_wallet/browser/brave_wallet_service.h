@@ -82,6 +82,11 @@ class BraveWalletService : public KeyedService,
                           ImportFromMetaMaskCallback callback) override;
   void GetDefaultWallet(GetDefaultWalletCallback callback) override;
   void SetDefaultWallet(mojom::DefaultWallet default_wallet) override;
+  void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
+  void SetDefaultBaseCurrency(const std::string& currency) override;
+  void GetDefaultBaseCryptocurrency(
+      GetDefaultBaseCryptocurrencyCallback callback) override;
+  void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
   void HasEthereumPermission(const std::string& origin,
                              const std::string& account,
                              HasEthereumPermissionCallback callback) override;
@@ -109,6 +114,8 @@ class BraveWalletService : public KeyedService,
 
  private:
   void OnDefaultWalletChanged();
+  void OnDefaultBaseCurrencyChanged();
+  void OnDefaultBaseCryptocurrencyChanged();
   friend class BraveWalletProviderImplUnitTest;
   friend class BraveWalletServiceUnitTest;
 

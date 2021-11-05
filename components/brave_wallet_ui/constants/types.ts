@@ -766,13 +766,25 @@ export interface IsMetaMaskInstalledReturnInfo {
   installed: boolean
 }
 
+export interface DefaultBaseCurrencyReturnInfo {
+  currency: string
+}
+
+export interface DefaultBaseCryptocurrencyReturnInfo {
+  cryptocurrency: string
+}
+
 export interface BraveWalletService {
   getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
   addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
   removeUserAsset: (token: TokenInfo, chainId: string) => Promise<RemoveUserAssetReturnInfo>
   setUserAssetVisible: (token: TokenInfo, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
   getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
-  setDefaultWallet: (defaultWallet: DefaultWallet) => Promise<void>
+  setDefaultWallet: (defaultWallet: DefaultWallet) => void
+  getBaseCurrency: () => Promise<DefaultBaseCurrencyReturnInfo>
+  setBaseCurrency: () => void
+  getBaseCryptocurrency: () => Promise<DefaultBaseCryptocurrencyReturnInfo>
+  setBaseCryptocurrency: () => void
   hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
   resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
   getActiveOrigin: () => Promise<GetActiveOriginReturnInfo>

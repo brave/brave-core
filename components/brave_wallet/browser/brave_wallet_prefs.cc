@@ -63,11 +63,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       kDefaultWallet2,
       static_cast<int>(
           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
-
+  registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
+  registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
-
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterListPref(kBraveWalletCustomNetworks);
@@ -114,6 +113,8 @@ void ClearProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletAutoLockMinutes);
   prefs->ClearPref(kBraveWalletSelectedAccount);
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
+  prefs->ClearPref(kDefaultBaseCurrency);
+  prefs->ClearPref(kDefaultBaseCryptocurrency);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {

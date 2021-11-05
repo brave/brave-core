@@ -6,6 +6,9 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
 const char kDefaultWallet2[] = "brave.wallet.default_wallet2";
+const char kDefaultBaseCurrency[] = "brave.wallet.default_base_currency";
+const char kDefaultBaseCryptocurrency[] =
+    "brave.wallet.default_base_cryptocurrency";
 const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
