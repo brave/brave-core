@@ -104,6 +104,8 @@ export default function shieldsPanelReducer (
       break
     }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
+      // @ts-ignore (petemill) - shields Tab / ShieldDetails types are a mess of
+      // and used interchangably and all this code will be removed soon.
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
       shieldsPanelState.updateShieldsIcon(state)
       if (chrome.test && shieldsPanelState.getActiveTabData(state)) {

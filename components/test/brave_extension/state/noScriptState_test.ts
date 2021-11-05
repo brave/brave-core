@@ -10,7 +10,7 @@ import { State } from '../../../brave_extension/extension/brave_extension/types/
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 
 // Helpers
-import * as deepFreeze from 'deep-freeze-node'
+import deepFreeze from '../../deepFreeze'
 import { getHostname, getOrigin } from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
 
 const url1: string = 'http://aaaa.com/script1.js'
@@ -30,9 +30,40 @@ const noScriptInfo: NoScriptInfo = {
 const url: string = 'https://brave.com'
 const tabId: number = 2
 const state: State = deepFreeze({
-  tabs: { [tabId]: { origin: url, id: tabId, noScriptInfo } },
+  tabs: { [tabId]: {
+    origin: url,
+    id: tabId,
+    noScriptInfo ,
+    hostname: 'https://brave.com',
+    url: 'https://brave.com',
+    ads: 'block',
+    adsBlocked: 0,
+    adsBlockedResources: [],
+    braveShields: 'allow',
+    controlsOpen: true,
+    trackers: 'block',
+    trackersBlocked: 0,
+    trackersBlockedResources: [],
+    httpUpgradableResources: 'block',
+    httpsRedirected: 0,
+    httpsRedirectedResources: [],
+    javascript: 'block',
+    javascriptBlocked: 0,
+    fingerprinting: 'block',
+    fingerprintingBlocked: 0,
+    fingerprintingBlockedResources: [],
+    cookies: 'block',
+    firstPartyCosmeticFiltering: false
+  } },
   windows: { 1: tabId },
-  currentWindowId: 1
+  persistentData: {
+    isFirstAccess: true
+  },
+  currentWindowId: 1,
+  settingsData: {
+    showAdvancedView: true,
+    statsBadgeVisible: true
+  }
 })
 
 describe('noScriptState', () => {

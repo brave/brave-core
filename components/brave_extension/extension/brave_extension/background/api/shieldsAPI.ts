@@ -50,6 +50,7 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       origin,
       hostname,
       id: tabData.id,
+      firstPartyCosmeticFiltering: true,
       braveShields: 'block',
       ads: 0,
       trackers: 0,
