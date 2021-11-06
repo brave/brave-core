@@ -6,6 +6,9 @@ body {
 
 .interstitial-wrapper {
   text-align: center;
+  padding-bottom: 60px;
+  position: relative;
+  z-index: 1;
 }
 
 .interstitial-wrapper span, p, button {
@@ -27,6 +30,8 @@ body {
 }
 
 .copy {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
   font-size: 14px;
   line-height: 20px;
   max-width: 600px;
