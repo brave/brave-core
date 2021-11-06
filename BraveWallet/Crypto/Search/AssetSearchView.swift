@@ -8,25 +8,6 @@ import SwiftUI
 import BraveCore
 import struct Shared.Strings
 
-private struct TokenView: View {
-  var token: BraveWallet.ERCToken
-  
-  var body: some View {
-    HStack(spacing: 8) {
-      AssetIconView(token: token)
-      VStack(alignment: .leading) {
-        Text(token.name)
-          .fontWeight(.semibold)
-          .foregroundColor(Color(.bravePrimary))
-        Text(token.symbol.uppercased())
-          .foregroundColor(Color(.secondaryBraveLabel))
-      }
-      .font(.footnote)
-    }
-    .padding(.vertical, 8)
-  }
-}
-
 struct AssetSearchView: View {
   var walletStore: WalletStore
   

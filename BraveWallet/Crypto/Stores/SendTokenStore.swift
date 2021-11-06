@@ -6,7 +6,7 @@
 import Foundation
 import BraveCore
 
-/// A store contains data for buying tokens
+/// A store contains data for sending tokens
 public class SendTokenStore: ObservableObject {
   /// User's asset with selected account and chain
   @Published var userAssets: [BraveWallet.ERCToken] = []

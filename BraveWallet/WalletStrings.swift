@@ -939,5 +939,40 @@ extension Strings {
       value: "We currently cannot proceed with your transaction",
       comment: "The error message will appear when there is any error occurs during unpproved transaction"
     )
+    public static let swapCryptoUnsupportNetworkTitle = NSLocalizedString(
+      "wallet.swapCryptoUnsupportNetworkTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Unsupported chain",
+      comment: "The title below account picker when user has selected a test network to swap cryptos"
+    )
+    public static let swapCryptoUnsupportNetworkDescription = NSLocalizedString(
+      "wallet.swapCryptoUnsupportNetworkBody",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Brave doesn't currently support swap on the %@. Please switch to a supported chain.",
+      comment: "The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network'"
+    )
+    public static let swapCryptoSlippageTitle = NSLocalizedString(
+      "wallet.swapCryptoSlippageTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Slippage Tolerance",
+      comment: "The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value"
+    )
+    public static let swapCryptoSwapButtonTitle = NSLocalizedString(
+      "wallet.swapCryptoSwapButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Swap",
+      comment: "The title of the button for users to click when they want to swap between two cryptos"
+    )
+    public static let swapCryptoMarketPriceTitle = NSLocalizedString(
+      "wallet.swapCryptoMarketPriceTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Market Price in %@",
+      comment: "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
+    )
   }
 }

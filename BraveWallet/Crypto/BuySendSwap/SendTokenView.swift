@@ -75,7 +75,7 @@ struct SendTokenView: View {
           header:
             WalletListHeaderView(
               title: Text(String.localizedStringWithFormat(Strings.Wallet.sendCryptoAmountTitle,
-                                                          sendTokenStore.selectedSendToken?.symbol ?? "")
+                                                           sendTokenStore.selectedSendToken?.symbol ?? "")
                         )
             ),
           footer: ShortcutAmountGrid(action: { amount in
