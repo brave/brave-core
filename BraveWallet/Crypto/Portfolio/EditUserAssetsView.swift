@@ -8,7 +8,7 @@ import SwiftUI
 import struct Shared.Strings
 import BraveShared
 
-private struct TokenView: View {
+private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
   
   var body: some View {
@@ -72,7 +72,7 @@ struct EditUserAssetsView: View {
             }
         ) {
           ForEach(tokenStores, id: \.token.id) { store in
-            TokenView(assetStore: store)
+            EditTokenView(assetStore: store)
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))

@@ -85,7 +85,8 @@ public struct CryptoView: View {
           case .swap:
             SwapCryptoView(
               keyringStore: walletStore.keyringStore,
-              ethNetworkStore: walletStore.networkStore
+              ethNetworkStore: walletStore.networkStore,
+              swapTokensStore: walletStore.swapTokenStore
             )
           }
         }
