@@ -175,15 +175,23 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     run_loop.Run();
   }
   void UserGrantPermission(bool granted) {
-    if (granted)
+    std::string expected_address = "undefined";
+    if (granted) {
       permissions::BraveEthereumPermissionContext::AcceptOrCancel(
           std::vector<std::string>{from()}, web_contents());
-    else
+      expected_address = from();
+    } else {
       permissions::BraveEthereumPermissionContext::Cancel(web_contents());
+    }
     ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractBool(),
               granted);
+    // Check that window.ethereum.selectedAddress is set correctly
+    EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              expected_address);
   }
 
   std::string from() { return "0x084DCb94038af1715963F149079cE011C4B22961"; }
@@ -216,6 +224,11 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         https_server_for_files()->GetURL("a.com", "/send_transaction.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     WaitForLoadStop(web_contents());
+
+    EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              "0x1");
 
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())

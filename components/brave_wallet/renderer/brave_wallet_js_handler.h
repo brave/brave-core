@@ -41,6 +41,10 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   void BindFunctionsToObject(v8::Isolate* isolate,
                              v8::Local<v8::Context> context,
                              v8::Local<v8::Object> javascript_object);
+  void UpdateAndBindJSProperties();
+  void UpdateAndBindJSProperties(v8::Isolate* isolate,
+                                 v8::Local<v8::Context> context,
+                                 v8::Local<v8::Object> ethereum_obj);
 
   // Adds a function to the provided object.
   template <typename Sig>
@@ -151,6 +155,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_;
   std::string chain_id_;
+  std::string first_allowed_account_;
   base::WeakPtrFactory<BraveWalletJSHandler> weak_ptr_factory_{this};
 };
 

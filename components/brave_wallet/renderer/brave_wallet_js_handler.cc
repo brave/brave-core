@@ -127,7 +127,13 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
   v8::HandleScope handle_scope(isolate);
   v8::MicrotasksScope microtasks(isolate,
                                  v8::MicrotasksScope::kDoNotRunMicrotasks);
-
+  first_allowed_account_.clear();
+  if (accounts.size() > 0)
+    first_allowed_account_ = accounts[0];
+  // Note that we'll update this from `AccountsChangedEvent` as well, but we
+  // need to update it earlier here before we give a response in case the JS
+  // page has a handler that checks window.ethereum.selectedAddress
+  UpdateAndBindJSProperties();
   std::unique_ptr<base::Value> formed_response;
   if (!success || accounts.empty()) {
     brave_wallet::ProviderErrors code =
@@ -365,11 +371,53 @@ void BraveWalletJSHandler::CreateEthereumObject(
     global->Set(context, gin::StringToSymbol(isolate, "ethereum"), ethereum_obj)
         .Check();
     BindFunctionsToObject(isolate, context, ethereum_obj);
+    UpdateAndBindJSProperties(isolate, context, ethereum_obj);
   } else {
     render_frame_->GetWebFrame()->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kWarning,
                                  "Brave Wallet will not insert window.ethereum "
                                  "because it already exists!"));
+  }
+}
+
+void BraveWalletJSHandler::UpdateAndBindJSProperties() {
+  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Local<v8::Value> ethereum_value;
+  v8::Local<v8::Object> ethereum_obj;
+  if (!GetProperty(context, context->Global(), u"ethereum")
+           .ToLocal(&ethereum_value))
+    return;
+  if (ethereum_value->ToObject(context).ToLocal(&ethereum_obj)) {
+    UpdateAndBindJSProperties(v8::Isolate::GetCurrent(), context, ethereum_obj);
+  }
+}
+
+void BraveWalletJSHandler::UpdateAndBindJSProperties(
+    v8::Isolate* isolate,
+    v8::Local<v8::Context> context,
+    v8::Local<v8::Object> ethereum_obj) {
+  ethereum_obj
+      ->Set(context, gin::StringToSymbol(isolate, "chainId"),
+            gin::StringToV8(isolate, chain_id_))
+      .Check();
+  // Note this does not return the selected account, but it returns the
+  // first connected account that was given permissions.
+  if (first_allowed_account_.empty()) {
+    v8::Local<v8::Primitive> undefined(v8::Undefined(isolate));
+    ethereum_obj
+        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
+              undefined)
+        .Check();
+  } else {
+    ethereum_obj
+        ->Set(context, gin::StringToSymbol(isolate, "selectedAddress"),
+              gin::StringToV8(isolate, first_allowed_account_))
+        .Check();
   }
 }
 
@@ -793,6 +841,7 @@ void BraveWalletJSHandler::OnGetChainId(const std::string& chain_id) {
   FireEvent(kConnectEvent, std::move(event_args));
   is_connected_ = true;
   chain_id_ = chain_id;
+  UpdateAndBindJSProperties();
 }
 
 void BraveWalletJSHandler::DisconnectEvent(const std::string& message) {
@@ -807,6 +856,7 @@ void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
   event_args.SetStringKey("chainId", chain_id);
   FireEvent(kChainChangedEvent, std::move(event_args));
   chain_id_ = chain_id;
+  UpdateAndBindJSProperties();
 }
 
 void BraveWalletJSHandler::AccountsChangedEvent(
@@ -815,6 +865,11 @@ void BraveWalletJSHandler::AccountsChangedEvent(
   for (const std::string& account : accounts) {
     event_args.Append(base::Value(account));
   }
+  first_allowed_account_.clear();
+  if (accounts.size() > 0) {
+    first_allowed_account_ = accounts[0];
+  }
+  UpdateAndBindJSProperties();
   FireEvent(kAccountsChangedEvent, std::move(event_args));
 }
 
