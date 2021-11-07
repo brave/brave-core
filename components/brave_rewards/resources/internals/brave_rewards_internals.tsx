@@ -78,7 +78,6 @@ function initialize () {
 // TODO(petemill): Use event listeners instead.
 // @ts-expect-error
 window.brave_rewards_internals = {
-  // @ts-expect-error
   onGetRewardsInternalsInfo,
   balance,
   contributions,

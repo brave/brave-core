@@ -172,9 +172,7 @@ window.brave_rewards = {
   rewardsParameters,
   promotions,
   promotionFinish,
-  // @ts-expect-error
   reconcileStamp,
-  // @ts-expect-error
   contributeList,
   excludedList,
   balanceReport,

@@ -27,7 +27,6 @@ import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
   const response = await fetch(paddedUrl)
   const blob = await response.blob()
-  // @ts-expect-error (Blob.arrayBuffer does exist)
   const buffer = await blob.arrayBuffer()
   const dataUrl = await getUnpaddedAsDataUrl(buffer, mimeType)
   return dataUrl

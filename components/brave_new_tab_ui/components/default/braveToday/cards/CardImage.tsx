@@ -71,7 +71,8 @@ export default function CardImage (props: Props) {
       img.src = unpaddedUrl
       return () => { shouldCancel = true }
     }
-     // otherwise ts complains: "Not all code paths return a value." 🤷‍♂️
+
+    return () => { }
   }, [unpaddedUrl])
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (

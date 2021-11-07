@@ -890,20 +890,13 @@ class NewTabPage extends React.Component<Props, State> {
   renderBinanceWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
     const { binanceState, showBinance, textDirection, binanceSupported } = newTabData
-    const menuActions = { onLearnMore: this.learnMoreBinance }
 
     if (!showBinance || !binanceSupported) {
       return null
     }
 
-    if (binanceState.userAuthed) {
-      menuActions.onDisconnect = this.setBinanceDisconnectInProgress
-      menuActions.onRefreshData = this.binanceRefreshActions
-    }
-
     return (
       <Binance
-        {...menuActions}
         {...binanceState}
         isCrypto={true}
         paddingType={'none'}
@@ -934,12 +927,14 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissAuthInvalid={this.dismissAuthInvalid}
         onSetSelectedView={this.setBinanceSelectedView}
         getCurrencyList={this.getCurrencyList}
+        onLearnMore={this.learnMoreBinance}
+        onRefreshData={binanceState.userAuthed ? this.binanceRefreshActions : undefined}
+        onDisconnect={binanceState.userAuthed ? this.setBinanceDisconnectInProgress : undefined}
       />
     )
   }
 
   renderGeminiWidget (showContent: boolean, position: number) {
-    const menuActions = {}
     const { newTabData } = this.props
     const { geminiState, showGemini, textDirection, geminiSupported } = newTabData
 
@@ -947,15 +942,9 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
-    if (geminiState.userAuthed) {
-      menuActions.onDisconnect = this.setGeminiDisconnectInProgress
-      menuActions.onRefreshData = this.geminiUpdateActions
-    }
-
     return (
       <Gemini
         {...geminiState}
-        {...menuActions}
         isCrypto={true}
         paddingType={'none'}
         isCryptoTab={!showContent}
@@ -978,6 +967,8 @@ class NewTabPage extends React.Component<Props, State> {
         onCancelDisconnect={this.cancelGeminiDisconnect}
         onDisconnectGemini={this.disconnectGemini}
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
+        onDisconnect={geminiState.userAuthed ? this.setGeminiDisconnectInProgress : undefined}
+        onRefreshData={geminiState.userAuthed ? this.geminiUpdateActions : undefined}
       />
     )
   }

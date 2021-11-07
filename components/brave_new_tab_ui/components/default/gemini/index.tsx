@@ -367,7 +367,7 @@ class Gemini extends React.PureComponent<Props, State> {
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = cryptoColors[key] || '#fff'
-    const styles = { color: '#000' }
+    const styles = { color: '#000', marginTop: '0', marginLeft: '0' }
 
     if (this.props.selectedView === 'balance') {
       styles.marginTop = '5px'

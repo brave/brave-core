@@ -6,7 +6,7 @@ import { defaultState } from '../../../storage/new_tab_storage'
 import { initialGridSitesState } from '../../../storage/grid_sites_storage'
 
 function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
-  const staticImages = {}
+  const staticImages = { SpaceX: undefined }
   for (const image of images) {
     Object.assign(staticImages, {
       [image.author]: {
