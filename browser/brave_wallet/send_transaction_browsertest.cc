@@ -18,14 +18,17 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_json_rpc_controller.h"
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
+#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_controller.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/web_contents.h"
@@ -149,6 +152,11 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
+
+  HostContentSettingsMap* host_content_settings_map() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
   GURL GetLastCommitedOrigin() {
     return web_contents()->GetLastCommittedURL().GetOrigin();
   }
@@ -174,6 +182,43 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         }));
     run_loop.Run();
   }
+
+  void LockWallet() {
+    keyring_controller_->Lock();
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void UnlockWallet() {
+    base::RunLoop run_loop;
+    keyring_controller_->Unlock("brave123",
+                                base::BindLambdaForTesting([&](bool success) {
+                                  ASSERT_TRUE(success);
+                                  run_loop.Quit();
+                                }));
+    run_loop.Run();
+    base::RunLoop().RunUntilIdle();
+  }
+
+  void AddAccount(const std::string& account_name) {
+    base::RunLoop run_loop;
+    keyring_controller_->AddAccount(
+        account_name, base::BindLambdaForTesting([&](bool success) {
+          ASSERT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void SetSelectedAccount(const std::string& address) {
+    base::RunLoop run_loop;
+    keyring_controller_->SetSelectedAccount(
+        address, base::BindLambdaForTesting([&](bool success) {
+          ASSERT_TRUE(success);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void UserGrantPermission(bool granted) {
     std::string expected_address = "undefined";
     if (granted) {
@@ -194,7 +239,28 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
               expected_address);
   }
 
-  std::string from() { return "0x084DCb94038af1715963F149079cE011C4B22961"; }
+  void AddEthereumPermission(const GURL& url, size_t from_index = 0) {
+    AddEthereumPermission(url, from(from_index));
+  }
+  void AddEthereumPermission(const GURL& url, const std::string& address) {
+    GURL sub_request_origin;
+    ASSERT_TRUE(
+        brave_wallet::GetSubRequestOrigin(url, address, &sub_request_origin));
+    host_content_settings_map()->SetContentSettingDefaultScope(
+        sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSetting::CONTENT_SETTING_ALLOW);
+    base::RunLoop().RunUntilIdle();
+  }
+
+  std::string from(size_t index = 0) {
+    if (index == 0) {
+      return "0x084DCb94038af1715963F149079cE011C4B22961";
+    }
+    if (index == 1) {
+      return "0xE60A2209372AF1049C4848B1bF0136258c35f268";
+    }
+    return "";
+  }
 
   void ApproveTransaction(const std::string& tx_meta_id) {
     base::RunLoop run_loop;
@@ -426,6 +492,59 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, NoEthPermission) {
                 .ExtractString(),
             l10n_util::GetStringUTF8(
                 IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED));
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SelectedAddress) {
+  RestoreWallet();
+  AddAccount("account 2");
+  GURL url =
+      https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(web_contents());
+
+  EXPECT_EQ(EvalJs(web_contents(), "getChainId()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            "0x1");
+
+  EXPECT_TRUE(
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
+          ->IsShowingBubble());
+  UserGrantPermission(true);
+
+  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            from());
+
+  // Locking the wallet makes the selectedAddress property undefined
+  LockWallet();
+  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            "undefined");
+
+  // Unlock wallet restores the selectedAddress property
+  UnlockWallet();
+  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            from());
+
+  // Changing the selected account doesn't change selectedAddress property
+  // because it's not allowed yet.
+  SetSelectedAccount(from(1));
+  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            from());
+
+  // But it does update the selectedAddress if the account is allowed
+  AddEthereumPermission(url, 1);
+  EXPECT_EQ(EvalJs(web_contents(), "getSelectedAddress()",
+                   content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                .ExtractString(),
+            from(1));
 }
 
 }  // namespace brave_wallet

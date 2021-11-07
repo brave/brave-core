@@ -2,13 +2,10 @@
 
 <script>
   var permissionGranted = false
-  var selectedAddress = ''
   window.ethereum.enable().then(accounts => {
       permissionGranted = true
-      selectedAddress = window.ethereum.selectedAddress
   }).catch(error => {
       permissionGranted = false
-      selectedAddress = window.ethereum.selectedAddress
   })
 
   function getPermissionGranted() {
@@ -77,7 +74,7 @@
   }
   // window.ethereum.selectedAddress and not necessarily the selected account
   function getSelectedAddress() {
-    window.domAutomationController.send(String(selectedAddress))
+    window.domAutomationController.send(String(window.ethereum.selectedAddress))
   }
   function getChainId() {
     window.domAutomationController.send(window.ethereum.chainId)

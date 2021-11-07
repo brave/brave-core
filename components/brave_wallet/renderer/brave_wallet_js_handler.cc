@@ -852,9 +852,7 @@ void BraveWalletJSHandler::ChainChangedEvent(const std::string& chain_id) {
   if (chain_id_ == chain_id)
     return;
 
-  base::DictionaryValue event_args;
-  event_args.SetStringKey("chainId", chain_id);
-  FireEvent(kChainChangedEvent, std::move(event_args));
+  FireEvent(kChainChangedEvent, base::Value(chain_id));
   chain_id_ = chain_id;
   UpdateAndBindJSProperties();
 }

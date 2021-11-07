@@ -43,7 +43,7 @@ std::string CheckForEventScript(const std::string& event_var) {
                    });
                    console.log('!!!set connect')
                    window.ethereum.on('chainChanged', function(chainId) {
-                     received_chain_changed_event = true
+                     received_chain_changed_event = chainId == '0x5'
                    });
                    console.log('!!!set chainChanged')
                  }
