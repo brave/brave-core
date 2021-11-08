@@ -20,6 +20,7 @@ cargo_build("rust_lib") {
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
+    "//brave/components/skus/browser/brave-rewards-cxx/src:rust_lib",
     "//brave/components/speedreader/rust/lib",
   ]
 }
@@ -27,6 +28,7 @@ cargo_build("rust_lib") {
 brave_ffi_deps = [
   "//brave/components/adblock_rust_ffi:rust_ffi",
   "//brave/components/challenge_bypass_ristretto:rust_ffi",
+  "//brave/components/skus/browser/brave-rewards-cxx/src:rust_ffi",
   "//brave/components/speedreader/rust/ffi:rust_ffi",
 ]
 

@@ -147,7 +147,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("shim.h");
+        include!("brave/components/skus/browser/brave-rewards-cxx/src/shim.h");
 
         type SkusSdkContext;
         type SkusSdkFetcher;

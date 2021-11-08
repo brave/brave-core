@@ -1,0 +1,40 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/cargo.gni")
+import("//brave/build/rust/rust_cxx.gni")
+
+rust_crate("rust_lib") {
+  inputs = [
+    "Cargo.toml",
+    "errors.rs",
+    "httpclient.rs",
+    "lib.rs",
+    "log.rs",
+    "storage.rs",
+  ]
+}
+
+rust_cxx("cxx") {
+  input = [ "lib.rs" ]
+  native_header_deps = [ ":shim" ]
+}
+
+source_set("shim") {
+  visibility = [ ":*" ]
+  sources = [ "shim.h" ]
+
+  deps = [
+    "//base",
+    "//brave/build/rust:cxx_cppdeps",
+  ]
+}
+
+rust_ffi("src") {
+  public_deps = [
+    ":cxx",
+    ":shim",
+  ]
+}

@@ -9,17 +9,9 @@
 #include <functional>
 #include <memory>
 
-#ifndef NOT_BRAVE_CORE_SHIM
-#include "brave/components/skus/browser/skus_sdk_context.h"
-#include "brave/components/skus/browser/skus_sdk_fetcher.h"
-#include "brave/components/skus/common/skus_sdk.mojom.h"
-#else
-#include "cxx.h"
-namespace brave_rewards {
-class SkusSdkContext {};
-class SkusSdkFetcher {};
-}  // namespace brave_rewards
-#endif  // NOT_BRAVE_CORE_SHIM
+#include "base/bind.h"
+#include "base/callback_helpers.h"
+#include "brave/third_party/rust/cxx/include/cxx.h"
 
 namespace brave_rewards {
 
@@ -29,36 +21,60 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
-class SkusSdkFetcher;
+
+class FetchOrderCredentialsCallbackState {
+ public:
+  FetchOrderCredentialsCallbackState();
+  ~FetchOrderCredentialsCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
+
+class PrepareCredentialsPresentationCallbackState {
+ public:
+  PrepareCredentialsPresentationCallbackState();
+  ~PrepareCredentialsPresentationCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
+
+class CredentialSummaryCallbackState {
+ public:
+  CredentialSummaryCallbackState();
+  ~CredentialSummaryCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
+};
 
 class RefreshOrderCallbackState {
-#ifndef NOT_BRAVE_CORE_SHIM
  public:
-  skus::mojom::SkusSdk::RefreshOrderCallback cb;
-#endif  // NOT_BRAVE_CORE_SHIM
+  RefreshOrderCallbackState();
+  ~RefreshOrderCallbackState();
+  base::OnceCallback<void(const std::string&)> cb;
 };
-class FetchOrderCredentialsCallbackState {
-#ifndef NOT_BRAVE_CORE_SHIM
+
+class SkusSdkFetcher {
  public:
-  skus::mojom::SkusSdk::FetchOrderCredentialsCallback cb;
-#endif  // NOT_BRAVE_CORE_SHIM
+  virtual ~SkusSdkFetcher() = default;
+  virtual void BeginFetch(
+      const brave_rewards::HttpRequest& req,
+      rust::cxxbridge1::Fn<
+          void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
+               brave_rewards::HttpResponse)> callback,
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) = 0;
 };
-class PrepareCredentialsPresentationCallbackState {
-#ifndef NOT_BRAVE_CORE_SHIM
+
+class SkusSdkContext {
  public:
-  skus::mojom::SkusSdk::PrepareCredentialsPresentationCallback cb;
-#endif  // NOT_BRAVE_CORE_SHIM
-};
-class CredentialSummaryCallbackState {
-#ifndef NOT_BRAVE_CORE_SHIM
- public:
-  skus::mojom::SkusSdk::CredentialSummaryCallback cb;
-#endif  // NOT_BRAVE_CORE_SHIM
+  virtual ~SkusSdkContext() = default;
+  virtual std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher()
+      const = 0;
+  virtual std::string GetValueFromStore(std::string key) const = 0;
+  virtual void PurgeStore() const = 0;
+  virtual void UpdateStoreValue(std::string key, std::string value) const = 0;
 };
 
 using RefreshOrderCallback = void (*)(RefreshOrderCallbackState* callback_state,
                                       RewardsResult result,
                                       rust::cxxbridge1::Str order);
+
 using FetchOrderCredentialsCallback =
     void (*)(FetchOrderCredentialsCallbackState* callback_state,
              RewardsResult result);

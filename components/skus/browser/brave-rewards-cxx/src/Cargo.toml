@@ -19,5 +19,6 @@ tracing = "0.1"
 cxx-build = "1.0"
 
 [lib]
-crate-type = ["staticlib", "rlib"]
 name = "brave_rewards_cxx"
+path = "lib.rs"
+crate-type = ["staticlib", "rlib"]

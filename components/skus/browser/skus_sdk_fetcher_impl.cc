@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/skus/browser/skus_sdk_fetcher.h"
+#include "brave/components/skus/browser/skus_sdk_fetcher_impl.h"
 
 #include <utility>
 #include <vector>
 
-#include "brave/components/skus/browser/brave-rewards-cxx/src/wrapper.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
 #include "net/base/load_flags.h"
 #include "url/gurl.h"
 
@@ -21,13 +21,13 @@ const int kMaxResponseSize = 1000000;  // 1Mb
 
 namespace brave_rewards {
 
-SkusSdkFetcher::SkusSdkFetcher(
+SkusSdkFetcherImpl::SkusSdkFetcherImpl(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory) {}
 
-SkusSdkFetcher::~SkusSdkFetcher() {}
+SkusSdkFetcherImpl::~SkusSdkFetcherImpl() {}
 
-void SkusSdkFetcher::BeginFetch(
+void SkusSdkFetcherImpl::BeginFetch(
     const brave_rewards::HttpRequest& req,
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
@@ -51,13 +51,14 @@ void SkusSdkFetcher::BeginFetch(
 
   sku_sdk_loader_->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&SkusSdkFetcher::OnFetchComplete, base::Unretained(this),
-                     std::move(callback), std::move(ctx)),
+      base::BindOnce(&SkusSdkFetcherImpl::OnFetchComplete,
+                     base::Unretained(this), std::move(callback),
+                     std::move(ctx)),
       kMaxResponseSize);
 }
 
 const net::NetworkTrafficAnnotationTag&
-SkusSdkFetcher::GetNetworkTrafficAnnotationTag() {
+SkusSdkFetcherImpl::GetNetworkTrafficAnnotationTag() {
   static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
       net::DefineNetworkTrafficAnnotation("sku_sdk_execute_request", R"(
       semantics {
@@ -77,7 +78,7 @@ SkusSdkFetcher::GetNetworkTrafficAnnotationTag() {
   return network_traffic_annotation_tag;
 }
 
-void SkusSdkFetcher::OnFetchComplete(
+void SkusSdkFetcherImpl::OnFetchComplete(
     rust::cxxbridge1::Fn<
         void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
              brave_rewards::HttpResponse)> callback,
