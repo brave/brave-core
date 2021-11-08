@@ -6,13 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_INFO_PAGE_INFO_BUBBLE_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_INFO_PAGE_INFO_BUBBLE_VIEW_H_
 
+#if 0
 class PageInfoBubbleView;
 
 #define HandleMoreInfoRequest \
   BraveAddIPFSButtons();      \
   void HandleMoreInfoRequest
+#endif
 
 #include "../../../../../../../chrome/browser/ui/views/page_info/page_info_bubble_view.h"
+
+#if 0
 #undef HandleMoreInfoRequest
+#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_INFO_PAGE_INFO_BUBBLE_VIEW_H_

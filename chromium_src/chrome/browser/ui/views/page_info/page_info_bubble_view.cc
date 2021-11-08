@@ -9,10 +9,12 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/views/page_info/page_info_hover_button.h"
 #include "chrome/browser/ui/views/page_info/page_info_view_factory.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if 0
 namespace {
 
 const char kIPFSDocsURL[] = "https://docs.ipfs.io/";
@@ -35,14 +37,21 @@ std::unique_ptr<PageInfoHoverButton> CreateButton(
 }
 
 }  // namespace
+#endif
 
-#define BRAVE_PAGE_INFO_BUBBLE_VIEW_PAGE_INFO_BUBBLE_VIEW \
+#define BRAVE_PAGE_INFO_BUBBLE_VIEW_PAGE_INFO_BUBBLE_VIEW
+#if 0
+  // This is the continuation to the #define above (restore '\' when undoing
+  // #if 0).
   if (ipfs::IsIPFSScheme(url))                            \
     BraveAddIPFSButtons();
+#endif
 
 #include "../../../../../../../chrome/browser/ui/views/page_info/page_info_bubble_view.cc"
+
 #undef BRAVE_PAGE_INFO_BUBBLE_VIEW_PAGE_INFO_BUBBLE_VIEW
 
+#if 0
 void PageInfoBubbleView::BraveAddIPFSButtons() {
   site_settings_view_->AddChildViewAt(
       CreateButton(IDR_BRAVE_IPFS_LOGO, IDS_PAGE_INFO_IPFS_SETTINGS_BUTTON_TEXT,
@@ -75,3 +84,4 @@ void PageInfoBubbleView::BraveAddIPFSButtons() {
                        base::Unretained(this))),
       0);
 }
+#endif
