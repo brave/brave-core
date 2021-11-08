@@ -42,6 +42,9 @@ class BraveWalletTabHelper
   bool CloseOnDeactivateForTesting() const {
     return close_on_deactivate_for_testing_;
   }
+  void SetSkipDelegateForTesting(bool skip) {
+    skip_delegate_for_testing_ = skip;
+  }
 #endif
 
  private:
@@ -51,6 +54,8 @@ class BraveWalletTabHelper
   GURL GetBubbleURL();
   base::OnceClosure show_bubble_callback_for_testing_;
   bool close_on_deactivate_for_testing_ = true;
+  bool is_showing_bubble_for_testing_ = false;
+  bool skip_delegate_for_testing_ = false;
   GURL GetApproveBubbleURL();
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
