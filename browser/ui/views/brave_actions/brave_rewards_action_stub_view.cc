@@ -42,15 +42,16 @@ class BraveRewardsActionStubViewHighlightPathGenerator
       : public views::HighlightPathGenerator {
  public:
   BraveRewardsActionStubViewHighlightPathGenerator() = default;
+  BraveRewardsActionStubViewHighlightPathGenerator(
+      const BraveRewardsActionStubViewHighlightPathGenerator&) = delete;
+  BraveRewardsActionStubViewHighlightPathGenerator& operator=(
+      const BraveRewardsActionStubViewHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveRewardsActionStubView*>(view)
         ->GetHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubViewHighlightPathGenerator);
 };
 
 }  // namespace

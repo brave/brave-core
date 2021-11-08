@@ -39,6 +39,9 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
     : host_view_(host_view) {
   }
 
+  BraveAlertBackground(const BraveAlertBackground&) = delete;
+  BraveAlertBackground& operator=(const BraveAlertBackground&) = delete;
+
   // views::Background overrides:
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
     if (!host_view_->IsTabAudioToggleable())
@@ -56,8 +59,6 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
 
  private:
   BraveAlertIndicator* host_view_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAlertBackground);
 };
 
 BraveAlertIndicator::BraveAlertIndicator(Tab* parent_tab)

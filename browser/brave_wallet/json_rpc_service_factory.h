@@ -20,6 +20,9 @@ class JsonRpcService;
 
 class JsonRpcServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  JsonRpcServiceFactory(const JsonRpcServiceFactory&) = delete;
+  JsonRpcServiceFactory& operator=(const JsonRpcServiceFactory&) = delete;
+
   static mojo::PendingRemote<mojom::JsonRpcService> GetForContext(
       content::BrowserContext* context);
   static JsonRpcService* GetServiceForContext(content::BrowserContext* context);
@@ -38,8 +41,6 @@ class JsonRpcServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(JsonRpcServiceFactory);
 };
 
 }  // namespace brave_wallet

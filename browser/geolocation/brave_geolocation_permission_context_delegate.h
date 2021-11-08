@@ -15,6 +15,10 @@ class BraveGeolocationPermissionContextDelegate
  public:
   explicit BraveGeolocationPermissionContextDelegate(
       content::BrowserContext* browser_context);
+  BraveGeolocationPermissionContextDelegate(
+      const BraveGeolocationPermissionContextDelegate&) = delete;
+  BraveGeolocationPermissionContextDelegate& operator=(
+      const BraveGeolocationPermissionContextDelegate&) = delete;
   ~BraveGeolocationPermissionContextDelegate() override;
 
   bool DecidePermission(
@@ -27,7 +31,6 @@ class BraveGeolocationPermissionContextDelegate
 
  private:
   Profile* profile_;
-  DISALLOW_COPY_AND_ASSIGN(BraveGeolocationPermissionContextDelegate);
 };
 
 #endif  // BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_DELEGATE_H_

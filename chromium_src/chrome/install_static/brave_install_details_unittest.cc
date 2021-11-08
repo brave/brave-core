@@ -6,7 +6,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "chrome/install_static/install_modes.h"
 #include "components/version_info/version_info_values.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -18,6 +17,9 @@ namespace install_static {
 
 class FakeInstallDetails : public InstallDetails {
  public:
+  FakeInstallDetails(const FakeInstallDetails&) = delete;
+  FakeInstallDetails& operator=(const FakeInstallDetails&) = delete;
+
   FakeInstallDetails() : InstallDetails(&payload) {
     constants.size = sizeof(constants);
     constants.install_suffix = L"";
@@ -49,8 +51,6 @@ class FakeInstallDetails : public InstallDetails {
   std::wstring channel = std::wstring(L"testchannel");
   std::string product_version = std::string(PRODUCT_VERSION);
   Payload payload = Payload();
-
-  DISALLOW_COPY_AND_ASSIGN(FakeInstallDetails);
 };
 
 TEST(InstallDetailsTest, GetClientStateKeyPath) {

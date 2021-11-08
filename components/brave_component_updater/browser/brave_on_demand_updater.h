@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/callback.h"
-#include "base/macros.h"
 
 namespace base {
 template <typename T>
@@ -23,6 +22,8 @@ class BraveOnDemandUpdater {
   using Callback = base::RepeatingCallback<void(const std::string&)>;
   static BraveOnDemandUpdater* GetInstance();
 
+  BraveOnDemandUpdater(const BraveOnDemandUpdater&) = delete;
+  BraveOnDemandUpdater& operator=(const BraveOnDemandUpdater&) = delete;
   ~BraveOnDemandUpdater();
   void OnDemandUpdate(const std::string& id);
 
@@ -33,8 +34,6 @@ class BraveOnDemandUpdater {
   BraveOnDemandUpdater();
 
   Callback on_demand_update_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveOnDemandUpdater);
 };
 
 }  // namespace brave_component_updater

@@ -32,6 +32,10 @@ class TorLauncherObserver;
 class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
   using GetLogCallback = base::OnceCallback<void(bool, const std::string&)>;
+
+  TorLauncherFactory(const TorLauncherFactory&) = delete;
+  TorLauncherFactory& operator=(const TorLauncherFactory&) = delete;
+
   static TorLauncherFactory* GetInstance();
 
   virtual void Init();
@@ -103,8 +107,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_FACTORY_H_

@@ -60,6 +60,9 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
 class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
  public:
   explicit MockContentSettingsAgentImpl(content::RenderFrame* render_frame);
+  MockContentSettingsAgentImpl(const MockContentSettingsAgentImpl&) = delete;
+  MockContentSettingsAgentImpl& operator=(const MockContentSettingsAgentImpl&) =
+      delete;
   ~MockContentSettingsAgentImpl() override {}
 
   // ContentSettingAgentImpl methods:
@@ -73,8 +76,6 @@ class MockContentSettingsAgentImpl : public BraveContentSettingsAgentImpl {
 
  private:
   MockContentSettingsManagerImpl::Log log_;
-
-  DISALLOW_COPY_AND_ASSIGN(MockContentSettingsAgentImpl);
 };
 
 MockContentSettingsAgentImpl::MockContentSettingsAgentImpl(

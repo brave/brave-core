@@ -14,6 +14,10 @@ class BackgroundVideoPlaybackTabHelper
       public content::WebContentsUserData<BackgroundVideoPlaybackTabHelper> {
  public:
   explicit BackgroundVideoPlaybackTabHelper(content::WebContents* contents);
+  BackgroundVideoPlaybackTabHelper(const BackgroundVideoPlaybackTabHelper&) =
+      delete;
+  BackgroundVideoPlaybackTabHelper& operator=(
+      const BackgroundVideoPlaybackTabHelper&) = delete;
   ~BackgroundVideoPlaybackTabHelper() override;
 
   // content::WebContentsObserver overrides:
@@ -21,9 +25,6 @@ class BackgroundVideoPlaybackTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BackgroundVideoPlaybackTabHelper);
 };
 
 #endif  // BRAVE_BROWSER_ANDROID_PREFERENCES_BACKGROUND_VIDEO_PLAYBACK_TAB_HELPER_H_

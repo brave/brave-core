@@ -8,7 +8,6 @@
 #include <string>
 #include <memory>
 
-#include "base/macros.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "net/base/proxy_server.h"
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
@@ -23,10 +22,12 @@ namespace net {
 class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
  public:
   ProxyConfigServiceTorTest() {}
+  ProxyConfigServiceTorTest(const ProxyConfigServiceTorTest&) = delete;
+  ProxyConfigServiceTorTest& operator=(const ProxyConfigServiceTorTest&) =
+      delete;
   ~ProxyConfigServiceTorTest() override {}
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(ProxyConfigServiceTorTest);
 };
 
 TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {

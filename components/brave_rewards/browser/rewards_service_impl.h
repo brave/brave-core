@@ -107,6 +107,8 @@ class RewardsServiceImpl : public RewardsService,
 #else
   explicit RewardsServiceImpl(Profile* profile);
 #endif
+  RewardsServiceImpl(const RewardsServiceImpl&) = delete;
+  RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
 
   // KeyedService:
@@ -810,7 +812,6 @@ class RewardsServiceImpl : public RewardsService,
   GetTestResponseCallback test_response_callback_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };
 
 }  // namespace brave_rewards

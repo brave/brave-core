@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 
@@ -20,6 +19,8 @@ class AutocompleteProviderClient;
 class TopSitesProvider : public AutocompleteProvider {
  public:
   explicit TopSitesProvider(AutocompleteProviderClient* client);
+  TopSitesProvider(const TopSitesProvider&) = delete;
+  TopSitesProvider& operator=(const TopSitesProvider&) = delete;
 
   // AutocompleteProvider:
   void Start(const AutocompleteInput& input, bool minimal_changes) override;
@@ -40,7 +41,6 @@ class TopSitesProvider : public AutocompleteProvider {
       const size_t &foundPos);
 
   AutocompleteProviderClient* client_;
-  DISALLOW_COPY_AND_ASSIGN(TopSitesProvider);
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_TOPSITES_PROVIDER_H_

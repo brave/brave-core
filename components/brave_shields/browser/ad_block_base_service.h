@@ -42,6 +42,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
       brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
 
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
+  AdBlockBaseService(const AdBlockBaseService&) = delete;
+  AdBlockBaseService& operator=(const AdBlockBaseService&) = delete;
   ~AdBlockBaseService() override;
 
   void ShouldStartRequest(const GURL& url,
@@ -95,7 +97,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   std::set<std::string> tags_;
   std::string resources_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
-  DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 
 }  // namespace brave_shields

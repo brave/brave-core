@@ -34,6 +34,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
 {
  public:
   BraveDefaultExtensionsHandler();
+  BraveDefaultExtensionsHandler(const BraveDefaultExtensionsHandler&) = delete;
+  BraveDefaultExtensionsHandler& operator=(
+      const BraveDefaultExtensionsHandler&) = delete;
   ~BraveDefaultExtensionsHandler() override;
 
  private:
@@ -113,8 +116,6 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler
       ipfs_service_observer_{this};
 #endif
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_

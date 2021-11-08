@@ -15,6 +15,10 @@ class AdBlockPrefService;
 
 class AdBlockPrefServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  AdBlockPrefServiceFactory(const AdBlockPrefServiceFactory&) = delete;
+  AdBlockPrefServiceFactory& operator=(const AdBlockPrefServiceFactory&) =
+      delete;
+
   static AdBlockPrefService* GetForBrowserContext(
       content::BrowserContext* context);
 
@@ -35,8 +39,6 @@ class AdBlockPrefServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
 
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(AdBlockPrefServiceFactory);
 };
 
 }  // namespace brave_shields

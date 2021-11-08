@@ -11,6 +11,8 @@
 class BraveThemeHelperWin : public ThemeHelperWin {
  public:
   BraveThemeHelperWin() = default;
+  BraveThemeHelperWin(const BraveThemeHelperWin&) = delete;
+  BraveThemeHelperWin& operator=(const BraveThemeHelperWin&) = delete;
   ~BraveThemeHelperWin() override = default;
 
  private:
@@ -19,8 +21,6 @@ class BraveThemeHelperWin : public ThemeHelperWin {
       int id,
       bool incognito,
       const CustomThemeSupplier* theme_supplier) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveThemeHelperWin);
 };
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_THEME_HELPER_WIN_H_

@@ -24,9 +24,10 @@ class TabHoverCardBubbleView : public TabHoverCardBubbleView_ChromiumImpl {
   using TabHoverCardBubbleView_ChromiumImpl::
       TabHoverCardBubbleView_ChromiumImpl;
 
-  void UpdateCardContent(const Tab* tab) override;
+  TabHoverCardBubbleView(const TabHoverCardBubbleView&) = delete;
+  TabHoverCardBubbleView& operator=(const TabHoverCardBubbleView&) = delete;
 
-  DISALLOW_COPY_AND_ASSIGN(TabHoverCardBubbleView);
+  void UpdateCardContent(const Tab* tab) override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_HOVER_CARD_BUBBLE_VIEW_H_

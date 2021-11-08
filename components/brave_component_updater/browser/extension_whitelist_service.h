@@ -37,6 +37,9 @@ class ExtensionWhitelistService : public LocalDataFilesObserver {
   explicit ExtensionWhitelistService(
       LocalDataFilesService* local_data_files_service,
       const std::vector<std::string>& whitelist);
+  ExtensionWhitelistService(const ExtensionWhitelistService&) = delete;
+  ExtensionWhitelistService& operator=(const ExtensionWhitelistService&) =
+      delete;
   ~ExtensionWhitelistService() override;
 
   bool IsWhitelisted(const std::string& extension_id) const;
@@ -60,8 +63,6 @@ class ExtensionWhitelistService : public LocalDataFilesObserver {
   brave_component_updater::DATFileDataBuffer buffer_;
   std::vector<std::string> whitelist_;
   base::WeakPtrFactory<ExtensionWhitelistService> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(ExtensionWhitelistService);
 };
 
 // Creates the ExtensionWhitelistService

@@ -17,12 +17,11 @@ class BraveSyncManagerImpl : public SyncManagerImpl {
   BraveSyncManagerImpl(
       const std::string& name,
       network::NetworkConnectionTracker* network_connection_tracker);
+  BraveSyncManagerImpl(const BraveSyncManagerImpl&) = delete;
+  BraveSyncManagerImpl& operator=(const BraveSyncManagerImpl&) = delete;
   ~BraveSyncManagerImpl() override;
 
   void StartSyncingNormally(base::Time last_poll_time) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncManagerImpl);
 };
 
 }  // namespace syncer

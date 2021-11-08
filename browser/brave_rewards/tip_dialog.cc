@@ -44,6 +44,8 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit TipDialogDelegate(WebContents* initiator,
       std::unique_ptr<base::DictionaryValue> params);
+  TipDialogDelegate(const TipDialogDelegate&) = delete;
+  TipDialogDelegate& operator=(const TipDialogDelegate&) = delete;
   ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -60,8 +62,6 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
  private:
   WebContents* initiator_;
   std::unique_ptr<base::DictionaryValue> params_;
-
-  DISALLOW_COPY_AND_ASSIGN(TipDialogDelegate);
 };
 
 TipDialogDelegate::TipDialogDelegate(WebContents* initiator,

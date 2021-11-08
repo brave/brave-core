@@ -55,6 +55,8 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
 #endif
   }
+  BraveToolbarViewTest(const BraveToolbarViewTest&) = delete;
+  BraveToolbarViewTest& operator=(const BraveToolbarViewTest&) = delete;
   ~BraveToolbarViewTest() override = default;
 
   void SetUpOnMainThread() override { Init(browser()); }
@@ -80,8 +82,6 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif
-
-  DISALLOW_COPY_AND_ASSIGN(BraveToolbarViewTest);
 };
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

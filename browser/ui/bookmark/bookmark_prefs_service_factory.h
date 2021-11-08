@@ -13,6 +13,10 @@ class BookmarkPrefsService;
 
 class BookmarkPrefsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  BookmarkPrefsServiceFactory(const BookmarkPrefsServiceFactory&) = delete;
+  BookmarkPrefsServiceFactory& operator=(const BookmarkPrefsServiceFactory&) =
+      delete;
+
   static BookmarkPrefsService* GetForBrowserContext(
       content::BrowserContext* context);
 
@@ -32,8 +36,6 @@ class BookmarkPrefsServiceFactory : public BrowserContextKeyedServiceFactory {
   bool ServiceIsCreatedWithBrowserContext() const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
-
-  DISALLOW_COPY_AND_ASSIGN(BookmarkPrefsServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_FACTORY_H_

@@ -35,6 +35,9 @@ struct WebPreferences;
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
   BraveContentBrowserClient();
+  BraveContentBrowserClient(const BraveContentBrowserClient&) = delete;
+  BraveContentBrowserClient& operator=(const BraveContentBrowserClient&) =
+      delete;
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
@@ -144,8 +147,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_

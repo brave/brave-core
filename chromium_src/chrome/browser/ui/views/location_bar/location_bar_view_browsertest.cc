@@ -35,6 +35,9 @@ class SecurityIndicatorTest
  public:
   SecurityIndicatorTest() : InProcessBrowserTest(), cert_(nullptr) {}
 
+  SecurityIndicatorTest(const SecurityIndicatorTest&) = delete;
+  SecurityIndicatorTest& operator=(const SecurityIndicatorTest&) = delete;
+
   void SetUpInProcessBrowserTestFixture() override {
     cert_ =
         net::ImportCertFromFile(net::GetTestCertsDirectory(), "ok_cert.pem");
@@ -85,8 +88,6 @@ class SecurityIndicatorTest
   scoped_refptr<net::X509Certificate> cert_;
 
   std::unique_ptr<content::URLLoaderInterceptor> url_loader_interceptor_;
-
-  DISALLOW_COPY_AND_ASSIGN(SecurityIndicatorTest);
 };
 
 IN_PROC_BROWSER_TEST_P(SecurityIndicatorTest, CheckIndicatorText) {

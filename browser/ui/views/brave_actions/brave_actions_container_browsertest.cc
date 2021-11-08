@@ -29,6 +29,9 @@
 class BraveActionsContainerTest : public InProcessBrowserTest {
  public:
   BraveActionsContainerTest() = default;
+  BraveActionsContainerTest(const BraveActionsContainerTest&) = delete;
+  BraveActionsContainerTest& operator=(const BraveActionsContainerTest&) =
+      delete;
   ~BraveActionsContainerTest() override = default;
 
   void SetUpOnMainThread() override { Init(browser()); }
@@ -53,7 +56,6 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
  protected:
   BraveActionsContainer* brave_actions_;
   PrefService* prefs_;
-  DISALLOW_COPY_AND_ASSIGN(BraveActionsContainerTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {

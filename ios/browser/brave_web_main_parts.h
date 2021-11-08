@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "ios/chrome/browser/ios_chrome_field_trials.h"
 #include "ios/web/public/init/web_main_parts.h"
 
@@ -22,6 +21,8 @@ class FieldTrialList;
 class BraveWebMainParts : public web::WebMainParts {
  public:
   BraveWebMainParts();
+  BraveWebMainParts(const BraveWebMainParts&) = delete;
+  BraveWebMainParts& operator=(const BraveWebMainParts&) = delete;
   ~BraveWebMainParts() override;
 
  private:
@@ -42,8 +43,6 @@ class BraveWebMainParts : public web::WebMainParts {
   PrefService* local_state_;
 
   IOSChromeFieldTrials ios_field_trials_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveWebMainParts);
 };
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WEB_MAIN_PARTS_H_

@@ -12,7 +12,6 @@
 
 #include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
-#include "base/macros.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
@@ -137,6 +136,8 @@ using OnTipCallback = base::OnceCallback<void(ledger::type::Result)>;
 class RewardsService : public KeyedService {
  public:
   RewardsService();
+  RewardsService(const RewardsService&) = delete;
+  RewardsService& operator=(const RewardsService&) = delete;
   ~RewardsService() override;
 
   virtual bool IsInitialized() = 0;
@@ -371,9 +372,6 @@ class RewardsService : public KeyedService {
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(RewardsService);
 };
 
 }  // namespace brave_rewards

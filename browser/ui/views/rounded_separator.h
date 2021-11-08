@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/views/view.h"
 
@@ -23,6 +22,8 @@ class RoundedSeparator : public views::View {
   static const int kThickness;
 
   RoundedSeparator();
+  RoundedSeparator(const RoundedSeparator&) = delete;
+  RoundedSeparator& operator=(const RoundedSeparator&) = delete;
   ~RoundedSeparator() override;
 
   void SetColor(SkColor color);
@@ -38,8 +39,6 @@ class RoundedSeparator : public views::View {
  private:
   int preferred_height_ = kThickness;
   absl::optional<SkColor> overridden_color_;
-
-  DISALLOW_COPY_AND_ASSIGN(RoundedSeparator);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_

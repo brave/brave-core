@@ -19,6 +19,9 @@ class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
       const network::ResourceRequest&)>
       OnBeforeSystemRequestCallback;
 
+  SystemRequestHandler(const SystemRequestHandler&) = delete;
+  SystemRequestHandler& operator=(const SystemRequestHandler&) = delete;
+
   // Returns the instance of SystemRequestHandler.
   static SystemRequestHandler* GetInstance();
 
@@ -36,8 +39,6 @@ class COMPONENT_EXPORT(NETWORK_CPP) SystemRequestHandler {
   ~SystemRequestHandler();
 
   OnBeforeSystemRequestCallback on_before_system_request_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(SystemRequestHandler);
 };
 
 }  // namespace network

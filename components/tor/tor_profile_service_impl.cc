@@ -45,6 +45,8 @@ class NewTorCircuitTracker : public WebContentsObserver {
  public:
   explicit NewTorCircuitTracker(content::WebContents* web_contents)
       : WebContentsObserver(web_contents) {}
+  NewTorCircuitTracker(const NewTorCircuitTracker&) = delete;
+  NewTorCircuitTracker& operator=(const NewTorCircuitTracker&) = delete;
   ~NewTorCircuitTracker() override {}
 
   void NewIdentityLoaded(bool success) {
@@ -59,13 +61,13 @@ class NewTorCircuitTracker : public WebContentsObserver {
       }
     }
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(NewTorCircuitTracker);
 };
 
 class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
  public:
+  TorProxyLookupClient(const TorProxyLookupClient&) = delete;
+  TorProxyLookupClient& operator=(const TorProxyLookupClient&) = delete;
+
   static mojo::PendingRemote<network::mojom::ProxyLookupClient>
   CreateTorProxyLookupClient(NewTorCircuitCallback callback) {
     auto* lookup_client = new TorProxyLookupClient(std::move(callback));
@@ -100,8 +102,6 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 
   NewTorCircuitCallback callback_;
   mojo::Receiver<network::mojom::ProxyLookupClient> receiver_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,

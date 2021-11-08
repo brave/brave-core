@@ -33,6 +33,8 @@ using brave_shields::features::kBraveDomainBlock;
 class DomainBlockTestBase : public AdBlockServiceTest {
  public:
   DomainBlockTestBase() {}
+  DomainBlockTestBase(const DomainBlockTestBase&) = delete;
+  DomainBlockTestBase& operator=(const DomainBlockTestBase&) = delete;
 
   void SetUp() override {
     request_count_ = 0;
@@ -80,8 +82,6 @@ class DomainBlockTestBase : public AdBlockServiceTest {
 
  protected:
   int request_count_;
-
-  DISALLOW_COPY_AND_ASSIGN(DomainBlockTestBase);
 };
 
 class DomainBlockTest : public DomainBlockTestBase {

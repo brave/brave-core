@@ -23,7 +23,10 @@ using ClientAttestationCallback =
 class SafetyNetCheck {
  public:
     explicit SafetyNetCheck(SafetyNetCheckRunner* runner);
+    SafetyNetCheck(const SafetyNetCheck&) = delete;
+    SafetyNetCheck& operator=(const SafetyNetCheck&) = delete;
     ~SafetyNetCheck();
+
     // Performs client attestation, called from C++
     bool clientAttestation(const std::string& nonce,
       ClientAttestationCallback attest_callback,
@@ -39,22 +42,21 @@ class SafetyNetCheck {
     base::android::ScopedJavaGlobalRef<jobject> java_obj_;
     ClientAttestationCallback attest_callback_;
     SafetyNetCheckRunner* runner_;
-
-    DISALLOW_COPY_AND_ASSIGN(SafetyNetCheck);
 };
 
 class SafetyNetCheckRunner {
  public:
     SafetyNetCheckRunner();
+    SafetyNetCheckRunner(const SafetyNetCheckRunner&) = delete;
+    SafetyNetCheckRunner& operator=(const SafetyNetCheckRunner&) = delete;
     ~SafetyNetCheckRunner();
+
     void performSafetynetCheck(const std::string& nonce,
       ClientAttestationCallback attest_callback,
       const bool perform_attestation_on_client = false);
     void jobFinished(SafetyNetCheck* finished_job);
  private:
-    std::vector<std::unique_ptr<SafetyNetCheck>> jobs_;
-
-    DISALLOW_COPY_AND_ASSIGN(SafetyNetCheckRunner);
+  std::vector<std::unique_ptr<SafetyNetCheck>> jobs_;
 };
 
 }  // namespace safetynet_check

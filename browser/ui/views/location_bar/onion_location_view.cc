@@ -63,6 +63,8 @@ void OnTorProfileCreated(GURL onion_location,
 class HighlightPathGenerator : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
+  HighlightPathGenerator(const HighlightPathGenerator&) = delete;
+  HighlightPathGenerator& operator=(const HighlightPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
@@ -71,9 +73,6 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
     const int corner_radius = view->height() / 2;
     return SkPath().addRoundRect(rect, corner_radius, corner_radius);
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
 class OnionLocationButtonView : public views::LabelButton {
@@ -112,6 +111,9 @@ class OnionLocationButtonView : public views::LabelButton {
         this, std::make_unique<HighlightPathGenerator>());
   }
 
+  OnionLocationButtonView(const OnionLocationButtonView&) = delete;
+  OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;
+
   ~OnionLocationButtonView() override {}
 
   void SetOnionLocation(GURL location) { onion_location_ = location; }
@@ -136,9 +138,6 @@ class OnionLocationButtonView : public views::LabelButton {
 
   GURL onion_location_;
   Profile* profile_;
-
-  OnionLocationButtonView(const OnionLocationButtonView&) = delete;
-  OnionLocationButtonView& operator=(const OnionLocationButtonView&) = delete;
 };
 
 }  // namespace

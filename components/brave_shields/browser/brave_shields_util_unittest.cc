@@ -5,7 +5,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -27,6 +26,8 @@ using brave_shields::features::kBraveDomainBlock;
 class BraveShieldsUtilTest : public testing::Test {
  public:
   BraveShieldsUtilTest() = default;
+  BraveShieldsUtilTest(const BraveShieldsUtilTest&) = delete;
+  BraveShieldsUtilTest& operator=(const BraveShieldsUtilTest&) = delete;
   ~BraveShieldsUtilTest() override = default;
 
   void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
@@ -43,8 +44,6 @@ class BraveShieldsUtilTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveShieldsUtilTest);
 };
 
 class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {

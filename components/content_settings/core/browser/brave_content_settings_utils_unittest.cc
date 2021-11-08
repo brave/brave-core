@@ -5,7 +5,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -19,6 +18,9 @@ using content_settings::ConvertPatternToWildcardSchemeAndPort;
 class BraveContentSettingsUtilsTest : public testing::Test {
  public:
   BraveContentSettingsUtilsTest() = default;
+  BraveContentSettingsUtilsTest(const BraveContentSettingsUtilsTest&) = delete;
+  BraveContentSettingsUtilsTest& operator=(
+      const BraveContentSettingsUtilsTest&) = delete;
   ~BraveContentSettingsUtilsTest() override = default;
 
   void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
@@ -28,8 +30,6 @@ class BraveContentSettingsUtilsTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsUtilsTest);
 };
 
 TEST_F(BraveContentSettingsUtilsTest,

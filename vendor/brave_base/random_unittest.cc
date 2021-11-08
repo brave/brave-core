@@ -7,16 +7,18 @@
 
 #include <cmath>
 
-#include "base/macros.h"
 #include "brave_base/random.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class BraveRandomDeterministicTest : public testing::Test {
  public:
   BraveRandomDeterministicTest() {}
+  BraveRandomDeterministicTest(const BraveRandomDeterministicTest&) = delete;
+  BraveRandomDeterministicTest& operator=(const BraveRandomDeterministicTest&) =
+      delete;
   ~BraveRandomDeterministicTest() override {}
+
  private:
-  DISALLOW_COPY_AND_ASSIGN(BraveRandomDeterministicTest);
 };
 
 TEST_F(BraveRandomDeterministicTest, Uniform_01) {

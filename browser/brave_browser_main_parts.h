@@ -6,12 +6,14 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 
-#include "base/macros.h"
 #include "chrome/browser/chrome_browser_main.h"
 
 class BraveBrowserMainParts : public ChromeBrowserMainParts {
  public:
   using ChromeBrowserMainParts::ChromeBrowserMainParts;
+
+  BraveBrowserMainParts(const BraveBrowserMainParts&) = delete;
+  BraveBrowserMainParts& operator=(const BraveBrowserMainParts&) = delete;
   ~BraveBrowserMainParts() override = default;
 
   void PreBrowserStart() override;
@@ -22,8 +24,6 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
 
  private:
   friend class ChromeBrowserMainExtraPartsTor;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainParts);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_

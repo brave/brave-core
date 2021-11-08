@@ -14,6 +14,10 @@ class Profile;
 
 class CryptoDotComServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  CryptoDotComServiceFactory(const CryptoDotComServiceFactory&) = delete;
+  CryptoDotComServiceFactory& operator=(const CryptoDotComServiceFactory&) =
+      delete;
+
   static CryptoDotComService* GetForProfile(Profile* profile);
   static CryptoDotComServiceFactory* GetInstance();
 
@@ -28,8 +32,6 @@ class CryptoDotComServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(CryptoDotComServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_CRYPTO_DOT_COM_CRYPTO_DOT_COM_SERVICE_FACTORY_H_

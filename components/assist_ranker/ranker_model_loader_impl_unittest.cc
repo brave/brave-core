@@ -32,6 +32,11 @@ using assist_ranker::RankerModelLoaderImpl;
 using assist_ranker::RankerModelStatus;
 
 class RankerModelLoaderImplTest : public ::testing::Test {
+ public:
+  RankerModelLoaderImplTest(const RankerModelLoaderImplTest&) = delete;
+  RankerModelLoaderImplTest& operator=(const RankerModelLoaderImplTest&) =
+      delete;
+
  protected:
   RankerModelLoaderImplTest();
 
@@ -67,9 +72,6 @@ class RankerModelLoaderImplTest : public ::testing::Test {
 
   // Model Data.
   RankerModel remote_model_;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(RankerModelLoaderImplTest);
 };
 
 RankerModelLoaderImplTest::RankerModelLoaderImplTest() {

@@ -60,6 +60,8 @@ class BraveSyncServiceTracker : public syncer::SyncServiceObserver {
 class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
   explicit BraveSyncWorker(ChromeBrowserState* browser_state_);
+  BraveSyncWorker(const BraveSyncWorker&) = delete;
+  BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
 
   bool SetSyncEnabled(bool enabled);
@@ -94,8 +96,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   base::ScopedObservation<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_WORKER_H_
