@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import CloseIcon from '../../extension/assets/close.svg'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -50,8 +51,8 @@ export const Title = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const CloseButton = styled.button`
-  display: flex;;
+export const CloseButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ export const CheckboxRow = styled.div`
   width: 10%;
 `
 
-export const DeleteButton = styled.button`
+export const DeleteButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

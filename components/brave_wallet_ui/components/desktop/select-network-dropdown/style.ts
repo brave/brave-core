@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import {
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -22,8 +23,8 @@ export const CaratDownIcon = styled(CaratCircleODownIcon)`
 
 // Will use brave-ui button comp in the future!
 // Currently is missing "tiny" variant
-export const OvalButton = styled.button`
-  display: flex;;
+export const OvalButton = styled(WalletButton)`
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;

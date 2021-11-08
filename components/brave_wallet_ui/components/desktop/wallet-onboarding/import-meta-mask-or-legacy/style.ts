@@ -3,6 +3,7 @@ import MMIcon from '../../../../assets/svg-icons/onboarding/import-from-metamask
 import MMIconDark from '../../../../assets/svg-icons/onboarding/import-from-metamask-dark.svg'
 import BIcon from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet.svg'
 import BIconDark from '../../../../assets/svg-icons/onboarding/reset-to-brave-wallet-dark.svg'
+import { WalletButton } from '../../../shared/style'
 
 interface StyleProps {
   needsNewPassword: boolean
@@ -74,7 +75,7 @@ export const BraveIcon = styled.div<Partial<StyleProps>>`
   }
 `
 
-export const LostButton = styled.button`
+export const LostButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 import Plus from '../../../assets/svg-icons/plus-icon.svg'
 
@@ -20,7 +21,7 @@ export const HeaderText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const Button = styled.button`
+export const Button = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   align-items: center;

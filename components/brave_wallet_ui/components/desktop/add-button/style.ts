@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 import icon from '../../../assets/svg-icons/plus-icon.svg'
 import { EditOIcon } from 'brave-ui/components/icons'
 interface StyleProps {
@@ -7,7 +8,7 @@ interface StyleProps {
 
 // Will need to change to brave-ui button
 
-export const StyledButton = styled.button<StyleProps>`
+export const StyledButton = styled(WalletButton) <StyleProps>`
   display: flex;
   align-items: center;
   justify-content: center;

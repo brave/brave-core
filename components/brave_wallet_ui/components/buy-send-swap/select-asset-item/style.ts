@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled.button`
+export const StyledWrapper = styled(WalletButton)`
   display: flex;
   width: 100%;
   flex-direction: row;

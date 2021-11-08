@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { MoreVertRIcon } from 'brave-ui/components/icons'
 import { LockIconD } from '../../../assets/svg-icons/nav-button-icons'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ export const Line = styled.div`
   background: ${(p) => p.theme.color.divider01};
 `
 
-export const MoreButton = styled.button`
+export const MoreButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

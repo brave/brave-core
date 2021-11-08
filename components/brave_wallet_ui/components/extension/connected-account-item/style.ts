@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-
+import { WalletButton } from '../../shared/style'
 interface StyleProps {
   orb: string
 }
@@ -52,7 +52,7 @@ export const AccountAddressText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const DisconnectButton = styled.button<Partial<StyleProps>>`
+export const DisconnectButton = styled(WalletButton) <Partial<StyleProps>>`
   display: flex;;
   cursor: pointer;
   outline: none;

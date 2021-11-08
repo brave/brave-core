@@ -1,10 +1,11 @@
 import styled from 'styled-components'
+import { WalletButton } from '../style'
 
 interface StyleProps {
   orb: string
 }
 
-export const StyledWrapper = styled.button`
+export const StyledWrapper = styled(WalletButton)`
   display: flex;
   width: 100%;
   flex-direction: row;

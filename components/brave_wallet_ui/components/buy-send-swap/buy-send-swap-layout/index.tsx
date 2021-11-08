@@ -48,6 +48,7 @@ function BuySendSwapLayout (props: Props) {
               isSelected={selectedTab === option.id}
               onClick={onChangeTab(option.id)}
               isDisabled={isBuyDisabled && option.id === 'buy' || isSwapDisabled && option.id === 'swap'}
+              disabled={isBuyDisabled && option.id === 'buy' || isSwapDisabled && option.id === 'swap'}
             >
               <RightDivider
                 tabID={option.id}

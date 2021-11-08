@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { BuySendSwapTypes } from '../../../constants/types'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
@@ -57,7 +58,7 @@ export const ButtonRow = styled.div`
   top: 0px;
 `
 
-export const TabButton = styled.button<Partial<StyleProps>>`
+export const TabButton = styled(WalletButton) <Partial<StyleProps>>`
   flex: 1;
   display: flex;
   height: 100%;

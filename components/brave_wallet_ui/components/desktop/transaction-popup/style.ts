@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const StyledWrapper = styled.div`
   z-index: 15;
  `
 
-export const PopupButton = styled.button`
+export const PopupButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
