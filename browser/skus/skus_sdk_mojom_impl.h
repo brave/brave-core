@@ -23,7 +23,7 @@ class SkusSdkMojomImpl final : public skus::mojom::SkusSdk {
   SkusSdkMojomImpl(const SkusSdkMojomImpl&) = delete;
   SkusSdkMojomImpl& operator=(const SkusSdkMojomImpl&) = delete;
 
-  SkusSdkMojomImpl(content::BrowserContext* context);
+  explicit SkusSdkMojomImpl(content::BrowserContext* context);
   ~SkusSdkMojomImpl() override;
 
   void RefreshOrder(const std::string& order_id,
