@@ -50,7 +50,6 @@ class DomainTests: CoreDataTestCase {
         
         let domain = Domain.getOrCreate(forUrl: url, persistent: true)
         XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.HTTPSE, considerAllShieldsOption: true))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
@@ -69,7 +68,6 @@ class DomainTests: CoreDataTestCase {
         }
         
         XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-        XCTAssertFalse(domain.isShieldExpected(BraveShield.HTTPSE, considerAllShieldsOption: true))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: false))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
@@ -80,7 +78,6 @@ class DomainTests: CoreDataTestCase {
         }
         
         XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-        XCTAssertTrue(domain.isShieldExpected(BraveShield.HTTPSE, considerAllShieldsOption: true))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
         XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
@@ -116,39 +113,5 @@ class DomainTests: CoreDataTestCase {
         domain.managedObjectContext?.refreshAllObjects()
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    }
-    
-    /// Testing HTTPSE
-    /// if setting an HTTP scheme, that HTTPS is also set
-    func testHTTPSEforHTTPsetter() {
-        backgroundSaveAndWaitForExpectation {
-            Domain.setBraveShield(forUrl: url, shield: .HTTPSE, isOn: true, isPrivateBrowsing: false)
-        }
-        
-        // Should be one for HTTP and one for HTTPS schemes
-        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
-        
-        let domainRefetch1 = Domain.getOrCreate(forUrl: url, persistent: true)
-        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE, considerAllShieldsOption: true), true)
-        
-        let domainRefetch2 = Domain.getOrCreate(forUrl: urlHTTPS, persistent: true)
-        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE, considerAllShieldsOption: true), true)
-    }
-    
-    /// Testing HTTPSE
-    /// if setting an HTTPS scheme, that HTTP is also set
-    func testHTTPSEforHTTPSsetter() {
-        backgroundSaveAndWaitForExpectation {
-            Domain.setBraveShield(forUrl: url2HTTPS, shield: .HTTPSE, isOn: true, isPrivateBrowsing: false)
-        }
-
-        // Should be one for HTTP and one for HTTPS schemes
-        XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 2)
-        
-        let domainRefetch1 = Domain.getOrCreate(forUrl: url2, persistent: true)
-        XCTAssertEqual(domainRefetch1.isShieldExpected(.HTTPSE, considerAllShieldsOption: true), true)
-        
-        let domainRefetch2 = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
-        XCTAssertEqual(domainRefetch2.isShieldExpected(.HTTPSE, considerAllShieldsOption: true), true)
     }
 }
