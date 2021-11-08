@@ -86,8 +86,8 @@ async function getStorageData () {
 }
 
 function clearStorageData () {
-  return new Promise(resolve => {
-    chrome.storage.local.remove(STORAGE_KEY, resolve)
+  return new Promise<void>(resolve => {
+    chrome.storage.local.remove(STORAGE_KEY, () => resolve())
   })
 }
 

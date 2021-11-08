@@ -73,9 +73,11 @@ reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
 })
 
 reducer.on(Actions.walletSetupComplete, (state: PageState) => {
-  const newState = { ...state }
+  const newState: PageState = {
+    ...state,
+    setupStillInProgress: false
+  }
   delete newState.mnemonic
-  delete newState.setupStillInProgress
   return newState
 })
 
