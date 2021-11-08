@@ -303,8 +303,10 @@ void BraveWalletJSHandler::SendResponse(
 }
 
 BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame,
+                                           bool brave_use_native_wallet,
                                            bool allow_overwrite_window_ethereum)
     : render_frame_(render_frame),
+      brave_use_native_wallet_(brave_use_native_wallet),
       allow_overwrite_window_ethereum_(allow_overwrite_window_ethereum),
       is_connected_(false) {
   if (g_provider_script->empty()) {
@@ -317,7 +319,7 @@ BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame,
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
 
 bool BraveWalletJSHandler::EnsureConnected() {
-  if (!brave_wallet_provider_.is_bound()) {
+  if (brave_use_native_wallet_ && !brave_wallet_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         brave_wallet_provider_.BindNewPipeAndPassReceiver());
     brave_wallet_provider_->Init(receiver_.BindNewPipeAndPassRemote());
@@ -736,7 +738,7 @@ v8::Local<v8::Promise> BraveWalletJSHandler::Enable() {
   v8::Isolate* isolate = v8::Isolate::GetCurrent();
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
-  if (!EnsureConnected() || resolver.IsEmpty()) {
+  if (resolver.IsEmpty()) {
     return v8::Local<v8::Promise>();
   }
 

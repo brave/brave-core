@@ -439,7 +439,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (brave_wallet::IsNativeWalletEnabled()) {
+  if (brave_wallet::IsNativeWalletEnabled() &&
+      brave_wallet::IsAllowedForContext(
+          render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::BraveWalletProvider>(
         base::BindRepeating(&MaybeBindBraveWalletProvider));
   }
