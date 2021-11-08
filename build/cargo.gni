@@ -11,38 +11,26 @@ if (is_mac) {
 }
 
 declare_args() {
-  rustup_path = rebase_path("//brave/build/rustup/", root_build_dir)
+  rustup_path = rebase_path("//brave/build/rustup")
 }
 
 template("rust_ffi") {
   config_target_name = target_name + "_external_config"
   cpp_target_name = "rust_ffi"
 
-  if (is_mac) {
-    assert(
-        defined(invoker.shared_library_define),
-        "Must specify a shared library define for importing symbols on mac ex: ADBLOCK_SHARED_LIB")
-    assert(
-        defined(invoker.implementation_define),
-        "Must specify an implementation define for exporting symbols on mac ex: ADBLOCK_IMPLEMENTATION")
-  } else {
-    not_needed(invoker,
-               [
-                 "shared_library_define",
-                 "implementation_define",
-               ])
-  }
-
   config(config_target_name) {
     visibility = [ ":*" ]
-    if (is_mac) {
+    if (is_mac && defined(invoker.shared_library_define)) {
       defines = [ invoker.shared_library_define ]
     }
   }
 
   group(target_name) {
     public_configs = [ ":$config_target_name" ]
-    public_deps = [ "//brave/build/rust" ]
+    public_deps = [
+      "//brave/build/rust",
+      "//brave/build/rust:cxx_cppdeps",
+    ]
   }
 
   source_set(cpp_target_name) {
@@ -55,7 +43,7 @@ template("rust_ffi") {
     }
 
     defines = []
-    if (is_mac) {
+    if (is_mac && defined(invoker.implementation_define)) {
       defines = [ invoker.implementation_define ]
     }
 
@@ -63,12 +51,21 @@ template("rust_ffi") {
       defines += invoker.defines
     }
 
+    public_deps = [ "//brave/build/rust:cxx_cppdeps" ]
+    if (defined(invoker.public_deps)) {
+      public_deps += invoker.public_deps
+    }
+
+    if (is_clang) {
+      configs -= [ "//build/config/clang:find_bad_constructs" ]
+    }
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [ "//build/config/compiler:no_chromium_code" ]
+
     forward_variables_from(invoker,
                            [
                              "sources",
                              "deps",
-                             "public_deps",
-                             "configs",
                              "frameworks",
                            ])
   }
