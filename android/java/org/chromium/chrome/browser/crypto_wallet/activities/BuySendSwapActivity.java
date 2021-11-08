@@ -5,13 +5,20 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,10 +28,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -57,10 +72,15 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetD
 import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.qrreader.BarcodeTracker;
+import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
+import org.chromium.chrome.browser.qrreader.CameraSource;
+import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,10 +90,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class BuySendSwapActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener {
+        implements ConnectionErrorHandler, AdapterView.OnItemSelectedListener,
+                   BarcodeTracker.BarcodeGraphicTrackerCallback {
     private final static String TAG = "BuySendSwapActivity";
     private final static String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+    private static final int RC_HANDLE_CAMERA_PERM = 113;
+    // Intent request code to handle updating play services if needed.
+    private static final int RC_HANDLE_GMS = 9001;
+
+    private CameraSource mCameraSource;
+    private CameraSourcePreview mCameraSourcePreview;
 
     public enum ActivityType {
         BUY(0),
@@ -158,6 +185,9 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mCameraSourcePreview != null) {
+            mCameraSourcePreview.release();
+        }
     }
 
     @Override
@@ -185,7 +215,6 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         TextView fromAssetText = findViewById(R.id.from_asset_text);
         fromAssetText.setText("ETH");
 
-        EditText toValueText = findViewById(R.id.to_value_text);
         TextView toBalanceText = findViewById(R.id.to_balance_text);
         TextView toAssetText = findViewById(R.id.to_asset_text);
         toAssetText.setText("ETH");
@@ -578,8 +607,10 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         } else if (mActivityType == ActivityType.SEND) {
             currencySign.setVisibility(View.GONE);
             toEstimateText.setText(getText(R.string.to_address));
-            toValueText.setText("");
-            toValueText.setHint(getText(R.string.to_address_edit));
+            toValueText.setVisibility(View.GONE);
+            EditText toSendValueText = findViewById(R.id.to_send_value_text);
+            toSendValueText.setText("");
+            toSendValueText.setHint(getText(R.string.to_address_edit));
             arrowDown.setVisibility(View.GONE);
             // radioBuySendSwap.setVisibility(View.GONE);
             marketPriceSection.setVisibility(View.GONE);
@@ -594,7 +625,22 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 bottomSheetDialogFragment.show(getSupportFragmentManager(),
                         EditVisibleAssetsBottomSheetDialogFragment.TAG_FRAGMENT);
             });
+            mCameraSourcePreview = (CameraSourcePreview) findViewById(R.id.preview);
+            ImageView qrCode = findViewById(R.id.qr_code);
+            qrCode.setOnClickListener(v -> {
+                RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+                if (relativeLayout.getVisibility() == View.VISIBLE) {
+                    if (null != mCameraSourcePreview) {
+                        mCameraSourcePreview.stop();
+                    }
+                    relativeLayout.setVisibility(View.GONE);
+                } else if (ensureCameraPermission()) {
+                    qrCodeFunctionality();
+                }
+            });
         } else if (mActivityType == ActivityType.SWAP) {
+            LinearLayout toSendSection = findViewById(R.id.to_send_section);
+            toSendSection.setVisibility(View.GONE);
             currencySign.setVisibility(View.GONE);
             toValueText.setText("");
             toValueText.setHint("0");
@@ -668,7 +714,8 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
             // TODO(sergz): Some kind of validation that we have enough balance
             String value = fromValueText.getText().toString();
             if (mActivityType == ActivityType.SEND) {
-                String to = toValueText.getText().toString();
+                EditText toSendValueText = findViewById(R.id.to_send_value_text);
+                String to = toSendValueText.getText().toString();
                 if (to.isEmpty()) {
                     // TODO(sergz): some address validation
                     return;
@@ -727,6 +774,166 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
                 getSendSwapQuota(true, false);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mCameraSourcePreview != null) {
+            mCameraSourcePreview.stop();
+            RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+            relativeLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void qrCodeFunctionality() {
+        RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+        if (relativeLayout.getVisibility() == View.VISIBLE) {
+            return;
+        }
+        relativeLayout.setVisibility(View.VISIBLE);
+
+        createCameraSource(true, false);
+        try {
+            startCameraSource();
+        } catch (SecurityException exc) {
+        }
+    }
+
+    private boolean ensureCameraPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[] {Manifest.permission.CAMERA}, RC_HANDLE_CAMERA_PERM);
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode != RC_HANDLE_CAMERA_PERM) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            return;
+        }
+
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // We have permission, so we can proceed with Camera
+            qrCodeFunctionality();
+
+            return;
+        }
+    }
+
+    @SuppressLint("InlinedApi")
+    private void createCameraSource(boolean autoFocus, boolean useFlash) {
+        // A barcode detector is created to track barcodes.  An associated multi-processor instance
+        // is set to receive the barcode detection results, track the barcodes, and maintain
+        // graphics for each barcode on screen.  The factory is used by the multi-processor to
+        // create a separate tracker instance for each barcode.
+        BarcodeDetector barcodeDetector =
+                new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.ALL_FORMATS).build();
+        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(this);
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+
+        if (!barcodeDetector.isOperational()) {
+            // Note: The first time that an app using the barcode or face API is installed on a
+            // device, GMS will download a native libraries to the device in order to do detection.
+            // Usually this completes before the app is run for the first time.  But if that
+            // download has not yet completed, then the above call will not detect any barcodes.
+            //
+            // isOperational() can be used to check if the required native libraries are currently
+            // available.  The detectors will automatically become operational once the library
+            // downloads complete on device.
+            Log.w(TAG, "Detector dependencies are not yet available.");
+        }
+
+        // Creates and starts the camera.  Note that this uses a higher resolution in comparison
+        // to other detection examples to enable the barcode detector to detect small barcodes
+        // at long distances.
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        CameraSource.Builder builder =
+                new CameraSource.Builder(this, barcodeDetector)
+                        .setFacing(CameraSource.CAMERA_FACING_BACK)
+                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
+                        .setRequestedFps(24.0f);
+
+        // Make sure that auto focus is an available option
+        builder = builder.setFocusMode(
+                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
+
+        mCameraSource =
+                builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
+    }
+
+    private void startCameraSource() throws SecurityException {
+        if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
+            // Check that the device has play services available.
+            try {
+                int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+                if (code != ConnectionResult.SUCCESS) {
+                    Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(
+                            this, code, RC_HANDLE_GMS);
+                    if (null != dlg) {
+                        dlg.show();
+                    }
+                }
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "Unable to start camera source.", e);
+                mCameraSource.release();
+                mCameraSource = null;
+
+                return;
+            }
+            try {
+                mCameraSourcePreview.start(mCameraSource);
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to start camera source.", e);
+                mCameraSource.release();
+                mCameraSource = null;
+            }
+        }
+    }
+
+    @Override
+    public void onDetectedQrCode(Barcode barcode) {
+        if (barcode == null) {
+            return;
+        }
+        final String barcodeValue = barcode.displayValue;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (null != mCameraSourcePreview) {
+                    mCameraSourcePreview.stop();
+                }
+                RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+                relativeLayout.setVisibility(View.GONE);
+                EditText toSendText = findViewById(R.id.to_send_value_text);
+                toSendText.setText(barcodeValue);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
+        if (relativeLayout.getVisibility() == View.VISIBLE) {
+            if (null != mCameraSourcePreview) {
+                mCameraSourcePreview.stop();
+            }
+            relativeLayout.setVisibility(View.GONE);
+
+            return;
+        }
+
+        super.onBackPressed();
     }
 
     private TextWatcher filterTextWatcherFrom = new TextWatcher() {
