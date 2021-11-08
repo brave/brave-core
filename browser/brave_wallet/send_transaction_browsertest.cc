@@ -185,6 +185,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   void LockWallet() {
     keyring_controller_->Lock();
+    // Needed so KeyringControllerObserver::Locked handler can be hit
+    // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
   }
 
@@ -196,6 +198,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
                                   run_loop.Quit();
                                 }));
     run_loop.Run();
+    // Needed so KeyringControllerObserver::Unlocked handler can be hit
+    // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
   }
 
@@ -249,6 +253,8 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     host_content_settings_map()->SetContentSettingDefaultScope(
         sub_request_origin, url, ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
+    // Needed so content settings observer handler can be hit
+    // which the provider object listens to for the accountsChanged event.
     base::RunLoop().RunUntilIdle();
   }
 
