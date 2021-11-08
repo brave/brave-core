@@ -48,3 +48,9 @@ export interface ErrorMessage {
   error: string
   userHint: string
 }
+
+export interface TrezorBridgeAccountsPayload {
+  success: boolean,
+  accounts: HardwareWalletAccount[],
+  error?: string
+}

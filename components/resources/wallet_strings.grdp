@@ -325,4 +325,6 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_JSON_ERROR" desc="Importer error message">JSON data is not expected</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR" desc="Importer error message">Password is not correct</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR" desc="Importer error message">Internal error</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_CREATE_BRIDGE_ERROR" desc="Hardware wallet error when access Trezor bridge">Internal error, unable to create iframe bridget</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNTS_IMPORT_ERROR" desc="Hardware wallet error when importing accounts from Trezor device">Internal error, Unable to fetch accounts</message>
 </grit-part>
