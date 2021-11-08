@@ -31,9 +31,21 @@ function ConnectHardwareWalletPanel (props: Props) {
     <StyledWrapper>
       <ConnectionRow>
         <Indicator isConnected={isConnected} />
-        <Description>{walletName} {isConnected ? getLocale('braveWalletConnectHardwarePanelConnected') : getLocale('braveWalletConnectHardwarePanelDisconnected')}</Description>
+        <Description>
+          {
+            isConnected
+              ? getLocale('braveWalletConnectHardwarePanelConnected').replace('$1', walletName)
+              : getLocale('braveWalletConnectHardwarePanelDisconnected').replace('$1', walletName)
+          }
+        </Description>
       </ConnectionRow>
-      <Title>{requestingConfirmation ? getLocale('braveWalletConnectHardwarePanelConfirmation') : getLocale('braveWalletConnectHardwarePanelConnect')} {walletName}</Title>
+      <Title>
+        {
+          requestingConfirmation
+            ? getLocale('braveWalletConnectHardwarePanelConfirmation').replace('$1', walletName)
+            : getLocale('braveWalletConnectHardwarePanelConnect').replace('$1', walletName)
+        }
+      </Title>
       <InstructionsButton onClick={onClickInstructions}>{getLocale('braveWalletConnectHardwarePanelInstructions')}</InstructionsButton>
       <PageIcon />
       <ButtonWrapper>

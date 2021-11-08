@@ -35,7 +35,7 @@ function ConnectedBottomNav (props: Props) {
         <PanelTooltip
           position='right'
           isDisabled={isBuyDisabled}
-          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
+          text={getLocale('braveWalletBssToolTip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
         >
           <NavButton disabled={isBuyDisabled} onClick={navigate('buy')}>
             <NavButtonText disabled={isBuyDisabled}>{getLocale('braveWalletBuy')}</NavButtonText>
@@ -49,7 +49,7 @@ function ConnectedBottomNav (props: Props) {
         <PanelTooltip
           position='left'
           isDisabled={isSwapDisabled}
-          text={`${reduceNetworkDisplayName(selectedNetwork.chainName)} ${getLocale('braveWalletBssToolTip')}`}
+          text={getLocale('braveWalletBssToolTip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
         >
           <NavButton disabled={isSwapDisabled} onClick={navigate('swap')}>
             <NavButtonText disabled={isSwapDisabled}>{getLocale('braveWalletSwap')}</NavButtonText>

@@ -82,17 +82,18 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
         <BraveIcon />
       )}
       <Title>
-        {getLocale('braveWalletImportTitle')}{` `}
-        {isMetaMask ?
-          getLocale('braveWalletImportMetaMaskTitle')
-          : getLocale('braveWalletImportBraveLegacyTitle')}
+        {getLocale('braveWalletImportTitle').replace('$1',
+          isMetaMask
+            ? getLocale('braveWalletImportMetaMaskTitle')
+            : getLocale('braveWalletImportBraveLegacyTitle')
+        )}
       </Title>
       <Description>
-        {getLocale('braveWalletImportDescriptionOne')}{` `}
-        {isMetaMask ?
-          getLocale('braveWalletImportMetaMaskTitle')
-          : getLocale('braveWalletImportBraveLegacyTitle')
-        }{` `}{getLocale('braveWalletImportDescriptionTwo')}
+        {getLocale('braveWalletImportDescription').replace('$1',
+          isMetaMask
+            ? getLocale('braveWalletImportMetaMaskTitle')
+            : getLocale('braveWalletImportBraveLegacyTitle')
+        )}
       </Description>
       <InputColumn useSamePasswordVerified={useSamePasswordVerified}>
         <PasswordInput
