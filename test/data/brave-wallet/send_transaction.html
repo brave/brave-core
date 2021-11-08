@@ -72,6 +72,13 @@
   function getSendTransactionError() {
     window.domAutomationController.send(sendTransactionError)
   }
+  // window.ethereum.selectedAddress and not necessarily the selected account
+  function getSelectedAddress() {
+    window.domAutomationController.send(String(window.ethereum.selectedAddress))
+  }
+  function getChainId() {
+    window.domAutomationController.send(window.ethereum.chainId)
+  }
 </script>
 
 <body>
