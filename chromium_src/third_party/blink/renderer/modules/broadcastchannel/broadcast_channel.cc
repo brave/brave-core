@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#if 0
 #include "third_party/blink/public/mojom/broadcastchannel/broadcast_channel.mojom-blink.h"
 #include "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h"
 
@@ -22,7 +23,10 @@
     }                                                                      \
   }                                                                        \
   provider->ConnectToChannel
+#endif
 
 #include "../../../../../../../third_party/blink/renderer/modules/broadcastchannel/broadcast_channel.cc"
 
+#if 0
 #undef ConnectToChannel
+#endif
