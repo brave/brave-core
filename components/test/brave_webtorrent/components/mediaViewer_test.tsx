@@ -23,7 +23,7 @@ describe('mediaViewer component', () => {
 
     const serverURL = 'http://localhost:12345'
     it('renders video', () => {
-      const files = [ { name: 'file.mp4', length: 500 } ]
+      const files = [{ name: 'file.mp4', length: 500 }]
       const torrentWithVideoFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
         <MediaViewer
@@ -36,7 +36,7 @@ describe('mediaViewer component', () => {
     })
 
     it('renders audio', () => {
-      const files = [ { name: 'file.mp3', length: 500 } ]
+      const files = [{ name: 'file.mp3', length: 500 }]
       const torrentWithAudioFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
         <MediaViewer
@@ -49,7 +49,7 @@ describe('mediaViewer component', () => {
     })
 
     it('renders img for image', () => {
-      const files = [ { name: 'file.jpg', length: 500 } ]
+      const files = [{ name: 'file.jpg', length: 500 }]
       const torrentWithJpgFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
         <MediaViewer
@@ -62,7 +62,7 @@ describe('mediaViewer component', () => {
     })
 
     it('renders object for PDF file', () => {
-      const files = [ { name: 'file.pdf', length: 500 } ]
+      const files = [{ name: 'file.pdf', length: 500 }]
       const torrentWithPdfFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
         <MediaViewer
@@ -75,7 +75,7 @@ describe('mediaViewer component', () => {
     })
 
     it('renders iframe for text file', () => {
-      const files = [ { name: 'file.txt', length: 500 } ]
+      const files = [{ name: 'file.txt', length: 500 }]
       const torrentWithTxtFile = { ...torrentObj, files, serverURL }
       const wrapper = shallow(
         <MediaViewer

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export interface NoScriptInfoInterface {
-  actuallyBlocked: boolean,
-  willBlock: boolean,
+  actuallyBlocked: boolean
+  willBlock: boolean
   userInteracted: boolean
 }

@@ -51,7 +51,8 @@ export const updateFocusedWindow: shieldState.UpdateFocusedWindow = (state, wind
 export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, tabId, details) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
 
-  tabs[tabId] = { ...{
+  tabs[tabId] = {
+ ...{
     adsBlocked: 0,
     trackersBlocked: 0,
     httpsRedirected: 0,
@@ -96,20 +97,20 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
   }
 
   if (blockType === 'shieldsAds') {
-    tabs[tabId].adsBlockedResources = unique([ ...tabs[tabId].adsBlockedResources, subresource ])
+    tabs[tabId].adsBlockedResources = unique([...tabs[tabId].adsBlockedResources, subresource])
     tabs[tabId].adsBlocked = tabs[tabId].adsBlockedResources.length
   } else if (blockType === 'trackers') {
-    tabs[tabId].trackersBlockedResources = unique([ ...tabs[tabId].trackersBlockedResources, subresource ])
+    tabs[tabId].trackersBlockedResources = unique([...tabs[tabId].trackersBlockedResources, subresource])
     tabs[tabId].trackersBlocked = tabs[tabId].trackersBlockedResources.length
   } else if (blockType === 'httpUpgradableResources') {
-    tabs[tabId].httpsRedirectedResources = unique([ ...tabs[tabId].httpsRedirectedResources, subresource ])
+    tabs[tabId].httpsRedirectedResources = unique([...tabs[tabId].httpsRedirectedResources, subresource])
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
   } else if (blockType === 'javascript') {
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
     tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
     tabs[tabId].javascriptBlocked = filterNoScriptInfoByWillBlockState(Object.entries(tabs[tabId].noScriptInfo), true).length
   } else if (blockType === 'fingerprinting') {
-    tabs[tabId].fingerprintingBlockedResources = unique([ ...tabs[tabId].fingerprintingBlockedResources, subresource ])
+    tabs[tabId].fingerprintingBlockedResources = unique([...tabs[tabId].fingerprintingBlockedResources, subresource])
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
   }
 

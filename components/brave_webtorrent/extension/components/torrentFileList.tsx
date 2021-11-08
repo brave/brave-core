@@ -13,7 +13,7 @@ import { File, TorrentObj } from '../constants/webtorrentState'
 
 interface Props {
   torrentId: string
-  torrent?: TorrentObj,
+  torrent?: TorrentObj
   onSaveAllFiles: () => void
 }
 

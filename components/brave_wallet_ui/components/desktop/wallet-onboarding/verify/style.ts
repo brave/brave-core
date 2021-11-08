@@ -66,7 +66,7 @@ export const RecoveryPhraseContainer = styled.div`
 `
 
 export const RecoveryBubble = styled(WalletButton) <Partial<StyleProps>>`
-  cursor: ${(p) => p.isSelected ? `default` : 'pointer'};
+  cursor: ${(p) => p.isSelected ? 'default' : 'pointer'};
   outline: none;
   background: none;
   border: ${(p) => p.isSelected ? `1px solid ${p.theme.color.divider01}` : 'none'};

@@ -57,7 +57,7 @@ function onGetListSubscriptions (listSubscriptions: AdBlock.SubscriptionInfo[]) 
 
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
-// @ts-ignore
+// @ts-expect-error
 window.brave_adblock = {
   onGetCustomFilters,
   onGetRegionalLists,

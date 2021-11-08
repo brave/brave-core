@@ -13,9 +13,7 @@ function mockNow (timeString: string) {
 }
 
 describe('pending_rewards', () => {
-
   describe('getDaysUntilRewardsPayment', () => {
-
     it('returns empty if month does not match', () => {
       mockNow('2021-01-20')
       expect(getDaysUntilRewardsPayment(ms('2021-02-05'))).toStrictEqual('')
@@ -44,7 +42,5 @@ describe('pending_rewards', () => {
       expect(getDaysUntilRewardsPayment(ms('2021-01-05T04:00:00')))
         .toStrictEqual('1 day')
     })
-
   })
-
 })

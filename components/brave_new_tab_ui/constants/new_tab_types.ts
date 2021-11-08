@@ -38,6 +38,6 @@ export type NewTabActions =
   typeof cryptoDotComActions &
   typeof stackWidgetActions &
   {
-    today: typeof todayActions,
+    today: typeof todayActions
     ftx: typeof ftxActions
   }

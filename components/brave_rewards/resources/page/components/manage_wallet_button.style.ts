@@ -10,7 +10,7 @@ export const root = styled.div`
   margin: 10px 20px 0px;
 
   button {
-    ${ buttonReset }
+    ${buttonReset}
     width: 100%;
     font-family: var(--brave-font-heading);
     font-weight: 600;

@@ -145,7 +145,6 @@ export function createHost (): Host {
     if (grantId && typeof grantId === 'string') {
       location.hash = ''
       loadCaptcha(grantId, 'pending')
-      return
     }
   }
 
@@ -383,7 +382,6 @@ export function createHost (): Host {
         }
 
         closePanel()
-
       }).catch(console.error)
     },
 

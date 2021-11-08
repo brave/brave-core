@@ -98,8 +98,8 @@ function GetBackgroundImageSrc (props: Props) {
 
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
-  return (newTabData.brandedWallpaper &&
-          newTabData.brandedWallpaper.isSponsored) ? true : false
+  return !!((newTabData.brandedWallpaper &&
+          newTabData.brandedWallpaper.isSponsored))
 }
 
 function GetShouldShowBrandedWallpaperNotification (props: Props) {
@@ -114,12 +114,14 @@ class NewTabPage extends React.Component<Props, State> {
     backgroundHasLoaded: false,
     activeSettingsTab: null
   }
+
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
   }
+
   visibilityTimer = new VisibilityTimer(this.onVisiblityTimerExpired, 4000)
 
   componentDidMount () {
@@ -494,6 +496,7 @@ class NewTabPage extends React.Component<Props, State> {
   setGeminiAssetDepositQRCodeSrc = (asset: string, src: string) => {
     this.props.actions.onGeminiDepositQRForAsset(asset, src)
   }
+
   setConvertableAssets = (asset: string, assets: string[]) => {
     this.props.actions.onConvertableAssets(asset, assets)
   }
@@ -894,8 +897,8 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     if (binanceState.userAuthed) {
-      menuActions['onDisconnect'] = this.setBinanceDisconnectInProgress
-      menuActions['onRefreshData'] = this.binanceRefreshActions
+      menuActions.onDisconnect = this.setBinanceDisconnectInProgress
+      menuActions.onRefreshData = this.binanceRefreshActions
     }
 
     return (
@@ -945,8 +948,8 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     if (geminiState.userAuthed) {
-      menuActions['onDisconnect'] = this.setGeminiDisconnectInProgress
-      menuActions['onRefreshData'] = this.geminiUpdateActions
+      menuActions.onDisconnect = this.setGeminiDisconnectInProgress
+      menuActions.onRefreshData = this.geminiUpdateActions
     }
 
     return (
@@ -1052,7 +1055,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
-    const isShowingBrandedWallpaper = newTabData.brandedWallpaper ? true : false
+    const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
     const cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1241,8 +1244,8 @@ class NewTabPage extends React.Component<Props, State> {
           toggleCards={this.props.saveSetAllStackWidgets}
         />
         {
-          showEditTopSite ?
-            <EditTopSite
+          showEditTopSite
+            ? <EditTopSite
               targetTopSiteForEditing={targetTopSiteForEditing}
               textDirection={newTabData.textDirection}
               onClose={this.closeEditTopSite}

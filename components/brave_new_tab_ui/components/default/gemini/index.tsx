@@ -347,7 +347,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     if ('USD' in accountBalances) {
-      USDValue += parseFloat(accountBalances['USD'])
+      USDValue += parseFloat(accountBalances.USD)
     }
 
     return USDValue.toFixed(2)
@@ -370,8 +370,8 @@ class Gemini extends React.PureComponent<Props, State> {
     const styles = { color: '#000' }
 
     if (this.props.selectedView === 'balance') {
-      styles['marginTop'] = '5px'
-      styles['marginLeft'] = '5px'
+      styles.marginTop = '5px'
+      styles.marginLeft = '5px'
     }
 
     return (
@@ -500,8 +500,7 @@ class Gemini extends React.PureComponent<Props, State> {
           </ListInfo>
         </AccountSummary>
         {balanceKeys.length !== 0
-        ?
-        <>
+        ? <>
           {balanceKeys.map((asset: string) => {
             const assetAccountBalance = accountBalances[asset]
             const assetBalance = this.formatCryptoBalance(assetAccountBalance)
@@ -647,7 +646,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     const compare = currentTradeMode === 'buy'
-      ? (accountBalances['USD'] || '0')
+      ? (accountBalances.USD || '0')
       : (accountBalances[currentTradeAsset] || '0')
 
     if (parseFloat(currentTradeQuantity) >= parseFloat(compare)) {
@@ -808,7 +807,7 @@ class Gemini extends React.PureComponent<Props, State> {
     } = this.state
     const { accountBalances } = this.props
     const currentAssetBalance = this.formatCryptoBalance(accountBalances[currentTradeAsset] || '0')
-    const accountUSDBalance = accountBalances['USD'] || '0.00'
+    const accountUSDBalance = accountBalances.USD || '0.00'
     const availableAmount = currentTradeMode === 'buy' ? accountUSDBalance : currentAssetBalance
     const availableLabel = currentTradeMode === 'buy' ? 'USD' : currentTradeAsset
 
@@ -994,7 +993,7 @@ class Gemini extends React.PureComponent<Props, State> {
           const lowerName = cleanName.toLowerCase()
           const lowerSearch = currentDepositSearch.toLowerCase()
 
-          if (lowerAsset.indexOf(lowerSearch) < 0 &&
+          if (!lowerAsset.includes(lowerSearch) &&
               lowerName.indexOf(lowerSearch) < 0 && currentDepositSearch) {
             return null
           }

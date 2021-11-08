@@ -26,7 +26,7 @@ import { DisclaimerText } from '../style'
 
 interface Props {
   hardwareWallet: string
-  accounts: Array<HardwareWalletAccount>
+  accounts: HardwareWalletAccount[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
   setSelectedDerivationPaths: (paths: string[]) => void

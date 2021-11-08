@@ -6,7 +6,7 @@ import * as React from 'react'
 import { getLocale } from '../../common/locale'
 
 interface Props {
-  actions: any,
+  actions: any
   rules: string
 }
 

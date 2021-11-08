@@ -111,7 +111,7 @@ function LineChart (props: Props) {
             type='monotone'
             dataKey='close'
             strokeWidth={2}
-            stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : `url(#lineGradient)`}
+            stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : 'url(#lineGradient)'}
             fill='none'
           />
           <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />

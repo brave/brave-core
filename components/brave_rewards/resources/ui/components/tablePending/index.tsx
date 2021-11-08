@@ -100,10 +100,10 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
 
   get headers (): Cell[] {
     const customStyle = {
-      border: 'none',
-      'border-bottom': `1px solid #696FDC`,
-      padding: '0',
-      color: '#696FDC'
+      'border': 'none',
+      'border-bottom': '1px solid #696FDC',
+      'padding': '0',
+      'color': '#696FDC'
     }
 
     return [
@@ -121,15 +121,17 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
       },
       {
         content: getLocale('amount'),
-        customStyle: {...customStyle,
+        customStyle: {
+...customStyle,
           'text-align': 'right'
         }
       },
       {
         content: getLocale('remove'),
-        customStyle: {...customStyle,
+        customStyle: {
+...customStyle,
           'text-align': 'center',
-          padding: '0 10px'
+          'padding': '0 10px'
         }
       }
     ]

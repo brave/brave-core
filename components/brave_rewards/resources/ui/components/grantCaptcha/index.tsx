@@ -26,7 +26,7 @@ export interface Props {
 
 export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   private readonly offset: number
-  private dndStartPosition: { x: number; y: number; width: number; height: number }
+  private dndStartPosition: { x: number, y: number, width: number, height: number }
   private captchaBox: HTMLDivElement | null
   private captchaDrag: HTMLDivElement | null
 

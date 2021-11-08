@@ -60,7 +60,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           state.rewardsState.dismissedNotifications = []
         }
 
-        if (state.rewardsState.dismissedNotifications.indexOf(promotion.promotionId) > -1) {
+        if (state.rewardsState.dismissedNotifications.includes(promotion.promotionId)) {
           return
         }
 

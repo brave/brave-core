@@ -43,6 +43,7 @@ export default class QwantTorTab extends React.PureComponent<Props, {}> {
     }
     return getLocale('torStatusDisconnected')
   }
+
   render () {
     return (
       <Grid2Columns>

@@ -6,7 +6,7 @@
 import * as Cr from 'chrome://resources/js/cr.m'
 
 export type TorTabData = {
-  torCircuitEstablished: boolean,
+  torCircuitEstablished: boolean
   torInitProgress: string
 }
 

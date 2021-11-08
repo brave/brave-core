@@ -64,7 +64,7 @@ type GrantStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | nul
 type GrantClaim = {
   promotionId?: string
   amount: number
-  expiresAt: number,
+  expiresAt: number
   type: number
   status: number
   captchaImage?: string
@@ -335,10 +335,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   generateWalletButton = (walletState: WalletState) => {
     const { walletType } = this.props
     const walletProviderIcon =
-      walletType === 'uphold' ? <UpholdSystemIcon /> :
-      walletType === 'bitflyer' ? <BitflyerIcon white={true} /> :
-      walletType === 'gemini' ? <GeminiIcon white={true} /> :
-      null
+      walletType === 'uphold' ? <UpholdSystemIcon />
+      : walletType === 'bitflyer' ? <BitflyerIcon white={true} />
+      : walletType === 'gemini' ? <GeminiIcon white={true} />
+      : null
 
     const buttonProps: Partial<ButtonProps> = {
       size: 'small',
@@ -618,9 +618,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const rewardsText1 = getLocale('rewardsPanelText1').split(/\$\d/g)
 
     const walletIcon =
-      walletType === 'uphold' ? <UpholdColorIcon /> :
-      walletType === 'gemini' ? <GeminiIcon /> :
-      null
+      walletType === 'uphold' ? <UpholdColorIcon />
+      : walletType === 'gemini' ? <GeminiIcon />
+      : null
 
     return (
       <>
@@ -695,8 +695,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               ? <StyledCopy connected={connectedVerified}>
                 {
                   walletVerified
-                  ?
-                    <>
+                  ? <>
                       <StyledCopyImage>{walletIcon}</StyledCopyImage>
                       <span>
                         {rewardsText1[0]}

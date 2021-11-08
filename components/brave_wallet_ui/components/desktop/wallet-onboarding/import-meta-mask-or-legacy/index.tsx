@@ -106,8 +106,8 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
       </InputColumn>
       {!useSamePasswordVerified &&
         <PasswordTitle needsNewPassword={needsNewPassword}>
-          {needsNewPassword ?
-            getLocale('braveWalletImportFromExternalNewPassword')
+          {needsNewPassword
+            ? getLocale('braveWalletImportFromExternalNewPassword')
             : getLocale('braveWalletImportFromExternalCreatePassword')}
         </PasswordTitle>
       }

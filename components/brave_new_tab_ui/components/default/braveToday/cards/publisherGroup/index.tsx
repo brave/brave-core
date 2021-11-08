@@ -12,7 +12,7 @@ import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 import PublisherMeta from '../PublisherMeta'
 
 interface Props {
-  content: (BraveNews.FeedItem)[]
+  content: BraveNews.FeedItem[]
   articleToScrollTo?: BraveNews.FeedItemMetadata
   publisher: BraveNews.Publisher
   onReadFeedItem: OnReadFeedItem

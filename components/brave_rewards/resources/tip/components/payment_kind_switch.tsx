@@ -23,7 +23,7 @@ interface Props {
 export function PaymentKindSwitch (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
-  const options: ButtonSwitchOption<PaymentKind>[] = [
+  const options: Array<ButtonSwitchOption<PaymentKind>> = [
     {
       value: 'bat',
       content: (

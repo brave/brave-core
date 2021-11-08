@@ -21,9 +21,8 @@ export interface Props {
 }
 
 export default class AppListItem extends React.PureComponent<Props> {
-
   getSrc (src?: string) {
-    return src ? src : ''
+    return src || ''
   }
 
   openApp = () => {

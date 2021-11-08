@@ -546,7 +546,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             fingerprintingBlocked: 1,
-            fingerprintingBlockedResources: [ 'https://test.brave.com' ]
+            fingerprintingBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -567,7 +567,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -606,7 +606,7 @@ describe('braveShieldsPanelReducer', () => {
         }
       })
       expect(nextState.tabs[tabId].adsBlockedResources).toEqual(
-        [ 'https://test.brave.com' ]
+        ['https://test.brave.com']
       )
 
       nextState = shieldsPanelReducer(nextState, {
@@ -678,7 +678,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           },
           3: {
             fingerprintingBlocked: 0,
@@ -690,7 +690,7 @@ describe('braveShieldsPanelReducer', () => {
             trackersBlocked: 0,
             trackersBlockedResources: [],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -711,7 +711,7 @@ describe('braveShieldsPanelReducer', () => {
           2: {
             ...state.tabs[2],
             adsBlocked: 1,
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -733,8 +733,8 @@ describe('braveShieldsPanelReducer', () => {
             ...state.tabs[2],
             adsBlocked: 1,
             trackersBlocked: 1,
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com']
           }
         }
       })
@@ -756,9 +756,9 @@ describe('braveShieldsPanelReducer', () => {
             adsBlocked: 1,
             trackersBlocked: 1,
             httpsRedirected: 1,
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })
@@ -783,9 +783,9 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })
@@ -811,10 +811,10 @@ describe('braveShieldsPanelReducer', () => {
             noScriptInfo: {
               'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
-            trackersBlockedResources: [ 'https://test.brave.com' ],
-            adsBlockedResources: [ 'https://test.brave.com' ],
-            fingerprintingBlockedResources: [ 'https://test.brave.com' ],
-            httpsRedirectedResources: [ 'https://test.brave.com' ]
+            trackersBlockedResources: ['https://test.brave.com'],
+            adsBlockedResources: ['https://test.brave.com'],
+            fingerprintingBlockedResources: ['https://test.brave.com'],
+            httpsRedirectedResources: ['https://test.brave.com']
           }
         }
       })

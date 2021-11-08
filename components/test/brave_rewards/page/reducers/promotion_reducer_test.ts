@@ -8,7 +8,6 @@ import { types } from '../../../../brave_rewards/resources/page/constants/reward
 import { defaultState } from '../../../../brave_rewards/resources/page/storage'
 
 describe('Promotion Reducer', () => {
-
   describe('FETCH_PROMOTIONS', () => {
     it('does not modify state', () => {
       const assertion = reducers(undefined, {

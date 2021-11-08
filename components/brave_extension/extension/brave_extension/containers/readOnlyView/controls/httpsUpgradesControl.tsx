@@ -34,7 +34,7 @@ import { BlockOptions } from '../../../types/other/blockTypes'
 interface Props {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
-  httpsRedirectedResources: Array<string>
+  httpsRedirectedResources: string[]
 }
 
 interface State {

@@ -54,8 +54,8 @@ export default class Notification extends React.Component<Props, {}> {
           >
             {getLocale('undoRemoved')}
           </SiteRemovalAction>
-          { this.props.showRestoreAll ?
-            <SiteRemovalAction onClick={this.onUndoRemoveAllTopSites}>
+          { this.props.showRestoreAll
+            ? <SiteRemovalAction onClick={this.onUndoRemoveAllTopSites}>
               {getLocale('restoreAll')}
             </SiteRemovalAction>
             : null

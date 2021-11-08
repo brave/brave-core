@@ -90,7 +90,7 @@ const AddAccountModal = (props: Props) => {
 
   const generateQRData = () => {
     const image = qr.image(account.address)
-    let chunks: Array<Uint8Array> = []
+    let chunks: Uint8Array[] = []
     image
       .on('data', (chunk: Uint8Array) => chunks.push(chunk))
       .on('end', () => {
@@ -145,8 +145,8 @@ const AddAccountModal = (props: Props) => {
 
   const tabList = React.useMemo((): TopTabNavObjectType[] => {
     return account.accountType === 'Trezor' ||
-      account.accountType === 'Ledger' ?
-      HardwareAccountSettingsNavOptions()
+      account.accountType === 'Ledger'
+      ? HardwareAccountSettingsNavOptions()
       : AccountSettingsNavOptions()
   }, [account])
 
@@ -204,8 +204,8 @@ const AddAccountModal = (props: Props) => {
             }
             <ButtonWrapper>
               <NavButton
-                onSubmit={showPrivateKey === false ? onShowPrivateKey : onHidePrivateKey}
-                text={showPrivateKey === false ? getLocale('braveWalletAccountSettingsShowKey') : getLocale('braveWalletAccountSettingsHideKey')}
+                onSubmit={!showPrivateKey ? onShowPrivateKey : onHidePrivateKey}
+                text={!showPrivateKey ? getLocale('braveWalletAccountSettingsShowKey') : getLocale('braveWalletAccountSettingsHideKey')}
                 buttonType='primary'
               />
             </ButtonWrapper>

@@ -13,7 +13,7 @@ type RootState = {
   hasError: boolean
   isSelectingRegion: boolean
   connectionStatus: ConnectionState
-  regions?: Array<Region>
+  regions?: Region[]
   currentRegion?: Region
   productUrls?: ProductUrls
   currentView: ViewType

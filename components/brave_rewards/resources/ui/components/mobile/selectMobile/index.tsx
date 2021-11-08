@@ -28,7 +28,6 @@ export interface Props {
 }
 
 export default class SelectMobile extends React.PureComponent<Props, {}> {
-
   onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (this.props.onChange) {
       this.props.onChange(event.target.value)

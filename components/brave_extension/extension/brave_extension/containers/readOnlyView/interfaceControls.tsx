@@ -14,16 +14,16 @@ import { BlockOptions } from '../../types/other/blockTypes'
 interface AdsTrackersProps {
   ads: BlockOptions
   adsBlocked: number
-  adsBlockedResources: Array<string>
+  adsBlockedResources: string[]
   trackers: BlockOptions
   trackersBlocked: number
-  trackersBlockedResources: Array<string>
+  trackersBlockedResources: string[]
 }
 
 interface HTTPSUpgradesProps {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
-  httpsRedirectedResources: Array<string>
+  httpsRedirectedResources: string[]
 }
 
 export type Props = AdsTrackersProps & HTTPSUpgradesProps

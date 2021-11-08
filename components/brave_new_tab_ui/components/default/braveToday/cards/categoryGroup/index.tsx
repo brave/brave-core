@@ -12,7 +12,7 @@ import useReadArticleClickHandler from '../../useReadArticleClickHandler'
 import { OnReadFeedItem } from '../../'
 
 interface Props {
-  content: (BraveNews.FeedItem)[]
+  content: BraveNews.FeedItem[]
   publishers: BraveNews.Publishers
   categoryName: string
   articleToScrollTo?: BraveNews.FeedItemMetadata

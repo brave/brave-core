@@ -24,7 +24,7 @@ const doNothing = () => {
 type Check = { yt: boolean, tw: boolean, inst: boolean }
 
 interface State {
-  check: Check,
+  check: Check
   settings: boolean
 }
 

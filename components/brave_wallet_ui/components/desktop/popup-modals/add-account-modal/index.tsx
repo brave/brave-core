@@ -95,7 +95,6 @@ const AddAccountModal = (props: Props) => {
     if (tab === 'import') {
       if (importOption === 'key') {
         onImportAccount(accountName, privateKey)
-        return
       } else {
         if (file) {
           const index = file[0]
@@ -107,7 +106,6 @@ const AddAccountModal = (props: Props) => {
           }
           reader.readAsText(index)
         }
-        return
       }
     }
   }
@@ -229,8 +227,8 @@ const AddAccountModal = (props: Props) => {
               onSubmit={onSubmit}
               disabled={isDisabled}
               text={
-                tab === 'create' ?
-                  getLocale('braveWalletCreateAccountButton')
+                tab === 'create'
+                  ? getLocale('braveWalletCreateAccountButton')
                   : getLocale('braveWalletAddAccountImport')
               }
               buttonType='primary'

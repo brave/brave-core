@@ -12,12 +12,12 @@ export class TrezorBridgeTransport extends MessagingTransport {
   constructor (bridgeFrameUrl: string) {
     super()
     this.bridgeFrameUrl = bridgeFrameUrl
-    // @ts-ignore
+    // @ts-expect-error
     this.frameId = crypto.randomUUID()
   }
 
-  private frameId: string
-  private bridgeFrameUrl: string
+  private readonly frameId: string
+  private readonly bridgeFrameUrl: string
 
   // T is response type, e.g. UnlockResponse. Resolves as `false` if transport error
   sendCommandToTrezorFrame = <T> (command: TrezorFrameCommand): Promise<T | false> => {
@@ -31,7 +31,6 @@ export class TrezorBridgeTransport extends MessagingTransport {
       }
       this.addCommandHandler(command.id, resolve)
       bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
-      return
     })
   }
 
@@ -51,11 +50,11 @@ export class TrezorBridgeTransport extends MessagingTransport {
     this.removeCommandHandler(event.data.id)
   }
 
-  private getTrezorBridgeOrigin = () => {
+  private readonly getTrezorBridgeOrigin = () => {
     return (new URL(this.bridgeFrameUrl)).origin
   }
 
-  private createBridge = () => {
+  private readonly createBridge = () => {
     return new Promise<HTMLIFrameElement>((resolve) => {
       let element = document.createElement('iframe')
       element.id = this.frameId
@@ -68,7 +67,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
     })
   }
 
-  private getBridge = (): HTMLIFrameElement | null => {
+  private readonly getBridge = (): HTMLIFrameElement | null => {
     return document.getElementById(this.frameId) as HTMLIFrameElement | null
   }
 }

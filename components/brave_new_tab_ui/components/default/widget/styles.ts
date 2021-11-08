@@ -66,7 +66,7 @@ export const StyledWidget = styled('div')<WidgetVisibilityProps & WidgetPaddingP
   }
 
   // Also hover when menu button has been clicked
-  ${ p => (p.widgetMenuPersist && !p.isCryptoTab) && `
+  ${p => (p.widgetMenuPersist && !p.isCryptoTab) && `
     background: rgba(33, 37, 41, 0.48);
   `}
 `

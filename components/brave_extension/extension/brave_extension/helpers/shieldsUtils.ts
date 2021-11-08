@@ -20,7 +20,7 @@ export const getTotalResourcesBlocked = (tabData: Partial<Tab>) => {
 }
 
 export const getFavicon = (url: string) => {
-  return `chrome://favicon/size/16@1x/${ url }`
+  return `chrome://favicon/size/16@1x/${url}`
 }
 
 export const blockedResourcesSize = (blockedResources: number) => {
@@ -74,8 +74,8 @@ export const sumAdsAndTrackers = (ads: number, trackers: number) => {
   return ads + trackers
 }
 
-export const mergeAdsAndTrackersResources = (ads: Array<string>, trackers: Array<string>) => {
-  return [ ...ads, ...trackers ]
+export const mergeAdsAndTrackersResources = (ads: string[], trackers: string[]) => {
+  return [...ads, ...trackers]
 }
 
 export const shieldsHasFocus = (url: string) => {

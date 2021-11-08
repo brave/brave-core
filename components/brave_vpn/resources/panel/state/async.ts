@@ -25,7 +25,7 @@ handler.on(Actions.connectToNewRegion.getType(), async (store) => {
   const state = getState(store)
 
   if (!state.currentRegion) {
-    console.error(`Current region is not defined`)
+    console.error('Current region is not defined')
     return
   }
 
@@ -42,7 +42,7 @@ handler.on(Actions.connectionStateChanged.getType(), async (store) => {
 
   if (state.connectionStatus === ConnectionState.CONNECT_FAILED) {
     store.dispatch(Actions.connectionFailed())
-    console.warn(`Connection has failed`)
+    console.warn('Connection has failed')
   }
 })
 

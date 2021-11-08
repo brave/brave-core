@@ -31,7 +31,7 @@ function SelectRegion () {
   }
 
   if (!selectedRegion) {
-    console.error(`Selected region is not defined`)
+    console.error('Selected region is not defined')
   }
 
   return (

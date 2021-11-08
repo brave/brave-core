@@ -58,7 +58,6 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.asset.logo : selectedAsset?.logo} />
       </IconWrapper>
     )
-
   }
 }
 

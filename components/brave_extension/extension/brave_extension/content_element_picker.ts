@@ -48,8 +48,8 @@ interface Rule {
 
 class ElementSelectorBuilder {
   public hasId: boolean
-  private elem: Element
-  private rules: Rule[]
+  private readonly elem: Element
+  private readonly rules: Rule[]
   private tag: string
 
   constructor (elem: Element) {
@@ -82,7 +82,6 @@ class ElementSelectorBuilder {
   toString (mask: number = mostSpecificMask): string {
     let selector = this.tag + ''
     for (const rule of this.rules) {
-
       if (!(mask & SpecificityFlags.Id) && rule.type === Selector.Id) {
         continue
       }
@@ -310,10 +309,10 @@ const launchElementPicker = () => {
 }
 
 interface TargetRect {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  x: number
+  y: number
+  width: number
+  height: number
 }
 
 const targetRectFromElement = (elem: Element): TargetRect => {
@@ -345,7 +344,7 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
     0b11101, // No DOM hierarchy
     0b01011, // No nth-of-type, no attributes
     0b10011, // No attributes, no class names
-    0b11111  // All selector rules (default)
+    0b11111 // All selector rules (default)
   ]
   const mask: number = specificityMasks[index]
 
@@ -362,8 +361,8 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   let i = 0
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
-    if ((mask & SpecificityFlags.Id) && b.hasId
-        || document.querySelectorAll(b.toString(mask)).length === 1) {
+    if ((mask & SpecificityFlags.Id) && b.hasId ||
+        document.querySelectorAll(b.toString(mask)).length === 1) {
       break
     }
   }

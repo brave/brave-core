@@ -30,7 +30,7 @@ interface Props {
   hostname: string
   stats: number
   name: string
-  list: Array<string>
+  list: string[]
   onClose: (event?: React.MouseEvent) => void
 }
 

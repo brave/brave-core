@@ -35,7 +35,7 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
 }
 
 function shouldShowBrandedWallpaperData (shouldShow: boolean): NewTab.BrandedWallpaper | undefined {
-  if (shouldShow === false) {
+  if (!shouldShow) {
     return undefined
   }
   return dummyBrandedWallpaper
@@ -58,7 +58,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   backgroundWallpaper: select(
     'Background image',
     generateStaticImages(images),
-    generateStaticImages(images)['SpaceX']
+    generateStaticImages(images).SpaceX
   ),
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
   showBackgroundImage: boolean('Show background image?', true),
@@ -77,7 +77,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   showBinance: boolean('Show Binance?', true),
   hideAllWidgets: boolean('Hide all widgets?', false),
   isBraveTodayOptedIn: boolean('Brave Today opted-in?', false),
-  textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
+  textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' }, 'ltr'),
   stats: {
     ...state.stats,
     adsBlockedStat: number('Number of blocked items', 1337),

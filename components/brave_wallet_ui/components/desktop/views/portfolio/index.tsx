@@ -285,7 +285,7 @@ const Portfolio = (props: Props) => {
       </TopRow>
       {!selectedAsset ? (
         <>
-          <BalanceText>${hoverBalance ? hoverBalance : portfolioBalance}</BalanceText>
+          <BalanceText>${hoverBalance || portfolioBalance}</BalanceText>
         </>
       ) : (
         <InfoColumn>
@@ -295,7 +295,7 @@ const Portfolio = (props: Props) => {
           </AssetRow>
           <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
           <PriceRow>
-            <PriceText>${hoverPrice ? hoverPrice : selectedUSDAssetPrice ? formatWithCommasAndDecimals(selectedUSDAssetPrice.price) : 0.00}</PriceText>
+            <PriceText>${hoverPrice || (selectedUSDAssetPrice ? formatWithCommasAndDecimals(selectedUSDAssetPrice.price) : 0.00)}</PriceText>
             <PercentBubble isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false}>
               <ArrowIcon isDown={selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange) < 0 : false} />
               <PercentText>{selectedUSDAssetPrice ? Number(selectedUSDAssetPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>

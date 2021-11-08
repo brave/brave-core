@@ -26,10 +26,10 @@ export interface Tab {
   fingerprintingBlocked: number
   cookies: BlockCookiesOptions
   noScriptInfo: NoScriptInfo
-  adsBlockedResources: Array<string>
-  trackersBlockedResources: Array<string>
-  httpsRedirectedResources: Array<string>
-  fingerprintingBlockedResources: Array<string>
+  adsBlockedResources: string[]
+  trackersBlockedResources: string[]
+  httpsRedirectedResources: string[]
+  fingerprintingBlockedResources: string[]
 }
 
 export interface Tabs {
@@ -52,78 +52,38 @@ export interface State {
   windows: Windows
 }
 
-export interface GetActiveTabId {
-  (state: State): number
-}
+export type GetActiveTabId = (state: State) => number
 
-export interface GetActiveTabData {
-  (state: State): Tab | undefined
-}
+export type GetActiveTabData = (state: State) => Tab | undefined
 
-export interface GetPersistentData {
-  (state: State): PersistentData
-}
+export type GetPersistentData = (state: State) => PersistentData
 
-export interface UpdatePersistentData {
-  (state: State, persistentData: Partial<PersistentData>): State
-}
+export type UpdatePersistentData = (state: State, persistentData: Partial<PersistentData>) => State
 
-export interface MergeSettingsData {
-  (state: State, settingsData: SettingsData): SettingsData
-}
+export type MergeSettingsData = (state: State, settingsData: SettingsData) => SettingsData
 
-export interface UpdateActiveTab {
-  (state: State, windowId: number, tabId: number): State
-}
+export type UpdateActiveTab = (state: State, windowId: number, tabId: number) => State
 
-export interface RemoveWindowInfo {
-  (state: State, windowId: number): State
-}
+export type RemoveWindowInfo = (state: State, windowId: number) => State
 
-export interface UpdateFocusedWindow {
-  (state: State, windowId: number): State
-}
+export type UpdateFocusedWindow = (state: State, windowId: number) => State
 
-export interface UpdateTabShieldsData {
-  (state: State, tabId: number, details: Partial<Tab>): State
-}
+export type UpdateTabShieldsData = (state: State, tabId: number, details: Partial<Tab>) => State
 
-export interface UpdateResourceBlocked {
-  (state: State, tabId: number, blockType: BlockTypes, subresource: string): State
-}
+export type UpdateResourceBlocked = (state: State, tabId: number, blockType: BlockTypes, subresource: string) => State
 
-export interface SaveCosmeticFilterRuleExceptions {
-  (state: State, tabId: number, exceptions: Array<string>): State
-}
+export type SaveCosmeticFilterRuleExceptions = (state: State, tabId: number, exceptions: string[]) => State
 
-export interface ResetBlockingStats {
-  (state: State, tabId: number): State
-}
+export type ResetBlockingStats = (state: State, tabId: number) => State
 
-export interface ResetBlockingResources {
-  (state: State, tabId: number): State
-}
+export type ResetBlockingResources = (state: State, tabId: number) => State
 
-export interface ResetNoScriptInfo {
-  (state: State, tabId: number, newOrigin: string): State
-}
+export type ResetNoScriptInfo = (state: State, tabId: number, newOrigin: string) => State
 
-export interface UpdateShieldsIconBadgeText {
-  (state: State): void
-}
-export interface UpdateShieldsIconImage {
-  (state: State): void
-}
-export interface UpdateShieldsIcon {
-  (state: State): void
-}
-export interface FocusedWindowChanged {
-  (state: State, windowId: number): State
-}
-export interface RequestDataAndUpdateActiveTab {
-  (state: State, windowId: number, tabId: number): State
-}
+export type UpdateShieldsIconBadgeText = (state: State) => void
+export type UpdateShieldsIconImage = (state: State) => void
+export type UpdateShieldsIcon = (state: State) => void
+export type FocusedWindowChanged = (state: State, windowId: number) => State
+export type RequestDataAndUpdateActiveTab = (state: State, windowId: number, tabId: number) => State
 
-export interface PersistAllNoScriptSettings {
-  (state: State, tabId: number): State
-}
+export type PersistAllNoScriptSettings = (state: State, tabId: number) => State

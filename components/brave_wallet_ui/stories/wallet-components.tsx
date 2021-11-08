@@ -84,7 +84,6 @@ _LineChartControls.story = {
 }
 
 export const _Onboarding = () => {
-
   const complete = () => {
     alert('Wallet Setup Complete!!!')
   }

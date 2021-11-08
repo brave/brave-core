@@ -244,7 +244,6 @@ const getPublisherPanelInfo = (tabId: number, publisherKey: string) => {
             info
           })
       }
-      return
     })
 }
 
@@ -272,7 +271,6 @@ const savePublisherInfo = (tabId: number, mediaType: string, url: string, publis
     (result: RewardsExtension.Result) => {
       if (result !== 0) {
         console.error(`Failed to save publisher info for ${publisherKey}, result is ${result}`)
-        return
       }
     })
 }
@@ -305,7 +303,6 @@ const handleSavePublisherVisit = (tabId: number, mediaType: string, data: SavePu
           data.publisherKey,
           data.publisherName,
           data.favIconUrl || '')
-        return
       }
     })
 }

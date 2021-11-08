@@ -7,8 +7,15 @@ export const GetNetworkInfo = (chainId: string, list: EthereumChain[]) => {
     }
   }
   return {
-    chainId: '', chainName: '', rpcUrls: [], blockExplorerUrls: [],
-    iconUrls: [], symbol: '', symbolName: '', decimals: 0, isEip1559: false
+    chainId: '',
+chainName: '',
+rpcUrls: [],
+blockExplorerUrls: [],
+    iconUrls: [],
+symbol: '',
+symbolName: '',
+decimals: 0,
+isEip1559: false
   }
 }
 

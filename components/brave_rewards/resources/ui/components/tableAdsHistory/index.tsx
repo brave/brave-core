@@ -85,8 +85,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return (
       <StyledTable>
         {
-          header ?
-            <thead>
+          header
+            ? <thead>
               <tr>
                 {
                   this.getHeader(header)
@@ -122,8 +122,8 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return rows.map((row: DetailRow, i: number) => {
       const detailRows = this.getDetailRows(row.adDetailRows)
       return (
-        detailRows && detailRows.length > 0 ?
-          <AdRowsDetails key={i} row={row} rowIndex={i} detailRows={detailRows} />
+        detailRows && detailRows.length > 0
+          ? <AdRowsDetails key={i} row={row} rowIndex={i} detailRows={detailRows} />
           : null
       )
     })
@@ -151,12 +151,11 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
       <StyledAdContentDiv>
         <StyledAdLink href={content.brandUrl} target={'_blank'}>
           {
-            content.logoUrl ?
-              <StyledLogoDiv>
+            content.logoUrl
+              ? <StyledLogoDiv>
                 <StyledLogo src={content.logoUrl} />
               </StyledLogoDiv>
-              :
-              <StyledNoLogoDiv />
+              : <StyledNoLogoDiv />
           }
           <StyledAdInfoDiv>
             <StyledAdBrand>{content.brand}</StyledAdBrand>
@@ -230,10 +229,9 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return (
       <div id={id} data-test-id={testId} key={id}>
       {
-        rows ?
-          this.getAdsHistoryTable(header, rows)
-          :
-          <StyledNoAdHistoryDiv>
+        rows
+          ? this.getAdsHistoryTable(header, rows)
+          : <StyledNoAdHistoryDiv>
             {
               getLocale('noAdsHistory')
             }

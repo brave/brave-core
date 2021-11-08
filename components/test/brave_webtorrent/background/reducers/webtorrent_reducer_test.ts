@@ -49,5 +49,4 @@ describe('webtorrent reducer test', () => {
       expect(state).toEqual(defaultState)
     })
   })
-
 })

@@ -38,7 +38,7 @@ const torInternalsReducer: Reducer<TorInternals.State | undefined> = (state: Tor
     case types.ON_GET_TOR_INIT_PERCENTAGE:
       state = {
         ...state,
-        generalInfo : {
+        generalInfo: {
           ...state.generalInfo,
           torInitPercentage: action.payload.percentage
         }
@@ -47,7 +47,7 @@ const torInternalsReducer: Reducer<TorInternals.State | undefined> = (state: Tor
     case types.ON_GET_TOR_CIRCUIT_ESTABLISHED:
       state = {
         ...state,
-        generalInfo : {
+        generalInfo: {
           ...state.generalInfo,
           isTorConnected: action.payload.success
         }

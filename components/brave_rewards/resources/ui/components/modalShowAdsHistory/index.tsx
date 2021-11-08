@@ -109,17 +109,17 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
               </StyledAdsPerHourText>
             </StyledAdsInfoTextWrapper>
               {
-                rows && hasSavedEntries ?
-                  <StyledAdsSaveFiltered>
+                rows && hasSavedEntries
+                  ? <StyledAdsSaveFiltered>
                     <StyledText>
                       {
-                        this.state.filterStatus !== 0 ?
-                          <StyledLink onClick={this.onAllFilterClick}>
+                        this.state.filterStatus !== 0
+                          ? <StyledLink onClick={this.onAllFilterClick}>
                             {
                               getLocale('all')
                             }
-                          </StyledLink> :
-                          <StyledNotSelectedLink>
+                          </StyledLink>
+                          : <StyledNotSelectedLink>
                             {
                               getLocale('all')
                             }
@@ -129,13 +129,13 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
                     <StyledSeparatorText>|</StyledSeparatorText>
                     <StyledText>
                       {
-                        this.state.filterStatus !== 1 ?
-                          <StyledLink onClick={this.onSavedFilterClick}>
+                        this.state.filterStatus !== 1
+                          ? <StyledLink onClick={this.onSavedFilterClick}>
                             {
                               getLocale('saved')
                             }
-                          </StyledLink> :
-                          <StyledNotSelectedLink>
+                          </StyledLink>
+                          : <StyledNotSelectedLink>
                             {
                               getLocale('saved')
                             }
@@ -145,11 +145,11 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
                     <StyledSeparatorText>|</StyledSeparatorText>
                     <StyledText>
                       {
-                        this.state.filterStatus !== 2 ?
-                          <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
+                        this.state.filterStatus !== 2
+                          ? <StyledThumbDownFilter onClick={this.onThumbFilterClick}>
                             <ThumbsupSIcon />
-                          </StyledThumbDownFilter> :
-                          <StyledThumbDownNotSelectedFilter>
+                          </StyledThumbDownFilter>
+                          : <StyledThumbDownNotSelectedFilter>
                             <ThumbsupSIcon />
                           </StyledThumbDownNotSelectedFilter>
                       }
@@ -164,8 +164,8 @@ export default class ModalShowAdsHistory extends React.PureComponent<Props, Stat
             header={this.headers}
           />
           {
-            !rows || rows.length === 0 ?
-              <StyledNoActivity>
+            !rows || rows.length === 0
+              ? <StyledNoActivity>
                 {getLocale('adsHistoryNone').replace('$1', String(totalDays || 0))}
               </StyledNoActivity>
             : null

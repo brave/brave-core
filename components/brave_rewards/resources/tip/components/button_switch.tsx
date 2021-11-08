@@ -19,7 +19,7 @@ export interface ButtonSwitchOption<T> {
 }
 
 interface Props<T> {
-  options: ButtonSwitchOption<T>[]
+  options: Array<ButtonSwitchOption<T>>
   selectedValue: T
   onSelect: (value: T) => void
 }

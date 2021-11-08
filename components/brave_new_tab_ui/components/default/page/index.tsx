@@ -128,8 +128,8 @@ export const Page: React.FunctionComponent<PageProps> = (props) => {
       if (scrollPast >= 1) {
         // Have blur effect amount follow scroll amount. Should
         // be fully blurred at 50% of viewport height
-        const blurUpperLimit = viewportHeight * .65
-        const blurLowerLimit = viewportHeight * .25
+        const blurUpperLimit = viewportHeight * 0.65
+        const blurLowerLimit = viewportHeight * 0.25
         const blurAmount = scrollPast > blurUpperLimit
           ? 1
           : scrollPast < blurLowerLimit

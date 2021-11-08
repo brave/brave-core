@@ -20,7 +20,6 @@ export interface Props {
 }
 
 export default class PanelHeader extends React.PureComponent<Props> {
-
   navigate = (path: PanelTypes) => () => {
     this.props.action(path)
   }
@@ -28,7 +27,7 @@ export default class PanelHeader extends React.PureComponent<Props> {
   render () {
     const { title, searchAction, useSearch } = this.props
     return (
-      <HeaderWrapper hasSearch={useSearch ? useSearch : false}>
+      <HeaderWrapper hasSearch={useSearch || false}>
         <TopRow>
           <HeaderTitle>{title}</HeaderTitle>
           <CloseButton onClick={this.navigate('main')} />

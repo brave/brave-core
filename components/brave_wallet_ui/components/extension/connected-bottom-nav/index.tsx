@@ -56,7 +56,7 @@ function ConnectedBottomNav (props: Props) {
           </NavButton>
         </PanelTooltip>
         {/* <NavDivider /> */}
-        {/*Temp commented out for MVP*/}
+        {/* Temp commented out for MVP */}
         {/* <NavButton onClick={navigate('apps')}>
           <AppsIcon />
         </NavButton> */}

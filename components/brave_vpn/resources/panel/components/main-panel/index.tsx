@@ -21,7 +21,7 @@ function MainPanel () {
   }
 
   if (isSelectingRegion) {
-    return(<SelectRegionList />)
+    return (<SelectRegionList />)
   }
 
   if (hasError) {

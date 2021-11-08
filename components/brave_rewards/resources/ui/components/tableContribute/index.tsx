@@ -51,7 +51,6 @@ export interface Props {
 }
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
-
   getHeader = (header: string[]) => {
     if (!header) {
       return
@@ -65,10 +64,10 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
 
     if (this.props.headerColor) {
       customStyle = {
-        border: 'none',
-        'border-bottom': `1px solid #9F22A1`,
-        padding: '8px 0',
-        color: '#9F22A1'
+        'border': 'none',
+        'border-bottom': '1px solid #9F22A1',
+        'padding': '8px 0',
+        'color': '#9F22A1'
       }
     }
 

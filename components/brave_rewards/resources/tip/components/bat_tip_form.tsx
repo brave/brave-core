@@ -113,8 +113,8 @@ export function BatTipForm (props: Props) {
     <style.root>
       <style.main>
         {
-          showCustomInput ?
-            <style.customInput>
+          showCustomInput
+            ? <style.customInput>
               <CustomAmountInput
                 amount={tipAmount}
                 exchangeRate={rewardsParameters.rate}
@@ -124,8 +124,8 @@ export function BatTipForm (props: Props) {
                 onHideInput={hideCustomInput}
               />
             </style.customInput>
-          : hasCustomAmount ?
-            <style.customAmount>
+          : hasCustomAmount
+            ? <style.customAmount>
               <CustomTipAmount
                 text={
                   getString(props.tipKind === 'one-time'
@@ -143,8 +143,7 @@ export function BatTipForm (props: Props) {
                 onReset={onResetCustomAmount}
               />
             </style.customAmount>
-          :
-            <style.amounts>
+          : <style.amounts>
               <TipAmountSelector
                 options={props.tipAmountOptions}
                 selectedValue={tipAmount}
@@ -167,8 +166,8 @@ export function BatTipForm (props: Props) {
           <TermsOfService />
         </style.terms>
         {
-          tipAmount < minimumTip ?
-            <style.minimumAmount>
+          tipAmount < minimumTip
+            ? <style.minimumAmount>
               <SadFaceIcon />&nbsp;
               {
                 formatMessage(getString('minimumTipAmount'), [
@@ -177,16 +176,15 @@ export function BatTipForm (props: Props) {
                 ])
               }
             </style.minimumAmount>
-          : props.tipKind === 'one-time' && tipAmount > props.userBalance ?
-            <style.notEnoughFunds>
+          : props.tipKind === 'one-time' && tipAmount > props.userBalance
+            ? <style.notEnoughFunds>
               <SadFaceIcon /> {getInsufficientFundsMessage(locale)}
             </style.notEnoughFunds>
-          : showCustomInput ?
-            <FormSubmitButton onClick={onSubmitCustomTip}>
+          : showCustomInput
+            ? <FormSubmitButton onClick={onSubmitCustomTip}>
               {getString('continue')}
             </FormSubmitButton>
-          :
-            <FormSubmitButton onClick={onSubmitTip}>
+          : <FormSubmitButton onClick={onSubmitTip}>
               {
                 tipProcessing
                   ? <LoadingIcon />

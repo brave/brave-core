@@ -6,7 +6,6 @@
 // rewards onboarding UX to store whether the user has interacted
 // with the onboarding experience.
 export class OnboardingCompletedStore {
-
   load () {
     return Boolean(localStorage.rewardsOnboardingComplete)
   }

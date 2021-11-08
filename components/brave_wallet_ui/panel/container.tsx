@@ -591,7 +591,7 @@ function Container (props: Props) {
       assets = WyreAccountAssetOptions
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
-    } else {  // swap
+    } else { // swap
       assets = filteredAssetList
     }
     return (

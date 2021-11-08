@@ -8,7 +8,6 @@ import { torrentObj } from '../testData'
 import TorrentViewerFooter from '../../../brave_webtorrent/extension/components/torrentViewerFooter'
 
 describe('torrentViewerFooter component', () => {
-
   describe('torrentViewerFooter dumb component', () => {
     it('renders the component with webtorrent link if torrent is passed', () => {
       const wrapper = shallow(

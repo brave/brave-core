@@ -15,6 +15,7 @@ export class TorControlEvents extends React.Component<Props, {}> {
   constructor (props: Props) {
     super(props)
   }
+
   render () {
     return (
       <LogTextArea value={this.props.events.join('\r\n')} readOnly={true}/>

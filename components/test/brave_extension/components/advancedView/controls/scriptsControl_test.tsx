@@ -10,7 +10,7 @@ import { BlockJSOptions } from '../../../../../brave_extension/extension/brave_e
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
-  setBlockedListOpen: () => { return },
+  setBlockedListOpen: () => { },
   hostname: 'brave.com',
   favicon: '',
   javascript: 'allow',

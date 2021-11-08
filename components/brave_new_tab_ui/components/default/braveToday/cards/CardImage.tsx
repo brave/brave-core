@@ -32,9 +32,9 @@ function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?:
       return
     }
     // Storybook method
-    // @ts-ignore
+    // @ts-expect-error
     if (window.braveStorybookUnpadUrl) {
-      // @ts-ignore
+      // @ts-expect-error
       window.braveStorybookUnpadUrl(paddedUrl)
       .then(onReceiveUnpaddedUrl)
       return
@@ -71,7 +71,7 @@ export default function CardImage (props: Props) {
       img.src = unpaddedUrl
       return () => { shouldCancel = true }
     }
-    return // otherwise ts complains: "Not all code paths return a value." 🤷‍♂️
+     // otherwise ts complains: "Not all code paths return a value." 🤷‍♂️
   }, [unpaddedUrl])
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (

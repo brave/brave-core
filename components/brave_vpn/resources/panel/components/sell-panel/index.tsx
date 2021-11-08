@@ -28,7 +28,7 @@ function SellPanel () {
           </S.PoweredBy>
         </S.PanelHeader>
         <S.List>
-          {featureList.map((entry,i) => (
+          {featureList.map((entry, i) => (
             <li key={i}>
               {entry}
             </li>

@@ -25,7 +25,7 @@ import { getOrigin } from '../helpers/urlUtils'
  * @returns {NoScriptInfo} The current NoScript data
  */
 export const getNoScriptInfo: GetNoScriptInfo = (state, tabId) => {
-  if ('noScriptInfo' in state.tabs[tabId] === false) {
+  if (!'noScriptInfo' in state.tabs[tabId]) {
     state.tabs[tabId].noScriptInfo = {}
   }
   return state.tabs[tabId].noScriptInfo

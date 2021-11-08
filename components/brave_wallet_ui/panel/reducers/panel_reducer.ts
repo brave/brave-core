@@ -22,9 +22,15 @@ const defaultState: PanelState = {
   tabId: -1,
   connectingAccounts: [],
   networkPayload: {
-    chainId: '0x1', chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet-infura.brave.com/'], blockExplorerUrls: [],
-    iconUrls: [], symbol: 'ETH', symbolName: 'Ethereum', decimals: 18, isEip1559: true
+    chainId: '0x1',
+chainName: 'Ethereum Mainnet',
+    rpcUrls: ['https://mainnet-infura.brave.com/'],
+blockExplorerUrls: [],
+    iconUrls: [],
+symbol: 'ETH',
+symbolName: 'Ethereum',
+decimals: 18,
+isEip1559: true
   },
   swapQuote: undefined,
   swapError: undefined,

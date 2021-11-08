@@ -57,7 +57,6 @@ interface State {
   - add error flow
  */
 export default class ModalBackupRestore extends React.PureComponent<Props, State> {
-
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -328,7 +327,7 @@ export default class ModalBackupRestore extends React.PureComponent<Props, State
 
   confirmSelection = () => {
     const confirmed = confirm(getLocale('rewardsResetConfirmation'))
-    if (confirmed === true) {
+    if (confirmed) {
       this.props.onReset()
     }
   }

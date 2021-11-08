@@ -75,7 +75,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   getSrc (src?: string) {
-    return src ? src : ''
+    return src || ''
   }
 
   getVerifiedInfo = () => {
@@ -169,12 +169,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      !refreshingPublisher && !publisherRefreshed ?
-        this.getDefaultVerifiedPanelWrap()
-    : !publisherRefreshed && refreshingPublisher ?
-        this.getVerifiedPanelWrapRefreshing()
-    :
-      this.getVerifiedPanelWrapRefreshFinished()
+      !refreshingPublisher && !publisherRefreshed
+        ? this.getDefaultVerifiedPanelWrap()
+    : !publisherRefreshed && refreshingPublisher
+        ? this.getVerifiedPanelWrapRefreshing()
+    : this.getVerifiedPanelWrapRefreshFinished()
     )
   }
 
@@ -267,12 +266,11 @@ export default class Profile extends React.PureComponent<Props, {}> {
     } = this.props
 
     return (
-      !publisherRefreshed && !refreshingPublisher ?
-        this.getDefaultUnverifiedPanelWrap()
-      : !publisherRefreshed && refreshingPublisher ?
-        this.getUnverifiedPanelWrapRefreshing()
-      :
-        this.getUnverifiedPanelWrapRefreshFinished()
+      !publisherRefreshed && !refreshingPublisher
+        ? this.getDefaultUnverifiedPanelWrap()
+      : !publisherRefreshed && refreshingPublisher
+        ? this.getUnverifiedPanelWrapRefreshing()
+      : this.getUnverifiedPanelWrapRefreshFinished()
     )
   }
 

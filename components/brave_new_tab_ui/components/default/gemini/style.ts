@@ -315,7 +315,7 @@ export const ListInfo = styled('div')<StyleProps>`
         text-align: left;
       `
     } else if (p.position === 'left') {
-      return `width: 120px`
+      return 'width: 120px'
     } else {
       return null
     }

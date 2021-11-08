@@ -96,7 +96,7 @@ function onGarbageCollection (garbageCollectionStatus: IPFS.GarbageCollectionSta
 
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
-// @ts-ignore
+// @ts-expect-error
 window.ipfs = {
   onGetConnectedPeers,
   onGetAddressesConfig,

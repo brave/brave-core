@@ -30,10 +30,11 @@ const noScriptInfo: NoScriptInfo = {
 const url: string = 'https://brave.com'
 const tabId: number = 2
 const state: State = deepFreeze({
-  tabs: { [tabId]: {
+  tabs: {
+ [tabId]: {
     origin: url,
     id: tabId,
-    noScriptInfo ,
+    noScriptInfo,
     hostname: 'https://brave.com',
     url: 'https://brave.com',
     ads: 'block',
@@ -54,7 +55,8 @@ const state: State = deepFreeze({
     fingerprintingBlockedResources: [],
     cookies: 'block',
     firstPartyCosmeticFiltering: false
-  } },
+  }
+},
   windows: { 1: tabId },
   persistentData: {
     isFirstAccess: true
@@ -81,7 +83,9 @@ describe('noScriptState', () => {
         willBlock: true,
         userInteracted: true
       })
-      expect(assertion).toEqual({ ...state, tabs: {
+      expect(assertion).toEqual({
+ ...state,
+tabs: {
         2: {
           ...state.tabs[2],
           noScriptInfo: {
@@ -92,7 +96,8 @@ describe('noScriptState', () => {
               willBlock: true
             }
           }
-        }}
+        }
+}
       })
     })
   })

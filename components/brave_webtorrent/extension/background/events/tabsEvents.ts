@@ -8,7 +8,8 @@ chrome.webNavigation.onCommitted.addListener(
   (details: chrome.webNavigation.WebNavigationFramedCallbackDetails) => {
     tabActions.tabUpdated(details.tabId, details)
   },
-  { url: [
+  {
+ url: [
     { pathSuffix: '.torrent' },
     // have a magnet scheme
     { schemes: ['magnet'] }]
@@ -26,7 +27,8 @@ chrome.webNavigation.onCommitted.addListener(
     details.url = decoded
     tabActions.tabUpdated(details.tabId, details)
   },
-  { url: [
+  {
+ url: [
     // when handling URLs as chrome-extension://...
     // the actual torrent URL is within query parameters
     { schemes: ['chrome-extension'], queryContains: '.torrent' },

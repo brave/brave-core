@@ -47,8 +47,7 @@ export default function Summary (props: Props) {
         </S.FlexItem>
       </S.FlexItem>
       {balanceKeys.length !== 0
-      ?
-      <S.List hasBorder={false}>
+      ? <S.List hasBorder={false}>
         {balanceKeys.map(currencyKey => {
           const balance = props.ftx.balances[currencyKey]
           return (

@@ -6,7 +6,7 @@ export async function generateQRData (url: string, asset: string, qrAction: any)
   const qr = await import('qr-image')
   const image: any = qr.image(url)
   try {
-    let chunks: Array<Uint8Array> = []
+    let chunks: Uint8Array[] = []
     image
       .on('data', (chunk: Uint8Array) => chunks.push(chunk))
       .on('end', () => {

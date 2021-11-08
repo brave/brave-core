@@ -25,7 +25,7 @@ function parseGrantId (id: string) {
 
 function mapProvider (name: string): ExternalWalletProvider {
   const provider = externalWalletProviderFromString(name.toLocaleLowerCase())
-  return provider ? provider : 'uphold'
+  return provider || 'uphold'
 }
 
 enum ExtensionNotificationType {

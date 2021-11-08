@@ -88,6 +88,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
     })
   }
+
   _createMessageSignature = (result: SignatureVRS, message: string, address: string) => {
     let v = (result.v - 27).toString()
     if (v.length < 2) {

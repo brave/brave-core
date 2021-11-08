@@ -110,7 +110,6 @@ const MenuItem = styled('li')`
 `
 
 export default function PublisherMetaComponent (props: Props) {
-
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
   const triggerElementRef = React.useRef<HTMLButtonElement>(null)

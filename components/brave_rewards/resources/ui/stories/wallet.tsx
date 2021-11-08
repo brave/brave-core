@@ -35,8 +35,8 @@ export const wrapper = () => {
   const showAlert = boolean('Show alert', false)
 
   const state: WalletState = select('wallet status', {
-    unverified: 'unverified',
-    verified: 'verified',
+    'unverified': 'unverified',
+    'verified': 'verified',
     'disconnected unverified': 'disconnected_unverified',
     'disconnected verified': 'disconnected_verified'
   }, 'unverified') as WalletState

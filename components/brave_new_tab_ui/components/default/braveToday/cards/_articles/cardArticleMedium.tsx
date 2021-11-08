@@ -14,7 +14,7 @@ import { OnReadFeedItem, OnSetPublisherPref } from '../../'
 // TODO(petemill): Large and Medium article should be combined to 1 component.
 
 interface Props {
-  content: (BraveNews.FeedItem)[]
+  content: BraveNews.FeedItem[]
   publishers: BraveNews.Publishers
   articleToScrollTo?: BraveNews.FeedItemMetadata
   onReadFeedItem: OnReadFeedItem

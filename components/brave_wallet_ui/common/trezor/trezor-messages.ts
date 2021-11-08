@@ -21,23 +21,23 @@ export type TrezorAccountPath = {
   path: string
 }
 export type GetAccountsCommand = CommandMessage & {
-  command: TrezorCommand.GetAccounts,
+  command: TrezorCommand.GetAccounts
   paths: TrezorAccountPath[]
 }
 export type UnlockCommand = CommandMessage & {
   command: TrezorCommand.Unlock
 }
 export type UnlockResponse = CommandMessage & {
-  result: Boolean,
+  result: Boolean
   error?: Unsuccessful
 }
 export type TrezorAccount = {
   publicKey: string
-  serializedPath: string,
+  serializedPath: string
   fingerprint: number
 }
 export type TrezorError = {
-  error: string,
+  error: string
   code: string
 }
 export type TrezorGetPublicKeyResponse = Unsuccessful | Success<HDNodeResponse[]>
@@ -83,11 +83,11 @@ export abstract class MessagingTransport {
 
   protected abstract onMessageReceived (event: MessageEvent): unknown
 
-  private addWindowMessageListener = () => {
+  private readonly addWindowMessageListener = () => {
     window.addEventListener('message', this.onMessageReceived)
   }
 
-  private removeWindowMessageListener = () => {
+  private readonly removeWindowMessageListener = () => {
     window.removeEventListener('message', this.onMessageReceived)
   }
 }

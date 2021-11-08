@@ -76,7 +76,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
     }
   }
 
-  private summary: Record<SummaryType, {color: TokenType, translation: string}> = {
+  private readonly summary: Record<SummaryType, {color: TokenType, translation: string}> = {
     grant: {
       color: 'earning',
       translation: 'tokenGrantClaimed'
@@ -300,7 +300,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
             })
           }
         </Tabs>
-        <TabContent data-test-id={`activity-table-body`}>
+        <TabContent data-test-id={'activity-table-body'}>
           {tabs[this.state.currentTab].content()}
         </TabContent>
       </>

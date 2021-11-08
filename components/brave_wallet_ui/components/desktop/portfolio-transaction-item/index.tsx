@@ -173,7 +173,7 @@ const PortfolioTransactionItem = (props: Props) => {
         const text = getLocale('braveWalletApprovalTransactionIntent')
         return (
           <>
-            {displayAccountName ? text : toProperCase(text)}{` `}
+            {displayAccountName ? text : toProperCase(text)}{' '}
             <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
               {transactionDetails.symbol}
             </AddressOrAsset>
@@ -195,7 +195,7 @@ const PortfolioTransactionItem = (props: Props) => {
         const text = getLocale('braveWalletTransactionSent')
         return (
           <>
-            {displayAccountName ? text : toProperCase(text)}{` `}
+            {displayAccountName ? text : toProperCase(text)}{' '}
             <AddressOrAsset
               // Disabled for ERC721 tokens until we have NFT meta data
               disabled={transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom}
@@ -203,7 +203,7 @@ const PortfolioTransactionItem = (props: Props) => {
             >
               {transactionDetails.symbol}
               {transaction.txType === TransactionType.ERC721TransferFrom || transaction.txType === TransactionType.ERC721SafeTransferFrom
-                ? ` ` + transactionDetails.erc721TokenId : ''}
+                ? ' ' + transactionDetails.erc721TokenId : ''}
             </AddressOrAsset>
           </>
         )
@@ -218,10 +218,10 @@ const PortfolioTransactionItem = (props: Props) => {
         return (
           <DetailRow>
             <DetailTextDark>
-              {toProperCase(text)} {transactionDetails.value}{` `}
+              {toProperCase(text)} {transactionDetails.value}{' '}
               <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
                 {transactionDetails.symbol}
-              </AddressOrAsset> -{` `}
+              </AddressOrAsset> -{' '}
               <AddressOrAsset onClick={onAddressClick(transactionDetails.approvalTarget)}>
                 {transactionDetails.approvalTargetLabel}
               </AddressOrAsset>
@@ -235,7 +235,7 @@ const PortfolioTransactionItem = (props: Props) => {
         return (
           <DetailRow>
             <DetailTextDark>
-              {transactionDetails.value}{` `}
+              {transactionDetails.value}{' '}
               <AddressOrAsset onClick={onAssetClick(transactionDetails.symbol)}>
                 {transactionDetails.symbol}
               </AddressOrAsset>
@@ -309,7 +309,7 @@ const PortfolioTransactionItem = (props: Props) => {
       </StatusRow>
       <DetailRow>
         <BalanceColumn>
-          <DetailTextDark>{/*We need to return a Transaction Time Stamp to calculate Fiat value here*/}${transactionDetails.fiatValue}</DetailTextDark>
+          <DetailTextDark>{/* We need to return a Transaction Time Stamp to calculate Fiat value here */}${transactionDetails.fiatValue}</DetailTextDark>
           <DetailTextLight>{transactionDetails.nativeCurrencyTotal} {selectedNetwork.symbol}</DetailTextLight>
         </BalanceColumn>
         <TransactionFeesTooltip

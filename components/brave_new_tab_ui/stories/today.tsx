@@ -13,7 +13,7 @@ import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
 import { UserEnabled } from '../api/brave_news'
 
-const onClick = (() => alert('clicked'))
+const onClick = () => alert('clicked')
 
 export default {
   title: 'New Tab/Brave Today',

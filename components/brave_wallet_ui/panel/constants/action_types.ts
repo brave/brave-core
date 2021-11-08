@@ -11,13 +11,13 @@ export type AccountPayloadType = {
 }
 
 export type ShowConnectToSitePayload = {
-  tabId: number,
-  accounts: string[],
+  tabId: number
+  accounts: string[]
   origin: string
 }
 
 export type EthereumChainRequestPayload = {
-  chainId: string,
+  chainId: string
   approved: boolean
 }
 
@@ -26,24 +26,24 @@ export type EthereumChainPayload = {
 }
 
 export type SignMessagePayload = {
-  id: number,
-  address: string,
+  id: number
+  address: string
   message: string
 }
 
 export type SignMessageProcessedPayload = {
-  approved: boolean,
+  approved: boolean
   id: number
 }
 
 export type SignMessageHardwareProcessedPayload = {
-  success: boolean,
-  id: number,
-  signature: string,
+  success: boolean
+  id: number
+  signature: string
   error: string
 }
 
 export type SwitchEthereumChainProcessedPayload = {
-  approved: boolean,
+  approved: boolean
   origin: Url
 }

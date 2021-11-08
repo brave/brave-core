@@ -56,7 +56,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
 
   const uuid = React.useMemo<string | undefined>(function () {
     if (props.isPromoted) {
-      // @ts-ignore
+      // @ts-expect-error
       const uuid: string = crypto.randomUUID()
       return uuid
     }
@@ -79,7 +79,7 @@ const LargeArticle = React.forwardRef<HTMLElement, ArticleProps>(function (props
       if (typeof forwardedRef === 'function') {
         forwardedRef(innerRef.current)
       } else {
-        // @ts-ignore
+        // @ts-expect-error
         // Ref.current is meant to be readonly, but we can ignore that.
         ref.current = newRef
       }

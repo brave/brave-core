@@ -4,9 +4,9 @@
 
 const pendingDaysFormatter = new Intl.NumberFormat(undefined, {
   style: 'unit',
-  // @ts-ignore: "unit" property not yet supported by TS
+  // @ts-expect-error: "unit" property not yet supported by TS
   unit: 'day',
-  // @ts-ignore: "unitDisplay" property not yet support by TS
+  // @ts-expect-error: "unitDisplay" property not yet support by TS
   unitDisplay: 'long',
   maximumFractionDigits: 0
 })

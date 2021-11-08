@@ -21,7 +21,7 @@ import {
 export interface Props {
   index: number
   currentScreen: number
-  browserProfiles: Array<Welcome.BrowserProfile>
+  browserProfiles: Welcome.BrowserProfile[]
   onClick: (sourceBrowserProfileIndex: number) => void
 }
 
@@ -45,7 +45,6 @@ export default class ImportBox extends React.PureComponent<Props, State> {
 
     const selectedProfile = getSelectedBrowserProfile(event.target.value, this.props.browserProfiles)
     selectedProfile && this.setState({ selectedBrowserProfile: selectedProfile })
-
   }
 
   onHandleImport = () => {

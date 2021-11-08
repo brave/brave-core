@@ -19,13 +19,13 @@ export type AddAccountPayloadType = {
 }
 
 export type ImportAccountPayloadType = {
-  accountName: string,
+  accountName: string
   privateKey: string
 }
 
 export type ImportAccountFromJsonPayloadType = {
-  accountName: string,
-  password: string,
+  accountName: string
+  password: string
   json: string
 }
 
@@ -38,8 +38,8 @@ export type RemoveHardwareAccountPayloadType = {
 }
 
 export type RestoreWalletPayloadType = {
-  mnemonic: string,
-  password: string,
+  mnemonic: string
+  password: string
   isLegacy: boolean
 }
 
@@ -61,23 +61,23 @@ export type PrivateKeyAvailablePayloadType = {
 }
 
 export type UpdateSelectedAssetType = {
-  asset: ERCToken,
+  asset: ERCToken
   timeFrame: AssetPriceTimeframe
 }
 
 export type SelectAssetPayloadType = {
-  priceHistory: GetPriceHistoryReturnObjectInfo | undefined,
-  usdPriceInfo: AssetPrice | undefined,
-  btcPriceInfo: AssetPrice | undefined,
+  priceHistory: GetPriceHistoryReturnObjectInfo | undefined
+  usdPriceInfo: AssetPrice | undefined
+  btcPriceInfo: AssetPrice | undefined
   timeFrame: AssetPriceTimeframe
 }
 
 export type ImportFromExternalWalletPayloadType = {
-  password: string,
+  password: string
   newPassword: string
 }
 
 export type ImportWalletErrorPayloadType = {
-  hasError: boolean,
+  hasError: boolean
   errorMessage?: string
 }

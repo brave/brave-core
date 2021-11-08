@@ -4,11 +4,11 @@
 
 'use strict'
 
-export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: Array<any>) {
+export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: any[]) {
   let timeout: any
   return (...args2: any[]) => {
     clearTimeout(timeout)
-    let a: Array<string> = args || []
+    let a: string[] = args || []
     if (args2 && args2.constructor === Array) {
       a = a.concat(args2)
     }

@@ -28,7 +28,7 @@ export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`
   outline: none;
   padding: 4px 6px;
   background: ${(p) =>
-    p.isSelected ? p.theme.color.text02 : `none`};
+    p.isSelected ? p.theme.color.text02 : 'none'};
   border: none;
   margin: 0px 2px;
 `

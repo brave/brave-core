@@ -9,11 +9,11 @@ import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicat
 import { ComponentType } from 'react'
 
 interface StyledProps {
-  connected?: boolean,
-  contentPadding?: boolean,
-  compact?: boolean,
-  background?: string,
-  isMobile?: boolean,
+  connected?: boolean
+  contentPadding?: boolean
+  compact?: boolean
+  background?: string
+  isMobile?: boolean
   notification?: Notification | undefined
 }
 

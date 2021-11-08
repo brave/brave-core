@@ -279,7 +279,7 @@ function onPrefChanged (key: string) {
 
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
-// @ts-ignore
+// @ts-expect-error
 window.brave_rewards = {
   rewardsParameters,
   promotions,

@@ -81,11 +81,11 @@ function Send (props: Props) {
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
       <NavButton
-        disabled={addressError !== ''
-          || toAddressOrUrl === ''
-          || parseFloat(selectedAssetAmount) === 0
-          || selectedAssetAmount === ''
-          || insuficientFundsError
+        disabled={addressError !== '' ||
+          toAddressOrUrl === '' ||
+          parseFloat(selectedAssetAmount) === 0 ||
+          selectedAssetAmount === '' ||
+          insuficientFundsError
         }
         buttonType='primary'
         text={getLocale('braveWalletSend')}

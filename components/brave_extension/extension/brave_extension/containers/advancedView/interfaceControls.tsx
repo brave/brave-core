@@ -22,10 +22,10 @@ interface CommonProps {
 interface AdsTrackersProps {
   ads: BlockOptions
   adsBlocked: number
-  adsBlockedResources: Array<string>
+  adsBlockedResources: string[]
   trackers: BlockOptions
   trackersBlocked: number
-  trackersBlockedResources: Array<string>
+  trackersBlockedResources: string[]
   firstPartyCosmeticFiltering: boolean
   blockAdsTrackers: BlockAdsTrackers
 }
@@ -33,7 +33,7 @@ interface AdsTrackersProps {
 interface HTTPSUpgradesProps {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
-  httpsRedirectedResources: Array<string>
+  httpsRedirectedResources: string[]
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 

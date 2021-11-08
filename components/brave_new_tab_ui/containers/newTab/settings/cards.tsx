@@ -58,7 +58,6 @@ interface Props {
 }
 
 class CardsSettings extends React.PureComponent<Props, {}> {
-
   renderToggleButton = (on: boolean, toggleFunc: any, float: boolean = true) => {
     const ButtonContainer = on ? StyledHideButtonIcon : StyledAddButtonIcon
     const ButtonIcon = on ? HideIcon : PlusIcon

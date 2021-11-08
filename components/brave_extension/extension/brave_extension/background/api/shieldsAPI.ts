@@ -111,7 +111,7 @@ export const requestShieldPanelData = (tabId: number) =>
  * @return a promise which resolves when the setting is set
  */
 export const setAllowBraveShields = (origin: string, setting: string) =>
-  chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow' ? true : false, origin)
+  chrome.braveShields.setBraveShieldsEnabledAsync(setting === 'allow', origin)
 
 /**
  * Changes the ads at origin to be allowed or blocked.
@@ -152,7 +152,7 @@ export const setAllowCosmeticFiltering = (origin: string, setting: string) => {
  * @return a promise which resolves when the setting is set
  */
 export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOptions) =>
-  chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting === 'allow' ? false : true, origin)
+  chrome.braveShields.setHTTPSEverywhereEnabledAsync(setting !== 'allow', origin)
 
 /**
  * Changes the Javascript to be on (allow) or off (block)
@@ -193,7 +193,7 @@ export const toggleShieldsValue = (value: BlockOptions) =>
  * @param {number} tabId ID of the tab which these origins are allowed in
  * @return a promise which resolves when the origins are set.
  */
-export const setAllowScriptOriginsOnce = (origins: Array<string>, tabId: number) =>
+export const setAllowScriptOriginsOnce = (origins: string[], tabId: number) =>
   new Promise<void>((resolve) => {
     chrome.braveShields.allowScriptsOnce(origins, tabId, () => {
       resolve()

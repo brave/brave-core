@@ -9,7 +9,6 @@ function mockNow (timeString: string) {
 }
 
 describe('wallet_card', () => {
-
   describe('getCurrentMonthRange', () => {
     it('returns a date range for the current month', () => {
       mockNow('2021-01-01T00:00:00')
@@ -22,5 +21,4 @@ describe('wallet_card', () => {
       expect(getCurrentMonthRange()).toStrictEqual('Jan 1 – Jan 31')
     })
   })
-
 })

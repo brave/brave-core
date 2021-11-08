@@ -62,8 +62,8 @@ export default class PrivateTab extends React.PureComponent<{}, {}> {
           <Text isStandalonePrivatePage={true}>{locale.headerText2} <Link href='https://support.brave.com/hc/en-us/articles/360017840332' target='_blank' isStandalonePrivatePage={true}>{locale.headerButton}</Link></Text>
         </Grid3Columns>
         {
-          this.showAlternativePrivateSearchEngineToggle ?
-          <ControlBox>
+          this.showAlternativePrivateSearchEngineToggle
+          ? <ControlBox>
             <ToggleGroup>
               <IconText>
                 <DuckDuckGoImage />
