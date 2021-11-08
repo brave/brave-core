@@ -768,6 +768,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     runWhenCancel.run();
                     dialog.dismiss();
                 });
+        confirmDialog.setOnCancelListener((dialog) -> { runWhenCancel.run(); });
+
         confirmDialog.show();
     }
 
