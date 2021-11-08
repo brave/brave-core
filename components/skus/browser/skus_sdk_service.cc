@@ -9,7 +9,10 @@
 
 #include "base/task/post_task.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/skus/browser/skus_sdk_context.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/shim.h"
+#include "brave/components/skus/browser/skus_sdk_context_impl.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
 
@@ -57,9 +60,9 @@ void OnCredentialSummary(
 SkusSdkService::SkusSdkService(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : context_(
-          std::make_unique<brave_rewards::SkusSdkContext>(prefs,
-                                                          url_loader_factory)),
+    : context_(std::make_unique<brave_rewards::SkusSdkContextImpl>(
+          prefs,
+          url_loader_factory)),
       // TODO(bsclifton): load environment properly (don't hardcode)
       sdk_(initialize_sdk(std::move(context_), "development")),
       weak_factory_(this) {}
