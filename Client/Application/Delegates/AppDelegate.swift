@@ -87,7 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Setup Adblock Stats and HTTPSE Stats.
         AdBlockStats.shared.startLoading()
-        HttpsEverywhereStats.shared.startLoading()
+        
+        // TODO: Downgrade to 14.5 once api becomes available.
+        if #available(iOS 15, *) {
+            // do nothing, use Apple's https solution.
+        } else {
+            HttpsEverywhereStats.shared.startLoading()
+        }
+        
         
         // Setup Application Shortcuts
         updateShortcutItems(application)

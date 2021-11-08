@@ -652,12 +652,16 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
             pendingRequests[url.absoluteString] = navigationAction.request
             
-            if let urlHost = url.normalizedHost() {
-                if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
-                    let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
+            // TODO: Downgrade to 14.5 once api becomes available.
+            if #available(iOS 15, *) {
+                // do nothing, use Apple's https solution.
+            } else {
+                if Preferences.Shields.httpsEverywhere.value,
+                   url.scheme == "http",
+                    let urlHost = url.normalizedHost() {
                     HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
                         DispatchQueue.main.async {
-                            if domainForShields.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) && shouldupgrade {
+                            if shouldupgrade {
                                 self.pendingHTTPUpgrades[urlHost] = navigationAction.request
                             }
                         }
@@ -677,7 +681,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
                 // Force adblocking on
                 domainForShields.shield_allOff = 1
                 domainForShields.shield_adblockAndTp = true
-                domainForShields.shield_httpse = true
                 
                 let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
                 let controller = webView.configuration.userContentController

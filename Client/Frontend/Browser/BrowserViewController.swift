@@ -2913,17 +2913,19 @@ extension BrowserViewController: PreferencesObserver {
             updateApplicationShortcuts()
         case Preferences.General.alwaysRequestDesktopSite.key:
             tabManager.reset()
-            self.tabManager.reloadSelectedTab()
+            tabManager.reloadSelectedTab()
         case Preferences.General.enablePullToRefresh.key:
             tabManager.selectedTab?.updatePullToRefreshVisibility()
         case Preferences.Shields.blockAdsAndTracking.key,
-             Preferences.Shields.httpsEverywhere.key,
              Preferences.Shields.blockScripts.key,
              Preferences.Shields.blockPhishingAndMalware.key,
              Preferences.Shields.blockImages.key,
              Preferences.Shields.fingerprintingProtection.key,
              Preferences.Shields.useRegionAdBlock.key:
             tabManager.allTabs.forEach { $0.webView?.reload() }
+        case Preferences.Shields.httpsEverywhere.key:
+            tabManager.reset()
+            tabManager.reloadSelectedTab()
         case Preferences.Privacy.blockAllCookies.key,
              Preferences.Shields.googleSafeBrowsing.key:
             // All `block all cookies` toggle requires a hard reset of Webkit configuration.

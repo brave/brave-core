@@ -19,7 +19,14 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
     
     /// List of all bundled content blockers.
     /// Regional lists are downloaded on fly and not included here.
-    static var allLists: Set<BlocklistName> { return [.ad, .tracker, .https, .image] }
+    static var allLists: Set<BlocklistName> {
+        // TODO: Downgrade to 14.5 once api becomes available.
+        if #available(iOS 15, *) {
+            return [.ad, .tracker, .image]
+        } else {
+            return [.ad, .tracker, .https, .image]
+        }
+    }
     
     let filename: String
     var rule: WKContentRuleList?
@@ -71,10 +78,6 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
         // For lists not implemented, always return exclude from `onList` to prevent accidental execution
         
         // TODO #159: Setup image shield
-        
-        if domain.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) {
-            onList.insert(.https)
-        }
         
         var offList = allLists.subtracting(onList)
         // Make sure to consider the regional list since the user may disable it globally
