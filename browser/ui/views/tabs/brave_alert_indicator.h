@@ -11,6 +11,8 @@
 class BraveAlertIndicator : public AlertIndicator {
  public:
   explicit BraveAlertIndicator(Tab* parent_tab);
+  BraveAlertIndicator(const BraveAlertIndicator&) = delete;
+  BraveAlertIndicator& operator=(const BraveAlertIndicator&) = delete;
 
  private:
   class BraveAlertBackground;
@@ -27,8 +29,6 @@ class BraveAlertIndicator : public AlertIndicator {
   bool IsTabAudioToggleable() const;
 
   bool mouse_pressed_ = false;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAlertIndicator);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_H_

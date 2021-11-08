@@ -24,6 +24,9 @@ namespace brave_shields {
 class AdBlockCustomFiltersService : public AdBlockBaseService {
  public:
   explicit AdBlockCustomFiltersService(BraveComponent::Delegate* delegate);
+  AdBlockCustomFiltersService(const AdBlockCustomFiltersService&) = delete;
+  AdBlockCustomFiltersService& operator=(const AdBlockCustomFiltersService&) =
+      delete;
   ~AdBlockCustomFiltersService() override;
 
   std::string GetCustomFilters();
@@ -35,8 +38,6 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
  private:
   friend class ::AdBlockServiceTest;
   void UpdateCustomFiltersOnFileTaskRunner(const std::string& custom_filters);
-
-  DISALLOW_COPY_AND_ASSIGN(AdBlockCustomFiltersService);
 };
 
 // Creates the AdBlockCustomFiltersService

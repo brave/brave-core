@@ -19,6 +19,9 @@ class EthTxController;
 
 class EthTxControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
+  EthTxControllerFactory(const EthTxControllerFactory&) = delete;
+  EthTxControllerFactory& operator=(const EthTxControllerFactory&) = delete;
+
   static mojo::PendingRemote<mojom::EthTxController> GetForContext(
       content::BrowserContext* context);
   static EthTxController* GetControllerForContext(
@@ -35,8 +38,6 @@ class EthTxControllerFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(EthTxControllerFactory);
 };
 
 }  // namespace brave_wallet

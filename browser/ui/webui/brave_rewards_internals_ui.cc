@@ -32,6 +32,9 @@ const int g_partial_log_max_lines = 5000;
 class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
  public:
   RewardsInternalsDOMHandler();
+  RewardsInternalsDOMHandler(const RewardsInternalsDOMHandler&) = delete;
+  RewardsInternalsDOMHandler& operator=(const RewardsInternalsDOMHandler&) =
+      delete;
   ~RewardsInternalsDOMHandler() override;
 
   void Init();
@@ -69,8 +72,6 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   brave_ads::AdsService* ads_service_;              // NOT OWNED
   Profile* profile_;
   base::WeakPtrFactory<RewardsInternalsDOMHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(RewardsInternalsDOMHandler);
 };
 
 RewardsInternalsDOMHandler::RewardsInternalsDOMHandler()

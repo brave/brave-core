@@ -19,6 +19,9 @@ class EthJsonRpcController;
 
 class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
+  RpcControllerFactory(const RpcControllerFactory&) = delete;
+  RpcControllerFactory& operator=(const RpcControllerFactory&) = delete;
+
   static mojo::PendingRemote<mojom::EthJsonRpcController> GetForContext(
       content::BrowserContext* context);
   static EthJsonRpcController* GetControllerForContext(
@@ -35,8 +38,6 @@ class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(RpcControllerFactory);
 };
 
 }  // namespace brave_wallet

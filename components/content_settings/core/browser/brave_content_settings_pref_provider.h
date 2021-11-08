@@ -26,6 +26,8 @@ class BravePrefProvider : public PrefProvider,
                     bool off_the_record,
                     bool store_last_modified,
                     bool restore_session);
+  BravePrefProvider(const BravePrefProvider&) = delete;
+  BravePrefProvider& operator=(const BravePrefProvider&) = delete;
   ~BravePrefProvider() override;
 
   static void CopyPluginSettingsForMigration(PrefService* prefs);
@@ -84,8 +86,6 @@ class BravePrefProvider : public PrefProvider,
   bool initialized_;
   bool store_last_modified_;
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BravePrefProvider);
 };
 
 }  //  namespace content_settings

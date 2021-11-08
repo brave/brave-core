@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/callback.h"
-#include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
@@ -42,6 +41,8 @@ class BraveStatsUpdaterParams;
 class BraveStatsUpdater : public ProfileManagerObserver {
  public:
   explicit BraveStatsUpdater(PrefService* pref_service);
+  BraveStatsUpdater(const BraveStatsUpdater&) = delete;
+  BraveStatsUpdater& operator=(const BraveStatsUpdater&) = delete;
   ~BraveStatsUpdater() override;
 
   void Start();
@@ -99,8 +100,6 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdater);
 };
 
 // Registers the preferences used by BraveStatsUpdater

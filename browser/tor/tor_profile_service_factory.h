@@ -17,6 +17,9 @@ class TorProfileService;
 // Profiles.
 class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  TorProfileServiceFactory(const TorProfileServiceFactory&) = delete;
+  TorProfileServiceFactory& operator=(const TorProfileServiceFactory&) = delete;
+
   static tor::TorProfileService* GetForContext(
       content::BrowserContext* context);
   static TorProfileServiceFactory* GetInstance();
@@ -38,8 +41,6 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(TorProfileServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_FACTORY_H_

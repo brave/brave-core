@@ -42,6 +42,8 @@ class BraveActionAPI : public KeyedService {
         std::unique_ptr<std::string> ui_relative_path,
         std::string* error);
   BraveActionAPI();
+  BraveActionAPI(const BraveActionAPI&) = delete;
+  BraveActionAPI& operator=(const BraveActionAPI&) = delete;
   ~BraveActionAPI() override;
 
   // Add or remove observers.
@@ -54,8 +56,6 @@ class BraveActionAPI : public KeyedService {
 
  private:
   base::ObserverList<Observer>::Unchecked observers_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveActionAPI);
 };
 }  // namespace extensions
 

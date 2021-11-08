@@ -7,7 +7,6 @@
 #define BRAVE_IOS_BROWSER_METRICS_IOS_BRAVE_METRICS_SERVICES_MANAGER_CLIENT_H_
 
 #include <memory>
-#include "base/macros.h"
 #include "ios/chrome/browser/metrics/ios_chrome_metrics_services_manager_client.h"
 
 class PrefService;
@@ -23,6 +22,10 @@ class IOSBraveMetricsServicesManagerClient
     : public IOSChromeMetricsServicesManagerClient {
  public:
   explicit IOSBraveMetricsServicesManagerClient(PrefService* local_state);
+  IOSBraveMetricsServicesManagerClient(
+      const IOSBraveMetricsServicesManagerClient&) = delete;
+  IOSBraveMetricsServicesManagerClient& operator=(
+      const IOSBraveMetricsServicesManagerClient&) = delete;
   ~IOSBraveMetricsServicesManagerClient() override;
 
  private:
@@ -32,8 +35,6 @@ class IOSBraveMetricsServicesManagerClient
   bool IsMetricsReportingEnabled() override;
   bool IsMetricsConsentGiven() override;
   bool IsOffTheRecordSessionActive() override;
-
-  DISALLOW_COPY_AND_ASSIGN(IOSBraveMetricsServicesManagerClient);
 };
 
 #endif  // BRAVE_IOS_BROWSER_METRICS_IOS_BRAVE_METRICS_SERVICES_MANAGER_CLIENT_H_

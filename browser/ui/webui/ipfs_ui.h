@@ -26,6 +26,8 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
                        public ipfs::IpfsServiceObserver {
  public:
   IPFSDOMHandler();
+  IPFSDOMHandler(const IPFSDOMHandler&) = delete;
+  IPFSDOMHandler& operator=(const IPFSDOMHandler&) = delete;
   ~IPFSDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -61,17 +63,15 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
       service_observer_{this};
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(IPFSDOMHandler);
 };
 
 // The WebUI for brave://ipfs
 class IPFSUI : public content::WebUIController {
  public:
   IPFSUI(content::WebUI* web_ui, const std::string& host);
-  ~IPFSUI() override;
   IPFSUI(const IPFSUI&) = delete;
   IPFSUI& operator=(const IPFSUI&) = delete;
+  ~IPFSUI() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_IPFS_UI_H_

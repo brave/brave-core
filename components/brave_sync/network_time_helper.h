@@ -24,6 +24,8 @@ class NetworkTimeHelper {
   static NetworkTimeHelper* GetInstance();
 
   NetworkTimeHelper();
+  NetworkTimeHelper(const NetworkTimeHelper&) = delete;
+  NetworkTimeHelper& operator=(const NetworkTimeHelper&) = delete;
   virtual ~NetworkTimeHelper();
 
   void SetNetworkTimeTracker(network_time::NetworkTimeTracker* tracker);
@@ -45,8 +47,6 @@ class NetworkTimeHelper {
   network_time::NetworkTimeTracker* network_time_tracker_ = nullptr;
 
   base::WeakPtrFactory<NetworkTimeHelper> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(NetworkTimeHelper);
 };
 
 }  // namespace brave_sync

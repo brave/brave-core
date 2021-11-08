@@ -56,6 +56,8 @@ Profile* GetFromPath(const base::FilePath& key) {
 
 class ParentProfileData : public base::SupportsUserData::Data {
  public:
+  ParentProfileData(const ParentProfileData&) = delete;
+  ParentProfileData& operator=(const ParentProfileData&) = delete;
   ~ParentProfileData() override;
   static void CreateForProfile(content::BrowserContext* context);
   static ParentProfileData* FromProfile(content::BrowserContext* context);
@@ -75,8 +77,6 @@ class ParentProfileData : public base::SupportsUserData::Data {
 
   Profile* profile_;
   base::FilePath path_;
-
-  DISALLOW_COPY_AND_ASSIGN(ParentProfileData);
 };
 
 const void* const ParentProfileData::kUserDataKey = &kUserDataKey;

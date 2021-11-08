@@ -11,6 +11,10 @@ class BraveBrowserContentSettingBubbleModelDelegate
     : public BrowserContentSettingBubbleModelDelegate {
  public:
   explicit BraveBrowserContentSettingBubbleModelDelegate(Browser* browser);
+  BraveBrowserContentSettingBubbleModelDelegate(
+      const BraveBrowserContentSettingBubbleModelDelegate&) = delete;
+  BraveBrowserContentSettingBubbleModelDelegate& operator=(
+      const BraveBrowserContentSettingBubbleModelDelegate&) = delete;
   ~BraveBrowserContentSettingBubbleModelDelegate() override;
 
   void ShowWidevineLearnMorePage();
@@ -18,8 +22,6 @@ class BraveBrowserContentSettingBubbleModelDelegate
 
  private:
   Browser* const browser_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserContentSettingBubbleModelDelegate);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_CONTENT_SETTING_BUBBLE_MODEL_DELEGATE_H_

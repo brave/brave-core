@@ -7,7 +7,6 @@
 #include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/i18n/case_conversion.h"
-#include "base/macros.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/test_reg_util_win.h"
@@ -120,6 +119,10 @@ constexpr TestData kTestData[] = {
 
 // Test that MakeProductDetails properly sniffs out an install's details.
 class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
+ public:
+  MakeProductDetailsTest(const MakeProductDetailsTest&) = delete;
+  MakeProductDetailsTest& operator=(const MakeProductDetailsTest&) = delete;
+
  protected:
   MakeProductDetailsTest()
       : test_data_(GetParam()),
@@ -174,8 +177,6 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
   const TestData& test_data_;
   HKEY root_key_;
   nt::ROOT_KEY nt_root_key_;
-
-  DISALLOW_COPY_AND_ASSIGN(MakeProductDetailsTest);
 };
 
 // Test that the install mode is sniffed properly based on the path.

@@ -5,7 +5,6 @@
 #ifndef BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_API_PROVIDER_H_
 #define BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_API_PROVIDER_H_
 
-#include "base/macros.h"
 #include "extensions/common/extensions_api_provider.h"
 
 namespace extensions {
@@ -13,6 +12,9 @@ namespace extensions {
 class BraveExtensionsAPIProvider : public ExtensionsAPIProvider {
  public:
   BraveExtensionsAPIProvider();
+  BraveExtensionsAPIProvider(const BraveExtensionsAPIProvider&) = delete;
+  BraveExtensionsAPIProvider& operator=(const BraveExtensionsAPIProvider&) =
+      delete;
   ~BraveExtensionsAPIProvider() override;
 
   // ExtensionsAPIProvider:
@@ -27,7 +29,6 @@ class BraveExtensionsAPIProvider : public ExtensionsAPIProvider {
   void RegisterManifestHandlers() override;
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionsAPIProvider);
 };
 
 }  // namespace extensions

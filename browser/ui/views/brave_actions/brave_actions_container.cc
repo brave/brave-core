@@ -44,6 +44,8 @@ class BraveActionsContainer::EmptyExtensionsContainer
     : public ExtensionsContainer {
  public:
   EmptyExtensionsContainer() = default;
+  EmptyExtensionsContainer(const EmptyExtensionsContainer&) = delete;
+  EmptyExtensionsContainer& operator=(const EmptyExtensionsContainer&) = delete;
   virtual ~EmptyExtensionsContainer() = default;
 
   ToolbarActionViewController* GetActionForId(
@@ -86,9 +88,6 @@ class BraveActionsContainer::EmptyExtensionsContainer
   void ToggleExtensionsMenu() override {}
 
   bool HasAnyExtensions() const override { return false; }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(EmptyExtensionsContainer);
 };
 
 BraveActionsContainer::BraveActionInfo::BraveActionInfo()

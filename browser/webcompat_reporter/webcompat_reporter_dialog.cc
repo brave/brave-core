@@ -33,6 +33,10 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit WebcompatReporterDialogDelegate(
       std::unique_ptr<base::DictionaryValue> params);
+  WebcompatReporterDialogDelegate(const WebcompatReporterDialogDelegate&) =
+      delete;
+  WebcompatReporterDialogDelegate& operator=(
+      const WebcompatReporterDialogDelegate&) = delete;
   ~WebcompatReporterDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -48,8 +52,6 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
 
  private:
   std::unique_ptr<base::DictionaryValue> params_;
-
-  DISALLOW_COPY_AND_ASSIGN(WebcompatReporterDialogDelegate);
 };
 
 WebcompatReporterDialogDelegate::WebcompatReporterDialogDelegate(

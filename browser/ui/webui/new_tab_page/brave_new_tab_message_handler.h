@@ -36,6 +36,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
                                   public TorLauncherObserver {
  public:
   explicit BraveNewTabMessageHandler(Profile* profile);
+  BraveNewTabMessageHandler(const BraveNewTabMessageHandler&) = delete;
+  BraveNewTabMessageHandler& operator=(const BraveNewTabMessageHandler&) =
+      delete;
   ~BraveNewTabMessageHandler() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* local_state);
@@ -79,8 +82,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 #endif
   base::WeakPtrFactory<BraveNewTabMessageHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_

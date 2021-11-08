@@ -14,6 +14,9 @@ class Profile;
 
 class BinanceServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  BinanceServiceFactory(const BinanceServiceFactory&) = delete;
+  BinanceServiceFactory& operator=(const BinanceServiceFactory&) = delete;
+
   static BinanceService* GetForProfile(Profile* profile);
   static BinanceServiceFactory* GetInstance();
 
@@ -28,8 +31,6 @@ class BinanceServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BinanceServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_BINANCE_BINANCE_SERVICE_FACTORY_H_

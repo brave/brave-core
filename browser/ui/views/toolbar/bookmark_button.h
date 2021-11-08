@@ -11,6 +11,8 @@
 class BookmarkButton : public ToolbarButton {
  public:
   explicit BookmarkButton(PressedCallback callback);
+  BookmarkButton(const BookmarkButton&) = delete;
+  BookmarkButton& operator=(const BookmarkButton&) = delete;
   ~BookmarkButton() override;
 
   void SetToggled(bool on);
@@ -20,8 +22,7 @@ class BookmarkButton : public ToolbarButton {
   const char* GetClassName() const override;
 
  private:
-    bool active_ = false;
-    DISALLOW_COPY_AND_ASSIGN(BookmarkButton);
+  bool active_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_

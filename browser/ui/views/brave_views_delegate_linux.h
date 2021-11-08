@@ -10,12 +10,12 @@
 class BraveViewsDelegateLinux : public ChromeViewsDelegate {
  public:
   BraveViewsDelegateLinux() = default;
+  BraveViewsDelegateLinux(const BraveViewsDelegateLinux&) = delete;
+  BraveViewsDelegateLinux& operator=(const BraveViewsDelegateLinux&) = delete;
   ~BraveViewsDelegateLinux() override = default;
  private:
   // ChromeViewsDelegate overrides:
   gfx::ImageSkia* GetDefaultWindowIcon() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveViewsDelegateLinux);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_VIEWS_DELEGATE_LINUX_H_

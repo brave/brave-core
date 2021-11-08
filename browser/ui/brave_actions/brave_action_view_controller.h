@@ -30,6 +30,10 @@ class MenuModel;
 // - Remove the context menu from the button since we do not allow uninstall
 class BraveActionViewController : public ExtensionActionViewController {
  public:
+  BraveActionViewController(const BraveActionViewController&) = delete;
+  BraveActionViewController& operator=(const BraveActionViewController&) =
+      delete;
+
   static std::unique_ptr<BraveActionViewController> Create(
       const extensions::ExtensionId& extension_id,
       Browser* browser,
@@ -61,7 +65,6 @@ class BraveActionViewController : public ExtensionActionViewController {
   std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
       content::WebContents* web_contents,
       const gfx::Size& size);
-  DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_

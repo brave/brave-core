@@ -6,19 +6,19 @@
 #define BRAVE_TEST_BASE_BRAVE_TEST_LAUNCHER_H_
 
 #include "chrome/test/base/chrome_test_launcher.h"
-#include "base/macros.h"
 
 class BraveTestLauncherDelegate : public ChromeTestLauncherDelegate {
  public:
   // Does not take ownership of ChromeTestSuiteRunner.
   explicit BraveTestLauncherDelegate(ChromeTestSuiteRunner* runner);
+  BraveTestLauncherDelegate(const BraveTestLauncherDelegate&) = delete;
+  BraveTestLauncherDelegate& operator=(const BraveTestLauncherDelegate&) =
+      delete;
   ~BraveTestLauncherDelegate() override;
 
  private:
   // ChromeLauncherDelegate:
   content::ContentMainDelegate* CreateContentMainDelegate() override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTestLauncherDelegate);
 };
 
 #endif  // BRAVE_TEST_BASE_BRAVE_TEST_LAUNCHER_H_

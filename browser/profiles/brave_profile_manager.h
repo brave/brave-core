@@ -18,6 +18,8 @@ class BraveProfileManager : public ProfileManager,
                             public ProfileObserver {
  public:
   explicit BraveProfileManager(const base::FilePath& user_data_dir);
+  BraveProfileManager(const BraveProfileManager&) = delete;
+  BraveProfileManager& operator=(const BraveProfileManager&) = delete;
   ~BraveProfileManager() override;
 
   void InitProfileUserPrefs(Profile* profile) override;
@@ -42,16 +44,15 @@ class BraveProfileManager : public ProfileManager,
   void MigrateProfileNames();
   base::ScopedMultiSourceObservation<Profile, ProfileObserver>
       observed_profiles_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
 };
 
 class BraveProfileManagerWithoutInit : public BraveProfileManager {
  public:
+  BraveProfileManagerWithoutInit(const BraveProfileManagerWithoutInit&) =
+      delete;
+  BraveProfileManagerWithoutInit& operator=(
+      const BraveProfileManagerWithoutInit&) = delete;
   explicit BraveProfileManagerWithoutInit(const base::FilePath& user_data_dir);
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileManagerWithoutInit);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_MANAGER_H_

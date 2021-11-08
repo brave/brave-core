@@ -34,6 +34,8 @@ class TorNavigationThrottle : public content::NavigationThrottle,
   explicit TorNavigationThrottle(content::NavigationHandle* navigation_handle);
   TorNavigationThrottle(content::NavigationHandle* navigation_handle,
                         TorLauncherFactory* tor_launcher_factory);
+  TorNavigationThrottle(const TorNavigationThrottle&) = delete;
+  TorNavigationThrottle& operator=(const TorNavigationThrottle&) = delete;
   ~TorNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
@@ -49,8 +51,6 @@ class TorNavigationThrottle : public content::NavigationThrottle,
 
   bool resume_pending_ = false;
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottle);
 };
 
 }  // namespace tor

@@ -17,9 +17,10 @@ class Extension;
 class BraveToolbarActionsModel : public ToolbarActionsModel {
   public:
     using ToolbarActionsModel::ToolbarActionsModel;
+    BraveToolbarActionsModel(const BraveToolbarActionsModel&) = delete;
+    BraveToolbarActionsModel& operator=(const BraveToolbarActionsModel&) =
+        delete;
     bool ShouldAddExtension(const extensions::Extension* extension) override;
-  private:
-    DISALLOW_COPY_AND_ASSIGN(BraveToolbarActionsModel);
 };
 
 #endif

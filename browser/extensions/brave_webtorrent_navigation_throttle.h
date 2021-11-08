@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_WEBTORRENT_NAVIGATION_THROTTLE_H_
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_WEBTORRENT_NAVIGATION_THROTTLE_H_
 
-#include "base/macros.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "content/public/browser/navigation_throttle.h"
@@ -25,6 +24,10 @@ class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
  public:
   explicit BraveWebTorrentNavigationThrottle(
       content::NavigationHandle* navigation_handle);
+  BraveWebTorrentNavigationThrottle(const BraveWebTorrentNavigationThrottle&) =
+      delete;
+  BraveWebTorrentNavigationThrottle& operator=(
+      const BraveWebTorrentNavigationThrottle&) = delete;
   ~BraveWebTorrentNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
@@ -46,7 +49,6 @@ class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
       extension_registry_observer_{this};
   bool resume_pending_;
   base::OneShotTimer timer_;
-  DISALLOW_COPY_AND_ASSIGN(BraveWebTorrentNavigationThrottle);
 };
 
 }  // namespace extensions

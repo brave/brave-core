@@ -74,6 +74,10 @@ class BraveShieldsRuleIterator : public RuleIterator {
     iterator_ = rules_.begin();
   }
 
+  BraveShieldsRuleIterator(const BraveShieldsRuleIterator&) = delete;
+
+  BraveShieldsRuleIterator& operator=(const BraveShieldsRuleIterator&) = delete;
+
   bool HasNext() const override {
     return iterator_ != rules_.end();
   }
@@ -85,8 +89,6 @@ class BraveShieldsRuleIterator : public RuleIterator {
  private:
   std::vector<Rule> rules_;
   std::vector<Rule>::const_iterator iterator_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveShieldsRuleIterator);
 };
 
 

@@ -29,6 +29,11 @@ namespace {
 class AdBlockSubscriptionDownloadManagerFactory
     : public SimpleKeyedServiceFactory {
  public:
+  AdBlockSubscriptionDownloadManagerFactory(
+      const AdBlockSubscriptionDownloadManagerFactory&) = delete;
+  AdBlockSubscriptionDownloadManagerFactory& operator=(
+      const AdBlockSubscriptionDownloadManagerFactory&) = delete;
+
   static AdBlockSubscriptionDownloadManagerFactory* GetInstance() {
     return base::Singleton<AdBlockSubscriptionDownloadManagerFactory>::get();
   }
@@ -62,8 +67,6 @@ class AdBlockSubscriptionDownloadManagerFactory
   SimpleFactoryKey* GetKeyToUse(SimpleFactoryKey* key) const override {
     return key;
   }
-
-  DISALLOW_COPY_AND_ASSIGN(AdBlockSubscriptionDownloadManagerFactory);
 };
 
 AdBlockSubscriptionDownloadManager* MaybeGetDownloadManager() {

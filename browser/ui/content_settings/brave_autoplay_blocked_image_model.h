@@ -10,13 +10,14 @@
 class BraveAutoplayBlockedImageModel : public ContentSettingSimpleImageModel {
  public:
   BraveAutoplayBlockedImageModel();
+  BraveAutoplayBlockedImageModel(const BraveAutoplayBlockedImageModel&) =
+      delete;
+  BraveAutoplayBlockedImageModel& operator=(
+      const BraveAutoplayBlockedImageModel&) = delete;
   bool UpdateAndGetVisibility(content::WebContents* web_contents) override;
   std::unique_ptr<ContentSettingBubbleModel> CreateBubbleModelImpl(
       ContentSettingBubbleModel::Delegate* delegate,
       content::WebContents* web_contents) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveAutoplayBlockedImageModel);
 };
 
 #endif  // BRAVE_BROWSER_UI_CONTENT_SETTINGS_BRAVE_AUTOPLAY_BLOCKED_IMAGE_MODEL_H_

@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/extensions/updater/chrome_update_client_config.h"
@@ -30,6 +29,9 @@ class ExtensionUpdateClientBaseTest;
 
 class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
  public:
+  BraveUpdateClientConfig(const BraveUpdateClientConfig&) = delete;
+  BraveUpdateClientConfig& operator=(const BraveUpdateClientConfig&) = delete;
+
   static scoped_refptr<ChromeUpdateClientConfig> Create(
       content::BrowserContext* context,
       absl::optional<GURL> url_override);
@@ -46,9 +48,6 @@ class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
   friend class ExtensionUpdateClientBaseTest;
 
   ~BraveUpdateClientConfig() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveUpdateClientConfig);
 };
 
 }  // namespace extensions

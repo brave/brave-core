@@ -15,6 +15,10 @@ class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubble
  public:
    BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
                                           WebContents* web_contents);
+   BraveAutoplayContentSettingBubbleModel(
+       const BraveAutoplayContentSettingBubbleModel&) = delete;
+   BraveAutoplayContentSettingBubbleModel& operator=(
+       const BraveAutoplayContentSettingBubbleModel&) = delete;
    ~BraveAutoplayContentSettingBubbleModel() override;
 
   // ContentSettingSimpleBubbleModel:
@@ -29,8 +33,6 @@ class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubble
   void SetNarrowestContentSetting(ContentSetting setting);
 
   ContentSetting block_setting_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAutoplayContentSettingBubbleModel);
 };
 
 #endif // BRAVE_BROWSER_UI_CONTENT_SETTINGS_BRAVE_AUTOPLAY_CONTENT_SETTING_BUBBLE_MODEL_H_

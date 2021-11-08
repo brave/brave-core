@@ -22,6 +22,9 @@ class WebServiceWorkerContextProxy;
 class BraveContentRendererClient : public ChromeContentRendererClient {
  public:
   BraveContentRendererClient();
+  BraveContentRendererClient(const BraveContentRendererClient&) = delete;
+  BraveContentRendererClient& operator=(const BraveContentRendererClient&) =
+      delete;
   ~BraveContentRendererClient() override;
 
   void RenderThreadStarted() override;
@@ -44,8 +47,6 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
   std::unique_ptr<BraveRenderThreadObserver> brave_observer_;
   brave_search::BraveSearchServiceWorkerHolder
       brave_search_service_worker_holder_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentRendererClient);
 };
 
 #endif  // BRAVE_RENDERER_BRAVE_CONTENT_RENDERER_CLIENT_H_

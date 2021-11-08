@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_EXTENSION_REWARDS_NOTIFICATION_SERVICE_OBSERVER_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_EXTENSION_REWARDS_NOTIFICATION_SERVICE_OBSERVER_H_
 
-#include "base/macros.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 
@@ -20,6 +19,10 @@ class ExtensionRewardsNotificationServiceObserver
     : public RewardsNotificationServiceObserver {
  public:
   explicit ExtensionRewardsNotificationServiceObserver(Profile* profile);
+  ExtensionRewardsNotificationServiceObserver(
+      const ExtensionRewardsNotificationServiceObserver&) = delete;
+  ExtensionRewardsNotificationServiceObserver& operator=(
+      const ExtensionRewardsNotificationServiceObserver&) = delete;
   ~ExtensionRewardsNotificationServiceObserver() override;
 
   // RewardsNotificationServiceObserver implementation
@@ -44,8 +47,6 @@ class ExtensionRewardsNotificationServiceObserver
 
  private:
   Profile* profile_;
-
-  DISALLOW_COPY_AND_ASSIGN(ExtensionRewardsNotificationServiceObserver);
 };
 
 }  // namespace brave_rewards

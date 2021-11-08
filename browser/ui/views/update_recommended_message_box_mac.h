@@ -9,6 +9,11 @@
 
 class UpdateRecommendedMessageBoxMac : public UpdateRecommendedMessageBox {
  public:
+  UpdateRecommendedMessageBoxMac(const UpdateRecommendedMessageBoxMac&) =
+      delete;
+  UpdateRecommendedMessageBoxMac& operator=(
+      const UpdateRecommendedMessageBoxMac&) = delete;
+
   static void Show(gfx::NativeWindow parent_window);
 
  private:
@@ -17,8 +22,6 @@ class UpdateRecommendedMessageBoxMac : public UpdateRecommendedMessageBox {
 
   // UpdateRecommendedMessageBox overrides:
   bool Accept() override;
-
-  DISALLOW_COPY_AND_ASSIGN(UpdateRecommendedMessageBoxMac);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_UPDATE_RECOMMENDED_MESSAGE_BOX_MAC_H_

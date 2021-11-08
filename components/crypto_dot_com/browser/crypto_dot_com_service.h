@@ -15,7 +15,6 @@
 #include "base/callback_forward.h"
 #include "base/containers/queue.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -52,6 +51,8 @@ typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
 class CryptoDotComService : public KeyedService {
  public:
   explicit CryptoDotComService(content::BrowserContext* context);
+  CryptoDotComService(const CryptoDotComService&) = delete;
+  CryptoDotComService& operator=(const CryptoDotComService&) = delete;
   ~CryptoDotComService() override;
 
   using GetTickerInfoCallback =
@@ -107,8 +108,6 @@ class CryptoDotComService : public KeyedService {
   base::WeakPtrFactory<CryptoDotComService> weak_factory_;
 
   friend class CryptoDotComAPIBrowserTest;
-
-  DISALLOW_COPY_AND_ASSIGN(CryptoDotComService);
 };
 
 #endif  // BRAVE_COMPONENTS_CRYPTO_DOT_COM_BROWSER_CRYPTO_DOT_COM_SERVICE_H_

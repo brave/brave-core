@@ -30,20 +30,24 @@ class BraveActionAPIDependencyManager : public DependencyManager {
     return factory.get();
   }
   BraveActionAPIDependencyManager() {}
+  BraveActionAPIDependencyManager(const BraveActionAPIDependencyManager&) =
+      delete;
+  BraveActionAPIDependencyManager& operator=(
+      const BraveActionAPIDependencyManager&) = delete;
   ~BraveActionAPIDependencyManager() override {}
 
 #ifndef NDEBUG
 void DumpContextDependencies(void* context) const override {}
 #endif  // NDEBUG
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveActionAPIDependencyManager);
 };
 
 class BraveActionAPIFactory : public KeyedServiceFactory {
  public:
   BraveActionAPIFactory() : KeyedServiceFactory("BraveActionAPI",
       BraveActionAPIDependencyManager::GetInstance(), SIMPLE) { }
+
+  BraveActionAPIFactory(const BraveActionAPIFactory&) = delete;
+  BraveActionAPIFactory& operator=(const BraveActionAPIFactory&) = delete;
 
   extensions::BraveActionAPI* GetBraveActionAPI(Browser* context) {
     return static_cast<extensions::BraveActionAPI*>(
@@ -66,7 +70,6 @@ class BraveActionAPIFactory : public KeyedServiceFactory {
   void CreateServiceNow(void* context) final {
     KeyedServiceFactory::GetServiceForContext(context, true);
   }
-  DISALLOW_COPY_AND_ASSIGN(BraveActionAPIFactory);
 };
 
 static BraveActionAPIFactory* GetFactoryInstance() {
