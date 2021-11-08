@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "base/synchronization/lock.h"
 #include "components/content_settings/core/browser/content_settings_default_provider.h"
 #include "components/content_settings/core/browser/content_settings_rule.h"
@@ -21,6 +20,8 @@ namespace content_settings {
 class BraveDefaultProvider : public DefaultProvider {
  public:
   BraveDefaultProvider(PrefService* prefs, bool off_the_record);
+  BraveDefaultProvider(const BraveDefaultProvider&) = delete;
+  BraveDefaultProvider& operator=(const BraveDefaultProvider&) = delete;
   ~BraveDefaultProvider() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
@@ -29,9 +30,6 @@ class BraveDefaultProvider : public DefaultProvider {
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
       bool off_the_record) const override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveDefaultProvider);
 };
 
 }  // namespace content_settings

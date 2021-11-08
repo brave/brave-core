@@ -20,13 +20,17 @@ class BraveActionIconWithBadgeImageSource : public IconWithBadgeImageSource {
  public:
   using IconWithBadgeImageSource::IconWithBadgeImageSource;
 
+  BraveActionIconWithBadgeImageSource(
+      const BraveActionIconWithBadgeImageSource&) = delete;
+  BraveActionIconWithBadgeImageSource& operator=(
+      const BraveActionIconWithBadgeImageSource&) = delete;
+
  private:
   absl::optional<int> GetCustomGraphicSize() override;
   absl::optional<int> GetCustomGraphicXOffset() override;
   absl::optional<int> GetCustomGraphicYOffset() override;
   void PaintBadge(gfx::Canvas* canvas) override;
   gfx::Rect GetIconAreaRect() const override;
-  DISALLOW_COPY_AND_ASSIGN(BraveActionIconWithBadgeImageSource);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_ICON_WITH_BADGE_IMAGE_SOURCE_H_

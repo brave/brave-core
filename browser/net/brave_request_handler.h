@@ -22,6 +22,8 @@ class PrefChangeRegistrar;
 class BraveRequestHandler {
  public:
   BraveRequestHandler();
+  BraveRequestHandler(const BraveRequestHandler&) = delete;
+  BraveRequestHandler& operator=(const BraveRequestHandler&) = delete;
   ~BraveRequestHandler();
 
   bool IsRequestIdentifierValid(uint64_t request_identifier);
@@ -55,7 +57,6 @@ class BraveRequestHandler {
   std::map<uint64_t, net::CompletionOnceCallback> callbacks_;
 
   base::WeakPtrFactory<BraveRequestHandler> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(BraveRequestHandler);
 };
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_REQUEST_HANDLER_H_

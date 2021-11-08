@@ -39,6 +39,8 @@ class AdblockDOMHandler
       public brave_shields::AdBlockSubscriptionServiceManagerObserver {
  public:
   AdblockDOMHandler();
+  AdblockDOMHandler(const AdblockDOMHandler&) = delete;
+  AdblockDOMHandler& operator=(const AdblockDOMHandler&) = delete;
   ~AdblockDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -68,8 +70,6 @@ class AdblockDOMHandler
       brave_shields::AdBlockSubscriptionServiceManager,
       brave_shields::AdBlockSubscriptionServiceManagerObserver>
       service_observer_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(AdblockDOMHandler);
 };
 
 AdblockDOMHandler::AdblockDOMHandler() {}

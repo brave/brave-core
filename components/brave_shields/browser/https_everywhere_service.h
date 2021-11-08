@@ -47,6 +47,8 @@ class HTTPSEverywhereService : public BaseBraveShieldsService,
                          public base::SupportsWeakPtr<HTTPSEverywhereService> {
  public:
   explicit HTTPSEverywhereService(BraveComponent::Delegate* delegate);
+  HTTPSEverywhereService(const HTTPSEverywhereService&) = delete;
+  HTTPSEverywhereService& operator=(const HTTPSEverywhereService&) = delete;
   ~HTTPSEverywhereService() override;
   bool GetHTTPSURL(const GURL* url,
                    const uint64_t& request_id,
@@ -87,7 +89,6 @@ class HTTPSEverywhereService : public BaseBraveShieldsService,
   leveldb::DB* level_db_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  DISALLOW_COPY_AND_ASSIGN(HTTPSEverywhereService);
 };
 
 // Creates the HTTPSEverywhereService

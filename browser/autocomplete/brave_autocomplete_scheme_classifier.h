@@ -15,6 +15,10 @@ class BraveAutocompleteSchemeClassifier
     : public ChromeAutocompleteSchemeClassifier {
  public:
   explicit BraveAutocompleteSchemeClassifier(Profile* profile);
+  BraveAutocompleteSchemeClassifier(const BraveAutocompleteSchemeClassifier&) =
+      delete;
+  BraveAutocompleteSchemeClassifier& operator=(
+      const BraveAutocompleteSchemeClassifier&) = delete;
   ~BraveAutocompleteSchemeClassifier() override;
 
   metrics::OmniboxInputType GetInputTypeForScheme(
@@ -24,8 +28,6 @@ class BraveAutocompleteSchemeClassifier
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   Profile* profile_ = nullptr;
 #endif
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAutocompleteSchemeClassifier);
 };
 
 #endif  // BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_SCHEME_CLASSIFIER_H_

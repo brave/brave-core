@@ -14,6 +14,9 @@ class Profile;
 
 class GeminiServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  GeminiServiceFactory(const GeminiServiceFactory&) = delete;
+  GeminiServiceFactory& operator=(const GeminiServiceFactory&) = delete;
+
   static GeminiService* GetForProfile(Profile* profile);
   static GeminiServiceFactory* GetInstance();
 
@@ -28,8 +31,6 @@ class GeminiServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(GeminiServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_GEMINI_GEMINI_SERVICE_FACTORY_H_

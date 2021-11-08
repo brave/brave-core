@@ -17,6 +17,8 @@ class BraveP3AScheduler : public metrics::MetricsScheduler {
       const base::RepeatingClosure& upload_callback,
       const base::RepeatingCallback<base::TimeDelta(void)>&
           get_interval_callback);
+  BraveP3AScheduler(const BraveP3AScheduler&) = delete;
+  BraveP3AScheduler& operator=(const BraveP3AScheduler&) = delete;
   ~BraveP3AScheduler() override;
 
   void UploadFinished(bool ok);
@@ -30,8 +32,6 @@ class BraveP3AScheduler : public metrics::MetricsScheduler {
 
   // Time to wait for the next upload attempt if the next one fails.
   base::TimeDelta backoff_interval_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveP3AScheduler);
 };
 
 }  // namespace brave

@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "net/base/test_completion_callback.h"
@@ -25,6 +24,10 @@ namespace net {
 class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
  public:
   ConfiguredProxyResolutionServiceTest() = default;
+  ConfiguredProxyResolutionServiceTest(
+      const ConfiguredProxyResolutionServiceTest&) = delete;
+  ConfiguredProxyResolutionServiceTest& operator=(
+      const ConfiguredProxyResolutionServiceTest&) = delete;
   ~ConfiguredProxyResolutionServiceTest() override = default;
 
   void SetUp() override {
@@ -41,7 +44,6 @@ class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
 
  private:
   std::unique_ptr<ConfiguredProxyResolutionService> service_;
-  DISALLOW_COPY_AND_ASSIGN(ConfiguredProxyResolutionServiceTest);
 };
 
 TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {

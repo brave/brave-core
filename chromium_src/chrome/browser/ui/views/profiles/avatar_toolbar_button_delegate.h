@@ -8,7 +8,6 @@
 
 // Pull in all original includes: Init and GetState are too common - we don't
 // want to redefine them elsewhere.
-#include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -26,6 +25,10 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
   using AvatarToolbarButtonDelegate::AvatarToolbarButtonDelegate;
   BraveAvatarToolbarButtonDelegate(AvatarToolbarButton* button,
                                    Profile* profile);
+  BraveAvatarToolbarButtonDelegate(const BraveAvatarToolbarButtonDelegate&) =
+      delete;
+  BraveAvatarToolbarButtonDelegate& operator=(
+      const BraveAvatarToolbarButtonDelegate&) = delete;
   ~BraveAvatarToolbarButtonDelegate() override = default;
 
   gfx::Image GetGaiaAccountImage() const;
@@ -33,7 +36,6 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
 
  private:
   Profile* const profile_ = nullptr;
-  DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButtonDelegate);
 };
 
 #undef BRAVE_PROFILE_MENU_VIEW_H

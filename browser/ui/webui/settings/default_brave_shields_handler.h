@@ -13,6 +13,9 @@ class Profile;
 class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
  public:
   DefaultBraveShieldsHandler() = default;
+  DefaultBraveShieldsHandler(const DefaultBraveShieldsHandler&) = delete;
+  DefaultBraveShieldsHandler& operator=(const DefaultBraveShieldsHandler&) =
+      delete;
   ~DefaultBraveShieldsHandler() override = default;
 
  private:
@@ -35,8 +38,6 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void GetNoScriptControlType(base::Value::ConstListView args);
 
   Profile* profile_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(DefaultBraveShieldsHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_

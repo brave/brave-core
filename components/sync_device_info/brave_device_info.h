@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "base/time/time.h"
 #include "components/sync/protocol/sync.pb.h"
 #include "components/sync_device_info/device_info.h"
@@ -34,6 +33,8 @@ class BraveDeviceInfo : public DeviceInfo {
                   const std::string& fcm_registration_token,
                   const ModelTypeSet& interested_data_types,
                   bool is_self_delete_supported);
+  BraveDeviceInfo(const BraveDeviceInfo&) = delete;
+  BraveDeviceInfo& operator=(const BraveDeviceInfo&) = delete;
   ~BraveDeviceInfo() override {}
 
   bool is_self_delete_supported() const;
@@ -41,8 +42,6 @@ class BraveDeviceInfo : public DeviceInfo {
 
  private:
   bool is_self_delete_supported_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDeviceInfo);
 };
 
 }  // namespace syncer

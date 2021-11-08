@@ -13,13 +13,16 @@
 
 class FakeAutocompleteProviderClient : public MockAutocompleteProviderClient {
  public:
-  ~FakeAutocompleteProviderClient() override;
   FakeAutocompleteProviderClient();
+  FakeAutocompleteProviderClient(const FakeAutocompleteProviderClient&) =
+      delete;
+  FakeAutocompleteProviderClient& operator=(
+      const FakeAutocompleteProviderClient&) = delete;
+  ~FakeAutocompleteProviderClient() override;
   PrefService* GetPrefs() const override;
 
  private:
   std::unique_ptr<TestingPrefServiceSimple> pref_service_;
-  DISALLOW_COPY_AND_ASSIGN(FakeAutocompleteProviderClient);
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_

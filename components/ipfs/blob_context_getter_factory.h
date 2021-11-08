@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "base/callback.h"
-#include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 
 namespace storage {
@@ -27,13 +26,12 @@ class BlobContextGetterFactory {
   virtual base::WeakPtr<storage::BlobStorageContext>
   RetrieveStorageContext() = 0;
 
+  BlobContextGetterFactory(const BlobContextGetterFactory&) = delete;
+  BlobContextGetterFactory& operator=(const BlobContextGetterFactory&) = delete;
   virtual ~BlobContextGetterFactory() = default;
 
  protected:
   BlobContextGetterFactory() = default;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BlobContextGetterFactory);
 };
 
 using BlobContextGetterFactoryPtr = std::unique_ptr<BlobContextGetterFactory>;

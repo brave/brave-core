@@ -28,6 +28,10 @@ namespace {
 class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
  public:
   BraveSpellingOptionsSubMenuObserverTest() {}
+  BraveSpellingOptionsSubMenuObserverTest(
+      const BraveSpellingOptionsSubMenuObserverTest&) = delete;
+  BraveSpellingOptionsSubMenuObserverTest& operator=(
+      const BraveSpellingOptionsSubMenuObserverTest&) = delete;
   ~BraveSpellingOptionsSubMenuObserverTest() override {}
 
   void Clear() {
@@ -97,8 +101,6 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
   std::unique_ptr<SpellingOptionsSubMenuObserver> observer_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSpellingOptionsSubMenuObserverTest);
 };
 
 // Tests that "Ask Brave for suggestions" isn't shown in the menu and the menu

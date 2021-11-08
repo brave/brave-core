@@ -5,7 +5,6 @@
 
 #include "chrome/browser/renderer_context_menu/spelling_menu_observer.h"
 
-#include "base/macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h"
@@ -26,6 +25,9 @@ namespace {
 class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
  public:
   BraveSpellingMenuObserverTest();
+  BraveSpellingMenuObserverTest(const BraveSpellingMenuObserverTest&) = delete;
+  BraveSpellingMenuObserverTest& operator=(
+      const BraveSpellingMenuObserverTest&) = delete;
 
   void SetUpOnMainThread() override {}
 
@@ -71,7 +73,6 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<SpellingMenuObserver> observer_;
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
-  DISALLOW_COPY_AND_ASSIGN(BraveSpellingMenuObserverTest);
 };
 
 BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {}

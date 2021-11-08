@@ -20,6 +20,8 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
                                public TorLauncherObserver {
  public:
   TorInternalsDOMHandler();
+  TorInternalsDOMHandler(const TorInternalsDOMHandler&) = delete;
+  TorInternalsDOMHandler& operator=(const TorInternalsDOMHandler&) = delete;
   ~TorInternalsDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -40,16 +42,14 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 
   base::WeakPtrFactory<TorInternalsDOMHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorInternalsDOMHandler);
 };
 
 class TorInternalsUI : public content::WebUIController {
  public:
   TorInternalsUI(content::WebUI* web_ui, const std::string& host);
-  ~TorInternalsUI() override;
   TorInternalsUI(const TorInternalsUI&) = delete;
   TorInternalsUI& operator=(const TorInternalsUI&) = delete;
+  ~TorInternalsUI() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_TOR_INTERNALS_UI_H_

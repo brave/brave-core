@@ -30,6 +30,10 @@ class IPFSLocationView;
 class BraveLocationBarView : public LocationBarView {
  public:
   using LocationBarView::LocationBarView;
+
+  BraveLocationBarView(const BraveLocationBarView&) = delete;
+  BraveLocationBarView& operator=(const BraveLocationBarView&) = delete;
+
   void Init() override;
   void Update(content::WebContents* contents) override;
   void OnChanged() override;
@@ -68,8 +72,6 @@ class BraveLocationBarView : public LocationBarView {
 #if BUILDFLAG(ENABLE_IPFS)
   IPFSLocationView* ipfs_location_view_ = nullptr;
 #endif
-
-  DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_LOCATION_BAR_VIEW_H_

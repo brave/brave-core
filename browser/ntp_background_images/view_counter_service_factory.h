@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_VIEW_COUNTER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_VIEW_COUNTER_SERVICE_FACTORY_H_
 
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
@@ -26,6 +25,10 @@ class ViewCounterService;
 
 class ViewCounterServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  ViewCounterServiceFactory(const ViewCounterServiceFactory&) = delete;
+  ViewCounterServiceFactory& operator=(const ViewCounterServiceFactory&) =
+      delete;
+
   static ViewCounterService* GetForProfile(Profile* profile);
   static ViewCounterServiceFactory* GetInstance();
 
@@ -41,8 +44,6 @@ class ViewCounterServiceFactory : public BrowserContextKeyedServiceFactory {
   bool ServiceIsCreatedWithBrowserContext() const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
-
-  DISALLOW_COPY_AND_ASSIGN(ViewCounterServiceFactory);
 };
 
 }  // namespace ntp_background_images

@@ -27,6 +27,11 @@ class BraveContentSettingsRegistryBrowserTest : public PlatformBrowserTest {
  public:
   using PlatformBrowserTest::PlatformBrowserTest;
 
+  BraveContentSettingsRegistryBrowserTest(
+      const BraveContentSettingsRegistryBrowserTest&) = delete;
+  BraveContentSettingsRegistryBrowserTest& operator=(
+      const BraveContentSettingsRegistryBrowserTest&) = delete;
+
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(
         chrome_test_utils::GetProfile(this));
@@ -37,9 +42,6 @@ class BraveContentSettingsRegistryBrowserTest : public PlatformBrowserTest {
         chrome_test_utils::GetProfile(this)->GetPrimaryOTRProfile(
             /*create_if_needed=*/true));
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsRegistryBrowserTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,

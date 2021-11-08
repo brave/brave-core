@@ -25,6 +25,8 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
                          public syncer::DeviceInfoTracker::Observer {
  public:
   BraveSyncHandler();
+  BraveSyncHandler(const BraveSyncHandler&) = delete;
+  BraveSyncHandler& operator=(const BraveSyncHandler&) = delete;
   ~BraveSyncHandler() override;
 
   // syncer::DeviceInfoTracker::Observer
@@ -68,8 +70,6 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
       device_info_tracker_observer_{this};
 
   base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_

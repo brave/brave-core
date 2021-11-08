@@ -22,6 +22,8 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
                            std::unique_ptr<TranslateBubbleModel> model,
                            translate::TranslateErrors::Type error_type,
                            content::WebContents* web_contents);
+  BraveTranslateBubbleView(const BraveTranslateBubbleView&) = delete;
+  BraveTranslateBubbleView& operator=(const BraveTranslateBubbleView&) = delete;
   ~BraveTranslateBubbleView() override;
 
   // views::BubbleDialogDelegateView methods.
@@ -48,8 +50,6 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   // replacing it. However, its child view(|tabbed_pane_|) is still referenced
   // from TranslateBubbleView. Keep to prevent leak.
   std::unique_ptr<views::View> removed_translate_view_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTranslateBubbleView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TRANSLATE_BRAVE_TRANSLATE_BUBBLE_VIEW_H_

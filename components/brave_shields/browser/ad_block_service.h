@@ -50,6 +50,8 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(
       BraveComponent::Delegate* delegate,
       std::unique_ptr<AdBlockSubscriptionServiceManager> manager);
+  AdBlockService(const AdBlockService&) = delete;
+  AdBlockService& operator=(const AdBlockService&) = delete;
   ~AdBlockService() override;
 
   void ShouldStartRequest(const GURL& url,
@@ -103,7 +105,6 @@ class AdBlockService : public AdBlockBaseService {
       subscription_service_manager_;
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
 
 // Registers the local_state preferences used by Adblock

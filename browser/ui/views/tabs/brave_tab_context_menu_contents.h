@@ -29,6 +29,9 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   BraveTabContextMenuContents(Tab* tab,
                               BraveBrowserTabStripController* controller,
                               int index);
+  BraveTabContextMenuContents(const BraveTabContextMenuContents&) = delete;
+  BraveTabContextMenuContents& operator=(const BraveTabContextMenuContents&) =
+      delete;
   ~BraveTabContextMenuContents() override;
 
   void Cancel();
@@ -54,8 +57,6 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   Browser* browser_;
   sessions::TabRestoreService* restore_service_ = nullptr;
   BraveBrowserTabStripController* controller_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTabContextMenuContents);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTEXT_MENU_CONTENTS_H_

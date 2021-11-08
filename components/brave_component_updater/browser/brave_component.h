@@ -10,7 +10,6 @@
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "components/component_updater/component_updater_service.h"
@@ -49,6 +48,8 @@ class BraveComponent {
   };
 
   explicit BraveComponent(Delegate* delegate);
+  BraveComponent(const BraveComponent&) = delete;
+  BraveComponent& operator=(const BraveComponent&) = delete;
   virtual ~BraveComponent();
   void Register(const std::string& component_name,
                 const std::string& component_id,
@@ -83,8 +84,6 @@ class BraveComponent {
   std::string component_base64_public_key_;
   Delegate* delegate_;  // NOT OWNED
   base::WeakPtrFactory<BraveComponent> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponent);
 };
 
 }  // namespace brave_component_updater

@@ -52,6 +52,8 @@ class SequentialUpdateChecker : public UpdateChecker {
   // Needs to be public so std::make_unique(...) works in Create(...).
   SequentialUpdateChecker(scoped_refptr<Configurator> config,
                           PersistedData* metadata);
+  SequentialUpdateChecker(const SequentialUpdateChecker&) = delete;
+  SequentialUpdateChecker& operator=(const SequentialUpdateChecker&) = delete;
   ~SequentialUpdateChecker() override;
 
  private:
@@ -86,8 +88,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   std::unique_ptr<UpdateChecker> update_checker_;
   // Aggregates results from all sequential update requests.
   ProtocolParser::Results results_;
-
-  DISALLOW_COPY_AND_ASSIGN(SequentialUpdateChecker);
 };
 
 }  // namespace update_client

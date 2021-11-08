@@ -12,11 +12,12 @@ class BraveStarView : public StarView {
  public:
   using StarView::StarView;
 
+  BraveStarView(const BraveStarView&) = delete;
+  BraveStarView& operator=(const BraveStarView&) = delete;
+
  protected:
   // views::View:
   void UpdateImpl() override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveStarView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_STAR_VIEW_H_

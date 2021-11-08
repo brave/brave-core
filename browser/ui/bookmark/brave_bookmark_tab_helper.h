@@ -15,6 +15,8 @@ class BookmarkTabHelperObserver;
 class BraveBookmarkTabHelper
     : public content::WebContentsUserData<BraveBookmarkTabHelper>{
  public:
+  BraveBookmarkTabHelper(const BraveBookmarkTabHelper&) = delete;
+  BraveBookmarkTabHelper& operator=(const BraveBookmarkTabHelper&) = delete;
   ~BraveBookmarkTabHelper() override;
 
   bool ShouldShowBookmarkBar();
@@ -29,8 +31,6 @@ class BraveBookmarkTabHelper
   content::WebContents* web_contents_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBookmarkTabHelper);
 };
 
 #endif  // BRAVE_BROWSER_UI_BOOKMARK_BRAVE_BOOKMARK_TAB_HELPER_H_

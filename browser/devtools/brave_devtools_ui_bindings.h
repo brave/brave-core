@@ -12,13 +12,14 @@ class BraveDevToolsUIBindings : public DevToolsUIBindings {
  public:
   using DevToolsUIBindings::DevToolsUIBindings;
 
+  BraveDevToolsUIBindings(const BraveDevToolsUIBindings&) = delete;
+  BraveDevToolsUIBindings& operator=(const BraveDevToolsUIBindings&) = delete;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveDevToolsUIBindingsBrowserTest, ThemeTest);
 
   // DevToolsUIBindings overrides:
   void GetPreferences(DispatchCallback callback) override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDevToolsUIBindings);
 };
 
 #endif  // BRAVE_BROWSER_DEVTOOLS_BRAVE_DEVTOOLS_UI_BINDINGS_H_

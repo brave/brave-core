@@ -19,14 +19,13 @@ class BraveSyncStoppedReporter : public SyncStoppedReporter {
       const std::string& user_agent,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       ResultCallback callback);
+  BraveSyncStoppedReporter(const BraveSyncStoppedReporter&) = delete;
+  BraveSyncStoppedReporter& operator=(const BraveSyncStoppedReporter&) = delete;
   ~BraveSyncStoppedReporter() override;
 
   void ReportSyncStopped(const std::string& access_token,
                          const std::string& cache_guid,
                          const std::string& birthday) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncStoppedReporter);
 };
 
 }  // namespace syncer

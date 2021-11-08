@@ -32,6 +32,9 @@ constexpr char kTestProfileName[] = "TestProfile";
 class TorNavigationThrottleUnitTest : public testing::Test {
  public:
   TorNavigationThrottleUnitTest() = default;
+  TorNavigationThrottleUnitTest(const TorNavigationThrottleUnitTest&) = delete;
+  TorNavigationThrottleUnitTest& operator=(
+      const TorNavigationThrottleUnitTest&) = delete;
   ~TorNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
@@ -72,7 +75,6 @@ class TorNavigationThrottleUnitTest : public testing::Test {
   std::unique_ptr<content::WebContents> web_contents_;
   std::unique_ptr<content::WebContents> tor_web_contents_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
-  DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottleUnitTest);
 };
 
 // Tests TorNavigationThrottle::MaybeCreateThrottleFor with tor enabled/disabled

@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/macros.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace base {
@@ -36,6 +35,8 @@ namespace tor {
 class TorProfileService : public KeyedService {
  public:
   TorProfileService();
+  TorProfileService(const TorProfileService&) = delete;
+  TorProfileService& operator=(const TorProfileService&) = delete;
   ~TorProfileService() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
@@ -49,9 +50,6 @@ class TorProfileService : public KeyedService {
   virtual bool IsTorConnected() = 0;
   virtual void KillTor() = 0;
   virtual void SetTorLauncherFactoryForTest(TorLauncherFactory* factory) {}
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(TorProfileService);
 };
 
 }  // namespace tor

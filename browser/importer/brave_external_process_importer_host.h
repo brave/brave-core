@@ -15,6 +15,10 @@
 class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
   BraveExternalProcessImporterHost();
+  BraveExternalProcessImporterHost(const BraveExternalProcessImporterHost&) =
+      delete;
+  BraveExternalProcessImporterHost& operator=(
+      const BraveExternalProcessImporterHost&) = delete;
 
  private:
   friend class ExternalProcessImporterHost;
@@ -31,8 +35,6 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 
   // Vends weak pointers for the importer to call us back.
   base::WeakPtrFactory<BraveExternalProcessImporterHost> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExternalProcessImporterHost);
 };
 
 #endif  // BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_

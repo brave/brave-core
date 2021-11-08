@@ -27,6 +27,10 @@ namespace ipfs {
 class IpfsBlobContextGetterFactoryUnitTest : public testing::Test {
  public:
   IpfsBlobContextGetterFactoryUnitTest() = default;
+  IpfsBlobContextGetterFactoryUnitTest(
+      const IpfsBlobContextGetterFactoryUnitTest&) = delete;
+  IpfsBlobContextGetterFactoryUnitTest& operator=(
+      const IpfsBlobContextGetterFactoryUnitTest&) = delete;
   ~IpfsBlobContextGetterFactoryUnitTest() override = default;
 
   void SetUp() override {
@@ -55,8 +59,6 @@ class IpfsBlobContextGetterFactoryUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   Profile* profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsBlobContextGetterFactoryUnitTest);
 };
 
 TEST_F(IpfsBlobContextGetterFactoryUnitTest, GetStorageContext) {

@@ -77,6 +77,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
                                 public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
+  BraveBrowserProcessImpl(const BraveBrowserProcessImpl&) = delete;
+  BraveBrowserProcessImpl& operator=(const BraveBrowserProcessImpl&) = delete;
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.
@@ -177,8 +179,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
 
   SEQUENCE_CHECKER(sequence_checker_);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_PROCESS_IMPL_H_
