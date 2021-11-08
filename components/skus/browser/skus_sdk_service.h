@@ -10,11 +10,16 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/skus/browser/brave-rewards-cxx/src/wrapper.h"
+#include "brave/components/skus/browser/skus_sdk_context_impl.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "brave/third_party/rust/cxx/include/cxx.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
+
+namespace brave_rewards {
+struct CppSDK;
+}
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -48,7 +53,7 @@ class SkusSdkService : public KeyedService {
       skus::mojom::SkusSdk::CredentialSummaryCallback callback);
 
  private:
-  std::unique_ptr<brave_rewards::SkusSdkContext> context_;
+  std::unique_ptr<brave_rewards::SkusSdkContextImpl> context_;
   ::rust::Box<brave_rewards::CppSDK> sdk_;
   base::WeakPtrFactory<SkusSdkService> weak_factory_;
 };

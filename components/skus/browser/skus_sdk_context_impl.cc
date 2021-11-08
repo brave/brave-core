@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/components/skus/browser/skus_sdk_context.h"
+#include "brave/components/skus/browser/skus_sdk_context_impl.h"
 
 #include <string>
 #include <utility>
 
 #include "base/logging.h"
 #include "base/threading/sequenced_task_runner_handle.h"
-#include "brave/components/skus/browser/brave-rewards-cxx/src/wrapper.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/skus_sdk_fetcher.h"
+#include "brave/components/skus/browser/skus_sdk_fetcher_impl.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "services/preferences/public/cpp/dictionary_value_update.h"
@@ -46,6 +46,20 @@ logging::LogSeverity getLogSeverity(brave_rewards::TracingLevel level) {
 }  // namespace
 
 namespace brave_rewards {
+
+FetchOrderCredentialsCallbackState::FetchOrderCredentialsCallbackState() {}
+FetchOrderCredentialsCallbackState::~FetchOrderCredentialsCallbackState() {}
+
+PrepareCredentialsPresentationCallbackState::
+    PrepareCredentialsPresentationCallbackState() {}
+PrepareCredentialsPresentationCallbackState::
+    ~PrepareCredentialsPresentationCallbackState() {}
+
+CredentialSummaryCallbackState::CredentialSummaryCallbackState() {}
+CredentialSummaryCallbackState::~CredentialSummaryCallbackState() {}
+
+RefreshOrderCallbackState::RefreshOrderCallbackState() {}
+RefreshOrderCallbackState::~RefreshOrderCallbackState() {}
 
 void shim_logMessage(rust::cxxbridge1::Str file,
                      uint32_t line,
@@ -102,25 +116,25 @@ std::unique_ptr<SkusSdkFetcher> shim_executeRequest(
 }
 
 // static
-void SkusSdkContext::RegisterProfilePrefs(
+void SkusSdkContextImpl::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(prefs::kSkusDictionary);
   registry->RegisterStringPref(prefs::kSkusVPNCredential, "");
 }
 
-SkusSdkContext::SkusSdkContext(
+SkusSdkContextImpl::SkusSdkContextImpl(
     PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
 
-SkusSdkContext::~SkusSdkContext() {}
+SkusSdkContextImpl::~SkusSdkContextImpl() {}
 
-std::unique_ptr<brave_rewards::SkusSdkFetcher> SkusSdkContext::CreateFetcher()
-    const {
-  return std::make_unique<SkusSdkFetcher>(url_loader_factory_);
+std::unique_ptr<brave_rewards::SkusSdkFetcher>
+SkusSdkContextImpl::CreateFetcher() const {
+  return std::make_unique<SkusSdkFetcherImpl>(url_loader_factory_);
 }
 
-std::string SkusSdkContext::GetValueFromStore(std::string key) const {
+std::string SkusSdkContextImpl::GetValueFromStore(std::string key) const {
   LOG(ERROR) << "shim_get: `" << key << "`";
   const base::Value* dictionary = prefs_->GetDictionary(prefs::kSkusDictionary);
   DCHECK(dictionary);
@@ -132,7 +146,7 @@ std::string SkusSdkContext::GetValueFromStore(std::string key) const {
   return "{}";
 }
 
-void SkusSdkContext::PurgeStore() const {
+void SkusSdkContextImpl::PurgeStore() const {
   LOG(ERROR) << "shim_purge";
   ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
   std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();
@@ -140,8 +154,8 @@ void SkusSdkContext::PurgeStore() const {
   dictionary->Clear();
 }
 
-void SkusSdkContext::UpdateStoreValue(std::string key,
-                                      std::string value) const {
+void SkusSdkContextImpl::UpdateStoreValue(std::string key,
+                                          std::string value) const {
   LOG(ERROR) << "shim_set: `" << key << "` = `" << value << "`";
   ::prefs::ScopedDictionaryPrefUpdate update(prefs_, prefs::kSkusDictionary);
   std::unique_ptr<::prefs::DictionaryValueUpdate> dictionary = update.Get();

@@ -7,10 +7,10 @@ import("//build/config/features.gni")
 
 source_set("skus") {
   sources = [
-      "//brave/browser/skus/skus_sdk_mojom_impl.cc",
-      "//brave/browser/skus/skus_sdk_mojom_impl.h",
-      "//brave/browser/skus/skus_sdk_service_factory.cc",
-      "//brave/browser/skus/skus_sdk_service_factory.h",
+    "//brave/browser/skus/skus_sdk_mojom_impl.cc",
+    "//brave/browser/skus/skus_sdk_mojom_impl.h",
+    "//brave/browser/skus/skus_sdk_service_factory.cc",
+    "//brave/browser/skus/skus_sdk_service_factory.h",
   ]
 
   deps = [
@@ -22,11 +22,4 @@ source_set("skus") {
     "//components/keyed_service/content",
     "//content/public/browser",
   ]
-
-  # TODO: this config should only be applying to the
-  # auto-generated rust files (wrapper.cpp, etc)
-  #
-  # I've tried making a separate target for those files but
-  # it still complains :/
-  configs -= [ "//build/config/clang:find_bad_constructs" ]
 }

@@ -3,13 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_
 
 #include <memory>
 #include <string>
 
-#include "brave/components/skus/browser/brave-rewards-cxx/src/cxx.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/lib.rs.h"
+#include "brave/third_party/rust/cxx/include/cxx.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -20,18 +21,18 @@ struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 
-class SkusSdkFetcher {
+class SkusSdkFetcherImpl : public SkusSdkFetcher {
  public:
-  explicit SkusSdkFetcher(
+  explicit SkusSdkFetcherImpl(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SkusSdkFetcher();
+  ~SkusSdkFetcherImpl() override;
 
   void BeginFetch(
       const brave_rewards::HttpRequest& req,
       rust::cxxbridge1::Fn<
           void(rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext>,
                brave_rewards::HttpResponse)> callback,
-      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx);
+      rust::cxxbridge1::Box<brave_rewards::HttpRoundtripContext> ctx) override;
 
  private:
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -49,4 +50,4 @@ class SkusSdkFetcher {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_FETCHER_IMPL_H_

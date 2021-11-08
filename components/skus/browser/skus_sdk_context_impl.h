@@ -3,13 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_H_
-#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_H_
+#ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
+#define BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
 
 #include <memory>
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/skus/browser/brave-rewards-cxx/src/shim.h"
 
 class PrefService;
 
@@ -27,22 +28,23 @@ class SkusSdkFetcher;
 
 namespace brave_rewards {
 
-class SkusSdkContext {
+class SkusSdkContextImpl : public SkusSdkContext {
  public:
+  // TODO(bridiver) - this is not the right place for this
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  SkusSdkContext(const SkusSdkContext&) = delete;
-  SkusSdkContext& operator=(const SkusSdkContext&) = delete;
+  SkusSdkContextImpl(const SkusSdkContextImpl&) = delete;
+  SkusSdkContextImpl& operator=(const SkusSdkContextImpl&) = delete;
 
-  explicit SkusSdkContext(
+  explicit SkusSdkContextImpl(
       PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~SkusSdkContext();
+  ~SkusSdkContextImpl() override;
 
-  std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher() const;
-  std::string GetValueFromStore(std::string key) const;
-  void PurgeStore() const;
-  void UpdateStoreValue(std::string key, std::string value) const;
+  std::unique_ptr<brave_rewards::SkusSdkFetcher> CreateFetcher() const override;
+  std::string GetValueFromStore(std::string key) const override;
+  void PurgeStore() const override;
+  void UpdateStoreValue(std::string key, std::string value) const override;
 
  private:
   // used to store the credential
@@ -54,4 +56,4 @@ class SkusSdkContext {
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_H_
+#endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_SDK_CONTEXT_IMPL_H_
