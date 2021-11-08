@@ -7,7 +7,8 @@ import {
   AccountTransactions,
   EthereumChain,
   TokenInfo,
-  AssetPriceInfo
+  AssetPriceInfo,
+  TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
@@ -73,6 +74,9 @@ export interface Props {
   onSelectAccount: (account: WalletAccountType) => void
   onSelectAsset: (token: TokenInfo) => void
   goBack: () => void
+  onRetryTransaction: (transaction: TransactionInfo) => void
+  onSpeedupTransaction: (transaction: TransactionInfo) => void
+  onCancelTransaction: (transaction: TransactionInfo) => void
 }
 
 function Accounts (props: Props) {
@@ -93,7 +97,10 @@ function Accounts (props: Props) {
     onClickBackup,
     onClickAddAccount,
     onUpdateAccountName,
-    onRemoveAccount
+    onRemoveAccount,
+    onRetryTransaction,
+    onSpeedupTransaction,
+    onCancelTransaction
   } = props
 
   const groupById = (accounts: WalletAccountType[], key: string) => {
@@ -302,6 +309,9 @@ function Accounts (props: Props) {
                   displayAccountName={false}
                   onSelectAccount={onSelectAccount}
                   onSelectAsset={onSelectAsset}
+                  onRetryTransaction={onRetryTransaction}
+                  onSpeedupTransaction={onSpeedupTransaction}
+                  onCancelTransaction={onCancelTransaction}
                 />
               )}
             </>

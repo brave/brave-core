@@ -37,7 +37,8 @@ import {
   UpdateAccountNamePayloadType,
   EthereumChain,
   WalletRoutes,
-  BuySendSwapTypes
+  BuySendSwapTypes,
+  TransactionInfo
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -260,7 +261,7 @@ function Container (props: Props) {
     }
   }
 
-  const restorError = React.useMemo(() => {
+  const restoreError = React.useMemo(() => {
     if (invalidMnemonic) {
       setTimeout(function () { props.walletPageActions.hasMnemonicError(false) }, 5000)
       return true
@@ -447,6 +448,18 @@ function Container (props: Props) {
     props.walletPageActions.openWalletSettings()
   }
 
+  const onRetryTransaction = (transaction: TransactionInfo) => {
+    props.walletActions.retryTransaction(transaction)
+  }
+
+  const onSpeedupTransaction = (transaction: TransactionInfo) => {
+    props.walletActions.speedupTransaction(transaction)
+  }
+
+  const onCancelTransaction = (transaction: TransactionInfo) => {
+    props.walletActions.cancelTransaction(transaction)
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokenOptions.map((token) => {
@@ -509,7 +522,7 @@ function Container (props: Props) {
                 <OnboardingRestore
                   onRestore={restoreWallet}
                   toggleShowRestore={onToggleShowRestore}
-                  hasRestoreError={restorError}
+                  hasRestoreError={restoreError}
                 />
               </OnboardingWrapper>
             }
@@ -602,6 +615,9 @@ function Container (props: Props) {
                 onOpenWalletSettings={onOpenWalletSettings}
                 onShowAddModal={onShowAddModal}
                 isMetaMaskInstalled={isMetaMaskInstalled}
+                onRetryTransaction={onRetryTransaction}
+                onSpeedupTransaction={onSpeedupTransaction}
+                onCancelTransaction={onCancelTransaction}
               />
             }
           </Route>
