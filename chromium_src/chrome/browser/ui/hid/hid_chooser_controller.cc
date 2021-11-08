@@ -1,0 +1,35 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/common/webui_url_constants.h"
+#include "chrome/browser/chooser_controller/title_util.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+
+namespace {
+
+bool IsBraveWalletOrigin(const url::Origin& origin) {
+  return origin == url::Origin::Create(GURL(kBraveUIWalletPanelURL)) ||
+         origin == url::Origin::Create(GURL(kBraveUIWalletPageURL));
+}
+
+std::u16string BraveCreateTitleLabel() {
+  auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
+  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT_ORIGIN,
+                                    wallet_title);
+}
+
+}  // namespace
+
+#define CreateExtensionAwareChooserTitle                           \
+  IsBraveWalletOrigin(render_frame_host->GetLastCommittedOrigin()) \
+      ? BraveCreateTitleLabel()                                    \
+      : CreateExtensionAwareChooserTitle
+#include "../../../../../../chrome/browser/ui/hid/hid_chooser_controller.cc"
+#undef CreateExtensionAwareChooserTitle
