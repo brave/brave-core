@@ -11,7 +11,8 @@ import {
   WalletAccountType,
   ER20TransferParams,
   SendTransactionParams,
-  ERC721TransferFromParams
+  ERC721TransferFromParams,
+  TokenInfo
 } from '../../constants/types'
 import { isValidAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
@@ -24,7 +25,8 @@ export default function useSend (
   selectedAccount: WalletAccountType,
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
-  sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>
+  sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
+  fullTokenList: TokenInfo[]
 ) {
 
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
@@ -98,6 +100,20 @@ export default function useSend (
       return
     }
 
+    // If value is the same as the selectedAccounts Wallet Address
+    if (valueToLowerCase === selectedAccount.address?.toLowerCase()) {
+      setToAddress(toAddressOrUrl)
+      setAddressError(getLocale('braveWalletSameAddressError'))
+      return
+    }
+
+    // If value is a Tokens Contract Address
+    if (fullTokenList.some(token => token.contractAddress.toLowerCase() === valueToLowerCase)) {
+      setToAddress(toAddressOrUrl)
+      setAddressError(getLocale('braveWalletContractAddressError'))
+      return
+    }
+
     // If value starts with 0x, will check if it's a valid address
     if (valueToLowerCase.startsWith('0x')) {
       setToAddress(toAddressOrUrl)
@@ -116,7 +132,7 @@ export default function useSend (
 
     // Fallback error state
     setAddressError(getLocale('braveWalletNotValidAddress'))
-  }, [toAddressOrUrl])
+  }, [toAddressOrUrl, selectedAccount])
 
   const onSubmitSend = () => {
     selectedSendAsset.asset.isErc20 && sendERC20Transfer({

@@ -379,6 +379,8 @@ provideStrings({
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidAddress: 'Not a valid address',
   braveWalletNotDomain: 'Domain is not registered',
+  braveWalletSameAddressError: 'The receiving address is your own address',
+  braveWalletContractAddressError: 'The receiving address is a tokens contract address',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
