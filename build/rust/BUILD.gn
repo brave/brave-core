@@ -32,50 +32,30 @@ brave_ffi_deps = [
 
 brave_rust_deps = brave_ffi_deps + [ ":rust_lib" ]
 
-if (is_mac) {
-  shared_library("brave_rust") {
-    visibility = [ ":*" ]
-    deps = brave_rust_deps
+# The required config for cxx-generated bindings because Chromium C++ is built
+# with -fno-exceptions.
+config("cxx_cppconfig") {
+  defines = [ "RUST_CXX_NO_EXCEPTIONS" ]
+}
 
-    public_deps = brave_ffi_deps
+# The required dependencies for cxx-generated bindings, that must be included
+# on the C++ side.
+source_set("cxx_cppdeps") {
+  sources = [
+    "//brave/third_party/rust/cxx/include/cxx.h",
+    "//brave/third_party/rust/cxx/src/cxx.cc",
+  ]
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  public_configs = [ ":cxx_cppconfig" ]
+}
 
-    ldflags =
-        [ "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib" ]
-  }
-
-  # This is just a hack so @loader_path/Libraries/lib$target_name.dylib
-  # works for the test executables
-  copy("copy_rust_lib") {
-    visibility = [ ":*" ]
-    sources = [ "$root_out_dir/libbrave_rust.dylib" ]
-    outputs = [ "$root_out_dir/Libraries/{{source_file_part}}" ]
-
-    public_deps = [ ":brave_rust" ]
-  }
-
-  bundle_data("bundle_rust_lib") {
-    visibility = [ ":*" ]
-    sources = [ "$root_out_dir/Libraries/libbrave_rust.dylib" ]
-    outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
-
-    public_deps = [ ":copy_rust_lib" ]
-  }
-} else {
-  config("external_config") {
-    libs = [ lib_output_path ]
-  }
-
-  group("brave_rust") {
-    public_configs = [ ":external_config" ]
-    visibility = [ ":*" ]
-    deps = brave_rust_deps
-    public_deps = brave_ffi_deps
-  }
+config("external_config") {
+  libs = [ lib_output_path ]
 }
 
 group("rust") {
-  public_deps = [ ":brave_rust" ]
-  if (is_mac) {
-    deps = [ ":bundle_rust_lib" ]
-  }
+  public_configs = [ ":external_config" ]
+  deps = brave_rust_deps
+  public_deps = brave_ffi_deps
 }
