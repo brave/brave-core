@@ -26,6 +26,7 @@ enum class ProviderErrors {
   kDisconnected = 4900,         // The provider is disconnected from all chains
   kChainDisconnected = 4901,    // The provider is disconnected from the
                                 // specified chain
+  kUnknownChain = 4902,         // The provider doesn't know this chain
   kInvalidParams = -32602,      // Invalid method parameters
   kInternalError = -32603,      // Internal JSON-RPC error
 };

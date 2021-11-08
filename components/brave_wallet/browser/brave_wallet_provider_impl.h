@@ -93,6 +93,11 @@ class BraveWalletProviderImpl final
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,
                           bool is_eip1559) override {}
+  void OnSwitchEthereumChainRequested(const std::string& chain_id,
+                                      const GURL& origin) {}
+  void OnSwitchEthereumChainRequestProcessed(bool approved,
+                                             const std::string& chain_id,
+                                             const GURL& origin);
 
   // mojom::EthTxControllerObserver
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
@@ -100,9 +105,7 @@ class BraveWalletProviderImpl final
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
 
   void OnAddEthereumChain(const std::string& chain_id, bool accepted);
-  void OnSwitchEthereumChain(SwitchEthereumChainCallback callback,
-                             const std::string& chain_id,
-                             bool approved);
+
   void OnChainApprovalResult(const std::string& chain_id,
                              const std::string& error);
   void OnConnectionError();
