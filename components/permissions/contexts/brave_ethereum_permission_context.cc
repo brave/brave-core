@@ -129,7 +129,7 @@ void BraveEthereumPermissionContext::Cancel(
   DCHECK(manager);
 
   // Dismiss all requests.
-  manager->Closing();
+  manager->Dismiss();
 }
 
 // static
