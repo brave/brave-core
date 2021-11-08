@@ -33,8 +33,8 @@ const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
   // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
-  const api = await import('../wallet_page_api_proxy.js')
-  return api.default.getInstance()
+  const api = await import('../wallet_page_api_proxy')
+  return api.default()
 }
 
 async function refreshWalletInfo (store: Store) {
