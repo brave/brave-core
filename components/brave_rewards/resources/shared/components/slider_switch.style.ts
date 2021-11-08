@@ -24,8 +24,8 @@ export const bar = styled.div`
 export const rail = styled.div`
   display: flex;
   align-items: center;
-  height: 37px;
-  background: var(--brave-palette-grey200);
+  height: var(--slider-switch-height, 37px);
+  background: var(--slider-switch-background, var(--brave-palette-grey200));
   border-radius: 21px;
 `
 
@@ -36,9 +36,8 @@ export const option = styled.div`
   button {
     width: 100%;
     text-align: center;
-    font-size: 12px;
-    line-height: 30px;
-    color: var(--brave-palette-grey700);
+    font: var(--slider-switch-font, 12px/30px var(--brave-font-heading));
+    color: var(--slider-switch-color, var(--brave-palette-grey700));
     background: transparent;
     cursor: pointer;
     border: none;

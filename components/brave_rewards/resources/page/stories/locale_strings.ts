@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const localeStrings = {
+  cancel: 'Cancel',
   connectWalletChooseHeader: 'Choose a wallet service',
   connectWalletChooseText: 'Select a custodial wallet partner. If you already have an account, you will be asked to log in to connect.',
   connectWalletChooseNote: 'Note: Your transactions will be visible to the selected wallet service once you authorize; for instance, they will be able to see the recipient and amount of your tips.',
@@ -14,5 +15,32 @@ export const localeStrings = {
   connectWalletInfoListItem2: 'Receive your Rewards directly in your wallet',
   continue: 'Continue',
   continueToLogin: 'Continue to login',
+  manageWalletBackup: 'Backup',
+  manageWalletCurrentDevice: 'Current device',
+  manageWalletDevicesHeader: 'Manage linked devices',
+  manageWalletDevicesText: 'You can link up to $1 devices to your $2 account. Note that each Rewards profile (“Wallet payment ID”) counts toward your $3$1-device$4 linking limit. $5Learn more$6',
+  manageWalletDone: 'Done',
+  manageWalletEnterRecoveryKey: 'Enter your recovery key or $1import$2',
+  manageWalletHeader: 'Manage your Rewards wallet',
+  manageWalletIdTooltip: 'A wallet payment ID is assigned to each browser on the device you are using. Only $1 payment IDs in total can be registered with your custodian wallet.',
+  manageWalletNoLinkedDevices: '$1Verify your Rewards wallet$2 to see your linked devices. If you can’t verify your Rewards wallet, you can $3contact support$4.',
+  manageWalletPaymentID: 'Wallet payment ID',
+  manageWalletReset: 'Reset',
+  manageWalletRestore: 'Restore',
+  manageWalletSettingsHeader: 'Wallet settings',
+  manageWalletUnlink: 'Unlink',
+  manageWalletViewQR: '$1View QR Code$2 for iOS Rewards users transferring BAT.',
+  manageWalletYourPaymentID: 'Your Wallet payment ID',
+  manageWalletUnlinkConfirmHeader: 'Unlink device from your account',
+  manageWalletUnlinkConfirmText: 'Note that you can only unlink a device once every $1.',
+  manageWalletUnlinkingTime: '$1 remaining before you can unlink another device',
+
+  rewardsBackupNoticeText1: 'The funds in your Brave wallet are virtual and not required to backup. It\'s available for you to spend exclusively on this browser.',
+  rewardsBackupNoticeText2: 'If you\'d like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend $1verifying your wallet$2.',
+  rewardsResetTextNoFunds: 'Your Rewards data will be permanently lost if you reset your wallet.',
+  rewardsResetTextFunds: 'Your $1 and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have $2verified your wallet$3 so you can keep your BAT.',
+  rewardsResetConfirmation: 'Are you sure you want to reset your Rewards Wallet?',
+  rewardsRestoreText3: 'Restoring with a recovery key will replace your current wallet. Make sure you empty or back up your current wallet before restoring.',
+
   minimumBalanceWarning: '$1 requires a minimum balance of $2 BAT to create an account. If you connected an account previously,'
 }

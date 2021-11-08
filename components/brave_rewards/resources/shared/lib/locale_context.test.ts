@@ -34,7 +34,7 @@ describe('locale_context', () => {
       })).toStrictEqual(['a ', '', '=x=', '', ' b ', '', '-y-', '', ' c'])
     })
 
-    it('fills placeholders and replacing tags', () => {
+    it('fills placeholders and replaces tags', () => {
       expect(formatMessage('a $1x$2 $3', {
         placeholders: {
           $3: 3
@@ -43,6 +43,36 @@ describe('locale_context', () => {
           $1: (content) => `-${content}-`
         }
       })).toStrictEqual(['a ', '', '-x-', '', ' ', 3])
+    })
+
+    it('replaces $$ with $', () => {
+      expect(formatMessage('$$', [])).toStrictEqual(['$'])
+    })
+
+    it('replaces tags with nested placeholders', () => {
+      expect(formatMessage('$1Hello, $2$3', {
+        placeholders: {
+          $2: 'world'
+        },
+        tags: {
+          $1: {
+            end: '$3',
+            replace: (content) => ['===', content, '===']
+          }
+        }
+      })).toStrictEqual([
+        '',
+        [
+          '===',
+          [
+            'Hello, ',
+            'world'
+          ],
+          '==='
+        ],
+        '',
+        ''
+      ])
     })
   })
 })

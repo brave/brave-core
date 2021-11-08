@@ -11,7 +11,7 @@ import { HostContext } from '../lib/host_context'
 import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
 import { RewardsTour } from '../../shared/components/onboarding'
-import { SliderSwitch, SliderSwitchOption } from './slider_switch'
+import { SliderSwitch, SliderSwitchOption } from '../../shared/components/slider_switch'
 import { TipComplete } from './tip_complete'
 import { OptInForm } from './opt_in_form'
 import { OneTimeTipForm } from './one_time_tip_form'

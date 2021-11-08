@@ -10,6 +10,10 @@ import * as style from './slider_switch.style'
 //  CSS Variables
 // ===============
 //
+// --slider-switch-height
+// --slider-switch-background
+// --slider-switch-font
+// --slider-switch-color
 // --slider-switch-selected-color
 
 export interface SliderSwitchOption<T> {

@@ -16,9 +16,9 @@ function splitMessage (message: string) {
   const parts: any[] = []
   const slots: Array<[string, number]> = []
 
-  for (const match of message.matchAll(/([\s\S]*?)(\$\d|$)/g)) {
-    if (match[0]) {
-      parts.push(match[1] || '')
+  for (const match of message.matchAll(/([\s\S]*?)(\$[\d\$]|$)/g)) {
+    if (match[1]) {
+      parts.push(match[1])
     }
     if (match[2]) {
       slots.push([match[2], parts.length])
@@ -29,9 +29,35 @@ function splitMessage (message: string) {
   return { parts, slots }
 }
 
+type TagReplacer =
+  ((content: any) => any) |
+  { end: string, replace: (content: any) => any }
+
 interface FormatOptions {
   placeholders?: Record<string, any>
-  tags?: Record<string, (content: any) => any>
+  tags?: Record<string, TagReplacer>
+}
+
+function createTagStack () {
+  const stack: Array<[TagReplacer, number]> = []
+
+  return {
+    push (replacer: TagReplacer, start: number) {
+      stack.push([replacer, start])
+    },
+
+    matches (tag: string) {
+      if (stack.length === 0) {
+        return false
+      }
+      const [replacer] = stack[stack.length - 1]
+      return typeof replacer !== 'object' || replacer.end === tag
+    },
+
+    pop () {
+      return stack.pop() || null
+    }
+  }
 }
 
 // Formats a locale-specific message template that contains $N placeholders and
@@ -58,11 +84,28 @@ interface FormatOptions {
 //       $2: (content) => <a key='profile' href='/profile'>{content}</a>
 //     }
 //   })
+//
+// Replacements can be made within tags by supplying a |TagReplacer| object in
+// the |tags| object. The tag replacer must specify the $N pattern that
+// represents the tag ending.
+//
+// Example:
+//   const result = formatMessage('Up to $1$2 devices$3 can be linked', {
+//     placeholders: {
+//       $2: '4',
+//     },
+//     tags: {
+//       $1: {
+//         end: '$3',
+//         replace: (content) => <b key='bold'>{content}</b>
+//     }
+//   });
 export function formatMessage (
   message: string,
   options: FormatOptions | any[]
 ) {
   const { parts, slots } = splitMessage(message)
+  const tagStack = createTagStack()
 
   if (Array.isArray(options)) {
     const placeholders: Record<string, any> = {}
@@ -73,18 +116,29 @@ export function formatMessage (
   }
 
   for (const [key, index] of slots) {
-    if (options.placeholders && key in options.placeholders) {
-      parts[index] = options.placeholders[key]
-    }
+    if (key === '$$') {
+      parts[index] = '$'
+    } else if (tagStack.matches(key)) {
+      const top = tagStack.pop()
+      if (top) {
+        let [replacer, start] = top
 
-    if (options.tags && key in options.tags) {
-      if (index < parts.length - 1) {
-        parts[index] = ''
-        parts[index + 1] = options.tags[key](parts[index + 1])
-        if (index < parts.length - 2) {
-          parts[index + 2] = ''
+        parts[start++] = ''
+
+        const slice = parts.slice(start, index)
+        const content = slice.length === 1 ? slice[0] : slice
+        parts[start++] = typeof replacer === 'object'
+          ? replacer.replace(content)
+          : replacer(content)
+
+        while (start <= index) {
+          parts[start++] = ''
         }
       }
+    } else if (options.placeholders && key in options.placeholders) {
+      parts[index] = options.placeholders[key]
+    } else if (options.tags && key in options.tags) {
+      tagStack.push(options.tags[key], index)
     }
   }
 
