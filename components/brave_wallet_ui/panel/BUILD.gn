@@ -18,7 +18,6 @@ transpile_web_ui("brave_wallet_panel_ui") {
   resource_name = "brave_wallet_panel"
   deps = [
     ":preprocess_panel",
-    ":wallet_panel_api_proxy",
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
@@ -34,13 +33,5 @@ preprocess_if_expr("preprocess_panel") {
   in_folder = "./"
   out_folder = "$target_gen_dir/$preprocess_folder"
   out_manifest = "$target_gen_dir/$preprocess_panel_manifest"
-  in_files = [ "wallet_panel_api_proxy.js" ]
-}
-
-js_library("wallet_panel_api_proxy") {
-  deps = [
-    "//brave/components/brave_wallet/common:mojom_js_library_for_compile",
-    "//ui/webui/resources/js:cr.m",
-    "//url/mojom:url_mojom_gurl_js_library_for_compile",
-  ]
+  in_files = [ "wallet_panel_api_proxy.ts" ]
 }
