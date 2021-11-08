@@ -36,11 +36,6 @@ class Migration {
         if !Preferences.Migration.playlistV1FileSettingsLocationCompleted.value {
             movePlaylistV1Items()
         }
-        
-        if !Preferences.Migration.removeLargeFaviconsMigrationCompleted.value {
-            FaviconMO.clearTooLargeFavicons()
-            Preferences.Migration.removeLargeFaviconsMigrationCompleted.value = true
-        }
 
         // Adding Observer to enable sync types
         
@@ -143,6 +138,28 @@ class Migration {
             log.error("Moving Playlist Files for \(errorPath) failed: \(error)")
         }
     }
+    
+    static func postCoreDataInitMigrations() {
+        if !Preferences.Migration.removeLargeFaviconsMigrationCompleted.value {
+            FaviconMO.clearTooLargeFavicons()
+            Preferences.Migration.removeLargeFaviconsMigrationCompleted.value = true
+        }
+        
+        if Preferences.Migration.coreDataCompleted.value { return }
+        
+        // In 1.6.6 we included private tabs in CoreData (temporarely) until the user did one of the following:
+        //  - Cleared private data
+        //  - Exited Private Mode
+        //  - The app was terminated (bug)
+        // However due to a bug, some private tabs remain in the container. Since 1.7 removes `isPrivate` from TabMO,
+        // we must dismiss any records that are private tabs during migration from Model7
+        TabMO.deleteAllPrivateTabs()
+        
+        Domain.migrateShieldOverrides()
+        LegacyBookmarksHelper.migrateBookmarkOrders()
+        
+        Preferences.Migration.coreDataCompleted.value = true
+    }
 }
 
 fileprivate extension Preferences {
@@ -158,6 +175,8 @@ fileprivate extension Preferences {
             Option<Bool>(key: "migration.playlistv1-file-settings-location-completed", default: false)
         static let removeLargeFaviconsMigrationCompleted =
             Option<Bool>(key: "migration.remove-large-favicons", default: false)
+        
+        static let coreDataCompleted = Option<Bool>(key: "migration.cd-completed", default: false)
     }
     
     /// Migrate the users preferences from prior versions of the app (<2.0)
@@ -232,19 +251,6 @@ fileprivate extension Preferences {
         // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
         // This needs to be translated to our new preference.
         Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
-        
-        // Core Data
-        
-        // In 1.6.6 we included private tabs in CoreData (temporarely) until the user did one of the following:
-        //  - Cleared private data
-        //  - Exited Private Mode
-        //  - The app was terminated (bug)
-        // However due to a bug, some private tabs remain in the container. Since 1.7 removes `isPrivate` from TabMO,
-        // we must dismiss any records that are private tabs during migration from Model7
-        TabMO.deleteAllPrivateTabs()
-        
-        Domain.migrateShieldOverrides()
-        LegacyBookmarksHelper.migrateBookmarkOrders()
         
         Preferences.Migration.completed.value = true
     }
