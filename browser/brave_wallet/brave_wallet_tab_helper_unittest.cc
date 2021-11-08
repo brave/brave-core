@@ -7,23 +7,27 @@
 
 #include <vector>
 
-#include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/hid/hid_chooser_controller.h"
-#include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/chooser_title_util.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
-#include "services/device/public/mojom/hid.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
+#if !defined(OS_ANDROID)
+#include "brave/common/webui_url_constants.h"
+#include "chrome/browser/ui/hid/hid_chooser_controller.h"
+#include "chrome/grit/generated_resources.h"
+#include "components/permissions/chooser_title_util.h"
+#include "services/device/public/mojom/hid.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
+#endif
+
+#if !defined(OS_ANDROID)
 namespace {
 std::u16string BraveCreateTitleLabel() {
   auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
@@ -40,6 +44,7 @@ std::u16string GetHIDTitle(content::WebContents* content, const GURL& url) {
   return hid_chooser_controller->GetTitle();
 }
 }  // namespace
+#endif
 
 namespace brave_wallet {
 

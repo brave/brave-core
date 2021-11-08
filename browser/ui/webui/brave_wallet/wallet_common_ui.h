@@ -8,9 +8,15 @@
 
 class Profile;
 
+namespace url {
+class Origin;
+}  // namespace url
+
 namespace brave_wallet {
 
 void AddERCTokenImageSource(Profile* profile);
+
+bool IsBraveWalletOrigin(const url::Origin& origin);
 
 }  // namespace brave_wallet
 
