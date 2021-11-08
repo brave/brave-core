@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 66247122c1e1b1cc9802912b34c2064863e296e4..550660d7b2f99cd16a866c05fc1667d4d86b985e 100644
+index 66247122c1e1b1cc9802912b34c2064863e296e4..4b154bc71749820e586a753105ecf96677ca77ef 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -384,6 +384,7 @@ void Tab::Layout() {
@@ -10,3 +10,11 @@ index 66247122c1e1b1cc9802912b34c2064863e296e4..550660d7b2f99cd16a866c05fc1667d4
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
+@@ -990,6 +991,7 @@ void Tab::UpdateIconVisibility() {
+       available_width -= favicon_width;
+ 
+     showing_close_button_ = large_enough_for_close_button;
++    BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
+     if (showing_close_button_)
+       available_width -= close_button_width;
+ 
