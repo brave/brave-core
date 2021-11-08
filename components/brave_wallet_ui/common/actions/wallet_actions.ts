@@ -90,7 +90,6 @@ export const rejectTransaction = createAction<TransactionInfo>('rejectTransactio
 export const rejectAllTransactions = createAction('rejectAllTransactions')
 export const setAccountTransactions = createAction<AccountTransactions>('setAccountTransactions')
 export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUpdated')
-export const notifyUserInteraction = createAction('notifyUserInteraction')
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
 export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
 export const refreshGasEstimates = createAction('refreshGasEstimates')
