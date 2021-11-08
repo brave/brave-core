@@ -15,6 +15,9 @@ class CookiePrefService;
 
 class CookiePrefServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  CookiePrefServiceFactory(const CookiePrefServiceFactory&) = delete;
+  CookiePrefServiceFactory& operator=(const CookiePrefServiceFactory&) = delete;
+
   static CookiePrefService* GetForBrowserContext(
       content::BrowserContext* context);
 
@@ -31,8 +34,6 @@ class CookiePrefServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* profile) const override;
 
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(CookiePrefServiceFactory);
 };
 
 }  // namespace brave_shields

@@ -42,6 +42,9 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
                   std::string channel,
                   std::string week_of_install);
 
+  BraveP3AService(const BraveP3AService&) = delete;
+  BraveP3AService& operator=(const BraveP3AService&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
 
   // Should be called right after constructor to subscribe to histogram
@@ -126,8 +129,6 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   std::vector<
       std::unique_ptr<base::StatisticsRecorder::ScopedHistogramSampleObserver>>
       histogram_sample_callbacks_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveP3AService);
 };
 
 }  // namespace brave

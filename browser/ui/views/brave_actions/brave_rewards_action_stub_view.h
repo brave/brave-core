@@ -28,6 +28,9 @@ class BraveRewardsActionStubView : public views::LabelButton {
   };
 
   explicit BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
+  BraveRewardsActionStubView(const BraveRewardsActionStubView&) = delete;
+  BraveRewardsActionStubView& operator=(const BraveRewardsActionStubView&) =
+      delete;
   ~BraveRewardsActionStubView() override;
 
   // views::LabelButton:
@@ -43,8 +46,6 @@ class BraveRewardsActionStubView : public views::LabelButton {
   StringPrefMember badge_text_pref_;
   Profile* profile_;
   Delegate* delegate_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_REWARDS_ACTION_STUB_VIEW_H_

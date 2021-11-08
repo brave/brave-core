@@ -30,6 +30,10 @@ class BraveWalleBrowserClientUnitTest
     : public ChromeRenderViewHostTestHarness {
  public:
   BraveWalleBrowserClientUnitTest() {}
+  BraveWalleBrowserClientUnitTest(const BraveWalleBrowserClientUnitTest&) =
+      delete;
+  BraveWalleBrowserClientUnitTest& operator=(
+      const BraveWalleBrowserClientUnitTest&) = delete;
 
   void SetUp() override {
     ChromeRenderViewHostTestHarness::SetUp();
@@ -58,7 +62,6 @@ class BraveWalleBrowserClientUnitTest
   scoped_refptr<const Extension> extension_;
   content::ContentBrowserClient client_;
   content::ContentBrowserClient* original_client_;
-  DISALLOW_COPY_AND_ASSIGN(BraveWalleBrowserClientUnitTest);
 };
 
 TEST_F(BraveWalleBrowserClientUnitTest,

@@ -74,6 +74,10 @@ namespace ipfs {
 class ContentBrowserClientHelperUnitTest : public testing::Test {
  public:
   ContentBrowserClientHelperUnitTest() = default;
+  ContentBrowserClientHelperUnitTest(
+      const ContentBrowserClientHelperUnitTest&) = delete;
+  ContentBrowserClientHelperUnitTest& operator=(
+      const ContentBrowserClientHelperUnitTest&) = delete;
   ~ContentBrowserClientHelperUnitTest() override = default;
 
   void SetUp() override {
@@ -136,8 +140,6 @@ class ContentBrowserClientHelperUnitTest : public testing::Test {
   Profile* profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
-
-  DISALLOW_COPY_AND_ASSIGN(ContentBrowserClientHelperUnitTest);
 };
 
 TEST_F(ContentBrowserClientHelperUnitTest, HandleIPFSURLRewriteDisabled) {

@@ -37,6 +37,8 @@ class TorProfileServiceImpl : public TorProfileService,
  public:
   TorProfileServiceImpl(content::BrowserContext* context,
                         BraveTorClientUpdater* tor_client_updater);
+  TorProfileServiceImpl(const TorProfileServiceImpl&) = delete;
+  TorProfileServiceImpl& operator=(const TorProfileServiceImpl&) = delete;
   ~TorProfileServiceImpl() override;
 
   // TorProfileService:
@@ -67,8 +69,6 @@ class TorProfileServiceImpl : public TorProfileService,
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };
 
 }  // namespace tor

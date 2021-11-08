@@ -16,7 +16,6 @@
 
 #include "base/callback.h"
 #include "base/containers/unique_ptr_adapters.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -64,6 +63,8 @@ class BraveProxyingURLLoaderFactory
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
         mojo::PendingRemote<network::mojom::URLLoaderClient> client);
+    InProgressRequest(const InProgressRequest&) = delete;
+    InProgressRequest& operator=(const InProgressRequest&) = delete;
     ~InProgressRequest() override;
 
     void Restart();
@@ -157,19 +158,17 @@ class BraveProxyingURLLoaderFactory
     // extensions made to headers in their callbacks.
     struct FollowRedirectParams {
       FollowRedirectParams();
+      FollowRedirectParams(const FollowRedirectParams&) = delete;
+      FollowRedirectParams& operator=(const FollowRedirectParams&) = delete;
       ~FollowRedirectParams();
       std::vector<std::string> removed_headers;
       net::HttpRequestHeaders modified_headers;
       net::HttpRequestHeaders modified_cors_exempt_headers;
       absl::optional<GURL> new_url;
-
-      DISALLOW_COPY_AND_ASSIGN(FollowRedirectParams);
     };
     std::unique_ptr<FollowRedirectParams> pending_follow_redirect_params_;
 
     base::WeakPtrFactory<InProgressRequest> weak_factory_;
-
-    DISALLOW_COPY_AND_ASSIGN(InProgressRequest);
   };
 
   // Constructor public for testing purposes. New instances should be created
@@ -183,6 +182,10 @@ class BraveProxyingURLLoaderFactory
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
+
+  BraveProxyingURLLoaderFactory(const BraveProxyingURLLoaderFactory&) = delete;
+  BraveProxyingURLLoaderFactory& operator=(
+      const BraveProxyingURLLoaderFactory&) = delete;
 
   ~BraveProxyingURLLoaderFactory() override;
 
@@ -231,8 +234,6 @@ class BraveProxyingURLLoaderFactory
   DisconnectCallback disconnect_callback_;
 
   base::WeakPtrFactory<BraveProxyingURLLoaderFactory> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProxyingURLLoaderFactory);
 };
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_PROXYING_URL_LOADER_FACTORY_H_

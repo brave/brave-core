@@ -16,6 +16,8 @@ class Profile;
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  public:
   BraveOmniboxClientImpl(OmniboxEditController* controller, Profile* profile);
+  BraveOmniboxClientImpl(const BraveOmniboxClientImpl&) = delete;
+  BraveOmniboxClientImpl& operator=(const BraveOmniboxClientImpl&) = delete;
   ~BraveOmniboxClientImpl() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* prefs);
@@ -28,8 +30,6 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
  private:
   Profile* profile_;
   BraveAutocompleteSchemeClassifier scheme_classifier_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveOmniboxClientImpl);
 };
 
 #endif  // BRAVE_BROWSER_UI_OMNIBOX_BRAVE_OMNIBOX_CLIENT_IMPL_H_

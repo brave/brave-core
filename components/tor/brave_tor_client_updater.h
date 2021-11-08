@@ -49,6 +49,8 @@ class BraveTorClientUpdater : public BraveComponent {
   BraveTorClientUpdater(BraveComponent::Delegate* component_delegate,
                         PrefService* local_state,
                         const base::FilePath& user_data_dir);
+  BraveTorClientUpdater(const BraveTorClientUpdater&) = delete;
+  BraveTorClientUpdater& operator=(const BraveTorClientUpdater&) = delete;
   ~BraveTorClientUpdater() override;
 
   void Register();
@@ -94,8 +96,6 @@ class BraveTorClientUpdater : public BraveComponent {
   base::FilePath user_data_dir_;
 
   base::WeakPtrFactory<BraveTorClientUpdater> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTorClientUpdater);
 };
 
 }  // namespace tor

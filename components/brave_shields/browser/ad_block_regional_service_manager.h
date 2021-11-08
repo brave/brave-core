@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/synchronization/lock.h"
 #include "base/values.h"
@@ -38,6 +37,9 @@ class AdBlockRegionalService;
 class AdBlockRegionalServiceManager {
  public:
   explicit AdBlockRegionalServiceManager(BraveComponent::Delegate* delegate);
+  AdBlockRegionalServiceManager(const AdBlockRegionalServiceManager&) = delete;
+  AdBlockRegionalServiceManager& operator=(
+      const AdBlockRegionalServiceManager&) = delete;
   ~AdBlockRegionalServiceManager();
 
   std::unique_ptr<base::ListValue> GetRegionalLists();
@@ -81,8 +83,6 @@ class AdBlockRegionalServiceManager {
       regional_services_;
 
   std::vector<adblock::FilterList> regional_catalog_;
-
-  DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalServiceManager);
 };
 
 // Creates the AdBlockRegionalServiceManager

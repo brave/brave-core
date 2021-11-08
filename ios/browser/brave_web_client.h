@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #import "ios/web/public/web_client.h"
 
 class BraveWebMainParts;
@@ -19,6 +18,8 @@ class BraveWebMainParts;
 class BraveWebClient : public web::WebClient {
  public:
   BraveWebClient();
+  BraveWebClient(const BraveWebClient&) = delete;
+  BraveWebClient& operator=(const BraveWebClient&) = delete;
   ~BraveWebClient() override;
 
   void SetUserAgent(const std::string& user_agent);
@@ -40,8 +41,6 @@ class BraveWebClient : public web::WebClient {
  private:
   BraveWebMainParts* web_main_parts_;
   std::string user_agent_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveWebClient);
 };
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_

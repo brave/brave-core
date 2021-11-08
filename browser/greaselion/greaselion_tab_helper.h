@@ -22,6 +22,8 @@ class GreaselionTabHelper
       public content::WebContentsUserData<GreaselionTabHelper> {
  public:
   explicit GreaselionTabHelper(content::WebContents*);
+  GreaselionTabHelper(const GreaselionTabHelper&) = delete;
+  GreaselionTabHelper& operator=(const GreaselionTabHelper&) = delete;
   ~GreaselionTabHelper() override;
 
  private:
@@ -33,7 +35,6 @@ class GreaselionTabHelper
   GreaselionDownloadService* download_service_;  // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(GreaselionTabHelper);
 };
 
 }  // namespace greaselion

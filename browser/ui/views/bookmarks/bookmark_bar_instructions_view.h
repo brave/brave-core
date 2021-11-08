@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_INSTRUCTIONS_VIEW_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
@@ -27,6 +26,9 @@ class BookmarkBarInstructionsView : public views::View,
                                     public views::ContextMenuController {
  public:
   explicit BookmarkBarInstructionsView(Browser* browser);
+  BookmarkBarInstructionsView(const BookmarkBarInstructionsView&) = delete;
+  BookmarkBarInstructionsView& operator=(const BookmarkBarInstructionsView&) =
+      delete;
 
  private:
   // views::View:
@@ -53,8 +55,6 @@ class BookmarkBarInstructionsView : public views::View,
   // and set to true once we have a valid ThemeProvider.
   bool updated_colors_;
   Browser* browser_;
-
-  DISALLOW_COPY_AND_ASSIGN(BookmarkBarInstructionsView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BOOKMARKS_BOOKMARK_BAR_INSTRUCTIONS_VIEW_H_

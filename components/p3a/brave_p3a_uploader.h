@@ -30,6 +30,9 @@ class BraveP3AUploader {
       const GURL& p2a_endpoint,
       const UploadCallback& on_upload_complete);
 
+  BraveP3AUploader(const BraveP3AUploader&) = delete;
+  BraveP3AUploader& operator=(const BraveP3AUploader&) = delete;
+
   ~BraveP3AUploader();
 
   // From metrics::MetricsLogUploader
@@ -44,7 +47,6 @@ class BraveP3AUploader {
   const GURL p2a_endpoint_;
   const UploadCallback on_upload_complete_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
-  DISALLOW_COPY_AND_ASSIGN(BraveP3AUploader);
 };
 
 }  // namespace brave

@@ -16,11 +16,11 @@ class BravePopularSitesImpl : public PopularSitesImpl {
  public:
   using PopularSitesImpl::PopularSitesImpl;
 
+  BravePopularSitesImpl(const BravePopularSitesImpl&) = delete;
+  BravePopularSitesImpl& operator=(const BravePopularSitesImpl&) = delete;
+
   // PopularSitesImpl overrides:
   const std::map<SectionType, SitesVector>& sections() const override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BravePopularSitesImpl);
 };
 
 }  // namespace ntp_tiles

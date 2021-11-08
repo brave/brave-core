@@ -26,6 +26,9 @@ class KeyringService;
 
 class KeyringServiceFactory : public BrowserStateKeyedServiceFactory {
  public:
+  KeyringServiceFactory(const KeyringServiceFactory&) = delete;
+  KeyringServiceFactory& operator=(const KeyringServiceFactory&) = delete;
+
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojo::PendingRemote<mojom::KeyringService> GetForBrowserState(
       ChromeBrowserState* browser_state);
@@ -46,8 +49,6 @@ class KeyringServiceFactory : public BrowserStateKeyedServiceFactory {
   bool ServiceIsNULLWhileTesting() const override;
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(KeyringServiceFactory);
 };
 
 }  // namespace brave_wallet

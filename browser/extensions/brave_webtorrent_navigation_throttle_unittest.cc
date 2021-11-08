@@ -77,6 +77,12 @@ class BraveWebTorrentNavigationThrottleUnitTest
       : local_state_(TestingBrowserProcess::GetGlobal()) {
   }
 
+  BraveWebTorrentNavigationThrottleUnitTest(
+      const BraveWebTorrentNavigationThrottleUnitTest&) = delete;
+
+  BraveWebTorrentNavigationThrottleUnitTest& operator=(
+      const BraveWebTorrentNavigationThrottleUnitTest&) = delete;
+
   void SetUp() override {
     original_client_ = content::SetBrowserClientForTesting(&client_);
     content::RenderViewHostTestHarness::SetUp();
@@ -145,7 +151,6 @@ class BraveWebTorrentNavigationThrottleUnitTest
   sync_preferences::TestingPrefServiceSyncable prefs_;
   // The ExtensionService associated with the primary profile.
   extensions::ExtensionService* extension_service_ = nullptr;
-  DISALLOW_COPY_AND_ASSIGN(BraveWebTorrentNavigationThrottleUnitTest);
 };
 
 // Tests the basic case of loading a URL, it should proceed.

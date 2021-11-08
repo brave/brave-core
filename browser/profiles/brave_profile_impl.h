@@ -21,6 +21,8 @@ class BraveProfileImpl : public ProfileImpl, public ProfileObserver {
                    CreateMode create_mode,
                    base::Time creation_time,
                    scoped_refptr<base::SequencedTaskRunner> io_task_runner);
+  BraveProfileImpl(const BraveProfileImpl&) = delete;
+  BraveProfileImpl& operator=(const BraveProfileImpl&) = delete;
   ~BraveProfileImpl() override;
 
   // ProfileObserver:
@@ -31,8 +33,6 @@ class BraveProfileImpl : public ProfileImpl, public ProfileObserver {
   base::ScopedObservation<Profile, ProfileObserver> parent_observation_{this};
 
   base::WeakPtrFactory<BraveProfileImpl> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileImpl);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_IMPL_H_

@@ -74,6 +74,10 @@ namespace ipfs {
 class IpfsNavigationThrottleUnitTest : public testing::Test {
  public:
   IpfsNavigationThrottleUnitTest() = default;
+  IpfsNavigationThrottleUnitTest(const IpfsNavigationThrottleUnitTest&) =
+      delete;
+  IpfsNavigationThrottleUnitTest& operator=(
+      const IpfsNavigationThrottleUnitTest&) = delete;
   ~IpfsNavigationThrottleUnitTest() override = default;
 
   void SetUp() override {
@@ -134,8 +138,6 @@ class IpfsNavigationThrottleUnitTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList feature_list_;
   std::string locale_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsNavigationThrottleUnitTest);
 };
 
 TEST_F(IpfsNavigationThrottleUnitTest, DeferMultipleUntilIpfsProcessLaunched) {

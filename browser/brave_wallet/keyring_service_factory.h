@@ -20,6 +20,9 @@ class KeyringService;
 
 class KeyringServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  KeyringServiceFactory(const KeyringServiceFactory&) = delete;
+  KeyringServiceFactory& operator=(const KeyringServiceFactory&) = delete;
+
   static mojo::PendingRemote<mojom::KeyringService> GetForContext(
       content::BrowserContext* context);
   static KeyringService* GetServiceForContext(content::BrowserContext* context);
@@ -38,8 +41,6 @@ class KeyringServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(KeyringServiceFactory);
 };
 
 }  // namespace brave_wallet

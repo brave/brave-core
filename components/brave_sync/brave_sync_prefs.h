@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
 #include "base/values.h"
 
 class PrefRegistrySimple;
@@ -25,6 +24,8 @@ namespace brave_sync {
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);
+  Prefs(const Prefs&) = delete;
+  Prefs& operator=(const Prefs&) = delete;
   virtual ~Prefs();
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -55,8 +56,6 @@ class Prefs {
 
  private:
   PrefService* const pref_service_;
-
-  DISALLOW_COPY_AND_ASSIGN(Prefs);
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

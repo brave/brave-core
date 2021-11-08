@@ -27,6 +27,8 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
   BraveSyncWorker(JNIEnv* env,
                   const base::android::JavaRef<jobject>& obj);
+  BraveSyncWorker(const BraveSyncWorker&) = delete;
+  BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
 
   void Destroy(JNIEnv* env);
@@ -73,8 +75,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
                                      syncer::SyncServiceObserver>
       sync_service_observer_{this};
   base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
 }  // namespace android

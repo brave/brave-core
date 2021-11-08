@@ -38,6 +38,9 @@ class TabActivationWaiter : public TabStripModelObserver {
     tab_strip_model->AddObserver(this);
   }
 
+  TabActivationWaiter(const TabActivationWaiter&) = delete;
+  TabActivationWaiter& operator=(const TabActivationWaiter&) = delete;
+
   void WaitForActiveTabChange() {
     if (number_of_unconsumed_active_tab_changes_ == 0) {
       // Wait until TabStripModelObserver::ActiveTabChanged will get called.
@@ -67,8 +70,6 @@ class TabActivationWaiter : public TabStripModelObserver {
  private:
   scoped_refptr<content::MessageLoopRunner> message_loop_runner_;
   int number_of_unconsumed_active_tab_changes_;
-
-  DISALLOW_COPY_AND_ASSIGN(TabActivationWaiter);
 };
 
 }  // namespace

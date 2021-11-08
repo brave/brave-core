@@ -30,6 +30,8 @@ class BraveTabMenuModel : public TabMenuModel {
                     TabMenuModelDelegate* tab_menu_model_delegate,
                     TabStripModel* tab_strip_model,
                     int index);
+  BraveTabMenuModel(const BraveTabMenuModel&) = delete;
+  BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
 
  private:
@@ -38,8 +40,6 @@ class BraveTabMenuModel : public TabMenuModel {
 
   content::WebContents* web_contents_;
   sessions::TabRestoreService* restore_service_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTabMenuModel);
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_

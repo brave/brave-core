@@ -22,6 +22,8 @@
 class BraveProfileMenuViewTest : public InProcessBrowserTest {
  public:
   BraveProfileMenuViewTest() = default;
+  BraveProfileMenuViewTest(const BraveProfileMenuViewTest&) = delete;
+  BraveProfileMenuViewTest& operator=(const BraveProfileMenuViewTest&) = delete;
   ~BraveProfileMenuViewTest() override = default;
 
  protected:
@@ -75,9 +77,6 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     EXPECT_EQ(GetProfileName(),
               static_cast<const views::Label*>(title_view)->GetText());
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuViewTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, TestCurrentProfileView) {

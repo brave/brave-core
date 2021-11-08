@@ -29,14 +29,15 @@ class BraveActionViewHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   BraveActionViewHighlightPathGenerator() = default;
+  BraveActionViewHighlightPathGenerator(
+      const BraveActionViewHighlightPathGenerator&) = delete;
+  BraveActionViewHighlightPathGenerator& operator=(
+      const BraveActionViewHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveActionView*>(view)->GetHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveActionViewHighlightPathGenerator);
 };
 
 }  // namespace

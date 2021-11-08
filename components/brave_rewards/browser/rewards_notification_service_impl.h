@@ -29,6 +29,10 @@ class RewardsNotificationServiceImpl
       public base::SupportsWeakPtr<RewardsNotificationServiceImpl> {
  public:
   explicit RewardsNotificationServiceImpl(Profile* profile);
+  RewardsNotificationServiceImpl(const RewardsNotificationServiceImpl&) =
+      delete;
+  RewardsNotificationServiceImpl& operator=(
+      const RewardsNotificationServiceImpl&) = delete;
   ~RewardsNotificationServiceImpl() override;
 
   void Init(
@@ -95,8 +99,6 @@ class RewardsNotificationServiceImpl
   RewardsNotificationsMap rewards_notifications_;
   std::vector<RewardsNotificationID> rewards_notifications_displayed_;
   std::unique_ptr<RewardsNotificationServiceObserver> extension_observer_;
-
-  DISALLOW_COPY_AND_ASSIGN(RewardsNotificationServiceImpl);
 };
 
 }  // namespace brave_rewards

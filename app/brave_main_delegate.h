@@ -13,6 +13,8 @@
 // Chrome implementation of ContentMainDelegate.
 class BraveMainDelegate : public ChromeMainDelegate {
  public:
+  BraveMainDelegate(const BraveMainDelegate&) = delete;
+  BraveMainDelegate& operator=(const BraveMainDelegate&) = delete;
   BraveMainDelegate();
 
   // |exe_entry_point_ticks| is the time at which the main function of the
@@ -33,8 +35,6 @@ class BraveMainDelegate : public ChromeMainDelegate {
 #if defined(OS_ANDROID)
   void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url);
 #endif  // defined(OS_ANDROID)
-
-  DISALLOW_COPY_AND_ASSIGN(BraveMainDelegate);
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_

@@ -17,14 +17,15 @@ namespace ipfs {
 class IpfsBlobContextGetterFactory : public ipfs::BlobContextGetterFactory {
  public:
   explicit IpfsBlobContextGetterFactory(content::BrowserContext* context);
+  IpfsBlobContextGetterFactory(const IpfsBlobContextGetterFactory&) = delete;
+  IpfsBlobContextGetterFactory& operator=(const IpfsBlobContextGetterFactory&) =
+      delete;
   ~IpfsBlobContextGetterFactory() override;
 
  private:
   base::WeakPtr<storage::BlobStorageContext> RetrieveStorageContext() override;
 
   ipfs::BlobContextGetter getter_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsBlobContextGetterFactory);
 };
 
 }  // namespace ipfs

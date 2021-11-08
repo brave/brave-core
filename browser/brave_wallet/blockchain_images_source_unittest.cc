@@ -19,6 +19,11 @@
 namespace brave_wallet {
 
 class BlockchainImagesSourceTest : public testing::Test {
+ public:
+  BlockchainImagesSourceTest(const BlockchainImagesSourceTest&) = delete;
+  BlockchainImagesSourceTest& operator=(const BlockchainImagesSourceTest&) =
+      delete;
+
  protected:
   BlockchainImagesSourceTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
@@ -63,8 +68,6 @@ class BlockchainImagesSourceTest : public testing::Test {
   std::unique_ptr<BlockchainImagesSource> source_;
   bool data_received_ = false;
   std::string data_;
-
-  DISALLOW_COPY_AND_ASSIGN(BlockchainImagesSourceTest);
 };
 
 TEST_F(BlockchainImagesSourceTest, GetMimeType) {

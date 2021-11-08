@@ -51,6 +51,8 @@ class BraveActionsContainer : public views::View,
                               public BraveRewardsActionStubView::Delegate {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
+  BraveActionsContainer(const BraveActionsContainer&) = delete;
+  BraveActionsContainer& operator=(const BraveActionsContainer&) = delete;
   ~BraveActionsContainer() override;
   void Init();
   void Update();
@@ -211,8 +213,6 @@ class BraveActionsContainer : public views::View,
   brave_rewards::RewardsService* rewards_service_;
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveActionsContainer);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_ACTIONS_CONTAINER_H_

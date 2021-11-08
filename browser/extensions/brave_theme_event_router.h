@@ -17,6 +17,8 @@ namespace extensions {
 class BraveThemeEventRouter : public ui::NativeThemeObserver {
  public:
   explicit BraveThemeEventRouter(Profile* profile);
+  BraveThemeEventRouter(const BraveThemeEventRouter&) = delete;
+  BraveThemeEventRouter& operator=(const BraveThemeEventRouter&) = delete;
   ~BraveThemeEventRouter() override;
 
  private:
@@ -32,8 +34,6 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
   Profile* profile_;
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver> observer_{
       this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveThemeEventRouter);
 };
 
 }  // namespace extensions

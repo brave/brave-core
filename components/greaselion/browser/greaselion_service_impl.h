@@ -14,7 +14,6 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/macros.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/version.h"
@@ -46,6 +45,8 @@ class GreaselionServiceImpl : public GreaselionService,
       extensions::ExtensionSystem* extension_system,
       extensions::ExtensionRegistry* extension_registry,
       scoped_refptr<base::SequencedTaskRunner> task_runner);
+  GreaselionServiceImpl(const GreaselionServiceImpl&) = delete;
+  GreaselionServiceImpl& operator=(const GreaselionServiceImpl&) = delete;
   ~GreaselionServiceImpl() override;
 
   // GreaselionService overrides
@@ -94,8 +95,6 @@ class GreaselionServiceImpl : public GreaselionService,
   std::vector<base::ScopedTempDir> extension_dirs_;
   base::Version browser_version_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionServiceImpl);
 };
 
 }  // namespace greaselion

@@ -61,6 +61,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
     client_hints_url_ = https_server_.GetURL(kClientHints);
   }
 
+  ClientHintsBrowserTest(const ClientHintsBrowserTest&) = delete;
+
+  ClientHintsBrowserTest& operator=(const ClientHintsBrowserTest&) = delete;
+
   ~ClientHintsBrowserTest() override {}
 
   bool IsClientHintHeaderEnabled() { return GetParam(); }
@@ -108,8 +112,6 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   GURL client_hints_url_;
   size_t count_client_hints_headers_seen_;
   base::test::ScopedFeatureList scoped_feature_list_;
-
-  DISALLOW_COPY_AND_ASSIGN(ClientHintsBrowserTest);
 };
 
 IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {

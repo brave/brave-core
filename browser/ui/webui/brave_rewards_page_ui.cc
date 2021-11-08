@@ -61,6 +61,8 @@ class RewardsDOMHandler
       public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler();
+  RewardsDOMHandler(const RewardsDOMHandler&) = delete;
+  RewardsDOMHandler& operator=(const RewardsDOMHandler&) = delete;
   ~RewardsDOMHandler() override;
 
   void Init();
@@ -299,8 +301,6 @@ class RewardsDOMHandler
   PrefChangeRegistrar pref_change_registrar_;
 
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
 
 namespace {

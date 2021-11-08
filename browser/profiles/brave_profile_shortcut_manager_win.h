@@ -11,6 +11,10 @@
 class BraveProfileShortcutManagerWin : public ProfileShortcutManagerWin {
  public:
   explicit BraveProfileShortcutManagerWin(ProfileManager* manager);
+  BraveProfileShortcutManagerWin(const BraveProfileShortcutManagerWin&) =
+      delete;
+  BraveProfileShortcutManagerWin& operator=(
+      const BraveProfileShortcutManagerWin&) = delete;
   ~BraveProfileShortcutManagerWin() override = default;
 
   void GetShortcutProperties(const base::FilePath& profile_path,
@@ -20,8 +24,6 @@ class BraveProfileShortcutManagerWin : public ProfileShortcutManagerWin {
 
  private:
   ProfileManager* profile_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileShortcutManagerWin);
 };
 
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_SHORTCUT_MANAGER_WIN_H_

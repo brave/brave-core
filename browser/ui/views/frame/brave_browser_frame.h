@@ -11,14 +11,14 @@
 class BraveBrowserFrame : public BrowserFrame {
  public:
   explicit BraveBrowserFrame(BrowserView* browser_view);
+  BraveBrowserFrame(const BraveBrowserFrame&) = delete;
+  BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
 
   // BrowserFrame overrides:
   const ui::NativeTheme* GetNativeTheme() const override;
 
  private:
   BrowserView* view_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserFrame);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

@@ -62,6 +62,8 @@ class IpfsService : public KeyedService,
               ipfs::BraveIpfsClientUpdater* ipfs_client_updater,
               const base::FilePath& user_data_dir,
               version_info::Channel channel);
+  IpfsService(const IpfsService&) = delete;
+  IpfsService& operator=(const IpfsService&) = delete;
   ~IpfsService() override;
 
   using GetConnectedPeersCallback =
@@ -240,8 +242,6 @@ class IpfsService : public KeyedService,
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   IpfsP3A ipfs_p3a_;
   base::WeakPtrFactory<IpfsService> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };
 
 }  // namespace ipfs

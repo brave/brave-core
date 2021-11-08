@@ -28,6 +28,8 @@ class BraveComponentLoader : public ComponentLoader {
  public:
   BraveComponentLoader(ExtensionSystem* extension_system,
                        Profile* browser_context);
+  BraveComponentLoader(const BraveComponentLoader&) = delete;
+  BraveComponentLoader& operator=(const BraveComponentLoader&) = delete;
   ~BraveComponentLoader() override;
 
   // Adds the default component extensions. If |skip_session_components|
@@ -68,8 +70,6 @@ class BraveComponentLoader : public ComponentLoader {
   PrefChangeRegistrar pref_change_registrar_;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 
 }  // namespace extensions

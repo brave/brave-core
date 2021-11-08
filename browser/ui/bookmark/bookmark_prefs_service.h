@@ -16,6 +16,8 @@ class Profile;
 class BookmarkPrefsService : public KeyedService {
  public:
   explicit BookmarkPrefsService(Profile* profile);
+  BookmarkPrefsService(const BookmarkPrefsService&) = delete;
+  BookmarkPrefsService& operator=(const BookmarkPrefsService&) = delete;
   ~BookmarkPrefsService() override;
 
  private:
@@ -24,8 +26,6 @@ class BookmarkPrefsService : public KeyedService {
   Profile* profile_;
   PrefService* prefs_;
   PrefChangeRegistrar pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BookmarkPrefsService);
 };
 
 #endif  // BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_H_
