@@ -182,6 +182,10 @@ def main():
         {
             "name": "cargo-audit",
             "features": "vendored-openssl",
+        },
+        {
+            "name": "cxxbridge-cmd",
+            "version": "1.0.56"
         }
     ]
     for tool in tools:
