@@ -260,7 +260,7 @@ bool ParseSwitchEthereumChainParams(const std::string& json,
   if (!param_obj || !param_obj->is_dict())
     return false;
 
-  const std::string* chain_id_str = param_obj->FindStringKey("chain_id");
+  const std::string* chain_id_str = param_obj->FindStringKey("chainId");
   if (!chain_id_str)
     return false;
 
