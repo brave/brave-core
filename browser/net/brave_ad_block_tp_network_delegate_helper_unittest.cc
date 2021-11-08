@@ -172,6 +172,19 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   EXPECT_TRUE(request_info->new_url_spec.empty());
 }
 
+TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
+  const GURL url(
+      "data:image/gif;base64,R0lGODlhAQABAIAAAP///"
+      "wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  request_info->initiator_url = GURL("https://example.com");
+  request_info->resource_type = blink::mojom::ResourceType::kImage;
+
+  EXPECT_FALSE(CheckRequest(request_info));
+  EXPECT_EQ(request_info->blocked_by, brave::kNotBlocked);
+  EXPECT_TRUE(request_info->new_url_spec.empty());
+}
+
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   ResetAdblockInstance(g_brave_browser_process->ad_block_service(),
                        "||brave.com/test.txt", "", false);
