@@ -1,3 +1,8 @@
+// url.mojom.Url
+export interface Url {
+  url: string
+}
+
 export interface WalletAccountType {
   id: string
   name: string
@@ -89,6 +94,7 @@ export type PanelTypes =
   | 'connectWithSite'
   | 'connectHardwareWallet'
   | 'addEthereumChain'
+  | 'switchEthereumChain'
   | 'approveTransaction'
   | 'sitePermissions'
 
@@ -219,6 +225,7 @@ export interface PanelState {
   swapQuote?: SwapResponse
   swapError?: SwapErrorResponse
   signMessageData: SignMessageData[]
+  switchChainRequest: SwitchChainRequest
 }
 
 export interface PageState {
@@ -658,7 +665,9 @@ export interface EthTxController {
 
 export interface EthJsonRpcController {
   getPendingChainRequests: () => Promise<GetAllNetworksList>
+  getPendingSwitchChainRequests: () => Promise<SwitchChainRequestsList>
   addEthereumChainRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
+  notifySwitchChainRequestProcessed: (approved: boolean, origin: Url) => Promise<void>
   getNetwork: () => Promise<GetNetworkReturnInfo>
   setNetwork: (netowrk: string) => Promise<void>
   getAllNetworks: () => Promise<GetAllNetworksList>
@@ -914,6 +923,15 @@ export type EthereumChain = {
 
 export interface GetAllNetworksList {
   networks: EthereumChain[]
+}
+
+export interface SwitchChainRequest {
+  origin: Url,
+  chainId: string
+}
+
+export interface SwitchChainRequestsList {
+  requests: SwitchChainRequest[]
 }
 
 export type TransactionPanelPayload = {

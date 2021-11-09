@@ -325,21 +325,23 @@ TEST(EthResponseHelperUnitTest, NormalizeEthRequest) {
 TEST(EthResponseHelperUnitTest, ParseSwitchEthereumChainParams) {
   std::string chain_id;
   EXPECT_TRUE(ParseSwitchEthereumChainParams(
-      "{\"params\": [{\"chain_id\": \"0x1\"}]}", &chain_id));
+      "{\"params\": [{\"chainId\": \"0x1\"}]}", &chain_id));
   EXPECT_EQ(chain_id, "0x1");
   // trailing comma should be accepted
   EXPECT_TRUE(ParseSwitchEthereumChainParams(
-      "{\"params\": [{\"chain_id\": \"0x1\",},]}", &chain_id));
+      "{\"params\": [{\"chainId\": \"0x1\",},]}", &chain_id));
   EXPECT_EQ(chain_id, "0x1");
 
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
-      "{\"params\": [{\"chain_id\": 0x1}]}", &chain_id));
+      "{\"params\": [{\"chainId\": 0x1}]}", &chain_id));
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
-      "{\"params\": [{\"chain_id\": \"123\"}]}", &chain_id));
+      "{\"params\": [{\"chainId\": \"123\"}]}", &chain_id));
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
-      "{\"params\": [{\"chain_id\": [123]}]}", &chain_id));
+      "{\"params\": [{\"chainId\": [123]}]}", &chain_id));
   EXPECT_FALSE(ParseSwitchEthereumChainParams(
       "{\"params\": [{\"chain_idea\": \"0x1\"}]}", &chain_id));
+  EXPECT_FALSE(ParseSwitchEthereumChainParams(
+      "{\"params\": [{\"chain_id\": \"0x1\"}]}", &chain_id));
   EXPECT_FALSE(ParseSwitchEthereumChainParams("{\"params\": [{}]}", &chain_id));
 }
 

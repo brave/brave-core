@@ -112,7 +112,8 @@ function Container (props: Props) {
     networkPayload,
     swapQuote,
     swapError,
-    signMessageData
+    signMessageData,
+    switchChainRequest
   } = props.panel
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
@@ -396,12 +397,16 @@ function Container (props: Props) {
     props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: true })
   }
 
-  const onApproveChangeNetwork = () => {
-    // Logic here to approve changing networks
-  }
-
   const onCancelAddNetwork = () => {
     props.walletPanelActions.addEthereumChainRequestCompleted({ chainId: networkPayload.chainId, approved: false })
+  }
+
+  const onApproveChangeNetwork = () => {
+    props.walletPanelActions.switchEthereumChainProcessed({ approved: true, origin: switchChainRequest.origin })
+  }
+
+  const onCancelChangeNetwork = () => {
+    props.walletPanelActions.switchEthereumChainProcessed({ approved: false, origin: switchChainRequest.origin })
   }
 
   const onNetworkLearnMore = () => {
@@ -537,8 +542,28 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelAddNetwork}
             onLearnMore={onNetworkLearnMore}
+            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
             networkPayload={networkPayload}
             panelType='add'
+          />
+        </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (selectedPanel === 'switchEthereumChain') {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper>
+          <AllowAddChangeNetworkPanel
+            siteOrigin={switchChainRequest.origin.url}
+            onApproveAddNetwork={onApproveAddNetwork}
+            onApproveChangeNetwork={onApproveChangeNetwork}
+            onCancel={onCancelChangeNetwork}
+            onLearnMore={onNetworkLearnMore}
+            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+            networkPayload={GetNetworkInfo(switchChainRequest.chainId, networkList)}
+            panelType='change'
           />
         </LongWrapper>
       </PanelWrapper>

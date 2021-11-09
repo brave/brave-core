@@ -129,6 +129,10 @@ class EthJsonRpcController : public KeyedService,
       override;
   void GetPendingChainRequests(
       GetPendingChainRequestsCallback callback) override;
+  void GetPendingSwitchChainRequests(
+      GetPendingSwitchChainRequestsCallback callback) override;
+  void NotifySwitchChainRequestProcessed(bool approved,
+                                         const GURL& origin) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
   std::string GetNetworkUrl() const;
   void GetNetworkUrl(
@@ -173,6 +177,14 @@ class EthJsonRpcController : public KeyedService,
   void GetSupportsInterface(const std::string& contract_address,
                             const std::string& interface_id,
                             GetSupportsInterfaceCallback callback);
+
+  using SwitchEthereumChainRequestCallback =
+      base::OnceCallback<void(int error, const std::string& error_message)>;
+  // return false when there is an error before processing request
+  bool AddSwitchEthereumChainRequest(
+      const std::string& chain_id,
+      const GURL& origin,
+      SwitchEthereumChainRequestCallback callback);
 
  private:
   void FireNetworkChanged();
@@ -310,6 +322,10 @@ class EthJsonRpcController : public KeyedService,
   std::string chain_id_;
   // <chain_id, EthereumChainRequest>
   base::flat_map<std::string, EthereumChainRequest> add_chain_pending_requests_;
+  // <origin, chain_id>
+  base::flat_map<GURL, std::string> switch_chain_requests_;
+  base::flat_map<GURL, SwitchEthereumChainRequestCallback>
+      switch_chain_callbacks_;
   mojo::RemoteSet<mojom::EthJsonRpcControllerObserver> observers_;
 
   mojo::ReceiverSet<mojom::EthJsonRpcController> receivers_;

@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/brave_wallet/eth_tx_controller_factory.h"
 #include "brave/browser/brave_wallet/keyring_controller_factory.h"
 #include "brave/browser/brave_wallet/rpc_controller_factory.h"
@@ -270,6 +271,19 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
   void Navigate(const GURL& url) { web_contents()->NavigateAndCommit(url); }
 
+  GURL GetOrigin() {
+    return web_contents()->GetMainFrame()->GetLastCommittedURL().GetOrigin();
+  }
+
+  void CreateBraveWalletTabHelper() {
+    brave_wallet::BraveWalletTabHelper::CreateForWebContents(
+        web_contents_.get());
+  }
+  brave_wallet::BraveWalletTabHelper* brave_wallet_tab_helper() {
+    return brave_wallet::BraveWalletTabHelper::FromWebContents(
+        web_contents_.get());
+  }
+
   void AddEthereumPermission(const GURL& url, size_t from_index = 0) {
     AddEthereumPermission(url, from(from_index));
   }
@@ -420,6 +434,7 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   }
 
   void SwitchEthereumChain(const std::string& chain_id,
+                           absl::optional<bool> user_approved,
                            int* error_out,
                            std::string* error_message_out) {
     base::RunLoop run_loop;
@@ -430,6 +445,9 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
                         *error_message_out = error_message;
                         run_loop.Quit();
                       }));
+    if (user_approved)
+      eth_json_rpc_controller_->NotifySwitchChainRequestProcessed(
+          *user_approved, GetOrigin());
     run_loop.Run();
   }
 
@@ -1104,20 +1122,63 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageHardware) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
+  // CreateWallet();
+  CreateBraveWalletTabHelper();
+  Navigate(GURL("https://bravesoftware.com"));
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
   int error = -1;
   std::string error_message;
 
-  SwitchEthereumChain("0x111", &error, &error_message);
-  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kInvalidParams));
+  // chain doesn't exist yet
+  std::string chain_id = "0x111";
+  SwitchEthereumChain(chain_id, absl::nullopt, &error, &error_message);
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUnknownChain));
   EXPECT_EQ(error_message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+            l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
+                                      base::ASCIIToUTF16(chain_id)));
+  EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
 
-  // TODO(darkdh): test positive case along with observer when UI is ready for
-  // hooked up
-  SwitchEthereumChain("0x1", &error, &error_message);
+  // already on this chain
+  SwitchEthereumChain("0x1", absl::nullopt, &error, &error_message);
+  EXPECT_EQ(error, 0);
+  EXPECT_TRUE(error_message.empty());
+  EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
+
+  // user rejected
+  SwitchEthereumChain("0x4", false, &error, &error_message);
   EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+  brave_wallet_tab_helper()->CloseBubble();
+  EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
+
+  // user approved
+  SwitchEthereumChain("0x4", true, &error, &error_message);
+  EXPECT_EQ(error, 0);
+  EXPECT_TRUE(error_message.empty());
+  EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+  brave_wallet_tab_helper()->CloseBubble();
+  EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
+  EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x4");
+
+  // one request per origin
+  base::RunLoop run_loop;
+  provider()->SwitchEthereumChain(
+      "0x1", base::BindLambdaForTesting(
+                 [&](int error, const std::string& error_message) {
+                   EXPECT_EQ(error, 0);
+                   EXPECT_TRUE(error_message.empty());
+                   run_loop.Quit();
+                 }));
+  SwitchEthereumChain("0x1", absl::nullopt, &error, &error_message);
+  EXPECT_EQ(error, static_cast<int>(ProviderErrors::kUserRejectedRequest));
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+  eth_json_rpc_controller()->NotifySwitchChainRequestProcessed(true,
+                                                               GetOrigin());
+  run_loop.Run();
+  EXPECT_EQ(eth_json_rpc_controller()->GetChainId(), "0x1");
 }
 
 }  // namespace brave_wallet
