@@ -61,61 +61,66 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
   if (canvas() && !AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
     return ScriptValue::CreateNull(script_state->GetIsolate());
 
-#define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER                      \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {     \
-    if (WebContentSettingsClient* settings =                                  \
-        brave::GetContentSettingsClientFor(context)) {                  \
-      if (settings->GetBraveFarblingLevel() == BraveFarblingLevel::MAXIMUM) { \
-        switch (pname) {                                                      \
-          case GL_SHADING_LANGUAGE_VERSION:                                   \
-          case GL_VERSION:                                                    \
-          case GL_COPY_READ_BUFFER_BINDING:                                   \
-          case GL_COPY_WRITE_BUFFER_BINDING:                                  \
-          case GL_DRAW_FRAMEBUFFER_BINDING:                                   \
-          case GL_MAX_VERTEX_UNIFORM_COMPONENTS:                              \
-          case GL_MAX_VERTEX_UNIFORM_BLOCKS:                                  \
-          case GL_MAX_VERTEX_OUTPUT_COMPONENTS:                               \
-          case GL_MAX_VARYING_COMPONENTS:                                     \
-          case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:              \
-          case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:                            \
-          case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:                                \
-          case GL_MAX_FRAGMENT_INPUT_COMPONENTS:                              \
-          case GL_MAX_UNIFORM_BUFFER_BINDINGS:                                \
-          case GL_MAX_COMBINED_UNIFORM_BLOCKS:                                \
-          case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:                     \
-          case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:                   \
-            return ScriptValue::CreateNull(script_state->GetIsolate());       \
-        }                                                                     \
-      } else if (settings->GetBraveFarblingLevel() ==                         \
-                 BraveFarblingLevel::BALANCED) {                              \
-        switch (pname) {                                                      \
-          case GL_MAX_VERTEX_UNIFORM_COMPONENTS:                              \
-            return FarbleGLIntParameter(this, script_state, pname, 1);        \
-          case GL_MAX_VERTEX_UNIFORM_BLOCKS:                                  \
-            return FarbleGLIntParameter(this, script_state, pname, 2);        \
-          case GL_MAX_VERTEX_OUTPUT_COMPONENTS:                               \
-            return FarbleGLIntParameter(this, script_state, pname, 3);        \
-          case GL_MAX_VARYING_COMPONENTS:                                     \
-            return FarbleGLIntParameter(this, script_state, pname, 4);        \
-          case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:              \
-            return FarbleGLIntParameter(this, script_state, pname, 5);        \
-          case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:                            \
-            return FarbleGLIntParameter(this, script_state, pname, 6);        \
-          case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:                                \
-            return FarbleGLIntParameter(this, script_state, pname, 7);        \
-          case GL_MAX_FRAGMENT_INPUT_COMPONENTS:                              \
-            return FarbleGLIntParameter(this, script_state, pname, 8);        \
-          case GL_MAX_UNIFORM_BUFFER_BINDINGS:                                \
-            return FarbleGLIntParameter(this, script_state, pname, 9);        \
-          case GL_MAX_COMBINED_UNIFORM_BLOCKS:                                \
-            return FarbleGLIntParameter(this, script_state, pname, 10);       \
-          case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:                     \
-            return FarbleGLInt64Parameter(this, script_state, pname, 11);     \
-          case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:                   \
-            return FarbleGLInt64Parameter(this, script_state, pname, 12);     \
-        }                                                                     \
-      }                                                                       \
-    }                                                                         \
+#define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER                \
+  switch (brave::GetBraveFarblingLevelFor(                              \
+      ExecutionContext::From(script_state), BraveFarblingLevel::OFF)) { \
+    case BraveFarblingLevel::OFF: {                                     \
+      break;                                                            \
+    }                                                                   \
+    case BraveFarblingLevel::MAXIMUM: {                                 \
+      switch (pname) {                                                  \
+        case GL_SHADING_LANGUAGE_VERSION:                               \
+        case GL_VERSION:                                                \
+        case GL_COPY_READ_BUFFER_BINDING:                               \
+        case GL_COPY_WRITE_BUFFER_BINDING:                              \
+        case GL_DRAW_FRAMEBUFFER_BINDING:                               \
+        case GL_MAX_VERTEX_UNIFORM_COMPONENTS:                          \
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS:                              \
+        case GL_MAX_VERTEX_OUTPUT_COMPONENTS:                           \
+        case GL_MAX_VARYING_COMPONENTS:                                 \
+        case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:          \
+        case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:                        \
+        case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:                            \
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS:                          \
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS:                            \
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS:                            \
+        case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:                 \
+        case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:               \
+          return ScriptValue::CreateNull(script_state->GetIsolate());   \
+      }                                                                 \
+      break;                                                            \
+    }                                                                   \
+    case BraveFarblingLevel::BALANCED: {                                \
+      switch (pname) {                                                  \
+        case GL_MAX_VERTEX_UNIFORM_COMPONENTS:                          \
+          return FarbleGLIntParameter(this, script_state, pname, 1);    \
+        case GL_MAX_VERTEX_UNIFORM_BLOCKS:                              \
+          return FarbleGLIntParameter(this, script_state, pname, 2);    \
+        case GL_MAX_VERTEX_OUTPUT_COMPONENTS:                           \
+          return FarbleGLIntParameter(this, script_state, pname, 3);    \
+        case GL_MAX_VARYING_COMPONENTS:                                 \
+          return FarbleGLIntParameter(this, script_state, pname, 4);    \
+        case GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS:          \
+          return FarbleGLIntParameter(this, script_state, pname, 5);    \
+        case GL_MAX_FRAGMENT_UNIFORM_COMPONENTS:                        \
+          return FarbleGLIntParameter(this, script_state, pname, 6);    \
+        case GL_MAX_FRAGMENT_UNIFORM_BLOCKS:                            \
+          return FarbleGLIntParameter(this, script_state, pname, 7);    \
+        case GL_MAX_FRAGMENT_INPUT_COMPONENTS:                          \
+          return FarbleGLIntParameter(this, script_state, pname, 8);    \
+        case GL_MAX_UNIFORM_BUFFER_BINDINGS:                            \
+          return FarbleGLIntParameter(this, script_state, pname, 9);    \
+        case GL_MAX_COMBINED_UNIFORM_BLOCKS:                            \
+          return FarbleGLIntParameter(this, script_state, pname, 10);   \
+        case GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS:                 \
+          return FarbleGLInt64Parameter(this, script_state, pname, 11); \
+        case GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS:               \
+          return FarbleGLInt64Parameter(this, script_state, pname, 12); \
+      }                                                                 \
+      break;                                                            \
+    }                                                                   \
+    default:                                                            \
+      NOTREACHED();                                                     \
   }
 
 #include "../../../../../../../third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc"

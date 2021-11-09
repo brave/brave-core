@@ -7,7 +7,6 @@
 
 #include "base/command_line.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "crypto/hmac.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -83,6 +82,17 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
         blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
   }
   return settings;
+}
+
+BraveFarblingLevel GetBraveFarblingLevelFor(ExecutionContext* context,
+                                            BraveFarblingLevel default_value) {
+  BraveFarblingLevel value = default_value;
+  // This is safe to call with a null pointer.
+  blink::WebContentSettingsClient* settings =
+      GetContentSettingsClientFor(context);
+  if (settings)
+    value = settings->GetBraveFarblingLevel();
+  return value;
 }
 
 BraveSessionCache::BraveSessionCache(ExecutionContext& context)

@@ -6,6 +6,7 @@
 #include "third_party/blink/renderer/modules/speech/speech_synthesis.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 #define OnSetVoiceList OnSetVoiceList_ChromiumImpl
 #include "../../../../../../../third_party/blink/renderer/modules/speech/speech_synthesis.cc"
@@ -16,13 +17,8 @@ namespace blink {
 void SpeechSynthesis::OnSetVoiceList(
     Vector<mojom::blink::SpeechSynthesisVoicePtr> mojom_voices) {
   voice_list_.clear();
-  BraveFarblingLevel farbling_level = BraveFarblingLevel::OFF;
-  if (ExecutionContext* context = GetExecutionContext()) {
-    if (blink::WebContentSettingsClient* settings =
-            brave::GetContentSettingsClientFor(context)) {
-      farbling_level = settings->GetBraveFarblingLevel();
-    }
-  }
+  BraveFarblingLevel farbling_level = brave::GetBraveFarblingLevelFor(
+      GetExecutionContext(), BraveFarblingLevel::OFF);
   if (farbling_level == BraveFarblingLevel::OFF) {
     // farbling off -> call upstream function
     OnSetVoiceList_ChromiumImpl(std::move(mojom_voices));
