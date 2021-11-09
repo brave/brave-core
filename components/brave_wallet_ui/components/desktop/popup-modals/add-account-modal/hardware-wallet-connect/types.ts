@@ -1,6 +1,6 @@
 import {
-  kLedgerHardwareVendor,
-  kTrezorHardwareVendor
+  LEDGER_HARDWARE_VENDOR,
+  TREZOR_HARDWARE_VENDOR
 } from '../../../../../constants/types'
 
 export enum LedgerDerivationPaths {
@@ -19,8 +19,8 @@ export const HardwareWalletDerivationPathLocaleMapping = {
 }
 
 export const HardwareWalletDerivationPathsMapping = {
-  [kLedgerHardwareVendor]: LedgerDerivationPaths,
-  [kTrezorHardwareVendor]: TrezorDerivationPaths
+  [LEDGER_HARDWARE_VENDOR]: LedgerDerivationPaths,
+  [TREZOR_HARDWARE_VENDOR]: TrezorDerivationPaths
 }
 
 export interface HardwareWalletConnectOpts {

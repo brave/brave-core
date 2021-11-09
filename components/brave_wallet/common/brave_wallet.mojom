@@ -136,6 +136,7 @@ struct SwapResponse {
 };
 
 const string kLedgerHardwareVendor = "Ledger";
+const string kTrezorHardwareVendor = "Trezor";
 
 struct HardwareWalletAccount {
   string address;

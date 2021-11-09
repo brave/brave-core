@@ -2,7 +2,7 @@ import * as React from 'react'
 import {
   TokenInfo,
   EthereumChain,
-  kMainnetChainId
+  MAINNET_CHAIN_ID
 } from '../../../../constants/types'
 import {
   PopupModal,
@@ -119,7 +119,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
     const fullList = visibleContracts.includes('') ? fullAssetList : [nativeAsset, ...fullAssetList]
     const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
-    return selectedNetwork.chainId !== kMainnetChainId
+    return selectedNetwork.chainId !== MAINNET_CHAIN_ID
       ? visibleContracts.includes('')
         ? userVisibleTokensInfo
         : [...userVisibleTokensInfo, nativeAsset]

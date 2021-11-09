@@ -8,9 +8,6 @@ import * as WalletActions from '../common/actions/wallet_actions'
 import { Store } from '../common/async/types'
 import LedgerBridgeKeyring from '../common/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../common/trezor/trezor_bridge_keyring'
-import {
-  kLedgerHardwareVendor, kTrezorHardwareVendor
-} from '../constants/types'
 
 // Provide access to all the generated types.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
@@ -62,9 +59,9 @@ export default class WalletApiProxy {
   }
 
   getKeyringsByType(type: string) {
-    if (type == kLedgerHardwareVendor) {
+    if (type == BraveWallet.LEDGER_HARDWARE_VENDOR) {
       return this.ledgerHardwareKeyring
-    } else if (type == kTrezorHardwareVendor) {
+    } else if (type == BraveWallet.TREZOR_HARDWARE_VENDOR) {
       return this.trezorHardwareKeyring
     }
     return this.keyringController

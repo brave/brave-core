@@ -3,8 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
+
+// Provide access to all the generated types.
+export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 
 export interface WalletAccountType {
   id: string
@@ -263,9 +267,6 @@ export interface WalletPanelState {
   wallet: WalletState
   panel: PanelState
 }
-
-export const kLedgerHardwareVendor = 'Ledger'
-export const kTrezorHardwareVendor = 'Trezor'
 
 export interface HardwareInfo {
   vendor: string
@@ -898,27 +899,18 @@ export type AllowSpendReturnPayload = {
   transactionData: TransactionDataType
 }
 
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export const kMainnetChainId = '0x1'
-export const kRinkebyChainId = '0x4'
-export const kRopstenChainId = '0x3'
-export const kGoerliChainId = '0x5'
-export const kKovanChainId = '0x2a'
-export const kLocalhostChainId = '0x539'
-
 export const BuySupportedChains = [
-  kMainnetChainId,
-  kRinkebyChainId,
-  kRopstenChainId,
-  kGoerliChainId,
-  kKovanChainId,
-  kLocalhostChainId
+  BraveWallet.MAINNET_CHAIN_ID,
+  BraveWallet.RINKEBY_CHAIN_ID,
+  BraveWallet.ROPSTEN_CHAIN_ID,
+  BraveWallet.GOERLI_CHAIN_ID,
+  BraveWallet.KOVAN_CHAIN_ID,
+  BraveWallet.LOCALHOST_CHAIN_ID
 ]
 
 export const SwapSupportedChains = [
-  kMainnetChainId,
-  kRopstenChainId
+  BraveWallet.MAINNET_CHAIN_ID,
+  BraveWallet.ROPSTEN_CHAIN_ID
 ]
 
 // Keep in sync with components/brave_wallet/common/brave_wallet.mojom until

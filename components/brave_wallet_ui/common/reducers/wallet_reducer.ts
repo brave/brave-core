@@ -17,7 +17,7 @@ import {
   GetERC20TokenBalanceAndPriceReturnInfo,
   GetNativeAssetBalancesPriceReturnInfo,
   GetPriceHistoryReturnInfo,
-  kMainnetChainId,
+  MAINNET_CHAIN_ID,
   PortfolioTokenHistoryAndInfo,
   TokenInfo,
   TransactionInfo,
@@ -49,7 +49,7 @@ const defaultState: WalletState = {
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
-    chainId: kMainnetChainId,
+    chainId: MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
