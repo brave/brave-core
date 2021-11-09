@@ -184,7 +184,8 @@ function Container (props: Props) {
     selectedAccount,
     props.walletActions.sendERC20Transfer,
     props.walletActions.sendTransaction,
-    props.walletActions.sendERC721TransferFrom
+    props.walletActions.sendERC721TransferFrom,
+    props.wallet.fullTokenList
   )
 
   const getSelectedAccountBalance = useBalance(selectedAccount)

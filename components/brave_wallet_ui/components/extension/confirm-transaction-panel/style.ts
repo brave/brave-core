@@ -287,6 +287,16 @@ export const QueueStepButton = styled(WalletButton) <Partial<StyleProps>>`
   margin-bottom: ${(p) => p.needsMargin ? '12px' : '0px'};
 `
 
+export const ErrorText = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.errorText};
+  margin-bottom: 6px;
+  text-align: center;
+`
+
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
   height: 'auto'
