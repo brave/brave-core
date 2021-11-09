@@ -112,6 +112,14 @@ extension UIColor {
   public static var braveDarkerBlurple: UIColor {
     DesignSystemColor.interactive04.color
   }
+  public static var braveBlurpleTint: UIColor {
+    .init {
+      if $0.userInterfaceStyle == .dark {
+        return .braveLighterBlurple
+      }
+      return .braveBlurple
+    }
+  }
   public static var braveSeparator: UIColor {
     DesignSystemColor.divider01.color
   }

@@ -202,6 +202,7 @@
 		0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */; };
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27012EE924FD80B8002694C3 /* WebcompatReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27012EE824FD80B8002694C3 /* WebcompatReporter.swift */; };
+		2701B14C2735B65300BE6FC6 /* EditGasFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */; };
 		27036EA325671817004EF6B6 /* FeedCardFooterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */; };
 		27036EC3256718DA004EF6B6 /* PartnerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036EC2256718DA004EF6B6 /* PartnerCardView.swift */; };
 		27036F8725684F64004EF6B6 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F8525684F64004EF6B6 /* Cryptography.swift */; };
@@ -363,6 +364,8 @@
 		27733E5826977EC40086799A /* PasscodeMigrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E5726977EC40086799A /* PasscodeMigrationView.swift */; };
 		27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */; };
 		2774300A2733126000183725 /* WalletColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277430092733126000183725 /* WalletColors.swift */; };
+		2774303227332C2F00183725 /* TransactionConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2774303127332C2F00183725 /* TransactionConfirmationView.swift */; };
+		2774303427332DAF00183725 /* BlockieGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2774303327332DAF00183725 /* BlockieGroup.swift */; };
 		277568D425ACF91600C129AF /* SPMLibraries.h in Headers */ = {isa = PBXBuildFile; fileRef = 277568D225ACF91600C129AF /* SPMLibraries.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		277568D725ACF91600C129AF /* SPMLibraries.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; };
 		277568D825ACF91600C129AF /* SPMLibraries.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 277568D025ACF91500C129AF /* SPMLibraries.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1789,6 +1792,7 @@
 		0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetButton.swift; sourceTree = "<group>"; };
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		27012EE824FD80B8002694C3 /* WebcompatReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebcompatReporter.swift; sourceTree = "<group>"; };
+		2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGasFeeView.swift; sourceTree = "<group>"; };
 		27036EA225671817004EF6B6 /* FeedCardFooterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardFooterButton.swift; sourceTree = "<group>"; };
 		27036EC2256718DA004EF6B6 /* PartnerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerCardView.swift; sourceTree = "<group>"; };
 		27036F8525684F64004EF6B6 /* Cryptography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
@@ -1945,6 +1949,8 @@
 		27733E5726977EC40086799A /* PasscodeMigrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeMigrationView.swift; sourceTree = "<group>"; };
 		27733E6D2697867C0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityEmbedInScrollViewViewModifier.swift; sourceTree = "<group>"; };
 		277430092733126000183725 /* WalletColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletColors.swift; sourceTree = "<group>"; };
+		2774303127332C2F00183725 /* TransactionConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionConfirmationView.swift; sourceTree = "<group>"; };
+		2774303327332DAF00183725 /* BlockieGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockieGroup.swift; sourceTree = "<group>"; };
 		277568D025ACF91500C129AF /* SPMLibraries.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMLibraries.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		277568D225ACF91600C129AF /* SPMLibraries.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMLibraries.h; sourceTree = "<group>"; };
 		277568D325ACF91600C129AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3686,6 +3692,7 @@
 		271F685626EBD27C00AA2A50 /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
+				2774302527332C1D00183725 /* Transaction Confirmations */,
 				7DAC596627235B0A00E735A2 /* Scanner */,
 				271F685726EBD27D00AA2A50 /* BuySendSwap */,
 				271F685926EBD27D00AA2A50 /* CryptoPagesView.swift */,
@@ -3826,6 +3833,7 @@
 			isa = PBXGroup;
 			children = (
 				271F688A26EBD27D00AA2A50 /* Blockies.swift */,
+				2774303327332DAF00183725 /* BlockieGroup.swift */,
 			);
 			path = Blockies;
 			sourceTree = "<group>";
@@ -3994,6 +4002,15 @@
 				27180179272B053F0047EB15 /* PasswordValidationTests.swift */,
 			);
 			path = BraveWalletTests;
+			sourceTree = "<group>";
+		};
+		2774302527332C1D00183725 /* Transaction Confirmations */ = {
+			isa = PBXGroup;
+			children = (
+				2774303127332C2F00183725 /* TransactionConfirmationView.swift */,
+				2701B14B2735B65300BE6FC6 /* EditGasFeeView.swift */,
+			);
+			path = "Transaction Confirmations";
 			sourceTree = "<group>";
 		};
 		277568D125ACF91600C129AF /* SPMLibraries */ = {
@@ -7487,6 +7504,7 @@
 				271F689326EBD27E00AA2A50 /* TestContent.swift in Sources */,
 				275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */,
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
+				2701B14C2735B65300BE6FC6 /* EditGasFeeView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				7D2D6EEB2731D6BA000650EA /* SwapTokenSearchView.swift in Sources */,
@@ -7539,6 +7557,7 @@
 				27DDE85926FBE09A00A70C3A /* AccountPrivateKeyView.swift in Sources */,
 				271F68AA26EBD27E00AA2A50 /* TransactionView.swift in Sources */,
 				271F689126EBD27E00AA2A50 /* TestEthRpcController.swift in Sources */,
+				2774303227332C2F00183725 /* TransactionConfirmationView.swift in Sources */,
 				271F689726EBD27E00AA2A50 /* CryptoPagesView.swift in Sources */,
 				7D758915271A17AF00B643C3 /* BuyTokenStore.swift in Sources */,
 				271F68B326EBD27E00AA2A50 /* RecoveryPhraseGrid.swift in Sources */,
@@ -7553,6 +7572,7 @@
 				271F68BE26EBD27E00AA2A50 /* LineChartView.swift in Sources */,
 				2762FF30271A054A001EF41D /* AssetIconView.swift in Sources */,
 				271F68B426EBD27E00AA2A50 /* CreateWalletView.swift in Sources */,
+				2774303427332DAF00183725 /* BlockieGroup.swift in Sources */,
 				271F689F26EBD27E00AA2A50 /* AccountActivityView.swift in Sources */,
 				271F68AE26EBD27E00AA2A50 /* BackupWalletView.swift in Sources */,
 				7D758908271A172C00B643C3 /* BuyTokenView.swift in Sources */,
