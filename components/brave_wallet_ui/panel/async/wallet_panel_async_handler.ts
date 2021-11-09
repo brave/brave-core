@@ -7,7 +7,14 @@ import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
 import { TransactionStatusChanged } from '../../common/constants/action_types'
-import { WalletPanelState, PanelState, WalletState, TransactionStatus, SignMessageData } from '../../constants/types'
+import {
+  WalletPanelState,
+  PanelState,
+  WalletState,
+  TransactionStatus,
+  SignMessageData,
+  SwitchChainRequest
+} from '../../constants/types'
 import {
   AccountPayloadType,
   ShowConnectToSitePayload,
@@ -15,7 +22,8 @@ import {
   EthereumChainRequestPayload,
   SignMessagePayload,
   SignMessageProcessedPayload,
-  SignMessageHardwareProcessedPayload
+  SignMessageHardwareProcessedPayload,
+  SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
 import {
   findHardwareAccountInfo
@@ -51,6 +59,15 @@ async function getPendingChainRequest () {
   const chains = (await ethJsonRpcController.getPendingChainRequests()).networks
   if (chains && chains.length) {
     return chains[0]
+  }
+}
+
+async function getPendingSwitchChainRequest () {
+  const ethJsonRpcController = (await getAPIProxy()).ethJsonRpcController
+  const requests =
+    (await ethJsonRpcController.getPendingSwitchChainRequests()).requests
+  if (requests && requests.length) {
+    return requests[0]
   }
 }
 
@@ -93,6 +110,11 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
     const signMessageRequest = await getPendingSignMessageRequest()
     if (signMessageRequest) {
       store.dispatch(PanelActions.signMessage(signMessageRequest))
+      return
+    }
+    const switchChainRequest = await getPendingSwitchChainRequest()
+    if (switchChainRequest) {
+      store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
       return
     }
   }
@@ -157,6 +179,27 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
   const chain = await getPendingChainRequest()
   if (chain) {
     store.dispatch(PanelActions.addEthereumChain({ chain }))
+    return
+  }
+  apiProxy.closeUI()
+})
+
+handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: SwitchChainRequest) => {
+  // We need to get current network list first because switch chain doesn't
+  // require permission connect first.
+  await refreshWalletInfo(store)
+  store.dispatch(PanelActions.navigateTo('switchEthereumChain'))
+  const apiProxy = await getAPIProxy()
+  apiProxy.showUI()
+})
+
+handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
+  const apiProxy = await getAPIProxy()
+  const ethJsonRpcController = apiProxy.ethJsonRpcController
+  ethJsonRpcController.notifySwitchChainRequestProcessed(payload.approved, payload.origin)
+  const switchChainRequest = await getPendingSwitchChainRequest()
+  if (switchChainRequest) {
+    store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
     return
   }
   apiProxy.closeUI()

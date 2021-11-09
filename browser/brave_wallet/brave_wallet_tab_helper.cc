@@ -41,6 +41,10 @@ void BraveWalletTabHelper::ClosePanelOnDeactivate(bool close) {
 }
 
 void BraveWalletTabHelper::ShowBubble() {
+  if (skip_delegate_for_testing_) {
+    is_showing_bubble_for_testing_ = true;
+    return;
+  }
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::Create(web_contents_, GetBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
@@ -60,11 +64,18 @@ void BraveWalletTabHelper::ShowApproveWalletBubble() {
 }
 
 void BraveWalletTabHelper::CloseBubble() {
+  if (skip_delegate_for_testing_) {
+    is_showing_bubble_for_testing_ = false;
+    return;
+  }
   if (wallet_bubble_manager_delegate_)
     wallet_bubble_manager_delegate_->CloseBubble();
 }
 
 bool BraveWalletTabHelper::IsShowingBubble() {
+  if (skip_delegate_for_testing_) {
+    return is_showing_bubble_for_testing_;
+  }
   return wallet_bubble_manager_delegate_ &&
          wallet_bubble_manager_delegate_->IsShowingBubble();
 }

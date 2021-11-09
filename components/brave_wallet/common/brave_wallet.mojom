@@ -317,10 +317,19 @@ struct EthereumChain {
   bool is_eip1559;
 };
 
+struct SwitchChainRequest {
+  url.mojom.Url origin;
+  string chain_id;
+};
+
 interface EthJsonRpcController {
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
+
   GetPendingChainRequests() => (array<EthereumChain> networks);
+  GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
+  // UI to native
+  NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
   SetNetwork(string chain_id) => (bool success);
   GetAllNetworks() => (array<EthereumChain> networks);
   GetChainId() => (string chain_id);

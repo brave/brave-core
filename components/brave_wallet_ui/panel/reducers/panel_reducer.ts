@@ -5,7 +5,7 @@
 /* global window */
 
 import { createReducer } from 'redux-act'
-import { PanelState, SwapErrorResponse, SwapResponse } from '../../constants/types'
+import { PanelState, SwapErrorResponse, SwapResponse, SwitchChainRequest } from '../../constants/types'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import {
   ShowConnectToSitePayload,
@@ -32,7 +32,13 @@ const defaultState: PanelState = {
     id: -1,
     address: '',
     message: ''
-  }]
+  }],
+  switchChainRequest: {
+    origin: {
+      url: ''
+    },
+    chainId: ''
+  }
 }
 
 const reducer = createReducer<PanelState>({}, defaultState)
@@ -61,6 +67,13 @@ reducer.on(PanelActions.addEthereumChain, (state: any, networkPayload: EthereumC
   return {
     ...state,
     networkPayload: networkPayload.chain
+  }
+})
+
+reducer.on(PanelActions.switchEthereumChain, (state: any, request: SwitchChainRequest) => {
+  return {
+    ...state,
+    switchChainRequest: request
   }
 })
 
