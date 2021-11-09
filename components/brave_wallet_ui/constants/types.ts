@@ -48,7 +48,7 @@ export interface UserAssetOptionType {
 }
 
 export interface AccountAssetOptionType {
-  asset: TokenInfo
+  asset: BraveWallet.ERCToken
   assetBalance: string
   fiatBalance: string
 }
@@ -166,18 +166,12 @@ export interface AppsListType {
 
 export interface ChartTimelineObjectType {
   name: string
-  id: AssetPriceTimeframe
+  id: BraveWallet.AssetPriceTimeframe
 }
 
 export interface PriceDataObjectType {
   date: Date | number
   close: number
-}
-
-export interface SignMessageData {
-  id: number
-  address: string
-  message: string
 }
 
 export interface ImportWalletError {
@@ -193,23 +187,23 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: EthereumChain
+  selectedNetwork: BraveWallet.EthereumChain
   accounts: WalletAccountType[]
   transactions: AccountTransactions
-  userVisibleTokensInfo: TokenInfo[]
-  fullTokenList: TokenInfo[]
+  userVisibleTokensInfo: BraveWallet.ERCToken[]
+  fullTokenList: BraveWallet.ERCToken[]
   portfolioPriceHistory: PriceDataObjectType[]
-  pendingTransactions: TransactionInfo[]
-  knownTransactions: TransactionInfo[]
-  selectedPendingTransaction: TransactionInfo | undefined
+  pendingTransactions: BraveWallet.TransactionInfo[]
+  knownTransactions: BraveWallet.TransactionInfo[]
+  selectedPendingTransaction: BraveWallet.TransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
-  selectedPortfolioTimeline: AssetPriceTimeframe
-  networkList: EthereumChain[]
+  selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
+  networkList: BraveWallet.EthereumChain[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
-  defaultWallet: DefaultWallet
+  defaultWallet: BraveWallet.DefaultWallet
   activeOrigin: string
-  gasEstimates?: GasEstimation
+  gasEstimates?: BraveWallet.GasEstimation1559
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
 }
@@ -221,19 +215,19 @@ export interface PanelState {
   panelTitle: string
   tabId: number
   connectingAccounts: string[]
-  networkPayload: EthereumChain
-  swapQuote?: SwapResponse
+  networkPayload: BraveWallet.EthereumChain
+  swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
-  signMessageData: SignMessageData[]
-  switchChainRequest: SwitchChainRequest
+  signMessageData: BraveWallet.SignMessageRequest[]
+  switchChainRequest: BraveWallet.SwitchChainRequest
 }
 
 export interface PageState {
   hasInitialized: boolean
   showRecoveryPhrase: boolean
   invalidMnemonic: boolean
-  selectedTimeline: AssetPriceTimeframe
-  selectedAsset: TokenInfo | undefined
+  selectedTimeline: BraveWallet.AssetPriceTimeframe
+  selectedAsset: BraveWallet.ERCToken | undefined
   selectedBTCAssetPrice: BraveWallet.AssetPrice | undefined
   selectedUSDAssetPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
@@ -247,7 +241,7 @@ export interface PageState {
   importWalletError: ImportWalletError
   showAddModal: boolean
   isCryptoWalletsInstalled: boolean
-  swapQuote?: SwapResponse
+  swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
 }
 
@@ -287,86 +281,10 @@ export interface WalletInfo extends WalletInfoBase {
   selectedAccount: string
 }
 
-export interface UnlockReturnInfo {
-  success: boolean
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export enum AssetPriceTimeframe {
-  Live = 0,
-  OneDay = 1,
-  OneWeek = 2,
-  OneMonth = 3,
-  ThreeMonths = 4,
-  OneYear = 5,
-  All = 6
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export enum TransactionStatus {
-  Unapproved = 0,
-  Approved = 1,
-  Rejected = 2,
-  Submitted = 3,
-  Confirmed = 4,
-  Error = 5
-}
-
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export enum TransactionType {
-  ETHSend = 0,
-  ERC20Transfer = 1,
-  ERC20Approve = 2,
-  ERC721TransferFrom = 3,
-  ERC721SafeTransferFrom = 4,
-  Other = 5
-}
-
-export interface SwapParams {
-  takerAddress: string
-  sellAmount: string
-  buyAmount: string
-  buyToken: string
-  sellToken: string
-  buyTokenPercentageFee: number
-  slippagePercentage: number
-  feeRecipient: string
-  gasPrice: string
-}
-
-export interface SwapResponse {
-  price: string
-  guaranteedPrice: string
-  to: string
-  data: string
-  value: string
-  gas: string
-  estimatedGas: string
-  gasPrice: string
-  protocolFee: string
-  minimumProtocolFee: string
-  buyTokenAddress: string
-  sellTokenAddress: string
-  buyAmount: string
-  sellAmount: string
-  allowanceTarget: string
-  sellTokenToEthRate: string
-  buyTokenToEthRate: string
-}
-
 export interface SwapErrorResponse {
   code: number,
   reason: string,
   validationErrors: { field: string, code: number, reason: string }[]
-}
-
-export interface SwapResponseReturnInfo {
-  success: boolean
-  response?: SwapResponse
-  errorResponse?: string
 }
 
 export type SwapValidationErrorType =
@@ -375,18 +293,6 @@ export type SwapValidationErrorType =
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
   | 'unknownError'
-
-export interface GetNetworkReturnInfo {
-  network: EthereumChain
-}
-
-export interface GetBlockTrackerUrlReturnInfo {
-  blockTrackerUrl: string
-}
-
-export interface GetChainIdReturnInfo {
-  chainId: string
-}
 
 export interface GetPriceReturnInfo {
   success: boolean,
@@ -403,34 +309,8 @@ export interface GetPriceHistoryReturnObjectInfo {
   values: GetPriceHistoryReturnInfo[]
 }
 
-export interface RestoreWalletReturnInfo {
-  isValidMnemonic: boolean
-}
-
-export interface AddAccountReturnInfo {
-  success: boolean
-}
-
-export interface TokenInfo {
-  contractAddress: string
-  name: string
-  isErc20: boolean
-  isErc721: boolean
-  symbol: string
-  decimals: number
-  visible?: boolean
-  logo?: string
-  tokenId?: string
-}
-
-export interface GetTokenByContractReturnInfo {
-  token: TokenInfo
-}
-export interface GetTokenBySymbolReturnInfo {
-  token: TokenInfo | undefined
-}
 export interface GetAllTokensReturnInfo {
-  tokens: TokenInfo[]
+  tokens: BraveWallet.ERCToken[]
 }
 
 export interface GetBalanceReturnInfo {
@@ -446,11 +326,6 @@ export interface GetNativeAssetBalancesPriceReturnInfo {
 export interface GetERCTokenBalanceReturnInfo {
   success: boolean
   balance: string
-}
-
-export interface GetERC20TokenAllowanceReturnInfo {
-  success: boolean
-  allowance: string
 }
 
 export interface GetERC20TokenBalanceAndPriceReturnInfo {
@@ -497,208 +372,13 @@ export interface ApproveERC20Params {
   allowance: string
 }
 
-export interface CreateWalletReturnInfo {
-  mnemonic: string
-}
-
-export class TxData {
-  nonce: string
-  gasPrice: string
-  gasLimit: string
-  to: string
-  value: string
-  data: Uint8Array
-}
-
-export class GasEstimation {
-  slowMaxPriorityFeePerGas: string
-  avgMaxPriorityFeePerGas: string
-  fastMaxPriorityFeePerGas: string
-  slowMaxFeePerGas: string
-  avgMaxFeePerGas: string
-  fastMaxFeePerGas: string
-  baseFeePerGas: string
-}
-
-export class TxData1559 {
-  baseData: TxData
-  chainId: string
-  maxPriorityFeePerGas: string
-  maxFeePerGas: string
-  gasEstimation?: GasEstimation
-}
-
-export interface AddUnapprovedTransactionReturnInfo {
-  success: boolean
-  txMetaId: string
-  errorMessage: string
-}
-
-export interface AddUnapproved1559TransactionReturnInfo {
-  success: boolean
-  txMetaId: string
-  errorMessage: string
-}
-
-export interface SpeedupRetryCancelTransactionReturnInfo {
-  success: boolean
-  txMetaId: string
-  errorMessage: string
-}
-
-export interface SetGasPriceAndLimitForUnapprovedTransactionReturnInfo {
-  success: boolean
-}
-
-export interface SetGasFeeAndLimitForUnapprovedTransactionReturnInfo {
-  success: boolean
-}
-
-export interface SetDataForUnapprovedTransactionReturnInfo {
-  success: boolean
-}
-
-export interface ApproveTransactionReturnInfo {
-  status: boolean
-}
-
-export interface ProcessLedgerSignatureReturnInfo {
-  status: boolean
-}
-
-export interface ApproveHardwareTransactionReturnInfo {
-  success: boolean
-  message: string
-}
-
-export interface RejectTransactionReturnInfo {
-  status: boolean
-}
-
-export interface MakeERC20TransferDataReturnInfo {
-  success: boolean
-  data: number[]
-}
-
-export interface MakeERC20ApproveDataReturnInfo {
-  success: boolean
-  data: number[]
-}
-
-export interface MakeERC721TransferFromDataReturnInfo {
-  success: boolean
-  data: number[]
-}
-
-export interface TransactionInfo {
-  id: string
-  fromAddress: string
-  txHash: string
-  txData: TxData1559
-  txStatus: TransactionStatus
-  txType: TransactionType
-  txParams: string[]
-  txArgs: string[]
-  createdTime: TimeDelta
-  submittedTime: TimeDelta
-  confirmedTime: TimeDelta
-}
-
 export type AccountTransactions = {
-  [accountId: string]: TransactionInfo[]
-}
-
-export interface GetAllTransactionInfoReturnInfo {
-  transactionInfos: TransactionInfo[]
-}
-
-export interface GetSelectedAccountReturnInfo {
-  address: string | undefined
-}
-
-export interface SetSelectedAccountReturnInfo {
-  success: boolean
+  [accountId: string]: BraveWallet.TransactionInfo[]
 }
 
 export interface GetEthAddrReturnInfo {
   success: boolean
   address: string
-}
-
-export interface GetEstimatedTimeReturnInfo {
-  success: boolean
-  seconds: string
-}
-
-export interface GetGasOracleReturnInfo {
-  estimation?: GasEstimation
-}
-
-export interface GetAutoLockMinutesReturnInfo {
-  minutes: number
-}
-
-export interface SetAutoLockMinutesReturnInfo {
-  success: boolean
-}
-
-export interface GetUserAssetsReturnInfo {
-  tokens: TokenInfo[]
-}
-
-export interface AddUserAssetReturnInfo {
-  success: boolean
-}
-
-export interface RemoveUserAssetReturnInfo {
-  success: boolean
-}
-
-export interface SetUserAssetVisibleReturnInfo {
-  success: boolean
-}
-
-export enum DefaultWallet {
-  AskDeprecated,
-  None,
-  CryptoWallets,
-  BraveWalletPreferExtension,
-  BraveWallet
-}
-
-export interface DefaultWalletReturnInfo {
-  defaultWallet: DefaultWallet
-}
-
-export interface HasEthereumPermissionReturnInfo {
-  success: boolean
-  hasPermission: boolean
-}
-
-export interface ResetEthereumPermissionReturnInfo {
-  success: boolean
-}
-
-export interface GetActiveOriginReturnInfo {
-  origin: string
-}
-
-export interface GetPendingSignMessageRequestReturnInfo {
-  id: number
-  address: string
-  message: string
-}
-
-export interface IsMetaMaskInstalledReturnInfo {
-  installed: boolean
-}
-
-export interface DefaultBaseCurrencyReturnInfo {
-  currency: string
-}
-
-export interface DefaultBaseCryptocurrencyReturnInfo {
-  cryptocurrency: string
 }
 
 export interface RecoveryObject {
@@ -754,7 +434,7 @@ export type TransactionDataType = {
 export type AllowSpendReturnPayload = {
   siteUrl: string,
   contractAddress: string,
-  erc20Token: TokenInfo,
+  erc20Token: BraveWallet.ERCToken,
   transactionFeeWei: string,
   transactionFeeFiat: string
   transactionData: TransactionDataType
@@ -774,38 +454,19 @@ export const SwapSupportedChains = [
   BraveWallet.ROPSTEN_CHAIN_ID
 ]
 
-// Keep in sync with components/brave_wallet/common/brave_wallet.mojom until
-// we auto generate this type file from mojo.
-export type EthereumChain = {
-  chainId: string,
-  chainName: string,
-  blockExplorerUrls: string[],
-  iconUrls: string[],
-  rpcUrls: string[],
-  symbol: string,
-  symbolName: string,
-  decimals: number,
-  isEip1559: boolean
-}
-
 export interface GetAllNetworksList {
-  networks: EthereumChain[]
-}
-
-export interface SwitchChainRequest {
-  origin: Url,
-  chainId: string
+  networks: BraveWallet.EthereumChain[]
 }
 
 export interface SwitchChainRequestsList {
-  requests: SwitchChainRequest[]
+  requests: BraveWallet.SwitchChainRequest[]
 }
 
 export type TransactionPanelPayload = {
   transactionAmount: string,
   transactionGas: string,
   toAddress: string,
-  erc20Token: TokenInfo,
+  erc20Token: BraveWallet.ERCToken,
   ethPrice: string,
   tokenPrice: string,
   transactionData: TransactionDataType
