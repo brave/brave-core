@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 80c1a2a7ab63538a68b8874f30d016b2bbf756d8..1135ac0bcd41078312193f8b630d15eef8fced2b 100644
+index 2a6c3a877a3ed15aafa76debdd2d20a280d12bda..b8f9ccd9aa74983292c531ca05af97b02d8f39bb 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -359,6 +359,7 @@ void GetChromeProgIdEntries(
+@@ -361,6 +361,7 @@ void GetChromeProgIdEntries(
    app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
  
    GetProgIdEntries(app_info, entries);
@@ -10,7 +10,7 @@ index 80c1a2a7ab63538a68b8874f30d016b2bbf756d8..1135ac0bcd41078312193f8b630d15ee
  
    if (!app_info.delegate_clsid.empty()) {
      auto delegate_execute_entries =
-@@ -455,6 +456,7 @@ void GetShellIntegrationEntries(
+@@ -457,6 +458,7 @@ void GetShellIntegrationEntries(
  
    const std::wstring html_prog_id(GetBrowserProgId(suffix));
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index 80c1a2a7ab63538a68b8874f30d016b2bbf756d8..1135ac0bcd41078312193f8b630d15ee
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i], html_prog_id));
-@@ -479,6 +481,7 @@ void GetAppExtRegistrationEntries(
+@@ -481,6 +483,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});
@@ -26,7 +26,7 @@ index 80c1a2a7ab63538a68b8874f30d016b2bbf756d8..1135ac0bcd41078312193f8b630d15ee
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -718,6 +721,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
+@@ -720,6 +723,7 @@ std::wstring GetTargetForDefaultAppsSettings(const wchar_t* protocol) {
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Browser");
    if (base::EqualsCaseInsensitiveASCII(protocol, L"mailto"))
      return base::StringPrintf(kSystemSettingsDefaultAppsFormat, L"Email");
@@ -34,7 +34,7 @@ index 80c1a2a7ab63538a68b8874f30d016b2bbf756d8..1135ac0bcd41078312193f8b630d15ee
    return L"SettingsPageAppsDefaultsProtocolView";
  }
  
-@@ -1680,8 +1684,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
+@@ -1721,8 +1725,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
      L".htm", L".html",  L".pdf",  L".shtml", L".svg",
      L".xht", L".xhtml", L".webp", nullptr};
  const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"ftp", L"http",
