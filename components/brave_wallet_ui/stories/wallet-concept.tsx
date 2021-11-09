@@ -12,7 +12,7 @@ import {
   AssetPriceTimeframe,
   PriceDataObjectType,
   AccountAssetOptionType,
-  AssetPriceInfo,
+  AssetPrice,
   RPCResponseType,
   OrderTypes,
   UserAccountType,
@@ -315,7 +315,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const usdValue = data ? data.usd : '0'
       const usdTimeframeChange = data ? data.usdTimeframeChange : '0'
-      const response: AssetPriceInfo = {
+      const response: AssetPrice = {
         price: usdValue,
         assetTimeframeChange: usdTimeframeChange,
         fromAsset: '',
@@ -331,7 +331,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const btcValue = data ? data.btc : '0'
       const btcTimeframeChange = data ? data.btcTimeframeChange : '0'
-      const response: AssetPriceInfo = {
+      const response: AssetPrice = {
         price: btcValue,
         assetTimeframeChange: btcTimeframeChange,
         fromAsset: '',

@@ -6,7 +6,7 @@
 import {
   GetPriceHistoryReturnObjectInfo,
   TokenInfo,
-  AssetPriceInfo,
+  AssetPrice,
   AssetPriceTimeframe
 } from '../../constants/types'
 
@@ -67,8 +67,8 @@ export type UpdateSelectedAssetType = {
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined,
-  usdPriceInfo: AssetPriceInfo | undefined,
-  btcPriceInfo: AssetPriceInfo | undefined,
+  usdPriceInfo: AssetPrice | undefined,
+  btcPriceInfo: AssetPrice | undefined,
   timeFrame: AssetPriceTimeframe
 }
 

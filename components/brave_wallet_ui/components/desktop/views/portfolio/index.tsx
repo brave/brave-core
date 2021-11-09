@@ -4,7 +4,7 @@ import * as React from 'react'
 import {
   PriceDataObjectType,
   AccountTransactions,
-  AssetPriceInfo,
+  AssetPrice,
   WalletAccountType,
   AssetPriceTimeframe,
   AccountAssetOptionType,
@@ -85,8 +85,8 @@ export interface Props {
   selectedTimeline: AssetPriceTimeframe
   selectedPortfolioTimeline: AssetPriceTimeframe
   selectedAsset: TokenInfo | undefined
-  selectedUSDAssetPrice: AssetPriceInfo | undefined
-  selectedBTCAssetPrice: AssetPriceInfo | undefined
+  selectedUSDAssetPrice: AssetPrice | undefined
+  selectedBTCAssetPrice: AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   portfolioBalance: string
@@ -95,7 +95,7 @@ export interface Props {
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
   isFetchingPortfolioPriceHistory: boolean
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void
   onCancelTransaction: (transaction: TransactionInfo) => void

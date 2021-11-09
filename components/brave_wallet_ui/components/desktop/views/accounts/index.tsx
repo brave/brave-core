@@ -7,7 +7,7 @@ import {
   AccountTransactions,
   EthereumChain,
   TokenInfo,
-  AssetPriceInfo,
+  AssetPrice
   TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
@@ -62,7 +62,7 @@ export interface Props {
   privateKey: string
   selectedNetwork: EthereumChain
   userVisibleTokensInfo: TokenInfo[]
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void

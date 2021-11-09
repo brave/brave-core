@@ -3,7 +3,7 @@ import * as EthereumBlockies from 'ethereum-blockies'
 
 import { getLocale } from '../../../../common/locale'
 import {
-  AssetPriceInfo,
+  AssetPrice,
   EthereumChain,
   TokenInfo,
   TransactionInfo,
@@ -55,7 +55,7 @@ export interface Props {
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
   visibleTokens: TokenInfo[]
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   displayAccountName: boolean
   onSelectAccount: (account: WalletAccountType) => void
   onSelectAsset: (asset: TokenInfo) => void

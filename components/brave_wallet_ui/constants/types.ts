@@ -212,7 +212,7 @@ export interface WalletState {
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: AssetPriceTimeframe
   networkList: EthereumChain[]
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultWallet: DefaultWallet
   activeOrigin: string
@@ -241,8 +241,8 @@ export interface PageState {
   invalidMnemonic: boolean
   selectedTimeline: AssetPriceTimeframe
   selectedAsset: TokenInfo | undefined
-  selectedBTCAssetPrice: AssetPriceInfo | undefined
-  selectedUSDAssetPrice: AssetPriceInfo | undefined
+  selectedBTCAssetPrice: BraveWallet.AssetPrice | undefined
+  selectedUSDAssetPrice: BraveWallet.AssetPrice | undefined
   selectedAssetPriceHistory: GetPriceHistoryReturnInfo[]
   portfolioPriceHistory: PriceDataObjectType[]
   mnemonic?: string
@@ -395,16 +395,9 @@ export interface GetChainIdReturnInfo {
   chainId: string
 }
 
-export interface AssetPriceInfo {
-  fromAsset: string
-  toAsset: string
-  price: string
-  assetTimeframeChange: string
-}
-
 export interface GetPriceReturnInfo {
   success: boolean,
-  values: AssetPriceInfo[]
+  values: BraveWallet.AssetPrice[]
 }
 
 export interface GetPriceHistoryReturnInfo {

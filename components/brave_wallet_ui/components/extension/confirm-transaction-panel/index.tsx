@@ -6,7 +6,7 @@ import {
   EthereumChain,
   TransactionInfo,
   TransactionType,
-  AssetPriceInfo,
+  AssetPrice,
   TokenInfo,
   GasEstimation
 } from '../../../constants/types'
@@ -76,7 +76,7 @@ export interface Props {
   fullTokenList: TokenInfo[]
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   gasEstimates?: GasEstimation
   transactionsQueueLength: number
   transactionQueueNumber: number

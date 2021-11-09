@@ -6,7 +6,7 @@ import {
   PriceDataObjectType,
   AccountAssetOptionType,
   AccountTransactions,
-  AssetPriceInfo,
+  AssetPrice,
   WalletAccountType,
   AssetPriceTimeframe,
   EthereumChain,
@@ -56,7 +56,7 @@ export interface Props {
   onOpenWalletSettings: () => void
   addUserAssetError: boolean
   hasImportError: boolean
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   privateKey: string
   fullAssetList: TokenInfo[]
   userVisibleTokensInfo: TokenInfo[]
@@ -67,8 +67,8 @@ export interface Props {
   selectedPortfolioTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
-  selectedUSDAssetPrice: AssetPriceInfo | undefined
-  selectedBTCAssetPrice: AssetPriceInfo | undefined
+  selectedUSDAssetPrice: AssetPrice | undefined
+  selectedBTCAssetPrice: AssetPrice | undefined
   selectedAsset: TokenInfo | undefined
   portfolioBalance: string
   transactions: AccountTransactions

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import {
-  AssetPriceInfo,
+  AssetPrice,
   EthereumChain,
   TokenInfo,
   TransactionInfo,
@@ -88,7 +88,7 @@ export function useTransactionFeesParser (selectedNetwork: EthereumChain, networ
 export function useTransactionParser (
   selectedNetwork: EthereumChain,
   accounts: WalletAccountType[],
-  spotPrices: AssetPriceInfo[],
+  spotPrices: AssetPrice[],
   visibleTokens: TokenInfo[],
   fullTokenList?: TokenInfo[]
 ) {
