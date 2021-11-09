@@ -1,5 +1,5 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index df19f76408257767dc58c697cdd326efca444a50..b1a404d5251a36bb79d8cb140cadb2be3b321ae2 100644
+index ff9b86f353b224ac333e3929a51e1fd58a05d1ee..aa788283aefceedb5cda0ebc33572f726c2599e4 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
 @@ -101,6 +101,8 @@ grit("generated_resources") {
