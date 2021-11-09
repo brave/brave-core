@@ -449,6 +449,7 @@ source_set("ui") {
       ]
 
       deps += [
+        "//brave/browser/ethereum_remote_client/buildflags",
         "//brave/components/ipfs/buildflags",
         "//third_party/widevine/cdm:buildflags",
       ]
@@ -482,6 +483,7 @@ source_set("ui") {
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
       "//brave/components/resources:static_resources",
+      "//brave/components/resources:strings_grit",
       "//chrome/browser/extensions",
       "//components/sessions",
       "//extensions/browser",

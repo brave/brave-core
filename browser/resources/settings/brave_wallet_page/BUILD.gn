@@ -5,7 +5,6 @@
 
 import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/polymer/html_to_js.gni")
-import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
 import("../settings.gni")
 
@@ -21,18 +20,9 @@ js_type_check("closure_compile_module") {
 
 group("web_modules") {
   public_deps = [
-    ":brave_wallet_page_module",
     ":modules",
     ":templatize",
   ]
-}
-
-polymer_modulizer("brave_wallet_page") {
-  js_file = "brave_wallet_page.js"
-  html_file = "brave_wallet_page.html"
-  html_type = "dom-module"
-  auto_imports = settings_auto_imports + [ "brave/browser/resources/settings/brave_wallet_page/brave_wallet_browser_proxy.html|BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl" ]
-  namespace_rewrites = settings_namespace_rewrites
 }
 
 js_modulizer("modules") {
@@ -42,7 +32,6 @@ js_modulizer("modules") {
 
 js_library("wallet_networks") {
   deps = [
-    "//chrome/browser/resources/settings:route",
     "//chrome/browser/resources/settings:router",
     "//ui/webui/resources/js:cr.m",
     "//ui/webui/resources/js:i18n_behavior.m",
@@ -55,6 +44,7 @@ js_library("wallet_networks") {
 html_to_js("templatize") {
   js_files = [
     "add_wallet_network_dialog.js",
+    "brave_wallet_page.js",
     "wallet_networks_subpage.js",
   ]
 }

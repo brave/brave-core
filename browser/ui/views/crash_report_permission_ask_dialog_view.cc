@@ -27,6 +27,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/theme_provider.h"
+#include "ui/color/color_id.h"
+#include "ui/color/color_provider.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/image_view.h"
@@ -120,9 +122,9 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
       header->AddChildView(std::make_unique<views::ImageView>());
   header_image->SetImageSize(gfx::Size(kIconSize, kIconSize));
   SkColor header_image_color = kDefaultSadImageColor;
-  if (auto* theme_provider = parent->GetThemeProvider()) {
-    header_image_color =
-        theme_provider->GetColor(BraveThemeProperties::COLOR_ICON_BASE);
+  if (parent && parent->GetThemeProvider()) {
+    header_image_color = parent->GetThemeProvider()->GetColor(
+        BraveThemeProperties::COLOR_ICON_BASE);
   }
   header_image->SetImage(ui::ImageModel::FromVectorIcon(
       kBraveSadIcon, header_image_color, kIconSize));
@@ -181,8 +183,8 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
           gfx::Insets{kFootnoteVerticalPadding, 0}));
   footnote_layout->set_main_axis_alignment(
       views::BoxLayout::MainAxisAlignment::kCenter);
-  footnote->SetBackground(views::CreateThemedSolidBackground(
-      footnote, ui::NativeTheme::kColorId_DialogBackground));
+  footnote->SetBackground(
+      views::CreateThemedSolidBackground(footnote, ui::kColorDialogBackground));
 
   const std::u16string setting_text = l10n_util::GetStringUTF16(
       IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_FOOTNOTE_TEXT_SETTING_PART);

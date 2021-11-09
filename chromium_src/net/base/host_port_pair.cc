@@ -80,15 +80,15 @@ namespace net {
 
 HostPortPair::~HostPortPair() = default;
 HostPortPair::HostPortPair(const HostPortPair& host_port) = default;
-HostPortPair::HostPortPair(const std::string& username,
-                           const std::string& password,
-                           const std::string& in_host,
+
+HostPortPair::HostPortPair(base::StringPiece username,
+                           base::StringPiece password,
+                           base::StringPiece in_host,
                            uint16_t in_port)
     : username_(username),
       password_(password),
       host_(in_host),
-      port_(in_port) {
-}
+      port_(in_port) {}
 
 const std::string& HostPortPair::username() const {
   return username_;

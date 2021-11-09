@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -107,6 +108,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
         Toast.makeText(getActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void resetRecoveryPhrasesViews() {
         if (recoveryPhrasesAdapter != null && recoveryPhrasesRecyclerView != null) {
             recoveryPhrasesAdapter = new RecoveryPhraseAdapter();
@@ -153,6 +155,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     OnRecoveryPhraseSelected onRecoveryPhraseSelected = new OnRecoveryPhraseSelected() {
         @Override
+        @SuppressLint("NotifyDataSetChanged")
         public void onSelectedRecoveryPhrase(String phrase) {
             if (recoveryPhrasesAdapter != null) {
                 recoveryPhrasesAdapter.notifyDataSetChanged();
@@ -175,6 +178,7 @@ public class VerifyRecoveryPhraseFragment extends CryptoOnboardingFragment {
 
     OnRecoveryPhraseSelected onSelectedRecoveryPhraseSelected = new OnRecoveryPhraseSelected() {
         @Override
+        @SuppressLint("NotifyDataSetChanged")
         public void onSelectedRecoveryPhrase(String phrase) {
             if (recoveryPhrasesAdapter != null) {
                 recoveryPhrasesAdapter.addPhraseAtPosition(recoveryPhrases.indexOf(phrase), phrase);

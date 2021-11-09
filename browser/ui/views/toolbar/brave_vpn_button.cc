@@ -22,8 +22,8 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/gfx/rrect_f.h"
 #include "ui/gfx/skia_util.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -76,6 +76,12 @@ BraveVPNButton::BraveVPNButton(Browser* browser)
   SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
   UpdateButtonState();
+
+  // Views resulting in focusable nodes later on in the accessibility tree need
+  // to have an accessible name for screen readers to see what they are about.
+  // TODO(simonhong): Re-visit this name.
+  SetAccessibleName(
+      l10n_util::GetStringUTF16(IDS_BRAVE_VPN_TOOLBAR_BUTTON_TEXT));
 }
 
 BraveVPNButton::~BraveVPNButton() = default;
