@@ -27,12 +27,20 @@ class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
   ~BraveSkusRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
+  void DidStartNavigation(
+      const GURL& url,
+      absl::optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
+
+  bool isSkusSdkAllowed();
+
+  // only allow injection on Brave Software properties
+  GURL url_;
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<BraveSkusJSHandler> native_javascript_handle_;

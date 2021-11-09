@@ -21,20 +21,39 @@ BraveSkusRenderFrameObserver::BraveSkusRenderFrameObserver(
 
 BraveSkusRenderFrameObserver::~BraveSkusRenderFrameObserver() {}
 
+void BraveSkusRenderFrameObserver::DidStartNavigation(
+    const GURL& url,
+    absl::optional<blink::WebNavigationType> navigation_type) {
+  url_ = url;
+}
+
 void BraveSkusRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
   if (!render_frame()->IsMainFrame() || world_id_ != world_id)
     return;
 
+  // There could be empty, invalid and "about:blank" URLs,
+  // they should fallback to the main frame rules
+  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
+    url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+               .GetURL();
+
+  if (!isSkusSdkAllowed())
+    return;
+
   if (!native_javascript_handle_) {
-    native_javascript_handle_.reset(
-        new BraveSkusJSHandler(render_frame()));
+    native_javascript_handle_.reset(new BraveSkusJSHandler(render_frame()));
   } else {
     native_javascript_handle_->ResetRemote(render_frame());
   }
 
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+}
+
+bool BraveSkusRenderFrameObserver::isSkusSdkAllowed() {
+  return url_.host() == "account.brave.com" ||
+         url_.host() == "account.brave.software";
 }
 
 void BraveSkusRenderFrameObserver::OnDestruct() {

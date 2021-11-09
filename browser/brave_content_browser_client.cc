@@ -328,22 +328,16 @@ void BindBraveSearchDefaultHost(
   }
 }
 
-void BindSkuSdkImpl(
+void MaybeBindSkusSdkImpl(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<skus::mojom::SkusSdk> receiver) {
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
+  // Skus functionality not supported in private / Tor / guest windows
   if (brave::IsRegularProfile(profile)) {
     mojo::MakeSelfOwnedReceiver(
         std::make_unique<brave_rewards::SkusSdkMojomImpl>(context),
         std::move(receiver));
-  } else {
-    // TODO(bsclifton) - finish me
-
-    // Dummy API which always returns false for private contexts.
-    // mojo::MakeSelfOwnedReceiver(
-    //     std::make_unique<brave_search::BraveSearchDefaultHostPrivate>(),
-    //     std::move(receiver));
   }
 }
 
@@ -464,7 +458,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
   map->Add<skus::mojom::SkusSdk>(
-        base::BindRepeating(&BindSkuSdkImpl));
+        base::BindRepeating(&MaybeBindSkusSdkImpl));
 
 #if !defined(OS_ANDROID)
   chrome::internal::RegisterWebUIControllerInterfaceBinder<
