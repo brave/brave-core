@@ -352,7 +352,7 @@ class BraveTranslateBrowserDisabledFeatureTest
 
 IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
                        FeatureDisabled) {
-  // Set target language to FR, that it's unsupported target language
+  // Set target language to FR, that is unsupported target language
   // for the brave backend.
   GetChromeTranslateClient()->GetTranslatePrefs()->SetRecentTargetLanguage(
       "fr");
