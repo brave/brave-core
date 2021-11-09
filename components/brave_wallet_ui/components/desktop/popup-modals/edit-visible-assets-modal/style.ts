@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
+import { WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -66,7 +67,7 @@ export const NoAssetText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const NoAssetButton = styled.button`
+export const NoAssetButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border: none;

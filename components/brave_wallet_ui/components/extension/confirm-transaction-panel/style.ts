@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { ArrowRightIcon } from 'brave-ui/components/icons'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -187,7 +187,7 @@ export const TopColumn = styled.div`
   width: 100%;
 `
 
-export const EditButton = styled.button`
+export const EditButton = styled(WalletButton)`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
@@ -272,7 +272,7 @@ export const QueueStepText = styled.span`
   margin-right: 9px;
 `
 
-export const QueueStepButton = styled.button<Partial<StyleProps>>`
+export const QueueStepButton = styled(WalletButton) <Partial<StyleProps>>`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;

@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   disabled: boolean
 }
 
-export const StyledWrapper = styled.button<StyleProps>`
+export const StyledWrapper = styled(WalletButton) <StyleProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;

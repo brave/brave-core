@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-
+import { WalletButton } from '../../shared/style'
 interface StyleProps {
   buttonType: 'primary' | 'secondary'
   bannerType: 'warning' | 'danger'
@@ -40,8 +40,8 @@ export const ButtonRow = styled.div`
   justify-content: center;
 `
 
-export const BannerButton = styled.button<Partial<StyleProps>>`
-  display: flex;;
+export const BannerButton = styled(WalletButton) <Partial<StyleProps>>`
+  display: flex;
   cursor: pointer;
   outline: none;
   border: none;

@@ -3,6 +3,7 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 import LedgerLogo from '../../../../../assets/svg-icons/ledger-logo.svg'
 import TrezorLogo from '../../../../../assets/svg-icons/trezor-logo.svg'
 import { DisclaimerWrapper as DisclaimerWrapperBase } from '../style'
+import { WalletButton } from '../../../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
@@ -28,7 +29,7 @@ export const HardwareButtonRow = styled.div`
   margin-bottom: 35px;
 `
 
-export const HardwareButton = styled.button<Partial<StyleProps>>`
+export const HardwareButton = styled(WalletButton) <Partial<StyleProps>>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +76,7 @@ export const HardwareInfoColumn = styled.div`
   margin-left: 10px;
 `
 
-export const ConnectingButton = styled.button`
+export const ConnectingButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   justify-content: center;

@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
+import { WalletButton } from '../style'
 
 // Will use brave-ui button comp in the future!
 // Currently is missing "tiny" variant
-export const StyledWrapper = styled.button`
+export const StyledWrapper = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

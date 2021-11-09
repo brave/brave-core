@@ -1,10 +1,11 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   isSelected: boolean
 }
 
-export const StyledButton = styled.button<Partial<StyleProps>>`
+export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`
 	display: flex;
   width: 240px;
 	align-items: center;

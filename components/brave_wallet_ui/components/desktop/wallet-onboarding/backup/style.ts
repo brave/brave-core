@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import BackupIcon from '../../../../assets/svg-icons/onboarding/backup-your-crypto.svg'
 import BackupIconDark from '../../../../assets/svg-icons/onboarding/backup-your-crypto-dark.svg'
+import { WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -78,7 +79,7 @@ export const PageIcon = styled.div`
   }
 `
 
-export const SkipButton = styled.button`
+export const SkipButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

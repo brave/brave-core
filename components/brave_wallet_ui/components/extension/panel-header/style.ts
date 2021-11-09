@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import CloseIcon from '../assets/close.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   hasSearch: boolean
@@ -36,7 +37,7 @@ export const TopRow = styled.div`
   justify-content: space-between;
 `
 
-export const CloseButton = styled.button`
+export const CloseButton = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

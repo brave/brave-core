@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import UnCheckStar from '../../../assets/svg-icons/star-unchecked.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   disabled?: boolean
@@ -34,7 +35,7 @@ export const NavDivider = styled.div`
   background-color: rgba(255,255,255,0.5);
 `
 
-export const NavButton = styled.button<StyleProps>`
+export const NavButton = styled(WalletButton) <StyleProps>`
   flex: 1;
   display: flex;
   height: 100%;
