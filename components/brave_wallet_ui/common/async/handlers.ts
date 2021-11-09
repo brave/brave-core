@@ -586,4 +586,49 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
   }
 })
 
+handler.on(WalletActions.retryTransaction.getType(), async (store: Store, payload: TransactionInfo) => {
+  const { ethTxController } = await getAPIProxy()
+  const result = await ethTxController.retryTransaction(payload.id)
+  if (!result.success) {
+    console.error(
+      `Retry transaction failed: ` +
+      `id=${payload.id} ` +
+      `err=${result.errorMessage}`
+    )
+  } else {
+    // Refresh the transaction history of the origin account.
+    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+  }
+})
+
+handler.on(WalletActions.speedupTransaction.getType(), async (store: Store, payload: TransactionInfo) => {
+  const { ethTxController } = await getAPIProxy()
+  const result = await ethTxController.speedupOrCancelTransaction(payload.id, false)
+  if (!result.success) {
+    console.error(
+      `Speedup transaction failed: ` +
+      `id=${payload.id} ` +
+      `err=${result.errorMessage}`
+    )
+  } else {
+    // Refresh the transaction history of the origin account.
+    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+  }
+})
+
+handler.on(WalletActions.cancelTransaction.getType(), async (store: Store, payload: TransactionInfo) => {
+  const { ethTxController } = await getAPIProxy()
+  const result = await ethTxController.speedupOrCancelTransaction(payload.id, true)
+  if (!result.success) {
+    console.error(
+      `Cancel transaction failed: ` +
+      `id=${payload.id} ` +
+      `err=${result.errorMessage}`
+    )
+  } else {
+    // Refresh the transaction history of the origin account.
+    await store.dispatch(refreshTransactionHistory(payload.fromAddress))
+  }
+})
+
 export default handler.middleware

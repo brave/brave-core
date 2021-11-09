@@ -13,7 +13,8 @@ import {
   TokenInfo,
   UpdateAccountNamePayloadType,
   WalletRoutes,
-  DefaultWallet
+  DefaultWallet,
+  TransactionInfo
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -78,6 +79,9 @@ export interface Props {
   isFetchingPortfolioPriceHistory: boolean
   defaultWallet: DefaultWallet
   isMetaMaskInstalled: boolean
+  onRetryTransaction: (transaction: TransactionInfo) => void
+  onSpeedupTransaction: (transaction: TransactionInfo) => void
+  onCancelTransaction: (transaction: TransactionInfo) => void
 }
 
 const CryptoView = (props: Props) => {
@@ -130,7 +134,10 @@ const CryptoView = (props: Props) => {
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
-    isMetaMaskInstalled
+    isMetaMaskInstalled,
+    onRetryTransaction,
+    onCancelTransaction,
+    onSpeedupTransaction
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -281,6 +288,9 @@ const CryptoView = (props: Props) => {
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
           transactionSpotPrices={transactionSpotPrices}
           addUserAssetError={addUserAssetError}
+          onRetryTransaction={onRetryTransaction}
+          onSpeedupTransaction={onSpeedupTransaction}
+          onCancelTransaction={onCancelTransaction}
         />
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>
@@ -302,6 +312,9 @@ const CryptoView = (props: Props) => {
           selectedNetwork={selectedNetwork}
           transactionSpotPrices={transactionSpotPrices}
           userVisibleTokensInfo={userVisibleTokensInfo}
+          onRetryTransaction={onRetryTransaction}
+          onSpeedupTransaction={onSpeedupTransaction}
+          onCancelTransaction={onCancelTransaction}
         />
       </Route>
 

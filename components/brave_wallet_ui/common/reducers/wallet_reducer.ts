@@ -267,7 +267,7 @@ reducer.on(WalletActions.portfolioTimelineUpdated, (state: any, payload: AssetPr
   }
 })
 
-reducer.on(WalletActions.newUnapprovedTxAdded, (state: any, payload: NewUnapprovedTxAdded) => {
+reducer.on(WalletActions.newUnapprovedTxAdded, (state: WalletState, payload: NewUnapprovedTxAdded) => {
   const newState = {
     ...state,
     pendingTransactions: [

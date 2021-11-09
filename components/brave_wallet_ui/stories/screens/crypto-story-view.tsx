@@ -198,6 +198,21 @@ const CryptoStoryView = (props: Props) => {
     // Does nothing in storybook
   }
 
+  const onClickRetryTransaction = () => {
+    // Does nothing in storybook
+    alert('Will retry transaction')
+  }
+
+  const onClickCancelTransaction = () => {
+    // Does nothing in storybook
+    alert('Will cancel transaction')
+  }
+
+  const onClickSpeedupTransaction = () => {
+    // Does nothing in storybook
+    alert('Will speedup transaction')
+  }
+
   return (
     <StyledWrapper>
       {!hideNav &&
@@ -276,6 +291,9 @@ const CryptoStoryView = (props: Props) => {
           userVisibleTokensInfo={userVisibleTokensInfo}
           isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
           transactionSpotPrices={transactionSpotPrices}
+          onRetryTransaction={onClickRetryTransaction}
+          onSpeedupTransaction={onClickSpeedupTransaction}
+          onCancelTransaction={onClickCancelTransaction}
         />
       }
       {selectedTab === 'accounts' &&
@@ -297,6 +315,9 @@ const CryptoStoryView = (props: Props) => {
           transactionSpotPrices={transactionSpotPrices}
           userVisibleTokensInfo={userVisibleTokensInfo}
           selectedAccount={selectedAccount}
+          onRetryTransaction={onClickRetryTransaction}
+          onSpeedupTransaction={onClickSpeedupTransaction}
+          onCancelTransaction={onClickCancelTransaction}
         />
       }
       {showAddModal &&

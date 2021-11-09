@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { getLocale } from '../../../../common/locale'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -8,21 +8,26 @@ import {
   ClickAwayContainer
 } from './style'
 
-export interface Props {
-  onClickView: () => void
+interface TransactionPopupItemProps {
+  onClick: () => void
+  text: string
+}
+
+export const TransactionPopupItem = (props: TransactionPopupItemProps) => (
+  <PopupButton onClick={props.onClick}>
+    <PopupButtonText>{props.text}</PopupButtonText>
+  </PopupButton>
+)
+
+interface Props {
+  children?: React.ReactNode
 }
 
 const TransactionPopup = (props: Props) => {
-  const {
-    onClickView
-  } = props
-
   return (
     <>
       <StyledWrapper>
-        <PopupButton onClick={onClickView}>
-          <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
-        </PopupButton>
+        {props.children}
       </StyledWrapper>
       <ClickAwayContainer />
     </>
