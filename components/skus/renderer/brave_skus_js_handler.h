@@ -19,6 +19,18 @@
 
 namespace brave_rewards {
 
+// If present, this will inject a few methods (used by SKU SDK)
+// into window.brave.*
+//
+// This is only intended to be used on account.brave.com and the dev / staging
+// counterparts. The accounts website will use this if present which allows a
+// safe way for the browser to intercept credentials which are used in the
+// browser.
+//
+// The first use-case for this credential redemption is with VPN. Folks
+// will be able to purchase VPN from account.brave.com and the browser can
+// detect the purchase and use those credentials during authentication when
+// establishing a connection to our partner providing the VPN service.
 class BraveSkusJSHandler {
  public:
   explicit BraveSkusJSHandler(content::RenderFrame* render_frame);

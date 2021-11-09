@@ -16,6 +16,14 @@
 
 namespace brave_rewards {
 
+// Used to conditionally inject a handler which exposes JavaScript methods
+// for the SKU SDK. The conditional logic ensures this is a Brave property
+// such as account.brave.com.
+//
+// Implementation-wise, those methods will only resolve in a regular
+// (non-private / non-guest / non-Tor) context.
+//
+// See `browser/brave_content_browser_client.cc` for more information.
 class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit BraveSkusRenderFrameObserver(content::RenderFrame* render_frame,
