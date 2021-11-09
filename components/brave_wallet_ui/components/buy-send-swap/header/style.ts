@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
+import { WalletButton } from '../../shared/style'
 import {
   CaratCircleODownIcon
 } from 'brave-ui/components/icons'
@@ -24,7 +25,7 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AccountAndAddress = styled.button`
+export const AccountAndAddress = styled(WalletButton)`
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -51,7 +52,7 @@ export const AccountAddress = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
 `
-export const AccountCircle = styled.button<StyleProps>`
+export const AccountCircle = styled(WalletButton) <StyleProps>`
   display: flex;
   cursor: pointer;
   width: 24px;
@@ -76,7 +77,7 @@ export const CaratDownIcon = styled(CaratCircleODownIcon)`
 
 // Will use brave-ui button comp in the future!
 // Currently is missing "tiny" variant
-export const OvalButton = styled.button`
+export const OvalButton = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

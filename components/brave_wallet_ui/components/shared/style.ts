@@ -21,3 +21,11 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   // Ref: https://web.dev/browser-level-image-lazy-loading
   loading: 'lazy'
 }))
+
+export const WalletButton = styled.button`
+  &:focus-visible {
+    outline-style: solid;
+    outline-color: ${p => p.theme.palette.blurple300};
+    outline-width: 2px;
+  }
+ `

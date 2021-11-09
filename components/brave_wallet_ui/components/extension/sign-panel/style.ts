@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import WaringTriangle from '../../../assets/svg-icons/warning-triangle.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -148,7 +149,7 @@ export const WarningIcon = styled.div`
   margin-right: 6px;
 `
 
-export const LearnMoreButton = styled.button`
+export const LearnMoreButton = styled(WalletButton)`
   font-family: Poppins;
   font-style: normal;
   font-size: 12px;

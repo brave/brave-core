@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { SettingsAdvancedIcon } from 'brave-ui/components/icons'
 import { LockIconD } from '../../../assets/svg-icons/nav-button-icons'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ export const StyledWrapper = styled.div`
   z-index: 10;
  `
 
-export const PopupButton = styled.button`
+export const PopupButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: flex-start;

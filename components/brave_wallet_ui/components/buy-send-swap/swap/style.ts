@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { StyledButton } from '../../extension/buttons/nav-button/style'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export const ArrowDownIcon = styled(CaratStrongDownIcon)`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const ArrowButton = styled.button`
+export const ArrowButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   align-items: center;

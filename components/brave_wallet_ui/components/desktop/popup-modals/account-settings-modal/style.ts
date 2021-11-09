@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import ClipboardIcon from '../../../../assets/svg-icons/clipboard-icon.svg'
+import { WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -60,7 +61,7 @@ export const QRCodeWrapper = styled.img`
   margin-bottom: 16px;
 `
 
-export const AddressButton = styled.button`
+export const AddressButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,7 +124,7 @@ export const WarningText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
-export const PrivateKeyBubble = styled.button`
+export const PrivateKeyBubble = styled(WalletButton)`
   cursor: pointer;
   display: flex;
   align-items: center;

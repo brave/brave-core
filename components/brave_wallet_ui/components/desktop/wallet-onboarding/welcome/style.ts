@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import WelcomeIcon from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
 import WelcomeIconDark from '../../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
 import MMIcon from '../../../../assets/svg-icons/meta-mask-icon.svg'
+import { WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ export const PageIcon = styled.div`
   }
 `
 
-export const RestoreButton = styled.button`
+export const RestoreButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +73,7 @@ export const Divider = styled.div`
   margin-bottom: 32px;
 `
 
-export const ImportButton = styled.button`
+export const ImportButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,7 +132,7 @@ export const CryptoWalletsAlertDescription = styled.span`
   text-align: center;
 `
 
-export const SettingsButton = styled.button`
+export const SettingsButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Exand from '../assets/expand.svg'
 import Action from '../assets/actions.svg'
+import { WalletButton } from '../../shared/style'
 
 export const HeaderTitle = styled.span`
   font-family: Poppins;
@@ -24,7 +25,7 @@ export const HeaderWrapper = styled.div`
   position: relative;
 `
 
-export const ExpandIcon = styled.button`
+export const ExpandIcon = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;
@@ -36,7 +37,7 @@ export const ExpandIcon = styled.button`
   border: none;
 `
 
-export const ActionIcon = styled.button`
+export const ActionIcon = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;
