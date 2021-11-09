@@ -53,6 +53,9 @@ import {
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+
 const handler = new AsyncActionHandler()
 
 const interactionNotifier = new InteractionNotifier()
@@ -407,9 +410,11 @@ handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txIn
     const { success, message } = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
     if (success) {
       let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-      const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
-      await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
-      await refreshWalletInfo(store)
+      if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
+        const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
+        await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
+        await refreshWalletInfo(store)
+      }
     }
     return
   }

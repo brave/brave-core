@@ -22,6 +22,9 @@ import { GetNetworkInfo } from '../../utils/network-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+
 export const getERC20Allowance = (
   contractAddress: string,
   ownerAddress: string,
@@ -47,11 +50,13 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
   return new Promise(async (resolve, reject) => {
     const apiProxy = await getAPIProxy()
     const keyring = await apiProxy.getKeyringsByType(opts.hardware)
-    keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
-      .then(async (accounts: HardwareWalletAccount[]) => {
-        resolve(accounts)
-      })
-      .catch(reject)
+    if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
+        .then(async (accounts: HardwareWalletAccount[]) => {
+          resolve(accounts)
+        })
+        .catch(reject)
+    }
   })
 }
 

@@ -32,6 +32,10 @@ import {
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
+
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+
 const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
@@ -223,18 +227,20 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageData) => {
+handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (hardwareAccount && hardwareAccount.hardware) {
     let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-    deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
-      then(async (signature: string) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
-      }).catch(async (error: any) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
-      })
+    if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
+      deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
+        then(async (signature: string) => {
+          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
+        }).catch(async (error: any) => {
+          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
+        })
+    }
     return
   }
   await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
