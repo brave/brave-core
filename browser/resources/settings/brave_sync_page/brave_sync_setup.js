@@ -70,10 +70,12 @@ Polymer({
   },
 
   handleSyncCodeDialogDone_: function (e) {
-    const messageText = this.i18n('braveSyncFinalSecurityWarning')
-    const shouldProceed = confirm(messageText)
-    if (!shouldProceed) {
-        return;
+    if (this.syncCodeDialogType_ === 'input') {
+      const messageText = this.i18n('braveSyncFinalSecurityWarning')
+      const shouldProceed = confirm(messageText)
+      if (!shouldProceed) {
+        return
+      }
     }
 
     this.submitSyncCode_()
