@@ -19,6 +19,9 @@ namespace brave_sync {
 namespace crypto {
 
 std::vector<uint8_t> GetSeed(size_t size) {
+  if (size < DEFAULT_SEED_SIZE) {
+    size = DEFAULT_SEED_SIZE;
+  }
   std::vector<uint8_t> bytes(size);
   ::crypto::RandBytes(&bytes[0], bytes.size());
   return bytes;

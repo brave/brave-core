@@ -18,9 +18,11 @@ namespace crypto {
 
 TEST(CryptoTest, GetSeed) {
   std::vector<uint8_t> seed = GetSeed();
-  EXPECT_EQ(seed.size(), (size_t)32);
+  EXPECT_EQ(seed.size(), 32u);
   std::vector<uint8_t> seed2 = GetSeed(256);
-  EXPECT_EQ(seed2.size(), (size_t)256);
+  EXPECT_EQ(seed2.size(), 256u);
+  std::vector<uint8_t> seed3 = GetSeed(16);
+  EXPECT_EQ(seed3.size(), 32u);
 }
 
 TEST(CryptoTest, HKDFSha512) {
