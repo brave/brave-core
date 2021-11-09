@@ -166,7 +166,7 @@ private struct SelectedWordsBox: View {
           .hidden()
       case .word(let word, let index, let isCorrect):
         Button(action: { tappedWord(atIndex: index) }) {
-          Text(verbatim: word)
+          Text(verbatim: "\(index + 1). \(word)")
             .padding(8)
             .frame(maxWidth: .infinity)
             .fixedSize(horizontal: false, vertical: true)
