@@ -6,7 +6,7 @@
 import {
   DefaultWallet,
   TransactionInfo,
-  TokenInfo,
+  ERCToken,
   AccountAssetOptionType,
   SlippagePresetObjectType,
   WalletAccountType
@@ -38,17 +38,17 @@ export type TransactionStatusChanged = {
 }
 
 export type AddUserAssetPayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
 }
 
 export type RemoveUserAssetPayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
   isVisible: boolean
 }

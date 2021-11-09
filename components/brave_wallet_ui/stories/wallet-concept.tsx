@@ -20,7 +20,7 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   AccountTransactions,
   BuySendSwapTypes,
   WalletAccountType,
@@ -229,7 +229,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
-  const [selectedAsset, setSelectedAsset] = React.useState<TokenInfo>()
+  const [selectedAsset, setSelectedAsset] = React.useState<ERCToken>()
   const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
@@ -389,7 +389,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }, [selectedAsset, mockRPCResponse])
 
   // This will scrape all of the user's accounts and combine the balances for a single asset
-  const scrapedFullAssetBalance = (asset: TokenInfo) => {
+  const scrapedFullAssetBalance = (asset: ERCToken) => {
     const response = mockRPCResponse
     const amounts = response.map((account) => {
       const balance = account.assets.find((item) => item.id === asset.contractAddress)?.balance
@@ -402,7 +402,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const scrapedFullAssetFiatBalance = (asset: TokenInfo) => {
+  const scrapedFullAssetFiatBalance = (asset: ERCToken) => {
     const fullBallance = scrapedFullAssetBalance(asset)
     const price = Number(CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd)
     const value = price ? price * fullBallance : 0
@@ -459,7 +459,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setSelectedTimeline(path)
   }
 
-  const onSelectAsset = (asset: TokenInfo) => {
+  const onSelectAsset = (asset: ERCToken) => {
     setSelectedAsset(asset)
   }
 

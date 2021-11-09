@@ -129,7 +129,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/bat.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -142,7 +144,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: ETHIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -155,7 +159,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/usdc.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -168,7 +174,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/dai.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -181,7 +189,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/AAVE.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -194,7 +204,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/busd.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -207,7 +219,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/comp.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -220,7 +234,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/curve.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -233,7 +249,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/gusd.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -246,7 +264,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/chainlink.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -259,7 +279,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/mkr.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -272,7 +294,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/synthetix.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -285,7 +309,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/UMA.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -298,7 +324,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/uni.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -311,7 +339,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/usds.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -324,7 +354,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/usdt.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -337,7 +369,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/wbtc.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -350,7 +384,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/yfi.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -363,7 +399,9 @@ export const WyreAccountAssetOptions: AccountAssetOptionType[] = [
       logo: 'chrome://erc-token-images/pdai.png',
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'

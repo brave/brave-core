@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   AssetPrice,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   TransactionType,
@@ -54,7 +54,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   decimals: number
   insufficientFundsError: boolean
   addressError: string
-  erc721TokenInfo?: TokenInfo
+  erc721ERCToken?: ERCToken
   erc721TokenId?: string
   isSwap?: boolean
 
@@ -89,8 +89,8 @@ export function useTransactionParser (
   selectedNetwork: EthereumChain,
   accounts: WalletAccountType[],
   spotPrices: AssetPrice[],
-  visibleTokens: TokenInfo[],
-  fullTokenList?: TokenInfo[]
+  visibleTokens: ERCToken[],
+  fullTokenList?: ERCToken[]
 ) {
   const findSpotPrice = usePricing(spotPrices)
   const getAddressLabel = useAddressLabels(accounts)
@@ -179,7 +179,7 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsError: insufficientNativeFunds,
-          erc721TokenInfo: token,
+          erc721ERCToken: token,
           erc721TokenId: hexToNumber(tokenID ?? ''),
           addressError: checkForAddressError(toAddress, fromAddress),
           ...feeDetails

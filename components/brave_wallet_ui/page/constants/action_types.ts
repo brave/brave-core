@@ -5,7 +5,7 @@
 
 import {
   GetPriceHistoryReturnObjectInfo,
-  TokenInfo,
+  ERCToken,
   AssetPrice,
   AssetPriceTimeframe
 } from '../../constants/types'
@@ -61,7 +61,7 @@ export type PrivateKeyAvailablePayloadType = {
 }
 
 export type UpdateSelectedAssetType = {
-  asset: TokenInfo,
+  asset: ERCToken,
   timeFrame: AssetPriceTimeframe
 }
 

@@ -7,7 +7,7 @@ import {
   TransactionInfo,
   TransactionType,
   AssetPrice,
-  TokenInfo,
+  ERCToken,
   GasEstimation1559
 } from '../../../constants/types'
 import {
@@ -72,8 +72,8 @@ export type confirmPanelTabs = 'transaction' | 'details'
 
 export interface Props {
   accounts: WalletAccountType[]
-  visibleTokens: TokenInfo[]
-  fullTokenList: TokenInfo[]
+  visibleTokens: ERCToken[]
+  fullTokenList: ERCToken[]
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
   transactionSpotPrices: AssetPrice[]
@@ -294,12 +294,12 @@ function ConfirmTransactionPanel (props: Props) {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721TokenInfo} />
+            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721ERCToken} />
           }
           <TransactionAmmountBig>
             {transactionInfo.txType === TransactionType.ERC721TransferFrom ||
               transactionInfo.txType === TransactionType.ERC721SafeTransferFrom
-              ? transactionDetails.erc721TokenInfo?.name + ' ' + transactionDetails.erc721TokenId
+              ? transactionDetails.erc721ERCToken?.name + ' ' + transactionDetails.erc721TokenId
               : transactionDetails.value + ' ' + transactionDetails.symbol
             }
           </TransactionAmmountBig>

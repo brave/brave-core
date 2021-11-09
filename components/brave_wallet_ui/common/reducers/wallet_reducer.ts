@@ -19,7 +19,7 @@ import {
   GetPriceHistoryReturnInfo,
   MAINNET_CHAIN_ID,
   PortfolioTokenHistoryAndInfo,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   WalletAccountType,
@@ -139,7 +139,7 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: TokenInfo[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: ERCToken[]) => {
   return {
     ...state,
     userVisibleTokensInfo: payload
@@ -177,7 +177,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userTokens: TokenInfo[] = state.userVisibleTokensInfo
+  const userTokens: ERCToken[] = state.userVisibleTokensInfo
   const userVisibleTokensInfo = userTokens.map((token) => {
     return {
       ...token,

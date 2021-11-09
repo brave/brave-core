@@ -29,7 +29,7 @@ import {
   EthereumChain,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
-  TokenInfo,
+  ERCToken,
   GetNativeAssetBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   PortfolioTokenHistoryAndInfo,
@@ -57,7 +57,7 @@ export const addUserAsset = createAction<AddUserAssetPayloadType>('addUserAsset'
 export const addUserAssetError = createAction<boolean>('addUserAssetError')
 export const removeUserAsset = createAction<RemoveUserAssetPayloadType>('removeUserAsset')
 export const setUserAssetVisible = createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible')
-export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
+export const setVisibleTokensInfo = createAction<ERCToken[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<EthereumChain>('selectNetwork')
 export const setNetwork = createAction<EthereumChain>('setNetwork')

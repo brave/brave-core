@@ -8,7 +8,7 @@ import {
   WalletAccountType,
   AssetPriceTimeframe,
   AccountAssetOptionType,
-  TokenInfo,
+  ERCToken,
   EthereumChain,
   TransactionInfo
 } from '../../../../constants/types'
@@ -69,14 +69,14 @@ import {
 export interface Props {
   toggleNav: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
-  onSelectAsset: (asset: TokenInfo | undefined) => void
+  onSelectAsset: (asset: ERCToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: () => void
   fetchFullTokenList: () => void
   onSelectNetwork: (network: EthereumChain) => void
-  onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
-  onRemoveUserAsset: (token: TokenInfo) => void
+  onAddUserAsset: (token: ERCToken) => void
+  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: ERCToken) => void
   addUserAssetError: boolean
   selectedNetwork: EthereumChain
   networkList: EthereumChain[]
@@ -84,7 +84,7 @@ export interface Props {
   accounts: WalletAccountType[]
   selectedTimeline: AssetPriceTimeframe
   selectedPortfolioTimeline: AssetPriceTimeframe
-  selectedAsset: TokenInfo | undefined
+  selectedAsset: ERCToken | undefined
   selectedUSDAssetPrice: AssetPrice | undefined
   selectedBTCAssetPrice: AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
@@ -92,8 +92,8 @@ export interface Props {
   portfolioBalance: string
   transactions: AccountTransactions
   isLoading: boolean
-  fullAssetList: TokenInfo[]
-  userVisibleTokensInfo: TokenInfo[]
+  fullAssetList: ERCToken[]
+  userVisibleTokensInfo: ERCToken[]
   isFetchingPortfolioPriceHistory: boolean
   transactionSpotPrices: AssetPrice[]
   onRetryTransaction: (transaction: TransactionInfo) => void
@@ -174,7 +174,7 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const selectAsset = (asset: TokenInfo) => () => {
+  const selectAsset = (asset: ERCToken) => () => {
     onSelectAsset(asset)
     toggleNav()
   }
@@ -219,12 +219,12 @@ const Portfolio = (props: Props) => {
     setShowVisibleAssetsModal(!showVisibleAssetsModal)
   }
 
-  const getFiatBalance = (account: WalletAccountType, asset: TokenInfo) => {
+  const getFiatBalance = (account: WalletAccountType, asset: ERCToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
     return (found) ? found.fiatBalance : '0'
   }
 
-  const getAssetBalance = (account: WalletAccountType, asset: TokenInfo) => {
+  const getAssetBalance = (account: WalletAccountType, asset: ERCToken) => {
     const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
     return (found) ? formatBalance(found.assetBalance, found.asset.decimals) : '0'
   }

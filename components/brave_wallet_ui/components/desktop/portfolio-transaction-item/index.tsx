@@ -5,7 +5,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   AssetPrice,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   TransactionType,
@@ -54,11 +54,11 @@ export interface Props {
   transaction: TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
-  visibleTokens: TokenInfo[]
+  visibleTokens: ERCToken[]
   transactionSpotPrices: AssetPrice[]
   displayAccountName: boolean
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (asset: TokenInfo) => void
+  onSelectAsset: (asset: ERCToken) => void
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void
   onCancelTransaction: (transaction: TransactionInfo) => void

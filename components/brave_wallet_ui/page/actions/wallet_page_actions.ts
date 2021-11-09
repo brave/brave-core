@@ -24,7 +24,7 @@ import {
 import {
   HardwareWalletAccount
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { SwapResponse, SwapErrorResponse, TokenInfo, UpdateAccountNamePayloadType } from '../../constants/types'
+import { SwapResponse, SwapErrorResponse, ERCToken, UpdateAccountNamePayloadType } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const createWallet = createAction<CreateWalletPayloadType>('createWallet')
@@ -47,7 +47,7 @@ export const setImportAccountError = createAction<boolean>('setImportAccountErro
 export const setImportWalletError = createAction<ImportWalletErrorPayloadType>('setImportWalletError')
 export const updatePriceInfo = createAction<SelectAssetPayloadType>('updatePriceInfo')
 export const selectAsset = createAction<UpdateSelectedAssetType>('selectAsset')
-export const updateSelectedAsset = createAction<TokenInfo>('updateSelectedAsset')
+export const updateSelectedAsset = createAction<ERCToken>('updateSelectedAsset')
 export const setIsFetchingPriceHistory = createAction<boolean>('setIsFetchingPriceHistory')
 export const setShowIsRestoring = createAction<boolean>('setShowIsRestoring')
 export const updateAccountName = createAction<UpdateAccountNamePayloadType>('updateAccountName')

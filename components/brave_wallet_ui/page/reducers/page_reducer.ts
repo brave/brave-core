@@ -9,7 +9,7 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   PageState,
   AssetPriceTimeframe,
-  TokenInfo,
+  ERCToken,
   SwapResponse,
   SwapErrorResponse,
   ImportWalletError
@@ -104,7 +104,7 @@ reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: TokenInfo) => {
+reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: ERCToken) => {
   return {
     ...state,
     selectedAsset: payload

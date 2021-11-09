@@ -13,7 +13,7 @@ import {
   AccountTransactions,
   AssetPriceTimeframe,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   WalletAccountType
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -106,7 +106,7 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
     // Selected Network's Native Asset
-    const nativeAsset: TokenInfo = {
+    const nativeAsset: ERCToken = {
       contractAddress: '',
       decimals: currentNetwork.decimals,
       isErc20: false,
@@ -114,10 +114,11 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
       logo: currentNetwork.iconUrls[0] ?? '',
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
-      visible: false
+      visible: false,
+      tokenId: ''
     }
 
-    const visibleTokens: TokenInfo[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
+    const visibleTokens: ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     // Update ETH Balances

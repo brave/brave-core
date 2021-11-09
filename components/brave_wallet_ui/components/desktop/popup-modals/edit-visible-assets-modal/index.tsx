@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  TokenInfo,
+  ERCToken,
   EthereumChain,
   MAINNET_CHAIN_ID
 } from '../../../../constants/types'
@@ -33,12 +33,12 @@ import {
 
 export interface Props {
   onClose: () => void
-  onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
-  onRemoveUserAsset: (token: TokenInfo) => void
+  onAddUserAsset: (token: ERCToken) => void
+  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: ERCToken) => void
   addUserAssetError: boolean
-  fullAssetList: TokenInfo[]
-  userVisibleTokensInfo: TokenInfo[]
+  fullAssetList: ERCToken[]
+  userVisibleTokensInfo: ERCToken[]
   selectedNetwork: EthereumChain
 }
 
@@ -54,7 +54,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     onSetUserAssetVisible
   } = props
 
-  const [filteredTokenList, setFilteredTokenList] = React.useState<TokenInfo[]>([])
+  const [filteredTokenList, setFilteredTokenList] = React.useState<ERCToken[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
@@ -64,7 +64,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
-  const [foundToken, setFoundToken] = React.useState<TokenInfo>()
+  const [foundToken, setFoundToken] = React.useState<ERCToken>()
   const [hasError, setHasError] = React.useState<boolean>(false)
 
   const handleTokenNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +112,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     logo: selectedNetwork.iconUrls[0] ?? '',
     name: selectedNetwork.symbolName,
     symbol: selectedNetwork.symbol,
-    visible: true
+    visible: true,
+    tokenId: ''
   }
 
   const tokenList = React.useMemo(() => {
@@ -171,7 +172,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       }
       onAddUserAsset(foundToken)
     } else {
-      const newToken: TokenInfo = {
+      const newToken: ERCToken = {
         contractAddress: tokenContractAddress,
         decimals: Number(tokenDecimals),
         isErc20: tokenID ? false : true,
@@ -187,15 +188,15 @@ const EditVisibleAssetsModal = (props: Props) => {
     setIsLoading(true)
   }
 
-  const isUserToken = (token: TokenInfo) => {
+  const isUserToken = (token: ERCToken) => {
     return userVisibleTokensInfo.map(e => e.contractAddress.toLowerCase()).includes(token.contractAddress.toLowerCase())
   }
 
-  const isAssetSelected = (token: TokenInfo): boolean => {
+  const isAssetSelected = (token: ERCToken): boolean => {
     return (isUserToken(token) && token.visible) ?? false
   }
 
-  const isCustomToken = React.useCallback((token: TokenInfo): boolean => {
+  const isCustomToken = React.useCallback((token: ERCToken): boolean => {
     const assetListContracts = fullAssetList.map((token) => token.contractAddress)
     if (token.isErc20 || token.isErc721) {
       return !assetListContracts.includes(token.contractAddress)
@@ -204,7 +205,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }
   }, [fullAssetList])
 
-  const onCheckWatchlistItem = (key: string, selected: boolean, token: TokenInfo, isCustom: boolean) => {
+  const onCheckWatchlistItem = (key: string, selected: boolean, token: ERCToken, isCustom: boolean) => {
     if (isUserToken(token)) {
       if (isCustom) {
         selected ? onSetUserAssetVisible(token, true) : onSetUserAssetVisible(token, false)
@@ -237,7 +238,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     toggleShowAddCustomToken()
   }
 
-  const onRemoveAsset = (token: TokenInfo) => {
+  const onRemoveAsset = (token: ERCToken) => {
     setIsLoading(true)
     onRemoveUserAsset(token)
   }
