@@ -174,6 +174,8 @@ void WriteNetworkAuditResultsToDisk(const base::DictionaryValue& results_dic,
 class BraveNetworkAuditTest : public InProcessBrowserTest {
  public:
   BraveNetworkAuditTest() = default;
+  BraveNetworkAuditTest(const BraveNetworkAuditTest&) = delete;
+  BraveNetworkAuditTest& operator=(const BraveNetworkAuditTest&) = delete;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -262,8 +264,6 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   brave_rewards::RewardsServiceImpl* rewards_service_;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveNetworkAuditTest);
 };
 
 // Loads brave://welcome first to simulate a first run and then loads another
