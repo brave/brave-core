@@ -5,6 +5,7 @@
 
 #include "brave/browser/skus/skus_sdk_service_factory.h"
 
+#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -19,15 +20,10 @@ SkusSdkServiceFactory* SkusSdkServiceFactory::GetInstance() {
 // static
 SkusSdkService* SkusSdkServiceFactory::GetForContext(
     content::BrowserContext* context) {
-  // if (!brave_vpn::IsBraveVPNEnabled())
-  //   return nullptr;
-
   return static_cast<SkusSdkService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
-
-// TODO(bsclifton): finish all this garbage
 SkusSdkServiceFactory::SkusSdkServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SkusSdkService",
@@ -37,6 +33,11 @@ SkusSdkServiceFactory::~SkusSdkServiceFactory() = default;
 
 KeyedService* SkusSdkServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  // Skus functionality not supported in private / Tor / guest windows
+  if (!brave::IsRegularProfile(context)) {
+    return nullptr;
+  }
+
   return new SkusSdkService(Profile::FromBrowserContext(context)->GetPrefs(),
                             context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess());

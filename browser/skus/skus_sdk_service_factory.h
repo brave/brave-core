@@ -10,8 +10,8 @@
 #include "brave/components/skus/browser/skus_sdk_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-class Profile;
-
+// Singleton that creates/deletes BraveRendererUpdater as new Profiles are
+// created/shutdown.
 class SkusSdkServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static SkusSdkService* GetForContext(content::BrowserContext* context);
