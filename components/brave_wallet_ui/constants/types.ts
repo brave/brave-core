@@ -501,19 +501,6 @@ export interface CreateWalletReturnInfo {
   mnemonic: string
 }
 
-export interface WalletAPIHandler {
-  getWalletInfo: () => Promise<WalletInfoBase>
-  addFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
-  setInitialVisibleTokens: (visibleAssets: string[]) => Promise<void>
-}
-
-export interface ERCTokenRegistry {
-  getTokenByContract: (contract: string) => Promise<GetTokenByContractReturnInfo>
-  getTokenBySymbol: (symbol: string) => Promise<GetTokenBySymbolReturnInfo>
-  getAllTokens: () => Promise<GetAllTokensReturnInfo>
-}
-
 export class TxData {
   nonce: string
   gasPrice: string
@@ -638,47 +625,6 @@ export interface GetEthAddrReturnInfo {
   address: string
 }
 
-export interface EthTxController {
-  addUnapprovedTransaction: (txData: TxData, from: string) => Promise<AddUnapprovedTransactionReturnInfo>
-  addUnapproved1559Transaction: (txData: TxData1559, from: string) => (AddUnapproved1559TransactionReturnInfo)
-  setGasPriceAndLimitForUnapprovedTransaction: (txMetaId: string, gasPrice: string, gasLimit: string) => Promise<SetGasPriceAndLimitForUnapprovedTransactionReturnInfo>
-  setGasFeeAndLimitForUnapprovedTransaction: (txMetaId: string, maxPriorityFeePerGas: string, maxFeePerGas: string, gasLimit: string) => Promise<SetGasFeeAndLimitForUnapprovedTransactionReturnInfo>
-  setDataForUnapprovedTransaction: (txMetaId: string, data: number[]) => Promise<SetDataForUnapprovedTransactionReturnInfo>
-  approveTransaction: (txMetaId: string) => Promise<ApproveTransactionReturnInfo>
-  rejectTransaction: (txMetaId: string) => Promise<RejectTransactionReturnInfo>
-  makeERC20TransferData: (toAddress: string, amount: string) => Promise<MakeERC20TransferDataReturnInfo>
-  makeERC20ApproveData: (spenderAddress: string, amount: string) => Promise<MakeERC20ApproveDataReturnInfo>
-  makeERC721TransferFromData: (from: string, to: string, tokenId: string, contractAddress: string) => Promise<MakeERC721TransferFromDataReturnInfo>
-  getAllTransactionInfo: (fromAddress: string) => Promise<GetAllTransactionInfoReturnInfo>
-  approveHardwareTransaction: (txMetaId: string) => Promise<ApproveHardwareTransactionReturnInfo>
-  processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
-  speedupOrCancelTransaction: (txMetaId: string, cancel: boolean) => Promise<SpeedupRetryCancelTransactionReturnInfo>
-  retryTransaction: (txMetaId: string) => Promise<SpeedupRetryCancelTransactionReturnInfo>
-}
-
-export interface EthJsonRpcController {
-  getPendingChainRequests: () => Promise<GetAllNetworksList>
-  getPendingSwitchChainRequests: () => Promise<SwitchChainRequestsList>
-  addEthereumChainRequestCompleted: (chainId: string, approved: boolean) => Promise<void>
-  notifySwitchChainRequestProcessed: (approved: boolean, origin: Url) => Promise<void>
-  getNetwork: () => Promise<GetNetworkReturnInfo>
-  setNetwork: (netowrk: string) => Promise<void>
-  getAllNetworks: () => Promise<GetAllNetworksList>
-  getChainId: () => Promise<GetChainIdReturnInfo>
-  getBlockTrackerUrl: () => Promise<GetBlockTrackerUrlReturnInfo>
-  getBalance: (address: string) => Promise<GetBalanceReturnInfo>
-  getERC721TokenBalance: (contractAddress: string, tokenId: string, accountAddress: string) => Promise<GetERCTokenBalanceReturnInfo>
-  getERC20TokenBalance: (contract: string, address: string) => Promise<GetERCTokenBalanceReturnInfo>
-  getERC20TokenAllowance: (contract: string, ownerAddress: string, spenderAddress: string) => Promise<GetERC20TokenAllowanceReturnInfo>
-  ensGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
-  unstoppableDomainsGetEthAddr: (domain: string) => Promise<GetEthAddrReturnInfo>
-}
-
-export interface SwapController {
-  getPriceQuote: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
-  getTransactionPayload: (swapParams: SwapParams) => Promise<SwapResponseReturnInfo>
-}
-
 export interface GetEstimatedTimeReturnInfo {
   success: boolean
   seconds: string
@@ -694,27 +640,6 @@ export interface GetAutoLockMinutesReturnInfo {
 
 export interface SetAutoLockMinutesReturnInfo {
   success: boolean
-}
-
-export interface AssetRatioController {
-  getPrice: (fromAssets: string[], toAssets: string[], timeframe: AssetPriceTimeframe) => Promise<GetPriceReturnInfo>
-  getPriceHistory: (asset: string, timeframe: AssetPriceTimeframe) => Promise<GetPriceHistoryReturnObjectInfo>
-  getEstimatedTime: (gasPrice: string /* decimal string in wei */) => Promise<GetEstimatedTimeReturnInfo>
-  getGasOracle: () => Promise<GetGasOracleReturnInfo>
-}
-
-export interface KeyringController {
-  createWallet: (password: string) => Promise<CreateWalletReturnInfo>
-  restoreWallet: (mnemonic: string, password: string, isLegacy: boolean) => Promise<RestoreWalletReturnInfo>
-  lock: () => Promise<void>
-  unlock: (password: string) => Promise<UnlockReturnInfo>
-  addAccount: (accountName: string) => Promise<AddAccountReturnInfo>
-  notifyUserInteraction: () => Promise<void>
-  getSelectedAccount: () => Promise<GetSelectedAccountReturnInfo>
-  setSelectedAccount: (address: string) => Promise<SetSelectedAccountReturnInfo>
-  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
-  setAutoLockMinutes: (minutes: number) => Promise<SetAutoLockMinutesReturnInfo>
-  getAutoLockMinutes: () => Promise<GetAutoLockMinutesReturnInfo>
 }
 
 export interface GetUserAssetsReturnInfo {
@@ -776,26 +701,6 @@ export interface DefaultBaseCryptocurrencyReturnInfo {
   cryptocurrency: string
 }
 
-export interface BraveWalletService {
-  getUserAssets: (chainId: string) => Promise<GetUserAssetsReturnInfo>
-  addUserAsset: (token: TokenInfo, chainId: string) => Promise<AddUserAssetReturnInfo>
-  removeUserAsset: (token: TokenInfo, chainId: string) => Promise<RemoveUserAssetReturnInfo>
-  setUserAssetVisible: (token: TokenInfo, chainId: string, visible: boolean) => Promise<SetUserAssetVisibleReturnInfo>
-  getDefaultWallet: () => Promise<DefaultWalletReturnInfo>
-  setDefaultWallet: (defaultWallet: DefaultWallet) => void
-  getBaseCurrency: () => Promise<DefaultBaseCurrencyReturnInfo>
-  setBaseCurrency: () => void
-  getBaseCryptocurrency: () => Promise<DefaultBaseCryptocurrencyReturnInfo>
-  setBaseCryptocurrency: () => void
-  hasEthereumPermission: (origin: string, account: string) => Promise<HasEthereumPermissionReturnInfo>
-  resetEthereumPermission: (origin: string, account: string) => Promise<ResetEthereumPermissionReturnInfo>
-  getActiveOrigin: () => Promise<GetActiveOriginReturnInfo>
-  getPendingSignMessageRequest: () => Promise<GetPendingSignMessageRequestReturnInfo>
-  notifySignMessageRequestProcessed: (approved: boolean, id: number) => Promise<void>
-  notifySignMessageHardwareRequestProcessed: (approved: boolean, id: number, signature: string, error: string) => Promise<void>
-  isMetaMaskInstalled: () => Promise<IsMetaMaskInstalledReturnInfo>
-}
-
 export interface RecoveryObject {
   value: string,
   id: number
@@ -838,36 +743,6 @@ export interface AmountPresetObjectType {
 export type ToOrFromType =
   | 'to'
   | 'from'
-
-export interface APIProxyControllers {
-  walletHandler: WalletAPIHandler
-  ethJsonRpcController: EthJsonRpcController
-  swapController: SwapController
-  assetRatioController: AssetRatioController
-  keyringController: KeyringController
-  ercTokenRegistry: ERCTokenRegistry
-  ethTxController: EthTxController
-  braveWalletService: BraveWalletService
-  getKeyringsByType: (type: string) => any
-  makeTxData: (
-    nonce: string,
-    gasPrice: string,
-    gasLimit: string,
-    to: string,
-    value: string,
-    data: number[]
-  ) => any
-  makeEIP1559TxData: (
-    chainId: string,
-    nonce: string,
-    maxPriorityFeePerGas: string,
-    maxFeePerGas: string,
-    gasLimit: string,
-    to: string,
-    value: string,
-    data: number[]
-  ) => any
-}
 
 export type TransactionDataType = {
   functionName: string
