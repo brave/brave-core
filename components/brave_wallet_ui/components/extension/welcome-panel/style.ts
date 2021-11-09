@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import WelcomeIcon from '../../../assets/svg-icons/onboarding/brave-wallet.svg'
 import WelcomeIconDark from '../../../assets/svg-icons/onboarding/brave-wallet-dark.svg'
+import { WalletButton } from '../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ export const PageIcon = styled.div`
   }
 `
 
-export const RestoreButton = styled.button`
+export const RestoreButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;

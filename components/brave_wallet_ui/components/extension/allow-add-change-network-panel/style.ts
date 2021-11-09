@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WalletButton } from '../../shared/style'
 
 export const MessageBox = styled.div`
   display: flex;
@@ -64,7 +65,7 @@ export const MessageBoxColumn = styled.div`
   margin-bottom: 6px;
 `
 
-export const DetailsButton = styled.button`
+export const DetailsButton = styled(WalletButton)`
   font-family: Poppins;
   font-style: normal;
   font-size: 12px;

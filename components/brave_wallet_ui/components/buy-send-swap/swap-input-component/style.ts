@@ -3,7 +3,7 @@ import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import Refresh from '../../../assets/svg-icons/refresh-icon.svg'
 import ClipboardIcon from '../../../assets/svg-icons/clipboard-icon.svg'
 import { BuySendSwapInputType } from './index'
-import { AssetIconProps, AssetIconFactory } from '../../shared/style'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
 interface StyleProps {
   componentType: BuySendSwapInputType
@@ -31,7 +31,7 @@ export const FromBalanceText = styled.span<Partial<StyleProps>>`
   color: ${(p) => p.theme.color.text03};
 `
 
-export const AssetButton = styled.button<Partial<StyleProps>>`
+export const AssetButton = styled(WalletButton) <Partial<StyleProps>>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -86,7 +86,7 @@ export const PresetRow = styled.div`
   margin-bottom: 4px;
 `
 
-export const PresetButton = styled.button<Partial<StyleProps>>`
+export const PresetButton = styled(WalletButton) <Partial<StyleProps>>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -146,7 +146,7 @@ export const SlippageInput = styled.input<Partial<StyleProps>>`
   }
 `
 
-export const MarketLimitButton = styled.button`
+export const MarketLimitButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -163,7 +163,7 @@ export const MarketLimitButton = styled.button`
   color: ${(p) => p.theme.color.interactive05};
 `
 
-export const RefreshButton = styled.button`
+export const RefreshButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -249,7 +249,7 @@ export const SelectValueText = styled.span`
   margin-right: 4px;
 `
 
-export const PasteButton = styled.button`
+export const PasteButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
   align-items: center;

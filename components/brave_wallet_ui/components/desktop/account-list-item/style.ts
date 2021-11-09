@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import TrashIcon from '../../../assets/svg-icons/trash-icon.svg'
 import FlashdriveIcon from '../../../assets/svg-icons/flashdrive-icon.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   orb: string
@@ -36,7 +37,7 @@ export const AccountNameRow = styled.div`
   flex-direction: row;
 `
 
-export const AccountName = styled.button`
+export const AccountName = styled(WalletButton)`
   font-family: Poppins;
   font-size: 13px;
   line-height: 20px;
@@ -49,7 +50,7 @@ export const AccountName = styled.button`
   border: none;
 `
 
-export const AccountAddress = styled.button`
+export const AccountAddress = styled(WalletButton)`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
@@ -77,7 +78,7 @@ export const AccountCircle = styled.div<StyleProps>`
   margin-right: 12px;
 `
 
-export const DeleteButton = styled.button`
+export const DeleteButton = styled(WalletButton)`
   display: flex;;
   align-items: center;
   justify-content: center;

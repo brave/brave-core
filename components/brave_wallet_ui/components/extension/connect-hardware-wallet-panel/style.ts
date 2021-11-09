@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import FlashDriveIcon from '../../../assets/svg-icons/graphic-flashdrive-icon.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   isConnected: boolean
@@ -45,7 +46,7 @@ export const PageIcon = styled.div`
   margin-bottom: 35px;
 `
 
-export const InstructionsButton = styled.button`
+export const InstructionsButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   background: none;
