@@ -271,9 +271,10 @@ handler.on(PanelActions.openWalletSettings.getType(), async (store) => {
 handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
   const state = getPanelState(store)
   const walletState = getWalletState(store)
-  if (payload.txInfo.txStatus === TransactionStatus.Submitted ||
-    payload.txInfo.txStatus === TransactionStatus.Rejected ||
-    payload.txInfo.txStatus === TransactionStatus.Approved) {
+  if (
+    [TransactionStatus.Submitted, TransactionStatus.Rejected, TransactionStatus.Approved]
+      .includes(payload.txInfo.txStatus)
+  ) {
     if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
       const apiProxy = await getAPIProxy()
       apiProxy.closeUI()
