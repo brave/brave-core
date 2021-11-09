@@ -8,7 +8,7 @@ import BraveCore
 import struct Shared.Strings
 
 extension BraveWallet.EthereumChain {
-  fileprivate var shortChainName: String {
+  var shortChainName: String {
     chainName.split(separator: " ").first?.capitalized ?? chainName
   }
 }

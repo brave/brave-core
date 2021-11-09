@@ -16,9 +16,10 @@ struct CryptoPagesView: View {
   
   @State private var isShowingSettings: Bool = false
   @State private var isShowingSearch: Bool = false
+  @State private var isShowingTransactions: Bool = false
   
   var body: some View {
-    _CryptoPagesView(walletStore: walletStore)
+    _CryptoPagesView(walletStore: walletStore, isShowingTransactions: $isShowingTransactions)
       .ignoresSafeArea()
       .navigationTitle(Strings.Wallet.cryptoTitle)
       .navigationBarTitleDisplayMode(.inline)
@@ -50,6 +51,9 @@ struct CryptoPagesView: View {
       .sheet(isPresented: $isShowingSearch) {
         AssetSearchView(walletStore: walletStore)
       }
+      .sheet(isPresented: $isShowingTransactions) {
+        TransactionConfirmationView(transactions: [], networkStore: walletStore.networkStore)
+      }
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
           Button(action: {
@@ -80,11 +84,13 @@ struct CryptoPagesView: View {
   
   struct _CryptoPagesView: UIViewControllerRepresentable {
     var walletStore: WalletStore
+    var isShowingTransactions: Binding<Bool>
     
     func makeUIViewController(context: Context) -> some UIViewController {
       CryptoPagesViewController(
         walletStore: walletStore,
-        buySendSwapDestination: context.environment.buySendSwapDestination
+        buySendSwapDestination: context.environment.buySendSwapDestination,
+        isShowingTransactions: isShowingTransactions
       )
     }
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
@@ -96,10 +102,12 @@ private class CryptoPagesViewController: TabbedPageViewController {
   private let walletStore: WalletStore
   private let swapButton = SwapButton()
   @Binding private var buySendSwapDestination: BuySendSwapDestination?
+  @Binding private var isShowingTransactions: Bool
   
-  init(walletStore: WalletStore, buySendSwapDestination: Binding<BuySendSwapDestination?>) {
+  init(walletStore: WalletStore, buySendSwapDestination: Binding<BuySendSwapDestination?>, isShowingTransactions: Binding<Bool>) {
     self.walletStore = walletStore
     self._buySendSwapDestination = buySendSwapDestination
+    self._isShowingTransactions = isShowingTransactions
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -141,6 +149,19 @@ private class CryptoPagesViewController: TabbedPageViewController {
     }
     
     swapButton.addTarget(self, action: #selector(tappedSwapButton), for: .touchUpInside)
+    
+//    let confirmationsButton = SwapButton()
+//    view.addSubview(confirmationsButton)
+//    confirmationsButton.snp.makeConstraints {
+//      $0.trailing.equalToSuperview().inset(16)
+//      $0.bottom.equalTo(view.safeAreaLayoutGuide).priority(.high)
+//      $0.bottom.lessThanOrEqualTo(view).inset(8)
+//    }
+//    confirmationsButton.addTarget(self, action: #selector(tappedConfirmationsButton), for: .touchUpInside)
+  }
+  
+  @objc private func tappedConfirmationsButton() {
+    isShowingTransactions = true
   }
   
   @objc private func tappedSwapButton() {

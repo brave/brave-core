@@ -974,5 +974,194 @@ extension Strings {
       value: "Market Price in %@",
       comment: "The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT'"
     )
+    public static let nextTransaction = NSLocalizedString(
+      "wallet.nextTransaction",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Next",
+      comment: "A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction"
+    )
+    public static let transactionFromToAccessibilityLabel = NSLocalizedString(
+      "wallet.transactionFromToAccessibilityLabel",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "From: %@. To: %@",
+      comment: "A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\""
+    )
+    public static let confirmationViewModeTransaction = NSLocalizedString(
+      "wallet.confirmationViewModeTransaction",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Transaction",
+      comment: "One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals"
+    )
+    public static let confirmationViewModeDetails = NSLocalizedString(
+      "wallet.confirmationViewModeTransaction",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Details",
+      comment: "One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data"
+    )
+    public static let gasFee = NSLocalizedString(
+      "wallet.gasFee",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Gas Fee",
+      comment: "A title displayed beside a number describing the cost of the transaction in ETH which is called Gas"
+    )
+    public static let editGasFeeButtonTitle = NSLocalizedString(
+      "wallet.editGasFeeButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Edit",
+      comment: "A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority"
+    )
+    public static let total = NSLocalizedString(
+      "wallet.total",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Total",
+      comment: "A title displayed beside a number describing the total amount of gas and ETH that will be transferred"
+    )
+    public static let amountAndGas = NSLocalizedString(
+      "wallet.amountAndGas",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Amount + Gas",
+      comment: "A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\""
+    )
+    public static let inputDataPlaceholder = NSLocalizedString(
+      "wallet.inputDataPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "No data.",
+      comment: "A label shown inside of a box when there is no input data for a given transaction"
+    )
+    public static let rejectAllTransactions = NSLocalizedString(
+      "wallet.rejectAllTransactions",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Reject %d Transactions",
+      comment: "A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions"
+    )
+    public static let confirmTransactionTitle = NSLocalizedString(
+      "wallet.confirmTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Confirm Transaction",
+      comment: "The title of the transaction confirmation panel UI."
+    )
+    public static let confirmTransactionsTitle = NSLocalizedString(
+      "wallet.confirmTransactionsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Confirm Transactions",
+      comment: "The title of the transaction confirmation panel UI when there are multiple transactions to confirm"
+    )
+    public static let confirmTransactionButtonTitle = NSLocalizedString(
+      "wallet.confirmTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Confirm",
+      comment: "A button title to confirm a transaction. It is shown below details about a given transaction"
+    )
+    public static let rejectTransactionButtonTitle = NSLocalizedString(
+      "wallet.rejectTransactionButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Reject",
+      comment: "A button title to reject a transaction. It is shown below details about a given transaction"
+    )
+    public static let insufficientFunds = NSLocalizedString(
+      "wallet.insufficientFunds",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Insufficient funds",
+      comment: "An error message displayed when the user does not have enough funds to make or confirm a transaction"
+    )
+    public static let gasFeeDisclaimer = NSLocalizedString(
+      "wallet.gasFeeDisclaimer",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "While not a guarantee, miners will likely prioritize your transaction earlier if you pay a higher fee.",
+      comment: "A disclaimer shown above the UI to select a gas fee"
+    )
+    public static let gasFeePredefinedLimitLow = NSLocalizedString(
+      "wallet.gasFeePredefinedLimitLow",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Low",
+      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+    )
+    public static let gasFeePredefinedLimitOptimal = NSLocalizedString(
+      "wallet.gasFeePredefinedLimitOptimal",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Optimal",
+      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+    )
+    public static let gasFeePredefinedLimitHigh = NSLocalizedString(
+      "wallet.gasFeePredefinedLimitHigh",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "High",
+      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom"
+    )
+    public static let gasFeeCustomOption = NSLocalizedString(
+      "wallet.gasFeeCustomOption",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Custom",
+      comment: "An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves"
+    )
+    public static let gasCurrentBaseFee = NSLocalizedString(
+      "wallet.gasCurrentBaseFee",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Current base fee",
+      comment: "The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount"
+    )
+    public static let gasAmountLimit = NSLocalizedString(
+      "wallet.gasAmountLimit",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Gas amount limit",
+      comment: "A title above a text field for inputting the gas amount limit"
+    )
+    public static let perGasTipLimit = NSLocalizedString(
+      "wallet.perGasTipLimit",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Per-gas tip limit (Gwei)",
+      comment: "A title above a text field for inputting the per-gas tip limit in Gwei"
+    )
+    public static let perGasPriceLimit = NSLocalizedString(
+      "wallet.perGasPriceLimit",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Per-gas price limit (Gwei)",
+      comment: "A title above a text field for inputting the per-gas price limit in Gwei"
+    )
+    public static let maximumGasFee = NSLocalizedString(
+      "wallet.maximumGasFee",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Maximum fee",
+      comment: "The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount"
+    )
+    public static let saveGasFee = NSLocalizedString(
+      "wallet.saveGasFee",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Save",
+      comment: "A button title for saving the users selected gas fee options"
+    )
+    public static let maxPriorityFeeTitle = NSLocalizedString(
+      "wallet.maxPriorityFeeTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Max Priority Fee",
+      comment: "The title of the edit gas fee screen"
+    )
   }
 }
