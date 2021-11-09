@@ -25,6 +25,7 @@ import {
 } from '../../utils/format-balances'
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
+import { getLocale } from '../../../common/locale'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -52,6 +53,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   symbol: string
   decimals: number
   insufficientFundsError: boolean
+  addressError: string
   erc721TokenInfo?: TokenInfo
   erc721TokenId?: string
   isSwap?: boolean
@@ -87,7 +89,8 @@ export function useTransactionParser (
   selectedNetwork: EthereumChain,
   accounts: WalletAccountType[],
   spotPrices: AssetPriceInfo[],
-  visibleTokens: TokenInfo[]
+  visibleTokens: TokenInfo[],
+  fullTokenList?: TokenInfo[]
 ) {
   const findSpotPrice = usePricing(spotPrices)
   const getAddressLabel = useAddressLabels(accounts)
@@ -96,6 +99,18 @@ export function useTransactionParser (
   const findToken = React.useCallback((contractAddress: string) => {
     return visibleTokens.find((token) => token.contractAddress.toLowerCase() === contractAddress.toLowerCase())
   }, [visibleTokens])
+
+  const checkForAddressError = (to: string, from: string): string => {
+    // If value is the same as the selectedAccounts Wallet Address
+    if (to.toLowerCase() === from.toLowerCase()) {
+      return getLocale('braveWalletSameAddressError')
+    }
+    // If value is a Tokens Contract Address
+    if (fullTokenList?.some(token => token.contractAddress.toLowerCase() === to.toLowerCase())) {
+      return getLocale('braveWalletContractAddressError')
+    }
+    return ''
+  }
 
   return React.useCallback((transactionInfo: TransactionInfo) => {
     const { txArgs, txData, fromAddress } = transactionInfo
@@ -134,6 +149,7 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
+          addressError: checkForAddressError(address, transactionInfo.fromAddress),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -165,6 +181,7 @@ export function useTransactionParser (
           insufficientFundsError: insufficientNativeFunds,
           erc721TokenInfo: token,
           erc721TokenId: hexToNumber(tokenID ?? ''),
+          addressError: checkForAddressError(toAddress, fromAddress),
           ...feeDetails
         } as ParsedTransaction
       }
@@ -225,6 +242,7 @@ export function useTransactionParser (
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: Number(totalAmountFiat) > Number(accountsNativeFiatBalance),
+          addressError: checkForAddressError(to, transactionInfo.fromAddress),
           isSwap: transactionInfo.txData.baseData.to.toLowerCase() === SwapExchangeProxy,
           ...feeDetails
         } as ParsedTransaction

@@ -191,7 +191,8 @@ function Container (props: Props) {
     selectedAccount,
     props.walletActions.sendERC20Transfer,
     props.walletActions.sendTransaction,
-    props.walletActions.sendERC721TransferFrom
+    props.walletActions.sendERC721TransferFrom,
+    props.wallet.fullTokenList
   )
 
   React.useMemo(() => {
@@ -505,6 +506,7 @@ function Container (props: Props) {
             updateUnapprovedTransactionGasFields={props.walletActions.updateUnapprovedTransactionGasFields}
             updateUnapprovedTransactionSpendAllowance={props.walletActions.updateUnapprovedTransactionSpendAllowance}
             gasEstimates={gasEstimates}
+            fullTokenList={props.wallet.fullTokenList}
           />
         </LongWrapper>
       </PanelWrapper>

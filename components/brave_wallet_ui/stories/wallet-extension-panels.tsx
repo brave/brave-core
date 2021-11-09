@@ -185,6 +185,7 @@ export const _ConfirmTransaction = () => {
         updateUnapprovedTransactionGasFields={updateUnapprovedTransactionGasFields}
         updateUnapprovedTransactionSpendAllowance={updateUnapprovedTransactionSpendAllowance}
         getERC20Allowance={getERC20Allowance}
+        fullTokenList={NewAssetOptions}
       />
     </StyledExtensionWrapperLonger>
   )
