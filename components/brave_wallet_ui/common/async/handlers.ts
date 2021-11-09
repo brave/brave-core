@@ -293,8 +293,10 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
 
   const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
 
-  const txData = isEIP1559
-    ? apiProxy.makeEIP1559TxData(
+  let addResult
+  let txData
+  if (isEIP1559) {
+    txData = apiProxy.makeEIP1559TxData(
       chainId,
       '' /* nonce */,
 
@@ -312,7 +314,9 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
-    : apiProxy.makeTxData(
+    addResult = await (apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from))
+  } else {
+    txData = apiProxy.makeTxData(
       '' /* nonce */,
 
       // Estimated by eth_tx_controller if value is ''
@@ -324,12 +328,9 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
+    addResult = await (apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from))
+  }
 
-  const addResult = await (
-    isEIP1559
-      ? apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
-      : apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
-  )
   if (!addResult.success) {
     console.log(
       `Sending unapproved transaction failed: ` +

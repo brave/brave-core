@@ -11,7 +11,7 @@ import {
   AssetPriceTimeframe,
   DefaultWallet,
   EthereumChain,
-  GasEstimation,
+  GasEstimation1559,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
@@ -384,7 +384,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
   }
 })
 
-reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation1559) => {
   return {
     ...state,
     gasEstimates: payload

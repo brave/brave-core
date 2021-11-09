@@ -40,7 +40,7 @@ import {
   TransactionInfo,
   AccountTransactions,
   DefaultWallet,
-  GasEstimation,
+  GasEstimation1559,
   ApproveERC20Params,
   WalletInfoBase,
   WalletInfo
@@ -94,7 +94,7 @@ export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUp
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
 export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
 export const refreshGasEstimates = createAction('refreshGasEstimates')
-export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
+export const setGasEstimates = createAction<GasEstimation1559>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')

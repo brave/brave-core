@@ -8,7 +8,7 @@ import {
   TransactionType,
   AssetPrice,
   TokenInfo,
-  GasEstimation
+  GasEstimation1559
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
@@ -77,7 +77,7 @@ export interface Props {
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
   transactionSpotPrices: AssetPrice[]
-  gasEstimates?: GasEstimation
+  gasEstimates?: GasEstimation1559
   transactionsQueueLength: number
   transactionQueueNumber: number
   onQueueNextTransction: () => void
