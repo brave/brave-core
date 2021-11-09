@@ -188,6 +188,12 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
         if (mCameraSourcePreview != null) {
             mCameraSourcePreview.release();
         }
+        mKeyringController.close();
+        mAssetRatioController.close();
+        mErcTokenRegistry.close();
+        mEthJsonRpcController.close();
+        mEthTxController.close();
+        mSwapController.close();
     }
 
     @Override
@@ -1108,6 +1114,13 @@ public class BuySendSwapActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
+        mAssetRatioController.close();
+        mErcTokenRegistry.close();
+        mEthJsonRpcController.close();
+        mEthTxController.close();
+        mSwapController.close();
+
         mErcTokenRegistry = null;
         mEthJsonRpcController = null;
         mEthTxController = null;
