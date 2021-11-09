@@ -402,6 +402,9 @@ void BraveP3AService::StartScheduledUpload() {
 
   // Only upload if service is enabled.
   bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
+#if defined(OS_ANDROID)
+  p3a_enabled = false;
+#endif  // OS_ANDROID
   if (p3a_enabled) {
     const std::string log = log_store_->staged_log();
     const std::string log_type = log_store_->staged_log_type();
@@ -414,6 +417,9 @@ void BraveP3AService::StartScheduledUpload() {
 void BraveP3AService::OnHistogramChanged(const char* histogram_name,
                                          uint64_t name_hash,
                                          base::HistogramBase::Sample sample) {
+#if defined(OS_ANDROID)
+  return;
+#endif  // OS_ANDROID
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
 
