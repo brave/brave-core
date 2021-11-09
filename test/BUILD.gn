@@ -803,6 +803,7 @@ if (!is_android) {
       deps += [
         "//brave/browser/brave_wallet",
         "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/browser:ethereum_permission_utils",
         "//brave/components/brave_wallet/common",
         "//brave/components/brave_wallet/common:mojom",
         "//brave/components/resources:strings_grit",
