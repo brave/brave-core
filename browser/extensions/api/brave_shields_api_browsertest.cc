@@ -215,8 +215,8 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
       new api::BraveShieldsGetNoScriptControlTypeFunction());
   get_function->set_extension(extension().get());
   std::unique_ptr<base::Value> value;
-  value.reset(RunFunctionAndReturnSingleResult(
-      get_function.get(), kJavascriptGetParams, browser()));
+  value = RunFunctionAndReturnSingleResult(get_function.get(),
+                                           kJavascriptGetParams, browser());
   EXPECT_EQ(value->GetString(), std::string("allow"));
 }
 
