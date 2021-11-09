@@ -557,7 +557,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-
       <if expr="is_win">
         </if>
       <if expr="use_titlecase">
