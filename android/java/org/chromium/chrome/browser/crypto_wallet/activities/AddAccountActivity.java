@@ -166,7 +166,14 @@ public class AddAccountActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mKeyringController.close();
+    }
+
+    @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
         mKeyringController = null;
         InitKeyringController();
     }
