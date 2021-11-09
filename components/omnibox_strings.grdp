@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <part file="omnibox/resources/omnibox_pedal_ui_strings.grdp" />
+  <!-- Note, referenced part .grdp files must be in the same directory as the
+       referencing .grdp file or translation console pipeline breaks. -->
+  <part file="omnibox_pedal_ui_strings.grdp" />
 
   <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
     <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
