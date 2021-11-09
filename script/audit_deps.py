@@ -25,11 +25,6 @@ NPM_EXCLUDE_PATHS = [
 # Tag @sec-team before adding any advisory to this list
 # Ignore these rust advisories
 IGNORED_CARGO_ADVISORIES = [
-    # Remove when:
-    # https://github.com/chronotope/chrono/issues/602 is resolved
-    # Tracking issue: https://github.com/brave/brave-browser/issues/18838
-    'RUSTSEC-2020-0071',
-    'RUSTSEC-2020-0159'
 ]
 
 # Use only these (sub)paths for cargo audit.
