@@ -75,7 +75,6 @@ public class AccountDetailActivity
                         new Intent(AccountDetailActivity.this, AccountDetailsWithQrActivity.class);
                 accountDetailsWithQrActivityIntent.putExtra(Utils.ADDRESS, mAddress);
                 accountDetailsWithQrActivityIntent.putExtra(Utils.NAME, mName);
-                accountDetailsWithQrActivityIntent.putExtra(Utils.ISIMPORTED, mIsImported);
                 startActivity(accountDetailsWithQrActivityIntent);
             }
         });

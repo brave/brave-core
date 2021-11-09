@@ -37,7 +37,6 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
 
     private String mAddress;
     private String mName;
-    private boolean mIsImported;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -46,7 +45,6 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         if (getIntent() != null) {
             mAddress = getIntent().getStringExtra(Utils.ADDRESS);
             mName = getIntent().getStringExtra(Utils.NAME);
-            mIsImported = getIntent().getBooleanExtra(Utils.ISIMPORTED, false);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -69,9 +67,6 @@ public class AccountDetailsWithQrActivity extends AsyncInitializationActivity {
         accountNameText.setEnabled(false);
 
         TextView privateKeyText = findViewById(R.id.account_private_key_text);
-        if (mIsImported) {
-            privateKeyText.setVisibility(View.GONE);
-        }
         privateKeyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -33,6 +33,7 @@ public class AccountPrivateKeyActivity
     private KeyringController mKeyringController;
     private String mAddress;
     private boolean mIsPrivateKeyShown;
+
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_private_key);
@@ -106,7 +107,14 @@ public class AccountPrivateKeyActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mKeyringController.close();
+    }
+
+    @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
         mKeyringController = null;
         InitKeyringController();
     }
