@@ -96,6 +96,9 @@ export interface Props {
   userVisibleTokensInfo: TokenInfo[]
   isFetchingPortfolioPriceHistory: boolean
   transactionSpotPrices: AssetPriceInfo[]
+  onRetryTransaction: (transaction: TransactionInfo) => void
+  onSpeedupTransaction: (transaction: TransactionInfo) => void
+  onCancelTransaction: (transaction: TransactionInfo) => void
 }
 
 const Portfolio = (props: Props) => {
@@ -128,7 +131,10 @@ const Portfolio = (props: Props) => {
     userAssetList,
     isLoading,
     isFetchingPortfolioPriceHistory,
-    transactionSpotPrices
+    transactionSpotPrices,
+    onRetryTransaction,
+    onSpeedupTransaction,
+    onCancelTransaction
   } = props
 
   const [filteredAssetList, setfilteredAssetList] = React.useState<AccountAssetOptionType[]>(userAssetList)
@@ -347,6 +353,9 @@ const Portfolio = (props: Props) => {
                   displayAccountName={true}
                   onSelectAccount={onSelectAccount}
                   onSelectAsset={onSelectAsset}
+                  onRetryTransaction={onRetryTransaction}
+                  onSpeedupTransaction={onSpeedupTransaction}
+                  onCancelTransaction={onCancelTransaction}
                 />
               )}
             </>

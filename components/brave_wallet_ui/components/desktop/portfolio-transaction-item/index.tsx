@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as EthereumBlockies from 'ethereum-blockies'
 
 import { getLocale } from '../../../../common/locale'
-import { TransactionPopup } from '../'
 import {
   AssetPriceInfo,
   EthereumChain,
@@ -45,6 +44,10 @@ import {
   TransactionFeeTooltipTitle
 } from './style'
 import TransactionFeesTooltip from '../transaction-fees-tooltip'
+import {
+  default as TransactionPopup,
+  TransactionPopupItem
+} from '../transaction-popup'
 
 export interface Props {
   selectedNetwork: EthereumChain
@@ -56,6 +59,9 @@ export interface Props {
   displayAccountName: boolean
   onSelectAccount: (account: WalletAccountType) => void
   onSelectAsset: (asset: TokenInfo) => void
+  onRetryTransaction: (transaction: TransactionInfo) => void
+  onSpeedupTransaction: (transaction: TransactionInfo) => void
+  onCancelTransaction: (transaction: TransactionInfo) => void
 }
 
 const PortfolioTransactionItem = (props: Props) => {
@@ -68,7 +74,10 @@ const PortfolioTransactionItem = (props: Props) => {
     displayAccountName,
     accounts,
     onSelectAccount,
-    onSelectAsset
+    onSelectAsset,
+    onRetryTransaction,
+    onSpeedupTransaction,
+    onCancelTransaction
   } = props
   const [showTransactionPopup, setShowTransactionPopup] = React.useState<boolean>(false)
 
@@ -97,13 +106,25 @@ const PortfolioTransactionItem = (props: Props) => {
   }
 
   const onClickViewOnBlockExplorer = () => {
-    const exporerURL = selectedNetwork.blockExplorerUrls[0]
-    if (exporerURL && transaction.txHash) {
-      const url = `${exporerURL}/tx/${transaction.txHash}`
+    const explorerURL = selectedNetwork.blockExplorerUrls[0]
+    if (explorerURL && transaction.txHash) {
+      const url = `${explorerURL}/tx/${transaction.txHash}`
       window.open(url, '_blank')
     } else {
       alert(getLocale('braveWalletTransactionExplorerMissing'))
     }
+  }
+
+  const onClickRetryTransaction = () => {
+    onRetryTransaction(transaction)
+  }
+
+  const onClickSpeedupTransaction = () => {
+    onSpeedupTransaction(transaction)
+  }
+
+  const onClickCancelTransaction = () => {
+    onCancelTransaction(transaction)
   }
 
   const findWalletAccount = React.useCallback((address: string) => {
@@ -301,7 +322,35 @@ const PortfolioTransactionItem = (props: Props) => {
           <MoreIcon />
         </MoreButton>
         {showTransactionPopup &&
-          <TransactionPopup onClickView={onClickViewOnBlockExplorer} />
+          <TransactionPopup>
+            {[TransactionStatus.Approved, TransactionStatus.Submitted, TransactionStatus.Confirmed] &&
+              <TransactionPopupItem
+                onClick={onClickViewOnBlockExplorer}
+                text={getLocale('braveWalletTransactionExplorer')}
+              />
+            }
+
+            {[TransactionStatus.Submitted, TransactionStatus.Approved].includes(transactionDetails.status) &&
+              <TransactionPopupItem
+                onClick={onClickSpeedupTransaction}
+                text={getLocale('braveWalletTransactionSpeedup')}
+              />
+            }
+
+            {[TransactionStatus.Submitted, TransactionStatus.Approved].includes(transactionDetails.status) &&
+              <TransactionPopupItem
+                onClick={onClickCancelTransaction}
+                text={getLocale('braveWalletTransactionCancel')}
+              />
+            }
+
+            {[TransactionStatus.Error].includes(transactionDetails.status) &&
+              <TransactionPopupItem
+                onClick={onClickRetryTransaction}
+                text={getLocale('braveWalletTransactionRetry')}
+              />
+            }
+          </TransactionPopup>
         }
       </DetailRow>
     </StyledWrapper>

@@ -22,6 +22,7 @@ import {
   MoreIcon,
   RightSide
 } from './style'
+import { TransactionPopupItem } from '../transaction-popup'
 
 export interface Props {
   address: string
@@ -83,7 +84,17 @@ const PortfolioAccountItem = (props: Props) => {
           <MoreIcon />
         </MoreButton>
         {showAccountPopup &&
-          <TransactionPopup onClickView={onClickViewOnBlockExplorer} />
+          <TransactionPopup>
+            <TransactionPopupItem
+              onClick={onClickViewOnBlockExplorer}
+              text={getLocale('braveWalletTransactionExplorer')}
+            />
+
+            <TransactionPopupItem
+              onClick={onClickViewOnBlockExplorer}
+              text={getLocale('braveWalletTransactionExplorer')}
+            />
+          </TransactionPopup>
         }
       </RightSide>
     </StyledWrapper>

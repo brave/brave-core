@@ -348,6 +348,9 @@ provideStrings({
   braveWalletTransactionReceived: 'received',
   braveWalletTransactionExplorerMissing: 'Block explorer URL is not available.',
   braveWalletTransactionExplorer: 'View on block explorer',
+  braveWalletTransactionSpeedup: 'Speedup transaction',
+  braveWalletTransactionCancel: 'Cancel transaction',
+  braveWalletTransactionRetry: 'Retry transaction',
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
 
   // Edit Gas
