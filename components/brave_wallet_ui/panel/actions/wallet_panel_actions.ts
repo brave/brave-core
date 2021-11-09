@@ -11,9 +11,15 @@ import {
   EthereumChainRequestPayload,
   SignMessagePayload,
   SignMessageProcessedPayload,
-  SignMessageHardwareProcessedPayload
+  SignMessageHardwareProcessedPayload,
+  SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
-import { SwapErrorResponse, SwapResponse, SignMessageData } from '../../constants/types'
+import {
+  SwapErrorResponse,
+  SwapResponse,
+  SignMessageData,
+  SwitchChainRequest
+} from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
 export const connectToSite = createAction<AccountPayloadType>('connectToSite')
@@ -22,6 +28,8 @@ export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const addEthereumChain = createAction<EthereumChainPayload>('addEthereumChain')
 export const addEthereumChainRequestCompleted = createAction<EthereumChainRequestPayload>('AddEthereumChainRequestCompleted')
+export const switchEthereumChain = createAction<SwitchChainRequest>('switchEthereumChain')
+export const switchEthereumChainProcessed = createAction<SwitchEthereumChainProcessedPayload>('switchEthereumChainProcessed')
 export const showApproveTransaction = createAction('showApproveTransaction')
 export const setupWallet = createAction('setupWallet')
 export const expandWallet = createAction('expandWallet')

@@ -160,38 +160,10 @@ void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
 void BraveWalletProviderImpl::SwitchEthereumChain(
     const std::string& chain_id,
     SwitchEthereumChainCallback callback) {
-  if (!GetNetworkURL(prefs_, chain_id).is_valid()) {
-    std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  // reject the request until UI is ready
-  OnSwitchEthereumChain(std::move(callback), chain_id, false);
-}
-
-void BraveWalletProviderImpl::OnSwitchEthereumChain(
-    SwitchEthereumChainCallback callback,
-    const std::string& chain_id,
-    bool approved) {
-  if (!approved) {
-    std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kUserRejectedRequest),
-        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
-    return;
-  }
-
-  // We already check chain id validiy in
-  // BraveWalletProviderImpl::SwitchEthereumChain so this should always be
-  // successful unless chain id differs or we add more check other than chain id
-  if (!rpc_controller_->SetNetwork(chain_id)) {
-    std::move(callback).Run(
-        static_cast<int>(ProviderErrors::kInvalidParams),
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-  std::move(callback).Run(0, "");
+  // Only show bubble when there is no immediate error
+  if (rpc_controller_->AddSwitchEthereumChainRequest(
+          chain_id, delegate_->GetOrigin(), std::move(callback)))
+    delegate_->ShowBubble();
 }
 
 void BraveWalletProviderImpl::AddAndApproveTransaction(

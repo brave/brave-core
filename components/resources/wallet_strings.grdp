@@ -5,10 +5,11 @@
   <message name="IDS_BRAVE_WALLET" desc="The name of the feature Brave Wallet">Brave Wallet</message>
   <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for brave provider call if the user rejected the request">The user rejected the request.</message>
   <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The text of the response for wallet_addEthereumChain call with invalid parameters">Invalid parameters.</message>
+  <message name="IDS_WALLET_UNKNOWN_CHAIN" desc="The text of the response for wallet_switchEthereumChain call with unknown">Chain <ph name="VALUE">$1<ex>1</ex></ph> hasn't been added</message>
   <message name="IDS_WALLET_EXPECTED_SINGLE_PARAMETER" desc="The text of the response for wallet_addEthereumChain call with empty parameters">Expected single, object parameter.</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
-  <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_addEthereumChain call for existing request">A request is already in progress</message>
+  <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_NOT_AUTHED" desc="The text of the response for eth_sendTransaction">'from' is not authorized to send transactions</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA" desc="Transaction data is not validated">Transaction data 'to' or 'data' must be specified</message>

@@ -35,6 +35,7 @@ export type tabs = 'network' | 'details'
 
 export interface Props {
   siteOrigin: string
+  selectedNetwork: EthereumChain
   networkPayload: EthereumChain
   panelType: 'add' | 'change'
   onCancel: () => void
@@ -46,6 +47,7 @@ export interface Props {
 function AllowAddChangeNetworkPanel (props: Props) {
   const {
     siteOrigin,
+    selectedNetwork,
     networkPayload,
     panelType,
     onCancel,
@@ -53,8 +55,9 @@ function AllowAddChangeNetworkPanel (props: Props) {
     onApproveChangeNetwork,
     onLearnMore
   } = props
-  const rpcUrl = networkPayload.rpcUrls ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
-  const blockUrl = networkPayload.blockExplorerUrls ? networkPayload.blockExplorerUrls[0] : ''
+  const selectedNetworkUrl = selectedNetwork.rpcUrls.length ? (new URL(selectedNetwork.rpcUrls[0])).hostname : ''
+  const rpcUrl = networkPayload.rpcUrls.length ? (new URL(networkPayload.rpcUrls[0])).hostname : ''
+  const blockUrl = networkPayload.blockExplorerUrls.length ? networkPayload.blockExplorerUrls[0] : ''
 
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
   const orb = React.useMemo(() => {
@@ -68,9 +71,9 @@ function AllowAddChangeNetworkPanel (props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{reduceNetworkDisplayName(networkPayload.chainName)}</NetworkText>
+        <NetworkText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</NetworkText>
         <AddressAndOrb>
-          <AddressText>{reduceAddress(rpcUrl)}</AddressText>
+          <AddressText>{reduceAddress(selectedNetworkUrl)}</AddressText>
           <AccountCircle orb={orb} />
         </AddressAndOrb>
       </TopRow>

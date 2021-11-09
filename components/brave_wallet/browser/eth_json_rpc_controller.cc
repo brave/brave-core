@@ -10,6 +10,7 @@
 #include "base/bind.h"
 #include "base/environment.h"
 #include "base/no_destructor.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_address.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
@@ -983,6 +984,72 @@ void EthJsonRpcController::OnGetSupportsInterface(
   }
 
   std::move(callback).Run(true, is_supported);
+}
+
+void EthJsonRpcController::GetPendingSwitchChainRequests(
+    GetPendingSwitchChainRequestsCallback callback) {
+  std::vector<mojom::SwitchChainRequestPtr> requests;
+  for (const auto& request : switch_chain_requests_) {
+    requests.push_back(
+        mojom::SwitchChainRequest::New(request.first, request.second));
+  }
+  std::move(callback).Run(std::move(requests));
+}
+
+void EthJsonRpcController::NotifySwitchChainRequestProcessed(
+    bool approved,
+    const GURL& origin) {
+  if (!switch_chain_requests_.contains(origin) ||
+      !switch_chain_callbacks_.contains(origin)) {
+    return;
+  }
+  if (approved) {
+    // We already check chain id validiy in
+    // EthJsonRpcController::AddSwitchEthereumChainRequest so this should always
+    // be successful unless chain id differs or we add more check other than
+    // chain id
+    CHECK(SetNetwork(switch_chain_requests_[origin]));
+  }
+  auto callback = std::move(switch_chain_callbacks_[origin]);
+  switch_chain_requests_.erase(origin);
+  switch_chain_callbacks_.erase(origin);
+
+  if (approved)
+    std::move(callback).Run(0, "");
+  else
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+}
+
+bool EthJsonRpcController::AddSwitchEthereumChainRequest(
+    const std::string& chain_id,
+    const GURL& origin,
+    SwitchEthereumChainRequestCallback callback) {
+  if (!GetNetworkURL(prefs_, chain_id).is_valid()) {
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kUnknownChain),
+        l10n_util::GetStringFUTF8(IDS_WALLET_UNKNOWN_CHAIN,
+                                  base::ASCIIToUTF16(chain_id)));
+    return false;
+  }
+
+  // Already on the chain
+  if (GetChainId() == chain_id) {
+    std::move(callback).Run(0, "");
+    return false;
+  }
+
+  // There can be only 1 request per origin
+  if (switch_chain_requests_.contains(origin)) {
+    std::move(callback).Run(
+        static_cast<int>(ProviderErrors::kUserRejectedRequest),
+        l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    return false;
+  }
+  switch_chain_requests_[origin] = chain_id;
+  switch_chain_callbacks_[origin] = std::move(callback);
+  return true;
 }
 
 }  // namespace brave_wallet
