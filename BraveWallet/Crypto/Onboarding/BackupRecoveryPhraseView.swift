@@ -55,7 +55,7 @@ struct BackupRecoveryPhraseView: View {
         warningView
           .padding(.vertical)
         RecoveryPhraseGrid(data: recoveryWords, id: \.self) { word in
-          Text(verbatim: word.value)
+          Text(verbatim: "\(word.index + 1). \(word.value)")
             .font(.footnote.bold())
             .padding(8)
             .frame(maxWidth: .infinity)
