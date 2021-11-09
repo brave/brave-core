@@ -10,7 +10,6 @@ import * as WalletActions from '../actions/wallet_actions'
 import {
   AddUserAssetPayloadType,
   ChainChangedEventPayloadType,
-  InitializedPayloadType,
   RemoveSitePermissionPayloadType,
   RemoveUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
@@ -35,6 +34,7 @@ import {
   TransactionInfo,
   WalletAccountType,
   WalletState,
+  WalletInfo,
   TransactionStatus
 } from '../../constants/types'
 import { toWeiHex } from '../../utils/format-balances'
@@ -200,7 +200,7 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
   await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
-handler.on(WalletActions.initialized.getType(), async (store: Store, payload: InitializedPayloadType) => {
+handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
     await store.dispatch(refreshTransactionHistory(payload.selectedAccount))

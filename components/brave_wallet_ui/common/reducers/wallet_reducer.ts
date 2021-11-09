@@ -23,11 +23,12 @@ import {
   TransactionInfo,
   TransactionStatus,
   WalletAccountType,
-  WalletState
+  WalletState,
+  WalletInfoBase,
+  WalletInfo
 } from '../../constants/types'
 import {
   ActiveOriginChanged,
-  InitializedPayloadType,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
   SitePermissionsPayloadType,
@@ -87,7 +88,7 @@ const getAccountType = (info: AccountInfo) => {
   return info.isImported ? 'Secondary' : 'Primary'
 }
 
-reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
+reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
   const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
       id: `${idx + 1}`,
@@ -417,7 +418,7 @@ reducer.on(WalletActions.setMetaMaskInstalled, (state: WalletState, payload: boo
   }
 })
 
-reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: InitializedPayloadType) => {
+reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: WalletInfoBase) => {
   const accounts = state.accounts
   const updatedAccounts = payload.accountInfos.map((info: AccountInfo) => {
     let account = accounts.find((account: WalletAccountType) => account.address === info.address)

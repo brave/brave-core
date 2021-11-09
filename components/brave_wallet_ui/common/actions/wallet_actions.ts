@@ -5,7 +5,6 @@
 
 import { createAction } from 'redux-act'
 import {
-  InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
   IsEip1559Changed,
@@ -42,11 +41,13 @@ import {
   AccountTransactions,
   DefaultWallet,
   GasEstimation,
-  ApproveERC20Params
+  ApproveERC20Params,
+  WalletInfoBase,
+  WalletInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
-export const initialized = createAction<InitializedPayloadType>('initialized')
+export const initialized = createAction<WalletInfo>('initialized')
 export const lockWallet = createAction('lockWallet')
 export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet')
 export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
@@ -104,7 +105,7 @@ export const removeSitePermission = createAction<RemoveSitePermissionPayloadType
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
 export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
-export const refreshAccountInfo = createAction<InitializedPayloadType>('refreshAccountInfo')
+export const refreshAccountInfo = createAction<WalletInfoBase>('refreshAccountInfo')
 export const autoLockMinutesChanged = createAction('autoLockMinutesChanged')
 export const retryTransaction = createAction<TransactionInfo>('retryTransaction')
 export const cancelTransaction = createAction<TransactionInfo>('cancelTransaction')

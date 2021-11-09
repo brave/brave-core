@@ -280,13 +280,16 @@ export interface AccountInfo {
   hardware?: HardwareInfo
 }
 
-export interface WalletInfo {
+export interface WalletInfoBase {
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: AppObjectType[]
   isWalletBackedUp: boolean
-  visibleTokens: string[]
   accountInfos: AccountInfo[]
+}
+
+export interface WalletInfo extends WalletInfoBase {
+  visibleTokens: string[]
   selectedAccount: string
 }
 
@@ -512,7 +515,7 @@ export interface CreateWalletReturnInfo {
 }
 
 export interface WalletAPIHandler {
-  getWalletInfo: () => Promise<WalletInfo>
+  getWalletInfo: () => Promise<WalletInfoBase>
   addFavoriteApp: (appItem: AppObjectType) => Promise<void>
   removeFavoriteApp: (appItem: AppObjectType) => Promise<void>
   setInitialVisibleTokens: (visibleAssets: string[]) => Promise<void>

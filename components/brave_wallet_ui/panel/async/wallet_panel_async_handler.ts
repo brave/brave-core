@@ -51,7 +51,7 @@ function getWalletState (store: Store): WalletState {
 async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
-  store.dispatch(WalletActions.initialized(result))
+  store.dispatch(WalletActions.initialized({...result, selectedAccount:'', visibleTokens: []}))
 }
 
 async function getPendingChainRequest () {
