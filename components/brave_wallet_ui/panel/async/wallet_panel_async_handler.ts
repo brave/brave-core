@@ -12,7 +12,7 @@ import {
   PanelState,
   WalletState,
   TransactionStatus,
-  SignMessageData,
+  SignMessageRequest,
   SwitchChainRequest
 } from '../../constants/types'
 import {
@@ -64,6 +64,7 @@ async function getPendingChainRequest () {
   if (chains && chains.length) {
     return chains[0]
   }
+  return null
 }
 
 async function getPendingSwitchChainRequest () {
