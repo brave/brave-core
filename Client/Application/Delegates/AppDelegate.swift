@@ -316,6 +316,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Clean up BraveCore
         BraveSyncAPI.removeAllObservers()
+        Preferences.AppState.backgroundedCleanly.value = true
     }
     
     func updateShortcutItems(_ application: UIApplication) {
