@@ -55,7 +55,8 @@ import {
   QueueStepRow,
   QueueStepButton,
   TopColumn,
-  AssetIcon
+  AssetIcon,
+  ErrorText
 } from './style'
 
 import {
@@ -72,6 +73,7 @@ export type confirmPanelTabs = 'transaction' | 'details'
 export interface Props {
   accounts: WalletAccountType[]
   visibleTokens: TokenInfo[]
+  fullTokenList: TokenInfo[]
   transactionInfo: TransactionInfo
   selectedNetwork: EthereumChain
   transactionSpotPrices: AssetPriceInfo[]
@@ -98,6 +100,7 @@ function ConfirmTransactionPanel (props: Props) {
     gasEstimates,
     transactionsQueueLength,
     transactionQueueNumber,
+    fullTokenList,
     onQueueNextTransction,
     onConfirm,
     onReject,
@@ -128,7 +131,7 @@ function ConfirmTransactionPanel (props: Props) {
   const siteURL = 'https://app.compound.finance'
 
   const findSpotPrice = usePricing(transactionSpotPrices)
-  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens)
+  const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
   const transactionDetails = parseTransaction(transactionInfo)
 
   React.useEffect(() => {
@@ -391,6 +394,11 @@ function ConfirmTransactionPanel (props: Props) {
           {getLocale('braveWalletQueueRejectAll').replace('$1', transactionsQueueLength.toString())}
         </QueueStepButton>
       }
+      {transactionDetails.addressError &&
+        <ErrorText>
+          {transactionDetails.addressError}
+        </ErrorText>
+      }
       <ButtonRow>
         <NavButton
           buttonType='reject'
@@ -401,7 +409,7 @@ function ConfirmTransactionPanel (props: Props) {
           buttonType='confirm'
           text={getLocale('braveWalletAllowSpendConfirmButton')}
           onSubmit={onConfirm}
-          disabled={parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError}
+          disabled={transactionDetails.addressError || parseFloat(transactionDetails.gasFeeFiat) === 0 ? true : transactionDetails.insufficientFundsError}
         />
       </ButtonRow>
     </StyledWrapper>
