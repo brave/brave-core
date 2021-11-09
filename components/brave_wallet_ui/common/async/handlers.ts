@@ -22,7 +22,7 @@ import {
   TransactionStatusChanged
 } from '../constants/action_types'
 import {
-  AppObjectType,
+  AppItem,
   ApproveERC20Params,
   AssetPriceTimeframe,
   ER20TransferParams,
@@ -177,13 +177,13 @@ handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: U
   store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
 })
 
-handler.on(WalletActions.addFavoriteApp.getType(), async (store: Store, appItem: AppObjectType) => {
+handler.on(WalletActions.addFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
   await walletHandler.addFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appItem: AppObjectType) => {
+handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
   await walletHandler.removeFavoriteApp(appItem)
   await refreshWalletInfo(store)

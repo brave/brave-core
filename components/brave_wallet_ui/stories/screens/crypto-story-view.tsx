@@ -8,7 +8,7 @@ import * as React from 'react'
 import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
-  AppObjectType,
+  AppItem,
   AppsListType,
   PriceDataObjectType,
   AccountAssetOptionType,
@@ -129,7 +129,7 @@ const CryptoStoryView = (props: Props) => {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
+  const [favoriteApps, setFavoriteApps] = React.useState<AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
@@ -144,11 +144,11 @@ const CryptoStoryView = (props: Props) => {
     setSelectedTab(path)
   }
 
-  const addToFavorites = (app: AppObjectType) => {
+  const addToFavorites = (app: AppItem) => {
     const newList = [...favoriteApps, app]
     setFavoriteApps(newList)
   }
-  const removeFromFavorites = (app: AppObjectType) => {
+  const removeFromFavorites = (app: AppItem) => {
     const newList = favoriteApps.filter(
       (fav) => fav.name !== app.name
     )

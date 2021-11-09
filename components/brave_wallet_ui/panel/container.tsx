@@ -39,7 +39,7 @@ import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
 import {
-  AppObjectType,
+  AppItem,
   AppsListType,
   WalletState,
   PanelState,
@@ -315,7 +315,7 @@ function Container (props: Props) {
   const onSetup = () => {
     props.walletPanelActions.setupWallet()
   }
-  const addToFavorites = (app: AppObjectType) => {
+  const addToFavorites = (app: AppItem) => {
     props.walletActions.addFavoriteApp(app)
   }
 
@@ -331,7 +331,7 @@ function Container (props: Props) {
     props.walletPanelActions.openWalletApps()
   }
 
-  const removeFromFavorites = (app: AppObjectType) => {
+  const removeFromFavorites = (app: AppItem) => {
     props.walletActions.removeFavoriteApp(app)
   }
 

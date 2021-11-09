@@ -23,7 +23,7 @@ import {
 import {
   WalletAccountType,
   PanelTypes,
-  AppObjectType,
+  AppItem,
   AppsListType,
   AccountAssetOptionType,
   BuySendSwapViewTypes,
@@ -325,7 +325,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>(
     accounts[0]
   )
-  const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
+  const [favoriteApps, setFavoriteApps] = React.useState<AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
@@ -408,11 +408,11 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     alert('Will expand to view more!')
   }
 
-  const addToFavorites = (app: AppObjectType) => {
+  const addToFavorites = (app: AppItem) => {
     const newList = [...favoriteApps, app]
     setFavoriteApps(newList)
   }
-  const removeFromFavorites = (app: AppObjectType) => {
+  const removeFromFavorites = (app: AppItem) => {
     const newList = favoriteApps.filter(
       (fav) => fav.name !== app.name
     )

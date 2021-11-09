@@ -24,7 +24,7 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
 import {
-  AppObjectType,
+  AppItem,
   WalletAccountType,
   EthereumChain,
   GetAllNetworksList,
@@ -50,8 +50,8 @@ export const initialize = createAction('initialize')
 export const initialized = createAction<WalletInfo>('initialized')
 export const lockWallet = createAction('lockWallet')
 export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet')
-export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
-export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
+export const addFavoriteApp = createAction<AppItem>('addFavoriteApp')
+export const removeFavoriteApp = createAction<AppItem>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
 export const addUserAsset = createAction<AddUserAssetPayloadType>('addUserAsset')
 export const addUserAssetError = createAction<boolean>('addUserAssetError')

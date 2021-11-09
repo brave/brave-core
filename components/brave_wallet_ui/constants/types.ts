@@ -158,17 +158,10 @@ export interface NavObjectType {
   id: NavTypes
 }
 
-export interface AppObjectType {
-  name: string
-  description: string
-  url: string
-  icon: string
-}
-
 export interface AppsListType {
   category: string
   categoryButtonText?: string
-  appList: AppObjectType[]
+  appList: BraveWallet.AppItem[]
 }
 
 export interface ChartTimelineObjectType {
@@ -196,7 +189,7 @@ export interface WalletState {
   hasInitialized: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  favoriteApps: AppObjectType[]
+  favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
@@ -284,7 +277,7 @@ export interface AccountInfo {
 export interface WalletInfoBase {
   isWalletCreated: boolean
   isWalletLocked: boolean
-  favoriteApps: AppObjectType[]
+  favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   accountInfos: AccountInfo[]
 }
