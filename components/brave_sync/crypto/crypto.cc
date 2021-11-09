@@ -157,5 +157,10 @@ bool PassphraseToBytes32(const std::string& passphrase,
   return true;
 }
 
+bool IsPassphraseValid(const std::string& passphrase) {
+  std::vector<uint8_t> bytes;
+  return PassphraseToBytes32(passphrase, &bytes);
+}
+
 }  // namespace crypto
 }  // namespace brave_sync
