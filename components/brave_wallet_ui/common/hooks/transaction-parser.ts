@@ -8,7 +8,6 @@ import * as React from 'react'
 import {
   AssetPriceInfo,
   EthereumChain,
-  MojoTime,
   TokenInfo,
   TransactionInfo,
   TransactionStatus,
@@ -26,6 +25,7 @@ import {
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
 import { getLocale } from '../../../common/locale'
+import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -40,7 +40,7 @@ interface ParsedTransactionFees {
 interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
-  createdTime: MojoTime
+  createdTime: TimeDelta
   status: TransactionStatus
   sender: string
   senderLabel: string

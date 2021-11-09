@@ -1,7 +1,10 @@
-// url.mojom.Url
-export interface Url {
-  url: string
-}
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 export interface WalletAccountType {
   id: string
@@ -402,7 +405,7 @@ export interface GetPriceReturnInfo {
 
 export interface GetPriceHistoryReturnInfo {
   price: string
-  date: MojoTime
+  date: TimeDelta
 }
 
 export interface GetPriceHistoryReturnObjectInfo {
@@ -619,9 +622,9 @@ export interface TransactionInfo {
   txType: TransactionType
   txParams: string[]
   txArgs: string[]
-  createdTime: MojoTime
-  submittedTime: MojoTime
-  confirmedTime: MojoTime
+  createdTime: TimeDelta
+  submittedTime: TimeDelta
+  confirmedTime: TimeDelta
 }
 
 export type AccountTransactions = {
@@ -806,10 +809,6 @@ export interface BraveWalletService {
 export interface RecoveryObject {
   value: string,
   id: number
-}
-
-export interface MojoTime {
-  microseconds: number
 }
 
 export type BuySendSwapViewTypes =
