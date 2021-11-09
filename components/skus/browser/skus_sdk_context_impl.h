@@ -28,6 +28,13 @@ class SkusSdkFetcher;
 
 namespace brave_rewards {
 
+// Context object used with the SKU SDK to provide 1) key/value pair storage
+// and 2) the fetcher used for contacting the SKU SDK endpoint via HTTPS.
+//
+// In the .cc, there are implementations for global methods originally defined
+// in `brave-rewards-cxx/src/shim.h`. These implementations are called from
+// Rust and will pass this context object along, so that the results can be
+// persisted.
 class SkusSdkContextImpl : public SkusSdkContext {
  public:
   // TODO(bridiver) - this is not the right place for this

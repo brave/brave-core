@@ -16,6 +16,14 @@
 
 namespace brave_rewards {
 
+// Used to conditionally inject a handler which exposes JavaScript methods
+// for the SKU SDK. The conditional logic ensures this is a Brave property
+// such as account.brave.com.
+//
+// Implementation-wise, those methods will only resolve in a regular
+// (non-private / non-guest / non-Tor) context.
+//
+// See `browser/brave_content_browser_client.cc` for more information.
 class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit BraveSkusRenderFrameObserver(content::RenderFrame* render_frame,
@@ -27,12 +35,20 @@ class BraveSkusRenderFrameObserver : public content::RenderFrameObserver {
   ~BraveSkusRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
+  void DidStartNavigation(
+      const GURL& url,
+      absl::optional<blink::WebNavigationType> navigation_type) override;
   void DidCreateScriptContext(v8::Local<v8::Context> context,
                               int32_t world_id) override;
 
  private:
   // RenderFrameObserver implementation.
   void OnDestruct() override;
+
+  bool isSkusSdkAllowed();
+
+  // only allow injection on Brave Software properties
+  GURL url_;
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<BraveSkusJSHandler> native_javascript_handle_;

@@ -25,7 +25,32 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-// This service is wrapping the calls to our SKU SDK
+// This is only intended to be used on account.brave.com and the dev / staging
+// counterparts. The accounts website will use this if present which allows a
+// safe way for the browser to intercept credentials which are used in the
+// browser.
+//
+// The first use-case for this credential redemption is with VPN. Folks
+// will be able to purchase VPN from account.brave.com and the browser can
+// detect the purchase and use those credentials during authentication when
+// establishing a connection to our partner providing the VPN service.
+//
+// There are a few different implementations using this service:
+// 1. RenderFrameObserver will (conditionally) inject a handler which uses
+//    Mojom to provide to call this in the browser process. See
+//    `brave_skus_js_handler.h` for more info.
+//
+// 2. The service can be called directly. For example, if we intercept the
+//    order / credential process for a person purchasing VPN, we may only
+//    call `CredentialSummary` to verify a credential exists (this never
+//    exposes the credentials). When the VPN service itself NEEDS the
+//    credentials, it can use this service to call
+//    `PrepareCredentialsPresentation`. If the credentials expire, the VPN
+//    service can call `FetchOrderCredentials`
+//
+// This implementation is meant to work on Android, Desktop, and iOS.
+// iOS will need to have a JS injection where the native handler can call
+// this service.
 //
 // For more information, please see:
 // https://github.com/brave-intl/br-rs/tree/skus
