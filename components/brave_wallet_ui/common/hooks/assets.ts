@@ -26,6 +26,26 @@ export default function useAssets (
     [fullTokenList]
   )
 
+  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(
+    () =>
+      userVisibleTokensInfo.map((token) => ({
+        ...token,
+        logo: `chrome://erc-token-images/${token.logo}`
+      })),
+    [userVisibleTokensInfo]
+  )
+
+  const sendAssetOptions: AccountAssetOptionType[] = React.useMemo(
+    () =>
+      userVisibleTokenOptions
+        .map((token) => ({
+          asset: token,
+          assetBalance: '0',
+          fiatBalance: '0'
+        })),
+    [userVisibleTokenOptions]
+  )
+
   const assetOptions: AccountAssetOptionType[] = React.useMemo(() => {
     const assets = tokenOptions
       .map((token) => ({
@@ -36,31 +56,17 @@ export default function useAssets (
 
     return [
       ETH,
+
       ...assets.filter((asset) => asset.asset.symbol === 'BAT'),
-      ...assets.filter((asset) => asset.asset.symbol !== 'BAT')
+
+      ...sendAssetOptions
+        .filter(asset => !['BAT', 'ETH'].includes(asset.asset.symbol)),
+
+      ...assets
+        .filter(asset => !['BAT', 'ETH'].includes(asset.asset.symbol))
+        .filter(asset => !sendAssetOptions.some(token => token.asset.symbol === asset.asset.symbol))
     ]
-  }, [tokenOptions])
-
-  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(
-    () =>
-      userVisibleTokensInfo.map((token) => ({
-        ...token,
-        logo: `chrome://erc-token-images/${token.logo}`
-      })),
-    [userVisibleTokensInfo]
-  )
-
-  const sendAssetOptions: AccountAssetOptionType[] = React.useMemo(() => {
-    const assets = userVisibleTokenOptions
-      .map((token) => ({
-        asset: token,
-        assetBalance: '0',
-        fiatBalance: '0'
-      }))
-    return assets
-  },
-    [userVisibleTokenOptions]
-  )
+  }, [tokenOptions, sendAssetOptions])
 
   return {
     tokenOptions,
