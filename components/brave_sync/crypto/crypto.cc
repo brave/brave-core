@@ -135,7 +135,7 @@ std::string PassphraseFromBytes32(const std::vector<uint8_t>& bytes) {
   std::string passphrase;
   if (bip39_mnemonic_from_bytes(nullptr, bytes.data(), bytes.size(), &words) !=
       WALLY_OK) {
-    LOG(ERROR) << "bip39_mnemonic_from_bytes failed";
+    CHECK(false) << "bip39_mnemonic_from_bytes failed";
     return passphrase;
   }
   passphrase = words;
