@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 20a701c91c9ea5568c7a31100c46143adb7764e9..78d99a21d62f79f675c7460af4f1afe0f864a94b 100644
+index 9c99d9de95f54ba303e5346028701a06c9988ecf..67c13fa0c67e4dd1b4a21ae485f45583e8f86cd4 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
 @@ -698,6 +698,7 @@ class BrowserView : public BrowserWindow,
