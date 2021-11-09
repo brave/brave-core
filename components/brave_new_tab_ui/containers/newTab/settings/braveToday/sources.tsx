@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { CaratRightIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
+import { Publisher } from '../../../../api/brave_news'
 import {
   SettingsRow,
   SettingsText,
@@ -49,7 +50,7 @@ function CategoryList (props: CategoryListProps) {
 
 type CategoryProps = {
   category: string
-  publishers: BraveToday.Publisher[]
+  publishers: Publisher[]
   onBack: () => any
   setPublisherPref: (publisherId: string, enabled: boolean) => any
 }
@@ -79,8 +80,8 @@ type SourcesProps = Props & {
 }
 
 export default function Sources (props: SourcesProps) {
-  const publishersByCategory = React.useMemo<Map<string, BraveToday.Publisher[]>>(() => {
-    const result = new Map<string, BraveToday.Publisher[]>()
+  const publishersByCategory = React.useMemo<Map<string, Publisher[]>>(() => {
+    const result = new Map<string, Publisher[]>()
     result.set(categoryNameAll, [])
     if (!props.publishers) {
       return result
@@ -89,15 +90,15 @@ export default function Sources (props: SourcesProps) {
       const forAll = result.get(categoryNameAll) || []
       forAll.push(publisher)
       result.set(categoryNameAll, forAll)
-      if (publisher.category) {
-        const forCategory = result.get(publisher.category) || []
+      if (publisher.categoryName) {
+        const forCategory = result.get(publisher.categoryName) || []
         forCategory.push(publisher)
-        result.set(publisher.category, forCategory)
+        result.set(publisher.categoryName, forCategory)
       }
     }
     // Sort all publishers alphabetically
     for (const publishers of result.values()) {
-      publishers.sort((a, b) => a.publisher_name.toLocaleLowerCase().localeCompare(b.publisher_name.toLocaleLowerCase()))
+      publishers.sort((a, b) => a.publisherName.toLocaleLowerCase().localeCompare(b.publisherName.toLocaleLowerCase()))
     }
     return result
   }, [props.publishers])

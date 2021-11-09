@@ -6,10 +6,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '../../../../../common/locale'
+import { Publisher } from '../../../../api/brave_news'
 import { OnSetPublisherPref } from '../'
 
 type Props = {
-  publisher: BraveToday.Publisher
+  publisher: Publisher
   onSetPublisherPref: OnSetPublisherPref
   title?: boolean
 }
@@ -156,7 +157,7 @@ export default function PublisherMetaComponent (props: Props) {
 
   const onClickDisablePublisher = React.useCallback(() => {
     props.onSetPublisherPref(
-      props.publisher.publisher_id,
+      props.publisher.publisherId,
       false
     )
   }, [props.publisher, props.onSetPublisherPref])
@@ -166,12 +167,12 @@ export default function PublisherMetaComponent (props: Props) {
     const publisherIndex = raw.indexOf('$1')
     if (publisherIndex === -1) {
       console.warn('Locale string for braveTodayDisableSourceCommand did not have a $1 replacement area for publisher name.', raw)
-      return `${raw} ${props.publisher.publisher_name}`
+      return `${raw} ${props.publisher.publisherName}`
     }
     return raw.substr(0, publisherIndex) +
-      props.publisher.publisher_name +
+      props.publisher.publisherName +
       raw.substr(publisherIndex + 2)
-  }, [props.publisher.publisher_name])
+  }, [props.publisher.publisherName])
 
   return (
     <PublisherMeta>
@@ -183,7 +184,7 @@ export default function PublisherMetaComponent (props: Props) {
         aria-expanded={isMenuOpen ? 'true' : 'false'}
       >
         <Text>
-          {props.publisher.publisher_name}
+          {props.publisher.publisherName}
         </Text>
         {isMenuOpen &&
           <Menu

@@ -1,0 +1,64 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_today/browser/brave_news_controller.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "content/public/browser/browser_context.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace brave_news {
+
+// static
+BraveNewsControllerFactory* BraveNewsControllerFactory::GetInstance() {
+  return base::Singleton<BraveNewsControllerFactory>::get();
+}
+
+// static
+BraveNewsController* BraveNewsControllerFactory::GetForContext(
+    content::BrowserContext* context) {
+  return static_cast<BraveNewsController*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
+}
+
+BraveNewsControllerFactory::BraveNewsControllerFactory()
+    : BrowserContextKeyedServiceFactory(
+          "BraveNewsControllerFactory",
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(brave_ads::AdsServiceFactory::GetInstance());
+  DependsOn(HistoryServiceFactory::GetInstance());
+}
+
+BraveNewsControllerFactory::~BraveNewsControllerFactory() = default;
+
+KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
+    content::BrowserContext* context) const {
+  if (!brave::IsRegularProfile(context)) {
+    return nullptr;
+  }
+  auto* profile = Profile::FromBrowserContext(context);
+  if (!profile) {
+    return nullptr;
+  }
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  auto* history_service = HistoryServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  return new BraveNewsController(profile->GetPrefs(), ads_service,
+                                 history_service,
+                                 profile->GetURLLoaderFactory());
+}
+
+content::BrowserContext* BraveNewsControllerFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  return chrome::GetBrowserContextRedirectedInIncognito(context);
+}
+
+}  // namespace brave_news

@@ -20,7 +20,7 @@ function getActions () {
 }
 
 // TODO(petemill): privateCDN should be in /common/
-import { getUnpaddedAsDataUrl } from '../../brave_extension/extension/brave_extension/background/today/privateCDN'
+import { getUnpaddedAsDataUrl } from '../../common/privateCDN'
 import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 
 // @ts-ignore

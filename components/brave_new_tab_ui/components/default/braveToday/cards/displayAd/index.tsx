@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { DisplayAd } from '../../../../../api/brave_news'
 import VisibilityTimer from '../../../../../helpers/visibilityTimer'
 import { getLocale } from '../../../../../../common/locale'
 import * as Card from '../../cardSizes'
@@ -23,7 +24,7 @@ type Props = {
 
 export default function CardDisplayAd (props: Props) {
   // Content is retrieved when the element is close to the viewport
-  const [content, setContent] = React.useState<BraveToday.DisplayAd | undefined | null>(undefined)
+  const [content, setContent] = React.useState<DisplayAd | undefined | null>(undefined)
   const [cardRef] = useScrollIntoView(props.shouldScrollIntoView || false)
   const onClick = useVisitDisplayAdClickHandler(props.onVisitDisplayAd, content ? { ad: content } : undefined)
   const innerRef = React.useRef<HTMLElement>(null)
@@ -45,7 +46,7 @@ export default function CardDisplayAd (props: Props) {
   // Ask for and render the ad only when we're scrolled close to it
   const handleOnNearViewport = React.useCallback(async () => {
     // Get the ad and display it
-    const ad = await props.getContent()
+    const { ad } = await props.getContent()
     // Request may not actually come back with an ad
     if (ad) {
       setContent(ad)
@@ -59,6 +60,14 @@ export default function CardDisplayAd (props: Props) {
     // verbose ref type conversion due to https://stackoverflow.com/questions/61102101/cannot-assign-refobjecthtmldivelement-to-refobjecthtmlelement-instance
     return <div ref={contentTrigger}><div ref={cardRef as unknown as React.RefObject<HTMLDivElement>} /></div>
   }
+  let isImageUnpadded = true
+  let imageUrl: string = ''
+  if (content.image.paddedImageUrl) {
+    imageUrl = content.image.paddedImageUrl.url
+    isImageUnpadded = false
+  } else if (content.image.imageUrl) {
+    imageUrl = content.image.imageUrl.url
+  }
   // Render ad when one is available for this unit
   // TODO(petemill): Avoid nested links
   return (
@@ -66,9 +75,10 @@ export default function CardDisplayAd (props: Props) {
       <Styles.BatAdLabel href='chrome://rewards'>
         {getLocale('ad')}
       </Styles.BatAdLabel>
-      <a onClick={onClick} href={content.targetUrl} ref={cardRef}>
+      <a onClick={onClick} href={content.targetUrl.url} ref={cardRef}>
         <CardImage
-          imageUrl={content.imageUrl}
+          isUnpadded={isImageUnpadded}
+          imageUrl={imageUrl}
           isPromoted={true}
         />
         <Card.Content>

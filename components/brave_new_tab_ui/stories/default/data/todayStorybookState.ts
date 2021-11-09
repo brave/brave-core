@@ -1,5 +1,31 @@
 import { boolean } from '@storybook/addon-knobs'
+import * as BraveNews from '../../../api/brave_news'
 import { BraveTodayState } from '../../../reducers/today'
+
+// Generate feed page from real data in devtools:
+// let pids = [
+//   "5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5",
+//   "gd4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5"
+// ]
+//
+// copy(newState.feed.pages[0].items.map( i => ({ ...i, items: i.items.map(ii => {
+//   let data = ii.article?.data || ii.promotedArticle?.data || ii.deal?.data
+//   if (ii.article) { data = ii.article.data }
+//   if (ii.promotedArticle) { data = ii.promotedArticle.data }
+//   data.publishTime.internalValue = data.publishTime.internalValue.toString()
+//   data.publisherId = pids[Math.floor(Math.random() * (pids.length - 1))]
+//   if (!ii.article) ii.article = "undefined"
+//   if (!ii.promotedArticle) ii.promotedArticle = "undefined"
+//   if (!ii.deal) ii.deal = "undefined"
+//   return ii
+// })})))
 
 export default function getTodayState (): BraveTodayState {
   const hasDataError = boolean('Today data fetch error?', false)
@@ -12,961 +38,1684 @@ export default function getTodayState (): BraveTodayState {
     cardsVisited: 0,
     publishers: hasDataError ? undefined : {
       ['5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 1`,
-        category: `Tech`,
-        enabled: false,
-        user_enabled: true
+        publisherId: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 1`,
+        categoryName: `Tech`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
       ['4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 2`,
-        category: `Top News`,
-        enabled: false,
-        user_enabled: null
+        publisherId: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 2`,
+        categoryName: `Top News`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
       ['a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 3`,
-        category: `Tech 2`,
-        enabled: false,
-        user_enabled: true
+        publisherId: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 3`,
+        categoryName: `Tech 2`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
       ['b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 4`,
-        category: `Top News 1`,
-        enabled: false,
-        user_enabled: null
+        publisherId: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 4`,
+        categoryName: `Top News 1`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
       ['c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name`,
-        category: `Tech 2`,
-        enabled: false,
-        user_enabled: true
+        publisherId: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name`,
+        categoryName: `Tech 2`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
       ['d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 6`,
-        category: `Top News 2`,
-        enabled: false,
-        user_enabled: null
+        publisherId: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 6`,
+        categoryName: `Top News 2`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
       ['eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 7`,
-        category: `Top News 3`,
-        enabled: false,
-        user_enabled: null
+        publisherId: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 7`,
+        categoryName: `Top News 3`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
       ['fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 8`,
-        category: `Tech 3`,
-        enabled: false,
-        user_enabled: true
+        publisherId: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 8`,
+        categoryName: `Tech 3`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
       ['gd4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5']: {
-        publisher_id: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `Test Publisher 9`,
-        category: `Top News 4`,
-        enabled: false,
-        user_enabled: null
+        publisherId: `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+        publisherName: `Test Publisher 9`,
+        categoryName: `Top News 4`,
+        isEnabled: false,
+        userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }
     },
     feed: hasDataError ? undefined : {
       hash: `123abc`,
-      featuredArticle: {
-        category: `Top News`,
-        publish_time: `2020-10-22 00:09:00 UTC`,
-        url: `https://www.npr.org/2020/10/21/926445682/u-s-blames-iran-for-threatening-election-emails-says-russia-may-interfere-too?utm_medium=RSS&utm_campaign=news`,
-        img: `https://pcdn.brave.software/brave-today/cache/9bbfe86e499867a3988d7b089daa757cb7762a6a9d9f3b9836c4f5b8d8cd610b.jpg.pad`,
-        title: `U.S. Blames Iran For Threatening Election Emails, Says Russia May Interfere Too`,
-        description: `The director of national intelligence and the FBI director said on Wednesday night that U.S. officials believe Iranian influence-mongers are behind an election-intimidation scam.`,
-        content_type: `article`,
-        publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-        publisher_name: `NPR`,
-        url_hash: `7d36ae2500e2952a49205ee549508046f38aa379b33c138eaa25076447899cd4`,
-        padded_img: `https://pcdn.brave.software/brave-today/cache/9bbfe86e499867a3988d7b089daa757cb7762a6a9d9f3b9836c4f5b8d8cd610b.jpg.pad`,
-        score: 18.525096955122685,
-        points: 18.525096955122685,
-        relative_time: `about 4 hours ago`
+      featuredItem: {
+        promotedArticle: undefined,
+        deal: undefined,
+        article: {
+          data: {
+            categoryName: `Top News`,
+            description: `Here's everything you need to know about the Haunted Hallows event, including how to unlock the Batmobile.`,
+            image: { imageUrl: undefined, paddedImageUrl: { url: 'https://pcdn.brave.com/brave-today/cache/fe949032ae151bb1257fd5301c5af8c1822982876b26739f92a5e71c5f06a2ec.jpg.pad' } },
+            publishTime: { internalValue: BigInt('13278618001000000') },
+            publisherId: `d75d65f0f747650ef1ea11adb0029f9d577c629a080b5f60ec80d125b2bf205b`,
+            publisherName: `Newsweek`,
+            relativeTimeDescription: `1 hour ago`,
+            urlHash: ``,
+            score: 14.200669212327124,
+            title: `'Rocket League' Haunted Hallows 2021: Details Revealed and How to Unlock Batmobile Cars`,
+            url: { url: 'https://www.newsweek.com/rocket-league-haunted-hallows-halloween-2021-batmobile-price-date-1638020' }
+          }
+        }
       },
       pages: [
         {
-          promotedArticle: {
-            creative_instance_id: '31ad7084-4168-4ea3-a0ec-fc4768e0aab0',
-            category: `Brave Partners`,
-            publish_time: `2020-10-21 21:46:00 UTC`,
-            url: `https://www.autoblog.com/2020/10/21/tesla-quarterly-earnings-net-profit/`,
-            img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
-            title: `Tesla posts net profit for fifth straight quarter`,
-            description: `Filed under:\n\t\t\t\t\t    Earnings/Financials,Green,Tesla,Electric\n\t\t\t\t\t    Tesla charged through a summertime auto industry sales slump in the U.S. to post stronger-than-expected net earnings for the third quarter.  The electric car and solar panel maker says Wednesday that it made $331 million, or 27 cents per share, for its fifth-straight profitable quarter.  Excluding special items such as stock-based compensation, Tesla made 76 cents per share, beating Wall Street estimates of 57 cents.Continue`,
-            content_type: `brave_partner`,
-            publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-            publisher_name: `Autoblog`,
-            url_hash: `963e1dbf6eccd9cdf0d273a89f3bc25c727f871104bf9e91d98db796fd09b696`,
-            padded_img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
-            score: 19.716764507900656,
-            points: 14.716764507900656,
-            relative_time: `about 6 hours ago`
-          },
-          articles: [
+          items: [
             {
-              category: `Cars`,
-              publish_time: `2020-10-21 21:46:00 UTC`,
-              url: `https://www.autoblog.com/2020/10/21/tesla-quarterly-earnings-net-profit/`,
-              img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
-              title: `Tesla posts net profit for fifth straight quarter`,
-              description: `Filed under:\n\t\t\t\t\t    Earnings/Financials,Green,Tesla,Electric\n\t\t\t\t\t    Tesla charged through a summertime auto industry sales slump in the U.S. to post stronger-than-expected net earnings for the third quarter.  The electric car and solar panel maker says Wednesday that it made $331 million, or 27 cents per share, for its fifth-straight profitable quarter.  Excluding special items such as stock-based compensation, Tesla made 76 cents per share, beating Wall Street estimates of 57 cents.Continue`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Autoblog`,
-              url_hash: `963e1dbf6eccd9cdf0d273a89f3bc25c727f871104bf9e91d98db796fd09b696`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/bc35efae36f1a6e590f68a30858c27c7e0adfb5f508bc1267798a2fe000eaea6.jpg.pad`,
-              score: 19.716764507900656,
-              points: 14.716764507900656,
-              relative_time: `about 6 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621116000000')
+                      },
+                      'title': `The agony of the feet: Why turf toe is such a dreaded injury in the NFL`,
+                      'description': `A misunderstood and often dismissed condition, a big toe hyperextension can cause crippling pain with every step, creating mental anguish and fatigue that take a huge toll on an athlete. After decades of occurrences, it's finally being taken seriously.`,
+                      'url': {
+                        'url': `https://www.espn.com/nfl/story/_/id/32379942/why-turf-toe-such-dreaded-injury-nfl`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/944ee78cb12ebda3d46c51a4fb91db1a961d3dee13b8eb1034798ae5ca2150dc.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `ESPN`,
+                      'score': 10.00343277763486,
+                      'relativeTimeDescription': `31 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Technology`,
-              publish_time: `2020-10-22 00:58:13 UTC`,
-              url: `https://www.theverge.com/2020/10/21/21527824/apple-designer-jony-ive-airbnb-hired-lovefrom`,
-              img: `https://pcdn.brave.software/brave-today/cache/6584f8d2fa523278504c9000b571972dc33a9df1fdcbb90cadcc98be5fbb6e6c.jpg.pad`,
-              title: `Jony Ive is bringing his design talents to... Airbnb`,
-              description: `\nI’m not going to pretend it makes obvious sense, but famed former Apple designer Jony Ive and his firm LoveFrom will soon be working for Airbnb. Yes, the company that primarily makes it easy for you to rent someone else’s home needs design help, and they’re going to the man best known for turning consumer tech on its head — as well as the occasional all-diamond diamond ring, a Christmas tree that is actually just a tree, and a magazine cover with no content. \nSo if you’ve been been put off rent`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `The Verge`,
-              url_hash: `dd467d2cb5e3e46141956e34e7e6a726b2dc4e19aabe038f053a64e1ad6ee860`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/6584f8d2fa523278504c9000b571972dc33a9df1fdcbb90cadcc98be5fbb6e6c.jpg.pad`,
-              score: 17.86715989718854,
-              points: 17.86715989718854,
-              relative_time: `about 3 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278620426000000')
+                      },
+                      'title': `Spain didn't win Nations League but Oyarzabal  is a star`,
+                      'description': `Spain's latest super-group of teenagers has caught the imagination this week, but 24-year-old Real Sociedad winger Mikel Oyarzabal might be the one to lead them.`,
+                      'url': {
+                        'url': `https://www.espn.com/soccer/spain-esp/story/4495432/spain-didnt-win-nations-league-but-they-have-a-gem-in-mikel-oyarzabal`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/9bd848550d4f968a1f93c46a1c4f142cb293ad8220092d8d3017b32d38b08c67.jpg.pad`
+                        }
+                      },
+                      'publisherId': `fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `ESPN - Football`,
+                      'score': 10.649119373004728,
+                      'relativeTimeDescription': `43 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Cars`,
-              publish_time: `2020-10-22 00:30:00 UTC`,
-              url: `https://jalopnik.com/tesla-finally-admits-model-3-bumpers-fall-off-in-rain-a-1845437462`,
-              img: `https://pcdn.brave.software/brave-today/cache/59a9899270a8bc92f463b674785fe56b15c27e9f598c7c521be4ffff4c1cd95e.jpg.pad`,
-              title: `Tesla Finally Admits Model 3 Bumpers Fall Off In Rain And Will Fix The Damage Under Warranty`,
-              description: `More than two years after Tesla initially told Jalopnik it was investigating why multiple brand-new Model 3s had their rear bumpers ripped off while driving on wet roads, the company effectively admitted there was a fault with the design and will cover the damage under the vehicle’s warranty. Read more...`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Jalopnik`,
-              url_hash: `299858a0c510881ac8b4d0f03e96d80176eb44f409b4d26f7f6b5b1efead6a2b`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/59a9899270a8bc92f463b674785fe56b15c27e9f598c7c521be4ffff4c1cd95e.jpg.pad`,
-              score: 18.270311098084218,
-              points: 18.270311098084218,
-              relative_time: `about 3 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621733000000')
+                      },
+                      'title': `Twitter is launching a Spaces accelerator program to pay live audio creators`,
+                      'description': `\n\nIllustration by Alex Castro / The Verge\n\nTwitter announced on Tuesday that it plans to support Twitter Spaces creators through a new three-month accelerator program called the Twitter Spaces Spark Program. Twitter’s plans follow a similar creator three-month program that Clubhouse launched in March 2021.\nThe Spark Program is designed to “discover and reward” around 150 Spaces creators with technical, financial, and marketing support, Twitter says. For anyone who applies and gets in, that inclu`,
+                      'url': {
+                        'url': `https://www.theverge.com/2021/10/13/22724450/twitter-spaces-accelerator-spark-clubhouse-creators`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/023e9e849e2a2af24c5271faa0ba5b25b15f4c90481a3583e948829ef40e881a.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Verge`,
+                      'score': 14.170018256553691,
+                      'relativeTimeDescription': `21 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Science`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621699000000')
+                      },
+                      'title': `Widespread masking nudges people to follow the crowd`,
+                      'description': `When wearing a mask to defend against the spread of COVID-19 becomes a trend, more people mask up themselves, a new study shows.`,
+                      'url': {
+                        'url': `https://www.futurity.org/covid-19-mask-viruses-2641802-2/?utm_source=rss&utm_medium=rss&utm_campaign=covid-19-mask-viruses-2641802-2`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/b735cb231cc73ce065177509ecda0ef35203e55bee5bfa798401a7bc67893182.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Futurity`,
+                      'score': 14.226233174417557,
+                      'relativeTimeDescription': `22 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Sports`,
-              publish_time: `2020-10-22 01:02:35 UTC`,
-              url: `https://www.cbssports.com/soccer/news/uefa-europa-league-matchday-1-storylines-all-eyes-on-zlatan-ibrahimovic-mourinho-returns-to-uel-with-spurs/`,
-              img: `https://pcdn.brave.software/brave-today/cache/98ea244c25672be6f964aa15fbcb3b9c4c2c4d57ac94303a2b095b5b3ff6b877.jpg.pad`,
-              title: `UEFA Europa League Matchday 1 storylines: All eyes on Zlatan Ibrahimovic; Mourinho returns to UEL with Spurs`,
-              description: `The group stage begins on Tuesday with 24 (!) mouth-watering matchups`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `CBSSports`,
-              url_hash: `af47253ffd1559bdc0ac420af25307b122cc2b70d12ce4ac12a4d97c4b3111a0`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/98ea244c25672be6f964aa15fbcb3b9c4c2c4d57ac94303a2b095b5b3ff6b877.jpg.pad`,
-              score: 17.796811025979405,
-              points: 17.796811025979405,
-              relative_time: `about 3 hours ago`
+              'cardType': 6,
+              'items': [
+                {
+                  article: undefined, deal: undefined, promotedArticle: {
+                    'data': {
+                      'categoryName': `Brave Partners`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621628000000')
+                      },
+                      'title': `Audiovox (VOXX) Q2 2022 Earnings Call Transcript`,
+                      'description': `VOXX earnings call for the period ending September 30, 2021.`,
+                      'url': {
+                        'url': `https://www.fool.com/earnings/call-transcripts/2021/10/13/audiovox-voxx-q2-2022-earnings-call-transcript/?source=thebrave&utm_source=foo&utm_medium=feed&utm_campaign=article`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/5b3d8da219eee17bce800689085994a6a851545aa99b35c374874f42a93c672b.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Motley Fool`,
+                      'score': 14.338672770645763,
+                      'relativeTimeDescription': `23 minutes ago`
+                    },
+                    'creativeInstanceId': `d2d506aa-5531-4069-8f85-7d9052f1b640`
+                  }
+                }
+              ]
             },
             {
-              category: `Culture`,
-              publish_time: `2020-10-22 01:54:10 UTC`,
-              url: `https://slate.com/news-and-politics/2020/10/trump-fauci-coronavirus-attack-idiotic.html?via=rss`,
-              img: `https://pcdn.brave.software/brave-today/cache/fe32ea9329a436fb80e38ba741539bc0cc5741dab5c01e8fe3257c2923a691ec.jpg.pad`,
-              title: `Trump’s Attack on Fauci Is Unbelievably Idiotic`,
-              description: `First the president got the pandemic wrong. Now he’s picking a fight with the guy who got it right.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Slate`,
-              url_hash: `5c1e076a01c2d8b2add7801b36aa586eef0acca696fdf582f4e3eda53fcba4d2`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/fe32ea9329a436fb80e38ba741539bc0cc5741dab5c01e8fe3257c2923a691ec.jpg.pad`,
-              score: 16.697455054177123,
-              points: 16.697455054177123,
-              relative_time: `about 2 hours ago`
+              'cardType': 2,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621613000000')
+                      },
+                      'title': `Brexit: Most NI checks on British goods to be scrapped`,
+                      'description': `The proposals are a \"genuine response\" to address Brexit trade issues, says the European Commission.`,
+                      'url': {
+                        'url': `https://www.bbc.co.uk/news/uk-northern-ireland-58871221?at_medium=RSS&at_campaign=KARANGA`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/1d465c5238d91f25be576c554f691bd651be6d1346382888a9636c52258f2d67.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `BBC`,
+                      'score': 14.361647694838718,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `What needs to be done to fix the tax system?`,
+                      'description': `Death duties, hiking the GST and more taxes on housing are on the wish lists of the nation’s top economists.`,
+                      'url': {
+                        'url': `https://www.smh.com.au/politics/federal/what-needs-to-be-done-to-fix-the-tax-system-20211004-p58x26.html?ref=rss&utm_medium=rss&utm_source=rss_feed`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/40a3ae95c9d10d6988236d4e17e0533f2528259d67ae3ed4b44f8243b65f764e.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Sydney Morning Herald`,
+                      'score': 14.381381289249747,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621533000000')
+                      },
+                      'title': `Woman Parades Through Airport Completely Naked, Makes Small Talk With Travelers`,
+                      'description': `'The woman asked travelers how they were doing and where they are from'`,
+                      'url': {
+                        'url': `https://dailycaller.com/2021/10/13/denver-airport-naked-woman/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/e9f94baedccb0fe6aa4679dba6762ded76b6d4a412149c55b29d5090fff182c5.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Daily Caller`,
+                      'score': 14.479957341206271,
+                      'relativeTimeDescription': `24 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Top News`,
-              publish_time: `2020-10-22 01:58:29 UTC`,
-              url: `https://www.dailymail.co.uk/femail/article-8865005/Is-OK-female-leaders-look-sexy-Finnish-PM-poses-blazer-underneath.html?ns_mchannel=rss&ns_campaign=1490&ito=1490`,
-              img: `https://pcdn.brave.software/brave-today/cache/94efb42417840a60de4a98181cc7cc561e02e80c54ebfd5e01174dd61d5626c9.jpg.pad`,
-              title: `Is it OK for female leaders to look sexy? As Finnish PM poses in a blazer with nothing underneath`,
-              description: `After the Finnish Prime Minister was photographed in a blazer with nothing underneath, writers Melanie McDonagh and Libby Purves debate if it is OK for female leaders to look sexy.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Daily Mail`,
-              url_hash: `61aa8e5ffe35422191f0f8c9e9e797ba661ace47d3c206e86740e9789942e881`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/94efb42417840a60de4a98181cc7cc561e02e80c54ebfd5e01174dd61d5626c9.jpg.pad`,
-              score: 16.570904700172253,
-              points: 16.570904700172253,
-              relative_time: `about 2 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621684000000')
+                      },
+                      'title': `William Shatner emotionally describes spaceflight to Jeff Bezos: 'The most profound experience'`,
+                      'description': `William Shatner, after returning to Earth, recounted his experience in an emotional talk with Blue Origin founder Jeff Bezos.`,
+                      'url': {
+                        'url': `https://www.cnbc.com/2021/10/13/william-shatner-speech-to-jeff-bezos-after-blue-origin-launch.html`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/c02a9c39546df2890a411e6afdac5f8a10ceded30947c4688fcfde43010c1d84.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `CNBC`,
+                      'score': 14.250519019150758,
+                      'relativeTimeDescription': `22 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Business`,
-              publish_time: `2020-10-22 02:01:34 UTC`,
-              url: `https://www.forbes.com/sites/alfredkonuwa/2020/10/21/aew-dynamite-results-winners-news-and-notes-on-october-21-2020/`,
-              img: `https://pcdn.brave.software/brave-today/cache/8c3b5a292188bfa62e5ebf9eed5f8bc4e3b23ebd90f1314eeb8a9c0487205988.jpg.pad`,
-              title: `AEW Dynamite Results: Winners, News And Notes On October 21, 2020`,
-              description: `AEW Dynamite results, winners, news and notes as Chris Jericho and MJF sing a musical number over a steak dinner.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Forbes`,
-              url_hash: `300fdd5ca62debcb62c467472506ae19fc487058fd99c7e1a98eacf76836554b`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/8c3b5a292188bfa62e5ebf9eed5f8bc4e3b23ebd90f1314eeb8a9c0487205988.jpg.pad`,
-              score: 16.475348134524175,
-              points: 16.475348134524175,
-              relative_time: `about 2 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Cars`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621683000000')
+                      },
+                      'title': `Lucid Air’s DreamDrive ADAS Suite Has LiDAR, 14 Cameras, And 32 Sensors For Future Proofing`,
+                      'description': `Lucid says that their overengineered tech suite will eventually be updated to include a \"hands-off, eyes-off\" driver assistance system.`,
+                      'url': {
+                        'url': `https://www.carscoops.com/2021/10/lucid-airs-dreamdrive-adas-suite-has-lidar-14-cameras-and-32-sensors-for-future-proofing/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/31b73f47c42c5323b6db05ff9907eee4b5217ca9a097e4aa810272609aebb06b.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Carscoops`,
+                      'score': 14.252130607208834,
+                      'relativeTimeDescription': `22 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Technology`,
-              publish_time: `2020-10-22 00:42:00 UTC`,
-              url: `https://www.cnet.com/news/fbi-iran-russia-obtained-voter-data-to-interfere-with-us-elections/#ftag=CAD590a51e`,
-              img: `https://pcdn.brave.software/brave-today/cache/ef82bc245b1a5b013a991381ed12ab7ca8c7eb7e2323085187a60258fead4e78.jpg.pad`,
-              title: `FBI: Iran, Russia obtained voter data to interfere with US elections     - CNET`,
-              description: `Both countries have obtained voter registration data, which Iran used to send emails to intimidate voters.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `CNET News`,
-              url_hash: `e1c2503cbab05cf8b0123d6d0b9204f6170126eb3a0c9efce7dd04b93fb85e62`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/ef82bc245b1a5b013a991381ed12ab7ca8c7eb7e2323085187a60258fead4e78.jpg.pad`,
-              score: 18.10867048076466,
-              points: 18.10867048076466,
-              relative_time: `about 3 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Home`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621634000000')
+                      },
+                      'title': `DMTV Milkshake: Cultivating Elegance at Home With Melissa Lee`,
+                      'description': `Melissa Lee, a self-titled aesthete, shares the invisible element that can change a space drastically when it comes to interior design.`,
+                      'url': {
+                        'url': `https://design-milk.com/dmtv-milkshake-cultivating-elegance-at-home-with-melissa-lee/?utm_source=feedburner&utm_campaign=Feed%3A+design-milk+%28Design+Milk%29`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/d00bc1449477f06cf7640231fd898be6c4e6fbd9f6eda99f1b845bb739419376.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Design Milk`,
+                      'score': 14.329404416919667,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621632000000')
+                      },
+                      'title': `‘You’ Renewed For Season 4 By Netflix`,
+                      'description': `Ahead of the Season 3 premiere on Friday, Netflix has handed an early fourth season renewal to its hit drama series You. Casting news for the new season will be announced at a later date. Starring Penn Badgley and Victoria Pedretti, You is developed by Sera Gamble and Greg Berlanti, and Gamble also serves as […]`,
+                      'url': {
+                        'url': `https://deadline.com/2021/10/you-renewed-season-4-netflix-1234855244/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/3b6d9b50f065b320acd02393d96199d9f45028b14399c2b971a85590da89ae33.jpg.pad`
+                        }
+                      },
+                      'publisherId': `fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Deadline`,
+                      'score': 14.332498680036917,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Fashion`,
-              publish_time: `2020-10-22 01:20:40 UTC`,
-              url: `https://hypebeast.com/2020/10/air-jordan-1-flyease-hyper-royal-cq3835-041-release-date-info`,
-              img: `https://pcdn.brave.software/brave-today/cache/db25817f12d7096916114cd568f9ff9fc886627966d6525cdfff2f67554aa6dc.jpg.pad`,
-              title: `Jordan Brand's Accessable Air Jordan 1 FlyEase Takes on Familiar "Hyper Royal" Colorway`,
-              description: `Jordan Brand's Air Jordan 1 FlyEase is all about accessibility — and its inclusive nature comes with plenty of style too, as indicated by this new "Hyper Royal" colorway. Offering a black, blue and white color scheme that's part Air Jordan 1 "Royal" and part fragment design x Air Jordan 1, the "Hyper Royal" also boasts Nike, Inc's adaptable FlyEase technology, enabling it to be put on and taken off with a single hand. Uppers are built entirely of leather, with the black midfoot, collar and mudgu`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Hypebeast`,
-              url_hash: `a98367d5ef569df29f44c99f04b4a04a02b5599556c37e7f4b88bb24e21559cb`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/db25817f12d7096916114cd568f9ff9fc886627966d6525cdfff2f67554aa6dc.jpg.pad`,
-              score: 17.475914251693297,
-              points: 17.475914251693297,
-              relative_time: `about 3 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621625000000')
+                      },
+                      'title': `AFI Fest Full Lineup: 2021 Festival Adds Pedro Almodovar’s ‘Parallel Mothers’ and More`,
+                      'description': `As previously announced, the awards-facing festival will open with the premiere of Lin-Manuel Miranda's \"Tick Tick Boom.\"`,
+                      'url': {
+                        'url': `https://www.indiewire.com/2021/10/afi-fest-full-lineup-2021-festival-1234671528/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/d42fe1b86e568d6dca5dc3623a2bb982f3fb337ff79ae338a3544b3cc4cab1b9.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `IndieWire`,
+                      'score': 14.343289731415563,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621617000000')
+                      },
+                      'title': `YOU Renewed for Season 4 at Netflix — Watch Announcement Video`,
+                      'description': `Netflix’s Joe Goldberg obsession continues with a Season 4 renewal of YOU, TVLine has learned. This news comes just two days before the Penn Badgley thriller is set to premiere its third season on Friday, Oct. 15. Based on Caroline Kepnes’ series of novels, YOU is developed by executive producers Greg Berlanti and Sera Gamble, […]`,
+                      'url': {
+                        'url': `https://tvline.com/2021/10/13/you-renewed-season-4-teaser-video-netflix/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/cbf6594866c44ef06f3cd74ba057559fac2e8dc659e33fa406d11a3583f4b2ed.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `TVLine`,
+                      'score': 14.355544195642704,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Entertainment`,
-              publish_time: `2020-10-22 00:49:31 UTC`,
-              url: `https://www.tmz.com/2020/10/21/donald-trump-fires-back-barack-obama-rebuke-presidency-election/`,
-              img: `https://pcdn.brave.software/brave-today/cache/53740f618bcf47d58cccc9043a1350c1b45692d36c0bdd65cce0bd0aa0629f84.jpg.pad`,
-              title: `Donald Trump Rips Barack Obama After Blistering Rebuke Of Presidency`,
-              description: `Donald Trump and Barack Obama are taking the gloves off ... Trump just ripped Obama after his blistering rebuke of Trump's presidency. The Prez went nuts on Obama during Wednesday's rally in North Carolina, and it sure seems like he watched Barry…`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `TMZ`,
-              url_hash: `bccc4e399be4ff5675f95c24edbcf315f4b3c13d3a7625a11366b884a615f8c8`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/53740f618bcf47d58cccc9043a1350c1b45692d36c0bdd65cce0bd0aa0629f84.jpg.pad`,
-              score: 18.00034097873492,
-              points: 18.00034097873492,
-              relative_time: `about 3 hours ago`
+              'cardType': 5,
+              'items': []
             },
             {
-              category: `Top News`,
-              publish_time: `2020-10-22 00:37:00 UTC`,
-              url: `https://www.wsj.com/articles/pope-francis-backs-civil-unions-for-gay-couples-in-shift-for-vatican-11603296578`,
-              img: `https://pcdn.brave.software/brave-today/cache/0eb9158ad992c2458b0893aa99b4c7659a8728f7ba213bc6c841cb22b7b4cbac.jpg.pad`,
-              title: `Pope Francis Backs Civil Unions for Gay Couples, in Shift for Vatican`,
-              description: `Pope Francis endorsed civil unions for same-sex couples, in a move that is likely to intensify the already heated controversy over the Catholic Church’s teaching on homosexuality.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `WSJ`,
-              url_hash: `8c8eec6037cf411567603a7c45d582d4b6aa8c91a45288a8640b0eef81f4b54b`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/0eb9158ad992c2458b0893aa99b4c7659a8728f7ba213bc6c841cb22b7b4cbac.jpg.pad`,
-              score: 18.177608618958335,
-              points: 18.177608618958335,
-              relative_time: `about 3 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Science`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621608000000')
+                      },
+                      'title': `First evidence of microtubules' mechanosensitive behavior`,
+                      'description': `Inside cells, microtubules not only serve as a component of the cytoskeleton (cell skeleton) but also play a role in intracellular transport. In intracellular transport, microtubules act as rails for motor proteins such as kinesin and dynein. Microtubules, the most rigid cytoskeletal component, are constantly subjected to various mechanical stresses such as compression, tension, and bending during cellular activities. It has been hypothesized that microtubules also function as mechanosensors tha`,
+                      'url': {
+                        'url': `https://phys.org/news/2021-10-evidence-microtubules-mechanosensitive-behavior.html`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/66475a510a759c80d3ed6bfac562fa8c4dd802b510326c8d0cae28eaae250444.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Phys.org`,
+                      'score': 14.369246557105962,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Culture`,
-              publish_time: `2020-10-22 01:09:45 UTC`,
-              url: `https://www.theatlantic.com/notes/2020/10/what-happens-after-the-election/616781/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+TheAtlantic+%28The+Atlantic+-+Master+Feed%29`,
-              img: `https://pcdn.brave.software/brave-today/cache/460f5ea2a861970256c71a2455ad774761be86333b4c1388b881791c3a72f32b.jpg.pad`,
-              title: `What Happens After the Election`,
-              description: `What else is going on in the country, with less than two weeks in this consequential election season? Here is a sampling of recent articles and developments worth notice.Prospects for local journalism: The strength and importance of local journalism have always grown from its attention to the local: What is happening in the town or region, what is getting better or worse, how local institutions are responding. Even as national politics have become more polarized and tribal, local news organizati`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `The Atlantic`,
-              url_hash: `2f5c26f08a083151d1064d77a9b4187069ab10c76adcf184c7b826394ba2fcb9`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/460f5ea2a861970256c71a2455ad774761be86333b4c1388b881791c3a72f32b.jpg.pad`,
-              score: 17.675727469724762,
-              points: 17.675727469724762,
-              relative_time: `about 3 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621606000000')
+                      },
+                      'title': `Fantasy Football Week 6 Rankings: Updated Overview for All Positions`,
+                      'description': `We've reached a critical point in the  NFL  season for fantasy managers. Bye weeks are here, and the Atlanta Falcons, New Orleans Saints, New York Jets and San Francisco 49ers have the first off rotation of the year...`,
+                      'url': {
+                        'url': `https://bleacherreport.com/articles/2949345-fantasy-football-week-6-rankings-updated-overview-for-all-positions`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/191782169a17e5df634109ecd2bb76c24cb48faa48f876edb3a5b2694fa497ba.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Bleacher Report`,
+                      'score': 14.372285656733615,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Technology`,
-              publish_time: `2020-10-22 00:08:57 UTC`,
-              url: `https://techcrunch.com/2020/10/21/this-former-tesla-cio-just-raised-150-million-more-to-pull-car-dealers-into-the-21st-century/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+Techcrunch+%28TechCrunch%29`,
-              img: `https://pcdn.brave.software/brave-today/cache/abdc9674a694c490adc467f71453e7773363ddf3e97aefed658c669ae8548dc8.jpg.pad`,
-              title: `This former Tesla CIO just raised $150 million more to pull car dealers into the 21st century`,
-              description: `“I have to choose my words carefully,” says Joe Castelino of Stevens Creek Volkswagen in San Jose, California, when asked about the management software on which most car dealerships rely for inventory information, marketing, customer relationships and more. Castelino, the dealership’s service director, laughs as he says this. But the joke has apparently been on […]`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `TechCrunch`,
-              url_hash: `5d44d16a1662892738bf9042a10752c9b36069efb9d3bfa9de4d53317182d434`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/abdc9674a694c490adc467f71453e7773363ddf3e97aefed658c669ae8548dc8.jpg.pad`,
-              score: 18.52566717020643,
-              points: 18.52566717020643,
-              relative_time: `about 4 hours ago`
+              'cardType': 3,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621605000000')
+                      },
+                      'title': `Alt-Rock Singer SK8 Shares How ‘Girl Next Door’ Represents The Evolution Of His Sound`,
+                      'description': `After first making a splash with hip-hop, SK8 has reconnected with his punk roots on 'Girls Next Door,' and he shares how this new direction came about, what it's like running a label, and what's next.`,
+                      'url': {
+                        'url': `https://hollywoodlife.com/2021/10/13/sk8-girl-next-door-interview/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/2904d64d82725230da6b1531aab85f54ff91cc55328e61f35319bcb3e5ba5abf.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Hollywood Life`,
+                      'score': 14.373802033258967,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278618574000000')
+                      },
+                      'title': `Laverne Cox, 49, Rocks Plunging Black Swimsuit On Vacation: ‘Trans Is Beautiful’`,
+                      'description': `Laverne Cox made a trans-positive statement while looking fiery hot in a sexy swimsuit on a luxury vacation.`,
+                      'url': {
+                        'url': `https://hollywoodlife.com/2021/10/13/laverne-cox-plunging-swimsuit-pool-video/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/a071a47e75db68c74fc1eaf6931d9420b2345a0c12b1247cdb05da135c0d5735.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Hollywood Life`,
+                      'score': 67.03023810006357,
+                      'relativeTimeDescription': `1 hour ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278617426000000')
+                      },
+                      'title': `Elizabeth Warren Urges Congress To ‘Step Up’ & Protect Roe V. Wade Amidst Texas Abortion Law`,
+                      'description': `The Massachusetts senator also explained that the new law will be most harmful to people who don't have easy access to abortion while appearing on 'The View.'`,
+                      'url': {
+                        'url': `https://hollywoodlife.com/2021/10/13/elizabeth-warren-roe-v-wade-the-view/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/d302f28efc872481f715f40ef457e419b7c35c03f514ca4a624aed099a8ec814.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Hollywood Life`,
+                      'score': 137.80582500043627,
+                      'relativeTimeDescription': `2 hours ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `Here are the best resin options for your SLA/DLP 3D printer`,
+                      'description': `Resin printing is a little more complex than standard filament printing. Not only do you need a few must-have 3D printing accessories, but you also need to pick the right resin. When faced with multiple colors and multiple types, it's also easy to get turned around when choosing the right 3D printing resin. You want it to print quickly but stay strong without becoming brittle. We've used as many as possible to bring you some of the best you can buy, but our favorite is Siraya Tech Fast, which pr`,
+                      'url': {
+                        'url': `https://www.windowscentral.com/best-resin-your-3d-printer?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+wmexperts+%28Windows+Central%29`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/5afe29078068e7413a7f15a16657453217fc8ad630e8291ee1c66d69c2df6f48.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Windows Central`,
+                      'score': 14.381363717462444,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `These are the best office chairs you can buy at any budget`,
+                      'description': `The adage \"you get what you pay for\" definitely holds for certain categories of products, like shoes, mattresses, and yes, office chairs. The simple fact is, the more you have available to spend (up to a point), the better chair you can buy. The range of options for the best office chairs available is quite diverse and includes styles and features for just about any taste and preference. Our top pick is the AmazonBasics High-Back Leather Executive Chair. It's got the looks to fit in a corporate `,
+                      'url': {
+                        'url': `https://www.androidcentral.com/best-office-chairs`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/b406b13e1fe493f9ab11140f5c33809a19125da6d5a3f1125810d299a9539da2.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Android Central`,
+                      'score': 14.381366799582283,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `Stop Using Playlists to Look Cool and Start Using Them to Share Your Feelings`,
+                      'description': `Do you struggle to express yourself with words? Consider turning to the one universal language we all share: emo playlists. I believe we, as a society, waste time trying to show off “aesthetic” music tastes. Instead, we should spend more time creating emotionally-charged, hyper-specific playlists. What’s more, we need…Read more...`,
+                      'url': {
+                        'url': `https://lifehacker.com/stop-using-playlists-to-look-cool-and-start-using-them-1847855875`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/87267b91579ebbf8ead3f305759376022fd50d3273209e851727cdf24b142304.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Lifehacker`,
+                      'score': 14.38136972344708,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 4,
+              'items': [
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13258305902000000')
+                      },
+                      'title': `Audible Plus`,
+                      'description': `Listen anytime, anywhere to an unmatched selection of audiobooks, premium podcasts, and more`,
+                      'url': {
+                        'url': `https://www.amazon.com/hz/audible/mlp/mdp/discovery?ref_=assoc_tag_ph_1524216631897&_encoding=UTF8&camp=1789&creative=9325&linkCode=pf4&tag=bravesoftware-20&linkId=c6d187d14da9ca69e1a1a950348e100e`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/a29e3a601efa77ba5f2f35e58b40037b527f4e577112ea9967ced44741dcce32.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 33.65394030598059,
+                      'relativeTimeDescription': `235 days ago`
+                    },
+                    'offersCategory': `Discounts`
+                  }
+                },
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13258305902000000')
+                      },
+                      'title': `Amazon Prime Music`,
+                      'description': `Listen to your favourite songs online from Brave.`,
+                      'url': {
+                        'url': `https://www.amazon.com/music/prime`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/04256e526b5cc73ddf7679ed907ac0f89e01d7d6af3a9d1c9faba288468c03ff.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 67.3078806123441,
+                      'relativeTimeDescription': `235 days ago`
+                    },
+                    'offersCategory': `Discounts`
+                  }
+                },
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13258305902000000')
+                      },
+                      'title': `Amazon Prime`,
+                      'description': `Enjoy exclusive Amazon Originals as well as popular movies and TV shows.`,
+                      'url': {
+                        'url': `https://www.amazon.com/amazonprime/146-1781179-3199520?_encoding=UTF8&camp=1789&creative=9325&linkCode=pf4&linkId=a402d5b2ca72ea0a267707ef10878979&primeCampaignId=prime_assoc_ft&ref_=assoc_tag_ph_1427739975520&tag=bravesoftware-20`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/c12d5200d342e72919e8420ccea6581ee4bf8e7ab510dd58bbc24d49ef22c36f.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 134.6157612254411,
+                      'relativeTimeDescription': `235 days ago`
+                    },
+                    'offersCategory': `Discounts`
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278609481000000')
+                      },
+                      'title': `'Havana Syndrome' mystery expands with new cases at U.S. Embassy in Colombia`,
+                      'description': `U.S. Embassy personnel in Bogota, Colombia, have reported symptoms aligned with the mysterious “Havana Syndrome” that continues to plague U.S. spies and diplomats around the globe. U.S. officials said Tuesday that two cases were initially reported by embassy personnel in the capital city, but said several others may have been ...`,
+                      'url': {
+                        'url': `https://www.washingtontimes.com/news/2021/oct/13/havana-syndrome-mystery-expands-new-cases-us-embas/?utm_source=RSS_Feed&utm_medium=RSS`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/4caf1b03489028604884ce33a6ac6f427f117de3670f4fefb047d92dccd3706c.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Washington Times`,
+                      'score': 304.21157985954886,
+                      'relativeTimeDescription': `4 hours ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Health`,
+                      'publishTime': {
+                        internalValue: BigInt('13278602700000000')
+                      },
+                      'title': `Tom Hardy Says He Was 'Really Overweight' as Bane in 'Dark Knight Rises'`,
+                      'description': `\"I was just bald, slightly porky, and with pencil arms.\"`,
+                      'url': {
+                        'url': `https://www.menshealth.com/weight-loss/a37947676/tom-hardy-overweight-bane-transformation-dark-knight-rises/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/2e81e99a21735bb5f0d3b7c8ac030a368b6e35711809a3475ba2bc6bdf7e300a.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Men's Health`,
+                      'score': 81223.05671641101,
+                      'relativeTimeDescription': `6 hours ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278618011000000')
+                      },
+                      'title': `Jodi! Tina! 'The Challenge: All Stars' Brings in Heavy Hitters for Season 2`,
+                      'description': `Welcome back! After the massive success of The Challenge: All Stars earlier this year, Paramount+’s reality show is back with another season and even more vets. TJ Lavin will return to host season 2, Parmount+ announced on Wednesday, October 13, with 24 cast members — some of whom haven’t competed in nearly 20 years. “With […]`,
+                      'url': {
+                        'url': `https://www.usmagazine.com/entertainment/pictures/the-challenge-all-stars-season-2-cast-includes-tina-jodi-and-more/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/c972ec42d40a1d2a5d2b180095407f119cd2c1b17ff41b5305c5b7987b7c0280.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Us Weekly`,
+                      'score': 544.0267160210122,
+                      'relativeTimeDescription': `1 hour ago`
+                    }
+                  }
+                }
+              ]
             }
-          ],
-          randomArticles: [
-            {
-              category: `Top News`,
-              publish_time: `2020-10-22 01:29:03 UTC`,
-              url: `https://abcnews.go.com/Business/doj-settle-maker-oxycontin-role-opioid-crisis/story?id=73735542`,
-              img: `https://pcdn.brave.software/brave-today/cache/81e8fdeecf8dda4a4f5db060f514a94d79d1fe9c8d8c2d6dbcb9da481ea0e3d5.jpg.pad`,
-              title: `DOJ makes $8B settlement with OxyContin manufacturer for role in opioid crisis`,
-              description: `The Justice Department is expected to announce on Wednesday a settlement of civil and criminal charges.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `ABC News`,
-              url_hash: `f5e2d85d374a10f809e348030d89f84cf93b3b9a282ad97614836edac6d84200`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/81e8fdeecf8dda4a4f5db060f514a94d79d1fe9c8d8c2d6dbcb9da481ea0e3d5.jpg.pad`,
-              score: 17.307662990529497,
-              points: 17.307662990529497,
-              relative_time: `about 2 hours ago`
-            },
-            {
-              category: `Culture`,
-              publish_time: `2020-10-22 02:00:18 UTC`,
-              url: `https://www.vox.com/2020/10/21/21527784/iran-russia-fbi-ratcliffe-voter-registration-emails`,
-              img: `https://pcdn.brave.software/brave-today/cache/f770a1e02bc27b75ba4275dffec3bfd2795a13e1e78fbf254c03dabc43591173.jpg.pad`,
-              title: `US intelligence officials say Iran and Russia obtained voter registration information to interfere in election`,
-              description: `\nDirector of National Intelligence John Ratcliffe arrives to a closed-door briefing on election security at the Senate Intelligence Committee in the Hart Senate Office Building on Capitol Hill on September 23, 2020 in Washington, DC. | Photo by Drew Angerer/Getty Images\nIran is behind intimidating emails sent to some Democratic voters, official say. Iran and Russia are using voter registration data to interfere in the US election, top national security officials announced during a surprise press`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Vox`,
-              url_hash: `740bcff4df724578ecc56c34c5e80eb0ec73b891c520343fe37df65c43928590`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/f770a1e02bc27b75ba4275dffec3bfd2795a13e1e78fbf254c03dabc43591173.jpg.pad`,
-              score: 16.515155451953422,
-              points: 16.515155451953422,
-              relative_time: `about 2 hours ago`
-            },
-            {
-              category: `Fashion`,
-              publish_time: `2020-10-22 01:55:02 UTC`,
-              url: `https://www.popsugar.com/food/disney-apple-pie-recipe-47860606`,
-              img: `https://pcdn.brave.software/brave-today/cache/056c01437bd9263f54e71ae4a4bad55da9fd57e7cbd1cb9104c90f164b8471c3.jpg.pad`,
-              title: `Bring the Most Magical Place on Earth to Your Kitchen With the Recipe For Disney's Apple Pie`,
-              description: `\nIf the inviting aroma of apple spice entices you, and a piece of your heart lives in the Most Magical Place on Earth year-round, then a) we should probably be friends, and b) this original apple pie recipe from Whispering Canyon Café at Disney's Wildnerness Lodge in Disney World is about to rock your world.\nAt first glance, it may seem intimidating, but this recipe can broken down into three basic components: a dough, a batter, and an apple filling. And while some work is required to get each e`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Popsugar`,
-              url_hash: `1a4fa80efc165bfc0a299003eff84a4231f46c57ea46b3aa1eaf5c2008cdc7ec`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/056c01437bd9263f54e71ae4a4bad55da9fd57e7cbd1cb9104c90f164b8471c3.jpg.pad`,
-              score: 16.672683709837138,
-              points: 16.672683709837138,
-              relative_time: `about 2 hours ago`
-            },
-            {
-              category: `Sports`,
-              publish_time: `2020-10-22 00:59:38 UTC`,
-              url: `https://www.espn.com/nfl/story/_/id/30155310/nfl-mvp-watch-2020-anyone-catch-russell-wilson-ryan-tannehill-legitimate-contender`,
-              img: `https://pcdn.brave.software/brave-today/cache/df7d6c1731e259598157998e900c7c3660d010017e49a77dee046fbddaa13c00.jpg.pad`,
-              title: `NFL MVP watch: Who can catch Russell Wilson?`,
-              description: `Wilson (19 TD passes) has the early lead, but the race is far from over. Who else is getting consideration?`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `ESPN`,
-              url_hash: `5f97445585f77e193b312895b7bd52aeb5dabeba6a264962d5a3859e52ce093c`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/df7d6c1731e259598157998e900c7c3660d010017e49a77dee046fbddaa13c00.jpg.pad`,
-              score: 17.844610520560096,
-              points: 17.844610520560096,
-              relative_time: `about 3 hours ago`
-            }
-          ],
-          deals: [
-            {
-              category: `Brave`,
-              publish_time: `2020-09-09 16:15:41 UTC`,
-              url: `https://shop.ledger.com/pages/ledger-nano-x?r=0ba5d7199327`,
-              img: `https://pcdn.brave.software/brave-today/cache/714318c5a4a9e6e8cfb0a7350a86dceb8bce4df06601116dcf3f879013ca55a7.jpg.pad`,
-              title: `Ledger Nano X`,
-              description: `Keep your crypto secure, everywhere.`,
-              content_type: `product`,
-              offers_category: `Companion Products`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Brave Offers`,
-              url_hash: `2f3dc38d47c686436a6b5110e79b0d1c5ca2e6b4059c4301f6b74569bb6ead81`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/714318c5a4a9e6e8cfb0a7350a86dceb8bce4df06601116dcf3f879013ca55a7.jpg.pad`,
-              score: 1934.7313751687607,
-              points: 1934.7313751687607,
-              relative_time: `about 1 month ago`
-            },
-            {
-              category: `Brave`,
-              publish_time: `2020-05-12 16:11:41 UTC`,
-              url: `https://protonmail.com/?url_id=0&utm_campaign=ww-all-2a-mail-gro_aff-tune&utm_medium=link&utm_source=aid-1397&utm_content=15`,
-              img: `https://pcdn.brave.software/brave-today/cache/a034daa5914c3de0c53c2cd310fe0954d5939c0ea939bc83a79d29299b45d43b.jpg.pad`,
-              title: `ProtonMail`,
-              description: `Secure Your Communications with ProtonMail`,
-              content_type: `product`,
-              offers_category: `Companion Products`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Brave Offers`,
-              url_hash: `cf5d7064da6f7a75544e9314e2288e52194dd7bb9c29ce7e64e257abfc235c54`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/a034daa5914c3de0c53c2cd310fe0954d5939c0ea939bc83a79d29299b45d43b.jpg.pad`,
-              score: 4213.026636328736,
-              points: 4213.026636328736,
-              relative_time: `5 months ago`
-            },
-            {
-              category: `Brave`,
-              publish_time: `2020-05-12 16:11:41 UTC`,
-              url: `https://1password.com/sign-up/?utm_source=Brave`,
-              img: `https://pcdn.brave.software/brave-today/cache/63f966f1650e9f072b8116963262e79ba9358f7b441ae43abd23f1cf6f500da4.jpg.pad`,
-              title: `1Password`,
-              description: `Proudly private password management. Free for 30 days`,
-              content_type: `product`,
-              offers_category: `Companion Products`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Brave Offers`,
-              url_hash: `10a47fe68f20a6302812c440305e8609b514d2a213d87aefa6f798055e492495`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/63f966f1650e9f072b8116963262e79ba9358f7b441ae43abd23f1cf6f500da4.jpg.pad`,
-              score: 8426.053272815747,
-              points: 8426.053272815747,
-              relative_time: `5 months ago`
-            }
-          ],
-          itemsByCategory: {
-            categoryName: `Top News`,
-            items: [
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:55:33 UTC`,
-                url: `https://www.cnn.com/2020/10/21/business/purdue-pharma-guilty-plea/index.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+rss%2Fcnn_topstories+%28RSS%3A+CNN+-+Top+Stories%29`,
-                img: `https://pcdn.brave.software/brave-today/cache/7f3711e93ebd1dc6edf9f8e3279953be2e8cdacf4569992d66bb8f82fc87b878.jpg.pad`,
-                title: `OxyContin maker will plead guilty and close down`,
-                description: `• The Sackler family withdrew more than $10 billion from Purdue Pharma during the country's opioid crisis\n    \n`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `CNN`,
-                url_hash: `e7f7e3f4ecee4bf5dd0bf04c22d71a017a4af67bb4c691da697cec0fe7b06bc3`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/7f3711e93ebd1dc6edf9f8e3279953be2e8cdacf4569992d66bb8f82fc87b878.jpg.pad`,
-                score: 16.65776592533871,
-                points: 16.65776592533871,
-                relative_time: `about 2 hours ago`
-              },
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:58:01 UTC`,
-                url: `https://www.nytimes.com/2020/10/21/us/politics/iran-russia-election-interference.html`,
-                img: `https://pcdn.brave.software/brave-today/cache/fbcaededb8449c765f35dd3b938b48602bd25cc621685eed3c43826d97915d7f.jpg.pad`,
-                title: `Iran and Russia Seek to Influence Election in Final Days, U.S. Officials Warn`,
-                description: `Iran is behind threatening, spoofed emails sent to voters, the officials said, but there was no indication that any votes themselves had been altered.`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `The New York Times`,
-                url_hash: `6551a4b61a7785d00aafbc0928a2ff0bcc5922f32f3fe0709b21b0a07133103b`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/fbcaededb8449c765f35dd3b938b48602bd25cc621685eed3c43826d97915d7f.jpg.pad`,
-                score: 16.58498463621073,
-                points: 16.58498463621073,
-                relative_time: `about 2 hours ago`
-              },
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:43:28 UTC`,
-                url: `https://nypost.com/2020/10/21/mom-of-girl-who-died-after-hot-trampoline-punishment-speaks-out/`,
-                img: `https://pcdn.brave.software/brave-today/cache/af29341d8da07953baae47f6353e3faa797c3615294b480abdf5ab0aa87dec4c.jpg.pad`,
-                title: `Mom of Texas girl who died after hot trampoline punishment speaks out`,
-                description: `The mother of an 8-year-old Texas girl who died after being forced to jump non-stop on a hot trampoline apologized to her daughter for not saving her from her allegedly sadistic legal guardians. Alysha Anderton said she lost custody of her daughter, Jaylin Schwarz, four years ago when she couldn’t overcome her addiction issue within...`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `New York Post`,
-                url_hash: `3929d5c50dee708641dac4a7f5621440702a4d871bda9f51bb0db18941bdc289`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/af29341d8da07953baae47f6353e3faa797c3615294b480abdf5ab0aa87dec4c.jpg.pad`,
-                score: 16.980427159622238,
-                points: 16.980427159622238,
-                relative_time: `about 2 hours ago`
-              }
-            ]
-          },
-          itemsByPublisher: {
-            name: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-            items: [
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:43:04 UTC`,
-                url: `https://www.usatoday.com/story/news/politics/elections/2020/10/21/john-ratcliffe-iran-russia-interfering-presidential-election/3721622001/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatoday-newstopstories`,
-                img: `https://pcdn.brave.software/brave-today/cache/20d7c29fe2796f065c0ff30035b7174cfdb500eb93b050e4801c4e8849f1ff1b.jpg.pad`,
-                title: `Iran, Russia obtained voter registration info to sow confusion in presidential election, US officials say`,
-                description: `Director National Intelligence John Ratcliffe said Iran sought to sow unrest in the U.S. in an attempt to damage President Donald Trump.\n`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `USA Today`,
-                url_hash: `535378ac3936856bc537e0d179f27ce4e981d227e99ffdbbd24f61c3584752ed`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/20d7c29fe2796f065c0ff30035b7174cfdb500eb93b050e4801c4e8849f1ff1b.jpg.pad`,
-                score: 16.99026898112577,
-                points: 16.99026898112577,
-                relative_time: `about 2 hours ago`
-              },
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:32:59 UTC`,
-                url: `https://www.usatoday.com/story/entertainment/movies/2020/10/21/rudy-giuliani-borat-2-scene-raises-eyebrows-sacha-baron-cohen/6006753002/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatoday-newstopstories`,
-                img: `https://pcdn.brave.software/brave-today/cache/b5345c5c6ad8c15bca69115841daf5509689ac789d94fb5f7708f407292b5367.jpg.pad`,
-                title: `'This is a hit job, I assure you': Rudy Giuliani responds to eyebrow-raising situation in 'Borat 2'`,
-                description: `President Trump's lawyer Rudy Giuliani was pranked by Sacha Baron Cohen and caught in a possibly inappropriate situation in the new "Borat 2."\n`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `USA Today`,
-                url_hash: `42cff5a244e4bc6b0b92a8e9ca3a9481d9ad93fa10c57fb7fe50b2f17ab69e4c`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/b5345c5c6ad8c15bca69115841daf5509689ac789d94fb5f7708f407292b5367.jpg.pad`,
-                score: 34.447120418541694,
-                points: 34.447120418541694,
-                relative_time: `about 2 hours ago`
-              },
-              {
-                category: `Top News`,
-                publish_time: `2020-10-22 01:12:45 UTC`,
-                url: `https://www.usatoday.com/in-depth/news/nation/2020/10/20/native-american-navajo-nation-coronavirus-deaths-underfunded-health-care/5883514002/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatoday-newstopstories`,
-                img: `https://pcdn.brave.software/brave-today/cache/bb891200a9e36e801ab3f8bf9f2d12efa07086befbc9a46806417f4b458a7174.jpg.pad`,
-                title: `'Still killing us': The federal government underfunded health care for Indigenous people for centuries. Now they're dying of COVID-19`,
-                description: `In reservation areas of New Mexico, health care is underfunded. In this six-part series, USA TODAY investigates links between racism and COVID-19.`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `USA Today`,
-                url_hash: `2abcef77bd1b534c3f08e36c91a0ae40d6cc6d6063921ebea72b0aefd5d90e65`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/bb891200a9e36e801ab3f8bf9f2d12efa07086befbc9a46806417f4b458a7174.jpg.pad`,
-                score: 70.49108931105651,
-                points: 70.49108931105651,
-                relative_time: `about 3 hours ago`
-              }
-            ]
-          }
+          ]
         },
         {
-          articles: [
+          items: [
             {
-              category: `Top News`,
-              publish_time: `2020-10-22 01:56:15 UTC`,
-              url: `https://www.theguardian.com/us-news/live/2020/oct/21/donald-trump-joe-biden-nancy-pelosi-coronavirus-covid-19-us-election-live-updates`,
-              img: `https://pcdn.brave.software/brave-today/cache/088e0793240ffb0ba748f64018bdceb05a54f9fdd920bb941687092ce175e9c0.jpg.pad`,
-              title: `FBI warns Iran and Russia obtained voter data as part of election interference efforts – as it happened`,
-              description: `Biden ahead of Trump in Pennsylvania while the two are tied in TexasTrump cuts short interview as Covid stimulus bill moves closerReport: Trump paid nearly $200,000 in taxes to ChinaFlorida accused of sowing confusion with voting changesVideo: how Trump failed OhioSign up for Fight to Vote – our weekly US election newsletter 2.54am BST – Guardian staff 2.49am BST Donald Trump’s deputy communications director Julia Hahn had connections to white nationalism when she joined the White House as an ai`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `The Guardian`,
-              url_hash: `7462ae38908c3bd98962d3cf1219187c61bc2cecb93d697b7dca93c8b9732a8f`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/088e0793240ffb0ba748f64018bdceb05a54f9fdd920bb941687092ce175e9c0.jpg.pad`,
-              score: 16.63737919529522,
-              points: 16.63737919529522,
-              relative_time: `about 2 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `USMNT vs Costa Rica: TV channel, live stream, team news & preview`,
+                      'description': `The Stars and Stripes tasted their first defeat since May when they fell to Panama on Sunday, but can quickly get back to winning ways`,
+                      'url': {
+                        'url': `https://www.goal.com/en/news/usmnt-vs-costa-rica-tv-channel-live-stream-team-news-preview/1ou1gnhu835jx174sq8yqn34os`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/ba5b2874d167e19150f3be8bf99a09717d912699a853321939dfbdef5bb9ff87.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Goal.com`,
+                      'score': 14.381372591543293,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Top News`,
-              publish_time: `2020-10-22 01:28:11 UTC`,
-              url: `https://www.bbc.co.uk/news/science-environment-54640475`,
-              img: `https://pcdn.brave.software/brave-today/cache/2bd2b1ff3c3ce40a3f580c9fdf0ed7d470462c8c5d25c773eadb2301738a764a.jpg.pad`,
-              title: `Osiris-Rex: Nasa asteroid mission confident of success`,
-              description: `The first images are released of the Osiris-Rex spacecraft trying to grab rock from asteroid Bennu.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `BBC`,
-              url_hash: `546093b55442fe3dde509a016c537b055c350b8c8f8546d5b9b65f2e8bdf70ce`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/2bd2b1ff3c3ce40a3f580c9fdf0ed7d470462c8c5d25c773eadb2301738a764a.jpg.pad`,
-              score: 17.325727750534337,
-              points: 17.325727750534337,
-              relative_time: `about 2 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Culture`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621600000000')
+                      },
+                      'title': `Tyga Turns Himself in to Police Following Domestic Violence Allegations From Ex-Girlfriend Camaryn Swanson`,
+                      'description': `Rapper Tyga turned himself in early Tuesday to the Los Angeles Police Department following a domestic violence allegation brought forth from his ex-girlfriend Camaryn Swanson.Read more...`,
+                      'url': {
+                        'url': `https://www.theroot.com/tyga-turns-himself-in-to-police-following-domestic-viol-1847854486`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/3816eb674df32251c4b9fbda44a33acfe85764931d36c26d1f5af0cd86a0a960.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Root`,
+                      'score': 14.381375498821068,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Sports`,
-              publish_time: `2020-10-22 02:18:36 UTC`,
-              url: `https://bleacherreport.com/articles/2914549-report-raptors-playing-home-games-in-louisville-amid-pandemic-being-considered`,
-              img: `https://pcdn.brave.software/brave-today/cache/9299eb60cc4e3214e24e3e7db10cf8fd6ac6ec7f7bd9b31b0a0953d782874397.jpg.pad`,
-              title: `Report: Raptors Playing Home Games in Louisville Amid Pandemic Being Considered`,
-              description: `So long as travel into Canada from the United States is banned during the COVID-19 pandemic, there will be the question of where the  Toronto Raptors  will play their home games next season...`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Bleacher Report`,
-              url_hash: `2dead18f4d36d08fa84ed1ac4d0d061d9c53293ef0e19bed3f7f84fbab5006af`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/9299eb60cc4e3214e24e3e7db10cf8fd6ac6ec7f7bd9b31b0a0953d782874397.jpg.pad`,
-              score: 15.845051807253439,
-              points: 15.845051807253439,
-              relative_time: `about 2 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621593000000')
+                      },
+                      'title': `Fastenal Company 2021 Q3 - Results - Earnings Call Presentation`,
+                      'description': ``,
+                      'url': {
+                        'url': `https://seekingalpha.com/article/4459715-fastenal-company-2021-q3-results-earnings-call-presentation?source=feed_all_articles`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/07fd83154e9157f70207bd1aa6dd7998ec3aa6a1b730aef93868a9ac950e912e.jpg.pad`
+                        }
+                      },
+                      'publisherId': `fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Seeking Alpha`,
+                      'score': 14.391950109691049,
+                      'relativeTimeDescription': `23 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621564000000')
+                      },
+                      'title': `One-handed CB Marshon Lattimore still playing lights-out: Saints takeaways vs. Washington`,
+                      'description': `Marshon Lattimore and WR Deonte Harris were standouts in the Saints' 33-22 win over Washington, and they weren't the only ones.`,
+                      'url': {
+                        'url': `https://theathletic.com/2885011/2021/10/13/one-handed-cb-marshon-lattimore-still-playing-lights-out-saints-takeaways-vs-washington/?source=rss`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/dbb85cea85bf1cb02a2e31827af8f4621a7fe1e3cd465739db8cda2e5c45e5db.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Athletic`,
+                      'score': 14.434964041654474,
+                      'relativeTimeDescription': `24 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Culture`,
-              publish_time: `2020-10-22 00:01:36 UTC`,
-              url: `https://www.vice.com/en/article/m7ajqa/us-says-iran-behind-threatening-voter-emails`,
-              img: `https://pcdn.brave.software/brave-today/cache/0723c9fbd775c4b3ddf966d44dade692cc1e2a69c69fb86e7ae74ba3ba9846a3.jpg.pad`,
-              title: `US Says Iran Is Behind Threatening ‘Proud Boys’ Emails About Mail-In Vote`,
-              description: `The Director of National Intelligence John Ratcliffe said that the emails, which were designed to make it look like they came from the far-right group Proud Boys, were "desperate attempts by desperate adversaries.”`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `VICE`,
-              url_hash: `5478c9273b40f5c39402c8a7c0a8f9298b6b09a5a47001892b1b14f147680b1f`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/0723c9fbd775c4b3ddf966d44dade692cc1e2a69c69fb86e7ae74ba3ba9846a3.jpg.pad`,
-              score: 18.607669601148604,
-              points: 18.607669601148604,
-              relative_time: `about 4 hours ago`
+              'cardType': 6,
+              'items': [
+                {
+                  article: undefined, deal: undefined, promotedArticle: {
+                    'data': {
+                      'categoryName': `Brave Partners`,
+                      'publishTime': {
+                        internalValue: BigInt('13278528021000000')
+                      },
+                      'title': `The Beginner’s Guide to Account-Based Marketing (ABM)`,
+                      'description': `This leads to a common paradox—marketing can hit its goals by bringing in a high volume of leads, but sales can’t hit its goals because those same leads are poorly qualified. Account-based marketing (ABM) aims to fix that by tightly…Read more ›`,
+                      'url': {
+                        'url': `https://ahrefs.com/blog/account-based-marketing/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/9d2f7ab67a81520a1e281d9def23ce4f4fbcf46cac8be01707f0cd0fb24e597a.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Ahrefs`,
+                      'score': 22.921395422138495,
+                      'relativeTimeDescription': `1 day ago`
+                    },
+                    'creativeInstanceId': `2626e169-a372-42ca-af14-b0df795d2819`
+                  }
+                }
+              ]
             },
             {
-              category: `Fun`,
-              publish_time: `2020-10-22 00:00:00 UTC`,
-              url: `https://www.theonion.com/nation-glad-to-see-baseball-players-still-have-names-li-1845439924`,
-              img: `https://pcdn.brave.software/brave-today/cache/5ed290b954a5134576f9174fc7b9d22c98ef19e16eab20f7ccab0e5100cf7c4d.jpg.pad`,
-              title: `Nation Glad To See Baseball Players Still Have Names Like Mookie Betts`,
-              description: `ALTOONA, PA—Basking in delight and nostalgia as they watched the 2020 MLB World Series, the nation was reportedly glad Wednesday to see baseball players still have names like Mookie Betts. “There are very few things you can count on in this life, so seeing that there are still baseball players out there hustling in…Read more...`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `The Onion`,
-              url_hash: `414f2d99019fad36cd0df87f5ceff8c13008a3a70ddc7c2c1eabfd51f868ddfc`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/5ed290b954a5134576f9174fc7b9d22c98ef19e16eab20f7ccab0e5100cf7c4d.jpg.pad`,
-              score: 18.625088588843223,
-              points: 18.625088588843223,
-              relative_time: `about 4 hours ago`
+              'cardType': 2,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13276800071000000')
+                      },
+                      'title': `Brave Launches Brave Talk for Privacy-Preserving Video Conferencing`,
+                      'description': `Today, Brave launched Brave Talk, a new privacy-focused video conferencing feature built directly into the Brave browser.\nThe post Brave Launches Brave Talk for Privacy-Preserving Video Conferencing appeared first on Brave Browser.`,
+                      'url': {
+                        'url': `https://brave.com/brave-talk-launch/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/8bc59275469ab8db7c8245e5269b5bfa84a8e77586de349dd1bce0435c27a6a5.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Blog`,
+                      'score': 28.831838413657156,
+                      'relativeTimeDescription': `21 days ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13276723068000000')
+                      },
+                      'title': `Research Paper: Privacy and Security Issues in Web 3.0`,
+                      'description': `We at Brave Research just published a technical report called “Privacy and Security Issues in Web 3.0” on arXiv. This blog post summarizes our findings and puts them in perspective for Brave users.\nThe post Research Paper: Privacy and Security Issues in Web 3.0 appeared first on Brave Browser.`,
+                      'url': {
+                        'url': `https://brave.com/research-paper-privacy-and-security-issues-in-web-3-0/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/260702227df254d2ada663cbdb14442933161f55da5b891d59f82335015a025d.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Blog`,
+                      'score': 57.82917689204489,
+                      'relativeTimeDescription': `22 days ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13276712102000000')
+                      },
+                      'title': `What’s Brave Done For My Privacy Lately? Episode #10: Custom Filter List Subscriptions`,
+                      'description': `This is the tenth in a series of blog posts on new Brave privacy features. This post describes work done by Anton Lazarev, Research Engineer. Authors: Peter Snyder and Anton Lazarev.\nThe post What’s Brave Done For My Privacy Lately? Episode #10: Custom Filter List Subscriptions appeared first on Brave Browser.`,
+                      'url': {
+                        'url': `https://brave.com/privacy-updates-10/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/2d9c785ca6d8dcdcf2d2046796d97a81cb99a002fb91895cca43a6846aeb3a2f.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Blog`,
+                      'score': 115.70439692971131,
+                      'relativeTimeDescription': `22 days ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Culture`,
-              publish_time: `2020-10-22 00:00:00 UTC`,
-              url: `https://www.wikihow.com/Preserve-Leaf-Color`,
-              img: `https://pcdn.brave.software/brave-today/cache/7a6d142aef7359eda55673ab1ff2208a2fdae093cf185790316038ec31c1c206.jpg.pad`,
-              title: `How to Preserve Leaf Color`,
-              description: `Traditional drying methods often remove the color from beautiful leaves. To keep the colors of your leaves as close to their original shade as possible, you’ll need to seal the leaves with wax, remove the moisture with borax, or replace the moisture with glycerin. Using wax is the best way to do this, but the wax will leave the leaves in a thick, shiny, texture. Drying your leaves in borax is the easiest method, but your greens may get washed out a little. Soaking leaves in glycerin is a great w`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Wikihow`,
-              url_hash: `92b811b5476f3502433d855c6bbcb712e25afc225475b384ef1c7d0a711e957c`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/7a6d142aef7359eda55673ab1ff2208a2fdae093cf185790316038ec31c1c206.jpg.pad`,
-              score: 18.625090947976922,
-              points: 18.625090947976922,
-              relative_time: `about 4 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Entertainment`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621540000000')
+                      },
+                      'title': `We see, acknowledge, and connect with Larry David in the trailer for Curb Your Enthusiasm’s new season`,
+                      'description': `Larry David and his seemingly endless array of irritations are returning for another glorious season of Curb Your Enthusiasm on October 24. But you don’t have to wait until then to see how stupid things like prayers and toasts are. They’re all right here in the brand new trailer. Read more...`,
+                      'url': {
+                        'url': `https://www.avclub.com/we-see-acknowledge-and-connect-with-larry-david-in-th-1847856248`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/d299252e34751a7d534376404149e30c574809d4f2a297dfc8ef4ac97e55fa3d.jpg.pad`
+                        }
+                      },
+                      'publisherId': `d4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The A.V. Club`,
+                      'score': 14.469881193573206,
+                      'relativeTimeDescription': `24 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Fun`,
-              publish_time: `2020-10-21 23:59:59 UTC`,
-              url: `https://dilbert.com/strip/2020-10-21?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+DilbertDailyStrip+%28Dilbert+Daily+Strip%29`,
-              img: `https://pcdn.brave.software/brave-today/cache/ec227063b3591785dc773fa7f87f25156d6dcc7278b3351418bda57db98fe079.jpg.pad`,
-              title: `Comic for October 21, 2020`,
-              description: `Dilbert readers - Please visit Dilbert.com to read this feature. Due to changes with our feeds, we are now making this RSS feed a link to Dilbert.com.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Dilbert Daily Strip`,
-              url_hash: `1b6ca2edc89439e6a470c0c52848b19669b706e42b0e2210d46e87b9a7857e42`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/ec227063b3591785dc773fa7f87f25156d6dcc7278b3351418bda57db98fe079.jpg.pad`,
-              score: 18.625276215155946,
-              points: 18.625276215155946,
-              relative_time: `about 4 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621540000000')
+                      },
+                      'title': `Stocks Up Slightly After Inflation Data, Major Earnings`,
+                      'description': `U.S. share benchmarks ticked up as fresh consumer-price data boosted the view that the bout of elevated inflation might last longer.`,
+                      'url': {
+                        'url': `https://www.wsj.com/articles/global-stock-markets-dow-update-10-13-2021-11634110620?mod=rss_markets_main`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/9a51fc8831ae2c54f2a02293bc472e88abe2f9ded6310dc18506badcf581837a.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `WSJ - Markets`,
+                      'score': 14.469883937507502,
+                      'relativeTimeDescription': `24 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Business`,
-              publish_time: `2020-10-21 23:17:16 UTC`,
-              url: `https://finance.yahoo.com/news/exxon-ceo-plans-layoffs-underscores-231716587.html`,
-              img: `https://pcdn.brave.software/brave-today/cache/41d65d5ba2137d14c6a90d4598c4588d54a66766e678c1e33e107d9c7bc60e82.jpg.pad`,
-              title: `Exxon CEO Plans Layoffs, Underscores Faith in Fossil Fuels`,
-              description: `(Bloomberg) -- Exxon Mobil Corp. plans to lay off an unspecified number of employees as low oil prices force the company to delay major projects, Chief Executive Officer Darren Woods said in an email to staff.Woods also mounted an extensive defense of fossil fuels, calling them a “higher purpose” that aids global prosperity at a time when European peers are looking at renewables as the future.“These are difficult times,” Woods said in the message, the text of which was released by the company We`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Yahoo Finance`,
-              url_hash: `035fe3ce01f1f8a1504408b2f2df450e64ce3b8947a3f5dccb67b072580f6918`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/41d65d5ba2137d14c6a90d4598c4588d54a66766e678c1e33e107d9c7bc60e82.jpg.pad`,
-              score: 19.04163338882812,
-              points: 19.04163338882812,
-              relative_time: `about 5 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621508000000')
+                      },
+                      'title': `Fox News Hosts Shout Down Liberal Panelist for Saying NYC Is No ‘Hellhole’`,
+                      'description': `Fox NewsFox News hosts Lisa “Kennedy” Montgomery and Julie Banderas on Wednesday took turns berating a liberal panelist for having the temerity to claim that dispute their claim that New York City is a “hellhole.”Kennedy and Banderas, in an effort to bolster their case that the city is a terrifying, crime-ridden wasteland, boasted that they “talk to cops” and read the New York Post as evidence for their claims. Besides whipping their viewers into a frenzy over vaccine mandates and critical race `,
+                      'url': {
+                        'url': `https://www.thedailybeast.com/fox-news-hosts-kennedy-and-julie-banderas-shout-down-liberal-panelist-for-saying-nyc-is-no-hellhole?source=articles&via=rss&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thedailybeast%2Farticles+%28The+Daily+Beast+-+Latest+Articles%29`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/3cdc6866dee932665c37ac1ae515c360ff77b47c6a555c3f02a534a79bd49308.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `The Daily Beast`,
+                      'score': 14.515511304097387,
+                      'relativeTimeDescription': `25 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Health`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621506000000')
+                      },
+                      'title': `Hilarie Burton Morgan on the Problem With True Crime, Life on the Farm, and Her ‘One Tree Hill’ Podcast`,
+                      'description': `Plus how she's practicing self-care.`,
+                      'url': {
+                        'url': `https://www.self.com/story/hilarie-burton-morgan-interview`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/3d1c2c118390f7d72a6502148c8733a2cbcb3a4eb3795307ab5a6c8b43671f19.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `SELF`,
+                      'score': 14.518330759046432,
+                      'relativeTimeDescription': `25 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Entertainment`,
-              publish_time: `2020-10-21 22:38:12 UTC`,
-              url: `https://www.rollingstone.com/music/music-country/miranda-lambert-settling-down-video-1079184/`,
-              img: `https://pcdn.brave.software/brave-today/cache/0256656d5dbc1bb5654554a2d94915d0a5661679fc76bd5ed9660972d4adc838.jpg.pad`,
-              title: `Miranda Lambert Shows Off Her Husband in ‘Settling Down’ Video`,
-              description: `Country singer shares the spotlight with her spouse Brendan McLoughlin in new clip`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Rolling Stone`,
-              url_hash: `6b640c1ab29407ac8ceae2cd0bff104c17c6870cdae5334454c1bbcc49702c26`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/0256656d5dbc1bb5654554a2d94915d0a5661679fc76bd5ed9660972d4adc838.jpg.pad`,
-              score: 19.35884769139228,
-              points: 19.35884769139228,
-              relative_time: `about 5 hours ago`
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621467000000')
+                      },
+                      'title': `Plug Power jumps 13% after it partners with Airbus to study and develop hydrogen-powered air travel`,
+                      'description': `Airbus is working towards a goal of bringing zero-emission aircraft to market by 2035, and it thinks hydrogen could help achieve that objective.`,
+                      'url': {
+                        'url': `https://markets.businessinsider.com/news/stocks/plug-power-stock-price-airbus-partnership-hydrogen-airport-study-phillips-2021-10`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/932bcb6a3ce07dc885c0ce7b881c3dfeb9fb643e6d5ce968decf14d1983dbbdd.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Business Insider`,
+                      'score': 14.572489911501611,
+                      'relativeTimeDescription': `25 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621435000000')
+                      },
+                      'title': `60K Film and TV Workers May Strike Within Days as Industry Still Recovers From Pandemic`,
+                      'description': `\"Without an end date, we could keep talking forever,\" said President of the International Alliance of Theatrical Stage Employees Matthew Loeb.`,
+                      'url': {
+                        'url': `https://www.newsweek.com/60k-film-tv-workers-may-strike-within-days-industry-still-recovers-pandemic-1638658`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/1e4526119064ccbd65d5fc372fe878ff60b64c1ba9047f3cb664b2afdeddf73f.jpg.pad`
+                        }
+                      },
+                      'publisherId': `fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Newsweek`,
+                      'score': 14.615857594582533,
+                      'relativeTimeDescription': `26 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Technology`,
-              publish_time: `2020-10-21 22:36:05 UTC`,
-              url: `https://www.wired.com/story/how-to-watch-last-2020-trump-biden-presidential-debate/`,
-              img: `https://pcdn.brave.software/brave-today/cache/d57bd7ab13275312f1b3a73878c6e5fd560ab3f0216be3674a6af91c8fdbd2f3.jpg.pad`,
-              title: `How to Watch the Final 2020 Presidential Debate`,
-              description: `Joe Biden and Donald Trump square off for the second and last time on a debate stage Thursday night in Nashville.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Wired`,
-              url_hash: `036af49b69676427f4f2e1df05c80278dd15cb5f6e35379a0b3dcd92c9353dd5`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/d57bd7ab13275312f1b3a73878c6e5fd560ab3f0216be3674a6af91c8fdbd2f3.jpg.pad`,
-              score: 19.3746762289538,
-              points: 19.3746762289538,
-              relative_time: `about 5 hours ago`
+              'cardType': 5,
+              'items': []
             },
             {
-              category: `Travel`,
-              publish_time: `2020-10-21 22:31:38 UTC`,
-              url: `https://thepointsguy.com/news/aloha-the-nations-longest-domestic-flight-is-back-and-you-can-book-with-miles/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+thepointsguy+%28The+Points+Guy%29`,
-              img: `https://pcdn.brave.software/brave-today/cache/01a07e47d70627888566cc50c729c65a36fe649229611192328c8327e9da1327.jpg.pad`,
-              title: `Aloha! The nation’s longest domestic flight is back, and you can book with miles`,
-              description: `The nation’s longest domestic route is set to make a comeback. That will come courtesy of Hawaiian Airlines, which announced on Wednesday Oct 21 that it would resume nonstop service from its Honolulu hub to both Boston and New York-JFK. Boston flights will begin Dec. 18, with Hawaiian offering two flights a week on an …`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `The Points Guy`,
-              url_hash: `5be186968f779798ce90217d22549a85d58e79e2c57a307d2cca149bdaa98297`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/01a07e47d70627888566cc50c729c65a36fe649229611192328c8327e9da1327.jpg.pad`,
-              score: 19.407551963611304,
-              points: 19.407551963611304,
-              relative_time: `about 5 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621421000000')
+                      },
+                      'title': `Apple AirPods 3 rumored to debut alongside new MacBook Pros at October 18 Unleashed event`,
+                      'description': ` Yesterday Apple confirmed a new “Unleashed” launch event scheduled on October 18. The stars of the show will almost certainly be  Apple’s next-generation ARM-based M-series chipset dubbed M1X and all-new 14” and 16” MacBook Pro laptops. Now Weibo leaker @PandaIsBald is also throwing in the long-rumored AirPods 3 to the mix.\n\n\n\n\nAirPods 3 leaked design (images: 52audio.com)\n\nApple’s regular non-Pro AirPods 2 have been out since March 2019 and are clearly due for an update. The third generation w`,
+                      'url': {
+                        'url': `https://www.gsmarena.com/apple_airpods_3_rumored_to_debut_alongside_new_macbook_pros_at_october_18_unleashed_event-news-51408.php`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/3352539771a4ac7482f4486de7900c458f052e11b605609fafcf206bb4634075.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `GSMArena`,
+                      'score': 14.634541104175572,
+                      'relativeTimeDescription': `26 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Crypto`,
-              publish_time: `2020-10-21 22:24:06 UTC`,
-              url: `https://www.coindesk.com/bitcoin-breaks-13k`,
-              img: `https://pcdn.brave.software/brave-today/cache/8ee674cafe63a533dbf1552562271ab95935237ec59d484309667686ff6e4638.jpg.pad`,
-              title: `Bitcoin Rallies Above $13K Less Than 24 Hours After Breaking 2020 Highs`,
-              description: `Bitcoin (BTC) has risen above $13,000 in less than 24 hours after it broke the $12,000 level on the news that PayPal will support cryptocurrencies on its platform.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `CoinDesk`,
-              url_hash: `852edd5d773f00de52e799bb2e0020b30cb025c61de699d6d14c8e402a334ff1`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/8ee674cafe63a533dbf1552562271ab95935237ec59d484309667686ff6e4638.jpg.pad`,
-              score: 19.462012471328542,
-              points: 19.462012471328542,
-              relative_time: `about 6 hours ago`
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621420000000')
+                      },
+                      'title': `: Starbucks and Netflix partner for series tied to Netflix’s book club`,
+                      'description': `Starbucks and Netflix have partnered for a series that will discuss how the streaming service's book club choices are transformed into movies and shows\n   \n`,
+                      'url': {
+                        'url': `https://www.marketwatch.com/story/starbucks-and-netflix-partner-for-series-tied-to-netflixs-book-club-11634130338?rss=1&siteid=rss`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/98683b85d91545ed868557351adee4d1b6fa45337082c356c36cedcc9a1c0085.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `MarketWatch`,
+                      'score': 14.635871140907735,
+                      'relativeTimeDescription': `26 minutes ago`
+                    }
+                  }
+                }
+              ]
             },
             {
-              category: `Cars`,
-              publish_time: `2020-10-21 22:22:00 UTC`,
-              url: `https://www.caranddriver.com/news/a34431401/elon-musk-full-self-driving-release-late-2020/`,
-              img: `https://pcdn.brave.software/brave-today/cache/d7b43bde456d48bf78cec3de00efdd62e087464d384d7ba7c62dc71e235078aa.jpg.pad`,
-              title: `Elon Musk Foresees Self-Driving Being Released to Public by End of 2020`,
-              description: `The Tesla CEO says that closed beta launched last night will be ready for all compatible Teslas by year's end. `,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Car and Driver`,
-              url_hash: `bcbd012247ef95cb7c023f5f7b2d7a24ad271a3fba1b400941ae317d28383036`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/d7b43bde456d48bf78cec3de00efdd62e087464d384d7ba7c62dc71e235078aa.jpg.pad`,
-              score: 19.476933239862994,
-              points: 19.476933239862994,
-              relative_time: `about 6 hours ago`
+              'cardType': 3,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Culture`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621400000000')
+                      },
+                      'title': `Cheat Maker Is Not Afraid of Call of Duty’s New Kernel-Level Anti-Cheat`,
+                      'description': `Activision announced the launch of a kernel-level anti-cheat system called RICOCHET to fight cheaters.`,
+                      'url': {
+                        'url': `https://www.vice.com/en/article/z3xjqa/cheat-maker-is-so-far-not-afraid-of-call-of-dutys-new-kernel-level-anti-cheat`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/f2dbdd22cf97479e7c2bccae2d3becc8346edd6b603ca2350ee02c35546de347.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `VICE`,
+                      'score': 14.662245395018518,
+                      'relativeTimeDescription': `27 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Culture`,
+                      'publishTime': {
+                        internalValue: BigInt('13278620323000000')
+                      },
+                      'title': `Airlines Are Already Defying the Texas Ban on Vaccine Mandates`,
+                      'description': `Gov. Greg Abbott made companies choose between state law and federal regulations, and Southwest and American Airlines made that choice pretty fast.`,
+                      'url': {
+                        'url': `https://www.vice.com/en/article/g5gzw7/airlines-are-defying-texas-ban-on-vaccine-mandates`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/39c1559de30f9abf91d6035ad655be5e8ba09f64ab4a73201010cb8921248068.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `VICE`,
+                      'score': 31.45969721478307,
+                      'relativeTimeDescription': `45 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Culture`,
+                      'publishTime': {
+                        internalValue: BigInt('13278620305000000')
+                      },
+                      'title': `The Best Dog DNA Tests That Actually Work, According to the Dog-Obsessed`,
+                      'description': `Help your pup assume their rightful throne as king of the dog park with the best dog DNA tests, according to convinced and happy pet owners.`,
+                      'url': {
+                        'url': `https://www.vice.com/en/article/dyvad7/best-dog-dna-tests`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/c6147aad0103a239ba49c79fa7696593bbf82558ba08a5362462fbbeea0a195c.jpg.pad`
+                        }
+                      },
+                      'publisherId': `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `VICE`,
+                      'score': 62.9745088197745,
+                      'relativeTimeDescription': `45 minutes ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Sports`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621373000000')
+                      },
+                      'title': `Poor IPL run not a concern, Nicholas Pooran wants to just 'refocus and go again'`,
+                      'description': `\"We won two World Cups without getting singles\" - West Indies vice-captain says power-hitting will still be big on the team's agenda`,
+                      'url': {
+                        'url': `https://www.espncricinfo.com/story/t20-world-cup-west-indies-vice-captain-nicholas-pooran-wants-to-just-refocus-and-go-again-after-poor-ipl-2021-1282815?ex_cid=OTC-RSS`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/01dde228cf27287b3ef5d3c9b5293c7b8cdaa59e269aa856f080c535016b7e01.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `ESPN - Cricket`,
+                      'score': 14.697300142885872,
+                      'relativeTimeDescription': `27 minutes ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621361000000')
+                      },
+                      'title': `Navy engineer smuggled secrets 'a few at a time' and wanted to meet 'foreign spies' for drinks`,
+                      'description': `Written communications between Jonathan Toebbe and an undercover FBI agent posing as a foreign spy show that he collected secret data over the years. Toebbe also planned to be extracted from the US.`,
+                      'url': {
+                        'url': `https://www.dailymail.co.uk/news/article-10087987/Navy-engineer-smuggled-secrets-time-wanted-meet-foreign-spies-drinks.html?ns_mchannel=rss&ns_campaign=1490&ito=1490`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/876f15ba1c5582a0bef82b3cd6b2d567d04d9394ef208dc3e3749a3d3da46df2.jpg.pad`
+                        }
+                      },
+                      'publisherId': `c5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Daily Mail`,
+                      'score': 14.712686451514855,
+                      'relativeTimeDescription': `27 minutes ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Technology`,
+                      'publishTime': {
+                        internalValue: BigInt('13278621350000000')
+                      },
+                      'title': `How Quickbase is using low-code to streamline Daifuku’s supply chain`,
+                      'description': `At VentureBeat's Low-Code/No-Code Summit, Quickbase explained how its platform helps connect and automate systems, processes, and workloads.`,
+                      'url': {
+                        'url': `https://venturebeat.com/2021/10/13/how-quickbase-is-using-low-code-to-streamline-daifukus-supply-chain/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/e1bab8826e0dc937e0c1ee4f79a3e63d3fbc8caf11773259dbea1cb3202b9a1a.jpg.pad`
+                        }
+                      },
+                      'publisherId': `a5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `VentureBeat`,
+                      'score': 14.726687401901625,
+                      'relativeTimeDescription': `27 minutes ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 4,
+              'items': [
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13256920996000000')
+                      },
+                      'title': `Sony 55 Inch TV`,
+                      'description': `BRAVIA OLED 4K Ultra HD Smart TV with HDR and Alexa Compatibility`,
+                      'url': {
+                        'url': `https://www.amazon.com/dp/B084KQFNBX?tag=bravesoftware-20&linkCode=osi&th=1&psc=1&language=en_US&currency=USD`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/6b0de702b8c1596cb713c89f3b79b568959cfebf4af6611e63c54d39a43e0233.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 270.2865946654164,
+                      'relativeTimeDescription': `251 days ago`
+                    },
+                    'offersCategory': `Electronics`
+                  }
+                },
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13256920996000000')
+                      },
+                      'title': `Samsung Galaxy Tab S7`,
+                      'description': `Go for hours on a single charge, and back to 100% with the fast-charging USB-C port.`,
+                      'url': {
+                        'url': `https://www.amazon.com/dp/B08FBN5STQ?tag=bravesoftware-20&linkCode=osi&th=1&psc=1&language=en_US&currency=USD`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/b8b0e9f54885248f635c620d638c716164972f0b7f72c5ec79357517e2d2a171.jpg.pad`
+                        }
+                      },
+                      'publisherId': `fc5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 540.5731893340486,
+                      'relativeTimeDescription': `251 days ago`
+                    },
+                    'offersCategory': `Electronics`
+                  }
+                },
+                {
+                  article: undefined, promotedArticle: undefined, deal: {
+                    'data': {
+                      'categoryName': `Brave`,
+                      'publishTime': {
+                        internalValue: BigInt('13256920996000000')
+                      },
+                      'title': `Samsung Curved LED-Lit Monitor`,
+                      'description': `A stylish design featuring a Black body metallic finish and sleek curves`,
+                      'url': {
+                        'url': `https://www.amazon.com/dp/B079K3MXWF?tag=bravesoftware-20&linkCode=osi&th=1&psc=1&language=en_US&currency=USD`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/e2bc4f0ca84cc9bc7183a92072bf41cbcdd4bd4e31da0a5d6e084a1da2c2c7fd.jpg.pad`
+                        }
+                      },
+                      'publisherId': `b4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Brave Offers`,
+                      'score': 1081.146378673966,
+                      'relativeTimeDescription': `251 days ago`
+                    },
+                    'offersCategory': `Electronics`
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 0,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Cars`,
+                      'publishTime': {
+                        internalValue: BigInt('13278542934000000')
+                      },
+                      'title': `Rivian’s first retail hub to open in Venice, CA, as ‘a space to gather’`,
+                      'description': `\nFresh off the heels of delivering its flagship R1T electric pickup to first customers, Rivian has shared details of its first hub, centered in Venice, California. Rather than existing as solely a retail space, Rivian hopes this first of several hub locations will offer a space for public gatherings and encourages its community to visit and connect. If you happen to order a $70,000 EV while you’re there… well that’s a welcomed option as well.\n more…\nThe post Rivian’s first retail hub to open in `,
+                      'url': {
+                        'url': `https://electrek.co/2021/10/12/rivians-first-retail-hub-to-open-in-venice-ca-as-a-space-to-gather/`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/c85762ffe3bd48886ed1ce58f868958989ad89b0723f5844a7ffe0fef57fa1c5.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Electrek`,
+                      'score': 23121.416404237974,
+                      'relativeTimeDescription': `22 hours ago`
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              'cardType': 1,
+              'items': [
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Business`,
+                      'publishTime': {
+                        internalValue: BigInt('13278518400000000')
+                      },
+                      'title': `Tech’s Exponential Growth – and How to Solve the Problems It’s Created`,
+                      'description': `Understanding and improving the impact that Big Tech has on society\n\n \n`,
+                      'url': {
+                        'url': `https://hbr.org/podcast/2021/10/techs-exponential-growth-and-how-to-solve-the-problems-its-created?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+harvardbusiness+%28HBR.org%29`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/703dace4d9ab2590c184826c2a7b39ed2249cace04101f891c011c31021a3b9d.jpg.pad`
+                        }
+                      },
+                      'publisherId': `4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `Harvard Business Review`,
+                      'score': 5917.313882859709,
+                      'relativeTimeDescription': `1 day ago`
+                    }
+                  }
+                },
+                {
+                  promotedArticle: undefined, deal: undefined, article: {
+                    'data': {
+                      'categoryName': `Top News`,
+                      'publishTime': {
+                        internalValue: BigInt('13278596700000000')
+                      },
+                      'title': `Global Climate Pledges Off Track to Meet Paris Targets, IEA Says`,
+                      'description': `Whether lawmakers continue existing policies or make good on recent promises, rising temperatures will exceed the limit global leaders committed to in the Paris Agreement, the International Energy Agency said.`,
+                      'url': {
+                        'url': `https://www.wsj.com/articles/governments-climate-pledges-not-enough-to-meet-paris-agreement-targets-iea-says-11634097601`
+                      },
+                      'urlHash': ``,
+                      'image': {
+                        imageUrl: undefined, paddedImageUrl: {
+                          'url': `https://pcdn.brave.com/brave-today/cache/1261719cac8a7c5d7d5ab0d2cc3b5b6a43cf177b3fd0a103f366f59b397efd9d.jpg.pad`
+                        }
+                      },
+                      'publisherId': `eb4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
+                      'publisherName': `WSJ`,
+                      'score': 325.5895923286794,
+                      'relativeTimeDescription': `7 hours ago`
+                    }
+                  }
+                }
+              ]
             }
-          ],
-          randomArticles: [
-            {
-              category: `Fashion`,
-              publish_time: `2020-10-21 21:16:23 UTC`,
-              url: `https://www.refinery29.com/en-us/2020/10/10110590/lily-james-rebecca-netflix-hair-makeup?utm_source=feed&utm_medium=rss`,
-              img: `https://pcdn.brave.software/brave-today/cache/80536e59961184d8d3cb0364be8d2637aa208560b144e406debd56e4f467ebcd.jpg.pad`,
-              title: `In Rebecca, Simple Beauty Makes An Emotional Statement`,
-              description: `\nWarning: Spoilers ahead for Netflix’s Rebecca.\nDaphne du Maurier’s 1938 novel Rebecca is the saga of an inexperienced young woman who marries a wealthy widower and goes to live at his sprawling estate by the sea, but it is not a love story. Sex, murder, jealousy, power, gender, and greed are  central themes throughout, thinly veiled by the lush, dreamy language of an unreliable narrator plagued by what must be one of the earliest documented cases of imposter syndrome.\nRebecca is, however, a rom`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Refinery29`,
-              url_hash: `739468a9c95502b014ed9134f97ce40fb5dc79da5b82d694c406b7aa2bec7c29`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/80536e59961184d8d3cb0364be8d2637aa208560b144e406debd56e4f467ebcd.jpg.pad`,
-              score: 19.894549992740075,
-              points: 19.894549992740075,
-              relative_time: `about 7 hours ago`
-            },
-            {
-              category: `Health`,
-              publish_time: `2020-10-21 21:06:58 UTC`,
-              url: `https://www.webmd.com/add-adhd/news/20201021/could-moms-thyroid-levels-influence-adhd-in-kids?src=RSS_PUBLIC`,
-              img: `https://pcdn.brave.software/brave-today/cache/1539a291097907d500358f5482cc4c40501c73418b25bba0920352c7d0f4e18a.jpg.pad`,
-              title: `Could Mom's Thyroid Levels Influence ADHD in Kids?`,
-              description: `The study found that children born to mothers with low thyroid hormone levels during the first trimester of pregnancy had a 28% increased risk of being diagnosed with ADHD later.`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `WebMD Health`,
-              url_hash: `2a05b8504429eb53a3b02ca04055fd44660c13d28d019df948369d52498b9ca1`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/1539a291097907d500358f5482cc4c40501c73418b25bba0920352c7d0f4e18a.jpg.pad`,
-              score: 19.947917983086388,
-              points: 19.947917983086388,
-              relative_time: `about 7 hours ago`
-            },
-            {
-              category: `Entertainment`,
-              publish_time: `2020-10-21 21:01:36 UTC`,
-              url: `https://www.buzzfeed.com/ryanschocket2/tyler-posey-hooking-up-with-men-dildos-and-more`,
-              img: `https://pcdn.brave.software/brave-today/cache/0866bc5dd473399c616e613f6aa41ca6b4c514fd7387c99442f9f531df404e35.jpg.pad`,
-              title: `Tyler Posey Opened Up About Hooking Up With Men And More In A New Candid Interview`,
-              description: `View Entire Post ›`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Buzzfeed`,
-              url_hash: `d9bd50214bfcba30b63f94c1f243fe5abe361f6f407f3b0cf07b925c805ee373`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/0866bc5dd473399c616e613f6aa41ca6b4c514fd7387c99442f9f531df404e35.jpg.pad`,
-              score: 19.977708940094605,
-              points: 19.977708940094605,
-              relative_time: `about 7 hours ago`
-            },
-            {
-              category: `Food`,
-              publish_time: `2020-10-21 21:00:00 UTC`,
-              url: `https://www.simplyrecipes.com/recipes/pumpkin_chili/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+elise%2Fsimplyrecipes+%28Simply+Recipes%29`,
-              img: `https://pcdn.brave.software/brave-today/cache/15831d758b15a7118a9b4f906607cb1661735048ef433e450d55ce4acf2ceef7.jpg.pad`,
-              title: `Pumpkin Chili`,
-              description: `\t\t\tPumpkin Chili! Made with chunks of pumpkin, ground pork, black beans, a bottle of beer, and plenty of spices. Ready in under an hour. Even better the next day.\t\t\tContinue reading "Pumpkin Chili" »`,
-              content_type: `article`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Simply Recipes`,
-              url_hash: `647039a9c85888b397347be70fa5581e688f2c00a9efaa001ce573229d87aff5`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/15831d758b15a7118a9b4f906607cb1661735048ef433e450d55ce4acf2ceef7.jpg.pad`,
-              score: 19.98651085657971,
-              points: 19.98651085657971,
-              relative_time: `about 7 hours ago`
-            }
-          ],
-          deals: [
-            {
-              category: `Brave`,
-              publish_time: `2020-09-09 22:10:19 UTC`,
-              url: `http://join.skillshare.com/premium-231/?clickid=w9Ux1NxkSxyLR5uwUx0Mo36FUkExD90cY2N82U0&irgwc=1&utm_content=4650&utm_term=30%25%20Off%20Annual%20Membership%20-%20Direct%20to%20Pay&utm_campaign=2051959&affiliateRef=6595003&utm_medium=affiliate-referral&utm_source=IR`,
-              img: `https://pcdn.brave.software/brave-today/cache/7700766c01c3e62ae738cf4843f03c129cbc2cfa62ccbb5ea5cd1a4a61bc0d71.jpg.pad`,
-              title: `Skillshare`,
-              description: `Explore your creativity. 30% off of Skillshare Premium`,
-              content_type: `product`,
-              offers_category: `Discounts`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Brave Offers`,
-              url_hash: `435520c4493be85fd8b38ad0c47cbae094854d38d40865921cfbfef4dd4af2e5`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/7700766c01c3e62ae738cf4843f03c129cbc2cfa62ccbb5ea5cd1a4a61bc0d71.jpg.pad`,
-              score: 483.4966589766055,
-              points: 483.4966589766055,
-              relative_time: `about 1 month ago`
-            },
-            {
-              category: `Brave`,
-              publish_time: `2020-09-09 16:18:41 UTC`,
-              url: `https://store.brave.com/`,
-              img: `https://pcdn.brave.software/brave-today/cache/36369312906f78355082d4821525dc8561129373ef70fb613f46cc84a4f803c2.jpg.pad`,
-              title: `Brave Swag Store`,
-              description: `Code BRAVETODAY for 40% off entire order. Limit 1 per customer.`,
-              content_type: `product`,
-              offers_category: `Discounts`,
-              publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-              publisher_name: `Brave Offers`,
-              url_hash: `8093dd7e9137806a4491ecb47f45168c5f9cbf4f64e8837673ee77f0ac4cb762`,
-              padded_img: `https://pcdn.brave.software/brave-today/cache/36369312906f78355082d4821525dc8561129373ef70fb613f46cc84a4f803c2.jpg.pad`,
-              score: 967.3625465407137,
-              points: 967.3625465407137,
-              relative_time: `about 1 month ago`
-            }
-          ],
-          itemsByCategory: {
-            categoryName: `Cars`,
-            items: [
-              {
-                category: `Cars`,
-                publish_time: `2020-10-21 18:50:00 UTC`,
-                url: `https://www.autoblog.com/2020/10/21/gmc-hummer-ev-trim-levels-pricing/`,
-                img: `https://pcdn.brave.software/brave-today/cache/028157141419891b44b8c3c74402382f5973a52969159de6626a154a4fe047fd.jpg.pad`,
-                title: `The Hummer EV Edition 1 is sold out and it'll be years before other trims arrive`,
-                description: `Filed under:\n\t\t\t\t\t    Green,GM,GMC,Hummer,Truck,Electric,Off-Road\nContinue reading The Hummer EV Edition 1 is sold out and it'll be years before other trims arrive\nThe Hummer EV Edition 1 is sold out and it'll be years before other trims arrive originally appeared on Autoblog on Wed, 21 Oct 2020 14:50:00 EDT.  Please see our terms for use of feeds.\nPermalink | \n\t\t\t\t\t\tEmail this | \n\t\t\t\t\t    Comments`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Autoblog`,
-                url_hash: `12bf8d7c8ff10c7bb359198eafe353055d4de7b9412f55530c3ffe4d12aa9543`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/028157141419891b44b8c3c74402382f5973a52969159de6626a154a4fe047fd.jpg.pad`,
-                score: 41.19286841230655,
-                points: 36.19286841230655,
-                relative_time: `about 9 hours ago`
-              },
-              {
-                category: `Cars`,
-                publish_time: `2020-10-21 23:30:00 UTC`,
-                url: `https://jalopnik.com/aston-martin-once-started-a-factory-backed-drag-racing-1845443351`,
-                img: `https://pcdn.brave.software/brave-today/cache/5a21ffc54892a60ec75896f7504041dfb70582da676cb9ee636e669fea74ed43.jpg.pad`,
-                title: `Aston Martin Once Started A Factory-Backed Drag Racing Program With An Employee’s Boyfriend And Guess How That Went`,
-                description: `The current Aston Martin DBS is a V12 supercoupe of terrifying speed. Indeed, it is a twin-turbo V12 rocketsled with over 700 horsepower. And it is nothing next to this Aston Martin Vantage from the early ‘90s, complete with a fantastic backstory and 2,800 horsepower.Read more...`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Jalopnik`,
-                url_hash: `22f2824d5d7f77bf5337175777a2f8945e67afb5e2c825dce86f64fd4f1a4ad4`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/5a21ffc54892a60ec75896f7504041dfb70582da676cb9ee636e669fea74ed43.jpg.pad`,
-                score: 37.852663591938935,
-                points: 37.852663591938935,
-                relative_time: `about 4 hours ago`
-              },
-              {
-                category: `Cars`,
-                publish_time: `2020-10-21 18:18:00 UTC`,
-                url: `https://www.caranddriver.com/volvo/xc90`,
-                img: `https://pcdn.brave.software/brave-today/cache/213841b8fe31283ceb66fc195fb938ca6226f64c97d474b0f06dd91f7870db0a.jpg.pad`,
-                title: `2021 Volvo XC90`,
-                description: `Review, Pricing, and Specs `,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Car and Driver`,
-                url_hash: `13e45208ee3b033fd47eebcd3e5e3eefe82f342a4c70e6e899a086a4238ed86c`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/213841b8fe31283ceb66fc195fb938ca6226f64c97d474b0f06dd91f7870db0a.jpg.pad`,
-                score: 41.44364899652782,
-                points: 41.44364899652782,
-                relative_time: `about 10 hours ago`
-              }
-            ]
-          },
-          itemsByPublisher: {
-            name: `8c342f261909d56c6c24087328089b983f2942a7c40c061321c43a52aee7383a`,
-            items: [
-              {
-                category: `Science`,
-                publish_time: `2020-10-21 22:00:00 UTC`,
-                url: `https://www.popsci.com/story/health/airplane-travel-coronavirus-risk/`,
-                img: `https://pcdn.brave.software/brave-today/cache/6dd00c8f7a09f0cd92b931749783219d476d0e6a26d45696b5b2e1740b925046.jpg.pad`,
-                title: `COVID-19 continues to make flying a risky proposition`,
-                description: `The results of a new report from the Department of Defense and United Airlines suggest that while COVID-19 transmission on airplanes might not be as significant as was once thought, it still exists.`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Popular Science`,
-                url_hash: `cc822f9fa9da85c038280a7822190bd90de7512082afe167ce627bb4f98ff359`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/6dd00c8f7a09f0cd92b931749783219d476d0e6a26d45696b5b2e1740b925046.jpg.pad`,
-                score: 19.626884024759892,
-                points: 19.626884024759892,
-                relative_time: `about 6 hours ago`
-              },
-              {
-                category: `Science`,
-                publish_time: `2020-10-21 20:57:04 UTC`,
-                url: `https://www.popsci.com/story/technology/gmc-electric-hummer/`,
-                img: `https://pcdn.brave.software/brave-today/cache/7c47393fd59b9b8ea76dd04053e5b9e6540f9c7a596cbc8a8f6cc280456246c0.jpg.pad`,
-                title: `The 2022 GMC electric Hummer looks a lot different than you might expect`,
-                description: `With 1,000 horsepower and 350 miles of range on a charge, this off-road-ready vehicle looks impressive.`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Popular Science`,
-                url_hash: `2b7042c7265a13cef1c7a270b62d7d6b71451ebb2dae7da151df0cfd33e41a25`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/7c47393fd59b9b8ea76dd04053e5b9e6540f9c7a596cbc8a8f6cc280456246c0.jpg.pad`,
-                score: 40.005077117655226,
-                points: 40.005077117655226,
-                relative_time: `about 7 hours ago`
-              },
-              {
-                category: `Science`,
-                publish_time: `2020-10-21 17:11:28 UTC`,
-                url: `https://www.popsci.com/story/space/universe-beginnings-missing-matter/`,
-                img: `https://pcdn.brave.software/brave-today/cache/d8b99f8c858115639c2c42d4c084cb3a1fc360d8d95045e39d6d8dcf4fe5c1ec.jpg.pad`,
-                title: `Meet the disk-shaped halo of hot gas you currently live in`,
-                description: `Scientists have determined that the Milky Way’s halo has a disk-like shape and a clumpy texture that suggests it’s constantly trading gas and energy with the galaxy as stars are born and die.`,
-                content_type: `article`,
-                publisher_id: `5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5`,
-                publisher_name: `Popular Science`,
-                url_hash: `ba01847ce8f8b154e588a9219fde0f9c89a74594b01da7be0f3a51e8fa9a1ec5`,
-                padded_img: `https://pcdn.brave.software/brave-today/cache/d8b99f8c858115639c2c42d4c084cb3a1fc360d8d95045e39d6d8dcf4fe5c1ec.jpg.pad`,
-                score: 83.83916933468261,
-                points: 83.83916933468261,
-                relative_time: `about 11 hours ago`
-              }
-            ]
-          }
+          ]
         }
       ]
     }

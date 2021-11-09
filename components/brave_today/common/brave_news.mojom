@@ -1,0 +1,134 @@
+module brave_news.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+import "url/mojom/url.mojom";
+
+// Items either have a padded or an unpadded image url
+union Image {
+  url.mojom.Url padded_image_url;
+  url.mojom.Url image_url;
+};
+
+enum CardType {
+  HEADLINE,
+  HEADLINE_PAIRED,
+  CATEGORY_GROUP,
+  PUBLISHER_GROUP,
+  DEALS,
+  DISPLAY_AD,
+  PROMOTED_ARTICLE
+};
+
+struct FeedItemMetadata {
+  string category_name;
+  mojo_base.mojom.Time publish_time;
+  string title;
+  string description;
+  url.mojom.Url url;
+  string url_hash;
+  Image image;
+  string publisher_id;
+  string publisher_name;
+  double score;
+  string relative_time_description;
+};
+
+struct Article {
+  FeedItemMetadata data;
+};
+
+struct PromotedArticle {
+  FeedItemMetadata data;
+  string creative_instance_id;
+};
+
+struct Deal {
+  FeedItemMetadata data;
+  string offers_category;
+};
+
+union FeedItem {
+  Article article;
+  PromotedArticle promoted_article;
+  Deal deal;
+};
+
+struct FeedPageItem {
+  CardType card_type;
+  // Each UI must validate if the items array
+  // contains enough content to support the card_type.
+  array<FeedItem> items;
+};
+
+struct FeedPage {
+  array<FeedPageItem> items;
+};
+
+struct Feed {
+  string hash;
+  array<FeedPage> pages;
+  FeedItem? featured_item;
+};
+
+enum UserEnabled {
+  NOT_MODIFIED,
+  ENABLED,
+  DISABLED,
+};
+
+struct Publisher {
+  // Identifies whether the user has manually set the publisher on and off,
+  // so that we may know if the source should follow the remote-provided value
+  // (which may change), or not.
+  string publisher_id;
+  string publisher_name;
+  string category_name;
+  bool is_enabled;
+  UserEnabled user_enabled_status = UserEnabled.NOT_MODIFIED;
+};
+
+struct DisplayAd {
+  string uuid;
+  string creative_instance_id;
+  string dimensions;
+  string title;
+  string description;
+  Image image;
+  url.mojom.Url target_url;
+  string? cta_text;
+};
+
+// Browser-side handler
+interface BraveNewsController {
+  GetFeed() => (Feed feed);
+  GetPublishers() => (map<string, Publisher> publishers);
+  GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
+  SetPublisherPref(string publisher_id, UserEnabled new_status);
+  ClearPrefs();
+  IsFeedUpdateAvailable(string displayed_feed_hash)
+    => (bool is_update_available);
+  GetDisplayAd() => (DisplayAd? ad);
+  // Lets the browser know when a user begins viewing or scrolling
+  // through Brave News, for statistics gathering purposes.
+  OnInteractionSessionStarted();
+  // Argument should be how many total cards visited in this session.
+  // We need the front-end to give us this since the class
+  // which implements this interface may live longer than the session
+  // or there may be multiple sessions active. This includes if a user visits
+  // a card and then navigates "back" to the same place in Brave News
+  // and visits a subsequent card.
+  OnSessionCardVisitsCountChanged(uint16 cards_visited_session_total_count);
+  // Argument should be how many total cards viewed in this session.
+  // We need the front-end to give us this since the class
+  // which implements this interface may live longer than the session
+  // or there may be multiple sessions active. This includes if a user visits
+  // a card and then navigates "back" to the same place in Brave News
+  // and views subsequent card. In that case,
+  // the UI should provide a number which increments the view count from before
+  // the navigation event.
+  OnSessionCardViewsCountChanged(uint16 cards_viewed_session_total_count);
+  OnPromotedItemView(string item_id, string creative_instance_id);
+  OnPromotedItemVisit(string item_id, string creative_instance_id);
+  OnDisplayAdVisit(string item_id, string creative_instance_id);
+  OnDisplayAdView(string item_id, string creative_instance_id);
+};

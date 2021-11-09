@@ -1,0 +1,27 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_today/buildflags/buildflags.gni")
+
+brave_browser_brave_news_sources = []
+brave_browser_brave_news_deps = []
+
+if (enable_brave_news) {
+  brave_browser_brave_news_sources += [
+    "//brave/browser/brave_news/brave_news_controller_factory.cc",
+    "//brave/browser/brave_news/brave_news_controller_factory.h",
+  ]
+
+  brave_browser_brave_news_deps += [
+    "//base",
+    "//brave/components/brave_today/browser",
+    "//brave/components/brave_today/buildflags",
+    "//brave/components/brave_today/common",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+  ]
+}

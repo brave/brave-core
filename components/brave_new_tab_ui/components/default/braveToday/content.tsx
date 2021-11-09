@@ -4,16 +4,17 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { Feed } from '../../../api/brave_news'
 import CardLoading from './cards/cardLoading'
 import CardError from './cards/cardError'
 import CardLarge from './cards/_articles/cardArticleLarge'
 import CardDisplayAd from './cards/displayAd'
-import CardsGroup, { groupItemCount } from './cardsGroup'
+import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import { attributeNameCardCount, Props } from './'
 import Refresh from './options/refresh'
 
-function getFeedHashForCache (feed?: BraveToday.Feed) {
+function getFeedHashForCache (feed?: Feed) {
   return feed ? feed.hash : ''
 }
 
@@ -141,18 +142,20 @@ export default function BraveTodayContent (props: Props) {
     return null
   }
   const displayedPageCount = Math.min(props.displayedPageCount, feed.pages.length)
-  const introCount = 2
+  const introCount = feed.featuredItem ? 2 : 1
+  let runningCardCount = introCount
   return (
     <>
     {/* featured item */}
-      <CardLarge
-        ref={onOptionsTriggerElement}
-        content={[feed.featuredArticle]}
+      <div ref={onOptionsTriggerElement} />
+      { feed.featuredItem && <CardLarge
+        content={[feed.featuredItem]}
         publishers={publishers}
         articleToScrollTo={props.articleToScrollTo}
         onSetPublisherPref={props.onSetPublisherPref}
         onReadFeedItem={props.onReadFeedItem}
       />
+      }
       <div {...{ [attributeNameCardCount]: 1 }} ref={registerCardCountTriggerElement} />
       <>
         <CardDisplayAd
@@ -166,10 +169,12 @@ export default function BraveTodayContent (props: Props) {
         /* Infinitely repeating collections of content. */
         Array(displayedPageCount).fill(undefined).map((_: undefined, index: number) => {
           const shouldScrollToDisplayAd = props.displayAdToScrollTo === (index + 1)
+          let startingDisplayIndex = runningCardCount
+          runningCardCount += feed.pages[index].items.length
           return (
             <CardsGroup
               key={index}
-              itemStartingDisplayIndex={introCount + (groupItemCount * index)}
+              itemStartingDisplayIndex={startingDisplayIndex}
               content={feed.pages[index]}
               publishers={publishers}
               articleToScrollTo={props.articleToScrollTo}

@@ -4,10 +4,11 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import * as BraveNews from '../../../api/brave_news'
+import { PromotedItemViewedPayload, ReadFeedItemPayload, DisplayAdViewedPayload, VisitDisplayAdPayload } from '../../../actions/today_actions'
 import * as BraveTodayElement from './default'
 import CardOptIn from './cards/cardOptIn'
 import CardLoading from './cards/cardLoading'
-import { PromotedItemViewedPayload, ReadFeedItemPayload, DisplayAdViewedPayload, VisitDisplayAdPayload } from '../../../actions/today_actions'
 const Content = React.lazy(() => import('./content'))
 
 export type OnReadFeedItem = (args: ReadFeedItemPayload) => any
@@ -15,16 +16,16 @@ export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
 export type OnPromotedItemViewed = (args: PromotedItemViewedPayload) => any
 export type OnVisitDisplayAd = (args: VisitDisplayAdPayload) => any
 export type OnViewedDisplayAd = (args: DisplayAdViewedPayload) => any
-export type GetDisplayAdContent = () => Promise<BraveToday.DisplayAd | null>
+export type GetDisplayAdContent = BraveNews.BraveNewsControllerRemote['getDisplayAd']
 
 export type Props = {
   isFetching: boolean
   hasInteracted: boolean
   isUpdateAvailable: boolean
   isOptedIn: boolean
-  feed?: BraveToday.Feed
-  publishers?: BraveToday.Publishers
-  articleToScrollTo?: BraveToday.FeedItem
+  feed?: BraveNews.Feed
+  publishers?: BraveNews.Publishers
+  articleToScrollTo?: BraveNews.FeedItemMetadata
   displayAdToScrollTo?: number
   displayedPageCount: number
   onInteracting: () => any
@@ -47,7 +48,7 @@ export const attributeNameCardCount = 'data-today-card-count'
 
 const intersectionOptions = { root: null, rootMargin: '0px', threshold: 0.25 }
 
-export default function BraveTodayContent (props: Props) {
+export default function BraveTodaySection (props: Props) {
   const handleHitsViewportObserver = React.useCallback<IntersectionObserverCallback>((entries) => {
     // When the scroll trigger, hits the viewport, notify externally, and since
     // we won't get updated with that result, change our internal state.

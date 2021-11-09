@@ -58,24 +58,13 @@ const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageClockFormat[] = "brave.new_tab_page.clock_format";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
-const char kNewTabPageShowToday[] = "brave.new_tab_page.show_brave_today";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
 const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
 const char kNewTabPageShowBraveTalk[] = "brave.new_tab_page.show_together";
 const char kNewTabPageHideAllWidgets[] = "brave.new_tab_page.hide_all_widgets";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
-const char kBraveTodaySources[] = "brave.today.sources";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
-const char kBraveTodayOptedIn[] = "brave.today.opted_in";
-const char kBraveTodayWeeklySessionCount[] =
-    "brave.today.p3a_weekly_session_count";
-const char kBraveTodayWeeklyCardViewsCount[] =
-    "brave.today.p3a_weekly_card_views_count";
-const char kBraveTodayWeeklyCardVisitsCount[] =
-    "brave.today.p3a_weekly_card_visits_count";
-const char kBraveTodayWeeklyDisplayAdViewedCount[] =
-    "brave.today.p3a_weekly_display_ad_viewed_count";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =

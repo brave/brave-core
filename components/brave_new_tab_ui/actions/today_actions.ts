@@ -4,16 +4,15 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { createAction } from 'redux-act'
-
-export const todayInit = createAction('todayInit')
+import * as BraveNews from '../api/brave_news'
 
 export const interactionBegin = createAction('interactionStart')
 
 export const ensureSettingsData = createAction('ensureSettingsData')
 
 type DataReceivedPayload = {
-  feed?: BraveToday.Feed
-  publishers?: BraveToday.Publishers
+  feed?: BraveNews.Feed
+  publishers?: BraveNews.Publishers
 }
 export const dataReceived = createAction<DataReceivedPayload>('dataReceived')
 
@@ -33,7 +32,7 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
  * User has requested to read an article
  */
 export type ReadFeedItemPayload = {
-  item: BraveToday.FeedItem,
+  item: BraveNews.FeedItem,
   isPromoted?: boolean,
   promotedUUID?: string,
   openInNewTab?: boolean
@@ -43,19 +42,19 @@ export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')
 export const feedItemViewedCountChanged = createAction<number>('feedItemViewedCountChanged')
 
 export type PromotedItemViewedPayload = {
-  item: BraveToday.PromotedArticle
+  item: BraveNews.FeedItem
   uuid: string
 }
 export const promotedItemViewed = createAction<PromotedItemViewedPayload>('promotedItemViewed')
 
 export type VisitDisplayAdPayload = {
-  ad: BraveToday.DisplayAd
+  ad: BraveNews.DisplayAd
   openInNewTab?: boolean
 }
 export const visitDisplayAd = createAction<VisitDisplayAdPayload>('visitDisplayAd')
 
 export type DisplayAdViewedPayload = {
-  ad: BraveToday.DisplayAd
+  ad: BraveNews.DisplayAd
 }
 export const displayAdViewed = createAction<DisplayAdViewedPayload>('displayAdViewed')
 

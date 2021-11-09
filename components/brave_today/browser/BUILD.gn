@@ -2,14 +2,41 @@ import("//brave/build/config.gni")
 
 static_library("browser") {
   sources = [
+    "brave_news_controller.cc",
+    "brave_news_controller.h",
+    "feed_building.cc",
+    "feed_building.h",
+    "feed_controller.cc",
+    "feed_controller.h",
+    "feed_parsing.cc",
+    "feed_parsing.h",
+    "network.cc",
+    "network.h",
+    "publishers_controller.cc",
+    "publishers_controller.h",
+    "publishers_parsing.cc",
+    "publishers_parsing.h",
     "urls.cc",
     "urls.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_private_cdn",
     "//brave/components/brave_today/common",
+    "//brave/components/brave_today/common:mojo_bindings",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
+    "//brave/components/weekly_storage",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//url",
   ]
 }

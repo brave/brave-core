@@ -6,20 +6,21 @@
 import * as React from 'react'
 
 // Feature-specific components
+import { FeedItem, FeedItemMetadata } from '../../../../api/brave_news'
 import * as Card from '../cardSizes'
-import CardImage from './CardImage'
+import { CardImageFromFeedItem } from './CardImage'
 import useScrollIntoView from '../useScrollIntoView'
 import useReadArticleClickHandler from '../useReadArticleClickHandler'
 import { OnReadFeedItem } from '../'
 
 interface Props {
-  content: BraveToday.Deal[]
-  articleToScrollTo?: BraveToday.FeedItem
+  content: FeedItem[]
+  articleToScrollTo?: FeedItemMetadata
   onReadFeedItem: OnReadFeedItem
 }
 
 type ListItemProps = {
-  item: BraveToday.Deal
+  item: FeedItem
   onReadFeedItem: OnReadFeedItem
   shouldScrollIntoView: boolean
 }
@@ -29,30 +30,35 @@ function ListItem (props: ListItemProps) {
   const onClick = useReadArticleClickHandler(props.onReadFeedItem, {
     item: props.item
   })
+  const data = props.item.deal?.data
+  if (!data) {
+    return null
+  }
   return (
-    <Card.DealItem ref={cardRef} onClick={onClick} href={props.item.url}>
-      <CardImage imageUrl={props.item.padded_img} />
-      <Card.Text>{props.item.title}</Card.Text>
-      <Card.DealDescription>{props.item.description}</Card.DealDescription>
+    <Card.DealItem ref={cardRef} onClick={onClick} href={data.url.url}>
+      <CardImageFromFeedItem data={data} />
+      <Card.Text>{data.title}</Card.Text>
+      <Card.DealDescription>{data.description}</Card.DealDescription>
     </Card.DealItem>
   )
 }
 
 export default function CardDeals (props: Props) {
-  // no full content no render®
-  if (props.content.length === 0) {
+  if (!props.content || props.content.length === 0 || !props.content[0].deal) {
     return null
   }
 
+  const categoryName = props.content[0].deal.data.categoryName
+
   return (
     <Card.DealsCard>
-      <Card.DealsCategory>{props.content[0].offers_category}</Card.DealsCategory>
+      <Card.DealsCategory>{categoryName}</Card.DealsCategory>
       <Card.DealsList>
         {
           props.content.map((item, index) => {
             const shouldScrollIntoView = (
               !!props.articleToScrollTo &&
-              props.articleToScrollTo.url === item.url
+              props.articleToScrollTo.url.url === item.deal?.data.url.url
             )
             return <ListItem
               key={index}

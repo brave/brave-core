@@ -5,6 +5,7 @@
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../../actions/today_actions'
+import * as BraveNews from '../../api/brave_news'
 
 export type BraveTodayState = {
   // Are we in the middle of checking for new data
@@ -16,9 +17,9 @@ export type BraveTodayState = {
   cardsViewed: number
   cardsVisited: number
   // Feed data
-  feed?: BraveToday.Feed
-  publishers?: BraveToday.Publishers
-  articleScrollTo?: BraveToday.FeedItem
+  feed?: BraveNews.Feed
+  publishers?: BraveNews.Publishers
+  articleScrollTo?: BraveNews.FeedItemMetadata
   // Page number of ad to scroll to
   displayAdToScrollTo?: number
 }
@@ -42,7 +43,8 @@ if (history.state && (history.state.todayArticle || history.state.todayAdPositio
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
-  defaultState.articleScrollTo = history.state.todayArticle as BraveToday.FeedItem | undefined
+  // tslint:disable-next-line whilst CI does not know about BraveNews.FeedItemMetadata
+  defaultState.articleScrollTo = history.state.todayArticle as BraveNews.FeedItemMetadata | undefined
   if (!defaultState.articleScrollTo) {
     defaultState.displayAdToScrollTo = history.state.todayAdPosition as number | undefined
   }
@@ -130,7 +132,12 @@ reducer.on(Actions.setPublisherPref, (state, payload) => {
   if (publisher) {
     publisher = {
       ...publishers[payload.publisherId],
-      user_enabled: payload.enabled
+      // Don't worry about UserEnabled.NOT_MODIFIED
+      // here since that's a storage optimization
+      // on the backend.
+      userEnabledStatus: payload.enabled
+        ? BraveNews.UserEnabled.ENABLED
+        : BraveNews.UserEnabled.DISABLED
     }
     publishers = {
       ...publishers,

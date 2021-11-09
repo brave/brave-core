@@ -5,7 +5,8 @@
 
 import * as React from 'react'
 import * as Card from '../cardSizes'
-import * as Background from '../../../../../common/Background'
+import getBraveNewsController, * as BraveNews from '../../../../api/brave_news'
+import { getDataUrl } from '../../../../../common/privateCDN'
 
 type Props = {
   imageUrl: string
@@ -38,12 +39,16 @@ function useGetUnpaddedImage (paddedUrl: string, isUnpadded: boolean, onLoaded?:
       .then(onReceiveUnpaddedUrl)
       return
     }
-    Background.send<BraveToday.Messages.GetImageDataResponse,
-        BraveToday.Messages.GetImageDataPayload>(
-      Background.MessageTypes.Today.getImageData,
-      { url: paddedUrl }
-    )
-    .then(result => onReceiveUnpaddedUrl(result.dataUrl))
+
+    getBraveNewsController().getImageData({ url: paddedUrl })
+    .then(async (result) => {
+      if (!result.imageData) {
+        return
+      }
+      const resultBuffer = new Uint8Array(result.imageData).buffer
+      const dataUrl = await getDataUrl(resultBuffer)
+      onReceiveUnpaddedUrl(dataUrl)
+    })
     .catch(err => {
       console.error(`Error getting image for ${paddedUrl}.`, err)
     })
@@ -74,4 +79,38 @@ export default function CardImage (props: Props) {
       <Card.Image isPromoted={props.isPromoted} src={unpaddedUrl} />
     </Frame>
   )
+}
+
+type FromFeedItemProps = Omit<Props, 'imageUrl' | 'isUnpadded'> & {
+  data: BraveNews.FeedItemMetadata
+}
+
+export function CardImageFromFeedItem (props: FromFeedItemProps) {
+  React.useEffect(() => {
+    if (!props.data.image.imageUrl && !props.data.image.paddedImageUrl) {
+      // Shouldn't happen since backend filters out items
+      // with no image. This is in a useEffect so it does not log every render.
+      console.error('Brave News found item with no image', props.data.url.url)
+    }
+  }, [props.data.image.imageUrl, props.data.image.paddedImageUrl])
+  const { data, ...baseProps } = props
+  if (props.data.image.paddedImageUrl) {
+    return (
+      <CardImage
+        {...baseProps}
+        imageUrl={props.data.image.paddedImageUrl.url}
+        isPromoted={props.isPromoted}
+      />
+    )
+  }
+  if (props.data.image.imageUrl) {
+    return (
+      <CardImage
+        imageUrl={props.data.image.imageUrl.url}
+        isUnpadded={true}
+        isPromoted={props.isPromoted}
+      />
+    )
+  }
+  return null
 }

@@ -24,6 +24,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -92,14 +93,16 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean("showClock", prefs->GetBoolean(kNewTabPageShowClock));
   pref_data.SetString("clockFormat", prefs->GetString(kNewTabPageClockFormat));
   pref_data.SetBoolean("showStats", prefs->GetBoolean(kNewTabPageShowStats));
-  pref_data.SetBoolean("showToday", prefs->GetBoolean(kNewTabPageShowToday));
+  pref_data.SetBoolean(
+      "showToday", prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
   pref_data.SetBoolean("showRewards",
                        prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
-  pref_data.SetBoolean("isBraveTodayOptedIn",
-                       prefs->GetBoolean(kBraveTodayOptedIn));
+  pref_data.SetBoolean(
+      "isBraveTodayOptedIn",
+      prefs->GetBoolean(brave_news::prefs::kBraveTodayOptedIn));
   pref_data.SetBoolean("hideAllWidgets",
                        prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.SetBoolean("showBinance",
@@ -273,38 +276,6 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       "customizeClicked",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleCustomizeClicked,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayInteractionBegin",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleTodayInteractionBegin,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayOnCardVisit",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardVisit,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayOnCardViews",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayOnCardViews,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayOnPromotedCardView",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleTodayOnPromotedCardView,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayGetDisplayAd",
-      base::BindRepeating(&BraveNewTabMessageHandler::HandleTodayGetDisplayAd,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayOnDisplayAdVisit",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "todayOnDisplayAdView",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleTodayOnDisplayAdView,
-          base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -348,7 +319,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   }
   // News
   pref_change_registrar_.Add(
-      kBraveTodayOptedIn,
+      brave_news::prefs::kBraveTodayOptedIn,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   // New Tab Page preferences
@@ -373,7 +344,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kNewTabPageShowToday,
+      brave_news::prefs::kNewTabPageShowToday,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
@@ -515,9 +486,9 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showStats") {
     settingsKey = kNewTabPageShowStats;
   } else if (settingsKeyInput == "showToday") {
-    settingsKey = kNewTabPageShowToday;
+    settingsKey = brave_news::prefs::kNewTabPageShowToday;
   } else if (settingsKeyInput == "isBraveTodayOptedIn") {
-    settingsKey = kBraveTodayOptedIn;
+    settingsKey = brave_news::prefs::kBraveTodayOptedIn;
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
@@ -631,193 +602,6 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
   brave::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
-}
-
-void BraveNewTabMessageHandler::HandleTodayInteractionBegin(
-    base::Value::ConstListView args) {
-  AllowJavascript();
-  // Track if user has ever scrolled to Brave Today.
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.HasEverInteracted", 1, 1);
-  // Track how many times in the past week
-  // user has scrolled to Brave Today.
-  WeeklyStorage session_count_storage(profile_->GetPrefs(),
-                                      kBraveTodayWeeklySessionCount);
-  session_count_storage.AddDelta(1);
-  uint64_t total_session_count = session_count_storage.GetWeeklySum();
-  constexpr int kSessionCountBuckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
-  const int* it_count =
-      std::lower_bound(kSessionCountBuckets, std::end(kSessionCountBuckets),
-                       total_session_count);
-  int answer = it_count - kSessionCountBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklySessionCount", answer,
-                             base::size(kSessionCountBuckets) + 1);
-}
-
-void BraveNewTabMessageHandler::HandleTodayOnCardVisit(
-    base::Value::ConstListView args) {
-  // Argument should be how many cards visited in this session.
-  // We need the front-end to give us this since this class
-  // will be destroyed and re-created when the user navigates "back",
-  // but the front-end will have access to history state in order to
-  // keep a count for the session.
-  int cards_visited_total = args[0].GetInt();
-  // Track how many Brave Today cards have been viewed per session
-  // (each NTP / NTP Message Handler is treated as 1 session).
-  WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardVisitsCount);
-  storage.ReplaceTodaysValueIfGreater(cards_visited_total);
-  // Send the session with the highest count of cards viewed.
-  uint64_t total = storage.GetHighestValueInWeek();
-  constexpr int kBuckets[] = {0, 1, 3, 6, 10, 15, 100};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardVisitsCount", answer,
-                             base::size(kBuckets) + 1);
-  // Record ad click if a promoted card was read.
-  if (args.size() < 4) {
-    return;
-  }
-  std::string item_id = args[1].GetString();
-  std::string creative_instance_id = args[2].GetString();
-  bool is_promoted = (args[3].is_bool() && args[3].GetBool());
-  if (is_promoted && !item_id.empty() && !creative_instance_id.empty()) {
-    auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    ads_service_->OnPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        ads::mojom::PromotedContentAdEventType::kClicked);
-  }
-}
-
-void BraveNewTabMessageHandler::HandleTodayOnCardViews(
-    base::Value::ConstListView args) {
-  // Argument should be how many cards viewed in this session.
-  int cards_viewed_total = args[0].GetInt();
-  // Track how many Brave Today cards have been viewed per session
-  // (each NTP / NTP Message Handler is treated as 1 session).
-  WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
-  storage.ReplaceTodaysValueIfGreater(cards_viewed_total);
-  // Send the session with the highest count of cards viewed.
-  uint64_t total = storage.GetHighestValueInWeek();
-  constexpr int kBuckets[] = {0, 1, 4, 12, 20, 40, 80, 1000};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyMaxCardViewsCount", answer,
-                             base::size(kBuckets) + 1);
-}
-
-void BraveNewTabMessageHandler::HandleTodayOnPromotedCardView(
-    base::Value::ConstListView args) {
-  // Argument should be how many cards viewed in this session.
-  std::string creative_instance_id = args[0].GetString();
-  std::string item_id = args[1].GetString();
-  if (!item_id.empty() && !creative_instance_id.empty()) {
-    auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-    ads_service_->OnPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        ads::mojom::PromotedContentAdEventType::kViewed);
-  }
-}
-
-void BraveNewTabMessageHandler::HandleTodayGetDisplayAd(
-    base::Value::ConstListView args) {
-  AllowJavascript();
-  std::string callback_id = args[0].GetString();
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (!ads_service_) {
-    ResolveJavascriptCallback(base::Value(callback_id),
-                              std::move(base::Value()));
-    return;
-  }
-  auto on_ad_received = base::BindOnce(
-      [](base::WeakPtr<BraveNewTabMessageHandler> handler,
-         std::string callback_id, const bool success,
-         const std::string& dimensions, const base::DictionaryValue& ad) {
-        // Validate page hasn't closed
-        if (!handler) {
-          return;
-        }
-
-        if (!handler->IsJavascriptAllowed()) {
-          return;
-        }
-
-        if (!success) {
-          handler->ResolveJavascriptCallback(base::Value(callback_id),
-                                             std::move(base::Value()));
-          return;
-        }
-        handler->ResolveJavascriptCallback(base::Value(callback_id),
-                                           std::move(ad));
-      },
-      weak_ptr_factory_.GetWeakPtr(), callback_id);
-  ads_service_->GetInlineContentAd("900x750", std::move(on_ad_received));
-}
-
-void BraveNewTabMessageHandler::HandleTodayOnDisplayAdVisit(
-    base::Value::ConstListView args) {
-  // Collect params
-  std::string item_id = args[0].GetString();
-  std::string creative_instance_id = args[1].GetString();
-
-  // Validate
-  if (item_id.empty()) {
-    LOG(ERROR) << "News: asked to record visit for an ad without ad id";
-    return;
-  }
-  if (creative_instance_id.empty()) {
-    LOG(ERROR) << "News: asked to record visit for an ad without "
-                  "ad creative instance id";
-    return;
-  }
-  // Let ad service know an ad was visited
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (!ads_service_) {
-    VLOG(1)
-        << "News: Asked to record an ad visit but there is no ads service for"
-           "this profile!";
-    return;
-  }
-  ads_service_->OnInlineContentAdEvent(
-      item_id, creative_instance_id,
-      ads::mojom::InlineContentAdEventType::kClicked);
-}
-
-void BraveNewTabMessageHandler::HandleTodayOnDisplayAdView(
-    base::Value::ConstListView args) {
-  // Collect params
-  std::string item_id = args[0].GetString();
-  std::string creative_instance_id = args[1].GetString();
-
-  // Validate
-  if (item_id.empty()) {
-    LOG(ERROR) << "News: asked to record view for an ad without ad id";
-    return;
-  }
-  if (creative_instance_id.empty()) {
-    LOG(ERROR) << "News: asked to record view for an ad without "
-                  "ad creative instance id";
-    return;
-  }
-  // Let ad service know an ad was viewed
-  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (!ads_service_) {
-    VLOG(1)
-        << "News: Asked to record an ad visit but there is no ads service for"
-           "this profile!";
-    return;
-  }
-  ads_service_->OnInlineContentAdEvent(
-      item_id, creative_instance_id,
-      ads::mojom::InlineContentAdEventType::kViewed);
-  // Let p3a know an ad was viewed
-  WeeklyStorage storage(profile_->GetPrefs(), kBraveTodayWeeklyCardViewsCount);
-  storage.AddDelta(1u);
-  // Store current weekly total in p3a, ready to send on the next upload
-  uint64_t total = storage.GetWeeklySum();
-  constexpr int kBuckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
-  const int* it_count = std::lower_bound(kBuckets, std::end(kBuckets), total);
-  int answer = it_count - kBuckets;
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Today.WeeklyDisplayAdsViewedCount", answer,
-                             base::size(kBuckets) + 1);
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

@@ -11,6 +11,7 @@ import BraveTodayErrorCard from '../components/default/braveToday/cards/cardErro
 import PublisherMeta from '../components/default/braveToday/cards/PublisherMeta'
 import DisplayAdCard from '../components/default/braveToday/cards/displayAd'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
+import { UserEnabled } from '../api/brave_news'
 
 const onClick = (() => alert('clicked'))
 
@@ -46,21 +47,21 @@ export const Publisher = () => (
   <>
     <PublisherMeta
       publisher={{
-        publisher_id: '123abc',
-        publisher_name: text('Publisher Name', 'small'),
-        category: 'Top News',
-        enabled: true,
-        user_enabled: null
+        publisherId: '123abc',
+        publisherName: text('Publisher Name', 'small'),
+        categoryName: 'Top News',
+        isEnabled: true,
+        userEnabledStatus: UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />
     <PublisherMeta
       publisher={{
-        publisher_id: '123abcdef',
-        publisher_name: text('Publisher Name 2', 'The Miller Chronicle'),
-        category: 'Top News',
-        enabled: true,
-        user_enabled: null
+        publisherId: '123abcdef',
+        publisherName: text('Publisher Name 2', 'The Miller Chronicle'),
+        categoryName: 'Top News',
+        isEnabled: true,
+        userEnabledStatus: UserEnabled.NOT_MODIFIED
       }}
       onSetPublisherPref={onClick}
     />

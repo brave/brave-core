@@ -4,10 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AsyncActionHandler from '../../common/AsyncActionHandler'
-import * as Background from '../../common/Background'
 import * as Actions from '../actions/today_actions'
 import { ApplicationState } from '../reducers'
 import { saveIsBraveTodayOptedIn } from '../api/preferences'
+import getBraveNewsController, * as BraveNews from '../api/brave_news'
 
 function storeInHistoryState (data: Object) {
   const oldHistoryState = (typeof history.state === 'object') ? history.state : {}
@@ -15,19 +15,10 @@ function storeInHistoryState (data: Object) {
   history.pushState(newHistoryState, document.title)
 }
 
-import Messages = BraveToday.Messages
-import MessageTypes = Background.MessageTypes.Today
-
 const handler = new AsyncActionHandler()
 
-handler.on(Actions.todayInit.getType(), async (store, payload) => {
-  // Let backend know that a UI with today is open, so that it can
-  // pre-fetch the feed if it is not already in a cache.
-  await Background.send(MessageTypes.indicatingOpen)
-})
-
 handler.on(Actions.interactionBegin.getType(), async () => {
-  chrome.send('todayInteractionBegin')
+  getBraveNewsController().onInteractionSessionStarted()
 })
 
 handler.on(
@@ -35,9 +26,10 @@ handler.on(
   async (store) => {
     try {
       const [{ feed }, { publishers }] = await Promise.all([
-        Background.send<Messages.GetFeedResponse>(MessageTypes.getFeed),
-        Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
+        getBraveNewsController().getFeed(),
+        getBraveNewsController().getPublishers()
       ])
+
       store.dispatch(Actions.dataReceived({ feed, publishers }))
     } catch (e) {
       console.error('error receiving feed', e)
@@ -55,59 +47,68 @@ handler.on(Actions.ensureSettingsData.getType(), async (store) => {
   if (state.today.publishers && Object.keys(state.today.publishers).length) {
     return
   }
-  const { publishers } = await Background.send<Messages.GetPublishersResponse>(MessageTypes.getPublishers)
+  const { publishers } = await getBraveNewsController().getPublishers()
   store.dispatch(Actions.dataReceived({ publishers }))
 })
 
 handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (store, payload) => {
   const state = store.getState() as ApplicationState
-  const todayPageIndex = state.today.currentPageIndex
-  const backendArgs: any[] = [
-    state.today.cardsVisited
-  ]
+  getBraveNewsController().onSessionCardVisitsCountChanged(state.today.cardsVisited)
   if (payload.isPromoted) {
-    backendArgs.push(
-      payload.promotedUUID,
-      (payload.item as BraveToday.PromotedArticle).creative_instance_id,
-      payload.isPromoted
-    )
+    const promotedArticle = payload.item.promotedArticle
+    if (!promotedArticle) {
+      console.error('Brave News: readFeedItem payload with invalid promoted article', payload)
+      return
+    }
+    if (!payload.promotedUUID) {
+      console.error('Brave News: invalid promotedUUID for readFeedItem', payload)
+      return
+    }
+    getBraveNewsController().onPromotedItemVisit(payload.promotedUUID, promotedArticle.creativeInstanceId)
   }
-  chrome.send('todayOnCardVisit', backendArgs)
+  const data = payload.item.article?.data || payload.item.promotedArticle?.data
+      || payload.item.deal?.data
+  if (!data) {
+    console.error('Brave News: readFeedItem payload item not present', payload)
+    return
+  }
   if (!payload.openInNewTab) {
     // remember article so we can scroll to it on "back" navigation
     // TODO(petemill): Type this history.state data and put in an API module
     // (see `reducers/today`).
     storeInHistoryState({
-      todayArticle: payload.item,
-      todayPageIndex,
+      todayArticle: data,
+      todayPageIndex: state.today.currentPageIndex,
       todayCardsVisited: state.today.cardsVisited
     })
     // visit article url
-    // @ts-ignore
-    window.location = payload.item.url
+    window.location.href = data.url.url
   } else {
-    window.open(payload.item.url, '_blank')
+    window.open(data.url.url, '_blank')
   }
 })
 
 handler.on<Actions.PromotedItemViewedPayload>(Actions.promotedItemViewed.getType(), async (store, payload) => {
-  chrome.send('todayOnPromotedCardView', [
-    payload.item.creative_instance_id,
-    payload.uuid
-  ])
+  if (!payload.item.promotedArticle) {
+    console.error('Brave News: promotedItemViewed invalid promoted article', payload)
+    return
+  }
+  getBraveNewsController().onPromotedItemView(payload.uuid, payload.item.promotedArticle.creativeInstanceId)
 })
 
 handler.on<number>(Actions.feedItemViewedCountChanged.getType(), async (store, payload) => {
   const state = store.getState() as ApplicationState
-  chrome.send('todayOnCardViews', [state.today.cardsViewed])
+  getBraveNewsController().onSessionCardViewsCountChanged(state.today.cardsViewed)
 })
 
 handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, payload) => {
   const { publisherId, enabled } = payload
-  Background.send<{}, Messages.SetPublisherPrefPayload>(MessageTypes.setPublisherPref, {
-    publisherId,
-    enabled
-  }).catch((e) => console.error(e))
+  let userStatus = (enabled === null)
+    ? BraveNews.UserEnabled.NOT_MODIFIED
+    : enabled === true
+      ? BraveNews.UserEnabled.ENABLED
+      : BraveNews.UserEnabled.DISABLED
+  getBraveNewsController().setPublisherPref(publisherId, userStatus)
   // Refreshing of content after prefs changed is throttled, so wait
   // a while before seeing if we have new content yet.
   // This doesn't have to be exact since we often check for update when
@@ -124,14 +125,13 @@ handler.on(Actions.checkForUpdate.getType(), async function (store) {
     return
   }
   const hash = state.today.feed.hash
-  const isUpdateAvailable = await Background.send<Messages.IsFeedUpdateAvailableResponse, Messages.IsFeedUpdateAvailablePayload>(MessageTypes.isFeedUpdateAvailable, {
-    hash
-  })
+  const isUpdateAvailable: {isUpdateAvailable: boolean} = await getBraveNewsController().isFeedUpdateAvailable(hash)
   store.dispatch(Actions.isUpdateAvailable(isUpdateAvailable))
 })
 
 handler.on(Actions.resetTodayPrefsToDefault.getType(), async function (store) {
-  const { publishers } = await Background.send<Messages.ClearPrefsResponse>(MessageTypes.resetPrefsToDefault)
+  getBraveNewsController().clearPrefs()
+  const { publishers } = await getBraveNewsController().getPublishers()
   store.dispatch(Actions.dataReceived({ publishers }))
   store.dispatch(Actions.checkForUpdate())
 })
@@ -143,11 +143,8 @@ handler.on(Actions.anotherPageNeeded.getType(), async function (store) {
 handler.on<Actions.VisitDisplayAdPayload>(Actions.visitDisplayAd.getType(), async function (store, payload) {
   const state = store.getState() as ApplicationState
   const todayPageIndex = state.today.currentPageIndex
-  chrome.send('todayOnDisplayAdVisit', [
-    payload.ad.uuid,
-    payload.ad.creativeInstanceId
-  ])
-  const destinationUrl = payload.ad.targetUrl
+  getBraveNewsController().onDisplayAdVisit(payload.ad.uuid, payload.ad.creativeInstanceId)
+  const destinationUrl = payload.ad.targetUrl.url
   if (!payload.openInNewTab) {
     // Remember display ad location so we can scroll to it on "back" navigation
     // We remember position and not ad ID since it can be a different ad on
@@ -160,18 +157,14 @@ handler.on<Actions.VisitDisplayAdPayload>(Actions.visitDisplayAd.getType(), asyn
       todayCardsVisited: state.today.cardsVisited
     })
     // visit article url
-    // @ts-ignore
-    window.location = destinationUrl
+    window.location.href = destinationUrl
   } else {
     window.open(destinationUrl, '_blank')
   }
 })
 
 handler.on<Actions.DisplayAdViewedPayload>(Actions.displayAdViewed.getType(), async (store, item) => {
-  chrome.send('todayOnDisplayAdView', [
-    item.ad.uuid,
-    item.ad.creativeInstanceId
-  ])
+  getBraveNewsController().onDisplayAdView(item.ad.uuid, item.ad.creativeInstanceId)
 })
 
 export default handler.middleware
