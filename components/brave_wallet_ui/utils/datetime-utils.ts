@@ -1,11 +1,16 @@
-import { MojoTime } from '../constants/types'
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
 /**
  * Converts a mojo time to a JS time.
  * @param {!mojoBase.mojom.TimeDelta} mojoTime
  * @return {!Date}
  */
-export function convertMojoTimeToJS (mojoTime: MojoTime) {
+export function mojoTimeDeltaToJSDate (mojoTime: TimeDelta) {
   return new Date(Number(mojoTime.microseconds) / 1000)
 }
 

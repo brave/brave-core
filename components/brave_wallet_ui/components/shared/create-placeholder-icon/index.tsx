@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { TokenInfo } from '../../../constants/types'
+import { ERCToken } from '../../../constants/types'
 import { IconWrapper, PlaceholderText } from './style'
 import { stripERC20TokenImageURL } from '../../../utils/string-utils'
 import { background } from 'ethereum-blockies'
@@ -12,7 +12,7 @@ interface Config {
 }
 
 interface Props {
-  selectedAsset?: TokenInfo
+  selectedAsset?: ERCToken
 }
 
 function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {

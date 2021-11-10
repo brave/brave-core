@@ -1,6 +1,6 @@
-import { TokenInfo } from '../constants/types'
+import { ERCToken } from '../constants/types'
 
-export const ETH: TokenInfo = {
+export const ETH: ERCToken = {
   contractAddress: '',
   decimals: 18,
   isErc20: false,

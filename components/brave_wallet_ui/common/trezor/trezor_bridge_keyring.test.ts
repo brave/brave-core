@@ -20,7 +20,7 @@ import {
   GetAccountsCommand
 } from '../../common/trezor/trezor-messages'
 import {
-  kTrezorHardwareVendor
+  TREZOR_HARDWARE_VENDOR
 } from '../../constants/types'
 import { getLocale } from '../../../common/locale'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
@@ -233,7 +233,7 @@ test('Check trezor bridge type', () => {
   const hardwareKeyring = new TrezorBridgeKeyring()
   hardwareKeyring.transport_ = createTrezorTransport(true,
                                               { success: true, payload: [], id: 1 })
-  return expect(hardwareKeyring.type()).toStrictEqual(kTrezorHardwareVendor)
+  return expect(hardwareKeyring.type()).toStrictEqual(TREZOR_HARDWARE_VENDOR)
 })
 
 test('Unlock device fail', () => {

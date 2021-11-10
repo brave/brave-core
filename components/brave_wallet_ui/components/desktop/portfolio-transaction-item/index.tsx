@@ -3,9 +3,9 @@ import * as EthereumBlockies from 'ethereum-blockies'
 
 import { getLocale } from '../../../../common/locale'
 import {
-  AssetPriceInfo,
+  AssetPrice,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   TransactionType,
@@ -14,7 +14,7 @@ import {
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
-import { convertMojoTimeToJS, formatDateAsRelative } from '../../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -54,11 +54,11 @@ export interface Props {
   transaction: TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]
-  visibleTokens: TokenInfo[]
-  transactionSpotPrices: AssetPriceInfo[]
+  visibleTokens: ERCToken[]
+  transactionSpotPrices: AssetPrice[]
   displayAccountName: boolean
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (asset: TokenInfo) => void
+  onSelectAsset: (asset: ERCToken) => void
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void
   onCancelTransaction: (transaction: TransactionInfo) => void
@@ -291,7 +291,7 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionIntentLocale}
             </DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
-            <DetailTextDarkBold>{formatDateAsRelative(convertMojoTimeToJS(transactionDetails.createdTime))}</DetailTextDarkBold>
+            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>

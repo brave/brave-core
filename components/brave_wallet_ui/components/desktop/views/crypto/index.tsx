@@ -6,11 +6,11 @@ import {
   PriceDataObjectType,
   AccountAssetOptionType,
   AccountTransactions,
-  AssetPriceInfo,
+  AssetPrice,
   WalletAccountType,
   AssetPriceTimeframe,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   UpdateAccountNamePayloadType,
   WalletRoutes,
   DefaultWallet,
@@ -34,7 +34,7 @@ export interface Props {
   onLockWallet: () => void
   onShowBackup: () => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
-  onSelectAsset: (asset: TokenInfo | undefined) => void
+  onSelectAsset: (asset: ERCToken | undefined) => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
@@ -50,16 +50,16 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (error: boolean) => void
-  onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
-  onRemoveUserAsset: (token: TokenInfo) => void
+  onAddUserAsset: (token: ERCToken) => void
+  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: ERCToken) => void
   onOpenWalletSettings: () => void
   addUserAssetError: boolean
   hasImportError: boolean
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   privateKey: string
-  fullAssetList: TokenInfo[]
-  userVisibleTokensInfo: TokenInfo[]
+  fullAssetList: ERCToken[]
+  userVisibleTokensInfo: ERCToken[]
   needsBackup: boolean
   accounts: WalletAccountType[]
   networkList: EthereumChain[]
@@ -67,9 +67,9 @@ export interface Props {
   selectedPortfolioTimeline: AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
   selectedAssetPriceHistory: PriceDataObjectType[]
-  selectedUSDAssetPrice: AssetPriceInfo | undefined
-  selectedBTCAssetPrice: AssetPriceInfo | undefined
-  selectedAsset: TokenInfo | undefined
+  selectedUSDAssetPrice: AssetPrice | undefined
+  selectedBTCAssetPrice: AssetPrice | undefined
+  selectedAsset: ERCToken | undefined
   portfolioBalance: string
   transactions: AccountTransactions
   userAssetList: AccountAssetOptionType[]
@@ -202,7 +202,7 @@ const CryptoView = (props: Props) => {
     history.push(`${WalletRoutes.Accounts}`)
   }
 
-  const selectAsset = (asset: TokenInfo | undefined) => {
+  const selectAsset = (asset: ERCToken | undefined) => {
     if (asset) {
       history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
     } else {

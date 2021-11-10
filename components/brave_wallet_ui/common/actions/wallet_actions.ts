@@ -5,7 +5,6 @@
 
 import { createAction } from 'redux-act'
 import {
-  InitializedPayloadType,
   UnlockWalletPayloadType,
   ChainChangedEventPayloadType,
   IsEip1559Changed,
@@ -25,12 +24,12 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../constants/action_types'
 import {
-  AppObjectType,
+  AppItem,
   WalletAccountType,
   EthereumChain,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
-  TokenInfo,
+  ERCToken,
   GetNativeAssetBalancesPriceReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   PortfolioTokenHistoryAndInfo,
@@ -41,22 +40,24 @@ import {
   TransactionInfo,
   AccountTransactions,
   DefaultWallet,
-  GasEstimation,
-  ApproveERC20Params
+  GasEstimation1559,
+  ApproveERC20Params,
+  WalletInfoBase,
+  WalletInfo
 } from '../../constants/types'
 
 export const initialize = createAction('initialize')
-export const initialized = createAction<InitializedPayloadType>('initialized')
+export const initialized = createAction<WalletInfo>('initialized')
 export const lockWallet = createAction('lockWallet')
 export const unlockWallet = createAction<UnlockWalletPayloadType>('unlockWallet')
-export const addFavoriteApp = createAction<AppObjectType>('addFavoriteApp')
-export const removeFavoriteApp = createAction<AppObjectType>('removeFavoriteApp')
+export const addFavoriteApp = createAction<AppItem>('addFavoriteApp')
+export const removeFavoriteApp = createAction<AppItem>('removeFavoriteApp')
 export const hasIncorrectPassword = createAction<boolean>('hasIncorrectPassword')
 export const addUserAsset = createAction<AddUserAssetPayloadType>('addUserAsset')
 export const addUserAssetError = createAction<boolean>('addUserAssetError')
 export const removeUserAsset = createAction<RemoveUserAssetPayloadType>('removeUserAsset')
 export const setUserAssetVisible = createAction<SetUserAssetVisiblePayloadType>('setUserAssetVisible')
-export const setVisibleTokensInfo = createAction<TokenInfo[]>('setVisibleTokensInfo')
+export const setVisibleTokensInfo = createAction<ERCToken[]>('setVisibleTokensInfo')
 export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<EthereumChain>('selectNetwork')
 export const setNetwork = createAction<EthereumChain>('setNetwork')
@@ -93,7 +94,7 @@ export const defaultWalletUpdated = createAction<DefaultWallet>('defaultWalletUp
 export const setSelectedAccount = createAction<WalletAccountType>('setSelectedAccount')
 export const activeOriginChanged = createAction<ActiveOriginChanged>('activeOriginChanged')
 export const refreshGasEstimates = createAction('refreshGasEstimates')
-export const setGasEstimates = createAction<GasEstimation>('setGasEstimates')
+export const setGasEstimates = createAction<GasEstimation1559>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
 export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
@@ -104,7 +105,8 @@ export const removeSitePermission = createAction<RemoveSitePermissionPayloadType
 export const queueNextTransaction = createAction('queueNextTransaction')
 export const refreshBalancesAndPrices = createAction('refreshBalancesAndPrices')
 export const setMetaMaskInstalled = createAction<boolean>('setMetaMaskInstalled')
-export const refreshAccountInfo = createAction<InitializedPayloadType>('refreshAccountInfo')
+export const refreshAccountInfo = createAction<WalletInfoBase>('refreshAccountInfo')
+export const autoLockMinutesChanged = createAction('autoLockMinutesChanged')
 export const retryTransaction = createAction<TransactionInfo>('retryTransaction')
 export const cancelTransaction = createAction<TransactionInfo>('cancelTransaction')
 export const speedupTransaction = createAction<TransactionInfo>('speedupTransaction')
