@@ -217,6 +217,7 @@
 		270E37DB26F5177B00C73C29 /* ResetListStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */; };
 		270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F1226F29C320024C70E /* UIKitNavigationView.swift */; };
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
+		27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */; };
 		2718016D272B05110047EB15 /* PasswordValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718016C272B05110047EB15 /* PasswordValidation.swift */; };
 		2718017A272B05400047EB15 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27180179272B053F0047EB15 /* PasswordValidationTests.swift */; };
 		2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */; };
@@ -1807,6 +1808,7 @@
 		270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetListStyleModifier.swift; sourceTree = "<group>"; };
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
+		2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPromptView.swift; sourceTree = "<group>"; };
 		2718016C272B05110047EB15 /* PasswordValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidation.swift; sourceTree = "<group>"; };
 		27180179272B053F0047EB15 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailStore.swift; sourceTree = "<group>"; };
@@ -3825,6 +3827,7 @@
 				271F687E26EBD27D00AA2A50 /* RecoveryPhraseGrid.swift */,
 				271F687F26EBD27D00AA2A50 /* CreateWalletView.swift */,
 				2718016C272B05110047EB15 /* PasswordValidation.swift */,
+				2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -7505,6 +7508,7 @@
 				275034E326EF9E6A00CF4C8A /* WalletSettingsView.swift in Sources */,
 				271F689B26EBD27E00AA2A50 /* CryptoView.swift in Sources */,
 				2701B14C2735B65300BE6FC6 /* EditGasFeeView.swift in Sources */,
+				27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */,
 				271F689826EBD27E00AA2A50 /* NetworkStore.swift in Sources */,
 				271F68AD26EBD27E00AA2A50 /* VerifyRecoveryPhraseView.swift in Sources */,
 				7D2D6EEB2731D6BA000650EA /* SwapTokenSearchView.swift in Sources */,
