@@ -1,0 +1,51 @@
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+static_library("brave_federated") {
+  sources = [
+    "brave_federated_service.cc",
+    "brave_federated_service.h",
+    "data_store_service.cc",
+    "data_store_service.h",
+    "data_stores/ad_notification_timing_data_store.cc",
+    "data_stores/ad_notification_timing_data_store.h",
+    "data_stores/data_store.cc",
+    "data_stores/data_store.h",
+    "features.cc",
+    "features.h",
+    "operational_patterns.cc",
+    "operational_patterns.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_stats/browser",
+    "//brave/components/p3a:p3a",
+    "//brave/components/version_info",
+    "//components/keyed_service/core",
+    "//components/metrics",
+    "//components/prefs",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//sql",
+  ]
+}
+
+source_set("brave_ad_notification_timing_data_store_unit_tests") {
+  testonly = true
+  sources = [
+    "data_stores/ad_notification_timing_data_store_unittest.cc",
+    "data_stores/data_store_unittest.cc",
+    "data_stores/test_data_store.cc",
+    "data_stores/test_data_store.h",
+    "features_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_federated:brave_federated",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//sql",
+    "//sql:test_support",
+  ]
+}

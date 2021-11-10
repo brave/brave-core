@@ -6,7 +6,7 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_federated_learning/brave_federated_learning_service_factory.h"
+#include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
@@ -60,7 +60,7 @@ namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_ads::AdsServiceFactory::GetInstance();
-  brave::BraveFederatedLearningServiceFactory::GetInstance();
+  brave_federated::BraveFederatedServiceFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
   brave_shields::AdBlockPrefServiceFactory::GetInstance();
   brave_shields::CookiePrefServiceFactory::GetInstance();

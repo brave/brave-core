@@ -7,13 +7,13 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_federated_learning/brave_operational_patterns.h"
+#include "brave/components/brave_federated/operational_patterns.h"
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -21,8 +21,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
-
-namespace brave {
 
 namespace {
 
@@ -34,7 +32,7 @@ constexpr char kCollectionIdExpirationPrefName[] =
     "brave.federated.collection_id_expiration";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("brave_operational_patterns", R"(
+  return net::DefineNetworkTrafficAnnotation("operational_pattern", R"(
         semantics {
           sender: "Operational Patterns Service"
           description:
@@ -59,20 +57,22 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // anonymous namespace
 
-BraveOperationalPatterns::BraveOperationalPatterns(
+namespace brave_federated {
+
+OperationalPatterns::OperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {}
 
-BraveOperationalPatterns::~BraveOperationalPatterns() {}
+OperationalPatterns::~OperationalPatterns() {}
 
-void BraveOperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
+void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckedSlotPrefName, -1);
   registry->RegisterStringPref(kCollectionIdPrefName, {});
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
 }
 
-void BraveOperationalPatterns::Start() {
+void OperationalPatterns::Start() {
   DCHECK(!simulate_local_training_step_timer_);
   DCHECK(!collection_slot_periodic_timer_);
 
@@ -83,48 +83,47 @@ void BraveOperationalPatterns::Start() {
       std::make_unique<base::RetainingOneShotTimer>();
   simulate_local_training_step_timer_->Start(
       FROM_HERE,
-      base::Seconds(operational_patterns::features::
+      base::Seconds(brave_federated::features::
                         GetSimulateLocalTrainingStepDurationValue() *
                     60),
-      this, &BraveOperationalPatterns::OnSimulateLocalTrainingStepTimerFired);
+      this, &OperationalPatterns::OnSimulateLocalTrainingStepTimerFired);
 
   collection_slot_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   collection_slot_periodic_timer_->Start(
       FROM_HERE,
-      base::Seconds(
-          operational_patterns::features::GetCollectionSlotSizeValue() * 60 /
-          2),
-      this, &BraveOperationalPatterns::OnCollectionSlotStartTimerFired);
+      base::Seconds(brave_federated::features::GetCollectionSlotSizeValue() *
+                    60 / 2),
+      this, &OperationalPatterns::OnCollectionSlotStartTimerFired);
 }
 
-void BraveOperationalPatterns::Stop() {
+void OperationalPatterns::Stop() {
   simulate_local_training_step_timer_.reset();
   collection_slot_periodic_timer_.reset();
 }
 
-void BraveOperationalPatterns::LoadPrefs() {
+void OperationalPatterns::LoadPrefs() {
   last_checked_slot_ = pref_service_->GetInteger(kLastCheckedSlotPrefName);
   collection_id_ = pref_service_->GetString(kCollectionIdPrefName);
   collection_id_expiration_time_ =
       pref_service_->GetTime(kCollectionIdExpirationPrefName);
 }
 
-void BraveOperationalPatterns::SavePrefs() {
+void OperationalPatterns::SavePrefs() {
   pref_service_->SetInteger(kLastCheckedSlotPrefName, last_checked_slot_);
   pref_service_->SetString(kCollectionIdPrefName, collection_id_);
   pref_service_->SetTime(kCollectionIdExpirationPrefName,
                          collection_id_expiration_time_);
 }
 
-void BraveOperationalPatterns::OnCollectionSlotStartTimerFired() {
+void OperationalPatterns::OnCollectionSlotStartTimerFired() {
   simulate_local_training_step_timer_->Reset();
 }
 
-void BraveOperationalPatterns::OnSimulateLocalTrainingStepTimerFired() {
+void OperationalPatterns::OnSimulateLocalTrainingStepTimerFired() {
   SendCollectionSlot();
 }
 
-void BraveOperationalPatterns::SendCollectionSlot() {
+void OperationalPatterns::SendCollectionSlot() {
   current_collected_slot_ = GetCurrentCollectionSlot();
   if (current_collected_slot_ == last_checked_slot_) {
     return;
@@ -145,11 +144,11 @@ void BraveOperationalPatterns::SendCollectionSlot() {
 
   url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
-      base::BindOnce(&BraveOperationalPatterns::OnUploadComplete,
+      base::BindOnce(&OperationalPatterns::OnUploadComplete,
                      base::Unretained(this)));
 }
 
-void BraveOperationalPatterns::OnUploadComplete(
+void OperationalPatterns::OnUploadComplete(
     scoped_refptr<net::HttpResponseHeaders> headers) {
   int response_code = -1;
   if (headers)
@@ -160,7 +159,7 @@ void BraveOperationalPatterns::OnUploadComplete(
   }
 }
 
-std::string BraveOperationalPatterns::BuildPayload() const {
+std::string OperationalPatterns::BuildPayload() const {
   base::Value root(base::Value::Type::DICTIONARY);
 
   root.SetKey("collection_id", base::Value(collection_id_));
@@ -175,26 +174,26 @@ std::string BraveOperationalPatterns::BuildPayload() const {
   return result;
 }
 
-int BraveOperationalPatterns::GetCurrentCollectionSlot() const {
+int OperationalPatterns::GetCurrentCollectionSlot() const {
   base::Time::Exploded now;
   base::Time::Now().LocalExplode(&now);
 
   return ((now.day_of_month - 1) * 24 * 60 + now.hour * 60 + now.minute) /
-         operational_patterns::features::GetCollectionSlotSizeValue();
+         brave_federated::features::GetCollectionSlotSizeValue();
 }
 
-void BraveOperationalPatterns::MaybeResetCollectionId() {
+void OperationalPatterns::MaybeResetCollectionId() {
   const base::Time now = base::Time::Now();
   if (collection_id_.empty() || (!collection_id_expiration_time_.is_null() &&
                                  now > collection_id_expiration_time_)) {
     collection_id_ =
         base::ToUpperASCII(base::UnguessableToken::Create().ToString());
     collection_id_expiration_time_ =
-        now + base::Seconds(
-                  operational_patterns::features::GetCollectionIdLifetime() *
-                  24 * 60 * 60);
+        now +
+        base::Seconds(brave_federated::features::GetCollectionIdLifetime() *
+                      24 * 60 * 60);
     SavePrefs();
   }
 }
 
-}  // namespace brave
+}  // namespace brave_federated
