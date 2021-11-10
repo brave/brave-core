@@ -1,5 +1,4 @@
 use crate::{dom, nlp, scorer, util};
-use chrono::DateTime;
 use html5ever::parse_document;
 use html5ever::tendril::TendrilSink;
 use html5ever::tree_builder::NodeOrText;
@@ -11,6 +10,9 @@ use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::io::Read;
 use thiserror::Error;
+use time::macros::format_description;
+use time::OffsetDateTime;
+use time::format_description::well_known::Rfc3339;
 use url::Url;
 use util::StringUtils;
 
@@ -72,7 +74,7 @@ pub struct Meta {
     pub author: Option<String>,
     pub description: Option<String>,
     pub charset: Option<String>,
-    pub last_modified: Option<DateTime<chrono::offset::FixedOffset>>,
+    pub last_modified: Option<OffsetDateTime>,
 }
 
 impl Meta {
@@ -291,11 +293,11 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
 
         // Add in last modified datetime
         if let Some(ref last_modified) = meta.last_modified {
-            let formatted = last_modified
-                .format("Updated %b. %d, %Y %H:%M %P")
-                .to_string();
-            let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+            let format = format_description!("Updated [month repr:short]. [day], [year] [hour repr:12]:[minute] [period]");
+            if let Some(formatted) = last_modified.format(format).ok() {
+                let modified = dom::create_element_simple(dom, "p", "metadata date", Some(&formatted));
+                dom.append_before_sibling(&first_child, NodeOrText::AppendNode(modified));
+            }
         }
 
         // Vertical split
@@ -477,7 +479,7 @@ fn try_parse_untyped_jsonld(content: &str, meta: &mut Meta) -> Result<(), JsonLd
                 .or_else(|| o.get("datePublished"))
                 .and_then(from_json_string)
             {
-                meta.last_modified = chrono::DateTime::parse_from_rfc3339(&timestamp).ok();
+                meta.last_modified = OffsetDateTime::parse(&timestamp, &Rfc3339).ok();
             }
         }
 
