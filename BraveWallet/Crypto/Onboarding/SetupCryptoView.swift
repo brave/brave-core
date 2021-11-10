@@ -15,7 +15,6 @@ struct SetupCryptoView: View {
   var body: some View {
     VStack(spacing: 46) {
       Image("setup-welcome")
-        .padding(.bottom)
       VStack(spacing: 14) {
         Text(Strings.Wallet.setupCryptoTitle)
           .foregroundColor(.primary)
@@ -39,7 +38,7 @@ struct SetupCryptoView: View {
       }
     }
     .padding()
-    .frame(maxHeight: .infinity)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .accessibilityEmbedInScrollView()
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)

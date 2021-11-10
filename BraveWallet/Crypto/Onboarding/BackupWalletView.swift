@@ -16,7 +16,7 @@ struct BackupWalletView: View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
         Image("graphic-save")
-          .padding(.vertical)
+          .padding(.top)
         VStack(spacing: 14) {
           Text(Strings.Wallet.backupWalletTitle)
             .font(.headline)
