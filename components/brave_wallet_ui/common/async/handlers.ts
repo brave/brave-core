@@ -49,8 +49,11 @@ import {
   refreshBalancesAndPrices
 } from './lib'
 import { Store } from './types'
+import InteractionNotifier from './interactionNotifier'
 
 const handler = new AsyncActionHandler()
+
+const interactionNotifier = new InteractionNotifier()
 
 function getWalletState (store: Store): WalletState {
   return store.getState().wallet
@@ -127,10 +130,15 @@ handler.on(WalletActions.keyringRestored.getType(), async (store) => {
 })
 
 handler.on(WalletActions.locked.getType(), async (store) => {
+  interactionNotifier.stopWatchingForInteraction()
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.unlocked.getType(), async (store) => {
+  interactionNotifier.beginWatchingForInteraction(50000, async () => {
+    const keyringController = (await getAPIProxy()).keyringController
+    await keyringController.notifyUserInteraction()
+  })
   await refreshWalletInfo(store)
 })
 
@@ -489,11 +497,6 @@ export const fetchSwapQuoteFactory = (
     }
   }
 }
-
-handler.on(WalletActions.notifyUserInteraction.getType(), async (store) => {
-  const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.notifyUserInteraction()
-})
 
 handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
   const assetPriceController = (await getAPIProxy()).assetRatioController
