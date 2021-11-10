@@ -1,0 +1,2 @@
+CI/run-audit-deps
+- any: ["package.json", "package-lock.json", "**/Cargo.toml", "**/Cargo.lock"]
