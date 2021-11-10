@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_WHITELISTS_H_
-#define BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_WHITELISTS_H_
+#ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_LISTS_H_
+#define BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_LISTS_H_
 
 #include <string>
 
 namespace brave {
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kWhitelistedUrlProtocols[] = {
+constexpr const char* kAllowedUrlProtocols[] = {
     "chrome-extension", "chrome", "brave", "file", "data", "blob",
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kWhitelistedUrlPrefixes[] = {
+constexpr const char* kAllowedUrlPrefixes[] = {
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
     "https://crlsets.brave.com/",
@@ -77,7 +77,7 @@ constexpr const char* kWhitelistedUrlPrefixes[] = {
 };
 
 // Before adding to this list, get approval from the security team.
-constexpr const char* kWhitelistedUrlPatterns[] = {
+constexpr const char* kAllowedUrlPatterns[] = {
     // allowed because it's url for fetching super referral's mapping table
     "https://mobile-data.s3.brave.com/superreferrer/map-table.json",
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",
@@ -85,4 +85,4 @@ constexpr const char* kWhitelistedUrlPatterns[] = {
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_WHITELISTS_H_
+#endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_LISTS_H_

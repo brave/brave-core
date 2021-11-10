@@ -14,7 +14,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/net/brave_network_audit_whitelists.h"
+#include "brave/browser/net/brave_network_audit_lists.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -119,14 +119,14 @@ bool PerformNetworkAuditProcess(base::Value* events) {
       return true;
     }
 
-    for (const char* protocol : kWhitelistedUrlProtocols) {
+    for (const char* protocol : kAllowedUrlProtocols) {
       if (protocol == url.scheme()) {
         return true;
       }
     }
 
     bool found_prefix = false;
-    for (const char* prefix : kWhitelistedUrlPrefixes) {
+    for (const char* prefix : kAllowedUrlPrefixes) {
       if (!url.spec().rfind(prefix, 0)) {
         found_prefix = true;
         break;
@@ -134,7 +134,7 @@ bool PerformNetworkAuditProcess(base::Value* events) {
     }
 
     bool found_pattern = false;
-    for (const char* pattern : kWhitelistedUrlPatterns) {
+    for (const char* pattern : kAllowedUrlPatterns) {
       if (RE2::FullMatch(url.spec(), pattern)) {
         found_pattern = true;
         break;
