@@ -15,6 +15,9 @@
     padding-inline-end: var(--cr-section-padding);
     padding-inline-start: var(--cr-section-indent-padding);
   }
+  .hovered {
+    cursor: pointer;
+  }
 </style>
 
 <div id="networks-section" class="flex-container">
@@ -33,15 +36,29 @@
         <template>
           <div on-dblclick=onItemDoubleClick>
             <div class="settings-box">
-              <div class="flex cr-padded-text">
+              <div class="flex cr-padded-text hovered">
                 <div><span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>{{item.chainName}}</div>
                 <div class="secondary">[[getItemDescritionText(item)]]</div>
               </div>
-              <cr-icon-button class="icon-picture-delete"
-                  hidden=[[isDefaultNetwork(item.chainId)]]
-                  on-click="onDeleteActionTapped_">
+              <cr-icon-button class="icon-more-vert"
+                              on-click="onNetworkMenuTapped_"
+                              itemName=[[item.name]]
+                              focus-type="menu">
               </cr-icon-button>
             </div>
+            <cr-lazy-render id="network-menu">
+              <template>
+                <cr-action-menu role-description="$i18n{menu}">
+                  <button class="dropdown-item" on-click="onEditTap_">
+                    $i18n{walletNetworkEdit}
+                  </button>
+                  <button class="dropdown-item" id="remove"
+                      on-click="onDeleteActionTapped_">
+                    $i18n{walletNetworkRemove}
+                  </button>
+                </cr-action-menu>
+              </template>
+            </cr-lazy-render>
           </div>
         </template>
       </iron-list>
