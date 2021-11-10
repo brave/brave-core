@@ -63,7 +63,7 @@ import {
   getERC20Allowance
 } from '../common/async/lib'
 
-import { useAssets, useBalance, useSwap, useSend, useTimeout, usePreset } from '../common/hooks'
+import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
 
 type Props = {
   panel: PanelState
@@ -125,11 +125,6 @@ function Container (props: Props) {
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<AccountAssetOptionType>(WyreAccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
   const [buyAmount, setBuyAmount] = React.useState('')
-
-  const notifyUserInteraction = () => {
-    props.walletActions.notifyUserInteraction()
-  }
-  useTimeout(notifyUserInteraction, isWalletLocked)
 
   const {
     assetOptions,
