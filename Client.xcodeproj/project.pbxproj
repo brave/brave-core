@@ -211,6 +211,7 @@
 		27036F9C25684F9F004EF6B6 /* AdContentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27036F9725684F9F004EF6B6 /* AdContentButton.swift */; };
 		2703BE8B24F4508E00CBE6CD /* CreatePDFActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */; };
 		270A0F392605267D0091D880 /* LegacyWalletTransferStatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */; };
+		271801A7273C55A400F683E3 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718019B273C55A400F683E3 /* PopupView.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
 		2719DA00249AAC2A0080AB48 /* FeedContextMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */; };
@@ -1713,6 +1714,7 @@
 		27036F9725684F9F004EF6B6 /* AdContentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdContentButton.swift; sourceTree = "<group>"; };
 		2703BE8A24F4508E00CBE6CD /* CreatePDFActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePDFActivity.swift; sourceTree = "<group>"; };
 		270A0F382605267D0091D880 /* LegacyWalletTransferStatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWalletTransferStatusButton.swift; sourceTree = "<group>"; };
+		2718019B273C55A400F683E3 /* PopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContextMenuDelegate.swift; sourceTree = "<group>"; };
@@ -4031,6 +4033,7 @@
 				279CC2C3260CEFE7009B3895 /* TableCellButtonStyle.swift */,
 				44A58CC72693A309005C0879 /* ActivityView.swift */,
 				CA9A22FF26A7370C00923D70 /* FontScaling.swift */,
+				2718019B273C55A400F683E3 /* PopupView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -7215,6 +7218,7 @@
 				4457A9C0272070240056388A /* LabelExtensions.swift in Sources */,
 				278C46B123F4A91D0083347F /* PopoverContentComponent.swift in Sources */,
 				278C46AF23F4A91C0083347F /* PopoverController.swift in Sources */,
+				271801A7273C55A400F683E3 /* PopupView.swift in Sources */,
 				278C46B523F4A9C80083347F /* POPExtensions.swift in Sources */,
 				278C46B923F4AB5A0083347F /* Then.swift in Sources */,
 				27733E792697867D0086799A /* AccessibilityEmbedInScrollViewViewModifier.swift in Sources */,
