@@ -132,14 +132,14 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   }
 
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
   const state = getPanelState(store)
   const apiProxy = await getAPIProxy()
-  apiProxy.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
-  apiProxy.closeUI()
+  apiProxy.panelHandler.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
@@ -147,8 +147,8 @@ handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: A
   const apiProxy = await getAPIProxy()
   let accounts: string[] = []
   payload.selectedAccounts.forEach((account) => { accounts.push(account.address) })
-  apiProxy.connectToSite(accounts, payload.siteToConnectTo, state.tabId)
-  apiProxy.closeUI()
+  apiProxy.panelHandler.connectToSite(accounts, payload.siteToConnectTo, state.tabId)
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.visibilityChanged.getType(), async (store: Store, isVisible) => {
@@ -157,25 +157,25 @@ handler.on(PanelActions.visibilityChanged.getType(), async (store: Store, isVisi
   }
   await refreshWalletInfo(store)
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.showConnectToSite.getType(), async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('connectWithSite'))
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.showApproveTransaction.getType(), async (store: Store, payload: ShowConnectToSitePayload) => {
   store.dispatch(PanelActions.navigateTo('approveTransaction'))
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.addEthereumChain.getType(), async (store: Store, payload: EthereumChainPayload) => {
   store.dispatch(PanelActions.navigateTo('addEthereumChain'))
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store: any, payload: EthereumChainRequestPayload) => {
@@ -187,7 +187,7 @@ handler.on(PanelActions.addEthereumChainRequestCompleted.getType(), async (store
     store.dispatch(PanelActions.addEthereumChain({ chain }))
     return
   }
-  apiProxy.closeUI()
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, request: SwitchChainRequest) => {
@@ -196,7 +196,7 @@ handler.on(PanelActions.switchEthereumChain.getType(), async (store: Store, requ
   await refreshWalletInfo(store)
   store.dispatch(PanelActions.navigateTo('switchEthereumChain'))
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
@@ -208,13 +208,13 @@ handler.on(PanelActions.switchEthereumChainProcessed.getType(), async (store: St
     store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
     return
   }
-  apiProxy.closeUI()
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: SignMessagePayload[]) => {
   store.dispatch(PanelActions.navigateTo('signData'))
   const apiProxy = await getAPIProxy()
-  apiProxy.showUI()
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
@@ -226,7 +226,7 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
     store.dispatch(PanelActions.signMessage(signMessageRequest))
     return
   }
-  apiProxy.closeUI()
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
@@ -252,7 +252,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
     store.dispatch(PanelActions.signMessage(signMessageRequest))
     return
   }
-  apiProxy.closeUI()
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
@@ -264,7 +264,7 @@ handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, pa
     store.dispatch(PanelActions.signMessage(signMessageRequest))
     return
   }
-  apiProxy.closeUI()
+  apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.showApproveTransaction.getType(), async (store) => {
@@ -328,7 +328,7 @@ handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store
   ) {
     if (state.selectedPanel === 'approveTransaction' && walletState.pendingTransactions.length === 0) {
       const apiProxy = await getAPIProxy()
-      apiProxy.closeUI()
+      apiProxy.panelHandler.closeUI()
     }
   }
 })

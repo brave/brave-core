@@ -32,6 +32,8 @@ import {
   SwapErrorResponse,
   SwapResponse,
   TransactionInfo,
+  TxData,
+  TxData1559,
   WalletAccountType,
   WalletState,
   WalletInfo,
@@ -295,40 +297,29 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
   const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
 
   let addResult
-  let txData
+  const txData: TxData = {
+    nonce: '',
+    // Estimated by eth_tx_controller if value is '' for legacy transactions
+    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
+    // Estimated by eth_tx_controller if value is ''
+    gasLimit: payload.gas || '',
+    to: payload.to,
+    value: payload.value,
+    data: payload.data || []
+  }
+
   if (isEIP1559) {
-    txData = apiProxy.makeEIP1559TxData(
+    const txData1559: TxData1559 = {
+      baseData: txData,
       chainId,
-      '' /* nonce */,
-
       // Estimated by eth_tx_controller if value is ''
-      payload.maxPriorityFeePerGas || '',
-
+      maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
       // Estimated by eth_tx_controller if value is ''
-      payload.maxFeePerGas || '',
-
-      // Estimated by eth_tx_controller if value is ''
-      // FIXME: using empty string to auto-estimate gas limit throws the error:
-      //  "Failed to get the gas limit for the transaction"
-      payload.gas || '',
-      payload.to,
-      payload.value,
-      payload.data || []
-    )
-    addResult = await apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
+      maxFeePerGas: payload.maxFeePerGas || '',
+      gasEstimation: undefined
+    }
+    addResult = await apiProxy.ethTxController.addUnapproved1559Transaction(txData1559, payload.from)
   } else {
-    txData = apiProxy.makeTxData(
-      '' /* nonce */,
-
-      // Estimated by eth_tx_controller if value is ''
-      payload.gasPrice || '',
-
-      // Estimated by eth_tx_controller if value is ''
-      payload.gas || '',
-      payload.to,
-      payload.value,
-      payload.data || []
-    )
     addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
   }
 
