@@ -47,6 +47,11 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         maybeReplaceIcons(menu);
     }
 
+    @Override
+    public int getAppMenuLayoutId() {
+        return R.menu.brave_main_menu;
+    }
+
     private void maybeReplaceIcons(Menu menu) {
         if (shouldShowIconBeforeItem()) {
             for (int i = 0; i < menu.size(); ++i) {
