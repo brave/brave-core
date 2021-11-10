@@ -101,7 +101,7 @@ export default function useSend (
     }
 
     // If value is the same as the selectedAccounts Wallet Address
-    if (valueToLowerCase === selectedAccount.address?.toLowerCase()) {
+    if (valueToLowerCase === selectedAccount?.address?.toLowerCase()) {
       setToAddress(toAddressOrUrl)
       setAddressError(getLocale('braveWalletSameAddressError'))
       return
