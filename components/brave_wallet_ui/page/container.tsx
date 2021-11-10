@@ -61,7 +61,7 @@ import {
 } from '../common/async/lib'
 
 import { formatBalance } from '../utils/format-balances'
-import { useSwap, useAssets, useTimeout, useBalance, useSend, usePreset } from '../common/hooks'
+import { useSwap, useAssets, useBalance, useSend, usePreset } from '../common/hooks'
 import { stripERC20TokenImageURL } from '../utils/string-utils'
 
 type Props = {
@@ -119,11 +119,6 @@ function Container (props: Props) {
   const [inputValue, setInputValue] = React.useState<string>('')
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
-
-  const notifyUserInteraction = () => {
-    props.walletActions.notifyUserInteraction()
-  }
-  useTimeout(notifyUserInteraction, isWalletLocked)
 
   const {
     tokenOptions,
