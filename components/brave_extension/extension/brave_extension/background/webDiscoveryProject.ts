@@ -27,7 +27,7 @@ function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallb
   }
 }
 
-if (App !== undefined && !chrome.extension.inIncognitoContext) {
+if (!chrome.extension.inIncognitoContext) {
   const APP = new App({
     version: chrome.runtime.getManifest().version
   })
