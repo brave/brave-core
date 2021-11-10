@@ -11,7 +11,7 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
-  kLedgerHardwareVendor,
+  LEDGER_HARDWARE_VENDOR,
   SignatureVRS
 } from '../../constants/types'
 
@@ -79,7 +79,7 @@ test('Extracting accounts from legacy device', () => {
 
 test('Check ledger bridge type', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  return expect(ledgerHardwareKeyring.type()).toStrictEqual(kLedgerHardwareVendor)
+  return expect(ledgerHardwareKeyring.type()).toStrictEqual(LEDGER_HARDWARE_VENDOR)
 })
 
 test('Check locks for device', () => {

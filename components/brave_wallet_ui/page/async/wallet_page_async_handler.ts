@@ -33,14 +33,14 @@ const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
   // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
-  const api = await import('../wallet_page_api_proxy.js')
-  return api.default.getInstance()
+  const api = await import('../wallet_page_api_proxy')
+  return api.default()
 }
 
 async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
-  store.dispatch(WalletActions.initialized(result))
+  store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
 handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {
@@ -56,7 +56,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
     store.dispatch(WalletPageActions.hasMnemonicError(!result.isValidMnemonic))
     return
   }
-  await keyringController.notifyWalletBackupComplete()
+  keyringController.notifyWalletBackupComplete()
   await refreshWalletInfo(store)
   store.dispatch(WalletPageActions.setShowIsRestoring(false))
 })
@@ -75,7 +75,7 @@ handler.on(WalletPageActions.showRecoveryPhrase.getType(), async (store: Store, 
 
 handler.on(WalletPageActions.walletBackupComplete.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.notifyWalletBackupComplete()
+  keyringController.notifyWalletBackupComplete()
 })
 
 handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload: UpdateSelectedAssetType) => {
@@ -143,13 +143,13 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, p
 
 handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store, accounts: HardwareWalletAccount[]) => {
   const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.addHardwareAccounts(accounts)
+  keyringController.addHardwareAccounts(accounts)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
 handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
   const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.removeHardwareAccount(payload.address)
+  keyringController.removeHardwareAccount(payload.address)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 
@@ -166,11 +166,11 @@ handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: St
   const keyringController = (await getAPIProxy()).keyringController
   const result = await braveWalletService.importFromCryptoWallets(payload.password, payload.newPassword)
   if (result.success) {
-    await keyringController.notifyWalletBackupComplete()
+    keyringController.notifyWalletBackupComplete()
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
-    errorMessage: result.errorMessage
+    errorMessage: result.errorMessage ?? undefined
   }))
 })
 
@@ -180,17 +180,17 @@ handler.on(WalletPageActions.importFromMetaMask.getType(), async (store: Store, 
   const result = await braveWalletService.importFromMetaMask(payload.password, payload.newPassword)
   console.log(result)
   if (result.success) {
-    await keyringController.notifyWalletBackupComplete()
+    keyringController.notifyWalletBackupComplete()
   }
   store.dispatch(WalletPageActions.setImportWalletError({
     hasError: !result.success,
-    errorMessage: result.errorMessage
+    errorMessage: result.errorMessage ?? undefined
   }))
 })
 
 handler.on(WalletActions.newUnapprovedTxAdded.getType(), async (store: Store, payload: NewUnapprovedTxAdded) => {
   const pageHandler = (await getAPIProxy()).pageHandler
-  await pageHandler.showApprovePanelUI()
+  pageHandler.showApprovePanelUI()
 })
 
 handler.on(

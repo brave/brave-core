@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 
-import { AssetPriceInfo } from '../../constants/types'
+import { AssetPrice } from '../../constants/types'
 
-export default function usePricing (spotPrices: AssetPriceInfo[]) {
+export default function usePricing (spotPrices: AssetPrice[]) {
   return React.useCallback((symbol: string) => {
     return spotPrices.find(
       (token) => token.fromAsset.toLowerCase() === symbol.toLowerCase()

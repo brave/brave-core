@@ -10,7 +10,7 @@ import {
   TrezorDerivationPaths, TrezorBridgeAccountsPayload
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
-  kTrezorHardwareVendor
+  TREZOR_HARDWARE_VENDOR
 } from '../../constants/types'
 import {
   TrezorCommand,
@@ -30,7 +30,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
   }
 
   type = () => {
-    return kTrezorHardwareVendor
+    return TREZOR_HARDWARE_VENDOR
   }
 
   getAccounts = async (from: number, to: number, scheme: string) => {

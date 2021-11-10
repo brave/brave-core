@@ -4,25 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
-  AppObjectType,
-  AccountInfo,
   DefaultWallet,
   TransactionInfo,
-  TokenInfo,
+  ERCToken,
   AccountAssetOptionType,
   SlippagePresetObjectType,
   WalletAccountType
 } from '../../constants/types'
-
-export type InitializedPayloadType = {
-  isWalletCreated: boolean
-  isWalletLocked: boolean
-  favoriteApps: AppObjectType[]
-  isWalletBackedUp: boolean
-  visibleTokens: string[]
-  accountInfos: AccountInfo[]
-  selectedAccount: string
-}
 
 export type UnlockWalletPayloadType = {
   password: string
@@ -50,17 +38,17 @@ export type TransactionStatusChanged = {
 }
 
 export type AddUserAssetPayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
 }
 
 export type RemoveUserAssetPayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
 }
 
 export type SetUserAssetVisiblePayloadType = {
-  token: TokenInfo
+  token: ERCToken
   chainId: string
   isVisible: boolean
 }

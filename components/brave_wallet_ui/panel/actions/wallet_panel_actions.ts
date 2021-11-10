@@ -17,7 +17,7 @@ import {
 import {
   SwapErrorResponse,
   SwapResponse,
-  SignMessageData,
+  SignMessageRequest,
   SwitchChainRequest
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
@@ -43,5 +43,5 @@ export const setPanelSwapError = createAction<SwapErrorResponse | undefined>('se
 export const fetchPanelSwapQuote = createAction<SwapParamsPayloadType>('fetchPanelSwapQuote')
 export const signMessage = createAction<SignMessagePayload[]>('signMessage')
 export const signMessageProcessed = createAction<SignMessageProcessedPayload>('signMessageProcessed')
-export const signMessageHardware = createAction<SignMessageData>('signMessageHardware')
+export const signMessageHardware = createAction<SignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')

@@ -1,4 +1,4 @@
-import { AccountAssetOptionType, TokenInfo } from '../constants/types'
+import { AccountAssetOptionType, ERCToken } from '../constants/types'
 import {
   ALGOIconUrl,
   BATIconUrl,
@@ -16,7 +16,9 @@ export const ETH: AccountAssetOptionType = {
     logo: ETHIconUrl,
     isErc20: false,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   assetBalance: '0',
   fiatBalance: '0'
@@ -32,7 +34,9 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       logo: `chrome://erc-token-images/dai.png`,
       isErc20: true,
       isErc721: false,
-      decimals: 18
+      decimals: 18,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -45,7 +49,9 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
       logo: `chrome://erc-token-images/usdc.png`,
       isErc20: true,
       isErc721: false,
-      decimals: 6
+      decimals: 6,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -53,7 +59,7 @@ export const RopstenSwapAssetOptions: AccountAssetOptionType[] = [
 ]
 
 // Use only with storybook as dummy data.
-export const NewAssetOptions: TokenInfo[] = [
+export const NewAssetOptions: ERCToken[] = [
   {
     contractAddress: '1',
     name: 'Ethereum',
@@ -61,7 +67,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: ETHIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   {
     contractAddress: '2',
@@ -70,7 +78,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: BATIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   {
     contractAddress: '3',
@@ -79,7 +89,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: BNBIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   {
     contractAddress: '4',
@@ -88,7 +100,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: BTCIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   {
     contractAddress: '5',
@@ -97,7 +111,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: ALGOIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   },
   {
     contractAddress: '6',
@@ -106,7 +122,9 @@ export const NewAssetOptions: TokenInfo[] = [
     logo: ZRXIconUrl,
     isErc20: true,
     isErc721: false,
-    decimals: 18
+    decimals: 18,
+    visible: true,
+    tokenId: ''
   }
 ]
 
@@ -121,7 +139,9 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       logo: BATIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 18
+      decimals: 18,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -134,7 +154,9 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       logo: BNBIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -147,7 +169,9 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       logo: BTCIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -160,7 +184,9 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       logo: ALGOIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 8
+      decimals: 8,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'
@@ -173,7 +199,9 @@ export const AccountAssetOptions: AccountAssetOptionType[] = [
       logo: ZRXIconUrl,
       isErc20: true,
       isErc721: false,
-      decimals: 18
+      decimals: 18,
+      visible: true,
+      tokenId: ''
     },
     assetBalance: '0',
     fiatBalance: '0'

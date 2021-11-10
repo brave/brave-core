@@ -6,10 +6,9 @@
 import * as React from 'react'
 
 import {
-  AssetPriceInfo,
+  AssetPrice,
   EthereumChain,
-  MojoTime,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   TransactionType,
@@ -26,6 +25,7 @@ import {
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
 import { getLocale } from '../../../common/locale'
+import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -40,7 +40,7 @@ interface ParsedTransactionFees {
 interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
-  createdTime: MojoTime
+  createdTime: TimeDelta
   status: TransactionStatus
   sender: string
   senderLabel: string
@@ -54,7 +54,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   decimals: number
   insufficientFundsError: boolean
   addressError: string
-  erc721TokenInfo?: TokenInfo
+  erc721ERCToken?: ERCToken
   erc721TokenId?: string
   isSwap?: boolean
 
@@ -88,9 +88,9 @@ export function useTransactionFeesParser (selectedNetwork: EthereumChain, networ
 export function useTransactionParser (
   selectedNetwork: EthereumChain,
   accounts: WalletAccountType[],
-  spotPrices: AssetPriceInfo[],
-  visibleTokens: TokenInfo[],
-  fullTokenList?: TokenInfo[]
+  spotPrices: AssetPrice[],
+  visibleTokens: ERCToken[],
+  fullTokenList?: ERCToken[]
 ) {
   const findSpotPrice = usePricing(spotPrices)
   const getAddressLabel = useAddressLabels(accounts)
@@ -179,7 +179,7 @@ export function useTransactionParser (
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsError: insufficientNativeFunds,
-          erc721TokenInfo: token,
+          erc721ERCToken: token,
           erc721TokenId: hexToNumber(tokenID ?? ''),
           addressError: checkForAddressError(toAddress, fromAddress),
           ...feeDetails

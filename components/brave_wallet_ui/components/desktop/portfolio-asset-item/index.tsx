@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 // Options
-import { TokenInfo } from '../../../constants/types'
+import { ERCToken } from '../../../constants/types'
 import { hexToNumber } from '../../../utils/format-balances'
 
 // Styled Components
@@ -21,7 +21,7 @@ export interface Props {
   action?: () => void
   assetBalance: string
   fiatBalance: string
-  token: TokenInfo
+  token: ERCToken
 }
 
 const PortfolioAssetItem = (props: Props) => {

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import reducers from './reducers'
 import walletPanelAsyncHandler from './async/wallet_panel_async_handler'
 import walletAsyncHandler from '../common/async/handlers'
-import apiProxy from './wallet_panel_api_proxy.js'
+import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 
 const middlewares = [
   thunk,
@@ -22,9 +22,9 @@ const store = createStore(
     applyMiddleware(...middlewares)
 )
 
-apiProxy.getInstance().addEthJsonRpcControllerObserver(store)
-apiProxy.getInstance().addKeyringControllerObserver(store)
-apiProxy.getInstance().addEthTxControllerObserverObserver(store)
-apiProxy.getInstance().addBraveWalletServiceObserver(store)
+getWalletPanelApiProxy().addEthJsonRpcControllerObserver(store)
+getWalletPanelApiProxy().addKeyringControllerObserver(store)
+getWalletPanelApiProxy().addEthTxControllerObserverObserver(store)
+getWalletPanelApiProxy().addBraveWalletServiceObserver(store)
 
 export default store

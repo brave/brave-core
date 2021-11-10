@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { kMainnetChainId, kRopstenChainId } from './types'
+import { MAINNET_CHAIN_ID, ROPSTEN_CHAIN_ID } from './types'
 
 /**
  * CAUTION: The contents of this file have business implications. Please check
@@ -11,14 +11,14 @@ import { kMainnetChainId, kRopstenChainId } from './types'
  */
 export default function getSwapConfig (networkChainId: string) {
   switch (networkChainId) {
-    case kRopstenChainId:
+    case ROPSTEN_CHAIN_ID:
       return {
         swapAPIURL: 'https://ropsten.api.0x.org/swap/v1',
         buyTokenPercentageFee: 0.00875,
         feeRecipient: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4'
       }
 
-    case kMainnetChainId:
+    case MAINNET_CHAIN_ID:
     default:
       return {
         swapAPIURL: 'https://api.0x.org/swap/v1',

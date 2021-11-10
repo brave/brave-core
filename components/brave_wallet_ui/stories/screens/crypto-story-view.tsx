@@ -8,16 +8,16 @@ import * as React from 'react'
 import { StyledWrapper } from '../../components/desktop/views/crypto/style'
 import {
   TopTabNavTypes,
-  AppObjectType,
+  AppItem,
   AppsListType,
   PriceDataObjectType,
   AccountAssetOptionType,
   AccountTransactions,
-  AssetPriceInfo,
+  AssetPrice,
   WalletAccountType,
   AssetPriceTimeframe,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   UpdateAccountNamePayloadType
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
@@ -40,9 +40,9 @@ export interface Props {
   userAssetList: AccountAssetOptionType[]
   transactions: AccountTransactions
   portfolioBalance: string
-  selectedAsset: TokenInfo | undefined
-  selectedBTCAssetPrice: AssetPriceInfo | undefined
-  selectedUSDAssetPrice: AssetPriceInfo | undefined
+  selectedAsset: ERCToken | undefined
+  selectedBTCAssetPrice: AssetPrice | undefined
+  selectedUSDAssetPrice: AssetPrice | undefined
   selectedAssetPriceHistory: PriceDataObjectType[]
   portfolioPriceHistory: PriceDataObjectType[]
   selectedPortfolioTimeline: AssetPriceTimeframe
@@ -50,14 +50,14 @@ export interface Props {
   networkList: EthereumChain[]
   accounts: WalletAccountType[]
   needsBackup: boolean
-  userVisibleTokensInfo: TokenInfo[]
-  fullAssetList: TokenInfo[]
+  userVisibleTokensInfo: ERCToken[]
+  fullAssetList: ERCToken[]
   privateKey: string
-  transactionSpotPrices: AssetPriceInfo[]
+  transactionSpotPrices: AssetPrice[]
   hasImportError: boolean
-  onAddUserAsset: (token: TokenInfo) => void
-  onSetUserAssetVisible: (token: TokenInfo, isVisible: boolean) => void
-  onRemoveUserAsset: (token: TokenInfo) => void
+  onAddUserAsset: (token: ERCToken) => void
+  onSetUserAssetVisible: (token: ERCToken, isVisible: boolean) => void
+  onRemoveUserAsset: (token: ERCToken) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -73,7 +73,7 @@ export interface Props {
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<HardwareWalletAccount[]>
   onImportAccount: (accountName: string, privateKey: string) => void
   onCreateAccount: (name: string) => void
-  onSelectAsset: (asset: TokenInfo | undefined) => void
+  onSelectAsset: (asset: ERCToken | undefined) => void
   onChangeTimeline: (path: AssetPriceTimeframe) => void
   onShowBackup: () => void
 }
@@ -129,7 +129,7 @@ const CryptoStoryView = (props: Props) => {
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType>()
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
-  const [favoriteApps, setFavoriteApps] = React.useState<AppObjectType[]>([
+  const [favoriteApps, setFavoriteApps] = React.useState<AppItem[]>([
     AppsList()[0].appList[0]
   ])
   const [selectedTab, setSelectedTab] = React.useState<TopTabNavTypes>('portfolio')
@@ -144,11 +144,11 @@ const CryptoStoryView = (props: Props) => {
     setSelectedTab(path)
   }
 
-  const addToFavorites = (app: AppObjectType) => {
+  const addToFavorites = (app: AppItem) => {
     const newList = [...favoriteApps, app]
     setFavoriteApps(newList)
   }
-  const removeFromFavorites = (app: AppObjectType) => {
+  const removeFromFavorites = (app: AppItem) => {
     const newList = favoriteApps.filter(
       (fav) => fav.name !== app.name
     )

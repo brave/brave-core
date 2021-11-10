@@ -10,7 +10,6 @@ import * as WalletActions from '../actions/wallet_actions'
 import {
   AddUserAssetPayloadType,
   ChainChangedEventPayloadType,
-  InitializedPayloadType,
   RemoveSitePermissionPayloadType,
   RemoveUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
@@ -23,7 +22,7 @@ import {
   TransactionStatusChanged
 } from '../constants/action_types'
 import {
-  AppObjectType,
+  AppItem,
   ApproveERC20Params,
   AssetPriceTimeframe,
   ER20TransferParams,
@@ -35,6 +34,7 @@ import {
   TransactionInfo,
   WalletAccountType,
   WalletState,
+  WalletInfo,
   TransactionStatus
 } from '../../constants/types'
 import { toWeiHex } from '../../utils/format-balances'
@@ -52,6 +52,9 @@ import {
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
+
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 
 const handler = new AsyncActionHandler()
 
@@ -139,7 +142,7 @@ handler.on(WalletActions.locked.getType(), async (store) => {
 handler.on(WalletActions.unlocked.getType(), async (store) => {
   interactionNotifier.beginWatchingForInteraction(50000, async () => {
     const keyringController = (await getAPIProxy()).keyringController
-    await keyringController.notifyUserInteraction()
+    keyringController.notifyUserInteraction()
   })
   await refreshWalletInfo(store)
 })
@@ -165,7 +168,7 @@ handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
 
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.lock()
+  keyringController.lock()
 })
 
 handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: UnlockWalletPayloadType) => {
@@ -174,15 +177,15 @@ handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: U
   store.dispatch(WalletActions.hasIncorrectPassword(!result.success))
 })
 
-handler.on(WalletActions.addFavoriteApp.getType(), async (store: Store, appItem: AppObjectType) => {
+handler.on(WalletActions.addFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
-  await walletHandler.addFavoriteApp(appItem)
+  walletHandler.addFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appItem: AppObjectType) => {
+handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
-  await walletHandler.removeFavoriteApp(appItem)
+  walletHandler.removeFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
@@ -196,11 +199,11 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
   const { keyringController } = await getAPIProxy()
 
   await keyringController.setSelectedAccount(payload.address)
-  await store.dispatch(WalletActions.setSelectedAccount(payload))
+  store.dispatch(WalletActions.setSelectedAccount(payload))
   await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
-handler.on(WalletActions.initialized.getType(), async (store: Store, payload: InitializedPayloadType) => {
+handler.on(WalletActions.initialized.getType(), async (store: Store, payload: WalletInfo) => {
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
     await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
@@ -239,7 +242,7 @@ handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, pay
 })
 
 handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store: Store, payload: AssetPriceTimeframe) => {
-  await store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
+  store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
   await store.dispatch(refreshTokenPriceHistory(payload))
 })
 
@@ -290,8 +293,10 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
 
   const { chainId } = await apiProxy.ethJsonRpcController.getChainId()
 
-  const txData = isEIP1559
-    ? apiProxy.makeEIP1559TxData(
+  let addResult
+  let txData
+  if (isEIP1559) {
+    txData = apiProxy.makeEIP1559TxData(
       chainId,
       '' /* nonce */,
 
@@ -309,7 +314,9 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
-    : apiProxy.makeTxData(
+    addResult = await apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
+  } else {
+    txData = apiProxy.makeTxData(
       '' /* nonce */,
 
       // Estimated by eth_tx_controller if value is ''
@@ -321,12 +328,9 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
+    addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
+  }
 
-  const addResult = await (
-    isEIP1559
-      ? apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
-      : apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
-  )
   if (!addResult.success) {
     console.log(
       `Sending unapproved transaction failed: ` +
@@ -407,9 +411,11 @@ handler.on(WalletActions.approveTransaction.getType(), async (store: Store, txIn
     const { success, message } = await apiProxy.ethTxController.approveHardwareTransaction(txInfo.id)
     if (success) {
       let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-      const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
-      await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
-      await refreshWalletInfo(store)
+      if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
+        const { v, r, s } = await deviceKeyring.signTransaction(hardwareAccount.hardware.path, message.replace('0x', ''))
+        await apiProxy.ethTxController.processLedgerSignature(txInfo.id, '0x' + v, r, s)
+        await refreshWalletInfo(store)
+      }
     }
     return
   }

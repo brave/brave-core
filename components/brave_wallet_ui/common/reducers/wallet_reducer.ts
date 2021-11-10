@@ -11,30 +11,31 @@ import {
   AssetPriceTimeframe,
   DefaultWallet,
   EthereumChain,
-  GasEstimation,
+  GasEstimation1559,
   GetAllNetworksList,
   GetAllTokensReturnInfo,
   GetERC20TokenBalanceAndPriceReturnInfo,
   GetNativeAssetBalancesPriceReturnInfo,
   GetPriceHistoryReturnInfo,
-  kMainnetChainId,
+  MAINNET_CHAIN_ID,
   PortfolioTokenHistoryAndInfo,
-  TokenInfo,
+  ERCToken,
   TransactionInfo,
   TransactionStatus,
   WalletAccountType,
-  WalletState
+  WalletState,
+  WalletInfoBase,
+  WalletInfo
 } from '../../constants/types'
 import {
   ActiveOriginChanged,
-  InitializedPayloadType,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
   SitePermissionsPayloadType,
   TransactionStatusChanged,
   UnapprovedTxUpdated
 } from '../constants/action_types'
-import { convertMojoTimeToJS } from '../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
 import { sortTransactionByDate } from '../../utils/tx-utils'
@@ -48,7 +49,7 @@ const defaultState: WalletState = {
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
   selectedNetwork: {
-    chainId: kMainnetChainId,
+    chainId: MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
     rpcUrls: [],
     blockExplorerUrls: [],
@@ -87,7 +88,7 @@ const getAccountType = (info: AccountInfo) => {
   return info.isImported ? 'Secondary' : 'Primary'
 }
 
-reducer.on(WalletActions.initialized, (state: any, payload: InitializedPayloadType) => {
+reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
   const accounts = payload.accountInfos.map((info: AccountInfo, idx: number) => {
     return {
       id: `${idx + 1}`,
@@ -138,7 +139,7 @@ reducer.on(WalletActions.setNetwork, (state: any, payload: EthereumChain) => {
   }
 })
 
-reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: TokenInfo[]) => {
+reducer.on(WalletActions.setVisibleTokensInfo, (state: any, payload: ERCToken[]) => {
   return {
     ...state,
     userVisibleTokensInfo: payload
@@ -176,7 +177,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: any, payload: GetNa
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20TokenBalanceAndPriceReturnInfo) => {
-  const userTokens: TokenInfo[] = state.userVisibleTokensInfo
+  const userTokens: ERCToken[] = state.userVisibleTokensInfo
   const userVisibleTokensInfo = userTokens.map((token) => {
     return {
       ...token,
@@ -247,7 +248,7 @@ reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: Por
   const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
   const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
     return {
-      date: convertMojoTimeToJS(token.date),
+      date: mojoTimeDeltaToJSDate(token.date),
       close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
     }
   }) : []
@@ -383,7 +384,7 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
   }
 })
 
-reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation) => {
+reducer.on(WalletActions.setGasEstimates, (state: any, payload: GasEstimation1559) => {
   return {
     ...state,
     gasEstimates: payload
@@ -417,7 +418,7 @@ reducer.on(WalletActions.setMetaMaskInstalled, (state: WalletState, payload: boo
   }
 })
 
-reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: InitializedPayloadType) => {
+reducer.on(WalletActions.refreshAccountInfo, (state: any, payload: WalletInfoBase) => {
   const accounts = state.accounts
   const updatedAccounts = payload.accountInfos.map((info: AccountInfo) => {
     let account = accounts.find((account: WalletAccountType) => account.address === info.address)

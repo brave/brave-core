@@ -12,8 +12,6 @@ export const hexStrToNumberArray = (value: string): number[] => {
   return array
 }
 
-export const uint8ArrayToHexStr = (value: Uint8Array): string => {
-  return Array.from(value)
-    .map(x => x.toString(16).padStart(2, '0'))
-    .join('')
+export const numberArrayToHexStr = (value: number[]): string => {
+  return value.map(x => x.toString(16).padStart(2, '0')).join('')
 }

@@ -6,8 +6,8 @@ import {
   UpdateAccountNamePayloadType,
   AccountTransactions,
   EthereumChain,
-  TokenInfo,
-  AssetPriceInfo,
+  ERCToken,
+  AssetPrice,
   TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
@@ -61,8 +61,8 @@ export interface Props {
   transactions: AccountTransactions
   privateKey: string
   selectedNetwork: EthereumChain
-  userVisibleTokensInfo: TokenInfo[]
-  transactionSpotPrices: AssetPriceInfo[]
+  userVisibleTokensInfo: ERCToken[]
+  transactionSpotPrices: AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   onViewPrivateKey: (address: string, isDefault: boolean) => void
   onDoneViewingPrivateKey: () => void
@@ -72,7 +72,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onRemoveAccount: (address: string, hardware: boolean) => void
   onSelectAccount: (account: WalletAccountType) => void
-  onSelectAsset: (token: TokenInfo) => void
+  onSelectAsset: (token: ERCToken) => void
   goBack: () => void
   onRetryTransaction: (transaction: TransactionInfo) => void
   onSpeedupTransaction: (transaction: TransactionInfo) => void

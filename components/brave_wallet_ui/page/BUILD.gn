@@ -6,10 +6,6 @@
 import("//brave/components/common/typescript.gni")
 import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
-import("//tools/grit/preprocess_if_expr.gni")
-
-preprocess_folder = "preprocessed"
-preprocess_page_manifest = "preprocessed_page_manifest.json"
 
 transpile_web_ui("brave_wallet_page_ui") {
   entry_points = [ [
@@ -18,8 +14,6 @@ transpile_web_ui("brave_wallet_page_ui") {
       ] ]
   resource_name = "brave_wallet_page"
   deps = [
-    ":preprocess_page",
-    ":wallet_page_api_proxy",
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
@@ -29,19 +23,4 @@ pack_web_resources("brave_wallet_page_generated") {
   resource_name = "brave_wallet_page"
   output_dir = "$root_gen_dir/brave/components/brave_wallet_page/resources"
   deps = [ ":brave_wallet_page_ui" ]
-}
-
-preprocess_if_expr("preprocess_page") {
-  in_folder = "./"
-  out_folder = "$target_gen_dir/$preprocess_folder"
-  out_manifest = "$target_gen_dir/$preprocess_page_manifest"
-  in_files = [ "wallet_page_api_proxy.js" ]
-}
-
-js_library("wallet_page_api_proxy") {
-  deps = [
-    "//brave/components/brave_wallet/common:mojom_js_library_for_compile",
-    "//ui/webui/resources/js:cr.m",
-    "//url/mojom:url_mojom_gurl_js_library_for_compile",
-  ]
 }

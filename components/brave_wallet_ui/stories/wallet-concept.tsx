@@ -12,7 +12,7 @@ import {
   AssetPriceTimeframe,
   PriceDataObjectType,
   AccountAssetOptionType,
-  AssetPriceInfo,
+  AssetPrice,
   RPCResponseType,
   OrderTypes,
   UserAccountType,
@@ -20,7 +20,7 @@ import {
   ExpirationPresetObjectType,
   ToOrFromType,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   AccountTransactions,
   BuySendSwapTypes,
   WalletAccountType,
@@ -64,7 +64,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -73,23 +73,24 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 3,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -98,23 +99,24 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 4,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -123,23 +125,24 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 2,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -148,16 +151,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 1,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -166,7 +170,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -175,23 +179,24 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 0,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -200,16 +205,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 5,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     }
   ]
 }
@@ -229,7 +235,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
   const [selectedTimeline, setSelectedTimeline] = React.useState<AssetPriceTimeframe>(AssetPriceTimeframe.OneDay)
   const [selectedAssetPriceHistory, setSelectedAssetPriceHistory] = React.useState<PriceDataObjectType[]>(PriceHistoryMockData.slice(15, 20))
-  const [selectedAsset, setSelectedAsset] = React.useState<TokenInfo>()
+  const [selectedAsset, setSelectedAsset] = React.useState<ERCToken>()
   const [selectedNetwork, setSelectedNetwork] = React.useState<EthereumChain>(mockNetworks[0])
   const [selectedAccount, setSelectedAccount] = React.useState<UserAccountType>(mockUserAccounts[0])
   const [showAddModal, setShowAddModal] = React.useState<boolean>(false)
@@ -315,7 +321,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const usdValue = data ? data.usd : '0'
       const usdTimeframeChange = data ? data.usdTimeframeChange : '0'
-      const response: AssetPriceInfo = {
+      const response: AssetPrice = {
         price: usdValue,
         assetTimeframeChange: usdTimeframeChange,
         fromAsset: '',
@@ -331,7 +337,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       const data = CurrentPriceMockData.find((coin) => coin.symbol === selectedAsset.symbol)
       const btcValue = data ? data.btc : '0'
       const btcTimeframeChange = data ? data.btcTimeframeChange : '0'
-      const response: AssetPriceInfo = {
+      const response: AssetPrice = {
         price: btcValue,
         assetTimeframeChange: btcTimeframeChange,
         fromAsset: '',
@@ -389,7 +395,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }, [selectedAsset, mockRPCResponse])
 
   // This will scrape all of the user's accounts and combine the balances for a single asset
-  const scrapedFullAssetBalance = (asset: TokenInfo) => {
+  const scrapedFullAssetBalance = (asset: ERCToken) => {
     const response = mockRPCResponse
     const amounts = response.map((account) => {
       const balance = account.assets.find((item) => item.id === asset.contractAddress)?.balance
@@ -402,7 +408,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const scrapedFullAssetFiatBalance = (asset: TokenInfo) => {
+  const scrapedFullAssetFiatBalance = (asset: ERCToken) => {
     const fullBallance = scrapedFullAssetBalance(asset)
     const price = Number(CurrentPriceMockData.find((coin) => coin.symbol === asset?.symbol)?.usd)
     const value = price ? price * fullBallance : 0
@@ -451,6 +457,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       case AssetPriceTimeframe.All:
         return 0
     }
+    return -1
   }
 
   // This updates the price chart timeline
@@ -459,7 +466,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setSelectedTimeline(path)
   }
 
-  const onSelectAsset = (asset: TokenInfo) => {
+  const onSelectAsset = (asset: ERCToken) => {
     setSelectedAsset(asset)
   }
 

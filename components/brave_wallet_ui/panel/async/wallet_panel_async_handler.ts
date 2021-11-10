@@ -12,7 +12,7 @@ import {
   PanelState,
   WalletState,
   TransactionStatus,
-  SignMessageData,
+  SignMessageRequest,
   SwitchChainRequest
 } from '../../constants/types'
 import {
@@ -32,12 +32,16 @@ import {
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
+
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+
 const handler = new AsyncActionHandler()
 
 async function getAPIProxy () {
   // TODO(petemill): don't lazy import() if this actually makes the time-to-first-data slower!
-  const api = await import('../wallet_panel_api_proxy.js')
-  return api.default.getInstance()
+  const api = await import('../wallet_panel_api_proxy')
+  return api.default()
 }
 
 function getPanelState (store: Store): PanelState {
@@ -51,7 +55,7 @@ function getWalletState (store: Store): WalletState {
 async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
-  store.dispatch(WalletActions.initialized(result))
+  store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
 async function getPendingChainRequest () {
@@ -60,6 +64,7 @@ async function getPendingChainRequest () {
   if (chains && chains.length) {
     return chains[0]
   }
+  return null
 }
 
 async function getPendingSwitchChainRequest () {
@@ -69,6 +74,7 @@ async function getPendingSwitchChainRequest () {
   if (requests && requests.length) {
     return requests[0]
   }
+  return null
 }
 
 async function getPendingSignMessageRequest () {
@@ -214,7 +220,7 @@ handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: Sig
 handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  await braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
+  braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))
@@ -223,21 +229,23 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
   apiProxy.closeUI()
 })
 
-handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageData) => {
+handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
   if (hardwareAccount && hardwareAccount.hardware) {
     let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-    deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
-      then(async (signature: string) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
-      }).catch(async (error: any) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
-      })
+    if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
+      deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
+        then(async (signature: string) => {
+          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
+        }).catch(async (error: any) => {
+          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
+        })
+    }
     return
   }
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
+  braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
     '', getLocale('braveWalletHardwareAccountNotFound'))
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
@@ -250,7 +258,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

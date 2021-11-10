@@ -4,7 +4,7 @@ import {
   BuySendSwapViewTypes,
   EthereumChain,
   ToOrFromType,
-  kMainnetChainId
+  MAINNET_CHAIN_ID
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
@@ -48,7 +48,7 @@ function Buy (props: Props) {
 
   return (
     <StyledWrapper>
-      {selectedNetwork.chainId === kMainnetChainId ? (
+      {selectedNetwork.chainId === MAINNET_CHAIN_ID ? (
         <SwapInputComponent
           componentType='buyAmount'
           onInputChange={onInputChange}
@@ -66,7 +66,7 @@ function Buy (props: Props) {
       <NavButton
         disabled={false}
         buttonType='primary'
-        text={selectedNetwork.chainId === kMainnetChainId ? getLocale('braveWalletBuyWyreButton') : getLocale('braveWalletBuyFaucetButton')}
+        text={selectedNetwork.chainId === MAINNET_CHAIN_ID ? getLocale('braveWalletBuyWyreButton') : getLocale('braveWalletBuyFaucetButton')}
         onSubmit={onSubmit}
       />
     </StyledWrapper>
