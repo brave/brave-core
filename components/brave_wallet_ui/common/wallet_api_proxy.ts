@@ -24,12 +24,13 @@ export default class WalletApiProxy {
   ledgerHardwareKeyring = new LedgerBridgeKeyring()
   trezorHardwareKeyring = new TrezorBridgeKeyring()
 
-  addEthJsonRpcControllerObserver(store: Store) {
+  addEthJsonRpcControllerObserver (store: Store) {
     const ethJsonRpcControllerObserverReceiver = new BraveWallet.EthJsonRpcControllerObserverReceiver({
       chainChangedEvent: function (chainId) {
         store.dispatch(WalletActions.chainChangedEvent({ chainId }))
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
+        // TODO: Handle this event.
       },
       onIsEip1559Changed: function (chainId, isEip1559) {
         store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
@@ -38,7 +39,7 @@ export default class WalletApiProxy {
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  makeTxData(nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data:number[]) {
+  makeTxData (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) {
     const txData = new BraveWallet.TxData()
     txData.nonce = nonce
     txData.gasPrice = gasPrice
@@ -49,7 +50,7 @@ export default class WalletApiProxy {
     return txData
   }
 
-  makeEIP1559TxData(chainId: string, nonce: string, maxPriorityFeePerGas: string, maxFeePerGas: string, gasLimit: string, to: string, value: string, data: number[]) {
+  makeEIP1559TxData (chainId: string, nonce: string, maxPriorityFeePerGas: string, maxFeePerGas: string, gasLimit: string, to: string, value: string, data: number[]) {
     const txData = new BraveWallet.TxData1559()
     txData.baseData = this.makeTxData(nonce, '', gasLimit, to, value, data)
     txData.maxPriorityFeePerGas = maxPriorityFeePerGas
@@ -58,16 +59,16 @@ export default class WalletApiProxy {
     return txData
   }
 
-  getKeyringsByType(type: string) {
-    if (type == BraveWallet.LEDGER_HARDWARE_VENDOR) {
+  getKeyringsByType (type: string) {
+    if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
       return this.ledgerHardwareKeyring
-    } else if (type == BraveWallet.TREZOR_HARDWARE_VENDOR) {
+    } else if (type === BraveWallet.TREZOR_HARDWARE_VENDOR) {
       return this.trezorHardwareKeyring
     }
     return this.keyringController
   }
 
-  addKeyringControllerObserver(store: Store) {
+  addKeyringControllerObserver (store: Store) {
     const keyringControllerObserverReceiver = new BraveWallet.KeyringControllerObserverReceiver({
       keyringCreated: function () {
         store.dispatch(WalletActions.keyringCreated())
@@ -97,34 +98,34 @@ export default class WalletApiProxy {
     this.keyringController.addObserver(keyringControllerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addEthTxControllerObserverObserver(store: Store) {
+  addEthTxControllerObserverObserver (store: Store) {
     const ethTxControllerObserverReceiver = new BraveWallet.EthTxControllerObserverReceiver({
       onNewUnapprovedTx: function (txInfo) {
-        store.dispatch(WalletActions.newUnapprovedTxAdded({txInfo}))
+        store.dispatch(WalletActions.newUnapprovedTxAdded({ txInfo }))
       },
       onUnapprovedTxUpdated: function (txInfo) {
-        store.dispatch(WalletActions.unapprovedTxUpdated({txInfo}))
+        store.dispatch(WalletActions.unapprovedTxUpdated({ txInfo }))
       },
       onTransactionStatusChanged: function (txInfo) {
-        store.dispatch(WalletActions.transactionStatusChanged({txInfo}))
+        store.dispatch(WalletActions.transactionStatusChanged({ txInfo }))
       }
     })
     this.ethTxController.addObserver(ethTxControllerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  addBraveWalletServiceObserver(store: Store) {
+  addBraveWalletServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletServiceObserverReceiver({
       onActiveOriginChanged: function (origin) {
-        store.dispatch(WalletActions.activeOriginChanged({origin}))
+        store.dispatch(WalletActions.activeOriginChanged({ origin }))
       },
       onDefaultWalletChanged: function (defaultWallet) {
-        store.dispatch(WalletActions.defaultWalletChanged({defaultWallet}))
+        store.dispatch(WalletActions.defaultWalletChanged({ defaultWallet }))
       },
       onDefaultBaseCurrencyChanged: function (currency) {
-        store.dispatch(WalletActions.defaultBaseCurrencyChanged({currency}))
+        store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))
       },
       onDefaultBaseCryptocurrencyChanged: function (cryptocurrency) {
-        store.dispatch(WalletActions.defaultBaseCryptocurrencyChanged({cryptocurrency}))
+        store.dispatch(WalletActions.defaultBaseCryptocurrencyChanged({ cryptocurrency }))
       },
       onNetworkListChanged: function () {
         store.dispatch(WalletActions.getAllNetworks())

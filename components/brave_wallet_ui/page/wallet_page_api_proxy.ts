@@ -10,7 +10,7 @@ let walletPageApiProxyInstance: WalletPageApiProxy
 class WalletPageApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   pageHandler = new BraveWallet.PageHandlerRemote()
-  constructor() {
+  constructor () {
     super()
 
     const factory = BraveWallet.PageHandlerFactory.getRemote()

@@ -40,7 +40,7 @@ async function getAPIProxy () {
 async function refreshWalletInfo (store: Store) {
   const walletHandler = (await getAPIProxy()).walletHandler
   const result = await walletHandler.getWalletInfo()
-  store.dispatch(WalletActions.initialized({...result, selectedAccount:'', visibleTokens: []}))
+  store.dispatch(WalletActions.initialized({ ...result, selectedAccount: '', visibleTokens: [] }))
 }
 
 handler.on(WalletPageActions.createWallet.getType(), async (store: Store, payload: CreateWalletPayloadType) => {

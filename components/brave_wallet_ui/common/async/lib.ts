@@ -236,7 +236,7 @@ export function refreshKeyringInfo () {
     const { keyringController, walletHandler } = apiProxy
 
     const walletInfoBase = await walletHandler.getWalletInfo()
-    const walletInfo = { ...walletInfoBase, visibleTokens:[], selectedAccount:'' }
+    const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
 
     // Get/Set selectedAccount
     if (!walletInfo.isWalletCreated) {

@@ -9,7 +9,7 @@ class WalletPanelApiProxy extends WalletApiProxy {
   callbackRouter = new BraveWallet.PageCallbackRouter()
   panelHandler = new BraveWallet.PanelHandlerRemote()
 
-  constructor() {
+  constructor () {
     super()
 
     const factory = BraveWallet.PanelHandlerFactory.getRemote()
@@ -26,20 +26,20 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
 
-  showUI() {
+  showUI () {
     this.panelHandler.showUI()
   }
 
-  closeUI() {
+  closeUI () {
     this.panelHandler.closeUI()
   }
 
-  connectToSite(accounts: string[], origin: string, tab_id: number) {
-    this.panelHandler.connectToSite(accounts, origin, tab_id)
+  connectToSite (accounts: string[], origin: string, tabId: number) {
+    this.panelHandler.connectToSite(accounts, origin, tabId)
   }
 
-  cancelConnectToSite(origin: string, tab_id: number) {
-    this.panelHandler.cancelConnectToSite(origin, tab_id)
+  cancelConnectToSite (origin: string, tabId: number) {
+    this.panelHandler.cancelConnectToSite(origin, tabId)
   }
 }
 
