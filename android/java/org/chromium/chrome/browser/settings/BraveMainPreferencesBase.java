@@ -77,6 +77,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
+    private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
@@ -184,6 +185,13 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_SHIELDS_AND_PRIVACY).setOrder(++firstSectionOrder);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++firstSectionOrder);
+
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+            findPreference(PREF_BRAVE_WALLET).setOrder(++firstSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_WALLET);
+        }
+
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
             findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         } else {

@@ -2097,6 +2097,27 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_BUY_MAINNET_BUTTON_TEXT" desc="Buy button on main net text">
       Continue to Wire
     </message>
+    <message name="IDS_BRAVE_UI_BRAVE_WALLET" desc="Title for Brave Wallet Settings. [CHAR-LIMIT=27]">
+      Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_SETTINGS_PRIVACY_SECTION" desc="Title for privacy sectio of Brave Wallet Settings. [CHAR-LIMIT=27]">
+      Privacy
+    </message>
+    <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_OPTION" desc="Title for brave wallet automatically lock.">
+      Automatically lock Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_SETTINGS_AUTOLOCK_HOW_MANY_MINUTES" desc="Brave wallet autolock dialog text">
+      How many minutes do you want before automatically lock your brave wallet?
+    </message>
+    <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION" desc="Title for preference to reset Brave Wallet.">
+      Reset Brave Wallet
+    </message>
+    <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Wallet.">
+      Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "Yes" to confirm.
+    </message>
+    <message name="IDS_BRAVE_WALLET_CONFIRM_TEXT" desc="Text for Brave Wallet confirm button text.">
+      Confirm
+    </message>
     <message name="IDS_BRAVE_FIREWALL_VPN" desc="VPN title text">
       Brave Firewall + VPN
     </message>
