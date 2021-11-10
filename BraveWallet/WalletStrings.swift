@@ -460,7 +460,7 @@ extension Strings {
       "wallet.setupCryptoSubtitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Hold crypto assets in your custody. Track portfolio performance, and interact with web 3 DApps. Trade, invest, borrow, and lend with DeFi. All right from the Brave privacy browser.",
+      value: "Hold crypto assets in your custody and track portfolio performance. All right from the Brave privacy browser.",
       comment: "The subtitle displayed on the 'setup crypto' onboarding screen"
     )
     public static let setupCryptoButtonTitle = NSLocalizedString(
