@@ -220,7 +220,7 @@ handler.on(PanelActions.signMessage.getType(), async (store: Store, payload: Sig
 handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, payload: SignMessageProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  await braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
+  braveWalletService.notifySignMessageRequestProcessed(payload.approved, payload.id)
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))
@@ -245,7 +245,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
     }
     return
   }
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
+  braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
     '', getLocale('braveWalletHardwareAccountNotFound'))
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
@@ -258,7 +258,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

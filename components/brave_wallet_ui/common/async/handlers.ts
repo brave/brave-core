@@ -168,7 +168,7 @@ handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
 
 handler.on(WalletActions.lockWallet.getType(), async (store) => {
   const keyringController = (await getAPIProxy()).keyringController
-  await keyringController.lock()
+  keyringController.lock()
 })
 
 handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: UnlockWalletPayloadType) => {
@@ -179,13 +179,13 @@ handler.on(WalletActions.unlockWallet.getType(), async (store: Store, payload: U
 
 handler.on(WalletActions.addFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
-  await walletHandler.addFavoriteApp(appItem)
+  walletHandler.addFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
 handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appItem: AppItem) => {
   const walletHandler = (await getAPIProxy()).walletHandler
-  await walletHandler.removeFavoriteApp(appItem)
+  walletHandler.removeFavoriteApp(appItem)
   await refreshWalletInfo(store)
 })
 
@@ -199,7 +199,7 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
   const { keyringController } = await getAPIProxy()
 
   await keyringController.setSelectedAccount(payload.address)
-  await store.dispatch(WalletActions.setSelectedAccount(payload))
+  store.dispatch(WalletActions.setSelectedAccount(payload))
   await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
@@ -242,7 +242,7 @@ handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, pay
 })
 
 handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store: Store, payload: AssetPriceTimeframe) => {
-  await store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
+  store.dispatch(WalletActions.portfolioTimelineUpdated(payload))
   await store.dispatch(refreshTokenPriceHistory(payload))
 })
 
