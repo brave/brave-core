@@ -352,34 +352,54 @@ class BraveTranslateBrowserDisabledFeatureTest
 
 IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserDisabledFeatureTest,
                        FeatureDisabled) {
+  // Set target language to FR, that is unsupported target language
+  // for the brave backend.
+  GetChromeTranslateClient()->GetTranslatePrefs()->SetRecentTargetLanguage(
+      "fr");
+
+  net::EmbeddedTestServer chrome_test_embedded_test_server;
+  chrome_test_embedded_test_server.ServeFilesFromSourceDirectory(
+      "chrome/test/data");
+  ASSERT_TRUE(chrome_test_embedded_test_server.Start());
+
   EXPECT_CALL(backend_request_, Call(_)).Times(0);
-  ResetObserver();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), embedded_test_server()->GetURL("/espanol_page.html")));
-  WaitUntilLanguageDetermined();
+  const GURL kTestUrls[] = {
+      // ES is supported by the brave backend.
+      embedded_test_server()->GetURL("/espanol_page.html"),
 
-  auto* bubble = TranslateBubbleView::GetCurrentBubble();
-  ASSERT_TRUE(bubble);
+      // EN is unsupported but the bubble must be shown anyway.
+      chrome_test_embedded_test_server.GetURL("/german_page.html")};
 
-  // The that we see a bubble that suggests Google translate extension
-  // installation.
-  ASSERT_EQ(bubble->GetWindowTitle(),
-            l10n_util::GetStringUTF16(
-                IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE));
+  for (const auto& url : kTestUrls) {
+    SCOPED_TRACE(url);
 
-  // Check the we don't download the translate scripts
-  base::MockCallback<TranslateScript::RequestCallback> mock_callback;
-  EXPECT_CALL(mock_callback, Run(false));
-  TranslateDownloadManager::GetInstance()->script()->Request(
-      mock_callback.Get(), false);
+    ResetObserver();
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    WaitUntilLanguageDetermined();
 
-  // The resulting callback must be postted immediately, so simply use
-  // RunUtilIdle() to wait for it.
-  base::RunLoop().RunUntilIdle();
+    auto* bubble = TranslateBubbleView::GetCurrentBubble();
+    ASSERT_TRUE(bubble);
 
-  // Check no bad flags infobar is shown (about the different translate
-  // script/origin).
-  EXPECT_TRUE(HasNoBadFlagsInfobar());
+    // The that we see a bubble that suggests Google translate extension
+    // installation.
+    ASSERT_EQ(bubble->GetWindowTitle(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_INSTALL_TITLE));
+
+    // Check the we don't download the translate scripts
+    base::MockCallback<TranslateScript::RequestCallback> mock_callback;
+    EXPECT_CALL(mock_callback, Run(false));
+    TranslateDownloadManager::GetInstance()->script()->Request(
+        mock_callback.Get(), false);
+
+    // The resulting callback must be postted immediately, so simply use
+    // RunUtilIdle() to wait for it.
+    base::RunLoop().RunUntilIdle();
+
+    // Check no bad flags infobar is shown (about the different translate
+    // script/origin).
+    EXPECT_TRUE(HasNoBadFlagsInfobar());
+  }
 }
 
 }  // namespace translate
