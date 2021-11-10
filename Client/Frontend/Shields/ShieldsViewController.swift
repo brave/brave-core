@@ -16,8 +16,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     private lazy var url: URL? = {
         guard let _url = tab.url else { return nil }
         
-        if _url.isErrorPageURL {
-            return _url.originalURLFromErrorURL
+        if InternalURL.isValid(url: _url),
+           let internalURL = InternalURL(_url),
+           internalURL.isErrorPage {
+            return internalURL.originalURLFromErrorPage
         }
         
         return _url
@@ -206,7 +208,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         (.AdblockAndTp, shieldsView.advancedShieldView.adsTrackersControl, Preferences.Shields.blockAdsAndTracking),
         (.SafeBrowsing, shieldsView.advancedShieldView.blockMalwareControl, Preferences.Shields.blockPhishingAndMalware),
         (.NoScript, shieldsView.advancedShieldView.blockScriptsControl, Preferences.Shields.blockScripts),
-        (.HTTPSE, shieldsView.advancedShieldView.httpsUpgradesControl, Preferences.Shields.httpsEverywhere),
         (.FpProtection, shieldsView.advancedShieldView.fingerprintingControl, Preferences.Shields.fingerprintingProtection),
     ]
     

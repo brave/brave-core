@@ -25,7 +25,7 @@ protocol Readable where Self: NSManagedObject {
 }
 
 // MARK: - Implementations
-extension Deletable where Self: NSManagedObject {
+extension Deletable {
     func delete(context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
@@ -63,8 +63,10 @@ extension Deletable where Self: NSManagedObject {
 
                     // Batch delete writes directly to the persistent store.
                     // Therefore contexts and in-memory objects must be updated manually.
-                    let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
-                    guard let objectIDArray = result?.result as? [NSManagedObjectID] else { return }
+                    
+                    guard let objectIDArray = try context.persistentStoreCoordinator?
+                        .execute(deleteRequest, with: context) as? [NSManagedObjectID] else { return }
+                    
                     let changes = [NSDeletedObjectsKey: objectIDArray]
 
                     // Merging changes to view context is important because fetch results controllers
@@ -80,7 +82,7 @@ extension Deletable where Self: NSManagedObject {
     }
 }
 
-extension Readable where Self: NSManagedObject { 
+extension Readable {
     static func count(predicate: NSPredicate? = nil,
                       context: NSManagedObjectContext = DataController.viewContext) -> Int? {
         let request = getFetchRequest()

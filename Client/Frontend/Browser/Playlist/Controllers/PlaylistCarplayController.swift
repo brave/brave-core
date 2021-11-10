@@ -72,7 +72,6 @@ class PlaylistCarplayController: NSObject {
             if let playlistTabTemplate = playlistTabTemplate {
                 let items = playlistTabTemplate.sections.flatMap({ $0.items }).compactMap({ $0 as? CPListItem })
                 
-                let isPlaying = self.player.isPlaying
                 items.forEach({
                     if let userInfo = $0.userInfo as? [String: Any],
                        let itemId = userInfo["id"] as? String {
@@ -80,7 +79,9 @@ class PlaylistCarplayController: NSObject {
                         $0.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
                         
                         if PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc == itemId {
-                            $0.isPlaying = isPlaying
+                            $0.isPlaying = true
+                            
+                            PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo["icon"] as? UIImage)
                         } else {
                             $0.isPlaying = false
                         }
@@ -226,6 +227,11 @@ class PlaylistCarplayController: NSObject {
         // an alert of CPNowPlayingTemplate.shared is being displayed
         //interfaceController.pop(to: tabBarTemplate, animated: true)
         
+        // Update Currently Playing Index before layout (so we can show the playing indicator)
+        if let pageSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc {
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: pageSrc) ?? -1
+        }
+        
         // Map all items to their IDs
         playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
         
@@ -278,7 +284,7 @@ class PlaylistCarplayController: NSObject {
                     
                     listItem.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
                     
-                    let isPlaying = self.player.isPlaying
+                    let isPlaying = self.player.isPlaying || self.player.isWaitingToPlay
                     for item in listItems.enumerated() {
                         let userInfo = item.element.userInfo as? [String: Any] ?? [:]
                         item.element.isPlaying = isPlaying &&
@@ -287,6 +293,7 @@ class PlaylistCarplayController: NSObject {
                     
                     let userInfo = listItem.userInfo as? [String: Any]
                     PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
+                    PlaylistMediaStreamer.updateNowPlayingInfo(self.player)
                     
                     completion()
                     
@@ -455,10 +462,10 @@ extension PlaylistCarplayController {
         }
         
         // Reset Now Playing when playback is starting.
-        if !player.isPlaying {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
-        }
+        PlaylistMediaStreamer.clearNowPlayingInfo()
         
+        PlaylistCarplayManager.shared.currentPlaylistItem = item
+        PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
         self.playItem(item: item) { [weak self] error in
             guard let self = self else {
                 PlaylistCarplayManager.shared.currentPlaylistItem = nil
@@ -557,6 +564,8 @@ extension PlaylistCarplayController {
 
         if index >= 0,
            let item = PlaylistManager.shared.itemAtIndex(index) {
+            PlaylistCarplayManager.shared.currentPlaylistItem = item
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
             self.playItem(item: item) { [weak self] error in
                 PlaylistCarplayManager.shared.currentPlaylistItem = nil
                 guard let self = self else { return }
@@ -772,7 +781,18 @@ extension PlaylistCarplayController {
                         if !isPlaying {
                             PlaylistMediaStreamer.clearNowPlayingInfo()
                         }
-                        completion?(.other(error))
+                        
+                        switch error as? MediaPlaybackError {
+                        case .cancelled:
+                            if !isPlaying {
+                                PlaylistMediaStreamer.clearNowPlayingInfo()
+                            }
+                            completion?(.cancelled)
+                        case .other(let err):
+                            completion?(.other(err))
+                        default:
+                            completion?(.other(error))
+                        }
                     case .finished:
                         break
                     }

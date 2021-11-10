@@ -137,28 +137,30 @@ private class HLSThumbnailGenerator {
 
     private let asset: AVAsset
     private let sourceURL: URL
-    private let player: AVPlayer?
-    private let videoOutput: AVPlayerItemVideoOutput?
+    private var player: AVPlayer?
+    private var currentItem: AVPlayerItem?
+    private var videoOutput: AVPlayerItemVideoOutput?
     private var observer: NSKeyValueObservation?
     private var state: State = .loading
-    private let queue = DispatchQueue(label: "com.brave.hls-thumbnail-generator")
     private let completion: (UIImage?, Error?) -> Void
+    private let queue = DispatchQueue(label: "com.brave.hls-thumbnail-generator")
 
     init(url: URL, time: TimeInterval, completion: @escaping (UIImage?, Error?) -> Void) {
         self.asset = AVAsset(url: url)
         self.sourceURL = url
         self.completion = completion
 
-        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: [])
+        let item = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: nil)
         self.player = AVPlayer(playerItem: item).then {
             $0.rate = 0
         }
         
+        self.currentItem = player?.currentItem
         self.videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ])
         
-        self.observer = self.player?.currentItem?.observe(\.status) { [weak self] item, _ in
+        self.observer = self.currentItem?.observe(\.status) { [weak self] item, _ in
             guard let self = self else { return }
             
             if item.status == .readyToPlay && self.state == .loading {
@@ -175,6 +177,25 @@ private class HLSThumbnailGenerator {
         if let videoOutput = self.videoOutput {
             self.player?.currentItem?.add(videoOutput)
         }
+    }
+    
+    deinit {
+        // Must call in this order.
+        // Bug in observers in iOS where the item can be deinit before the observer
+        // In such a case, it wrongly throws an exception
+        // KVO_IS_RETAINING_ALL_OBSERVERS_OF_THIS_OBJECT_IF_IT_CRASHES_AN_OBSERVER_WAS_OVERRELEASED_OR_SMASHED
+        // This happens even with block-based observers
+        // So we must call invalidate FIRST, then release the object being observed
+        // (Aka reverse stack order release)
+        if let videoOutput = videoOutput {
+            currentItem?.remove(videoOutput)
+        }
+        
+        videoOutput = nil
+        observer?.invalidate()
+        observer = nil
+        currentItem = nil
+        player = nil
     }
 
     private func generateThumbnail(at time: TimeInterval) {

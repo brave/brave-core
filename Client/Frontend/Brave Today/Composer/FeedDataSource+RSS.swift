@@ -34,7 +34,7 @@ extension FeedDataSource {
     ///            url location is not a web page url
     @discardableResult
     func addRSSFeedLocation(_ location: RSSFeedLocation) -> Bool {
-        if !location.url.isWebPage(includeDataURIs: false) {
+        if !location.url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: location.url) {
             return false
         }
         let feedUrl = location.url.absoluteString
@@ -76,7 +76,7 @@ extension FeedItem.Content {
     private static func imageURL(from document: HTMLDocument, releativeTo baseURL: URL?) -> URL? {
         if let src = document.firstChild(xpath: "//img[@src]")?.attr("src"),
            let url = URL(string: src, relativeTo: baseURL),
-           url.isWebPage(includeDataURIs: false) {
+           url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
             return url
         }
         return nil
@@ -103,7 +103,7 @@ extension FeedItem.Content {
         var description = ""
         var imageURL: URL?
         if let image = feedItem.image, let url = URL(string: image, relativeTo: location.url.domainURL),
-           url.isWebPage(includeDataURIs: false) {
+           url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
             imageURL = url
         }
         if let text = feedItem.contentText {
@@ -143,7 +143,7 @@ extension FeedItem.Content {
         var imageURL: URL?
         if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
            let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-           url.isWebPage(includeDataURIs: false) {
+           url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
             imageURL = url
         }
         if feedItem.summary?.attributes?.type == "text" {
@@ -185,7 +185,7 @@ extension FeedItem.Content {
         var imageURL: URL?
         if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
            let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-           url.isWebPage(includeDataURIs: false) {
+           url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
             imageURL = url
         }
         if let html = feedItem.description, let doc = try? HTMLDocument(string: html) {

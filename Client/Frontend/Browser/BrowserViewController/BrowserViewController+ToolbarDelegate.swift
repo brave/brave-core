@@ -21,8 +21,6 @@ extension BrowserViewController: TopToolbarDelegate {
         }
         updateFindInPageVisibility(visible: false)
         
-        let tabTrayController = TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
-        
         if tabManager.selectedTab == nil {
             tabManager.selectTab(tabManager.tabsForCurrentMode.first)
         }
@@ -32,8 +30,9 @@ extension BrowserViewController: TopToolbarDelegate {
         
         isTabTrayActive = true
         
-        navigationController?.pushViewController(tabTrayController, animated: true)
-        self.tabTrayController = tabTrayController
+        let vc = TabTrayController(tabManager: tabManager)
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
@@ -45,7 +44,8 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     
     func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
-        guard let tab = tabManager.selectedTab else { return }
+        guard let tab = tabManager.selectedTab, let url = tab.url, !url.isLocal, !url.isReaderModeURL else { return }
+       
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         
@@ -111,8 +111,8 @@ extension BrowserViewController: TopToolbarDelegate {
     func topToolbarDisplayTextForURL(_ topToolbar: URL?) -> (String?, Bool) {
         // use the initial value for the URL so we can do proper pattern matching with search URLs
         var searchURL = self.tabManager.selectedTab?.currentInitialURL
-        if searchURL?.isErrorPageURL ?? true {
-            searchURL = topToolbar
+        if let url = searchURL, InternalURL.isValid(url: url) {
+            searchURL = url
         }
         if let query = profile.searchEngines.queryForSearchURL(searchURL as URL?) {
             return (query, true)
@@ -233,12 +233,14 @@ extension BrowserViewController: TopToolbarDelegate {
     
     func presentBraveShieldsViewController() {
         guard let selectedTab = tabManager.selectedTab, var url = selectedTab.url else { return }
-        if url.isErrorPageURL, let originalURL = url.originalURLFromErrorURL {
+        if let internalUrl = InternalURL(url), internalUrl.isErrorPage, let originalURL = internalUrl.originalURLFromErrorPage {
             url = originalURL
         }
+        
         if url.isLocalUtility {
             return
         }
+        
         let shields = ShieldsViewController(tab: selectedTab)
         shields.shieldsSettingsChanged = { [unowned self] _ in
             // Update the shields status immediately
@@ -279,7 +281,7 @@ extension BrowserViewController: TopToolbarDelegate {
     // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
     // See: https://github.com/brave/brave-ios/issues/1452
     func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-        showBookmarkController()
+        navigationHelper.openBookmarks()
     }
     
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
@@ -511,48 +513,32 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressShare() {
-        func share(url: URL) {
-            presentActivityViewController(
-                url,
-                tab: url.isFileURL ? nil : tabManager.selectedTab,
-                sourceView: view,
-                sourceRect: view.convert(topToolbar.menuButton.frame, from: topToolbar.menuButton.superview),
-                arrowDirection: [.up]
-            )
-        }
-        
-        guard let tab = tabManager.selectedTab, let url = tab.url else { return }
-        
-        if let temporaryDocument = tab.temporaryDocument {
-            temporaryDocument.getURL().uponQueue(.main, block: { tempDocURL in
-                // If we successfully got a temp file URL, share it like a downloaded file,
-                // otherwise present the ordinary share menu for the web URL.
-                if tempDocURL.isFileURL {
-                    share(url: tempDocURL)
-                } else {
-                    share(url: url)
-                }
-            })
-        } else {
-            share(url: url)
-        }
+        navigationHelper.openShareSheet()
     }
     
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
         let selectedTabURL: URL? = {
-            guard let url = tabManager.selectedTab?.url, !url.isLocal || url.isReaderModeURL else { return nil }
+            guard let url = tabManager.selectedTab?.url else { return nil }
+            
+            if (InternalURL.isValid(url: url) || url.isLocal) && !url.isReaderModeURL { return nil }
+            
             return url
         }()
         var activities: [UIActivity] = []
         if let url = selectedTabURL, let tab = tabManager.selectedTab {
             activities = shareActivities(for: url, tab: tab, sourceView: view, sourceRect: self.view.convert(self.topToolbar.menuButton.frame, from: self.topToolbar.menuButton.superview), arrowDirection: .up)
         }
-        let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 420
+        let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 500
         let menuController = MenuViewController(initialHeight: initialHeight, content: { menuController in
+            let isShownOnWebPage = selectedTabURL != nil
             VStack(spacing: 6) {
-                featuresMenuSection(menuController)
+                if isShownOnWebPage {
+                    featuresMenuSection(menuController)
+                } else {
+                    privacyFeaturesMenuSection(menuController)
+                }
                 Divider()
-                destinationMenuSection(menuController)
+                destinationMenuSection(menuController, isShownOnWebPage: isShownOnWebPage)
                 if let tabURL = selectedTabURL {
                     Divider()
                     PageActionsMenuSection(browserViewController: self, tabURL: tabURL, activities: activities)

@@ -10,6 +10,7 @@ import BraveShared
 
 class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
     var sectionDidChange: (() -> Void)?
+    private var defaultCalloutView = DefaultBrowserCalloutView()
     
     private typealias DefaultBrowserCalloutCell = NewTabCenteredCollectionViewCell<DefaultBrowserCalloutView>
     
@@ -43,7 +44,10 @@ class NTPDefaultBrowserCalloutProvider: NSObject, NTPObservableSectionProvider {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        size.height = defaultCalloutView.systemLayoutSizeFitting(size).height
+        
+        return size
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

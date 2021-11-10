@@ -43,10 +43,10 @@ extension BrowserViewController: PlaylistHelperDelegate {
                         DispatchQueue.main.async {
                             if let webView = tab?.webView {
                                 PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
-                                    self?.openPlaylist(item: item, playbackOffset: currentTime)
+                                    self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                                 }
                             } else {
-                                self.openPlaylist(item: item, playbackOffset: 0.0)
+                                self.openPlaylist(tab: tab, item: item, playbackOffset: 0.0)
                             }
                         }
                     }
@@ -188,10 +188,10 @@ extension BrowserViewController: PlaylistHelperDelegate {
                     DispatchQueue.main.async {
                         if let webView = tab?.webView {
                             PlaylistHelper.getCurrentTime(webView: webView, nodeTag: item.tagId) { [weak self] currentTime in
-                                self?.openPlaylist(item: item, playbackOffset: currentTime)
+                                self?.openPlaylist(tab: tab, item: item, playbackOffset: currentTime)
                             }
                         } else {
-                            self.openPlaylist(item: item, playbackOffset: 0.0)
+                            self.openPlaylist(tab: tab, item: item, playbackOffset: 0.0)
                         }
                     }
                 }
@@ -256,8 +256,8 @@ extension BrowserViewController: PlaylistHelperDelegate {
         }
     }
     
-    func openPlaylist(item: PlaylistInfo?, playbackOffset: Double) {
-        let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: nil, initialItem: item, initialItemPlaybackOffset: playbackOffset)
+    func openPlaylist(tab: Tab?, item: PlaylistInfo?, playbackOffset: Double) {
+        let playlistController = PlaylistCarplayManager.shared.getPlaylistController(tab: tab, initialItem: item, initialItemPlaybackOffset: playbackOffset)
         playlistController.modalPresentationStyle = .fullScreen
         
         /// Donate Open Playlist Activity for suggestions

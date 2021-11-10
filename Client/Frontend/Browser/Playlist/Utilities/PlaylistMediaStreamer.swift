@@ -64,55 +64,66 @@ class PlaylistMediaStreamer {
     
     // MARK: - Private
     
-    private func streamingFallback(_ item: PlaylistInfo) -> Future<Void, PlaybackError> {
+    private func streamingFallback(_ item: PlaylistInfo) -> Combine.Deferred<AnyPublisher<Void, PlaybackError>> {
         // Fallback to web stream
-        return Future { [weak self] resolver in
-            guard let self = self else {
-                resolver(.failure(.other("Streaming Cancelled")))
-                return
-            }
+        return Deferred {
+            var cancelled = false
             
-            self.webLoader = PlaylistWebLoader(certStore: self.certStore, handler: { [weak self] newItem in
-                guard let self = self else { return }
-                defer {
-                    // Destroy the web loader when the callback is complete.
-                    self.webLoader?.removeFromSuperview()
-                    self.webLoader = nil
+            return Future { [weak self] resolver in
+                guard let self = self else {
+                    resolver(.failure(.other("Streaming Cancelled")))
+                    return
                 }
                 
-                if let newItem = newItem, URL(string: newItem.src) != nil {
-                    PlaylistItem.updateItem(newItem) {
-                        resolver(.success(Void()))
+                self.webLoader = PlaylistWebLoader(certStore: self.certStore, handler: { [weak self] newItem in
+                    guard let self = self else { return }
+                    defer {
+                        // Destroy the web loader when the callback is complete.
+                        self.webLoader?.removeFromSuperview()
+                        self.webLoader = nil
                     }
-                } else {
-                    resolver(.failure(.expired))
+                    
+                    if let newItem = newItem, URL(string: newItem.src) != nil {
+                        PlaylistItem.updateItem(newItem) {
+                            resolver(.success(Void()))
+                        }
+                    } else if cancelled {
+                        resolver(.failure(.cancelled))
+                    } else {
+                        resolver(.failure(.expired))
+                    }
+                }).then {
+                    // If we don't do this, youtube shows ads 100% of the time.
+                    // It's some weird race-condition in WKWebView where the content blockers may not load until
+                    // The WebView is visible!
+                    self.playerView?.window?.insertSubview($0, at: 0)
                 }
-            }).then {
-                // If we don't do this, youtube shows ads 100% of the time.
-                // It's some weird race-condition in WKWebView where the content blockers may not load until
-                // The WebView is visible!
-                self.playerView?.window?.insertSubview($0, at: 0)
-            }
-            
-            if let url = URL(string: item.pageSrc) {
-                self.webLoader?.load(url: url)
-            } else {
-                resolver(.failure(.other("Cannot Load Media")))
-            }
+                
+                if let url = URL(string: item.pageSrc) {
+                    self.webLoader?.load(url: url)
+                } else {
+                    resolver(.failure(.other("Cannot Load Media")))
+                }
+            }.handleEvents(receiveCancel: { [weak self] in
+                cancelled = true
+                self?.webLoader?.stop()
+            }).eraseToAnyPublisher()
         }
     }
     
     // Would be nice if AVPlayer could detect the mime-type from the URL for my delegate without a head request..
     // This function only exists because I can't figure out why videos from URLs don't play unless I explicitly specify a mime-type..
-    private func canStreamURL(_ url: URL) -> Future<Bool, PlaybackError> {
-        return Future { resolver in
-            PlaylistMediaStreamer.getMimeType(url) { mimeType in
-                if let mimeType = mimeType {
-                    resolver(.success(!mimeType.isEmpty))
-                } else {
-                    resolver(.success(false))
+    private func canStreamURL(_ url: URL) -> Combine.Deferred<AnyPublisher<Bool, PlaybackError>> {
+        return Deferred {
+            return Future { resolver in
+                PlaylistMediaStreamer.getMimeType(url) { mimeType in
+                    if let mimeType = mimeType {
+                        resolver(.success(!mimeType.isEmpty))
+                    } else {
+                        resolver(.success(false))
+                    }
                 }
-            }
+            }.eraseToAnyPublisher()
         }
     }
     
@@ -190,7 +201,7 @@ class PlaylistMediaStreamer {
         session.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    log.error("Error fetching MimeType for playlist item: \(url) - \(error)")
+                    log.error("Error fetching MimeType: \(error)")
                     return completion(nil)
                 }
                 

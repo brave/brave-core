@@ -72,4 +72,68 @@ open class BraveGlobalShieldStats {
         fpProtection = Preferences.BlockStats.fingerprintingCount.value
         safeBrowsing = Preferences.BlockStats.phishingCount.value
     }
+    
+    fileprivate let millisecondsPerItem: Int = 50
+    fileprivate let bytesPerItem = 30485
+    
+    public var timeSaved: String {
+        get {
+            let estimatedMillisecondsSaved = (adblock + trackingProtection) * millisecondsPerItem
+            let hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
+            let minutes = estimatedMillisecondsSaved < 1000 * 60 * 60
+            let seconds = estimatedMillisecondsSaved < 1000 * 60
+            var counter: Double = 0
+            var text = ""
+            
+            if seconds {
+                counter = ceil(Double(estimatedMillisecondsSaved / 1000))
+                text = Strings.shieldsTimeStatsSeconds
+            } else if minutes {
+                counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60))
+                text = Strings.shieldsTimeStatsMinutes
+            } else if hours {
+                counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60))
+                text = Strings.shieldsTimeStatsHour
+            } else {
+                counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60 / 24))
+                text = Strings.shieldsTimeStatsDays
+            }
+            
+            if let counterLocaleStr = Int(counter).decimalFormattedString {
+                return counterLocaleStr + text
+            } else {
+                return "0" + Strings.shieldsTimeStatsSeconds     // If decimalFormattedString returns nil, default to "0s"
+            }
+        }
+    }
+    
+    public var dataSaved: String {
+        var estimatedDataSavedInBytes = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection) * bytesPerItem
+        
+        if estimatedDataSavedInBytes <= 0 { return "0" }
+        let _1MB = 1000 * 1000
+        
+        // Byte formatted megabytes value can be too long to display nicely(#3274).
+        // As a workaround we cut fraction value from megabytes by rounding it down.
+        if estimatedDataSavedInBytes > _1MB {
+            estimatedDataSavedInBytes = (estimatedDataSavedInBytes / _1MB) * _1MB
+        }
+        
+        let formatter = ByteCountFormatter()
+        formatter.allowsNonnumericFormatting = false
+            // Skip bytes, because it displays as `bytes` instead of `B` which is too long for our shield stat.
+            // This is for extra safety only, there's not many sub 1000 bytes tracker scripts in the wild.
+        formatter.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
+        
+        return formatter.string(fromByteCount: Int64(estimatedDataSavedInBytes))
+    }
+}
+
+private extension Int {
+    var decimalFormattedString: String? {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        numberFormatter.locale = NSLocale.current
+        return numberFormatter.string(from: self as NSNumber)
+    }
 }

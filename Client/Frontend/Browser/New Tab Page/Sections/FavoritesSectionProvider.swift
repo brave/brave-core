@@ -21,6 +21,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     var action: (Favorite, BookmarksAction) -> Void
     var legacyLongPressAction: (UIAlertController) -> Void
     
+    var hasMoreThanOneFavouriteItems: Bool {
+        frc.fetchedObjects?.count ?? 0 > 0
+    }
+    
     private var frc: NSFetchedResultsController<Favorite>
     
     init(action: @escaping (Favorite, BookmarksAction) -> Void,

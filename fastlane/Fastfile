@@ -91,7 +91,8 @@ platform :ios do
         provisioningProfiles: { 
           "com.brave.ios.browser" => "Brave iOS",
           "com.brave.ios.browser.ShareExtension" => "Brave iOS Share Extension",
-          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension"
+          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Intents Extension",
+          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Widgets Extension"
         },
         manageAppVersionAndBuildNumber: false
       },
@@ -126,7 +127,8 @@ platform :ios do
         provisioningProfiles: { 
           "com.brave.ios.enterprise.Browser" => "BraveEnt",
           "com.brave.ios.enterprise.Browser.ShareExtension" => "Ent-ShareTo",
-          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents"
+          "com.brave.ios.enterprise.Browser.BrowserIntents" => "BraveEnt Browser Intents",
+          "com.brave.ios.enterprise.Browser.BraveWidgetsExtension" => "BraveEntWidgets"
         },
         manageAppVersionAndBuildNumber: false
       },

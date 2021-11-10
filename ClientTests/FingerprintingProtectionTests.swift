@@ -13,7 +13,7 @@ class FingerprintProtectionTest: XCTestCase {
     
     override func setUp() {
         DataController.shared = DataController()
-        DataController.shared.initialize()
+        DataController.shared.initializeOnce()
     }
     
     func testFingerprintProtection() {

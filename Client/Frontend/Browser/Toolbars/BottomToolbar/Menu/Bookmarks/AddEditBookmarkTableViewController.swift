@@ -363,14 +363,14 @@ class AddEditBookmarkTableViewController: UITableViewController {
         
         for tab in tabs {
             if PrivateBrowsingManager.shared.isPrivateBrowsing {
-                if let url = tab.url, url.isWebPage(), !url.isAboutHomeURL {
+                if let url = tab.url, url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
                     bookmarkManager.add(url: url, title: tab.title, parentFolder: parentFolder)
                 }
             } else {
                 if let tabID = tab.id {
                     let fetchedTab = TabMO.get(fromId: tabID)
                     
-                    if let urlString = fetchedTab?.url, let url = URL(string: urlString), url.isWebPage(), !url.isAboutHomeURL {
+                    if let urlString = fetchedTab?.url, let url = URL(string: urlString), url.isWebPage(), !(InternalURL(url)?.isAboutHomeURL ?? false) {
                         bookmarkManager.add(url: url,
                                        title: fetchedTab?.title ?? tab.title ?? tab.lastTitle,
                                        parentFolder: parentFolder)

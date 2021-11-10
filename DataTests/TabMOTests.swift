@@ -48,7 +48,7 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertNotEqual(object.url, newUrl)
         
         let tabData = SavedTab(id: object.syncUUID!, title: newTitle, url: newUrl, isSelected: true, order: 10, 
-                               screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20)
+                               screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20, isPrivate: false)
         
         backgroundSaveAndWaitForExpectation {
             TabMO.update(tabData: tabData)
@@ -88,7 +88,7 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertNotEqual(object.url, newUrl)
         
         let tabData = SavedTab(id: wrongId, title: newTitle, url: newUrl, isSelected: true, order: 10, 
-                               screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20)
+                               screenshot: UIImage.sampleImage(), history: ["history1", "history2"], historyIndex: 20, isPrivate: false)
         
         TabMO.update(tabData: tabData)
         // We can't wait for context save here, wrong id is being passed, let's fake it by waiting one second
@@ -153,7 +153,7 @@ class TabMOTests: CoreDataTestCase {
         let object = createAndWait()
         
         let tabData = SavedTab(id: object.syncUUID!, title: "title\(order)", url: "url\(order)", isSelected: false, order: Int16(order),
-                               screenshot: nil, history: [], historyIndex: 0)
+                               screenshot: nil, history: [], historyIndex: 0, isPrivate: false)
         backgroundSaveAndWaitForExpectation {
             TabMO.update(tabData: tabData)
         }

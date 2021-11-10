@@ -37,7 +37,8 @@ enum NewTabPage: String {
         //       probably best to remove `NewTabPage` all-together in the future and refactor out its usages.
         
         // For now, we are going to just default to 0 which used to be `HomePanelType.topSites`
-        return URL(string: "#panel=0", relativeTo: UIConstants.aboutHomePage as URL)!
+        let aboutUrl: URL! = URL(string: "\(InternalURL.baseUrl)/\(AboutHomeHandler.path)")
+        return URL(string: "#panel=0", relativeTo: aboutUrl)!
     }
 
     static let allValues = [blankPage, topSites, homePage]
