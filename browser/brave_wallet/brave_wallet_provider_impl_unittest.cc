@@ -931,8 +931,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
   AddEthereumPermission(url, hardware);
   const std::vector<std::string> addresses = GetAddresses();
 
-  const std::string message1 = "0xbeef01";
-  const std::string message2 = "0xbeef02";
+  const std::string message1 = "0x68656c6c6f20776f726c64";
+  const std::string message2 = "0x4120756e69636f646520c68e20737472696e6720c3b1";
   const std::string message3 = "0xbeef03";
   int id1 = SignMessageRequest(addresses[0], message1);
   int id2 = SignMessageRequest(addresses[0], message2);
@@ -944,12 +944,9 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
   ASSERT_TRUE(base::HexStringToBytes(message1.substr(2), &message_bytes1));
   ASSERT_TRUE(base::HexStringToBytes(message2.substr(2), &message_bytes2));
   ASSERT_TRUE(base::HexStringToBytes(message3.substr(2), &message_bytes3));
-  const std::string message1_in_queue(message_bytes1.begin(),
-                                      message_bytes1.end());
-  const std::string message2_in_queue(message_bytes2.begin(),
-                                      message_bytes2.end());
-  const std::string message3_in_queue(message_bytes3.begin(),
-                                      message_bytes3.end());
+  const std::string message1_in_queue = "hello world";
+  const std::string message2_in_queue = "A unicode Ǝ string ñ";
+  const std::string message3_in_queue = "0xbeef03";
 
   EXPECT_EQ(GetSignMessageQueueSize(), 3u);
   EXPECT_EQ(GetSignMessageQueueFront()->id, id1);
