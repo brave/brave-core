@@ -54,6 +54,8 @@ public class AssetDetailActivity extends AsyncInitializationActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mKeyringController.close();
+        mAssetRatioController.close();
     }
 
     @Override
@@ -203,6 +205,9 @@ public class AssetDetailActivity extends AsyncInitializationActivity
 
     @Override
     public void onConnectionError(MojoException e) {
+        mKeyringController.close();
+        mAssetRatioController.close();
+
         mAssetRatioController = null;
         InitAssetRatioController();
 
