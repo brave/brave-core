@@ -35,7 +35,7 @@ import {
   TransactionStatusChanged,
   UnapprovedTxUpdated
 } from '../constants/action_types'
-import { convertMojoTimeToJS } from '../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 import { formatFiatBalance } from '../../utils/format-balances'
 import { sortTransactionByDate } from '../../utils/tx-utils'
@@ -248,7 +248,7 @@ reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: Por
   const shortestHistory = jointHistory.length > 0 ? jointHistory.reduce((a, b) => a.length <= b.length ? a : b) : []
   const sumOfHistory = jointHistory.length > 0 ? shortestHistory.map((token, tokenIndex) => {
     return {
-      date: convertMojoTimeToJS(token.date),
+      date: mojoTimeDeltaToJSDate(token.date),
       close: jointHistory.map(price => Number(price[tokenIndex].price) || 0).reduce((sum, x) => sum + x, 0)
     }
   }) : []

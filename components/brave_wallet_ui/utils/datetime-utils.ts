@@ -10,7 +10,7 @@ import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
  * @param {!mojoBase.mojom.TimeDelta} mojoTime
  * @return {!Date}
  */
-export function convertMojoTimeToJS (mojoTime: TimeDelta) {
+export function mojoTimeDeltaToJSDate (mojoTime: TimeDelta) {
   return new Date(Number(mojoTime.microseconds) / 1000)
 }
 

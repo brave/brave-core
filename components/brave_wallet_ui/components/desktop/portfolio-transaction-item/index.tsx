@@ -14,7 +14,7 @@ import {
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
-import { convertMojoTimeToJS, formatDateAsRelative } from '../../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -291,7 +291,7 @@ const PortfolioTransactionItem = (props: Props) => {
               {transactionIntentLocale}
             </DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
-            <DetailTextDarkBold>{formatDateAsRelative(convertMojoTimeToJS(transactionDetails.createdTime))}</DetailTextDarkBold>
+            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
           </DetailRow>
           {transactionIntentDescription}
         </DetailColumn>

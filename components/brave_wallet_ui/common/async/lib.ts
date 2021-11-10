@@ -52,7 +52,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
     const keyring = await apiProxy.getKeyringsByType(opts.hardware)
     if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
       keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
-        .then(async (accounts: HardwareWalletAccount[]) => {
+        .then((accounts: HardwareWalletAccount[]) => {
           resolve(accounts)
         })
         .catch(reject)

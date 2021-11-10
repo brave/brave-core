@@ -314,7 +314,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
-    addResult = await (apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from))
+    addResult = await apiProxy.ethTxController.addUnapproved1559Transaction(txData, payload.from)
   } else {
     txData = apiProxy.makeTxData(
       '' /* nonce */,
@@ -328,7 +328,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       payload.value,
       payload.data || []
     )
-    addResult = await (apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from))
+    addResult = await apiProxy.ethTxController.addUnapprovedTransaction(txData, payload.from)
   }
 
   if (!addResult.success) {
