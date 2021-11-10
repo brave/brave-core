@@ -15,6 +15,7 @@ source_set("skus") {
 
   deps = [
     "//base",
+    "//brave/browser/profiles:util",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",
     "//chrome/browser/profiles",
