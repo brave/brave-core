@@ -1,5 +1,7 @@
 static_library("brave_federated_learning") {
   sources = [
+    "brave_federated_data_store.cc",
+    "brave_federated_data_store.h",
     "brave_federated_learning_service.cc",
     "brave_federated_learning_service.h",
     "brave_operational_patterns.cc",

@@ -7,6 +7,10 @@
 
 #include "brave/components/brave_federated_learning/brave_federated_learning_service.h"
 
+#include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
+#include "base/json/json_reader.h"
+#include "brave/components/brave_federated_learning/brave_federated_data_store.h"
 #include "brave/components/brave_federated_learning/brave_operational_patterns.h"
 #include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
 #include "brave/components/p3a/pref_names.h"
@@ -14,6 +18,9 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+// DEBUG
+#include <iostream> 
 
 namespace brave {
 
@@ -34,6 +41,45 @@ void BraveFederatedLearningService::Start() {
       new BraveOperationalPatterns(local_state_, url_loader_factory_));
 
   InitPrefChangeRegistrar();
+
+  std::cerr << "Starting Data Store \n";
+  // create Data Store
+  base::ScopedTempDir temp_dir;
+  if (!temp_dir.CreateUniqueTempDir()) {
+    return;
+  }
+  base::FilePath db_path(temp_dir.GetPath().AppendASCII("brave_federated_data_store.db"));
+  FederatedDataStore* db = new FederatedDataStore(db_path);
+  bool success = db->Init();
+
+  if (!success) {
+    std::cerr << "Initialization failed. \n";
+    return;
+  }
+
+  std::cerr << "Testing FederatedLog Class \n";
+  // Test FederatedLog class
+  std::string json_obj = "{"
+        "  \"log\": ["
+        "    {"
+        "    \"name\": \"attribute_1\","
+        "    \"value\": 3.14"
+        "  },"
+        "    {"
+        "    \"name\": \"attribute_2\","
+        "    \"value\": \"cow\""
+        "  }"
+        "  ]"
+        "}";
+
+  brave::FederatedDataStore::FederatedLog* log = new FederatedDataStore::FederatedLog(json_obj);
+  std::cerr << "Initialized FederatedLog \n";
+  
+  if (!db->DoesTableExist("general_logs")) {
+    db->CreateTable("0.0", "general_logs", log);
+  } else {
+    std::cerr << "Table already exists!";
+  }
 
   if (IsP3AEnabled() && IsOperationalPatternsEnabled()) {
     operational_patterns_->Start();
