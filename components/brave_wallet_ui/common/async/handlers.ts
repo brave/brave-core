@@ -142,7 +142,7 @@ handler.on(WalletActions.locked.getType(), async (store) => {
 handler.on(WalletActions.unlocked.getType(), async (store) => {
   interactionNotifier.beginWatchingForInteraction(50000, async () => {
     const keyringController = (await getAPIProxy()).keyringController
-    await keyringController.notifyUserInteraction()
+    keyringController.notifyUserInteraction()
   })
   await refreshWalletInfo(store)
 })
