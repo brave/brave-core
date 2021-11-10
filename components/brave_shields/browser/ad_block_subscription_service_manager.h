@@ -17,18 +17,27 @@
 #include "base/one_shot_event.h"
 #include "base/synchronization/lock.h"
 #include "base/threading/thread_checker.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 class PrefService;
 
+namespace base {
+template <typename StructType>
+class JSONValueConverter;
+}
+
 namespace brave_shields {
 class AdBlockSubscriptionServiceManagerObserver;
+class AdBlockSubscriptionSourceProvider;
+class ResourceProvider;
 }
 
 class AdBlockServiceTest;
@@ -37,12 +46,33 @@ using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
+struct SubscriptionInfo {
+  // The URL used to fetch the list, which is also used as a unique identifier
+  // for a subscription service.
+  GURL subscription_url;
+
+  // These are base::Time::Min() if no download has been
+  // attempted/succeeded. If a subscription has been successfully downloaded,
+  // both of these are exactly equal.
+  base::Time last_update_attempt;
+  base::Time last_successful_update_attempt;
+
+  // Any enabled list will be queried during network requests and page loads,
+  // otherwise it will be bypassed. Disabled lists will not be automatically
+  // updated.
+  bool enabled;
+
+  static void RegisterJSONConverter(
+      base::JSONValueConverter<SubscriptionInfo>*);
+};
+
 // The AdBlock subscription service manager, in charge of initializing and
 // managing AdBlock clients corresponding to custom filter list subscriptions.
 class AdBlockSubscriptionServiceManager {
  public:
   explicit AdBlockSubscriptionServiceManager(
-      BraveComponent::Delegate* delegate,
+      PrefService* local_state,
+      scoped_refptr<base::SequencedTaskRunner> task_runner,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
       const base::FilePath& profile_dir);
   ~AdBlockSubscriptionServiceManager();
@@ -85,6 +115,9 @@ class AdBlockSubscriptionServiceManager {
   void AddObserver(AdBlockSubscriptionServiceManagerObserver* observer);
   void RemoveObserver(AdBlockSubscriptionServiceManagerObserver* observer);
 
+  void Init(ResourceProvider* resource_provider);
+  bool IsInitialized();
+
  private:
   friend class ::AdBlockServiceTest;
   // Returns the directory used to store cached list data for the given
@@ -96,7 +129,7 @@ class AdBlockSubscriptionServiceManager {
 
   void StartDownload(const GURL& sub_url, bool from_ui);
 
-  bool Init();
+  bool initialized_;
   void LoadSubscriptionServices();
   void UpdateSubscriptionPrefs(const GURL& sub_url,
                                const SubscriptionInfo& info);
@@ -110,14 +143,17 @@ class AdBlockSubscriptionServiceManager {
   void SetUpdateIntervalsForTesting(base::TimeDelta* initial_delay,
                                     base::TimeDelta* retry_interval);
 
-  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_ =
-      nullptr;  // NOT OWNED
+  raw_ptr<PrefService> local_state_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  raw_ptr<ResourceProvider> resource_provider_;
+  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
 
-  std::map<GURL, std::unique_ptr<AdBlockSubscriptionService>>
-      subscription_services_;
+  std::map<GURL, std::unique_ptr<AdBlockEngineService>> subscription_services_;
+  std::map<GURL, std::unique_ptr<AdBlockSubscriptionSourceProvider>>
+      subscription_source_providers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 

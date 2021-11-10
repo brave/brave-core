@@ -14,7 +14,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -51,8 +51,8 @@ BraveShieldsAddSiteCosmeticFilterFunction::Run() {
       brave_shields::AddSiteCosmeticFilter::Params::Create(args()));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* custom_filters_service =
-      g_brave_browser_process->ad_block_custom_filters_service();
+  auto* custom_filters_service = g_brave_browser_process->ad_block_service()
+                                     ->custom_filters_source_provider();
   std::string custom_filters = custom_filters_service->GetCustomFilters();
   custom_filters_service->UpdateCustomFilters(custom_filters + '\n' +
                                               params->host + "##" +

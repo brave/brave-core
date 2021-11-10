@@ -282,10 +282,9 @@ void HTTPSEverywhereService::Engine::CloseDatabase() {
 bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 
 HTTPSEverywhereService::HTTPSEverywhereService(
-    BraveComponent::Delegate* delegate)
-    : BaseBraveShieldsService(delegate),
-      engine_(new Engine(this),
-              base::OnTaskRunnerDeleter(delegate->GetTaskRunner())) {}
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : BaseBraveShieldsService(task_runner),
+      engine_(new Engine(this), base::OnTaskRunnerDeleter(task_runner)) {}
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -380,8 +379,8 @@ void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
 std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
-    BraveComponent::Delegate* delegate) {
-  return std::make_unique<HTTPSEverywhereService>(delegate);
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
+  return std::make_unique<HTTPSEverywhereService>(task_runner);
 }
 
 }  // namespace brave_shields

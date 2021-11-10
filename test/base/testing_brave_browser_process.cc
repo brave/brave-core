@@ -49,18 +49,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   return ad_block_service_.get();
 }
 
-brave_shields::AdBlockCustomFiltersService*
-TestingBraveBrowserProcess::ad_block_custom_filters_service() {
-  NOTREACHED();
-  return nullptr;
-}
-
-brave_shields::AdBlockRegionalServiceManager*
-TestingBraveBrowserProcess::ad_block_regional_service_manager() {
-  NOTREACHED();
-  return nullptr;
-}
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 brave_component_updater::ExtensionWhitelistService*
 TestingBraveBrowserProcess::extension_whitelist_service() {

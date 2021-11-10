@@ -17,6 +17,9 @@
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -37,7 +40,11 @@ class AdBlockRegionalService;
 // managing regional AdBlock clients.
 class AdBlockRegionalServiceManager {
  public:
-  explicit AdBlockRegionalServiceManager(BraveComponent::Delegate* delegate);
+  explicit AdBlockRegionalServiceManager(
+      PrefService* local_state,
+      std::string locale,
+      component_updater::ComponentUpdateService* cus,
+      scoped_refptr<base::SequencedTaskRunner> task_runner);
   AdBlockRegionalServiceManager(const AdBlockRegionalServiceManager&) = delete;
   AdBlockRegionalServiceManager& operator=(
       const AdBlockRegionalServiceManager&) = delete;
@@ -48,7 +55,6 @@ class AdBlockRegionalServiceManager {
   void SetRegionalCatalog(std::vector<adblock::FilterList> catalog);
   const std::vector<adblock::FilterList>& GetRegionalCatalog();
 
-  bool IsInitialized() const;
   bool Start();
   void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
@@ -72,24 +78,36 @@ class AdBlockRegionalServiceManager {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
+  void Init(ResourceProvider* resource_provider);
+
  private:
   friend class ::AdBlockServiceTest;
   void StartRegionalServices();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
-  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_ =
-      nullptr;  // NOT OWNED
+  raw_ptr<PrefService> local_state_;
+  std::string locale_;
   bool initialized_;
   base::Lock regional_services_lock_;
-  std::map<std::string, std::unique_ptr<AdBlockRegionalService>>
+  std::map<std::string, std::unique_ptr<AdBlockEngineService>>
       regional_services_;
+  std::map<std::string, std::unique_ptr<AdBlockRegionalSourceProvider>>
+      regional_source_providers_;
 
   std::vector<adblock::FilterList> regional_catalog_;
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
+  raw_ptr<ResourceProvider> resource_provider_;
 };
 
 // Creates the AdBlockRegionalServiceManager
 std::unique_ptr<AdBlockRegionalServiceManager>
-AdBlockRegionalServiceManagerFactory(BraveComponent::Delegate* delegate);
+AdBlockRegionalServiceManagerFactory(
+    PrefService* local_state,
+    std::string locale,
+    component_updater::ComponentUpdateService* cus,
+    scoped_refptr<base::SequencedTaskRunner> task_runner);
 
 }  // namespace brave_shields
 

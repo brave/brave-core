@@ -20,8 +20,8 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
+#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -31,11 +31,26 @@
 #include "crypto/sha2.h"
 #include "net/base/filename_util.h"
 
+#include "brave/components/brave_shields/browser/ad_block_subscription_source_provider.h"
+
 namespace brave_shields {
 
 base::TimeDelta* g_testing_subscription_retry_interval;
 
 namespace {
+
+bool SkipGURLField(base::StringPiece value, GURL* field) {
+  return true;
+}
+
+bool ParseTimeValue(const base::Value* value, base::Time* field) {
+  auto time = base::ValueToTime(value);
+  if (!time) {
+    return false;
+  }
+  *field = *time;
+  return true;
+}
 
 const base::TimeDelta kListUpdateInterval = base::Days(7);
 const base::TimeDelta kListRetryInterval = base::Hours(1);
@@ -60,12 +75,30 @@ const base::FilePath::CharType kSubscriptionsDir[] =
 
 }  // namespace
 
+void SubscriptionInfo::RegisterJSONConverter(
+    base::JSONValueConverter<SubscriptionInfo>* converter) {
+  // The `subscription_url` field is skipped, as it's not stored within the
+  // JSON value and should be populated externally.
+  converter->RegisterCustomField<GURL>(
+      "subscription_url", &SubscriptionInfo::subscription_url, &SkipGURLField);
+  converter->RegisterCustomValueField<base::Time>(
+      "last_update_attempt", &SubscriptionInfo::last_update_attempt,
+      &ParseTimeValue);
+  converter->RegisterCustomValueField<base::Time>(
+      "last_successful_update_attempt",
+      &SubscriptionInfo::last_successful_update_attempt, &ParseTimeValue);
+  converter->RegisterBoolField("enabled", &SubscriptionInfo::enabled);
+}
+
 AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
-    brave_component_updater::BraveComponent::Delegate* delegate,
+    PrefService* local_state,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
     const base::FilePath& profile_dir)
-    : delegate_(delegate),
+    : initialized_(false),
+      local_state_(local_state),
+      task_runner_(task_runner),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscriptions_(new base::DictionaryValue()),
       subscription_update_timer_(
@@ -74,6 +107,16 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AdBlockSubscriptionServiceManager::Init(
+    ResourceProvider* resource_provider) {
+  resource_provider_ = resource_provider;
+  initialized_ = true;
+}
+
+bool AdBlockSubscriptionServiceManager::IsInitialized() {
+  return initialized_;
 }
 
 AdBlockSubscriptionServiceManager::~AdBlockSubscriptionServiceManager() {}
@@ -110,13 +153,12 @@ void AdBlockSubscriptionServiceManager::OnUpdateTimer(
     component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
 
-  PrefService* local_state = delegate_->local_state();
-  if (!local_state)
+  if (!local_state_)
     return;
 
   base::AutoLock lock(subscription_services_lock_);
   subscriptions_ = base::DictionaryValue::From(base::Value::ToUniquePtrValue(
-      local_state->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
+      local_state_->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
 
   for (base::DictionaryValue::Iterator it(*subscriptions_); !it.IsAtEnd();
        it.Advance()) {
@@ -158,22 +200,36 @@ void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
 void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+
+  auto it = subscription_services_.find(sub_url);
+  if (it != subscription_services_.end()) {
+    return;
+  }
+
   SubscriptionInfo info;
   info.subscription_url = sub_url;
   info.last_update_attempt = base::Time();
   info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
-  auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
-      info, GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
-      delegate_);
+  auto subscription_service =
+      std::make_unique<AdBlockEngineService>(task_runner_);
   UpdateSubscriptionPrefs(sub_url, info);
+
+  auto subscription_source_provider =
+      std::make_unique<AdBlockSubscriptionSourceProvider>(
+          local_state_,
+          GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
+  subscription_service->Init(subscription_source_provider.get(),
+                             resource_provider_);
 
   {
     base::AutoLock lock(subscription_services_lock_);
     // this could allow more than one service for a given url
     subscription_services_.insert(
         std::make_pair(sub_url, std::move(subscription_service)));
+    subscription_source_providers_.insert(
+        std::make_pair(sub_url, std::move(subscription_source_provider)));
   }
 
   StartDownload(sub_url, true);
@@ -212,6 +268,9 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     auto it = subscription_services_.find(sub_url);
     DCHECK(it != subscription_services_.end());
     subscription_services_.erase(it);
+    auto it2 = subscription_source_providers_.find(sub_url);
+    DCHECK(it2 != subscription_source_providers_.end());
+    subscription_source_providers_.erase(it2);
   }
   ClearSubscriptionPrefs(sub_url);
 
@@ -279,13 +338,12 @@ absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
 void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
 
-  PrefService* local_state = delegate_->local_state();
-  if (!local_state)
+  if (!local_state_)
     return;
 
   base::AutoLock lock(subscription_services_lock_);
   subscriptions_ = base::DictionaryValue::From(base::Value::ToUniquePtrValue(
-      local_state->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
+      local_state_->GetDictionary(prefs::kAdBlockListSubscriptions)->Clone()));
 
   for (base::DictionaryValue::Iterator it(*subscriptions_); !it.IsAtEnd();
        it.Advance()) {
@@ -297,13 +355,20 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
-      auto subscription_service = std::make_unique<AdBlockSubscriptionService>(
-          info,
-          GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
-          delegate_);
+      auto subscription_service =
+          std::make_unique<AdBlockEngineService>(task_runner_);
+
+      auto subscription_source_provider =
+          std::make_unique<AdBlockSubscriptionSourceProvider>(
+              local_state_,
+              GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
+      subscription_service->Init(subscription_source_provider.get(),
+                                 resource_provider_);
 
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
+      subscription_source_providers_.insert(
+          std::make_pair(sub_url, std::move(subscription_source_provider)));
     }
   }
 }
@@ -314,11 +379,10 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     const GURL& sub_url,
     const SubscriptionInfo& info) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  PrefService* local_state = delegate_->local_state();
-  if (!local_state)
+  if (!local_state_)
     return;
 
-  DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
+  DictionaryPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
   base::Value* subscriptions_dict = update.Get();
   auto subscription_dict = base::Value(base::Value::Type::DICTIONARY);
   subscription_dict.SetBoolKey("enabled", info.enabled);
@@ -340,11 +404,10 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
 void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  PrefService* local_state = delegate_->local_state();
-  if (!local_state)
+  if (!local_state_)
     return;
 
-  DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
+  DictionaryPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
   base::Value* subscriptions_dict = update.Get();
   subscriptions_dict->RemoveKey(sub_url.spec());
 
@@ -454,8 +517,8 @@ base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
     const GURL& sub_url) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto it = subscription_services_.find(sub_url);
-  if (it == subscription_services_.end())
+  auto it = subscription_source_providers_.find(sub_url);
+  if (it == subscription_source_providers_.end())
     return;
 
   auto info = GetInfo(sub_url);
@@ -466,7 +529,7 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   info->last_successful_update_attempt = info->last_update_attempt;
   UpdateSubscriptionPrefs(sub_url, *info);
 
-  it->second->ReloadList();
+  it->second->ReloadListFromDisk();
 
   NotifyObserversOfServiceEvent();
 }

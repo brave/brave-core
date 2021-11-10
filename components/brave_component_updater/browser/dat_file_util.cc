@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
+#include <memory>
 #include <string>
 
 #include "base/logging.h"
@@ -12,6 +13,12 @@
 #include "base/files/file_util.h"
 
 namespace brave_component_updater {
+
+DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path) {
+  DATFileDataBuffer buffer;
+  GetDATFileData(dat_file_path, &buffer);
+  return buffer;
+}
 
 void GetDATFileData(const base::FilePath& file_path,
                     DATFileDataBuffer* buffer) {

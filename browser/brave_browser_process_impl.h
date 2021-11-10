@@ -34,7 +34,7 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class AdBlockCustomFiltersService;
+class AdBlockCustomFiltersSourceProvider;
 class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
@@ -90,10 +90,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service()
-      override;
-  brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager() override;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service() override;

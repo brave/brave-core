@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_shields/https_everywhere_component_installer.h"
+#include "brave/components/brave_shields/browser/https_everywhere_component_installer.h"
 
 #include <memory>
 #include <string>
@@ -12,11 +12,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
-#include "base/no_destructor.h"
-#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "chrome/browser/browser_process.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -42,7 +38,11 @@ const char kHTTPSEverywhereComponentBase64PublicKey[] =
 class HTTPSEverywhereComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  HTTPSEverywhereComponentInstallerPolicy();
+  explicit HTTPSEverywhereComponentInstallerPolicy(
+      const std::string& component_public_key,
+      const std::string& component_id,
+      const std::string& component_name,
+      OnComponentReadyCallback callback);
   ~HTTPSEverywhereComponentInstallerPolicy() override;
 
   HTTPSEverywhereComponentInstallerPolicy(
@@ -54,44 +54,38 @@ class HTTPSEverywhereComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
-      const base::Value& manifest,
+      const base::DictionaryValue& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::Value& manifest,
+  bool VerifyInstallation(const base::DictionaryValue& manifest,
                           const base::FilePath& install_dir) const override;
   void ComponentReady(const base::Version& version,
                       const base::FilePath& path,
-                      base::Value manifest) override;
+                      std::unique_ptr<base::DictionaryValue> manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
 
-  static base::NoDestructor<std::string> g_https_everywhere_component_id_;
-  static base::NoDestructor<std::string>
-      g_https_everywhere_component_base64_public_key_;
-
  private:
   const std::string component_id_;
   const std::string component_name_;
+  OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
 };
 
-base::NoDestructor<std::string>
-    HTTPSEverywhereComponentInstallerPolicy::g_https_everywhere_component_id_(
-        kHTTPSEverywhereComponentId);
-base::NoDestructor<std::string> HTTPSEverywhereComponentInstallerPolicy::
-    g_https_everywhere_component_base64_public_key_(
-        kHTTPSEverywhereComponentBase64PublicKey);
-
 HTTPSEverywhereComponentInstallerPolicy::
-    HTTPSEverywhereComponentInstallerPolicy()
-    : component_id_(kHTTPSEverywhereComponentId),
-      component_name_(kHTTPSEverywhereComponentName) {
+    HTTPSEverywhereComponentInstallerPolicy(
+        const std::string& component_public_key,
+        const std::string& component_id,
+        const std::string& component_name,
+        OnComponentReadyCallback callback)
+    : component_id_(component_id),
+      component_name_(component_name),
+      ready_callback_(callback) {
   // Generate hash from public key.
   std::string decoded_public_key;
-  base::Base64Decode(kHTTPSEverywhereComponentBase64PublicKey,
-                     &decoded_public_key);
+  base::Base64Decode(component_public_key, &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
@@ -110,7 +104,7 @@ bool HTTPSEverywhereComponentInstallerPolicy::RequiresNetworkEncryption()
 
 update_client::CrxInstaller::Result
 HTTPSEverywhereComponentInstallerPolicy::OnCustomInstall(
-    const base::Value& manifest,
+    const base::DictionaryValue& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(0);
 }
@@ -120,15 +114,12 @@ void HTTPSEverywhereComponentInstallerPolicy::OnCustomUninstall() {}
 void HTTPSEverywhereComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
-    base::Value manifest) {
-  if (g_browser_process->IsShuttingDown())
-    return;
-
-  g_brave_browser_process->https_everywhere_service()->InitDB(path);
+    std::unique_ptr<base::DictionaryValue> manifest) {
+  ready_callback_.Run(path);
 }
 
 bool HTTPSEverywhereComponentInstallerPolicy::VerifyInstallation(
-    const base::Value& manifest,
+    const base::DictionaryValue& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }
@@ -152,33 +143,25 @@ HTTPSEverywhereComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-void OnRegistered() {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
-      kHTTPSEverywhereComponentId);
+void OnRegistered(const std::string& component_id) {
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
 }
 
 }  // namespace
 
-// static
-void SetHTTPSEverywhereComponentIdAndBase64PublicKeyForTest(
-    const std::string& component_id,
-    const std::string& component_base64_public_key) {
-  *HTTPSEverywhereComponentInstallerPolicy::g_https_everywhere_component_id_ =
-      component_id;
-  *HTTPSEverywhereComponentInstallerPolicy::
-      g_https_everywhere_component_base64_public_key_ =
-      component_base64_public_key;
-}
-
 void RegisterHTTPSEverywhereComponent(
-    component_updater::ComponentUpdateService* cus) {
+    component_updater::ComponentUpdateService* cus,
+    OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
   if (!cus)
     return;
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<HTTPSEverywhereComponentInstallerPolicy>());
-  installer->Register(cus, base::BindOnce(&OnRegistered));
+      std::make_unique<HTTPSEverywhereComponentInstallerPolicy>(
+          kHTTPSEverywhereComponentBase64PublicKey, kHTTPSEverywhereComponentId,
+          kHTTPSEverywhereComponentName, callback));
+  installer->Register(
+      cus, base::BindOnce(&OnRegistered, kHTTPSEverywhereComponentId));
 }
 
 }  // namespace brave_shields

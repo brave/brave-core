@@ -10,6 +10,7 @@
 #include "base/bind.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
@@ -23,7 +24,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -192,25 +193,19 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (!ad_block_service_) {
+    scoped_refptr<base::SequencedTaskRunner> task_runner(
+        base::ThreadPool::CreateSequencedTaskRunner(
+            {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
+             base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
     ad_block_service_ = std::make_unique<brave_shields::AdBlockService>(
-        brave_component_updater_delegate(),
+        local_state(), GetApplicationLocale(), component_updater(), task_runner,
         std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            brave_component_updater_delegate(),
+            local_state(), task_runner,
             AdBlockSubscriptionDownloadManagerGetter(),
             profile_manager()->user_data_dir().Append(
                 profile_manager()->GetInitialProfileDir())));
   }
   return ad_block_service_.get();
-}
-
-brave_shields::AdBlockCustomFiltersService*
-BraveBrowserProcessImpl::ad_block_custom_filters_service() {
-  return ad_block_service()->custom_filters_service();
-}
-
-brave_shields::AdBlockRegionalServiceManager*
-BraveBrowserProcessImpl::ad_block_regional_service_manager() {
-  return ad_block_service()->regional_service_manager();
 }
 
 NTPBackgroundImagesService*
@@ -264,7 +259,7 @@ brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!created_https_everywhere_service_) {
     https_everywhere_service_ = brave_shields::HTTPSEverywhereServiceFactory(
-        brave_component_updater_delegate());
+        brave_component_updater_delegate()->GetTaskRunner());
     created_https_everywhere_service_ = true;
   }
   return https_everywhere_service_.get();

@@ -7,6 +7,7 @@
 #include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/https_everywhere_component_installer.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -63,10 +64,9 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
 
   void InitService() {
     brave_shields::HTTPSEverywhereService::SetIgnorePortForTest(true);
-    brave_shields::HTTPSEverywhereService::
-        SetComponentIdAndBase64PublicKeyForTest(
-            kHTTPSEverywhereComponentTestId,
-            kHTTPSEverywhereComponentTestBase64PublicKey);
+    brave_shields::SetHTTPSEverywhereComponentIdAndBase64PublicKeyForTest(
+        kHTTPSEverywhereComponentTestId,
+        kHTTPSEverywhereComponentTestBase64PublicKey);
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -82,8 +82,8 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
     if (!httpse_extension)
       return false;
 
-    g_brave_browser_process->https_everywhere_service()->OnComponentReady(
-        httpse_extension->id(), httpse_extension->path(), "");
+    g_brave_browser_process->https_everywhere_service()->InitDB(
+        httpse_extension->path());
     WaitForHTTPSEverywhereServiceThread();
 
     return true;

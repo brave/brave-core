@@ -8,7 +8,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -318,7 +319,8 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoFetch) {
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, NoThirdPartyInterstitial) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+  ASSERT_TRUE(g_brave_browser_process->ad_block_service()
+                  ->custom_filters_source_provider()
                   ->UpdateCustomFilters("||b.com^$third-party"));
 
   GURL url = embedded_test_server()->GetURL("a.com", "/simple_link.html");

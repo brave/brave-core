@@ -11,8 +11,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_test_source_provider.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -39,6 +39,8 @@ uint64_t getProfileAdsBlocked(Browser* browser) {
 
 }  // namespace
 
+using brave_shields::TestSourceProvider;
+
 class PerfPredictorTabHelperTest : public InProcessBrowserTest {
  public:
   PerfPredictorTabHelperTest() {}
@@ -55,8 +57,6 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
   void PreRunTestOnMainThread() override {
     InProcessBrowserTest::PreRunTestOnMainThread();
-    // Need ad_block_service to be available to get blocking savings predictions
-    ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
 
   void TearDown() override { InProcessBrowserTest::TearDown(); }
@@ -71,21 +71,28 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
+    source_provider_ = std::make_unique<TestSourceProvider>(rules, "");
+
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
+
     ad_block_service->GetTaskRunner()->PostTask(
         FROM_HERE,
-        base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
-                       base::Unretained(ad_block_service), rules, ""));
+        base::BindOnce(
+            &brave_shields::AdBlockService::UseSourceProvidersForTest,
+            base::Unretained(ad_block_service), source_provider_.get(),
+            source_provider_.get()));
 
     WaitForAdBlockServiceThreads();
   }
 
   void WaitForAdBlockServiceThreads() {
     scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+        g_brave_browser_process->ad_block_service()->GetTaskRunner()));
     ASSERT_TRUE(tr_helper->Run());
   }
+
+  std::unique_ptr<TestSourceProvider> source_provider_;
 };
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {

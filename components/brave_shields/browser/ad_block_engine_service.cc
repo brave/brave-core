@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/components/brave_shields/browser/ad_block_engine_service.h"
 
 #include <algorithm>
 #include <set>
@@ -103,16 +103,17 @@ std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
-    : BaseBraveShieldsService(delegate),
+AdBlockEngineService::AdBlockEngineService(
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : BaseBraveShieldsService(task_runner),
       ad_block_client_(new adblock::Engine()),
       weak_factory_(this) {}
 
-AdBlockBaseService::~AdBlockBaseService() {
+AdBlockEngineService::~AdBlockEngineService() {
   GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
 }
 
-void AdBlockBaseService::ShouldStartRequest(
+void AdBlockEngineService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
@@ -122,9 +123,6 @@ void AdBlockBaseService::ShouldStartRequest(
     bool* did_match_important,
     std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  // if (!IsInitialized())
-  //   return;
-
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -137,13 +135,13 @@ void AdBlockBaseService::ShouldStartRequest(
                             did_match_exception, did_match_important,
                             mock_data_url);
 
-  // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
+  // LOG(ERROR) << "AdBlockEngineService::ShouldStartRequest(), host: "
   //  << tab_host
   //  << ", resource type: " << resource_type
   //  << ", url.spec(): " << url.spec();
 }
 
-absl::optional<std::string> AdBlockBaseService::GetCspDirectives(
+absl::optional<std::string> AdBlockEngineService::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
@@ -167,10 +165,10 @@ absl::optional<std::string> AdBlockBaseService::GetCspDirectives(
   }
 }
 
-void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
+void AdBlockEngineService::EnableTag(const std::string& tag, bool enabled) {
   if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
     GetTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockBaseService::EnableTag,
+        FROM_HERE, base::BindOnce(&AdBlockEngineService::EnableTag,
                                   base::Unretained(this), tag, enabled));
     return;
   }
@@ -190,38 +188,31 @@ void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   }
 }
 
-void AdBlockBaseService::AddResources(const std::string& resources) {
+void AdBlockEngineService::AddResources(const std::string& resources) {
   if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
     GetTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockBaseService::AddResources,
+        FROM_HERE, base::BindOnce(&AdBlockEngineService::AddResources,
                                   base::Unretained(this), resources));
     return;
   }
 
   ad_block_client_->addResources(resources);
-  resources_ = resources;
 }
 
-bool AdBlockBaseService::TagExists(const std::string& tag) {
+bool AdBlockEngineService::TagExists(const std::string& tag) {
   return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
 }
 
-absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
+absl::optional<base::Value> AdBlockEngineService::UrlCosmeticResources(
     const std::string& url) {
-  // if (!IsInitialized())
-  //   return;
-
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
-base::Value AdBlockBaseService::HiddenClassIdSelectors(
+base::Value AdBlockEngineService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  // if (!IsInitialized())
-  //   return;
-
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   absl::optional<base::Value> result = base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
@@ -233,9 +224,31 @@ base::Value AdBlockBaseService::HiddenClassIdSelectors(
   }
 }
 
-void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path,
-                                        bool deserialize,
-                                        base::OnceClosure callback) {
+void AdBlockEngineService::OnInitialListLoad(bool deserialize,
+                                             const DATFileDataBuffer& dat_buf) {
+  if (deserialize) {
+    OnNewDATAvailable(dat_buf);
+  } else {
+    OnNewListSourceAvailable(dat_buf);
+  }
+}
+
+bool AdBlockEngineService::Init(SourceProvider* source_provider,
+                                ResourceProvider* resource_provider) {
+  source_provider->Load(base::BindOnce(&AdBlockEngineService::OnInitialListLoad,
+                                       weak_factory_.GetWeakPtr()));
+  source_provider->AddObserver(this);
+
+  // Resources will be reloaded later when rules are provided, so no need to do
+  // anything here.
+  resource_provider_ = resource_provider;
+
+  return true;
+}
+
+void AdBlockEngineService::GetDATFileData(const base::FilePath& dat_file_path,
+                                          bool deserialize,
+                                          base::OnceClosure callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
@@ -243,12 +256,12 @@ void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path,
               ? &brave_component_updater::LoadDATFileData<adblock::Engine>
               : &brave_component_updater::LoadRawFileData<adblock::Engine>,
           dat_file_path),
-      base::BindOnce(&AdBlockBaseService::OnGetDATFileData,
+      base::BindOnce(&AdBlockEngineService::OnGetDATFileData,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdBlockBaseService::OnGetDATFileData(base::OnceClosure callback,
-                                          GetDATFileDataResult result) {
+void AdBlockEngineService::OnGetDATFileData(base::OnceClosure callback,
+                                            GetDATFileDataResult result) {
   if (result.second.empty()) {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
@@ -258,48 +271,84 @@ void AdBlockBaseService::OnGetDATFileData(base::OnceClosure callback,
     return;
   }
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                                base::Unretained(this),
-                                std::move(result.first)));
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngineService::UpdateAdBlockClient,
+                     base::Unretained(this), std::move(result.first)));
   // TODO(bridiver) this needs to happen after adblock client is actually reset
   std::move(callback).Run();
 }
 
-void AdBlockBaseService::UpdateAdBlockClient(
+void AdBlockEngineService::UpdateAdBlockClient(
     std::unique_ptr<adblock::Engine> ad_block_client) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   ad_block_client_ = std::move(ad_block_client);
   AddKnownTagsToAdBlockInstance();
-  AddKnownResourcesToAdBlockInstance();
+  DemandResourceReload();
 }
 
-void AdBlockBaseService::AddKnownTagsToAdBlockInstance() {
+void AdBlockEngineService::AddKnownTagsToAdBlockInstance() {
   std::for_each(tags_.begin(), tags_.end(),
                 [&](const std::string tag) { ad_block_client_->addTag(tag); });
 }
 
-void AdBlockBaseService::AddKnownResourcesToAdBlockInstance() {
-  ad_block_client_->addResources(resources_);
+void AdBlockEngineService::OnNewListSourceAvailable(
+    const DATFileDataBuffer& list_source) {
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngineService::UpdateFiltersOnFileTaskRunner,
+                     base::Unretained(this), list_source));
 }
 
-bool AdBlockBaseService::Init() {
+void AdBlockEngineService::UpdateFiltersOnFileTaskRunner(
+    const DATFileDataBuffer& filters) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+
+  UpdateAdBlockClient(std::make_unique<adblock::Engine>(
+      reinterpret_cast<const char*>(filters.data()), filters.size()));
+}
+
+void AdBlockEngineService::OnNewDATAvailable(const DATFileDataBuffer& dat_buf) {
+  // An empty buffer will not load successfully.
+  if (dat_buf.empty()) {
+    return;
+  }
+  GetTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&AdBlockEngineService::UpdateDATOnFileTaskRunner,
+                     base::Unretained(this), dat_buf));
+}
+
+void AdBlockEngineService::UpdateDATOnFileTaskRunner(
+    const DATFileDataBuffer& dat_buf) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  auto e = std::make_unique<adblock::Engine>();
+  e->deserialize(reinterpret_cast<const char*>(&dat_buf.front()),
+                 dat_buf.size());
+
+  UpdateAdBlockClient(std::move(e));
+}
+
+void AdBlockEngineService::OnNewResourcesAvailable(
+    const std::string& resources_json) {
+  ad_block_client_->addResources(resources_json);
+}
+
+void AdBlockEngineService::DemandResourceReload() {
+  DCHECK(resource_provider_);
+  resource_provider_->Load(
+      base::BindOnce(&AdBlockEngineService::OnNewResourcesAvailable,
+                     weak_factory_.GetWeakPtr()));
+}
+
+bool AdBlockEngineService::Init() {
   return true;
 }
 
-void AdBlockBaseService::ResetForTest(const std::string& rules,
-                                      const std::string& resources) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  // This is temporary until adblock-rust supports incrementally adding
-  // filter rules to an existing instance. At which point the hack below
-  // will dissapear.
-  ad_block_client_.reset(new adblock::Engine(rules));
-  AddKnownTagsToAdBlockInstance();
-  if (!resources.empty()) {
-    resources_ = resources;
-  }
-  AddKnownResourcesToAdBlockInstance();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
+std::unique_ptr<AdBlockEngineService> AdBlockEngineServiceFactory(
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
+  return std::make_unique<AdBlockEngineService>(task_runner);
+}
 
 }  // namespace brave_shields

@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_test_source_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/chrome_paths.h"
@@ -31,6 +32,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
+using brave_shields::TestSourceProvider;
 
 namespace {
 
@@ -95,9 +97,12 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     base::FilePath user_data_dir;
     DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
     auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
-        brave_component_updater_delegate_.get(),
+        brave_component_updater_delegate_->local_state(),
+        brave_component_updater_delegate_->locale(), nullptr,
+        brave_component_updater_delegate_->GetTaskRunner(),
         std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-            brave_component_updater_delegate_.get(),
+            brave_component_updater_delegate_->local_state(),
+            brave_component_updater_delegate_->GetTaskRunner(),
             base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
             user_data_dir));
 
@@ -123,10 +128,10 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     TestingBraveBrowserProcess::DeleteInstance();
   }
 
-  void ResetAdblockInstance(brave_shields::AdBlockBaseService* service,
-                            std::string rules,
-                            std::string resources) {
-    service->ResetForTest(rules, resources);
+  void ResetAdblockInstance(std::string rules, std::string resources) {
+    source_provider_ = std::make_unique<TestSourceProvider>(rules, resources);
+    g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
+        source_provider_.get(), source_provider_.get());
   }
 
   // Returns true if the request handler deferred control back to the calling
@@ -143,6 +148,12 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     return rc == net::ERR_IO_PENDING;
   }
 
+  void EnableRedirectUrlParsing() {
+    g_brave_browser_process->ad_block_service()
+        ->default_service()
+        ->EnableRedirectUrlParsingForTest();
+  }
+
   std::unique_ptr<ScopedTestingLocalState> local_state_;
 
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>
@@ -153,6 +164,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<net::MockHostResolver> host_resolver_;
 
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
+
+  std::unique_ptr<TestSourceProvider> source_provider_;
 
  private:
   std::unique_ptr<network::HostResolver> resolver_wrapper_;
@@ -204,8 +217,7 @@ TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
 }
 
 TEST_F(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
-  ResetAdblockInstance(g_brave_browser_process->ad_block_service(),
-                       "||brave.com/test.txt", "");
+  ResetAdblockInstance("||brave.com/test.txt", "");
 
   const GURL url("https://brave.com/test.txt");
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
