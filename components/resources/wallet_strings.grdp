@@ -352,4 +352,6 @@
   <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR" desc="Unable to get raw messagse to sign for hardware transaction during signing process">Error processing the transaction, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR" desc="Unable to sign personal messagse on hardware device">Error signing message, please try again</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_EDIT" desc="Edit custom network button title">Edit</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_REMOVE" desc="Remove custom network button title">Remove</message>
 </grit-part>
