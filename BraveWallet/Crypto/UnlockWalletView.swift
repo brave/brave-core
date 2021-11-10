@@ -134,6 +134,7 @@ struct CryptoUnlockView_Previews: PreviewProvider {
   static var previews: some View {
     UnlockWalletView(keyringStore: .previewStore)
       .previewLayout(.sizeThatFits)
+      .previewColorSchemes()
   }
 }
 #endif
