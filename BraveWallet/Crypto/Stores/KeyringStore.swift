@@ -8,6 +8,7 @@ import SwiftUI
 import BraveCore
 import Security
 import struct Shared.Strings
+import LocalAuthentication
 
 struct AutoLockInterval: Identifiable, Hashable {
   var value: Int32
@@ -65,6 +66,17 @@ public class KeyringStore: ObservableObject {
   @Published private(set) var keyring: BraveWallet.KeyringInfo = .init()
   /// Whether or not the user should be viewing the onboarding flow to setup a keyring
   @Published private(set) var isOnboardingVisible: Bool = false
+  /// Whether or not the last time the wallet was locked was due to the user manually locking it
+  ///
+  /// Affects whether or not we automatically fill the password from the keychain immediately on
+  /// `UnlockWalletView` appearing
+  @Published private(set) var lockedManually: Bool = false
+  /// Whether or not the biometrics prompt is currently visible in the unlock view
+  ///
+  /// Needed as a workaround that we show the prompt _after_ the restore completes, which unlocks the wallet
+  /// and dismisses the `UnlockWalletView`. We need to keep the unlock view/biometrics prompt up until
+  /// the user dismisess it or enables it.
+  @Published var isRestoreFromUnlockBiometricsPromptVisible: Bool = false
   /// The number of minutes to wait until the Brave Wallet is automatically locked
   @Published var autoLockInterval: AutoLockInterval = .minute {
     didSet {
@@ -113,6 +125,7 @@ public class KeyringStore: ObservableObject {
   }
   
   func lock() {
+    lockedManually = true
     controller.lock()
   }
   
@@ -120,6 +133,10 @@ public class KeyringStore: ObservableObject {
     if !keyring.isDefaultKeyringCreated { return }
     controller.unlock(password) { [weak self] unlocked in
       completion(unlocked)
+      if unlocked {
+        // Reset this state for next unlock
+        self?.lockedManually = false
+      }
       self?.updateKeyringInfo()
     }
   }
@@ -277,6 +294,24 @@ public class KeyringStore: ObservableObject {
     ]
     let status = SecItemDelete(query as CFDictionary)
     return status == errSecSuccess
+  }
+  
+  static var isKeychainPasswordStored: Bool {
+    let context = LAContext()
+    context.interactionNotAllowed = true
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrAccount as String: passwordKeychainKey,
+      kSecMatchLimit as String: kSecMatchLimitOne,
+      kSecUseAuthenticationContext as String: context
+    ]
+    let status = SecItemCopyMatching(query as CFDictionary, nil)
+    #if targetEnvironment(simulator)
+    // See comment in `storePasswordInKeychain(_:)`
+    return status == errSecSuccess
+    #else
+    return status == errSecInteractionNotAllowed
+    #endif
   }
   
   /// Retreives a users stored wallet password using biometrics or passcode or nil if they have not saved

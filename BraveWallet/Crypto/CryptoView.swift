@@ -41,7 +41,7 @@ public struct CryptoView: View {
     if !keyring.isDefaultKeyringCreated || keyringStore.isOnboardingVisible {
       return .onboarding
     }
-    if keyring.isLocked {
+    if keyring.isLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
       return .unlock
     }
     return .crypto

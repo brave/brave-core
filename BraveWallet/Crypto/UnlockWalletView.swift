@@ -6,6 +6,7 @@
 import SwiftUI
 import BraveUI
 import struct Shared.Strings
+import LocalAuthentication
 
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -42,6 +43,30 @@ struct UnlockWalletView: View {
     }
   }
   
+  private func fillPasswordFromKeychain() {
+    if let password = KeyringStore.retrievePasswordFromKeychain() {
+      self.password = password
+      unlock()
+    }
+  }
+  
+  private var biometricsIcon: Image? {
+    let context = LAContext()
+    if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+      switch context.biometryType {
+      case .faceID:
+        return Image(systemName: "faceid")
+      case .touchID:
+        return Image(systemName: "touchid")
+      case .none:
+        return nil
+      @unknown default:
+        return nil
+      }
+    }
+    return nil
+  }
+  
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 46) {
@@ -53,13 +78,22 @@ struct UnlockWalletView: View {
             .padding(.bottom)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
-          SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
-            .font(.subheadline)
-            .introspectTextField(customize: { tf in
-              tf.becomeFirstResponder()
-            })
-            .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
-            .padding(.horizontal, 48)
+          HStack {
+            SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
+              .font(.subheadline)
+              .introspectTextField(customize: { tf in
+                tf.becomeFirstResponder()
+              })
+              .textFieldStyle(BraveValidatedTextFieldStyle(error: unlockError))
+            if KeyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
+              Button(action: fillPasswordFromKeychain) {
+                icon
+                  .imageScale(.large)
+                  .font(.headline)
+              }
+            }
+          }
+          .padding(.horizontal, 48)
         }
         VStack(spacing: 30) {
           Button(action: unlock) {
@@ -86,12 +120,9 @@ struct UnlockWalletView: View {
     }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !attemptedBiometricsUnlock && keyringStore.keyring.isLocked {
+        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.keyring.isLocked {
           attemptedBiometricsUnlock = true
-          if let password = KeyringStore.retrievePasswordFromKeychain() {
-            self.password = password
-            unlock()
-          }
+          fillPasswordFromKeychain()
         }
       }
     }

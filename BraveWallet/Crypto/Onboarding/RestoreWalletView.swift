@@ -7,6 +7,7 @@ import Foundation
 import SwiftUI
 import BraveUI
 import struct Shared.Strings
+import LocalAuthentication
 
 struct RestoreWalletContainerView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -55,6 +56,10 @@ private struct RestoreWalletView: View {
   @State private var isShowingLegacyWalletToggle: Bool = false
   @State private var isBraveLegacyWallet: Bool = false
   
+  private var isBiometricsAvailable: Bool {
+    LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+  }
+  
   private func validate() -> Bool {
     if phrase.isEmpty {
       restoreError = .invalidPhrase
@@ -80,8 +85,13 @@ private struct RestoreWalletView: View {
       if !success {
         restoreError = .invalidPhrase
       } else {
-        // If we're displaying this via onboarding, mark as completed.
-        keyringStore.markOnboardingCompleted()
+        KeyringStore.resetKeychainStoredPassword()
+        if isBiometricsAvailable {
+          keyringStore.isRestoreFromUnlockBiometricsPromptVisible = true
+        } else {
+          // If we're displaying this via onboarding, mark as completed.
+          keyringStore.markOnboardingCompleted()
+        }
       }
     }
   }
@@ -186,6 +196,27 @@ private struct RestoreWalletView: View {
     .onChange(of: phrase, perform: handlePhraseChanged)
     .onChange(of: password, perform: handlePasswordChanged)
     .onChange(of: repeatedPassword, perform: handleRepeatedPasswordChanged)
+    .background(BiometricsPromptView(isPresented: $keyringStore.isRestoreFromUnlockBiometricsPromptVisible) { enabled, navController in
+      defer {
+        keyringStore.isRestoreFromUnlockBiometricsPromptVisible = false
+        keyringStore.markOnboardingCompleted()
+      }
+      if enabled {
+        // Store password in keychain
+        if !KeyringStore.storePasswordInKeychain(password) {
+          let alert = UIAlertController(
+            title: Strings.Wallet.biometricsSetupErrorTitle,
+            message: Strings.Wallet.biometricsSetupErrorMessage,
+            preferredStyle: .alert
+          )
+          alert.addAction(.init(title: Strings.OKString, style: .default, handler: nil))
+          navController?.presentedViewController?.present(alert, animated: true)
+          // Unfortunately nothing else we can do here, the wallet is already restored. Maybe later can add
+          // an option to enable in `UnlockWalletView`
+        }
+      }
+      return false
+    })
   }
 }
 
