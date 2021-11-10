@@ -9,14 +9,16 @@
 
 namespace features {
 
-DISABLE_FEATURE_BY_DEFAULT(kDirectSockets);
-DISABLE_FEATURE_BY_DEFAULT(kIdleDetection);
-DISABLE_FEATURE_BY_DEFAULT(kNotificationTriggers);
-DISABLE_FEATURE_BY_DEFAULT(kSignedExchangeSubresourcePrefetch);
-DISABLE_FEATURE_BY_DEFAULT(kSubresourceWebBundles);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kDirectSockets, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSignedExchangeSubresourcePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSubresourceWebBundles, base::FEATURE_DISABLED_BY_DEFAULT},
 #if defined(OS_ANDROID)
-DISABLE_FEATURE_BY_DEFAULT(kWebNfc);
+    {kWebNfc, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
-DISABLE_FEATURE_BY_DEFAULT(kWebOTP);
+    {kWebOTP, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 }  // namespace features

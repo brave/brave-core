@@ -9,7 +9,9 @@
 
 namespace federated_learning {
 
-DISABLE_FEATURE_BY_DEFAULT(kFederatedLearningOfCohorts);
-DISABLE_FEATURE_BY_DEFAULT(kFlocIdComputedEventLogging);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kFederatedLearningOfCohorts, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFlocIdComputedEventLogging, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 }  // namespace federated_learning

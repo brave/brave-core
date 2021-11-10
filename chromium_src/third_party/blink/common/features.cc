@@ -10,27 +10,29 @@
 namespace blink {
 namespace features {
 
-// Upgrade all mixed content
-ENABLE_FEATURE_BY_DEFAULT(kMixedContentAutoupgrade);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    // Upgrade all mixed content
+    {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
 
-ENABLE_FEATURE_BY_DEFAULT(kPrefetchPrivacyChanges);
-ENABLE_FEATURE_BY_DEFAULT(kReducedReferrerGranularity);
-
-DISABLE_FEATURE_BY_DEFAULT(kAdInterestGroupAPI);
-DISABLE_FEATURE_BY_DEFAULT(kComputePressure);
-DISABLE_FEATURE_BY_DEFAULT(kConversionMeasurement);
-DISABLE_FEATURE_BY_DEFAULT(kFledge);
-DISABLE_FEATURE_BY_DEFAULT(kHandwritingRecognitionWebPlatformApiFinch);
-DISABLE_FEATURE_BY_DEFAULT(kInterestGroupStorage);
-DISABLE_FEATURE_BY_DEFAULT(kInterestCohortAPIOriginTrial);
-DISABLE_FEATURE_BY_DEFAULT(kInterestCohortFeaturePolicy);
-DISABLE_FEATURE_BY_DEFAULT(kNavigatorPluginsFixed);
-DISABLE_FEATURE_BY_DEFAULT(kParakeet);
-DISABLE_FEATURE_BY_DEFAULT(kPrerender2);
-DISABLE_FEATURE_BY_DEFAULT(kReportAllJavaScriptFrameworks);
-DISABLE_FEATURE_BY_DEFAULT(kSpeculationRulesPrefetchProxy);
-DISABLE_FEATURE_BY_DEFAULT(kTextFragmentAnchor);
-DISABLE_FEATURE_BY_DEFAULT(kWebSQLInThirdPartyContextEnabled);
+    {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHandwritingRecognitionWebPlatformApiFinch,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestCohortAPIOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestCohortFeaturePolicy, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNavigatorPluginsFixed, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kReportAllJavaScriptFrameworks, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kWebSQLInThirdPartyContextEnabled, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};

@@ -11,6 +11,8 @@ source_set("base_unittests") {
   ]
   deps = [
     "//base",
-    "//testing/gtest:gtest",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }

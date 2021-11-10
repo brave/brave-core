@@ -9,9 +9,11 @@
 
 namespace feed {
 
+OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if defined(OS_ANDROID)
-DISABLE_FEATURE_BY_DEFAULT(kInterestFeedContentSuggestions);
-DISABLE_FEATURE_BY_DEFAULT(kInterestFeedV2);
+    {kInterestFeedContentSuggestions, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+}});
 
 }  // namespace feed

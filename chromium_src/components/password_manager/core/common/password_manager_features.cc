@@ -10,7 +10,9 @@
 namespace password_manager {
 namespace features {
 
-ENABLE_FEATURE_BY_DEFAULT(kPasswordImport);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kPasswordImport, base::FEATURE_ENABLED_BY_DEFAULT},
+}});
 
 }  // namespace features
 }  // namespace password_manager

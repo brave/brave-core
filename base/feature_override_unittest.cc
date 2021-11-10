@@ -5,7 +5,12 @@
 
 #include "base/feature_override.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
+#include "base/test/mock_callback.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using testing::_;
 
 namespace base {
 namespace {
@@ -25,10 +30,12 @@ constexpr Feature kTestConstexprEnabledButOverridenFeature{
 constexpr Feature kTestConstexprDisabledButOverridenFeature{
     "TestConstexprDisabledButOverridenFeature", FEATURE_ENABLED_BY_DEFAULT};
 
-ENABLE_FEATURE_BY_DEFAULT(kTestDisabledButOverridenFeature);
-ENABLE_FEATURE_BY_DEFAULT(kTestConstexprDisabledButOverridenFeature);
-DISABLE_FEATURE_BY_DEFAULT(kTestEnabledButOverridenFeature);
-DISABLE_FEATURE_BY_DEFAULT(kTestConstexprEnabledButOverridenFeature);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
+    {kTestDisabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
+    {kTestConstexprEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
+    {kTestConstexprDisabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
+}});
 
 }  // namespace
 
@@ -55,5 +62,29 @@ TEST(FeatureOverrideTest, OverridesTest) {
         << test_case.feature.name;
   }
 }
+
+#if DCHECK_IS_ON()
+TEST(FeatureOverrideTest, FeatureDuplicateDChecks) {
+  base::MockCallback<logging::LogAssertHandlerFunction> mock_log_handler;
+  logging::ScopedLogAssertHandler scoped_log_handler(mock_log_handler.Get());
+  EXPECT_CALL(
+      mock_log_handler,
+      Run(_, _,
+          testing::HasSubstr("TestEnabledButOverridenFeature is duplicated"),
+          _));
+  EXPECT_CALL(
+      mock_log_handler,
+      Run(_, _,
+          testing::HasSubstr(
+              "TestEnabledButOverridenFeature has already been overridden"),
+          _))
+      .Times(2);
+
+  internal::FeatureDefaultStateOverrider test_overrider{{
+      {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
+      {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
+  }};
+}
+#endif  // DCHECK_IS_ON()
 
 }  // namespace base

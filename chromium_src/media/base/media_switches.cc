@@ -9,6 +9,8 @@
 
 namespace media {
 
-DISABLE_FEATURE_BY_DEFAULT(kLiveCaption);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kLiveCaption, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 }  // namespace media

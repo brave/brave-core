@@ -10,9 +10,11 @@
 namespace net {
 namespace features {
 
-ENABLE_FEATURE_BY_DEFAULT(kLegacyTLSEnforced);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kLegacyTLSEnforced, base::FEATURE_ENABLED_BY_DEFAULT},
 
-DISABLE_FEATURE_BY_DEFAULT(kFirstPartySets);
+    {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
                                            base::FEATURE_ENABLED_BY_DEFAULT};

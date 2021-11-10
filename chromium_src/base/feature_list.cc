@@ -4,44 +4,72 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_list.h"
+#include "base/containers/contains.h"
+#include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/feature_override.h"
 #include "base/no_destructor.h"
 
+#include <functional>
+
 namespace base {
+namespace internal {
 namespace {
 
-using FeatureDefaultStateOverrides =
-    base::flat_map<const Feature*, FeatureState>;
+using DefaultStateOverrides =
+    base::flat_map<std::reference_wrapper<const Feature>, FeatureState>;
 
-FeatureDefaultStateOverrides& GetFeatureDefaultStateOverrides() {
-  static base::NoDestructor<FeatureDefaultStateOverrides> overrides;
-  return *overrides;
+DefaultStateOverrides& GetDefaultStateOverrides() {
+  static base::NoDestructor<DefaultStateOverrides> default_state_overrides;
+  return *default_state_overrides;
 }
 
-FeatureState GetDefaultOrOverriddenState(const Feature& feature) {
-  const auto& overrides = GetFeatureDefaultStateOverrides();
-  auto override_it = overrides.find(&feature);
-  return override_it == overrides.end() ? feature.default_state
-                                        : override_it->second;
+inline FeatureState GetDefaultOrOverriddenFeatureState(const Feature& feature) {
+  const auto& default_state_overrides = GetDefaultStateOverrides();
+  const auto default_state_override_it = default_state_overrides.find(feature);
+  return default_state_override_it != default_state_overrides.end()
+             ? default_state_override_it->second
+             : feature.default_state;
 }
 
 }  // namespace
 
-namespace internal {
-
-FeatureDefaultStateOverride::FeatureDefaultStateOverride(
-    const base::Feature& feature,
-    FeatureState default_state) {
-  const auto& inserted =
-      GetFeatureDefaultStateOverrides().emplace(&feature, default_state);
-  DCHECK(inserted.second) << "Feature " << feature.name
-                          << "has already been overridden";
+FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
+    std::initializer_list<FeatureOverrideInfo> overrides) {
+  auto& default_state_overrides = GetDefaultStateOverrides();
+#if DCHECK_IS_ON()
+  {
+    base::flat_set<std::reference_wrapper<const Feature>> new_overrides;
+    new_overrides.reserve(overrides.size());
+    for (const auto& override : overrides) {
+      DCHECK(new_overrides.insert(override.first).second)
+          << "Feature " << override.first.get().name
+          << " is duplicated in the current override macros";
+      DCHECK(!base::Contains(default_state_overrides, override.first))
+          << "Feature " << override.first.get().name
+          << " has already been overridden";
+    }
+  }
+#endif
+  default_state_overrides.insert(overrides.begin(), overrides.end());
 }
 
 }  // namespace internal
+
+// Custom comparator to use std::reference_wrapper as a key in a map/set.
+static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
+                             const std::reference_wrapper<const Feature>& rhs) {
+  // Compare internal pointers directly, because there must only ever be one
+  // struct instance for a given feature name.
+  return &lhs.get() < &rhs.get();
+}
+
 }  // namespace base
 
-#define default_state name&& GetDefaultOrOverriddenState(feature)
+// This replaces |default_state| compare blocks with a modified one that
+// includes the state override check.
+#define default_state \
+  name&& internal::GetDefaultOrOverriddenFeatureState(feature)
 
 #include "../../../base/feature_list.cc"
 

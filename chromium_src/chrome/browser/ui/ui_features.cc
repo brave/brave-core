@@ -7,4 +7,10 @@
 
 #include "base/feature_override.h"
 
-DISABLE_FEATURE_BY_DEFAULT(features::kTabGroupsFeedback);
+namespace features {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kTabGroupsFeedback, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
+
+}  // namespace features

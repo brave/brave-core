@@ -10,7 +10,9 @@
 namespace security_state {
 namespace features {
 
-ENABLE_FEATURE_BY_DEFAULT(kSafetyTipUI);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kSafetyTipUI, base::FEATURE_ENABLED_BY_DEFAULT},
+}});
 
 }  // namespace features
 }  // namespace security_state

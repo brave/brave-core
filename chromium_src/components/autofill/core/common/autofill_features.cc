@@ -10,8 +10,10 @@
 namespace autofill {
 namespace features {
 
-DISABLE_FEATURE_BY_DEFAULT(kAutofillEnableAccountWalletStorage);
-DISABLE_FEATURE_BY_DEFAULT(kAutofillServerCommunication);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kAutofillEnableAccountWalletStorage, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 }  // namespace features
 }  // namespace autofill

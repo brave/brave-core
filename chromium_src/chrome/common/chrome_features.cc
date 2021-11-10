@@ -13,9 +13,11 @@
 
 namespace features {
 
-// Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
-// on this feature.
-ENABLE_FEATURE_BY_DEFAULT(kWebUIDarkMode);
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
+    // on this feature.
+    {kWebUIDarkMode, base::FEATURE_ENABLED_BY_DEFAULT},
+}});
 
 // Enable the DoH settings UI in chrome://settings/security on all platforms.
 const base::FeatureParam<bool> kDnsOverHttpsShowUiParam{&kDnsOverHttps,

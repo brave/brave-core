@@ -9,8 +9,10 @@
 
 namespace apps {
 
+OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !defined(OS_ANDROID)
-DISABLE_FEATURE_BY_DEFAULT(kAppDiscoveryRemoteUrlSearch);
+    {kAppDiscoveryRemoteUrlSearch, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+}});
 
 }  // namespace apps
