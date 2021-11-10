@@ -73,16 +73,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 3,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
@@ -98,16 +99,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 4,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -123,16 +125,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 2,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -148,16 +151,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 1,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     }
   ],
   [mockUserAccounts[1].id]: [
@@ -175,16 +179,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 0,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     },
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
@@ -200,16 +205,17 @@ const transactionDummyData: AccountTransactions = {
         },
         chainId: '',
         maxFeePerGas: '',
-        maxPriorityFeePerGas: ''
+        maxPriorityFeePerGas: '',
+        gasEstimation: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 5,
       txArgs: [],
       txParams: [],
       txType: 0,
-      createdTime: { microseconds: 0 },
-      submittedTime: { microseconds: 0 },
-      confirmedTime: { microseconds: 0 }
+      createdTime: { microseconds: BigInt(0) },
+      submittedTime: { microseconds: BigInt(0) },
+      confirmedTime: { microseconds: BigInt(0) }
     }
   ]
 }
@@ -451,6 +457,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
       case AssetPriceTimeframe.All:
         return 0
     }
+    return -1
   }
 
   // This updates the price chart timeline

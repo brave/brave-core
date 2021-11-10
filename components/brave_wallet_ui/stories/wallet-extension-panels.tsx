@@ -106,19 +106,20 @@ export const _ConfirmTransaction = () => {
         gasLimit: '21000',
         to: '2',
         value: '0x15ddf09c97b0000',
-        data: new Uint8Array(24)
+        data: Array.from(new Uint8Array(24))
       },
       chainId: '0x0',
       maxPriorityFeePerGas: '',
-      maxFeePerGas: ''
+      maxFeePerGas: '',
+      gasEstimation: undefined
     },
     txHash: '0xab834bab0000000000000000000000007be8076f4ea4a4ad08075c2508e481d6c946d12b00000000000000000000000073a29a1da971497',
     txStatus: 0,
     txParams: ['address', 'ammount'],
     txType: TransactionType.ERC20Transfer,
-    createdTime: { microseconds: 0 },
-    submittedTime: { microseconds: 0 },
-    confirmedTime: { microseconds: 0 }
+    createdTime: { microseconds: BigInt(0) },
+    submittedTime: { microseconds: BigInt(0) },
+    confirmedTime: { microseconds: BigInt(0) }
   }
 
   const onConfirmTransaction = () => {
