@@ -5,10 +5,10 @@
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 // Provide access to all the generated types.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+export { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 export interface WalletAccountType {
   id: string

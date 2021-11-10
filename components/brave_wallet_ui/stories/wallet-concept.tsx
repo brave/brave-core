@@ -64,7 +64,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -89,7 +89,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -114,7 +114,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -139,7 +139,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -166,7 +166,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',
@@ -191,7 +191,7 @@ const transactionDummyData: AccountTransactions = {
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
       txData: {
         baseData: {
-          data: new Uint8Array(24),
+          data: Array.from(new Uint8Array(24)),
           gasLimit: '0xfde8',
           gasPrice: '0x20000000000',
           nonce: '0x1',

@@ -74,6 +74,7 @@ async function getPendingSwitchChainRequest () {
   if (requests && requests.length) {
     return requests[0]
   }
+  return null
 }
 
 async function getPendingSignMessageRequest () {

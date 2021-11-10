@@ -7,7 +7,7 @@ import {
   AccountTransactions,
   EthereumChain,
   ERCToken,
-  AssetPrice
+  AssetPrice,
   TransactionInfo
 } from '../../../../constants/types'
 import { reduceAddress } from '../../../../utils/reduce-address'
