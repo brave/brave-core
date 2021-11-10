@@ -25,6 +25,7 @@
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
     "lint": "node ./build/commands/scripts/commands.js lint",
     "format": "node ./build/commands/scripts/commands.js format",
+    "preinstall": "npx npm-force-resolutions@0.0.10",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
@@ -260,6 +261,10 @@
         }
       }
     }
+  },
+  "resolutions": {
+    "immer": "9.0.6",
+    "set-value": "4.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
