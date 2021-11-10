@@ -441,7 +441,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"walletAddNetworkDialogFillNativeCurrencyInfo",
      IDS_SETTINGS_WALLET_NETWORKS_NATIVE_CURRENCY_ERROR},
     {"walletAddNetworkDialogReplaceNetwork",
-     IDS_SETTINGS_WALLET_NETWORKS_REPLACE}
+     IDS_SETTINGS_WALLET_NETWORKS_REPLACE},
+    {"walletNetworkEdit", IDS_BRAVE_WALLET_NETWORK_EDIT},
+    {"walletNetworkRemove", IDS_BRAVE_WALLET_NETWORK_REMOVE},
   };
 
   html_source->AddLocalizedStrings(localized_strings);

@@ -79,6 +79,8 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   }
 
   onDeleteActionTapped_(event) {
+    this.selectedNetwork = {}
+    this.$$('cr-action-menu').close();
     var message = this.i18n('walletDeleteNetworkConfirmation',
                             event.model.item.chainName)
     if (!window.confirm(message))
@@ -110,6 +112,22 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
     this.showAddWalletNetworkDialog_ = false
     this.selectedNetwork = {}
     this.updateNetworks()
+  }
+
+  onNetworkMenuTapped_(event) {
+    this.selectedNetwork = event.model.item
+    const actionMenu =
+        /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
+    actionMenu.showAt(event.target);
+  }
+
+  onEditTap_() {
+    this.$$('cr-action-menu').close();
+    this.showAddWalletNetworkDialog_ = true
+  }
+
+  onNetworkActionTapped_(event) {
+    this.showAddWalletNetworkDialog_ = true
   }
 }
 
