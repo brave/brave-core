@@ -312,8 +312,12 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     return;
   }
 
-  auto request = mojom::SignMessageRequest::New(
-      sign_message_id_++, address, std::string(message.begin(), message.end()));
+  std::string message_str(message.begin(), message.end());
+  if (!base::IsStringUTF8(message_str))
+    message_str = ToHex(message_str);
+
+  auto request =
+      mojom::SignMessageRequest::New(sign_message_id_++, address, message_str);
   if (keyring_controller_->IsHardwareAccount(address)) {
     brave_wallet_service_->AddSignMessageRequest(
         std::move(request),
