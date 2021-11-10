@@ -12,6 +12,11 @@ import Shared
 
 private let log = Logger.browserLogger
 
+enum MediaPlaybackError: Error {
+    case cancelled
+    case other(Error)
+}
+
 class MediaPlayer: NSObject {
     public enum RepeatMode: CaseIterable {
         case none
@@ -44,6 +49,10 @@ class MediaPlayer: NSObject {
         // This will also allow us to properly determine play state in
         // PlaylistMediaInfo -> init -> MPRemoteCommandCenter.shared().playCommand
         player.timeControlStatus == .playing
+    }
+    
+    public var isWaitingToPlay: Bool {
+        player.timeControlStatus == .waitingToPlayAtSpecifiedRate
     }
     
     public var currentItem: AVPlayerItem? {
@@ -111,7 +120,7 @@ class MediaPlayer: NSObject {
         UIApplication.shared.endReceivingRemoteControlEvents()
     }
     
-    func load(url: URL) -> Combine.Deferred<AnyPublisher<Bool, Error>> {
+    func load(url: URL) -> Combine.Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
         load(asset: AVURLAsset(url: url))
     }
     
@@ -120,10 +129,10 @@ class MediaPlayer: NSObject {
     /// If an existing item is loaded, you should seek to offset zero to restart playback.
     /// If a new item is loaded, you should call play to begin playback.
     /// Returns an error on failure.
-    func load(asset: AVURLAsset) -> Combine.Deferred<AnyPublisher<Bool, Error>> {
+    func load(asset: AVURLAsset) -> Combine.Deferred<AnyPublisher<Bool, MediaPlaybackError>> {
         return Deferred { [weak self] in
             guard let self = self else {
-                return Fail<Bool, Error>(error: "MediaPlayer Deallocated")
+                return Fail<Bool, MediaPlaybackError>(error: .other("MediaPlayer Deallocated"))
                         .eraseToAnyPublisher()
             }
             
@@ -140,25 +149,32 @@ class MediaPlayer: NSObject {
 
                 let assetKeys = ["playable", "tracks", "duration"]
                 self.pendingMediaItem = AVPlayerItem(asset: asset)
-                asset.loadValuesAsynchronously(forKeys: assetKeys) { [weak self] in
-                    guard let self = self, let item = self.pendingMediaItem else { return }
-                    
-                    for key in assetKeys {
-                        var error: NSError?
-                        let status = item.asset.statusOfValue(forKey: key, error: &error)
-                        if let error = error {
-                            resolver(.failure(error))
-                            return
-                        } else if status != .loaded {
-                            resolver(.failure("Cannot Load Asset Status: \(status)"))
-                            return
+                
+                DispatchQueue.global(qos: .userInitiated).async {
+                    asset.loadValuesAsynchronously(forKeys: assetKeys) { [weak self] in
+                        guard let self = self, let item = self.pendingMediaItem else { return }
+                        
+                        for key in assetKeys {
+                            var error: NSError?
+                            let status = item.asset.statusOfValue(forKey: key, error: &error)
+                            if let error = error {
+                                resolver(.failure(.other(error)))
+                                return
+                            } else if status == .cancelled {
+                                log.error("Asset Duration Fetch Cancelled")
+                                resolver(.success(false))
+                                return
+                            } else if status != .loaded {
+                                resolver(.failure(.other("Cannot Load Asset Status: \(status)")))
+                                return
+                            }
                         }
-                    }
-                    
-                    DispatchQueue.main.async {
-                        self.player.replaceCurrentItem(with: item)
-                        self.pendingMediaItem = nil
-                        resolver(.success(true)) // New Item loaded
+                        
+                        DispatchQueue.main.async {
+                            self.player.replaceCurrentItem(with: item)
+                            self.pendingMediaItem = nil
+                            resolver(.success(true)) // New Item loaded
+                        }
                     }
                 }
             }.eraseToAnyPublisher()

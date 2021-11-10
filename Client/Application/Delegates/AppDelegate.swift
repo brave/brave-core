@@ -90,7 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Setup Adblock Stats and HTTPSE Stats.
         AdBlockStats.shared.startLoading()
-        HttpsEverywhereStats.shared.startLoading()
+        
+        // TODO: Downgrade to 14.5 once api becomes available.
+        if #available(iOS 15, *) {
+            // do nothing, use Apple's https solution.
+        } else {
+            HttpsEverywhereStats.shared.startLoading()
+        }
+        
         
         // Setup Application Shortcuts
         updateShortcutItems(application)
@@ -105,10 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // upon reinstall.
             KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
         }
-        
-        // We have to wait until pre1.12 migration is done until we proceed with database
-        // initialization. This is because Database container may change. See bugs #3416, #3377.
-        DataController.shared.initialize()
         
         return startApplication(application, withLaunchOptions: launchOptions)
     }
@@ -305,11 +308,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         AdblockResourceDownloader.shared.startLoading()
-        
-        // Setup Playlist
-        // This restores the playlist incomplete downloads. So if a download was started
-        // and interrupted on application death, we restart it on next launch.
-        PlaylistManager.shared.restoreSession()
       
         return shouldPerformAdditionalDelegateHandling
     }
@@ -322,6 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Clean up BraveCore
         braveCore.syncAPI.removeAllObservers()
+        Preferences.AppState.backgroundedCleanly.value = true
     }
     
     func updateShortcutItems(_ application: UIApplication) {
@@ -386,15 +385,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func setUpWebServer(_ profile: Profile) {
         let server = WebServer.sharedInstance
-        if server.server.isRunning { return }
+        guard !server.server.isRunning else { return }
         
-        ReaderModeHandlers.register(server, profile: profile)
-        ErrorPageHelper.register(server, certStore: profile.certStore)
-        SafeBrowsingHandler.register(server)
-        AboutHomeHandler.register(server)
-        AboutLicenseHandler.register(server)
-        SessionRestoreHandler.register(server)
-        BookmarksInterstitialPageHandler.register(server)
+        let responders: [(String, InternalSchemeResponse)] =
+            [(AboutHomeHandler.path, AboutHomeHandler()),
+             (AboutLicenseHandler.path, AboutLicenseHandler()),
+             (SessionRestoreHandler.path, SessionRestoreHandler()),
+             (ErrorPageHandler.path, ErrorPageHandler())]
+        responders.forEach { (path, responder) in
+            InternalSchemeHandler.responders[path] = responder
+        }
+        
+        ReaderModeHandlers.register(server, profile: profile) //TODO: PORT TO InternalSchemeHandler
+        SafeBrowsingHandler.register(server) //TODO: REMOVE COMPLETELY!!!
+        BookmarksInterstitialPageHandler.register(server) //TODO: PORT TO InternalSchemeHandler
 
         // Bug 1223009 was an issue whereby CGDWebserver crashed when moving to a background task
         // catching and handling the error seemed to fix things, but we're not sure why.
@@ -438,20 +442,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func sceneInfo(for sceneSession: UISceneSession) -> SceneInfoModel? {
         return sceneInfo
-    }
-}
-
-// MARK: - Root View Controller Animations
-extension AppDelegate: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch operation {
-        case .push:
-            return BrowserToTrayAnimator()
-        case .pop:
-            return TrayToBrowserAnimator()
-        default:
-            return nil
-        }
     }
 }
 

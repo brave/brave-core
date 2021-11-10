@@ -8,6 +8,9 @@ import Shared
 import BraveShared
 
 class BraveWebView: WKWebView {
+    lazy var findInPageDelegate: WKWebViewFindStringFindDelegate? = {
+        return WKWebViewFindStringFindDelegate(webView: self)
+    }()
     
     /// Stores last position when the webview was touched on.
     private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
@@ -28,12 +31,6 @@ class BraveWebView: WKWebView {
             configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
         } else {
             configuration.websiteDataStore = WKWebsiteDataStore.default()
-        }
-        
-        if Preferences.General.mediaAutoPlays.value {
-            configuration.mediaTypesRequiringUserActionForPlayback = []
-        } else {
-            configuration.mediaTypesRequiringUserActionForPlayback = .all
         }
         
         super.init(frame: frame, configuration: configuration)

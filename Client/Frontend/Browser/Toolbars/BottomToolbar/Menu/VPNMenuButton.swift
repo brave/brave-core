@@ -12,6 +12,8 @@ import BraveUI
 struct VPNMenuButton: View {
     /// The product info
     var vpnProductInfo: VPNProductInfo
+    /// The description for product info
+    var description: String?
     /// A closure executed when the parent must display a VPN-specific view controller due to some
     /// user action
     var displayVPNDestination: (UIViewController) -> Void
@@ -69,7 +71,10 @@ struct VPNMenuButton: View {
     
     var body: some View {
         HStack {
-            MenuItemHeaderView(icon: #imageLiteral(resourceName: "vpn_menu_icon").template, title: "Brave VPN")
+            MenuItemHeaderView(
+                icon: #imageLiteral(resourceName: "vpn_menu_icon").template,
+                title: "Brave VPN",
+                subtitle: description)
             Spacer()
             if isVPNStatusChanging {
                 ActivityIndicatorView(isAnimating: true)

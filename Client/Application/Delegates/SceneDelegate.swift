@@ -9,6 +9,7 @@ import Combine
 import BraveShared
 import Shared
 import Storage
+import Data
 
 private let log = Logger.browserLogger
 
@@ -28,6 +29,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let sceneInfo = sceneInfo else {
             return
         }
+        
+        // We have to wait until pre1.12 migration is done until we proceed with database
+        // initialization. This is because Database container may change. See bugs #3416, #3377.
+        DataController.shared.initializeOnce()
+        Migration.postCoreDataInitMigrations()
         
         Preferences.General.themeNormalMode.objectWillChange
             .merge(with: PrivateBrowsingManager.shared.objectWillChange)
@@ -57,6 +63,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
         
+        // Setup Playlist
+        // This restores the playlist incomplete downloads. So if a download was started
+        // and interrupted on application death, we restart it on next launch.
+        PlaylistManager.shared.restoreSession()
+        
         // Setup Playlist Car-Play
         // TODO: Decide what to do if we have multiple windows
         // as it is only possible to have a single car-play instance.
@@ -68,7 +79,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Assign each browser a navigation controller
         let navigationController = UINavigationController(rootViewController: browserViewController).then {
-            $0.delegate = self
             $0.isNavigationBarHidden = true
             $0.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         }
@@ -78,7 +88,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             SceneObserver.setupApplication(window: $0) // TODO: REFACTOR for multiple windows
             
             $0.backgroundColor = .black
-            $0.frame = UIScreen.main.bounds
             $0.overrideUserInterfaceStyle = expectedThemeOverride
             $0.tintColor = UIColor {
                 if $0.userInterfaceStyle == .dark {
@@ -157,6 +166,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if let scene = scene as? UIWindowScene {
             scene.browserViewController?.showWalletTransferExpiryPanelIfNeeded()
+            scene.browserViewController?.windowProtection = windowProtection
         }
     }
 
@@ -302,20 +312,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
         return nil
-    }
-}
-
-// MARK: - Root View Controller Animations
-extension SceneDelegate: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        switch operation {
-        case .push:
-            return BrowserToTrayAnimator()
-        case .pop:
-            return TrayToBrowserAnimator()
-        default:
-            return nil
-        }
     }
 }
 

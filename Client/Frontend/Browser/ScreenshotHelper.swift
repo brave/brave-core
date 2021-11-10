@@ -3,6 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
+import WebKit
+import Shared
+
+private let log = Logger.browserLogger
 
 /**
  * Handles screenshots for a given tab, including pages with non-webview content.
@@ -17,20 +21,36 @@ class ScreenshotHelper {
     }
 
     func takeScreenshot(_ tab: Tab) {
-        var screenshot: UIImage?
-
-        if let url = tab.url {
-            if url.isAboutHomeURL {
-                if let homePanel = tabManager?.selectedTab?.newTabPageViewController {
-                    screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
-                }
-            } else {
-                let offset = CGPoint(x: 0, y: -(tab.webView?.scrollView.contentInset.top ?? 0))
-                screenshot = tab.webView?.screenshot(offset: offset, quality: UIConstants.activeScreenshotQuality)
-            }
+        guard let webView = tab.webView, let url = tab.url else {
+            log.error("Tab webView or url is nil")
+            tab.setScreenshot(nil)
+            return
         }
 
-        tab.setScreenshot(screenshot)
+        if InternalURL(url)?.isAboutHomeURL == true {
+            if let homePanel = tabManager?.selectedTab?.newTabPageViewController {
+                let screenshot = homePanel.view.screenshot(quality: UIConstants.activeScreenshotQuality)
+                tab.setScreenshot(screenshot)
+            } else {
+                tab.setScreenshot(nil)
+            }
+        } else {
+            let configuration = WKSnapshotConfiguration()
+            //This is for a bug in certain iOS 13 versions, snapshots cannot be taken correctly without this boolean being set
+            configuration.afterScreenUpdates = false
+            
+            webView.takeSnapshot(with: configuration) { image, error in
+                if let image = image {
+                    tab.setScreenshot(image)
+                } else if let error = error {
+                    log.error(error)
+                    tab.setScreenshot(nil)
+                } else {
+                    log.error("Cannot snapshot Tab Screenshot - No error description")
+                    tab.setScreenshot(nil)
+                }
+            }
+        }
     }
 
     /// Takes a screenshot after a small delay.

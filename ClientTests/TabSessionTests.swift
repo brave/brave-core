@@ -525,7 +525,7 @@ class TabSessionTests: XCTestCase {
              if (typeof value == "undefined" || typeof value.indexOf == "undefined") {
                return false;
              }
-             if (value.indexOf("\(UserScriptManager.messageHandlerToken)") >= 0 || value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0 || value.indexOf("\(UserScriptManager.securityToken)") >= 0 || value.indexOf("\(UserScriptManager.securityTokenString)") >= 0) {
+             if (value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0 || value.indexOf("\(UserScriptManager.messageHandlerTokenString)") >= 0 {
                return true;
              }
              return false;

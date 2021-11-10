@@ -5,10 +5,11 @@
 
 import Foundation
 import BraveWallet
+import struct Shared.InternalURL
 
 extension BrowserViewController: BraveWalletDelegate {
     func openWalletURL(_ url: URL) {
-        if tabManager.selectedTab?.url?.isAboutURL == true {
+        if let url = tabManager.selectedTab?.url, InternalURL.isValid(url: url) {
             select(url: url, visitType: .link)
         } else {
             _ = tabManager.addTabAndSelect(

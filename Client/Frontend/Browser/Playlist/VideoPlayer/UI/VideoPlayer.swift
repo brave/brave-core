@@ -340,9 +340,9 @@ class VideoView: UIView, VideoTrackerBarDelegate {
         isSeeking = true
         
         if delegate.isPlaying {
-            delegate.pause(self)
             wasPlayingBeforeSeeking = true
             playbackRate = delegate.playbackRate
+            delegate.pause(self)
         }
         
         toggleOverlays(showOverlay: false, except: [infoView, controlsView], display: [controlsView])

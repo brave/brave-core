@@ -208,6 +208,10 @@ open class SQLiteLogins: BrowserLogins {
     open func getAllLogins() -> Deferred<Maybe<Cursor<Login>>> {
         return searchLoginsWithQuery(nil)
     }
+    
+    open func getLoginsForQuery(_ query: String) -> Deferred<Maybe<Cursor<Login>>> {
+        return searchLoginsWithQuery(query)
+    }
 
     open func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>> {
         let projection = SQLiteLogins.loginColumns

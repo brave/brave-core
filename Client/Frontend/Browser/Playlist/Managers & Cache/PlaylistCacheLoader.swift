@@ -341,7 +341,6 @@ class PlaylistWebLoader: UIView {
         $0.preferences.javaScriptCanOpenWindowsAutomatically = false
         $0.allowsInlineMediaPlayback = true
         $0.ignoresViewportScaleLimits = true
-        // $0.mediaTypesRequiringUserActionForPlayback = []
     }, type: .private).then {
         $0.createWebview()
         $0.webView?.scrollView.layer.masksToBounds = true
@@ -354,7 +353,7 @@ class PlaylistWebLoader: UIView {
         }
         
         var alteredSource = source
-        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        let token = UserScriptManager.securityTokenString
         
         let replacements = [
             "$<PlaylistDetector>": "PlaylistDetector_\(token)",
@@ -444,6 +443,15 @@ class PlaylistWebLoader: UIView {
         guard let webView = tab.webView else { return }
         webView.frame = self.window?.bounds ?? .zero
         webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0))
+    }
+    
+    func stop() {
+        guard let webView = tab.webView else { return }
+        webView.stopLoading()
+        DispatchQueue.main.async {
+            self.handler(nil)
+            webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+        }
     }
     
     private class PlaylistWebLoaderContentHelper: TabContentScript {
@@ -596,7 +604,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
             return
         }
 
-        if !navigationAction.isAllowed && navigationAction.navigationType != .backForward {
+        if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
             decisionHandler(.cancel)
             return
         }
@@ -644,12 +652,16 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
             pendingRequests[url.absoluteString] = navigationAction.request
             
-            if let urlHost = url.normalizedHost() {
-                if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
-                    let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
+            // TODO: Downgrade to 14.5 once api becomes available.
+            if #available(iOS 15, *) {
+                // do nothing, use Apple's https solution.
+            } else {
+                if Preferences.Shields.httpsEverywhere.value,
+                   url.scheme == "http",
+                    let urlHost = url.normalizedHost() {
                     HttpsEverywhereStats.shared.shouldUpgrade(url) { shouldupgrade in
                         DispatchQueue.main.async {
-                            if domainForShields.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) && shouldupgrade {
+                            if shouldupgrade {
                                 self.pendingHTTPUpgrades[urlHost] = navigationAction.request
                             }
                         }
@@ -660,7 +672,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
             if
                 let mainDocumentURL = navigationAction.request.mainDocumentURL,
                 mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
-                !url.isSessionRestoreURL,
+                !(InternalURL(url)?.isSessionRestore ?? false),
                 navigationAction.sourceFrame.isMainFrame || navigationAction.targetFrame?.isMainFrame == true {
                 
                 // Identify specific block lists that need to be applied to the requesting domain
@@ -669,7 +681,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
                 // Force adblocking on
                 domainForShields.shield_allOff = 1
                 domainForShields.shield_adblockAndTp = true
-                domainForShields.shield_httpse = true
                 
                 let (on, off) = BlocklistName.blocklists(forDomain: domainForShields)
                 let controller = webView.configuration.userContentController
@@ -706,7 +717,9 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         let response = navigationResponse.response
         let responseURL = response.url
         
-        if responseURL?.isSessionRestoreURL == true {
+        if let responseURL = responseURL,
+            let internalURL = InternalURL(responseURL),
+            internalURL.isSessionRestore {
             tab.shouldClassifyLoadsForAds = false
         }
         

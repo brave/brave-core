@@ -49,10 +49,13 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
         
         if let restorationController = PlaylistCarplayManager.shared.playlistController {
             restorationController.modalPresentationStyle = .fullScreen
-            if view.window == nil {
-                self.currentScene?.browserViewController?.present(restorationController, animated: true)
+            let browserViewController = view.window == nil ? PlaylistCarplayManager.shared.browserController : self.currentScene?.browserViewController
+            
+            if UIDevice.isIpad {
+                attachPlayerView()
             }
             
+            browserViewController?.present(restorationController, animated: true)
             PlaylistCarplayManager.shared.playlistController = nil
         }
         

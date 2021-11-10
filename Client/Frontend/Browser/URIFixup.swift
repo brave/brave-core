@@ -61,6 +61,10 @@ class URIFixup {
     }
     
     static func getURL(_ entry: String) -> URL? {
+        if let url = URL(string: entry), InternalURL.isValid(url: url) {
+            return URL(string: entry)
+        }
+        
         let trimmed = entry.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .URLAllowed) else {
             return nil

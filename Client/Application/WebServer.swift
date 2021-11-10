@@ -54,7 +54,7 @@ class WebServer {
     func registerHandlerForMethod(_ method: String, module: String, resource: String, handler: @escaping (_ request: GCDWebServerRequest?) -> GCDWebServerResponse?) {
         // Prevent serving content if the requested host isn't a whitelisted local host.
         let wrappedHandler = {(request: GCDWebServerRequest?) -> GCDWebServerResponse? in
-            guard let request = request, request.url.isLocal else {
+            guard let request = request, InternalURL.isValid(url: request.url) else {
                 return GCDWebServerResponse(statusCode: 403)
             }
 

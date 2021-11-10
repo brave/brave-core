@@ -17,9 +17,13 @@ public struct SavedTab {
     public let screenshot: UIImage?
     public let history: [String]
     public let historyIndex: Int16
+    public let isPrivate: Bool
     
+    /// For the love of all developers everywhere, if you use this constructor, **PLEASE** use
+    /// `SessionData.updateSessionURLs(urls)` **BEFORE** passing in the URLs for the `history` parameter!!!
+    /// If you don't, you **WILL break session restore**.
     public init(id: String, title: String?, url: String, isSelected: Bool, order: Int16, screenshot: UIImage?, 
-                history: [String], historyIndex: Int16) {
+                history: [String], historyIndex: Int16, isPrivate: Bool) {
         self.id = id
         self.title = title
         self.url = url
@@ -28,6 +32,7 @@ public struct SavedTab {
         self.screenshot = screenshot
         self.history = history
         self.historyIndex = historyIndex
+        self.isPrivate = isPrivate
     }
 }
 
@@ -47,6 +52,7 @@ public final class TabMO: NSManagedObject, CRUD {
     @NSManaged public var screenshotUUID: String?
     /// Last time this tab was updated. Required for 'purge unused tabs' feature.
     @NSManaged public var lastUpdate: Date?
+    @NSManaged public var isPrivate: Bool
     
     public override func prepareForDeletion() {
         super.prepareForDeletion()
@@ -117,6 +123,7 @@ public final class TabMO: NSManagedObject, CRUD {
             tabToUpdate.urlHistoryCurrentIndex = tabData.historyIndex
             tabToUpdate.isSelected = tabData.isSelected
             tabToUpdate.lastUpdate = Date()
+            tabToUpdate.isPrivate = tabData.isPrivate
         }
     }
     
@@ -127,6 +134,20 @@ public final class TabMO: NSManagedObject, CRUD {
             tabToUpdate.lastUpdate = Date()
         }
         
+    }
+
+    public class func selectTabAndDeselectOthers(selectedTabId: String) {
+        DataController.perform { context in
+            guard let tabToUpdate = getInternal(fromId: selectedTabId, context: context) else { return }
+            
+            let predicate = NSPredicate(format: "isSelected == true")
+            all(where: predicate, context: context)?
+                .forEach {
+                    $0.isSelected = false
+                }
+            
+            tabToUpdate.isSelected = true
+        }
     }
     
     // Deletes the Tab History by removing items except the last one from historysnapshot and setting current index

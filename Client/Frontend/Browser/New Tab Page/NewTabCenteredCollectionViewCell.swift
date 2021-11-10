@@ -17,6 +17,8 @@ class NewTabCenteredCollectionViewCell<View: UIView>: UICollectionViewCell, Coll
         view.snp.remakeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
         }
     }
     

@@ -204,7 +204,7 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
            Preferences.Playlist.enableLongPressAddToPlaylist.value {
             let touchPoint = gestureRecognizer.location(in: webView)
             
-            let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+            let token = UserScriptManager.securityTokenString
             let javascript = String(format: "window.__firefox__.onLongPressActivated_%@(%f, %f)", token, touchPoint.x, touchPoint.y)
             webView.evaluateJavaScript(javascript) // swiftlint:disable:this safe_javascript
         }

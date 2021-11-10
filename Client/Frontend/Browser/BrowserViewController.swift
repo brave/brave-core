@@ -16,6 +16,7 @@ import Data
 import BraveShared
 import SwiftKeychainWrapper
 import BraveCore
+import CoreData
 import StoreKit
 import SafariServices
 import BraveUI
@@ -96,7 +97,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     var pasteAction: AccessibleAction!
     var copyAddressAction: AccessibleAction!
 
-    weak var tabTrayController: TabTrayController!
     let profile: Profile
     let tabManager: TabManager
     let historyAPI: BraveHistoryAPI
@@ -163,19 +163,22 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     
     let vpnProductInfo = VPNProductInfo()
     
+    /// Window Protection instance which will be used for controller requires biometric authentication
+    var windowProtection: WindowProtection?
+    
     // Product Notification Related Properties
     
     /// Boolean which is tracking If a product notification is presented
     /// in order to not to try to present another one over existing popover
     var benchmarkNotificationPresented = false
     
-    /// Number of Ads/Trackers used a limit to show benchmark notification
-    let benchmarkNumberOfTrackers = 10
-    
     /// Used to determine when to present benchmark pop-overs
     /// Current session ad count is compared with live ad count
     /// So user will not be introduced with a pop-over directly
     let benchmarkCurrentSessionAdCount = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+    
+    /// Navigation Helper used for Brave Widgets
+    private(set) lazy var navigationHelper = BrowserNavigationHelper(self)
     
     /// Boolean tracking  if Tab Tray is active on the screen
     /// Used to determine If pop-over should be presented
@@ -185,9 +188,12 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     var shouldShowNTPEducation = false
 
     /// Data Source object used to determine blocking stats
-    //let benchmarkBlockingDataSource = BlockingSummaryDataSource()
     var benchmarkBlockingDataSource: BlockingSummaryDataSource?
     
+    private(set) var widgetBookmarksFRC: NSFetchedResultsController<Favorite>?
+    var widgetFaviconFetchers: [FaviconFetcher] = []
+    let deviceCheckClient: DeviceCheckClient?
+
     init(profile: Profile,
          diskImageStore: DiskImageStore?,
          historyAPI: BraveHistoryAPI,
@@ -465,9 +471,15 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 }
             }
         }
+        
+        // Setup Widgets FRC
+        widgetBookmarksFRC = Favorite.frc()
+        widgetBookmarksFRC?.fetchRequest.fetchLimit = 16
+        widgetBookmarksFRC?.delegate = self
+        try? widgetBookmarksFRC?.performFetch()
+        
+        updateWidgetFavoritesData()
     }
-    
-    let deviceCheckClient: DeviceCheckClient?
     
     private func setupAdsNotificationHandler() {
         notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
@@ -1209,16 +1221,26 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
 
     func updateInContentHomePanel(_ url: URL?) {
+        let isAboutHomeURL = { () -> Bool in
+            if let url = url {
+                return InternalURL(url)?.isAboutHomeURL == true
+            }
+            return false
+        }()
+        
         if !topToolbar.inOverlayMode {
             guard let url = url else {
                 hideActiveNewTabPageController()
                 return
             }
-            if url.isAboutHomeURL && !url.isErrorPageURL {
+            
+            if isAboutHomeURL {
                 showNewTabPageController()
-            } else if !url.isLocalUtility || url.isReaderModeURL || url.isErrorPageURL {
+            } else if !url.absoluteString.hasPrefix("\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)") {
                 hideActiveNewTabPageController(url.isReaderModeURL)
             }
+        } else if isAboutHomeURL {
+            showNewTabPageController()
         }
     }
     
@@ -1335,7 +1357,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             guard tab === tabManager.selectedTab,
                   // `WKWebView.estimatedProgress` is a `Double` type so it must be casted as such
                 let progress = change?[.newKey] as? Double else { break }
-            if webView.url?.isLocalUtility == false {
+            if let url = webView.url, !InternalURL.isValid(url: url) {
                 topToolbar.updateProgressBar(Float(progress))
             } else {
                 topToolbar.hideProgressBar()
@@ -1424,7 +1446,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             
             guard let serverTrust = tab.webView?.serverTrust else {
                 if let url = tab.webView?.url ?? tab.url {
-                    if url.isAboutHomeURL || url.isAboutURL || url.scheme == "about" {
+                    if InternalURL.isValid(url: url),
+                        let internalUrl = InternalURL(url),
+                        (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
+                        
                         tab.secureContentState = .localHost
                         if tabManager.selectedTab === tab {
                             topToolbar.secureContentState = .localHost
@@ -1432,7 +1457,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         break
                     }
                     
-                    if url.isErrorPageURL {
+                    if InternalURL.isValid(url: url),
+                       let internalUrl = InternalURL(url),
+                        internalUrl.isErrorPage {
+                        
                         if ErrorPageHelper.certificateError(for: url) != 0 {
                             tab.secureContentState = .insecure
                             if tabManager.selectedTab === tab {
@@ -1442,7 +1470,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         }
                     }
                     
-                    if url.isReaderModeURL || url.isLocal {
+                    if url.isReaderModeURL || InternalURL.isValid(url: url) {
                         tab.secureContentState = .unknown
                         if tabManager.selectedTab === tab {
                             topToolbar.secureContentState = .unknown
@@ -1541,18 +1569,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         navigationToolbar.updatePageStatus(isPage)
     }
 
-    // MARK: Opening New Tabs
-
-    func switchToPrivacyMode(isPrivate: Bool ) {
-        let tabTrayController = self.tabTrayController ?? TabTrayController(tabManager: tabManager,
-                                                                            profile: profile,
-                                                                            tabTrayDelegate: self)
-        if tabTrayController.privateMode != isPrivate {
-            tabTrayController.changePrivacyMode(isPrivate)
-        }
-        self.tabTrayController = tabTrayController
-    }
-
     func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool, isExternal: Bool = false) {
         if !isExternal {
             popToBVC()
@@ -1578,7 +1594,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             request = nil
         }
 
-        switchToPrivacyMode(isPrivate: isPrivate)
         _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
     }
 
@@ -1867,7 +1882,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             // Whether to show search icon or + icon
             toolbar?.setSearchButtonState(url: url)
             
-            if !url.isErrorPageURL, !url.isAboutHomeURL, !url.isFileURL {
+            if (!InternalURL.isValid(url: url) || url.isReaderModeURL), !url.isFileURL {
                 // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
                 // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -1878,7 +1893,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 runScriptsOnWebView(webView)
                 
                 // Only add history of a url which is not a localhost url
-                if !tab.isPrivate, !PrivilegedRequest.isWebServerRequest(url: url) {
+                if !tab.isPrivate {
                     // The visitType is checked If it is "typed" or not to determine the History object we are adding
                     // should be synced or not. This limitation exists on browser side so we are aligning with this
                     if let visitType =
@@ -2030,7 +2045,7 @@ extension BrowserViewController: TabDelegate {
             tab.addContentScript(logins, name: LoginsHelper.name(), sandboxed: false)
         }
 
-        let errorHelper = ErrorPageHelper()
+        let errorHelper = ErrorPageHelper(certStore: profile.certStore)
         tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), sandboxed: false)
 
         let sessionRestoreHelper = SessionRestoreHelper(tab: tab)
@@ -2175,15 +2190,9 @@ extension BrowserViewController: TabDelegate {
     }
     
     func stopMediaPlayback(_ tab: Tab) {
-        if #available(iOS 15, *) {
-            tabManager.allTabs.forEach({
-                $0.webView?.pauseAllMediaPlayback(completionHandler: nil)
-            })
-        } else {
-            tabManager.allTabs.forEach({
-                PlaylistHelper.stopPlayback(tab: $0)
-            })
-        }
+        tabManager.allTabs.forEach({
+            PlaylistHelper.stopPlayback(tab: $0)
+        })
     }
 }
 
@@ -2220,7 +2229,12 @@ extension BrowserViewController: SearchViewControllerDelegate {
     }
     
     func searchViewControllerAllowFindInPage() -> Bool {
-        return tabManager.selectedTab?.webView?.url?.isAboutHomeURL == false
+        if let url = tabManager.selectedTab?.webView?.url,
+           let internalURL = InternalURL(url),
+           internalURL.isAboutHomeURL {
+            return false
+        }
+        return true
     }
 }
 
@@ -2233,28 +2247,14 @@ extension BrowserViewController: TabManagerDelegate {
             wv.accessibilityLabel = nil
             wv.accessibilityElementsHidden = true
             wv.accessibilityIdentifier = nil
-            
-            #if swift(>=5.4)
-            if #available(iOS 15.0, *) {
-                wv.alpha = 0.0
-                wv.requestMediaPlaybackState { state in
-                    if state != .playing && wv != tabManager.selectedTab?.webView {
-                        wv.alpha = 1.0
-                    }
-                }
-            } else {
-                wv.removeFromSuperview()
-            }
-            #else
             wv.removeFromSuperview()
-            #endif
         }
         
         toolbar?.setSearchButtonState(url: selected?.url)
         if let tab = selected, let webView = tab.webView {
             updateURLBar()
             
-            if let url = tab.url, !url.isLocalUtility {
+            if let url = tab.url, !InternalURL.isValid(url: url) {
                 let previousEstimatedProgress = previous?.webView?.estimatedProgress ?? 1.0
                 let selectedEstimatedProgress = webView.estimatedProgress
                 
@@ -2273,12 +2273,34 @@ extension BrowserViewController: TabManagerDelegate {
             webView.snp.remakeConstraints { make in
                 make.left.right.top.bottom.equalTo(self.webViewContainer)
             }
+            
+            // This is a terrible workaround for a bad iOS 12 bug where PDF
+            // content disappears any time the view controller changes (i.e.
+            // the user taps on the tabs tray). It seems the only way to get
+            // the PDF to redraw is to either reload it or revisit it from
+            // back/forward list. To try and avoid hitting the network again
+            // for the same PDF, we revisit the current back/forward item and
+            // restore the previous scrollview zoom scale and content offset
+            // after a short 100ms delay. *facepalm*
+            //
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=1516524
+            if tab.mimeType == MIMEType.PDF {
+                let previousZoomScale = webView.scrollView.zoomScale
+                let previousContentOffset = webView.scrollView.contentOffset
+
+                if let currentItem = webView.backForwardList.currentItem {
+                    webView.go(to: currentItem)
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                    webView.scrollView.setZoomScale(previousZoomScale, animated: false)
+                    webView.scrollView.setContentOffset(previousContentOffset, animated: false)
+                }
+            }
+            
             webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.accessibilityIdentifier = "contentView"
             webView.accessibilityElementsHidden = false
-            
-            // Restore WebView visibility state
-            webView.alpha = 1.0
 
             if webView.url == nil {
                 // The web view can go gray if it was zombified due to memory pressure.
@@ -2308,8 +2330,8 @@ extension BrowserViewController: TabManagerDelegate {
         
         let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
         
-        if let selected = selected,
-            let readerMode = selected.getContentScript(name: ReaderMode.name()) as? ReaderMode, !shouldShowPlaylistURLBarButton {
+        if let readerMode = selected?.getContentScript(name: ReaderMode.name()) as? ReaderMode,
+           !shouldShowPlaylistURLBarButton {
             topToolbar.updateReaderModeState(readerMode.state)
             if readerMode.state == .active {
                 showReaderModeBar(animated: false)
@@ -2317,24 +2339,12 @@ extension BrowserViewController: TabManagerDelegate {
                 hideReaderModeBar(animated: false)
             }
             
-            updatePlaylistURLBar(tab: selected, state: selected.playlistItemState, item: selected.playlistItem)
+            updatePlaylistURLBar(tab: selected, state: selected?.playlistItemState ?? .none, item: selected?.playlistItem)
         } else {
             topToolbar.updateReaderModeState(ReaderModeState.unavailable)
         }
 
         updateInContentHomePanel(selected?.url as URL?)
-        
-        #if swift(>=5.4)
-        for tab in tabManager.allTabs {
-            if #available(iOS 15.0, *), let wv = tab.webView {
-                wv.requestMediaPlaybackState { state in
-                    if state != .playing && wv != tabManager.selectedTab?.webView {
-                        wv.alpha = 1.0
-                    }
-                }
-            }
-        }
-        #endif
     }
 
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
@@ -2391,7 +2401,7 @@ extension BrowserViewController: TabManagerDelegate {
     }
     
     func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
-        guard let toast = toast, !tabTrayController.privateMode else {
+        guard let toast = toast, !PrivateBrowsingManager.shared.isPrivateBrowsing else {
             return
         }
         show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
@@ -2411,7 +2421,8 @@ extension BrowserViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         guard let parentTab = tabManager[webView] else { return nil }
 
-        guard navigationAction.isAllowed, shouldRequestBeOpenedAsPopup(navigationAction.request) else {
+        guard !navigationAction.isInternalUnprivileged,
+                shouldRequestBeOpenedAsPopup(navigationAction.request) else {
             print("Denying popup from request: \(navigationAction.request)")
             return nil
         }
@@ -2542,13 +2553,13 @@ extension BrowserViewController: WKUIDelegate {
         }
 
         if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-            ErrorPageHelper().showPage(error, forUrl: url, inWebView: webView)
+            ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
             // If the local web server isn't working for some reason (Firefox cellular data is
             // disabled in settings, for example), we'll fail to load the session restore URL.
             // We rely on loading that page to get the restore callback to reset the restoring
             // flag, so if we fail to load that page, reset it here.
-            if url.aboutComponent == "sessionrestore" {
+            if InternalURL(url)?.aboutComponent == "sessionrestore" {
                 tabManager.allTabs.filter { $0.webView == webView }.first?.restoring = false
             }
         }
@@ -2699,29 +2710,8 @@ extension BrowserViewController: SessionRestoreHelperDelegate {
 }
 
 extension BrowserViewController: TabTrayDelegate {
-    func tabLocationViewDidTapLocation() {
-        topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
-    }
-    
-    // This function animates and resets the tab chrome transforms when
-    // the tab tray dismisses.
-    func tabTrayDidDismiss(_ tabTray: TabTrayController) {
-        isTabTrayActive = false
-        
-        // BRAVE TODO: Add update tabs method?
-        resetBrowserChrome()
-    }
-
-    func tabTrayDidAddTab(_ tabTray: TabTrayController, tab: Tab) {
-        // BRAVE TODO: Add update tabs method?
-    }
-
-    func tabTrayDidAddBookmark(_ tab: Tab) {
-        // BRAVE TODO: Not Sure..
-    }
-
-    func tabTrayRequestsPresentationOf(_ viewController: UIViewController) {
-        self.present(viewController, animated: false, completion: nil)
+    func tabOrderChanged() {
+        tabsBar.updateData()
     }
 }
 
@@ -2746,7 +2736,18 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate
 
     fileprivate func find(_ text: String, function: String) {
         guard let webView = tabManager.selectedTab?.webView else { return }
-        webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
+        
+        if let delegate = webView.findInPageDelegate {
+            let backwards = function == TextSearchDirection.previous.rawValue
+            
+            delegate.find(string: text, backwards: backwards) { [weak self] index, total in
+                guard let self = self else { return }
+                self.findInPageBar?.totalResults = Int(total)
+                self.findInPageBar?.currentResult = index
+            }
+        } else {
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
+        }
     }
 
     func findInPageHelper(_ findInPageHelper: FindInPageHelper, didUpdateCurrentResult currentResult: Int) {
@@ -2912,25 +2913,25 @@ extension BrowserViewController: PreferencesObserver {
         case Preferences.General.tabBarVisibility.key:
             updateTabsBarVisibility()
         case Preferences.Privacy.privateBrowsingOnly.key:
-            let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
-            switchToPrivacyMode(isPrivate: isPrivate)
-            PrivateBrowsingManager.shared.isPrivateBrowsing = isPrivate
+            PrivateBrowsingManager.shared.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
             setupTabs()
             updateTabsBarVisibility()
             updateApplicationShortcuts()
         case Preferences.General.alwaysRequestDesktopSite.key:
             tabManager.reset()
-            self.tabManager.reloadSelectedTab()
+            tabManager.reloadSelectedTab()
         case Preferences.General.enablePullToRefresh.key:
             tabManager.selectedTab?.updatePullToRefreshVisibility()
         case Preferences.Shields.blockAdsAndTracking.key,
-             Preferences.Shields.httpsEverywhere.key,
              Preferences.Shields.blockScripts.key,
              Preferences.Shields.blockPhishingAndMalware.key,
              Preferences.Shields.blockImages.key,
              Preferences.Shields.fingerprintingProtection.key,
              Preferences.Shields.useRegionAdBlock.key:
             tabManager.allTabs.forEach { $0.webView?.reload() }
+        case Preferences.Shields.httpsEverywhere.key:
+            tabManager.reset()
+            tabManager.reloadSelectedTab()
         case Preferences.Privacy.blockAllCookies.key,
              Preferences.Shields.googleSafeBrowsing.key:
             // All `block all cookies` toggle requires a hard reset of Webkit configuration.

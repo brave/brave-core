@@ -48,6 +48,10 @@ open class MockLogins: BrowserLogins {
         }))
         return Deferred(value: Maybe(success: cursor))
     }
+    
+    open func getLoginsForQuery(_ query: String) -> Deferred<Maybe<Cursor<Login>>> {
+        return searchLoginsWithQuery(query)
+    }
 
     open func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>> {
         let cursor = ArrayCursor(data: cache.filter({ login in

@@ -14,21 +14,22 @@ class LocalRequestHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-        guard let params = message.body as? [String: String], message.frameInfo.request.url?.isLocal ?? false else {
-            return
-        }
+        guard let requestUrl = message.frameInfo.request.url,
+              let internalUrl = InternalURL(requestUrl),
+              let params = message.body as? [String: String] else { return }
         
         if UserScriptManager.isMessageHandlerTokenMissing(in: params) {
             log.debug("Missing required security token.")
             return
         }
 
-        if params["type"] == "load",
-           let urlString = params["url"],
-           let url = URL(string: urlString) {
-            _ = message.webView?.load(PrivilegedRequest(url: url) as URLRequest)
-        } else if params["type"] == "reload" {
-            _ = message.webView?.reload()
+        if params["type"] == "reload" {
+            // If this is triggered by session restore pages, the url to reload is a nested url argument.
+            if let _url = internalUrl.extractedUrlParam, let nested = InternalURL(_url), let url = nested.extractedUrlParam {
+                message.webView?.replaceLocation(with: url)
+            } else {
+                _ = message.webView?.reload()
+            }
         } else {
             assertionFailure("Invalid message: \(message.body)")
         }

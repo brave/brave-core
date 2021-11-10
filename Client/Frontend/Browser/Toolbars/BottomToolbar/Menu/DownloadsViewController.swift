@@ -292,7 +292,8 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
             log.error("Could not get table view cell as TwoLineTableViewCell")
             return UITableViewCell()
         }
-        
+        cell.backgroundColor = .secondaryBraveBackground
+
         return configureDownloadedFile(cell, for: indexPath)
     }
     

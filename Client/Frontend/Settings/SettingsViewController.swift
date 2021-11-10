@@ -62,6 +62,7 @@ class SettingsViewController: TableViewController {
     private let historyAPI: BraveHistoryAPI
     private let syncAPI: BraveSyncAPI
     private let walletKeyringStore: KeyringStore?
+    private let windowProtection: WindowProtection?
 
     init(profile: Profile,
          tabManager: TabManager,
@@ -70,7 +71,8 @@ class SettingsViewController: TableViewController {
          legacyWallet: BraveLedger? = nil,
          historyAPI: BraveHistoryAPI,
          syncAPI: BraveSyncAPI,
-         walletKeyringStore: KeyringStore? = nil
+         walletKeyringStore: KeyringStore? = nil,
+         windowProtection: WindowProtection?
     ) {
         self.profile = profile
         self.tabManager = tabManager
@@ -80,6 +82,7 @@ class SettingsViewController: TableViewController {
         self.historyAPI = historyAPI
         self.syncAPI = syncAPI
         self.walletKeyringStore = walletKeyringStore
+        self.windowProtection = windowProtection
         
         super.init(style: .insetGrouped)
     }
@@ -122,6 +125,7 @@ class SettingsViewController: TableViewController {
     
     private var sections: [Static.Section] {
         var list = [
+            defaultBrowserSection,
             featuresSection,
             generalSection,
             displaySection,
@@ -175,6 +179,21 @@ class SettingsViewController: TableViewController {
         header.bounds = CGRect(size: calculatedSize)
         
         return Static.Section(header: .view(header))
+    }()
+    
+    private lazy var defaultBrowserSection: Static.Section = {
+        var section = Static.Section(
+            rows: [
+                .init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                        return
+                    }
+                    UIApplication.shared.open(settingsUrl)
+                }, cellClass: MultilineButtonCell.self)
+            ]
+        )
+        
+        return section
     }()
     
     private lazy var featuresSection: Static.Section = {
@@ -285,20 +304,8 @@ class SettingsViewController: TableViewController {
                      image: #imageLiteral(resourceName: "settings-pull-to-refresh").template),
             .boolRow(title: Strings.mediaAutoBackgrounding,
                      option: Preferences.General.mediaAutoBackgrounding,
-                     image: #imageLiteral(resourceName: "background_play_settings_icon").template),
-            .boolRow(title: Strings.mediaAutoPlays,
-                     option: Preferences.General.mediaAutoPlays,
-                     image: #imageLiteral(resourceName: "settings-autoplay").template)
+                     image: #imageLiteral(resourceName: "background_play_settings_icon").template)
         ])
-        
-        if AppConstants.iOSVersionGreaterThanOrEqual(to: 14) && AppConstants.buildChannel == .release {
-            general.rows.append(.init(text: Strings.setDefaultBrowserSettingsCell, selection: { [unowned self] in
-                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                    return
-                }
-                UIApplication.shared.open(settingsUrl)
-            }, cellClass: MultilineButtonCell.self))
-        }
 
         return general
     }()
@@ -439,7 +446,13 @@ class SettingsViewController: TableViewController {
             header: .title(Strings.security),
             rows: [
                 .boolRow(title: Strings.browserLock, detailText: Strings.browserLockDescription, option: Preferences.Privacy.lockWithPasscode, image: #imageLiteral(resourceName: "settings-passcode").template),
-                .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins, image: #imageLiteral(resourceName: "settings-save-logins").template)
+                Row(text: Strings.Login.loginListNavigationTitle, selection: { [unowned self] in
+                    let loginsPasswordsViewController = LoginListViewController(
+                        profile: self.profile,
+                        windowProtection: self.windowProtection)
+                    loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
+                    self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
+                }, image: #imageLiteral(resourceName: "settings-save-logins").template, accessory: .disclosureIndicator)
             ]
         )
     }()
