@@ -37,7 +37,7 @@ def HasFormatErrors():
             print(git_diff)
             print('Format errors have been auto-fixed. Please review and commit these'
                 ' changes if lint was run locally. Otherwise run npm format to fix.')
-        return True
+            return True
     return False
 
 def RunFormatCheck(upstream_branch): # pylint: disable=inconsistent-return-statements
