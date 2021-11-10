@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "base/win/registry.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 class MSEdgeProtocolMessageHandler : public content::WebUIMessageHandler {
@@ -29,6 +30,14 @@ class MSEdgeProtocolMessageHandler : public content::WebUIMessageHandler {
   void OnIsDefaultProtocolHandler(bool is_default);
   void OnSetDefaultProtocolHandler(bool success);
 
+  void CheckMSEdgeProtocolDefaultHandlerState();
+
+  // Watch ms-edge UserChoice reg change.
+  void StartWatching();
+  void OnRegValChanged();
+  void LaunchSystemDialog();
+
+  base::win::RegKey user_choice_key_;
   base::WeakPtrFactory<MSEdgeProtocolMessageHandler> weak_factory_{this};
 };
 

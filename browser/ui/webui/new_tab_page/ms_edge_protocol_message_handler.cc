@@ -6,19 +6,51 @@
 #include "brave/browser/ui/webui/new_tab_page/ms_edge_protocol_message_handler.h"
 
 #include "base/bind.h"
+#include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/path_service.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/default_protocol_handler_utils_win.h"
+#include "chrome/installer/util/shell_util.h"
 
 namespace {
 
 constexpr wchar_t kMSEdgeProtocol[] = L"microsoft-edge";
+constexpr wchar_t kMSEdgeProtocolRegKey[] =
+    L"SOFTWARE\\Microsoft\\Windows\\Shell\\Associations\\UrlAssociations\\micro"
+    L"soft-edge";
 
 }  // namespace
 
-MSEdgeProtocolMessageHandler::MSEdgeProtocolMessageHandler() = default;
+MSEdgeProtocolMessageHandler::MSEdgeProtocolMessageHandler()
+    : user_choice_key_(HKEY_CURRENT_USER, kMSEdgeProtocolRegKey, KEY_NOTIFY) {
+  StartWatching();
+}
+
 MSEdgeProtocolMessageHandler::~MSEdgeProtocolMessageHandler() = default;
+
+void MSEdgeProtocolMessageHandler::StartWatching() {
+  if (user_choice_key_.Valid()) {
+    user_choice_key_.StartWatching(
+        base::BindOnce(&MSEdgeProtocolMessageHandler::OnRegValChanged,
+                       base::Unretained(this)));
+  }
+}
+
+void MSEdgeProtocolMessageHandler::OnRegValChanged() {
+  CheckMSEdgeProtocolDefaultHandlerState();
+  StartWatching();
+}
+
+void MSEdgeProtocolMessageHandler::CheckMSEdgeProtocolDefaultHandlerState() {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&IsDefaultProtocolHandlerFor, kMSEdgeProtocol),
+      base::BindOnce(&MSEdgeProtocolMessageHandler::OnIsDefaultProtocolHandler,
+                     weak_factory_.GetWeakPtr()));
+}
 
 void MSEdgeProtocolMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
@@ -37,17 +69,20 @@ void MSEdgeProtocolMessageHandler::RegisterMessages() {
 void MSEdgeProtocolMessageHandler::HandleCheckDefaultMSEdgeProtocolHandlerState(
     base::Value::ConstListView args) {
   AllowJavascript();
-
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&IsDefaultProtocolHandlerFor, kMSEdgeProtocol),
-      base::BindOnce(&MSEdgeProtocolMessageHandler::OnIsDefaultProtocolHandler,
-                     weak_factory_.GetWeakPtr()));
+  CheckMSEdgeProtocolDefaultHandlerState();
 }
 
 void MSEdgeProtocolMessageHandler::HandleSetAsDefaultMSEdgeProtocolHandler(
     base::Value::ConstListView args) {
   AllowJavascript();
+
+  // Test purpose switch to use system ui.
+  constexpr char kUseSystemUIForMSEdgeProtocol[] = "use-system-ui-for-ms-edge";
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kUseSystemUIForMSEdgeProtocol)) {
+    LaunchSystemDialog();
+    return;
+  }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -65,7 +100,7 @@ void MSEdgeProtocolMessageHandler::OnIsDefaultProtocolHandler(bool is_default) {
 
 void MSEdgeProtocolMessageHandler::OnSetDefaultProtocolHandler(bool success) {
   if (!success) {
-    // TODO(simonhong): Launch system ui as a fallback.
+    LaunchSystemDialog();
     return;
   }
 
@@ -73,4 +108,21 @@ void MSEdgeProtocolMessageHandler::OnSetDefaultProtocolHandler(bool success) {
     FireWebUIListener("notify-ms-edge-protocol-default-handler-status",
                       base::Value(success));
   }
+}
+
+void MSEdgeProtocolMessageHandler::LaunchSystemDialog() {
+  base::FilePath brave_exe;
+  if (!base::PathService::Get(base::FILE_EXE, &brave_exe)) {
+    LOG(ERROR) << "Failed to get app exe path";
+    return;
+  }
+
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          [](const base::FilePath& brave_exe) {
+            ShellUtil::ShowMakeChromeDefaultProtocolClientSystemUI(
+                brave_exe, kMSEdgeProtocol);
+          },
+          brave_exe));
 }
