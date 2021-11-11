@@ -8,7 +8,6 @@ import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { formatBalance } from '../../utils/format-balances'
-
 import {
   AccountTransactions,
   AssetPriceTimeframe,
@@ -18,7 +17,6 @@ import {
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
-
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 

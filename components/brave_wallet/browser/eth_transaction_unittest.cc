@@ -295,19 +295,35 @@ TEST(EthTransactionUnitTest, ProcessVRS) {
   tx.set_nonce(0u);
 
   std::string r =
-      "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
+      "0x93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
   std::string s =
-      "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
+      "0x7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
   ASSERT_TRUE(tx.ProcessVRS("0x00", r, s));
   EXPECT_EQ(tx.v(), (uint256_t)0);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r())), r);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s())), s);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.r())), r.substr(2));
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.s())), s.substr(2));
 
   EXPECT_EQ(
       tx.GetSignedTransaction(),
       "0xf84980808080808080a093b9121e82df014428924df439ff044f89c205dd76a194f8b1"
       "1f50d2eade744ea07aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8"
       "d2bfc11d");
+}
+
+TEST(EthTransactionUnitTest, ProcessVRSFail) {
+  EthTransaction tx;
+  ASSERT_FALSE(tx.ProcessVRS("", "", ""));
+  ASSERT_FALSE(tx.ProcessVRS("00", "aefrwr", "342fds"));
+  EXPECT_EQ(tx.v(), (uint256_t)0);
+  ASSERT_TRUE(tx.r().empty());
+  ASSERT_TRUE(tx.s().empty());
+  tx.set_nonce(0u);
+
+  std::string r =
+      "93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e";
+  std::string s =
+      "7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d";
+  ASSERT_FALSE(tx.ProcessVRS("0x00", r, s));
 }
 
 }  // namespace brave_wallet

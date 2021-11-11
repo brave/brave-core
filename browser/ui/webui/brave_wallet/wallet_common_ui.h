@@ -6,11 +6,27 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_COMMON_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_COMMON_UI_H_
 
+#include <stdint.h>
+
 class Profile;
+class Browser;
+
+namespace url {
+class Origin;
+}  // namespace url
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace brave_wallet {
 
 void AddERCTokenImageSource(Profile* profile);
+
+bool IsBraveWalletOrigin(const url::Origin& origin);
+
+content::WebContents* GetWebContentsFromTabId(Browser** browser,
+                                              int32_t tab_id);
 
 }  // namespace brave_wallet
 

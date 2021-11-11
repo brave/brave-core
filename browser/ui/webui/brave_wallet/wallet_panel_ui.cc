@@ -41,24 +41,6 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
-namespace {
-
-content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
-  for (auto* browser : *BrowserList::GetInstance()) {
-    TabStripModel* tab_strip_model = browser->tab_strip_model();
-    for (int index = 0; index < tab_strip_model->count(); ++index) {
-      content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
-      if (sessions::SessionTabHelper::IdForTab(contents).id() == tab_id) {
-        return contents;
-      }
-    }
-  }
-
-  return nullptr;
-}
-
-}  // namespace
-
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui,
                                     true /* Needed for webui browser tests */) {
@@ -89,6 +71,11 @@ void WalletPanelUI::BindInterface(
   panel_factory_receiver_.Bind(std::move(receiver));
 }
 
+void WalletPanelUI::SetDeactivationCallback(
+    base::RepeatingCallback<void(bool)> deactivation_callback) {
+  deactivation_callback_ = std::move(deactivation_callback);
+}
+
 void WalletPanelUI::CreatePanelHandler(
     mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
@@ -113,7 +100,8 @@ void WalletPanelUI::CreatePanelHandler(
 
   panel_handler_ = std::make_unique<WalletPanelHandler>(
       std::move(panel_receiver), this,
-      base::BindRepeating(&GetWebContentsFromTabId));
+      base::BindRepeating(&brave_wallet::GetWebContentsFromTabId, nullptr),
+      std::move(deactivation_callback_));
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 

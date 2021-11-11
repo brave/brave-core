@@ -13,7 +13,10 @@ import {
   WalletState,
   TransactionStatus,
   SignMessageData,
-  SwitchChainRequest
+  SwitchChainRequest,
+  TransactionInfo,
+  kTrezorHardwareVendor,
+  kLedgerHardwareVendor
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -28,7 +31,10 @@ import {
 import {
   findHardwareAccountInfo
 } from '../../common/async/lib'
-
+import {
+  signTrezorTransaction,
+  signLedgerTransaction
+} from '../../common/async/hardware'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
@@ -134,6 +140,22 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   const apiProxy = await getAPIProxy()
   apiProxy.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
   apiProxy.closeUI()
+})
+
+handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
+  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    return
+  }
+  const apiProxy = await getAPIProxy()
+  apiProxy.setCloseOnDeactivate(false)
+  if (hardwareAccount.hardware.vendor === kLedgerHardwareVendor) {
+    await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  } else if (hardwareAccount.hardware.vendor === kTrezorHardwareVendor) {
+    await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  }
+  apiProxy.setCloseOnDeactivate(true)
+  apiProxy.showUI()
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {

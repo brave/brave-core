@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_BRAVE_WALLET_WALLET_BUBBLE_MANAGER_DELEGATE_H_
 
 #include <memory>
+#include <vector>
 
 class GURL;
 
@@ -33,6 +34,7 @@ class WalletBubbleManagerDelegate {
   virtual bool IsShowingBubble() = 0;
   virtual bool IsBubbleClosedForTesting() = 0;
   virtual content::WebContents* GetWebContentsForTesting() = 0;
+  virtual const std::vector<int32_t>& GetPopupIdsForTesting() = 0;
   virtual void CloseOnDeactivate(bool close) = 0;
 
  protected:
