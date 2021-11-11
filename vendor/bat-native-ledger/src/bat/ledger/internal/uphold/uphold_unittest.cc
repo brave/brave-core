@@ -1108,8 +1108,8 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::DEVICE_LIMIT_REACHED,
       type::WalletStatus::NOT_CONNECTED
     },
-    LinkWalletParamType{  // Mismatched provider accounts.
-      "01_mismatched_provider_accounts",
+    LinkWalletParamType{  // KYC required.
+      "01_kyc_required",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -1131,14 +1131,87 @@ INSTANTIATE_TEST_SUITE_P(
         {},
         {},
         net::HttpStatusCode::HTTP_FORBIDDEN,
+        R"(
+          {
+              "message": "error linking wallet: KYC required: user kyc did not pass",
+              "code": 403
+          }
+        )",
+        {}
+      },
+      type::Result::NOT_FOUND,
+      type::WalletStatus::NOT_CONNECTED
+    },
+    LinkWalletParamType{  // Mismatched provider accounts.
+      "02_mismatched_provider_accounts",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
         {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      false,
+      R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_FORBIDDEN,
+        R"(
+          {
+              "message": "error linking wallet: unable to link wallets: mismatched provider accounts: wallets do not match",
+              "code": 403
+          }
+        )",
         {}
       },
       type::Result::MISMATCHED_PROVIDER_ACCOUNTS,
       type::WalletStatus::NOT_CONNECTED
     },
+    LinkWalletParamType{  // Transaction verification failure.
+      "03_transaction_verification_failure",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "currencies": [ "BAT" ], "status": "ok", "memberAt": "2021-05-26T16:42:23.134Z" })",
+        {}
+      },
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"([ { "id": "962ef3b8-bc12-4619-a349-c8083931b795", "label": "Brave Browser" } ])",
+        {}
+      },
+      false,
+      R"({ "payment_id": "f375da3c-c206-4f09-9422-665b8e5952db", "recovery_seed": "OG2zYotDSeZ81qLtr/uq5k/GC6WE5/7BclT1lHi4l+w=" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_FORBIDDEN,
+        R"(
+          {
+              "message": "error linking wallet: transaction verification failure: failed to verify transaction",
+              "code": 403
+          }
+        )",
+        {}
+      },
+      type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE,
+      type::WalletStatus::NOT_CONNECTED
+    },
     LinkWalletParamType{  // Rewards Link (Claim) Wallet failed.
-      "02_link_wallet_failed",
+      "04_link_wallet_failed",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -1167,7 +1240,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::PENDING
     },
     LinkWalletParamType{  // Happy path.
-      "03_happy_path",
+      "05_happy_path",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},

@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/common/random_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "crypto/sha2.h"
 
@@ -66,6 +67,8 @@ void BitflyerAuthorization::Authorize(
     const std::string message = args.at("error_description");
     BLOG(1, message);
     if (message == "User does not meet minimum requirements") {
+      ledger_->database()->SaveEventLog(log::kKYCRequired,
+                                        constant::kWalletBitflyer);
       callback(type::Result::NOT_FOUND, {});
       return;
     }
@@ -183,31 +186,21 @@ void BitflyerAuthorization::OnClaimWallet(
     return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  const std::string event_text = std::string(constant::kWalletBitflyer) +
-                                 (!wallet_ptr->address.empty() ? "/" : "") +
-                                 wallet_ptr->address.substr(0, 5);
+  DCHECK(!address.empty());
 
-  if (result == type::Result::DEVICE_LIMIT_REACHED) {
-    BLOG(0, "Wallet linking limit reached!");
-
-    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
-
-    return callback(type::Result::DEVICE_LIMIT_REACHED, {});
-  }
-
-  if (result == type::Result::MISMATCHED_PROVIDER_ACCOUNTS) {
-    BLOG(0, "Mismatched bitFlyer accounts!");
-
-    ledger_->database()->SaveEventLog(log::kMismatchedProviderAccounts,
-                                      event_text);
-
-    return callback(type::Result::MISMATCHED_PROVIDER_ACCOUNTS, {});
-  }
-
-  if (result != type::Result::LEDGER_OK) {
-    BLOG(0, "Couldn't claim wallet");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
+  switch (result) {
+    case type::Result::DEVICE_LIMIT_REACHED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+      ledger_->database()->SaveEventLog(
+          log::GetEventLogKeyForLinkingResult(result),
+          constant::kWalletBitflyer + std::string("/") + address.substr(0, 5));
+      return callback(result, {});
+    default:
+      if (result != type::Result::LEDGER_OK) {
+        BLOG(0, "Couldn't claim wallet!");
+        return callback(result, {});
+      }
   }
 
   wallet_ptr->token = token;
@@ -223,8 +216,7 @@ void BitflyerAuthorization::OnClaimWallet(
       break;
   }
 
-  ledger_->bitflyer()->SetWallet(wallet_ptr->Clone());
-
+  ledger_->bitflyer()->SetWallet(std::move(wallet_ptr));
   callback(type::Result::LEDGER_OK, {});
 }
 

@@ -51,7 +51,9 @@ class PostClaimBitflyer {
 
   std::string GeneratePayload(const std::string& linking_info);
 
-  type::Result CheckStatusCode(const int status_code);
+  type::Result ProcessResponse(const type::UrlResponse& response) const;
+
+  type::Result ParseBody(const std::string& body) const;
 
   void OnRequest(const type::UrlResponse& response,
                  PostClaimBitflyerCallback callback);

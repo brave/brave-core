@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
@@ -70,17 +71,17 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds,
   const std::string header_signature =
       util::Security::Sign(headers, "primary", rewards_wallet->recovery_seed);
 
-  base::Value signed_reqeust(base::Value::Type::DICTIONARY);
-  signed_reqeust.SetStringKey("octets", octets_json);
-  signed_reqeust.SetKey("body", std::move(octets));
+  base::Value signed_request(base::Value::Type::DICTIONARY);
+  signed_request.SetStringKey("octets", octets_json);
+  signed_request.SetKey("body", std::move(octets));
 
   base::Value headers_dict(base::Value::Type::DICTIONARY);
   headers_dict.SetStringKey("digest", header_digest);
   headers_dict.SetStringKey("signature", header_signature);
-  signed_reqeust.SetKey("headers", std::move(headers_dict));
+  signed_request.SetKey("headers", std::move(headers_dict));
 
   std::string signed_request_json;
-  base::JSONWriter::Write(signed_reqeust, &signed_request_json);
+  base::JSONWriter::Write(signed_request, &signed_request_json);
 
   std::string signed_request_base64;
   base::Base64Encode(signed_request_json, &signed_request_base64);
@@ -110,10 +111,13 @@ void PostClaimUphold::OnRequest(const type::UrlResponse& response,
                                 const std::string& address,
                                 PostClaimUpholdCallback callback) const {
   ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code), address);
+  callback(ProcessResponse(response), address);
 }
 
-type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
+type::Result PostClaimUphold::ProcessResponse(
+    const type::UrlResponse& response) const {
+  const auto status_code = response.status_code;
+
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
     return type::Result::LEDGER_ERROR;
@@ -121,7 +125,7 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
 
   if (status_code == net::HTTP_FORBIDDEN) {
     BLOG(0, "Forbidden");
-    return type::Result::MISMATCHED_PROVIDER_ACCOUNTS;
+    return ParseBody(response.body);
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
@@ -145,6 +149,36 @@ type::Result PostClaimUphold::CheckStatusCode(const int status_code) const {
   }
 
   return type::Result::LEDGER_OK;
+}
+
+// disambiguating on the HTTP 403 (Forbidden)
+type::Result PostClaimUphold::ParseBody(const std::string& body) const {
+  base::DictionaryValue* root = nullptr;
+  auto value = base::JSONReader::Read(body);
+  if (!value || !value->GetAsDictionary(&root)) {
+    BLOG(0, "Invalid body!");
+    return type::Result::LEDGER_ERROR;
+  }
+  DCHECK(root);
+
+  auto* message = root->FindStringKey("message");
+  if (!message) {
+    BLOG(0, "message is missing!");
+    return type::Result::LEDGER_ERROR;
+  }
+
+  if (message->find("KYC required") != std::string::npos) {
+    return type::Result::NOT_FOUND;
+  } else if (message->find("mismatched provider accounts") !=
+             std::string::npos) {
+    return type::Result::MISMATCHED_PROVIDER_ACCOUNTS;
+  } else if (message->find("transaction verification failure") !=
+             std::string::npos) {
+    return type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE;
+  } else {
+    BLOG(0, "Unknown message!");
+    return type::Result::LEDGER_ERROR;
+  }
 }
 
 }  // namespace promotion

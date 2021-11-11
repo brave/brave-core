@@ -14,10 +14,15 @@ namespace log {
 const char kACAddedToQueue[] = "ac_added_to_queue";
 const char kDatabaseMigrated[] = "database_migrated";
 const char kDeviceLimitReached[] = "device_limit_reached";
+const char kKYCRequired[] = "kyc_required";
 const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionsClaimed[] = "promotion_claimed";
 const char kRecurringTipAdded[] = "recurring_tip_added";
 const char kRecurringTipRemoved[] = "recurring_tip_removed";
+const char kRequestSignatureVerificationFailure[] =
+    "request_signature_verification_failure";
+const char kTransactionVerificationFailure[] =
+    "transaction_verification_failure";
 const char kWalletConnected[] = "wallet_connected";
 const char kWalletCorrupted[] = "wallet_corrupted";
 const char kWalletDisconnected[] = "wallet_disconnected";

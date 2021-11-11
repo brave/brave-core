@@ -86,21 +86,71 @@ TEST_F(PostClaimBitflyerTest, ServerError400) {
                   });
 }
 
-TEST_F(PostClaimBitflyerTest, ServerError403) {
+TEST_F(PostClaimBitflyerTest, ServerError403MismatchedProviderAccounts) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "error linking wallet: unable to link wallets: mismatched provider accounts: wallets do not match",
+    "code": 403
+}
+            )";
             callback(response);
           }));
 
   claim_->Request(
-      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](const type::Result result) {
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](type::Result result) {
         EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
       });
+}
+
+TEST_F(PostClaimBitflyerTest,
+       ServerError403RequestSignatureVerificationFailure) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "request signature verification failure",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(
+      "83b3b77b-e7c3-455b-adda-e476fa0656d2", [](type::Result result) {
+        EXPECT_EQ(result, type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE);
+      });
+}
+
+TEST_F(PostClaimBitflyerTest, ServerError403UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 403;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("83b3b77b-e7c3-455b-adda-e476fa0656d2",
+                  [](type::Result result) {
+                    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
+                  });
 }
 
 TEST_F(PostClaimBitflyerTest, ServerError404) {

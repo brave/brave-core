@@ -494,6 +494,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/wallet_info_state.cc",
     "src/bat/ledger/internal/legacy/wallet_info_state.h",
     "src/bat/ledger/internal/logging/event_log_keys.h",
+    "src/bat/ledger/internal/logging/event_log_util.cc",
+    "src/bat/ledger/internal/logging/event_log_util.h",
     "src/bat/ledger/internal/logging/logging.cc",
     "src/bat/ledger/internal/logging/logging.h",
     "src/bat/ledger/internal/logging/logging_util.cc",

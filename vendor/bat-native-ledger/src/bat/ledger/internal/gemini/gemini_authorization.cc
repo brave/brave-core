@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/gemini/gemini_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
+#include "bat/ledger/internal/logging/event_log_util.h"
 #include "bat/ledger/internal/notifications/notification_keys.h"
 #include "crypto/sha2.h"
 
@@ -140,6 +141,8 @@ void GeminiAuthorization::OnFetchRecipientId(
     ledger::ExternalWalletAuthorizationCallback callback) {
   if (result == type::Result::NOT_FOUND) {
     BLOG(0, "Unverified User");
+    ledger_->database()->SaveEventLog(log::kKYCRequired,
+                                      constant::kWalletGemini);
     callback(type::Result::NOT_FOUND, {});
     return;
   }
@@ -214,31 +217,21 @@ void GeminiAuthorization::OnClaimWallet(
   }
 
   DCHECK(!recipient_id.empty());
-  const std::string event_text = std::string(constant::kWalletGemini) +
-                                 (!recipient_id.empty() ? "/" : "") +
-                                 recipient_id.substr(0, 5);
 
-  if (result == type::Result::DEVICE_LIMIT_REACHED) {
-    BLOG(0, "Wallet linking limit reached!");
-
-    ledger_->database()->SaveEventLog(log::kDeviceLimitReached, event_text);
-
-    return callback(type::Result::DEVICE_LIMIT_REACHED, {});
-  }
-
-  if (result == type::Result::MISMATCHED_PROVIDER_ACCOUNTS) {
-    BLOG(0, "Mismatched Gemini accounts!");
-
-    ledger_->database()->SaveEventLog(log::kMismatchedProviderAccounts,
-                                      event_text);
-
-    return callback(type::Result::MISMATCHED_PROVIDER_ACCOUNTS, {});
-  }
-
-  if (result != type::Result::LEDGER_OK) {
-    BLOG(0, "Couldn't claim wallet");
-    callback(type::Result::LEDGER_ERROR, {});
-    return;
+  switch (result) {
+    case type::Result::DEVICE_LIMIT_REACHED:
+    case type::Result::MISMATCHED_PROVIDER_ACCOUNTS:
+    case type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE:
+      ledger_->database()->SaveEventLog(
+          log::GetEventLogKeyForLinkingResult(result),
+          constant::kWalletGemini + std::string("/") +
+              recipient_id.substr(0, 5));
+      return callback(result, {});
+    default:
+      if (result != type::Result::LEDGER_OK) {
+        BLOG(0, "Couldn't claim wallet!");
+        return callback(result, {});
+      }
   }
 
   wallet_ptr->address = recipient_id;
@@ -253,7 +246,7 @@ void GeminiAuthorization::OnClaimWallet(
       break;
   }
 
-  ledger_->gemini()->SetWallet(wallet_ptr->Clone());
+  ledger_->gemini()->SetWallet(std::move(wallet_ptr));
   callback(type::Result::LEDGER_OK, {});
 }
 

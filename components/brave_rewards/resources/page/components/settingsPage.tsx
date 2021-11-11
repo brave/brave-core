@@ -240,8 +240,8 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-id-verification-required'}
-            titleText={getLocale('redirectModalKYCRequiredTitle')}
             errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
+            titleText={getLocale('redirectModalKYCRequiredTitle')}
             buttonText={getLocale('redirectModalClose')}
             walletType={walletType}
             onClick={this.actions.hideRedirectModal}
@@ -310,6 +310,18 @@ class SettingsPage extends React.Component<Props, State> {
             errorText={getLocale('redirectModalUpholdRestrictedUserText')}
             titleText={getLocale('redirectModalUpholdRestrictedUserTitle')}
             learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
+      case 'walletOwnershipVerificationFailureModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-wallet-ownership-verification-failure'}
+            errorText={getLocale('redirectModalWalletOwnershipVerificationFailureText').replace('$1', getWalletProviderName(externalWallet))}
+            errorTextLink={'https://community.brave.com'}
+            titleText={getLocale('redirectModalWalletOwnershipVerificationFailureTitle')}
             buttonText={getLocale('redirectModalClose')}
             walletType={walletType}
             onClick={this.actions.hideRedirectModal}

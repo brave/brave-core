@@ -83,19 +83,66 @@ TEST_F(PostClaimGeminiTest, ServerError400) {
   });
 }
 
-TEST_F(PostClaimGeminiTest, ServerError403) {
+TEST_F(PostClaimGeminiTest, ServerError403MismatchedProviderAccounts) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "error linking wallet: unable to link wallets: mismatched provider accounts: wallets do not match",
+    "code": 403
+}
+            )";
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
     EXPECT_EQ(result, type::Result::MISMATCHED_PROVIDER_ACCOUNTS);
+  });
+}
+
+TEST_F(PostClaimGeminiTest, ServerError403RequestSignatureVerificationFailure) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_FORBIDDEN;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "request signature verification failure",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
+    EXPECT_EQ(result, type::Result::REQUEST_SIGNATURE_VERIFICATION_FAILURE);
+  });
+}
+
+TEST_F(PostClaimGeminiTest, ServerError403UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_FORBIDDEN;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 403
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 

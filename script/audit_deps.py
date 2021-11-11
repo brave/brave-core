@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-"""This script runs `npm audit' and `cargo audit' on relevant paths in the repo."""
+"""This script runs `npm audit' and `cargo audit' """ \
+"""on relevant paths in the repo."""
 
 # Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -35,7 +36,8 @@ CARGO_INCLUDE_PATHS = [
 # Ping security team before adding to ignored_npm_advisories
 ignored_npm_advisories = [
     # These are issues in dev depencies, no updates are available yet
-    # To-Do (@jumde) - Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
+    # To-Do (@jumde) -
+    # Remove when https://github.com/brave/brave-browser/issues/18662 is fixed
     1002401,    # https://github.com/advisories/GHSA-93q8-gq69-wqmw
     1002422,    # https://github.com/advisories/GHSA-hqhp-5p83-hx96
     1002475,    # https://github.com/advisories/GHSA-4jqc-8m5r-9rpr
@@ -57,7 +59,8 @@ def main():
     if args.input_dir:
         return audit_path(os.path.abspath(args.input_dir), args)
 
-    for path in [os.path.dirname(os.path.dirname(args.source_root)), args.source_root]:
+    for path in [os.path.dirname(os.path.dirname(args.source_root)), \
+                args.source_root]:
         errors += audit_path(path, args)
 
     for dir_path, dirs, dummy in os.walk(args.source_root):
@@ -178,7 +181,8 @@ def extract_resolutions(result):
         for _, v in advisories.items():
             via = v['via']
             for item in via:
-                if isinstance(item, dict) and item['source'] not in ignored_npm_advisories:
+                if isinstance(item, dict) and \
+                   item['source'] not in ignored_npm_advisories:
                     resolutions.append(item)
     # npm 6 and earlier
     if 'advisories' in result:
