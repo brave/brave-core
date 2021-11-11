@@ -20,6 +20,7 @@ import("//brave/test/testing.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//testing/test.gni")
+import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -398,8 +399,16 @@ test("brave_unit_tests") {
       "//chrome/android:chrome_apk_paks",
       "//chrome/test/android:chrome_java_test_support",
       "//components/gcm_driver/instance_id/android:instance_id_driver_test_support_java",
-      "//v8:v8_external_startup_data_assets",
     ]
+
+    if (use_v8_context_snapshot) {
+      deps += [ "//tools/v8_context_snapshot:v8_context_snapshot_assets" ]
+    }
+
+    if (!use_v8_context_snapshot || include_both_v8_snapshots) {
+      deps += [ "//v8:v8_external_startup_data_assets" ]
+    }
+
     data += [
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
