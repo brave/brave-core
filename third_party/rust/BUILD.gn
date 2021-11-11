@@ -1,0 +1,16 @@
+import("//brave/build/cargo.gni")
+import("//brave/build/rust/rust_cxx.gni")
+
+cargo_build("cxxbridge") {
+  visibility = [ ":*" ]
+  # this doesn't actually cover all the inputs, but since we're not making any
+  # changes to these files we can track based on the version in Cargo.toml
+  inputs = [
+    "cxx/gen/cmd/Cargo.toml",
+    "cxx/gen/cmd/src/lib.rs",
+  ]
+
+  build_path = cxx_build_path
+  output = cxxbridge_path
+  manifest_path = "cxx/gen/cmd/Cargo.toml"
+}
