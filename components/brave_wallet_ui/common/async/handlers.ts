@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { SimpleActionCreator } from 'redux-act'
+import BigNumber from 'bignumber.js'
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
@@ -435,7 +436,7 @@ export const fetchSwapQuoteFactory = (
   setSwapQuote: SimpleActionCreator<SwapResponse>,
   setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
 ) => async (store: Store, payload: SwapParamsPayloadType) => {
-  const swapController = (await getAPIProxy()).swapController
+  const { swapController, assetRatioController } = await getAPIProxy()
 
   const {
     fromAsset,
@@ -477,12 +478,33 @@ export const fetchSwapQuoteFactory = (
         estimatedGas
       } = quote.response
 
+      // Get the latest gas estimates, since we'll force the fastest fees in
+      // order to ensure a swap with minimum slippage.
+      const { estimation: gasEstimates } = await assetRatioController.getGasOracle()
+
+      let maxPriorityFeePerGas
+      let maxFeePerGas
+      if (gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
+        // Bump fast priority fee and max fee by 1 GWei if same as average fees.
+        const maxPriorityFeePerGasBN = new BigNumber(gasEstimates.fastMaxPriorityFeePerGas).plus(10 ** 9)
+        const maxFeePerGasBN = new BigNumber(gasEstimates.fastMaxFeePerGas).plus(10 ** 9)
+
+        maxPriorityFeePerGas = `0x${maxPriorityFeePerGasBN.toString(16)}`
+        maxFeePerGas = `0x${maxFeePerGasBN.toString(16)}`
+      } else if (gasEstimates) {
+        // Always suggest fast gas fees as default
+        maxPriorityFeePerGas = gasEstimates.fastMaxPriorityFeePerGas
+        maxFeePerGas = gasEstimates.fastMaxFeePerGas
+      }
+
       const params = {
         from: accountAddress,
         to,
         value: toWeiHex(value, 0),
         gas: toWeiHex(estimatedGas, 0),
-        data: hexStrToNumberArray(data)
+        data: hexStrToNumberArray(data),
+        maxPriorityFeePerGas,
+        maxFeePerGas
       }
 
       store.dispatch(WalletActions.sendTransaction(params))
