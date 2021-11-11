@@ -10,8 +10,6 @@
 #include "base/feature_override.h"
 #include "base/no_destructor.h"
 
-#include <functional>
-
 namespace base {
 namespace internal {
 namespace {
