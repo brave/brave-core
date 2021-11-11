@@ -963,7 +963,7 @@ if (!is_android) {
 
     sources = [
       "//brave/browser/net/brave_network_audit_browsertest.cc",
-      "//brave/browser/net/brave_network_audit_whitelists.h",
+      "//brave/browser/net/brave_network_audit_allowed_lists.h",
     ]
 
     deps = [

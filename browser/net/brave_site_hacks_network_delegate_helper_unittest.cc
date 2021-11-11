@@ -17,7 +17,7 @@
 
 using brave::ResponseCallback;
 
-TEST(BraveSiteHacksNetworkDelegateHelperTest, NOTUAWhitelistedTest) {
+TEST(BraveSiteHacksNetworkDelegateHelperTest, UANotAllowedTest) {
   const std::vector<const GURL> urls(
       {GURL("https://brianbondy.com"), GURL("https://bravecombo.com"),
        GURL("https://brave.example.com"),

@@ -20,7 +20,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  const std::vector<std::string> whitelisted_domains = {
+  const std::vector<std::string> allowed_domains = {
       kExtensionUpdaterDomain, GURL(UPDATER_DEV_ENDPOINT).host(),
       GURL(UPDATER_PROD_ENDPOINT).host()};
 
@@ -28,7 +28,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
 
   if (url.SchemeIs(url::kHttpsScheme)) {
     if (std::any_of(
-            whitelisted_domains.begin(), whitelisted_domains.end(),
+            allowed_domains.begin(), allowed_domains.end(),
             [&url](std::string domain) { return url.DomainIs(domain); })) {
       headers->SetHeader(kBraveServicesKeyHeader, BRAVE_SERVICES_KEY);
     }
