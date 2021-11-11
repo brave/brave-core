@@ -43,7 +43,6 @@ std::unique_ptr<views::ImageView> TranslateBubbleView::CreateTranslateIcon() {
 #undef IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE
 #define IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE \
   GetTitleBeforeTranslateTitle()
-#define MAKE_TRANSLATE_BUBBLE_VIEW_ MakeTranslateBubbleView
 #endif
 #define MAKE_BRAVE_TRANSLATE_BUBBLE_VIEW MakeTranslateBubbleView
 #define TranslateBubbleView ChromiumTranslateBubbleView
