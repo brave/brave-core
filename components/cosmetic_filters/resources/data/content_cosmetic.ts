@@ -465,7 +465,6 @@ const pumpCosmeticFilterQueues = () => {
       // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
       // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
       queueIsSleeping = false
-      // tslint:disable-next-line:no-use-before-declare
       pumpCosmeticFilterQueuesOnIdle()
     }, pumpIntervalMinMs)
   }
