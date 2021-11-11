@@ -5,8 +5,7 @@
 
 #include <random>
 
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
-#include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "base/compiler_specific.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -54,12 +53,10 @@ String PluginReplacementName(std::mt19937_64* prng) {
 void FarblePlugins(DOMPluginArray* owner,
                    PluginData* data,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
-  if (!owner->DomWindow())
-    return;
-  LocalFrame* frame = owner->DomWindow()->GetFrame();
-  if (!frame || !frame->GetContentSettingsClient())
-    return;
-  switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
+  // |owner| is guaranteed to be non-null here.
+  // |owner->DomWindow()| might be null but function can handle it.
+  switch (brave::GetBraveFarblingLevelFor(owner->DomWindow(),
+                                          BraveFarblingLevel::OFF)) {
     case BraveFarblingLevel::OFF: {
       break;
     }
@@ -67,9 +64,10 @@ void FarblePlugins(DOMPluginArray* owner,
       dom_plugins->clear();
       // "Maximum" behavior is clear existing plugins + "balanced" behavior,
       // so fall through here.
-      U_FALLTHROUGH;
+      FALLTHROUGH;
     }
     case BraveFarblingLevel::BALANCED: {
+      LocalFrame* frame = owner->DomWindow()->GetFrame();
       std::mt19937_64 prng = BraveSessionCache::From(*(frame->DomWindow()))
                                  .MakePseudoRandomGenerator();
       // The item() method will populate plugin info if any item of

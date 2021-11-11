@@ -11,6 +11,7 @@
 #include <random>
 
 #include "base/callback.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 
 namespace blink {
 class WebContentSettingsClient;
@@ -27,6 +28,9 @@ typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
+CORE_EXPORT BraveFarblingLevel
+GetBraveFarblingLevelFor(ExecutionContext* context,
+                         BraveFarblingLevel default_value);
 
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
