@@ -4,7 +4,6 @@
 
 import("//brave/build/rust/config.gni")
 import("//build/config/clang/clang.gni")
-import("//build/config/sysroot.gni")
 
 if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
@@ -126,7 +125,12 @@ template("cargo_build") {
     }
 
     if (defined(rust_flags)) {
-      args += [ "--rust_flags=$rust_flags" ]
+      foreach(flag, rust_flags) {
+        args += [
+          "--rust_flag",
+          flag,
+        ]
+      }
     }
   }
 
