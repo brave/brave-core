@@ -62,13 +62,11 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
               <p>
               {
                 errorTextLinkTags
-                ?
-                  <>
+                ? <>
                     {errorTextLinkTags.beforeTag}
                       {
                         errorTextLink
-                        ?
-                          <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
+                        ? <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
                             {errorTextLinkTags.duringTag}
                           </a>
                         : errorTextLinkTags.duringTag
