@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { getLocale } from '../../../../common/locale'
-import { uint8ArrayToHexStr } from '../../../utils/hex-utils'
+import { numberArrayToHexStr } from '../../../utils/hex-utils'
 import { TransactionInfo, TransactionType } from '../../../constants/types'
 import { CodeSnippet, CodeSnippetText, DetailRow, DetailText, TransactionText } from './style'
 
@@ -46,7 +46,7 @@ const TransactionDetailBox = (props: Props) => {
             <CodeSnippet>
               <code>
                 <CodeSnippetText>
-                  {`0x${uint8ArrayToHexStr(data)}`}
+                  {`0x${numberArrayToHexStr(data)}`}
                 </CodeSnippetText>
               </code>
             </CodeSnippet>

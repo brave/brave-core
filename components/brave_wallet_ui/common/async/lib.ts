@@ -13,7 +13,7 @@ import {
   AccountTransactions,
   AssetPriceTimeframe,
   EthereumChain,
-  TokenInfo,
+  ERCToken,
   WalletAccountType
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -22,13 +22,16 @@ import { GetNetworkInfo } from '../../utils/network-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 
+import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
+import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
+
 export const getERC20Allowance = (
   contractAddress: string,
   ownerAddress: string,
   spenderAddress: string
 ): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const controller = (await getAPIProxy()).ethJsonRpcController
+    const controller = getAPIProxy().ethJsonRpcController
     const result = await controller.getERC20TokenAllowance(
       contractAddress,
       ownerAddress,
@@ -45,19 +48,21 @@ export const getERC20Allowance = (
 
 export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promise<HardwareWalletAccount[]> => {
   return new Promise(async (resolve, reject) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const keyring = await apiProxy.getKeyringsByType(opts.hardware)
-    keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
-      .then(async (accounts: HardwareWalletAccount[]) => {
-        resolve(accounts)
-      })
-      .catch(reject)
+    if (keyring instanceof LedgerBridgeKeyring || keyring instanceof TrezorBridgeKeyring) {
+      keyring.getAccounts(opts.startIndex, opts.stopIndex, opts.scheme)
+        .then((accounts: HardwareWalletAccount[]) => {
+          resolve(accounts)
+        })
+        .catch(reject)
+    }
   })
 }
 
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const controller = (await getAPIProxy()).ethJsonRpcController
+    const controller = getAPIProxy().ethJsonRpcController
     const result = await controller.getBalance(address)
     if (result.success) {
       resolve(formatBalance(result.balance, 18))
@@ -68,17 +73,17 @@ export const getBalance = (address: string): Promise<string> => {
 }
 
 export async function findENSAddress (address: string) {
-  const apiProxy = await getAPIProxy()
+  const apiProxy = getAPIProxy()
   return apiProxy.ethJsonRpcController.ensGetEthAddr(address)
 }
 
 export async function findUnstoppableDomainAddress (address: string) {
-  const apiProxy = await getAPIProxy()
+  const apiProxy = getAPIProxy()
   return apiProxy.ethJsonRpcController.unstoppableDomainsGetEthAddr(address)
 }
 
 export async function findHardwareAccountInfo (address: string) {
-  const apiProxy = await getAPIProxy()
+  const apiProxy = getAPIProxy()
   const result = await apiProxy.walletHandler.getWalletInfo()
   for (const account of result.accountInfos) {
     if (!account.hardware) {
@@ -93,7 +98,7 @@ export async function findHardwareAccountInfo (address: string) {
 
 export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { wallet: { accounts, selectedPortfolioTimeline } } = getState()
 
     const { braveWalletService, assetRatioController, ethJsonRpcController } = apiProxy
@@ -101,7 +106,7 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
     const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
 
     // Selected Network's Native Asset
-    const nativeAsset: TokenInfo = {
+    const nativeAsset: ERCToken = {
       contractAddress: '',
       decimals: currentNetwork.decimals,
       isErc20: false,
@@ -109,10 +114,11 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
       logo: currentNetwork.iconUrls[0] ?? '',
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
-      visible: false
+      visible: false,
+      tokenId: ''
     }
 
-    const visibleTokens: TokenInfo[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
+    const visibleTokens: ERCToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     // Update ETH Balances
@@ -165,7 +171,7 @@ export function refreshBalancesAndPrices (currentNetwork: EthereumChain) {
 
 export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceTimeframe) {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { assetRatioController } = apiProxy
 
     const { wallet: { accounts } } = getState()
@@ -187,7 +193,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: AssetPriceT
 
 export function refreshTransactionHistory (address?: string) {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { ethTxController } = apiProxy
 
     const { wallet: { accounts, transactions } } = getState()
@@ -212,7 +218,7 @@ export function refreshTransactionHistory (address?: string) {
 
 export function refreshNetworkInfo () {
   return async (dispatch: Dispatch) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { ethJsonRpcController } = apiProxy
 
     const networkList = await ethJsonRpcController.getAllNetworks()
@@ -226,10 +232,11 @@ export function refreshNetworkInfo () {
 
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { keyringController, walletHandler } = apiProxy
 
-    const walletInfo = await walletHandler.getWalletInfo()
+    const walletInfoBase = await walletHandler.getWalletInfo()
+    const walletInfo = { ...walletInfoBase, visibleTokens: [], selectedAccount: '' }
 
     // Get/Set selectedAccount
     if (!walletInfo.isWalletCreated) {
@@ -268,7 +275,7 @@ export function refreshKeyringInfo () {
 
 export function refreshSitePermissions () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = await getAPIProxy()
+    const apiProxy = getAPIProxy()
     const { braveWalletService } = apiProxy
 
     const { wallet: { accounts, activeOrigin } } = getState()

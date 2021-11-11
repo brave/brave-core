@@ -12,6 +12,7 @@ group("storybook") {
   # they will be generated before storybook is compiled.
   deps = [
     "//brave/components/brave_vpn:mojom_js",
+    "//brave/components/brave_wallet/common:mojom_js",
     "//ui/webui/resources/js:cr.m",
   ]
 }

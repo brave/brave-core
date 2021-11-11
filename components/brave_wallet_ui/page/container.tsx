@@ -33,7 +33,7 @@ import {
   AssetPriceTimeframe,
   AccountAssetOptionType,
   WalletAccountType,
-  TokenInfo,
+  ERCToken,
   UpdateAccountNamePayloadType,
   EthereumChain,
   WalletRoutes,
@@ -46,7 +46,7 @@ import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { BuyAssetUrl } from '../utils/buy-asset-url'
-import { convertMojoTimeToJS } from '../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
 import { WyreAccountAssetOptions } from '../options/wyre-asset-options'
 import {
   HardwareWalletAccount
@@ -270,7 +270,7 @@ function Container (props: Props) {
   }, [mnemonic])
 
   // This will scrape all of the user's accounts and combine the asset balances for a single asset
-  const fullAssetBalance = (asset: TokenInfo) => {
+  const fullAssetBalance = (asset: ERCToken) => {
     const amounts = accounts.map((account) => {
       let balance = 0
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -286,7 +286,7 @@ function Container (props: Props) {
   }
 
   // This will scrape all of the user's accounts and combine the fiat value for a single asset
-  const fullAssetFiatBalance = (asset: TokenInfo) => {
+  const fullAssetFiatBalance = (asset: ERCToken) => {
     const amounts = accounts.map((account) => {
       let fiatBalance = 0
       const found = account.tokens.find((token) => token.asset.contractAddress === asset.contractAddress)
@@ -310,7 +310,7 @@ function Container (props: Props) {
     }))
   }, [userVisibleTokenOptions, accounts])
 
-  const onSelectAsset = (asset: TokenInfo) => {
+  const onSelectAsset = (asset: ERCToken) => {
     props.walletPageActions.selectAsset({ asset: asset, timeFrame: selectedTimeline })
   }
 
@@ -336,7 +336,7 @@ function Container (props: Props) {
   const formatedPriceHistory = React.useMemo(() => {
     const formated = selectedAssetPriceHistory.map((obj) => {
       return {
-        date: convertMojoTimeToJS(obj.date),
+        date: mojoTimeDeltaToJSDate(obj.date),
         close: Number(obj.price)
       }
     })
@@ -422,21 +422,21 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (token: TokenInfo, isVisible: boolean) => {
+  const onSetUserAssetVisible = (token: ERCToken, isVisible: boolean) => {
     props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
   }
 
-  const onAddUserAsset = (token: TokenInfo) => {
+  const onAddUserAsset = (token: ERCToken) => {
     props.walletActions.addUserAsset({
       token: {
         ...token,
-        logo: stripERC20TokenImageURL(token.logo)
+        logo: stripERC20TokenImageURL(token.logo) || ''
       },
       chainId: selectedNetwork.chainId
     })
   }
 
-  const onRemoveUserAsset = (token: TokenInfo) => {
+  const onRemoveUserAsset = (token: ERCToken) => {
     props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
   }
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppObjectType, AppsListType } from '../../../constants/types'
+import { AppItem, AppsListType } from '../../../constants/types'
 import { NavButton } from '../../extension/'
 import { AppListItem } from '../'
 import { getLocale } from '../../../../common/locale'
@@ -13,19 +13,19 @@ import {
 
 export interface Props {
   list: AppsListType[]
-  favApps: AppObjectType[]
+  favApps: AppItem[]
   action: () => void
-  addToFav: (app: AppObjectType) => void
-  removeFromFav: (app: AppObjectType) => void
+  addToFav: (app: AppItem) => void
+  removeFromFav: (app: AppItem) => void
 }
 
 export default class AppList extends React.PureComponent<Props> {
 
-  checkIsSelected = (app: AppObjectType) => {
+  checkIsSelected = (app: AppItem) => {
     return this.props.favApps.some((a) => a.name === app.name)
   }
 
-  toggleFavorite = (app: AppObjectType) => () => {
+  toggleFavorite = (app: AppItem) => () => {
     if (this.checkIsSelected(app)) {
       this.props.removeFromFav(app)
     } else {

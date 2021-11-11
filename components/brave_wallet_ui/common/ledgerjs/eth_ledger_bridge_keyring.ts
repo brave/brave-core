@@ -11,7 +11,7 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
-  kLedgerHardwareVendor, SignatureVRS
+  LEDGER_HARDWARE_VENDOR, SignatureVRS
 } from '../../constants/types'
 
 import Eth from '@ledgerhq/hw-app-eth'
@@ -25,7 +25,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   type = () => {
-    return kLedgerHardwareVendor
+    return LEDGER_HARDWARE_VENDOR
   }
 
   getAccounts = (from: number, to: number, scheme: string) => {

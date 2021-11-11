@@ -17,24 +17,27 @@ export default class InteractionNotifier {
     }
   }
 
-  beginWatchingForInteraction (timeMs: number, onInteractionInterval: () => unknown) {
-    this.intervalId = setInterval(
-      () => {
-        if (this.userHasInteracted) {
-          this.userHasInteracted = false
-          onInteractionInterval()
-        }
-      }, timeMs)
-    window.addEventListener('mousemove', this.handleInteraction)
-    window.addEventListener('keydown', this.handleInteraction)
-    window.addEventListener('focus', this.handleInteraction, true)
-    window.addEventListener('scroll', this.handleInteraction, true)
-    document.addEventListener('visibilitychange', this.handleVisibilityChange)
+  beginWatchingForInteraction (timeMs: number, isWalletLocked: boolean, onInteractionInterval: () => unknown) {
+    if (!isWalletLocked && !this.intervalId) {
+      this.intervalId = setInterval(
+        () => {
+          if (this.userHasInteracted) {
+            this.userHasInteracted = false
+            onInteractionInterval()
+          }
+        }, timeMs)
+      window.addEventListener('mousemove', this.handleInteraction)
+      window.addEventListener('keydown', this.handleInteraction)
+      window.addEventListener('focus', this.handleInteraction, true)
+      window.addEventListener('scroll', this.handleInteraction, true)
+      document.addEventListener('visibilitychange', this.handleVisibilityChange)
+    }
   }
 
   stopWatchingForInteraction () {
     if (this.intervalId) {
       clearTimeout(this.intervalId)
+      this.intervalId = undefined
       window.removeEventListener('mousemove', this.handleInteraction)
       window.removeEventListener('keydown', this.handleInteraction)
       window.removeEventListener('focus', this.handleInteraction, true)

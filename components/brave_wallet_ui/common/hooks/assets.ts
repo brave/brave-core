@@ -7,17 +7,17 @@ import * as React from 'react'
 
 import {
   AccountAssetOptionType,
-  TokenInfo,
+  ERCToken,
   WalletAccountType
 } from '../../constants/types'
 import { ETH } from '../../options/asset-options'
 
 export default function useAssets (
   selectedAccount: WalletAccountType,
-  fullTokenList: TokenInfo[],
-  userVisibleTokensInfo: TokenInfo[]
+  fullTokenList: ERCToken[],
+  userVisibleTokensInfo: ERCToken[]
 ) {
-  const tokenOptions: TokenInfo[] = React.useMemo(
+  const tokenOptions: ERCToken[] = React.useMemo(
     () =>
       fullTokenList.map((token) => ({
         ...token,
@@ -26,7 +26,7 @@ export default function useAssets (
     [fullTokenList]
   )
 
-  const userVisibleTokenOptions: TokenInfo[] = React.useMemo(
+  const userVisibleTokenOptions: ERCToken[] = React.useMemo(
     () =>
       userVisibleTokensInfo.map((token) => ({
         ...token,

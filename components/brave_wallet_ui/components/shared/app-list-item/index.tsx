@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppObjectType } from '../../../constants/types'
+import { AppItem } from '../../../constants/types'
 
 // Styled Components
 import {
@@ -15,7 +15,7 @@ import {
 } from './style'
 
 export interface Props {
-  appInfo: AppObjectType
+  appInfo: AppItem
   isStared: boolean
   toggleFavorite: () => void
 }

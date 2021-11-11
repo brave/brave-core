@@ -3,14 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { APIProxyControllers } from '../../constants/types'
+import WalletApiProxy from '../wallet_api_proxy'
+import getWalletPanelApiProxy from '../../panel/wallet_panel_api_proxy'
+import getWalletPageApiProxy from '../../page/wallet_page_api_proxy'
 
-export default async function getAPIProxy (): Promise<APIProxyControllers> {
-  let api
-  if (window.location.hostname === 'wallet-panel.top-chrome') {
-    api = await import('../../panel/wallet_panel_api_proxy.js')
-  } else {
-    api = await import('../../page/wallet_page_api_proxy.js')
-  }
-  return api.default.getInstance()
+export default function getAPIProxy (): WalletApiProxy {
+  return window.location.hostname === 'wallet-panel.top-chrome'
+    ? getWalletPanelApiProxy() : getWalletPageApiProxy()
 }

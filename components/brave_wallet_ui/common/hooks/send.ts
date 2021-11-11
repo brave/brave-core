@@ -12,7 +12,7 @@ import {
   ER20TransferParams,
   SendTransactionParams,
   ERC721TransferFromParams,
-  TokenInfo
+  ERCToken
 } from '../../constants/types'
 import { isValidAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
@@ -26,7 +26,7 @@ export default function useSend (
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
-  fullTokenList: TokenInfo[]
+  fullTokenList: ERCToken[]
 ) {
 
   const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
