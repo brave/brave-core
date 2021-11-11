@@ -2842,6 +2842,11 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
                      std::move(callback)));
 }
 
+bool RewardsServiceImpl::IsAutoContributeSupported() const {
+  // Auto-contribute is currently not supported in bitFlyer regions
+  return !IsBitFlyerRegion();
+}
+
 std::string RewardsServiceImpl::GetLegacyWallet() {
   auto* dict = profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 

@@ -308,6 +308,8 @@ class RewardsService : public KeyedService {
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
+  virtual bool IsAutoContributeSupported() const = 0;
+
   virtual void GetExternalWallet(GetExternalWalletCallback callback) = 0;
 
   virtual const std::vector<std::string> GetExternalWalletProviders() const = 0;

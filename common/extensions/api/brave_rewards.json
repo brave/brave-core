@@ -1071,6 +1071,23 @@
         ]
       },
       {
+        "name": "isAutoContributeSupported",
+        "type": "function",
+        "description": "Determines whether the current profile supports auto-contribute",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "fetchBalance",
         "type": "function",
         "description": "Fetch balance",
