@@ -1,0 +1,5 @@
+CI/run-audit-deps:
+- package.json
+- package-lock.json
+- "**/Cargo.toml"
+- "**/Cargo.lock"
