@@ -94,6 +94,8 @@ base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
+  CHECK(brave_sync::crypto::IsPassphraseValid(sync_code));
+
   return base::android::ConvertUTF8ToJavaString(env, sync_code);
 }
 
