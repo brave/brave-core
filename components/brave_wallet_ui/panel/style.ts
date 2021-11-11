@@ -21,6 +21,6 @@ export const SendWrapper = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
-  padding: 0px 24px;
+  padding: 0px 24px 12px;
   box-sizing: border-box;
 `
