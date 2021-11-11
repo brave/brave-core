@@ -35,6 +35,10 @@
 
 namespace mini_installer {
 
+namespace {
+const size_t kStandardReferralCodeLen = 6;
+}  // namespace
+
 // Coverts a string in place to uppercase
 void SafeStrASCIIUpper(wchar_t* str, size_t size) {
   if (!str || !size)
@@ -58,29 +62,30 @@ bool ParseStandardReferralCode(const wchar_t* filename,
   if (*scan++ != L'-')
     return false;
 
-  if (anchor - scan + 1 != StandardReferralCodeLen)
+  if (anchor - scan + 1 != kStandardReferralCodeLen)
     return false;
 
   const wchar_t* ref_code = scan;
-  wchar_t ref_code_normalized[StandardReferralCodeLen + 1];
+  wchar_t ref_code_normalized[kStandardReferralCodeLen + 1];
 
   // Ensure that first half of referral code is alphabetic.
-  for (int i = 0; i < StandardReferralCodeLen / 2; ++i) {
+  for (size_t i = 0; i < kStandardReferralCodeLen / 2; ++i) {
     if ((ref_code[i] < L'a' || ref_code[i] > L'z') &&
         (ref_code[i] < L'A' || ref_code[i] > L'Z'))
       return false;
   }
 
   // Ensure that second half of referral code is numeric.
-  for (int i = StandardReferralCodeLen / 2; i < StandardReferralCodeLen; ++i) {
+  for (size_t i = kStandardReferralCodeLen / 2; i < kStandardReferralCodeLen;
+       ++i) {
     if (ref_code[i] < L'0' || ref_code[i] > L'9')
       return false;
   }
 
-  if (!SafeStrCopy(ref_code_normalized, StandardReferralCodeLen + 1, ref_code))
+  if (!SafeStrCopy(ref_code_normalized, kStandardReferralCodeLen + 1, ref_code))
     return false;
 
-  SafeStrASCIIUpper(ref_code_normalized, StandardReferralCodeLen);
+  SafeStrASCIIUpper(ref_code_normalized, kStandardReferralCodeLen);
 
   if (!referral_code->assign(ref_code_normalized))
     return false;
