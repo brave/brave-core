@@ -21,7 +21,7 @@ static_library("browser") {
     "switches.h",
   ]
 
-  public_deps = [ "//brave/build/rust" ]
+  public_deps = [ "brave-rewards-cxx/src" ]
 
   deps = [
     "//base",
