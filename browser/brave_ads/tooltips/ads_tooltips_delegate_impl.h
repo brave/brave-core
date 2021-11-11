@@ -26,7 +26,7 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
   void ShowCaptchaTooltip(
       const std::string& payment_id,
       const std::string& captcha_id,
-      bool enable_cancel_button,
+      bool include_cancel_button,
       ShowScheduledCaptchaCallback show_captcha_callback,
       SnoozeScheduledCaptchaCallback snooze_captcha_callback) override;
   void CloseCaptchaTooltip() override;
