@@ -25,22 +25,6 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.ethTxController.$.bindNewPipeAndPassReceiver(),
         this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
-
-  showUI () {
-    this.panelHandler.showUI()
-  }
-
-  closeUI () {
-    this.panelHandler.closeUI()
-  }
-
-  connectToSite (accounts: string[], origin: string, tabId: number) {
-    this.panelHandler.connectToSite(accounts, origin, tabId)
-  }
-
-  cancelConnectToSite (origin: string, tabId: number) {
-    this.panelHandler.cancelConnectToSite(origin, tabId)
-  }
 }
 
 let walletPanelApiProxyInstance: WalletPanelApiProxy
