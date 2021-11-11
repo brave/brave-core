@@ -298,7 +298,14 @@ const PortfolioTransactionItem = (props: Props) => {
       </TransactionDetailRow>
       <StatusRow>
         <StatusBubble status={transactionDetails.status} />
-        <DetailTextDarkBold>{TransactionStatus[transactionDetails.status]}</DetailTextDarkBold>
+        <DetailTextDarkBold>
+          {transactionDetails.status === TransactionStatus.Unapproved && getLocale('braveWalletTransactionStatusUnapproved')}
+          {transactionDetails.status === TransactionStatus.Approved && getLocale('braveWalletTransactionStatusApproved')}
+          {transactionDetails.status === TransactionStatus.Rejected && getLocale('braveWalletTransactionStatusRejected')}
+          {transactionDetails.status === TransactionStatus.Submitted && getLocale('braveWalletTransactionStatusSubmitted')}
+          {transactionDetails.status === TransactionStatus.Confirmed && getLocale('braveWalletTransactionStatusConfirmed')}
+          {transactionDetails.status === TransactionStatus.Error && getLocale('braveWalletTransactionStatusError')}
+        </DetailTextDarkBold>
       </StatusRow>
       <DetailRow>
         <BalanceColumn>

@@ -283,6 +283,12 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RETRY" desc="Retry transaction button">Retry transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER" desc="Transactions placeholder">Transactions will appear here</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND" desc="Transaction not found error">Transaction not found</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED" desc="Status label for unapproved transaction">Unapproved</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_APPROVED" desc="Status label for approved transaction">Approved</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_REJECTED" desc="Status label for rejected transaction">Rejected</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED" desc="Status label for submitted transaction">Submitted</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED" desc="Status label for confirmed transaction">Confirmed</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_ERROR" desc="Status label for error transaction">Error</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE1" desc="Edit gas panel max fee label">Max priority fee</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE2" desc="Edit gas panel edit gas button">Edit gas</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_DESCRIPTION" desc="Edit gas panel description">While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.</message>
