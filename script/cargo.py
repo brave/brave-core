@@ -1,9 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import argparse
+import optparse
 import os
 import sys
 import subprocess
@@ -45,7 +46,7 @@ def build(args):
         env['NDEBUG'] = "1"
 
     if args.rust_flags is not None:
-        env['RUSTFLAGS'] = args.rust_flags
+        env['RUSTFLAGS'] = " ".join(args.rust_flags)
 
     env["RUST_BACKTRACE"] = "1"
 
@@ -71,24 +72,24 @@ def build(args):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Cargo')
+    parser = optparse.OptionParser(description='Cargo')
 
-    parser.add_argument('--rustup_path', required=True)
-    parser.add_argument('--cargo_path', required=True)
-    parser.add_argument('--manifest_path', required=True)
-    parser.add_argument('--build_path', required=True)
-    parser.add_argument('--target', required=True)
-    parser.add_argument('--toolchain')
-    parser.add_argument('--is_debug', required=True)
-    parser.add_argument('--mac_deployment_target')
-    parser.add_argument('--rust_flags')
+    parser.add_option('--rustup_path')
+    parser.add_option('--cargo_path')
+    parser.add_option('--manifest_path')
+    parser.add_option('--build_path')
+    parser.add_option('--target')
+    parser.add_option('--toolchain')
+    parser.add_option('--is_debug')
+    parser.add_option('--mac_deployment_target')
+    parser.add_option("--rust_flag", action="append", dest="rust_flags", default=[])
 
-    args = parser.parse_args()
+    options, args = parser.parse_args()
 
-    if (args.is_debug != "false" and args.is_debug != "true"):
+    if (options.is_debug != "false" and options.is_debug != "true"):
         raise Exception("is_debug argument was not specified correctly")
 
-    return args
+    return options
 
 
 def main():
