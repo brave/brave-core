@@ -25,5 +25,6 @@ provideStrings({
   braveVpnFeature2: 'Protects you from unwanted network connections',
   braveVpnFeature3: 'Choose your VPN location',
   braveVpnFeature4: 'Fast and unlimited up to 100 Mbps',
-  braveVpnFeature5: '24/7 support'
+  braveVpnFeature5: '24/7 support',
+  braveVpnLoading: 'One moment while loading…'
 })

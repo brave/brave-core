@@ -19,10 +19,13 @@ export type ConnectToNewRegionPayload = {
   region: Region
 }
 
-export type InitUIMainPayload = {
+export type showMainViewPayload = {
   currentRegion: Region
   regions: Region[]
   connectionStatus: ConnectionState
+}
+
+export type initializedPayload = {
   productUrls: ProductUrls
 }
 
@@ -32,8 +35,10 @@ export const connectionFailed = createAction('connectionFailed')
 export const retryConnect = createAction('retryConnect')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
+export const showSellView = createAction('showSellView')
 
-export const initUIMain = createAction<InitUIMainPayload>('initUIMain')
+export const initialized = createAction<initializedPayload>('initialized')
+export const showMainView = createAction<showMainViewPayload>('showMainView')
 export const toggleRegionSelector = createAction<ToggleRegionSelectorPayload>('toggleRegionSelector', (isSelectingRegion) => ({ isSelectingRegion }))
 export const connectionStateChanged = createAction<ConnectionStatePayload>('connectionStateChanged')
 export const connectToNewRegion = createAction<ConnectToNewRegionPayload>('connectToNewRegion', (region) => ({ region }))

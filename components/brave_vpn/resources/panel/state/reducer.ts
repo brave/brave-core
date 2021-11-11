@@ -16,7 +16,7 @@ type RootState = {
   regions?: Region[]
   currentRegion?: Region
   productUrls?: ProductUrls
-  currentView: ViewType
+  currentView: ViewType | null
 }
 
 const defaultState: RootState = {
@@ -25,7 +25,7 @@ const defaultState: RootState = {
   connectionStatus: ConnectionState.DISCONNECTED,
   regions: undefined,
   currentRegion: undefined,
-  currentView: ViewType.Sell
+  currentView: null
 }
 
 const reducer = createReducer<RootState>({}, defaultState)
@@ -82,15 +82,35 @@ reducer.on(Actions.retryConnect, (state): RootState => {
   }
 })
 
+reducer.on(Actions.purchaseConfirmed, (state): RootState => {
+  return {
+    ...state,
+    currentView: null
+  }
+})
+
+reducer.on(Actions.showSellView, (state): RootState => {
+  return {
+    ...state,
+    currentView: ViewType.Sell
+  }
+})
+
+reducer.on(Actions.initialized, (state, payload): RootState => {
+  return {
+    ...state,
+    productUrls: payload.productUrls
+  }
+})
+
 // TODO(nullhook): The handler doesnt throw an error unless if explicitly
 // defined. Update the type internally so it can be infered.
-reducer.on(Actions.initUIMain, (state, payload): RootState => {
+reducer.on(Actions.showMainView, (state, payload): RootState => {
   return {
     ...state,
     currentRegion: payload.currentRegion,
     regions: payload.regions,
     connectionStatus: payload.connectionStatus,
-    productUrls: payload.productUrls,
     currentView: ViewType.Main
   }
 })

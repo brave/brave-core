@@ -16,6 +16,12 @@ function SellPanel () {
     getLocale('braveVpnFeature5')
   ]), [])
 
+  const handleClick = () => {
+    if (!productUrls) return
+    const url = new URL('?intent=checkout&product=vpn', productUrls.manage)
+    window.open(url, '_blank')
+  }
+
   return (
     <S.Box>
       <S.PanelContent>
@@ -40,6 +46,7 @@ function SellPanel () {
             type='default'
             brand='rewards'
             text={getLocale('braveVpnBuy').replace('$1', '$4.99/mo')}
+            onClick={handleClick}
           />
           <a href={productUrls?.manage} target='_blank'>
             {getLocale('braveVpnPurchased')}
