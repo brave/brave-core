@@ -39,26 +39,6 @@ export default class WalletApiProxy {
     this.ethJsonRpcController.addObserver(ethJsonRpcControllerObserverReceiver.$.bindNewPipeAndPassRemote())
   }
 
-  makeTxData (nonce: string, gasPrice: string, gasLimit: string, to: string, value: string, data: number[]) {
-    const txData = new BraveWallet.TxData()
-    txData.nonce = nonce
-    txData.gasPrice = gasPrice
-    txData.gasLimit = gasLimit
-    txData.to = to
-    txData.value = value
-    txData.data = data
-    return txData
-  }
-
-  makeEIP1559TxData (chainId: string, nonce: string, maxPriorityFeePerGas: string, maxFeePerGas: string, gasLimit: string, to: string, value: string, data: number[]) {
-    const txData = new BraveWallet.TxData1559()
-    txData.baseData = this.makeTxData(nonce, '', gasLimit, to, value, data)
-    txData.maxPriorityFeePerGas = maxPriorityFeePerGas
-    txData.maxFeePerGas = maxFeePerGas
-    txData.chainId = chainId
-    return txData
-  }
-
   getKeyringsByType (type: string) {
     if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
       return this.ledgerHardwareKeyring
