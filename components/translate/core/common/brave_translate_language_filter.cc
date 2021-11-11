@@ -7,6 +7,7 @@
 
 #include "base/containers/contains.h"
 #include "base/strings/string_piece.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
 
 namespace translate {
 namespace {
@@ -20,10 +21,14 @@ constexpr base::StringPiece kTargetLanguages[] = {"de", "en", "es", "et", "ru"};
 }  // namespace
 
 bool IsSourceLanguageCodeSupported(const std::string& lang_code) {
+  if (!IsBraveTranslateGoAvailable())
+    return true;
   return base::Contains(kSourceLanguages, lang_code);
 }
 
 bool IsTargetLanguageCodeSupported(const std::string& lang_code) {
+  if (!IsBraveTranslateGoAvailable())
+    return true;
   return base::Contains(kTargetLanguages, lang_code);
 }
 
