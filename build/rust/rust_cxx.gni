@@ -4,6 +4,9 @@
 
 import("//brave/build/cargo.gni")
 
+cxx_build_path = "$root_build_dir/cxxbridge"
+cxxbridge_path = "$cxx_build_path/$rustc_target/release/cxxbridge"
+
 set_defaults("rust_cxx") {
   native_header_deps = []
 }
@@ -61,8 +64,7 @@ template("rust_cxx") {
     output_h = "{{source_gen_dir}}/{{source_file_part}}.h"
     output_cc = "{{source_gen_dir}}/{{source_file_part}}.cc"
 
-    # TODO(bridiver) get version from python
-    cxxbridge_executable = rebase_path("${rustup_path}/0.1.8/bin/cxxbridge")
+    cxxbridge_executable = rebase_path(cxxbridge_path)
     if (is_win) {
       cxxbridge_executable = rebase_path("${cxxbridge_executable}.exe")
     }
@@ -85,6 +87,10 @@ template("rust_cxx") {
       "--cc",
       output_cc,
       "{{source}}",
+    ]
+
+    deps = [
+      "//brave/third_party/rust:cxxbridge",
     ]
 
     # Anyone building the header files we generate needs to have
