@@ -1,0 +1,14 @@
+diff --git a/tools/typescript/tsconfig_definitions_base.json b/tools/typescript/tsconfig_definitions_base.json
+index 5787be425372bd467620126b486afc0875bcf1a8..e6a3cffda672f63b576df09aaa4a5b2311e30f44 100644
+--- a/tools/typescript/tsconfig_definitions_base.json
++++ b/tools/typescript/tsconfig_definitions_base.json
+@@ -9,6 +9,8 @@
+     "emitDeclarationOnly": true,
+     "pretty": true,
+     "removeComments": true,
+-    "listEmittedFiles": true
++    "listEmittedFiles": true,
++
++    "moduleResolution": "node"
+   }
+ }
