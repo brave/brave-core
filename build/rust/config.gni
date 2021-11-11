@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/config.gni")
 import("//build/config/sysroot.gni")
 
@@ -10,12 +11,39 @@ rustc_target = ""
 rustc_toolchain = ""
 cargo_lib_prefix = ""
 cargo_lib_suffix = ""
-rust_flags = ""
+
+# Rust compiler flags setup.
+# ---------------------------
+rust_flags = [
+  # Overflow checks are optional in Rust, but even if switched
+  # off they do not cause undefined behavior (the overflowing
+  # behavior is defined). Because containers are bounds-checked
+  # in safe Rust, they also can't provoke buffer overflows.
+  # As such these checks may be less important in Rust than C++.
+  # But in (simplistic) testing they have negligible performance
+  # overhead, and this helps to provide consistent behavior
+  # between different configurations, so we'll keep them on until
+  # we discover a reason to turn them off.
+  "-Coverflow-checks=on",
+]
+
+if (!use_thin_lto) {
+  # Optimization - don't include bitcode if it won't be used.
+  rust_flags += [ "-Cembed-bitcode=no" ]
+}
+
+if (is_official_build) {
+  if (optimize_for_size) {
+    rust_flags += [ "-Copt-level=s" ]
+  } else {
+    rust_flags += [ "-Copt-level=3" ]
+  }
+}
 
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
   if (current_cpu == "x86") {
-    rust_flags += " --codegen target-feature=+crt-static "
+    rust_flags += [ "--codegen target-feature=+crt-static" ]
     rustc_target = "i686-pc-windows-msvc"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-pc-windows-msvc"
@@ -30,8 +58,8 @@ if (is_win) {
   if (current_cpu == "x64") {
     rustc_target = "x86_64-unknown-linux-gnu"
     if (use_sysroot) {
-      rust_flags += " -C link-arg=--sysroot=$target_sysroot "
-      rust_flags += " -C link-arg=-Wl,-rpath=\$ORIGIN "
+      rust_flags += [ "-C link-arg=--sysroot=$target_sysroot" ]
+      rust_flags += [ "-C link-arg=-Wl,-rpath=\$ORIGIN" ]
     }
   }
 } else if (is_android) {
