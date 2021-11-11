@@ -15,4 +15,9 @@
       BraveWeb3ProviderEventEmitter.removeListener
   // For webcompat
   window.ethereum.isMetaMask = true
+  window.ethereum._metamask = {
+    isUnlocked: () => {
+      return Promise.resolve(false);
+    }
+  }
 })()
