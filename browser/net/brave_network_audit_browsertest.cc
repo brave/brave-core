@@ -14,7 +14,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/net/brave_network_audit_lists.h"
+#include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
