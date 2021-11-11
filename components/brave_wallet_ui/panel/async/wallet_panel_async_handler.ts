@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { TransactionInfo, TREZOR_HARDWARE_VENDOR, LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
@@ -28,6 +29,10 @@ import {
 import {
   findHardwareAccountInfo
 } from '../../common/async/lib'
+import {
+  signTrezorTransaction,
+  signLedgerTransaction
+} from '../../common/async/hardware'
 
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
@@ -135,6 +140,22 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.cancelConnectToSite(payload.siteToConnectTo, state.tabId)
   apiProxy.panelHandler.closeUI()
+})
+
+handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
+  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    return
+  }
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.setCloseOnDeactivate(false)
+  if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
+    await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
+    await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  }
+  apiProxy.panelHandler.setCloseOnDeactivate(true)
+  apiProxy.panelHandler.showUI()
 })
 
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {

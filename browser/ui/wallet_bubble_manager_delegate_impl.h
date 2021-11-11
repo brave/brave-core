@@ -9,6 +9,7 @@
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
 
 #include <memory>
+#include <vector>
 
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -35,6 +36,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   void CloseOnDeactivate(bool close) override;
   bool IsBubbleClosedForTesting() override;
   content::WebContents* GetWebContentsForTesting() override;
+  const std::vector<int32_t>& GetPopupIdsForTesting() override;
 
  private:
   content::WebContents* web_contents_;
