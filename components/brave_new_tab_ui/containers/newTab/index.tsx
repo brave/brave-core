@@ -493,8 +493,20 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onDepositQRForAsset(asset, src)
   }
 
-  setGeminiAssetDepositQRCodeSrc = (asset: string, src: string) => {
-    this.props.actions.onGeminiDepositQRForAsset(asset, src)
+  setGeminiAssetAddress = (address: string, asset: string, qrCode: string) => {
+    const assetAddresses: NewTab.GeminiAssetAddress[] = [{ asset, address, qrCode }]
+    if (asset === 'ETH') {
+      // Use ETH's address and qrCode for all other erc tokens.
+      geminiData.ercTokens.forEach((ercToken: string) => {
+        assetAddresses.push({
+          asset: ercToken,
+          address,
+          qrCode
+        })
+      })
+    }
+
+    this.props.actions.setGeminiAssetAddress(assetAddresses)
   }
 
   setConvertableAssets = (asset: string, assets: string[]) => {
@@ -610,29 +622,19 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   updateGeminiAssetAddress = (asset: string, address: string) => {
-    this.props.actions.setGeminiAssetAddress(asset, address)
-    void generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
+    generateQRData(address, asset, this.setGeminiAssetAddress.bind(this, address))
   }
 
   fetchGeminiDepositInfo = () => {
-    geminiData.currencies.map((asset: string) => {
-      // Update when ETH's address is fetched.
-      if (geminiData.ercTokens.includes(asset)) {
-        return
-      }
+    // Remove all ercTokens and update their address when ETH's address is fetched.
+    const toRemove = new Set(geminiData.ercTokens)
+    const targetAssets = geminiData.currencies.filter(x => !toRemove.has(x))
 
+    targetAssets.forEach((asset: string) => {
       chrome.gemini.getDepositInfo(`${asset.toLowerCase()}`, (address: string) => {
-        if (!address) {
-          return
+        if (address) {
+          this.updateGeminiAssetAddress(asset, address)
         }
-
-        if (asset === 'ETH') {
-          geminiData.ercTokens.forEach((ercToken: string) => {
-            this.updateGeminiAssetAddress(ercToken, address)
-          })
-        }
-
-        this.updateGeminiAssetAddress(asset, address)
       })
     })
   }
