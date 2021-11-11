@@ -137,10 +137,6 @@ handler.on(WalletActions.locked.getType(), async (store) => {
 })
 
 handler.on(WalletActions.unlocked.getType(), async (store) => {
-  interactionNotifier.beginWatchingForInteraction(50000, async () => {
-    const keyringController = (await getAPIProxy()).keyringController
-    await keyringController.notifyUserInteraction()
-  })
   await refreshWalletInfo(store)
 })
 
@@ -201,6 +197,11 @@ handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: 
 })
 
 handler.on(WalletActions.initialized.getType(), async (store: Store, payload: InitializedPayloadType) => {
+  const isWalletLocked = getWalletState(store).isWalletLocked
+  interactionNotifier.beginWatchingForInteraction(50000, isWalletLocked, async () => {
+    const keyringController = (await getAPIProxy()).keyringController
+    await keyringController.notifyUserInteraction()
+  })
   // This can be 0 when the wallet is locked
   if (payload.selectedAccount) {
     await store.dispatch(refreshTransactionHistory(payload.selectedAccount))
