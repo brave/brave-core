@@ -20,7 +20,7 @@ deps = {
   "third_party/argon2/src": "https://github.com/P-H-C/phc-winner-argon2.git@62358ba2123abd17fccf2a108a301d4b52c01a7c",
 }
 
-recurseDeps = [
+recursedeps = [
   'vendor/omaha'
 ]
 
