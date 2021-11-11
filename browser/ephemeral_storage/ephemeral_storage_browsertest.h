@@ -13,6 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "url/gurl.h"
 
@@ -40,6 +41,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     void OnHttpRequest(const net::test_server::HttpRequest& request);
     bool HasHttpRequestWithCookie(const GURL& url,
                                   const std::string& cookie_value) const;
+    int GetHttpRequestsCount(const GURL& url) const;
     void Clear() { http_requests_.clear(); }
 
    private:
@@ -54,6 +56,8 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override;
   void SetUpCommandLine(base::CommandLine* command_line) override;
+  void SetUpInProcessBrowserTestFixture() override;
+  void TearDownInProcessBrowserTestFixture() override;
 
   void SetValuesInFrame(content::RenderFrameHost* frame,
                         std::string storage_value,
@@ -90,6 +94,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   void SetUpHttpsServer();
 
   net::test_server::EmbeddedTestServer https_server_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   GURL a_site_ephemeral_storage_url_;
   GURL b_site_ephemeral_storage_url_;
   GURL c_site_ephemeral_storage_url_;

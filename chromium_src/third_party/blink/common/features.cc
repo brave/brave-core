@@ -37,5 +37,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kPartitionBlinkMemoryCache{
+    "PartitionBlinkMemoryCache", base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features
 }  // namespace blink
