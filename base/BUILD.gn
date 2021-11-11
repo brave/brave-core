@@ -5,6 +5,14 @@
 
 source_set("base_unittests") {
   testonly = true
-  sources = [ "tools_sanity_unittest.cc" ]
-  deps = [ "//testing/gtest:gtest" ]
+  sources = [
+    "feature_override_unittest.cc",
+    "tools_sanity_unittest.cc",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
 }

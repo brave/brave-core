@@ -5,8 +5,34 @@
 
 #include "../../../../../third_party/blink/common/features.cc"
 
+#include "base/feature_override.h"
+
 namespace blink {
 namespace features {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    // Upgrade all mixed content
+    {kMixedContentAutoupgrade, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kPrefetchPrivacyChanges, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
+
+    {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kComputePressure, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kConversionMeasurement, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFledge, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kHandwritingRecognitionWebPlatformApiFinch,
+     base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestGroupStorage, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestCohortAPIOriginTrial, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kInterestCohortFeaturePolicy, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kNavigatorPluginsFixed, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kParakeet, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kReportAllJavaScriptFrameworks, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kWebSQLInThirdPartyContextEnabled, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
                                          base::FEATURE_DISABLED_BY_DEFAULT};
