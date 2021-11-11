@@ -1,4 +1,5 @@
 use_relative_paths = True
+use_relative_hooks = True
 
 deps = {
   "vendor/adblock_rust_ffi": "https://github.com/spinda/adblock-rust-ffi.git@expose-filter-rule",
