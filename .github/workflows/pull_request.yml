@@ -9,3 +9,10 @@ jobs:
     steps:
       - name: Assign author to PR
         uses: technote-space/assign-author@v1
+  # See: .github/labeler.yml
+  addCiLabels:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/labeler@v3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
