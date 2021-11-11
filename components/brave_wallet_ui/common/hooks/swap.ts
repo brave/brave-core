@@ -314,10 +314,16 @@ export default function useSwap (
   // Set isLoading to false as soon as quote has been fetched.
   React.useEffect(() => setIsLoading(false), [quote])
 
-  const onSwapQuoteRefresh = () => onSwapParamsChange(
-    { toOrFrom: 'from' },
-    { fromAmount, toAmount }
-  )
+  const onSwapQuoteRefresh = () => {
+    const customSlippage = {
+      id: 4,
+      slippage: Number(customSlippageTolerance)
+    }
+    onSwapParamsChange(
+      { toOrFrom: 'from', slippageTolerance: customSlippageTolerance ? customSlippage : slippageTolerance },
+      { fromAmount, toAmount }
+    )
+  }
 
   /**
    * onSwapParamsChangeDebounced is a debounced function which delays calling
