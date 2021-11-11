@@ -17,6 +17,7 @@ import Eth from '@ledgerhq/hw-app-eth'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
+import { SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -61,11 +62,12 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return this.isUnlocked()
   }
 
-  signTransaction = async (path: string, rawTxHex: string) => {
+  signTransaction = async (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult> => {
     if (!this.isUnlocked() && !(await this.unlock())) {
-      return new Error(getLocale('braveWalletUnlockError'))
+      return { success: false, error: getLocale('braveWalletUnlockError') }
     }
-    return this.app.signTransaction(path, rawTxHex)
+    const signed = await this.app.signTransaction(path, rawTxHex)
+    return { success: true, payload: signed }
   }
 
   signPersonalMessage = async (path: string, address: string, message: string) => {

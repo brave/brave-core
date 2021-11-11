@@ -8,7 +8,6 @@ import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { formatBalance } from '../../utils/format-balances'
-
 import {
   AccountTransactions,
   AssetPriceTimeframe,
@@ -18,10 +17,8 @@ import {
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 import { GetNetworkInfo } from '../../utils/network-utils'
-
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
-
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 
