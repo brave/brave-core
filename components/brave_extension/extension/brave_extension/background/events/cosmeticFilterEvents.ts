@@ -79,7 +79,7 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       break
     }
     default: {
-      console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
+      console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)
     }
   }
 }

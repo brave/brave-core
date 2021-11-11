@@ -34,8 +34,8 @@ interface Props {
 }
 
 export interface State {
-  currentScreen: number,
-  finished: boolean,
+  currentScreen: number
+  finished: boolean
   skipped: boolean
   shouldUpdateElementOverflow: boolean
 }

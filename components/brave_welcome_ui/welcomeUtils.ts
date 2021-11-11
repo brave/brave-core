@@ -26,7 +26,7 @@ export const getSearchEngineProviders = () => {
 
 // Import Box
 
-export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>): Array<Welcome.BrowserProfile> => {
+export const getValidBrowserProfiles = (browserProfiles: Welcome.BrowserProfile[]): Welcome.BrowserProfile[] => {
   const result = browserProfiles.reduce((filteredProfiles, profile) =>
     (profile.name === 'Safari' || profile.name === 'Bookmarks HTML File')
       ? filteredProfiles
@@ -37,12 +37,12 @@ export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserPr
 
 export const getBrowserProfiles = () =>
   async (dispatch: Dispatch) => {
-    const response: Array<Welcome.BrowserProfile> = await sendWithPromise('initializeImportDialog')
+    const response: Welcome.BrowserProfile[] = await sendWithPromise('initializeImportDialog')
     const filteredProfiles = getValidBrowserProfiles(response)
     dispatch(getBrowserProfilesSuccess(filteredProfiles))
   }
 
-export const getSelectedBrowserProfile = (profileIndex: string, browserProfiles: Array<Welcome.BrowserProfile>) => {
+export const getSelectedBrowserProfile = (profileIndex: string, browserProfiles: Welcome.BrowserProfile[]) => {
   return browserProfiles.find((profile: Welcome.BrowserProfile) =>
     profile.index.toString() === profileIndex
   )
@@ -52,5 +52,5 @@ export const getSourceBrowserProfileIndex = (state: ImportBoxState): number => {
   return state && state.selectedBrowserProfile && state.selectedBrowserProfile.index || 0
 }
 
-export const isValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>) =>
+export const isValidBrowserProfiles = (browserProfiles: Welcome.BrowserProfile[]) =>
   browserProfiles && Array.isArray(browserProfiles) && browserProfiles.length > 0

@@ -85,8 +85,8 @@ export default class Box extends React.PureComponent<Props, {}> {
                 </StyledTitle>
                 <StyledSettingsToggleContainer>
                   {
-                    settingsChild && ((toggle && checked) || !toggle) ?
-                      <Tooltip
+                    settingsChild && ((toggle && checked) || !toggle)
+                      ? <Tooltip
                         content={this.getSettingsTitle(title)}
                       >
                         <StyledSettingsIcon onClick={onSettingsClick}>
@@ -96,15 +96,15 @@ export default class Box extends React.PureComponent<Props, {}> {
                       : null
                   }
                   {
-                    toggle ?
-                      <Toggle onToggle={onToggle} checked={checked} testId={testId} />
+                    toggle
+                      ? <Toggle onToggle={onToggle} checked={checked} testId={testId} />
                       : null
                   }
                 </StyledSettingsToggleContainer>
               </StyledSettingTitleWrapper>
               {
-                disabledContent && toggle ?
-                  <StyledTOS title={title} />
+                disabledContent && toggle
+                  ? <StyledTOS title={title} />
                   : null
               }
               <StyledDescription>
@@ -112,9 +112,7 @@ export default class Box extends React.PureComponent<Props, {}> {
               </StyledDescription>
               <StyledContent>
                 {
-                  disabledContent
-                    ? disabledContent
-                    : children
+                  disabledContent || children
                 }
               </StyledContent>
             </StyledContentWrapper>

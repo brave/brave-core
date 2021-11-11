@@ -52,7 +52,7 @@ export const generateNoScriptInfoDataStructure = (noScriptInfo: { [key: string]:
   for (const [url] of Object.entries(noScriptInfo)) {
     const entry = newData.some((item) => item[0] === getOrigin(url))
     if (!entry) {
-      newData.push([ getOrigin(url), filterResourceByOrigin(noScriptInfo, url) ])
+      newData.push([getOrigin(url), filterResourceByOrigin(noScriptInfo, url)])
     }
   }
   return newData
@@ -65,7 +65,7 @@ export const generateNoScriptInfoDataStructure = (noScriptInfo: { [key: string]:
  * @param {boolean} filterByDifference - Whether or not `willBlock` should be filtered by difference
  */
 export const filterNoScriptInfoByBlockedState = (
-  noScriptInfo: Array<any>,
+  noScriptInfo: any[],
   maybeBlock: boolean,
   filterByDifference?: boolean
 ) => {
@@ -81,7 +81,7 @@ export const filterNoScriptInfoByBlockedState = (
  * @param {boolean} isBlocked - Whether or not all scripts are blocked
  */
 export const checkEveryItemIsBlockedOrAllowed = (
-  noScriptInfo: Array<any>,
+  noScriptInfo: any[],
   isBlocked: boolean,
   shouldParseData?: boolean
 ) => {

@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 export default class DisconnectIcon extends React.PureComponent {
-
   render () {
     return (
       <svg width={'16'} height={'13'} xmlns={'http://www.w3.org/2000/svg'}>

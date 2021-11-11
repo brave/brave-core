@@ -29,7 +29,6 @@ interface Props {
 }
 
 class BraveTalk extends React.PureComponent<Props, {}> {
-
   getButtonText = () => {
     return getLocale('braveTalkWidgetStartButton')
   }

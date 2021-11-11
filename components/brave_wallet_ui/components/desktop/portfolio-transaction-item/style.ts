@@ -159,10 +159,10 @@ export const StatusBubble = styled.div<Partial<StyleProps>>`
   height: 10px;
   border-radius: 100%;
   opacity: ${(p) => p.status === 3 || p.status === 1 || p.status === 0 ? 0.4 : 1};
-  background-color: ${(p) => p.status === 4 || p.status === 1 ?
-    '#2AC194'
-    : p.status === 2 || p.status === 5 ? '#EE6374' :
-      p.status === 0 ? p.theme.color.interactive08 : p.theme.color.warningIcon
+  background-color: ${(p) => p.status === 4 || p.status === 1
+    ? '#2AC194'
+    : p.status === 2 || p.status === 5 ? '#EE6374'
+      : p.status === 0 ? p.theme.color.interactive08 : p.theme.color.warningIcon
   };
   margin-right: 6px;
 `

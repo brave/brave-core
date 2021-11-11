@@ -4,7 +4,7 @@ export interface Region {
   namePretty: string
 }
 export interface RegionState {
-  all?: Array<Region>,
-  current?: Region,
+  all?: Region[]
+  current?: Region
   hasError: boolean
 }

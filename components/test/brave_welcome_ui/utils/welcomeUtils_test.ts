@@ -27,7 +27,7 @@ describe('welcome utils tests', () => {
   describe('getSourceBrowserProfileIndex tests', () => {
     it('should return the index of the selected browser profile in the component state', () => {
       const mockComponentState = {
-        selectedBrowserProfile : mockImportSources[0]
+        selectedBrowserProfile: mockImportSources[0]
       }
       const expected = 1
       const result = getSourceBrowserProfileIndex(mockComponentState)

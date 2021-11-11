@@ -47,6 +47,7 @@ export default class TorTab extends React.PureComponent<Props, {}> {
     }
     return getLocale('torStatusDisconnected')
   }
+
   renderTorTip () {
     const { beforeTag, duringTag, afterTag } = getLocaleWithTag('torTip')
     if (this.props.newTabData && !this.props.newTabData.torCircuitEstablished) {

@@ -12,7 +12,7 @@ const fakeProps: Props = {
   favicon: '',
   hostname: 'brave.com',
   isBlockedListOpen: true,
-  setBlockedListOpen: () => { return },
+  setBlockedListOpen: () => { },
   fingerprinting: 'allow',
   fingerprintingBlocked: 0,
   fingerprintingBlockedResources: [],

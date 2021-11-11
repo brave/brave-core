@@ -50,7 +50,7 @@ export interface ErrorMessage {
 }
 
 export interface TrezorBridgeAccountsPayload {
-  success: boolean,
-  accounts: HardwareWalletAccount[],
+  success: boolean
+  accounts: HardwareWalletAccount[]
   error?: string
 }

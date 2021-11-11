@@ -22,7 +22,7 @@ interface JavaScriptProps {
 interface FingerprintingProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
-  fingerprintingBlockedResources: Array<string>
+  fingerprintingBlockedResources: string[]
 }
 
 export type Props = JavaScriptProps & FingerprintingProps

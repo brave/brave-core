@@ -28,7 +28,7 @@ function useCardErrorState () {
 
 export interface CreditCardFormHandle {
   focus: () => void
-  validate: () => Array<CreditCardError>
+  validate: () => CreditCardError[]
   details: CreditCardDetails
 }
 

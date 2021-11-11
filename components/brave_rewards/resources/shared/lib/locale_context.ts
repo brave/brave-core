@@ -14,7 +14,7 @@ export const LocaleContext = React.createContext<Locale>({
 
 function splitMessage (message: string) {
   const parts: any[] = []
-  const slots: [string, number][] = []
+  const slots: Array<[string, number]> = []
 
   for (const match of message.matchAll(/([\s\S]*?)(\$\d|$)/g)) {
     if (match[0]) {

@@ -106,7 +106,6 @@ async function updateAccountInfo (store: Store) {
   } else {
     await refreshWalletInfo(store)
   }
-
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.getType(), async (store: Store) => {
@@ -324,7 +323,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
 
   if (!addResult.success) {
     console.log(
-      `Sending unapproved transaction failed: ` +
+      'Sending unapproved transaction failed: ' +
       `from=${payload.from} err=${addResult.errorMessage} txData=`, txData
     )
     return
@@ -500,7 +499,7 @@ handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
   const assetPriceController = getAPIProxy().assetRatioController
   const basicEstimates = await assetPriceController.getGasOracle()
   if (!basicEstimates.estimation) {
-    console.error(`Failed to fetch gas estimates`)
+    console.error('Failed to fetch gas estimates')
     return
   }
 
@@ -522,7 +521,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
 
     if (!result.success) {
       console.error(
-        `Failed to update unapproved transaction: ` +
+        'Failed to update unapproved transaction: ' +
         `id=${payload.txMetaId} ` +
         `maxPriorityFeePerGas=${payload.maxPriorityFeePerGas}` +
         `maxFeePerGas=${payload.maxFeePerGas}` +
@@ -538,7 +537,7 @@ handler.on(WalletActions.updateUnapprovedTransactionGasFields.getType(), async (
 
     if (!result.success) {
       console.error(
-        `Failed to update unapproved transaction: ` +
+        'Failed to update unapproved transaction: ' +
         `id=${payload.txMetaId} ` +
         `gasPrice=${payload.gasPrice}` +
         `gasLimit=${payload.gasLimit}`
@@ -562,7 +561,7 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), as
   const result = await apiProxy.ethTxController.setDataForUnapprovedTransaction(payload.txMetaId, data)
   if (!result.success) {
     console.error(
-      `Failed to update unapproved transaction: ` +
+      'Failed to update unapproved transaction: ' +
       `id=${payload.txMetaId} ` +
       `allowance=${payload.allowance}`
     )
@@ -587,7 +586,7 @@ handler.on(WalletActions.retryTransaction.getType(), async (store: Store, payloa
   const result = await ethTxController.retryTransaction(payload.id)
   if (!result.success) {
     console.error(
-      `Retry transaction failed: ` +
+      'Retry transaction failed: ' +
       `id=${payload.id} ` +
       `err=${result.errorMessage}`
     )
@@ -602,7 +601,7 @@ handler.on(WalletActions.speedupTransaction.getType(), async (store: Store, payl
   const result = await ethTxController.speedupOrCancelTransaction(payload.id, false)
   if (!result.success) {
     console.error(
-      `Speedup transaction failed: ` +
+      'Speedup transaction failed: ' +
       `id=${payload.id} ` +
       `err=${result.errorMessage}`
     )
@@ -617,7 +616,7 @@ handler.on(WalletActions.cancelTransaction.getType(), async (store: Store, paylo
   const result = await ethTxController.speedupOrCancelTransaction(payload.id, true)
   if (!result.success) {
     console.error(
-      `Cancel transaction failed: ` +
+      'Cancel transaction failed: ' +
       `id=${payload.id} ` +
       `err=${result.errorMessage}`
     )

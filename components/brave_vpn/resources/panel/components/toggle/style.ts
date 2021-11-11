@@ -34,7 +34,7 @@ export const ToggleBox = styled.button<Props>`
       #737ade 100%,
       #4d56d0 75%,
       #0e1bd1 100%
-	  );
+    );
     background-size: 400% 400%;
     animation: ${moveBg} 5s ease infinite;
   `}

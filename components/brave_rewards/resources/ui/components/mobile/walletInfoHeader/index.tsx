@@ -48,19 +48,19 @@ export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
         onClick={onClick}
       >
       {
-        alert && alert.node ?
-        <StyledAlertWrapper>
+        alert && alert.node
+        ? <StyledAlertWrapper>
           {
-            alert.onAlertClose ?
-            <StyledAlertClose onClick={alert.onAlertClose}>
+            alert.onAlertClose
+            ? <StyledAlertClose onClick={alert.onAlertClose}>
               <CloseCircleOIcon />
             </StyledAlertClose> : null
           }
           <Alert type={alert.type} bg={true}>
             {alert.node}
         </Alert>
-        </StyledAlertWrapper> :
-        <StyledHeader>
+        </StyledAlertWrapper>
+        : <StyledHeader>
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
             <StyledBalance>
               <StyledBalanceTokens>

@@ -32,9 +32,9 @@ export const errorGettingDataFromBackground = createAction<BackgroundErrorPayloa
  * User has requested to read an article
  */
 export type ReadFeedItemPayload = {
-  item: BraveNews.FeedItem,
-  isPromoted?: boolean,
-  promotedUUID?: string,
+  item: BraveNews.FeedItem
+  isPromoted?: boolean
+  promotedUUID?: string
   openInNewTab?: boolean
 }
 export const readFeedItem = createAction<ReadFeedItemPayload>('readFeedItem')

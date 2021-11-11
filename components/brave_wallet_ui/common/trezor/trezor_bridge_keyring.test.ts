@@ -62,7 +62,8 @@ const createTrezorTransport = (unlock: Boolean,
   hardwareTransport.postResponse = (data: TrezorFrameResponse) => {
     for (const value of Object.values(hardwareTransport.windowListeners_)) {
       (value as Function)(
-        { type: 'message',
+        {
+ type: 'message',
           origin: kTrezorBridgeUrl,
           data: data
         }, kTrezorBridgeUrl)
@@ -121,7 +122,8 @@ const createCommandHandler = () => {
   hardwareTransport.postResponse = (data: TrezorFrameResponse) => {
     for (const value of Object.values(hardwareTransport.windowListeners_)) {
       (value as Function)(
-        { type: 'message',
+        {
+ type: 'message',
           origin: kTrezorBridgeUrl,
           data: data
         }, kTrezorBridgeUrl)
@@ -142,7 +144,8 @@ const handlerResponse = async (handler: TrezorCommandHandler): Promise => {
     handler.postCommand = (data: TrezorFrameCommand) => {
       for (const value of Object.values(handler.windowListeners_)) {
         (value as Function)(
-          { type: 'message',
+          {
+ type: 'message',
             origin: kTrezorBridgeUrl,
             data: data,
             source: handler.mockedWindow
@@ -250,16 +253,20 @@ test('Extract accounts from locked device', () => {
 })
 
 test('Extracting accounts from unlocked device fail to access bridge', () => {
-  const error: TrezorError = { error: getLocale('braveWalletCreateBridgeError'),
-    code: 'code' }
+  const error: TrezorError = {
+ error: getLocale('braveWalletCreateBridgeError'),
+    code: 'code'
+}
   const hardwareKeyring = createTrezorKeyringWithTransport(true, { success: false, payload: error })
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))
     .rejects.toStrictEqual(new Error(getLocale('braveWalletCreateBridgeError')))
 })
 
 test('Extracting accounts from unlocked device returned fail', () => {
-  const error: TrezorError = { error: getLocale('braveWalletCreateBridgeError'),
-    code: 'code' }
+  const error: TrezorError = {
+ error: getLocale('braveWalletCreateBridgeError'),
+    code: 'code'
+}
   const hardwareKeyring = createTrezorKeyringWithTransport(true, { success: false, payload: error })
   hardwareKeyring.getBridge = () => {
     return hardwareKeyring as any
@@ -290,16 +297,20 @@ test('Extracting accounts from unlocked device returned success', () => {
   }
   return expect(hardwareKeyring.getAccounts(-2, 1, TrezorDerivationPaths.Default))
     .resolves.toStrictEqual([
-      { 'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
+      {
+ 'address': '0x2F015C60E0be116B1f0CD534704Db9c92118FB6A',
         'derivationPath': 'm/44\'/60\'/0\'/0',
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
-        'name': 'Trezor' },
-      { 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
+        'name': 'Trezor'
+},
+      {
+ 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
         'derivationPath': 'm/44\'/60\'/0\'/1',
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
-        'name': 'Trezor' }])
+        'name': 'Trezor'
+}])
 })
 
 test('Extracting accounts from unlocked device returned success without zero index', () => {
@@ -324,11 +335,13 @@ test('Extracting accounts from unlocked device returned success without zero ind
   }
   return expect(hardwareKeyring.getAccounts(1, 2, TrezorDerivationPaths.Default))
     .resolves.toStrictEqual([
-      { 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
+      {
+ 'address': '0x8e926dF9926746ba352F4d479Fb5DE47382e83bE',
         'derivationPath': 'm/44\'/60\'/0\'/1',
         'deviceId': '5454545',
         'hardwareVendor': 'Trezor',
-        'name': 'Trezor' }])
+        'name': 'Trezor'
+}])
 })
 
 test('Extract accounts from unknown device', () => {
@@ -387,6 +400,6 @@ test('Add multiple commands handlers', () => {
   hardwareTransport.postCommand({ command: TrezorCommand.Unlock, origin: kTrezorBridgeUrl })
   return expect(response).resolves.toStrictEqual([
     { result: true },
-    [ TrezorCommand.Unlock, TrezorCommand.GetAccounts,
+    [TrezorCommand.Unlock, TrezorCommand.GetAccounts,
       TrezorCommand.GetAccounts, TrezorCommand.Unlock]])
 })

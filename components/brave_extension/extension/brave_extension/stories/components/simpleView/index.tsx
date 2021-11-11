@@ -34,9 +34,11 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, State>
     super(props)
     this.state = { isBlockedListOpen: false }
   }
+
   setBlockedListOpen = () => {
     this.setState({ isBlockedListOpen: !this.state.isBlockedListOpen })
   }
+
   render () {
     const {
       enabled,

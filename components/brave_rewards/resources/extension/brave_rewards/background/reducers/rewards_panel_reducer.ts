@@ -19,7 +19,7 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
     return
   }
 
-  windows.forEach((window => {
+  windows.forEach(window => {
     if (!window.id) {
       return
     }
@@ -39,8 +39,7 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
     }
 
     setBadgeText(state, isPublisherConnectedOrVerified(publisher.status), tab.id)
-  }))
-
+  })
 }
 
 const handledByGreaselion = (url: URL) => {
@@ -103,7 +102,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
           tabUrl: tab.url,
           tabId: tab.id
         }
-
       } else if (publisher &&
                  publisher.tabUrl === tab.url &&
                  (publisher.tabId !== tab.id || payload.activeTabIsLoadingTriggered) &&
@@ -204,7 +202,7 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       delete notifications[id]
 
       if (state.currentNotification === id) {
-        let current: number | undefined = undefined
+        let current: number | undefined
         Object.keys(state.notifications).forEach((key: string) => {
           if (
             current === undefined ||
@@ -213,7 +211,6 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
           ) {
             current = notifications[key].id
           }
-
         })
 
         state.currentNotification = current

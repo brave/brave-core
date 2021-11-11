@@ -61,7 +61,7 @@ function initialize () {
 
 // Expose functions to Page Handlers.
 // TODO(petemill): Use event listeners instead.
-// @ts-ignore
+// @ts-expect-error
 window.tor_internals = {
   onGetTorGeneralInfo,
   onGetTorLog,

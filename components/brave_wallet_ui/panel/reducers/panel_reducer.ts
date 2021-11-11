@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
 import { createReducer } from 'redux-act'
 import { PanelState, SwapErrorResponse, SwapResponse, SwitchChainRequest } from '../../constants/types'
@@ -22,9 +21,15 @@ const defaultState: PanelState = {
   tabId: -1,
   connectingAccounts: [],
   networkPayload: {
-    chainId: '0x1', chainName: 'Ethereum Mainnet',
-    rpcUrls: ['https://mainnet-infura.brave.com/'], blockExplorerUrls: [],
-    iconUrls: [], symbol: 'ETH', symbolName: 'Ethereum', decimals: 18, isEip1559: true
+    chainId: '0x1',
+    chainName: 'Ethereum Mainnet',
+    rpcUrls: ['https://mainnet-infura.brave.com/'],
+    blockExplorerUrls: [],
+    iconUrls: [],
+    symbol: 'ETH',
+    symbolName: 'Ethereum',
+    decimals: 18,
+    isEip1559: true
   },
   swapQuote: undefined,
   swapError: undefined,

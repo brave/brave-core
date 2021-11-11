@@ -253,8 +253,8 @@ const EditGas = (props: Props) => {
             <SliderLabel>{getLocale('braveWalletEditGasMaxFee')}:</SliderLabel>
             <SliderValue>
               ~${suggestedEIP1559FiatGasFee}
-              {` `}USD ({suggestedEIP1559GasFee}
-              {` `}{selectedNetwork.symbol})</SliderValue>
+              {' '}USD ({suggestedEIP1559GasFee}
+              {' '}{selectedNetwork.symbol})</SliderValue>
             <GasSlider
               type='range'
               min='0'

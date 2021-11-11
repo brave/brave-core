@@ -13,7 +13,6 @@ function CustomTooltip (props: any) {
   }
 
   if (props.active && props.payload && props.payload.length) {
-
     React.useLayoutEffect(() => {
       props.onUpdatePosition(props.coordinate.x)
       props.onUpdateBalance(props.payload[0].value)

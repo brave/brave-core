@@ -43,6 +43,7 @@ export class App extends React.Component<Props> {
       }
     }
   }
+
   get actions () {
     return this.props.actions
   }

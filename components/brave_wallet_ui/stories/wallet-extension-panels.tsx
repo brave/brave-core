@@ -94,7 +94,6 @@ const accounts: WalletAccountType[] = [
 ]
 
 export const _ConfirmTransaction = () => {
-
   const transactionInfo: TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     id: '465a4d6646-kjlwf665',
@@ -197,7 +196,6 @@ _ConfirmTransaction.story = {
 }
 
 export const _AllowAddChangeNetwork = () => {
-
   const onApprove = () => {
     alert('Will Approve adding or chainging networks')
   }
@@ -231,7 +229,6 @@ _AllowAddChangeNetwork.story = {
 }
 
 export const _SignData = () => {
-
   const onSign = () => {
     alert('Signed Data')
   }
@@ -588,7 +585,6 @@ _ConnectedPanel.story = {
 }
 
 export const _SetupWallet = () => {
-
   const onRestore = () => {
     alert('Will navigate to full wallet restore page')
   }
@@ -609,7 +605,6 @@ _SetupWallet.story = {
 }
 
 export const _ConnectHardwareWallet = () => {
-
   const onCancel = () => {
     // Doesn't do anything in storybook
   }

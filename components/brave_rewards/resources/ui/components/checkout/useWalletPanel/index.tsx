@@ -23,7 +23,7 @@ import {
 } from './style'
 
 interface ActionButtonProps {
-  locale: LocaleData,
+  locale: LocaleData
   onClick: () => void
 }
 

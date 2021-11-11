@@ -5,7 +5,6 @@
 import * as React from 'react'
 
 export default class BinanceLogo extends React.PureComponent {
-
   render () {
     return (
       <svg width={'32'} height={'32'} xmlns={'http://www.w3.org/2000/svg'}>

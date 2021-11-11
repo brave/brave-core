@@ -9,12 +9,12 @@ import createWidget from '../widget/index'
 import { StyledClock, StyledTime } from './style'
 
 interface TimeComponent {
-  type: string,
+  type: string
   value: string
 }
 
 export interface ClockState {
-  currentTime: Array<TimeComponent>
+  currentTime: TimeComponent[]
   date: Date
 }
 
@@ -41,9 +41,9 @@ class Clock extends React.PureComponent<Props, ClockState> {
     // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
     const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric' }
     if (this.props.clockFormat === '24') {
-      options['hourCycle'] = 'h23'
+      options.hourCycle = 'h23'
     } else if (this.props.clockFormat === '12') {
-      options['hourCycle'] = 'h12'
+      options.hourCycle = 'h12'
     }
     return new Intl.DateTimeFormat(undefined, options)
   }

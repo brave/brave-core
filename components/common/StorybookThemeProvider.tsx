@@ -18,7 +18,7 @@ type Props = {
 const ThemeProvider: React.FunctionComponent<Props> = (props) => {
   const themeName = select(
     'Theme',
-    { ['Light']: 'Light', ['Dark']: 'Dark' },
+    { 'Light': 'Light', 'Dark': 'Dark' },
     'Light'
   )
   let darkTheme: ITheme = props.darkTheme as ITheme || DarkTheme

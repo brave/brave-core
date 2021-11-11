@@ -171,8 +171,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           </Styled.Left>
           <Styled.Right>
             {
-              toggle ?
-                <Styled.ToggleWrapper detailView={isDetailView}>
+              toggle
+                ? <Styled.ToggleWrapper detailView={isDetailView}>
                   <Toggle
                     size={'small'}
                     onToggle={this.onToggle}
@@ -184,8 +184,8 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
           </Styled.Right>
         </Styled.ToggleHeader>
         {
-          !checked && toggle ?
-            <Styled.TOS title={title} />
+          !checked && toggle
+            ? <Styled.TOS title={title} />
             : null
         }
       </Styled.ToggleRow>

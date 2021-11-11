@@ -57,7 +57,7 @@ class PageWallet extends React.Component<Props, State> {
 
   hasUserFunds () {
     const { balance } = this.props.rewardsData
-    return balance && balance.wallets['anonymous'] > 0
+    return balance && balance.wallets.anonymous > 0
   }
 
   componentDidMount () {
@@ -121,7 +121,7 @@ class PageWallet extends React.Component<Props, State> {
     const a = document.createElement('a')
     document.body.appendChild(a)
     a.style.display = 'display: none'
-    const blob = new Blob([backupString], { type : 'plain/text' })
+    const blob = new Blob([backupString], { type: 'plain/text' })
     const url = window.URL.createObjectURL(blob)
     a.href = url
     a.download = backupFileText
@@ -242,7 +242,6 @@ class PageWallet extends React.Component<Props, State> {
         return
       }
       this.actions.getMonthlyReport(parseInt(items[1], 10), parseInt(items[0], 10))
-      return
     }
   }
 
@@ -428,7 +427,6 @@ class PageWallet extends React.Component<Props, State> {
 
     if (externalWallet.loginUrl) {
       this.handleExternalWalletLink()
-      return
     }
   }
 
@@ -624,7 +622,6 @@ class PageWallet extends React.Component<Props, State> {
         text = getLocale('processorGemini')
         break
       }
-
     }
 
     if (text.length === 0) {
@@ -744,7 +741,7 @@ class PageWallet extends React.Component<Props, State> {
         months={this.getMonthlyReportDropDown()}
         walletType={externalWallet ? externalWallet.type : ''}
         onClose={this.onModalActivityToggle}
-        onMonthChange={this.onModalActivityAction.bind(this,'onMonthChange')}
+        onMonthChange={this.onModalActivityAction.bind(this, 'onMonthChange')}
       />
     )
   }
@@ -755,7 +752,7 @@ class PageWallet extends React.Component<Props, State> {
       return 0
     }
 
-    return (balance.wallets['anonymous'] || 0) + (balance.wallets['blinded'] || 0)
+    return (balance.wallets.anonymous || 0) + (balance.wallets.blinded || 0)
   }
 
   getBackupErrorMessage = () => {

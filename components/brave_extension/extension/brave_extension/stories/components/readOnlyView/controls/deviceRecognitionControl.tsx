@@ -36,6 +36,7 @@ export default class AdsTrackersControl extends React.PureComponent<{}, State> {
   onClickFakeThirdPartyFingerprintingBlocked = () => {
     this.setState({ dummyThirdPartyFingerprintingBlockedOpen: !this.state.dummyThirdPartyFingerprintingBlockedOpen })
   }
+
   render () {
     const { dummyThirdPartyFingerprintingBlockedOpen } = this.state
     return (

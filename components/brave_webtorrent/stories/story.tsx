@@ -20,7 +20,7 @@ const FullPageStory = (storyFn: any) => (
 )
 
 function consoleLog () {
-  console.log(`Clicked something`)
+  console.log('Clicked something')
 }
 
 const sampleTorrent = {

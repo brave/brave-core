@@ -1,4 +1,3 @@
-/* global jest, expect, describe, it, afterEach */
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { create } from 'react-test-renderer'

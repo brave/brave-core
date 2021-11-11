@@ -8,18 +8,18 @@
  * continuously before calling a provided function.
  */
 export default class VisibilityTimer {
-  private element?: HTMLElement
+  private readonly element?: HTMLElement
   private timerId?: number = undefined
   private isIntersecting: boolean
-  private viewTimeMs: number = 0
-  private onTimerExpired: Function
-  private intersectionObserver?: IntersectionObserver
+  private readonly viewTimeMs: number = 0
+  private readonly onTimerExpired: Function
+  private readonly intersectionObserver?: IntersectionObserver
 
   constructor (onTimerExpired: Function, viewTimeMs: number, elementToObserve?: HTMLElement) {
     this.element = elementToObserve
     this.onTimerExpired = onTimerExpired
     this.viewTimeMs = viewTimeMs
-    this.isIntersecting = elementToObserve ? false : true
+    this.isIntersecting = !elementToObserve
     if (elementToObserve) {
       this.intersectionObserver = new IntersectionObserver(entries => {
         this.isIntersecting = entries.some(entry => entry.isIntersecting)
@@ -53,7 +53,7 @@ export default class VisibilityTimer {
     }
   }
 
-  private handleVisibility = () => {
+  private readonly handleVisibility = () => {
     if (document.visibilityState === 'visible' && this.isIntersecting) {
       if (!this.timerId) {
         // Start the timer again

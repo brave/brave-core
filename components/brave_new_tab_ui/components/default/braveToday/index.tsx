@@ -63,7 +63,7 @@ export default function BraveTodaySection (props: Props) {
     // Setup intersection observer params
     console.log('setting today viewport observer, should only happen once')
     viewportObserver.current = new IntersectionObserver(handleHitsViewportObserver, intersectionOptions)
-  }, [ handleHitsViewportObserver ])
+  }, [handleHitsViewportObserver])
 
   const scrollTrigger = React.useRef<HTMLDivElement>(null)
 
@@ -80,7 +80,7 @@ export default function BraveTodaySection (props: Props) {
       // Cleanup current observer if we get a new observer, or a new element to observe
       observer.disconnect()
     }
-  }, [ scrollTrigger.current, viewportObserver.current, props.isOptedIn, props.hasInteracted ])
+  }, [scrollTrigger.current, viewportObserver.current, props.isOptedIn, props.hasInteracted])
 
   // Only load all the content DOM elements if we're
   // scrolled far down enough, otherwise it's too easy to scroll down

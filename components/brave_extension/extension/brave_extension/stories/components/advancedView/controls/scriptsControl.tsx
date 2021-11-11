@@ -75,7 +75,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
   }
 
   onAllowScriptsOnceViaShortcut = () => {
-    return
+
   }
 
   render () {

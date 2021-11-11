@@ -30,6 +30,7 @@ export default class WebCompatWarning extends React.PureComponent<Props, {}> {
   setAdvancedViewFirstAccess = () => {
     this.props.setAdvancedViewFirstAccess()
   }
+
   render () {
     return (
       <Overlay>

@@ -135,6 +135,7 @@ describe('welcomeReducer', () => {
         { name: 'Brave Search beta', canBeRemoved: true }
       ]
       let countryString: string = 'US'
+      // eslint-disable-next-line no-import-assign
       loadTimeData = {
         getString: (fieldName: string) => {
           switch (fieldName) {

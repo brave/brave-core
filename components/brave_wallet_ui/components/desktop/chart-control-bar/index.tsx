@@ -15,7 +15,6 @@ export interface Props {
 }
 
 export default class ChartControlBar extends React.PureComponent<Props, {}> {
-
   onTimeSelect = (id: AssetPriceTimeframe) => () => {
     this.props.onSubmit(id)
   }

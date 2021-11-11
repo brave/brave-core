@@ -9,13 +9,13 @@ import { formatDistanceToNow } from 'date-fns'
 import { getLocale } from '../../common/locale'
 
 interface Props {
-  actions: any,
+  actions: any
   subscriptions: AdBlock.SubscriptionInfo[]
 }
 
 interface State {
-  currentlyAddingSubscription: boolean,
-  newSubscriptionUrl: string,
+  currentlyAddingSubscription: boolean
+  newSubscriptionUrl: string
   currentlyOpenedContextMenu: string | undefined
 }
 
@@ -181,24 +181,24 @@ export class CustomSubscriptions extends React.Component<Props, State> {
           <div className='filterListGridCell' style={{ gridRow, gridColumn: 1 }}>{subscription.subscription_url}</div>
           {lastUpdatedCell}
           {
-            subscription.last_successful_update_attempt ?
-              (<div className='filterListGridCell' style={{ gridRow, gridColumn: 3 }}><input type='checkbox' checked={subscription.enabled} onChange={onToggleThisSubscription}/></div>) :
-              (<></>)
+            subscription.last_successful_update_attempt
+              ? (<div className='filterListGridCell' style={{ gridRow, gridColumn: 3 }}><input type='checkbox' checked={subscription.enabled} onChange={onToggleThisSubscription}/></div>)
+              : (<></>)
           }
           <div className='filterListGridCell' style={{ gridRow, gridColumn: '4 / span 5' }}>
             <span style={{ cursor: 'pointer', color: '#656565', userSelect: 'none', fontSize: '1.25em' }} onClick={onClickThisContextMenu}>•••</span>
             {
-              (subscription.subscription_url === this.state.currentlyOpenedContextMenu) ?
-                (<div style={{ display: 'flex', flexDirection: 'column' }}>
+              (subscription.subscription_url === this.state.currentlyOpenedContextMenu)
+                ? (<div style={{ display: 'flex', flexDirection: 'column' }}>
                   <button onClick={onRefreshThisSubscription}>{getLocale('customListSubscriptionsTriggerUpdate')}</button>
                   {
-                    subscription.last_successful_update_attempt ?
-                      <button onClick={onViewThisSource}>{getLocale('customListSubscriptionsViewListSource')}</button> :
-                      <></>
+                    subscription.last_successful_update_attempt
+                      ? <button onClick={onViewThisSource}>{getLocale('customListSubscriptionsViewListSource')}</button>
+                      : <></>
                   }
                   <button onClick={onUnsubscribeThisList}>{getLocale('customListSubscriptionsUnsubscribe')}</button>
-                </div>) :
-                (<></>)
+                </div>)
+                : (<></>)
             }
           </div>
         </React.Fragment>
@@ -218,15 +218,15 @@ export class CustomSubscriptions extends React.Component<Props, State> {
   }
 
   render () {
-    const addSubscriptionSection = this.state.currentlyAddingSubscription ?
-      (
+    const addSubscriptionSection = this.state.currentlyAddingSubscription
+      ? (
         <>
           <input autoFocus={true} value={this.state.newSubscriptionUrl} onChange={this.onChangeNewSubscriptionUrl} onKeyDown={this.onNewSubscriptionUrlKeyDown} placeholder={getLocale('customListSubscriptionsEnterSubscriptionUrlPlaceholder')}/>
           <button disabled={!this.newSubscriptionUrlValid()} onClick={this.onSubmitNewSubscription}>{getLocale('customListSubscriptionsSubmitNewSubscription')}</button>
           <button onClick={this.onCancelAddSubscription}>{getLocale('customListSubscriptionsCancelAddSubscription')}</button>
         </>
-      ) :
-      (<button onClick={this.onStartAddSubscription}>{getLocale('customListSubscriptionsAddNewFilterList')}</button>)
+      )
+      : (<button onClick={this.onStartAddSubscription}>{getLocale('customListSubscriptionsAddNewFilterList')}</button>)
 
     const existingListsSection = this.props.subscriptions.length === 0 ? (<></>) : this.renderTable(this.props.subscriptions)
 

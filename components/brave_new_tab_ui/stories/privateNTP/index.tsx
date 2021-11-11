@@ -27,6 +27,7 @@ export default class NewPrivateTab extends React.PureComponent<Props, {}> {
       : isTor ? <TorWindow />
       : <PrivateWindow />
   }
+
   render () {
     const { isTor, isQwant } = this.props
     return (

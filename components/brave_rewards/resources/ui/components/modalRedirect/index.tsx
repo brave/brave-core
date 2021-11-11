@@ -29,7 +29,6 @@ export interface Props {
 }
 
 export default class ModalRedirect extends React.PureComponent<Props, {}> {
-
   getButton = () => {
     const { onClick, buttonText } = this.props
     if (!onClick || !buttonText) {

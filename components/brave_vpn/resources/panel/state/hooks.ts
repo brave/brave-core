@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { TypedUseSelectorHook,
+import {
+ TypedUseSelectorHook,
   useSelector as useReduxSelector,
-  useDispatch as useReduxDispatch } from 'react-redux'
+  useDispatch as useReduxDispatch
+} from 'react-redux'
 
 import type { RootState, AppDispatch } from './store'
 

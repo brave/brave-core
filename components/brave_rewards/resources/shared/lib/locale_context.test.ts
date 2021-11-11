@@ -5,9 +5,7 @@
 import { formatMessage } from './locale_context'
 
 describe('locale_context', () => {
-
   describe('formatMesage', () => {
-
     it('fills placeholders with array values', () => {
       expect(formatMessage('a $1 b $3 c $2', [1, 2, 3]))
         .toStrictEqual(['a ', 1, ' b ', 3, ' c ', 2])
@@ -46,7 +44,5 @@ describe('locale_context', () => {
         }
       })).toStrictEqual(['a ', '', '-x-', '', ' ', 3])
     })
-
   })
-
 })

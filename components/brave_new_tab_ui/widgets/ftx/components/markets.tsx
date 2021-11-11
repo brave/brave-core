@@ -24,7 +24,7 @@ export default function Markets (props: Props) {
 
   const handleAssetDetailClick = React.useCallback((symbol) => {
     props.actions.showAssetDetail({ symbol })
-  }, [ props.actions.showAssetDetail ])
+  }, [props.actions.showAssetDetail])
 
   return (
     <>

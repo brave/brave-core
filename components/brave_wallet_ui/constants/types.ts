@@ -36,8 +36,8 @@ export interface AssetOptionType {
 }
 
 export interface SignatureVRS {
-  v: number,
-  r: string,
+  v: number
+  r: string
   s: string
 }
 
@@ -282,9 +282,9 @@ export interface WalletInfo extends WalletInfoBase {
 }
 
 export interface SwapErrorResponse {
-  code: number,
-  reason: string,
-  validationErrors: { field: string, code: number, reason: string }[]
+  code: number
+  reason: string
+  validationErrors: Array<{ field: string, code: number, reason: string }>
 }
 
 export type SwapValidationErrorType =
@@ -295,7 +295,7 @@ export type SwapValidationErrorType =
   | 'unknownError'
 
 export interface GetPriceReturnInfo {
-  success: boolean,
+  success: boolean
   values: BraveWallet.AssetPrice[]
 }
 
@@ -305,7 +305,7 @@ export interface GetPriceHistoryReturnInfo {
 }
 
 export interface GetPriceHistoryReturnObjectInfo {
-  success: boolean,
+  success: boolean
   values: GetPriceHistoryReturnInfo[]
 }
 
@@ -382,7 +382,7 @@ export interface GetEthAddrReturnInfo {
 }
 
 export interface RecoveryObject {
-  value: string,
+  value: string
   id: number
 }
 
@@ -432,10 +432,10 @@ export type TransactionDataType = {
 }
 
 export type AllowSpendReturnPayload = {
-  siteUrl: string,
-  contractAddress: string,
-  erc20Token: BraveWallet.ERCToken,
-  transactionFeeWei: string,
+  siteUrl: string
+  contractAddress: string
+  erc20Token: BraveWallet.ERCToken
+  transactionFeeWei: string
   transactionFeeFiat: string
   transactionData: TransactionDataType
 }
@@ -463,18 +463,18 @@ export interface SwitchChainRequestsList {
 }
 
 export type TransactionPanelPayload = {
-  transactionAmount: string,
-  transactionGas: string,
-  toAddress: string,
-  erc20Token: BraveWallet.ERCToken,
-  ethPrice: string,
-  tokenPrice: string,
+  transactionAmount: string
+  transactionGas: string
+  toAddress: string
+  erc20Token: BraveWallet.ERCToken
+  ethPrice: string
+  tokenPrice: string
   transactionData: TransactionDataType
 }
 
 export type UpdateAccountNamePayloadType = {
-  address: string,
-  name: string,
+  address: string
+  name: string
   isDerived: boolean
 }
 

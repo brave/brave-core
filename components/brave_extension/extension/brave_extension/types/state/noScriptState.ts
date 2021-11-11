@@ -5,30 +5,16 @@
 import { State } from '../state/shieldsPannelState'
 import { NoScriptInfo } from '../other/noScriptInfo'
 
-export interface GetNoScriptInfo {
-  (state: State, tabId: number): NoScriptInfo
-}
+export type GetNoScriptInfo = (state: State, tabId: number) => NoScriptInfo
 
-export interface ModifyNoScriptInfo {
-  (state: State, tabId: number, url: string, modifiedInfo: {}): State
-}
+export type ModifyNoScriptInfo = (state: State, tabId: number, url: string, modifiedInfo: {}) => State
 
-export interface ResetNoScriptInfo {
-  (state: State, tabId: number, newOrigin: string): State
-}
+export type ResetNoScriptInfo = (state: State, tabId: number, newOrigin: string) => State
 
-export interface SetScriptBlockedCurrentState {
-  (state: State, url: string): State
-}
+export type SetScriptBlockedCurrentState = (state: State, url: string) => State
 
-export interface SetGroupedScriptsBlockedCurrentState {
-  (state: State, origin: string, maybeBlock: boolean): State
-}
+export type SetGroupedScriptsBlockedCurrentState = (state: State, origin: string, maybeBlock: boolean) => State
 
-export interface SetAllScriptsBlockedCurrentState {
-  (state: State, maybeBlock: boolean): State
-}
+export type SetAllScriptsBlockedCurrentState = (state: State, maybeBlock: boolean) => State
 
-export interface SetFinalScriptsBlockedState {
-  (state: State): State
-}
+export type SetFinalScriptsBlockedState = (state: State) => State

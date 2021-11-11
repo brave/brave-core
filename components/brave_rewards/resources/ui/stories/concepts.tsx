@@ -43,16 +43,12 @@ const grantNotification = {
   text: <span>Free 30 BAT have been awarded to you.</span>
 }
 
-const dummyOptInAction = () => {
-  console.log(dummyOptInAction)
-}
-
 storiesOf('Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
   .add('Settings Page', () => {
     const walletState: WalletState = select('wallet status', {
-      unverified: 'unverified',
-      verified: 'verified',
+      'unverified': 'unverified',
+      'verified': 'verified',
       'disconnected unverified': 'disconnected_unverified',
       'disconnected verified': 'disconnected_verified'
     }, 'unverified') as WalletState
@@ -97,10 +93,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
 
     const doNothing = () => {
       console.log('do nothing')
-    }
-
-    const onCloseNotification = () => {
-      console.log(onCloseNotification)
     }
 
     const onFetchCaptcha = () => {
@@ -148,8 +140,8 @@ storiesOf('Rewards/Concepts/Desktop', module)
         <WalletWrapper
           compact={true}
           contentPadding={false}
-          notification={boolean('show notification', true) ?
-                        store.state.notification as Notification : undefined}
+          notification={boolean('show notification', true)
+                        ? store.state.notification as Notification : undefined}
           gradientTop={getGradientColor()}
           balance={text('Tokens', '30.0')}
           converted={text('Converted', '15.50 USD')}
@@ -175,8 +167,8 @@ storiesOf('Rewards/Concepts/Desktop', module)
           onSolution={onSolution}
           onFinish={onFinish}
           walletState={select('wallet status', {
-            unverified: 'unverified',
-            verified: 'verified',
+            'unverified': 'unverified',
+            'verified': 'verified',
             'disconnected unverified': 'disconnected_unverified',
             'disconnected verified': 'disconnected_verified'
           }, 'unverified') as WalletState}

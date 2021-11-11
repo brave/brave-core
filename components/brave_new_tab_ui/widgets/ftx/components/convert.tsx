@@ -52,7 +52,7 @@ function ConversionInProgress (props: Props) {
   // Countdown label
   const countdownLabel = React.useMemo(() => {
     return getLocale('ftxConversionConfirmLabel').replace('$1', `${timeLeft}`)
-  }, [ timeLeft ])
+  }, [timeLeft])
 
   return (
     <S.BasicBox $mt={15} $mb={10} isFlex={true} column={true} alignItems={'stretch'}>

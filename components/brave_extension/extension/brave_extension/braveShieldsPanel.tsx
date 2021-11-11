@@ -24,7 +24,7 @@ Promise.all([
   getViewPreferences()
 ])
 .then((
-  [ , themeType, settings ]:
+  [, themeType, settings]:
   [
     undefined,
     chrome.braveTheme.ThemeType,

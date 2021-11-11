@@ -34,7 +34,7 @@ export const Box = withState({ checked: true, toggle: true }, (store) => {
         checked={boolean('Toggle checked', store.state.checked)}
         type={select<any>('Type', { contribute: 'contribute', donation: 'donation', ads: 'ads' }, 'contribute')}
         description={
-          text('Description', `A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding right from the list below.`)
+          text('Description', 'A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding right from the list below.')
         }
         toggleAction={onToggle}
         settingsChild={<div>Settings content</div>}

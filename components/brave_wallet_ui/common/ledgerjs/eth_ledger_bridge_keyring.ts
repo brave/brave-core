@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
 const { EventEmitter } = require('events')
 
@@ -88,6 +87,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
       }
     })
   }
+
   _createMessageSignature = (result: SignatureVRS, message: string, address: string) => {
     let v = (result.v - 27).toString()
     if (v.length < 2) {

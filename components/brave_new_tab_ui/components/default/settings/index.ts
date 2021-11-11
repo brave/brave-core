@@ -42,7 +42,7 @@ const getTopSiteCustomizationImage = (dark: boolean, selected: boolean, favorite
 export const SettingsMenu = styled('div')<Props>`
   width: 720px;
   min-width: 720px;
-  ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`};
+  ${p => p.textDirection && (p.textDirection === 'rtl') ? 'left: 12px' : 'right: 12px'};
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
@@ -89,7 +89,7 @@ export const SettingsSidebarActiveButtonSlider =
   transition-property: transform;
 `
 interface SettingsSidebarSVGContentProps {
-  src: string,
+  src: string
   isActive: boolean
 }
 

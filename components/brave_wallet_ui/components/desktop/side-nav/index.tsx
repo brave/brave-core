@@ -13,7 +13,6 @@ export interface Props {
 }
 
 export default class SideNav extends React.PureComponent<Props, {}> {
-
   onNav = (id: NavTypes) => () => {
     this.props.onSubmit(id)
   }

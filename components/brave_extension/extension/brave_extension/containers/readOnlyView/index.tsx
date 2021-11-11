@@ -39,6 +39,7 @@ export default class ShieldsReadOnlyView extends React.PureComponent<Props, {}> 
     const { url } = this.props.shieldsPanelTabData
     return getFavicon(url)
   }
+
   render () {
     const { shieldsPanelTabData, toggleReadOnlyView } = this.props
     return (

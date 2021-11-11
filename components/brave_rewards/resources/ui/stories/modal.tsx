@@ -269,7 +269,7 @@ storiesOf('Rewards/Modal', module)
       />
     )
   })
-  .add('Pending contributions',() => {
+  .add('Pending contributions', () => {
     const rows: PendingDetailRow[] = [
       {
         profile: {
@@ -327,7 +327,7 @@ storiesOf('Rewards/Modal', module)
       />
     )
   })
-  .add('Redirect',() => {
+  .add('Redirect', () => {
     return (
       <ModalRedirect
         titleText={text('Title text', 'Sorry there was a problem processing your request, please try again.')}
@@ -336,7 +336,7 @@ storiesOf('Rewards/Modal', module)
       />
     )
   })
-  .add('Show Ads History',() => {
+  .add('Show Ads History', () => {
     const adsPerHour = 2
     const adUuid: number = 0
     const rowId: number = 0
@@ -509,7 +509,7 @@ storiesOf('Rewards/Modal', module)
       />
     )
   })
-  .add('Show Empty Ads History',() => {
+  .add('Show Empty Ads History', () => {
     const adsPerHour = 0
     return (
       <ModalShowAdsHistory

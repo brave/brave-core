@@ -13,10 +13,10 @@ import * as Cr from 'chrome://resources/js/cr.m'
 //
 
 export type Stats = {
-  adsBlockedStat: number,
-  javascriptBlockedStat: number,
-  fingerprintingBlockedStat: number,
-  httpsUpgradesStat: number,
+  adsBlockedStat: number
+  javascriptBlockedStat: number
+  fingerprintingBlockedStat: number
+  httpsUpgradesStat: number
   bandwidthSavedStat: number
 }
 

@@ -71,7 +71,7 @@ class AdsBox extends React.Component<Props, State> {
       automaticallyDetectedAdsSubdivisionTargeting
     } = this.props.rewardsData.adsData
 
-    let subdivisions: [string, string][] = [
+    let subdivisions: Array<[string, string]> = [
       ['US-AL', 'Alabama'],
       ['US-AK', 'Alaska'],
       ['US-AZ', 'Arizona'],
@@ -133,7 +133,7 @@ class AdsBox extends React.Component<Props, State> {
     const subdivisionMap = new Map<string, string>(subdivisions)
     const subdivision = subdivisionMap.get(automaticallyDetectedAdsSubdivisionTargeting)
     if (subdivision && adsSubdivisionTargeting === 'AUTO') {
-      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget : subdivision })])
+      subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetectedAs', { adsSubdivisionTarget: subdivision })])
     } else {
       subdivisions.unshift(['AUTO', getLocale('adsSubdivisionTargetingAutoDetect')])
     }
@@ -192,8 +192,8 @@ class AdsBox extends React.Component<Props, State> {
             </Select>
           </ControlWrapper>
         </Column>
-        { shouldAllowAdsSubdivisionTargeting ?
-          <>
+        { shouldAllowAdsSubdivisionTargeting
+          ? <>
             <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
               <ControlWrapper text={getLocale('adsSubdivisionTargetingTitle')}>
                 <Select

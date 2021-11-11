@@ -59,8 +59,8 @@ export default function BraveTodayContent (props: Props) {
       console.debug('Intersection Observer trigger show options', [...entries])
       // Show if target article is inside or above viewport.
       const shouldShowOptions = entries.some(
-        entry => entry.isIntersecting
-                  || entry.boundingClientRect.top < 0
+        entry => entry.isIntersecting ||
+                  entry.boundingClientRect.top < 0
       )
       console.debug('Intersection Observer trigger show options, changing', shouldShowOptions)
       setShowOptions(shouldShowOptions)

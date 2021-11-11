@@ -98,8 +98,8 @@ function GetBackgroundImageSrc (props: Props) {
 
 function GetIsShowingBrandedWallpaper (props: Props) {
   const { newTabData } = props
-  return (newTabData.brandedWallpaper &&
-          newTabData.brandedWallpaper.isSponsored) ? true : false
+  return !!((newTabData.brandedWallpaper &&
+          newTabData.brandedWallpaper.isSponsored))
 }
 
 function GetShouldShowBrandedWallpaperNotification (props: Props) {
@@ -114,12 +114,14 @@ class NewTabPage extends React.Component<Props, State> {
     backgroundHasLoaded: false,
     activeSettingsTab: null
   }
+
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
   }
+
   visibilityTimer = new VisibilityTimer(this.onVisiblityTimerExpired, 4000)
 
   componentDidMount () {
@@ -494,6 +496,7 @@ class NewTabPage extends React.Component<Props, State> {
   setGeminiAssetDepositQRCodeSrc = (asset: string, src: string) => {
     this.props.actions.onGeminiDepositQRForAsset(asset, src)
   }
+
   setConvertableAssets = (asset: string, assets: string[]) => {
     this.props.actions.onConvertableAssets(asset, assets)
   }
@@ -887,20 +890,13 @@ class NewTabPage extends React.Component<Props, State> {
   renderBinanceWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
     const { binanceState, showBinance, textDirection, binanceSupported } = newTabData
-    const menuActions = { onLearnMore: this.learnMoreBinance }
 
     if (!showBinance || !binanceSupported) {
       return null
     }
 
-    if (binanceState.userAuthed) {
-      menuActions['onDisconnect'] = this.setBinanceDisconnectInProgress
-      menuActions['onRefreshData'] = this.binanceRefreshActions
-    }
-
     return (
       <Binance
-        {...menuActions}
         {...binanceState}
         isCrypto={true}
         paddingType={'none'}
@@ -931,12 +927,14 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissAuthInvalid={this.dismissAuthInvalid}
         onSetSelectedView={this.setBinanceSelectedView}
         getCurrencyList={this.getCurrencyList}
+        onLearnMore={this.learnMoreBinance}
+        onRefreshData={binanceState.userAuthed ? this.binanceRefreshActions : undefined}
+        onDisconnect={binanceState.userAuthed ? this.setBinanceDisconnectInProgress : undefined}
       />
     )
   }
 
   renderGeminiWidget (showContent: boolean, position: number) {
-    const menuActions = {}
     const { newTabData } = this.props
     const { geminiState, showGemini, textDirection, geminiSupported } = newTabData
 
@@ -944,15 +942,9 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
-    if (geminiState.userAuthed) {
-      menuActions['onDisconnect'] = this.setGeminiDisconnectInProgress
-      menuActions['onRefreshData'] = this.geminiUpdateActions
-    }
-
     return (
       <Gemini
         {...geminiState}
-        {...menuActions}
         isCrypto={true}
         paddingType={'none'}
         isCryptoTab={!showContent}
@@ -975,6 +967,8 @@ class NewTabPage extends React.Component<Props, State> {
         onCancelDisconnect={this.cancelGeminiDisconnect}
         onDisconnectGemini={this.disconnectGemini}
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
+        onDisconnect={geminiState.userAuthed ? this.setGeminiDisconnectInProgress : undefined}
+        onRefreshData={geminiState.userAuthed ? this.geminiUpdateActions : undefined}
       />
     )
   }
@@ -1052,7 +1046,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
-    const isShowingBrandedWallpaper = newTabData.brandedWallpaper ? true : false
+    const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
     const cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1241,8 +1235,8 @@ class NewTabPage extends React.Component<Props, State> {
           toggleCards={this.props.saveSetAllStackWidgets}
         />
         {
-          showEditTopSite ?
-            <EditTopSite
+          showEditTopSite
+            ? <EditTopSite
               targetTopSiteForEditing={targetTopSiteForEditing}
               textDirection={newTabData.textDirection}
               onClose={this.closeEditTopSite}

@@ -66,8 +66,8 @@ handler.on<Actions.ReadFeedItemPayload>(Actions.readFeedItem.getType(), async (s
     }
     getBraveNewsController().onPromotedItemVisit(payload.promotedUUID, promotedArticle.creativeInstanceId)
   }
-  const data = payload.item.article?.data || payload.item.promotedArticle?.data
-      || payload.item.deal?.data
+  const data = payload.item.article?.data || payload.item.promotedArticle?.data ||
+      payload.item.deal?.data
   if (!data) {
     console.error('Brave News: readFeedItem payload item not present', payload)
     return
@@ -105,7 +105,7 @@ handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), 
   const { publisherId, enabled } = payload
   let userStatus = (enabled === null)
     ? BraveNews.UserEnabled.NOT_MODIFIED
-    : enabled === true
+    : enabled
       ? BraveNews.UserEnabled.ENABLED
       : BraveNews.UserEnabled.DISABLED
   getBraveNewsController().setPublisherPref(publisherId, userStatus)

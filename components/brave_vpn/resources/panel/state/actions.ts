@@ -21,7 +21,7 @@ export type ConnectToNewRegionPayload = {
 
 export type InitUIMainPayload = {
   currentRegion: Region
-  regions: Array<Region>
+  regions: Region[]
   connectionStatus: ConnectionState
   productUrls: ProductUrls
 }

@@ -21,9 +21,9 @@ export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
 
 export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
 
-export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
+export const getSearchEngineProvidersSuccess = (searchProviders: Welcome.SearchEngineEntry[]) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
 
-export const getBrowserProfilesSuccess = (browserProfiles: Array<Welcome.BrowserProfile>) => action(types.IMPORT_BROWSER_PROFILES_SUCCESS, browserProfiles)
+export const getBrowserProfilesSuccess = (browserProfiles: Welcome.BrowserProfile[]) => action(types.IMPORT_BROWSER_PROFILES_SUCCESS, browserProfiles)
 
 export const getSearchEngineProviders = () => welcomeUtils.getSearchEngineProviders()
 

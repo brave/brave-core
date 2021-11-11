@@ -63,10 +63,11 @@ export default class TrezorBridgeKeyring extends EventEmitter {
 
   unlock = async () => {
     const data = await this.sendTrezorCommand<UnlockResponse>({
-      // @ts-ignore
+      // @ts-expect-error
       id: crypto.randomUUID(),
       origin: window.origin,
-      command: TrezorCommand.Unlock })
+      command: TrezorCommand.Unlock
+})
     if (!data) {
       return false
     }
@@ -81,11 +82,11 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return sendTrezorCommand<T>(command)
   }
 
-  private getHashFromAddress = async (address: string) => {
+  private readonly getHashFromAddress = async (address: string) => {
     return hardwareDeviceIdFromAddress(address)
   }
 
-  private getDeviceIdFromAccountsList = async (accountsList: TrezorAccount[]) => {
+  private readonly getDeviceIdFromAccountsList = async (accountsList: TrezorAccount[]) => {
     const zeroPath = this.getPathForIndex(0, TrezorDerivationPaths.Default)
     for (const value of accountsList) {
       if (value.serializedPath !== zeroPath) {
@@ -97,23 +98,24 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return ''
   }
 
-  private publicKeyToAddress = (key: string) => {
+  private readonly publicKeyToAddress = (key: string) => {
     const buffer = Buffer.from(key, 'hex')
     const address = publicToAddress(buffer, true).toString('hex')
     return toChecksumAddress(`0x${address}`)
   }
 
-  private getAccountsFromDevice = async (paths: string[], skipZeroPath: Boolean): Promise<TrezorBridgeAccountsPayload> => {
+  private readonly getAccountsFromDevice = async (paths: string[], skipZeroPath: Boolean): Promise<TrezorBridgeAccountsPayload> => {
     const requestedPaths = []
     for (const path of paths) {
       requestedPaths.push({ path: path })
     }
     const data = await this.sendTrezorCommand<GetAccountsResponsePayload>({
       command: TrezorCommand.GetAccounts,
-      // @ts-ignore
+      // @ts-expect-error
       id: crypto.randomUUID(),
       paths: requestedPaths,
-      origin: window.origin })
+      origin: window.origin
+})
     if (!data || !data.payload.success) {
       return { success: false, error: getLocale('braveWalletCreateBridgeError'), accounts: [] }
     }
@@ -140,7 +142,7 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return { success: true, accounts: [...accounts] }
   }
 
-  private getPathForIndex = (index: number, scheme: string) => {
+  private readonly getPathForIndex = (index: number, scheme: string) => {
     if (scheme === TrezorDerivationPaths.Default) {
       return `m/44'/60'/0'/${index}`
     } else {

@@ -285,11 +285,11 @@ export function refreshSitePermissions () {
       const result = await braveWalletService.hasEthereumPermission(activeOrigin, account.address)
       if (result.hasPermission) {
         return account
-      } else {
-        return
       }
+
+      return undefined
     }))
-    const accountsWithPermission: (WalletAccountType | undefined)[] = getAllPermissions.filter((account) => account !== undefined)
+    const accountsWithPermission: Array<WalletAccountType | undefined> = getAllPermissions.filter((account) => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
 }

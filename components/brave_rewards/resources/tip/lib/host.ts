@@ -245,7 +245,7 @@ export function createHost (): Host {
       chrome.send('onTip', [
         dialogArgs.publisherKey,
         amount,
-        kind === 'monthly' ? true : false
+        kind === 'monthly'
       ])
 
       // Gemini currently has up to a 10-minute delay on the balance

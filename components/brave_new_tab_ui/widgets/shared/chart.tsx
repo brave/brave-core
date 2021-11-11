@@ -4,7 +4,7 @@ import { SVG } from './styles'
 interface ChartConfig {
   width: number
   height: number
-  data: Array<ChartDataPoint>
+  data: ChartDataPoint[]
 }
 
 export interface ChartDataPoint {

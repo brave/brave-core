@@ -34,7 +34,7 @@ import { BlockFPOptions } from '../../../types/other/blockTypes'
 interface Props {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
-  fingerprintingBlockedResources: Array<string>
+  fingerprintingBlockedResources: string[]
 }
 
 interface State {

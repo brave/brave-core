@@ -92,8 +92,8 @@ export default class Shields extends React.PureComponent<Props, State> {
     return (
       <ShieldsPanel data-test-id='brave-shields-panel' style={{ width: '370px' }}>
         {
-          persistentData.isFirstAccess
-            && <WebCompatWarning setAdvancedViewFirstAccess={actions.setAdvancedViewFirstAccess} />
+          persistentData.isFirstAccess &&
+            <WebCompatWarning setAdvancedViewFirstAccess={actions.setAdvancedViewFirstAccess} />
         }
         <Header
           enabled={this.isShieldsEnabled}

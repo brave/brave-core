@@ -17,7 +17,7 @@ import { getOrigin, isHttpOrHttps } from './urlUtils'
  * @param {string} url - The URL to compare origins against each other
  * @returns {[string, NoScriptEntry][]} - The filtered list of scripts matching the same domain
  */
-export const filterResourcesBySameOrigin = (noScriptInfo: NoScriptInfo, url: string): [string, NoScriptEntry][] => {
+export const filterResourcesBySameOrigin = (noScriptInfo: NoScriptInfo, url: string): Array<[string, NoScriptEntry]> => {
   return Object.entries(noScriptInfo).filter((script) => {
     return getOrigin(url) === getOrigin(script[0])
   })
@@ -30,12 +30,12 @@ export const filterResourcesBySameOrigin = (noScriptInfo: NoScriptInfo, url: str
  * @param {NoScriptInfo} noScriptInfo - The NoScriptInfo state
  * @returns {Array<any>} - The new generated NoScriptInfo data
  */
-export const generateNoScriptInfoDataStructure = (noScriptInfo: NoScriptInfo): Array<any> => {
+export const generateNoScriptInfoDataStructure = (noScriptInfo: NoScriptInfo): any[] => {
   let newData = []
   for (const [url] of Object.entries(noScriptInfo)) {
     const entry = newData.some((item) => item[0] === getOrigin(url))
     if (!entry) {
-      newData.push([ getOrigin(url), filterResourcesBySameOrigin(noScriptInfo, url) ])
+      newData.push([getOrigin(url), filterResourcesBySameOrigin(noScriptInfo, url)])
     }
   }
   return newData
@@ -48,9 +48,9 @@ export const generateNoScriptInfoDataStructure = (noScriptInfo: NoScriptInfo): A
  * @returns {Array<any>} - The new generated NoScriptInfo data
  */
 export const filterNoScriptInfoByWillBlockState = (
-  modifiedNoScriptInfo: Array<any>,
+  modifiedNoScriptInfo: any[],
   maybeBlock: boolean
-): Array<any> => {
+): any[] => {
   return modifiedNoScriptInfo.filter(script => script[1].willBlock === maybeBlock)
 }
 
@@ -61,7 +61,7 @@ export const filterNoScriptInfoByWillBlockState = (
  * @returns {boolean} - Whether or not the new generated NoScriptInfo data is either blocked or allowed
  */
 export const checkEveryItemIsBlockedOrAllowedByUser = (
-  modifiedNoScriptInfo: [string, NoScriptEntry][],
+  modifiedNoScriptInfo: Array<[string, NoScriptEntry]>,
   isBlocked: boolean
 ): boolean => {
   return modifiedNoScriptInfo
@@ -118,8 +118,8 @@ export const getBlockScriptText = (haveUserInteracted: boolean, isBlocked: boole
  * @param {boolean} isBlocked - Whether or not all scripts are blocked
  * @returns {Array<string>} - An array with all origins that user decided to allow
  */
-export const getAllowedScriptsOrigins = (modifiedNoScriptInfo: NoScriptInfo): Array<string> => {
+export const getAllowedScriptsOrigins = (modifiedNoScriptInfo: NoScriptInfo): string[] => {
   const getAllowedOrigins = Object.entries(modifiedNoScriptInfo)
-    .filter(url => url[1].actuallyBlocked === false)
+    .filter(url => !url[1].actuallyBlocked)
   return getAllowedOrigins.map(url => isHttpOrHttps(url[0]) ? getOrigin(url[0]) + '/' : url[0])
 }

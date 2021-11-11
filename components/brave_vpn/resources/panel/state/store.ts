@@ -17,8 +17,8 @@ const store = createStore(
 
 // Register the observer earlier
 const observer = {
-  onConnectionCreated: () => {/**/},
-  onConnectionRemoved: () => {/**/},
+  onConnectionCreated: () => { /**/ },
+  onConnectionRemoved: () => { /**/ },
   onConnectionStateChanged: (connectionStatus: ConnectionState) => {
     store.dispatch(Actions.connectionStateChanged({ connectionStatus }))
   },

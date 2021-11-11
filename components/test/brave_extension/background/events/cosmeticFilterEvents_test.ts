@@ -4,13 +4,9 @@
 
 import * as cosmeticFilterEvents from '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
 
-let lastInputText: string
-let lastPromptText: string
 let selectorToReturn: string
 
-global.prompt = (inputText: string, promptText: string) => {
-  lastInputText = inputText
-  lastPromptText = promptText
+global.prompt = () => {
   return selectorToReturn
 }
 
@@ -38,6 +34,7 @@ describe('cosmeticFilterEvents events', () => {
       contextMenuOnClickedSpy = jest.spyOn(chrome.tabs, 'create')
       chromeTabsQuerySpy = jest.spyOn(chrome.tabs, 'query')
       chromeTabsSendMessageSpy = jest.spyOn(chrome.tabs, 'sendMessage')
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       chromeBraveShieldsAddSiteCosmeticFilterSpy = jest.spyOn(chrome.braveShields, 'addSiteCosmeticFilter')
     })
     afterEach(() => {

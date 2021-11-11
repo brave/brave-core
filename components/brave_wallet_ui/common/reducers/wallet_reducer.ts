@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-/* global window */
 
 import { createReducer } from 'redux-act'
 import {
@@ -102,8 +101,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
       tokens: []
     }
   })
-  const selectedAccount = payload.selectedAccount ?
-    accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
+  const selectedAccount = payload.selectedAccount
+    ? accounts.find((account) => account.address.toLowerCase() === payload.selectedAccount.toLowerCase()) ?? accounts[0]
     : accounts[0]
   return {
     ...state,
@@ -203,7 +202,7 @@ reducer.on(WalletActions.tokenBalancesUpdated, (state: any, payload: GetERC20Tok
         fiatBalance = account.fiatBalance
       } else if (info.success && userVisibleTokensInfo[tokenIndex].isErc721) {
         assetBalance = info.balance
-        fiatBalance = '0'  // TODO: support estimated market value.
+        fiatBalance = '0' // TODO: support estimated market value.
       } else if (info.success) {
         assetBalance = info.balance
         fiatBalance = formatFiatBalance(info.balance, userVisibleTokensInfo[tokenIndex].decimals, findTokenPrice(userVisibleTokensInfo[tokenIndex].symbol))
@@ -256,7 +255,7 @@ reducer.on(WalletActions.portfolioPriceHistoryUpdated, (state: any, payload: Por
   return {
     ...state,
     portfolioPriceHistory: sumOfHistory,
-    isFetchingPortfolioPriceHistory: sumOfHistory.length === 0 ? true : false
+    isFetchingPortfolioPriceHistory: sumOfHistory.length === 0
   }
 })
 
@@ -331,8 +330,8 @@ reducer.on(WalletActions.transactionStatusChanged, (state: WalletState, payload:
 
 reducer.on(WalletActions.setAccountTransactions, (state: WalletState, payload: AccountTransactions) => {
   const { selectedAccount } = state
-  const newPendingTransactions = selectedAccount ?
-    payload[selectedAccount.address].filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved) : []
+  const newPendingTransactions = selectedAccount
+    ? payload[selectedAccount.address].filter((tx: TransactionInfo) => tx.txStatus === TransactionStatus.Unapproved) : []
 
   const sortedTransactionList = sortTransactionByDate(newPendingTransactions)
 
