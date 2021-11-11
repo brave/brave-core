@@ -19,7 +19,7 @@
       ResourceRequest::RedirectStatus redirect_status, const KURL& url);  \
   bool ShouldDisableCSPCheckForLitePageSubresourceRedirectOrigin_ChromiumImpl
 
-#include "../../../../../../third_party/blink/renderer/core/loader/subresource_redirect_util.h"
+#include "../../../../../../../third_party/blink/renderer/core/loader/subresource_redirect_util.h"
 #undef ShouldDisableCSPCheckForLitePageSubresourceRedirectOrigin
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_LOADER_SUBRESOURCE_REDIRECT_UTIL_H_
