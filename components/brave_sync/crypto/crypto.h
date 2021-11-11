@@ -96,6 +96,13 @@ std::string PassphraseFromBytes32(const std::vector<uint8_t>& bytes);
 bool PassphraseToBytes32(const std::string& passphrase,
                          std::vector<uint8_t>* bytes);
 
+/**
+ * Checks if the given string is a valid passphrase
+ * @param passphrase genereated by PassphraseFromBytes32
+ * @returns success or failure
+ */
+bool IsPassphraseValid(const std::string& passphrase);
+
 }  // namespace crypto
 }  // namespace brave_sync
 
