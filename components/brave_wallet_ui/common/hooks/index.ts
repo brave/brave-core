@@ -5,7 +5,6 @@
 
 import useSwap from './swap'
 import useAssets from './assets'
-import useTimeout from './timeout'
 import useBalance from './balance'
 import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
@@ -16,7 +15,6 @@ import usePreset from './selectPreset'
 export {
   useAssets,
   useSwap,
-  useTimeout,
   useBalance,
   useTransactionParser,
   useTransactionFeesParser,
