@@ -609,15 +609,30 @@ class NewTabPage extends React.Component<Props, State> {
     })
   }
 
+  updateGeminiAssetAddress = (asset: string, address: string) => {
+    this.props.actions.setGeminiAssetAddress(asset, address)
+    void generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
+  }
+
   fetchGeminiDepositInfo = () => {
     geminiData.currencies.map((asset: string) => {
+      // Update when ETH's address is fetched.
+      if (geminiData.ercTokens.includes(asset)) {
+        return
+      }
+
       chrome.gemini.getDepositInfo(`${asset.toLowerCase()}`, (address: string) => {
         if (!address) {
           return
         }
 
-        this.props.actions.setGeminiAssetAddress(asset, address)
-        void generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
+        if (asset === 'ETH') {
+          geminiData.ercTokens.forEach((ercToken: string) => {
+            this.updateGeminiAssetAddress(ercToken, address)
+          })
+        }
+
+        this.updateGeminiAssetAddress(asset, address)
       })
     })
   }
