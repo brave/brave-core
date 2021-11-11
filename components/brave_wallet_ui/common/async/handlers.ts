@@ -40,7 +40,6 @@ import {
   TransactionStatus
 } from '../../constants/types'
 import { toWeiHex } from '../../utils/format-balances'
-import getSwapConfig from '../../constants/swap.config'
 import { hexStrToNumberArray } from '../../utils/hex-utils'
 import getAPIProxy from './bridge'
 import {
@@ -449,17 +448,13 @@ export const fetchSwapQuoteFactory = (
     full
   } = payload
 
-  const config = getSwapConfig(payload.networkChainId)
-
   const swapParams = {
     takerAddress: accountAddress,
     sellAmount: fromAssetAmount || '',
     buyAmount: toAssetAmount || '',
     buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
     sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
-    buyTokenPercentageFee: config.buyTokenPercentageFee,
     slippagePercentage: slippageTolerance.slippage / 100,
-    feeRecipient: config.feeRecipient,
     gasPrice: ''
   }
 
