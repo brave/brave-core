@@ -245,13 +245,11 @@ const elementPickerOnKeydown = (event: KeyboardEvent): void => {
   if (event.key === 'Escape') {
     event.stopPropagation()
     event.preventDefault()
-    // tslint:disable-next-line:no-use-before-declare
     quitElementPicker()
   }
 }
 
 const elementPickerViewportChanged = () => {
-  // tslint:disable-next-line:no-use-before-declare
   recalculateAndSendTargets(targetedElems)
 }
 

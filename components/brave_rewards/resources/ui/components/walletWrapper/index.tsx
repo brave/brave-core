@@ -238,7 +238,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       return
     }
 
-    // tslint:disable
     const isWindows = window.navigator.platform === 'Win32'
 
     return (

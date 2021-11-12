@@ -43,7 +43,6 @@ if (history.state && (history.state.todayArticle || history.state.todayAdPositio
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
-  // tslint:disable-next-line whilst CI does not know about BraveNews.FeedItemMetadata
   defaultState.articleScrollTo = history.state.todayArticle as BraveNews.FeedItemMetadata | undefined
   if (!defaultState.articleScrollTo) {
     defaultState.displayAdToScrollTo = history.state.todayAdPosition as number | undefined

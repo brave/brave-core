@@ -17,7 +17,6 @@ import CardType = BraveNews.CardType
 
 // Disabled rules because we have a function
 // which returns elements in a switch.
-// tslint:disable:jsx-wrap-multiline jsx-alignment
 
 type Props = {
   content: BraveNews.FeedPage
