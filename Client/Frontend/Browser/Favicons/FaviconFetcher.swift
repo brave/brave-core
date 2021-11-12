@@ -55,12 +55,12 @@ class FaviconFetcher {
     
     static let defaultFaviconImage = #imageLiteral(resourceName: "defaultFavicon")
     
-    init(siteURL: URL, kind: Kind, domain: Domain? = nil) {
+    init(siteURL: URL, kind: Kind, domain: Domain? = nil, persistentCheckOverride: Bool? = nil) {
         self.url = siteURL
         self.kind = kind
         self.domain = domain ?? Domain.getOrCreate(
             forUrl: siteURL,
-            persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing
+            persistent: persistentCheckOverride ?? !PrivateBrowsingManager.shared.isPrivateBrowsing
         )
     }
     
