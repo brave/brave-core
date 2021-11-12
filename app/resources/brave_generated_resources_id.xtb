@@ -54,6 +54,27 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Menyusun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
+<translation id="6821903322090655051">Brave Rewards dinonaktifkan</translation>
+<translation id="9184430019924125685">Klik di sini untuk mempelajari lebih lanjut</translation>
+<translation id="3849957491997306859">Terdeteksi Otomatis</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="4176463684765177261">Dinonaktifkan</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Dapatkan token dengan melihat Brave Ads. Iklan yang ditampilkan adalah berdasarkan minat Anda, yang disimpulkan dari pola penelusuran internet Anda. Tidak ada data pribadi atau riwayat penelusuran internet yang dikirimkan ke luar dari peramban Anda.</translation>
+<translation id="1758947220824279023">Jumlah maksimum iklan yang akan ditampilkan</translation>
+<translation id="8578912649458880781">Penargetan iklan tingkat negara bagian</translation>
+<translation id="3678362265519557511">Ini memungkinkan Brave untuk menampilkan iklan bagi Anda khusus untuk negara bagian Anda. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Kontribusi Otomatis</translation>
+<translation id="9132509928968869844">Batas kontribusi bulanan</translation>
+<translation id="7286722244752781970">Waktu laman minimum sebelum kunjungan dicatat</translation>
+<translation id="4424486208397124985">Kunjungan minimum untuk relevansi penerbit</translation>
+<translation id="6248554379744796526">Tampilkan situs non-terverifikasi dalam daftar</translation>
+<translation id="3241299447027267831">Izinkan kontribusi ke video</translation>
+<translation id="924777189963477634">Dengan mengaktifkan Kontribusi Otomatis, Anda menyetujui<ph name="BEGIN_LINK_TOS"/>Syarat Layanan<ph name="END_LINK_TOS"/> dan <ph name="BEGIN_LINK_PP"/>Kebijakan Privasi<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Tombol tip</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
 <translation id="1988804048511540801">Halaman tab baru ditampilkan</translation>
 <translation id="2970343821770026391">Dasbor</translation>
@@ -69,10 +90,12 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8934172355414207733">Pribadi dengan Tor</translation>
 <translation id="1970435562892104727">Ini adalah jendela pribadi dengan Tor</translation>
 <translation id="1037341607922068025">Buka Jendela Pribadi dengan Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Buka di Tor</translation>
 <translation id="7643538479215207633">Buka memakai IPFS</translation>
 <translation id="3094628781200061820">Publikasikan dan ambil berkas dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
+<translation id="406832631167785034">Buka dengan menggunakan alamat .onion</translation>
 <translation id="4901618511712685702">Impor ke IPFS</translation>
 <translation id="6794469945030154569">Halaman ini</translation>
 <translation id="5037852323412456577">Gambar yang dipilih</translation>
@@ -81,6 +104,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7895302206188277628">Konten ditautkan</translation>
 <translation id="3654831858282189202">Publikasikan dengan kunci IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Impor Teks yang dipilih ke IPFS</translation>
 <translation id="6925604404524625582">Impor dan Salin Tautan ke Sekilas Info tentang IPFS</translation>
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
 <translation id="4703780849509456860">Buka Tautan di Jendela Pribadi dengan Tor</translation>
@@ -94,7 +118,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2638041073279639246">Buka tautan di jendela pribadi dengan Tor</translation>
 <translation id="3425600262621021599">Buka tautan di jendela pribadi dengan Tor Brave</translation>
 <translation id="575838692088926391">Bagikan folder lokal dengan menggunakan IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Layanan Iklan Bat</translation>
 <translation id="7924918279836988121">Layanan Buku Besar BAT</translation>
 <translation id="4472575034687746823">Memulai</translation>
@@ -121,13 +144,11 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
 <translation id="4078738236287221428">Agresif</translation>
 <translation id="7740996059027112821">Standar</translation>
-<translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="5770288601196774623">Hanya antar situs</translation>
 <translation id="3587482841069643663">Semua</translation>
 <translation id="5533533363827555308">Ketat, dapat merusak situs</translation>
 <translation id="8792121506918889955">Kebijakan penanganan IP WebRTC</translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
-<translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Antarmuka pribadi dan umum baku</translation>
 <translation id="5825943197137337319">Hanya antarmuka publik baku</translation>
 <translation id="1689062823386843231">Nonaktifkan UDP yang tidak di-proxy</translation>
@@ -174,6 +195,11 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2339730291919608488">Keluar dai Rantai Sinkronisasi</translation>
 <translation id="115699408012835975">Jika mengatur ulang Sinkronisasi, Anda akan perlu memasukkan ulang kode sinkronisasi dari perangkat lain untuk menyinkronkan dengannya. Yakin ingin lanjutkan?</translation>
 <translation id="6092564993102418148">Anda yakin ingin menghapus perangkat yang dipilih dari rantai sinkronisasi?</translation>
+<translation id="2936582902048232286">Peringatan: tindakan ini akan membagikan data Brave Anda, termasuk mungkin kata sandi Anda, dengan perangkat yang menghasilkan kata kode ini.
+
+Silakan periksa ulang bahwa kata kode ini dihasilkan oleh perangkat yang Anda miliki.
+
+Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3396347744975515056">Brave Sync telah ditingkatkan dan memerlukan penataan</translation>
 <translation id="7473245612074035141">Mulai Tata</translation>
 <translation id="3411013544209536575">Tip bantuan</translation>
@@ -187,13 +213,17 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8488282162676695335">Dompet Brave.</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="7701040980221191251">Tidak ada</translation>
-<translation id="1274962333945373242">Ekstensi Dompet Kripto yang Ditanggalkan</translation>
+<translation id="1274962333945373242">Crypto Wallets (Lama)</translation>
+<translation id="3695088618483091287">Brave Wallet (Sambungan terpilih)</translation>
 <translation id="9131889008937672866">Dompet mata uang kripto bawaan</translation>
+<translation id="4718664830805652430">Mata uang dasar bawaan</translation>
+<translation id="7992507032049865603">Mata uang kripto dasar bawaan</translation>
 <translation id="1834467296210148203">Tampilkan ikon Brave Wallet pada bilah alat</translation>
 <translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="6864914031231797928">Izinkan login Google untuk ekstensi</translation>
 <translation id="5927916530277631319">Metode untuk menelusuri Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Pelajari Lebih Lanjut<ph name="END_LINK"/> tentang DNS over HTTPS dan pertimbangan privasi Ethereum.</translation>
 <translation id="5248318250177143470">Metode untuk menelusuri Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Atur kunci IPNS Anda</translation>
 <translation id="951216659045543447">Tandai konten dengan kunci privat yang terkait dan publikasikan ke IPNS</translation>
@@ -207,6 +237,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6476061084931271248">Mulai ulang simpul untuk menerapkan perubahan</translation>
 <translation id="3754226427671882382">Mulai ulang simpul</translation>
 <translation id="949667118776341807">Putar</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Nama ini tidak valid</translation>
 <translation id="6758961763875471084">Ubah daftar pihak lain</translation>
 <translation id="1295874070797049002">Ekspor kunci</translation>
@@ -217,6 +248,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="616058968889448209">Kesalahan peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Impor kunci '<ph name="KEY_NAME"/>' telah gagal</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
+<translation id="8860039076160511438">Atur Ulang Wallet</translation>
+<translation id="6369495274982305511">Anda yakin ingin mengatur ulang dompet Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk dana terkait). Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
+<translation id="1426410128494586442">Ya</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="3654980960391973513">Hasilkan</translation>
 <translation id="5531501313997312487">Mulai simpul</translation>
@@ -224,6 +258,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1327977588028644528">Gerbang</translation>
 <translation id="80225669816651290">Node lokal</translation>
 <translation id="4927734062756955434">Alamat gateway publik IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Pelajari Lebih Lanjut<ph name="END_LINK_MPL"/> tentang simpul lokal IPFS dan pertimbangan privasi gerbang.</translation>
 <translation id="8425213833346101688">Ubah</translation>
 <translation id="557281710253742286">Atur gateway IPFS</translation>
 <translation id="8571837315037233299">Alamat gateway</translation>
@@ -358,6 +393,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4235920711083356755">Tampilkan tombol VPN</translation>
 <translation id="4070612712151038707">Tampilkan tombol VPN di bilah alat</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN Dwiarah</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="2345974803401546682">Tentang VPN Brave</translation>
 <translation id="4378551569595875038">Menyambung...</translation>
@@ -383,4 +419,31 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai peramban bawaan</translation>
 <translation id="8581710194025054669">Untuk memastikan daring dengan privasi terbaik, pertimbangkan untuk menetapkan Brave sebagai peramban bawaan di komputer Anda. Dengan Brave sebagai bawaan, tautan web apa pun yang Anda klik akan terbuka dengan perlindungan privasi Brave.</translation>
+<translation id="1241283133946520352">Jaringan</translation>
+<translation id="8205945804087322170">Tambahkan jaringan baru</translation>
+<translation id="2156993118928861787">Alamat tidak sah</translation>
+<translation id="2653659639078652383">Kirim</translation>
+<translation id="2556708692502648323">Jaringan dompet</translation>
+<translation id="1330032157352961756">ID rantai baru</translation>
+<translation id="9053905035135220650">Deret heksadesimal berawalan 0x</translation>
+<translation id="726121047592132939">Nama rantai baru</translation>
+<translation id="1034112277864078119">Masukkan nama rantai</translation>
+<translation id="4672314527143443556">Nama mata uang rantai</translation>
+<translation id="4652114030688989556">Masukkan nama mata uang</translation>
+<translation id="1079960017149736097">Simbol mata uang rantai</translation>
+<translation id="1288105009659846362">Masukkan simbol mata uang</translation>
+<translation id="665660671251623018">Desimal mata uang rantai</translation>
+<translation id="2978054488731497946">Masukkan desimal mata uang</translation>
+<translation id="2727514928168763432">URL RPC</translation>
+<translation id="7059127752542505809">Masukkan URL</translation>
+<translation id="3047726704186619366">URL Ikon</translation>
+<translation id="2487558607408469181">Blokir URL penjelajah</translation>
+<translation id="6301398959353668507">Bidang ini tidak dapat dibiarkan kosong.</translation>
+<translation id="4514843126085243862">Format tidak valid. Rantai ini adalah deret heksadesimal berawalan 0x</translation>
+<translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
+<translation id="650071759190249039">Kesalahan Internal, tidak dapat menambahkan jaringan.</translation>
+<translation id="868529041590572443">Silakan mengisi semua informasi tentang mata uang asal</translation>
+<translation id="1062463687579789365">Kustomisasi jaringan dompet</translation>
+<translation id="2234108191702901162">Tidak dapat menambahkan jaringan</translation>
+<translation id="2618193846561624884">Anda ingin memperbarui jaringan yang ada?</translation>
 </translationbundle>

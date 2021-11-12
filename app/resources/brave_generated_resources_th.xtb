@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">ไม่ป้องกันคุณจากเว็บไซต์ การดาวน์โหลด และส่วนขยายที่เป็นอันตราย</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
+<translation id="6821903322090655051">ปิดใช้งาน Brave Rewards แล้ว</translation>
+<translation id="9184430019924125685">คลิกที่นี่เพื่อเรียนรู้เพิ่มเติม</translation>
+<translation id="3849957491997306859">ตรวจพบอัตโนมัติ</translation>
+<translation id="8798099450830957504">ค่าเริ่มต้น</translation>
+<translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">รับโทเค็นผ่านการชม Brave Ads ที่ระบบจะนำเสนอโฆษณาตามความสนใจของคุณ ตามที่อนุมานได้จากพฤติกรรมการท่องเว็บของคุณ โดยจะไม่มีข้อมูลส่วนตัวหรือประวัติการท่องเว็บใดๆ เล็ดลอดออกจากเบราว์เซอร์ของคุณ</translation>
+<translation id="1758947220824279023">จำนวนโฆษณาสูงสุดที่จะแสดง</translation>
+<translation id="8578912649458880781">การวางเป้าโฆษณาระดับรัฐ</translation>
+<translation id="3678362265519557511">นี่จะอนุญาตให้ Brave แสดงโฆษณาที่ทำขึ้นเพื่อรัฐของคุณโดยเฉพาะ<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">มีส่วนร่วมอัตโนมัติ</translation>
+<translation id="9132509928968869844">การจำกัดการสนับสนุนรายเดือนอัตโนมัติ</translation>
+<translation id="7286722244752781970">เวลาแสดงหน้าขั้นต่ำก่อนเข้าสู่ระบบ</translation>
+<translation id="4424486208397124985">การเข้าชมขั้นต่ำสำหรับความเกี่ยวข้องของผู้จัดพิมพ์</translation>
+<translation id="6248554379744796526">แสดงไซต์ที่ไม่ได้ยืนยันในรายการ</translation>
+<translation id="3241299447027267831">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
+<translation id="924777189963477634">การเปิดการสนับสนุนอัตโนมัติจะถือว่าคุณยอมรับ<ph name="BEGIN_LINK_TOS"/>ข้อตกลงการใช้บริการ<ph name="END_LINK_TOS"/>และ<ph name="BEGIN_LINK_PP"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK_PP"/></translation>
+<translation id="5733490796524078528">ปุ่มทิป</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">GitHub</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="1988804048511540801">การแสดงหน้าแท็บใหม่</translation>
 <translation id="2970343821770026391">แดชบอร์ด</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">แบบส่วนตัวผ่าน Tor</translation>
 <translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">เปิดใน Tor</translation>
 <translation id="7643538479215207633">เปิดด้วย IPFS</translation>
 <translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="1672270084584211506">บริการหัวหอมพร้อมใช้งาน</translation>
+<translation id="406832631167785034">เปิดโดยใช้ที่อยู่ .onion</translation>
 <translation id="4901618511712685702">นำเข้าไปยัง IPFS</translation>
 <translation id="6794469945030154569">หน้านี้</translation>
 <translation id="5037852323412456577">ภาพที่เลือก</translation>
@@ -94,7 +117,6 @@
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
 <translation id="575838692088926391">แบ่งปันโฟลเดอร์ในเครื่องโดยใช้ IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">บริการโฆษณา BAT</translation>
 <translation id="7924918279836988121">บริการรายการเดินบัญชี Bat</translation>
 <translation id="4472575034687746823">เริ่มต้น</translation>
@@ -121,13 +143,11 @@
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
 <translation id="4078738236287221428">รุนแรง</translation>
 <translation id="7740996059027112821">มาตรฐาน</translation>
-<translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
 <translation id="5770288601196774623">เฉพาะข้ามเว็บเท่านั้น</translation>
 <translation id="3587482841069643663">ทั้งหมด</translation>
 <translation id="5533533363827555308">เข้มงวด อาจทำเว็บเสียหาย</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
-<translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
@@ -174,6 +194,11 @@
 <translation id="2339730291919608488">ออกจากกลุ่มการซิงค์</translation>
 <translation id="115699408012835975">หากคุณรีเซ็ตซิงค์ คุณจะต้องกรอกรหัสซิงค์ใหม่จากอุปกรณ์อื่นเพื่อที่จะซิงค์กับอุปกรณ์นั้น ๆ แน่ใจว่าต้องการดำเนินการต่อ?</translation>
 <translation id="6092564993102418148">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ที่เลือกจากซิงค์เชน</translation>
+<translation id="2936582902048232286">คำเตือน: การดำเนินการนี้จะแชร์ข้อมูล Brave ของคุณ รวมถึงอาจแชร์รหัสผ่านของคุณ กับอุปกรณ์ที่สร้างข้อความโค้ดเหล่านี้
+
+กรุณาตรวจสอบอีกครั้งว่าข้อความโค้ดเหล่านี้สร้างโดยอุปกรณ์ที่คุณเป็นเจ้าของ
+
+คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้</translation>
 <translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
 <translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="3411013544209536575">เคล็ดลับช่วยเหลือ</translation>
@@ -187,8 +212,11 @@
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">ถาม</translation>
 <translation id="7701040980221191251">ไม่มี</translation>
-<translation id="1274962333945373242">ส่วนขยายกระเป๋าเงินดิจิตอลที่เลิกใช้แล้ว</translation>
+<translation id="1274962333945373242">กระเป๋าเงินคริปโต (ที่เลิกใช้แล้ว)</translation>
+<translation id="3695088618483091287">Brave Wallet (ต้องการส่วนขยาย)</translation>
 <translation id="9131889008937672866">วอลเล็ตสกุลเงินคริปโตหลัก</translation>
+<translation id="4718664830805652430">สกุลเงินพื้นฐานเริ่มต้น</translation>
+<translation id="7992507032049865603">สกุลเงินคริปโตพื้นฐานเริ่มต้น</translation>
 <translation id="1834467296210148203">แสดงไอคอน Brave Wallet บนแถบเครื่องมือ</translation>
 <translation id="8239147115686034860">ล็อค Brave วอลเล็ตโดยอัตโนมัติ</translation>
 <translation id="414639769490080648">จำนวนนาทีที่ต้องรอจนกว่า Brave วอลเล็ตจะล็อคโดยอัตโนมัติ</translation>
@@ -207,6 +235,7 @@
 <translation id="6476061084931271248">รีสตาร์ทโหนดเพื่อใช้การเปลี่ยนแปลง</translation>
 <translation id="3754226427671882382">รีสตาร์ทโหนด</translation>
 <translation id="949667118776341807">หมุน</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">ชื่อนี้ไม่ถูกต้อง</translation>
 <translation id="6758961763875471084">แก้ไขรายการเพียร์</translation>
 <translation id="1295874070797049002">ส่งออกคีย์</translation>
@@ -217,6 +246,9 @@
 <translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้บริการ IPFS กรุณาดูข้อมูลเพิ่มเติมได้ที่ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">การนำเข้าคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
 <translation id="3364053282600191535">ส่งออกคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
+<translation id="8860039076160511438">รีเซ็ตกระเป๋าเงิน</translation>
+<translation id="6369495274982305511">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตกระเป๋าเงินของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="1426410128494586442">ใช่</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="3654980960391973513">สร้าง</translation>
 <translation id="5531501313997312487">เริ่มต้นใช้งานโหนด</translation>
@@ -359,6 +391,7 @@
 <translation id="4235920711083356755">แสดงปุ่ม VPN</translation>
 <translation id="4070612712151038707">แสดงปุ่ม VPN ในแถบเครื่องมือ</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">เปิด/ปิด VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">เกี่ยวกับ Brave VPN</translation>
 <translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
@@ -384,4 +417,31 @@
 <translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 <translation id="2273851479262317744">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="8581710194025054669">เพื่อให้มั่นใจว่ากิจกรรมออนไลน์ได้รับความเป็นส่วนตัวที่ดีที่สุด ให้ตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นบนคอมพิวเตอร์ของคุณ และเมื่อ Brave เป็นเบราว์เซอร์เริ่มต้น ลิงก์ของเว็บใดๆ ที่คุณคลิกจะเปิดขึ้นพร้อมกับการปกป้องความเป็นส่วนตัวของ Brave</translation>
+<translation id="1241283133946520352">เครือข่าย</translation>
+<translation id="8205945804087322170">เพิ่มเครือข่ายใหม่</translation>
+<translation id="2156993118928861787">แอดแดรสไม่ถูกต้อง</translation>
+<translation id="2653659639078652383">ส่ง</translation>
+<translation id="2556708692502648323">เครือข่ายกระเป๋าเงิน</translation>
+<translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
+<translation id="9053905035135220650">สตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
+<translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
+<translation id="1034112277864078119">ระบุชื่อ Chain</translation>
+<translation id="4672314527143443556">ชื่อสกุลเงินของ Chain</translation>
+<translation id="4652114030688989556">ระบุชื่อสกุลเงิน</translation>
+<translation id="1079960017149736097">สัญลักษณ์สกุลเงินของ Chain</translation>
+<translation id="1288105009659846362">ใส่สัญลักษณ์สกุลเงิน</translation>
+<translation id="665660671251623018">ทศนิยมสกุลเงินของ Chain</translation>
+<translation id="2978054488731497946">ใส่ทศนิยมสกุลเงิน</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">ป้อน URL</translation>
+<translation id="3047726704186619366">URL ไอคอน</translation>
+<translation id="2487558607408469181">URL ของ Block Explorer</translation>
+<translation id="6301398959353668507">ต้องกรอกข้อมูลในช่องนี้</translation>
+<translation id="4514843126085243862">รูปแบบไม่ถูกต้อง Chain ID คือสตริงเลขฐานสิบหกที่มีคำนำหน้าด้วย 0x</translation>
+<translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
+<translation id="650071759190249039">เกิดข้อผิดพลาดภายใน ไม่สามารถเพิ่มเครือข่ายได้</translation>
+<translation id="868529041590572443">กรุณากรอกข้อมูลเกี่ยวกับสกุลเงินประจำกระดานเทรดทั้งหมด</translation>
+<translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
+<translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
+<translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
 </translationbundle>

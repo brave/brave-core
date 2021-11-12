@@ -238,10 +238,6 @@
     "message": "Додати кошти",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Докладніше",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Відновити з’єднання",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "У вас є несплати через недостатній залишок коштів ",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Не вдалося підключити гаманець",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Ваш гаманець не може бути перевірений, оскільки ви досягли максимального ліміту підтверджених пристроїв.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Схоже, що ваш гаманець «Винагороди Brave» було верифіковано за допомогою іншого акаунту $provider$. Спробуйте пройти верифікацію знову, використовуючи свій попередній акаунт.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT не підтримується у вашому регіоні в гаманцях Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ваш обліковий запис в Uphold наразі заблоковано.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ваш обліковий запис в Uphold усе ще обробляється.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Ваш обліковий запис в Uphold наразі обмежено.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Натискаючи, ви погоджуєтеся з $tos_link_begin$Умовами використання$tos_link_end$ й $pp_link_begin$Політикою конфіденційності$pp_link_end$. Згоду можна скасувати будь-коли в меню «Налаштування».",
+    "message": "Увімкнувши цю опцію, ви погоджуєтеся з $tos_link_begin$Умовами використання$tos_link_end$ й $pp_link_begin$Політикою конфіденційності$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Увімкнути Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Увімкнувши Ads, ви погоджуєтеся з $tos_link_begin$Умовами обслуговування$tos_link_end$ й $pp_link_begin$Політикою конфіденційності$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Тепер ви можете розпочати безкоштовний виклик",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Натисніть у будь-якому місці екрана, щоб продовжити користуватися Brave Talk.",
+    "message": "Натисніть або торкніться в будь-якому місці екрана, щоб перейти в Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

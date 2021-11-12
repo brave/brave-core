@@ -238,10 +238,6 @@
     "message": "Pridėti lėšų",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Sužinokite daugiau",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Prisijungti iš naujo",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Turite laukiančių indėlių dėl nepakankamų lėšų",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Piniginės susieti nepavyko",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Jūsų piniginės nebuvo galima patvirtinti, nes pasiekėte maksimalų patvirtintų įrenginių limitą.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Atrodo, kad jūsų „Brave Rewards“ piniginė jau patvirtinta su kita $provider$ sąskaita. Bandykite patvirtinti dar kartą, naudodami savo ankstesnę sąskaitą.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "„Uphold“ dar nepalaiko BAT jūsų regione.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Jūsų „Uphold“ paskyra šiuo metu užblokuota.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Jūsų „Uphold“ paskyra vis dar laukianti.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Jūsų „Uphold“ paskyra šiuo metu apribota.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Spustelėdami sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$. Išjungti galite bet kada, apsilankę srityje „Nustatymai“.",
+    "message": "Įjungdami šią funkciją sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Įjungti privatumo nepažeidžiančias „Brave“ reklamas",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Įjungdami reklamas, sutinkate su $tos_link_begin$paslaugų teikimo sąlygomis$tos_link_end$ ir $pp_link_begin$privatumo politika$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Dabar galite pradėti nemokamą pokalbį",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Spustelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.",
+    "message": "Spustelėkite ar bakstelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

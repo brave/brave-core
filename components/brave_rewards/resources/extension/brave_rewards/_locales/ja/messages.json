@@ -8,11 +8,11 @@
     "description": ""
   },
   "unverifiedCreator": {
-    "message": "未認証クリエイター",
+    "message": "未認証",
     "description": ""
   },
   "verifiedCreator": {
-    "message": "認証クリエイター",
+    "message": "認証済",
     "description": ""
   },
   "refreshStatus": {
@@ -238,10 +238,6 @@
     "message": "資金を追加する",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "詳しく知る",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "再接続",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "資金不足により保留されているチップがあります",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "ウォレットのリンクに失敗しました",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "認証済みのデバイスの上限に達したため、あなたのウォレットを確認できません。",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "このBrave Rewardsウォレットは、すでに他の$provider$アカウントで認証済みのようです。以前のアカウントを使用してもう一度認証をお試しください。",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "お住まいの地域では、UpholdでBATがサポートされていません。",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "現在、Upholdのアカウントがブロックされています。",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Upholdのアカウントが保留中です。",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "現在、Upholdのアカウントが制限されています。",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "クリックすることで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。設定でいつでも無効にできます。",
+    "message": "有効にすることで、お客様は$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads を有効にする",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "広告を有効にすることで、あなたは$tos_link_begin$利用規約$tos_link_end$および$pp_link_begin$プライバシーポリシー$pp_link_end$に同意したことになります。",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "無料通話を開始できます",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "画面上をクリックして、Brave Talk に進みます。",
+    "message": "画面上をクリックまたはタップして、Brave Talk に進みます。",
     "description": ""
   },
   "braveTalkWantLearnMore": {

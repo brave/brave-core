@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Forhindrer trackere og reklamer i at blive indlæst og vist på websider</translation>
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
+<translation id="5254037869598726291">Anonymiseret P3A-information hjælper Brave med at estimere generelt forbrug og sikre, at vi forbedrer populære funktioner.</translation>
 <translation id="4272190451231642425">Send automatisk nedbrudsrapporter</translation>
 <translation id="2239766974964486304">Nedbrudsrapporter hjælper Brave med at forbedre stabiliteten for alle brugere.</translation>
 <translation id="7977176350719484850">Est. datamængde\ngemt</translation>
@@ -219,6 +220,14 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="7173114856073700355">Åbn Indstillinger</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Vis ikke igen</translation>
+<translation id="1056898198331236512">Advarsel</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="7811264919113243207">Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede denne QR-kode.
+Dobbelttjek, at denne QR-kode blev genereret på en enhed, du ejer.
+Er du sikker på, du vil gennemføre?</translation>
+<translation id="3097089005389027085">Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede disse adgangskoder.
+Dobbelttjek, at disse adgangskoder blev genereret på en enhed, du ejer.
+Er du sikker på, du vil gennemføre?</translation>
 <translation id="597993392929850353">Brave-licens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6199596294742117349">Dette er en privat fane</translation>
@@ -331,6 +340,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="5617673581653540121">Din forbindelse er nu krypteret.</translation>
 <translation id="4055107796760496928">Hvis det er tilgængeligt, opgraderer Brave dig automatisk til en sikker forbindelse.</translation>
 <translation id="8869714780588464835">Del nyheden</translation>
+<translation id="7427391215172269363">Hver dag sparer jeg data ved at bruge Brave som browser.</translation>
 <translation id="5372054974373489308">1000 trackere og reklamer blokeret!</translation>
 <translation id="2338952568654182692">5000 trackere og reklamer blokeret!</translation>
 <translation id="5289711064670408815">10.000 trackere og reklamer blokeret!</translation>
@@ -410,6 +420,8 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="6755546361496900700">Forhåndsvis Konvertering</translation>
 <translation id="2882813124794301799">Widget-stak</translation>
 <translation id="13296465911709339">Din tekst er kopieret til udklipsholderen.</translation>
+<translation id="4670943871783273148">Din tekst er blevet gemt i en tekstfil.</translation>
+<translation id="4432845796903761592">Fil ikke gemt.</translation>
 <translation id="7144878232160441200">Prøv igen</translation>
 <translation id="2977461003134694205">Databeskyttelsesstatistik</translation>
 <translation id="4643117005422448078">Topsider</translation>
@@ -471,11 +483,12 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="8037420924417098685">For at starte et gratis opkald skal du aktivere Brave Rewards</translation>
 <translation id="8961724619078500274">Med Brave Rewards kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
 <translation id="7307847920988946894">Slå Rewards til</translation>
+<translation id="7872993190040589450">Ved at aktivere accepterer du <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">For at starte et gratis opkald skal du aktivere Brave Private Ads</translation>
 <translation id="7930006085154756245">Med Brave Private Ads kan du optjene poletter for at se privatreklamer (din data er sikker). Konvertér disse poletter til kontanter, gavekort…eller giv dem i drikkepenge til hjemmesider, du elsker. Der er ingen tracking og ingen forsinkelser.</translation>
 <translation id="4992617448154987397">Aktivér Brave Private Ads</translation>
 <translation id="3415016869273103668">Du kan nu startet et gratis opkald</translation>
-<translation id="7073631403665023390">Tryk hvor som helst på skærmen for at fortætte til Brave Talk.</translation>
+<translation id="7073631403665023390">Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.</translation>
 <translation id="626339649633171286">Vil du have mere at vide om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Du konverterede <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Tjek venligst din netværksforbindelse.</translation>
@@ -531,13 +544,15 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="5460364286096798286">Opbevar din kryptovaluta. Køb og sælg dine aktiver. Se priser og udvikling. Investér, lån og udlån med DeFi.</translation>
 <translation id="1748009926009835882">Konfigurér krypto</translation>
 <translation id="2759836790106646094">Lav en sikkerhedskopi af din tegnebog nu!</translation>
-<translation id="7685607706678113458">På næste trin vil du se 12 ord, som du kan bruge til gendannelse af din kryptotegnebog.</translation>
+<translation id="5156354224138379811">På næste trin vil du se 12 ord, som du kan bruge til gendannelse af din Crypto Wallet.</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="5024543173656851695">Jeg er indforstået med, at hvis jeg mister mine gendannelsesord, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
 <translation id="3933122286596948824">Din gendannelsessætning</translation>
 <translation id="6146351434671268516">Skriv ordene ned, eller kopiér dem i den rigtige rækkefølge, og gem dem et sikkert sted.</translation>
 <translation id="7408247683131762445">ADVARSEL: Oplys aldrig din backup-sætning. Personer i besiddelse af sætningen kan tage dine midler permanent.</translation>
 <translation id="939275786514736244">Jeg har lavet en backup af min sætning og gemt den et sikkert sted</translation>
+<translation id="6896758677409633944">Kopier</translation>
+<translation id="5317780077021120954">Gem</translation>
 <translation id="2604744480284798833">Backup din wallet nu for at beskytte din crypto-portefølje i tilfælde af mistet adgang.</translation>
 <translation id="1202920745614909195">Køb krypto med Apple Pay eller betalingskort.</translation>
 <translation id="841880029259839903">Send krypto, eller overfør fra én konto til en anden.</translation>
@@ -559,13 +574,13 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivér oplåsning via fingeraftryk?</translation>
 <translation id="5493402808936397665">Slå biometriske data til, så du hurtigt kan låse din tegnebog op uden at indtaste adgangskode.</translation>
-<translation id="1544192797660353713">Brave-wallet</translation>
+<translation id="1544192797660353713">Wallet</translation>
 <translation id="6901810042765869341">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
 <translation id="1970161551843843564">Gendan kryptokonto</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
 <translation id="283071225285270357">Indtast din gendannelsessætning</translation>
 <translation id="2339124864228588937">Bekræft gendannelsessætning</translation>
-<translation id="6202787708155200390">Tryk på ordene, og sæt dem i den rigtige rækkefølge.</translation>
+<translation id="2718669004132381989">Tryk på ordene, og sæt dem i den rigtige rækkefølge.</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="3157931365184549694">Gendan</translation>
 <translation id="9111102763498581341">Lås op</translation>
@@ -573,7 +588,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="1569452037668432756">Indtast din adgangskode får at låse op</translation>
 <translation id="224719674509047150">Adgangskoden skal være mindst 7 tegn og indeholde mindst ét tal og ét særligt tegn</translation>
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
-<translation id="745115390910697838">Sætningerne stemte ikke overens. Prøv igen.</translation>
+<translation id="5760476995887363522">Sætningerne stemte ikke overens. Prøv igen.</translation>
 <translation id="2360588547830602174">Kontogendannelsen mislykkedes. Prøv igen.</translation>
 <translation id="6392640873800632439">Markedspris i <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Fra</translation>
@@ -587,6 +602,12 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="4636930964841734540">Info</translation>
+<translation id="2449682593754783720">1 time</translation>
+<translation id="969133700726811190">1 dag</translation>
+<translation id="5882300031363619940">1 uge</translation>
+<translation id="5698094150392720512">1 måned</translation>
+<translation id="5483736362376139517">1 år</translation>
+<translation id="6979737339423435258">Altid</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
 <translation id="5288333155754958121">Det anonyme, private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
 <translation id="3819257035322786455">Sikkerhedskopi</translation>
@@ -627,7 +648,7 @@ indtil de verificerer, eller indtil der er gået 90 dage.</translation>
 <translation id="6277055349883621705">Forny årligt, og spar 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / år.</translation>
 <translation id="4487678670820292781">$119.88</translation>
-<translation id="5867778679088331977">Prøv gratis i 7 dage. Efter 7 dage vil du blive opkrævet abonnementsprisen. Alle abonnementer fornyes automatisk, men kan annulleres inden fornyelse.</translation>
+<translation id="2655185358771731232">Prøv gratis i 7 dage. Efter 7 dage vil du blive opkrævet abonnementsprisen. Alle abonnementer fornyes automatisk, men kan annulleres inden fornyelse.</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
 <translation id="721747358270435486">Installér VPN</translation>
 <translation id="836074276610740314">Installér VPN-profil</translation>
@@ -701,4 +722,11 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="275990379543116961">Ikke nok midler til gas</translation>
 <translation id="3292453499915466604">Utilstrækkelig likviditet</translation>
 <translation id="3380365263193509176">Ukendt fejl</translation>
+<translation id="5932938770824268122">Privat nøgle</translation>
+<translation id="2472882733835903303">Vis privat nøgle</translation>
+<translation id="4391056902675005799">Gem privat nøgle</translation>
+<translation id="5929798090073091848">Advarsel: Oplys aldrig denne nøgle. Enhver med privat nøgle kan stjæle aktiverne i din konto.</translation>
+<translation id="1133619932669546254">Aktivér <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">FUNKTIONSTYPE: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Ingen data</translation>
 </translationbundle>

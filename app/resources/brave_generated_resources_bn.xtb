@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">আপনাকে বিপজ্জনক ওয়েবসাইট, ডাউনলোড, এবঙ্গ এক্সটেনশনগুলি থেকে রক্ষা করে না।</translation>
 <translation id="6285118765755298263">অন্যান্য সার্চ ইঞ্জিনকে ইনডেক্স করুন</translation>
 <translation id="919715748352669592">OpenSearch স্পেসিফিকেশন অনুসরণ করে এমন ওয়েবসাইটগুলিকে স্বয়ংক্রিয়ভাবে ইনডেক্স করে।</translation>
+<translation id="6821903322090655051">Brave পুরষ্কার অক্ষম করা আছে</translation>
+<translation id="9184430019924125685">আরও জানতে এখানে ক্লিক করুন</translation>
+<translation id="3849957491997306859">স্বয়ংক্রিয়ভাবে সনাক্ত হয়েছে</translation>
+<translation id="8798099450830957504">ডিফল্ট</translation>
+<translation id="4176463684765177261">অক্ষম</translation>
+<translation id="4851215387785619212">Brave ব্যক্তিগত বিজ্ঞাপন</translation>
+<translation id="7808122468353671181">Brave বিজ্ঞাপন দেখে টোকেন উপার্জন করুন। আপনার ব্রাউজিং আচরণ থেকে অনুমান করে আপনার আগ্রহের ভিত্তিতে বিজ্ঞাপন পরিবেশন করা হয়। কোনো ব্যক্তিগত তথ্য বা ব্রাউজিং ইতিহাস কখনো আপনার ব্রাউজার ছেড়ে যায় না।</translation>
+<translation id="1758947220824279023">দেখানোর জন্য বিজ্ঞাপনের সর্বাধিক সংখ্যা</translation>
+<translation id="8578912649458880781">রাজ্য-স্তরের বিজ্ঞাপন টার্গেটিং</translation>
+<translation id="3678362265519557511">এটি Brave-কে বিশেষরূপে আপনার রাজ্যের উদ্দেশ্যের বিজ্ঞাপনগুলি দেখানোর অনুমতি দেয়। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">স্বতঃ-প্রদান</translation>
+<translation id="9132509928968869844">মাসিক স্বয়ংক্রিয় অবদানের সীমা</translation>
+<translation id="7286722244752781970">একটি সাক্ষাত লগ করার জন্য প্রয়োজন ন্যুনতম পেজ টাইম</translation>
+<translation id="4424486208397124985">প্রকাশকের প্রাসঙ্গিকতার জন্য ন্যুনতম সাক্ষাত</translation>
+<translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
+<translation id="3241299447027267831">ভিডিওতে অবদানের অনুমতি দিন</translation>
+<translation id="924777189963477634">স্বয়ংক্রিয় অবদান চালু করে, আপনি <ph name="BEGIN_LINK_TOS"/>পরিষেবার শর্তাবলী<ph name="END_LINK_TOS"/> এবং <ph name="BEGIN_LINK_PP"/>গোপনীয়তা নীতি<ph name="END_LINK_PP"/>-র সাথে সম্মত হন।</translation>
+<translation id="5733490796524078528">ইঙ্গিত বোতাম</translation>
+<translation id="3905400818082450708">রেড্ডিট</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="1988804048511540801">নতুন ট্যাব পেজ দেখায়</translation>
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">টরের সাথে ব্যক্তিগত</translation>
 <translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
+<translation id="5410152065859052603">টর</translation>
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
 <translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
+<translation id="406832631167785034">.onion ঠিকানা ব্যবহার করে খুলুন</translation>
 <translation id="4901618511712685702">IPFS-এ আমদানি করুন</translation>
 <translation id="6794469945030154569">এই পৃষ্ঠা</translation>
 <translation id="5037852323412456577">নির্বাচিত ছবি</translation>
@@ -95,7 +118,6 @@
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="575838692088926391">IPFS ব্যবহার করে স্থানীয় ফোল্ডার শেয়ার করুন</translation>
-<translation id="5410152065859052603">টর</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
 <translation id="4472575034687746823">শুরু করুন</translation>
@@ -122,13 +144,11 @@
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="4078738236287221428">আক্রমনাত্মক</translation>
 <translation id="7740996059027112821">মানক</translation>
-<translation id="4176463684765177261">অক্ষম</translation>
 <translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
 <translation id="3587482841069643663">সকল</translation>
 <translation id="5533533363827555308">কঠোর, সাইটগুলিকে ভাঙ্গতে পারে</translation>
 <translation id="8792121506918889955">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
-<translation id="8798099450830957504">ডিফল্ট</translation>
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
@@ -175,6 +195,11 @@
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
 <translation id="115699408012835975">আপনি যদি সিঙ্ক রিসেট করেন তহালে এর সাথে সিঙ্ক করার জন্য আপনাকে অন্য ডিভাইস থেকে একটি সিঙ্ক কোডটি পুনরায় প্রবেশ করতে হবে। আপনি কি এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?</translation>
 <translation id="6092564993102418148">আপনি কি সিঙ্ক চেন থেকে নির্বাচিত ডিভাইসটি সরিয়ে দিতে নিশ্চিত?</translation>
+<translation id="2936582902048232286">সতর্কবাণী: যে ডিভাইসে এই কোড ওয়ার্ডগুলি তৈরি হয় এটি সেই ডিভাইসের সাথে সম্ভাব্য আপনার পাসওয়ার্ড সহ আপনার Brave ডেটা শেয়ার করবে।
+
+যে ডিভাইসে এই কোড ওয়ার্ডগুলি তৈরি হয় আপনিই যে সেটির মালিক অনুগ্রহ করে তা দুবার পরীক্ষা করুন।
+
+আপনি কি এটি করার ব্যাপারে নিশ্চিত?</translation>
 <translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
 <translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
 <translation id="3411013544209536575">সহায়ক পরামর্শসমূহ</translation>
@@ -188,13 +213,17 @@
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
 <translation id="7701040980221191251">কিছুই নয়</translation>
-<translation id="1274962333945373242">অবমানিত ক্রিপ্টো ওয়ালেটগুলোর এক্সটেনশন</translation>
+<translation id="1274962333945373242">ক্রিপ্টো ওয়ালেট (অপ্রচলিত)</translation>
+<translation id="3695088618483091287">Brave ওয়ালেট (এক্সটেনশন পছন্দ করুন)</translation>
 <translation id="9131889008937672866">ডিফল্ট ক্রিপ্টোকারেন্সি ওয়ালেট</translation>
+<translation id="4718664830805652430">ডিফল্ট বেস মুদ্রা</translation>
+<translation id="7992507032049865603">ডিফল্ট বেস ক্রিপ্টোকারেন্সি</translation>
 <translation id="1834467296210148203">টুলবারে Brave ওয়ালেট আইকন দেখান</translation>
 <translation id="8239147115686034860">স্বয়ংক্রিয়ভাবে Brave ওয়ালেট লক করুন</translation>
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="6864914031231797928">এক্সটেনশনগুলির জন্য Google লগইন এর অনুমতি দিন</translation>
 <translation id="5927916530277631319">অপ্রতিরোধ্য ডোমেইনগুলোর সমস্যা সমাধানের উপায়</translation>
+<translation id="8412057160793088103">HTTPS এ DNS এবং ইথেরিয়াম গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/>।</translation>
 <translation id="5248318250177143470">Ethereum Name Service (ENS) সমাধানের উপায়</translation>
 <translation id="7024553202001112871">আপনার IPNS কিগুলি সেট করুন</translation>
 <translation id="951216659045543447">সংশ্লিষ্ট প্রাইভেট কি ব্যবহার করে বিষয়টি সই করে IPNS-এ পাবলিশ করুন</translation>
@@ -208,6 +237,7 @@
 <translation id="6476061084931271248">পরিবর্তনগুলি প্রয়োগ করার জন্য নোড রিস্টার্ট করুন</translation>
 <translation id="3754226427671882382">নোড রিস্টার্ট করুন</translation>
 <translation id="949667118776341807">ঘোরান</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">এই নামটি বৈধ নয়</translation>
 <translation id="6758961763875471084">পীয়ার তালিকা সম্পাদনা করুন</translation>
 <translation id="1295874070797049002">কী রপ্তানী করুন</translation>
@@ -218,6 +248,9 @@
 <translation id="616058968889448209">IPFS পরিষেবা লঞ্চ করার ত্রুটি, <ph name="BEGIN_LINK"/>ডায়াগনস্টিক পৃষ্ঠাতে<ph name="END_LINK"/> আরো তথ্য পাওয়া যাবে</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' কি ইমপোর্ট করা ব্যর্থ হয়েছে</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' কী রপ্তানী করা ব্যর্থ হয়েছে</translation>
+<translation id="8860039076160511438">ওয়ালেট রিসেট করুন</translation>
+<translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="1426410128494586442">হ্যাঁ</translation>
 <translation id="8275038454117074363">আমদানি</translation>
 <translation id="3654980960391973513">সৃষ্টি করুন</translation>
 <translation id="5531501313997312487">নোড চালু করুন</translation>
@@ -225,6 +258,7 @@
 <translation id="1327977588028644528">গেটওয়ে</translation>
 <translation id="80225669816651290">স্থানীয় নোড</translation>
 <translation id="4927734062756955434">IPFS পাবলিক গেটওয়ে ঠিকানা</translation>
+<translation id="3399481770463167943">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
@@ -359,6 +393,7 @@
 <translation id="4235920711083356755">VPN বোতাম দেখান</translation>
 <translation id="4070612712151038707">টুলবারে VPN বোতামটি দেখায়</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN টগল করুন</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Brave VPN সম্পর্কে</translation>
 <translation id="4378551569595875038">সংযুক্ত হচ্ছে...</translation>
@@ -384,4 +419,31 @@
 <translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 <translation id="2273851479262317744">Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করুন</translation>
 <translation id="8581710194025054669">অনলাইনে সর্বাধিক গোপনীয়তা সুনিশ্চিত করতে, আপনার কম্পিউটারে Brave-কে ডিফল্ট ব্রাউজার হিসেবে সেট করা বিবেচনা করুন। ডিফল্ট হিসেবে Brave থাকলে, আপনার ক্লিক করা যে কোনও লিঙ্ক Brave এর গোপনীয়তা সুরক্ষা সহ খুলবে।</translation>
+<translation id="1241283133946520352">নেটওয়ার্কসমূহ</translation>
+<translation id="8205945804087322170">নতুন নেটওয়ার্ক যোগ করুন</translation>
+<translation id="2156993118928861787">অবৈধ ঠিকানা</translation>
+<translation id="2653659639078652383">জমা দিন</translation>
+<translation id="2556708692502648323">ওয়ালেট নেটওয়ার্ক</translation>
+<translation id="1330032157352961756">নতুন চেইনের id</translation>
+<translation id="9053905035135220650">একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
+<translation id="726121047592132939">নতুন চেইনের নাম</translation>
+<translation id="1034112277864078119">চেইনের নাম এন্টার করুন</translation>
+<translation id="4672314527143443556">চেইনের মুদ্রার নাম</translation>
+<translation id="4652114030688989556">মুদ্রার নাম এন্টার করুন</translation>
+<translation id="1079960017149736097">চেইনের মুদ্রার প্রতীক</translation>
+<translation id="1288105009659846362">মুদ্রার প্রতীক এন্টার করুন</translation>
+<translation id="665660671251623018">চেইনের মুদ্রার দশমিক</translation>
+<translation id="2978054488731497946">মুদ্রার দশমিক এন্টার করুন</translation>
+<translation id="2727514928168763432">RPC URLগুলি</translation>
+<translation id="7059127752542505809">URL লিখুন</translation>
+<translation id="3047726704186619366">আইকন URLগুলি</translation>
+<translation id="2487558607408469181">এক্সপ্লোরার URLগুলি ব্লক করুন</translation>
+<translation id="6301398959353668507">এই ক্ষেত্রটি খালি রাখা যাবে না।</translation>
+<translation id="4514843126085243862">অবৈধ ফরম্যাট, চেইন idটি একটি 0x-প্রিফিক্সড হেক্সাডেসিমেল স্ট্রিং</translation>
+<translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
+<translation id="650071759190249039">অভ্যন্তরীণ ত্রুটি, নেটওয়ার্ক যোগ করা যায়নি।</translation>
+<translation id="868529041590572443">দেশীয় মুদ্রা সম্পর্কিত সমস্ত তথ্য পূরণ করুন</translation>
+<translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
+<translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
+<translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
 </translationbundle>

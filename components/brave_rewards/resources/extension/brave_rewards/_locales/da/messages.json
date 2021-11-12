@@ -238,10 +238,6 @@
     "message": "Tilføj Penge ",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Få mere at vide",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Genopret forbindelsen",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Du har afventende belønninger grundet utilstrækkelige midler",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Kunne ikke forbinde til tegnebog",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Din wallet kunne ikke verificeres, da du har nået den maksimalt verificerede enhedsgrænse.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Det ser ud til, at din Brave Rewards-tegnebog allerede er blevet bekræftet på en anden $provider$-konto. Prøv at bekræfte den igen med din tidligere konto.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT understøttes endnu ikke i din region på Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Din konto på Uphold er i øjeblikket blokeret.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Din konto på Udhold afventer stadig",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Din konto hos Uphold er i øjeblikket begrænset.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Ved at klikke accepterer du vores $tos_link_begin$Servicebetingelser $tos_link_end$ og $pp_link_begin$Privatlivspolitik$pp_link_end$.",
+    "message": "Ved at fortsætte accepterer du $tos_link_begin$servicevilkårene $tos_link_end$ og $pp_link_begin$databeskyttelsespolitikken$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Aktivér Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ved at aktivere reklamer accepterer du vores $tos_link_begin$Servicebetingelser$tos_link_end$ og $pp_link_begin$Privatlivspolitik$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Du kan nu startet et gratis opkald",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Klik hvor som helst på skærmen for at fortsætte Brave Talk.",
+    "message": "Klik eller tryk hvor som helst på skærmen for at fortsætte Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

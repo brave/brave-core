@@ -238,10 +238,6 @@
     "message": "फंड्स जोड़ें",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "अधिक जानकारी प्राप्त करें",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "रिकनेक्ट",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "अपर्याप्त राशि के कारण आपके पास लंबित टिप्स हैं",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "वॉलेट लिंकिंग नहीं हो सका",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "आपके वॉलेट को सत्यापित नहीं किया जा सकता है क्योंकि आप अधिकतम सत्यापित डिवाइस सीमा पर पहुँच गए हैं।\n",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "ऐसा लगता है कि आपका Brave Reward वॉलेट पहले से ही दूसरे अकाउंट $provider$के साथ वेरिफ़ाई किया जा चुका है. अपने पिछले अकाउंट का इस्तेमाल करके फिर से वेरिफ़ाई करने की कोशिश करें.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "आपके क्षेत्र में Uphold पर bAT अभी तक सपोर्टेड नहीं है.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Uphold पर आपका अकाउंट अभी ब्लॉक्ड है.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Uphold पर आपका अकाउंट अभी भी पेंडिंग है.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Uphold पर इस समय आपके अकाउंट पर रोक लगी हुई है.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "$tos_link_begin$क्लिक करके, आप सेवा की शर्तों $tos_link_end$और$pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं. सेटिंग्स में किसी भी समय बंद करें.",
+    "message": "इसे चालू करके, आप $tos_link_begin$सेवा की शर्तों$tos_link_end$ और $pp_link_begin$निजता नीति$pp_link_end$ पर अपनी सहमति देते हैं.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads को शुरू करें.",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": " Ads चालू करके आप $tos_link_begin$सेवा की शर्तों$tos_link_end$ और $pp_link_begin$गोपनीयता नीति$pp_link_end$ से सहमत होते हैं.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "अब आप फ़्री कॉल  शुरू कर सकते हैं",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.",
+    "message": "Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक या टैप करें.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

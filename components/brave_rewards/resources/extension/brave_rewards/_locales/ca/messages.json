@@ -238,10 +238,6 @@
     "message": "Afegeix Fons",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Més informació",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Torna't a connectar",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Tens propines pendents perquè no hi ha prou fons",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "S'ha produït un error en enllaçar la cartera",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "La teva cartera no es pot verificar perquè has assolit el límit màxim de dispositius verificats.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Sembla que la teva cartera de Brave Rewards ja s'ha verificat amb un altre compte $provider$. Prova de verificar-la novament utilizant el teu compte anterior.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "El BAT a les carteres Uphold encara no s'admet a la teva regió.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "El teu compte a Uphold actualment està bloquejat.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "El teu compte a Uphold encarà està pendent.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "El teu compte a Uphold actualment està restringit.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Si feu clic, esteu acceptant els $tos_link_begin$Termes del servei$tos_link_end$ i la $pp_link_begin$Política de privacitat$pp_link_end$. Podeu desactivar l'opció en qualsevol moment a Configuració.",
+    "message": "Si ho habilites, acceptes les $tos_link_begin$Condicions d'ús$tos_link_end$ i la $pp_link_begin$Política de privacitat$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Activa Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Si activeu Brave Ads, esteu acceptant els $tos_link_begin$Termes del servei$tos_link_end$ i la $pp_link_begin$Política de privacitat$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Ara podeu iniciar una trucada gratuïta",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Feu clic a qualsevol lloc de la pantalla per continuar cap a Brave Talk.",
+    "message": "Fes clic o toca qualsevol lloc de la pantalla per continuar a Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

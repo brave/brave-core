@@ -238,10 +238,6 @@
     "message": "添加资金",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "详细了解",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "重新连接",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "由于资金不足，您的赏金待处理",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "钱包关联失败",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "无法验证您的钱包，因为您已达到验证设备的最大限量。",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "您的 Brave Rewards 钱包好象已经通过另一个 $provider$ 帐户进行了验证。请尝试用您以前的帐户再次验证。",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "您所在地区的 Uphold 尚不支持 BAT。",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "您在 Uphold 的账户目前已被屏蔽。",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "您在 Uphold 的账户仍处于待处理状态。",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "您在 Uphold 的账户目前受到限制。",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "单击即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。可以随时在“设置”中将其禁用。",
+    "message": "启用此功能即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "开启 Brave专属广告",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "开启广告即表示您同意$tos_link_begin$服务条款$tos_link_end$和$pp_link_begin$隐私政策$pp_link_end$。",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "你现在可以开始免费通话",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "点击屏幕上的任何地方继续 Brave Talk",
+    "message": "单击或轻按屏幕上的任何地方，继续使用 Brave 通话。",
     "description": ""
   },
   "braveTalkWantLearnMore": {

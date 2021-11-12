@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">ट्रैकर्स को रोकता है &amp; वेबपेजेज़ में लोड होने और दिखने वाले विज्ञापन</translation>
 <translation id="1680858055899097121">ब्राउज़िंग सत्रों के बीच टैब बनाएं न रखें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
+<translation id="5254037869598726291">अनामित P3A जानकारी Brave को समग्र उपयोग का अनुमान लगाने में मदद करती है, और यह सुनिश्चित करती है कि हम लोकप्रिय सुविधाओं में सुधार कर रहे हैं.</translation>
 <translation id="4272190451231642425">अपने आप क्रैश रिपोर्ट भेजें</translation>
 <translation id="2239766974964486304">क्रैश रिपोर्ट Brave को सभी उपयोगकर्ताओं के लिए उत्पाद स्थिरता में सुधार करने में मदद करती है.</translation>
 <translation id="7977176350719484850">डेटा\nसेव किया गया</translation>
@@ -217,6 +218,13 @@
 <translation id="7173114856073700355">सेटिंग खोलें</translation>
 <translation id="6965382102122355670">ठीक है</translation>
 <translation id="4450893287417543264">इसे दोबारा न दिखाएँ</translation>
+<translation id="1056898198331236512">चेतावनी</translation>
+<translation id="1426410128494586442">हां</translation>
+<translation id="7811264919113243207">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें यह QR कोड बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
+कृपया यह एक बार फिर से जाँच लें कि यह QR कोड आपकी ही किसी डिवाइस से बनाए गए हैं. 
+क्या आप वाकई यह करना चाहते हैं?</translation>
+<translation id="3097089005389027085">इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
+कृपया यह एक बार फिर से जाँच लें कि ये कोड शब्द आपकी ही किसी डिवाइस से बनाए गए हैं. क्या आप वाकई यह करना चाहते हैं?</translation>
 <translation id="597993392929850353">Brave लाइसेंस</translation>
 <translation id="6336451774241870485">नया निजी टैब</translation>
 <translation id="6199596294742117349">यह एक निजी टैब है</translation>
@@ -409,6 +417,8 @@
 <translation id="6755546361496900700">संवाद को प्रीव्यू करें</translation>
 <translation id="2882813124794301799">विज़ेट स्टैक</translation>
 <translation id="13296465911709339">आपके टेक्स्ट को क्लिपबोर्ड पर कॉपी किया गया है।</translation>
+<translation id="4670943871783273148">आपके टेक्स्ट को एक टेक्स्ट फ़ाइल में सेव कर दिया गया है.</translation>
+<translation id="4432845796903761592">फ़ाइल सेव नहीं हुई.</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="2977461003134694205">गोपनीयता आँकड़े</translation>
 <translation id="4643117005422448078">शीर्ष साइट्स</translation>
@@ -470,11 +480,12 @@
 <translation id="8037420924417098685">फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें</translation>
 <translation id="8961724619078500274">Brave Rewards के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, गिफ़्ट कार्ड…या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
 <translation id="7307847920988946894">रिवॉर्ड शुरू करें</translation>
+<translation id="7872993190040589450">इसे चालू करके, आप <ph name="TERMS_OF_SERVICE"/> और <ph name="PRIVACY_POLICY"/> पर सहमति देते हैं.</translation>
 <translation id="6128511569382736135">फ़्री कॉल शुरू करने के लिए,  Brave Private Ads चालू करें</translation>
 <translation id="7930006085154756245">Brave Private Ads के साथ, आप निजी विज्ञापन देखने के लिए टोकन पाते हैं (आपका डेटा सुरक्षित है). उन टोकन को नकद, गिफ़्ट कार्ड… या यहां तक कि अपनी पसंदीदा वेबसाइटों को टिप दें. ट्रैकिंग नहीं. धीमा नहीं पड़ता.</translation>
 <translation id="4992617448154987397">Brave Private Ads को शुरू करें.</translation>
 <translation id="3415016869273103668">अब आप फ़्री कॉल  शुरू कर सकते हैं</translation>
-<translation id="7073631403665023390">Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.</translation>
+<translation id="7073631403665023390">Brave Talk पर जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक या टैप करें.</translation>
 <translation id="626339649633171286">के बारे में अधिक जानना चाहते हैं? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">आपने <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> से <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/> में बदला है!</translation>
 <translation id="392587271502873865">कृपया अपना नेटवर्क कनेक्शन जांचें।</translation>
@@ -530,13 +541,15 @@
 <translation id="5460364286096798286">क्रिप्टो को अपनी कस्टडी में रखें. व्यापार संपत्ति. मूल्य और पोर्टफोलियो प्रदर्शन देखें. DeFi के साथ निवेश करें, उधार लें और उधार दें.</translation>
 <translation id="1748009926009835882">क्रिप्टो सेटअप करें</translation>
 <translation id="2759836790106646094">अपने वॉलेट का बैकअप लें</translation>
-<translation id="7685607706678113458">अगले चरण में आपको 12 शब्द दिखाई देंगे जिससे आप अपना क्रिप्टो वॉलेट रिकवर कर सकेंगे.</translation>
+<translation id="5156354224138379811">अगले चरण में आपको 12 शब्द दिखाई देंगे जिनसे आप अपना क्रिप्टो वॉलेट रिकवर कर सकेंगे.</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="5024543173656851695">मैं जानता हूं कि अगर मैं अपने रिकवरी शब्द खो देता हूं, तो मैं अपने क्रिप्टो वॉलेट तक नहीं पहुंच पाऊंगा.</translation>
 <translation id="3933122286596948824">आपका रिकवरी वाक्यांश</translation>
 <translation id="6146351434671268516">इन शब्दों को सही क्रम में लिखें या कॉपी करके कहीं सुरक्षित रख लें.</translation>
 <translation id="7408247683131762445">चेतावनी: अपने बैकअप फ़्रेज़ को कभी भी ज़ाहिर न करें. इस फ़्रेज़ वाला कोई भी व्यक्ति आपके पैसे को हमेशा के लिए ले सकता है.</translation>
 <translation id="939275786514736244">मैंने अपने फ़्रेज़ का बैकअप कहीं सुरक्षित रखा है</translation>
+<translation id="6896758677409633944">कॉपी</translation>
+<translation id="5317780077021120954">सेव करें</translation>
 <translation id="2604744480284798833">अपने क्रिप्टो पोर्टफ़ोलिओ को एक्सेस के नुकसान से बचाने के लिए अभी अपने वॉलेट का बैकअप लें.</translation>
 <translation id="1202920745614909195">Apple Pay, क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
 <translation id="841880029259839903">क्रिप्टो भेजें या एक अकाउंट से दूसरे अकॉउंट में ट्रांसफर करें.</translation>
@@ -558,13 +571,13 @@
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">फ़िंगरप्रिंट अनलॉक चालू करें</translation>
 <translation id="5493402808936397665">अपना पासवर्ड डाले बिना अपने वॉलेट को जल्दी से अनलॉक करने के लिए बायोमेट्रिक्स चालू करें.</translation>
-<translation id="1544192797660353713">Brave वॉलेट</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
 <translation id="6901810042765869341">अपने Brave वॉलेट क्रिप्टो अकाउंट को रिस्टोर करने के लिए अपना रिकवरी फ्रेज़ एंटर करें.</translation>
 <translation id="1970161551843843564">क्रिप्टो अकाउंट रिस्टोर करें</translation>
 <translation id="4811736040444856406">रिकवरी फ्रेज़ दिखाएँ</translation>
 <translation id="283071225285270357">रिकवरी फ्रेज़ एंटर करें</translation>
 <translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
-<translation id="6202787708155200390">ऊपर दिए गए शब्दों को सही क्रम में एक दूसरे के बगल में रखें.</translation>
+<translation id="2718669004132381989">ऊपर दिए गए शब्दों को सही क्रम में एक दूसरे के बगल में रखने के लिए टैप करें.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
 <translation id="9111102763498581341">अनलॉक करें</translation>
@@ -572,7 +585,7 @@
 <translation id="1569452037668432756">अनलॉक करने के लिए अपना पासवर्ड एंटर करें</translation>
 <translation id="224719674509047150">पासवर्ड कम से कम 7 वर्णों का होना चाहिए जिसमें कम से कम एक संख्या और एक विशेष वर्ण हो</translation>
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
-<translation id="745115390910697838">वाक्यांश नहीं मेल खा रहे. कृपया दोबारा कोशिश करें.</translation>
+<translation id="5760476995887363522">वाक्य मेल नहीं खा रहे. कृपया फिर से कोशिश करें.</translation>
 <translation id="2360588547830602174">अकाउंट रिकवरी नहीं हो पाया. कृपया दोबारा कोशिश करें.</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/> में बाजार मूल्य</translation>
 <translation id="6748108480210050150">से\n\n</translation>
@@ -586,6 +599,12 @@
 <translation id="1987317783729300807">खाते</translation>
 <translation id="3535654229833214438">लेन-देन</translation>
 <translation id="4636930964841734540">जानकारी</translation>
+<translation id="2449682593754783720">1 घंटा</translation>
+<translation id="969133700726811190">1 दिन</translation>
+<translation id="5882300031363619940">1 हफ़्ता</translation>
+<translation id="5698094150392720512">1 महीना</translation>
+<translation id="5483736362376139517">1 साल</translation>
+<translation id="6979737339423435258">हमेशा</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
 <translation id="5288333155754958121">यह अनाम, निजी पिंग Brave को एक्टिव उपयोगकर्ताओं का अनुमान लगाने देता है</translation>
 <translation id="3819257035322786455">बैकअप</translation>
@@ -626,7 +645,7 @@
 <translation id="6277055349883621705">सालाना रिन्यूअल करें 16% बचाएं</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / साल.</translation>
 <translation id="4487678670820292781">$119.88</translation>
-<translation id="5867778679088331977">7 दिनों के लिए फ़्री ट्रायल करें. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यूअल से पहले कैंसिल किये जा सकते हैं.</translation>
+<translation id="2655185358771731232">7 दिनों के लिए मुफ़्त आज़माएँ. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यू होने से पहले कैंसिल किए जा सकते हैं.</translation>
 <translation id="6053992191006521518">फ़्री में आज़माएँ</translation>
 <translation id="721747358270435486">VPN इंस्टॉल करें</translation>
 <translation id="836074276610740314">VPN प्रोफ़ाइल इंस्टॉल करें</translation>
@@ -700,4 +719,11 @@
 <translation id="275990379543116961">गैस के लिए अपर्याप्त राशि</translation>
 <translation id="3292453499915466604">अपर्याप्त राशि</translation>
 <translation id="3380365263193509176">अज्ञात गड़बड़ी</translation>
+<translation id="5932938770824268122">निजी कुंजी</translation>
+<translation id="2472882733835903303">प्राइवेट की (Key) दिखाएँ</translation>
+<translation id="4391056902675005799">प्राइवेट की (Key) छिपाएँ</translation>
+<translation id="5929798090073091848">चेतावनी : यह की (key) किसी से ज़ाहिर न करें. जिसके पास भी यह प्राइवेट की (key) होगी, वह आपके अकाउंट में मौजूद कोई भी ऐसेट चुरा सकता है.</translation>
+<translation id="1133619932669546254"><ph name="TOKEN"/> ऐक्टिवेट करें</translation>
+<translation id="2199215899212542417">फ़ंक्शन का प्रकार : <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">कोई डेटा नहीं</translation>
 </translationbundle>

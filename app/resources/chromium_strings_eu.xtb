@@ -41,9 +41,9 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="7798069806040634998">Brave-ek fitxategiak deskargatzearren memorian sartzeko baimena behar du</translation>
 <translation id="8447483940522230788">Brave laguntzailea</translation>
 <translation id="7933006624150961626">Brave-eko gauzak gailu guztietan atzitze aldera, hasi saioa sinkronizazioa aktibatzeko.</translation>
-<translation id="5486618155264784386">Instalatu Chrome OS</translation>
 <translation id="7291143854620707672">Laneko profilaren administratzaileak kendu egin ditzake profil hau erabiltzean sortutako Brave-eko datuak (adibidez, sortutako laster-markak, historia, pasahitzak eta bestelako ezarpenak). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Eguneratzea aplikatzeko, berrabiarazi egin behar da Brave sistema eragilea.</translation>
+<translation id="4703432949110765917">Ezarpen lehenetsiak egokiak dira jende gehienarentzat, baina pertsonalizatu egin ditzakezu Brave erabiltzen duzun moduari egokitzeko</translation>
 <translation id="7387051847644272380">Sistema-eragilean errore bat gertatu da instalatu bitartean. Deskargatu Brave berriro.</translation>
 <translation id="2648689842065142443">Gailu bat partekatzen baduzu, lagunak eta familiako kideak beren kontuak erabilita ibil daitezke Interneten, eta Brave nahi duten moduan konfiguratu</translation>
 <translation id="6791166902140255175">Brave fitxa</translation>
@@ -54,8 +54,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="777113543093865885">Kendu Brave-etik…</translation>
 <translation id="2885378588091291677">Zereginen kudeatzailea</translation>
 <translation id="2176825726964012531">&amp;Brave arakatzaileari buruz</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Azken abisua: Chrome OS instalatuz gero, <ph name="BEGIN_BOLD"/>ezabatu egingo da disko gogor osoko eduki guztia<ph name="END_BOLD"/>. Ziurtatu gorde nahi dituzun datuen babeskopia egin duzula.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Instalazio-prozesua hasiz gero, ezin da bertan behera utzi.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Eguneratuta dago Brave</translation>
 <translation id="2953892977076487219">Pasahitzak editatzen saiatzen ari da Brave.</translation>
 <translation id="8755404239607088219">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu geroago.</translation>
@@ -78,7 +76,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="2711887072399498551">Badago kontu honen Brave-eko profil bat</translation>
 <translation id="2297290224191497273">Lehendik dagoen Brave-eko profil batera aldatu nahi duzu?</translation>
 <translation id="2450003541323895471">Brave-eko profilekin, Brave-en dituzun gauza guztiak bereiz ditzakezu. Sortu profilak lagunentzat eta familiako kideentzat, edo banandu gauza pertsonalak eta lanekoak.</translation>
-<translation id="7275165473619697274">Chrome OS instalatzen ari da</translation>
 <translation id="9216183508558772570">Arriskuan dagoen pasahitz batekin hasten baduzu saioa, jakinarazi egingo dizu Brave-ek</translation>
 <translation id="5853262807109651878">Gailuko <ph name="ITEMS_COUNT"/> elementu ezabatuko dira. Geroago datuak eskuratu nahi izanez gero, hasi saioa Brave-en <ph name="USER_EMAIL"/> gisa.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> da Brave-eko profil batetik bestera aldatzeko lasterbidea</translation>
@@ -103,7 +100,6 @@ Eginbide batzuk agian dira erabilgarri egongo eta hobespenei egindako aldaketak 
 <translation id="8923080813984421771">Gailua erabili aurretik, <ph name="MANAGER"/> kudeatzaileak jarraian azalduko diren Zerbitzu-baldintzak irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte hedatuko, aldatuko edo mugatuko Chrome OS-en Baldintzak.</translation>
 <translation id="3262506503470845422">Lortu Brave erabiltzeko laguntza</translation>
 <translation id="7691786510374174420">Instalazioak huts egin du zehaztu gabeko errore batengatik. Brave abian bada, itxi eta ireki berriro.</translation>
-<translation id="429583012151745428">Instalazioa abian da. Ez itzali gailua. Instalazioak 20 minutu iraungo ditu gehienez. Instalazioa amaitzen denean, makina automatikoki itzaliko da.</translation>
 <translation id="9183662282810237335">Brave-etik irten nahi duzu hala ere?</translation>
 <translation id="4065288863231444640">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="8148611988012584308">Pertsonalizatu eta kontrolatu Brave</translation>
@@ -196,7 +192,6 @@ Baliteke eginbide batzuk erabilgarri ez egotea. Adierazi beste profil-direktorio
 <translation id="6666624454809779082">Ordenagailuko erabiltzaile guztientzat dago instalatuta Brave.</translation>
 <translation id="5360050006043219962">Brave-eko gauzak gailu guztietan atzitzeko, hasi saioa eta aktibatu sinkronizazioa.</translation>
 <translation id="8291513491595858997">Zure gurasoak "Webguneen, aplikazioen eta luzapenen baimenak" desaktibatu ditu Brave-en. Ezin da gaitu <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
-<translation id="1810203443153428607">Chrome OS instalatzean, gailuko datu guztiak gainidatziko dira.</translation>
 <translation id="8211837073776713955">Brave-ek abisatu egingo dizu pasahitzak inoiz arriskuan badaude</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave-en kopiatu da)</translation>
@@ -207,6 +202,7 @@ Baliteke eginbide batzuk erabilgarri ez egotea. Adierazi beste profil-direktorio
 <translation id="3335606533094650083">Brave-ek webgune honen izenean mikrofonoa atzitzeko baimena behar du</translation>
 <translation id="1705567146636171298">Eguneratu Brave</translation>
 <translation id="5499063270485366718">Irudiren batek ez badu azalpen lagungarririk, halako bat lortzen ahaleginduko da Brave. Azalpen horiek sortzeko, irudiak Brave-ri bidaltzen zaizkio.</translation>
+<translation id="151916274998710826">Pertsonalizatu Brave-en pribatutasun-aukera garrantzitsuenetako batzuk</translation>
 <translation id="1008530050039597147">Brave-ek kamera atzitzeko baimena behar du webgune honetan</translation>
 <translation id="1197672524850678392">Ezin izan da abiarazi Brave. Saiatu berriro.</translation>
 <translation id="3405035915691517126">Brave-ek ezin ditu egiaztatu pasahitzak. Saiatu berriro 24 ordu barru.</translation>
@@ -231,10 +227,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
       Brave-en sistema eragilearen ezarpenetan.<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave kamera eta mikrofonoa erabiltzen ari da.</translation>
 <translation id="2827121003398607864">Brave hobetu egin dugu</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Hasi aurretik, egiaztatu zure datuen babeskopia eguneratu bat duzula. Chrome OS instalatzean, disko gogorreko datu guztiak gainidatziko dira.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave ez da datuen galeraren arduraduna eta ez du bermatzen Chrome OS-ek ziurtatu gabeko modeloetan funtzionatuko duenik. Joan [TBD] webgunera ziurtatutako modeloei buruzko informazio gehiago lortzeko.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Lortu informazio gehiago Chrome OS instalatzeari eta datuak ezabatzeari buruz: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Aurrera egiteko prest bazaude, sakatu "Instalatu Chrome OS" eta instalazioarekin lagunduko dizugu; urrats gutxi batzuk besterik ez dira. Ekintza berresteko beste aukera bat izango duzu ordenagailuan beste aldaketarik egin aurretik.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave ez da zure arakatzaile lehenetsia</translation>
 <translation id="5477319665405831211">Sinkronizatu eta pertsonalizatu Brave gailu guzietan</translation>
 <translation id="5419189641394808652">Brave-ek ezin izan dizkizu sinkronizatu datuak sinkronizazioa ez dagoelako erabilgarri zure domeinuan.</translation>

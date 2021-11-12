@@ -54,6 +54,27 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
+<translation id="6821903322090655051">Brave Rewards er deaktivert</translation>
+<translation id="9184430019924125685">Klikk her for å finne ut mer</translation>
+<translation id="3849957491997306859">Automatisk oppdaget</translation>
+<translation id="8798099450830957504">Standard</translation>
+<translation id="4176463684765177261">Deaktivert</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Tjen tokener ved å se Brave Ads. Annonser som presenteres er basert på interessene dine, som utledet av nettleseratferden din. Personlige data og nettleserloggen vil ikke forlate nettleseren din.</translation>
+<translation id="1758947220824279023">Maksimalt antall annonser som skal vises</translation>
+<translation id="8578912649458880781">Annonsemålretting i området ditt</translation>
+<translation id="3678362265519557511">Dette lar Brave viser deg annonser ment spesifikt for området ditt. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-bidra</translation>
+<translation id="9132509928968869844">Månedlig grense for automatiske bidrag</translation>
+<translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
+<translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
+<translation id="6248554379744796526">Vis ikke-verifiserte nettsteder på listen</translation>
+<translation id="3241299447027267831">Tillat bidrag til videoer</translation>
+<translation id="924777189963477634">Ved å slå på automatisk bidrag samtykker du til <ph name="BEGIN_LINK_TOS"/>vilkårene for bruk<ph name="END_LINK_TOS"/> og <ph name="BEGIN_LINK_PP"/>retningslinjene for personvern<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Tipsknapper</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Ny fane-side</translation>
 <translation id="1988804048511540801">Ny faneside vises</translation>
 <translation id="2970343821770026391">Instrumentbord</translation>
@@ -69,10 +90,12 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8934172355414207733">Privat med Tor</translation>
 <translation id="1970435562892104727">Dette er et privat vindu med Tor</translation>
 <translation id="1037341607922068025">Åpne privat vindu med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Åpne i Tor</translation>
 <translation id="7643538479215207633">Åpne med IPFS</translation>
 <translation id="3094628781200061820">Publiser og hent filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion-tilgjengelig</translation>
+<translation id="406832631167785034">Åpne med .onion-adresse</translation>
 <translation id="4901618511712685702">Importer til IPFS</translation>
 <translation id="6794469945030154569">Denne siden</translation>
 <translation id="5037852323412456577">Valgt bilde</translation>
@@ -94,7 +117,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
 <translation id="3425600262621021599">Åpne lenke i Brave privat vindu med Tor</translation>
 <translation id="575838692088926391">Del lokal mappe ved å bruke IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -117,11 +139,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Deaktivert</translation>
 <translation id="3587482841069643663">Alle</translation>
 <translation id="8792121506918889955">WebRTCs IP-håndteringspolicy</translation>
 <translation id="6165508094623778733">Lær mer</translation>
-<translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grensesnitt</translation>
 <translation id="5825943197137337319">Kun standard offentlig grensesnitt</translation>
 <translation id="1689062823386843231">Deaktiver ikke-proxied UDP</translation>
@@ -155,6 +175,11 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5093410893656857925">Velg enhetstype</translation>
 <translation id="2339730291919608488">Forlat synkroniseringskjede</translation>
 <translation id="6092564993102418148">Er du sikker på at du vil fjerne den valgte enheten fra synkroniseringskjeden?</translation>
+<translation id="2936582902048232286">Advarsel: Dette deler dine Brave-data, potensielt inkludert passordene dine, med enheten som genererte disse kodeordene.
+
+Dobbeltsjekk at disse kodeordene ble generert av en enhet du eier.
+
+Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3411013544209536575">Hjelpetips</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-beskjed på 404-sider</translation>
 <translation id="1807246157184219062">Lyst</translation>
@@ -166,8 +191,11 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="2356070529366658676">Spør</translation>
 <translation id="7701040980221191251">Ingen</translation>
-<translation id="1274962333945373242">Avviklet Kryptolommebøker-utvidelse</translation>
+<translation id="1274962333945373242">Kryptolommebøker (avviklet)</translation>
+<translation id="3695088618483091287">Brave Wallet (foretrekker utvidelser)</translation>
 <translation id="9131889008937672866">Standard kryptovaluta-lommebok</translation>
+<translation id="4718664830805652430">Standard basisvaluta</translation>
+<translation id="7992507032049865603">Standard basiskryptovaluta</translation>
 <translation id="1834467296210148203">Vis Brave Wallet-ikonet i sidefelt</translation>
 <translation id="8239147115686034860">Lås Brave-lommeboken automatisk</translation>
 <translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
@@ -186,6 +214,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6476061084931271248">Start noden på nytt for å aktivere endringene</translation>
 <translation id="3754226427671882382">Start noden på nytt</translation>
 <translation id="949667118776341807">Roter</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Dette navnet er ugyldig</translation>
 <translation id="6758961763875471084">Endre listen over peers</translation>
 <translation id="1295874070797049002">Eksporter nøkkel</translation>
@@ -196,6 +225,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="616058968889448209">IPFS-opplastingafeil. Du finner mer informasjon på <ph name="BEGIN_LINK"/>diagnosesiden<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>'-nøkkelimport mislyktes</translation>
 <translation id="3364053282600191535">Kunne ikke eksportere nøkkel '<ph name="KEY_NAME"/>'</translation>
+<translation id="8860039076160511438">Tilbakestill lommebok</translation>
+<translation id="6369495274982305511">Er du sikker på at du vil tilbakestille lommeboken? Om lommeboken din ikke er sikkerhetskopiert, vil tilbakestilling føre til at du mister alle kontodata (inkludert eventuelle tilknyttede midler). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for å bekrefte.</translation>
+<translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Generer</translation>
 <translation id="5531501313997312487">Start noden</translation>
@@ -337,6 +369,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4235920711083356755">Vis VPN-knappen</translation>
 <translation id="4070612712151038707">Viser VPN-knappen i verktøylinjen</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Slå VPN av og på</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">om Brave VPM</translation>
 <translation id="4378551569595875038">Kobler til …</translation>
@@ -362,4 +395,31 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
 <translation id="2273851479262317744">Angi Brave som standard nettleser</translation>
 <translation id="8581710194025054669">For å sikre best mulig personvern, bør du vurdere å angi Brave som standard nettleser på datamaskinen din. Med Brave som standard, åpnes alle lenker du klikker med Braves personvernbeskyttelse.</translation>
+<translation id="1241283133946520352">Nettverk</translation>
+<translation id="8205945804087322170">Legg til nytt nettverk</translation>
+<translation id="2156993118928861787">Ugyldig adresse</translation>
+<translation id="2653659639078652383">Send</translation>
+<translation id="2556708692502648323">Lommeboknettverk</translation>
+<translation id="1330032157352961756">Den nye kjedens ID</translation>
+<translation id="9053905035135220650">En heksadesimal streng med 0x-prefiks</translation>
+<translation id="726121047592132939">Den nye kjedens navn</translation>
+<translation id="1034112277864078119">Skriv inn kjedenavn</translation>
+<translation id="4672314527143443556">Kjedens valutanavn</translation>
+<translation id="4652114030688989556">Skriv inn valutanavn</translation>
+<translation id="1079960017149736097">Kjedens valutasymbol</translation>
+<translation id="1288105009659846362">Skriv inn valutasymbol</translation>
+<translation id="665660671251623018">Kjedens valutadesimaler</translation>
+<translation id="2978054488731497946">Skriv inn valutadesimaler</translation>
+<translation id="2727514928168763432">Nettadresser til RPC</translation>
+<translation id="7059127752542505809">Skriv inn nettadresse</translation>
+<translation id="3047726704186619366">Ikonnettadresser</translation>
+<translation id="2487558607408469181">Blokker utforskernettadresser</translation>
+<translation id="6301398959353668507">Dette feltet kan ikke stå tomt.</translation>
+<translation id="4514843126085243862">Ugyldig format, kjede-ID er en heksadesimal streng med 0x-prefiks</translation>
+<translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
+<translation id="650071759190249039">Intern feil, kan ikke legge til nettverk.</translation>
+<translation id="868529041590572443">Fyll inn all informasjon om innebygd valuta</translation>
+<translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
+<translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
+<translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
 </translationbundle>

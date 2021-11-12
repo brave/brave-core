@@ -156,6 +156,7 @@
 <translation id="8969049974285901797">在 Twitch 上</translation>
 <translation id="3692362746128814480">您已指定将 <ph name="BAT_VALUE"/> 个 BAT 发送给尚未注册接受捐款的创建者。您的浏览器将继续尝试捐赠
 直到他们通过验证或直到 90 天以后为止。</translation>
+<translation id="3101693828171454453"><ph name="TOKEN"/>代币不足</translation>
 <translation id="6940273954212603510">请</translation>
 <translation id="1036277985068412734">添加资金</translation>
 <translation id="3492491948683276944">设定每月酬谢费</translation>
@@ -217,6 +218,14 @@
 <translation id="7173114856073700355">打开“设置”</translation>
 <translation id="6965382102122355670">确定</translation>
 <translation id="4450893287417543264">不再显示</translation>
+<translation id="1056898198331236512">警告</translation>
+<translation id="1426410128494586442">是</translation>
+<translation id="7811264919113243207">这会与生成这此二维码的设备共享您的 Brave 数据，可能包括您的密码。
+请再次确认此二维码由您所拥有的设备生成。
+确定要这么做吗？</translation>
+<translation id="3097089005389027085">这会与生成这些代码单词的设备共享您的 Brave 数据，可能包括您的密码。
+请再次确认这些单词由您所拥有的设备生成。
+确定要这么做吗？</translation>
 <translation id="597993392929850353">Brave 执照</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="6199596294742117349">这是一个私人标签页</translation>
@@ -409,6 +418,8 @@
 <translation id="6755546361496900700">预览兑换</translation>
 <translation id="2882813124794301799">小部件堆栈</translation>
 <translation id="13296465911709339">您的文本已复制到剪贴板。</translation>
+<translation id="4670943871783273148">您的文本已保存到文本文件。</translation>
+<translation id="4432845796903761592">文件未保存。</translation>
 <translation id="7144878232160441200">重试</translation>
 <translation id="2977461003134694205">隐私统计数据</translation>
 <translation id="4643117005422448078">热门网站</translation>
@@ -470,11 +481,12 @@
 <translation id="8037420924417098685">要开始免费通话，请开启 Brave 奖励</translation>
 <translation id="8961724619078500274">使用 Brave 奖励，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡……或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
 <translation id="7307847920988946894">开启奖励</translation>
+<translation id="7872993190040589450">启用该服务即表示您同意<ph name="TERMS_OF_SERVICE"/>和<ph name="PRIVACY_POLICY"/>。</translation>
 <translation id="6128511569382736135">要开始免费通话，请启用 Brave 专属广告</translation>
 <translation id="7930006085154756245">使用 Brave 专属广告，您可以通过查看专属广告获得代币（您的数据是安全的）。把这些代币变成现金、礼品卡，或是给您喜欢的网站打赏。不会跟踪您的足迹。不会拖慢网站速度。</translation>
 <translation id="4992617448154987397">开启 Brave 专属广告</translation>
 <translation id="3415016869273103668">你现在可以开始免费通话</translation>
-<translation id="7073631403665023390">点击屏幕上的任意位置，继续使用 Brave 语聊。</translation>
+<translation id="7073631403665023390">单击或轻按屏幕上的任何地方，继续使用 Brave 通话。</translation>
 <translation id="626339649633171286">想要了解 Brave 奖励更多详情？<ph name="TAKE_QUICK_TOUR"/>。</translation>
 <translation id="3604285424134705930">您将<ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> 兑换成了 <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>！</translation>
 <translation id="392587271502873865">请检查您的网络连接。</translation>
@@ -530,13 +542,15 @@
 <translation id="5460364286096798286">保管加密货币。交易资产。查看价格和投资组合表现。通过 DeFi 投资和借贷。</translation>
 <translation id="1748009926009835882">设置加密货币</translation>
 <translation id="2759836790106646094">立即备份钱包！</translation>
-<translation id="7685607706678113458">在下一步中，您将看到 12 个密语，用于恢复您的加密货币钱包。</translation>
+<translation id="5156354224138379811">在下一步中，您将看到 12 个密语，用于恢复您的加密货币钱包。</translation>
 <translation id="2359808026110333948">继续</translation>
 <translation id="5024543173656851695">我理解一旦我丢失我的恢复语句，我将无法访问我的加密钱包。</translation>
 <translation id="3933122286596948824">您的恢复密语</translation>
 <translation id="6146351434671268516">按正确顺序记下或复制这些密语，将他们保存在安全位置。</translation>
 <translation id="7408247683131762445">警告：切勿向他人透露您的备份密语。任何人一旦持有该密语，即可取走您的资金。</translation>
 <translation id="939275786514736244">我已将我的密语备份到某个安全位置</translation>
+<translation id="6896758677409633944">复制</translation>
+<translation id="5317780077021120954">保存</translation>
 <translation id="2604744480284798833">立即备份您的钱包，以保护您的加密货币投资组合，并确保您不会失去访问权限。</translation>
 <translation id="1202920745614909195">使用 Apple Pay、信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
@@ -558,13 +572,13 @@
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">启用指纹解锁功能？</translation>
 <translation id="5493402808936397665">启用生物识别，无需输入密码即可快速解锁您的钱包。</translation>
-<translation id="1544192797660353713">Brave 钱包</translation>
+<translation id="1544192797660353713">钱包</translation>
 <translation id="6901810042765869341">输入您的恢复密语，以恢复您的 Brave Wallet 加密货币账户。</translation>
 <translation id="1970161551843843564">恢复加密货币账户</translation>
 <translation id="4811736040444856406">显示恢复密语</translation>
 <translation id="283071225285270357">输入您的恢复密语</translation>
 <translation id="2339124864228588937">验证恢复密语</translation>
-<translation id="6202787708155200390">点按词语顶部，将它们按正确的顺序排列在一起。</translation>
+<translation id="2718669004132381989">点按词语顶部，将它们按正确的顺序排列在一起。</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="3157931365184549694">恢复</translation>
 <translation id="9111102763498581341">解锁</translation>
@@ -572,7 +586,7 @@
 <translation id="1569452037668432756">输入您的密码以解锁</translation>
 <translation id="224719674509047150">密码必须至少有 7 个字符，包含至少一个数字和一个特殊字符</translation>
 <translation id="1144810021918451336">不能保护您免受危险网站、下载和扩展名的侵害。</translation>
-<translation id="745115390910697838">密语不匹配，请重试。</translation>
+<translation id="5760476995887363522">密语不匹配，请重试。</translation>
 <translation id="2360588547830602174">账户恢复失败。请重试。</translation>
 <translation id="6392640873800632439"><ph name="ASSET"/>市场价格</translation>
 <translation id="6748108480210050150">来自</translation>
@@ -586,6 +600,12 @@
 <translation id="1987317783729300807">帐号</translation>
 <translation id="3535654229833214438">交易</translation>
 <translation id="4636930964841734540">信息</translation>
+<translation id="2449682593754783720">1 小时</translation>
+<translation id="969133700726811190">1 天</translation>
+<translation id="5882300031363619940">1 周</translation>
+<translation id="5698094150392720512">1 个月</translation>
+<translation id="5483736362376139517">1 年</translation>
+<translation id="6979737339423435258">时间不限</translation>
 <translation id="6284218950354553099">自动向 Brave 发送每日使用 ping</translation>
 <translation id="5288333155754958121">这种匿名的私人 ping 可以让 Brave 估计活跃用户数</translation>
 <translation id="3819257035322786455">备份</translation>
@@ -626,7 +646,7 @@
 <translation id="6277055349883621705">每年续订节省 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="4487678670820292781">$119.88</translation>
-<translation id="5867778679088331977">免费试用 7 天。7 天后，您将被收取套餐价格。所有订阅都会自动续订，但在续订之前可以取消。</translation>
+<translation id="2655185358771731232">免费试用 7 天。7 天后，您将被收取套餐价格。所有订阅都会自动续订，但在续订之前可以取消。</translation>
 <translation id="6053992191006521518">免费试用</translation>
 <translation id="721747358270435486">安装 VPN</translation>
 <translation id="836074276610740314">安装 VPN 配置文件</translation>
@@ -700,4 +720,11 @@
 <translation id="275990379543116961">gas 资金不足</translation>
 <translation id="3292453499915466604">流动性不足</translation>
 <translation id="3380365263193509176">未知错误</translation>
+<translation id="5932938770824268122">私钥</translation>
+<translation id="2472882733835903303">显示私钥</translation>
+<translation id="4391056902675005799">隐藏私钥</translation>
+<translation id="5929798090073091848">注意：永远不要公开这个私钥。任何拥有您的私钥的人都可以窃取您账户中的所有资产。</translation>
+<translation id="1133619932669546254">激活 <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">功能类型：<ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">无数据</translation>
 </translationbundle>

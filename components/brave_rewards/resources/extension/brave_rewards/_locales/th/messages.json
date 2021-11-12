@@ -238,10 +238,6 @@
     "message": "เพิ่มเงิน",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "เรียนรู้เพิ่มเติม",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "เชื่อมต่ออีกครั้ง",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "คุณมีทิปที่รอดำเนินการอยู่เนื่องจากมีเงินในบัญชีไม่พอ",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "การเชื่อมโยงกระเป๋าเงินล้มเหลว",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "ไม่สามารถยืนยันตัวตนของวอลเล็ทได้เนื่องจากคุณมีจำนวนอุปกรณ์ที่ผ่านการยืนยันตัวตนถึงขีดจำกัดสูงสุดแล้ว",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "ดูเหมือนว่ากระเป๋าเงิน Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชี $provider$ อื่นแล้ว กรุณาลองยืนยันอีกครั้งโดยใช้บัญชีก่อนหน้านี้ของคุณ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "บัญชีของคุณที่ Uphold ถูกบล็อกอยู่ในขณะนี้",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "บัญชีของคุณที่ Uphold ยังคงรอดำเนินการอยู่",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "บัญชีของคุณที่ Uphold ถูกจำกัดอยู่ในขณะนี้",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "การคลิกหมายความว่า คุณยอมรับ $tos_link_begin$ข้อตกลงการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$ โดยคุณสามารถปิดการใช้งานได้ทุกเมื่อในการตั้งค่า",
+    "message": "การดำเนินการต่อจะถือว่าคุณยอมรับ$tos_link_begin$ข้อตกลงในการใช้บริการ$tos_link_end$และ$pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "เปิดการทำงานของ Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "การเปิดการทำงานของโฆษณาหมายความว่า คุณยอมรับ $tos_link_begin$ข้อตกลงการใช้บริการ$tos_link_end$ และ $pp_link_begin$นโยบายความเป็นส่วนตัว$pp_link_end$",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "คลิกที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk",
+    "message": "คลิกหรือแตะที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk",
     "description": ""
   },
   "braveTalkWantLearnMore": {

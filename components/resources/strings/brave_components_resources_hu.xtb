@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Már kattintott</translation>
 <translation id="7119308337584989771">Elutasítva</translation>
 <translation id="6805660603861526473">Megtekintett</translation>
+<translation id="4014166694178311757">Pénztárcád nem ellenőrizhető, mert elérted a maximális ellenőrzött eszközhatárt.</translation>
+<translation id="1221593978088944142">Hiba: eszközhatár elérve</translation>
 <translation id="3113653894794167793">Sajnáljuk, hiba történt a kérésed teljesítése során, próbáld újra.</translation>
-<translation id="8832187864682447273">A bejelentkezéshez hitelesített pénztárcára van szüksége</translation>
 <translation id="2607420597216860026">Próbálja meg újra, miután elvégezte az azonosító-hitelesítést itt: <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Hiba: a bejelentkezéshez hitelesített pénztárcára van szüksége</translation>
 <translation id="1501075228659004450">Hmm, úgy tűnik, hogy a Brave Jutalmak pénztárcáját már egy másik <ph name="PROVIDER"/> fióknál ellenőrizték. Próbálja meg újra ellenőrizni a korábbi fiókjával.</translation>
 <translation id="5111921830714291902">Hiba: eltérő fiók</translation>
+<translation id="5382684862562314222">Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.</translation>
+<translation id="9074594632540931067">Hiba: BAT nem elérhető</translation>
+<translation id="413458922997276130">Uphold-fiókja jelenleg zárolva van.</translation>
+<translation id="3579959767665130790">Hiba: zárolt fiók</translation>
+<translation id="819370426249314592">Uphold-fiókja továbbra is függőben van.</translation>
+<translation id="4530453398914580957">Hiba: függőben lévő fiók</translation>
+<translation id="2388470740942086608">Uphold-fiókja jelenleg korlátozva van.</translation>
+<translation id="3605236342612716051">Hiba: korlátozott fiók</translation>
 <translation id="1737873393693460829">A(z) [[title]] bekapcsolásával elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>.</translation>
+<translation id="901298512318791028">Az Ön <ph name="AMOUNT"/> kifizetésének feldolgozása <ph name="DAYS"/> múlva fog megkezdődni.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Megjegyzés: <ph name="BOLD_END"/>Pár nap eltelhet a fizetés feldolgozásáig és a BAT-je megérkezésééig.</translation>
 <translation id="4672975606583962967">Pénztárca-szolgáltatás kiválasztása</translation>
 <translation id="1815503044492647974">Válassza ki a letétkezelő pénztárca-partnert. Ha már van fiókja, a kapcsolódáshoz a rendszer belépést fog kérni Öntől.</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">Felhasználó azonosítója</translation>
 <translation id="4235360514405112390">Érvényes</translation>
 <translation id="3902084968737576005">Pénztárca címe:</translation>
+<translation id="3653417592104122757">Pénztárca előzményei</translation>
 <translation id="2326487656644542536">Pénztárcaadatok</translation>
 <translation id="3506182299017414175">A pénztárca</translation>
 <translation id="8559420016582377654">Pénztárca fizetési azonosítója:</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">Adja meg helyreállítási kódját, vagy</translation>
 <translation id="1209382772199769572">Készítsen biztonsági másolatot pénztárcájáról, mielőtt kicserélné. Ellenkező esetben elveszíti a következő pénzalapot a jelenlegi pénztárcájából: [[funds]].</translation>
 <translation id="5423214929210538027">Biztosan újraállítja Reward pénztárcáját?</translation>
+<translation id="4749947664556704604">Az Ön birtokában lévő <ph name="BAT_AMOUNT"/> és egyéb Rewards-adatai végleg elvesznek, ha visszaállítja pénztárcáját. Győződjön meg róla, hogy <ph name="LINK_BEGIN"/>hitelesítette pénztárcáját<ph name="LINK_END"/>, hogy megtarthassa BAT-ját.</translation>
 <translation id="2028613172174411919">A Rewards adatai végleg elvesznek a pénztárca újraállításakor.</translation>
 <translation id="4914597931214386232">Beváltott zseton adományok</translation>
 <translation id="3494964159182650590">Jutalmak összefoglalója</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">Már akár 1$-t is befektethetsz népszerű részvényekbe, és kereskedhetsz AAPL, TSLA vagy AMZN és hasonló alapokkal.</translation>
 <translation id="3787061634640932557">Kártyák szerkesztése</translation>
 <translation id="5977237145327845546">Indíts videóhívást barátaiddal és munkatársaiddal.</translation>
-<translation id="5850325887346946383">Videóhívás indítása</translation>
+<translation id="8863928195533744356">Hívás indítása</translation>
 <translation id="3651550649176056334">Az adataidról</translation>
 <translation id="223536150967420869">Vásárolj</translation>
 <translation id="5110244215256675209">Vásárolj kriptot</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">Az összes megtekintése</translation>
 <translation id="3026978804849658576">Kimutatás megtekintése</translation>
 <translation id="8494748383523030337">Az ön egyenlege</translation>
+<translation id="3343165035032571678">Ön <ph name="AMOUNT"/> jutalmat kapott Brave Private hirdetések megtekintéséért!</translation>
+<translation id="6618415862402597254">Kapott hirdetési jutalmak</translation>
+<translation id="5981646694027725752">Bevételek igénylése</translation>
+<translation id="2556441076129789027">Tokenek igénylése</translation>
+<translation id="5544777623605368410">Bevétel</translation>
+<translation id="3273637494083639780">Az ebben a hónapban megszerzett tokenek feldolgozása ekkor fog megkezdődni: <ph name="DATE"/>.</translation>
+<translation id="1029300693989825319">Ez a piac volatilitásától függően változhat.</translation>
+<translation id="8334559352278209120">Adás</translation>
+<translation id="3903419925307046908">Szerezz tokeneket és adj vissza</translation>
+<translation id="244362569344671266">Szerezzen tokeneket Brave privát hirdetések nézésével, és támogassa automatikusan a tartalomkészítőket.</translation>
+<translation id="5095252080770652994">Előrehaladás</translation>
+<translation id="6278643716658443228">Rewards beállítások</translation>
+<translation id="6777169449483742979">Ennek a szponzorált képnek a megtekintéséért tokeneket kap.</translation>
+<translation id="5486114327664215175">Szerezzen tokeneket a kép megtekintéséért, és támogassa a tartalomkészítőket.</translation>
+<translation id="2940863921746574646">Token egyenleg</translation>
+<translation id="1714906256929297600">Használja promóciós tokeneit az alkotók támogatására, mielőtt még lejárnának!</translation>
+<translation id="2426048501007152001">Elérhető tokenek</translation>
 <translation id="7701466644604753106">Gyorsolvasó bekapcsolása</translation>
 <translation id="763042262431778831">Gyorsolvasó kikapcsolása</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">A felhasználó elutasította a kérelmet.</translation>
 <translation id="2403819048476450281">Érvénytelen paraméterek.</translation>
+<translation id="3955144560853195652">A(z) <ph name="VALUE"/> lánc nem lett hozzáadva</translation>
 <translation id="9161147058107529840">Egyetlen objektumparamétert várt.</translation>
 <translation id="1875861420974447980">Ez a láncazonosító már használatban van</translation>
 <translation id="167698752210114155">Belső hiba lépett fel</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">Nem sikerült a tranzakciós adatokat konvertálni</translation>
 <translation id="3829038878925630240">A 'from' tranzakciós adatot meg kell adni</translation>
 <translation id="4732386285392573809">Nem sikerült lehívni a gas árát a tranzakcióhoz</translation>
-<translation id="7619826778671319444">Nem sikerült lehívni a gas határértékét a tranzakcióhoz</translation>
 <translation id="4232775951515678071">Nem sikerült lehívni a típust a tranzakcióhoz</translation>
-<translation id="7631054302129692654">Nem sikerült lehívni a gas becslését az EIP-1559 tranzakcióhoz</translation>
+<translation id="2080935885647755539">Nem sikerült lehívni a gas díját az EIP-1559 tranzakcióhoz</translation>
+<translation id="4843814354611030845">A felhasználó elutasította a tranzakciót</translation>
+<translation id="1462494615260983714">Hiba történt a tranzakció feldolgozásakor</translation>
+<translation id="4886059598718763020">'<ph name="VALUE"/>' nem jogosult az üzenet aláírására</translation>
 <translation id="4958950550253325418">Defi alkalmazások</translation>
 <translation id="735961408871282410">NFT piacterek</translation>
 <translation id="7740287852186792672">Keresési eredmények</translation>
@@ -833,7 +866,11 @@
 <translation id="2267753748892043616">Számla hozzáadása</translation>
 <translation id="1483493594462132177">Küldés</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">nem támogatott</translation>
+<translation id="7020187418439030877">A(z) <ph name="NETWORK"/> nem támogatott</translation>
+<translation id="1191686659164947414">Lehetséges, hogy a tranzakció "frontrun" típusú</translation>
+<translation id="632241521608275119">Csúszási tolerancia</translation>
+<translation id="4500473291496079954">Lejár ennyi idő múlva:</translation>
+<translation id="8093033115658137576">0x  cím vagy URL</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="1420318137760245955">Üdvözli az új Brave pénztárca</translation>
 <translation id="8303434745767477417">Tartson magánál letétben kriptoeszközöket. Kövesse nyomon a portfóliója teljesítményét és lépjen interakcióba web 3 decentralizált applikációkkal. Kereskedjen, fektessen be, vegyen fel kölcsönt, és adjon kölcsön a DeFi-vel. Mindezt egyenesen a Brave adatvédelmi böngészőből. Nincsenek bővítmények és a letöltés sem szükséges.</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">Biztosítsa kriptoeszközei biztonságát jelszóval</translation>
 <translation id="6901073872645365201">A jelszónak legalább 7 karakterből kell állnia, és tartalmaznia kell legalább egy számot és egy különleges karaktert.</translation>
 <translation id="6657585470893396449">Jelszó</translation>
-<translation id="692381016487372902">Adja meg újra a jelszót</translation>
-<translation id="3527905866577245691">A megerősítő jelszó nem egyezik</translation>
+<translation id="5486261815000869482">Jelszó megerősítése</translation>
+<translation id="467510802200863975">A jelszavak nem egyeznek</translation>
 <translation id="5168349973342709369">A tárca feloldásához adja meg a jelszavát</translation>
 <translation id="9111102763498581341">Feloldás</translation>
 <translation id="5045550434625856497">Helytelen jelszó</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">Eszközök</translation>
 <translation id="2236507293802791911">Látható eszközök</translation>
 <translation id="7525067979554623046">Létrehozás</translation>
+<translation id="4771176409524282426">Fiók létrehozása</translation>
 <translation id="4324198334837993695">Hardver</translation>
 <translation id="3067168166931605141">Számla neve</translation>
 <translation id="1136772623587250243">Illessze be a privát kulcsot a vágólapról</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">Nincs kiválasztva fájl</translation>
 <translation id="5891811606602061966">Sikertelen a számla importálása, próbálja újra</translation>
 <translation id="5051929972046200722">Válassza ki a hardver tárca eszközét</translation>
-<translation id="6932355307691676490">Csatlakoztassa</translation>
-<translation id="4513956488935671725">tárcáját közvetlenül a számítógépéhez.</translation>
+<translation id="5745936663807461565">Kapcsolja össze <ph name="HARDWARE_DEVICE"/> pénztárcáját közvetlenül a számítógépével.</translation>
 <translation id="5041211872515579638">Oldja fel az eszközét és válassza az Ethereum applikációt.</translation>
+<translation id="6892232036314454524">Ez a hiba akkor fordulhat elő, ha nem a megfelelő alkalmazás van nyitva a Ledger eszközön.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Csatlakozás…</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">Token neve</translation>
 <translation id="4432966365400169165">Token szerződéses cím</translation>
 <translation id="4092152169181928870">Tokenszimbólum</translation>
-<translation id="871696868578199698">A pontosság tizedesjegyei</translation>
-<translation id="6637540491667802882">egyéni tokenként</translation>
+<translation id="4351811224047421378">A pontosság tizedesjegyei</translation>
+<translation id="4982060163914604175"><ph name="CONTRACT_ADDRESS"/> hozzáadása egyéni tokenként</translation>
 <translation id="7978047524114351365">Nincsenek megnevezett eszközök</translation>
 <translation id="9040455159722359521">Keressen eszközre vagy szerződéses címre</translation>
 <translation id="6018178824574796106">Sikertelen az egyéni token hozzáadása, próbálja újra.</translation>
+<translation id="547122651977318828">Tokenazonosító (csak az ERC721-hez)</translation>
+<translation id="7544552854944350190">A tokenazonosítót kötelező megadni</translation>
 <translation id="2708402071160162126">FIGYELMEZTETÉS: Senkivel ne ossza meg a helyreállítási kifejezését! Ennek a kifejezésnek a birtokában bárki örökre elveheti az eszközeit.</translation>
 <translation id="2902856457593699108">Kulcs mutatása</translation>
 <translation id="8033497299373164724">Kulcs elrejtése</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">Mind</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet (végleges hálózat)</translation>
 <translation id="1613627717923045622">Hálózat tesztelése</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">Korlátozás</translation>
 <translation id="8569380433211549748">Ár ebben:</translation>
 <translation id="2490428413101944234">Pénzcsap tesztelése</translation>
-<translation id="6082785102488657349">Szerezzen Ethert pénzcsapból ennyiért:</translation>
+<translation id="3352959425838279177">Szerezzen Ethert pénzcsapból ehhez: <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">Tovább a Wyre-re</translation>
 <translation id="2581671693710952401">Ether beszerzése</translation>
 <translation id="8009571545960303544">Szükség van az aláírására</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">Csak a saját felelősségére írjon alá</translation>
 <translation id="5488357322146334497">Üzenet</translation>
 <translation id="3586752056660754651">Aláír</translation>
-<translation id="7065157926159745595">Engedélyezze az alkalmazást, hogy elköltse ezt:</translation>
+<translation id="9032898664193335413">Engedélyezi az alkalmazás számára, hogy elköltse a következőt: <ph name="TOKEN_SYMBOL"/>?</translation>
+<translation id="854606191596163710">A jogosultság megadásával engedélyezi az alkalmazás számára, hogy levonja a következőt: <ph name="VALUE"/> és tranzakciókat automatizáljon az Ön számára.</translation>
 <translation id="8786100550345425552">Engedélyek szerkesztése</translation>
 <translation id="7710469167917867539">Tranzakciós összeg</translation>
 <translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="7968982339740310781">Részletek megtekintése</translation>
 <translation id="6452181791372256707">Elutasítás</translation>
+<translation id="8904889345035514635">Jelenlegi keret</translation>
+<translation id="7073918978411974168">Javasolt keret</translation>
 <translation id="4717431746210146708">Engedélyezi, hogy ez az oldal hálózatot adjon hozzá?</translation>
 <translation id="2521480044079508357">Ez engedélyezi, hogy ezt a hálózatot használni lehessen a Brave pénztárcán belül.</translation>
 <translation id="1982257600591932657">Hálózat neve</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">Lánc azonosítója</translation>
 <translation id="7131971375297699539">Valuta szimbóluma</translation>
 <translation id="4693057234255364395">Block explorer URL-je</translation>
+<translation id="1060221736464994328">Engedélyezi, hogy ez az oldal hálózatot váltson?</translation>
+<translation id="2478788592457735063">Ez egy korábban hozzáadott hálózatra fog váltani.</translation>
+<translation id="8756686998207163764">Hálózátváltás</translation>
 <translation id="3948067511324628726">Gas ára</translation>
 <translation id="7163997622278957886">Ajánlat</translation>
 <translation id="1074360622426001342">Összeg + gas</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">következő</translation>
 <translation id="793994607260936590">első</translation>
 <translation id="4709524402122994378">tranzakciók</translation>
+<translation id="523862956770478816">Oldalengedélyek</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> fiók csatlakoztatva</translation>
 <translation id="4460220693591349571">FUNKCIÓTÍPUS</translation>
 <translation id="838933475572692615">HEX ADAT</translation>
 <translation id="2240831799756994975">BÁJTOK</translation>
 <translation id="4874303883488468190">Számlák kiválasztása</translation>
-<translation id="4015195974325151180">Tekintse meg az ezekhez tartozó címeket:</translation>
-<translation id="3587259018193837508">engedélyezett számlák (kötelező)</translation>
+<translation id="2018472018751735678">Az engedélyezett fiókok címeinek megtekintése (kötelező)</translation>
 <translation id="7029403458170657879">Csatlakozás Brave pénztárcával</translation>
 <translation id="7982184974053636367">Biztonságosabb jelszóra van szükség a Brave pénztárcához</translation>
 <translation id="2372897697869224590">Új Brave pénztárca jelszó beállítása</translation>
 <translation id="7739762330714405363">Ugyanazon jelszó használata</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Importálás innen:</translation>
-<translation id="4428111176561355185">Importálja</translation>
-<translation id="8929587248006013051">MetaMask-fiókjait a Brave pénztárcába. Élvezze, hogy gyorsabb és biztonságosabb módon kezelheti a kriptoeszközeit és léphet interakcióba web 3 decentralizált applikációkkal.</translation>
+<translation id="7102907656918333773">Importálás innen: <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Importálja <ph name="WALLET_EXTENSION"/> fiókjait a Brave Walletbe. Élvezze a kriptoeszközök kezelésének gyorsabb és biztonságosabb módját, és lépjen interakcióba web 3 DAppokkal.</translation>
 <translation id="4237840336687249184">MetaMask jelszó</translation>
 <translation id="2381605201035323535">a kriptotárcákat</translation>
 <translation id="2770851145415891830">Már meglévő kriptotárcákat észleltünk</translation>
 <translation id="4938145712652668388">Ha az "Első lépések"-re kattint, importálja a korábbi kriptotárcáját az új Brave pénztárca-élménybe, és élvezheti annak már említett előnyeit. Próbálja ki, és ossza meg velünk a véleményét!</translation>
-<translation id="913613743605881268">Ha kihagyná az importálást, és megtartaná a régi kriptotárcáját, lépjen a Brave böngészőbe</translation>
-<translation id="5886242758142314994">és állítsa vissza alapértelmezettre a kriptotárcákat. Importálhat, kipróbálhatja az új Brave pénztárcát, és visszaválthat bármikor.</translation>
+<translation id="2237759620789871865">Ha inkább kihagyná az importálást, és megtartaná a korábbi Crypto Wallets felhasználói élményt, csak navigáljon a Brave böngésző <ph name="LINK_BEFORE"/>beállításaira<ph name="LINK_AFTER"/> és állítsa vissza az alapértelmezett beállítást a Crypto Wallets-re. Importálásokat is végezhet, kipróbálhatja az új Brave Wallet alkalmazást, és bármikor visszaválthat.</translation>
 <translation id="3301259443293676544">Adja meg a már meglévő kriptotárcája jelszavát a Brave pénztárcába való importáláshoz. Élvezze, hogy gyorsabb és biztonságosabb módon kezelheti a kriptoeszközeit és léphet interakcióba web 3 decentralizált applikációkkal.</translation>
 <translation id="9099900965604225657">Kriptotárca jelszava</translation>
 <translation id="4020495774166914146">Elfelejtettem a jelszavam és a helyreállítási kifejezésem, új tárcát szeretnék létrehozni.</translation>
-<translation id="480319080797177742">csatlakoztatva</translation>
-<translation id="4203566092423620442">kapcsolata megbontva</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> csatlakoztatva</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
 <translation id="5317781812114905957">Utasítások</translation>
-<translation id="1952715382071350669">A hardveres tárca tranzakciós jóváhagyást igényel.</translation>
+<translation id="1178198982208000092">Csatlakoztassa a következőt: <ph name="DEVICE_NAME"/></translation>
+<translation id="3301417531330431881">A hardware pénztárcához tranzakció-visszaigazolás szükséges. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">elküldött</translation>
 <translation id="5013754027092416509">beérkezett</translation>
 <translation id="5867988533873716616">A block explorer URL-je nem elérhető.</translation>
 <translation id="4255623233927788178">Megtekintés block explorerben</translation>
 <translation id="6383204195803840504">A tranzakciók itt jelennek majd meg</translation>
+<translation id="2916401020782528840">A tranzakció nem található</translation>
 <translation id="8941851657764077659">Maximum prioritási díj</translation>
 <translation id="8047527352810290817">Gas szerkesztése</translation>
 <translation id="9091334651803050473">Nincs rá garancia, de a bányászok nagyobb valószínűséggel részesítik előnyben a tranzakcióját, ha magasabb díjat fizet nekik.</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Egyéni beállítása</translation>
 <translation id="7400927223938424379">Ajánlott beállítása</translation>
+<translation id="1599636444563952897">A költségkorlát jogosultság engedélyezi a(z) <ph name="SITE_ORIGIN"/> számára, hogy levonjon és elköltsön összeget a következő értékig:</translation>
+<translation id="4512871563176965522">Egyéni keret</translation>
+<translation id="749944179568745958">Érvénytelen ETH cím</translation>
+<translation id="882486206986535424">Érvénytelen cím</translation>
+<translation id="6825399159373612149">A(z) <ph name="DOMAIN_NAME"/> domén nincs regisztrálva</translation>
+<translation id="862585889767884824">/</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> tranzakció elutasítása</translation>
 <translation id="1118876217803190221">Nincs fedezet</translation>
 <translation id="275990379543116961">Nincs elegendő fedezet a gashez</translation>
 <translation id="3292453499915466604">Elégtelen likviditás</translation>
 <translation id="805808215102934711"><ph name="FROM_ASSET_SYMBOL"/> aktiválása</translation>
 <translation id="3380365263193509176">Ismeretlen hiba</translation>
-<translation id="6687008710463927359">Számla: <ph name="VALUE"/></translation>
+<translation id="5071303414930953888"><ph name="ACCOUNT_NUMBER"/> fiók</translation>
+<translation id="2330177808960134000">A pénztárca zárolását előbb fel kell oldani</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> nem érvényes cím</translation>
+<translation id="7340805872138998391">Nem sikerült feloldani az eszköz zárolását, próbáljon meg újra csatlakozni</translation>
+<translation id="1984410139271779110">Belső hiba, ismeretlen séma</translation>
+<translation id="8682200134223578011">jóváhagyva</translation>
+<translation id="4674380028960132654">Ledger: az aláírás nem egyezik a megfelelő címmel</translation>
+<translation id="3183932890629254743">A hardware fiók nem található</translation>
+<translation id="4287068151777838754">JSON-adatok nem várhatók</translation>
+<translation id="3282936527763045737">A jelszó helytelen</translation>
+<translation id="1119447706177454957">Belső hiba</translation>
+<translation id="3327639091470204775">Belső hiba, sikertelen volt az iframe bridge létrehozása</translation>
+<translation id="6672377693827764095">Belső hiba, sikertelen volt a fiókok lehívása</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor kapcsolat állapota</translation>
 <translation id="6024292492796847324">Tor inicializálási állapot</translation>
+<translation id="1742469581923031760">Kapcsolódás...</translation>
+<translation id="1287487756047817908">Kapcsolat bontása...</translation>
+<translation id="2325196879156848326">A kapcsolódás sikertelen volt</translation>
+<translation id="745054660363064771">Nem lehet kapcsolódni a szerverhez</translation>
+<translation id="3936826714240735937">Válasszon másik szervert</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> nem tudott csatlakozni a(z) <ph name="REGION_NAME"/> szerverhez. Megpróbálhatja újra, vagy válasszon egy másik szervert</translation>
+<translation id="1664949222596149258">Megvásárlás <ph name="PRODUCE_PRICE"/> összegért</translation>
+<translation id="1024255913009642477">Már vásárolt VPN-szolgáltatást?</translation>
+<translation id="8814357473522731680">Szolgáltató:</translation>
+<translation id="5747552184818312860">Lejár</translation>
+<translation id="1691256669639196606">Előfizetés kezelése</translation>
+<translation id="434523916398030617">Lépjen kapcsolatba az ügyfélszolgálattal</translation>
+<translation id="1116694919640316211">Névjegy</translation>
+<translation id="8670386189340362926">Nyomkövetők és reklámok blokkolása minden alkalmazásban</translation>
+<translation id="4860763498907927955">Védelmet biztosít a nemkívánatos hálózati kapcsolatokkal szemben</translation>
+<translation id="3181339219453722970">Kiválaszthatja a VPN országát</translation>
+<translation id="1751947227857853925">Gyors és 100 Mbps-ig korlátlan</translation>
+<translation id="1400240082805528049">0–24 ügyfélszolgálat</translation>
 <translation id="7586151660465233733">További piacok itt: <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Megtekintheti a piacokat és kriptokereskedést bonyolíthat az FTX-en</translation>
 <translation id="5963745988819586370">Piacok</translation>
