@@ -42,8 +42,8 @@
 
   <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another</message>
 
-  <message name="IDS_BRAVE_VPN_BUY" desc="Button title that includes the price of the product">
-    Buy for <ph name="PRODUCE_PRICE">$1<ex>$4.99/mo</ex></ph>
+  <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
+    Buy
   </message>
 
   <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased VPN?</message>

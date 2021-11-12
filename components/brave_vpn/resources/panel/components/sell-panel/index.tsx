@@ -45,7 +45,7 @@ function SellPanel () {
             level='primary'
             type='default'
             brand='rewards'
-            text={getLocale('braveVpnBuy').replace('$1', '$4.99/mo')}
+            text={getLocale('braveVpnBuy')}
             onClick={handleClick}
           />
           <a href={productUrls?.manage} target='_blank'>
