@@ -204,12 +204,6 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     return true;
   }
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    // HTTPS server only serves a valid cert for localhost, so this is needed
-    // to load pages from other hosts without an error
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
-
   void RunUntilIdle() {
     base::RunLoop loop;
     loop.RunUntilIdle();
