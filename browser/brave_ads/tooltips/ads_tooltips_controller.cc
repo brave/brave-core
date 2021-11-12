@@ -27,7 +27,7 @@ AdsTooltipsController::~AdsTooltipsController() = default;
 void AdsTooltipsController::ShowCaptchaTooltip(
     const std::string& payment_id,
     const std::string& captcha_id,
-    bool enable_cancel_button,
+    bool include_cancel_button,
     ShowScheduledCaptchaCallback show_captcha_callback,
     SnoozeScheduledCaptchaCallback snooze_captcha_callback) {
   const std::u16string title = l10n_util::GetStringUTF16(
@@ -36,12 +36,13 @@ void AdsTooltipsController::ShowCaptchaTooltip(
       IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_BODY);
   const std::u16string ok_button_text = l10n_util::GetStringUTF16(
       IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_OK_BUTTON_TEXT);
-  const std::u16string cancel_button_text = l10n_util::GetStringUTF16(
+  std::u16string cancel_button_text = l10n_util::GetStringUTF16(
       IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_CANCEL_BUTTON_TEXT);
 
   brave_tooltips::BraveTooltipAttributes tooltip_attributes(
-      title, body, ok_button_text, cancel_button_text);
-  tooltip_attributes.set_cancel_button_enabled(enable_cancel_button);
+      title, body, ok_button_text,
+      include_cancel_button ? cancel_button_text : u"");
+  tooltip_attributes.set_cancel_button_enabled(include_cancel_button);
   auto captcha_tooltip = std::make_unique<AdsCaptchaTooltip>(
       std::move(show_captcha_callback), std::move(snooze_captcha_callback),
       tooltip_attributes, payment_id, captcha_id);
