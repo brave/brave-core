@@ -3,6 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import {
+  TransportStatusError as LedgerTransportStatusError,
+  TransportError as LedgerTransportError,
+  DisconnectedDeviceDuringOperation as LedgerDisconnectedDeviceDuringOperation,
+  StatusCodes as LedgerStatusCodes
+} from '@ledgerhq/errors'
+
 import { SignHardwareTransactionType, SignHardwareMessageOperationResult } from '../hardware_operations'
 import { getLocale } from '../../../common/locale'
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
@@ -11,7 +18,8 @@ import { APIProxyControllers } from 'components/brave_wallet_ui/constants/types'
 import {
   kTrezorHardwareVendor,
   kLedgerHardwareVendor,
-  TransactionInfo
+  TransactionInfo,
+  HardwareWalletErrorType
 } from '../../constants/types'
 
 export async function signTrezorTransaction (apiProxy: APIProxyControllers, path: string, txInfo: TransactionInfo): Promise<SignHardwareTransactionType> {
@@ -45,7 +53,19 @@ export async function signLedgerTransaction (apiProxy: APIProxyControllers, path
     return { success: false, error: getLocale('braveWalletNoMessageToSignError') }
   }
   const deviceKeyring = apiProxy.getKeyringsByType(kLedgerHardwareVendor) as LedgerBridgeKeyring
-  const signed = await deviceKeyring.signTransaction(path, data.message.replace('0x', ''))
+
+  let signed
+  try {
+    signed = await deviceKeyring.signTransaction(path, data.message.replace('0x', ''))
+  } catch (e) {
+    const ledgerError = parseLedgerDeviceError(e)
+    if (ledgerError === 'needsConnectionReset') {
+      await deviceKeyring.makeApp()
+    }
+
+    return { success: false, deviceError: ledgerError }
+  }
+
   if (!signed || !signed.success || !signed.payload) {
     const error = signed && signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')
     return { success: false, error: error }
@@ -66,4 +86,21 @@ export async function signMessageWithHardwareKeyring (apiProxy: APIProxyControll
     return deviceKeyring.signPersonalMessage(path, message)
   }
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
+}
+
+export function parseLedgerDeviceError (e: any): HardwareWalletErrorType {
+  // @ts-ignore
+  if (e instanceof LedgerTransportStatusError && e.statusCode === LedgerStatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
+    return 'transactionRejected'
+  }
+
+  if (e instanceof LedgerTransportError && e.message === 'Ledger Device is busy (lock signTransaction)') {
+    return 'deviceBusy'
+  }
+
+  if (e instanceof LedgerDisconnectedDeviceDuringOperation) {
+    return 'needsConnectionReset'
+  }
+
+  return 'deviceNotConnected'
 }

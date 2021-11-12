@@ -19,7 +19,8 @@ import {
   SwapResponse,
   SignMessageData,
   SwitchChainRequest,
-  TransactionInfo
+  TransactionInfo,
+  HardwareWalletErrorType
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 
@@ -47,3 +48,4 @@ export const signMessageProcessed = createAction<SignMessageProcessedPayload>('s
 export const signMessageHardware = createAction<SignMessageData>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')
 export const approveHardwareTransaction = createAction<TransactionInfo>('approveHardwareTransaction')
+export const setHardwareWalletInteractionError = createAction<HardwareWalletErrorType | undefined>('setHardwareWalletInteractionError')
