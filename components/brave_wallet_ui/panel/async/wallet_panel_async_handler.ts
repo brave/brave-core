@@ -33,7 +33,8 @@ import {
 } from '../../common/async/lib'
 import {
   signTrezorTransaction,
-  signLedgerTransaction
+  signLedgerTransaction,
+  signMessageWithHardwareKeyring
 } from '../../common/async/hardware'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
@@ -247,32 +248,35 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
 
 handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageData) => {
   const apiProxy = await getAPIProxy()
-  const braveWalletService = apiProxy.braveWalletService
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
-  if (hardwareAccount && hardwareAccount.hardware) {
-    let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-    deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
-      then(async (signature: string) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
-      }).catch(async (error: any) => {
-        store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
-      })
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    const braveWalletService = apiProxy.braveWalletService
+    braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
+      '', getLocale('braveWalletHardwareAccountNotFound'))
+    const signMessageRequest = await getPendingSignMessageRequest()
+    if (signMessageRequest) {
+      store.dispatch(PanelActions.signMessage(signMessageRequest))
+      return
+    }
+    apiProxy.closeUI()
     return
   }
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
-    '', getLocale('braveWalletHardwareAccountNotFound'))
-  const signMessageRequest = await getPendingSignMessageRequest()
-  if (signMessageRequest) {
-    store.dispatch(PanelActions.signMessage(signMessageRequest))
+  const info = hardwareAccount.hardware
+  apiProxy.setCloseOnDeactivate(false)
+  const signature = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.address, messageData.message)
+  apiProxy.setCloseOnDeactivate(true)
+  if (!signature || !signature.success) {
+    store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, error: signature.error }))
     return
   }
+  store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature.payload }))
   apiProxy.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = await getAPIProxy()
   const braveWalletService = apiProxy.braveWalletService
-  await braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  await braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature || '', payload.error || '')
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

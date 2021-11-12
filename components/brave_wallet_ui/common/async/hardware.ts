@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { SignHardwareTransactionType } from '../hardware_operations'
+import { SignHardwareTransactionType, SignHardwareMessageOperationResult } from '../hardware_operations'
 import { getLocale } from '../../../common/locale'
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
@@ -56,4 +56,14 @@ export async function signLedgerTransaction (apiProxy: APIProxyControllers, path
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
   return { success: result.status }
+}
+
+export async function signMessageWithHardwareKeyring (apiProxy: APIProxyControllers, vendor: string, path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+  const deviceKeyring = await apiProxy.getKeyringsByType(vendor)
+  if (deviceKeyring instanceof LedgerBridgeKeyring) {
+    return deviceKeyring.signPersonalMessage(path, address, message)
+  } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
+    return deviceKeyring.signPersonalMessage(path, message)
+  }
+  return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
