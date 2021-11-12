@@ -95,6 +95,23 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "License": "Apache-2.0",
             "License File": "/brave/vendor/omaha/LICENSE.txt",
         },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad'): {
+            "Name": "Breakpad",
+            "URL": "https://chromium.googlesource.com/breakpad/breakpad",
+            "License File": "/brave/vendor/omaha/third_party/breakpad/LICENSE",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
+            "Name": "GoogleTest",
+            "URL": "https://github.com/google/googletest",
+            "License": "BSD",
+            "License File": "/brave/vendor/omaha/third_party/googletest/LICENSE",
+        },
+        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
+            "Name": "libzip",
+            "URL": "https://libzip.org",
+            "License": "BSD",
+            "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
+        },
         os.path.join('brave', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
             "URL": "https://github.com/brave/python-patch",
