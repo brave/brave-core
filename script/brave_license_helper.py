@@ -104,7 +104,8 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
-            "License File": "/brave/vendor/omaha/third_party/googletest/LICENSE",
+            "License File":
+                "/brave/vendor/omaha/third_party/googletest/LICENSE",
         },
         os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
             "Name": "libzip",
