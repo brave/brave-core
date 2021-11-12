@@ -1,8 +1,10 @@
 import { EthereumSignedTx } from 'trezor-connect/lib/typescript'
+import { HardwareWalletErrorType } from '../constants/types'
 
 export interface SignHardwareTransactionType {
   success: boolean
   error?: string
+  deviceError?: HardwareWalletErrorType
 }
 export interface SignatureVRS {
   v: number
