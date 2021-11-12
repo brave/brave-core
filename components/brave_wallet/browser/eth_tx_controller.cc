@@ -253,6 +253,23 @@ void EthTxController::ContinueAddUnapprovedTransaction(
   uint256_t gas_limit;
   if (!success || !HexValueToUint256(result, &gas_limit)) {
     gas_limit = 0;
+    mojom::TransactionType tx_type;
+    if (GetTransactionInfoFromData(ToHex(tx->data()), &tx_type, nullptr,
+                                   nullptr)) {
+      // Try to use reasonable values when we can't get an estimation.
+      // These are taken via looking through the different types of transactions
+      // on etherscan and taking the next rounded up value for the largest found
+      if (tx_type == mojom::TransactionType::ETHSend) {
+        gas_limit = kDefaultSendEthGasLimit;
+      } else if (tx_type == mojom::TransactionType::ERC20Transfer) {
+        gas_limit = kDefaultERC20TransferGasLimit;
+      } else if (tx_type == mojom::TransactionType::ERC721TransferFrom ||
+                 tx_type == mojom::TransactionType::ERC721SafeTransferFrom) {
+        gas_limit = kDefaultERC721TransferGasLimit;
+      } else if (tx_type == mojom::TransactionType::ERC20Approve) {
+        gas_limit = kDefaultERC20ApproveGasLimit;
+      }
+    }
   }
   tx->set_gas_limit(gas_limit);
 
