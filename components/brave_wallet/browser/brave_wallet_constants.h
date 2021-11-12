@@ -426,6 +426,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletTransactionRetry", IDS_BRAVE_WALLET_TRANSACTION_RETRY},
     {"braveWalletTransactionPlaceholder",
      IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER},
+    {"braveWalletTransactionApproveUnlimited",
+     IDS_BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED},
     {"braveWalletEditGasTitle1", IDS_BRAVE_WALLET_EDIT_GAS_TITLE1},
     {"braveWalletEditGasTitle2", IDS_BRAVE_WALLET_EDIT_GAS_TITLE2},
     {"braveWalletEditGasDescription", IDS_BRAVE_WALLET_EDIT_GAS_DESCRIPTION},
