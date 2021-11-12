@@ -120,11 +120,6 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     DebounceComponentInstallerWaiter(component_installer).Wait();
   }
 
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
-  }
-
   GURL add_redirect_param(const GURL& original_url, const GURL& landing_url) {
     return net::AppendOrReplaceQueryParameter(original_url, "url",
                                               landing_url.spec());
