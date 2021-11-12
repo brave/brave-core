@@ -5,13 +5,15 @@
 
 #include "brave/browser/default_protocol_handler_utils_win.h"
 
-#include <bcrypt.h>
 #include <shobjidl.h>
-#include <wincrypt.h>
 #include <winternl.h>
 #include <wrl/client.h>
 
+#include <memory>
+
+#include "base/base64.h"
 #include "base/files/file_path.h"
+#include "base/hash/md5.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
@@ -42,57 +44,7 @@ inline DWORD WordSwap(DWORD v) {
   return (v >> 16) | (v << 16);
 }
 
-std::unique_ptr<DWORD[]> CNGMD5(const unsigned char* bytes, ULONG bytes_len) {
-  constexpr ULONG kMD5Bytes = 16;
-  constexpr ULONG kMD5DWords = kMD5Bytes / sizeof(DWORD);
-  std::unique_ptr<DWORD[]> hash;
-
-  BCRYPT_ALG_HANDLE h_alg = nullptr;
-  if (NT_SUCCESS(::BCryptOpenAlgorithmProvider(&h_alg, BCRYPT_MD5_ALGORITHM,
-                                               nullptr, 0))) {
-    BCRYPT_HASH_HANDLE h_hash = nullptr;
-    // As of Windows 7 the hash handle will manage its own object buffer when
-    // pbHashObject is nullptr and cbHashObject is 0.
-    if (NT_SUCCESS(
-            ::BCryptCreateHash(h_alg, &h_hash, nullptr, 0, nullptr, 0, 0))) {
-      // BCryptHashData promises not to modify pbInput.
-      if (NT_SUCCESS(::BCryptHashData(h_hash, const_cast<unsigned char*>(bytes),
-                                      bytes_len, 0))) {
-        hash = std::make_unique<DWORD[]>(kMD5DWords);
-        if (!NT_SUCCESS(::BCryptFinishHash(
-                h_hash, reinterpret_cast<unsigned char*>(hash.get()),
-                kMD5DWords * sizeof(DWORD), 0))) {
-          hash.reset();
-        }
-      }
-      ::BCryptDestroyHash(h_hash);
-    }
-    ::BCryptCloseAlgorithmProvider(h_alg, 0);
-  }
-
-  return hash;
-}
-
-// @return The input bytes encoded as base64, nullptr on failure.
-std::unique_ptr<wchar_t[]> CryptoApiBase64Encode(const unsigned char* bytes,
-                                                 DWORD bytes_len) {
-  DWORD base64_len = 0;
-  if (!::CryptBinaryToStringW(bytes, bytes_len,
-                              CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
-                              nullptr, &base64_len)) {
-    return nullptr;
-  }
-  auto base64 = std::make_unique<wchar_t[]>(base64_len);
-  if (!::CryptBinaryToStringW(bytes, bytes_len,
-                              CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF,
-                              base64.get(), &base64_len)) {
-    return nullptr;
-  }
-
-  return base64;
-}
-
-std::unique_ptr<wchar_t[]> HashString(const wchar_t* input_string) {
+std::wstring HashString(const wchar_t* input_string) {
   auto* input_bytes = reinterpret_cast<const unsigned char*>(input_string);
   const int input_byte_count = (::lstrlenW(input_string) + 1) * sizeof(wchar_t);
 
@@ -102,16 +54,14 @@ std::unique_ptr<wchar_t[]> HashString(const wchar_t* input_string) {
   const int block_count = input_byte_count / kBlockSize;
 
   if (block_count == 0) {
-    return nullptr;
+    return std::wstring();
   }
 
   // Compute an MD5 hash. md5[0] and md5[1] will be used as constant multipliers
   // in the scramble below.
-  auto md5 = CNGMD5(input_bytes, input_byte_count);
-  if (!md5) {
-    return nullptr;
-  }
-
+  base::MD5Digest digest;
+  base::MD5Sum(input_bytes, input_byte_count, &digest);
+  auto* md5 = reinterpret_cast<DWORD*>(digest.a);
   // The following loop effectively computes two checksums, scrambled like a
   // hash after every DWORD is added.
 
@@ -158,9 +108,11 @@ std::unique_ptr<wchar_t[]> HashString(const wchar_t* input_string) {
   }
 
   DWORD hash[2] = {h0 ^ h1, h0_acc ^ h1_acc};
-
-  return CryptoApiBase64Encode(reinterpret_cast<const unsigned char*>(hash),
-                               sizeof(hash));
+  std::string base64_text;
+  base::Base64Encode(
+      base::StringPiece(reinterpret_cast<const char*>(hash), sizeof(hash)),
+      &base64_text);
+  return base::UTF8ToWide(base64_text);
 }
 
 std::unique_ptr<wchar_t[]> FormatUserChoiceString(base::WStringPiece ext,
@@ -273,7 +225,7 @@ bool SetUserChoice(base::WStringPiece ext,
   SYSTEMTIME hash_timestamp;
   ::GetSystemTime(&hash_timestamp);
   auto hash = GenerateUserChoiceHash(ext, sid, prog_id, hash_timestamp);
-  if (!hash)
+  if (hash.empty())
     return false;
 
   // The hash changes at the end of each minute, so check that the hash should
@@ -293,7 +245,7 @@ bool SetUserChoice(base::WStringPiece ext,
     // For consistency, use the current time.
     ::GetSystemTime(&hash_timestamp);
     hash = GenerateUserChoiceHash(ext, sid, prog_id, hash_timestamp);
-    if (!hash)
+    if (hash.empty())
       return false;
   }
 
@@ -328,7 +280,7 @@ bool SetUserChoice(base::WStringPiece ext,
     return false;
   }
 
-  if (assoc_key.WriteValue(kHashKey, hash.get()) != ERROR_SUCCESS) {
+  if (assoc_key.WriteValue(kHashKey, hash.c_str()) != ERROR_SUCCESS) {
     LOG(ERROR) << "Failed to write Hash value";
     return false;
   }
@@ -432,10 +384,10 @@ bool CheckUserChoiceHash(base::WStringPiece protocol,
 
   auto computed_hash = GenerateUserChoiceHash(protocol, user_sid, prog_id,
                                               last_write_system_time);
-  if (!computed_hash)
+  if (computed_hash.empty())
     return false;
 
-  if (::CompareStringOrdinal(computed_hash.get(), -1, stored_hash.c_str(), -1,
+  if (::CompareStringOrdinal(computed_hash.c_str(), -1, stored_hash.c_str(), -1,
                              FALSE) != CSTR_EQUAL) {
     return false;
   }
@@ -445,14 +397,14 @@ bool CheckUserChoiceHash(base::WStringPiece protocol,
 
 }  // namespace
 
-std::unique_ptr<wchar_t[]> GenerateUserChoiceHash(base::WStringPiece ext,
-                                                  base::WStringPiece sid,
-                                                  base::WStringPiece prog_id,
-                                                  SYSTEMTIME timestamp) {
+std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
+                                    base::WStringPiece sid,
+                                    base::WStringPiece prog_id,
+                                    SYSTEMTIME timestamp) {
   auto user_choice = FormatUserChoiceString(ext, sid, prog_id, timestamp);
   if (!user_choice) {
     LOG(ERROR) << "Didn't get user choice string for generating hash.";
-    return nullptr;
+    return std::wstring();
   }
 
   return HashString(user_choice.get());

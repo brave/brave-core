@@ -16,37 +16,31 @@ TEST(DefaultProtocolHandlerUtilsWinTest, HashTest) {
   const wchar_t* sid = L"S-1-5-21-636376821-3290315252-1794850287-1001";
 
   // length mod 8 = 0
-  EXPECT_STREQ(
+  EXPECT_EQ(
       GenerateUserChoiceHash(L"https", sid, L"FirefoxURL-308046B0AF4A39CB",
-                             (SYSTEMTIME){2021, 4, 1, 19, 23, 7, 56, 506})
-          .get(),
+                             (SYSTEMTIME){2021, 4, 1, 19, 23, 7, 56, 506}),
       L"uzpIsMVyZ1g=");
 
   // length mod 8 = 2 (confirm that the incomplete last block is dropped)
-  EXPECT_STREQ(
+  EXPECT_EQ(
       GenerateUserChoiceHash(L".html", sid, L"FirefoxHTML-308046B0AF4A39CB",
-                             (SYSTEMTIME){2021, 4, 1, 19, 23, 7, 56, 519})
-          .get(),
+                             (SYSTEMTIME){2021, 4, 1, 19, 23, 7, 56, 519}),
       L"7fjRtUPASlc=");
 
   // length mod 8 = 4
-  EXPECT_STREQ(
+  EXPECT_EQ(
       GenerateUserChoiceHash(L"https", sid, L"MSEdgeHTM",
-                             (SYSTEMTIME){2021, 4, 1, 19, 23, 3, 48, 119})
-          .get(),
+                             (SYSTEMTIME){2021, 4, 1, 19, 23, 3, 48, 119}),
       L"Fz0kA3Ymmps=");
 
   // length mod 8 = 6
-  EXPECT_STREQ(
-      GenerateUserChoiceHash(L".html", sid, L"ChromeHTML",
-                             (SYSTEMTIME){2021, 4, 1, 19, 23, 6, 3, 628})
-          .get(),
-      L"R5TD9LGJ5Xw=");
+  EXPECT_EQ(GenerateUserChoiceHash(L".html", sid, L"ChromeHTML",
+                                   (SYSTEMTIME){2021, 4, 1, 19, 23, 6, 3, 628}),
+            L"R5TD9LGJ5Xw=");
 
   // non-ASCII
-  EXPECT_STREQ(
+  EXPECT_EQ(
       GenerateUserChoiceHash(L".html", sid, L"FirefoxHTML-ÀBÇDË😀†",
-                             (SYSTEMTIME){2021, 4, 2, 20, 0, 38, 55, 101})
-          .get(),
+                             (SYSTEMTIME){2021, 4, 2, 20, 0, 38, 55, 101}),
       L"F3NsK3uNv5E=");
 }

@@ -199,8 +199,6 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
-brave_chrome_browser_libs = []
-
 if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_browser_main_parts_mac.h",
@@ -329,8 +327,6 @@ if (is_win) {
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
   ]
-
-  brave_chrome_browser_libs += [ "bcrypt.lib" ]
 }
 
 if (is_win && is_official_build) {

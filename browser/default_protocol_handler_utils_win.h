@@ -8,15 +8,15 @@
 
 #include <windows.h>
 
-#include <memory>
+#include <string>
 
 #include "base/strings/string_piece_forward.h"
 
 // Exported for testing.
-std::unique_ptr<wchar_t[]> GenerateUserChoiceHash(base::WStringPiece ext,
-                                                  base::WStringPiece sid,
-                                                  base::WStringPiece prog_id,
-                                                  SYSTEMTIME timestamp);
+std::wstring GenerateUserChoiceHash(base::WStringPiece ext,
+                                    base::WStringPiece sid,
+                                    base::WStringPiece prog_id,
+                                    SYSTEMTIME timestamp);
 
 bool SetDefaultProtocolHandlerFor(base::WStringPiece protocol);
 bool IsDefaultProtocolHandlerFor(base::WStringPiece protocol);
