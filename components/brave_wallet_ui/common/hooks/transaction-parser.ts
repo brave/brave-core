@@ -118,6 +118,7 @@ export function useTransactionParser (
     const { value, to } = baseData
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const accountsNativeFiatBalance = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())?.fiatBalance
+    const usersTokenInfo = account?.tokens.find((asset) => asset.asset.contractAddress.toLowerCase() === to.toLowerCase())
 
     switch (true) {
       // transfer(address recipient, uint256 amount) → bool
@@ -130,7 +131,7 @@ export function useTransactionParser (
         const feeDetails = parseTransactionFees(transactionInfo)
         const { gasFeeFiat } = feeDetails
         const totalAmountFiat = (Number(gasFeeFiat) + Number(sendAmountFiat)).toFixed(2)
-        const accountsTokenFiatBalance = account?.tokens.find((token) => token.asset.contractAddress.toLowerCase() === to.toLowerCase())?.fiatBalance
+        const accountsTokenFiatBalance = usersTokenInfo?.fiatBalance
         const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
         const insufficientTokenFunds = Number(sendAmountFiat) > Number(accountsTokenFiatBalance)
 
@@ -194,6 +195,9 @@ export function useTransactionParser (
         const { gasFeeFiat } = feeDetails
         const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
         const insufficientNativeFunds = Number(gasFeeFiat) > Number(accountsNativeFiatBalance)
+        const formatedValue = formatBalance(amount, token?.decimals ?? 18)
+        const userTokenBalance = usersTokenInfo?.assetBalance ?? ''
+        const allowanceValue = Number(amount) > Number(userTokenBalance) ? getLocale('braveWalletTransactionApproveUnlimited') : formatedValue
 
         return {
           hash: transactionInfo.txHash,
@@ -206,7 +210,7 @@ export function useTransactionParser (
           fiatValue: (0).toFixed(2),
           fiatTotal: totalAmountFiat,
           nativeCurrencyTotal: (0).toFixed(2),
-          value: formatBalance(amount, token?.decimals ?? 18),
+          value: allowanceValue,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
