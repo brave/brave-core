@@ -505,7 +505,11 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSignOnDeviceError",
      IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR},
     {"braveWalletNoMessageToSignError",
-     IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR}};
+     IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR},
+    {"braveWalletProcessMessageError",
+     IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR},
+    {"braveWalletUnknownKeyringError",
+     IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR}};
 
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenBuyTokenPercentageFee[] = "0.00875";

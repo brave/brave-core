@@ -10,9 +10,9 @@ import {
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 
 import {
-  LEDGER_HARDWARE_VENDOR,
-  SignatureVRS
+  LEDGER_HARDWARE_VENDOR
 } from '../../constants/types'
+import { SignatureVRS } from '../hardware_operations'
 
 class MockApp {
   signature: SignatureVRS
@@ -108,21 +108,15 @@ test('Sign personal message successfully', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   ledgerHardwareKeyring.app = new MockApp()
   ledgerHardwareKeyring.app.signature = { v: 1, r: 'b68983', s: 'r68983' }
-  ledgerHardwareKeyring._recoverAddressFromSignature = (message: string, signature: string) => {
-    return '0x111'
-  }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', '0x111', 'message'))
-    .resolves.toStrictEqual('0xb68983r68983-26')
+    .resolves.toStrictEqual({ payload: '0xb68983r68983-26', success: true })
 })
 
 test('Sign personal message failed', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  const ledgerHardwareKeyring = createLedgerKeyring()
   ledgerHardwareKeyring.app = new MockApp()
-  ledgerHardwareKeyring._recoverAddressFromSignature = (message: string, signature: string) => {
-    return '0x111'
-  }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', '0x111', 'message'))
-    .rejects.toThrow()
+    .resolves.toMatchObject({ success: false })
 })

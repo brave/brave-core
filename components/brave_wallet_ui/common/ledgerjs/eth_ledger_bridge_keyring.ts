@@ -4,20 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const { EventEmitter } = require('events')
-
+import Eth from '@ledgerhq/hw-app-eth'
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   LedgerDerivationPaths
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-
-import {
-  LEDGER_HARDWARE_VENDOR, SignatureVRS
-} from '../../constants/types'
-
-import Eth from '@ledgerhq/hw-app-eth'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
-import { SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
+import { SignatureVRS, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 
 export default class LedgerBridgeKeyring extends EventEmitter {
   constructor () {
@@ -70,27 +65,24 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return { success: true, payload: signed }
   }
 
-  signPersonalMessage = async (path: string, address: string, message: string) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!this.isUnlocked() && !(await this.unlock())) {
-          return new Error(getLocale('braveWalletUnlockError'))
-        }
-        return this.app.signPersonalMessage(path,
-          Buffer.from(message)).then((result: SignatureVRS) => {
-            const signature = this._createMessageSignature(result, message, address)
-            if (!signature) {
-              return reject(new Error(getLocale('braveWalletLedgerValidationError')))
-            }
-            resolve(signature)
-          }).catch(reject)
-      } catch (e) {
-        reject(e)
+  signPersonalMessage = async (path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    try {
+      const data = await this.app.signPersonalMessage(path,
+        Buffer.from(message))
+      const signature = this.createMessageSignature(data)
+      if (!signature) {
+        return { success: false, error: getLocale('braveWalletLedgerValidationError') }
       }
-    })
+      return { success: true, payload: signature }
+    } catch (e) {
+      return { success: false, error: e.message }
+    }
   }
 
-  _createMessageSignature = (result: SignatureVRS, message: string, address: string) => {
+  private readonly createMessageSignature = (result: SignatureVRS) => {
     let v = (result.v - 27).toString()
     if (v.length < 2) {
       v = `0${v}`
@@ -100,7 +92,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   }
 
   /* PRIVATE METHODS */
-  _getPathForIndex = (index: number, scheme: string) => {
+  private readonly getPathForIndex = (index: number, scheme: string) => {
     if (scheme === LedgerDerivationPaths.LedgerLive) {
       return `m/44'/60'/${index}'/0/0`
     } else if (scheme === LedgerDerivationPaths.Legacy) {
@@ -120,7 +112,7 @@ export default class LedgerBridgeKeyring extends EventEmitter {
   _getAccounts = async (from: number, to: number, scheme: string) => {
     const accounts = []
     for (let i = from; i <= to; i++) {
-      const path = this._getPathForIndex(i, scheme)
+      const path = this.getPathForIndex(i, scheme)
       const address = await this._getAddress(path)
       accounts.push({
         address: address.address,

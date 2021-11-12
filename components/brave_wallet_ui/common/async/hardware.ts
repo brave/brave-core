@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { SignHardwareTransactionType } from '../hardware_operations'
+import { SignHardwareTransactionType, SignHardwareMessageOperationResult } from '../hardware_operations'
 import { getLocale } from '../../../common/locale'
 import WalletApiProxy from '../../common/wallet_api_proxy'
 import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
@@ -52,4 +52,14 @@ export async function signLedgerTransaction (apiProxy: WalletApiProxy, path: str
     return { success: false, error: getLocale('braveWalletProcessTransactionError') }
   }
   return { success: result.status }
+}
+
+export async function signMessageWithHardwareKeyring (apiProxy: WalletApiProxy, vendor: string, path: string, address: string, message: string): Promise<SignHardwareMessageOperationResult> {
+  const deviceKeyring = await apiProxy.getKeyringsByType(vendor)
+  if (deviceKeyring instanceof LedgerBridgeKeyring) {
+    return deviceKeyring.signPersonalMessage(path, address, message)
+  } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
+    return deviceKeyring.signPersonalMessage(path, message)
+  }
+  return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }
