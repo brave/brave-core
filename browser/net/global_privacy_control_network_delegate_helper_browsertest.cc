@@ -25,8 +25,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
     : public InProcessBrowserTest {
  public:
   GlobalPrivacyControlNetworkDelegateBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -35,6 +34,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
 
     host_resolver()->AddRule("*", "127.0.0.1");
 
+    https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &GlobalPrivacyControlNetworkDelegateBrowserTest::HandleRequest,
         base::Unretained(this)));
@@ -48,17 +48,11 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
     auto it = request.headers.find(kSecGpcHeader);
     if (it == request.headers.end()) {
       header_result_ = GPCHeaderResult::kNoHeader;
-    } else if (it ->second != "1") {
+    } else if (it->second != "1") {
       header_result_ = GPCHeaderResult::kWrongValue;
     } else {
       header_result_ = GPCHeaderResult::kOk;
     }
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    // Allows the embedded test server to serve HTTPS
-    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
   const net::EmbeddedTestServer& https_server() { return https_server_; }
@@ -78,7 +72,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
 // request headers.
 IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                        IncludesSecGPCHeader) {
-  const GURL target = https_server().GetURL("example.com", "/index.html");
+  const GURL target = https_server().GetURL("a.test", "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_EQ(header_result(), GPCHeaderResult::kOk);
 }
@@ -88,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
 // it will always return `true`.
 IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                        NavigatorGlobalPrivacyAPI) {
-  const GURL target = https_server().GetURL("example.com", "/index.html");
+  const GURL target = https_server().GetURL("a.test", "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
 
   auto* rfh =
