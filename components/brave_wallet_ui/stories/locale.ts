@@ -352,6 +352,7 @@ provideStrings({
   braveWalletTransactionCancel: 'Cancel transaction',
   braveWalletTransactionRetry: 'Retry transaction',
   braveWalletTransactionPlaceholder: 'Transactions will appear here',
+  braveWalletTransactionApproveUnlimited: 'Unlimited',
 
   // Edit Gas
   braveWalletEditGasTitle1: 'Max priority fee',

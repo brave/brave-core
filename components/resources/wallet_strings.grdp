@@ -282,6 +282,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_CANCEL" desc="Cancel transaction button">Cancel transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RETRY" desc="Retry transaction button">Retry transaction</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PLACEHOLDER" desc="Transactions placeholder">Transactions will appear here</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_APPROVE_UNLIMITED" desc="Transaction Approve Unlimited Spend">Unlimited</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND" desc="Transaction not found error">Transaction not found</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED" desc="Status label for unapproved transaction">Unapproved</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_STATUS_APPROVED" desc="Status label for approved transaction">Approved</message>
