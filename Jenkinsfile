@@ -61,7 +61,7 @@ pipeline {
                         }
                     }
 
-                    if (SKIP && PLATFORM != 'pre-init' && PLATFORM != 'post-init' ) {
+                    if (SKIP && PLATFORM != 'noplatform') {
                         echo "Aborting build as PRs are either in draft or have a skip label (CI/skip or CI/skip-${PLATFORM})"
                         currentBuild.result = 'SUCCESS'
                         return
@@ -126,7 +126,7 @@ pipeline {
                     ]
 
                     currentBuild.result = build(job: PIPELINE_NAME, parameters: params, propagate: false).result
-                    if (env.OTHER_PR_NUMBER && PLATFORM != 'pre-init') {
+                    if (env.OTHER_PR_NUMBER) {
                         build(job: OTHER_REPO + '-build-pr-' + PLATFORM + '/PR-' + env.OTHER_PR_NUMBER, parameters: [string(name: 'BUILD_STATUS', value: currentBuild.result)], propagate: false)
                     }
                 }
