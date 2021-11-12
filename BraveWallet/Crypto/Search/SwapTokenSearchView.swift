@@ -25,8 +25,10 @@ struct SwapTokenSearchView: View {
       Button(action: {
         if searchType == .fromToken {
           swapTokenStore.selectedFromToken = token
+          swapTokenStore.fetchPriceQuote(base: .perSellAsset)
         } else {
           swapTokenStore.selectedToToken = token
+          swapTokenStore.fetchPriceQuote(base: .perBuyAsset)
         }
         presentationMode.dismiss()
       }) {
