@@ -63,10 +63,12 @@ public class WalletStore {
       transactionController: transactionController
     )
     self.swapTokenStore = .init(
+      keyringController: keyringController,
       tokenRegistry: tokenRegistry,
       rpcController: rpcController,
       assetRatioController: assetRatioController,
-      swapController: swapController
+      swapController: swapController,
+      transactionController: transactionController
     )
   }
   

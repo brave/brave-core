@@ -946,6 +946,8 @@
 		7D758919271A184D00B643C3 /* BuyTokenSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758918271A184D00B643C3 /* BuyTokenSearchView.swift */; };
 		7D758921271F07B800B643C3 /* SendTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D758920271F07B800B643C3 /* SendTokenView.swift */; };
 		7DAC597B2726524E00E735A2 /* AddressQRCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAC597A2726524E00E735A2 /* AddressQRCodeScannerView.swift */; };
+		7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */; };
+		7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */; };
 		A104E199210A384400D2323E /* ShieldsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A104E198210A384400D2323E /* ShieldsViewController.swift */; };
 		A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134B88920DA98BB00A581D0 /* ClientPreferences.swift */; };
 		A13AC72520EC12360040D4BB /* Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13AC72420EC12360040D4BB /* Migration.swift */; };
@@ -2875,6 +2877,8 @@
 		7D758918271A184D00B643C3 /* BuyTokenSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenSearchView.swift; sourceTree = "<group>"; };
 		7D758920271F07B800B643C3 /* SendTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenView.swift; sourceTree = "<group>"; };
 		7DAC597A2726524E00E735A2 /* AddressQRCodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressQRCodeScannerView.swift; sourceTree = "<group>"; };
+		7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtension.swift; sourceTree = "<group>"; };
+		7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtensionTests.swift; sourceTree = "<group>"; };
 		A104E198210A384400D2323E /* ShieldsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsViewController.swift; sourceTree = "<group>"; };
 		A134B88920DA98BB00A581D0 /* ClientPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientPreferences.swift; sourceTree = "<group>"; };
 		A13AC72420EC12360040D4BB /* Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migration.swift; sourceTree = "<group>"; };
@@ -3756,6 +3760,7 @@
 				277309DD2721DDFB007643F6 /* WeiFormatter.swift */,
 				275C6FB32731D1A500AB2FC7 /* RpcControllerExtensions.swift */,
 				277430092733126000183725 /* WalletColors.swift */,
+				7DC52B11273D99E70067E237 /* WalletArrayExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4121,6 +4126,7 @@
 				277309E72721DF6D007643F6 /* WeiFormatterTests.swift */,
 				27EA1B0D2729E6C8003C5CF9 /* AddressTests.swift */,
 				27180179272B053F0047EB15 /* PasswordValidationTests.swift */,
+				7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */,
 			);
 			path = BraveWalletTests;
 			sourceTree = "<group>";
@@ -7818,6 +7824,7 @@
 				27DDE88626FD2BC400A70C3A /* PortfolioStore.swift in Sources */,
 				271F68B126EBD27E00AA2A50 /* EnableBiometricsView.swift in Sources */,
 				271F68BF26EBD27E00AA2A50 /* DateRangeView.swift in Sources */,
+				7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */,
 				7DAC597B2726524E00E735A2 /* AddressQRCodeScannerView.swift in Sources */,
 				271F68B226EBD27E00AA2A50 /* RestoreWalletView.swift in Sources */,
 				2774300A2733126000183725 /* WalletColors.swift in Sources */,
@@ -7884,6 +7891,7 @@
 			files = (
 				2718017A272B05400047EB15 /* PasswordValidationTests.swift in Sources */,
 				27EA1B0E2729E6C8003C5CF9 /* AddressTests.swift in Sources */,
+				7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */,
 				277309E82721DF6D007643F6 /* WeiFormatterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
