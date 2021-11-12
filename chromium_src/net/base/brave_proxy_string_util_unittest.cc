@@ -9,7 +9,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace net {
-namespace {
 
 TEST(BraveProxySpecificationUtilTest, ProxyUriWithAuthToProxyServer) {
   const struct {
@@ -63,5 +62,4 @@ TEST(BraveProxySpecificationUtilTest, PacResultElementWithAuthToProxyServer) {
   }
 }
 
-}  // namespace
 }  // namespace net

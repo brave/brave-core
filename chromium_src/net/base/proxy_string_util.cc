@@ -45,7 +45,7 @@ ProxyServer CreateProxyServerWithAuthInfo(
                                host_and_port.substr(password_component.begin,
                                                     password_component.len)});
     }
-    auth_hostname = auth_str + "@" + auth_hostname;
+    auth_hostname = base::StrCat({auth_str, "@", auth_hostname});
   }
 
   return ProxyServer::FromSchemeHostAndPort(scheme, auth_hostname, port);
@@ -55,11 +55,11 @@ std::string GetProxyServerAuthString(const ProxyServer& proxy_server) {
   std::string auth_string;
   const HostPortPair& host_port_pair = proxy_server.host_port_pair();
   if (!host_port_pair.username().empty()) {
-    auth_string += host_port_pair.username();
+    auth_string = host_port_pair.username();
     if (!host_port_pair.password().empty()) {
-      auth_string += ':' + host_port_pair.password();
+      base::StrAppend(&auth_string, {":", host_port_pair.password()});
     }
-    auth_string += '@';
+    base::StrAppend(&auth_string, {"@"});
   }
   return auth_string;
 }
@@ -99,8 +99,8 @@ std::string ProxyServerToProxyUri(const ProxyServer& proxy_server) {
     proxy_uri = proxy_uri.substr(colon + 3);  // Skip past the "://"
   }
 
-  std::string result =
-      scheme_prefix + GetProxyServerAuthString(proxy_server) + proxy_uri;
+  std::string result = base::StrCat(
+      {scheme_prefix, GetProxyServerAuthString(proxy_server), proxy_uri});
   return result;
 }
 
@@ -114,8 +114,8 @@ std::string ProxyServerToPacResultElement(const ProxyServer& proxy_server) {
     proxy_pac = proxy_pac.substr(space + 1);  // Skip past the space
   }
 
-  std::string result =
-      scheme_prefix + GetProxyServerAuthString(proxy_server) + proxy_pac;
+  std::string result = base::StrCat(
+      {scheme_prefix, GetProxyServerAuthString(proxy_server), proxy_pac});
   return result;
 }
 
