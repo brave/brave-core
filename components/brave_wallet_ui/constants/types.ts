@@ -34,12 +34,6 @@ export interface AssetOptionType {
   logo: string
 }
 
-export interface SignatureVRS {
-  v: number,
-  r: string,
-  s: string
-}
-
 export interface UserAssetOptionType {
   asset: AssetOptionType
   assetBalance: number

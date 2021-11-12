@@ -13,7 +13,10 @@ import {
   GetAccountsResponsePayload,
   TrezorGetPublicKeyResponse,
   SignTransactionCommand,
-  SignTransactionResponsePayload
+  SignTransactionResponsePayload,
+  SignMessageCommand,
+  SignMessageResponsePayload,
+  SignMessageResponse
 } from '../common/trezor/trezor-messages'
 
 import { addTrezorCommandHandler } from '../common/trezor/trezor-command-handler'
@@ -54,6 +57,14 @@ addTrezorCommandHandler(TrezorCommand.GetAccounts, (command: GetAccountsCommand,
 addTrezorCommandHandler(TrezorCommand.SignTransaction, (command: SignTransactionCommand, source: Window): Promise<SignTransactionResponsePayload> => {
   return new Promise(async (resolve) => {
     TrezorConnect.ethereumSignTransaction(command.payload).then((result: Unsuccessful | Success<EthereumSignedTx>) => {
+      resolve({ id: command.id, command: command.command, payload: result, origin: command.origin })
+    })
+  })
+})
+
+addTrezorCommandHandler(TrezorCommand.SignMessage, (command: SignMessageCommand, source: Window): Promise<SignMessageResponsePayload> => {
+  return new Promise(async (resolve) => {
+    TrezorConnect.ethereumSignMessage(command.payload).then((result: SignMessageResponse) => {
       resolve({ id: command.id, command: command.command, payload: result, origin: command.origin })
     })
   })
