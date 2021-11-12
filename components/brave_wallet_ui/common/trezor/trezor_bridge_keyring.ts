@@ -5,23 +5,29 @@
 /* global window */
 
 const { EventEmitter } = require('events')
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util'
+import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
 import {
   TrezorDerivationPaths, TrezorBridgeAccountsPayload
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import {
-  kTrezorHardwareVendor
+  kTrezorHardwareVendor,
+  TransactionInfo
 } from '../../constants/types'
 import {
   TrezorCommand,
   UnlockResponse,
   GetAccountsResponsePayload,
   TrezorAccount,
-  TrezorFrameCommand
+  SignTransactionCommandPayload,
+  TrezorFrameCommand,
+  SignTransactionResponsePayload,
+  SignMessageCommandPayload,
+  SignMessageResponsePayload
 } from '../../common/trezor/trezor-messages'
 import { sendTrezorCommand } from '../../common/trezor/trezor-bridge-transport'
 import { getLocale } from '../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
+import { SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../../common/hardware_operations'
 
 export default class TrezorBridgeKeyring extends EventEmitter {
   constructor () {
@@ -55,6 +61,47 @@ export default class TrezorBridgeKeyring extends EventEmitter {
       throw Error(accounts.error)
     }
     return accounts.accounts
+  }
+
+  signTransaction = async (path: string, txInfo: TransactionInfo, chainId: string): Promise<SignHardwareTransactionOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    const data = await this.sendTrezorCommand<SignTransactionResponsePayload>({
+      command: TrezorCommand.SignTransaction,
+      // @ts-expect-error
+      id: crypto.randomUUID(),
+      payload: this.prepareTransactionPayload(path, txInfo, chainId),
+      origin: window.origin
+    })
+    if (!data || !data.payload) {
+      return { success: false, error: getLocale('braveWalletProcessTransactionError') }
+    }
+    if (!data.payload.success) {
+      return { success: false, error: data.payload.payload.error, code: data.payload.payload.code }
+    }
+    return { success: true, payload: data.payload.payload }
+  }
+
+  signPersonalMessage = async (path: string, message: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked() && !(await this.unlock())) {
+      return { success: false, error: getLocale('braveWalletUnlockError') }
+    }
+    const data = await this.sendTrezorCommand<SignMessageResponsePayload>({
+      command: TrezorCommand.SignMessage,
+      // @ts-expect-error
+      id: crypto.randomUUID(),
+      payload: this.prepareSignMessagePayload(path, message),
+      origin: window.origin
+    })
+    if (!data) {
+      return { success: false, error: getLocale('braveWalletProcessMessageError') }
+    }
+    if (!data.payload.success) {
+      const unsuccess = data.payload
+      return { success: false, error: unsuccess.payload.error, code: unsuccess.payload.code }
+    }
+    return { success: true, payload: data.payload.payload.signature }
   }
 
   isUnlocked = () => {
@@ -97,7 +144,50 @@ export default class TrezorBridgeKeyring extends EventEmitter {
     return ''
   }
 
-  private publicKeyToAddress = (key: string) => {
+  private prepareTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    const isEIP1559Transaction = txInfo.txData.maxPriorityFeePerGas !== '' && txInfo.txData.maxFeePerGas !== ''
+    if (isEIP1559Transaction) {
+      return this.createEIP1559TransactionPayload(path, txInfo, chainId)
+    }
+    return this.createLegacyTransactionPayload(path, txInfo, chainId)
+  }
+
+  private createEIP1559TransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    return {
+      path: path,
+      transaction: {
+        to: txInfo.txData.baseData.to,
+        value: txInfo.txData.baseData.value,
+        data: bufferToHex(Buffer.from(txInfo.txData.baseData.data)).toString(),
+        chainId: parseInt(chainId, 16),
+        nonce: txInfo.txData.baseData.nonce,
+        gasLimit: txInfo.txData.baseData.gasLimit,
+        maxFeePerGas: txInfo.txData.maxFeePerGas,
+        maxPriorityFeePerGas: txInfo.txData.maxPriorityFeePerGas
+      }
+    }
+  }
+
+  private createLegacyTransactionPayload = (path: string, txInfo: TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    return {
+      path: path,
+      transaction: {
+        to: txInfo.txData.baseData.to,
+        value: txInfo.txData.baseData.value,
+        data: bufferToHex(Buffer.from(txInfo.txData.baseData.data)).toString(),
+        chainId: parseInt(chainId, 16),
+        nonce: txInfo.txData.baseData.nonce,
+        gasLimit: txInfo.txData.baseData.gasLimit,
+        gasPrice: txInfo.txData.baseData.gasPrice
+      }
+    }
+  }
+
+  private readonly prepareSignMessagePayload = (path: string, message: string): SignMessageCommandPayload => {
+    return { path: path, message: message }
+  }
+
+  private readonly publicKeyToAddress = (key: string) => {
     const buffer = Buffer.from(key, 'hex')
     const address = publicToAddress(buffer, true).toString('hex')
     return toChecksumAddress(`0x${address}`)

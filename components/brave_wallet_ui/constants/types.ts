@@ -1,3 +1,8 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 // url.mojom.Url
 export interface Url {
   url: string
@@ -26,12 +31,6 @@ export interface AssetOptionType {
   name: string
   symbol: string
   logo: string
-}
-
-export interface SignatureVRS {
-  v: number,
-  r: string,
-  s: string
 }
 
 export interface UserAssetOptionType {
@@ -661,6 +660,9 @@ export interface EthTxController {
   processLedgerSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessLedgerSignatureReturnInfo>
   speedupOrCancelTransaction: (txMetaId: string, cancel: boolean) => Promise<SpeedupRetryCancelTransactionReturnInfo>
   retryTransaction: (txMetaId: string) => Promise<SpeedupRetryCancelTransactionReturnInfo>
+  getNonceForHardwareTransaction: (txMetaId: string) => Promise<GetNonceForHardwareTransactionReturnInfo | null>
+  processHardwareSignature: (txMetaId: string, v: string, r: string, s: string) => Promise<ProcessHardwareSignatureReturnInfo>
+  getTransactionMessageToSign: (txMetaId: string) => Promise<GetTransactionMessageToSignReturnInfo | null>
 }
 
 export interface EthJsonRpcController {
@@ -798,6 +800,18 @@ export interface RecoveryObject {
 
 export interface MojoTime {
   microseconds: number
+}
+
+export interface GetTransactionMessageToSignReturnInfo {
+  message: string
+}
+
+export interface ProcessHardwareSignatureReturnInfo {
+  status: boolean
+}
+
+export interface GetNonceForHardwareTransactionReturnInfo {
+  nonce: string
 }
 
 export type BuySendSwapViewTypes =

@@ -277,6 +277,7 @@ function Container (props: Props) {
       if (found) {
         balance = Number(formatBalance(found.assetBalance, found.asset.decimals))
       }
+      console.log(found, account)
       return balance
     })
     const grandTotal = amounts.reduce(function (a, b) {

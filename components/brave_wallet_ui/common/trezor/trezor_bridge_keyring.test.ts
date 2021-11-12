@@ -17,7 +17,8 @@ import {
   TrezorFrameCommand,
   UnlockResponse,
   UnlockCommand,
-  GetAccountsCommand
+  GetAccountsCommand,
+  SignTransactionResponse
 } from '../../common/trezor/trezor-messages'
 import {
   kTrezorHardwareVendor
@@ -25,6 +26,7 @@ import {
 import { getLocale } from '../../../common/locale'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
 import { TrezorCommandHandler } from './trezor-command-handler'
+import { getMockedTransactionInfo } from '../constants/mocks'
 
 let uuid = 0
 window.crypto = {
@@ -33,9 +35,7 @@ window.crypto = {
   }
 }
 
-const createTrezorTransport = (unlock: Boolean,
-                               accounts?: TrezorGetPublicKeyResponse) => {
-  const hardwareTransport = new TrezorBridgeTransport(kTrezorBridgeUrl)
+const createTransport = (url: string, hardwareTransport: TrezorBridgeTransport | TrezorCommandHandler) => {
   hardwareTransport.windowListeners_ = {}
   hardwareTransport.getTrezorBridgeOrigin = () => {
     return 'braveWalletTrezorBridgeUrl'
@@ -62,12 +62,20 @@ const createTrezorTransport = (unlock: Boolean,
   hardwareTransport.postResponse = (data: TrezorFrameResponse) => {
     for (const value of Object.values(hardwareTransport.windowListeners_)) {
       (value as Function)(
-        { type: 'message',
-          origin: kTrezorBridgeUrl,
+        {
+          type: 'message',
+          origin: url,
           data: data
-        }, kTrezorBridgeUrl)
+        }, url)
     }
   }
+  return hardwareTransport
+}
+
+const createTrezorTransport = (unlock: Boolean,
+                               accounts?: TrezorGetPublicKeyResponse,
+                               signedPayload?: SignTransactionResponse) => {
+  let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
   hardwareTransport.contentWindow = {
     postMessage: (message: any, command: any) => {
       expect(command).toStrictEqual(kTrezorBridgeUrl)
@@ -85,6 +93,13 @@ const createTrezorTransport = (unlock: Boolean,
           payload: accounts
         })
       }
+      if (message.command === TrezorCommand.SignTransaction) {
+        hardwareTransport.postResponse({
+          id: message.id,
+          command: TrezorCommand.SignTransaction,
+          payload: signedPayload
+        })
+      }
     }
   }
   hardwareTransport.createBridge = async () => {
@@ -95,38 +110,7 @@ const createTrezorTransport = (unlock: Boolean,
 }
 
 const createCommandHandler = () => {
-  const hardwareTransport = new TrezorCommandHandler()
-  hardwareTransport.windowListeners_ = {}
-  hardwareTransport.getTrezorBridgeOrigin = () => {
-    return 'braveWalletTrezorBridgeUrl'
-  }
-  hardwareTransport.addWindowMessageListener = () => {
-    hardwareTransport.expectWindowMessageSubscribers(0)
-
-    const key = hardwareTransport.onMessageReceived.toString()
-    hardwareTransport.windowListeners_[key] = hardwareTransport.onMessageReceived
-
-    hardwareTransport.expectWindowMessageSubscribers(1)
-  }
-  hardwareTransport.expectWindowMessageSubscribers = (amount: number) => {
-    const keys = Object.keys(hardwareTransport.windowListeners_)
-    expect(keys.length).toStrictEqual(amount)
-  }
-  hardwareTransport.removeWindowMessageListener = () => {
-    hardwareTransport.expectWindowMessageSubscribers(1)
-    const key = hardwareTransport.onMessageReceived.toString()
-    delete hardwareTransport.windowListeners_[key]
-    hardwareTransport.expectWindowMessageSubscribers(0)
-  }
-  hardwareTransport.postResponse = (data: TrezorFrameResponse) => {
-    for (const value of Object.values(hardwareTransport.windowListeners_)) {
-      (value as Function)(
-        { type: 'message',
-          origin: kTrezorBridgeUrl,
-          data: data
-        }, kTrezorBridgeUrl)
-    }
-  }
+  let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorCommandHandler())
   hardwareTransport._commands_called = []
   return hardwareTransport
 }
@@ -214,9 +198,10 @@ test('isUnlocked', () => {
 })
 
 const createTrezorKeyringWithTransport = (unlock: Boolean,
-                                          accounts?: TrezorGetAccountsResponse) => {
+                                          accounts?: TrezorGetAccountsResponse,
+                                          signedPayload?: SignTransactionResponse) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
-  const transport = createTrezorTransport(unlock, accounts)
+  const transport = createTrezorTransport(unlock, accounts, signedPayload)
   hardwareKeyring.sendTrezorCommand = async (command: TrezorFrameCommand, listener: Function) => {
     return transport.sendCommandToTrezorFrame(command, listener)
   }
@@ -268,7 +253,7 @@ test('Extracting accounts from unlocked device returned fail', () => {
     .rejects.toStrictEqual(new Error(getLocale('braveWalletCreateBridgeError')))
 })
 
-test('Extracting accounts from unlocked device returned success', () => {
+test('Extract accounts from unlocked device returned success', () => {
   const accounts = [
     {
       publicKey: '3a443d8381a6798a70c6ff9304bdc8cb0163c23211d11628fae52ef9e0dca11a001cf066d56a8156fc201cd5df8a36ef694eecd258903fca7086c1fae7441e1d',
@@ -389,4 +374,43 @@ test('Add multiple commands handlers', () => {
     { result: true },
     [ TrezorCommand.Unlock, TrezorCommand.GetAccounts,
       TrezorCommand.GetAccounts, TrezorCommand.Unlock]])
+})
+
+test('Sign transaction from unlocked device', () => {
+  const txInfo = getMockedTransactionInfo()
+  const signed = {
+    success: true,
+    payload: {
+      v: '0xV',
+      r: '0xR',
+      s: '0xS'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(true, undefined, signed)
+  hardwareKeyring._getBridge = () => {
+    return hardwareKeyring as any
+  }
+  return expect(hardwareKeyring.signTransaction('m/44\'/60\'/0\'/0', txInfo, '0x539'))
+    .resolves.toStrictEqual(signed)
+})
+
+test('Sign transaction failed from unlocked device', () => {
+  const txInfo = getMockedTransactionInfo()
+  const signed = {
+    success: false,
+    payload: {
+      error: 'Permissions not granted',
+      code: 'Method_PermissionsNotGranted'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(true, undefined, signed)
+  hardwareKeyring._getBridge = () => {
+    return hardwareKeyring as any
+  }
+  return expect(hardwareKeyring.signTransaction('m/44\'/60\'/0\'/0', txInfo, '0x539'))
+    .resolves.toStrictEqual({
+      error: signed.payload.error,
+      code: signed.payload.code,
+      success: false
+    })
 })
