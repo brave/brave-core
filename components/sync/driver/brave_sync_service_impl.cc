@@ -63,6 +63,10 @@ std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
     sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
   }
+
+  CHECK(brave_sync::crypto::IsPassphraseValid(sync_code))
+      << "Could not generate valid sync code";
+
   return sync_code;
 }
 
