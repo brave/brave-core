@@ -15,6 +15,12 @@ export default function addBraveRoutes(r) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
     // bring back people's /manageProfile (now in getStarted)
     r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile');
+    // We re-section people page into getStarted section (see people_page Brave
+    // override), so we need to adjust the route accordingly in order for the
+    // direct navigation to brave://settings/importData to work.
+    if (r.IMPORT_DATA) {
+      r.IMPORT_DATA.section = 'getStarted'
+    }
   }
   r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
   r.REWARDS = r.BASIC.createSection('/rewards', 'rewards')
