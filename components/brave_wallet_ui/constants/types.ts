@@ -5,7 +5,6 @@
 
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
-
 // Provide access to all the generated types.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
@@ -33,12 +32,6 @@ export interface AssetOptionType {
   name: string
   symbol: string
   logo: string
-}
-
-export interface SignatureVRS {
-  v: number,
-  r: string,
-  s: string
 }
 
 export interface UserAssetOptionType {
@@ -384,6 +377,18 @@ export interface GetEthAddrReturnInfo {
 export interface RecoveryObject {
   value: string,
   id: number
+}
+
+export interface GetTransactionMessageToSignReturnInfo {
+  message: string
+}
+
+export interface ProcessHardwareSignatureReturnInfo {
+  status: boolean
+}
+
+export interface GetNonceForHardwareTransactionReturnInfo {
+  nonce: string
 }
 
 export type BuySendSwapViewTypes =

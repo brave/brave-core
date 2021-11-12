@@ -340,4 +340,11 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR" desc="Importer error message">Internal error</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_CREATE_BRIDGE_ERROR" desc="Hardware wallet error when access Trezor bridge">Internal error, unable to create iframe bridget</message>
   <message name="IDS_BRAVE_WALLET_HARDWARE_ACCOUNTS_IMPORT_ERROR" desc="Hardware wallet error when importing accounts from Trezor device">Internal error, Unable to fetch accounts</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR" desc="Process transaction error when signing transactions with hardware device">Error processing the transaction</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_APPROVE_TRANSACTION_ERROR" desc="Unable to approve hardware transaction during signing process">Error processing the transaction</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NOT_FOUND_ERROR" desc="Unable to find hardware transaction during signing process">Unable to find hardware transaction, please try again</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_DEVICE_ERROR" desc="Received error from hardware device during signing process">Received error from hardware device, probably you need to confirm the transaction on your device</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_TRANSACTION_NO_MESSAGE_TO_SIGN_ERROR" desc="Unable to get raw messagse to sign for hardware transaction during signing process">Error processing the transaction, please try again</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_SIGN_MESSAGE_ERROR" desc="Unable to sign personal messagse on hardware device">Error signing message, please try again</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_UNKNOWN_KEYRING_ERROR" desc="Error when requested unknown keyring">Error signing message, unknown keyring requested, please try again</message>
 </grit-part>

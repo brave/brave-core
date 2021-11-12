@@ -3,6 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import {
+  TransactionInfo,
+  SignMessageRequest,
+  SwitchChainRequest,
+  TransactionStatus,
+  TREZOR_HARDWARE_VENDOR,
+  LEDGER_HARDWARE_VENDOR
+} from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as PanelActions from '../actions/wallet_panel_actions'
 import * as WalletActions from '../../common/actions/wallet_actions'
@@ -10,10 +18,7 @@ import { TransactionStatusChanged } from '../../common/constants/action_types'
 import {
   WalletPanelState,
   PanelState,
-  WalletState,
-  TransactionStatus,
-  SignMessageRequest,
-  SwitchChainRequest
+  WalletState
 } from '../../constants/types'
 import {
   AccountPayloadType,
@@ -28,13 +33,16 @@ import {
 import {
   findHardwareAccountInfo
 } from '../../common/async/lib'
+import {
+  signTrezorTransaction,
+  signLedgerTransaction,
+  signMessageWithHardwareKeyring
+} from '../../common/async/hardware'
 
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
-import LedgerBridgeKeyring from '../../common/ledgerjs/eth_ledger_bridge_keyring'
-import TrezorBridgeKeyring from '../../common/trezor/trezor_bridge_keyring'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 
 const handler = new AsyncActionHandler()
@@ -137,6 +145,22 @@ handler.on(PanelActions.cancelConnectToSite.getType(), async (store: Store, payl
   apiProxy.panelHandler.closeUI()
 })
 
+handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Store, txInfo: TransactionInfo) => {
+  const hardwareAccount = await findHardwareAccountInfo(txInfo.fromAddress)
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    return
+  }
+  const apiProxy = getWalletPanelApiProxy()
+  apiProxy.panelHandler.setCloseOnDeactivate(false)
+  if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
+    await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
+    await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+  }
+  apiProxy.panelHandler.setCloseOnDeactivate(true)
+  apiProxy.panelHandler.showUI()
+})
+
 handler.on(PanelActions.connectToSite.getType(), async (store: Store, payload: AccountPayloadType) => {
   const state = getPanelState(store)
   const apiProxy = getWalletPanelApiProxy()
@@ -226,34 +250,35 @@ handler.on(PanelActions.signMessageProcessed.getType(), async (store: Store, pay
 
 handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData: SignMessageRequest) => {
   const apiProxy = getWalletPanelApiProxy()
-  const braveWalletService = apiProxy.braveWalletService
   const hardwareAccount = await findHardwareAccountInfo(messageData.address)
-  if (hardwareAccount && hardwareAccount.hardware) {
-    let deviceKeyring = await apiProxy.getKeyringsByType(hardwareAccount.hardware.vendor)
-    if (deviceKeyring instanceof LedgerBridgeKeyring || deviceKeyring instanceof TrezorBridgeKeyring) {
-      deviceKeyring.signPersonalMessage(hardwareAccount.hardware.path, hardwareAccount.address, messageData.message).
-        then(async (signature: string) => {
-          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature, error: '' }))
-        }).catch(async (error: any) => {
-          store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, signature: '', error: error.message }))
-        })
+  if (!hardwareAccount || !hardwareAccount.hardware) {
+    const braveWalletService = apiProxy.braveWalletService
+    braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
+      '', getLocale('braveWalletHardwareAccountNotFound'))
+    const signMessageRequest = await getPendingSignMessageRequest()
+    if (signMessageRequest) {
+      store.dispatch(PanelActions.signMessage(signMessageRequest))
+      return
     }
+    apiProxy.panelHandler.closeUI()
     return
   }
-  braveWalletService.notifySignMessageHardwareRequestProcessed(false, messageData.id,
-    '', getLocale('braveWalletHardwareAccountNotFound'))
-  const signMessageRequest = await getPendingSignMessageRequest()
-  if (signMessageRequest) {
-    store.dispatch(PanelActions.signMessage(signMessageRequest))
+  const info = hardwareAccount.hardware
+  apiProxy.panelHandler.setCloseOnDeactivate(false)
+  const signature = await signMessageWithHardwareKeyring(apiProxy, info.vendor, info.path, messageData.address, messageData.message)
+  apiProxy.panelHandler.setCloseOnDeactivate(true)
+  if (!signature || !signature.success) {
+    store.dispatch(PanelActions.signMessageHardwareProcessed({ success: false, id: messageData.id, error: signature.error }))
     return
   }
+  store.dispatch(PanelActions.signMessageHardwareProcessed({ success: true, id: messageData.id, signature: signature.payload }))
   apiProxy.panelHandler.closeUI()
 })
 
 handler.on(PanelActions.signMessageHardwareProcessed.getType(), async (store, payload: SignMessageHardwareProcessedPayload) => {
   const apiProxy = getWalletPanelApiProxy()
   const braveWalletService = apiProxy.braveWalletService
-  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature, payload.error)
+  braveWalletService.notifySignMessageHardwareRequestProcessed(payload.success, payload.id, payload.signature || '', payload.error || '')
   const signMessageRequest = await getPendingSignMessageRequest()
   if (signMessageRequest) {
     store.dispatch(PanelActions.signMessage(signMessageRequest))

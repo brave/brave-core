@@ -33,6 +33,11 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
+  // The bubble disappears by default when Trezor opens a popup window
+  // from the wallet panel bubble. In order to prevent it we set a callback
+  // to modify panel deactivation flag when necessary.
+  void SetDeactivationCallback(
+      base::RepeatingCallback<void(bool)> deactivation_callback);
 
  private:
   // brave_wallet::mojom::PanelHandlerFactory:
@@ -58,6 +63,7 @@ class WalletPanelUI : public ui::MojoBubbleWebUIController,
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
 
+  base::RepeatingCallback<void(bool)> deactivation_callback_;
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
 
