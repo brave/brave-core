@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/proguard.py b/build/android/gyp/proguard.py
+index 2e7d945cf2863e2e5aa0a5d5ea645216be9d7faf..18da9d9af981764106a7a526e17eed9d6ab1381e 100755
+--- a/build/android/gyp/proguard.py
++++ b/build/android/gyp/proguard.py
+@@ -502,6 +502,7 @@ def _CheckForMissingSymbols(r8_path, dex_files, classpath, warnings_as_errors,
+         # KotlinDetector: com.google.firebase.platforminfo.KotlinDetector.
+         'kotlin.KotlinVersion',
+     ]
++    ignored_lines += [ 'Warning: Missing method', ]
+ 
+     had_unfiltered_items = '  ' in stderr
+     stderr = build_utils.FilterLines(
