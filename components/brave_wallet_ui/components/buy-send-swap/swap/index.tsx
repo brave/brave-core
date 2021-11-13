@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { getLocale } from '../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../common/locale'
 import {
   AccountAssetOptionType,
   OrderTypes,
@@ -11,6 +11,7 @@ import {
   SwapValidationErrorType
 } from '../../../constants/types'
 import SwapInputComponent from '../swap-input-component'
+import { SwapTooltip } from '../../desktop'
 
 // Styled Components
 import {
@@ -19,7 +20,11 @@ import {
   ArrowButton,
   SwapNavButton,
   SwapButtonText,
-  SwapButtonLoader
+  SwapButtonLoader,
+  SwapDisclaimerText,
+  SwapDisclaimerButton,
+  SwapDisclaimerRow,
+  AlertIcon
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
@@ -115,6 +120,17 @@ function Swap (props: Props) {
     return getLocale('braveWalletSwap')
   }, [validationError])
 
+  const disclaimerText = getLocale('braveWalletSwapDisclaimer')
+  const { beforeTag, duringTag, afterTag } = splitStringForTag(disclaimerText)
+
+  const onClick0x = () => {
+    chrome.tabs.create({ url: 'https://0x.org' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -168,10 +184,22 @@ function Swap (props: Props) {
       >
         {
           isFetchingQuote
-          ? <SwapButtonLoader><LoaderIcon /></SwapButtonLoader>
-          : <SwapButtonText>{submitText}</SwapButtonText>
+            ? <SwapButtonLoader><LoaderIcon /></SwapButtonLoader>
+            : <SwapButtonText>{submitText}</SwapButtonText>
         }
       </SwapNavButton>
+      <SwapDisclaimerRow>
+        <SwapDisclaimerText>
+          {beforeTag}
+          <SwapDisclaimerButton onClick={onClick0x}>{duringTag}</SwapDisclaimerButton>
+          {afterTag}
+        </SwapDisclaimerText>
+        <SwapTooltip
+          text={getLocale('braveWalletSwapDisclaimerDescription')}
+        >
+          <AlertIcon />
+        </SwapTooltip>
+      </SwapDisclaimerRow>
     </StyledWrapper>
   )
 }
