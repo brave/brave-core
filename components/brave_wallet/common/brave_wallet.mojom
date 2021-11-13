@@ -9,22 +9,49 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
+// Used to notify the renderer of provider information for use in
+// window.ethereum events
 interface EventsListener {
+  // Fired when the current netowrk changes
   ChainChangedEvent(string chain_id);
+
+  // Fired when the accounts have changed such as when the wallet locked, the
+  // selected account changes, a new account is given permission, etc.
   AccountsChangedEvent(array<string> accounts);
 };
 
+// There is one BraveWalletProvider per renderer, the renderer communicates
+// with this for window.ethereum usage.
 interface BraveWalletProvider {
+  // Initializes an EventsListener
   Init(pending_remote<EventsListener> events_listener);
+
+  // Corresponds to window.ethereum.request
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+
+  // Corresponds to window.ethereum.enable and eth_requestAccounts
   RequestEthereumPermissions() => (bool success, array<string> accounts);
+
+  // Used for wallet_addEthereumChain method requests
   AddEthereumChain(string json_payload) => (int32 error, string message);
+
+  // Used for wallet_switchEthereumChain method requests
   SwitchEthereumChain(string chain_id) => (int32 error, string message);
+
+  // Used for eth_sendTransaction method requests without 1559 gas data
   AddAndApproveTransaction(TxData tx_data, string from) => (bool success, string tx_hash, string error_message);
+
+  // Used for eth_sendTransaction method requests with 1559 gas data
   AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_hash, string error_message);
+
+  // Used for eth_sign and personal_sign
   // error will be 0 when success
   SignMessage(string address, string message) => (string signature, int32 error, string error_message);
+
+  // Used for the connect event
   GetChainId() => (string chain_id);
+
+  // Used for eth_accounts method requests
   GetAllowedAccounts() => (bool success, array<string> accounts);
 };
 
@@ -73,6 +100,7 @@ interface PanelHandler {
 
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
+  // Used by the brave://wallet page to open up the approval panel
   ShowApprovePanelUI();
 };
 
@@ -169,11 +197,16 @@ struct KeyringInfo {
 
 // Browser-side handler for common panel / page things
 interface WalletHandler {
+  // Obtains basic information about the wallet that is needed for first render
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
                       array<AppItem> favoriteApps,
                       bool isWalletBackedUp,
                       array<AccountInfo> accountInfos);
+
+  // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);
+
+  // Removes a favorite app to the apps list
   RemoveFavoriteApp(AppItem appItem);
 };
 
@@ -194,63 +227,151 @@ interface Page {
 };
 
 interface KeyringControllerObserver {
+  // Fired when a keyring is created
   KeyringCreated();
+
+  // Fired when a keyring is restored
   KeyringRestored();
+
+  // Fired when a keyring is locked
   Locked();
+
+  // Fired when a keyring is unlocked
   Unlocked();
+
+  // Fired when a keyring is backed up
   BackedUp();
+
+  // Fired when the accounts list changes
   AccountsChanged();
+
+  // Fired when the autolock setting changes
   AutoLockMinutesChanged();
+
+  // Fired when the selected account setting changes
   SelectedAccountChanged();
 };
 
+// List of tokens and coins that are supported.
 interface ERCTokenRegistry {
+  // Obtains token information by a contract lookup
   GetTokenByContract(string contract) => (ERCToken? token);
+
+  // Obtains token information by a symbol lookup
   GetTokenBySymbol(string symbol) => (ERCToken? token);
+
+  // Obtains all tokens Send/Swap UI
   GetAllTokens() => (array<ERCToken> tokens);
+
+  // Obtains all tokens for the Buy UI
   GetBuyTokens() => (array<ERCToken> tokens);
+
+  // Obtains the URL used for buying assets
   GetBuyUrl(string address, string symbol, string amount) => (string url);
 };
 
+// Implements the HD wallet, Ledger & Trezor integration, account management,
+// and signing.
 interface KeyringController {
+  // Creates a new wallet and encrypts it using the specified password
   CreateWallet(string password) => (string mnemonic);
+
+  // Obtains the mnemonic code words for an already existing wallet
   GetMnemonicForDefaultKeyring() => (string mnemonic);
+
+  // Restores a wallet with the specified mnemonic and encrypts it with the
+  // new password provided. isLegacyBraveWallet can be used to restore the
+  // wallet using Brave's legacy derivation paths.
   RestoreWallet(string mnemonic, string password, bool isLegacyBraveWallet)
     => (bool isValidMnemonic);
+
+  // Locks the keyring.
   Lock();
+
+  // Unlocks the keyring.
   Unlock(string password) => (bool success);
+
+  // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+
+  // Adds an account to the keyring.
   AddAccount(string accountName) => (bool success);
+
+  // Obtains the private key for the keyring.
   GetPrivateKeyForDefaultKeyringAccount(string address)
     => (bool success, string privateKey);
+
+  // Imports an account with a specific private key to the keyring
   ImportAccount(string accountName, string privateKey)
     => (bool success, string address);
+
+  // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
+
+  // Obtains the private key for an imported account
   GetPrivateKeyForImportedAccount(string address)
     => (bool success, string privateKey);
+
+  // Removes an imported account
   RemoveImportedAccount(string address) => (bool success);
+
+  // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);
+
+  // Informs the keyring that the wallet has been backed up
   NotifyWalletBackupComplete();
+
+  // Obtains the keyring information
   GetDefaultKeyringInfo() => (KeyringInfo keyring);
+
+  // Resets the keyring and all preferences
   Reset();
+
+  // Adds a KeyringControllerObserver
   AddObserver(pending_remote<KeyringControllerObserver> observer);
+
+  // Sets the account name for a derived account
   SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+
+  // Sets the account name for an imported account
   SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+
+  // Sets the account name for a hardware account
   SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
+
+  // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info);
+
+  // Removes a hardware account
   RemoveHardwareAccount(string address);
+
+  // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
+
+  // Obtains the selected account
   GetSelectedAccount() => (string? address);
+
+  // Sets the selected account
   SetSelectedAccount(string address) => (bool success);
+
+  // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);
+
+  // Sets the number of minutes for keyring auto-lock
   // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
   SetAutoLockMinutes(int32 minutes) => (bool success);
 };
 
+// Used for cryptocurrency prices over time.
 interface AssetRatioController {
+  // Obtains the prices from a list of assets to a list of assets
+  // Each from asset is represented in the to asset and includes the timeframe
+  // change as well.
   GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetPrice> values);
+
+  // Obtains the price history for a specific asset
   GetPriceHistory(string asset, AssetPriceTimeframe timeframe) =>
       (bool success, array<AssetTimePrice> values);
 
@@ -260,16 +381,25 @@ interface AssetRatioController {
   GetGasOracle() => (GasEstimation1559? estimation);
 };
 
+// Implements swapping related functionality through the 0x API.
 interface SwapController {
+  // Obtains a price quote for a swap
   GetPriceQuote(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
+
+  // Obtains transaction payload data for a swap
   GetTransactionPayload(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
 };
 
 interface EthJsonRpcControllerObserver {
+  // Fired when the selected network changes
   ChainChangedEvent(string chain_id);
+
+  // Fired when a wallet_addEthereumChain request is completed
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
+
+  // Fired when a chain ID's 1559 status changes
   OnIsEip1559Changed(string chain_id, bool is_eip1559);
 };
 
@@ -324,30 +454,61 @@ struct SwitchChainRequest {
   string chain_id;
 };
 
+// Deals with the ETH JSON RPC API, as well as things like the user's current
+// network.
 interface EthJsonRpcController {
+  // Checks the chain ID for an ethereum chain that should be added
   AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
-
   GetPendingChainRequests() => (array<EthereumChain> networks);
-  GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
-  // UI to native
+
+  // This is used for UI notifying native when the user approves or
+  // rejects SwitchChainRequest
   NotifySwitchChainRequestProcessed(bool approved, url.mojom.Url origin);
+  GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
+
   SetNetwork(string chain_id) => (bool success);
   GetAllNetworks() => (array<EthereumChain> networks);
+
+  // Obtains the current network's chain ID
   GetChainId() => (string chain_id);
+
+  // Obtains the current network's block tracker URL
   GetBlockTrackerUrl() => (string block_tracker_url);
+
+  // Obtains the current network's URL
   GetNetworkUrl() => (string network_url);
+
+  // Obtains the native balance (e.g. ETH for Ethereum) for the address
   GetBalance(string address) => (bool success, string balance);
+
+  // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
                        string address) => (bool success, string balance);
+
+  // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
                          string owner_address, string spender_address) => (bool success, string allowance);
+
+  // ENS lookups
   EnsGetEthAddr(string domain) => (bool success, string address);
+
+  // Unstoppable Domains lookups
   UnstoppableDomainsGetEthAddr(string domain) => (bool success, string address);
+
+  // Used for making requests to the currently selected EVM compatible node
   Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+
+  // Adds an observer for the events of EthJsonRpcController
   AddObserver(pending_remote<EthJsonRpcControllerObserver> observer);
+
+  // Sets a custom network for testing
   SetCustomNetworkForTesting(string chain_id, url.mojom.Url provider_url);
+
+  // Obtains the owner of a contract's ERC721 token ID
   GetERC721OwnerOf(string contract, string token_id) => (bool success, string owner_address);
+
+  // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
   GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (bool success, string balance);
@@ -386,26 +547,53 @@ struct TransactionInfo {
 };
 
 interface EthTxControllerObserver {
+  // Fired when a new unapproved transaction is encountered
   OnNewUnapprovedTx(TransactionInfo tx_info);
+
+  // Fired when an unapproved transaction is updated, such as the gas
+  // properties change
   OnUnapprovedTxUpdated(TransactionInfo tx_info);
+
+  // Fired when a transaction is updated
   OnTransactionStatusChanged(TransactionInfo tx_info);
 };
 
+// For transaction management such as creation, broadcasting, and storing
+// transactions.
 interface EthTxController {
+  // Used to add a transaction
   AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to add an EIP 1559 transaction
   AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to approve a transaction
   ApproveTransaction(string tx_meta_id) => (bool status);
+
+  // Used to reject a transaction
   RejectTransaction(string tx_meta_id) => (bool status);
+
+  // Used for modifying transaction data
   SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
   SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
   SetDataForUnapprovedTransaction(string tx_meta_id, array<uint8> data) => (bool success);
+
+  // Used for creating transaction data
   MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
+
+  // Obtains a list of all transactions from an address.
   // This returns different data depending on which network is currently selected in EthJsonRpcController
   GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
+
+  // Adds an observer for EthTxController
   AddObserver(pending_remote<EthTxControllerObserver> observer);
+
+  // Used to speed-up or cancel a transaction
   SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to retry a transaction
   RetryTransaction(string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
   GetTransactionMessageToSign(string tx_meta_id) => (string? message);
@@ -413,10 +601,19 @@ interface EthTxController {
 };
 
 interface BraveWalletServiceObserver {
+  // Fired when the active origin is changed
   OnActiveOriginChanged(string origin);
+
+  // Fired when the default wallet setting changes
   OnDefaultWalletChanged(DefaultWallet wallet);
+
+  // Fired when the default base currency changes (e.g. USD -> CAD)
   OnDefaultBaseCurrencyChanged(string currency);
+
+  // Fired when the default base currency changes (e.g. BTC -> ETH)
   OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
+
+  // Fired when the list of networks changes
   OnNetworkListChanged();
 };
 
@@ -426,30 +623,69 @@ struct SignMessageRequest {
   string message;
 };
 
+// For default wallet setting, user assets, permission checks, importing
+// functionality and much more.
 interface BraveWalletService {
+  // Adds an observer for BraveWalletService
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
+
+  // Obtains the user assets for the specified chain ID
   GetUserAssets(string chain_id) => (array<ERCToken> tokens);
+
+  // Adds a user asset for the specified chain ID
   AddUserAsset(ERCToken token, string chain_id) => (bool success);
+
+  // Removes a user asset for the specified chain ID
   RemoveUserAsset(ERCToken token, string chain_id) => (bool success);
+
+  // Sets whether or not an asset is visible for the specified chain ID
   SetUserAssetVisible(ERCToken token, string chain_id, bool visible) => (bool success);
+
+  // Checks if the deprecated Crypto Wallets extension is installed
   IsCryptoWalletsInstalled() => (bool installed);
+
+  // Checks if MetaMask is installed (Used for knowing to present import UI)
   IsMetaMaskInstalled() => (bool installed);
+
+  // Imports from Crypto Wallets
   ImportFromCryptoWallets(string password, string newPassword) => (bool success,
-  string? errorMessage);
+      string? errorMessage);
+
+  // Imports from MetaMask
   ImportFromMetaMask(string password, string newPassword) => (bool success,
-  string? errorMessage);
+      string? errorMessage);
+
+  // Obtains the default wallet setting
   GetDefaultWallet() => (DefaultWallet default_wallet);
+
+  // Modifies the default wallet setting
   SetDefaultWallet(DefaultWallet default_wallet);
+
+  // Obtains the default base currency
   GetDefaultBaseCurrency() => (string currency);
+
+  // Sets the default base currency
   SetDefaultBaseCurrency(string currency);
+
+  // Obtains the default base cryptocurrency
   GetDefaultBaseCryptocurrency() => (string cryptocurrency);
+
+  // Sets the default base cryptocurrency
   SetDefaultBaseCryptocurrency(string cryptocurrency);
+
+  // Checks if the Ethereum permission is allowed for the origin on the account
   HasEthereumPermission(string origin, string account) => (bool success, bool has_permission);
+
+  // Resets the Ethereum permission for the account
   ResetEthereumPermission(string origin, string account) => (bool success);
+
+  // Obtains the active origin
   GetActiveOrigin() => (string origin);
-  GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
-  // UI to native
+
+  // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
   NotifySignMessageRequestProcessed(bool approved, int32 id);
+  // Obtains the pending sign message requests
+  GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
   NotifySignMessageHardwareRequestProcessed(bool approved, int32 id, string signature, string error);
 };
 
