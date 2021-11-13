@@ -431,7 +431,9 @@ function Container (props: Props) {
   }
 
   const onCancelConnectHardwareWallet = () => {
-    // Logic here to cancel connecting your hardware wallet
+    // Navigating to main panel view will unmount ConnectHardwareWalletPanel
+    // and therefore forfeit connecting to the hardware wallet.
+    props.walletPanelActions.navigateTo('main')
   }
 
   const removeSitePermission = (origin: string, address: string) => {
@@ -480,6 +482,21 @@ function Container (props: Props) {
     )
   }
 
+  if (selectedPendingTransaction && selectedPanel === 'connectHardwareWallet') {
+    return (
+        <PanelWrapper isLonger={false}>
+          <StyledExtensionWrapper>
+            <ConnectHardwareWalletPanel
+                onCancel={onCancelConnectHardwareWallet}
+                walletName={selectedAccount.name}
+                hardwareWalletError={props.panel.hardwareWalletError}
+                retryCallable={onConfirmTransaction}
+            />
+          </StyledExtensionWrapper>
+        </PanelWrapper>
+    )
+  }
+
   if (selectedPendingTransaction) {
     return (
       <PanelWrapper isLonger={true}>
@@ -504,22 +521,6 @@ function Container (props: Props) {
             fullTokenList={props.wallet.fullTokenList}
           />
         </LongWrapper>
-      </PanelWrapper>
-    )
-  }
-
-  if (selectedPanel === 'connectHardwareWallet') {
-    return (
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <ConnectHardwareWalletPanel
-            onCancel={onCancelConnectHardwareWallet}
-            isConnected={false}
-            walletName='Ledger 1'
-            // Pass a boolean true here to show needs Transaction Confirmation state
-            requestingConfirmation={false}
-          />
-        </StyledExtensionWrapper>
       </PanelWrapper>
     )
   }

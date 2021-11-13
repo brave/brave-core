@@ -614,13 +614,16 @@ export const _ConnectHardwareWallet = () => {
     // Doesn't do anything in storybook
   }
 
+  const onConfirmTransaction = () => {
+    // Doesn't do anything in storybook
+  }
+
   return (
     <StyledExtensionWrapper>
       <ConnectHardwareWalletPanel
         walletName='Ledger 1'
-        isConnected={true}
         onCancel={onCancel}
-        requestingConfirmation={true}
+        retryCallable={onConfirmTransaction}
       />
     </StyledExtensionWrapper>
   )

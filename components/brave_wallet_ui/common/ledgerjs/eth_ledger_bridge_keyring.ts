@@ -45,11 +45,17 @@ export default class LedgerBridgeKeyring extends EventEmitter {
     return this.app !== undefined
   }
 
+  makeApp = async () => {
+    this.app = new Eth(await TransportWebHID.create())
+  }
+
   unlock = async () => {
     if (this.app) {
       return this.app
     }
-    this.app = new Eth(await TransportWebHID.create())
+
+    await this.makeApp()
+
     if (this.app) {
       const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
       const address = await this._getAddress(zeroPath)
