@@ -23,6 +23,14 @@
 <translation id="2814998458708016836">அகன்ற முகவரி பட்டையை பயன்படுத்து</translation>
 <translation id="6123134130710658846">பிரேவ் வெகுமதிகள் பொத்தானை மறை</translation>
 <translation id="1811404036171336214">புது தாவல் பக்கத்தில் எப்போதும் புத்தகக்குறிகளை காட்டு</translation>
+<translation id="5802665280774361839">முகவரிப்பட்டையில் தன்னிறைவுசெய்தலைக் காட்டு</translation>
+<translation id="597020512043916976">தன்னிறைவுசெய்தல் பரிந்துரைகளில் உயர்மட்ட தளங்களைக் காட்டு</translation>
+<translation id="264150068416846820">தன்னிறைவுசெய்தல் பரிந்துரைகளில் பிரேவ் பரிந்துரைக்குந்தளங்களைக் காட்டு</translation>
+<translation id="8798099450830957504">இயல்புநிலை</translation>
+<translation id="4176463684765177261">முடக்கப்பட்டது</translation>
+<translation id="6112368337882254910">தானாக-பங்களி</translation>
+<translation id="7286722244752781970">வருகையை பதிவு செய்வதற்கு முன் குறைந்தபட்ச பக்க நேரம்</translation>
+<translation id="2635094637295383009">Twitter</translation>
 <translation id="7781069478569868053">புது தாவல் பக்கம்</translation>
 <translation id="2970343821770026391">முகப்பலகம்</translation>
 <translation id="3719826155360621982">முகப்புப்பக்கம்</translation>
@@ -35,6 +43,7 @@
 <translation id="8934172355414207733">Tor உடனான மறைநிலை</translation>
 <translation id="1970435562892104727">இது Tor உடனான மறைநிலைச் சாளரம்</translation>
 <translation id="1037341607922068025">Tor உடனான மறைநிலைச் சாளரத்தை திற</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Tor-இல் திற</translation>
 <translation id="7643538479215207633">IPFS பயன்படுத்தி திற</translation>
 <translation id="6794469945030154569">இப்பக்கம்</translation>
@@ -47,7 +56,6 @@
 <translation id="6313675821927505581">Tor உடனான புது மறைநிலைச் சாளரம்</translation>
 <translation id="2638041073279639246">Tor உடனான மறைநிலைச் சாளரத்தில் தொடுப்பை திற</translation>
 <translation id="3425600262621021599">Tor உடனான பிரேவ் மறைநிலைச் சாளரத்தில் தொடுப்பை திற</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat விளம்பரங்கள் சேவை</translation>
 <translation id="4472575034687746823">தொடங்குக</translation>
 <translation id="3400357268283240774">கூடுதல் அமைப்புகள்</translation>
@@ -69,11 +77,9 @@
 <translation id="958971637207126733">LinkedIn உட்பதித்த இடுகைகளை அனுமதி</translation>
 <translation id="4078738236287221428">கடுமையான</translation>
 <translation id="7740996059027112821">நிலையானது</translation>
-<translation id="4176463684765177261">முடக்கப்பட்டது</translation>
 <translation id="5770288601196774623">குறுக்கு-தளம் மட்டும்</translation>
 <translation id="3587482841069643663">எல்லாம்</translation>
 <translation id="6165508094623778733">மேலும் அறிக</translation>
-<translation id="8798099450830957504">இயல்புநிலை</translation>
 <translation id="5825943197137337319">இயல்புநிலை பொது இடைமுகங்களை மட்டும்</translation>
 <translation id="5565355416171743213">ஒத்திசைவைப் பயன்படுத்த ஆரம்பி</translation>
 <translation id="4332558599726753990">அமைப்பை ஒத்திசை</translation>
@@ -116,6 +122,7 @@
 <translation id="1834467296210148203">கருவிப்பட்டையில் பிரேவ் பணப்பை படவுருவை காட்டு</translation>
 <translation id="1295874070797049002">விசையை ஏற்றுமதிசெய்</translation>
 <translation id="3946479342297227860">விசையை நீக்கு</translation>
+<translation id="1426410128494586442">ஆம்</translation>
 <translation id="8275038454117074363">இறக்குமதி செய்</translation>
 <translation id="3654980960391973513">உருவாக்கு</translation>
 <translation id="1327977588028644528">கேட்வே</translation>
@@ -137,6 +144,7 @@
 <translation id="780301667611848630">தேவையில்லை</translation>
 <translation id="5039804452771397117">அனுமதி</translation>
 <translation id="7053983685419859001">தடு</translation>
+<translation id="7815301689257843278">இச்சிக்கல் மீண்டுமேற்படுவதைப் பிரேவ் தவிர்க்க சிதைவறிக்கைகளைத் தானாக அனுப்பவா?</translation>
 <translation id="1324417023773393937">பிரேவ் உலாவி</translation>
 <translation id="6873781976650514089">இந்த அமைப்பு</translation>
 <translation id="6040143037577758943">மூடு</translation>
@@ -170,4 +178,8 @@
 <translation id="2557899542277210112">விரைவு அணுகலுக்கு, உமது புத்தகக்குறிகளை இங்கே புத்தகக்குறி பட்டையில் வை.</translation>
 <translation id="2808630562319398131">பிரேவ் வெகுமதிகள் தரவை அகரமாக்கு...</translation>
 <translation id="2273851479262317744">இயல்புநிலை உலாவியாக பிரேவை அமை</translation>
+<translation id="2156993118928861787">செல்லாத முகவரி</translation>
+<translation id="2653659639078652383">சமர்ப்பி</translation>
+<translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
+<translation id="3047726704186619366">படவுரு உரலிகள்</translation>
 </translationbundle>

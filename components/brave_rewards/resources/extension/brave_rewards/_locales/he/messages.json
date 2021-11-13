@@ -238,10 +238,6 @@
     "message": "הוספת כספים",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "למידע נוסף",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "התחבר מחדש",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "יש לכם טיפים שממתינים בשל חוסר בכסף",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "קישור הארנק נכשל",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "לא ניתן לאמת את הארנק שלך משום שהגעת לגבול האימות המרבי למכשיר.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "נראה כי ארנק Brave Rewards שלך כבר אומת באמצעות חשבון $provider$ אחר. נסה לאמת שוב באמצעות חשבונך הקודם.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT עדין לא נתמך באזור שלך ב-Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "החשבון שלך ב-Uphold חסום כעת.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "החשבון שלך ב-Uphold עדין בהשהייה.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "החשבון שלך ב-Uphold מוגבל כעת.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "על ידי המשך, אתה מסכים $tos_link_begin$לתנאי השירות$tos_link_end$ $pp_link_begin$ומדיניות הפרטיות$pp_link_end$. ניתן לבטל בכל עת דרך תפריט הגדרות.",
+    "message": "על ידי הפעלה, הנכם מסכימים $tos_link_begin$לתנאי השירות$tos_link_end$ ו-$pp_link_begin$מדיניות הפרטיות$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "הפעל את Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "על ידי המשך, אתה מסכים $tos_link_begin$לתנאי השירות$tos_link_end$ $pp_link_begin$ומדיניות הפרטיות$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "כעת תוכל להתחיל שיחה בחינם",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk.",
+    "message": "לחץ או הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

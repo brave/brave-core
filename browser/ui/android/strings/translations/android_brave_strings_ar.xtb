@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">تحجب المتتبعات &amp; والإعلانات من تحميل صفحات الويب وعرضها</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
 <translation id="7142548388914389999">السماح بتحليلات المنتج التي تحافظ على الخصوصية (P3A)</translation>
+<translation id="5254037869598726291">تساعد معلومات P3A مجهولة المصدر Brave على تقدير الاستخدام الكلي، وتضمن أننا ’re نقوم بتحسين الميزات الشائعة.</translation>
 <translation id="4272190451231642425">إرسال تقارير الأعطال تلقائيًّا</translation>
 <translation id="2239766974964486304">تقارير الأعطال تساعد Brave على تحسين استقرار المنتج لكل المستخدمين.</translation>
 <translation id="7977176350719484850">البيانات التقديرية المحفوظة</translation>
@@ -217,6 +218,10 @@
 <translation id="7173114856073700355">فتح الإعدادات</translation>
 <translation id="6965382102122355670">موافق</translation>
 <translation id="4450893287417543264">لا تظهر مرة أخرى</translation>
+<translation id="1056898198331236512">تحذير</translation>
+<translation id="1426410128494586442">نعم</translation>
+<translation id="7811264919113243207">سيؤدي هذا إلى مشاركة بيانات Brave الخاصة بك، بما في ذلك كلمات مرورك المحتملة، مع الجهاز الذي أنشأ رمز الاستجابة السريعة هذا. يرجى التحقق مرة أخرى من أن رمز الاستجابة السريعة هذا قد تم إنشاؤه بواسطة جهاز تملكه. هل أنت متأكد من أنك تريد القيام بذلك؟</translation>
+<translation id="3097089005389027085">سيؤدي هذا إلى مشاركة بيانات Brave الخاصة بك، بما في ذلك كلمات مرورك المحتملة، مع الجهاز الذي أنشأ كلمات الشفرة هذه. يرجى التحقق مرة أخرى من أن هذه الكلمات المشفرة قد تم إنشاؤها بواسطة جهاز تملكه. هل أنت متأكد من أنك تريد القيام بذلك؟</translation>
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
@@ -409,6 +414,8 @@
 <translation id="6755546361496900700">معاينة التحويل</translation>
 <translation id="2882813124794301799">حزمة الأدوات الذكية</translation>
 <translation id="13296465911709339">تم نسخ النص الخاص بك إلى الحافظة.</translation>
+<translation id="4670943871783273148">تم حفظ النص الخاص بك في ملف نصي.</translation>
+<translation id="4432845796903761592">لم يتم حفظ الملف.</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="2977461003134694205">إحصائيات الخصوصية</translation>
 <translation id="4643117005422448078">المواقع الأولى</translation>
@@ -470,11 +477,12 @@
 <translation id="8037420924417098685">للبدء في إجراء مكالمة مجانية، قم بتشغيل Brave Rewards.</translation>
 <translation id="8961724619078500274">مع Brave Rewards، تكسب رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حول هذه الرموز المميزة إلى نقود أو بطاقات هدايا أو حتى إرشاد المواقع التي تحبها. لا يوجد هناك عمليات تتبع أو تباطؤ.</translation>
 <translation id="7307847920988946894">تشغيل المكافآت</translation>
+<translation id="7872993190040589450">من خلال التمكين، فإنك بذلك توافق على <ph name="TERMS_OF_SERVICE"/>و<ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">للبدء في إجراء مكالمة مجانية، قم بتمكين Brave Private Ads.</translation>
 <translation id="7930006085154756245">مع Brave Private Ads، تربح رموزًا لعرض الإعلانات الخاصة (بياناتك آمنة). حول هذه الرموز المميزة إلى نقود أو بطاقات هدايا أو حتى إرشاد المواقع التي تحبها. لا يوجد هناك عمليات تتبع أو تباطؤ.</translation>
 <translation id="4992617448154987397">تشغيل Brave Private Ads</translation>
 <translation id="3415016869273103668">يمكنك إجراء مكالمة مجانية الآن</translation>
-<translation id="7073631403665023390">انقر في أي مكان على الشاشة لمتابعة Brave Talk.</translation>
+<translation id="7073631403665023390">انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.</translation>
 <translation id="626339649633171286">هل ترغب في معرفة المزيد عن Brave Rewards؟<ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">لقد قمت بتحويل <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> إلى <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">يُرجى التحقق من اتصالك بالشبكة.</translation>
@@ -530,13 +538,15 @@
 <translation id="5460364286096798286">احتفظ بوحدات crypto المشفرة في عهدتك. الأصول التجارية. عرض الأسعار وأداء المحفظة. استثمر واقترض وأقرض مع DeFi.</translation>
 <translation id="1748009926009835882">إعداد Crypto</translation>
 <translation id="2759836790106646094">قم بعمل نسخة احتياطية من محفظتك الآن!</translation>
-<translation id="7685607706678113458">في الخطوة التالية، سوف تظهر لك 12 كلمة تخول لك باستعادة محفظتك المشفرة.</translation>
+<translation id="5156354224138379811">في الخطوة التالية، سترى 12 كلمة تسمح لك باستعادة محفظتك المشفرة.</translation>
 <translation id="2359808026110333948">استمرار</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
 <translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
 <translation id="6146351434671268516">قم بكتابة هذه الكلمات أو انسخها بالترتيب الصحيح واحفظها في مكان آمن.</translation>
 <translation id="7408247683131762445">تنبيه: لا تُفصح عن العبارة الاحتياطية خاصتك. حيث يمكن لأي شخص لديه هذه العبارة أن يستولي على أموالك إلى الأبد.</translation>
 <translation id="939275786514736244">لقد قمت بعمل نسخة احتياطية من عباراتي في مكان آمن</translation>
+<translation id="6896758677409633944">نسخ</translation>
+<translation id="5317780077021120954">حفظ</translation>
 <translation id="2604744480284798833">قم بعمل نسخة احتياطية من محفظتك الآن لحماية محفظة العملات المشفرة الخاصة بك من فقدان الوصول.</translation>
 <translation id="1202920745614909195">قم بشراء وحدة crypto المشفرة باستخدام خدمة الدفع  Apple Pay أو بطاقة الائتمان أو بطاقة الخصم.</translation>
 <translation id="841880029259839903">إرسال وحدات crypto المشفرة أو قم بتحويلها من حساب إلى آخر.</translation>
@@ -558,13 +568,13 @@
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">تفعيل إلغاء القفل ببصمة الإصبع</translation>
 <translation id="5493402808936397665">قم بتفعيل خيار الدخول بالبصمة لفتح محفظتك بسرعة دون إدخال كلمة المرور الخاصة بك.</translation>
-<translation id="1544192797660353713">محفظة Brave</translation>
+<translation id="1544192797660353713">المحفظة</translation>
 <translation id="6901810042765869341">أدخل عبارة الاسترداد الخاصة بك لاستعادة حساب التشفير crypto لـ Brave Wallet الخاص بك.</translation>
 <translation id="1970161551843843564">استعادة حساب التشفير Crypto</translation>
 <translation id="4811736040444856406">عرض عبارة الاسترداد</translation>
 <translation id="283071225285270357">أدخِل عبارة الاسترداد</translation>
 <translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
-<translation id="6202787708155200390">اضغط على الكلمات الموجودة في الأعلى وضعها بجوار بعضها بالترتيب الصحيح.</translation>
+<translation id="2718669004132381989">اضغط على الكلمات لوضعها بجانب بعضها بالترتيب الصحيح.</translation>
 <translation id="6518133107902771759">تحقق</translation>
 <translation id="3157931365184549694">استعادة</translation>
 <translation id="9111102763498581341">فتح القفل</translation>
@@ -572,7 +582,7 @@
 <translation id="1569452037668432756">أدخل كلمة المرور الخاصة بك لفتح</translation>
 <translation id="224719674509047150">يجب أن تتكون كلمة المرور من 7 أحرف على الأقل وتحتوي على رقم واحد  وحرف خاص على الأقل</translation>
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
-<translation id="745115390910697838">العبارات غير متطابقة، يرجى المحاولة مرة أخرى.</translation>
+<translation id="5760476995887363522">العبارات غير متطابقة. حاول مرة أخرى.</translation>
 <translation id="2360588547830602174">فشل استرداد الحساب، حاول مرة أخرى.</translation>
 <translation id="6392640873800632439">سعر السوق في <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">من</translation>
@@ -586,6 +596,12 @@
 <translation id="1987317783729300807">الحسابات</translation>
 <translation id="3535654229833214438">المعاملات</translation>
 <translation id="4636930964841734540">معلومات</translation>
+<translation id="2449682593754783720">ساعة واحدة</translation>
+<translation id="969133700726811190">يوم واحد</translation>
+<translation id="5882300031363619940">أسبوع واحد</translation>
+<translation id="5698094150392720512">شهر واحد</translation>
+<translation id="5483736362376139517">سنة واحدة</translation>
+<translation id="6979737339423435258">جميع الأوقات</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
 <translation id="5288333155754958121">يتيح هذا أمر البينج المجهول والخاص لـ Brave تقدير المستخدمين النشطين.</translation>
 <translation id="3819257035322786455">الاحتفاظ بنسخة احتياطية</translation>
@@ -626,7 +642,7 @@
 <translation id="6277055349883621705">تجديد سنوي وفر 16٪</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="4487678670820292781">119.88 دولار أمريكي</translation>
-<translation id="5867778679088331977">جربه مجانًا لمدة 7 أيام. بعد 7 أيام، سيتم تحصيل سعر الخطة منك. يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.</translation>
+<translation id="2655185358771731232">جربه مجانًا لمدة 7 أيام. بعد 7 أيام، سيتم تحصيل سعر الخطة منك. يتم تجديد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها قبل التجديد.</translation>
 <translation id="6053992191006521518">المحاولة مجانًا</translation>
 <translation id="721747358270435486">تثبيت VPN</translation>
 <translation id="836074276610740314">تثبيت ملف تعريف VPN</translation>
@@ -700,4 +716,11 @@
 <translation id="275990379543116961">أموال غير كافية للغاز</translation>
 <translation id="3292453499915466604">سيولة غير كافية</translation>
 <translation id="3380365263193509176">خطأ غير معروف</translation>
+<translation id="5932938770824268122">المفتاح الخاص</translation>
+<translation id="2472882733835903303">قم بإظهار المفتاح الخاص</translation>
+<translation id="4391056902675005799">قم بإخفاء المفتاح الخاص</translation>
+<translation id="5929798090073091848">تحذير: لا تكشف عن هذا المفتاح. يمكن لأي شخص لديه مفتاح خاص سرقة أي أصول موجودة في حسابك.</translation>
+<translation id="1133619932669546254">قم بتفعيل <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">نوع الوظيفة:<ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">لا توجد بيانات</translation>
 </translationbundle>

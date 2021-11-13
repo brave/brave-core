@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Sivustolla vierailun vähimmäiskesto ennen vierailun kirjautumista</translation>
 <translation id="4424486208397124985">Vierailukertojan vähimmäismäärä julkaisijan kannalta</translation>
 <translation id="6248554379744796526">Näytä vahvistamattomat sivustot luettelossa</translation>
-<translation id="5510618543889994434">Salli lahjoitus videoihin</translation>
+<translation id="5510618543889994434">Salli videoihin liittyvä lahjoittaminen</translation>
 <translation id="8933202740471878108">1 vierailu</translation>
 <translation id="354797634123275103">5 vierailua</translation>
 <translation id="3583700907990488238">10 vierailua</translation>
@@ -244,11 +244,21 @@
 <translation id="3082557070674409251">Klikattu</translation>
 <translation id="7119308337584989771">Hylätty</translation>
 <translation id="6805660603861526473">Katsottu</translation>
+<translation id="4014166694178311757">Lompakkoasi ei voida vahvistaa, sillä olet saavuttanut sallitun vahvistettujen laitteiden ylärajan.</translation>
+<translation id="1221593978088944142">Virhe: laiteraja saavutettu</translation>
 <translation id="3113653894794167793">Pyyntösi käsittelyn yhteydessä ilmeni häiriö; ole hyvä ja yritä uudelleen.</translation>
-<translation id="8832187864682447273">Tarvitset todennetun lompakon kirjautuaksesi sisään</translation>
-<translation id="2607420597216860026">Yritä uudelleen, kun olet todentanut tunnuksen henkilölle <ph name="PROVIDER"/>.</translation>
+<translation id="2607420597216860026">Yritä uudelleen, kun olet suorittanut henkilöllisyyden vahvistuksen kohteessa <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Virhe: tarvitset vahvistetun lompakon kirjautuaksesi sisään</translation>
 <translation id="1501075228659004450">Hmm, näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
 <translation id="5111921830714291902">Virhe: Eri tili</translation>
+<translation id="5382684862562314222">BATtia ei vielä tueta alueesi Uphold-lompakoissa.</translation>
+<translation id="9074594632540931067">Virhe: BAT ei ole saatavilla</translation>
+<translation id="413458922997276130">Uphold-tilisi on tällä hetkellä estetty.</translation>
+<translation id="3579959767665130790">Virhe: Estetty tili</translation>
+<translation id="819370426249314592">Uphold-tilisi odottaa vielä käsittelyä.</translation>
+<translation id="4530453398914580957">Virhe: Odottava tili</translation>
+<translation id="2388470740942086608">Uphold-tilisi on tällä hetkellä rajoitettu.</translation>
+<translation id="3605236342612716051">Virhe: Rajoitettu tili</translation>
 <translation id="1737873393693460829">Käynnistämällä [[title]] hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
 <translation id="901298512318791028"><ph name="AMOUNT"/> maksu käsitellään <ph name="DAYS"/> kuluttua.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Maksun käsittely ja BAT:n saapuminen voivat kestää muutaman päivän.</translation>
@@ -335,6 +345,7 @@
 <translation id="2223892939866251845">Käyttäjän tunnus</translation>
 <translation id="4235360514405112390">Pätevä</translation>
 <translation id="3902084968737576005">Lompakon osoite:</translation>
+<translation id="3653417592104122757">Lompakkohistoria</translation>
 <translation id="2326487656644542536">Lompakon tiedot</translation>
 <translation id="3506182299017414175">Lompakkoa ei vielä luotu</translation>
 <translation id="8559420016582377654">Lompakon maksutunniste:</translation>
@@ -531,6 +542,7 @@
 <translation id="3267911153934785912">Syätö palautusavaimesi tai</translation>
 <translation id="1209382772199769572">Tee lompakostasi varmuuskopio ennen sen vaihtamista. Muutoin menetät tämänhetkisen lompakkosi [[funds]] varat.</translation>
 <translation id="5423214929210538027">Tahdotko varmasti palauttaa palkintolompakkosi alkutilaan?</translation>
+<translation id="4749947664556704604">Menetät summan <ph name="BAT_AMOUNT"/> ja muut palkinnot pysyvästi, jos lompakkosi nollataan. Varmista, että olet <ph name="LINK_BEGIN"/>vahvistanut lompakkos<ph name="LINK_END"/>, jotta voit pitää BAT:si.</translation>
 <translation id="2028613172174411919">Palkintotietosi menetetään pysyvästi, jos palautat lompakkosi alkutilaan.</translation>
 <translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
 <translation id="3494964159182650590">Palkkioiden yhteenveto</translation>
@@ -588,7 +600,7 @@
 <translation id="3345432088196080137">Investoi pienimmillään jopa vain 1 $ suosittuihin osakkeisiin ja vaihda rahastoja, kuten AAPL, TSLA tai AMZN</translation>
 <translation id="3787061634640932557">Muokkaa kortteja</translation>
 <translation id="5977237145327845546">Aloita videopuhelu ystäviesi tai kollegoidesi kanssa.</translation>
-<translation id="5850325887346946383">Aloita videopuhelu</translation>
+<translation id="8863928195533744356">Aloita puhelu</translation>
 <translation id="3651550649176056334">Lisätietoja datastasi</translation>
 <translation id="223536150967420869">Osta</translation>
 <translation id="5110244215256675209">Osta kryptovaluuttaa</translation>
@@ -773,11 +785,29 @@
 <translation id="4989163558385430922">Näytä kaikki</translation>
 <translation id="3026978804849658576">Näytä tiliote</translation>
 <translation id="8494748383523030337">Saldosi</translation>
+<translation id="3343165035032571678">Ansaitsit <ph name="AMOUNT"/> katsomalla Brave Private Ads -mainoksia!</translation>
+<translation id="6618415862402597254">Mainosansiot vastaanotettu</translation>
+<translation id="5981646694027725752">Lunasta ansiot</translation>
+<translation id="2556441076129789027">Lunasta tokenit</translation>
+<translation id="5544777623605368410">Ansiot</translation>
+<translation id="3273637494083639780">Tässä kuussa ansaitsemiesi tokenien käsittely alkaa <ph name="DATE"/>.</translation>
+<translation id="1029300693989825319">Tämä voi vaihdella markkinoiden volatiliteetin mukaan.</translation>
+<translation id="8334559352278209120">Lahjoittaminen</translation>
+<translation id="3903419925307046908">Ansaitse maksutunnuksia ja auta muita</translation>
+<translation id="244362569344671266">Ansaitse maksutunnuksia katsomalla Braven yksityismainoksia sekä tukemalla sisällönkehittäjiä automaattisesti.</translation>
+<translation id="5095252080770652994">Edistyminen</translation>
+<translation id="6278643716658443228">Palkintoasetukset</translation>
+<translation id="6777169449483742979">Ansaitset tokeneita tämän sponsoroidun kuvan katselusta.</translation>
+<translation id="5486114327664215175">Ansaitse tokeneita tämän kuvan katselusta ja tue sisällöntuottajia.</translation>
+<translation id="2940863921746574646">Tokenisaldo</translation>
+<translation id="1714906256929297600">Käytä kampanjatokeneita antaaksesi lahjoituksia sisällöntuottajille ennen kuin ne vanhenevat!</translation>
+<translation id="2426048501007152001">Käytettävissä olevat tokenit</translation>
 <translation id="7701466644604753106">Ota SpeedReader käyttöön</translation>
 <translation id="763042262431778831">Poista SpeedReader käytöstä</translation>
 <translation id="8488282162676695335">Brave-lompakko</translation>
 <translation id="1148827340205946630">Käyttäjä hylkäsi pyynnön.</translation>
 <translation id="2403819048476450281">Virheelliset parametrit.</translation>
+<translation id="3955144560853195652">Ketjua <ph name="VALUE"/> ei ole lisätty</translation>
 <translation id="9161147058107529840">Odotti yhtä objektiparametriä.</translation>
 <translation id="1875861420974447980">Tämä ketjun tunnus on käytössä</translation>
 <translation id="167698752210114155">Tapahtui sisäinen virhe</translation>
@@ -797,9 +827,11 @@
 <translation id="7381733147588397055">Maksutapahtumatietojen muuntaminen ei onnistunut</translation>
 <translation id="3829038878925630240">Maksutapahtumatieto 'from' on määritettävä</translation>
 <translation id="4732386285392573809">Gas-hinnan haku maksutapahtumaa varten epäonnistui</translation>
-<translation id="7619826778671319444">Gas-rajan haku maksutapahtumaa varten epäonnistui</translation>
 <translation id="4232775951515678071">Tyypin haku maksutapahtumaa varten epäonnistui</translation>
-<translation id="7631054302129692654">Gas-tokenin arvion haku EIP-1559-maksutapahtumaa varten epäonnistui</translation>
+<translation id="2080935885647755539">Gas-maksujen haku EIP-1559-maksutapahtumaa varten epäonnistui</translation>
+<translation id="4843814354611030845">Käyttäjä hylkäsi kauppatapahtuman</translation>
+<translation id="1462494615260983714">Virhe maksutapahtuman käsittelyssä</translation>
+<translation id="4886059598718763020"><ph name="VALUE"/>' ei ole valtuutettu allekirjoittamaan viestiä</translation>
 <translation id="4958950550253325418">Defi-sovellukset</translation>
 <translation id="735961408871282410">NFT-markkinapaikat</translation>
 <translation id="7740287852186792672">Hakutulokset</translation>
@@ -834,7 +866,11 @@
 <translation id="2267753748892043616">Lisää tili</translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">ei tueta</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> -ketjua ei tueta</translation>
+<translation id="1191686659164947414">Maksutapahtuma voidaan suorittaa etukäteen</translation>
+<translation id="632241521608275119">Myöhästymisen toleranssi</translation>
+<translation id="4500473291496079954">Vanhenee:</translation>
+<translation id="8093033115658137576">0x-osoite tai -url</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
 <translation id="8303434745767477417">Pidä kryptovaroja mukanasi. Seuraa portfolion kehitystä ja ole vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa. Vaihda, sijoita ja lainaa DeFillä avulla. Kaikki tämä suoraan yksityisestä Brave-selaimesta. Ei laajennuksia, ei latausta.</translation>
@@ -854,8 +890,8 @@
 <translation id="2813156651070657572">Suojaa kryptovarasi salasanalla</translation>
 <translation id="6901073872645365201">Salasanassa on oltava vähintään 7 merkkiä, yksi numero ja yksi erikoismerkki.</translation>
 <translation id="6657585470893396449">Salasana</translation>
-<translation id="692381016487372902">Kirjoita salasana uudelleen</translation>
-<translation id="3527905866577245691">Vahvista salasana -kentässä annettu salasana ei täsmää</translation>
+<translation id="5486261815000869482">Vahvista salasana</translation>
+<translation id="467510802200863975">Salasanat eivät täsmää</translation>
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
@@ -879,6 +915,7 @@
 <translation id="1940465339426637378">Omaisuudet</translation>
 <translation id="2236507293802791911">Näkyvät varat</translation>
 <translation id="7525067979554623046">Luo</translation>
+<translation id="4771176409524282426">Luo tili</translation>
 <translation id="4324198334837993695">Laitteisto</translation>
 <translation id="3067168166931605141">Tilin nimi</translation>
 <translation id="1136772623587250243">Liitä yksityinen avain leikepöydältä</translation>
@@ -888,9 +925,9 @@
 <translation id="795667975304826397">Tiedostoa ei ole valittu</translation>
 <translation id="5891811606602061966">Tilin tuonti epäonnistui. Yritä uudelleen.</translation>
 <translation id="5051929972046200722">Valitse lompakkosi laite</translation>
-<translation id="6932355307691676490">Liitä</translation>
-<translation id="4513956488935671725">lompakko suoraan tietokoneeseen.</translation>
+<translation id="5745936663807461565">Liitä <ph name="HARDWARE_DEVICE"/> suoraan tietokoneeseesi.</translation>
 <translation id="5041211872515579638">Avaa laitteen lukitus ja valitse Ethereum-sovellus.</translation>
+<translation id="6892232036314454524">Tämä virhe voi tapahtua, kun väärä sovellus on auki Ledger-laitteessa.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Yhdistetään…</translation>
@@ -908,11 +945,13 @@
 <translation id="6600400596821238377">Tokenin nimi</translation>
 <translation id="4432966365400169165">Tokenin yhteystieto-osoite</translation>
 <translation id="4092152169181928870">Tokenin symboli</translation>
-<translation id="871696868578199698">Desimaalitarkkuus</translation>
-<translation id="6637540491667802882">mukautettuna tokenina</translation>
+<translation id="4351811224047421378">Desimaalitarkkuus</translation>
+<translation id="4982060163914604175">Lisää <ph name="CONTRACT_ADDRESS"/> mukautettuna tokenina</translation>
 <translation id="7978047524114351365">Ei nimettyjä varoja</translation>
 <translation id="9040455159722359521">Hae varoja tai yhteystiedon osoitteita</translation>
 <translation id="6018178824574796106">Mukautetun tokenin lisäys epäonnistui. Yritä uudelleen.</translation>
+<translation id="547122651977318828">Tokenitunnus (vain ERC721)</translation>
+<translation id="7544552854944350190">Tokenitunnus on pakollinen</translation>
 <translation id="2708402071160162126">VAROITUS: Älä koskaan jaa palautuslausetta. Jokainen, jolla on tämä lause hallussaan, voi viedä varasi.</translation>
 <translation id="2902856457593699108">Näytä avain</translation>
 <translation id="8033497299373164724">Piilota avain</translation>
@@ -920,7 +959,7 @@
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
-<translation id="3512100619724810532">Kaikki</translation>
+<translation id="3512100619724810532">100 %</translation>
 <translation id="1530109021798294736">Pääverkko</translation>
 <translation id="1613627717923045622">Testiverkko</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -941,7 +980,7 @@
 <translation id="59223531494896848">Raja</translation>
 <translation id="8569380433211549748">Hinta valuutassa:</translation>
 <translation id="2490428413101944234">Ilmaisia kolikoita jakava palvelu</translation>
-<translation id="6082785102488657349">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta</translation>
+<translation id="3352959425838279177">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta <ph name="SELECTED_NETWORK"/> varten</translation>
 <translation id="7420359180991315365">Jatka Wyreen</translation>
 <translation id="2581671693710952401">Hanki Etheriä</translation>
 <translation id="8009571545960303544">Allekirjoitustasi pyydetään</translation>
@@ -949,12 +988,15 @@
 <translation id="3474375934783434676">Allekirjoita omalla vastuullasi</translation>
 <translation id="5488357322146334497">Viesti</translation>
 <translation id="3586752056660754651">Allekirjoita</translation>
-<translation id="7065157926159745595">Anna tälle sovellukselle käyttöoikeus käyttää kohdetta</translation>
+<translation id="9032898664193335413">Anna tälle sovellukselle käyttöoikeus käyttää kohdetta <ph name="TOKEN_SYMBOL"/>?</translation>
+<translation id="854606191596163710">Antamalla tämän käyttöoikeuden annat tämän sovelluksen nostaa <ph name="VALUE"/> ja automatisoida maksutapahtumia puolestasi.</translation>
 <translation id="8786100550345425552">Muokkaa käyttöoikeuksia</translation>
 <translation id="7710469167917867539">Maksutapahtumamaksu</translation>
 <translation id="9065203028668620118">Muokkaa</translation>
 <translation id="7968982339740310781">Näytä tiedot</translation>
 <translation id="6452181791372256707">Hylkää</translation>
+<translation id="8904889345035514635">Nykyinen varaus</translation>
+<translation id="7073918978411974168">Ehdotettu varaus</translation>
 <translation id="4717431746210146708">Anna tälle sivustolle lupa lisätä verkko?</translation>
 <translation id="2521480044079508357">Tämä mahdollistaa tämän verkon käytön Brave Wallet -lompakossa.</translation>
 <translation id="1982257600591932657">Verkon nimi</translation>
@@ -964,6 +1006,9 @@
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="7131971375297699539">Valuutan symboli</translation>
 <translation id="4693057234255364395">Lohkoketjuohjelman URL-osoite</translation>
+<translation id="1060221736464994328">Anna tälle sivustolle lupa vaihtaa verkkoa?</translation>
+<translation id="2478788592457735063">Tämä vaihtaa verkon aiemmin lisättyyn verkkoon.</translation>
+<translation id="8756686998207163764">Vaihda verkkoa</translation>
 <translation id="3948067511324628726">Gas-maksu</translation>
 <translation id="7163997622278957886">Tarjous</translation>
 <translation id="1074360622426001342">Summa ja Gas-maksu</translation>
@@ -971,38 +1016,39 @@
 <translation id="5821668936183240062">seuraava</translation>
 <translation id="793994607260936590">ensimmäinen</translation>
 <translation id="4709524402122994378">tapahtumat</translation>
+<translation id="523862956770478816">Sivuston käyttöoikeudet</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> liitettyä tiliä</translation>
 <translation id="4460220693591349571">TOIMINTOTYYPPI</translation>
 <translation id="838933475572692615">HEX-TIEDOT</translation>
 <translation id="2240831799756994975">TAVUA</translation>
 <translation id="4874303883488468190">Valitse tilit</translation>
-<translation id="4015195974325151180">Katso osoitteet</translation>
-<translation id="3587259018193837508">sallitut tilit (pakollinen)</translation>
+<translation id="2018472018751735678">Näytä sallittujen tilien osoitteet (vaaditaan)</translation>
 <translation id="7029403458170657879">Liitä Brave Wallet -lompakkoon</translation>
 <translation id="7982184974053636367">Brave Wallet -lompakko vaatii turvallisemman salasanan</translation>
 <translation id="2372897697869224590">Aseta Brave Wallet -lompakolle salasana</translation>
 <translation id="7739762330714405363">Käytä samaa salasanaa</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Tuo kohteesta</translation>
-<translation id="4428111176561355185">Tuo kohde</translation>
-<translation id="8929587248006013051">MetaMask-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="7102907656918333773">Tuo kohteesta <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Tuo <ph name="WALLET_EXTENSION"/>-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
 <translation id="4237840336687249184">MetaMask-salasana</translation>
 <translation id="2381605201035323535">kryptolompakot</translation>
 <translation id="2770851145415891830">Olemassa olevat kryptolompakot havaittu</translation>
 <translation id="4938145712652668388">Kun napsautat Aloita-kohtaa, tuot vanhat Crypto Wallet -lompakot uuteen Brave Wallet -kokemukseen ja pääset nauttimaan kaikista edellä mainituista eduista. Kokeile sitä ja kerro meille mielipiteesi!</translation>
-<translation id="913613743605881268">Jos haluat mieluummin ohittaa tuonnin ja säilyttää vanhan Crypto Wallet -lompakkokokemuksen, siirry Brave-selaimeen</translation>
-<translation id="5886242758142314994">ja muuta oletusarvoinen asetus Crypto Wallet -lompakoksi. Voit myös tuoda, kokeilla uutta Brave Wallet -lompakkoa ja vaihtaa takaisin milloin tahansa.</translation>
+<translation id="2237759620789871865">Jos haluat mieluummin ohittaa tuonnin ja säilyttää vanhan Crypto Wallet -lompakkokokemuksen, siirry Brave-selaimen <ph name="LINK_BEFORE"/>asetuksiin<ph name="LINK_AFTER"/> ja muuta oletusarvoinen asetus Crypto Wallet -lompakoksi. Voit myös tuoda, kokeilla uutta Brave Wallet -lompakkoa ja vaihtaa takaisin milloin tahansa.</translation>
 <translation id="3301259443293676544">Tuo Brave Wallet -lompakkoon antamalla olemassa olevien kryptolompakkojen salasana. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
 <translation id="9099900965604225657">Kryptolompakkojen salasana</translation>
 <translation id="4020495774166914146">Olen hukannut salasanani ja palautuslauseeni, luo uusi lompakko.</translation>
-<translation id="480319080797177742">yhdistetty</translation>
-<translation id="4203566092423620442">yhteys katkaistu</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/>-laite liitetty</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/>-laitetta ei ole enää liitetty</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
-<translation id="1952715382071350669">Laitelompakko vaatii maksutapahtumavahvistuksen.</translation>
+<translation id="1178198982208000092">Liitä <ph name="DEVICE_NAME"/>-laitteesi</translation>
+<translation id="3301417531330431881">Laitelompakko vaatii maksutapahtumavahvistuksen. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">lähetetty</translation>
 <translation id="5013754027092416509">vastaanotettu</translation>
 <translation id="5867988533873716616">Lohkoketjuohjelman URL-osoite ei ole käytettävissä.</translation>
 <translation id="4255623233927788178">Näytä lohkoketjuohjelmassa</translation>
 <translation id="6383204195803840504">Maksutapahtumat näkyvät tässä</translation>
+<translation id="2916401020782528840">Maksutapahtumaa ei löydy</translation>
 <translation id="8941851657764077659">Ensisijaisuuden enimmäismaksu</translation>
 <translation id="8047527352810290817">Muokkaa Gas-tokenia</translation>
 <translation id="9091334651803050473">Vaikka siitä ei ole takuita, louhijat todennäköisesti priorisoivat maksutapahtumasi, jos maksat suuremman maksun.</translation>
@@ -1019,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Määritä mukautus</translation>
 <translation id="7400927223938424379">Aseta ehdotukset</translation>
+<translation id="1599636444563952897">Käytä rajakäyttöoikeus salliaksesi <ph name="SITE_ORIGIN"/>, jotta voit nostaa ja käyttää seuraavan summan:</translation>
+<translation id="4512871563176965522">Mukautettu varaus</translation>
+<translation id="749944179568745958">Virheellinen ETH-osoite</translation>
+<translation id="882486206986535424">Virheellinen osoite</translation>
+<translation id="6825399159373612149">Verkkotunnusta <ph name="DOMAIN_NAME"/> ei ole rekisteröity</translation>
+<translation id="862585889767884824">/</translation>
+<translation id="9106265941552476098">Hylkää <ph name="TRANSACTION_LENGTH"/> maksutapahtumaa</translation>
 <translation id="1118876217803190221">Riittämätön saldo</translation>
 <translation id="275990379543116961">Riittämättömät varat Gas-tokeniin</translation>
 <translation id="3292453499915466604">Riittämätön likviditeetti</translation>
 <translation id="805808215102934711">Aktivoi <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Tuntematon virhe</translation>
-<translation id="6687008710463927359">Tili <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Tili <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Lompakon lukitus on ensin avattava</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> ei ole kelvollinen osoite</translation>
+<translation id="7340805872138998391">Laitteen lukituksen avaamine ei onnistu, yritä muodostaa yhteys uudelleen</translation>
+<translation id="1984410139271779110">Sisäinen virhe, tuntematon malli</translation>
+<translation id="8682200134223578011">hyväksytty</translation>
+<translation id="4674380028960132654">Ledger: allekirjoitus ei vastaa oikeaa osoitetta</translation>
+<translation id="3183932890629254743">Laitetiliä ei löydy</translation>
+<translation id="4287068151777838754">JSON-tietoja ei odoteta</translation>
+<translation id="3282936527763045737">Salasana on virheellinen</translation>
+<translation id="1119447706177454957">Sisäinen virhe</translation>
+<translation id="3327639091470204775">Sisäinen virhe, iframe bridgetia ei voida luoda</translation>
+<translation id="6672377693827764095">Sisäinen virhe, tilejä ei voitu noutaa</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1033,6 +1098,24 @@
 <translation id="6951743416068151209">Torin välityspalvelimen URI</translation>
 <translation id="1671503397662036257">Tor-yhteyden tila</translation>
 <translation id="6024292492796847324">Torin käynnistymisen edistyminen</translation>
+<translation id="1742469581923031760">Yhdistetään…</translation>
+<translation id="1287487756047817908">Yhteyttä katkaistaan…</translation>
+<translation id="2325196879156848326">Yhdistäminen epäonnistui</translation>
+<translation id="745054660363064771">Ei voitu yhdistää palvelimeen</translation>
+<translation id="3936826714240735937">Valitse toinen palvelin</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ei pystynyt muodostamaan yhteyttä <ph name="REGION_NAME"/> palvelimeen. Voit yrittää uudelleen tai valita toisen</translation>
+<translation id="1664949222596149258">Osta hintaan <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">Oletko jo ostanut VPN:n?</translation>
+<translation id="8814357473522731680">Palvelun tarjoaa</translation>
+<translation id="5747552184818312860">Vanhenee</translation>
+<translation id="1691256669639196606">Hallitse tilausta</translation>
+<translation id="434523916398030617">Ota yhteyttä tekniseen tukipalveluun</translation>
+<translation id="1116694919640316211">Tietoja asetuksista</translation>
+<translation id="8670386189340362926">Estä seuranta ja mainokset kaikissa sovelluksissa</translation>
+<translation id="4860763498907927955">Suojaa sinua ei-toivotuilta verkkoyhteyksiltä</translation>
+<translation id="3181339219453722970">Valitse VPN:n sijainti</translation>
+<translation id="1751947227857853925">Nopea ja rajoittamaton, jopa 100 Mbit/s</translation>
+<translation id="1400240082805528049">Ympärivuorokautinen tuki</translation>
 <translation id="7586151660465233733">Lisää markkinoita sivustolla <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Katso markkinoita ja käy kauppaa kryptolla FTX:ssä</translation>
 <translation id="5963745988819586370">Markkinat</translation>

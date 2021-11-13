@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">O Brave necessita de acesso ao armazenamento para transferir ficheiros.</translation>
 <translation id="8447483940522230788">Ajuda do Brave</translation>
 <translation id="7933006624150961626">Para aceder aos seus itens do Brave em todos os seus dispositivos, inicie sessão para ativar a sincronização.</translation>
-<translation id="5486618155264784386">Instalar o Chrome OS</translation>
 <translation id="7291143854620707672">Os dados do Brave gerados durante a utilização deste perfil (como a criação de marcadores, histórico, palavras-passe e outras definições) podem ser removidos pelo administrador do perfil de trabalho. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">O SO Brave tem de ser reiniciado para aplicar a atualização.</translation>
 <translation id="7387051847644272380">Ocorreu um erro no sistema operativo durante a instalação. Descarregue novamente o Brave.</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">Remover do Brave...</translation>
 <translation id="2885378588091291677">Gestor de tarefas</translation>
 <translation id="2176825726964012531">Acerca do &amp;Brave</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Só mais um lembrete: a instalação <ph name="BEGIN_BOLD"/>apaga todo o seu disco rígido<ph name="END_BOLD"/>. Certifique-se de que tem uma cópia de segurança dos dados importantes.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Não pode cancelar a instalação depois de a iniciar.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
 <translation id="2953892977076487219">O Brave está a tentar editar palavras-passe.</translation>
 <translation id="8755404239607088219">O Brave não consegue verificar as suas palavras-passe. Tente novamente mais tarde.</translation>
@@ -75,7 +72,6 @@
 <translation id="2711887072399498551">Já existe um perfil do Brave com esta conta.</translation>
 <translation id="2297290224191497273">Pretende mudar para o perfil do Brave existente?</translation>
 <translation id="2450003541323895471">Com os perfis do Brave, pode separar todos os seus itens do Brave. Crie perfis para amigos e familiares ou separe o trabalho da diversão.</translation>
-<translation id="7275165473619697274">Instalação do SO Brave em curso</translation>
 <translation id="9216183508558772570">O Brave envia-lhe uma notificação quando iniciar sessão com uma palavra-passe comprometida.</translation>
 <translation id="5853262807109651878">Esta ação elimina <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar os dados mais tarde, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">O atalho <ph name="SHORTCUT"/> permite alternar entre perfis do Brave</translation>
@@ -100,7 +96,6 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> requer a leitura e aceitação dos seguintes Termos de Utilização antes de utilizar este dispositivo. Estes termos não ampliam, não modificam nem limitam os Termos do Chrome OS.</translation>
 <translation id="3262506503470845422">Obter ajuda relacionada com o Brave</translation>
 <translation id="7691786510374174420">A instalação falhou devido a um erro não especificado. Se o Brave estiver em execução, feche-o e tente de novo.</translation>
-<translation id="429583012151745428">A instalação está em curso. Não desligue o dispositivo. A instalação não deve demorar mais de vinte minutos. O computador será automaticamente encerrado após a instalação.</translation>
 <translation id="9183662282810237335">Pretende sair do Brave mesmo assim?</translation>
 <translation id="4065288863231444640">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="8148611988012584308">Personalizar e controlar o Brave</translation>
@@ -192,7 +187,6 @@ Algumas funcionalidades podem não estar disponíveis. Especifique um diretório
 <translation id="6666624454809779082">O Brave já está instalado para todos os utilizadores no seu computador.</translation>
 <translation id="5360050006043219962">Para aceder aos seus itens do Brave em todos os seus dispositivos, inicie sessão e, em seguida, ative a sincronização.</translation>
 <translation id="8291513491595858997">O teu pai/mãe desativou as "Autorizações para sites, apps e extensões" para o Brave. Não é permitido ativar esta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
-<translation id="1810203443153428607">A instalação do SO Brave substitui todos os dados no seu dispositivo.</translation>
 <translation id="8211837073776713955">O Brave indica-lhe se as suas palavras-passe forem comprometidas.</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (copiado para o Brave)</translation>
@@ -204,6 +198,7 @@ a sincronização. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LI
 <translation id="3335606533094650083">O Brave necessita de autorização de acesso ao microfone para este site.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave.</translation>
+<translation id="151916274998710826">Personalize algumas das opções de privacidade mais importantes do Brave</translation>
 <translation id="1008530050039597147">O Brave necessita da autorização da câmara para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">O Brave não consegue verificar as suas palavras-passe. Tente novamente após 24 horas.</translation>
@@ -228,10 +223,6 @@ O Brave não consegue recuperar as suas definições.</translation>
       Definições do Chrome OS<ph name="LINK_END"/>.</translation>
 <translation id="3293668930608086049">O Brave está a utilizar a câmara e o microfone.</translation>
 <translation id="2827121003398607864">O Brave está ainda melhor</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Antes de começarmos, certifique-se de que tem uma cópia de segurança atualizada dos seus dados. A instalação do SO Brave substitui todos os dados no seu disco rígido.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>A Brave não é responsável por qualquer perda de dados e não garante que o SO Brave irá funcionar em modelos não certificados. Visite [TBD] para saber mais acerca dos modelos certificados.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Saiba mais acerca da instalação do SO Brave e da eliminação dos dados: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Se quiser continuar, clique em "Instalar o SO Brave" e iremos mostrar-lhe como efetuar a instalação em apenas alguns passos simples. Terá outra oportunidade de confirmar antes de efetuarmos quaisquer alterações ao seu computador.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">O Brave não é o seu navegador predefinido.</translation>
 <translation id="5477319665405831211">Sincronizar e personalizar o Brave em todos os dispositivos</translation>
 <translation id="5419189641394808652">O Brave não conseguiu sincronizar os dados porque a Sincronização não está disponível para o seu domínio.</translation>
@@ -296,5 +287,6 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização.}=1{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{O seu administrador necessita que reinicie o Brave para aplicar uma atualização.}=1{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="7914115000169617076">Quase atualizado! Reinicie o Brave para concluir a atualização. Não é possível reabrir as suas janelas de navegação privada.</translation>
+<translation id="4703432949110765917">As predefinições funcionam na maior parte dos perfis. Contudo, pode personalizá-las para se adaptarem melhor à sua utilização do Brave.</translation>
 <translation id="2176087127109773485">Pode gerir as suas cadeias de sincronização Brave com sessão iniciada. Estas são utilizadas no navegador Brave, na Play Store e no Gmail, entre outros. Caso pretenda adicionar uma conta para outra pessoa, como um familiar, adicione um novo perfil a <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 </translationbundle>

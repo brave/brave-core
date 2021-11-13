@@ -238,10 +238,6 @@
     "message": "Προσθήκη Κεφαλαίων",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Μάθετε περισσότερα",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Επανάληψη σύνδεσης",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Έχετε εκκρεμείς βραβεύσεις λόγω ανεπαρκούς υπολοίπου",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Η σύνδεση του πορτοφολιού απέτυχε",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Δεν είναι δυνατή η επαλήθευση του πορτοφολιού σας, επειδή έχετε φτάσει το μέγιστο όριο επαληθευμένων συσκευών.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Φαίνεται ότι το πορτοφόλι σας Brave Rewards έχει ήδη επαληθευτεί με άλλο λογαριασμό$provider$. Προσπαθήστε να το επαληθεύσετε ξανά, χρησιμοποιώντας τον προηγούμενο λογαριασμό σας.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Το BAT δεν υποστηρίζεται ακόμα στην περιοχή σας στο Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ο λογαριασμός στο Uphold είναι προς το παρόν αποκλεισμένος.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ο λογαριασμός σας στο Uphold εκκρεμεί ακόμα.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Ο λογαριασμός σας στο Uphold είναι προς το παρόν περιορισμένος.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Κάνοντας κλικ, συμφωνείτε με τους $tos_link_begin$Όρους Υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$. Μπορείτε να απενεργοποιήσετε αυτήν την επιλογή στις Ρυθμίσεις.",
+    "message": "Με την ενεργοποίηση, συμφωνείτε με τους $tos_link_begin$Όρους Παροχής Υπηρεσιών$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Ενεργοποίηση Ιδιωτικών διαφημίσεων Brave",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ενεργοποιώντας τις Διαφημίσεις, συμφωνείτε με τους $tos_link_begin$Όρους Υπηρεσίας$tos_link_end$ και την $pp_link_begin$Πολιτική Απορρήτου$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Μπορείτε να ξεκινήσετε μια δωρεάν κλήση τώρα",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Κάντε κλικ οπουδήποτε στην οθόνη για να συνεχίσετε στο Brave Talk.",
+    "message": "Κάντε κλικ ή πατήστε οπουδήποτε πάνω στην οθόνη, για να συνεχίσετε στη Συνομιλία Brave.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

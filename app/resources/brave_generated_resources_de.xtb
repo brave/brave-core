@@ -54,6 +54,27 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1144810021918451336">Schützt Sie nicht vor gefährlichen Websites, Downloads und Erweiterungen.</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
+<translation id="6821903322090655051">Brave Rewards sind deaktiviert</translation>
+<translation id="9184430019924125685">Klicken Sie hier, um mehr zu erfahren</translation>
+<translation id="3849957491997306859">Automatisch erkannt</translation>
+<translation id="8798099450830957504">Standardeinstellung</translation>
+<translation id="4176463684765177261">Deaktiviert</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Verdienen Sie Token, indem Sie Brave Ads ansehen. Anzeigen werden basierend auf Ihren Interessen angezeigt, die aus Ihrem Browsing-Verhalten abgeleitet werden. Persönliche Daten oder der Browserverlauf verbleiben stets auf Ihrem Browser.</translation>
+<translation id="1758947220824279023">Maximale Anzahl der einzublendenden Anzeigen</translation>
+<translation id="8578912649458880781">Anzeigen-Targeting auf Statusebene</translation>
+<translation id="3678362265519557511">Auf diese Weise kann Brave Ihnen Anzeigen speziell für Ihren Status anzeigen. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automatische Spenden</translation>
+<translation id="9132509928968869844">Monatliches Limit für das automatische Beitragen</translation>
+<translation id="7286722244752781970">Minimale Nutzungsdauer einer Seite bevor sie mit einbezogen wird</translation>
+<translation id="4424486208397124985">Mindestbesuche für Herausgeberrelevanz</translation>
+<translation id="6248554379744796526">Liste noch nicht bestätigter Seiten anzeigen</translation>
+<translation id="3241299447027267831">Beiträge zu Videos zulassen</translation>
+<translation id="924777189963477634">Indem Sie die Option zum automatischen Beitragen aktivieren, stimmen Sie den <ph name="BEGIN_LINK_TOS"/>Nutzungsbedingungen<ph name="END_LINK_TOS"/> und der <ph name="BEGIN_LINK_PP"/>Datenschutzrichtlinie<ph name="END_LINK_PP"/> zu.</translation>
+<translation id="5733490796524078528">Tipp-Schaltflächen</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Neuer-Tab-Seite</translation>
 <translation id="1988804048511540801">Neue Tab-Seite zeigt</translation>
 <translation id="2970343821770026391">Instrumententafel</translation>
@@ -69,10 +90,12 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8934172355414207733">Privat über Tor</translation>
 <translation id="1970435562892104727">Dies ist ein privates Fenster über Tor</translation>
 <translation id="1037341607922068025">Privates Fenster über Tor öffnen</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">In Tor öffnen</translation>
 <translation id="7643538479215207633">Mit IPFS öffnen</translation>
 <translation id="3094628781200061820">Alle Dateien vom IPFS veröffentlichen und abrufen</translation>
 <translation id="1672270084584211506">Onion Verfügbar</translation>
+<translation id="406832631167785034">Mit .onion-Adresse öffnen</translation>
 <translation id="4901618511712685702">In IPFS importieren</translation>
 <translation id="6794469945030154569">Diese Seite</translation>
 <translation id="5037852323412456577">Ausgewähltes Bild</translation>
@@ -81,6 +104,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7895302206188277628">Verknüpfter Inhalt</translation>
 <translation id="3654831858282189202">Mit IPNS-Schlüssel veröffentlichen</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Ausgewählten Text in IPFS importieren</translation>
 <translation id="6925604404524625582">Importieren und Link in IPFS-Snapshot kopieren</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
 <translation id="4703780849509456860">Link in privatem Fenster mit Tor öffnen</translation>
@@ -94,7 +118,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2638041073279639246">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3425600262621021599">Link in privatem Brave-Fenster mit Tor öffnen</translation>
 <translation id="575838692088926391">Lokalen Ordner mit IPFS freigeben</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-Service</translation>
 <translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
 <translation id="4472575034687746823">Start</translation>
@@ -121,13 +144,11 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
 <translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Deaktiviert</translation>
 <translation id="5770288601196774623">Nur Website-übergreifend</translation>
 <translation id="3587482841069643663">Alle</translation>
 <translation id="5533533363827555308">Streng, könnte Websites kaputtmachen</translation>
 <translation id="8792121506918889955">WebRTC-IP-Nutzungsrichtlinien</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
-<translation id="8798099450830957504">Standardeinstellung</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
@@ -174,6 +195,11 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2339730291919608488">Sync-Kette verlassen</translation>
 <translation id="115699408012835975">Wenn Sie Sync zurücksetzen, müssen Sie, wenn Sie mit einem anderen Gerät synchronisieren möchten, erneut einen Synchronisierungscode von diesem eingeben. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
 <translation id="6092564993102418148">Sind Sie sicher, dass Sie das ausgewählte Gerät aus der Synchronisierungskette entfernen wollen?</translation>
+<translation id="2936582902048232286">Warnung: Dadurch werden Ihre Brave-Daten, einschließlich Ihrer Kennwörter, an das Gerät weitergegeben, das diese Code-Wörter generiert hat.
+
+Bitte überprüfen Sie, dass diese Code-Wörter von einem Gerät generiert wurden, das Ihnen gehört.
+
+Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
 <translation id="7473245612074035141">Einrichtung beginnen</translation>
 <translation id="3411013544209536575">Hilfstipps</translation>
@@ -187,13 +213,17 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Fragen</translation>
 <translation id="7701040980221191251">Keine</translation>
-<translation id="1274962333945373242">Veraltete Krypto-Wallets-Erweiterung</translation>
+<translation id="1274962333945373242">Krypto-Wallets (veraltet)</translation>
+<translation id="3695088618483091287">Brave Wallet (Erweiterungen bevorzugen)</translation>
 <translation id="9131889008937672866">Standard-Kryptowährungs-Wallet</translation>
+<translation id="4718664830805652430">Standardmäßige Basiswährung</translation>
+<translation id="7992507032049865603">Standardmäßige Basis-Kryptowährung</translation>
 <translation id="1834467296210148203">Brave-Wallet-Symbol in der Werkzeugleiste anzeigen</translation>
 <translation id="8239147115686034860">Brave Wallet automatisch sperren</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="6864914031231797928">Google-Anmeldung bei Erweiterungen erlauben</translation>
 <translation id="5927916530277631319">Methode zum Auflösen unaufhaltsamer Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Erfahren Sie mehr<ph name="END_LINK"/> über DNS via HTTPS und Überlegungen zum Datenschutz von Ethereum.</translation>
 <translation id="5248318250177143470">Methode zum Auflösen des Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">IPNS-Schlüssel einrichten</translation>
 <translation id="951216659045543447">Inhalt mit dem entsprechenden privaten Schlüssel signieren und auf IPNS veröffentlichen</translation>
@@ -207,6 +237,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="6476061084931271248">Starten Sie den Knoten neu, um die Änderungen zu übernehmen</translation>
 <translation id="3754226427671882382">Knoten neu starten</translation>
 <translation id="949667118776341807">Drehen</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Dieser Name ist nicht gültig</translation>
 <translation id="6758961763875471084">Peer-Liste bearbeiten</translation>
 <translation id="1295874070797049002">Schlüssel exportieren</translation>
@@ -217,6 +248,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import des „<ph name="KEY_NAME"/>“-Schlüssels fehlgeschlagen</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' Schlüssel-Export fehlgeschlagen</translation>
+<translation id="8860039076160511438">Wallet zurücksetzen</translation>
+<translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importieren</translation>
 <translation id="3654980960391973513">Erzeugen</translation>
 <translation id="5531501313997312487">Knoten starten</translation>
@@ -224,6 +258,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokaler Knoten</translation>
 <translation id="4927734062756955434">Öffentliche IPFS-Gateway-Adresse</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Erfahren Sie mehr<ph name="END_LINK_MPL"/> über lokale IPFS-Knoten und Gateway-Datenschutz.</translation>
 <translation id="8425213833346101688">Ändern</translation>
 <translation id="557281710253742286">IPFS-Gateway senden</translation>
 <translation id="8571837315037233299">Gateway-Adresse</translation>
@@ -352,12 +387,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8053093028263274061">Leider ist keine gespeicherte Version verfügbar.</translation>
 <translation id="8517321676372639828">Auf gespeicherte Version überprüfen</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
-        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
+        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="4235920711083356755">VPN-Schaltfläche anzeigen</translation>
 <translation id="4070612712151038707">Zeigt die VPN-Schaltfläche in der Werkzeugleiste an</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN umschalten</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Über Brave VPN</translation>
 <translation id="4378551569595875038">Verbindung wird hergestellt...</translation>
@@ -383,4 +419,31 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
 <translation id="2273851479262317744">Brave als Standardbrowser festlegen</translation>
 <translation id="8581710194025054669">Um online den besten Datenschutz zu gewährleisten, sollten Sie Brave als Standardbrowser auf Ihrem Computer festlegen. Mit Brave als Standard wird jeder Weblink, auf den Sie klicken, mit dem Datenschutz von Brave geöffnet.</translation>
+<translation id="1241283133946520352">Netzwerke</translation>
+<translation id="8205945804087322170">Neues Netzwerk hinzufügen</translation>
+<translation id="2156993118928861787">Ungültige Adresse</translation>
+<translation id="2653659639078652383">Senden</translation>
+<translation id="2556708692502648323">Wallet-Netzwerk</translation>
+<translation id="1330032157352961756">Die ID der neuen Kette</translation>
+<translation id="9053905035135220650">Eine Hexadezimalzeichenfolge mit Präfix 0x</translation>
+<translation id="726121047592132939">Der Name der neuen Kette</translation>
+<translation id="1034112277864078119">Kettennamen eingeben</translation>
+<translation id="4672314527143443556">Währungsname der Kette</translation>
+<translation id="4652114030688989556">Währungsnamen eingeben</translation>
+<translation id="1079960017149736097">Währungssymbol der Kette</translation>
+<translation id="1288105009659846362">Währungssymbol eingeben</translation>
+<translation id="665660671251623018">Währungsdezimalstellen der Kette</translation>
+<translation id="2978054488731497946">Währungsdezimalstellen eingeben</translation>
+<translation id="2727514928168763432">RPC-URLs</translation>
+<translation id="7059127752542505809">URL eingeben</translation>
+<translation id="3047726704186619366">Symbol-URLs</translation>
+<translation id="2487558607408469181">Explorer-URLs blockieren</translation>
+<translation id="6301398959353668507">Dieses Feld kann nicht leer bleiben.</translation>
+<translation id="4514843126085243862">Ungültiges Format, die Ketten-ID ist eine Hexadezimalzeichenfolge mit Präfix 0x</translation>
+<translation id="8325036459845654666">Dieses Netzwerk wurde bereits hinzugefügt.</translation>
+<translation id="650071759190249039">Interner Fehler, Netzwerk kann nicht hinzugefügt werden</translation>
+<translation id="868529041590572443">Geben Sie alle Informationen über die native Währung ein</translation>
+<translation id="1062463687579789365">Anpassung der Wallet-Netzwerke</translation>
+<translation id="2234108191702901162">Netzwerk kann nicht hinzugefügt werden</translation>
+<translation id="2618193846561624884">Möchten Sie das vorhandene Netzwerk aktualisieren?</translation>
 </translationbundle>

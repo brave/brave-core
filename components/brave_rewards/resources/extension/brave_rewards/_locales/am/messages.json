@@ -238,10 +238,6 @@
     "message": "ድጎማ ያድርጉ",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "የበለጠ ይወቁ",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "በድጋሚ ያገናኙ",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "ያለዎት ገንዘብ አነስተኛ በመሆኑ ምክንያት በሒደት ላይ ያሉ ፍንጮች አሉዎት ",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "ዋሌት የማገናኘት ሂደቱ አልተሳካም",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "ከፍተኛው የተረጋገጠ መሣሪያ መጠን ገደብ ላይ ስለደረሱ የእርስዎ ዋሌት ሊረጋገጥ አይችልም።",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "የእርስዎ Brave Rewards ቦርሳ ቀደም ሲል በሌላ $provider$ መለያ የተረጋገጠ ይመስላል። እባክዎ የቀድሞ መለያዎን በመጠቀም እንደገና ለማረጋገጥ ይሞክሩ። ",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT በ Uphold ላይ ባለው ክልልዎ ውስጥ አልተፈቀደም።",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ ታግዷል።",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "በ Uphold ላይ ያለው መለያዎ አሁንም በመጠባበቅ ላይ ነው።",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "በ Uphold ላይ ያለው መለያዎ በአሁኑ ጊዜ የተገደበ ነው።",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "ጠቅ በማድረግ፣ ከ$tos_link_begin$የአገልግሎት ሁኔታዎች$tos_link_end$እና $pp_link_begin$ የግላዊነት ፖሊሲ $pp_link_end$ጋር ይስማማሉ። ",
+    "message": "ይህንን በመፍቀድዎ፣ እርስዎ በ $tos_link_begin$የአገልግሎት ውሎች$tos_link_end$ እና $pp_link_begin$የግላዊነት ፖሊሲ$pp_link_end$ተስማምተዋል።",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "የBrave Private ማስታወቂያዎችን ያብሩ",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "ማስታወቂያዎችን በማብራት፣ ከ$tos_link_begin$የአገልግሎት ሁኔታዎች$tos_link_end$እና $pp_link_begin$ የግላዊነት ፖሊሲ $pp_link_end$ጋር ይስማማሉ። ",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "አሁን ነጻ የስልክ ጥሪ መጀመር ይችላሉ",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": " Brave Talkን ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቀ ያድርጉ።",
+    "message": "ወደ  Brave Talk ለመቀጠል በማያ ገጽዎ ላይ የትም ቦታ ላይ ጠቀ ያድርጉ ወይም ይንኩ።",
     "description": ""
   },
   "braveTalkWantLearnMore": {

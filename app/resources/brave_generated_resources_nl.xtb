@@ -55,6 +55,27 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch-specificaties volgen.</translation>
+<translation id="6821903322090655051">Brave-beloningen zijn uitgeschakeld</translation>
+<translation id="9184430019924125685">Klik hier voor meer informatie</translation>
+<translation id="3849957491997306859">Automatisch gedetecteerd</translation>
+<translation id="8798099450830957504">Standaard</translation>
+<translation id="4176463684765177261">Uitgeschakeld</translation>
+<translation id="4851215387785619212">Brave-privéadvertenties</translation>
+<translation id="7808122468353671181">Verdien tokens door Brave-advertenties te bekijken. De gepresenteerde advertenties zijn gebaseerd op jouw interesses, afgeleid uit je browsegedrag. Persoonlijke gegevens en de browsergeschiedenis verlaten nooit je browser.</translation>
+<translation id="1758947220824279023">Maximumaantal advertenties om weer te geven</translation>
+<translation id="8578912649458880781">Advertenties afhankelijk van staat</translation>
+<translation id="3678362265519557511">Dit stelt Brave in staat om advertenties speciaal voor jouw staat te laten zien. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Contribute</translation>
+<translation id="9132509928968869844">Maandelijkse limiet automatische bijdragen</translation>
+<translation id="7286722244752781970">Minimum tijd op pagina voordat een bezoek wordt geregistreerd</translation>
+<translation id="4424486208397124985">Minimum aantal bezoeken voor relevantie uitgever</translation>
+<translation id="6248554379744796526">Niet-geverifieerde sites in lijst weergeven</translation>
+<translation id="3241299447027267831">Bijdragen aan video's toestaan</translation>
+<translation id="924777189963477634">Door automatische bijdragen in te schakelen, ga je akkoord met de <ph name="BEGIN_LINK_TOS"/>servicevoorwaarden<ph name="END_LINK_TOS"/> en het <ph name="BEGIN_LINK_PP"/>privacybeleid<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Beloningsknoppen</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="1988804048511540801">Nieuw tabblad toont</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -70,10 +91,12 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8934172355414207733">Privé met Tor</translation>
 <translation id="1970435562892104727">Dit is een privévenster met Tor</translation>
 <translation id="1037341607922068025">Private Window openen met Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">In Tor openen</translation>
 <translation id="7643538479215207633">Openen met IPFS</translation>
 <translation id="3094628781200061820">Bestanden publiceren en ophalen uit IPFS</translation>
 <translation id="1672270084584211506">Onion beschikbaar</translation>
+<translation id="406832631167785034">Openen met .onion-adres</translation>
 <translation id="4901618511712685702">Naar IPFS importeren</translation>
 <translation id="6794469945030154569">Deze pagina</translation>
 <translation id="5037852323412456577">Geselecteerde afbeelding</translation>
@@ -82,6 +105,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="7895302206188277628">Gekoppelde inhoud</translation>
 <translation id="3654831858282189202">Publiceren met IPNS-sleutel</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Geselecteerde tekst naar IPFS importeren</translation>
 <translation id="6925604404524625582">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
@@ -95,7 +119,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
 <translation id="575838692088926391">Lokale map delen met IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -122,13 +145,11 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
 <translation id="4078738236287221428">Agressief</translation>
 <translation id="7740996059027112821">Standaard</translation>
-<translation id="4176463684765177261">Uitgeschakeld</translation>
 <translation id="5770288601196774623">Alleen cross-site</translation>
 <translation id="3587482841069643663">Alles</translation>
 <translation id="5533533363827555308">Strikt, kan websites doen stukgaan</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
-<translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
@@ -175,6 +196,11 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
 <translation id="115699408012835975">Als je de Synchronisatie opnieuw instelt, moet je een synchronisatie code van een ander apparaat opnieuw invoeren. Ben je er zeker van om door te gaan?</translation>
 <translation id="6092564993102418148">Weet u zeker dat u het geselecteerde apparaat wilt verwijderen uit de synchronisatieketen?</translation>
+<translation id="2936582902048232286">Waarschuwing: hiermee deel je je Brave-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze codewoorden heeft gegenereerd.
+
+Controleer of deze codewoorden zijn gegenereerd door een apparaat dat jouw eigendom is.
+
+Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3396347744975515056">Brave Sync is ge-update and vereist configuratie</translation>
 <translation id="7473245612074035141">Begin met de Configuratie</translation>
 <translation id="3411013544209536575">Hulptips</translation>
@@ -188,13 +214,17 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="7701040980221191251">Geen</translation>
-<translation id="1274962333945373242">Verouderde Crypto Wallets extensie</translation>
+<translation id="1274962333945373242">Cryptowallets (verouderd)</translation>
+<translation id="3695088618483091287">Brave-wallet (voorkeur extensies)</translation>
 <translation id="9131889008937672866">Standaard cryptovalutawallet</translation>
+<translation id="4718664830805652430">Standaard basisvaluta</translation>
+<translation id="7992507032049865603">Standaard cryptobasisvaluta</translation>
 <translation id="1834467296210148203">Brave Wallet-pictogram in werkbalk tonen</translation>
 <translation id="8239147115686034860">Brave-wallet automatisch vergrendelen</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="6864914031231797928">Google-login voor extensies toestaan</translation>
 <translation id="5927916530277631319">Methode om Unstoppable Domains op te lossen</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over DNS via HTTPS en privacy-overwegingen voor Ethereum.</translation>
 <translation id="5248318250177143470">Methode om Ethereum Name Service (ENS) op te lossen</translation>
 <translation id="7024553202001112871">Je IPNS-sleutels instellen</translation>
 <translation id="951216659045543447">Content tekenen op basis van de bijbehorende privésleutel en publiceren in IPNS</translation>
@@ -208,6 +238,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="6476061084931271248">Knooppunt opnieuw opstarten om wijzigingen door te voeren</translation>
 <translation id="3754226427671882382">Knooppunt opnieuw starten</translation>
 <translation id="949667118776341807">Vernieuwen</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Deze naam is ongeldig</translation>
 <translation id="6758961763875471084">Lijst met peers aanpassen</translation>
 <translation id="1295874070797049002">Sleutel exporteren</translation>
@@ -218,6 +249,9 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostiek<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
 <translation id="3364053282600191535">Exporteren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
+<translation id="8860039076160511438">Wallet opnieuw instellen</translation>
+<translation id="6369495274982305511">Weet je zeker dat je je wallet opnieuw wilt instellen? Als je geen back-up van je wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer je je wallet opnieuw instelt. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
+<translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="3654980960391973513">Genereren</translation>
 <translation id="5531501313997312487">Knooppunt starten</translation>
@@ -225,6 +259,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokale node</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
@@ -359,6 +394,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4235920711083356755">VPN-knop tonen</translation>
 <translation id="4070612712151038707">Laat de VPN-knop zien in de werkbalk</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN in-/uitschakelen</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="2345974803401546682">Over Brave-VPN</translation>
 <translation id="4378551569595875038">Connecting...</translation>
@@ -384,4 +420,31 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 <translation id="2273851479262317744">Brave instellen als standaardbrowser</translation>
 <translation id="8581710194025054669">Om je privacy online zo goed mogelijk te beschermen, kun je Brave instellen als standaardbrowser op je computer. Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar je op klikt.</translation>
+<translation id="1241283133946520352">netwerken</translation>
+<translation id="8205945804087322170">Nieuw netwerk toevoegen</translation>
+<translation id="2156993118928861787">Ongeldig adres</translation>
+<translation id="2653659639078652383">Verzenden</translation>
+<translation id="2556708692502648323">Wallet-netwerken</translation>
+<translation id="1330032157352961756">ID van nieuwe keten</translation>
+<translation id="9053905035135220650">Een hexadecimale tekenreeks met 0x-voorvoegsel</translation>
+<translation id="726121047592132939">De naam van de nieuwe keten</translation>
+<translation id="1034112277864078119">Voer ketennaam in</translation>
+<translation id="4672314527143443556">Valutanaam van keten</translation>
+<translation id="4652114030688989556">Voer valutanaam in</translation>
+<translation id="1079960017149736097">Valutasymbool van keten</translation>
+<translation id="1288105009659846362">Voer valutasymbool in</translation>
+<translation id="665660671251623018">Decimalen ketenvaluta</translation>
+<translation id="2978054488731497946">Voer valutadecimalen in</translation>
+<translation id="2727514928168763432">RPC-URL's</translation>
+<translation id="7059127752542505809">Voer URL in</translation>
+<translation id="3047726704186619366">Pictogram-URL's</translation>
+<translation id="2487558607408469181">Explorer-URL's blokkeren</translation>
+<translation id="6301398959353668507">Dit veld mag niet leeg zijn.</translation>
+<translation id="4514843126085243862">Ongeldige notatie, de keten-ID is een hexadecimale tekenreeks met 0x-voorvoegsel</translation>
+<translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
+<translation id="650071759190249039">Interne fout, kan netwerk niet toevoegen.</translation>
+<translation id="868529041590572443">Verstrek alle informatie over de oorspronkelijke valuta</translation>
+<translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
+<translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
+<translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
 </translationbundle>

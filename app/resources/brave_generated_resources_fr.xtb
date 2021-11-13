@@ -54,6 +54,27 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1144810021918451336">Ne vous protège pas contre les sites Internet dangereux, les téléchargements et les extensions.</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
+<translation id="6821903322090655051">Les récompenses Brave sont désactivées</translation>
+<translation id="9184430019924125685">Cliquez ici pour en savoir plus</translation>
+<translation id="3849957491997306859">Détection automatique</translation>
+<translation id="8798099450830957504">Par défaut</translation>
+<translation id="4176463684765177261">Désactivé</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Gagnez des jetons en regardant des annonces Brave Ads. Les annonces sont présentées en fonction de vos centres d'intérêt, tels qu'ils sont déduits de votre comportement de navigation. Vos données personnelles ou votre historique de navigation ne quittent jamais votre navigateur.</translation>
+<translation id="1758947220824279023">Nombre maximal d'annonces à afficher</translation>
+<translation id="8578912649458880781">Ciblage publicitaire au niveau de l'État</translation>
+<translation id="3678362265519557511">Cela permet à Brave de vous montrer des publicités spécifiques à votre État. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Contribuer</translation>
+<translation id="9132509928968869844">Limite des contributions automatiques mensuelles</translation>
+<translation id="7286722244752781970">Temps minimum sur la page avant de considérer que c'est une visite</translation>
+<translation id="4424486208397124985">Nombre minimum de visites pour considérer l'éditeur comme pertinent</translation>
+<translation id="6248554379744796526">Afficher les sites non vérifiés dans la liste</translation>
+<translation id="3241299447027267831">Autoriser les contributions à des vidéos</translation>
+<translation id="924777189963477634">En activant la contribution automatique, vous acceptez les <ph name="BEGIN_LINK_TOS"/>Conditions d'utilisation<ph name="END_LINK_TOS"/> et la <ph name="BEGIN_LINK_PP"/>Politique de confidentialité<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Boutons de dons</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Nouvel onglet</translation>
 <translation id="1988804048511540801">Le nouvel onglet affiche</translation>
 <translation id="2970343821770026391">Tableau de bord</translation>
@@ -69,10 +90,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8934172355414207733">Navigation privée avec Tor</translation>
 <translation id="1970435562892104727">Fenêtre de navigation privée avec Tor</translation>
 <translation id="1037341607922068025">Ouvrir une Fenêtre de Navigation Privée avec Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Ouvrir dans Tor</translation>
 <translation id="7643538479215207633">Ouvrir avec IPFS</translation>
 <translation id="3094628781200061820">Publier et récupérer des fichiers depuis IPFS</translation>
 <translation id="1672270084584211506">Onion disponible</translation>
+<translation id="406832631167785034">Ouvrir en utilisant une adresse .onion</translation>
 <translation id="4901618511712685702">Importer sur IPFS</translation>
 <translation id="6794469945030154569">Cette page</translation>
 <translation id="5037852323412456577">Image sélectionnée</translation>
@@ -95,7 +118,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2638041073279639246">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
 <translation id="3425600262621021599">Ouvrir le lien dans une fenêtre privée Brave avec Tor</translation>
 <translation id="575838692088926391">Partager un fichier local utilisant IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7924918279836988121">Service Bat Ledger</translation>
 <translation id="4472575034687746823">Premiers pas</translation>
@@ -122,13 +144,11 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
 <translation id="4078738236287221428">Agressif</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Désactivé</translation>
 <translation id="5770288601196774623">Uniquement intersites</translation>
 <translation id="3587482841069643663">Tous</translation>
 <translation id="5533533363827555308">Strict, peut casser les sites</translation>
 <translation id="8792121506918889955">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
-<translation id="8798099450830957504">Par défaut</translation>
 <translation id="1822560017823072927">Interfaces publiques et privées par défaut</translation>
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
@@ -175,6 +195,11 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2339730291919608488">Quitter la chaîne de synchronisation</translation>
 <translation id="115699408012835975">Si vous réinitialisez Sync, vous devrez saisir à nouveau un code de synchronisation provenant d'un autre appareil afin de vous synchroniser avec celui-ci. Êtes-vous sûr(e) de vouloir continuer ?</translation>
 <translation id="6092564993102418148">Êtes-vous sûr de vouloir supprimer l'appareil sélectionné de la chaîne de synchronisation?</translation>
+<translation id="2936582902048232286">Avertissement : Cette action partagera vos données Brave, et potentiellement vos mots de passe, avec l'appareil qui a généré ces mots de code.
+
+Veuillez vérifier que ces mots de code ont été générés par un appareil dont vous êtes le propriétaire.
+
+Voulez-vous vraiment continuer ?</translation>
 <translation id="3396347744975515056">Brave Sync a été mis à jour et doit être configuré</translation>
 <translation id="7473245612074035141">Commencer la configuration</translation>
 <translation id="3411013544209536575">Conseils d'aide</translation>
@@ -188,13 +213,17 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8488282162676695335">Portefeuille Brave</translation>
 <translation id="2356070529366658676">Demander</translation>
 <translation id="7701040980221191251">Aucun</translation>
-<translation id="1274962333945373242">Extension Crypto Wallets obsolète</translation>
+<translation id="1274962333945373242">Portefeuilles de cryptomonnaies (Obsolète)</translation>
+<translation id="3695088618483091287">Portefeuille Brave (Extensions de préférence)</translation>
 <translation id="9131889008937672866">Portefeuille de cryptomonnaies par défaut</translation>
+<translation id="4718664830805652430">Devise de base par défaut</translation>
+<translation id="7992507032049865603">Cryptomonnaie de base par défaut</translation>
 <translation id="1834467296210148203">Afficher l'icône Portefeuille Brave dans la barre d'outils</translation>
 <translation id="8239147115686034860">Verrouiller automatiquement le portefeuille Brave</translation>
 <translation id="414639769490080648">Le nombre de minutes à attendre avant que le portefeuille Brave soit automatiquement verrouillé</translation>
 <translation id="6864914031231797928">Autoriser la connexion Google pour les extensions</translation>
 <translation id="5927916530277631319">Méthode de résolution des domaines Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur les considérations relatives au DNS via HTTPS et à Ethereum.</translation>
 <translation id="5248318250177143470">Méthode de résolution des domaines Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Configurer vos clés IPNS</translation>
 <translation id="951216659045543447">Signez le contenu avec la clé privée correspondante et publiez le dans IPNS</translation>
@@ -208,6 +237,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6476061084931271248">Redémarrer le nœud pour appliquer les modifications</translation>
 <translation id="3754226427671882382">Redémarrer le nœud</translation>
 <translation id="949667118776341807">Renouveler</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ce nom n'est pas valide</translation>
 <translation id="6758961763875471084">Modifier la liste des pairs</translation>
 <translation id="1295874070797049002">Exporter la clé</translation>
@@ -218,6 +248,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="616058968889448209">Erreur du lancement du service IPFS, plus d'informations sont disponibles sur <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Échec lors de l'importation de la clé « <ph name="KEY_NAME"/> »</translation>
 <translation id="3364053282600191535">Échec lors de l'exportation de la clé « <ph name="KEY_NAME"/> »</translation>
+<translation id="8860039076160511438">Réinitialiser le portefeuille</translation>
+<translation id="6369495274982305511">Voulez-vous vraiment réinitialiser votre portefeuille ? Si votre portefeuille n'est pas sauvegardé, vous perdrez alors toutes les données de votre compte (y compris tous les fonds associés). Tapez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
+<translation id="1426410128494586442">Oui</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Générer</translation>
 <translation id="5531501313997312487">Nœud de départ</translation>
@@ -225,6 +258,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1327977588028644528">Passerelle</translation>
 <translation id="80225669816651290">Nœud local</translation>
 <translation id="4927734062756955434">Adresse de la passerelle réseau IPFS publique</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud local et la passerelle IPFS.</translation>
 <translation id="8425213833346101688">Modifier</translation>
 <translation id="557281710253742286">Configurer la passerelle réseau IPFS</translation>
 <translation id="8571837315037233299">Adresse de la passerelle réseau</translation>
@@ -359,6 +393,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4235920711083356755">Afficher le bouton VPN</translation>
 <translation id="4070612712151038707">Affiche le bouton VPN dans la barre d'outils</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Activer/Désactiver le VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">À propos de Brave VPN</translation>
 <translation id="4378551569595875038">Connexion...</translation>
@@ -384,4 +419,31 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2808630562319398131">Réinitialiser les données de Brave Rewards...</translation>
 <translation id="2273851479262317744">Définir Brave comme navigateur par défaut</translation>
 <translation id="8581710194025054669">Pour garantir le meilleur de la confidentialité en ligne, nous vous conseillons de définir Brave comme navigateur par défaut sur votre ordinateur. De cette façon, les liens sur lesquels vous cliquerez s'ouvriront avec les protections de confidentialité de Brave.</translation>
+<translation id="1241283133946520352">Réseaux</translation>
+<translation id="8205945804087322170">Ajouter un nouveau réseau</translation>
+<translation id="2156993118928861787">Adresse invalide</translation>
+<translation id="2653659639078652383">Valider</translation>
+<translation id="2556708692502648323">Réseaux du portefeuille</translation>
+<translation id="1330032157352961756">Identifiant de la nouvelle chaîne</translation>
+<translation id="9053905035135220650">Chaîne hexadécimale commençant par 0x</translation>
+<translation id="726121047592132939">Nom de la nouvelle chaîne</translation>
+<translation id="1034112277864078119">Saisir le nom de la chaîne</translation>
+<translation id="4672314527143443556">Nom de devise de la chaîne</translation>
+<translation id="4652114030688989556">Saisir le nom de la devise</translation>
+<translation id="1079960017149736097">Symbole de devise de la chaîne</translation>
+<translation id="1288105009659846362">Saisir le symbole de la devise</translation>
+<translation id="665660671251623018">Décimales de la devise de la chaîne</translation>
+<translation id="2978054488731497946">Saisir les décimales de la devise</translation>
+<translation id="2727514928168763432">URL RPC</translation>
+<translation id="7059127752542505809">Saisir une URL</translation>
+<translation id="3047726704186619366">URL d'icône</translation>
+<translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
+<translation id="6301398959353668507">Champ obligatoire.</translation>
+<translation id="4514843126085243862">Format non valide : l'identifiant de la chaîne est une chaîne hexadécimale commençant par 0x</translation>
+<translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
+<translation id="650071759190249039">Erreur interne, impossible d'ajouter le réseau.</translation>
+<translation id="868529041590572443">Veuillez renseigner toutes les informations sur la devise native</translation>
+<translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
+<translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
+<translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant ?</translation>
 </translationbundle>

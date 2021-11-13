@@ -54,6 +54,27 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="1144810021918451336">Nechráni vás pred nebezpečnými webovými stránkami, stiahnutými súbormi a rozšíreniami.</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch.</translation>
+<translation id="6821903322090655051">Odmeny Brave sú vypnuté</translation>
+<translation id="9184430019924125685">Kliknutím sem získate ďalšie informácie</translation>
+<translation id="3849957491997306859">Automaticky zistené</translation>
+<translation id="8798099450830957504">Predvolené</translation>
+<translation id="4176463684765177261">Deaktivované</translation>
+<translation id="4851215387785619212">Súkromné reklamy Brave</translation>
+<translation id="7808122468353671181">Získavajte tokeny za zobrazovanie reklám Brave. Uvedené reklamy vychádzajú z vašich záujmov a sú vydedukované na základe vášho správania pri prehliadaní. Žiadne osobné údaje ani informácie o histórii prehliadania neopustia váš prehliadač.</translation>
+<translation id="1758947220824279023">Maximálny počet zobrazovaných reklám</translation>
+<translation id="8578912649458880781">Cielenie reklám na úrovni štátu</translation>
+<translation id="3678362265519557511">Vďaka tomu vám môže Brave ukazovať reklamy konkrétne pre váš stav. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automaticky prispieť</translation>
+<translation id="9132509928968869844">Mesačný limit automatických príspevkov</translation>
+<translation id="7286722244752781970">Minimálny čas na stránke k zalogovaniu návštevy</translation>
+<translation id="4424486208397124985">Minimálny počet návštev pre relevanciu vydavateľa</translation>
+<translation id="6248554379744796526">Zobraziť neoverené stránky v zozname</translation>
+<translation id="3241299447027267831">Povoliť príspevky k videám</translation>
+<translation id="924777189963477634">Zapnutím automatických príspevkov súhlasíte so<ph name="BEGIN_LINK_TOS"/>Zmluvnými podmienkami<ph name="END_LINK_TOS"/> a <ph name="BEGIN_LINK_PP"/>Zásadami ochrany osobných údajov<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Tlačidlá príspevkov</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Stránka novej karty</translation>
 <translation id="1988804048511540801">Nová karta zobrazuje</translation>
 <translation id="2970343821770026391">Prehľadový panel</translation>
@@ -69,10 +90,12 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8934172355414207733">Súkromné s Tor</translation>
 <translation id="1970435562892104727">Toto je súkromné okno s Tor</translation>
 <translation id="1037341607922068025">Otvorte súkromné okno s Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Otvoriť v režime Tor</translation>
 <translation id="7643538479215207633">Otvoriť pomocou IPFS</translation>
 <translation id="3094628781200061820">Zverejniť a získať súbory z IPFS</translation>
 <translation id="1672270084584211506">Služba Onion dostupná</translation>
+<translation id="406832631167785034">Otvoriť pomocou adresy .onion</translation>
 <translation id="4901618511712685702">Importovať do IPFS</translation>
 <translation id="6794469945030154569">Táto stránka</translation>
 <translation id="5037852323412456577">Vybraný obrázok</translation>
@@ -94,7 +117,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2638041073279639246">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
 <translation id="575838692088926391">Zdieľať lokálny priečinok pomocou IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="4472575034687746823">Začíname</translation>
@@ -121,13 +143,11 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
 <translation id="4078738236287221428">Agresívne</translation>
 <translation id="7740996059027112821">Štandardne</translation>
-<translation id="4176463684765177261">Deaktivované</translation>
 <translation id="5770288601196774623">Iba na viacerých stránkach</translation>
 <translation id="3587482841069643663">Všetko</translation>
 <translation id="5533533363827555308">Striktne, môže prerušiť činnosť stránok</translation>
 <translation id="8792121506918889955">Poriadok zaobchádzania WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
-<translation id="8798099450830957504">Predvolené</translation>
 <translation id="1822560017823072927">Štandardné verejné a súkromné rozhrania</translation>
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
@@ -174,6 +194,11 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2339730291919608488">Ukončiť synchronizačný reťazec</translation>
 <translation id="115699408012835975">Ak resetujete synchronizáciu, budete musieť znova synchronizovať kód z iného zariadenia, aby ste ho mohli synchronizovať. Naozaj chcete pokračovať?</translation>
 <translation id="6092564993102418148">Ste si istí, že chcete odstrániť zvolené zariadenie zo synchronizačného reťazca?</translation>
+<translation id="2936582902048232286">Pozor: týmto krokom budete zdieľať dáta z Brave, medzi ktorými môžu potenciálne byť aj vaše heslá, so zariadením, ktoré vygenerovalo tieto kódové slová.
+
+Preverte si, že tieto kódové slová vygenerovalo zariadenie, ktoré vlastníte.
+
+Naozaj chcete pokračovať?</translation>
 <translation id="3396347744975515056">Synchronizácia aplikácie Brave bola vylepšená a potrebuje inštaláciu</translation>
 <translation id="7473245612074035141">Začať inštaláciu</translation>
 <translation id="3411013544209536575">Pomocník</translation>
@@ -187,8 +212,11 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="8488282162676695335">Peňaženka Brave</translation>
 <translation id="2356070529366658676">Opýtať sa</translation>
 <translation id="7701040980221191251">Žiadne</translation>
-<translation id="1274962333945373242">Zastarané rozšírenie kryptopeňaženiek</translation>
+<translation id="1274962333945373242">Kryptopeňaženky (zastarané)</translation>
+<translation id="3695088618483091287">Peňaženka Brave (preferujú sa rozšírenia)</translation>
 <translation id="9131889008937672866">Predvolená peňaženka kryptomeny</translation>
+<translation id="4718664830805652430">Predvolená základná mena</translation>
+<translation id="7992507032049865603">Predvolená základná kryptomena</translation>
 <translation id="1834467296210148203">Zobraziť ikonu Brave Wallet na paneli s nástrojmi</translation>
 <translation id="8239147115686034860">Automaticky uzamknúť peňaženku Brave</translation>
 <translation id="414639769490080648">Počet minút čakania do automatického uzamknutia peňaženky Brave</translation>
@@ -208,6 +236,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="6476061084931271248">Reštartovať uzol pre uplatnenie zmien</translation>
 <translation id="3754226427671882382">Reštartovať uzol</translation>
 <translation id="949667118776341807">Otočiť</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Tento názov je neplatný</translation>
 <translation id="6758961763875471084">Upraviť zoznam klientov</translation>
 <translation id="1295874070797049002">Exportovať kľúč</translation>
@@ -218,6 +247,9 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="616058968889448209">Chyba spúšťania služby IPFS. Viac informácií nájdete na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importovanie kľúča zlyhalo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' exportovanie kľúča zlyhalo</translation>
+<translation id="8860039076160511438">Obnoviť peňaženku</translation>
+<translation id="6369495274982305511">Naozaj si chcete obnoviť peňaženku? Ak vaša peňaženka nie je zálohovaná, obnovenie spôsobí, že stratíte všetky údaje z účtu (vrátane všetkých finančných prostriedkov s ním spojených). Na potvrdenie napíšte „<ph name="CONFIRMATION_PHRASE"/>“ .</translation>
+<translation id="1426410128494586442">Áno</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Generovať</translation>
 <translation id="5531501313997312487">Spustiť uzol</translation>
@@ -360,6 +392,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4235920711083356755">Zobraziť tlačidlo VPN</translation>
 <translation id="4070612712151038707">Zobraziť tlačidlo VPN na paneli s nástrojmi</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Prepnúť VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">O Brave VPN</translation>
 <translation id="4378551569595875038">Pripája sa...</translation>
@@ -385,4 +418,31 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2808630562319398131">Obnoviť údaje o Odmenách Brave</translation>
 <translation id="2273851479262317744">Nastaviť Brave ako predvolený prehliadač</translation>
 <translation id="8581710194025054669">Ak chcete zaistiť najlepšiu ochranu osobných údajov online, zvážte nastavenie Brave ako predvoleného prehliadača na svojom počítači. Keď je prehliadač Brave predvolený, každý webový odkaz, na ktorý kliknete, sa otvorí s ochranou osobných údajov Brave.</translation>
+<translation id="1241283133946520352">Sítě</translation>
+<translation id="8205945804087322170">Pridať novú sieť</translation>
+<translation id="2156993118928861787">Neplatná adresa</translation>
+<translation id="2653659639078652383">Odoslať</translation>
+<translation id="2556708692502648323">Siete peňaženiek</translation>
+<translation id="1330032157352961756">ID nového reťazca</translation>
+<translation id="9053905035135220650">Šestnástkový reťazec s predvoľbou 0x</translation>
+<translation id="726121047592132939">Názov nového reťazca</translation>
+<translation id="1034112277864078119">Zadajte názov reťazca</translation>
+<translation id="4672314527143443556">Názov meny reťazca</translation>
+<translation id="4652114030688989556">Zadajte názov meny</translation>
+<translation id="1079960017149736097">Symbol meny reťazca</translation>
+<translation id="1288105009659846362">Zadajte symbol meny</translation>
+<translation id="665660671251623018">Počet desatinných miest meny reťazca</translation>
+<translation id="2978054488731497946">Zadajte počet desatinných miest meny</translation>
+<translation id="2727514928168763432">Adresy URL RPC</translation>
+<translation id="7059127752542505809">Zadajte adresu URL</translation>
+<translation id="3047726704186619366">Adresy URL ikon</translation>
+<translation id="2487558607408469181">Adresy URL blokového prieskumníka</translation>
+<translation id="6301398959353668507">Pole nesmie byť prázdne.</translation>
+<translation id="4514843126085243862">Neplatný formát, ID reťazca je šestnástkový reťazec s predvoľbou 0x</translation>
+<translation id="8325036459845654666">Táto sieť je už pridaná.</translation>
+<translation id="650071759190249039">Interná chyba, nepodarilo sa pridať sieť.</translation>
+<translation id="868529041590572443">Vyplňte všetky informácie o natívnej mene</translation>
+<translation id="1062463687579789365">Prispôsobenie sietí peňaženiek</translation>
+<translation id="2234108191702901162">Nepodarilo sa pridať sieť</translation>
+<translation id="2618193846561624884">Chcete aktualizovať existujúcu sieť?</translation>
 </translationbundle>

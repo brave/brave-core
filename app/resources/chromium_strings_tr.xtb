@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">Dosya indirmek için Brave'un depolama alanına erişmesi gerekiyor</translation>
 <translation id="8447483940522230788">Brave Yardımcısı</translation>
 <translation id="7933006624150961626">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açarak senkronizasyonu etkinleştirebilirsiniz.</translation>
-<translation id="5486618155264784386">Chrome OS'i yükle</translation>
 <translation id="7291143854620707672">Bu profil kullanılırken oluşturulan tüm Brave verileri (yer işaretleri, geçmiş, şifreler ve diğer ayarlar gibi) iş profili yöneticisi tarafından kaldırılabilir. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Güncellemenin uygulanması için Chrome OS yeniden başlatılmalıdır.</translation>
 <translation id="7387051847644272380">Yükleme sırasında bir işletim sistemi hatası oluştu. Lütfen Brave'u yeniden indirin.</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">Brave'dan kaldır...</translation>
 <translation id="2885378588091291677">Görev Yöneticisi</translation>
 <translation id="2176825726964012531">&amp;Brave hakkında</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Son bir hatırlatma: Yükleme işlemi, <ph name="BEGIN_BOLD"/>sabit diskinizin tamamını silecek<ph name="END_BOLD"/>. Lütfen sizin için önemli olan tüm verileri yedeklediğinizden emin olun.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Yükleme işlemi, başladıktan sonra iptal edilemez.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave güncel durumda</translation>
 <translation id="2953892977076487219">Brave şifreleri düzenlemeye çalışıyor.</translation>
 <translation id="8755404239607088219">Brave, şifrelerinizi kontrol edemiyor. Daha sonra tekrar deneyin.</translation>
@@ -73,7 +70,6 @@
 <translation id="2711887072399498551">Bu hesaba sahip bir Brave profili zaten var</translation>
 <translation id="2297290224191497273">Mevcut Brave profiline geçilsin mi?</translation>
 <translation id="2450003541323895471">Brave profilleri ile tüm Brave öğelerinizi ayırabilirsiniz. Arkadaşlar ve aile için profil oluşturun veya iş ile eğlenceyi ayırın.</translation>
-<translation id="7275165473619697274">Chrome OS yükleme işlemi devam ediyor</translation>
 <translation id="9216183508558772570">Brave, güvenliği ihlal edilmiş bir şifreyle oturum açtığınızda size haber verir</translation>
 <translation id="5853262807109651878">Bu işlem, <ph name="ITEMS_COUNT"/> öğeyi bu cihazdan silecektir. Verilerinizi daha sonra geri almak için Brave'da <ph name="USER_EMAIL"/> hesabıyla oturum açın.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/>, Brave profilleri arasında geçiş yapabilir</translation>
@@ -98,7 +94,6 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/>, bu cihazı kullanmadan önce aşağıdaki Hizmet Şartları'nı okuyup kabul etmenizi zorunlu tutmaktadır. Bu şartlar, Chrome OS Şartları'nın kapsamını genişletmez, değiştirmez veya sınırlamaz.</translation>
 <translation id="3262506503470845422">Brave'la ilgili yardım alın</translation>
 <translation id="7691786510374174420">Belirlenemeyen bir hata nedeniyle yükleme başarısız oldu. Brave şu anda çalışır durumdaysa kapatıp yeniden deneyin.</translation>
-<translation id="429583012151745428">Yükleme işlemi devam ediyor. Cihazı kapatmayın. Yükleme işlemi yirmi dakikadan fazla sürmez. Yükleme işleminden sonra makine otomatik olarak kapatılır.</translation>
 <translation id="9183662282810237335">Yine de Brave'dan çıkılsın mı?</translation>
 <translation id="4065288863231444640">Brave'un Arka Planda Çalışmasına İzin Ver</translation>
 <translation id="8148611988012584308">Brave'u özelleştirin ve kontrol edin</translation>
@@ -190,7 +185,6 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="6666624454809779082">Brave zaten bilgisayarınızdaki tüm kullanıcılar için yüklendi.</translation>
 <translation id="5360050006043219962">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açın ve senkronizasyonu etkinleştirin.</translation>
 <translation id="8291513491595858997">Ebeveyniniz, Brave'a yönelik "Siteler, uygulamalar ve uzantılar için izinler"i kapattı. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> uzantısının etkinleştirilmesine izin verilmiyor.</translation>
-<translation id="1810203443153428607">Chrome OS yüklenirken cihazınızdaki tüm verilerin üzerine yazılır.</translation>
 <translation id="8211837073776713955">Brave, şifrelerinizin güvenliğinin ihlal edilip edilmediğini size bildirir</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave'a kopyalandı)</translation>
@@ -201,6 +195,7 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="3335606533094650083">Brave'un bu sitede mikrofonunuza erişmesi için izin gerekiyor</translation>
 <translation id="1705567146636171298">Brave'u güncelle</translation>
 <translation id="5499063270485366718">Bir resmin işe yarar bir açıklaması yoksa, Brave sizin için bir açıklama sağlamaya çalışır. Açıklama oluşturmak için resimler Brave'a gönderilir.</translation>
+<translation id="151916274998710826">Brave'un en önemli gizlilik seçeneklerinden bazılarını özelleştirme</translation>
 <translation id="1008530050039597147">Bu site için Brave'un kamera iznine ihtiyacı var</translation>
 <translation id="1197672524850678392">Brave başlatılamadı. Tekrar deneyin.</translation>
 <translation id="3405035915691517126">Brave, şifrelerinizi kontrol edemiyor. 24 saat sonra tekrar deneyin.</translation>
@@ -225,10 +220,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
       Chrome OS ayarlarınıza<ph name="LINK_END"/> bakın</translation>
 <translation id="3293668930608086049">Brave kameranızı ve mikrofonunuzu kullanıyor.</translation>
 <translation id="2827121003398607864">Brave daha da iyi bir hale geldi</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Lütfen başlamadan önce verilerinizin güncel bir yedeğinin bulunduğundan emin olun. Chrome OS yüklenirken sabit diskinizdeki tüm verilerin üzerine yazılacak.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave, hiçbir veri kaybından sorumlu değildir ve Chrome OS'in sertifikasız cihazlarda çalışmasını garanti etmez. Sertifikalı modeller hakkında daha fazla bilgi almak için lütfen [TBD] adresini ziyaret edin.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Chrome OS'i yükleme ve verilerin silinmesi hakkında daha fazla bilgi edinin: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Hazırsanız devam etmek için "Chrome OS'i yükle"yi tıklayın. Birkaç kolay adımla yüklemeyi tamamlamanız için size yol göstereceğiz. Bilgisayarınızda herhangi bir değişiklik yapmamızdan önce onay vermek için bir şansınız daha olacak.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
 <translation id="5419189641394808652">Senkronizasyon alan adınızda kullanılamadığından Brave, verilerinizi senkronize edemedi.</translation>
@@ -293,5 +284,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor}=1{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor}=1{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="7914115000169617076">Güncel hale gelmek üzere! Güncellemenin tamamlanması için Brave'u yeniden başlatın. Özel pencereler yeniden açılmayacak.</translation>
+<translation id="4703432949110765917">Varsayılan ayarlar çoğu profil için işe yarar ama Brave'i nasıl kullanmak istediğinize göre ayarları kişiselleştirebilirsiniz</translation>
 <translation id="2176087127109773485">Oturumu açılmış Brave senkronizasyon zincirlerinizi yönetebilirsiniz. Brave senkronizasyon zincirleriniz Brave tarayıcısı, Play Store, Gmail ve daha fazlası için kullanılır. Bir aile üyesi gibi başka biri için bir hesap eklemek istiyorsanız bunun yerine <ph name="DEVICE_TYPE"/> yeni bir profil ekleyin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 </translationbundle>

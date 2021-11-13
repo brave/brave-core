@@ -21,6 +21,7 @@
 <translation id="1050038467049342496">Digər tətbiqləri bağlayın</translation>
 <translation id="1055184225775184556">Əlavəni geri qaytarın</translation>
 <translation id="1056898198331236512">Xəbərdarlıq</translation>
+<translation id="1248991947169346185"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave'da Dinozavr Qaçış oyununu oynayın</translation>
 <translation id="1058479211578257048">Kartlar yadda saxlanılır...</translation>
 <translation id="10614374240317010">Heç vaxt saxlanılmır</translation>
 <translation id="1062160989074299343">Prc10 (Zərf)</translation>
@@ -28,16 +29,18 @@
 <translation id="1068672505746868501">Heç vaxt <ph name="SOURCE_LANGUAGE"/> dilində olan səhifələri tərcümə etməyin</translation>
 <translation id="1070901266639972381">Gecə</translation>
 <translation id="1074497978438210769">Təhlükəsiz deyil</translation>
-<translation id="4531684717123912090">Brave'da endirmələri idarə edin</translation>
 <translation id="1080116354587839789">Eninə uyğunlaşdırın</translation>
+<translation id="1081061862829655580">Qab 19</translation>
 <translation id="1086953900555227778">Index-5x8</translation>
 <translation id="1088860948719068836">Kart üzərindəki Adı Daxil edin</translation>
 <translation id="1089439967362294234">Parolu Dəyişin</translation>
 <translation id="1096545575934602868">Bu sahədə maksimum <ph name="MAX_ITEMS_LIMIT"/> daxiletmə olmalıdır. Əlavə daxiletmələr silinəcək.</translation>
+<translation id="7584468665743195331">"Baxışa davam edin" düyməsi, Enter düyməsinə basaraq baxışa davam edin və Brave tarixçəsində əlaqəli fəaliyyəti görün</translation>
 <translation id="1101672080107056897">Xəta əməliyyatı</translation>
 <translation id="1103523840287552314">Həmişə <ph name="LANGUAGE"/> dilinə tərcümə edin</translation>
 <translation id="1110994991967754504"><ph name="PERMISSION_NAME"/> üçün icazə seçin</translation>
 <translation id="1113869188872983271">&amp;Yerbəyer etməyi ləğv edin</translation>
+<translation id="380806882992967677"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq hazırda açıq olan bütün Anonim pəncərələri bağlayın.</translation>
 <translation id="1123753900084781868">Canlı Altyazı hazırda əlçatan deyil</translation>
 <translation id="1125573121925420732">Veb saytlar təhlükəsizliyi yeniləyərkən xəbərdarlıqlar ümumi ola bilər. Bu tezliklə təkmilləşdirilməlidir.</translation>
 <translation id="112840717907525620">Siyasət keşi OK-dir</translation>
@@ -59,6 +62,7 @@
 <translation id="1178581264944972037">Durdurun</translation>
 <translation id="1181037720776840403">Silin</translation>
 <translation id="1186201132766001848">Parolları yoxlayın</translation>
+<translation id="1195210374336998651">Tətbiq ayarlarına keçin</translation>
 <translation id="1195558154361252544">İcazə verdiklərinizdən başqa bütün saytlarda bildirişlər blok edilib</translation>
 <translation id="1197088940767939838">Narıncı</translation>
 <translation id="1201402288615127009">Növbəti</translation>
@@ -68,6 +72,7 @@
 <translation id="8250355499536962710">"Forma yaradın" düyməsi, Enter düyməsinə basaraq Brave Forma'da cəld yeni forma yaradın</translation>
 <translation id="121201262018556460">Siz <ph name="DOMAIN"/> üzərinə daxil olmağa çalışırsız, lakin server zəif açardan ibarət sertifikat təqdim edir.  Hücumçunun şəxsi açarı qırıq ola bilər və server gözlədiyiniz server olmaya bilər. (bir hücumçu ilə əlaqə yaratmış ola bilərsiniz)</translation>
 <translation id="1219129156119358924">Sistem Təhlükəsizliyi</translation>
+<translation id="1222060260947439312">Sağ Qab</translation>
 <translation id="1227224963052638717">Naməlum siyasət.</translation>
 <translation id="1228893227497259893">Yanlış şəxs identifikatoru</translation>
 <translation id="1232569758102978740">Başlıqsız</translation>
@@ -89,20 +94,23 @@
 <translation id="1257553931232494454">zoom səviyyələri</translation>
 <translation id="8101828947363663989"><ph name="MANAGE_CHROME_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave ayarlarınızı idarə edin</translation>
 <translation id="1263231323834454256">Oxu siyahısı</translation>
-<translation id="1269096320618100013">"Əlçatımlılıq ayarlarını idarə edin" düyməsi, Enter düyməsinə basaraq Chrome OS ayarlarında əlçatımlılıq alətlərinizi fərdiləşdirin</translation>
+<translation id="1264309058268477500">Alternativ</translation>
 <translation id="53564677632020212">Brave Sayt'da cəld yeni sayt yaradın</translation>
 <translation id="1270502636509132238">Götürmə Üsulu</translation>
 <translation id="1281476433249504884">Yığıcı 1</translation>
 <translation id="1285320974508926690">Bu saytı heç vaxt tərcümə etməyin</translation>
+<translation id="1292571435393770077">Qab 16</translation>
 <translation id="1209478311331937175">"Kompüterdəki proqram təminatı Brave'un vebə təhlükəsiz şəkildə qoşulmağına mane olur" (yalnız Windows kompüterləri)</translation>
 <translation id="1294154142200295408">Əmr xəttinin növləri</translation>
 <translation id="129553762522093515">Son qapadılan</translation>
 <translation id="129863573139666797"><ph name="BEGIN_LINK"/>Kukiləriniz təmizlənir<ph name="END_LINK"/></translation>
 <translation id="1301324364792935241">Təhlükəsiz DNS ayarlarınızı yoxlayın</translation>
 <translation id="1307966114820526988">Ləğv edilmiş funksiya</translation>
+<translation id="1308113895091915999">Təklif əlçatandır</translation>
 <translation id="1312803275555673949">Hansı dəlillər bunu dəstəkləyir?</translation>
 <translation id="131405271941274527">NFC cihazında telefonunuza toxunan zaman <ph name="URL"/> məlumat göndərmək və qəbul etmək istəyir</translation>
 <translation id="1314509827145471431">Sağdan uclarını qovuşdurun</translation>
+<translation id="1318023360584041678">Tab qrupunda saxlanıldı</translation>
 <translation id="1319245136674974084">Bu tətbiq haqqında bir daha soruşmayın</translation>
 <translation id="1320233736580025032">Prc1 (Zərf)</translation>
 <translation id="132301787627749051">Mübadilə buferindən şəkil axtarın</translation>
@@ -115,6 +123,7 @@
           <ph name="LIST_ITEM"/>Şirkət və ya məktəbinizə
           <ph name="LIST_ITEM"/>İnternet xidmət provayderinə        
          <ph name="END_LIST"/></translation>
+<translation id="1337692097987160377">Bu tabı paylaşın</translation>
 <translation id="1339601241726513588">Qeydiyyat domeni:</translation>
 <translation id="1340482604681802745">Götürmə ünvanı</translation>
 <translation id="1346748346194534595">Sağ</translation>
@@ -134,9 +143,11 @@
 <translation id="1380591466760231819">Məktub formasında qatlayın</translation>
 <translation id="138218114945450791">Açıq-mavi</translation>
 <translation id="1382194467192730611">USB cihazına administrator tərəfindən icazə verilib</translation>
+<translation id="1382912999714108023">Cari məlumatınızı görmürsünüz? Yeniləmək üçün bankınızla əlaqə saxlayın.</translation>
 <translation id="1384725838384960382">Güvənli ödəniş məlumatları üzrə doğrulama vərəqəsi</translation>
 <translation id="1386623374109090026">Annotasiyalar</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> hər hansı data göndərməyib.</translation>
+<translation id="506514040997322270"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq araşdırmaya davam edin və Brave tarixçəsində əlaqəli fəaliyyəti görün</translation>
 <translation id="1405567553485452995">Açıq-yaşıl</translation>
 <translation id="1407135791313364759">Hamısını açın</translation>
 <translation id="1408787208417187241">Yuxarıdan üçlü ştapel vurun</translation>
@@ -146,8 +157,8 @@
 <translation id="1428146450423315676">Yığıcı 7</translation>
 <translation id="1428729058023778569">Bu sayt HTTPS-i dəstəkləmədiyinə görə bu xəbərdarlığı görürsünüz. <ph name="BEGIN_LEARN_MORE_LINK"/>Ətraflı məlumat<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">Çap edin</translation>
+<translation id="1432581352905426595">Axtarış sistemlərini idarə edin</translation>
 <translation id="1436185428532214179">Saytlar cihazınızdakı faylları və qovluqları redaktə etmək üçün icazə istəyə bilər</translation>
-<translation id="1439627443299342313">"Bu səhifəni paylaşın" düyməsi, Enter düyməsinə basaraq keçid paylaşma, QR kodu yaratma, yayımlama kimi seçimlərlə bu səhifəni paylaşın.</translation>
 <translation id="1442386063175183758">Sağ küncə qatlayın</translation>
 <translation id="1442987760062738829">Deşik açın</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
@@ -162,6 +173,7 @@
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="147358896496811705">2A0</translation>
 <translation id="1476595624592550506">Parolunuzu dəyişin</translation>
+<translation id="1483493594462132177">Göndərin</translation>
 <translation id="1484290072879560759">Göndəriş Ünvanı seçin</translation>
 <translation id="1492194039220927094">Siyasət bildirişləri:</translation>
 <translation id="1495677929897281669">Taba geri qayıdın</translation>
@@ -193,7 +205,6 @@
       &lt;p&gt;Lütfən, tarix və saatı &lt;strong&gt;Ayarlar&lt;/strong&gt; tətbiqinin &lt;strong&gt;Ümumi&lt;/strong&gt; bölməsində düzəldin.&lt;/p&gt;</translation>
 <translation id="1567040042588613346">Bu siyasət nəzərdə tutulduğu kimi işləyir, lakin eyni dəyər başqa bir yerdə təyin olunub və bu siyasət tərəfindən əvəz edilib.</translation>
 <translation id="1569487616857761740">Bitmə vaxtını daxil edin</translation>
-<translation id="1017004253394863898">Brave Reklam Ayarlarımı idarə edin</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583294866416602487">Plex</translation>
 <translation id="1583429793053364125">Bu veb səhifəni göstərərkən xəta baş verdi.</translation>
@@ -201,7 +212,9 @@
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1592005682883173041">Yerli Data Girişi</translation>
 <translation id="1594030484168838125">Seçin</translation>
+<translation id="8523167061098356223">Brave'da Dinozavr Qaçış oyununu oynayın</translation>
 <translation id="161042844686301425">Firuzəyi</translation>
+<translation id="1611101756749861742">İkinci Rulon</translation>
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1623104350909869708">Bu səhifədə əlavə dialoqlar yaranmasın</translation>
 <translation id="16338877384480380">Arxitektura-B</translation>
@@ -223,7 +236,6 @@
 <translation id="1662550410081243962">Ödəniş üsullarını yadda saxlayın və doldurun</translation>
 <translation id="1838576226863399477">Kart və ünvanlar Brave'dandır. Onları <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/> bölməsindən idarə edə bilərsiniz.</translation>
 <translation id="1671391448414634642"><ph name="SOURCE_LANGUAGE"/> dilindəki səhifələr artıq <ph name="TARGET_LANGUAGE"/> dilinə tərcümə ediləcək.</translation>
-<translation id="4108761354879954940"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave Dinozavr oyununu oynayın</translation>
 <translation id="1682696192498422849">Qısa kənar əvvəldə</translation>
 <translation id="168693727862418163">Bu siyasət dəyəri sxem əsasında doğrulanmadı və nəzərə alınmayacaq.</translation>
 <translation id="168841957122794586">Server sertifikatının kriptoqrafik açarı zəifdir.</translation>
@@ -251,7 +263,6 @@
 <translation id="1736420071277903564">Kompüter</translation>
 <translation id="1740951997222943430">Düzgün bitmə ayı daxil edin</translation>
 <translation id="1741613555002899862">Təyin edilməli və DnsOverHttpsMode <ph name="SECURE_DNS_MODE_SECURE"/> olduqda, doğru dəyər olmalıdır.</translation>
-<translation id="1743570585616704562">Tanınmır</translation>
 <translation id="1745880797583122200">Brauzer idarə edilir</translation>
 <translation id="1746113442205726301">Şəklin Y oxu üzrə yerdəyişməsi</translation>
 <translation id="17513872634828108">Panelləri açın</translation>
@@ -279,14 +290,17 @@
 <translation id="182139138257690338">avtomatik endirmələr</translation>
 <translation id="1821930232296380041">Yanlış sorğu və ya sorğu parametrləri</translation>
 <translation id="1822540298136254167">Daxil olduğunuz veb saytlar və onlarda keçirdiyiniz vaxt</translation>
+<translation id="1824402189105105503">Səkkizinci Rulon</translation>
 <translation id="1826516787628120939">Yoxlanılır...</translation>
 <translation id="1834321415901700177">Saytda zərərli proqramlar var</translation>
 <translation id="1838374766361614909">Axtarışı təmizləyin</translation>
 <translation id="1839551713262164453">Siyasət dəyərlərinin doğrulanması xəta səbəbilə alınmadı</translation>
 <translation id="1842969606798536927">Ödəniş</translation>
 <translation id="137199123615682137">Anonim rejim nələri bacarmır</translation>
+<translation id="1863257867908022953">Qab 12</translation>
 <translation id="1871208020102129563">Proksi .pac skript URL deyil sabit proksi serverlər istifadə etmək üçün ayarlanıb.</translation>
 <translation id="1871284979644508959">Tələb olunan sahə</translation>
+<translation id="1875025161375567525">Foto Qabı</translation>
 <translation id="85321348617848915">Brave Formalar</translation>
 <translation id="187918866476621466">Başlanğıc səhifələri açın</translation>
 <translation id="1883255238294161206">Siyahını yığcamlaşdırın</translation>
@@ -303,14 +317,17 @@
 <translation id="1919345977826869612">Reklamlar</translation>
 <translation id="1919367280705858090">Spesifik xəta mesajı ilə bağlı yardım əldə edin</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Yoxdur}=1{1 sayt}other{# sayt}}</translation>
+<translation id="1923390796829649802">"Əlçatımlılıq ayarlarını idarə edin" düyməsi, Enter düyməsinə basaraq Chrome OS ayarlarında əlçatımlılıq alətlərinizi fərdiləşdirin</translation>
 <translation id="1924727005275031552">Yeni</translation>
 <translation id="1939175642807587452">Saytlar bildirişlər göndərmək üçün icazə istəyə bilər</translation>
 <translation id="1947454675006758438">Yuxarı sağ tərəfdən ştapel vurun</translation>
+<translation id="1956486093533522234">Cihazınızı tapın, qoruyun və ya silin</translation>
 <translation id="1958218078413065209">Ən yüksək xalınız: <ph name="SCORE"/>.</translation>
 <translation id="990584554013599191"><ph name="BEGIN_WHITEPAPER_LINK"/>Daxil olduğunuz bəzi səhifələrin keçidlərini, məhdud sistem məlumatlarını və bəzi səhifə məzmununu<ph name="END_WHITEPAPER_LINK"/> Brave'a göndərməklə vebdə hər kəs üçün təhlükəsizliyi artırmağa yardım edin. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Məxfilik siyasəti<ph name="END_PRIVACY_PAGE_LINK"/></translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> Əlfəcinləri</translation>
 <translation id="1973335181906896915">Serializasiya xətası</translation>
 <translation id="1974060860693918893">Qabaqcıl</translation>
+<translation id="1975457531113383421">Daxiletmə Qabı</translation>
 <translation id="1975584088563498795">Poçt qutusu 10</translation>
 <translation id="1978555033938440688">Firmware Versiyası</translation>
 <translation id="1988881251331415125">Yazılış doğrudursa, <ph name="BEGIN_LINK"/>Bağlantı Diaqnostikasını icra edin<ph name="END_LINK"/>.</translation>
@@ -324,6 +341,8 @@
 <translation id="2025186561304664664">Proksi avtomatik konfiqurasiyaya ayarlandı.</translation>
 <translation id="2025891858974379949">Təhlükəli məzmun</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>Proksi və güvənlik divarı yoxlanılır<ph name="END_LINK"/></translation>
+<translation id="2034971124472263449">İstənilən halda yadda saxlayın</translation>
+<translation id="2036983605131262583">Alternativ Rulon</translation>
 <translation id="2042213636306070719">Qab 7</translation>
 <translation id="3163988908275223348">Brave Hesabınızda saxlanılan parollardan istifadə etmək üçün daxil olun</translation>
 <translation id="2053111141626950936"><ph name="LANGUAGE"/> dilindəki səhifələr tərcümə edilməyəcək.</translation>
@@ -358,12 +377,12 @@
 <translation id="2130448033692577677">DnsOverHttpsMode siyasətinin ayarlanmamasına görə qeyd etdiyiniz şablonlar tətbiq edilməyə bilər.</translation>
 <translation id="213826338245044447">Mobil Əlfəcinlər</translation>
 <translation id="214556005048008348">Ödənişi ləğv edin</translation>
-<translation id="214581181351097783"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq keçid paylaşma, QR kodu yaratma, yayımlama kimi seçimlərlə bu səhifəni paylaşın.</translation>
 <translation id="2148613324460538318">Kart Əlavə Edin</translation>
 <translation id="2149968176347646218">Bağlantı güvənli deyil</translation>
 <translation id="2154054054215849342">Sinxronlaşma domeniniz üçün əlçatan deyil</translation>
 <translation id="2154484045852737596">Kartı redaktə edin</translation>
 <translation id="2161656808144014275">Mətn</translation>
+<translation id="2162510787844374618">Bankınızla əlaqə saxlanılır...</translation>
 <translation id="2164510882479075877"><ph name="HOST_NAME"/> hostunda orfoqrafik səhv olub-olmadığını yoxlayın.</translation>
 <translation id="2166049586286450108">Tam Admin Girişi</translation>
 <translation id="2166378884831602661">Bu sayt təhlükəsiz bağlantı təmin edə bilməz</translation>
@@ -403,11 +422,9 @@
 <translation id="2293443924986248631">Aktiv edildiyi zaman saytlar vebdə sizi izləyən kukilərdən istifadə edə bilmir. Bəzi saytlardakı funksiyalar dayandırıla bilər.</translation>
 <translation id="6148139222908395733">Ziyarət etdiyiniz səhifələrin keçidləri təhlil üçün Brave Cloud'a və ya üçüncü tərəflərə göndərilir. Məsələn, onlar güvənli olmayan vebsaytları aşkarlamaq üçün skanlana bilər.</translation>
 <translation id="2297722699537546652">B5 (Zərf)</translation>
-<translation id="2297822946037605517">Bu səhifəni paylaşın</translation>
 <translation id="2144551375735610273">"Kukiləri idarə edin" düyməsi, Brave ayarlarında kuki tərcihlərinizi idarə etmək üçün Enter düyməsinə basın</translation>
 <translation id="2300306941146563769">Yüklənməyib</translation>
 <translation id="2310021320168182093">Chou2 (Zərf)</translation>
-<translation id="5299725681393421941">"Anonim pəncərələri bağlayın" düyməsi, Enter düyməsinə basaraq cari anonim profil üçün bütün anonim pəncərələri bağlayın</translation>
 <translation id="2316887270356262533">Maksimum 1 MB boşaldılır. Növbəti dəfə daxil olarkən bəzi saytlar daha yavaş yüklənə bilər.</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> istifadəçi adı və parol tələb edir.</translation>
 <translation id="2328651992442742497">İcazə verilib (defolt)</translation>
@@ -440,9 +457,9 @@
 <translation id="2413155254802890957">Köhnə</translation>
 <translation id="2413528052993050574">Bu server <ph name="DOMAIN"/> domenini təsdiqləyə bilmir; təhlükəsizlik sertifikatı ləğv edilə bilər. Buna yanlış konfiqurasiya və ya hücumçu tərəfindən bağlantının ələ keçirilməsi səbəb ola bilər.</translation>
 <translation id="2414886740292270097">Qara</translation>
-<translation id="8506574374929286570">Cari anonim profil üçün bütün anonim pəncərələri bağlayın</translation>
 <translation id="2089192652156377984">"Brave Hesabını idarə edin" düyməsi, Enter düyməsinə basaraq Brave Hesabınızda məlumat, məxfilik və təhlükəsizliyinizi idarə edin</translation>
 <translation id="2438874542388153331">Sağdan dördlü deşik açın</translation>
+<translation id="2450021089947420533">Baxışlar</translation>
 <translation id="2463739503403862330">Doldurun</translation>
 <translation id="2465402087343596252">Arxitektura-E</translation>
 <translation id="2465655957518002998">Çatdırılma Üsulu seçin</translation>
@@ -478,14 +495,15 @@
 <translation id="2546283357679194313">Kukilər və sayt datası</translation>
 <translation id="254947805923345898">Siyasət dəyəri düzgün deyil.</translation>
 <translation id="255002559098805027"><ph name="HOST_NAME"/> yalnış cavab göndərdi.</translation>
+<translation id="2552246211866555379">Hagaki</translation>
 <translation id="2552295903035773204">Bundan sonra kartları təsdiqləmək üçün ekran kilidi istifadə edin</translation>
 <translation id="2553853292994445426">Təhlükəsiz DNS ayarlarınızı yoxlayın. Bağlanmaq mümkün olmayan təhlükəsiz DNS serveri konfiqurasiya etmiş ola bilərsiniz.</translation>
 <translation id="2556876185419854533">Düzəlişi ləğv edin</translation>
+<translation id="2570734079541893434">Ayarları idarə edin</translation>
 <translation id="257674075312929031">Qrup</translation>
 <translation id="2586657967955657006">Mübadilə buferi</translation>
 <translation id="2587730715158995865"><ph name="ARTICLE_PUBLISHER"/> adlı şəxsdən. Bunu və digər <ph name="OTHER_ARTICLE_COUNT"/> hekayəni oxuyun.</translation>
 <translation id="2587841377698384444">Direktoriya API ID:</translation>
-<translation id="8933635548957089845">"Əlçatımlılıq ayarlarını idarə edin" düyməsi, Enter düyməsinə basaraq Brave ayarlarında əlçatımlılıq alətlərinizi fərdiləşdirin.</translation>
 <translation id="2594318783181750337">Sürətli veb görünüşü:</translation>
 <translation id="2595719060046994702">Bu cihaz və hesab şirkət və ya başqa təşkilat tərəfindən idarə olunmur.</translation>
 <translation id="2597378329261239068">Bu sənəd parol ilə qorunur. Parolu yazın.</translation>
@@ -513,7 +531,6 @@
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Tərk edin</translation>
 <translation id="2684561033061424857">11x12</translation>
-<translation id="4052852245328185874">"Brave Dinozavr oyununu oynayın" düyməsi, Enter düyməsinə basaraq Brave Dinozavr oyununu oynayın</translation>
 <translation id="2687555958734450033">Ən uyğun</translation>
 <translation id="2688969097326701645">Bəli, davam edin</translation>
 <translation id="2691924980723297736">Təhlükəsizlik xəbərdarlığı</translation>
@@ -527,9 +544,10 @@
 <translation id="2713444072780614174">Ağ</translation>
 <translation id="4131157740532436004"><ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave ayarlarında ödənişlərinizi və kredit kartı məlumatlarınızı idarə edin</translation>
 <translation id="2721148159707890343">Sorğu uğurlu oldu</translation>
-<translation id="272451190272506600">Ödəniş etmək üçün sensora toxunun</translation>
+<translation id="2726001110728089263">Yan Qab</translation>
 <translation id="2728127805433021124">Server sertifikatı zəif imza alqoritmi istifadə olunaraq daxil edildi.</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Bağlantı Diaqnostikası İşləyir<ph name="END_LINK"/></translation>
+<translation id="702982279146510219">Brave tarixçəsində əlaqəli fəaliyyəti görmək üçün araşdırmaya davam edin</translation>
 <translation id="2738330467931008676">Götürmə Ünvanı seçin</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="2742870351467570537">Seçilmiş elementləri silin</translation>
@@ -542,6 +560,7 @@
 <translation id="2792012897584536778">Bu cihazın administratorlarının quraşdırdığı güvənlik sertifikatları daxil olduğunuz veb saytların kontentini görmələrinə imkan verir.</translation>
 <translation id="2799020568854403057">Sonrakı saytda zərərli tətbiq var</translation>
 <translation id="2799223571221894425">Yenidən başladın</translation>
+<translation id="1985381490482194205">"Araşdırmaya davam edin" düyməsi, Enter düyməsinə basaraq araşdırmaya davam edin və Brave tarixçəsində əlaqəli fəaliyyəti görün</translation>
 <translation id="2803306138276472711">Brave Güvənlik Baxış <ph name="SITE"/> saytında <ph name="BEGIN_LINK"/>zərərli proqram aşkar etdi<ph name="END_LINK"/>. Adətən güvənli olan veb saytlar bəzən zərərli proqramlar ilə yoluxur.</translation>
 <translation id="2807052079800581569">Şəklin Y oxu üzrə mövqeyi</translation>
 <translation id="2820957248982571256">Skan edilir...</translation>
@@ -559,6 +578,7 @@
 <translation id="2880660355386638022">Pəncərənin yerləşdirilməsi</translation>
 <translation id="2881276955470682203">Kart yadda saxlansın?</translation>
 <translation id="2882949212241984732">Cüt qatlayın</translation>
+<translation id="2893773853358652045">Dördüncü Rulon</translation>
 <translation id="2900528713135656174">Tədbir yaradın</translation>
 <translation id="2903493209154104877">Ünvanlar</translation>
 <translation id="290376772003165898">Səhifə <ph name="LANGUAGE"/> dilində deyil?</translation>
@@ -575,10 +595,10 @@
 <translation id="2934466151127459956">Hökumət Məktubu</translation>
 <translation id="2941952326391522266">Server <ph name="DOMAIN"/> olmasını sübut edə bilmədi; güvənlik sertifikatı <ph name="DOMAIN2"/> domenindəndir.</translation>
 <translation id="2943895734390379394">Yükləmə Vaxtı:</translation>
-<translation id="2948017612172418360">"Sayt axtarışını idarə edin" düyməsi, Enter düyməsinə basaraq sayt axtarışı və defolt axtarış sisteminizi idarə edin</translation>
 <translation id="2948083400971632585">Ayarlar səhifəsindən bağlantı üçün sazlanmış istənilən proksini deaktiv edə bilərsiniz.</translation>
 <translation id="3955566820843143766">Cihaz Brave Brauzer Bulud İdarəetməsində qeydiyyatdan keçirilmədiyi üçün nəzərə alınmayıb.</translation>
 <translation id="2951588413176968965">Poçt qutum</translation>
+<translation id="4920329334239571966">Bütün Anonim pəncərələri bağlayın</translation>
 <translation id="295526156371527179">Xəbərdarlıq: Bu siyasətin göstərdiyi siyasət lüğət olmadığına görə lüğət kimi birləşdirilmədi.</translation>
 <translation id="2955913368246107853">Tapmaq panelini qapadın</translation>
 <translation id="2972581237482394796">&amp;Yenidən edin</translation>
@@ -588,9 +608,9 @@
 <translation id="2987034854559945715">Uyğun funksiya yoxdur</translation>
 <translation id="2989742184762224133">Yuxarıdan qoşa ştapel vurun</translation>
 <translation id="2991174974383378012">Veb saytlar ilə paylaşılır</translation>
+<translation id="299122504639061328">Defolt axtarış sisteminizi və sayt axtarışınızı idarə edin</translation>
 <translation id="2991571918955627853">Hazırda <ph name="SITE"/> saytına daxil olmaq mümkün deyil, çünki veb səhifə HSTS istifadə edir. Şəbəkə xətaları və hücumları adətən müvəqqəti olur, beləliklə, bu səhifə yəqin ki daha sonra işləyəcək.</translation>
 <translation id="2995517112308048736">Fayl ölçüsü:</translation>
-<translation id="8406211340906251322">Brave Dinozavr oyununu oynayın</translation>
 <translation id="3002501248619246229">Daxiletmə qabı mediasını yoxlayın</translation>
 <translation id="3005723025932146533">Saxlanılmış kopyanı göstərin</translation>
 <translation id="3008447029300691911"><ph name="CREDIT_CARD"/> üçün CVC kodu daxil edin. Təsdiq etdikdən sonra, kart detallarınız bu sayt ilə paylaşılacaq.</translation>
@@ -603,7 +623,7 @@
 <translation id="3024663005179499861">Yanlış siyasət növü</translation>
 <translation id="3037605927509011580">Yapon xalq musiqisi dinləmisiniz?</translation>
 <translation id="3041612393474885105">Sertifikat Məlumatı</translation>
-<translation id="3079963700041543483">"Brave tarixçənizə baxın" düyməsi, Enter düyməsinə basaraq Brave ayarlarında brauzer tarixçənizə baxın və idarə edin</translation>
+<translation id="3044034790304486808">Araşdırmaya davam edin</translation>
 <translation id="3060227939791841287">C9 (Zərf)</translation>
 <translation id="4836986635834556421"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave ayarlarında Təhlükəsizlik Yoxlanışını icra edin</translation>
 <translation id="3061707000357573562">Təmir Xidməti</translation>
@@ -615,6 +635,7 @@
 <translation id="3096100844101284527">Götürmə Ünvanı əlavə edin</translation>
 <translation id="3105172416063519923">Aktiv ID:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Təhlükəsiz DNS konfiqurasiyası yoxlanılır<ph name="END_LINK"/></translation>
+<translation id="3108943290502734357">Orta Qab</translation>
 <translation id="3109728660330352905">Bu səhifəyə baxmaq üçün icazəniz yoxdur.</translation>
 <translation id="3113284927548439113">Üçüncü növbə</translation>
 <translation id="3115874930288085374"><ph name="ENROLLMENT_DOMAIN"/> datanızı yedəkləmənizi və bu <ph name="DEVICE_TYPE"/> cihazını qaytarmanızı tələb edir.</translation>
@@ -626,15 +647,16 @@
 <translation id="3145945101586104090">Cavabı dekodlaşdırmaq olmadı</translation>
 <translation id="3150653042067488994">Müvəqqəti server xətası</translation>
 <translation id="3154506275960390542">Bu səhifədə təhlükəsiz şəkildə göndərilməyən forma var. Göndərdiyiniz data keçid zamanı digərləri tərəfindən görülə bilər və ya serverin əldə etdiyi məlumatları dəyişmək üçün hücumçu tərəfindən dəyişdirilə bilər.</translation>
+<translation id="3154987252551138431">Yaxınlıqda Paylaşım istifadə edərkən xəta baş verdi</translation>
 <translation id="315504272643575312">Hesabınızı <ph name="MANAGER"/> idarə edir.</translation>
 <translation id="3157931365184549694">Bərpa edin</translation>
+<translation id="3158539265159265653">Disk</translation>
 <translation id="3162559335345991374">İstifadə etdiyiniz Wi-Fi login səhifəsinə daxil olmağınızı tələb edə bilər.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Ada</translation>
 <translation id="3176929007561373547">Proksi serverin işləməsinə əmin olmaq üçün proksi ayarlarınızı yoxlayın və ya şəbəkə administratorunuzla əlaqə saxlayın. Proksi server işlətməli olduğunuza inanmırsınızsa: 
       <ph name="PLATFORM_TEXT"/></translation>
 <translation id="317878711435188021">Bu cihazdan nə zaman aktiv şəkildə istifadə etdiyinizi bilmək</translation>
-<translation id="3188393374551744535">Hesab balansı</translation>
 <translation id="3194737229810486521"><ph name="URL"/> datanı həmişəlik cihazınızda saxlamaq istəyir</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> <ph name="SERVER_NAME"/> serverində</translation>
 <translation id="3197136577151645743">Saytlar bu cihazdan nə vaxt aktiv istifadə etdiyinizi öyrənmək üçün icazə istəyə bilər</translation>
@@ -680,6 +702,7 @@
 <translation id="3329013043687509092">Saturasiya</translation>
 <translation id="3333762389743153920">Virtual kart üçün uyğun deyil</translation>
 <translation id="3338095232262050444">Güvənli</translation>
+<translation id="553857293324311872">"Anonim pəncərələri bağlayın" düyməsi, Enter düyməsinə basaraq hazırda açıq olan bütün Anonim pəncərələri bağlayın.</translation>
 <translation id="3355823806454867987">Proksi ayarlarını dəyişin...</translation>
 <translation id="3360103848165129075">Ödəniş səhifəsi</translation>
 <translation id="669410734497476819">Brave aşağıdakı məlumatları <ph name="BEGIN_EMPHASIS"/>yadda saxlamayacaq<ph name="END_EMPHASIS"/>:
@@ -708,12 +731,12 @@
 <translation id="3395827396354264108">Götürmə üsulu</translation>
 <translation id="3399952811970034796">Çatdırılma Ünvanı</translation>
 <translation id="3402261774528610252">Bu saytı yükləmək üçün istifadə edilən bağlantı köhnələn və gələcəkdə söndürüləcək TLS 1.0 və ya TLS 1.1 versiyasından istifadə etdi. Söndürüldükdən sonra istifadəçilərin bu saytı yükləməsinin qarşısı alınacaq. Server TLS 1.2 və ya daha sonrakı versiyanı aktivləşdirməlidir.</translation>
+<translation id="3405664148539009465">Şriftləri fərdiləşdirin</translation>
 <translation id="3409896703495473338">Təhlükəsizlik ayarlarını idarə edin</translation>
 <translation id="3414952576877147120">Ölçü:</translation>
 <translation id="25726459489263481">Yüklədiyiniz və ya əlavə etdiyiniz fayllar təhlil üçün Brave Cloud'a və ya üçüncü tərəflərə göndərilir. Məsələn, onlar həssas data və ya zərərli proqrama görə skanlana bilər.</translation>
 <translation id="3422248202833853650">Yaddaşı boşaltmaq üçün digər proqramlardan çıxın.</translation>
 <translation id="3422472998109090673"><ph name="HOST_NAME"/> hal-hazırda əlçatmazdır.</translation>
-<translation id="3422654661304792373">Temalarla brauzerinizin görünüşünü fərdiləşdirin</translation>
 <translation id="3423742043356668186">Sistem tərəfindən müəyyənləşdirilən</translation>
 <translation id="3427092606871434483">İcazə verin (defolt)</translation>
 <translation id="3427342743765426898">Yenidən düzəliş edin...</translation>
@@ -764,9 +787,11 @@
 <translation id="3587738293690942763">Orta</translation>
 <translation id="3592413004129370115">İtalyan (Zərf)</translation>
 <translation id="3595699422137460894">{NUM_DAYS,plural, =0{Qrupunuzu istənilən vaxt sıfırlaya bilərsiniz. Yeni bir qrupa qoşulmaq təxminən bir gün çəkir.}=1{Qrupunuzu istənilən vaxt sıfırlaya bilərsiniz. Yeni bir qrupa qoşulmaq təxminən bir gün çəkir.}other{Qrupunuzu istənilən vaxt sıfırlaya bilərsiniz. Yeni bir qrupa qoşulmaq təxminən {NUM_DAYS} gün çəkir.}}</translation>
+<translation id="3596012367874587041">Tətbiq ayarları</translation>
 <translation id="3600246354004376029"><ph name="TITLE"/>, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
 <translation id="3603507503523709">Tətbiq admin tərəfindən bloklanıb</translation>
 <translation id="3608932978122581043">İstiqaməti tənzimləyin</translation>
+<translation id="3611395257124510155"><ph name="CARD_IDENTIFIER"/> üçün virtual kart</translation>
 <translation id="3614103345592970299">Ölçü 2</translation>
 <translation id="361438452008624280">Siyahı girişi "<ph name="LANGUAGE_ID"/>": Naməlum və ya dəstəklənməyən dil.</translation>
 <translation id="3615877443314183785">Düzgün bitmə tarixi daxil edin</translation>
@@ -786,6 +811,7 @@
 <translation id="3658742229777143148">Versiya</translation>
 <translation id="3664782872746246217">Açar sözlər:</translation>
 <translation id="3671540257457995106">Ölçünü dəyişməyə icazə verilsin?</translation>
+<translation id="3675563144891642599">Üçüncü Rulon</translation>
 <translation id="3676592649209844519">Cihaz ID'si:</translation>
 <translation id="3677008721441257057">&lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; ünvanını nəzərdə tuturdunuz?</translation>
 <translation id="3678029195006412963">Sorğuya daxil olmaq mümkün olmadı</translation>
@@ -795,6 +821,7 @@
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Yüklənir...</translation>
 <translation id="3709599264800900598">Kopyalanmış Mətn</translation>
+<translation id="370972442370243704">Baxışları aktiv edin</translation>
 <translation id="3711895659073496551">Durdurun</translation>
 <translation id="3712624925041724820">Lisenziyalar bitib</translation>
 <translation id="3714780639079136834">Mobil data və ya Wi-Fi aktiv edilir</translation>
@@ -823,7 +850,6 @@
 <translation id="3781428340399460090">Parlaq Çəhrayı</translation>
 <translation id="3783418713923659662">Mastercard</translation>
 <translation id="3784372983762739446">Bluetooth cihazları</translation>
-<translation id="3787675388804467730">Virtual kart nömrəsi</translation>
 <translation id="3787705759683870569"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/> tarixində bitir</translation>
 <translation id="3789155188480882154">Ölçü 16</translation>
 <translation id="3789841737615482174">Quraşdırın</translation>
@@ -837,6 +863,7 @@
 <translation id="3816482573645936981">Dəyər (əvəz edilib)</translation>
 <translation id="382518646247711829">Əgər proksi server istifadə edirsinizsə...</translation>
 <translation id="3827112369919217609">Mütləq</translation>
+<translation id="3827475930221174051">"<ph name="SEARCH_TERM"/>" ilə əlaqəli fəaliyyətə əsaslanır</translation>
 <translation id="3828924085048779000">Boş parola icazə verilmir.</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> domeninə əlavə funksiyalar üçün artırmalar quraşdırılıb. Artırmalar datanın bir hissəsinə daxil ola bilər.</translation>
 <translation id="3832522519263485449">Soldan çoxsaylı deşik açın</translation>
@@ -845,6 +872,7 @@
 <translation id="385051799172605136">Geri</translation>
 <translation id="3858027520442213535">Tarix və saatı güncəlləşdirin</translation>
 <translation id="3858860766373142691">Ad</translation>
+<translation id="3879224246272917991">CPU/RAM istifadəsi kimi cihaz statistikası və avadanlıq spesifikasiyaları</translation>
 <translation id="3881478300875776315">Daha az sətir göstərin</translation>
 <translation id="3884278016824448484">Ziddiyyətli cihaz identifikatoru</translation>
 <translation id="3885155851504623709">Kilsə</translation>
@@ -870,6 +898,7 @@
 <translation id="3963721102035795474">Oxu Rejimi</translation>
 <translation id="3963837677003247395">Manual olaraq davam edilsin?</translation>
 <translation id="3964661563329879394">{COUNT,plural, =0{Yoxdur}=1{1 saytdan }other{# saytdan }}</translation>
+<translation id="3969052498612555048">Kodunuzu tapa bilmirsiniz? <ph name="BEGIN_LINK"/>Yeni kod əldə edin<ph name="END_LINK"/></translation>
 <translation id="397105322502079400">Hesablanır...</translation>
 <translation id="3973234410852337861"><ph name="HOST_NAME"/> blok edilib</translation>
 <translation id="5066241626630788624">Brave Təhlükəsizlik Yoxlanışını İcra Edin düyməsi, Brave ayarlarında Təhlükəsizlik Yoxlanışını icra etmək üçün Enter düyməsinə basın</translation>
@@ -884,6 +913,7 @@
 <translation id="4010758435855888356">Yaddaşa giriş icazəsi verilsin?</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{{COUNT} səhifədən ibarət PDF sənədi}other{{COUNT} səhifədən ibarət PDF sənədi}}</translation>
 <translation id="4023431997072828269">Bu forma təhlükəsiz olmayan bağlantıdan istifadə etməklə təqdim edildiyinə görə məlumatlarınız digərləri tərəfindən görüləcək.</translation>
+<translation id="3356024105713905662">"Brave Məxfilik ayarlarını idarə edin" düyməsi, Enter düyməsinə basaraq Brave Hesabınızın məxfilik ayarlarını ziyarət edin</translation>
 <translation id="4030383055268325496">Əlavəni geri qaytarın</translation>
 <translation id="4056223980640387499">Sepia</translation>
 <translation id="4058922952496707368">Açar "<ph name="SUBKEY"/>": <ph name="ERROR"/></translation>
@@ -899,6 +929,7 @@
 <translation id="4084120443451129199">Axtarış rejimi, <ph name="KEYWORD_SUFFIX"/> axtarışı üçün Enter seçiminə basın</translation>
 <translation id="8049340108547416244">"Tədbir yaradın" düyməsi, Enter düyməsinə basaraq Brave Calendar'da cəld yeni tədbir yaradın</translation>
 <translation id="4088981014127559358">Şəklin 1-ci tərəfinin Y oxu üzrə yerdəyişməsi</translation>
+<translation id="4089152113577680600">Qab 14</translation>
 <translation id="4098354747657067197">Qabaqda aldadıcı site</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave'da şrift ölçülərini və şriftləri fərdiləşdirin</translation>
 <translation id="4101413244023615925">Mətn və qrafik</translation>
@@ -914,11 +945,11 @@
 <translation id="4123572138124678573">Aşağıdan üçlü deşik açın</translation>
 <translation id="4129401438321186435">{COUNT,plural, =1{digər 1}other{digər #}}</translation>
 <translation id="4130226655945681476">Şəbəkə kabelləri, modem və yönləndirici yoxlanılır</translation>
+<translation id="4133224101597112888">"Bu tabı paylaşın" düyməsi, Enter düyməsinə basaraq keçid paylaşaraq, QR kodu yaradaraq, yayımlayaraq və digər əməliyyatları edərək bu tabı paylaşın.</translation>
 <translation id="4134123981501319574">Sənəd yaradın</translation>
 <translation id="413544239732274901">Ətraflı məlumat</translation>
 <translation id="4142935452406587478">Qab 10</translation>
 <translation id="4148925816941278100">American Express</translation>
-<translation id="4149889845221342198"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq temalarla brauzerinizin görünüşünü fərdiləşdirin.</translation>
 <translation id="4151403195736952345">Qlobal defolt istifadə edin (Defekt)</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{Səhifə 1}other{Səhifə {COUNT}}}</translation>
 <translation id="4154664944169082762">Barmaq izi</translation>
@@ -933,12 +964,14 @@
 <translation id="4179515394835346607"><ph name="ROW_NAME"/> <ph name="ROW_CONTENT"/></translation>
 <translation id="4194250254487269611">Hazırda kartınızı yadda saxlamaq mümkün deyil</translation>
 <translation id="4196861286325780578">Hərəkəti təkrarlayın</translation>
+<translation id="4202554117186904723">Beşinci Rulon</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>güvənlik divarı və antivirus konfiqurasiyaları yoxlanılır<ph name="END_LINK"/></translation>
 <translation id="4209092469652827314">Böyük</translation>
 <translation id="4209166701302774460">Daxil olacağınız server <ph name="ORIGIN"/>, ona göndərilən bütün giriş sorğulara
     mənbə siyasətinin tətbiq edilməsini tələb edib. Lakin indi
     siyasəti icra etmək alınmadı, bu isə brauzerin <ph name="SITE"/> saytı üçün sorğunuzu yerinə yetirməsinə icazə vermir. Mənbə siyasətlər
     sayt üçün təhlükəsizlik və digər xüsusiyyətləri konfiqurasiya etmək üçün sayt operatorları tərəfindən istifadə edilə bilər.</translation>
+<translation id="4210602799576081649">Doğrulama kodunun müddəti bitib, yeni kod tələb edin</translation>
 <translation id="421066178035138955">Virtual reallıq cihazları və datanı istifadə etmək</translation>
 <translation id="4214357935346142455">giriş ekranı profili</translation>
 <translation id="4215751373031079683">7x9 (Zərf)</translation>
@@ -960,7 +993,6 @@
 <translation id="4275830172053184480">Cihazınızı yenidən başladın</translation>
 <translation id="4277028893293644418">Parolu sıfırlayın</translation>
 <translation id="4278390842282768270">İcazə verilib</translation>
-<translation id="4286047936834273847">Sayt axtarışı və defolt axtarış sisteminizi idarə edin</translation>
 <translation id="8314946990939758167">{NUM_CARDS,plural, =1{Bu kart Brave Hesabında yadda saxlanılıb}other{Bu kartlar Brave Hesabında yadda saxlanılıb}}</translation>
 <translation id="4287885627794386150">Sınaq üçün uyğundur, lakin aktiv deyil</translation>
 <translation id="4297502707443874121"><ph name="THUMBNAIL_PAGE"/> səhifəsi üçün miniatür</translation>
@@ -976,6 +1008,7 @@
 <translation id="4314815835985389558">Sinxronizasiyanı idarə edin</translation>
 <translation id="4318312030194671742">Boyama Önbaxış Düzücü Xidməti</translation>
 <translation id="4318566738941496689">Cihaz adı və şəbəkə ünvanı</translation>
+<translation id="4325600325087822253">Qab 17</translation>
 <translation id="4325863107915753736">Məqalə tapılmadı</translation>
 <translation id="4326324639298822553">Bitmə tarixini yoxlayın və yenidən cəhd edin</translation>
 <translation id="4329871760342656885">Siyasətin parsellənməsi xətası: <ph name="ERROR"/></translation>
@@ -986,19 +1019,18 @@
 <translation id="4346197816712207223">Qəbul edilən Kredit Kartları</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4348834659292907206"><ph name="SITE"/> saytına bağlantı güvənli deyil</translation>
+<translation id="4350629523305688469">Çoxfunksiyalı Qab</translation>
 <translation id="4351060348582610152"><ph name="ORIGIN"/> yaxınlıqdakı Bluetooth cihazlarını axtarmaq istəyir. Aşağıdakı cihazlar tapıldı:</translation>
+<translation id="4351175281479794167">Doğrulama Kodunu daxil edin</translation>
 <translation id="4356973930735388585">Saytdakı hücumçular kompüterinizə təhlükəli proqramlar yükləyərək məlumatlarınızı (məsələn, foto, parol, mesaj və kredit kart) oğurlamağa və ya silməyə cəhd edə bilər.</translation>
 <translation id="4358059973562876591">DnsOverHttpsMode siyasətində xəta olduğuna görə qeyd etdiyiniz şablonlar tətbiq edilməyə bilər.</translation>
 <translation id="4358461427845829800">Ödəniş üsullarını idarə edin...</translation>
-<translation id="4363178190432472170">Telefonumu tap</translation>
 <translation id="4367563149485757821">Nömrə-12 (Zərf)</translation>
 <translation id="437040971055499437">Güvənlik tədbiri baş verir</translation>
-<translation id="437058704415269440">Hesab Balansı</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
 <translation id="4372948949327679948">Gözlənilən <ph name="VALUE_TYPE"/> dəyəri.</translation>
 <translation id="4377125064752653719"><ph name="DOMAIN"/> domeninə daxil olmağa çalışdınız, onun sertifikatı geri alınıb. Bu o deməkdir ki, güvənlik kredensiallarına kəsinliklə inanmaq olmaz. Ola bilər ki, hücumçu ilə əlaqəyə girirsiniz.</translation>
 <translation id="4378154925671717803">Telefon</translation>
-<translation id="4389652395741935834">Keçid paylaşaraq, QR kodu yaradaraq, yayımlayaraq və digər əməliyyatları edərək bu səhifəni paylaşın.</translation>
 <translation id="4390472908992056574">Xətlər</translation>
 <translation id="4406883609789734330">Avtomatik subtitrlər</translation>
 <translation id="4406896451731180161">axtarış nəticələri</translation>
@@ -1012,7 +1044,6 @@
 <translation id="4434045419905280838">Popap və yönləndirmələr</translation>
 <translation id="4435702339979719576">Postkart)</translation>
 <translation id="443673843213245140">Proksi istifadəsi deaktiv edilib, amma ətraflı proksi konfiqurasiyası müəyyən edilib.</translation>
-<translation id="2796056610310156100">"Brave temalarını idarə edin" düyməsi, Enter düyməsinə basaraq temalarla brauzerinizin görünüşünü fərdiləşdirin.</translation>
 <translation id="4450893287417543264">Göstərilməsin</translation>
 <translation id="4451135742916150903">Saytlar HID cihazlarına qoşulmaq üçün icazə istəyə bilər</translation>
 <translation id="4460315069258617173">Siz bu sayt üzrə tabları bağlayanadək icazə verilir</translation>
@@ -1035,12 +1066,15 @@
 <translation id="4508814173490746936">Toxunuş ID-si istifadə edilmədi</translation>
 <translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq bu səhifəni Brave Tərcümə ilə tərcümə edin</translation>
 <translation id="4510487217173779431">Chou4 (Zərf)</translation>
+<translation id="4514308731478712184">Baxışları deaktiv edin</translation>
 <translation id="4892470328555495647">Kart və ünvanlar Brave və Brave Hesabındandır (<ph name="ACCOUNT_EMAIL"/>). Onları <ph name="BEGIN_LINK"/>Ayarlar<ph name="END_LINK"/> bölməsindən idarə edə bilərsiniz.</translation>
 <translation id="4517607026994743406">Comm-10 (Zərf)</translation>
 <translation id="4521157617044179198"><ph name="WIDTH"/> × <ph name="HEIGHT"/> mm (<ph name="ORIENTATION"/>)</translation>
+<translation id="4521916730539354575">Sol Qab</translation>
 <translation id="4522570452068850558">Detallar</translation>
 <translation id="4524138615196389145">Bundan sonra WebAuthn istifadə edərək kartlarınızı daha sürətli təsdiqləyin</translation>
 <translation id="4524805452350978254">Kartları idarə edin</translation>
+<translation id="4530347922939905757">Mətn mesajı</translation>
 <translation id="4541810033354695636">artırılmış reallıq</translation>
 <translation id="4542971377163063093">Qab 6</translation>
 <translation id="455113658016510503">A9</translation>
@@ -1053,6 +1087,7 @@
 <translation id="4592951414987517459"><ph name="DOMAIN"/> domeninə bağlantınız müasir şifrə paketi ilə şifrələnib.</translation>
 <translation id="4594403342090139922">&amp;Silinməni ləğv edin</translation>
 <translation id="4597348597567598915">Ölçü 8</translation>
+<translation id="4598556348158889687">Yaddaş idarəetməsi</translation>
 <translation id="4600854749408232102">C6/C5 (Zərf)</translation>
 <translation id="4606870351894164739">Təsirli</translation>
 <translation id="7265018635737406618">"Brave ipucularına baxın" düyməsi, Enter düyməsinə basaraq Brave funksiyaları haqqında ətraflı məlumat əldə edin</translation>
@@ -1097,6 +1132,7 @@
 <translation id="4751476147751820511">Hərəkət və ışıq sensorları</translation>
 <translation id="4754461935447132332">Güvənsiz saytlar üçün icazə verilmir</translation>
 <translation id="4756388243121344051">&amp;Tarixçə</translation>
+<translation id="1015173303159845845">İndicə parolunuzu aldadıcı sayt içində yazdınız. Hesablarınızı qorumaq üçün Brave yadda saxladığınız parolları yoxlamağı tövsiyə edir.</translation>
 <translation id="4758311279753947758">Kontakt məlumatı əlavə edin</translation>
 <translation id="4761104368405085019">Mikrofon işlədin</translation>
 <translation id="1980929286541331105">Brave Təhlükəsizlik Yoxlanışı icra edin</translation>
@@ -1126,6 +1162,7 @@
           <ph name="LIST_ITEM"/>İşəgötürənlər və ya məktəblər axtarış fəaliyyətini izləyə bilir<ph name="END_LIST_ITEM"/>
           <ph name="LIST_ITEM"/>İnternet xidmət təminatçıları veb trafikini izləyə bilər<ph name="END_LIST_ITEM"/>
         <ph name="END_LIST"/></translation>
+<translation id="483241715238664915">Xəbərdarlıqları aktiv edin</translation>
 <translation id="4838327282952368871">Xəyali</translation>
 <translation id="246176083348620700">Brave tarixçənizə baxın</translation>
 <translation id="484462545196658690">Avtomatik</translation>
@@ -1135,6 +1172,7 @@
 <translation id="4853901935952445031">Bu sayt 2022-ci ilin fevralından sonra U2F API-dən istifadə edə bilməyəcək. Bu saytın sahibisinizsə, Veb Doğrulama API-dən istifadə etmək üçün onu dəyişdirməlisiniz.</translation>
 <translation id="4854362297993841467">Bu çatdırılma üsulu əlçatan deyil. Başqa üsul seçin.</translation>
 <translation id="3418609161696289726">Brave Keep'də cəld yeni qeyd yaradın</translation>
+<translation id="485902285759009870">Kod doğrulanır...</translation>
 <translation id="4876188919622883022">Sadə görüntü</translation>
 <translation id="4876305945144899064">İstifadəçi adı yoxdur</translation>
 <translation id="4877083676943085827">{COUNT,plural, =0{Heç biri}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
@@ -1147,6 +1185,7 @@
 <translation id="2418728264526266844">"Anonim Pəncərə Açın" düyməsi, gizli baxış üçün yeni Anonim pəncərə açmaq üçün Enter düyməsinə basın</translation>
 <translation id="4892518386797173871">Arxa</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
+<translation id="4900217275619098670">Doqquzuncu Rulon</translation>
 <translation id="4901778704868714008">Yadda saxlayın...</translation>
 <translation id="4913987521957242411">Yuxarı soldan deşik açın</translation>
 <translation id="4918221908152712722"><ph name="APP_NAME"/> tətbiqini quraşdırın (endirmək tələb edilmir)</translation>
@@ -1157,14 +1196,15 @@
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq axtarış edin</translation>
 <translation id="4930153903256238152">Böyük tutum</translation>
 <translation id="4943872375798546930">Nəticə yoxdur</translation>
+<translation id="2388640476675728425">"Əlçatımlılıq ayarlarını idarə edin" düyməsi, Enter düyməsinə basaraq Brave ayarlarında əlçatımlılıq alətlərinizi fərdiləşdirin.</translation>
 <translation id="4950898438188848926">Keçid düyməsinə klikləyin, açıq <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/> tabına keçmək üçün "Daxil olun" düyməsinə basın</translation>
 <translation id="495170559598752135">Fəaliyyətlər</translation>
 <translation id="4953689047182316270">Əlçatımlılıq Tədbirlərinə cavab vermək</translation>
 <translation id="4955242332710481440">A5-Extra</translation>
 <translation id="4958444002117714549">Siyahını genişləndirin</translation>
 <translation id="4968522289500246572">Bu tətbiq mobil cihaz üçün nəzərdə tutulmuşdur və ölçüsü hər cihaz üçün uyğun olmaya bilər. Tətbiq problemlərlə qarşılaşa bilər və ya yenidən başladıla bilər.</translation>
+<translation id="4969341057194253438">Qeydəalmanı silin</translation>
 <translation id="4973922308112707173">Yuxarıdan qoşa deşik açın</translation>
-<translation id="4974590756084640048">Xəbərdarlıqları yenidən aktiv edin</translation>
 <translation id="4984088539114770594">Mikrofondan istifadə edilsin?</translation>
 <translation id="4984339528288761049">Prc5 (Zərf)</translation>
 <translation id="4989163558385430922">Hamısına baxın</translation>
@@ -1190,12 +1230,14 @@
 <translation id="5040262127954254034">Məxfilik</translation>
 <translation id="5043480802608081735">Kopyalanmış Link</translation>
 <translation id="5045550434625856497">Yanlış parol</translation>
+<translation id="5056425809654826431">{NUM_FILES,plural, =1{Yaxınlıqda Paylaşım ilə bu faylı göndərmək üçün cihazınızda (<ph name="DISK_SPACE_SIZE"/>) yer boşaldın}other{Yaxınlıqda Paylaşım ilə bu faylları göndərmək üçün cihazınızda (<ph name="DISK_SPACE_SIZE"/>) yer boşaldın}}</translation>
 <translation id="5056549851600133418">Sizin üçün məqalələr</translation>
 <translation id="5061227663725596739"><ph name="LOOKALIKE_DOMAIN"/> nəzərdə tuturdunuz?</translation>
 <translation id="5066056036849835175">Çap tarixçəsi</translation>
 <translation id="5068524481479508725">A10</translation>
 <translation id="5068778127327928576">{NUM_COOKIES,plural, =1{(1 kuki istifadə edilir)}other{(# kuki istifadə edilir)}}</translation>
 <translation id="5070335125961472645"><ph name="BEGIN_LINK"/>Proksi ünvanı yoxlanılır<ph name="END_LINK"/></translation>
+<translation id="5070838744279127212">Onuncu Rulon</translation>
 <translation id="507130231501693183">Poçt qutusu 4</translation>
 <translation id="5087286274860437796">Server sertifikatı hazırda etibarlı deyil.</translation>
 <translation id="5087580092889165836">Kart əlavə edin</translation>
@@ -1208,6 +1250,7 @@
 <translation id="5097501891273180634">A2</translation>
 <translation id="5108881358339761672">Sayt güvənli deyil</translation>
 <translation id="5112422516732747637">A5</translation>
+<translation id="5114288597538800140">Qab 18</translation>
 <translation id="5114987907971894280">virtual reallıq</translation>
 <translation id="5115216390227830982">Avropa-Edp</translation>
 <translation id="5115232566827194440">Məhdud idarə olunan qonaq sessiyasının əvəzlənməsi</translation>
@@ -1218,6 +1261,7 @@
 <translation id="5126510351761255129">Kartı təsdiq edin</translation>
 <translation id="512670116361803001"><ph name="APP_NAME"/> ölçüsü lazımi şəkildə dəyişdirilməyə bilər. Tətbiqin problemlərlə üzləşməməsi üçün əvvəlcədən ayarlanmış pəncərə ölçülərindən istifadə edin.</translation>
 <translation id="5135404736266831032">Ünvanları idarə edin...</translation>
+<translation id="5136841603454277753">Düzgün kodu daxil edin</translation>
 <translation id="5138014172396933048">Virtual kart hazırda əlçatan deyil, bankınızla əlaqə saxlayın</translation>
 <translation id="5138227688689900538">Daha azına baxın</translation>
 <translation id="5145883236150621069">Xəta kodu siyasət cavabında mövcuddur</translation>
@@ -1239,8 +1283,10 @@
 <translation id="5201306358585911203">Bu səhifə daxilində yerləşdirilmiş səhifə deyir:</translation>
 <translation id="5205222826937269299">Ad tələb olunur</translation>
 <translation id="5209518306177824490">SHA-1 Barmaqizi</translation>
+<translation id="5209670883520018268">Qab 20</translation>
 <translation id="1051285409463218679">Brave Pay istifadə edən kart və ünvanlar</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
+<translation id="521659676233207110">Qab 13</translation>
 <translation id="5222812217790122047">E-poçt ünvanı tələb olunur</translation>
 <translation id="5230733896359313003">Göndəriş Ünvanı</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1251,12 +1297,13 @@
 <translation id="5252000469029418751">C7 (Zərf)</translation>
 <translation id="5254043433801397071">Çap məzmununu optimallaşdırın</translation>
 <translation id="5254958791078852567">E1</translation>
-<translation id="5261548214279761072">Ödəmə Tamamlandı</translation>
-<translation id="6419595334958289908">Brave'da məxfiliyimi idarə edin</translation>
+<translation id="5255690596502591079">Yenə də çəkiliş edilsin</translation>
 <translation id="5266128565379329178">Yuxarıdan uclarını qovuşdurun</translation>
+<translation id="5269124652893918188"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq brauzerinizin görünüşünü fərdiləşdirin.</translation>
 <translation id="5269225904387178860">Aşağıdan dördlü deşik açın</translation>
 <translation id="5269999699920406580">Bütün sistemə təsir edən funksiyalar yalnız hesabın sahibi tərəfindən ayarlana bilər: <ph name="OWNER_EMAIL"/></translation>
 <translation id="5273658854610202413">Xəbərdarlıq: bu siyasət birləşdirilə bilən lüğət siyasətlərinin bir hissəsi olmadığına görə PolicyDictionaryMultipleSourceMergeList siyasətində müəyyən edildiyi kimi birləşdirilmədi.</translation>
+<translation id="5279286380302340275">Endirmələri idarə edin</translation>
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">Sənəd xüsusiyyətləri</translation>
 <translation id="528468243742722775">Son</translation>
@@ -1286,8 +1333,8 @@
 <translation id="5340250774223869109">Tətbiq bloklanıb</translation>
 <translation id="534295439873310000">NFC cihazları</translation>
 <translation id="5344579389779391559">Bu səhifədə Sizdən ödəniş tutula bilər</translation>
+<translation id="145631537248113690">"Brave'da şriftləri fərdiləşdirin" düyməsi, Enter düyməsinə basaraq Brave'da şrift ölçülərini və şriftləri fərdiləşdirin</translation>
 <translation id="5355557959165512791">Hazırda <ph name="SITE"/> saytına daxil olmaq mümkün deyil, çünki onun sertifikatı silinib. Şəbəkə xətaları və hücumları adətən müvəqqəti olur, beləliklə, səhifə yəqin ki daha sonra işləyəcək.</translation>
-<translation id="3338395521045980933">Brave'da şriftləri fərdiləşdirin</translation>
 <translation id="536296301121032821">Siyasət ayarlarını saxlamaq uğursuz oldu</translation>
 <translation id="5363309033720083897">Administratorunuz tərəfindən icazə verilən ardıcıl port</translation>
 <translation id="5371425731340848620">Kartı yeniləyin</translation>
@@ -1305,6 +1352,7 @@
 <translation id="5426179911063097041"><ph name="SITE"/> Sizə bildiriş göndərmək istəyir</translation>
 <translation id="5428105026674456456">Ispan</translation>
 <translation id="5430298929874300616">Əlfəcini silin</translation>
+<translation id="5434889539950523874"><ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq keçid paylaşaraq, QR kodu yaradaraq, yayımlayaraq və digər əməliyyatları edərək bu tabı paylaşın.</translation>
 <translation id="5439770059721715174">"<ph name="ERROR_PATH"/>" yolunda sxem doğrulama xətası: <ph name="ERROR"/></translation>
 <translation id="5443468954631487277">Tərs sıra ilə üzü yuxarı</translation>
 <translation id="5447765697759493033">Bu sayt tərcümə edilməyəcək</translation>
@@ -1373,6 +1421,7 @@
 <translation id="5663955426505430495">Bu cihazın administratoru əlavə funksiyalar üçün artırmalar quraşdırıb. Artırmalar datanın bir hissəsinə daxil ola bilər.</translation>
 <translation id="5675650730144413517">Bu səhifə işləmir</translation>
 <translation id="568292603005599551">Şəklin X oxu üzrə mövqeyi</translation>
+<translation id="5684277895745049190">Siyahı</translation>
 <translation id="5684874026226664614">Bu səhifə tərcümə edilə bilmir. Niyəsini bilmirik.</translation>
 <translation id="5685654322157854305">Göndəriş Ünvanı əlavə edin</translation>
 <translation id="5689199277474810259">JSON-a eksport edin</translation>
@@ -1381,8 +1430,8 @@
 <translation id="5695542892312572833">Doğrulamaq və alışı tamamlamaq üçün Windows Hello istifadə edilsin?</translation>
 <translation id="5701381305118179107">Mərkəzi edin</translation>
 <translation id="570530837424789914">İdarə edin...</translation>
+<translation id="5707154300732650394">Baxışı davam etdirin</translation>
 <translation id="57094364128775171">Güclü parol təklif edin…</translation>
-<translation id="5710435578057952990">Bu veb saytın identifikasiyası doğrulanmamışdır.</translation>
 <translation id="571403275720188526">(arm64)</translation>
 <translation id="5720705177508910913">Cari istifadəçi</translation>
 <translation id="5728056243719941842">C5 (Zərf)</translation>
@@ -1390,7 +1439,6 @@
 <translation id="5576538372759072019">{NUM_CARDS,plural, =1{Kartı Brave Hesabında yadda saxlayın}other{Kartları Brave Hesabında yadda saxlayın}}</translation>
 <translation id="5745733273847572235">Saytlar məkanınıza daxil olmaq üçün icazə istəyə bilər</translation>
 <translation id="5745980000221562234">{NUM_CARDS,plural, =1{Bu kart üçün virtual nömrə istifadə edin}other{Kart seçin}}</translation>
-<translation id="7325578009484607279">Brave temalarını idarə edin</translation>
 <translation id="5759751709240058861">Kameranızın istifadəsi və hərəkət etdirilməsi</translation>
 <translation id="5763042198335101085">Düzgün e-poçt ünvanı daxil edin</translation>
 <translation id="5765072501007116331">Çatdırılma üsulları və tələblərinə baxın, ünvan seçin</translation>
@@ -1424,6 +1472,7 @@
 <translation id="5866898949289125849">Developer alətlər səhifəsinə baxırsınız</translation>
 <translation id="5869405914158311789">Bu sayta qoşulmaq olmur</translation>
 <translation id="5869522115854928033">Saxlanılmış parollar</translation>
+<translation id="5873013647450402046">Bankınız bunun siz olduğunuzu təsdiq etmək istəyir.</translation>
 <translation id="5887400589839399685">Kart yadda saxlanıldı</translation>
 <translation id="5895138241574237353">Yenidən başladın</translation>
 <translation id="5895187275912066135">Buraxılış Tarixi</translation>
@@ -1446,6 +1495,7 @@
 <translation id="5967592137238574583">Kontakt Məlumatını Redaktə Edin</translation>
 <translation id="5967867314010545767">Tarixçədən silin</translation>
 <translation id="5968793460449681917">Hər dəfə ziyarət etdikdə</translation>
+<translation id="5974052231147553524">Altıncı Rulon</translation>
 <translation id="5975083100439434680">Kiçildin</translation>
 <translation id="5979084224081478209">Parolları yoxlayın</translation>
 <translation id="5980920751713728343">Index-3x5</translation>
@@ -1488,23 +1538,24 @@
 <translation id="6060009363608157444">Yanlış DnsOverHttps rejimi.</translation>
 <translation id="6064217302520318294">Ekran kilidi</translation>
 <translation id="6080696365213338172">Administrator tərəfindən təqdim olunmuş sertifikatı istifadə edərək məzmuna daxil oldunuz. <ph name="DOMAIN"/> domeninə təqdim etdiyiniz data administrator tərəfindən ələ keçirilə bilər.</translation>
-<translation id="8416632546053774839"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave'da məxfiliyimi idarə edin</translation>
+<translation id="6087312102907839798">Əlaqəli axtarışlar</translation>
 <translation id="6094273045989040137">Annotasiya</translation>
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">Sayt yaradın</translation>
 <translation id="6106989379647458772"><ph name="PAGE"/> veb səhifəsi müvəqqəti işləməyə bilər və ya yeni veb ünvana köçürülmüş ola bilər.</translation>
 <translation id="6107012941649240045">Verildi:</translation>
 <translation id="8233947174119245051"><ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> linkində Brave Hesabına məxsus axtarış tarixçəsinin başqa formaları ola bilər</translation>
-<translation id="6930993816375730727">"Baxışa davam edin" düyməsi, Enter düyməsinə basaraq baxışa davam edin və Brave tarixçəsində əlaqəli fəaliyyəti görün</translation>
 <translation id="6116338172782435947">Buferə kopyalanan mətn və şəkillərə baxın</translation>
 <translation id="6120179357481664955">UPI ID'niz yadda saxlansın?</translation>
 <translation id="5972135347314259717">Brave Enterprise Birləşdiriciləri</translation>
+<translation id="6127379762771434464">Element silindi</translation>
 <translation id="6146055958333702838">Kabelləri yoxlayın və istifadə edəcəyiniz hər hansı router, modem və ya digər
         şəbəkə cihazlarını yenidən yükləyin.</translation>
 <translation id="614940544461990577">Cəhd edin:</translation>
 <translation id="6150036310511284407">Soldan üçlü deşik açın</translation>
 <translation id="6151417162996330722">Server sertifikatı çox uzun olan doğrulama müddətinə malikdir.</translation>
 <translation id="6153243098246946146"><ph name="WIDTH"/> × <ph name="HEIGHT"/> düym (<ph name="ORIENTATION"/>)</translation>
+<translation id="6157754950574419155">Tarixçədən hamısını silin</translation>
 <translation id="6157877588268064908">Göndərmə üsulları və tələblərinə baxın, ünvan seçin</translation>
 <translation id="6165508094623778733">Ətraflı öyrənin</translation>
 <translation id="5673623523506565506">İndi şəxsi axtarış edə bilərsiniz və bu cihazı istifadə edən digər şəxslər fəaliyyətinizi görməyəcək. Lakin endirmələr və əlfəcinlər yadda saxlanacaq.</translation>
@@ -1522,15 +1573,16 @@
 <translation id="624499991300733384">Çap məhsullarının tərtibi xidməti</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave'da endirdiyiniz faylları idarə edin</translation>
 <translation id="6254436959401408446">Bu səhifəni açmaq üçün kifayət qədər yaddaş yoxdur</translation>
-<translation id="625755898061068298">Bu sayt üçün təhlükəsizlik xəbərdarlığını deaktiv etməyi seçmişik.</translation>
 <translation id="6259156558325130047">&amp;Təkrar sıralamanı yenidən edin</translation>
 <translation id="6263376278284652872"><ph name="DOMAIN"/> əlfəcinləri</translation>
 <translation id="6264485186158353794">Güvənliyə qayıdın</translation>
 <translation id="6265794661083428563"><ph name="POLICY_NAME"/> siyasətinin dəyərini kopyalayın</translation>
 <translation id="6266934640124581640">Açıq-firuzəyi</translation>
+<translation id="1300170712564922349">Brave tarixçəsində əlaqəli fəaliyyəti görmək üçün baxışa davam edin</translation>
 <translation id="9136010393039243713">Brave Güncəlləməsi</translation>
 <translation id="6276112860590028508">Oxu siyahısının səhifələri burada görünəcək</translation>
 <translation id="7954557091400543500">Növbəti dəfə daha sürətli ödəniş etmək üçün kartı və faktura ünvanını Brave Hesabınızda yadda saxlayın.</translation>
+<translation id="6279098320682980337">Virtual kart nömrəsi daxil edilməyib? Kopyalamaq üçün kart məlumatlarını tıklayın</translation>
 <translation id="6280223929691119688">Bu ünvana çatdırmaq mümkün deyil. Başqa ünvan seçin.</translation>
 <translation id="6282194474023008486">Poçt kodu</translation>
 <translation id="6289939620939689042">Səhifə Rəngi</translation>
@@ -1568,12 +1620,10 @@
 <translation id="6401136357288658127">Bu siyasət ləğv edilib. Əvəzinə <ph name="NEW_POLICY"/> siyasətindən istifadə edin.</translation>
 <translation id="6404511346730675251">Əlfəcinə düzəliş edin</translation>
 <translation id="6406765186087300643">C0 (Zərf)</translation>
-<translation id="9018981925326888629">İndicə parolunuzu aldadıcı sayt içində yazdınız. Brave parolunuzu indi dəyişməyi məsləhət görür.</translation>
 <translation id="6410264514553301377"><ph name="CREDIT_CARD"/> üçün bitmə tarixi və CVC nömrəsini daxil edin</translation>
 <translation id="6423385022588644828">Bundan sonra Toxunuş İD'si istifadə edərək kartlarınızı daha sürətli təsdiqləyin</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Qapı şəklində qatlayın</translation>
-<translation id="9113676821737496576">Brave tarixçəsində əlaqəli fəaliyyəti görmək üçün baxışa davam edin</translation>
 <translation id="6428450836711225518">Telefon nömrənizi doğrulayın</translation>
 <translation id="7772223497488184427">Brave parolunu dəyişin</translation>
 <translation id="6433490469411711332">Kontakt məlumatını redaktə edin</translation>
@@ -1598,12 +1648,13 @@
 <translation id="6494750904506170417">popap və yönləndirmələr</translation>
 <translation id="6499038740797743453">Parol sıfırlansın?</translation>
 <translation id="6502991525169604759">Dəyişikliklər olmadan</translation>
-<translation id="8120597037175988664">Anonim pəncərələri bağlayın</translation>
+<translation id="6506959208958864820">Zərf</translation>
 <translation id="3960299545138990065">Brave'u yenidən başladın</translation>
 <translation id="6513005815064132016">Saytlar kamera mövqeyinizi izləmək üçün icazə istəyə bilər</translation>
 <translation id="6517596291481585650">Xəbərdarlıq: Siyasət tərəfindən göstərilən bu siyasət siyahı olmadığına görə siyahı şəklində birləşdirilmədi.</translation>
 <translation id="6518133107902771759">Doğrulayın</translation>
 <translation id="6521745193039995384">Aktiv deyil</translation>
+<translation id="6529173248185917884">Yeddinci Rulon</translation>
 <translation id="6529602333819889595">Silinməni yenidən edin</translation>
 <translation id="6545864417968258051">Bluetooth axtarışı</translation>
 <translation id="6547208576736763147">Soldan qoşa deşik açın</translation>
@@ -1631,13 +1682,13 @@
 <translation id="6643016212128521049">Silin</translation>
 <translation id="6645291930348198241">Kukilər və sayt datasına giriş.</translation>
 <translation id="1375868315964791309">{COUNT,plural, =0{Yoxdur}=1{1 saytdan (Brave Hesabınızdan çıxmayacaqsınız)}other{ # saytdan (Brave Hesabınızdan çıxmayacaqsınız)}}</translation>
-<translation id="6647197322759179819">Baxışa davam edin</translation>
 <translation id="6678472970290886941">Administrator brauzer quraşdırmasını uzaqdan dəyişə bilər. Bu cihazdakı fəaliyyət Brave'dan kənarda da idarə edilə bilər.</translation>
 <translation id="6648524591329069940">Serif Şrifti</translation>
 <translation id="6651270836885078973">İdarə edən:</translation>
 <translation id="6652101503459149953">Windows Hello işlədin</translation>
 <translation id="6657585470893396449">Parol</translation>
 <translation id="6660413144148052430">məkan</translation>
+<translation id="6662457027866368246">Birinci Rulon</translation>
 <translation id="666259744093848177">(x86_64 tərcümə edilib)</translation>
 <translation id="6665553082534466207">Sağdan üçlü deşik açın</translation>
 <translation id="6685834062052613830">Çıxın və quraşdırmanı tamamlayın</translation>
@@ -1646,6 +1697,7 @@
 <translation id="6688775486821967877">Virtual kart hazırda əlçatan deyil, sonra yenidən cəhd edin</translation>
 <translation id="6689249931105087298">Qara nöqtə sıxılması ilə nisbi</translation>
 <translation id="5406652219015697259">Daxil olduğunuza görə Brave kartları Brave Hesabında yadda saxlamağı təklif edir. Bunu ayarlarda dəyişə bilərsiniz. Kart sahibinin adı hesabınızdan götürülüb.</translation>
+<translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq cihazınızı Brave Hesabında tapın</translation>
 <translation id="6698381487523150993">Yaradılıb:</translation>
 <translation id="6702919718839027939">Təqdim edin</translation>
 <translation id="6710213216561001401">Əvvəlki</translation>
@@ -1677,12 +1729,12 @@
 <translation id="6820143000046097424">ardıcıl portlar</translation>
 <translation id="6825578344716086703"><ph name="DOMAIN"/> domeninə daxil olmağa cəhd etdiniz, amma server zəif imza alqoritmi ilə daxil olan sertifikat təqdim etdi. Bu o deməkdir ki, serverin təqdim etdiyi təhlükəsizlik mandatı saxtalaşdırıla bilər və server gözlədiyiniz server olmaya bilər (Siz hücumçu ilə ünsiyyətdə ola bilərsiniz).</translation>
 <translation id="6826993739343257035">AR üçün icazə verilsin?</translation>
-<translation id="4607634726018694567">"Brave'da şriftləri fərdiləşdirin" düyməsi, Enter düyməsinə basaraq Brave'da şrift ölçülərini və şriftləri fərdiləşdirin</translation>
 <translation id="6831043979455480757">Tərcümə et</translation>
 <translation id="6839929833149231406">Sahə</translation>
 <translation id="6846340164947227603">Virtual kart nömrəsini istifadə edin:</translation>
 <translation id="6852204201400771460">Tətbiq yenidən yüklənilsin?</translation>
 <translation id="6865412394715372076">Bu kart hazırda doğrulana bilməz</translation>
+<translation id="6873456682041376666">Üst Qab</translation>
 <translation id="6874604403660855544">&amp;Yenidən əlavə edin</translation>
 <translation id="5856252669085142737">Cəld yeni Brave Sənəd yaradın</translation>
 <translation id="6883221904761970440">Güvənli ödəniş məlumatları üzrə doğrulama vərəqəsi bağlanıb</translation>
@@ -1695,6 +1747,7 @@
 <translation id="6895330447102777224">Kartınız təsdiqləndi</translation>
 <translation id="6897140037006041989">İstifadəçi Agent</translation>
 <translation id="6898699227549475383">Təşkilat (T)</translation>
+<translation id="6899000063526916106"><ph name="NUMBER_OF_DIGITS"/> rəqəmli kodu daxil edin</translation>
 <translation id="6907293445143367439"><ph name="SITE_NAME"/> tətbiqinə icazə verin:</translation>
 <translation id="6910240653697687763"><ph name="URL"/> MIDI cihazlarda tam nəzarət əldə etmək istəyir</translation>
 <translation id="691024665142758461">Bir çox faylları endirin</translation>
@@ -1709,6 +1762,7 @@
 <translation id="695140971690006676">Hamısını sıfırlayın</translation>
 <translation id="6954341342296443517">Saytlar fayl növlərini açmaq üçün icazə istəyə bilər</translation>
 <translation id="6957887021205513506">Serverin sertifikatı fırıldağa oxşayır.</translation>
+<translation id="774679539085757206">Brave Hesabınızda Brave məxfilik ayarlarını idarə edin</translation>
 <translation id="6961844873822989059">Saytlar cihazınızda quraşdırılmış şriftləri istifadə etmək üçün icazə istəyə bilər</translation>
 <translation id="6963520811470373926">Əvəz edilir</translation>
 <translation id="6964255747740675745">Şəbəkə konfiqurasiyasını təhlil etmək alınmadı (yanlış JSON).</translation>
@@ -1721,7 +1775,6 @@
 <translation id="6972629891077993081">HID cihazları</translation>
 <translation id="6973656660372572881">Fiskə edilmiş proksi serverlər və .pac skript URL-lər göstərilib.</translation>
 <translation id="6973932557599545801">Artıq kömək edə bilmirəm, özünüz davam edin.</translation>
-<translation id="846000886289004690">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave indi <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> və bu parolu istifadə etdiyiniz digər saytlara keçərək parolunuzu dəyişmənizi tövsiyə edir.</translation>
 <translation id="6979158407327259162">Brave Disk</translation>
 <translation id="6979440798594660689">Səssiz edin (defolt)</translation>
 <translation id="1714833602699685456">Endirdiyiniz fayllar təhlil üçün Brave Cloud'a və ya üçüncü tərəflərə göndərilir. Məsələn, onlar həssas data və ya zərərli proqrama görə skanlana bilər.</translation>
@@ -1737,6 +1790,7 @@
 <translation id="7029809446516969842">Parollar</translation>
 <translation id="7030436163253143341">Sertifikat etibarlı deyil</translation>
 <translation id="7031646650991750659">Quraşdırdığınız Google Play tətbiqləri</translation>
+<translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave Hesabınızın məxfilik ayarlarını idarə edin</translation>
 <translation id="7050187094878475250"><ph name="DOMAIN"/> domeninə girmək istədiniz, lakin server etibarlıq müddəti güvənmək üçün həddən uzun olan sertifikat təqdim edib.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Hazırda bu kartı yadda saxlamaq mümkün deyil}other{Hazırda bu kartları yadda saxlamaq mümkün deyil}}</translation>
 <translation id="7053983685419859001">Bloklayın</translation>
@@ -1744,6 +1798,7 @@
 <translation id="7062635574500127092">Firuzəyi</translation>
 <translation id="5320462991730735481">Brave ayarlarında ünvanlar əlavə edin və idarə edin</translation>
 <translation id="7064851114919012435">Kontakt məlumatı</translation>
+<translation id="7068733155164172741"><ph name="OTP_LENGTH"/> rəqəmli kodu daxil edin</translation>
 <translation id="70705239631109039">Bağlantınız tam təhlükəsiz deyil</translation>
 <translation id="7075452647191940183">Sorğu çox uzundur</translation>
 <translation id="7079718277001814089">Bu saytda virus var</translation>
@@ -1752,6 +1807,8 @@
 <translation id="7086090958708083563">Yükləmə istifadəçi tərəfindən tələb edildi</translation>
 <translation id="7087282848513945231">Ölkə</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave ayarlarında saytlarda saxlanılan icazələri və datanı idarə etmək üçün Tab, sonra Enter düyməsinə basın</translation>
+<translation id="7096937462164235847">Bu veb saytın kimliyi doğrulanmayıb.</translation>
+<translation id="6793825086874189463">Brave Dinozavr oyununu oynayın</translation>
 <translation id="7108338896283013870">Gizlədin</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> kameranızı istifadə etmək istəyir</translation>
 <translation id="7108819624672055576">Artırma tərəfindən icazə verildi</translation>
@@ -1762,12 +1819,14 @@
 <translation id="7135130955892390533">Statusu göstərin</translation>
 <translation id="7138472120740807366">Çatdırılma üsulu</translation>
 <translation id="7139724024395191329">Əmirlik</translation>
+<translation id="7139892792842608322">Əsas Qab</translation>
 <translation id="714064300541049402">Şəklin 2-ci tərəfinin X oxu üzrə yerdəyişməsi</translation>
 <translation id="7152423860607593928">Nömrə-14 (Zərf)</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> və daha <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}other{<ph name="PAYMENT_METHOD_PREVIEW"/> və daha <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}}</translation>
 <translation id="7153618581592392745">Yasəmən</translation>
 <translation id="7156870133441232244">Server TLS 1.2 və ya daha sonrakı versiyaya güncəlləməlidir.</translation>
 <translation id="717330890047184534">Gaia ID:</translation>
+<translation id="7173920250514487165">Ekranınızda məxfi məzmunu çəkin</translation>
 <translation id="7174545416324379297">Birləşdirildi</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> və daha <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}other{<ph name="SHIPPING_OPTION_PREVIEW"/> və daha <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>}}</translation>
 <translation id="7179323680825933600">Ödəniş Üsullarını Yadda Saxlayın və Doldurun</translation>
@@ -1788,18 +1847,16 @@
 <translation id="7220786058474068424">Prosesdən keçirilir...</translation>
 <translation id="7221855153210829124">Bildirişləri göstərin</translation>
 <translation id="8326104954595890674">Yeni Gizli Panel</translation>
-<translation id="3619365259205518877">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> saytlarında və bu paroldan istifadə etdiyiniz digər saytlarda saxlanılmış parollarınızı indi yoxlamağı tövsiyə edir.</translation>
-<translation id="7231476387708735839">Sayt axtarışını idarə edin</translation>
 <translation id="7233592378249864828">Təsdiq vərəqini çap edin</translation>
 <translation id="7238585580608191973">SHA-256 Barmaqizi</translation>
 <translation id="7240120331469437312">Sertifikat Subyekti Alternativ Adı</translation>
-<translation id="7240121456710944377"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Telefonumu tap</translation>
 <translation id="7243010569062352439"><ph name="PASSWORDS"/>; <ph name="SIGNIN_DATA"/></translation>
 <translation id="724691107663265825">Sonrakı sayda virus var</translation>
 <translation id="724975217298816891">Detallarınızı güncəlləmək məqsədi ilə <ph name="CREDIT_CARD"/> üçün bitmə tarixi və CVC nömrəsini daxil edin. Təsdiq etdikdən sonra, kart detallarınız bu sayt ilə paylaşılacaq.</translation>
 <translation id="7251437084390964440">Şəbəkə konfiqurasiyası ONC standartına uyğun deyil. Konfiqurasiyanın hissələri import edilə bilməz.
 Əlavə məlumat:
 <ph name="DEBUG_INFO"/></translation>
+<translation id="7256634549594854023">Arxa Qab</translation>
 <translation id="725866823122871198">Kompüterinizin tarixi və vaxtı (<ph name="DATE_AND_TIME"/>) yanlış olduğu üçün <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> domeninə bağlantı alınmır.</translation>
 <translation id="7260504762447901703">Girişi ləğv edin</translation>
 <translation id="7275334191706090484">İdarə olunan əlfəcinlər</translation>
@@ -1808,13 +1865,13 @@
 <translation id="7298195798382681320">Tövsiyə olunur</translation>
 <translation id="7300012071106347854">Kobalt Mavisi</translation>
 <translation id="7304030187361489308">Yüksək</translation>
+<translation id="244157907932852817">Brave Hesabının məxfilik ayarlarını idarə edin</translation>
 <translation id="7305756307268530424">Daha asta sürəti başladın</translation>
 <translation id="7308436126008021607">arxa fonda sinxronizasiya</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Bağlantı Yardımı</translation>
 <translation id="7323804146520582233">"<ph name="SECTION"/>" bölməsini gizlədin</translation>
 <translation id="733354035281974745">Cihazın lokal hesabı əvəz edilib</translation>
-<translation id="8539546768943490744">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave indi <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> və bu parolu istifadə etdiyiniz digər saytlara keçərək parolunuzu dəyişmənizi tövsiyə edir.</translation>
 <translation id="7334320624316649418">&amp;Yenidən yerbəyer edin</translation>
 <translation id="7335157162773372339">Saytlar kameranızdan istifadə üçün icazə tələb edə bilər</translation>
 <translation id="7337248890521463931">Daha çox sətir göstərin</translation>
@@ -1860,6 +1917,7 @@
 <translation id="7416351320495623771">Parolları İdarə edin...</translation>
 <translation id="7419106976560586862">Profil yolu</translation>
 <translation id="7421067045979951561">protokol nizamlayıcıları</translation>
+<translation id="1451399671339759400">"Brave tarixçənizə baxın" düyməsi, Enter düyməsinə basaraq Brave ayarlarında brauzer tarixçənizə baxın və idarə edin</translation>
 <translation id="7437289804838430631">Kontakt Məlumatı Əlavə Edin</translation>
 <translation id="7440140511386898319">Oflayn kəşf edin</translation>
 <translation id="7441627299479586546">Yanlış siyasət mövzusu</translation>
@@ -1872,7 +1930,6 @@
 <translation id="7473891865547856676">Yox</translation>
 <translation id="7481312909269577407">İrəli</translation>
 <translation id="7485870689360869515">Heç bir data tapılmadı.</translation>
-<translation id="4933920924465085087">Brave Dinozavr oyununu oynayın</translation>
 <translation id="7495528107193238112">Bu məzmun bloklanıb. Problemi düzəltmək üçün sayt sahibi ilə əlaqə saxlayın.</translation>
 <translation id="7812541223399526596">"Sənəd yaradın" düyməsi, Enter düyməsinə basaraq cəld yeni Brave Sənəd yaradın</translation>
 <translation id="7508255263130623398">Qaytarılmış qaydalar cihaz İD'si boşdur və ya cari cihaz İD'si ilə üst-üstə düşmür</translation>
@@ -1899,6 +1956,7 @@
 <translation id="7554791636758816595">Yeni Panel</translation>
 <translation id="7559278538486662777">Bu tətbiqin ölçüsünü dəyişmək alınmadı.</translation>
 <translation id="7567204685887185387">Bu server <ph name="DOMAIN"/> olduğunu sübut edə bilmədi; güvənlik sertifikatı saxta ola bilər. Buna yalnış quraşdırma və ya hücumçu bağlantısı səbəb ola bilər.</translation>
+<translation id="7569761772822664555">"Axtarış sistemlərini idarə edin" düyməsi, Enter düyməsinə basaraq defolt axtarış sisteminizi və sayt axtarışınızı idarə edin</translation>
 <translation id="7569983096843329377">Qara</translation>
 <translation id="7575207903026901870">Təklifi Silmə düyməsi, bu təklifi silmək üçün Enter düyməsinə basın</translation>
 <translation id="405970181812690156">Brave ilə yadda saxladığınız kartları istifadə edərək cihazlardan sayt və tətbiqlərdə cəld ödəniş edin.</translation>
@@ -1921,6 +1979,7 @@
 <translation id="7638605456503525968">Seriya portları</translation>
 <translation id="7639968568612851608">Tünd-boz</translation>
 <translation id="7647206758853451655">Çap keyfiyyəti</translation>
+<translation id="342933251860824958">Hazırda açıq olan bütün Anonim pəncərələri bağlayın.</translation>
 <translation id="7648992873808071793">Faylları bu cihazda saxlayın</translation>
 <translation id="7653957176542370971">Ödəniş səhifəsi bağlıdır</translation>
 <translation id="7654909834015434372">Annotasiyaları redaktə etdiyiniz zaman bu sənəd ilkin vəziyyətinə qayıdacaq</translation>
@@ -1932,6 +1991,7 @@
 <translation id="7667346355482952095">Qaytarılmış qaydalar nişanı boşdur və ya cari nişanla üst-üstə düşmür</translation>
 <translation id="7668654391829183341">Naməlum cihaz</translation>
 <translation id="7669271284792375604">Saytdakı hücumçular işinizə zərər gətirəcək proqramları quraşdırmaq üçün Sizi aldatmağa cəhd edə bilər (məsələn, əsas səhifəni dəyişməklə və ya daxil olduğunuz saytlarda əlavə reklamlar göstərməklə).</translation>
+<translation id="7669907849388166732">{COUNT,plural, =1{Məxfi olaraq işarələnmiş məlumatlarla aparılan əməliyyatlar (girişdən sonra 1 əməliyyat). <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/>}other{Məxfi olaraq işarələnmiş məlumatlarla aparılan əməliyyatlar (girişdən sonra # əməliyyat). <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/>}}</translation>
 <translation id="7673278391011283842">Poçt qutusu 6</translation>
 <translation id="7676643023259824263">Mübadilə buferində mətni axtarın, <ph name="TEXT"/></translation>
 <translation id="4628681623692678085">Brave ayarlarında brauzer tarixçənizə baxın və idarə edin</translation>
@@ -1952,9 +2012,11 @@
 <translation id="1296098648902562076">Brave Forma'da cəld yeni forma yaradın</translation>
 <translation id="773466115871691567">Səhifələri həmişə <ph name="SOURCE_LANGUAGE"/> dilinə tərcümə edin</translation>
 <translation id="7740996059027112821">Standart</translation>
+<translation id="77424286611022110">Bu sayt inadçı və ya aldadıcı reklamlar göstərir. <ph name="LEARN_MORE_LINK_TEXT"/></translation>
 <translation id="774634243536837715">Təhlükəli kontent blok edildi.</translation>
 <translation id="921286857694606205">Brave'da şrift ölçülərini və şriftləri fərdiləşdirin</translation>
 <translation id="7752995774971033316">İdarə edilməyən</translation>
+<translation id="7755624218968747854">Əsas Rulon</translation>
 <translation id="7757555340166475417">Dai-Pa-Kai</translation>
 <translation id="7758069387465995638">Qoruyucu divar və ya antivirus proqramı bağlantını blok etmiş ola bilər.</translation>
 <translation id="776110834126722255">Müddəti keçib</translation>
@@ -1986,7 +2048,6 @@
 <translation id="7862185352068345852">Saytdan çıxılsın?</translation>
 <translation id="7865448901209910068">Ən yüksək sürət</translation>
 <translation id="7971990257511863579">Brave Hesabı parolunuzu dəyişin</translation>
-<translation id="1012292338579042608">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> saytlarında və bu paroldan istifadə etdiyiniz digər saytlarda saxlanılmış parollarınızı indi yoxlamağı tövsiyə edir.</translation>
 <translation id="7877007680666472091">qorunan məzmun ID-ləri</translation>
 <translation id="7878562273885520351">Parolunuz təhlükədə ola bilər</translation>
 <translation id="7880146494886811634">Ünvanın Yadda Saxlanması</translation>
@@ -2000,7 +2061,6 @@
 <translation id="793209273132572360">Ünvan yenilənsin?</translation>
 <translation id="7932579305932748336">Palto</translation>
 <translation id="79338296614623784">Düzgün telefon nömrəsi daxil edin</translation>
-<translation id="7934052535022478634">Ödəmə tamamlandı</translation>
 <translation id="8329449853370113380"><ph name="URL"/> qorunan kontenti oxutmaq istəyir. Cihazın kimliyi Brave tərəfindən doğrulanacaq.</translation>
 <translation id="7935031712718413217">URL'nin saxta olma ehtimalı var</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
@@ -2013,10 +2073,12 @@
 <translation id="1535074845255182168">Brave ayarlarında kuki tərcihlərinizi idarə edin</translation>
 <translation id="7951415247503192394">(32-bit)</translation>
 <translation id="7953569069500808819">Yuxarıdan kənarını tikin</translation>
+<translation id="7954041596401851904">Keçid paylaşaraq, QR kodu yaradaraq, yayımlayaraq və digər əməliyyatları edərək bu tabı paylaşın.</translation>
 <translation id="7956713633345437162">Mobil əlfəcinlər</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="7966803981046576691">İş hesabı növü</translation>
 <translation id="79682505114836835">"<ph name="VALUE"/>" dəyəri yanlış altılıq rəngdir.</translation>
+<translation id="7968982339740310781">Detallara baxın</translation>
 <translation id="7970392640816874403">Digər mənbələr nə deyir?</translation>
 <translation id="7976214039405368314">Həddən çox sorğu var</translation>
 <translation id="7977538094055660992">Çıxış cihazı</translation>
@@ -2033,6 +2095,7 @@
 <translation id="8012116502927253373">{NUM_CARDS,plural, =1{Bu kart və faktura ünvanı yadda saxlanacaq. <ph name="USER_EMAIL"/> hesabına daxil olduqda bundan istifadə edə bilməyəcəksiniz.}other{Bu kartlar və faktura ünvanları yadda saxlanacaq. <ph name="USER_EMAIL"/> hesabına daxil olduqda bunlardan istifadə edə bilməyəcəksiniz.}}</translation>
 <translation id="8025119109950072390">Bu saytdakı hücumçular Sizi proqram təminatı endirmək və ya şəxsi məlumatları aşkarlamaq kimi təhlükəli işləri görməyə (məsələn, parollar, telefon nömrələri və ya kredit kartları) sövq edə bilər</translation>
 <translation id="8026334261755873520">Brauzinq datasını təmizləyin</translation>
+<translation id="8027077570865220386">Qab 15</translation>
 <translation id="814401020562419411"><ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave Forma'da cəld yeni forma yaradın</translation>
 <translation id="8028960012888758725">İşdən sonra kəsin</translation>
 <translation id="8034522405403831421">Bu səhifə <ph name="SOURCE_LANGUAGE"/> dilindədir. <ph name="TARGET_LANGUAGE"/> dilinə tərcümə edilsin?</translation>
@@ -2043,6 +2106,7 @@
 <translation id="8041089156583427627">Geri Əlaqə Göndərin</translation>
 <translation id="8041940743680923270">Qlobal defoltdan istifadə edin (Soruşun)</translation>
 <translation id="8042918947222776840">Götürmə Üsulu seçin</translation>
+<translation id="8052898407431791827">Mübadilə buferinə kopyalandı</translation>
 <translation id="8057711352706143257">"<ph name="SOFTWARE_NAME"/>" düzgün konfiqurasiya edilməyib. "<ph name="SOFTWARE_NAME"/>" proqramının sistemdən silinməsi ilə adətən problem həll olunur. <ph name="FURTHER_EXPLANATION"/></translation>
 <translation id="8066955247577885446">Xəta baş verdi.</translation>
 <translation id="5442778523450464826">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave yardım edə bilər. Parolunuzu dəyişmək və Brave'a hesabınızın təhlükədə ola biləcəyini bildirmək üçün "Hesabı Qoruyun" seçiminə toxunun.</translation>
@@ -2077,19 +2141,19 @@
 <translation id="8176440868214972690">Bu cihazın administratoru aşağıdakı veb saytlara ayarlar və ya siyasətlər kimi bəzi məlumatlar göndərib.</translation>
 <translation id="8184538546369750125">Qlobal defoltdan istifadə edin (İcazə verin)</translation>
 <translation id="8190193880870196235">Artırma tərəfindən idarə edilir</translation>
-<translation id="8193086767630290324">Məxfi olaraq işarələnmiş məlumatlarla aparılan əməliyyatlar</translation>
 <translation id="8194797478851900357">&amp;Ləğv edin</translation>
 <translation id="8201077131113104583">"<ph name="EXTENSION_ID"/>" identifikasiyalı artırma üçün güncəllənmə linki yanlışdır</translation>
 <translation id="8202097416529803614">Sifariş xülasəsi</translation>
 <translation id="8202370299023114387">Ziddiyət</translation>
 <translation id="8206978196348664717">Prc4 (Zərf)</translation>
 <translation id="8211406090763984747">Bağlantı təhlükəsizdir</translation>
+<translation id="3280037408312613646">"Brave'u fərdiləşdirin" düyməsi, Enter düyməsinə basaraq brauzerinizin görünüşünü fərdiləşdirin.</translation>
 <translation id="8218327578424803826">Ayrılmış yer:</translation>
 <translation id="8220146938470311105">C7/C6 (Zərf)</translation>
-<translation id="3272614036080146686">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave indi <ph name="WEBSITE_1"/> və bu parolu istifadə etdiyiniz digər saytlara keçərək parolunuzu dəyişmənizi tövsiyə edir.</translation>
 <translation id="8228419419708659934">İki səhifə görünüşü</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Platforma temperaturu</translation>
+<translation id="8233773197406738106">Fayl hazırlanır</translation>
 <translation id="8241707690549784388">Baxdığınız səhifə daxil etdiyiniz məlumatı işlədir. Həmin səhifəyə qayıtmaq, etdiyiniz istənilən əməlin təkrarlanmasına səbəb ola bilər. Davam edirsiniz?</translation>
 <translation id="8241712895048303527">Bu saytda blok edin</translation>
 <translation id="8242426110754782860">Davam edin</translation>
@@ -2106,10 +2170,12 @@
 <translation id="8270242299912238708">PDF sənədləri</translation>
 <translation id="8275952078857499577">Bu saytın tərcümə edilməsini təklif etməyin</translation>
 <translation id="8277900682056760511">Ödəniş səhifəsi açıqdır</translation>
+<translation id="8280630997017109758">Qab 11</translation>
 <translation id="8281084378435768645">Böyük Ölçülü Foto</translation>
 <translation id="8282947398454257691">Unikal cihaz identifikatorunuzu tanıyın</translation>
 <translation id="4596532552309852907">Brave ayarlarında Təhlükəsiz Baxış və daha çoxunu idarə edin</translation>
 <translation id="8286036467436129157">Giriş</translation>
+<translation id="8287501787477690853">Administrator məxfi məzmun çəkildiyinə görə skrinşot çəkmək və ya çəkiliş etməyi məsləhət görmür.</translation>
 <translation id="8288807391153049143">Sertifikatı göstərin</translation>
 <translation id="8289355894181816810">Bunun mənasını bilmirsinizsə, şəbəkə administratorunuz ilə əlaqə saxlayın.</translation>
 <translation id="8293206222192510085">Əlfəcin əlavə edin</translation>
@@ -2141,12 +2207,13 @@
 <translation id="8364627913115013041">Ayarlanmayıb</translation>
 <translation id="8368027906805972958">Naməlum və ya dəstəklənməyən cihaz (<ph name="DEVICE_ID"/>)</translation>
 <translation id="8368476060205742148">Google Play xidmətləri</translation>
+<translation id="8369073279043109617">Yeni kod əldə edin</translation>
 <translation id="8371889962595521444">Əsas fərdi sertifikatlar</translation>
 <translation id="8374636051559112948">Fərqlənir</translation>
-<translation id="8380167699614421159">Bu sayt inadçı və ya aldadıcı reklamlar göstərir</translation>
 <translation id="8380941800586852976">Təhlükəli</translation>
 <translation id="8381674639488873545">Bu ödənişlər birdəfəlik və ya təkrarlanan ola bilər. Eyni zamanda görünməyə bilər. <ph name="BEGIN_LINK"/>Hər bir halda göstərin<ph name="END_LINK"/></translation>
 <translation id="8390725133630534698"><ph name="ORIGIN_NAME"/> mənbəyindən <ph name="VM_NAME"/> məkanına paylaşım etmək administrator siyasətinə əsasən bloklanıb</translation>
+<translation id="8398790343843005537">Telefonunuzu tapın</translation>
 <translation id="15931837016421186">Brave ayarlarında sinxronlaşdırdığınız məlumatları idarə edin</translation>
 <translation id="8409413588194360210">ödəniş emalçıları</translation>
 <translation id="8412145213513410671">Qəzalar (<ph name="CRASH_COUNT"/>)</translation>
@@ -2165,20 +2232,20 @@
 <translation id="8457125768502047971">Qeyri-müəyyən</translation>
 <translation id="8461694314515752532">Sinxronizasiya parolunuz ilə sinxronizasiya edilmiş datanı şifrələyin</translation>
 <translation id="8466379296835108687">{COUNT,plural, =1{1 kredit kartı}other{# kredit kartı}}</translation>
-<translation id="1778834943115423771"><ph name="MANAGE_GOOGLE_AD_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave Reklam Ayarlarımı idarə edin</translation>
 <translation id="8473863474539038330">Ünvanlar və s.</translation>
 <translation id="8474910779563686872">Tərtibatçı detallarını göstərin</translation>
 <translation id="8479754468255770962">Aşağı soldan ştapel vurun</translation>
 <translation id="5142582872611298328">Brave Hesabınızdan kartları istifadə etmək üçün, Brave'a daxil olun</translation>
 <translation id="8488350697529856933">Tətbiq olunur</translation>
 <translation id="8490137692873530638">Yığıcı 10</translation>
+<translation id="8493948351860045254">Yaddaşı boşaldın</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> hostuna cavab çox uzun çəkdi.</translation>
 <translation id="230699814587342492">Brave Parolları</translation>
 <translation id="8503813439785031346">İstifadəçi adı</translation>
 <translation id="8507227106804027148">Əmr sahəsi</translation>
-<translation id="72434570621750659"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq cari anonim profil üçün bütün anonim pəncərələri bağlayın</translation>
 <translation id="8508648098325802031">Axtarış işarəsi</translation>
 <translation id="8511402995811232419">Kukiləri idarə edin</translation>
+<translation id="8519478486928352883">Administrator ekranda məxfi məzmun olduğuna görə skrinşot çəkmək və ya çəkiliş etməyi məsləhət görmür.</translation>
 <translation id="1426902392270366682">Brave Brave Hesabınızı qorumağa və parolu dəyişməyə kömək edə bilər.</translation>
 <translation id="1215802963054007211">Baxış tarixçəsi, kukilər, keş və daha çoxunu Brave ayarlarında təmizləyin</translation>
 <translation id="8533619373899488139">Bloklanmış URL-ləri və sistem admininin tətbiq etdiyi digər siyasətləri görmək üçün buraya keçin: &lt;strong&gt;chrome://policy&lt;/strong&gt;</translation>
@@ -2187,6 +2254,7 @@
 <translation id="8542014550340843547">Aşağıdan üçlü ştapel vurun</translation>
 <translation id="8543181531796978784"><ph name="BEGIN_ERROR_LINK"/>Aşkarlama problemini bildirə<ph name="END_ERROR_LINK"/> bilərsiniz, təhlükəsizliyiniz ilə bağlı riski başa düşürsünüzsə, <ph name="BEGIN_LINK"/>bu təhlükəli sayta daxil ola bilərsiniz<ph name="END_LINK"/>.</translation>
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{İcazəni sıfırlayın}other{İcazələri sıfırlayın}}</translation>
+<translation id="8555010941760982128">Ödəniş zamanı bu koddan istifadə edin</translation>
 <translation id="8557066899867184262">CVC kartın arxasında yerləşir.</translation>
 <translation id="8558485628462305855">Artırılmış virtual reallıq kontentinə baxmaq üçün ARCore'u güncəlləyin</translation>
 <translation id="8559762987265718583">Cihazınızın tarixi və vaxtı (<ph name="DATE_AND_TIME"/>) yanlış olduğundan, <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> domeninə şəxsi bağlantı yaradıla bilməz.</translation>
@@ -2217,6 +2285,7 @@
 <translation id="868922510921656628">Dəst üzrə səhifələr</translation>
 <translation id="869891660844655955">Bitmə tarixi</translation>
 <translation id="8699041776323235191">HID cihazı</translation>
+<translation id="4959770473590669345">"Brave Dinozavr oyununu oynayın" düyməsi, Enter düyməsinə basaraq Brave'da Dinozavr Qaçış oyununu oynayın</translation>
 <translation id="8703575177326907206"><ph name="DOMAIN"/> domeninə olan bağlantınız şifrələnib.</translation>
 <translation id="8705331520020532516">Seriya Nömrəsi</translation>
 <translation id="8708134712139312373">Saytlar Bluetooth cihazlarına qoşulmaq üçün icazə istəyə bilər</translation>
@@ -2225,6 +2294,7 @@
 <translation id="8718314106902482036">Ödəniş tamamlanmadı</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, təklif edilən axtarış</translation>
 <translation id="8719528812645237045">Yuxarıdan çoxsaylı deşik açın</translation>
+<translation id="8723535127346307411">Doğrulama Kodunu Daxil Edin</translation>
 <translation id="8725066075913043281">Yenidən cəhd edin</translation>
 <translation id="8726549941689275341">Səhifə ölçüsü:</translation>
 <translation id="8730621377337864115">Tamamdır</translation>
@@ -2236,13 +2306,11 @@
 <translation id="8742371904523228557"><ph name="ORIGIN"/> üçün kodunuz: <ph name="ONE_TIME_CODE"/></translation>
 <translation id="874918643257405732">Bu tabı əlfəcinlərə əlavə edin</translation>
 <translation id="8751426954251315517">Sonra yenidən cəhd edin</translation>
-<translation id="6994163263933300131">Brave Pay təklifi əlçatandır</translation>
 <translation id="8759274551635299824">Bu kartın vaxtı bitib</translation>
 <translation id="87601671197631245">Bu sayt vaxtı keçmiş təhlükəsizlik konfiqurasiyasından istifadə edir və bu da sayta göndərilən məlumatınızın (məsələn, parollar, mesajlar və ya kredit kartları) paylaşılmasına səbəb ola bilər.</translation>
 <translation id="8761567432415473239">Brave Təhlükəsiz Brauzinq yenicə <ph name="SITE"/> saytında <ph name="BEGIN_LINK"/>zərərli proqram tapdı<ph name="END_LINK"/>.</translation>
 <translation id="8763927697961133303">USB cihazı</translation>
 <translation id="8766943070169463815">Güvənli ödəniş məlumatları üzrə doğrulama vərəqəsi açılıb</translation>
-<translation id="565908431635579039">İndicə parolunuzu aldadıcı saytda daxil etdiniz. Brave <ph name="WEBSITE_1"/> saytında və bu paroldan istifadə etdiyiniz digər saytlarda saxlanılmış parollarınızı indi yoxlamağı tövsiyə edir.</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8790007591277257123">Silinməni yenidən edin</translation>
 <translation id="5304100303568917877"><ph name="ORG_NAME"/> hesabına girişi itirə və ya kimlik oğurluğu ilə üzləşə bilərsiniz. Brave parollarınızı indi dəyişməyi məsləhət görür.</translation>
@@ -2252,6 +2320,7 @@
 <translation id="8805819170075074995">Siyahı daxiletməsi "<ph name="LANGUAGE_ID"/>": Daxiletmə SpellcheckLanguage siyasətində də əlavə edildiyinə görə qəbul edilmədi.</translation>
 <translation id="8807160976559152894">Hər səhifədən sonra kəsin</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab düyməsi, sonra Enter düyməsinə basaraq Brave ayarlarında Brave'u güncəlləyin</translation>
+<translation id="882338992931677877">Manual Yuva</translation>
 <translation id="883848425547221593">Digər Əlfəcinlər</translation>
 <translation id="884264119367021077">Göndərmə ünvanı</translation>
 <translation id="884923133447025588">Ləğv etmə mexanizmi tapılmadı.</translation>
@@ -2263,6 +2332,7 @@
 <translation id="886872106311861689">B3</translation>
 <translation id="8870413625673593573">Son Qapadılan</translation>
 <translation id="8870494189203302833">Eyni sıra ilə üzü aşağı</translation>
+<translation id="8871553383647848643">Brauzerinizin görünüşünü fərdiləşdirin</translation>
 <translation id="8874824191258364635">Düzgün kart nömrəsi daxil edin</translation>
 <translation id="8891727572606052622">Yanlış proksi rejimi.</translation>
 <translation id="8894794286471754040">Əvvəlcə uzun kənar</translation>
@@ -2310,6 +2380,8 @@
 <translation id="9036306139374661733">Mikrofon icazəsi verilsin?</translation>
 <translation id="9038649477754266430">Səhifələri daha sürətlə yükləmək üçün proqnozlaşdırma xidmətindən istifadə edin</translation>
 <translation id="9039213469156557790">Bundan əlavə, bu səhifəyə təhlükəsiz olmayan başqa resurslar daxildir. Bu resurslar keçid zamanı başqaları tərəfindən görüntülən bilər və hücumçu tərəfindən səhifə rejiminin dəyişdirilməsi üçün modifikasiya edilə bilər.</translation>
+<translation id="6093455506390049122">"Cihazımı Tap" düyməsi, Enter düyməsinə basaraq Brave Hesabında cihazınızı tapma bölməsinə keçin</translation>
+<translation id="9042617223719777575">Geniş Tutum</translation>
 <translation id="9044359186343685026">Toxunuş ID-dən istifadə edin</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9049981332609050619"><ph name="DOMAIN"/> domeninə giriş cəhdi etdiniz, amma server yanlış sertifikat təqdim etdi.</translation>
@@ -2319,6 +2391,7 @@
 <translation id="9065203028668620118">Düzəliş edin</translation>
 <translation id="9065745800631924235">Tarixçədən <ph name="TEXT"/> axtarışı</translation>
 <translation id="9069693763241529744">Artırma tərəfindən blok edildi</translation>
+<translation id="9073799351042754113">Bu sayt üçün təhlükəsizlik xəbərdarlıqlarını deaktiv etməyi seçdiniz.</translation>
 <translation id="9078964945751709336">Ətraflı məlumat tələb olunur</translation>
 <translation id="9080712759204168376">Sifariş Xülasəsi</translation>
 <translation id="9089260154716455634">Qeyri-iş saatları siyasəti:</translation>
@@ -2361,10 +2434,12 @@
 <translation id="9191834167571392248">Aşağı soldan deşik açın</translation>
 <translation id="9199905725844810519">Çap funksiyası bloklanıb</translation>
 <translation id="9205078245616868884">Datanız sinxronizasiya parol sözü ilə şifrələnib. Sinxronizasiyanı başlamaq üçün onu daxil edin.</translation>
+<translation id="920511547311754821">Kodunuzu tapa bilmirsiniz? <ph name="IDS_AUTOFILL_CARD_UNMASK_OTP_INPUT_DIALOG_NEW_CODE_MESSAGE"/></translation>
 <translation id="9207861905230894330">Məqalə əlavə etmək olmadı.</translation>
 <translation id="9213433120051936369">Görünüşü fərdiləşdirin</translation>
 <translation id="2206050430829841793">Tətbiq Brave'un bu sayta təhlükəsiz şəkildə qoşulmasını dayandırır</translation>
 <translation id="9219103736887031265">Şəkillər</translation>
+<translation id="142389341645668510">Brave'u fərdiləşdirin</translation>
 <translation id="933712198907837967">Diners Club</translation>
 <translation id="935608979562296692">FORMU TƏMİZLƏYİN</translation>
 <translation id="936474030629450166">Super-B</translation>
@@ -2397,7 +2472,6 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Brave Pay'dən</translation>
-<translation id="34950557859710859">Brave ayarlarını idarə edin</translation>
 <translation id="8820817407110198400">Əlfəcinlər</translation>
 <translation id="8362995731815961365">Kompüteri quraşdıran şəxs bu saytı blok etməyi seçib.</translation>
 <translation id="4075123085690634698">Yeni Gizli pəncərədə səhifə açın (⇧⌘N)</translation>

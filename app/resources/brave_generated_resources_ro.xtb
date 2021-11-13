@@ -54,6 +54,27 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
+<translation id="6821903322090655051">Opțiunea Brave Rewards este dezactivată</translation>
+<translation id="9184430019924125685">Dați clic aici pentru a afla mai multe</translation>
+<translation id="3849957491997306859">Detectare automată</translation>
+<translation id="8798099450830957504">Prestabilit</translation>
+<translation id="4176463684765177261">Dezactivat</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Câștigați token-uri afișând Brave Ads. Reclamele prezentate sunt alese în funcție de interesele dvs., care sunt deduse din comportamentul de navigare pe internet. Datele cu caracter personal și istoricul navigării rămân întotdeauna în browser.</translation>
+<translation id="1758947220824279023">Numărul maxim de reclame de afișat</translation>
+<translation id="8578912649458880781">Direcționare reclame la nivel de stat</translation>
+<translation id="3678362265519557511">Astfel, Brave vă poate afișa anunțuri destinate special statului dvs. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Contribuție automată</translation>
+<translation id="9132509928968869844">Limita lunară de contribuții automate</translation>
+<translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
+<translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
+<translation id="6248554379744796526">Arată siteuri neverificate în listă</translation>
+<translation id="3241299447027267831">Permiteți contribuțiile pentru videoclipuri</translation>
+<translation id="924777189963477634">Prin activarea contribuțiilor automate, acceptați <ph name="BEGIN_LINK_TOS"/>Termenii de utilizare<ph name="END_LINK_TOS"/> și <ph name="BEGIN_LINK_PP"/>Politica de confidențialitate<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Butoane pentru contribuții</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Pagină filă nouă</translation>
 <translation id="1988804048511540801">Pagina nouă arată</translation>
 <translation id="2970343821770026391">Tablou de bord</translation>
@@ -69,10 +90,12 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8934172355414207733">Privată cu Tor</translation>
 <translation id="1970435562892104727">Aceasta este o fereastră privată cu Tor</translation>
 <translation id="1037341607922068025">Deschideți o fereastră privată cu Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Deschide în Tor</translation>
 <translation id="7643538479215207633">Deschideți folosind IPFS</translation>
 <translation id="3094628781200061820">Publica și recupera fișiere de pe IPFS</translation>
 <translation id="1672270084584211506">Disponibil onion</translation>
+<translation id="406832631167785034">Deschideți folosind adresa .onion</translation>
 <translation id="4901618511712685702">Importați în IPFS</translation>
 <translation id="6794469945030154569">Această pagină</translation>
 <translation id="5037852323412456577">Imagine selectată</translation>
@@ -94,7 +117,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
 <translation id="575838692088926391">Distribuiți dosarul local cu ajutorul IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -121,13 +143,11 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
 <translation id="4078738236287221428">Agresiv</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Dezactivat</translation>
 <translation id="5770288601196774623">Numai pe mai multe site-uri</translation>
 <translation id="3587482841069643663">Toate</translation>
 <translation id="5533533363827555308">Strict, poate sparge site-uri</translation>
 <translation id="8792121506918889955">Politică de manipulare IP WebRTC</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
-<translation id="8798099450830957504">Prestabilit</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
@@ -174,6 +194,11 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2339730291919608488">Părăsire lanț de sincronizare</translation>
 <translation id="115699408012835975">Dacă resetați sincronizarea, va trebui să reintroduceți un cod de sincronizare de la alt dispozitiv pentru a vă sincroniza cu acesta. Sigur doriți să continuați?</translation>
 <translation id="6092564993102418148">Sigur doriți să eliminați dispozitivul selectat din lanțul de sincronizare?</translation>
+<translation id="2936582902048232286">Avertisment: astfel, veți distribui datele dvs. Brave (posibil, inclusiv parolele) dispozitivului care a generat aceste cuvinte-cod.
+
+Verificați încă o dată dacă aceste cuvinte-cod au fost generate de un dispozitiv deținut de dvs.
+
+Sigur doriți să faceți acest lucru?</translation>
 <translation id="3396347744975515056">S-a făcut upgrade pentru Brave Sync și necesită configurare</translation>
 <translation id="7473245612074035141">Începeți configurarea</translation>
 <translation id="3411013544209536575">Plăți ajutor</translation>
@@ -187,8 +212,11 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="7701040980221191251">Niciuna</translation>
-<translation id="1274962333945373242">Extensia portofelelor crypto este perimată</translation>
+<translation id="1274962333945373242">Portofele de criptomonede (perimat)</translation>
+<translation id="3695088618483091287">Brave Wallet (se preferă extensiile)</translation>
 <translation id="9131889008937672866">Portofelul implicit pentru criptomonede</translation>
+<translation id="4718664830805652430">Moneda de bază implicită</translation>
+<translation id="7992507032049865603">Criptomoneda de bază implicită</translation>
 <translation id="1834467296210148203">Afișați pictograma Brave Wallet în bara de instrumente</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
@@ -207,6 +235,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6476061084931271248">Reporniți nodul pentru a aplica modificările</translation>
 <translation id="3754226427671882382">Reporniți nodul</translation>
 <translation id="949667118776341807">Rotire</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Această denumire nu este validă</translation>
 <translation id="6758961763875471084">Modificați lista de perechi</translation>
 <translation id="1295874070797049002">Exportare cheie</translation>
@@ -217,6 +246,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="616058968889448209">Eroare la lansarea serviciului IPFS. Sunt disponibile informații suplimentare în <ph name="BEGIN_LINK"/>pagina de diagnosticare<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Eroare la importarea cheii '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Eroare la exportarea cheii '<ph name="KEY_NAME"/>'</translation>
+<translation id="8860039076160511438">Resetați portofelul</translation>
+<translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="1426410128494586442">Da</translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="3654980960391973513">Generare</translation>
 <translation id="5531501313997312487">Start nod</translation>
@@ -358,6 +390,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4235920711083356755">Afișează butonul VPN</translation>
 <translation id="4070612712151038707">Afișează butonul VPN în bara de instrumente</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Activare/dezactivare VPN</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="2345974803401546682">Despre modulul VPN Brave</translation>
 <translation id="4378551569595875038">Se stabilește conexiunea...</translation>
@@ -383,4 +416,31 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
 <translation id="2273851479262317744">Setați Brave ca browser implicit</translation>
 <translation id="8581710194025054669">Pentru a beneficia de maximum de confidențialitate online, setați Brave ca browser implicit pe computer. Când browserul implicit este Brave, orice link accesat se va deschide utilizându-se protecțiile Brave în materie de confidențialitate.</translation>
+<translation id="1241283133946520352">Rețele</translation>
+<translation id="8205945804087322170">Adăugați o rețea nouă</translation>
+<translation id="2156993118928861787">Adresă nevalidă</translation>
+<translation id="2653659639078652383">Trimite</translation>
+<translation id="2556708692502648323">Rețele portofele</translation>
+<translation id="1330032157352961756">Identificatorul noului lanț</translation>
+<translation id="9053905035135220650">Un șir hexazecimal cu prefix 0x</translation>
+<translation id="726121047592132939">Numele noului lanț</translation>
+<translation id="1034112277864078119">Introduceți numele lanțului</translation>
+<translation id="4672314527143443556">Numele monedei lanțului</translation>
+<translation id="4652114030688989556">Introduceți numele monedei</translation>
+<translation id="1079960017149736097">Simbolul monedei lanțului</translation>
+<translation id="1288105009659846362">Introduceți simbolul monedei</translation>
+<translation id="665660671251623018">Zecimalele monedei lanțului</translation>
+<translation id="2978054488731497946">Introduceți zecimalele monedei</translation>
+<translation id="2727514928168763432">Adrese URL RPC</translation>
+<translation id="7059127752542505809">Introduceți URL</translation>
+<translation id="3047726704186619366">Adrese URL pictograme</translation>
+<translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
+<translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
+<translation id="4514843126085243862">Format incorect; identificatorul lanțului este un șir hexazecimal cu prefix 0x</translation>
+<translation id="8325036459845654666">Această rețea este adăugată deja</translation>
+<translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
+<translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>
+<translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
+<translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
+<translation id="2618193846561624884">Doriți să actualizați rețeaua existentă?</translation>
 </translationbundle>

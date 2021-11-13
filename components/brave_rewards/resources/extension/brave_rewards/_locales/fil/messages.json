@@ -238,10 +238,6 @@
     "message": "Magdagdag ng Mga Pondo",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Matuto Pa",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Kumonekta ulit",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Mayroon kang mga nakabinbing tip dahil sa hindi sapat na pondo",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Hindi na-link ang wallet",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Hindi ma-verify ang iyong wallet dahil naabot mo na ang maximum na limitasyon sa na-verify na device.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Mukhang na-verify na ang iyong Brave Rewards wallet gamit ang ibang $provider$ account. Pakisubukang mag-verify ulit gamit ang iyong nakaraang account.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Hindi pa sinusuportahan ang BAT sa iyong rehiyon sa Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Kasalukuyang naka-block ang iyong account sa Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Pending pa rin ang iyong account sa Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Kasalukuyang restricted ang iyong account sa Uphold.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Sa pamamagitan ng pag-click, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$. I-disable anumang oras sa Mga Setting.",
+    "message": "Sa pag-enable nito, sang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "I-on ang Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Sa pamamagitan ng pag-on ng Brave Ads, sumasang-ayon ka sa $tos_link_begin$Mga Tuntunin ng Serbisyo$tos_link_end$ at $pp_link_begin$Patakaran sa Privacy$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Pwede ka nang magsimula ng libreng tawag",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Mag-click kahit saan sa screen para magpatuloy sa Brave Talk.",
+    "message": "Mag-click o mag-tap saanman sa screen para ipagpatuloy ang Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

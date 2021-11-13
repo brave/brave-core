@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
 <translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
-<translation id="5510618543889994434">Cho phép đóng góp vào vidoe</translation>
+<translation id="5510618543889994434">Cho phép đóng góp cho video</translation>
 <translation id="8933202740471878108">1 lượt truy cập</translation>
 <translation id="354797634123275103">5 lượt truy cập</translation>
 <translation id="3583700907990488238">10 lượt xem</translation>
@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Đã nhấp</translation>
 <translation id="7119308337584989771">Đã loại bỏ</translation>
 <translation id="6805660603861526473">Đã xem</translation>
+<translation id="4014166694178311757">Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.</translation>
+<translation id="1221593978088944142">Lỗi: Đã đạt đến giới hạn của thiết bị</translation>
 <translation id="3113653894794167793">Rất tiếc, đã xảy ra sự cố khi xử lý yêu cầu của bạn, xin vui lòng thử lại.</translation>
-<translation id="8832187864682447273">Bạn cần một ví đã được xác minh để đăng nhập</translation>
-<translation id="2607420597216860026">Vui lòng thử lại sau khi bạn đã hoàn tất xác minh mã trên <ph name="PROVIDER"/>.</translation>
+<translation id="2607420597216860026">Vui lòng thử lại sau khi bạn đã hoàn thành việc xác thực ID trên <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Lỗi: Bạn cần ví được xác thực để đăng nhập</translation>
 <translation id="1501075228659004450">Rất tiếc, có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản <ph name="PROVIDER"/> khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.</translation>
 <translation id="5111921830714291902">Lỗi: Tài khoản khác</translation>
+<translation id="5382684862562314222">BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.</translation>
+<translation id="9074594632540931067">Lỗi: BAT không khả dụng</translation>
+<translation id="413458922997276130">Tài khoản của bạn tại Uphold hiện đang bị khóa.</translation>
+<translation id="3579959767665130790">Lỗi: Tài khoản bị chặn</translation>
+<translation id="819370426249314592">Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.</translation>
+<translation id="4530453398914580957">Lỗi: Treo tài khoản</translation>
+<translation id="2388470740942086608">Tài khoản của bạn tại Uphold hiện đang bị hạn chế.</translation>
+<translation id="3605236342612716051">Lỗi: Tài khoản bị hạn chế</translation>
 <translation id="1737873393693460829">Với việc bật [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
+<translation id="901298512318791028">Khoản thanh toán <ph name="AMOUNT"/> của bạn sẽ bắt đầu xử lý sau <ph name="DAYS"/> nữa.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Lưu ý: <ph name="BOLD_END"/>Có thể mất một vài ngày để xử lý việc thanh toán và để BAT của bạn đến nơi.</translation>
 <translation id="4672975606583962967">Chọn một dịch vụ ví</translation>
 <translation id="1815503044492647974">Chọn một đối tác ví giám hộ. Nếu bạn đã có một tài khoản, bạn sẽ được yêu cầu đăng nhập để kết nối.</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">ID người dùng</translation>
 <translation id="4235360514405112390">Hợp lệ</translation>
 <translation id="3902084968737576005">Địa chỉ ví:</translation>
+<translation id="3653417592104122757">Lịch sử ví</translation>
 <translation id="2326487656644542536">Thông tin ví</translation>
 <translation id="3506182299017414175">Ví chưa được tạo</translation>
 <translation id="8559420016582377654">Mã thanh toán của ví:</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">Nhập khoá khôi phục của bạn hoặc</translation>
 <translation id="1209382772199769572">Hãy sao lưu ví của bạn trước khi thay thế. Nếu không bạn sẽ mất khoản tiền, [[funds]], trong ví hiện tại của bạn.</translation>
 <translation id="5423214929210538027">Bạn có chắc chắn muốn đặt lại Ví Phần thưởng của mình không?</translation>
+<translation id="4749947664556704604">Khoản <ph name="BAT_AMOUNT"/> và các dữ liệu Phần thưởng khác sẽ bị mất vĩnh viễn nếu bạn đặt lại ví của mình. Vui lòng bảo đảm rằng bạn đã <ph name="LINK_BEGIN"/>xác thực ví của mình<ph name="LINK_END"/> để bạn có thể giữ lại BAT của mình.</translation>
 <translation id="2028613172174411919">Dữ liệu Phần thưởng của bạn sẽ bị mất vĩnh viễn nếu bạn đặt lại ví của mình.</translation>
 <translation id="4914597931214386232">Khoản thưởng Token Đã nhận</translation>
 <translation id="3494964159182650590">Tóm tắt Tiền thưởng</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">Đầu tư chỉ với $1 vào các cổ phiếu và quỹ hoán đổi danh mục phổ biến như AAPL, TSLA hoặc AMZN</translation>
 <translation id="3787061634640932557">Chỉnh sửa Thẻ</translation>
 <translation id="5977237145327845546">Bắt đầu một cuộc gọi video riêng tư với bạn bè và đồng nghiệp của bạn.</translation>
-<translation id="5850325887346946383">Bắt đầu cuộc gọi video</translation>
+<translation id="8863928195533744356">Bắt đầu gọi</translation>
 <translation id="3651550649176056334">Về dữ liệu của bạn</translation>
 <translation id="223536150967420869">Mua</translation>
 <translation id="5110244215256675209">Mua Tiền điện tử</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">Xem tất cả</translation>
 <translation id="3026978804849658576">Xem sao kê</translation>
 <translation id="8494748383523030337">Số dư của bạn</translation>
+<translation id="3343165035032571678">Bạn đã kiếm được <ph name="AMOUNT"/> từ việc xem Quảng cáo Riêng tư Brave!</translation>
+<translation id="6618415862402597254">Doanh thu quảng cáo nhận được</translation>
+<translation id="5981646694027725752">Nhận doanh thu</translation>
+<translation id="2556441076129789027">Nhận token</translation>
+<translation id="5544777623605368410">Doanh thu</translation>
+<translation id="3273637494083639780">Các token mà bạn kiếm được trong tháng này sẽ bắt đầu xử lý vào <ph name="DATE"/>.</translation>
+<translation id="1029300693989825319">Điều này có thể khác nhau dựa vào sự biến động của thị trường.</translation>
+<translation id="8334559352278209120">Cho</translation>
+<translation id="3903419925307046908">Kiếm token và báo đáp</translation>
+<translation id="244362569344671266">Kiếm token bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung.</translation>
+<translation id="5095252080770652994">Tiến độ</translation>
+<translation id="6278643716658443228">Cài đặt Phần thưởng</translation>
+<translation id="6777169449483742979">Bạn đang kiếm được token khi xem hình ảnh được tài trợ này.</translation>
+<translation id="5486114327664215175">Kiếm token khi xem hình ảnh này và ủng hộ các nhà sáng tạo nội dung.</translation>
+<translation id="2940863921746574646">Số dư token</translation>
+<translation id="1714906256929297600">Sử dụng các token khuyến mãi của bạn để đóng góp cho các nhà sáng tạo nội dung trước khi chúng hết hạn!</translation>
+<translation id="2426048501007152001">Token khả dụng</translation>
 <translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
 <translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
 <translation id="1148827340205946630">Người dùng đã từ chối yêu cầu.</translation>
 <translation id="2403819048476450281">Thông số không hợp lệ.</translation>
+<translation id="3955144560853195652">Chuỗi <ph name="VALUE"/> chưa được thêm vào</translation>
 <translation id="9161147058107529840">Mong đợi nhận một tham số đối tượng.</translation>
 <translation id="1875861420974447980">Mã chuỗi này hiện đang được sử dụng</translation>
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">Không thể chuyển đổi dữ liệu giao dịch</translation>
 <translation id="3829038878925630240">Dữ liệu giao dịch 'from' phải được chỉ định</translation>
 <translation id="4732386285392573809">Không lấy được giá xăng cho giao dịch</translation>
-<translation id="7619826778671319444">Không lấy được giới hạn xăng cho giao dịch</translation>
 <translation id="4232775951515678071">Không lấy được loại cho giao dịch</translation>
-<translation id="7631054302129692654">Không lấy được ước tính xăng cho giao dịch EIP-1559</translation>
+<translation id="2080935885647755539">Không lấy được phí xăng cho giao dịch EIP-1559</translation>
+<translation id="4843814354611030845">Người dùng đã từ chối giao dịch này</translation>
+<translation id="1462494615260983714">Lỗi khi xử lý giao dịch</translation>
+<translation id="4886059598718763020">'<ph name="VALUE"/>' không được phép ký tin nhắn</translation>
 <translation id="4958950550253325418">Ứng dụng Defi</translation>
 <translation id="735961408871282410">Chợ NFT</translation>
 <translation id="7740287852186792672">Kết quả tìm kiếm</translation>
@@ -833,13 +866,17 @@
 <translation id="2267753748892043616">Thêm tài khoản</translation>
 <translation id="1483493594462132177">Gửi</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">không hỗ trợ</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> không được hỗ trợ</translation>
+<translation id="1191686659164947414">Giao dịch có thể được chạy trước</translation>
+<translation id="632241521608275119">Tỷ lệ trượt giá</translation>
+<translation id="4500473291496079954">Hết hạn trong</translation>
+<translation id="8093033115658137576">Địa chỉ hoặc URL của 0x</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
 <translation id="8303434745767477417">Nắm giữ tài sản mã hóa trong lòng bàn tay. Theo dõi hiệu suất danh mục và tương tác với các ứng dụng phi tập trung web 3. Giao dịch, đầu tư, vay và cho vay với DeFi. Tất cả ngay từ trình duyệt riêng tư Brave. Không yêu cầu phần mở rộng, tải xuống.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
-<translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy giữ nó ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
+<translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ, mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy lưu giữ cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="5024543173656851695">Tôi hiểu rằng nếu tôi mất các từ khôi phục, tôi sẽ không thể truy cập vào ví tiền điện tử của mình.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="5077747669435508720">Ghi lại hoặc sao chép những từ này theo thứ tự chính xác được hiển thị bên dưới và lưu chúng ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">Bảo vệ an toàn tài sản tiền mã hóa của bạn bằng mật khẩu</translation>
 <translation id="6901073872645365201">Mật khẩu phải dài ít nhất 7 ký tự và chứa ít nhất một con số và một ký tự đặc biệt.</translation>
 <translation id="6657585470893396449">Mật khẩu</translation>
-<translation id="692381016487372902">Gõ lại mật khẩu</translation>
-<translation id="3527905866577245691">Xác thực mật khẩu không khớp</translation>
+<translation id="5486261815000869482">Xác nhận mật khẩu</translation>
+<translation id="467510802200863975">Mật khẩu không khớp</translation>
 <translation id="5168349973342709369">Nhập mật khẩu để mở khóa ví</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="5045550434625856497">Mật khẩu sai</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">Tài sản</translation>
 <translation id="2236507293802791911">Tài sản nhìn thấy được</translation>
 <translation id="7525067979554623046">Tạo</translation>
+<translation id="4771176409524282426">Tạo tài khoản</translation>
 <translation id="4324198334837993695">hardware</translation>
 <translation id="3067168166931605141">Tên tài khoản</translation>
 <translation id="1136772623587250243">Dán khóa riêng từ từ khay nhớ tạm</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">Không có tệp nào được chọn</translation>
 <translation id="5891811606602061966">Không nhập được tài khoản, vui lòng hãy thử lại.</translation>
 <translation id="5051929972046200722">Chọn thiết bị ví phần cứng của bạn</translation>
-<translation id="6932355307691676490">Kết nối</translation>
-<translation id="4513956488935671725">ví của bạn trực tiếp với máy tính của bạn.</translation>
+<translation id="5745936663807461565">Kết nối ví <ph name="HARDWARE_DEVICE"/> của bạn trực tiếp với máy tính.</translation>
 <translation id="5041211872515579638">Mở khóa thiết bị của bạn và chọn ứng dụng Ethereum.</translation>
+<translation id="6892232036314454524">Lỗi này có thể xảy ra khi mở sai ứng dụng trên thiết bị Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Connecting...</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">Tên token</translation>
 <translation id="4432966365400169165">Địa chỉ hợp đồng token</translation>
 <translation id="4092152169181928870">Ký hiệu token</translation>
-<translation id="871696868578199698">Số thập phân chính xác</translation>
-<translation id="6637540491667802882">làm token tùy chỉnh</translation>
+<translation id="4351811224047421378">Số thập phân chính xác</translation>
+<translation id="4982060163914604175">Thêm <ph name="CONTRACT_ADDRESS"/> làm token tùy chỉnh</translation>
 <translation id="7978047524114351365">Không có tài sản nào được đặt tên</translation>
 <translation id="9040455159722359521">Tìm kiếm tài sản hoặc địa chỉ hợp đồng</translation>
 <translation id="6018178824574796106">Không thêm được token tùy chỉnh, vui lòng thử lại.</translation>
+<translation id="547122651977318828">ID token (chỉ dành cho ERC721)</translation>
+<translation id="7544552854944350190">Cần có ID token</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
 <translation id="2902856457593699108">Hiển thị khóa</translation>
 <translation id="8033497299373164724">Ẩn khóa</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">Tất cả</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Kiểm trang mạng</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">Giới hạn</translation>
 <translation id="8569380433211549748">Giá bằng</translation>
 <translation id="2490428413101944234">Kiểm tra vòi nước</translation>
-<translation id="6082785102488657349">Nhận Ether từ vòi nước cho</translation>
+<translation id="3352959425838279177">Nhận Ether từ vòi nước cho <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">Continue to Wyre</translation>
 <translation id="2581671693710952401">Lấy Ether</translation>
 <translation id="8009571545960303544">Chữ ký của bạn đang được yêu cầu</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">Tự chịu trách nhiệm khi ký</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="3586752056660754651">Ký nhận</translation>
-<translation id="7065157926159745595">Cho phép ứng dụng này sử dụng</translation>
+<translation id="9032898664193335413">Cho phép ứng dụng này chi tiêu <ph name="TOKEN_SYMBOL"/>của bạn?</translation>
+<translation id="854606191596163710">Với việc cấp quyền này, bạn đang cho phép ứng dụng này rút <ph name="VALUE"/> của bạn và tự động hóa các giao dịch cho bạn.</translation>
 <translation id="8786100550345425552">Sửa quyền</translation>
 <translation id="7710469167917867539">Phí giao dịch</translation>
 <translation id="9065203028668620118">Chỉnh sửa</translation>
 <translation id="7968982339740310781">Xem chi tiết</translation>
 <translation id="6452181791372256707">Từ chối</translation>
+<translation id="8904889345035514635">Trợ cấp hiện tại</translation>
+<translation id="7073918978411974168">Trợ cấp đề xuất</translation>
 <translation id="4717431746210146708">Cho phép trang web này thêm mạng?</translation>
 <translation id="2521480044079508357">Điều này sẽ cho phép sử dụng mạng này bên trong Ví Brave.</translation>
 <translation id="1982257600591932657">Tên mạng</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Ký hiệu tiền tệ</translation>
 <translation id="4693057234255364395">URL trình khám phá khối</translation>
+<translation id="1060221736464994328">Cho phép trang này chuyển đổi mạng?</translation>
+<translation id="2478788592457735063">Điều này sẽ chuyển đổi mạng sang một mạng đã thêm trước đó.</translation>
+<translation id="8756686998207163764">Chuyển đổi mạng</translation>
 <translation id="3948067511324628726">Giá xăng</translation>
 <translation id="7163997622278957886">Giá thầu</translation>
 <translation id="1074360622426001342">Số tiền + xăng</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">tiếp theo</translation>
 <translation id="793994607260936590">đầu tiên</translation>
 <translation id="4709524402122994378">transactions</translation>
+<translation id="523862956770478816">Quyền trang</translation>
+<translation id="1575262454612599115">Đã kết nối <ph name="NUMBER_OF_ACCOUNTS"/> tài khoản</translation>
 <translation id="4460220693591349571">LOẠI CHỨC NĂNG</translation>
 <translation id="838933475572692615">DỮ LIỆU HEX</translation>
 <translation id="2240831799756994975">BYTE</translation>
 <translation id="4874303883488468190">Chọn tài khoản</translation>
-<translation id="4015195974325151180">Xem địa chỉ của</translation>
-<translation id="3587259018193837508">các tài khoản được phép của bạn (bắt buộc)</translation>
+<translation id="2018472018751735678">Xem địa chỉ của các tài khoản được phép của bạn (bắt buộc)</translation>
 <translation id="7029403458170657879">Kết nối với Ví Brave</translation>
 <translation id="7982184974053636367">Yêu cầu một mật khẩu bảo mật hơn cho Ví Brave</translation>
 <translation id="2372897697869224590">Đặt mật khẩu Ví Brave</translation>
 <translation id="7739762330714405363">Sử dụng mật khẩu giống nhau</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Nhập từ</translation>
-<translation id="4428111176561355185">Nhập</translation>
-<translation id="8929587248006013051">tài khoản MetaMask của bạn vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
+<translation id="7102907656918333773">Nhập từ <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Nhập từ tài khoản <ph name="WALLET_EXTENSION"/> của bạn vào Ví Brave. Tận hưởng cách thức quản lý tài sản mã hóa và tương tác với các ứng dụng phi tập trung web 3 nhanh hơn và bảo mật hơn.</translation>
 <translation id="4237840336687249184">Mật khẩu MetaMask</translation>
 <translation id="2381605201035323535">ví tiền mã hóa</translation>
 <translation id="2770851145415891830">Đã phát hiện ví tiền mã hóa hiện hành</translation>
 <translation id="4938145712652668388">Khi bạn nhấp vào "Bắt đầu" bạn sẽ nhập Ví tiền mã hóa trước đây vào trải nghiệm Ví Brave mới và tận hưởng tất cả các lợi ích được nêu ra ở trên. Hãy dùng thử và cho chúng tôi biết suy nghĩ của bạn!</translation>
-<translation id="913613743605881268">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần di chuyển đến Trình duyệt Brave</translation>
-<translation id="5886242758142314994">và thay đổi tùy chọn mặc định lại thành Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
+<translation id="2237759620789871865">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần chuyển đến Trình duyệt Brave <ph name="LINK_BEFORE"/>Cài đặt<ph name="LINK_AFTER"/> và thay đổi mặc định về Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
 <translation id="3301259443293676544">Nhập mật khẩu ví tiền mã hóa hiện tại của bạn để nhập vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
 <translation id="9099900965604225657">Mật khẩu ví tiền mã hóa</translation>
 <translation id="4020495774166914146">Tôi bị mất mật khẩu và cụm từ khôi phục, hãy tạo một ví mới.</translation>
-<translation id="480319080797177742">đã kết nối</translation>
-<translation id="4203566092423620442">đã ngắt kết nối</translation>
+<translation id="6344138931392227467">Đã kết nối <ph name="DEVICE_NAME"/></translation>
+<translation id="7051244143160304048">Đã ngắt kết nối <ph name="DEVICE_NAME"/></translation>
 <translation id="5317781812114905957">Hướng dẫn</translation>
-<translation id="1952715382071350669">Ví phần cứng yêu cầu xác nhận giao dịch.</translation>
+<translation id="1178198982208000092">Kết nối <ph name="DEVICE_NAME"/> của bạn</translation>
+<translation id="3301417531330431881">Ví phần cứng yêu cầu xác nhận giao dịch. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">đã gửi</translation>
 <translation id="5013754027092416509">đã nhận</translation>
 <translation id="5867988533873716616">URL trình khám phá khối không khả dụng.</translation>
 <translation id="4255623233927788178">Xem trên trình khám phá khối</translation>
 <translation id="6383204195803840504">Các giao dịch sẽ xuất hiện ở đây</translation>
+<translation id="2916401020782528840">Không tìm thấy giao dịch</translation>
 <translation id="8941851657764077659">Phí ưu tiên tối đa</translation>
 <translation id="8047527352810290817">Sửa xăng</translation>
 <translation id="9091334651803050473">Mặc dù không đây không phải là một sự bảo đảm, người đào tiền nhiều khả năng sẽ ưu tiên giao dịch của bạn nếu bạn trả một khoản phí cao hơn.</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Đặt tùy chỉnh</translation>
 <translation id="7400927223938424379">Đặt gợi ý</translation>
+<translation id="1599636444563952897">Quyền giới hạn chi tiêu cho phép <ph name="SITE_ORIGIN"/> rút và chi tiêu tối đa số tiền sau:</translation>
+<translation id="4512871563176965522">Trợ cấp tùy chỉnh</translation>
+<translation id="749944179568745958">Không phải là địa chỉ ETH hợp lệ</translation>
+<translation id="882486206986535424">Không phải là địa chỉ hợp lệ</translation>
+<translation id="6825399159373612149">Tên miền <ph name="DOMAIN_NAME"/> chưa được đăng ký</translation>
+<translation id="862585889767884824">of</translation>
+<translation id="9106265941552476098">Từ chối <ph name="TRANSACTION_LENGTH"/> giao dịch</translation>
 <translation id="1118876217803190221">Số dư không đủ</translation>
 <translation id="275990379543116961">Không đủ tiền mua xăng</translation>
 <translation id="3292453499915466604">Thanh khoản không đủ</translation>
 <translation id="805808215102934711">Kích hoạt <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
-<translation id="6687008710463927359">Tài khoản <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Tài khoản <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Ví cần được mở khóa trước</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> không phải là địa chỉ hợp lệ</translation>
+<translation id="7340805872138998391">Không thể mở khóa thiết bị, hãy thử kết nối lại</translation>
+<translation id="1984410139271779110">Lỗi nội bộ, lược đồ không xác định</translation>
+<translation id="8682200134223578011">đã phê duyệt</translation>
+<translation id="4674380028960132654">Ledger: Chữ ký không khớp với đúng địa chỉ</translation>
+<translation id="3183932890629254743">Không tìm thấy tài khoản phần cứng</translation>
+<translation id="4287068151777838754">Dữ liệu JSON không được kỳ vọng</translation>
+<translation id="3282936527763045737">Mật khẩu không đúng</translation>
+<translation id="1119447706177454957">Lỗi nội bộ</translation>
+<translation id="3327639091470204775">Lỗi nội bộ, không thể tạo cầu iframe</translation>
+<translation id="6672377693827764095">Lỗi nội bộ, không thể lấy tài khoản</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">URI Proxy Tor</translation>
 <translation id="1671503397662036257">Trạng thái Kết nối Tor</translation>
 <translation id="6024292492796847324">Quá trình Khởi tạo Tor</translation>
+<translation id="1742469581923031760">Đang kết nối…</translation>
+<translation id="1287487756047817908">Đang ngắt kết nối…</translation>
+<translation id="2325196879156848326">Kết nối không thành công</translation>
+<translation id="745054660363064771">Không thể kết nối với máy chủ</translation>
+<translation id="3936826714240735937">Chọn một máy chủ khác</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> không thể kết nối với máy chủ <ph name="REGION_NAME"/>. Bạn có thể thử lại hoặc chọn một máy chủ khác</translation>
+<translation id="1664949222596149258">Mua với giá <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">Đã mua VPN?</translation>
+<translation id="8814357473522731680">Được hỗ trợ bởi</translation>
+<translation id="5747552184818312860">Hết hạn</translation>
+<translation id="1691256669639196606">Quản lý đăng ký</translation>
+<translation id="434523916398030617">Liên hệ hỗ trợ kỹ thuật</translation>
+<translation id="1116694919640316211">About</translation>
+<translation id="8670386189340362926">Chặn trình theo dõi &amp; quảng cáo trên khắp tất cả các ứng dụng</translation>
+<translation id="4860763498907927955">Bảo vệ bạn trước các kết nối mạng không mong muốn</translation>
+<translation id="3181339219453722970">Chọn vị trí VPN của bạn</translation>
+<translation id="1751947227857853925">Nhanh và không giới hạn lên đến 100 Mbps</translation>
+<translation id="1400240082805528049">Hỗ trợ 24/7</translation>
 <translation id="7586151660465233733">Thêm thị trường trên <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Xem thị trường và giao dịch tiền điện tử trên FTX</translation>
 <translation id="5963745988819586370">Thị trường</translation>

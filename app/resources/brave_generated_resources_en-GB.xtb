@@ -54,6 +54,27 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1144810021918451336">Does not protect you against dangerous websites, downloads and extensions.</translation>
 <translation id="6285118765755298263">Index other search engines</translation>
 <translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
+<translation id="6821903322090655051">Brave Rewards are disabled</translation>
+<translation id="9184430019924125685">Click here to learn more</translation>
+<translation id="3849957491997306859">Auto-detected</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="4176463684765177261">Disabled</translation>
+<translation id="4851215387785619212">Brave private ads</translation>
+<translation id="7808122468353671181">Earn tokens by viewing Brave ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
+<translation id="1758947220824279023">Maximum number of ads to display</translation>
+<translation id="8578912649458880781">Area-level ad targeting</translation>
+<translation id="3678362265519557511">This allows Brave to show you ads meant specifically for your area. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Contribute</translation>
+<translation id="9132509928968869844">Monthly auto-contribution limit</translation>
+<translation id="7286722244752781970">Minimum page time before logging a visit</translation>
+<translation id="4424486208397124985">Minimum visits for publisher relevancy</translation>
+<translation id="6248554379744796526">Show non-verified sites in list</translation>
+<translation id="3241299447027267831">Allow contributions to videos</translation>
+<translation id="924777189963477634">By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS"/>Terms of Service<ph name="END_LINK_TOS"/> and <ph name="BEGIN_LINK_PP"/>Privacy Policy<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Tip buttons</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">New tab page</translation>
 <translation id="1988804048511540801">New tab page shows</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -69,10 +90,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8934172355414207733">Private with Tor</translation>
 <translation id="1970435562892104727">This is a private window with Tor</translation>
 <translation id="1037341607922068025">Open Private Window with Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Open in Tor</translation>
 <translation id="7643538479215207633">Open using IPFS</translation>
 <translation id="3094628781200061820">Publish and retrieve files from IPFS</translation>
 <translation id="1672270084584211506">Onion Available</translation>
+<translation id="406832631167785034">Open using .onion address</translation>
 <translation id="4901618511712685702">Import to IPFS</translation>
 <translation id="6794469945030154569">This page</translation>
 <translation id="5037852323412456577">Selected image</translation>
@@ -81,6 +104,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7895302206188277628">Linked content</translation>
 <translation id="3654831858282189202">Publish with IPNS key</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Import Selected Text to IPFS</translation>
 <translation id="6925604404524625582">Import and copy link to IPFS Snapshot</translation>
 <translation id="1434416574322382019">New Private Window with Tor</translation>
 <translation id="4703780849509456860">Open Link in Private Window with Tor</translation>
@@ -94,7 +118,6 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="2638041073279639246">Open link in private window with Tor</translation>
 <translation id="3425600262621021599">Open link in Brave private window with Tor</translation>
 <translation id="575838692088926391">Share local folder using IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads Service</translation>
 <translation id="7924918279836988121">Bat Ledger Service</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -121,13 +144,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="958971637207126733">Allow LinkedIn embedded posts</translation>
 <translation id="4078738236287221428">Aggressive</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Disabled</translation>
 <translation id="5770288601196774623">Only cross-site</translation>
 <translation id="3587482841069643663">All</translation>
 <translation id="5533533363827555308">Strict, may break sites</translation>
 <translation id="8792121506918889955">WebRTC IP handling policy</translation>
 <translation id="6165508094623778733">Learn more</translation>
-<translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
@@ -174,6 +195,11 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="2339730291919608488">Leave Sync Chain</translation>
 <translation id="115699408012835975">If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?</translation>
 <translation id="6092564993102418148">Are you sure you want to remove the selected device from the sync chain?</translation>
+<translation id="2936582902048232286">Warning: this will share your Brave data, including potentially your passwords, with the device that generated these code words.
+
+Please double check that these code words were generated by a device that you own.
+
+Are you sure you want to do this?</translation>
 <translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
 <translation id="7473245612074035141">Begin Setup</translation>
 <translation id="3411013544209536575">Help tips</translation>
@@ -187,13 +213,17 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Ask</translation>
 <translation id="7701040980221191251">None</translation>
-<translation id="1274962333945373242">Deprecated Crypto Wallets extension</translation>
+<translation id="1274962333945373242">Crypto wallets (deprecated)</translation>
+<translation id="3695088618483091287">Brave wallet (prefer extensions)</translation>
 <translation id="9131889008937672866">Default cryptocurrency wallet</translation>
+<translation id="4718664830805652430">Default base currency</translation>
+<translation id="7992507032049865603">Default base cryptocurrency</translation>
 <translation id="1834467296210148203">Show Brave wallet icon on toolbar</translation>
 <translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
 <translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="5927916530277631319">Method to resolve Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/> about DNS over HTTPS and Ethereum privacy considerations.</translation>
 <translation id="5248318250177143470">Method to resolve Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Set up your IPNS keys</translation>
 <translation id="951216659045543447">Sign content by the corresponding private key and publish it to IPNS</translation>
@@ -207,6 +237,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="6476061084931271248">Restart node to apply changes</translation>
 <translation id="3754226427671882382">Restart node</translation>
 <translation id="949667118776341807">Rotate</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">This name is not valid</translation>
 <translation id="6758961763875471084">Modify the peers list</translation>
 <translation id="1295874070797049002">Export key</translation>
@@ -217,6 +248,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="616058968889448209">IPFS service launch error, more information is available on the <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' key import failed</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
+<translation id="8860039076160511438">Reset wallet</translation>
+<translation id="6369495274982305511">Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
+<translation id="1426410128494586442">Yes</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Generate</translation>
 <translation id="5531501313997312487">Start node</translation>
@@ -224,6 +258,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Local node</translation>
 <translation id="4927734062756955434">IPFS public gateway address</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
 <translation id="8425213833346101688">Change</translation>
 <translation id="557281710253742286">Set IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -358,6 +393,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4235920711083356755">Show VPN button</translation>
 <translation id="4070612712151038707">Shows the VPN button in the toolbar</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Toggle VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">About Brave VPN</translation>
 <translation id="4378551569595875038">Connecting...</translation>
@@ -383,4 +419,31 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="2808630562319398131">Reset Brave Rewards data ...</translation>
 <translation id="2273851479262317744">Set Brave as default browser</translation>
 <translation id="8581710194025054669">To ensure the best privacy online, consider setting Brave as the default browser on your computer. With Brave as default, any web link you click will open with Brave's privacy protections.</translation>
+<translation id="1241283133946520352">Networks</translation>
+<translation id="8205945804087322170">Add new network</translation>
+<translation id="2156993118928861787">Invalid address</translation>
+<translation id="2653659639078652383">Submit</translation>
+<translation id="2556708692502648323">Wallet networks</translation>
+<translation id="1330032157352961756">The id of new chain</translation>
+<translation id="9053905035135220650">A 0x-prefixed hexadecimal string</translation>
+<translation id="726121047592132939">The name of new chain</translation>
+<translation id="1034112277864078119">Enter chain name</translation>
+<translation id="4672314527143443556">Chain's currency name</translation>
+<translation id="4652114030688989556">Enter currency name</translation>
+<translation id="1079960017149736097">Chain's currency symbol</translation>
+<translation id="1288105009659846362">Enter currency symbol</translation>
+<translation id="665660671251623018">Chain's currency decimals</translation>
+<translation id="2978054488731497946">Enter currency decimals</translation>
+<translation id="2727514928168763432">RPC URLs</translation>
+<translation id="7059127752542505809">Enter URL</translation>
+<translation id="3047726704186619366">Icon URLs</translation>
+<translation id="2487558607408469181">Block explorer URLs</translation>
+<translation id="6301398959353668507">This field cannot be blank.</translation>
+<translation id="4514843126085243862">Invalid format, the chain id is a 0x-prefixed hexadecimal string</translation>
+<translation id="8325036459845654666">This network is already added.</translation>
+<translation id="650071759190249039">Internal error, unable to add network.</translation>
+<translation id="868529041590572443">Please fill in all infromation about native currency</translation>
+<translation id="1062463687579789365">Wallet networks customisation</translation>
+<translation id="2234108191702901162">Unable to add network</translation>
+<translation id="2618193846561624884">Do you want to update the existing network?</translation>
 </translationbundle>

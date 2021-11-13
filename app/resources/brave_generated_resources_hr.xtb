@@ -54,6 +54,27 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1144810021918451336">Ne štiti vas od opasnih mrežnih mjesta, preuzimanja i proširenja.</translation>
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
 <translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
+<translation id="6821903322090655051">Onemogućene Nagrade Brave</translation>
+<translation id="9184430019924125685">Klikni ovdje za više informacija</translation>
+<translation id="3849957491997306859">Automatski otkriveno</translation>
+<translation id="8798099450830957504">Zadano</translation>
+<translation id="4176463684765177261">Onemogućeno</translation>
+<translation id="4851215387785619212">Privatni oglasi Brave</translation>
+<translation id="7808122468353671181">Zaradite tokene pregledavanjem oglasa Brave. Prikazani oglasi temelje se na vašim interesima pretpostavljenima na temelju vašeg ponašanja pri pregledavanju. Osobni podatci i povijest pregledavanja nikada ne nestaju iz vašeg preglednika.</translation>
+<translation id="1758947220824279023">Najveći broj oglasa za prikaz</translation>
+<translation id="8578912649458880781">Usmjeravanje oglasa na razini stanja</translation>
+<translation id="3678362265519557511">Time se omogućuje prikazivanje oglasa namijenjenih posebno za vaše stanje putem preglednika Brave. <ph name="BEGIN_LINK"/>Saznaj više<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automatski doprinos</translation>
+<translation id="9132509928968869844">Ograničenje automatskog mjesečnog doprinosa</translation>
+<translation id="7286722244752781970">Minimalno vrijeme provedeno na stranici prije evidentiranja posjeta</translation>
+<translation id="4424486208397124985">Minimalni broj posjeta da bi se izdavač smatrao relevantnim</translation>
+<translation id="6248554379744796526">Pokaži neprovjerena mrežna mjesta na popisu</translation>
+<translation id="3241299447027267831">Dopusti davanje doprinosa videozapisima</translation>
+<translation id="924777189963477634">Uključivanjem automatskog davanja doprinosa pristajete na <ph name="BEGIN_LINK_TOS"/>Odredbe pružanja usluge<ph name="END_LINK_TOS"/> i<ph name="BEGIN_LINK_PP"/>Pravilnik o privatnosti<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Gumbi za napojnice</translation>
+<translation id="3905400818082450708">Ponovno uredi</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
 <translation id="1988804048511540801">Na stranici Nova kartica prikazuje se</translation>
 <translation id="2970343821770026391">Nadzorna ploča</translation>
@@ -69,10 +90,12 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="8934172355414207733">Privatni prozor s funkcijom Tor</translation>
 <translation id="1970435562892104727">Ovo je privatni prozor s funkcijom Tor</translation>
 <translation id="1037341607922068025">Otvori privatni prozor s funkcijom Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Otvori u funkciji Tor</translation>
 <translation id="7643538479215207633">Otvori uporabom sustava IPFS</translation>
 <translation id="3094628781200061820">Objavi i dohvati datoteke s protokola IPFS</translation>
 <translation id="1672270084584211506">Dostupan Onion</translation>
+<translation id="406832631167785034">Otvori adresom .onion</translation>
 <translation id="4901618511712685702">Uvezi u sustav IPFS</translation>
 <translation id="6794469945030154569">Ova stranica</translation>
 <translation id="5037852323412456577">Odabrana slika</translation>
@@ -81,6 +104,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="3654831858282189202">Objavi upotrebom ključa IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Uvezi odabrani tekst u sustav IPFS</translation>
 <translation id="6925604404524625582">Uvezi i kopiraj poveznicu za snimku sustava IPFS</translation>
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
@@ -94,7 +118,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="2638041073279639246">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
 <translation id="575838692088926391">Podijeli lokalnu mapu putem sustava IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
 <translation id="7924918279836988121">Usluga bat registra</translation>
 <translation id="4472575034687746823">Početak korištenja</translation>
@@ -121,13 +144,11 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
 <translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Standardno</translation>
-<translation id="4176463684765177261">Onemogućeno</translation>
 <translation id="5770288601196774623">Samo na više mjesta</translation>
 <translation id="3587482841069643663">Sve</translation>
 <translation id="5533533363827555308">Striktno, mogu se rušiti mrežna mjesta</translation>
 <translation id="8792121506918889955">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
-<translation id="8798099450830957504">Zadano</translation>
 <translation id="1822560017823072927">Zadana javna i privatna sučelja</translation>
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez uporabe proxyja</translation>
@@ -174,6 +195,11 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="2339730291919608488">Napusti lanac sinkronizacije</translation>
 <translation id="115699408012835975">Ako poništite stavku Sinkroniziranje, trebate ponovno upisati kôd za sinkronizaciju na drugom uređaju kako biste sinkronizirali s njim. Sigurno želite nastaviti?</translation>
 <translation id="6092564993102418148">Jeste li sigurni da želite ukloniti odabrani uređaj iz lanca sinkronizacije?</translation>
+<translation id="2936582902048232286">Upozorenje: time se dijele vaši podatci preglednika Brave uključujući potencijalno vaše lozinke s uređajem kojim su se generirale te šifre.
+
+Dvaput provjerite jesu li se te šifre generirale uređajem koji imate.
+
+Sigurno želite to napraviti?</translation>
 <translation id="3396347744975515056">Značajka Sinkronizacije preglednika Brave ažurirana je i potrebno ju je postaviti</translation>
 <translation id="7473245612074035141">Počni postavljanje</translation>
 <translation id="3411013544209536575">Savjeti za pomoć</translation>
@@ -187,13 +213,17 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="8488282162676695335">Novčanik Brave</translation>
 <translation id="2356070529366658676">Upitaj</translation>
 <translation id="7701040980221191251">Nema</translation>
-<translation id="1274962333945373242">Zastarjelo proširenje kriptovalutnih novčanika</translation>
+<translation id="1274962333945373242">Kriptovalutni novčanici (zastarjeli)</translation>
+<translation id="3695088618483091287">Novčanik Brave (željena proširenja)</translation>
 <translation id="9131889008937672866">Zadani novčanik za kriptovalutu</translation>
+<translation id="4718664830805652430">Zadana osnovna valuta</translation>
+<translation id="7992507032049865603">Zadana osnovna kriptovaluta</translation>
 <translation id="1834467296210148203">Prikaži ikonu novčanika preglednika Brave na alatnoj traci</translation>
 <translation id="8239147115686034860">Automatski zaključaj novčanik preglednika Brave</translation>
 <translation id="414639769490080648">Broj minuta čekanja dok se novčanik preglednika Brave automatski ne zaključa</translation>
 <translation id="6864914031231797928">Dopusti prijavu uslugom Google za proširenja</translation>
 <translation id="5927916530277631319">Metoda za rješavanje značajke Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/> o razmatranjima o privatnosti DNS-a putem HTTPS-a i Ethereuma.</translation>
 <translation id="5248318250177143470">Metoda za rješavanje sustava Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Postavi svoje ključeve IPNS</translation>
 <translation id="951216659045543447">Potpiši sadržaj odgovarajućim privatnim ključem i objavi ga sustavu IPNS</translation>
@@ -207,6 +237,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6476061084931271248">Ponovno pokreni čvor za primjenu promjena</translation>
 <translation id="3754226427671882382">Ponovno pokreni čvor</translation>
 <translation id="949667118776341807">Rotiraj</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ovaj naziv nije valjan</translation>
 <translation id="6758961763875471084">Izmijeni popis ravnopravnih članova</translation>
 <translation id="1295874070797049002">Izvezi ključ</translation>
@@ -217,6 +248,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="616058968889448209">Nastala je pogreška pri pokretanju usluge IPFS, a više informacija potražite na dijagnostičkoj stranici <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">uvoz ključa '<ph name="KEY_NAME"/>' nije uspio</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa nije uspio</translation>
+<translation id="8860039076160511438">Ponovno postavi novčanik</translation>
+<translation id="6369495274982305511">Sigurno želite ponovno postaviti novčanik? Ako ne postoji sigurnosna kopija vašeg novčanika, ponovnim postavljanjem prouzročava se gubitak svih podataka računa (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrđivanje.</translation>
+<translation id="1426410128494586442">Da</translation>
 <translation id="8275038454117074363">Uvezi</translation>
 <translation id="3654980960391973513">Generiraj</translation>
 <translation id="5531501313997312487">Pokreni čvor</translation>
@@ -224,6 +258,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1327977588028644528">Pristupnik</translation>
 <translation id="80225669816651290">Lokalni čvor</translation>
 <translation id="4927734062756955434">Javna adresa IPFS pristupnika</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika sustava IPFS.</translation>
 <translation id="8425213833346101688">Promijeni</translation>
 <translation id="557281710253742286">Postavi pristupnik IPFS</translation>
 <translation id="8571837315037233299">Adresa pristupnika</translation>
@@ -358,6 +393,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="4235920711083356755">Prikaži gumb za VPN</translation>
 <translation id="4070612712151038707">Prikazuje gumb za VPN u alatnoj traci</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Prebaci VPN</translation>
 <translation id="3960619311638643872">VPN preglednika Brave</translation>
 <translation id="2345974803401546682">O VPN-u preglednika Brave</translation>
 <translation id="4378551569595875038">Povezivanje...</translation>
@@ -383,4 +419,31 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
 <translation id="2273851479262317744">Postavi preglednik Brave kao zadani preglednik</translation>
 <translation id="8581710194025054669">Za jamčenje najbolje privatnosti na mreži razmotrite postavljanje preglednika Brave kao zadanog preglednika na svom računalu. Ako je preglednik Brave vaš zadani preglednik, bilo koja mrežna poveznica na koju kliknete otvara se uz zaštite privatnosti preglednika Brave.</translation>
+<translation id="1241283133946520352">Mreže</translation>
+<translation id="8205945804087322170">Dodaj novu mrežu</translation>
+<translation id="2156993118928861787">Nevaljana adresa</translation>
+<translation id="2653659639078652383">Pošalji</translation>
+<translation id="2556708692502648323">Mreže novčanika</translation>
+<translation id="1330032157352961756">ID novog lanca</translation>
+<translation id="9053905035135220650">Heksadekadski niz s prefiksom 0x</translation>
+<translation id="726121047592132939">Naziv novog lanca</translation>
+<translation id="1034112277864078119">Upiši naziv lanca</translation>
+<translation id="4672314527143443556">Naziv valute lanca</translation>
+<translation id="4652114030688989556">Upiši naziv valute</translation>
+<translation id="1079960017149736097">Simbol valute lanca</translation>
+<translation id="1288105009659846362">Upiši simbol valute</translation>
+<translation id="665660671251623018">Decimale valute lanca</translation>
+<translation id="2978054488731497946">Upiši decimale valute</translation>
+<translation id="2727514928168763432">URL-ovi RPC-a</translation>
+<translation id="7059127752542505809">Upiši URL</translation>
+<translation id="3047726704186619366">URL-ovi ikone</translation>
+<translation id="2487558607408469181">URL-ovi tražilice Block Explorer</translation>
+<translation id="6301398959353668507">Polje ne smije biti prazno.</translation>
+<translation id="4514843126085243862">Nevažeći oblik, identifikacija oznaka lanca heksadekadski je niz s prefiksom 0x</translation>
+<translation id="8325036459845654666">Mreža već dodana.</translation>
+<translation id="650071759190249039">Interna pogreška, nemogućnost dodavanja mreže.</translation>
+<translation id="868529041590572443">Upišite sve informacije o domaćoj valuti</translation>
+<translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
+<translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
+<translation id="2618193846561624884">Želite li ažurirati postojeću mrežu?</translation>
 </translationbundle>

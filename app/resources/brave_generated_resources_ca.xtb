@@ -54,6 +54,28 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
+<translation id="6821903322090655051">Brave Rewards està inhabilitat</translation>
+<translation id="9184430019924125685">Fes clic aquí per saber-ne més</translation>
+<translation id="3849957491997306859">Detectat automàticament</translation>
+<translation id="8798099450830957504">Predeterminat</translation>
+<translation id="4176463684765177261">Desactivat</translation>
+<translation id="4851215387785619212">Anuncis privats de Brave</translation>
+<translation id="7808122468353671181">Guanya fitxes veient anuncis de Brave. Els anuncis que es mostren es basen en els teus interessos, segons es dedueix del teu comportament de navegació. No es recullen dades personals ni l'historial de navegació del teu navegador.</translation>
+<translation id="1758947220824279023">Nombre màxim d'anuncis per mostrar</translation>
+<translation id="8578912649458880781">Orientació dels anuncis a nivell estatal</translation>
+<translation id="3678362265519557511">Això permet que Brave et mostri anuncis segons el teu estat.
+<ph name="BEGIN_LINK"/> Més informació<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Contribució</translation>
+<translation id="9132509928968869844">Límit de contribució automàtica mensual</translation>
+<translation id="7286722244752781970">Temps mínim de pàgina oberta abans de registrar una visita</translation>
+<translation id="4424486208397124985">Visites mínimes per que l'editor mereixi rellevància</translation>
+<translation id="6248554379744796526">Mostra llocs no verificats en la llista</translation>
+<translation id="3241299447027267831">Permet contribucions als vídeos</translation>
+<translation id="924777189963477634">En activar la contribució automàtica, acceptes les <ph name="BEGIN_LINK_TOS"/>Condicions del servei <ph name="END_LINK_TOS"/> i la <ph name="BEGIN_LINK_PP"/> Política de privacitat <ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Botons de propina</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Pàgina de pestanyes nova</translation>
 <translation id="1988804048511540801">La nova pestanya mostra</translation>
 <translation id="2970343821770026391">Panell</translation>
@@ -69,10 +91,12 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8934172355414207733">Privat amb Tor</translation>
 <translation id="1970435562892104727">Això és una finestra privada amb Tor</translation>
 <translation id="1037341607922068025">Obrir una Finestra Privada amb Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Obrir a Tor</translation>
 <translation id="7643538479215207633">Obrir amb IPFS</translation>
 <translation id="3094628781200061820">Publica i recupera fitxers de l'IPFS</translation>
 <translation id="1672270084584211506">Onion Disponible</translation>
+<translation id="406832631167785034">Obrir utilitzant l'adreça .onion</translation>
 <translation id="4901618511712685702">Importa a IPFS</translation>
 <translation id="6794469945030154569">Aquesta pàgina</translation>
 <translation id="5037852323412456577">Imatge seleccionada</translation>
@@ -95,7 +119,6 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2638041073279639246">Obre l'enllaç a una finestra privada amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra privada de Brave amb Tor</translation>
 <translation id="575838692088926391">Comparteix la carpeta local mitjançant IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Servei d'anuncis de BAT</translation>
 <translation id="7924918279836988121">Servei de comptabilitat Bat</translation>
 <translation id="4472575034687746823">Comença</translation>
@@ -122,13 +145,11 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
 <translation id="4078738236287221428">Agresiu</translation>
 <translation id="7740996059027112821">Estàndard</translation>
-<translation id="4176463684765177261">Desactivat</translation>
 <translation id="5770288601196774623">Només llocs creuats</translation>
 <translation id="3587482841069643663">Tots</translation>
 <translation id="5533533363827555308">Estricte, pot ser que trenqui llocs</translation>
 <translation id="8792121506918889955">Política de gestió d'IP WebRTC</translation>
 <translation id="6165508094623778733">Saber més</translation>
-<translation id="8798099450830957504">Predeterminat</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
@@ -175,6 +196,11 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2339730291919608488">Deixa la cadena de sincronització</translation>
 <translation id="115699408012835975">Si restabliu la sincronització, haureu de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Esteu segurs que voleu continuar?</translation>
 <translation id="6092564993102418148">Estàs segur que vols eliminar el dispositiu seleccionat de la cadena de sincronització?</translation>
+<translation id="2936582902048232286">Avís: amb això es compartiran les teves dades de Brave, incloses les teves contrasenyes, amb el dispositiu que ha generat aquestes paraules de codi.
+
+Si us plau, revisa que aquests codis de paraules s'hagin generat a partir d'un dels teus dispositius.
+
+Segur que vols continuar?</translation>
 <translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
 <translation id="7473245612074035141">Comenceu la Configuració</translation>
 <translation id="3411013544209536575">Consells d'ajuda</translation>
@@ -188,8 +214,11 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="7701040980221191251">Cap</translation>
-<translation id="1274962333945373242">Extensió obsoleta de Crypto Wallets</translation>
+<translation id="1274962333945373242">Moneders de criptomoneda (obsolets)</translation>
+<translation id="3695088618483091287">Brave Wallet (extensions preferents)</translation>
 <translation id="9131889008937672866">Cartera de criptomoneda predeterminada</translation>
+<translation id="4718664830805652430">Moneda base predeterminada</translation>
+<translation id="7992507032049865603">Criptomoneda base predeterminada</translation>
 <translation id="1834467296210148203">Mostra la icona de Brave Wallet a la barra d'eines</translation>
 <translation id="8239147115686034860">Bloquegeu la cartera de Brave de forma automàtica</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
@@ -220,6 +249,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="616058968889448209">Error d'inici del sistema IPFS, trobaràs més informació disponible a la <ph name="BEGIN_LINK"/>pàgina de diagnòstic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">No ha estat possible importar la clau '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Error en l'exportació de la clau '<ph name="KEY_NAME"/>'</translation>
+<translation id="8860039076160511438">Restablir moneder</translation>
+<translation id="6369495274982305511">Segur que vols restablir el teu moneder? Si no en tens una còpia de seguretat, amb el restabliment perdràs totes les dades del compte (inclosos els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar.</translation>
+<translation id="1426410128494586442">Sí</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Node d'inici</translation>
@@ -362,6 +394,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4235920711083356755">Mostra el botó VPN</translation>
 <translation id="4070612712151038707">Mostra el botó VPN a la barra d'eines</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Activar/Desactivar VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Sobre Brave VPN</translation>
 <translation id="4378551569595875038">S'està connectant...</translation>
@@ -387,4 +420,31 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2808630562319398131">Restableix les dades de Brave Rewards...</translation>
 <translation id="2273851479262317744">Defineix Brave com a navegador predeterminat</translation>
 <translation id="8581710194025054669">Per tal de garantir la millor privadesa en línia, pensa a definir Brave com el navegador predeterminat del teu ordinador. Si Brave és el navegador per defecte, qualsevol enllaç web en el qual facis clic s'obrirà amb les proteccions de privacitat de Brave.</translation>
+<translation id="1241283133946520352">Xarxes</translation>
+<translation id="8205945804087322170">Afegir nova xarxa</translation>
+<translation id="2156993118928861787">Adreça no vàlida</translation>
+<translation id="2653659639078652383">Envia</translation>
+<translation id="2556708692502648323">Xarxes del moneder</translation>
+<translation id="1330032157352961756">La ID de la nova cadena</translation>
+<translation id="9053905035135220650">Una sèrie hexadecimal prefixada a 0x</translation>
+<translation id="726121047592132939">El nom de la nova cadena</translation>
+<translation id="1034112277864078119">Introdueix el nom de la cadena</translation>
+<translation id="4672314527143443556">Nom de la moneda de la cadena</translation>
+<translation id="4652114030688989556">Introdueix el nom de la moneda</translation>
+<translation id="1079960017149736097">Símbol de la moneda de la cadena</translation>
+<translation id="1288105009659846362">Introduir el símbol de la moneda</translation>
+<translation id="665660671251623018">Decimals de la moneda de la cadena</translation>
+<translation id="2978054488731497946">Introdueix els decimals de la moneda</translation>
+<translation id="2727514928168763432">URL d'RPC</translation>
+<translation id="7059127752542505809">Introdueix URL</translation>
+<translation id="3047726704186619366">URL d'icona</translation>
+<translation id="2487558607408469181">Bloquejar URL de l'explorador</translation>
+<translation id="6301398959353668507">Aquest camp no pot estar buit.</translation>
+<translation id="4514843126085243862">El format no és vàlid, l'ID de la cadena és una sèrie hexadecimal amb prefix 0x</translation>
+<translation id="8325036459845654666">Ja s'ha afegit aquesta xarxa.</translation>
+<translation id="650071759190249039">Error intern, no s'ha pogut afegir la xarxa.</translation>
+<translation id="868529041590572443">Emplena tota la informació sobre la moneda nativa</translation>
+<translation id="1062463687579789365">Personalització de les xarxes del moneder</translation>
+<translation id="2234108191702901162">No s'ha pogut afegir la xarxa</translation>
+<translation id="2618193846561624884">Vols actualtzar la xarxa existent?</translation>
 </translationbundle>
