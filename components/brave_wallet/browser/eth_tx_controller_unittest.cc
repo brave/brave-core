@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_controller.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -413,19 +414,50 @@ TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
 
-  SetErrorInterceptor();
-  callback_called = false;
-  eth_tx_controller_->AddUnapprovedTransaction(
-      std::move(tx_data), from(),
-      base::BindOnce(&AddUnapprovedTransactionSuccessCallback, &callback_called,
-                     &tx_meta_id));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
-  EXPECT_TRUE(tx_meta);
-  EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
-  EXPECT_TRUE(HexValueToUint256("0x0", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  // Check gas limit for estimation errors of different tx data types
+  std::map<std::string, uint256_t> data_to_default_gas = {
+      {"", kDefaultSendEthGasLimit},
+      {"0xa9059cbb000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e644"
+       "60f0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+       kDefaultERC20TransferGasLimit},
+      {"0x095ea7b3000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e644"
+       "60f0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+       kDefaultERC20ApproveGasLimit},
+      {"0x23b872dd000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e644"
+       "60f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a0000"
+       "00000000000000000000000000000000000000000000000000000000000f",
+       kDefaultERC721TransferGasLimit},
+      {"0x42842e0e000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e644"
+       "60f000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a0000"
+       "00000000000000000000000000000000000000000000000000000000000f",
+       kDefaultERC721TransferGasLimit},
+      {"0x70a082310000000000000000000000004e02f254184E904300e0775E4b8eeCB1",
+       0}};
+  for (const auto& kv : data_to_default_gas) {
+    std::vector<uint8_t> data_decoded;
+    if (kv.first.length() >= 2) {
+      EXPECT_TRUE(base::HexStringToBytes(kv.first.substr(2), &data_decoded));
+    }
+
+    tx_data = mojom::TxData::New("0x06", gas_price, "" /* gas_limit */,
+                                 "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                                 "0x016345785d8a0000", data_decoded);
+
+    SetErrorInterceptor();
+    callback_called = false;
+    eth_tx_controller_->AddUnapprovedTransaction(
+        std::move(tx_data), from(),
+        base::BindOnce(&AddUnapprovedTransactionSuccessCallback,
+                       &callback_called, &tx_meta_id));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+    tx_meta = eth_tx_controller_->GetTxForTesting(tx_meta_id);
+    EXPECT_TRUE(tx_meta);
+    EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
+    EXPECT_TRUE(
+        HexValueToUint256(Uint256ValueToHex(kv.second), &gas_limit_value));
+    EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  }
 }
 
 TEST_F(EthTxControllerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
