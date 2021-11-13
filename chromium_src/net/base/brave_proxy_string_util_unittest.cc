@@ -31,7 +31,7 @@ TEST(BraveProxySpecificationUtilTest, ProxyUriWithAuthToProxyServer) {
 
   for (const auto& test : tests) {
     ProxyServer uri =
-      ProxyUriToProxyServer(test.input_uri, ProxyServer::SCHEME_HTTP);
+        ProxyUriToProxyServer(test.input_uri, ProxyServer::SCHEME_HTTP);
     EXPECT_TRUE(uri.is_valid());
     EXPECT_FALSE(uri.is_direct());
     EXPECT_EQ(test.expected_uri, ProxyServerToProxyUri(uri));
