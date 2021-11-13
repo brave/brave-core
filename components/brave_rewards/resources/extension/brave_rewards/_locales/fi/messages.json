@@ -238,10 +238,6 @@
     "message": "Lisää varoja",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Lue lisää",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Yhdistä uudelleen",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Sinulla on varojen riittämättömyydestä johtuvia odottavia tippejä",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Lompakon linkitys epäonnistui",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Lompakkoasi ei voida vahvistaa, sillä olet saavuttanut sallitun vahvistettujen laitteiden ylärajan.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisen palveluntarjoajan $provider$ tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BATtia ei vielä tueta alueesi Uphold-lompakoissa.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Uphold-tilisi on tällä hetkellä estetty.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Uphold-tilisi odottaa vielä käsittelyä.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Uphold-tilisi on tällä hetkellä rajoitettu.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Napsauttamalla hyväksyt $tos_link_begin$palveluehdot$tos_link_end$ ja $pp_link_begin$tietosuojakäytännön$pp_link_end$. Poista käytöstä milloin tahansa asetuksissa.",
+    "message": "Ottamalla käyttöön hyväksyt $tos_link_begin$palveluehdot$tos_link_end$ ja $pp_link_begin$tietosuojakäytännön$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Ota Brave Private Ads käyttöön",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ottamalla Adsin käyttöön hyväksyt $tos_link_begin$palveluehdot$tos_link_end$ ja $pp_link_begin$tietosuojakäytännön$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Voit nyt aloittaa ilmaisen puhelun",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.",
+    "message": "Napsauta tai napauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

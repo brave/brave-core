@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">無法協助您防護危險網站、下載和延伸套件。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
+<translation id="6821903322090655051">Brave 獎勵已停用</translation>
+<translation id="9184430019924125685">按這裡了解詳情</translation>
+<translation id="3849957491997306859">自動偵測</translation>
+<translation id="8798099450830957504">預設</translation>
+<translation id="4176463684765177261">已停用</translation>
+<translation id="4851215387785619212">Brave 私密廣告</translation>
+<translation id="7808122468353671181">透過觀看 Brave 廣告來賺取代幣。我們會從您的瀏覽行為判斷您的喜好，並據此投放廣告。您的瀏覽器不會洩漏任何個人資料或瀏覽記錄。</translation>
+<translation id="1758947220824279023">廣告顯示數量上限</translation>
+<translation id="8578912649458880781">國家級廣告定位</translation>
+<translation id="3678362265519557511">這允許 Brave 向您顯示符合您狀態的廣告。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">自動捐獻</translation>
+<translation id="9132509928968869844">每月自動捐獻限制</translation>
+<translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
+<translation id="4424486208397124985">攸關發布者的最低瀏覽數</translation>
+<translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
+<translation id="3241299447027267831">允許對影片捐獻</translation>
+<translation id="924777189963477634">開啟自動捐獻即表示您同意<ph name="BEGIN_LINK_TOS"/>服務條款<ph name="END_LINK_TOS"/>與<ph name="BEGIN_LINK_PP"/>隱私政策<ph name="END_LINK_PP"/>。</translation>
+<translation id="5733490796524078528">打賞按鈕</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">用 Tor 進行私人瀏覽</translation>
 <translation id="1970435562892104727">這是 Tor 的私人視窗</translation>
 <translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
 <translation id="7643538479215207633">使用 IPFS 開啟</translation>
 <translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
+<translation id="406832631167785034">使用 .onion 位址開啟</translation>
 <translation id="4901618511712685702">匯入至 IPFS</translation>
 <translation id="6794469945030154569">此頁面</translation>
 <translation id="5037852323412456577">選取的圖片</translation>
@@ -95,7 +118,6 @@
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
 <translation id="575838692088926391">使用 IPFS 分享本機資料夾</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -122,13 +144,11 @@
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
 <translation id="4078738236287221428">積極</translation>
 <translation id="7740996059027112821">標準</translation>
-<translation id="4176463684765177261">已停用</translation>
 <translation id="5770288601196774623">僅跨站</translation>
 <translation id="3587482841069643663">全部</translation>
 <translation id="5533533363827555308">嚴格，可能會破壞網站</translation>
 <translation id="8792121506918889955">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
-<translation id="8798099450830957504">預設</translation>
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
@@ -175,6 +195,11 @@
 <translation id="2339730291919608488">離開同步鏈結</translation>
 <translation id="115699408012835975">如果您重設同步，您將必須重新輸入從其他裝置而來的同步代碼以與其同步。您確定您想要繼續嗎？</translation>
 <translation id="6092564993102418148">您確定您想要從同步鏈移除選定的裝置嗎？</translation>
+<translation id="2936582902048232286">警告：這會與產生這些代碼字詞的裝置分享您的 Brave 資料，可能包括您的密碼。
+
+請再次確認這些代碼字詞由您擁有的裝置產生。
+
+確定要如此操作嗎？</translation>
 <translation id="3396347744975515056">Brave 同步已升級並需要設定</translation>
 <translation id="7473245612074035141">開始設定</translation>
 <translation id="3411013544209536575">協助小費</translation>
@@ -188,8 +213,11 @@
 <translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="2356070529366658676">詢問</translation>
 <translation id="7701040980221191251">無</translation>
-<translation id="1274962333945373242">不推薦使用的加密錢包擴充</translation>
+<translation id="1274962333945373242">Crypto Wallets（已棄用）</translation>
+<translation id="3695088618483091287">Brave 錢包 (偏好延伸)</translation>
 <translation id="9131889008937672866">預設加密幣錢包</translation>
+<translation id="4718664830805652430">預設基礎貨幣</translation>
+<translation id="7992507032049865603">預設基礎加密貨幣</translation>
 <translation id="1834467296210148203">在工具列上顯示 Brave Wallet 圖示</translation>
 <translation id="8239147115686034860">自動鎖定 Brave 錢包</translation>
 <translation id="414639769490080648">Brave 錢包自動鎖定前等待的分鐘數</translation>
@@ -220,6 +248,9 @@
 <translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊請參閱<ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 金鑰匯入失敗</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 金鑰匯出失敗</translation>
+<translation id="8860039076160511438">重設錢包</translation>
+<translation id="6369495274982305511">確定要重設錢包嗎？如果錢包未備份，重設將會導致您失去所有帳戶資料（包括任何關聯的資金）。鍵入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
+<translation id="1426410128494586442">是</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="3654980960391973513">產生</translation>
 <translation id="5531501313997312487">啟動節點</translation>
@@ -362,6 +393,7 @@
 <translation id="4235920711083356755">顯示 VPN 按鈕</translation>
 <translation id="4070612712151038707">在工具列中顯示 VPN 按鈕</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">切換 VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">關於 Brave VPN</translation>
 <translation id="4378551569595875038">連線中...</translation>
@@ -387,4 +419,31 @@
 <translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 <translation id="2273851479262317744">將 Brave 設為預設瀏覽器</translation>
 <translation id="8581710194025054669">若要享有最優質的網路隱私，不妨考慮將 Brave 設為您電腦上的預設瀏覽器。這麼做的話，每當您點選任何網頁連結，Brave 都會在開啟連結時一併啟動隱私防護機制。</translation>
+<translation id="1241283133946520352">網路</translation>
+<translation id="8205945804087322170">新增網路</translation>
+<translation id="2156993118928861787">錯誤的位址</translation>
+<translation id="2653659639078652383">提交</translation>
+<translation id="2556708692502648323">錢包網路</translation>
+<translation id="1330032157352961756">新鏈 ID</translation>
+<translation id="9053905035135220650">字首為 0x 的十六進位字串</translation>
+<translation id="726121047592132939">新鏈名稱</translation>
+<translation id="1034112277864078119">輸入鏈名稱</translation>
+<translation id="4672314527143443556">鏈的貨幣名稱</translation>
+<translation id="4652114030688989556">輸入貨幣名稱</translation>
+<translation id="1079960017149736097">鏈的貨幣符號</translation>
+<translation id="1288105009659846362">輸入貨幣符號</translation>
+<translation id="665660671251623018">鏈的貨幣小數位</translation>
+<translation id="2978054488731497946">輸入貨幣小數位</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">輸入 URL</translation>
+<translation id="3047726704186619366">圖示 URL</translation>
+<translation id="2487558607408469181">區塊瀏覽器 URL</translation>
+<translation id="6301398959353668507">這個欄位不能留空。</translation>
+<translation id="4514843126085243862">格式無效，鏈 id 是一個字首為 0x 的十六進位字串</translation>
+<translation id="8325036459845654666">此網路已新增。</translation>
+<translation id="650071759190249039">內部錯誤，無法新增網路。</translation>
+<translation id="868529041590572443">請填寫關於原生貨幣的所有資訊</translation>
+<translation id="1062463687579789365">錢包網路自訂</translation>
+<translation id="2234108191702901162">無法新增網路</translation>
+<translation id="2618193846561624884">要更新現有網路嗎？</translation>
 </translationbundle>

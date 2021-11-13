@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">لا يحميك من مواقع الويب والتنزيلات والإضافات الخطيرة.</translation>
 <translation id="6285118765755298263">فهرسة محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
+<translation id="6821903322090655051">تم تعطيل Brave Rewards</translation>
+<translation id="9184430019924125685">انقر هنا لمعرفة المزيد</translation>
+<translation id="3849957491997306859">يجري الكشف عنه بشكل تلقائي</translation>
+<translation id="8798099450830957504">التلقائي</translation>
+<translation id="4176463684765177261">غير مفعّل</translation>
+<translation id="4851215387785619212">الإعلانات الخاصة المتعلقة بــ Brave</translation>
+<translation id="7808122468353671181">كسب الرموز من خلال عرض Brave Ads. تستند الإعلانات المقدمة إلى اهتماماتك، كما هو مستدل من سلوك التصفح الخاص بك. لا توجد بيانات شخصية أو سجل تصفح يغادر متصفحك على الإطلاق.</translation>
+<translation id="1758947220824279023">الحد الأقصى لعدد الإعلانات المراد عرضها</translation>
+<translation id="8578912649458880781">استهداف الإعلانات على مستوى الدولة</translation>
+<translation id="3678362265519557511">يتيح ذلك لـ Brave عرض إعلانات مخصصة لبلدك على وجه التحديد. <ph name="BEGIN_LINK"/>اعرف المزيد <ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">مساهمة تلقائية</translation>
+<translation id="9132509928968869844">حد المساهمة التلقائية الشهرية</translation>
+<translation id="7286722244752781970">الحد الأدنى لوقت الصفحة قبل تسجيل الزيارة</translation>
+<translation id="4424486208397124985">الحد الأدنى من الزيارات من أجل صلة الناشر</translation>
+<translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
+<translation id="3241299447027267831">السماح بالمساهمات في مقاطع الفيديو</translation>
+<translation id="924777189963477634">من خلال تشغيل المساهمة التلقائية، فإنك توافق على <ph name="BEGIN_LINK_TOS"/>شروط الخدمة <ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/> سياسة الخصوصية <ph name="END_LINK_PP"/></translation>
+<translation id="5733490796524078528">أزرار النصائح</translation>
+<translation id="3905400818082450708">ريديت</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">صفحة في علامة تبويب جديدة</translation>
 <translation id="1988804048511540801">تظهر صفحة علامة تبويب جديدة</translation>
 <translation id="2970343821770026391">لوحة التحكم</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">الوضع الخاص عبر متصفح تور</translation>
 <translation id="1970435562892104727">هذه نافذة خاصة عبر متصفح تور</translation>
 <translation id="1037341607922068025">افتح نافذة خاصة من خلال متصفح تور</translation>
+<translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="1725356094208762656">افتح في Tor</translation>
 <translation id="7643538479215207633">افتح باستخدام IPFS</translation>
 <translation id="3094628781200061820">النشر واسترداد الملفات من IPFS</translation>
 <translation id="1672270084584211506">موقع أنيون المتاح</translation>
+<translation id="406832631167785034">افتح باستخدام عنوان .onion</translation>
 <translation id="4901618511712685702">استيراد إلى IPFS</translation>
 <translation id="6794469945030154569">هذه الصفحة</translation>
 <translation id="5037852323412456577">الصورة المحددة</translation>
@@ -81,6 +104,7 @@
 <translation id="7895302206188277628">المحتوى ذو الصلة</translation>
 <translation id="3654831858282189202">النشر بواسطة مفتاح IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">استيراد النص المحدد إلى IPFS</translation>
 <translation id="6925604404524625582">الاستيراد ونسخ الرابط في صيغة لقطة من لقطات IPFS</translation>
 <translation id="1434416574322382019">نافذة جديدة وخاصة بـTor</translation>
 <translation id="4703780849509456860">افتح الرابط في نافذة خاصة بـ Tor</translation>
@@ -94,7 +118,6 @@
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
 <translation id="575838692088926391">مشاركة مجلد محلي باستخدام IPFS</translation>
-<translation id="5410152065859052603">برنامج تور (Tor)</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
@@ -121,13 +144,11 @@
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="4078738236287221428">عدواني</translation>
 <translation id="7740996059027112821">قياسي</translation>
-<translation id="4176463684765177261">غير مفعّل</translation>
 <translation id="5770288601196774623">فقط عبر الموقع</translation>
 <translation id="3587482841069643663">الكل</translation>
 <translation id="5533533363827555308">صارم، قد يفصل المواقع</translation>
 <translation id="8792121506918889955">سياسة التعامل مع WebRTC IP</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
-<translation id="8798099450830957504">التلقائي</translation>
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
@@ -174,6 +195,7 @@
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
 <translation id="115699408012835975">إذا قمت بإعادة تعيين المزامنة، فسيتعين عليك إعادة إدخال رمز المزامنة من جهاز آخر من أجل المزامنة معه. هل أنت متأكد أنك تريد المتابعة؟</translation>
 <translation id="6092564993102418148">هل أنت متأكد أنك تريد حذف الجهاز المحدد من سلسلة المزامنة؟</translation>
+<translation id="2936582902048232286">تحذير: سيؤدي هذا إلى مشاركة بيانات Brave الخاصة بك، بما في ذلك كلمات مرورك المحتملة، مع الجهاز الذي أنشأ كلمات الرمز هذه. يرجى التحقق مرة أخرى من أن هذه الكلمات الرمزية البرمجية قد تم إنشاؤها بواسطة جهاز تملكه. هل أنت متأكد من أنك تريد القيام بذلك؟</translation>
 <translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
 <translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="3411013544209536575">نصائح للمساعدة</translation>
@@ -187,13 +209,17 @@
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="7701040980221191251">بلا</translation>
-<translation id="1274962333945373242">الملحق الخاص بمحافظ العملات المشفرة التي تم الحد من استخدامها</translation>
+<translation id="1274962333945373242">محافظ العملات المشفرة (مهملة)</translation>
+<translation id="3695088618483091287">محفظة Brave (يفضل الامتدادات)</translation>
 <translation id="9131889008937672866">المحفظة الافتراضية للعملات المشفرة</translation>
+<translation id="4718664830805652430">العملة الأساسية الافتراضية</translation>
+<translation id="7992507032049865603">العملة المشفرة الأساسية الافتراضية</translation>
 <translation id="1834467296210148203">إظهار رمز Brave Wallet على شريط الأدوات</translation>
 <translation id="8239147115686034860">قفل Brave Wallet تلقائيًا</translation>
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="6864914031231797928">قم بالسماح بتسجيل الدخول إلى Google للحصول على الإضافات</translation>
 <translation id="5927916530277631319">طريقة لمعالجة النطاقات التي لا يمكن إيقافها</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>تعرّف على المزيد<ph name="END_LINK"/> حول اعتبارات خصوصية إيثريوم وبروتوكول DNS عبر HTTPS.</translation>
 <translation id="5248318250177143470">طريقة لمعالجة خدمة اسم إيثريوم (ENS)</translation>
 <translation id="7024553202001112871">إعداد مفاتيح IPNS الخاصة بك</translation>
 <translation id="951216659045543447">توقيع المحتوى بواسطة المفتاح الخاص المتوافق ونشره على IPNS</translation>
@@ -207,6 +233,7 @@
 <translation id="6476061084931271248">إعادة تشغيل العقدة لتطبيق التغييرات</translation>
 <translation id="3754226427671882382">إعادة تشغيل العقدة</translation>
 <translation id="949667118776341807">تدوير</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">هذا الاسم غير صالح</translation>
 <translation id="6758961763875471084">تعديل قائمة الأقران</translation>
 <translation id="1295874070797049002">تصدير المفتاح</translation>
@@ -218,6 +245,9 @@
 <translation id="6912148685459054619">فشل استيراد المفتاح '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed
 فشل تصدير المفتاح</translation>
+<translation id="8860039076160511438">قم بإعادة تعيين المحفظة</translation>
+<translation id="6369495274982305511">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
+<translation id="1426410128494586442">نعم</translation>
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="3654980960391973513">إنشاء</translation>
 <translation id="5531501313997312487">بدء العقدة</translation>
@@ -225,6 +255,7 @@
 <translation id="1327977588028644528">المدخل</translation>
 <translation id="80225669816651290">عقدة محلية</translation>
 <translation id="4927734062756955434">عنوان بوابة IPFS العام</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>تعرّف على المزيد<ph name="END_LINK_MPL"/> حول اعتبارات الخصوصية بالبوابة والعقدة المحلية IPFS.</translation>
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="557281710253742286">تعيين بوابة IPFS</translation>
 <translation id="8571837315037233299">عنوان البوابة</translation>
@@ -359,6 +390,7 @@
 <translation id="4235920711083356755">إظهار زر VPN</translation>
 <translation id="4070612712151038707">يُظهر زر VPN في شريط الأدوات</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">تبديل VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">لمحة عن Brave VPN</translation>
 <translation id="4378551569595875038">جارٍ الاتصال...</translation>
@@ -384,4 +416,31 @@
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="2273851479262317744">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="8581710194025054669">حتى تضمن أفضل خصوصية عبر الإنترنت، قم بتعيين Brave كمتصفح افتراضي على جهاز الكمبيوتر الخاص بك، باستخدامك متصفح Brave كمتصفح افتراضي، سيتم فتح أي رابط ويب تنقر عليه مع وسائل حماية خصوصية Brave.</translation>
+<translation id="1241283133946520352">الشبكات</translation>
+<translation id="8205945804087322170">أضف شبكة جديدة</translation>
+<translation id="2156993118928861787">عنوان غير صالح</translation>
+<translation id="2653659639078652383">إرسال</translation>
+<translation id="2556708692502648323">شبكات المحفظة</translation>
+<translation id="1330032157352961756">مُعرّف السلسلة الجديدة</translation>
+<translation id="9053905035135220650">سلسلة سداسية عشرية مسبوقة بــ 0x</translation>
+<translation id="726121047592132939">اسم السلسلة الجديدة</translation>
+<translation id="1034112277864078119">قم بإدخال اسم السلسلة</translation>
+<translation id="4672314527143443556">اسم عملة السلسلة</translation>
+<translation id="4652114030688989556">قم بإدخال اسم العملة</translation>
+<translation id="1079960017149736097">رمز عملة السلسلة</translation>
+<translation id="1288105009659846362">قم بإدخال رمز العملة</translation>
+<translation id="665660671251623018">الكسور العشرية لعملات السلسلة</translation>
+<translation id="2978054488731497946">قم بإدخال الكسور العشرية للعملات</translation>
+<translation id="2727514928168763432">عناوين محدد موقع الموارد الموحد (URL) لـ RPC</translation>
+<translation id="7059127752542505809">إدخال URL</translation>
+<translation id="3047726704186619366">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
+<translation id="2487558607408469181">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
+<translation id="6301398959353668507">هذا الحقل لا يمكن أن يكون فارغًا.</translation>
+<translation id="4514843126085243862">تنسيق غير صالح، مُعرف السلسلة عبارة عن سلسلة سداسية عشرية مسبوقة بـ 0x</translation>
+<translation id="8325036459845654666">تمت إضافة هذه الشبكة بالفعل.</translation>
+<translation id="650071759190249039">خطأ داخلي، غير قادر على إضافة الشبكة.</translation>
+<translation id="868529041590572443">يرجى ملء جميع المعلومات حول العملة المحلية</translation>
+<translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
+<translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
+<translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
 </translationbundle>

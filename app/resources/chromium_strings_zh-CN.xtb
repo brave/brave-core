@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">Brave 需要获得存储空间使用权限，才能下载文件</translation>
 <translation id="8447483940522230788">Brave 帮助程序</translation>
 <translation id="7933006624150961626">如需在您的所有设备上访问自己的 Brave 信息，请登录您的帐号以便开启同步功能。</translation>
-<translation id="5486618155264784386">安装 Brave 操作系统</translation>
 <translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">需要重新启动 Brave 操作系统以应用更新。</translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">从Brave中移除…</translation>
 <translation id="2885378588091291677">任务管理器</translation>
 <translation id="2176825726964012531">关于 Brave(&amp;C)</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>最后请注意：安装流程<ph name="BEGIN_BOLD"/>会清除您的整个硬盘中的数据<ph name="END_BOLD"/>。请确保您已妥善地备份了所有重要数据。<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>安装流程一旦开始就无法取消。<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave 已是最新版本</translation>
 <translation id="2953892977076487219">Brave 正在尝试修改密码。</translation>
 <translation id="8755404239607088219">Brave 无法检查您的密码。请稍后重试。</translation>
@@ -75,7 +72,6 @@
 <translation id="2711887072399498551">已有一份使用此帐号创建的 Brave 个人资料</translation>
 <translation id="2297290224191497273">切换到现有的 Brave 个人资料？</translation>
 <translation id="2450003541323895471">借助 Brave 个人资料，您可将自己的所有 Brave 内容分门别类。比如，您可为朋友和家人创建专属个人资料，或者将工作内容和娱乐内容分开。</translation>
-<translation id="7275165473619697274">正在安装 Brave 操作系统</translation>
 <translation id="9216183508558772570">当您使用已泄露的密码登录时，Brave 会通知您</translation>
 <translation id="5853262807109651878">这会从这台设备上删除 <ph name="ITEMS_COUNT"/> 项内容。如果日后想要检索您的数据，届时请以 <ph name="USER_EMAIL"/> 的身份登录 Brave。</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> 可用于切换 Brave 个人资料</translation>
@@ -100,7 +96,6 @@
 <translation id="8923080813984421771">根据 <ph name="MANAGER"/> 的要求，您必须先阅读并接受以下《服务条款》才能使用此设备。这些条款不会扩展、修改或限制 Brave 操作系统条款。</translation>
 <translation id="3262506503470845422">获取有关 Brave 的帮助</translation>
 <translation id="7691786510374174420">未知错误导致安装失败。如果 Brave 正在运行，请将其关闭，然后重试。</translation>
-<translation id="429583012151745428">正在安装。请勿关闭设备。安装用时应该不会超过 20 分钟。待安装完毕后，计算机将会自动关机。</translation>
 <translation id="9183662282810237335">仍要退出 Brave？</translation>
 <translation id="4065288863231444640">让 Brave 在后台运行</translation>
 <translation id="8148611988012584308">自定义及控制 Brave</translation>
@@ -192,7 +187,6 @@
 <translation id="6666624454809779082">已为您计算机上的所有用户都安装 Brave。</translation>
 <translation id="5360050006043219962">如需在您的所有设备上访问自己的 Brave 信息，请登录您的帐号，然后开启同步功能。</translation>
 <translation id="8291513491595858997">您的家长已为 Brave 停用“网站、应用和扩展程序的权限”。因此，您无法启用该<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
-<translation id="1810203443153428607">安装 Brave 操作系统会覆盖您的设备上的所有数据。</translation>
 <translation id="8211837073776713955">Brave 会让您知道您的密码是否曾被泄露</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay（已复制到 Brave）</translation>
@@ -203,6 +197,7 @@
 <translation id="3335606533094650083">Brave 需要获得相应权限，才能允许此网站使用您的麦克风</translation>
 <translation id="1705567146636171298">更新 Brave</translation>
 <translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。</translation>
+<translation id="151916274998710826">自定义 Brave 的一些最重要的隐私设置选项</translation>
 <translation id="1008530050039597147">Brave 需要为此网站授予摄像头权限</translation>
 <translation id="1197672524850678392">无法启动 Brave。请重试。</translation>
 <translation id="3405035915691517126">Brave 无法检查您的密码。请过 24 小时再试。</translation>
@@ -227,10 +222,6 @@ Brave 无法恢复您的设置。</translation>
       Brave 操作系统设置<ph name="LINK_END"/>中查找</translation>
 <translation id="3293668930608086049">Brave 正在使用您的摄像头和麦克风。</translation>
 <translation id="2827121003398607864">Brave现在更好用了</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>开始安装前，请确保您拥有最新的数据备份。安装 Brave 操作系统会覆盖您的硬盘上的所有数据。<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave 不对任何数据损失承担责任，也不保证 Brave 操作系统能在未经认证的型号上正常运行。如需详细了解经过认证的型号，请访问 [TBD]。<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>如需详细了解 Brave 操作系统安装方法和数据清除情况，请访问：[TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>如果您已准备好继续操作，请点击“安装 Brave 操作系统”，然后我们会引导您通过几个简单的步骤完成安装。在对您的计算机进行任何更改之前，我们会让您再次确认。<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave 不是您的默认浏览器</translation>
 <translation id="5477319665405831211">在您的所有设备上同步并个性化设置 Brave</translation>
 <translation id="5419189641394808652">由于您的网域停用了同步功能，Brave无法同步您的数据。</translation>
@@ -295,5 +286,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用此项更新}=1{您的管理员要求您重新启动 Brave 以应用此项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用此项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用一项更新}=1{您的管理员要求您重新启动 Brave 以应用一项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用一项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="7914115000169617076">离最新版本只有一步之遥了！重新启动 Brave 即可完成更新。私人窗户不会重新打开。</translation>
+<translation id="4703432949110765917">默认设置适用于大多数配置文件，但您可以自定义以适应您喜欢的 Brave 使用方式</translation>
 <translation id="2176087127109773485">您可以管理已登录的 Brave 同步链。您的 Brave 同步链用于 Brave 浏览器、应用商店、Gmail 等。如果您想为其他人（例如家庭成员）添加帐户，则请将新的个人资料添加到您的 <ph name="DEVICE_TYPE"/> 上。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -238,10 +238,6 @@
     "message": "إضافة أموال",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "مزيد من المعلومات",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "إعادة الاتصال",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "لديك نصائح معلقة بسبب عدم كفاية الأموال",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "فشل ربط المحفظة",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "لا يمكن التحقق من محفظتك لأنك بلغت الحد الأقصى المسموح به لعمليات التحقق للجهاز الواحد.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "يبدو أنه تم التحقق بالفعل من محفظة Brave Rewards باستخدام حساب $provider$ آخر. يرجى محاولة التحقق مرة أخرى باستخدام حسابك السابق.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "لم يتم دعم BAT حتى الآن في منطقتك بعد، في Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "حسابك في Uphold محظور حاليًا.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "لا يزال حسابك في Uphold معلقًا.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "حسابك في Uphold مقيد حاليًا.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "من خلال الضغط، فستوافق على$tos_link_begin$شروط الخدمة$tos_link_end$و$pp_link_begin$سياسة الخصوصية$pp_link_end$. يمكنك تعطيل هذه الميزة في أي وقت من \"الإعدادات\".",
+    "message": "بمجرد تفعيلك، فإنك بذلك توافق على $tos_link_begin$شروط الخدمة $tos_link_end$ و $pp_link_begin$ سياسة الخصوصية $pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "تشغيل Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "من خلال تشغيل \"الإعلانات\"، فستوافق على $tos_link_begin$شروط الخدمة$tos_link_end$و$pp_link_begin$سياسة الخصوصية$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "يمكنك إجراء مكالمة مجانية الآن",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "انقر على أي مكان في الشاشة لمواصلة التواجد في Brave Talk.",
+    "message": "انقر أو اضغط في أي مكان على الشاشة للمتابعة إلى Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

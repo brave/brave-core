@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Forhindrer sporere og annonser fra å lastes inn og vises på nettsider</translation>
 <translation id="1680858055899097121">Ikke behold faner på tvers av surfeøkter</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
+<translation id="5254037869598726291">Anonymisert P3A-informasjon hjelper Brave med å anslå den totale bruken, og sikrer at vi forbedrer populære funksjoner.</translation>
 <translation id="4272190451231642425">Send krasjrapporter automatisk</translation>
 <translation id="2239766974964486304">Krasjrapporter hjelper Brave å forbedre produktstabiliteten for alle brukere.</translation>
 <translation id="7977176350719484850">Est. data\nlagret</translation>
@@ -209,6 +210,14 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="7173114856073700355">Åpne Innstillinger</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Ikke vis igjen</translation>
+<translation id="1056898198331236512">Advarsel</translation>
+<translation id="1426410128494586442">Ja</translation>
+<translation id="7811264919113243207">Dette dine Brave-dataene dine, potensielt inkludert passordene dine, med enheten som genererte denne QR-koden.
+Dobbeltsjekk at denne QR-koden ble generert av en enhet du eier.
+Er du sikker på at du vil gjøre dette?</translation>
+<translation id="3097089005389027085">Dette deler dine Brave-data, potensielt inkludert passordene dine, med enheten som genererte disse kodeordene.
+Dobbeltsjekk at disse kodeordene ble generert av en enhet du eier.
+Er du sikker på at du vil gjøre dette?</translation>
 <translation id="597993392929850353">Brave-lisens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="6199596294742117349">Dette er en privat fane</translation>
@@ -397,6 +406,8 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6755546361496900700">Forhåndsvis konvertering</translation>
 <translation id="2882813124794301799">Widgetstabel</translation>
 <translation id="13296465911709339">Teksten din er kopiert til utklippstavlen.</translation>
+<translation id="4670943871783273148">Teksten din har blitt lagret i en tekstfil.</translation>
+<translation id="4432845796903761592">Filen er ikke lagret.</translation>
 <translation id="7144878232160441200">Prøv på nytt</translation>
 <translation id="2977461003134694205">Personvernstatistikk</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
@@ -458,11 +469,12 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="8037420924417098685">Slå på Brave-belønninger for å starte et gratis anrop</translation>
 <translation id="8961724619078500274">Med Brave Rewards tjener du opp tokener ved å se på private annonser (dataene dine er trygge). Tokenene kan konverteres til kontanter, kavekort … eller tips til favoritt-nettstedene dine. Ingen sporing – ingen treghet.</translation>
 <translation id="7307847920988946894">Slå på Rewards</translation>
+<translation id="7872993190040589450">Ved å aktivere dette, samtykker du til <ph name="TERMS_OF_SERVICE"/> og <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Slå på Brave Private Ads for å starte et gratis anrop</translation>
 <translation id="7930006085154756245">Med Brave Private Ads tjener du opp tokener for å se på private annonser (opplysningene dine er uansett trygge). Tokenene kan brukes på gaver, gavekort eller tips til favorittnettstedene dine. Ingen sporing – ingen forsinkelser.</translation>
 <translation id="4992617448154987397">Slå på Brave Private Ads</translation>
 <translation id="3415016869273103668">Du kan nå starte et gratis anrop</translation>
-<translation id="7073631403665023390">Trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
+<translation id="7073631403665023390">Klikk eller trykk hvor som helst på skjermen for å fortsette til Brave Talk.</translation>
 <translation id="626339649633171286">Vil du ha mer informasjon om Brave Rewards? <ph name="TAKE_QUICK_TOUR"/></translation>
 <translation id="3604285424134705930">Du konverterte <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> til <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Vennligst sjekk nettverksforbindelsen din.</translation>
@@ -518,13 +530,15 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="5460364286096798286">Ha kryptoen i din varetekt. Bytt verdier, se priser og hvordan porteføljen din presterer. Invester, lån og lån ut med DeFi.</translation>
 <translation id="1748009926009835882">Sett opp Krypto</translation>
 <translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
-<translation id="7685607706678113458">I neste trinn får du se 12 ord du må bruke til å gjenopprette kryptolommeboken din.</translation>
+<translation id="5156354224138379811">I neste trinn får du se 12 ord som lar deg gjenopprette kryptolommeboken din.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
 <translation id="5024543173656851695">Jeg forstår at hvis jeg mister ordene for gjenoppretting, mister jeg også tilgangen til kryptolommeboken min.</translation>
 <translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
 <translation id="6146351434671268516">Skriv ned eller kopier disse ordene i korrekt rekkefølge, og oppbevar dem på et sikkert sted.</translation>
 <translation id="7408247683131762445">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen kan ta ut verdiene dine for alltid.</translation>
 <translation id="939275786514736244">Jeg har tatt sikkerhetskopi av frasen min og lagret den på et sikkert sted</translation>
+<translation id="6896758677409633944">Kopier</translation>
+<translation id="5317780077021120954">Lagre</translation>
 <translation id="2604744480284798833">Sikkerhetskopier lommeboken din nå for å beskytte kryptolommeboken din fra tap av tilgang</translation>
 <translation id="1202920745614909195">Kjøp krypto med Apple Pay, kreditt- eller debetkort.</translation>
 <translation id="841880029259839903">Send krypto eller overfør fra en konto til en annen.</translation>
@@ -546,13 +560,13 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Aktivere åpning med fingeravtrykk?</translation>
 <translation id="5493402808936397665">Aktiver biometri for å raskt åpne lommeboken din uten bruk av passord.</translation>
-<translation id="1544192797660353713">Brave-lommebok</translation>
+<translation id="1544192797660353713">Lommebok</translation>
 <translation id="6901810042765869341">Angi gjenopprettingsfrasen for å gjenopprette Brave Wallet-kryptokontoen din.</translation>
 <translation id="1970161551843843564">Gjenopprett kryptokonto</translation>
 <translation id="4811736040444856406">Vis gjenopprettingsfrase</translation>
 <translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
 <translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
-<translation id="6202787708155200390">Trykk på ordene for å legge dem inn etter hverandre i riktig rekkefølge.</translation>
+<translation id="2718669004132381989">Trykk på ordene for å sette dem ved siden av hverandre i riktig rekkefølge.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="9111102763498581341">Lås opp</translation>
@@ -560,7 +574,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="1569452037668432756">Angi passordet for å låse opp</translation>
 <translation id="224719674509047150">Passordet må ha 7 tegn eller mer og må inneholde minst ett tall og et spesialtegn</translation>
 <translation id="1144810021918451336">Beskytter deg ikke mot farlige nettsteder, nedlastinger eller utvidelser.</translation>
-<translation id="745115390910697838">Frasene stemte ikke. Prøv igjen.</translation>
+<translation id="5760476995887363522">Ordene stemte ikke overens. Prøv på nytt.</translation>
 <translation id="2360588547830602174">Kunne ikke gjenopprette konto. Prøv igjen.</translation>
 <translation id="6392640873800632439">Markedspris i <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Fra</translation>
@@ -574,6 +588,12 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="1987317783729300807">Kontoer</translation>
 <translation id="3535654229833214438">Transaksjoner</translation>
 <translation id="4636930964841734540">Info</translation>
+<translation id="2449682593754783720">1 time</translation>
+<translation id="969133700726811190">1 dag</translation>
+<translation id="5882300031363619940">1 uke</translation>
+<translation id="5698094150392720512">1 måned</translation>
+<translation id="5483736362376139517">1 år</translation>
+<translation id="6979737339423435258">Alle datoer</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
 <translation id="5288333155754958121">Denne anonyme, private pingen gjør at Brave kan estimere antall aktive brukere.</translation>
 <translation id="3819257035322786455">Sikkerhetskopi</translation>
@@ -614,7 +634,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="6277055349883621705">Forny årlig, spar 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> per år.</translation>
 <translation id="4487678670820292781">USD 119,88</translation>
-<translation id="5867778679088331977">Prøv gratis i 7 dager. Etter 7 dager belastes du prisen for abonnementet. Alle abonnementer fornyes automatisk, men kan kanselleres før de fornyes.</translation>
+<translation id="2655185358771731232">Prøv gratis i 7 dager. Etter 7 dager belastes du prisen for abonnementet. Alle abonnementer fornyes automatisk, men kan kanselleres før de fornyes.</translation>
 <translation id="6053992191006521518">Prøv GRATIS</translation>
 <translation id="721747358270435486">Installer VPN</translation>
 <translation id="836074276610740314">Installer VPN-profil</translation>
@@ -688,4 +708,11 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="275990379543116961">Ikke nok midler til «gas»</translation>
 <translation id="3292453499915466604">Ikke tilstrekkelig likviditet</translation>
 <translation id="3380365263193509176">Ukjent feil</translation>
+<translation id="5932938770824268122">Privat nøkkel</translation>
+<translation id="2472882733835903303">Vis privat nøkkel</translation>
+<translation id="4391056902675005799">Skjul privat nøkkel</translation>
+<translation id="5929798090073091848">Advarsel: Aldri røp denne nøkkelen. Alle som har tilgang til din private nøkkel kan stjele midlene som er på kontoen din.</translation>
+<translation id="1133619932669546254">Aktiver <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">FUNKSJONSTYPE: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Ingen data</translation>
 </translationbundle>

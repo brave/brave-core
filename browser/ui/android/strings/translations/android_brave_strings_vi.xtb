@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Ngăn các trình theo dõi &amp; quảng cáo tải và hiển thị trên các trang web</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
 <translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
+<translation id="5254037869598726291">Thông tin P3A ẩn danh hóa giúp Brave ước tính mức sử dụng tổng thể và bảo đảm rằng chúng tôi đang cải thiện những tính năng phổ biến.</translation>
 <translation id="4272190451231642425">Tự động gửi báo cáo sự cố</translation>
 <translation id="2239766974964486304">Báo cáo sự cố giúp Brave cải thiện độ ổn định của sản phẩm cho tất cả người dùng.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
@@ -218,6 +219,14 @@ tháng này...</translation>
 <translation id="7173114856073700355">Mở phần Cài đặt</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Không hiển thị lại</translation>
+<translation id="1056898198331236512">Cảnh báo</translation>
+<translation id="1426410128494586442">Có</translation>
+<translation id="7811264919113243207">Điều này sẽ chia sẻ dữ liệu Brave của bạn, bao gồm khả năng là mật khẩu của bạn, với thiết bị đã tạo ra mã QR này.
+Vui lòng kiểm tra kỹ rằng mã QR này được tạo ra bởi một thiết bị mà bạn sở hữu.
+Bạn có chắc chắn muốn thực hiện điều này không?</translation>
+<translation id="3097089005389027085">Điều này sẽ chia sẻ dữ liệu Brave của bạn, bao gồm khả năng là mật khẩu của bạn, với thiết bị đã tạo ra những từ mã này.
+Vui lòng kiểm tra kỹ rằng những từ mã này được tạo ra bởi một thiết bị mà bạn sở hữu.
+Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="597993392929850353">Giấy phép Brave</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="6199596294742117349">Đây là Tab riêng tư</translation>
@@ -409,6 +418,8 @@ tháng này...</translation>
 <translation id="6755546361496900700">Xem trước Quy đổi</translation>
 <translation id="2882813124794301799">Ngăn xếp Tiện ích</translation>
 <translation id="13296465911709339">Đã sao chép văn bản của bạn vào khay nhớ tạm.</translation>
+<translation id="4670943871783273148">Văn bản của bạn đã được lưu vào một tệp văn bản.</translation>
+<translation id="4432845796903761592">Tệp chưa được lưu.</translation>
 <translation id="7144878232160441200">Thử lại</translation>
 <translation id="2977461003134694205">Thống kê Quyền riêng tư</translation>
 <translation id="4643117005422448078">Các trang Hàng đầu</translation>
@@ -470,11 +481,12 @@ tháng này...</translation>
 <translation id="8037420924417098685">Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave</translation>
 <translation id="8961724619078500274">Với Phần thưởng Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng…hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
 <translation id="7307847920988946894">Bật Rewards</translation>
+<translation id="7872993190040589450">Với việc bật, bạn đồng ý với <ph name="TERMS_OF_SERVICE"/> và <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Để bắt đầu một cuộc gọi miễn phí, hãy bật Quảng cáo Riêng tư Brave</translation>
 <translation id="7930006085154756245">Với Quảng cáo Riêng tư Brave, bạn kiếm được token khi xem quảng cáo riêng tư (dữ liệu của bạn được an toàn). Biến những token này thành tiền mặt, phiếu quà tặng…hoặc thậm chí là thưởng cho những trang web mà bạn yêu thích. Không theo dõi. Không chậm đi.</translation>
 <translation id="4992617448154987397">Bật Quảng cáo Riêng tư Brave</translation>
 <translation id="3415016869273103668">Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí</translation>
-<translation id="7073631403665023390">Chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.</translation>
+<translation id="7073631403665023390">Nhấp hoặc chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.</translation>
 <translation id="626339649633171286">Muốn tìm hiểu thêm về Phần thưởng Brave? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Bạn đã chuyển đổi <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> thành <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Xin vui lòng kiểm tra kết nối mạng của bạn.</translation>
@@ -530,13 +542,15 @@ tháng này...</translation>
 <translation id="5460364286096798286">Giữ tiền điện tử trong quyền giám sát của bạn. Giao dịch tài sản. Xem giá và hiệu quả danh mục đầu tư. Đầu tư, vay và cho vay với DeFi.</translation>
 <translation id="1748009926009835882">Thiết lập tiền điện tử</translation>
 <translation id="2759836790106646094">Sao lưu ví của bạn ngay bây giờ!</translation>
-<translation id="7685607706678113458">Trong bước tiếp theo, bạn sẽ thấy 12 từ cho phép bạn khôi phục ví tiền điện tử của mình.</translation>
+<translation id="5156354224138379811">Trong bước tiếp theo, bạn sẽ thấy 12 từ cho phép bạn khôi phục ví tiền mã hóa của mình.</translation>
 <translation id="2359808026110333948">Tiếp tục</translation>
 <translation id="5024543173656851695">Tôi hiểu rằng nếu tôi mất các từ khôi phục, tôi sẽ không thể truy cập vào ví tiền điện tử của mình.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="6146351434671268516">Viết ra hoặc sao chép những từ này theo đúng thứ tự và lưu chúng ở nơi an toàn.</translation>
 <translation id="7408247683131762445">CẢNH BÁO: Không bao giờ tiết lộ cụm từ sao lưu của bạn. Bất kỳ ai có cụm từ này đều có thể lấy tiền của bạn mãi mãi.</translation>
 <translation id="939275786514736244">Tôi đã sao lưu cụm từ của mình ở một nơi an toàn</translation>
+<translation id="6896758677409633944">Sao chép</translation>
+<translation id="5317780077021120954">Lưu</translation>
 <translation id="2604744480284798833">Sao lưu ví của bạn ngay để bảo vệ danh mục tiền mã hóa của bạn trước việc bị mất quyền truy cập.</translation>
 <translation id="1202920745614909195">Mua tiền điện tử bằng Apple Pay, thẻ tín dụng hoặc thẻ ghi nợ.</translation>
 <translation id="841880029259839903">Gửi tiền điện tử hoặc chuyển từ tài khoản này sang tài khoản khác.</translation>
@@ -558,13 +572,13 @@ tháng này...</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Bật tính năng mở khóa bằng vân tay?</translation>
 <translation id="5493402808936397665">Bật sinh trắc học để nhanh chóng mở khóa ví của bạn mà không cần nhập mật khẩu.</translation>
-<translation id="1544192797660353713">Ví Brave</translation>
+<translation id="1544192797660353713">Ví</translation>
 <translation id="6901810042765869341">Nhập cụm từ khôi phục của bạn để khôi phục tài khoản tiền điện tử Brave Wallet của bạn.</translation>
 <translation id="1970161551843843564">Khôi phục tài khoản tiền điện tử</translation>
 <translation id="4811736040444856406">Hiển thị cụm từ khôi phục</translation>
 <translation id="283071225285270357">Nhập cụm từ khôi phục của bạn</translation>
 <translation id="2339124864228588937">Xác minh cụm từ khôi phục</translation>
-<translation id="6202787708155200390">Nhấn vào các từ trên cùng đặt chúng cạnh nhau theo đúng thứ tự.</translation>
+<translation id="2718669004132381989">Chạm vào các từ để đặt chúng cạnh nhau theo đúng thứ tự.</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="9111102763498581341">Unlock</translation>
@@ -572,7 +586,7 @@ tháng này...</translation>
 <translation id="1569452037668432756">Nhập mật khẩu của bạn để mở khóa</translation>
 <translation id="224719674509047150">Mật khẩu phải có ít nhất 7 ký tự chứa ít nhất một số và một ký tự đặc biệt</translation>
 <translation id="1144810021918451336">Không bảo vệ bạn khỏi các trang web, nội dung tải xuống và tiện ích mở rộng nguy hiểm.</translation>
-<translation id="745115390910697838">Các cụm từ không khớp. Vui lòng thử lại.</translation>
+<translation id="5760476995887363522">Các cụm từ không khớp. Vui lòng thử lại.</translation>
 <translation id="2360588547830602174">Khôi phục tài khoản không thành công. Vui lòng thử lại.</translation>
 <translation id="6392640873800632439">Giá thị trường bằng <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Từ</translation>
@@ -586,6 +600,12 @@ tháng này...</translation>
 <translation id="1987317783729300807">Tài khoản</translation>
 <translation id="3535654229833214438">Giao dịch</translation>
 <translation id="4636930964841734540">Info</translation>
+<translation id="2449682593754783720">1 giờ</translation>
+<translation id="969133700726811190">1 ngày</translation>
+<translation id="5882300031363619940">1 tuần</translation>
+<translation id="5698094150392720512">1 tháng</translation>
+<translation id="5483736362376139517">1 năm</translation>
+<translation id="6979737339423435258">Từ trước đến nay</translation>
 <translation id="6284218950354553099">Tự động gửi ping sử dụng hàng ngày đến Brave</translation>
 <translation id="5288333155754958121">Ping ẩn danh, riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
@@ -626,7 +646,7 @@ tháng này...</translation>
 <translation id="6277055349883621705">Gia hạn hàng năm tiết kiệm 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / năm</translation>
 <translation id="4487678670820292781">119,88$</translation>
-<translation id="5867778679088331977">Dùng thử miễn phí trong 7 ngày. Sau 7 ngày, bạn sẽ được tính phí theo giá gói. Tất cả mọi gói đăng ký được tự động gia hạn nhưng có thể hủy trước lúc gia hạn.</translation>
+<translation id="2655185358771731232">Dùng thử miễn phí trong 7 ngày. Sau 7 ngày, bạn sẽ được tính phí theo giá gói. Tất cả các gói đăng ký được tự động gia hạn nhưng có thể hủy trước khi gia hạn.</translation>
 <translation id="6053992191006521518">Dùng thử MIỄN PHÍ</translation>
 <translation id="721747358270435486">Cài đặt VPN</translation>
 <translation id="836074276610740314">Cài đặt cấu hình VPN</translation>
@@ -700,4 +720,11 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="275990379543116961">Không đủ tiền mua xăng</translation>
 <translation id="3292453499915466604">Thanh khoản không đủ</translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
+<translation id="5932938770824268122">Khóa Bí Mật</translation>
+<translation id="2472882733835903303">Hiển thị khóa riêng tư</translation>
+<translation id="4391056902675005799">Ẩn khóa riêng tư</translation>
+<translation id="5929798090073091848">Cảnh báo: Đừng bao giờ tiết lộ khóa này. Bất cứ ai có khóa riêng tư có thể đánh cắp mọi tài sản được nắm giữ trong tài khoản của bạn.</translation>
+<translation id="1133619932669546254">Kích hoạt <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">LOẠI CHỨC NĂNG: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Không có dữ liệu</translation>
 </translationbundle>

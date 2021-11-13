@@ -238,10 +238,6 @@
     "message": "ಹಣ ಜಮೆಮಾಡಿ",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "ಮರುಸಂಪರ್ಕಿಸಿ",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "ಸಾಕಷ್ಟು ಹಣ ಇಲ್ಲದೇ ಇರುವುದರಿಂದ ನೀವು ಬಾಕಿಯಿರುವ ಸಲಹೆಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "ವಾಲೆಟ್ ಲಿಂಕ್ ಮಾಡುವಿಕೆ ವಿಫಲಗೊಂಡಿದೆ",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ, ಏಕೆಂದರೆ ನೀವು ಗರಿಷ್ಠ ದೃಢೀಕೃತ ಸಾಧನ ಮಿತಿಯನ್ನು ಈಗಾಗಲೇ ತಲುಪಿದ್ದೀರಿ.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "ಓಹ್, ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್ ಅನ್ನು ಮತ್ತೊಂದು $provider$ ಖಾತೆಯೊಂದಿಗೆ ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಎಂಬುದಾಗಿ ಕಂಡುಬರುತ್ತಿದೆ. ನಿಮ್ಮ ಹಿಂದಿನ ಖಾತೆಯನ್ನು ಬಳಸಿಕೊಂಡು ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪರಿಶೀಲಿಸಲು ಪ್ರಯತ್ನಿಸಿ.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ BAT ಇನ್ನೂ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "ಅಪ್‌ಹೋಲ್ಡ್‌ನಲ್ಲಿರುವ ನಿಮ್ಮ ಖಾತೆ ಇನ್ನೂ ಬಾಕಿ ಉಳಿದಿದೆ.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "ನಿಮ್ಮ ಖಾತೆ ಅಪ್‌ಹೋಲ್ಡ್ ಅನ್ನು ಪ್ರಸ್ತುತ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "ಕ್ಲಿಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ. ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಎಂಬಲ್ಲಿ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ.",
+    "message": "ಸಕ್ರಿಯಗೊಳಿಸುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು $tos_link_begin$ಸೇವಾ ನಿಯಮಗಳು$tos_link_end$ ಮತ್ತು $pp_link_begin$ಗೌಪ್ಯತೆ ನೀತಿ$pp_link_end$ಗೆ ಒಪ್ಪುತ್ತೀರಿ.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "ನೀವು ಇದೀಗ ಉಚಿತ ಕರೆಯನ್ನು ಆರಂಭಿಸಬಹುದು",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+    "message": "Brave ಟಾಕ್‌ಗೆ ಮುಂದುವರಿಯಲು ಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ಎಲ್ಲಿಯಾದರೂ ಕ್ಲಿಕ್ ಮಾಡಿ ಅಥವಾ ಟ್ಯಾಪ್ ಮಾಡಿ.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

@@ -216,7 +216,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7286722244752781970">เวลาแสดงหน้าขั้นต่ำก่อนเข้าสู่ระบบ</translation>
 <translation id="4424486208397124985">การเข้าชมขั้นต่ำสำหรับความเกี่ยวข้องของผู้จัดพิมพ์</translation>
 <translation id="6248554379744796526">แสดงไซต์ที่ไม่ได้ยืนยันในรายการ</translation>
-<translation id="5510618543889994434">อนุญาตการสนับสนุนไปยังวิดีโอ</translation>
+<translation id="5510618543889994434">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
 <translation id="8933202740471878108">1 การเยี่ยมชม</translation>
 <translation id="354797634123275103">5 การเยี่ยมชม</translation>
 <translation id="3583700907990488238">10 การเยี่ยมชม</translation>
@@ -245,12 +245,23 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3082557070674409251">คลิกแล้ว</translation>
 <translation id="7119308337584989771">ปิด</translation>
 <translation id="6805660603861526473">ดูแล้ว</translation>
+<translation id="4014166694178311757">ไม่สามารถยืนยันตัวตนของวอลเล็ทได้เนื่องจากคุณมีจำนวนอุปกรณ์ที่ผ่านการยืนยันตัวตนถึงขีดจำกัดสูงสุดแล้ว</translation>
+<translation id="1221593978088944142">ข้อผิดพลาด: ถึงขีดจำกัดอุปกรณ์</translation>
 <translation id="3113653894794167793">ขออภัย เกิดปัญหาในการดำเนินการตามคำขอ โปรดลองอีกครั้ง</translation>
-<translation id="8832187864682447273">คุณต้องมีวอลเล็ทที่ผ่านการยืนยันแล้วเพื่อเข้าสู่ระบบ</translation>
-<translation id="2607420597216860026">โปรดลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="PROVIDER"/> แล้ว</translation>
+<translation id="2607420597216860026">กรุณาลองอีกครั้งหลังจากที่คุณได้ดำเนินการยืนยัน ID บน <ph name="PROVIDER"/>แล้ว</translation>
+<translation id="8832187864682447273">เกิดข้อผิดพลาด: คุณต้องมีกระเป๋าเงินที่ผ่านการยืนยันแล้วเพื่อเข้าสู่ระบบ</translation>
 <translation id="1501075228659004450">ดูเหมือนว่ากระเป๋าเงิน Brave Rewards ของคุณจะได้รับการยืนยันด้วยบัญชีผู้ใช้ <ph name="PROVIDER"/> อีกบัญชีหนึ่ง กรุณายืนยันอีกครั้งโดยใช้บัญชีก่อนหน้าของคุณ</translation>
 <translation id="5111921830714291902">ข้อผิดพลาด: บัญชีแตกต่างกัน</translation>
+<translation id="5382684862562314222">ยังไม่รองรับ BAT ในภูมิภาคของคุณบน Uphold</translation>
+<translation id="9074594632540931067">เกิดข้อผิดพลาด: BAT ไม่พร้อมใช้งาน</translation>
+<translation id="413458922997276130">บัญชีของคุณที่ Uphold ถูกบล็อกอยู่ในขณะนี้</translation>
+<translation id="3579959767665130790">เกิดข้อผิดพลาด: บัญชีถูกบล็อก</translation>
+<translation id="819370426249314592">บัญชีของคุณที่ Uphold ยังคงรอดำเนินการอยู่</translation>
+<translation id="4530453398914580957">เกิดข้อผิดพลาด: บัญชีอยู่ระหว่างรอดำเนินการ</translation>
+<translation id="2388470740942086608">บัญชีของคุณที่ Uphold ถูกจำกัดอยู่ในขณะนี้</translation>
+<translation id="3605236342612716051">เกิดข้อผิดพลาด: บัญชีถูกจำกัด</translation>
 <translation id="1737873393693460829">เมื่อเปิด [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>
+<translation id="901298512318791028">การจ่ายเงิน <ph name="AMOUNT"/> จะเริ่มดำเนินการใน <ph name="DAYS"/></translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>หมายเหตุ: <ph name="BOLD_END"/>อาจใช้เวลาสองสามวันในการดำเนินการจ่ายเงินและคุณจึงจะได้รับ BAT</translation>
 <translation id="4672975606583962967">เลือกบริการกระเป๋าเงิน</translation>
 <translation id="1815503044492647974">เลือกพันธมิตรกระเป๋าเงินเพื่อจัดเก็บข้อมูลของลูกค้า หากคุณมีบัญชีอยู่แล้ว ระบบจะขอให้คุณเข้าสู่ระบบเพื่อเชื่อมต่อ</translation>
@@ -335,6 +346,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2223892939866251845">รหัสผู้ใช้</translation>
 <translation id="4235360514405112390">ถูกต้อง</translation>
 <translation id="3902084968737576005">ที่อยุ่วอลเล็ต:</translation>
+<translation id="3653417592104122757">ประวัติกระเป๋าเงิน</translation>
 <translation id="2326487656644542536">ข้อมูลกระเป๋าเงิน</translation>
 <translation id="3506182299017414175">ยังไม่มีการสร้างกระเป๋าสตางค์</translation>
 <translation id="8559420016582377654">ID ชำระเงินด้วยวอลเล็ต:</translation>
@@ -531,6 +543,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3267911153934785912">ป้อนคีย์กู้คืนของคุณหรือ</translation>
 <translation id="1209382772199769572">สำรองข้อมูลกระเป๋าเงินของคุณก่อนแทนที่ ไม่เช่นนั้นคุณจะเสียเงิน [[funds]] ในกระเป๋าเงินปัจจุบันของคุณไป</translation>
 <translation id="5423214929210538027">แน่ใจว่าต้องการรีเซ็ต Rewards Wallet?</translation>
+<translation id="4749947664556704604">หากคุณรีเซ็ตกระเป๋าเงิน จำนวนเงิน <ph name="BAT_AMOUNT"/> ของคุณและข้อมูลรางวัลอื่นๆ จะหายไปโดยถาวร กรุณาตรวจสอบให้แน่ใจว่าคุณ<ph name="LINK_BEGIN"/>ยืนยันกระเป๋าเงิน<ph name="LINK_END"/>แล้ว เพื่อให้เงิน BAT ของคุณไม่หายไป</translation>
 <translation id="2028613172174411919">ข้อมูลรางวัลของคุณจะสูญหายถาวรหากคุณรีเซ็ตกระเป๋าเงินของคุณ</translation>
 <translation id="4914597931214386232">โทเค็นเงินบริจาคที่เบิกแล้ว</translation>
 <translation id="3494964159182650590">สรุปรางวัล</translation>
@@ -588,7 +601,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3345432088196080137">ลงทุนเล็กน้อยแค่ $1 ในหุ้นยอดนิยมและแลกเปลี่ยนเงินทุนเทรดเช่น AAPL, TSLA หรือ AMZN</translation>
 <translation id="3787061634640932557">แก้ไขบัตร</translation>
 <translation id="5977237145327845546">เริ่มวิดีโอคอลส่วนตัวกับเพื่อนและคนรู้จักของคุณ</translation>
-<translation id="5850325887346946383">เริ่มวิดีโอคอล</translation>
+<translation id="8863928195533744356">เริ่มโทร</translation>
 <translation id="3651550649176056334">เกี่ยวกับข้อมูลของคุณ</translation>
 <translation id="223536150967420869">ซื้อ</translation>
 <translation id="5110244215256675209">ซื้อสกุลเงินดิจิทัล</translation>
@@ -773,11 +786,29 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4989163558385430922">ดูทั้งหมด</translation>
 <translation id="3026978804849658576">ดูรายการชําระ</translation>
 <translation id="8494748383523030337">ยอดของคุณ</translation>
+<translation id="3343165035032571678">คุณได้รับ <ph name="AMOUNT"/> จากการเข้าชม Brave Private Ads!</translation>
+<translation id="6618415862402597254">รายได้จากโฆษณาที่ได้รับ</translation>
+<translation id="5981646694027725752">รับรายได้</translation>
+<translation id="2556441076129789027">รับโทเค็น</translation>
+<translation id="5544777623605368410">รายได้</translation>
+<translation id="3273637494083639780">โทเค็นที่คุณได้รับในเดือนนี้จะเริ่มดำเนินการในวันที่ <ph name="DATE"/></translation>
+<translation id="1029300693989825319">นี่อาจแตกต่างกันไปตามความผันผวนของตลาด</translation>
+<translation id="8334559352278209120">การให้</translation>
+<translation id="3903419925307046908">รับโทเค็นเพื่อนำไปตอบแทน</translation>
+<translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
+<translation id="5095252080770652994">ความคืบหน้า</translation>
+<translation id="6278643716658443228">การตั้งค่า Rewards</translation>
+<translation id="6777169449483742979">คุณได้รับโทเค็นจากการดูภาพที่ได้รับการสนับสนุนภาพนี้</translation>
+<translation id="5486114327664215175">รับโทเค็นจากการดูภาพนี้และสนับสนุนผู้สร้างเนื้อหา</translation>
+<translation id="2940863921746574646">ยอดโทเค็นคงเหลือ</translation>
+<translation id="1714906256929297600">ใช้โทเค็นโปรโมทของคุณเพื่อสนับสนุนผู้สร้างก่อนที่จะหมดอายุ!</translation>
+<translation id="2426048501007152001">มีโทเค็น</translation>
 <translation id="7701466644604753106">เปิด Speedreader</translation>
 <translation id="763042262431778831">ปิด Speedreader</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="1148827340205946630">ผู้ใช้ปฏิเสธคำขอ</translation>
 <translation id="2403819048476450281">พารามิเตอร์ไม่ถุกต้อง</translation>
+<translation id="3955144560853195652">ยังไม่ได้เพิ่ม Chain <ph name="VALUE"/></translation>
 <translation id="9161147058107529840">หนึ่งพารามิเตอร์เป้าหมายที่คาดว่าจะได้รับ</translation>
 <translation id="1875861420974447980">ใช้ Chain ID นี้อยู่ในขณะนี้</translation>
 <translation id="167698752210114155">เกิดข้อผิดพลาดภายใน</translation>
@@ -797,9 +828,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7381733147588397055">ไม่สามารถแปลงข้อมูลธุรกรรม</translation>
 <translation id="3829038878925630240">ต้องระบุข้อมูลธุรกรรม 'from'</translation>
 <translation id="4732386285392573809">เรียกข้อมูลราคาค่าแก๊สสำหรับธุรกรรมไม่สำเร็จ</translation>
-<translation id="7619826778671319444">เรียกข้อมูลวงเงินค่าแก๊สสำหรับธุรกรรมไม่สำเร็จ</translation>
 <translation id="4232775951515678071">เรียกข้อมูลประเภทสำหรับธุรกรรมไม่สำเร็จ</translation>
-<translation id="7631054302129692654">เรียกข้อมูลประมาณการค่าแก๊สสำหรับธุรกรรม EIP-1559 ไม่สำเร็จ</translation>
+<translation id="2080935885647755539">ไม่สามารถรับค่าแก๊สสำหรับธุรกรรม EIP-1559 ได้</translation>
+<translation id="4843814354611030845">ผู้ใช้ปฏิเสธการทำธุรกรรม</translation>
+<translation id="1462494615260983714">เกิดข้อผิดพลาดในการประมวลผลธุรกรรม</translation>
+<translation id="4886059598718763020">'<ph name="VALUE"/>' ไม่ได้รับอนุญาตให้เซ็นข้อความ</translation>
 <translation id="4958950550253325418">แอป DeFi</translation>
 <translation id="735961408871282410">ตลาด NFT</translation>
 <translation id="7740287852186792672">ผลการค้นหา</translation>
@@ -834,13 +867,17 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2267753748892043616">เพิ่มบัญชี</translation>
 <translation id="1483493594462132177">ส่ง</translation>
 <translation id="538450413584738399">สวอป</translation>
-<translation id="5420730209575475110">ไม่รองรับ</translation>
+<translation id="7020187418439030877">ไม่รองรับ <ph name="NETWORK"/></translation>
+<translation id="1191686659164947414">การทำธุรกรรมอาจเป็น Front Run</translation>
+<translation id="632241521608275119">ค่าเผื่อความคลาดเคลื่อน</translation>
+<translation id="4500473291496079954">หมดอายุใน</translation>
+<translation id="8093033115658137576">ที่อยู่หรือ URL 0x</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
 <translation id="1420318137760245955">ยินดีต้อนรับสู่ Brave วอลเล็ตใหม่</translation>
 <translation id="8303434745767477417">ถือครองสินทรัพย์คริปโตไว้ในการดูแลของคุณ ติดตามผลงานของพอร์ตโฟลิโอและโต้ตอบด้วย web3 DApps เทรด ลงทุน ยืม และให้กู้ยืมด้วย DeFi ทั้งหมดนี้ทำได้จากเบราว์เซอร์ที่มีความเป็นส่วนตัวจาก Brave โดยไม่ต้องใช้ส่วนขยาย ไม่ต้องมีการดาวน์โหลด</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">เก็บสำรองคริปโตวอลเล็ตของคุณ</translation>
-<translation id="1078873179929044999">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) 12 คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ เก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานวอลเล็ต</translation>
+<translation id="1078873179929044999">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) 12 คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ เก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานกระเป๋าเงิน</translation>
 <translation id="5024543173656851695">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
 <translation id="3933122286596948824">วลีกู้คืนของคุณ</translation>
 <translation id="5077747669435508720">จดหรือคัดลอกคำเหล่านี้ไว้ตามลำดับที่ถูกต้องดังที่แสดงด้านล่างแล้วเก็บรักษาไว้ในที่ที่ปลอดภัย กลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานวอลเล็ต</translation>
@@ -854,8 +891,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2813156651070657572">รักษาความปลอดภัยให้สินทรัพย์คริปโตของคุณด้วยรหัสผ่าน</translation>
 <translation id="6901073872645365201">รหัสผ่านต้องมีอย่างน้อย 7 อักขระ และมีอย่างน้อย 1 ตัวเลขและ 1 อักขระพิเศษ</translation>
 <translation id="6657585470893396449">รหัสผ่าน</translation>
-<translation id="692381016487372902">พิมพ์รหัสผ่านอีกครั้ง</translation>
-<translation id="3527905866577245691">รหัสผ่านที่ยืนยันไม่ตรงกัน</translation>
+<translation id="5486261815000869482">ยืนยันรหัสผ่าน</translation>
+<translation id="467510802200863975">รหัสผ่านไม่ตรงกัน</translation>
 <translation id="5168349973342709369">ป้อนรหัสผ่านเพื่อปลดล็อควอลเล็ต</translation>
 <translation id="9111102763498581341">ปลดล็อก</translation>
 <translation id="5045550434625856497">รหัสผ่านไม่ถูกต้อง</translation>
@@ -879,6 +916,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1940465339426637378">แอสเซท</translation>
 <translation id="2236507293802791911">สินทรัพย์ที่มองเห็นได้</translation>
 <translation id="7525067979554623046">สร้าง</translation>
+<translation id="4771176409524282426">สร้างบัญชี</translation>
 <translation id="4324198334837993695">ฮาร์ดแวร์</translation>
 <translation id="3067168166931605141">ชื่อบัญชี</translation>
 <translation id="1136772623587250243">วางไพรเวทคีย์จากคลิปบอร์ด</translation>
@@ -888,9 +926,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="795667975304826397">ไม่มีไฟล์ที่เลือก</translation>
 <translation id="5891811606602061966">นำเข้าบัญชีไม่สำเร็จ โปรดลองอีกครั้ง</translation>
 <translation id="5051929972046200722">เลือกอุปกรณ์ฮาร์ดแวร์วอลเล็ตของคุณ</translation>
-<translation id="6932355307691676490">เชื่อมต่อวอลเล็ต</translation>
-<translation id="4513956488935671725">ของคุณกับคอมพิวเตอร์ของคุณโดยตรง</translation>
+<translation id="5745936663807461565">เชื่อมต่อกระเป๋าเงิน <ph name="HARDWARE_DEVICE"/> ของคุณโดยตรงไปยังคอมพิวเตอร์ของคุณ</translation>
 <translation id="5041211872515579638">ปลดล็อคอุปกรณ์ของคุณแล้วเลือกแอป Ethereum</translation>
+<translation id="6892232036314454524">ข้อผิดพลาดนี้อาจเกิดขึ้นเมื่อมีการเปิดแอปพลิเคชันที่ไม่ถูกต้องบนอุปกรณ์ Ledger</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
@@ -908,11 +946,13 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6600400596821238377">ชื่อโทเค็น</translation>
 <translation id="4432966365400169165">แอดเดรสสัญญาโทเค็น</translation>
 <translation id="4092152169181928870">สัญลักษณ์โทเค็น</translation>
-<translation id="871696868578199698">จำนวนหลักทศนิยมเลขฐาน</translation>
-<translation id="6637540491667802882">เป็นโทเค็นที่กำหนดเอง</translation>
+<translation id="4351811224047421378">ความเที่ยงตรงของทศนิยม</translation>
+<translation id="4982060163914604175">เพิ่ม <ph name="CONTRACT_ADDRESS"/> เป็นโทเค็นที่กำหนดเอง</translation>
 <translation id="7978047524114351365">ไม่มีสินทรัพย์ที่ตั้งชื่อไว้</translation>
 <translation id="9040455159722359521">ค้นหาสินทรัพย์หรือแอดเดรสสัญญา</translation>
 <translation id="6018178824574796106">เพิ่มโทเค็นที่กำหนดเองไม่สำเร็จ โปรดลองอีกครั้ง</translation>
+<translation id="547122651977318828">ID โทเค็น (สำหรับ ERC721 เท่านั้น)</translation>
+<translation id="7544552854944350190">ต้องระบุ ID โทเค็น</translation>
 <translation id="2708402071160162126">คำเตือน: อย่าให้ใครรู้กลุ่มคำสำหรับการกู้คืนของคุณ ใครก็ตามที่มีกลุ่มคำเหล่านี้จะสามารถนำสินทรัพย์ของคุณไปได้ตลอดกาล</translation>
 <translation id="2902856457593699108">แสดงคีย์</translation>
 <translation id="8033497299373164724">ซ่อนคีย์</translation>
@@ -920,7 +960,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">ทั้งหมด</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Test Network</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -941,7 +981,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="59223531494896848">ข้อจำกัด</translation>
 <translation id="8569380433211549748">ราคาใน</translation>
 <translation id="2490428413101944234">Test faucet</translation>
-<translation id="6082785102488657349">รับ Ether จาก Faucet สำหรับ</translation>
+<translation id="3352959425838279177">รับ Ether จาก Faucet สำหรับ <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">ไปที่ Wyre</translation>
 <translation id="2581671693710952401">รับอีเธอร์</translation>
 <translation id="8009571545960303544">ลายเซ็นของคุณกำลังได้รับการร้องขอ</translation>
@@ -949,12 +989,15 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3474375934783434676">ลงชื่อโดยยอมรับความเสี่ยงด้วยตัวคุณเอง</translation>
 <translation id="5488357322146334497">ข้อความ</translation>
 <translation id="3586752056660754651">เซ็นชื่อ</translation>
-<translation id="7065157926159745595">อนุญาตให้แอปนี้ใช้จ่ายสินทรัพย์ต่อไปนี้ของคุณ:</translation>
+<translation id="9032898664193335413">อนุญาตให้แอปนี้ใช้จ่าย <ph name="TOKEN_SYMBOL"/> ของคุณ</translation>
+<translation id="854606191596163710">การให้สิทธ์อนุญาตนี้จะถือว่าคุณอนุญาตให้แอปนี้ถอน <ph name="VALUE"/> ของคุณและทำธุรกรรมให้คุณโดยอัตโนมัติ</translation>
 <translation id="8786100550345425552">แก้ไขสิทธิ์อนุญาต</translation>
 <translation id="7710469167917867539">ค่าธรรมเนียมการทำธุรกรรม</translation>
 <translation id="9065203028668620118">แก้ไข</translation>
 <translation id="7968982339740310781">ดูรายละเอียด</translation>
 <translation id="6452181791372256707">ปฏิเสธ</translation>
+<translation id="8904889345035514635">การอนุญาตปัจจุบัน</translation>
+<translation id="7073918978411974168">การอนุญาตที่เสนอ</translation>
 <translation id="4717431746210146708">อนุญาตให้ไซต์นี้เพิ่มเครือข่ายหรือไม่</translation>
 <translation id="2521480044079508357">การดำเนินการนี้จะอนุญาตให้ใช้เครือข่ายนี้ภายใน Brave วอลเล็ตได้</translation>
 <translation id="1982257600591932657">ชื่อเครือข่าย</translation>
@@ -964,6 +1007,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">สัญลักษณ์สกุลเงิน</translation>
 <translation id="4693057234255364395">URL ของ Block Explorer</translation>
+<translation id="1060221736464994328">อนุญาตให้เว็บไซต์นี้สลับเครือข่ายหรือไม่</translation>
+<translation id="2478788592457735063">การดำเนินการนี้จะสลับเครือข่ายเป็นเครือข่ายที่เพิ่มไว้ก่อนหน้านี้</translation>
+<translation id="8756686998207163764">สลับเครือข่าย</translation>
 <translation id="3948067511324628726">ค่าแก๊ส</translation>
 <translation id="7163997622278957886">เสนอซื้อ</translation>
 <translation id="1074360622426001342">จำนวนเงิน + ค่าแก๊ส</translation>
@@ -971,38 +1017,39 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5821668936183240062">ถัดไป</translation>
 <translation id="793994607260936590">รายการแรก</translation>
 <translation id="4709524402122994378">ธุรกรรม</translation>
+<translation id="523862956770478816">การให้สิทธิ์แก่เว็บไซต์</translation>
+<translation id="1575262454612599115">เชื่อมต่อบัญชี <ph name="NUMBER_OF_ACCOUNTS"/> แล้ว</translation>
 <translation id="4460220693591349571">ประเภทฟังก์ชัน</translation>
 <translation id="838933475572692615">ข้อมูล HEX</translation>
 <translation id="2240831799756994975">ไบต์</translation>
 <translation id="4874303883488468190">เลือกบัญชี</translation>
-<translation id="4015195974325151180">ดูแอดเดรสของบัญชี</translation>
-<translation id="3587259018193837508">ที่คุณอนุญาต (จำเป็น)</translation>
+<translation id="2018472018751735678">ดูที่อยู่ของบัญชีที่คุณอนุญาต (บังคับ)</translation>
 <translation id="7029403458170657879">เชื่อมต่อกับ Brave วอลเล็ต</translation>
 <translation id="7982184974053636367">ต้องใช้รหัสผ่านที่ปลอดภัยมากขึ้นสำหรับ Brave วอลเล็ต</translation>
 <translation id="2372897697869224590">ตั้งรหัสผ่าน Brave วอลเล็ต</translation>
 <translation id="7739762330714405363">ใช้รหัสผ่านเดียวกัน</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">นำเข้าจาก</translation>
-<translation id="4428111176561355185">นำเข้า</translation>
-<translation id="8929587248006013051">บัญชี MetaMask ของคุณไปยัง Brave วอลเล็ต แล้วเพลิดเพลินไปกับวิธีที่เร็วขึ้นและปลอดภัยยิ่งขึ้นในการจัดการสินทรัพย์คริปโตและโต้ตอบกับ web3 DApps</translation>
+<translation id="7102907656918333773">นำเข้าจาก <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">นำเข้าบัญชี <ph name="WALLET_EXTENSION"/> ของคุณไปยัง Brave Wallet เพลิดเพลินไปกับวิธีในการจัดการสินทรัพย์คริปโตและโต้ตอบกับ web 3 DApps ที่รวดเร็วและปลอดภัยยิ่งขึ้น</translation>
 <translation id="4237840336687249184">รหัสผ่าน MetaMask</translation>
 <translation id="2381605201035323535">คริปโตวอลเล็ต</translation>
 <translation id="2770851145415891830">ตรวจพบคริปโตวอลเล็ตที่มีอยู่</translation>
 <translation id="4938145712652668388">เมื่อคลิก "เริ่มต้นใช้งาน" คุณจะนำเข้าคริปโตวอลเล็ตของคุณที่มีอยู่ก่อนหน้านี้ไปยังประสบการณ์การใช้งานรูปแบบใหม่บน Brave วอลเล็ต แล้วเพลิดเพลินไปกับสิทธิประโยชน์ทั้งหมดที่ระบุไว้ข้างต้น ลองดูเลย แล้วบอกเราว่าคุณคิดยังไง!</translation>
-<translation id="913613743605881268">หากคุณต้องการข้ามการนำเข้าและเก็บประสบการณ์การใช้งานคริปโตวอลเล็ตเดิมของคุณไว้ ก็เพียงแค่ไปที่ เบราว์เซอร์ Brave</translation>
-<translation id="5886242758142314994">แล้วเปลี่ยนค่าเริ่มต้นกลับไปที่คริปโตวอลเล็ต นอกจากนี้คุณยังสามารถนำเข้า ลองใช้งาน Brave วอลเล็ตใหม่ และเปลี่ยนกลับมาได้ทุกเมื่อ</translation>
+<translation id="2237759620789871865">หากคุณต้องการข้ามการนำเข้าและรับประสบการณ์กระเป๋าเงินคริปโตแบบเก่า เพียงไปที่<ph name="LINK_BEFORE"/>การตั้งค่า<ph name="LINK_AFTER"/> Brave Browser และเปลี่ยนค่าเริ่มต้นกลับไปเป็นกระเป๋าเงินคริปโต โดยคุณยังสามารถนำเข้าได้อยู่ สามารถลองใช้ Brave Wallet ใหม่ และเปลี่ยนกลับได้ตลอด</translation>
 <translation id="3301259443293676544">ป้อนรหัสผ่านคริปโตวอลเล็ตที่มีอยู่ของคุณเพื่อนำเข้าไปยัง Brave วอลเล็ต แล้วเพลิดเพลินไปกับวิธีที่เร็วขึ้นและปลอดภัยยิ่งขึ้นในการจัดการสินทรัพย์คริปโตและโต้ตอบกับ web3 DApps</translation>
 <translation id="9099900965604225657">รหัสผ่านคริปโตวอลเล็ต</translation>
 <translation id="4020495774166914146">รหัสผ่านและกลุ่มคำสำหรับการกู้คืนของฉันสูญหาย สร้างวอลเล็ตใหม่</translation>
-<translation id="480319080797177742">เชื่อมต่อแล้ว</translation>
-<translation id="4203566092423620442">ยกเลิกการเชื่อมต่อแล้ว</translation>
+<translation id="6344138931392227467">เชื่อมต่อ <ph name="DEVICE_NAME"/> แล้ว</translation>
+<translation id="7051244143160304048">ยกเลิกการเชื่อมต่อ <ph name="DEVICE_NAME"/> แล้ว</translation>
 <translation id="5317781812114905957">คำแนะนำ</translation>
-<translation id="1952715382071350669">ฮาร์ดแวร์วอลเล็ตต้องการให้ยืนยันการทำธุรกรรม</translation>
+<translation id="1178198982208000092">เชื่อมต่อ <ph name="DEVICE_NAME"/> ของคุณ</translation>
+<translation id="3301417531330431881">Hardware Wallet ต้องการให้ยืนยันการทำธุรกรรม <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">ส่งแล้ว</translation>
 <translation id="5013754027092416509">ได้รับแล้ว</translation>
 <translation id="5867988533873716616">ไม่มี URL ของ Block Explorer</translation>
 <translation id="4255623233927788178">ดูบน Block Explorer</translation>
 <translation id="6383204195803840504">ธุรกรรมจะปรากฏที่นี่</translation>
+<translation id="2916401020782528840">ไม่พบการทำธุรกรรม</translation>
 <translation id="8941851657764077659">ค่าธรรมเนียมลัดคิวสูงสุด</translation>
 <translation id="8047527352810290817">แก้ไขค่าแก๊ส</translation>
 <translation id="9091334651803050473">นักขุดจะมีแนวโน้มที่จะลัดคิวให้ธุรกรรมของคุณหากคุณจ่ายค่าธรรมเนียมสูงกว่า ทั้งนี้ไม่มีการประกัน</translation>
@@ -1019,12 +1066,31 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">ตั้งค่าแบบกำหนดเอง</translation>
 <translation id="7400927223938424379">ตั้งค่าตามที่แนะนำ</translation>
+<translation id="1599636444563952897">การอนุญาตวงเงินจะช่วยให้ <ph name="SITE_ORIGIN"/> สามารถถอนและใช้จ่ายได้จนถึงจำนวนดังต่อไปนี้:</translation>
+<translation id="4512871563176965522">การอนุญาตที่กำหนดเอง</translation>
+<translation id="749944179568745958">ที่อยู่ ETH ไม่ถูกต้อง</translation>
+<translation id="882486206986535424">ที่อยู่ไม่ถูกต้อง</translation>
+<translation id="6825399159373612149">ยังไม่ได้ลงทะเบียนโดเมน <ph name="DOMAIN_NAME"/></translation>
+<translation id="862585889767884824">of</translation>
+<translation id="9106265941552476098">ปฏิเสธการทำธุรกรรม <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">ยอดคงเหลือไม่เพียงพอ</translation>
 <translation id="275990379543116961">เงินทุนไม่เพียงพอสำหรับค่าแก๊ส</translation>
 <translation id="3292453499915466604">สภาพคล่องไม่เพียงพอ</translation>
 <translation id="805808215102934711">เปิดใช้งาน <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">ข้อผิดพลาดที่ไม่รู้จัก</translation>
-<translation id="6687008710463927359">บัญชี <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">บัญชี <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">ต้องปลดล็อกกระเป๋าเงินก่อน</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> ไม่ใช่ที่อยู่ที่ถูกต้อง</translation>
+<translation id="7340805872138998391">ไม่สามารถปลดล็อกอุปกรณ์ได้ ลองเชื่อมต่อใหม่</translation>
+<translation id="1984410139271779110">เกิดข้อผิดพลาดภายใน รูปแบบที่ไม่รู้จัก</translation>
+<translation id="8682200134223578011">อนุมัติแล้ว</translation>
+<translation id="4674380028960132654">Ledger: ลายเซ็นไม่ตรงกับที่อยู่ที่ถูกต้อง</translation>
+<translation id="3183932890629254743">ไม่พบบัญชีฮาร์ดแวร์</translation>
+<translation id="4287068151777838754">ข้อมูล JSON ไม่ได้รับการคาดหวัง</translation>
+<translation id="3282936527763045737">รหัสผ่านไม่ถูกต้อง</translation>
+<translation id="1119447706177454957">ข้อผิดพลาดภายใน</translation>
+<translation id="3327639091470204775">เกิดข้อผิดพลาดภายใน ไม่สามารถสร้าง iframe bridge</translation>
+<translation id="6672377693827764095">เกิดข้อผิดพลาดภายใน ไม่สามารถดึงข้อมูลบัญชีได้</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1033,6 +1099,24 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6951743416068151209">Tor Proxy URI</translation>
 <translation id="1671503397662036257">สถานะการเชื่อมต่อ Tor</translation>
 <translation id="6024292492796847324">ความคืบหน้าการเริ่มต้น Tor</translation>
+<translation id="1742469581923031760">กำลังเชื่อมต่อ</translation>
+<translation id="1287487756047817908">กำลังยกเลิกการเชื่อมต่อ</translation>
+<translation id="2325196879156848326">การเชื่อมต่อล้มเหลว</translation>
+<translation id="745054660363064771">ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้</translation>
+<translation id="3936826714240735937">เลือกเซิร์ฟเวอร์อื่น</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ <ph name="REGION_NAME"/> ได้ คุณสามารถลองอีกครั้งหรือเลือกเซิร์ฟเวอร์อื่น</translation>
+<translation id="1664949222596149258">ซื้อ <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">ซื้อ VPN แล้วใช่ไหม</translation>
+<translation id="8814357473522731680">สนับสนุนโดย</translation>
+<translation id="5747552184818312860">หมดอายุ</translation>
+<translation id="1691256669639196606">จัดการการสมัครสมาชิก</translation>
+<translation id="434523916398030617">ติดต่อฝ่ายสนับสนุนทางเทคนิค</translation>
+<translation id="1116694919640316211">เกี่ยวกับ</translation>
+<translation id="8670386189340362926">บล็อกตัวติดตามและโฆษณาในทุกแอป</translation>
+<translation id="4860763498907927955">ปกป้องคุณจากการเชื่อมต่อเครือข่ายที่ไม่ต้องการ</translation>
+<translation id="3181339219453722970">เลือกตำแหน่ง VPN ของคุณ</translation>
+<translation id="1751947227857853925">เร็วและไม่จำกัด สูงสุด 100 Mbps</translation>
+<translation id="1400240082805528049">การสนับสนุนทุกวันตลอด 24 ชม.</translation>
 <translation id="7586151660465233733">ตลาดซื้อขายเพิ่มเติมที่ <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">ดูตลาดซื้อขายและเทรดคริปโตบน FTX</translation>
 <translation id="5963745988819586370">ตลาดซื้อขาย</translation>

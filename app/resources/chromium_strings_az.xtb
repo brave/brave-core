@@ -41,9 +41,9 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="7798069806040634998">Faylları endirmək üçün Brave yaddaşa giriş tələb edir</translation>
 <translation id="8447483940522230788">Brave Yardım</translation>
 <translation id="7933006624150961626">Bütün cihazlarınızda Brave elementlərinə giriş etmək üçün daxil olun ki, sinxronizasiyanı aktiv edə biləsiniz.</translation>
-<translation id="5486618155264784386">Chrome OS'i quraşdırın</translation>
 <translation id="7291143854620707672">Bu profilin istifadəsi zamanı yaranan hər hansı bir Brave datası (əlfəcinlər, tarixçələr, parolların yaradılması və digər ayarlar kimi) iş profili administratoru tərəfindən silinə bilər. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Güncəlləşmənin tətbiq olunması üçün Chrome OS yenidən başladılmalıdır.</translation>
+<translation id="4703432949110765917">Defolt ayarlar əksər insanlar üçün işləyir, lakin onları Brave'dan istifadə tərzinizə uyğunlaşdıra bilərsiniz</translation>
 <translation id="7387051847644272380">Quraşdırma zamanı əməliyyat sistemi xətası baş verdi. Brave'u yenidən endirin.</translation>
 <translation id="2648689842065142443">Cihaz paylaşsanız, dostlarınız və ailəniz ayrıca baxış keçirə bilər və Brave'u istədikləri kimi ayarlaya bilər.</translation>
 <translation id="6791166902140255175">Brave Paneli</translation>
@@ -54,8 +54,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="777113543093865885">Brave'dan silin...</translation>
 <translation id="2885378588091291677">Tapşırıq Meneceri</translation>
 <translation id="2176825726964012531">Brave haqqında</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Son xatırlatma: quraşdırma nəticəsində <ph name="BEGIN_BOLD"/>sərt diskdəki bütün data silinəcək<ph name="END_BOLD"/>. Lazımlı bütün datanı yedəkləyin.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Quraşdırma başladıqdan sonra ləğv edilə bilməz.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave güncəldir</translation>
 <translation id="2953892977076487219">Brave parolları redaktə etməyə çalışır.</translation>
 <translation id="8755404239607088219">Brave parollarınızı yoxlaya bilmir. Sonra yenidən cəhd edin.</translation>
@@ -76,7 +74,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="2711887072399498551">Bu hesab ilə Brave profili artıq mövcuddur</translation>
 <translation id="2297290224191497273">Mövcud Brave profilinə keçirilsin?</translation>
 <translation id="2450003541323895471">Brave profilləri ilə bütün Brave elementlərinizi ayıra bilərsiniz. Dostlarınız və ailəniz üçün profillər yaradın və ya iş və əyləncə arasında bölün.</translation>
-<translation id="7275165473619697274">Chrome OS quraşdırılır</translation>
 <translation id="9216183508558772570">Oğurlanmış parol ilə daxil olduqda Brave sizə bildiriş göndərəcək</translation>
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> element bu cihazdan silinəcək. Sonradan datanızı bərpa etmək üçün Bravea <ph name="USER_EMAIL"/> kimi daxil olun.</translation>
 <translation id="2024972335338126423"><ph name="SHORTCUT"/> Brave profilləri arasında keçid edə bilər</translation>
@@ -101,7 +98,6 @@ Bəzi funksiyalar əlçatmaz ola bilər ki, nəticədə tərcihlərə edilən d�
 <translation id="8923080813984421771"><ph name="MANAGER"/> bu cihazı istifadə etməzdən əvvəl aşağıdakı Xidmət Şərtlərini oxumağınızı və qəbul etməyinizi tələb edir. Bu şərtlər Chrome OS Şərtlərini artırmır, dəyişdirmir və ya məhdudlaşdırmır.</translation>
 <translation id="3262506503470845422">Brave ilə yardım alın</translation>
 <translation id="7691786510374174420">Naməlum xəta üzündən quraşdırmaq alınmadı. Əgər Brave hazırda işləyirsə, lütfən, qapadın və yenidən cəhd edin.</translation>
-<translation id="429583012151745428">Quraşdırma davam edir. Cihazı deaktiv etməyin. Quraşdırma iyirmi dəqiqədən çox çəkməməlidir. Quraşdırıldıqdan sonra maşın avtomatik olaraq bağlanacaq.</translation>
 <translation id="9183662282810237335">Brave'dan istənilən halda çıxılsın?</translation>
 <translation id="4065288863231444640">Brave'a Arxa Fonda İşləmək İcazəsi Verin</translation>
 <translation id="8148611988012584308">Fərdiləşdirin və Brave'u kontrol edin</translation>
@@ -194,7 +190,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="6666624454809779082">Brave kompüterinizdəki bütün istifadəçilər üçün artıq quraşdırılıb.</translation>
 <translation id="5360050006043219962">Bütün cihazlarınızda Brave elementlərinə giriş etmək üçün daxil olun və sinxronizasiyanı aktiv edin.</translation>
 <translation id="8291513491595858997">Valideyniniz Brave üçün "Saytlar, tətbiqlər və artırmalar üçün icazələri" deaktiv edib. Bu <ph name="EXTENSION_TYPE_PARAMETER"/> artırmasının aktiv edilməsinə icazə verilmir.</translation>
-<translation id="1810203443153428607">Chrome OS'i quraşdırdıqda cihazınızdakı bütün data əvəzlənəcəkdir.</translation>
 <translation id="8211837073776713955">Brave parollarınızın oğurlanıb-oğurlanmadığı haqqında Sizə məlumat verir</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (Brave'a kopyalandı)</translation>
@@ -205,6 +200,7 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
 <translation id="3335606533094650083">Brave bu sayt üçün mikrofona giriş tələb edir</translation>
 <translation id="1705567146636171298">Brave'u güncəlləşdirin</translation>
 <translation id="5499063270485366718">Şəklin təsviri faydalı deyilsə, Brave Sizin üçün təsviri təmin etməyə çalışacaq. Təsvir yaratmaq üçün şəkillər Brave'a göndərilir.</translation>
+<translation id="151916274998710826">Brave'un ən vacib məxfilik seçimlərindən bəzilərini fərdiləşdirin</translation>
 <translation id="1008530050039597147">Brave bu sayt üçün kamera icazəsi tələb edir</translation>
 <translation id="1197672524850678392">Brave başlamadı. Yenidən sınayın.</translation>
 <translation id="3405035915691517126">Brave parollarınızı yoxlaya bilmir. 24 saatdan sonra yenidən cəhd edin.</translation>
@@ -227,10 +223,6 @@ Bəzi funksiyalar əlçatmaz ola bilər. Xüsusi profil direktoriyası göstəri
       Chrome OS ayarlarına<ph name="LINK_END"/> baxın</translation>
 <translation id="3293668930608086049">Brave kameranızı və mikrofonunuzu işlədir.</translation>
 <translation id="2827121003398607864">Brave daha da keyfiyyətli oldu</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>İşə başlamazdan əvvəl, datanızın güncəl yedəyinin olduğuna əmin olun. Chrome OS'i quraşdırdıqda sərt diskinizdəki bütün data əvəzlənəcəkdir.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave, hər hansı bir data itkisinə görə məsuliyyət daşımır və Chrome OS'in sertifikatsız modellərdə işləyəcəyinə zəmanət vermir. Sertifikatlı modellər haqqında ətraflı məlumat üçün [TBD] bölməsini ziyarət edin.<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Chrome OS'in quraşdırılması və datanın silinməsi haqqında ətraflı məlumat: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Davam etməyə hazırsınızsa, “Chrome OS'i quraşdırın” seçiminə toxunun və quraşdırma zamanı sizi bir neçə asan addımla yönləndirəcəyik. Kompüterinizdə hər hansı bir dəyişiklik etmədən əvvəl təsdiqləmək üçün əlavə bir şansınız olacaq.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave defolt brauzeriniz deyil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarda sinxronizasiya edin və fərdiləşdirin</translation>
 <translation id="5419189641394808652">Chomium datanızı sinxronizasiya edə bilmədi, çünki sinxronizasiya domeniniz üçün əlçatan deyil.</translation>

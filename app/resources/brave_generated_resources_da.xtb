@@ -54,6 +54,27 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="1144810021918451336">Beskytter dig ikke mod farlige websteder, downloads og udvidelser.</translation>
 <translation id="6285118765755298263">Indeksér andre søgemaskiner</translation>
 <translation id="919715748352669592">Indekserer automatisk websteder, der følger Open Source-specifikationer.</translation>
+<translation id="6821903322090655051">Brave Rewards er deaktiveret</translation>
+<translation id="9184430019924125685">Klik for at få mere at vide</translation>
+<translation id="3849957491997306859">Autoslettet</translation>
+<translation id="8798099450830957504">Standard</translation>
+<translation id="4176463684765177261">Deaktiveret</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Tjen tokens på at se Brave Ads. De viste reklamer er baseret på dine interesser med udgangspunkt i din browse-adfærd. Ingen personlige data eller browsing-historik forlader på noget tidspunkt din browser.</translation>
+<translation id="1758947220824279023">Maksimum antal af annoncer vist</translation>
+<translation id="8578912649458880781">Reklametilpasning på statsniveau</translation>
+<translation id="3678362265519557511">Dette gør Brave i stand til at vise dig reklamer, der passer præcis på din delstat. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Bidrag</translation>
+<translation id="9132509928968869844">Grænse for månedligt autobidrag</translation>
+<translation id="7286722244752781970">Minimumstid på en side før et besøg logges</translation>
+<translation id="4424486208397124985">Mindstebesøg for udgiver-relevans</translation>
+<translation id="6248554379744796526">Vis ikke-verificerede sider på listen</translation>
+<translation id="3241299447027267831">Tillad bidrag til videoer</translation>
+<translation id="924777189963477634">Hvis du aktiverer Auto-Bidrag, accepterer du vores <ph name="BEGIN_LINK_TOS"/>Servicevilkår<ph name="END_LINK_TOS"/> og <ph name="BEGIN_LINK_PP"/>Privatlivspolitik<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Donationsknapper</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Side på ny fane</translation>
 <translation id="1988804048511540801">Ny faneside viser</translation>
 <translation id="2970343821770026391">Instrumentbræt</translation>
@@ -69,10 +90,12 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="8934172355414207733">Privat med Tor</translation>
 <translation id="1970435562892104727">Dette er et privat vindue med Tor</translation>
 <translation id="1037341607922068025">Åbn privat vindue med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Åbn i Tor</translation>
 <translation id="7643538479215207633">Åbn med IPFS</translation>
 <translation id="3094628781200061820">Udgiv og find filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion tilgængelig</translation>
+<translation id="406832631167785034">Åbn via .onion-adresse</translation>
 <translation id="4901618511712685702">Importér til IPFS</translation>
 <translation id="6794469945030154569">Denne webside</translation>
 <translation id="5037852323412456577">Valgt billede</translation>
@@ -81,6 +104,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7895302206188277628">Forbundet indhold</translation>
 <translation id="3654831858282189202">Udgiv med IPNS-nøgle</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importér valgt tekst til IPFS</translation>
 <translation id="6925604404524625582">Importér og kopiér link til IPFS-snapshot</translation>
 <translation id="1434416574322382019">Nyt privat vindue med Tor</translation>
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
@@ -95,7 +119,6 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="575838692088926391">Del lokal mappe via IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
@@ -122,13 +145,11 @@ vindue med Tor</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
 <translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Deaktiveret</translation>
 <translation id="5770288601196774623">Kun cross-site</translation>
 <translation id="3587482841069643663">Alle</translation>
 <translation id="5533533363827555308">Streng, kan ødelægge sider</translation>
 <translation id="8792121506918889955">WebRTC IP-håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
-<translation id="8798099450830957504">Standard</translation>
 <translation id="1822560017823072927">Standard offentlige og private grænseflader</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
@@ -175,6 +196,11 @@ vindue med Tor</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
 <translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
 <translation id="6092564993102418148">Er du sikker på, at du vil fjerne den valgte enhed fra synkroniseringskæden?</translation>
+<translation id="2936582902048232286">Advarsel: Dette deler din Brave-data, potentielt inklusive din adgangskode, med den enhed, der genererede disse adgangskoder.
+
+Dobbelttjek, at disse adgangskoder blev genereret på en enhed, du ejer.
+
+Er du sikker på, du vil gennemføre?</translation>
 <translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
 <translation id="7473245612074035141">Begynd opsætning</translation>
 <translation id="3411013544209536575">Hjælperåd</translation>
@@ -188,13 +214,17 @@ vindue med Tor</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="2356070529366658676">Spørg</translation>
 <translation id="7701040980221191251">Ingen</translation>
-<translation id="1274962333945373242">Forældet Crypto Wallets-udvidelse</translation>
+<translation id="1274962333945373242">Crypto Wallets (forældet)</translation>
+<translation id="3695088618483091287">Brave Wallet (Foretræk udvidelser)</translation>
 <translation id="9131889008937672866">Standard-wallet til cryptovaluta</translation>
+<translation id="4718664830805652430">Standard basisvaluta</translation>
+<translation id="7992507032049865603">Standardbasis for cryptovaluta</translation>
 <translation id="1834467296210148203">Vis ikon for Brave Wallet på værktøjslinje</translation>
 <translation id="8239147115686034860">Låser automatisk Brave Wallet</translation>
 <translation id="414639769490080648">Antallet minutter, indtil Brave Wallet automatisk bliver låst</translation>
 <translation id="6864914031231797928">Tillad Google-login for udvidelser</translation>
 <translation id="5927916530277631319">Metode til at løsning af Unstoppable-domæner</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/> om overvejelser af DNS over HTTPS- og Ethereum-anonymitet.</translation>
 <translation id="5248318250177143470">Metode til løsning af Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Sæt dine IPNS-nøgler op</translation>
 <translation id="951216659045543447">Underskriv indhold med den tilhørende private nøgle, og udgiv det på IPNS.</translation>
@@ -208,6 +238,7 @@ vindue med Tor</translation>
 <translation id="6476061084931271248">Genstart node for at anvende ændringerne</translation>
 <translation id="3754226427671882382">Genstart node</translation>
 <translation id="949667118776341807">Rotér</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Navnet er ikke gyldigt</translation>
 <translation id="6758961763875471084">Foretag ændringer af peerliste</translation>
 <translation id="1295874070797049002">Eksportér nøgle</translation>
@@ -218,6 +249,9 @@ vindue med Tor</translation>
 <translation id="616058968889448209">Opstartsfejl for IPFS-service. Se flere oplysninger på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' importering af nøgle mislykkedes</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' eksport af nøgle mislykkedes</translation>
+<translation id="8860039076160511438">Nulstil Wallet</translation>
+<translation id="6369495274982305511">Er du sikker på, du vil nulstille din Wallet? Hvis din Wallet ikke har en backup, vil nulstillingen slette al din kontodata (inklusive alle tilknyttede milder). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
+<translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Opret</translation>
 <translation id="5531501313997312487">Start node</translation>
@@ -225,6 +259,7 @@ vindue med Tor</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal node</translation>
 <translation id="4927734062756955434">Offentlige IPFS-gatewayadresse</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Læs mere<ph name="END_LINK_MPL"/> om overvejelser af IPFS-lokalnode- og gateway-anonymitet.</translation>
 <translation id="8425213833346101688">Skift</translation>
 <translation id="557281710253742286">Opsæt IPFS-gateway</translation>
 <translation id="8571837315037233299">Gatewayadresse</translation>
@@ -359,6 +394,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4235920711083356755">Vis VPN-knap</translation>
 <translation id="4070612712151038707">Viser VPN-knappen i værktøjsbjælken</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Slå VPN til eller fra</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Om Brave VPN</translation>
 <translation id="4378551569595875038">Opretter forbindelse...</translation>
@@ -384,4 +420,31 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 <translation id="2273851479262317744">Angiv som standardbrowser</translation>
 <translation id="8581710194025054669">For at sikre den bedste mulige anonymitet online bør du overveje at indstille Brave til at være standardbrowser på din computer. Hvis Brave er din standardbrowser, vil alle weblinks, som du klikker på, blive åbnet med Braves beskyttelse af din anonymitet.</translation>
+<translation id="1241283133946520352">Netværk</translation>
+<translation id="8205945804087322170">Tilføj nyt netværk</translation>
+<translation id="2156993118928861787">Ugyldig adresse</translation>
+<translation id="2653659639078652383">Indsend</translation>
+<translation id="2556708692502648323">Wallet-netværk</translation>
+<translation id="1330032157352961756">Id for ny kæde</translation>
+<translation id="9053905035135220650">En 0x-prefixed hexadecimal-streng</translation>
+<translation id="726121047592132939">Navn på ny kæde</translation>
+<translation id="1034112277864078119">Angiv kædenavn</translation>
+<translation id="4672314527143443556">Kædens valutanavn</translation>
+<translation id="4652114030688989556">Skriv valutanavn</translation>
+<translation id="1079960017149736097">Kædens valutasymbol</translation>
+<translation id="1288105009659846362">Angiv valutasymbol</translation>
+<translation id="665660671251623018">Kædens valutandecimaler</translation>
+<translation id="2978054488731497946">Angiv valutadecimaler</translation>
+<translation id="2727514928168763432">RPC-url'er</translation>
+<translation id="7059127752542505809">Indtast URL</translation>
+<translation id="3047726704186619366">Ikon-url'er</translation>
+<translation id="2487558607408469181">Blokér Explorer-url'er</translation>
+<translation id="6301398959353668507">Dette felt må ikke være tomt.</translation>
+<translation id="4514843126085243862">Ugyldigt format. Kædei-id'er er en 0x-prefixed hexadecimal-streng</translation>
+<translation id="8325036459845654666">Netværk allerede tilføjet</translation>
+<translation id="650071759190249039">Intern fejl. Kunne ikke tilføje netværk.</translation>
+<translation id="868529041590572443">Angiv al information om lokalvaluta</translation>
+<translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
+<translation id="2234108191702901162">Der kunne ikke tilføje netværk</translation>
+<translation id="2618193846561624884">Vil du opdatere det eksisterende netværk?</translation>
 </translationbundle>

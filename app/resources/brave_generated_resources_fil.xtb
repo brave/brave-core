@@ -54,6 +54,27 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
 <translation id="919715748352669592">Awtomatikong nag-i-index ng mga website na sumusunod sa spec. ng OpenSearch</translation>
+<translation id="6821903322090655051">Naka-disable ang Brave Rewards</translation>
+<translation id="9184430019924125685">Mag-click dito para matuto pa</translation>
+<translation id="3849957491997306859">Awtomatikong na-detect</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="4176463684765177261">Hindi Pinagana</translation>
+<translation id="4851215387785619212">Mga Pribadong Ad ng Brave</translation>
+<translation id="7808122468353671181">Makakuha ng token sa pamamagitan ng panonood ng Brave Ads. Ang ipinapakitang mga ad ay batay sa iyong mga interes, gaya ng natukoy sa iyong gawi sa pag-browse. Walang lalabas na personal na data o history sa pag-browse sa iyong browser kailanman.</translation>
+<translation id="1758947220824279023">Maximum na bilang ad na ipapakita</translation>
+<translation id="8578912649458880781">Pag-target ng ad sa antas ng estado</translation>
+<translation id="3678362265519557511">Nagbibigay-daan ang Brave para magpakita ng mga ad na partikular para sa iyong estado. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Awtomatikong Mag-ambag</translation>
+<translation id="9132509928968869844">Buwanang limitasyon sa awtomatikong kontribusyon</translation>
+<translation id="7286722244752781970">Minimum na oras sa page bago mag-log ng pagbisita</translation>
+<translation id="4424486208397124985">Minimum na bilang ng mga pagbisita para sa kaugnayan ng publisher</translation>
+<translation id="6248554379744796526">Magpakita ng mga hindi na-verify na site sa listahan</translation>
+<translation id="3241299447027267831">Payagan ang mga kontribusyon sa mga video</translation>
+<translation id="924777189963477634">Sa pag-on sa Awtomatikong Kontribusyon, sang-ayon ka sa <ph name="BEGIN_LINK_TOS"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK_TOS"/> at <ph name="BEGIN_LINK_PP"/>Patakaran sa Privacy<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Mga button ng tip</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Page ng Bagong Tab</translation>
 <translation id="1988804048511540801">Nagpapakita ang bagong tab</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -69,10 +90,12 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8934172355414207733">Pribadong may Tor</translation>
 <translation id="1970435562892104727">Pribadong window ito na may Tor</translation>
 <translation id="1037341607922068025">Magbukas ng Pribadong Window na may Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Buksan sa Tor</translation>
 <translation id="7643538479215207633">Buksan gamit ang IPFS</translation>
 <translation id="3094628781200061820">I-publish at kunin ang mga file mula sa IPFS</translation>
 <translation id="1672270084584211506">Available ang Onion</translation>
+<translation id="406832631167785034">Buksan gamit ang .onion address</translation>
 <translation id="4901618511712685702">I-import sa IPFS</translation>
 <translation id="6794469945030154569">Ang page na ito</translation>
 <translation id="5037852323412456577">Napiling larawan</translation>
@@ -81,6 +104,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7895302206188277628">Naka-link na content</translation>
 <translation id="3654831858282189202">I-publish gamit ang key ng IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">I-import ang Piniling Text sa IPFS</translation>
 <translation id="6925604404524625582">I-import at Kopyahin ang Link sa IPFS Snapshot</translation>
 <translation id="1434416574322382019">Bagong Pribadong Window na may Tor</translation>
 <translation id="4703780849509456860">Buksan ang Link sa Pribadong Window na may Tor</translation>
@@ -94,7 +118,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="2638041073279639246">Buksan ang link sa pribadong window gamit ang Tor</translation>
 <translation id="3425600262621021599">Buksan ang link sa pribadong window ng Brave gamit ang Tor</translation>
 <translation id="575838692088926391">Ibahagi ang lokal na folder gamit ang IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
 <translation id="4472575034687746823">Magsimula</translation>
@@ -121,13 +144,11 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
 <translation id="4078738236287221428">Agresibo</translation>
 <translation id="7740996059027112821">Karaniwan</translation>
-<translation id="4176463684765177261">Hindi Pinagana</translation>
 <translation id="5770288601196774623">Cross-site lang</translation>
 <translation id="3587482841069643663">Lahat</translation>
 <translation id="5533533363827555308">Istrikto, pwedeng makasira sa mga site</translation>
 <translation id="8792121506918889955">Patakaran sa pangangasiwa ng IP ng WebRTC</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
-<translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Default na pampubliko at pampribadong interface</translation>
 <translation id="5825943197137337319">Default na pampublikong interface lang</translation>
 <translation id="1689062823386843231">I-disable ang UDP na walang proxy</translation>
@@ -174,6 +195,11 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
 <translation id="115699408012835975">Kung ire-reset mo ang Sync, kakailanganin mong mag-enter ulit ng sync code mula sa ibang device upang makapag-sync dito. Sigurado ka bang gusto mong magpatuloy?</translation>
 <translation id="6092564993102418148">Sigurado ka bang gusto mong alisin ang napiling device sa sync chain?</translation>
+<translation id="2936582902048232286">Babala: ibabahagi nito ang iyong data sa Brave, kabilang ang mga potensyal na password, with the device that generated these code words.
+
+Paki-double check kung na-generate ang salitang code ng device na pagmamay-ari mo.
+
+Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
 <translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="3411013544209536575">Mga tulong na tip</translation>
@@ -187,13 +213,17 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Magtanong</translation>
 <translation id="7701040980221191251">Wala</translation>
-<translation id="1274962333945373242">Hindi na ginagamit na extension ng Crypto Wallets</translation>
+<translation id="1274962333945373242">Crypto Wallets (Deprecated)</translation>
+<translation id="3695088618483091287">Brave Wallet (Gusto ng mga extension)</translation>
 <translation id="9131889008937672866">Default na wallet ng cryptocurrency</translation>
+<translation id="4718664830805652430">Default na base currency</translation>
+<translation id="7992507032049865603">Default na base currency</translation>
 <translation id="1834467296210148203">Ipakita ang icon ng Brave Wallet sa toolbar</translation>
 <translation id="8239147115686034860">Awtomatikong i-lock ang Brave Wallet</translation>
 <translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="6864914031231797928">Payagan ang mga pag-log in sa Google para sa mga extension</translation>
 <translation id="5927916530277631319">Pamamaraan para lutasin ang Mga Hindi Napipigilang Domain</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/> tungkol sa mga konsiderasyon sa privacy ng DNS sa HTTPS at Ethereum.</translation>
 <translation id="5248318250177143470">Pamamaraan para lutasin ang Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">I-set up ang iyong IPNS keys</translation>
 <translation id="951216659045543447">Mag-sign ng content sa pamamagitan ng kaukulang pribadong key at i-publish ito sa IPNS</translation>
@@ -207,6 +237,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6476061084931271248">I-restart ang node para ma-apply ang mga pagbabago</translation>
 <translation id="3754226427671882382">I-restart ang node</translation>
 <translation id="949667118776341807">I-rotate</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Hindi valid ang pangalang ito</translation>
 <translation id="6758961763875471084">Baguhin ang listahan ng mga peer</translation>
 <translation id="1295874070797049002">Key sa pag-export</translation>
@@ -217,6 +248,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="616058968889448209">Error sa paglulunsad ng serbisyo ng IPFS, may higit pang impormasyon sa <ph name="BEGIN_LINK"/>page ng diagnostic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Hindi na-export ang key na '<ph name="KEY_NAME"/>'</translation>
+<translation id="8860039076160511438">I-reset ang Wallet</translation>
+<translation id="6369495274982305511">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
+<translation id="1426410128494586442">Oo</translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="3654980960391973513">Buuin</translation>
 <translation id="5531501313997312487">Simulan ang node</translation>
@@ -224,6 +258,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Lokal na node</translation>
 <translation id="4927734062756955434">Pampublikong gateway address ng IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa IPFS local node at mga konsiderasyon sa privacy sa gateway.</translation>
 <translation id="8425213833346101688">Baguhin</translation>
 <translation id="557281710253742286">Itakda ang gateway ng IPFS</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -358,6 +393,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4235920711083356755">Ipakita ang button ng VPN</translation>
 <translation id="4070612712151038707">Ipinapakita ang button ng VPN sa toolbar</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">I-toggle ang VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Tungkol sa Brave VPN</translation>
 <translation id="4378551569595875038">Kumokonekta...</translation>
@@ -383,4 +419,31 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
 <translation id="2273851479262317744">I-set ang Brave bilang default na browser</translation>
 <translation id="8581710194025054669">Para tiyakin ang pinakamaigting na privacy online, pag-isipang i-set ang Brave bilang default na browser sa iyong computer. Gamit ang Brave bilang default, ang anumang web link na kini-click mo ay magbubukas nang may mga proteksyon sa privacy ng Brave.</translation>
+<translation id="1241283133946520352">Mga Network</translation>
+<translation id="8205945804087322170">Magdagdag ng bagong network</translation>
+<translation id="2156993118928861787">Hindi valid ang address</translation>
+<translation id="2653659639078652383">Isumite</translation>
+<translation id="2556708692502648323">Mga network ng wallet</translation>
+<translation id="1330032157352961756">Ang id ng bagong chain</translation>
+<translation id="9053905035135220650">Isang 0x-prefixed na hexadecimal string</translation>
+<translation id="726121047592132939">Ang pangalan ng bagong chain</translation>
+<translation id="1034112277864078119">Ilagay ang pangalan ng chain</translation>
+<translation id="4672314527143443556">Pangalan ng currency ng chain</translation>
+<translation id="4652114030688989556">Ilagay ang pangalan ng currency</translation>
+<translation id="1079960017149736097">Simbolo ng currency ng chain</translation>
+<translation id="1288105009659846362">Ilagay ang simbolo ng currency</translation>
+<translation id="665660671251623018">Mga decimal ng currency ng chain</translation>
+<translation id="2978054488731497946">Ilagay ang mga decimal ng currency</translation>
+<translation id="2727514928168763432">Mga URL ng RPC</translation>
+<translation id="7059127752542505809">Ilagay ang URL</translation>
+<translation id="3047726704186619366">Mga URL ng ico</translation>
+<translation id="2487558607408469181">I-block ang mga explorer na URL</translation>
+<translation id="6301398959353668507">Hindi pwedeng blangko ang field.</translation>
+<translation id="4514843126085243862">Invalid na format, ang chain id ay isang 0x-prefixed na hexadecimal string</translation>
+<translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
+<translation id="650071759190249039">Internal na Error, hindi maidagdag ang network.</translation>
+<translation id="868529041590572443">Pakilagay ang lahat ng impormasyon tungkol sa native na currency</translation>
+<translation id="1062463687579789365">Pag-customize ng mga network ng wallet</translation>
+<translation id="2234108191702901162">Hindi maidagdag ang network</translation>
+<translation id="2618193846561624884">Gusto mo bang i-update ang dati nang network na ito?</translation>
 </translationbundle>

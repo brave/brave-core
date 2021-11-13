@@ -238,10 +238,6 @@
     "message": "Lisa vahendeid",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Rohkem teavet",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Ühenda uuesti",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Teil on ebapiisavate vahendite tõttu ootel preemiaid.",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Rahakoti ühendamine nurjus",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Rahakotti ei saa kinnitada, sest olete jõudnud kinnitatud seadmete ülemmäärani.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Paistab, et teie Brave Rewardsi rahakott on juba kinnitatud muu teenusepakkuja $provider$ kontoga. Proovige uuesti kinnitada oma eelmise konto abil.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Teie piirkonnas Uphold veel BAT-i ei toeta.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Teie Upholdi konto on praegu blokeeritud.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Teie Upholdi konto on veel ootel.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Teie Upholdi konto on praegu piiratud õigustega.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Klõpsamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$. Keelata saate suvalisel ajal seadetest.",
+    "message": "Lubamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Lülita Brave'i privaatreklaamid sisse",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Adsi sisselülitamisega nõustute $tos_link_begin$teenusetingimuste$tos_link_end$ ja $pp_link_begin$privaatsuspõhimõtetega$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Saate nüüd alustada tasuta kõnet",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave'i vestluses jätkamiseks klõpsake ekraanil suvalises kohas.",
+    "message": "Brave'i vestluses jätkamiseks puudutage mis tahes kohta ekraanil.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
