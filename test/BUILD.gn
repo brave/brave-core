@@ -176,6 +176,7 @@ test("brave_unit_tests") {
     "//brave/browser/widevine:unittest",
     "//brave/chromium_src/chrome/browser/privacy_sandbox:unit_tests",
     "//brave/chromium_src/components/autofill_assistant/browser:unit_tests",
+    "//brave/chromium_src/net/base:unit_tests",
     "//brave/common:network_constants",
     "//brave/common:pref_names",
     "//brave/components/adblock_rust_ffi",
@@ -962,8 +963,8 @@ if (!is_android) {
     configs += [ "//chrome/test:disable_thinlto_cache_flags" ]
 
     sources = [
-      "//brave/browser/net/brave_network_audit_browsertest.cc",
       "//brave/browser/net/brave_network_audit_allowed_lists.h",
+      "//brave/browser/net/brave_network_audit_browsertest.cc",
     ]
 
     deps = [
