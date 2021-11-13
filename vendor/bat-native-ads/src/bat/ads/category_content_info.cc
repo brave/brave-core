@@ -18,7 +18,7 @@ CategoryContentInfo::CategoryContentInfo(const CategoryContentInfo& info) =
 CategoryContentInfo::~CategoryContentInfo() = default;
 
 bool CategoryContentInfo::operator==(const CategoryContentInfo& rhs) const {
-  return category == rhs.category && opt_action == rhs.opt_action;
+  return category == rhs.category && opt_action_type == rhs.opt_action_type;
 }
 
 bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
@@ -45,21 +45,21 @@ bool CategoryContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("opt_action")) {
-    opt_action =
-        static_cast<CategoryContentActionType>(document["opt_action"].GetInt());
+    opt_action_type = static_cast<CategoryContentOptActionType>(
+        document["opt_action"].GetInt());
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const CategoryContentInfo& content) {
+void SaveToJson(JsonWriter* writer, const CategoryContentInfo& info) {
   writer->StartObject();
 
   writer->String("category");
-  writer->String(content.category.c_str());
+  writer->String(info.category.c_str());
 
   writer->String("opt_action");
-  writer->Int(static_cast<int>(content.opt_action));
+  writer->Int(static_cast<int>(info.opt_action_type));
 
   writer->EndObject();
 }

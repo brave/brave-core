@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 
+#include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
@@ -19,6 +21,16 @@ PermissionRules::PermissionRules() = default;
 PermissionRules::~PermissionRules() = default;
 
 bool PermissionRules::HasPermission() const {
+  CatalogFrequencyCap catalog_frequency_cap;
+  if (!ShouldAllow(&catalog_frequency_cap)) {
+    return false;
+  }
+
+  IssuersFrequencyCap issuers_frequency_cap;
+  if (!ShouldAllow(&issuers_frequency_cap)) {
+    return false;
+  }
+
   UnblindedTokensFrequencyCap unblinded_tokens_frequency_cap;
   if (!ShouldAllow(&unblinded_tokens_frequency_cap)) {
     return false;

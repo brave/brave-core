@@ -34,16 +34,16 @@ void Build(const std::string& creative_instance_id,
 
   base::DictionaryValue user_data;
 
-  const base::DictionaryValue platform_user_data = GetPlatform();
+  const base::DictionaryValue& platform_user_data = GetPlatform();
   user_data.MergeDictionary(&platform_user_data);
 
-  const base::DictionaryValue build_channel_user_data = GetBuildChannel();
+  const base::DictionaryValue& build_channel_user_data = GetBuildChannel();
   user_data.MergeDictionary(&build_channel_user_data);
 
-  const base::DictionaryValue locale_user_data = GetLocale();
+  const base::DictionaryValue& locale_user_data = GetLocale();
   user_data.MergeDictionary(&locale_user_data);
 
-  const base::DictionaryValue studies_user_data = GetStudies();
+  const base::DictionaryValue& studies_user_data = GetStudies();
   user_data.MergeDictionary(&studies_user_data);
 
   if (confirmation_type != ConfirmationType::kConversion) {
@@ -71,7 +71,7 @@ void Build(const std::string& creative_instance_id,
           return;
         }
 
-        const ConversionQueueItemInfo conversion_queue_item =
+        const ConversionQueueItemInfo& conversion_queue_item =
             conversion_queue_items.front();
 
         const base::DictionaryValue conversion_user_data =

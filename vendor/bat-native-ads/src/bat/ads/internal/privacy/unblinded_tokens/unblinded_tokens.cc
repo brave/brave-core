@@ -61,7 +61,6 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
     if (value.is_string()) {
       // Migrate legacy tokens
       unblinded_token_base64 = value.GetString();
-      public_key_base64 = "";
     } else {
       const base::DictionaryValue* dictionary = nullptr;
       if (!value.GetAsDictionary(&dictionary)) {

@@ -5,8 +5,10 @@
 
 #include "bat/ads/ad_content_info.h"
 
+#include "base/values.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 
@@ -23,13 +25,133 @@ bool AdContentInfo::operator==(const AdContentInfo& rhs) const {
          campaign_id == rhs.campaign_id && brand == rhs.brand &&
          brand_info == rhs.brand_info &&
          brand_display_url == rhs.brand_display_url &&
-         brand_url == rhs.brand_url && like_action == rhs.like_action &&
-         ad_action == rhs.ad_action && saved_ad == rhs.saved_ad &&
-         flagged_ad == rhs.flagged_ad;
+         brand_url == rhs.brand_url &&
+         like_action_type == rhs.like_action_type &&
+         confirmation_type == rhs.confirmation_type &&
+         is_saved == rhs.is_saved && is_flagged == rhs.is_flagged;
 }
 
 bool AdContentInfo::operator!=(const AdContentInfo& rhs) const {
   return !(*this == rhs);
+}
+
+AdContentLikeActionType AdContentInfo::ToggleThumbUpActionType() const {
+  if (like_action_type == AdContentLikeActionType::kThumbsUp) {
+    return AdContentLikeActionType::kNeutral;
+  } else {
+    return AdContentLikeActionType::kThumbsUp;
+  }
+}
+
+AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
+  if (like_action_type == AdContentLikeActionType::kThumbsDown) {
+    return AdContentLikeActionType::kNeutral;
+  } else {
+    return AdContentLikeActionType::kThumbsDown;
+  }
+}
+
+base::Value AdContentInfo::ToValue() const {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  dictionary.SetKey("adType", base::Value(type.value()));
+  dictionary.SetKey("uuid", base::Value(uuid));
+  dictionary.SetKey("creativeInstanceId", base::Value(creative_instance_id));
+  dictionary.SetKey("creativeSetId", base::Value(creative_set_id));
+  dictionary.SetKey("campaignId", base::Value(campaign_id));
+  dictionary.SetKey("brand", base::Value(brand));
+  dictionary.SetKey("brandInfo", base::Value(brand_info));
+  dictionary.SetKey("brandDisplayUrl", base::Value(brand_display_url));
+  dictionary.SetKey("brandUrl", base::Value(brand_url));
+  dictionary.SetKey("likeAction",
+                    base::Value(static_cast<int>(like_action_type)));
+  dictionary.SetKey("adAction", base::Value(std::string(confirmation_type)));
+  dictionary.SetKey("savedAd", base::Value(is_saved));
+  dictionary.SetKey("flaggedAd", base::Value(is_flagged));
+
+  return dictionary;
+}
+
+bool AdContentInfo::FromValue(const base::Value& value) {
+  const base::DictionaryValue* dictionary = nullptr;
+  if (!(&value)->GetAsDictionary(&dictionary)) {
+    return false;
+  }
+
+  const absl::optional<int> ad_type = dictionary->FindIntKey("adType");
+  if (ad_type && ad_type.has_value()) {
+    type = AdType(static_cast<AdType::Value>(ad_type.value()));
+  }
+
+  const std::string* uuid_value = dictionary->FindStringKey("uuid");
+  if (uuid_value) {
+    uuid = *uuid_value;
+  }
+
+  const std::string* creative_instance_id_value =
+      dictionary->FindStringKey("creativeInstanceId");
+  if (creative_instance_id_value) {
+    creative_instance_id = *creative_instance_id_value;
+  }
+
+  const std::string* creative_set_id_value =
+      dictionary->FindStringKey("creativeSetId");
+  if (creative_set_id_value) {
+    creative_set_id = *creative_set_id_value;
+  }
+
+  const std::string* campaign_id_value =
+      dictionary->FindStringKey("campaignId");
+  if (campaign_id_value) {
+    campaign_id = *campaign_id_value;
+  }
+
+  const std::string* brand_value = dictionary->FindStringKey("brand");
+  if (brand_value) {
+    brand = *brand_value;
+  }
+
+  const std::string* brand_info_value = dictionary->FindStringKey("brandInfo");
+  if (brand_info_value) {
+    brand_info = *brand_info_value;
+  }
+
+  const std::string* brand_display_url_value =
+      dictionary->FindStringKey("brandDisplayUrl");
+  if (brand_display_url_value) {
+    brand_display_url = *brand_display_url_value;
+  }
+
+  const std::string* brand_url_value = dictionary->FindStringKey("brandUrl");
+  if (brand_url_value) {
+    brand_url = *brand_url_value;
+  }
+
+  const absl::optional<int> like_action_type_value =
+      dictionary->FindIntKey("likeAction");
+  if (like_action_type_value && like_action_type_value.has_value()) {
+    like_action_type =
+        static_cast<AdContentLikeActionType>(like_action_type_value.value());
+  }
+
+  const std::string* confirmation_type_value =
+      dictionary->FindStringKey("adAction");
+  if (confirmation_type_value) {
+    confirmation_type = ConfirmationType(*confirmation_type_value);
+  }
+
+  const absl::optional<int> is_saved_value = dictionary->FindIntKey("savedAd");
+  if (is_saved_value && is_saved_value.has_value()) {
+    is_saved = static_cast<bool>(is_saved_value.value());
+  }
+
+  const absl::optional<int> is_flagged_value =
+      dictionary->FindIntKey("flaggedAd");
+  if (is_flagged_value && is_flagged_value.has_value()) {
+    is_flagged = static_cast<bool>(is_flagged_value.value());
+  }
+
+  return true;
 }
 
 std::string AdContentInfo::ToJson() const {
@@ -86,69 +208,68 @@ bool AdContentInfo::FromJson(const std::string& json) {
   }
 
   if (document.HasMember("like_action")) {
-    like_action =
-        static_cast<AdContentActionType>(document["like_action"].GetInt());
+    like_action_type =
+        static_cast<AdContentLikeActionType>(document["like_action"].GetInt());
   }
 
   if (document.HasMember("ad_action")) {
-    std::string action = document["ad_action"].GetString();
-    ad_action = ConfirmationType(action);
+    confirmation_type = ConfirmationType(document["ad_action"].GetString());
   }
 
   if (document.HasMember("saved_ad")) {
-    saved_ad = document["saved_ad"].GetBool();
+    is_saved = document["saved_ad"].GetBool();
   }
 
   if (document.HasMember("flagged_ad")) {
-    flagged_ad = document["flagged_ad"].GetBool();
+    is_flagged = document["flagged_ad"].GetBool();
   }
 
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const AdContentInfo& ad_content) {
+void SaveToJson(JsonWriter* writer, const AdContentInfo& info) {
   writer->StartObject();
 
   writer->String("type");
-  auto type = std::string(ad_content.type);
+  const std::string type = std::string(info.type);
   writer->String(type.c_str());
 
   writer->String("uuid");
-  writer->String(ad_content.uuid.c_str());
+  writer->String(info.uuid.c_str());
 
   writer->String("creative_instance_id");
-  writer->String(ad_content.creative_instance_id.c_str());
+  writer->String(info.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
-  writer->String(ad_content.creative_set_id.c_str());
+  writer->String(info.creative_set_id.c_str());
 
   writer->String("campaign_id");
-  writer->String(ad_content.campaign_id.c_str());
+  writer->String(info.campaign_id.c_str());
 
   writer->String("brand");
-  writer->String(ad_content.brand.c_str());
+  writer->String(info.brand.c_str());
 
   writer->String("brand_info");
-  writer->String(ad_content.brand_info.c_str());
+  writer->String(info.brand_info.c_str());
 
   writer->String("brand_display_url");
-  writer->String(ad_content.brand_display_url.c_str());
+  writer->String(info.brand_display_url.c_str());
 
   writer->String("brand_url");
-  writer->String(ad_content.brand_url.c_str());
+  writer->String(info.brand_url.c_str());
 
   writer->String("like_action");
-  writer->Int(static_cast<int>(ad_content.like_action));
+  writer->Int(static_cast<int>(info.like_action_type));
 
   writer->String("ad_action");
-  auto ad_action = std::string(ad_content.ad_action);
-  writer->String(ad_action.c_str());
+  const std::string confirmation_type = std::string(info.confirmation_type);
+  writer->String(confirmation_type.c_str());
 
   writer->String("saved_ad");
-  writer->Bool(ad_content.saved_ad);
+  writer->Bool(info.is_saved);
 
   writer->String("flagged_ad");
-  writer->Bool(ad_content.flagged_ad);
+  writer->Bool(info.is_flagged);
 
   writer->EndObject();
 }

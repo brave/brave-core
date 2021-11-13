@@ -1,5 +1,6 @@
 include_rules = [
-  "+chrome/services/qrcode_generator/public/cpp",
   "+chrome/services/qrcode_generator/public/mojom",
+  "+chrome/services/qrcode_generator/public/cpp",
+  "+bat/ads/ad_content_info.h",
   "+bat/ledger/mojom_structs.h",
 ]

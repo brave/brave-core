@@ -19,6 +19,7 @@ const char kDismissedConfirmationType[] = "dismiss";
 const char kViewedConfirmationType[] = "view";
 const char kServedConfirmationType[] = "served";
 const char kTransferredConfirmationType[] = "landed";
+const char kSavedConfirmationType[] = "saved";
 const char kFlaggedConfirmationType[] = "flag";
 const char kUpvotedConfirmationType[] = "upvote";
 const char kDownvotedConfirmationType[] = "downvote";
@@ -39,6 +40,8 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = kServed;
   } else if (value == kTransferredConfirmationType) {
     value_ = kTransferred;
+  } else if (value == kSavedConfirmationType) {
+    value_ = kSaved;
   } else if (value == kFlaggedConfirmationType) {
     value_ = kFlagged;
   } else if (value == kUpvotedConfirmationType) {
@@ -80,6 +83,10 @@ ConfirmationType::operator std::string() const {
 
     case kTransferred: {
       return kTransferredConfirmationType;
+    }
+
+    case kSaved: {
+      return kSavedConfirmationType;
     }
 
     case kFlagged: {

@@ -16,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -94,21 +95,17 @@ class RewardsDOMHandler
   void GetAdsHistory(base::Value::ConstListView args);
   void OnGetAdsHistory(const base::ListValue& history);
   void ToggleAdThumbUp(base::Value::ConstListView args);
-  void OnToggleAdThumbUp(const std::string& creative_instance_id,
-                         const int action);
+  void OnToggleAdThumbUp(const std::string& json);
   void ToggleAdThumbDown(base::Value::ConstListView args);
-  void OnToggleAdThumbDown(const std::string& creative_instance_id,
-                           const int action);
-  void ToggleAdOptInAction(base::Value::ConstListView args);
-  void OnToggleAdOptInAction(const std::string& category, const int action);
-  void ToggleAdOptOutAction(base::Value::ConstListView args);
-  void OnToggleAdOptOutAction(const std::string& category, const int action);
-  void ToggleSaveAd(base::Value::ConstListView args);
-  void OnToggleSaveAd(const std::string& creative_instance_id,
-                      const bool saved);
-  void ToggleFlagAd(base::Value::ConstListView args);
-  void OnToggleFlagAd(const std::string& creative_instance_id,
-                      const bool flagged);
+  void OnToggleAdThumbDown(const std::string& json);
+  void ToggleAdOptIn(base::Value::ConstListView args);
+  void OnToggleAdOptIn(const std::string& category, const int action);
+  void ToggleAdOptOut(base::Value::ConstListView args);
+  void OnToggleAdOptOut(const std::string& category, const int action);
+  void ToggleSavedAd(base::Value::ConstListView args);
+  void OnToggleSavedAd(const std::string& json);
+  void ToggleFlaggedAd(base::Value::ConstListView args);
+  void OnToggleFlaggedAd(const std::string& json);
   void SaveAdsSetting(base::Value::ConstListView args);
   void SetBackupCompleted(base::Value::ConstListView args);
   void OnGetContributionAmount(double amount);
@@ -420,20 +417,20 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::ToggleAdThumbDown,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.toggleAdOptInAction",
-      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptInAction,
+      "brave_rewards.toggleAdOptIn",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptIn,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.toggleAdOptOutAction",
-      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptOutAction,
+      "brave_rewards.toggleAdOptOut",
+      base::BindRepeating(&RewardsDOMHandler::ToggleAdOptOut,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.toggleSaveAd",
-      base::BindRepeating(&RewardsDOMHandler::ToggleSaveAd,
+      "brave_rewards.toggleSavedAd",
+      base::BindRepeating(&RewardsDOMHandler::ToggleSavedAd,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.toggleFlagAd",
-      base::BindRepeating(&RewardsDOMHandler::ToggleFlagAd,
+      "brave_rewards.toggleFlaggedAd",
+      base::BindRepeating(&RewardsDOMHandler::ToggleFlaggedAd,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.saveAdsSetting",
@@ -1280,67 +1277,71 @@ void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(base::Value::ConstListView args) {
-  CHECK_EQ(3U, args.size());
+  CHECK_EQ(1U, args.size());
+
   if (!ads_service_) {
     return;
   }
 
   AllowJavascript();
 
-  const std::string id = args[0].GetString();
-  const std::string creative_set_id = args[1].GetString();
-  const int action = args[2].GetInt();
+  ads::AdContentInfo ad_content;
+  const base::Value& value = args[0];
+  ad_content.FromValue(value);
+
   ads_service_->ToggleAdThumbUp(
-      id, creative_set_id, action,
-      base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
-                     weak_factory_.GetWeakPtr()));
+      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
+                                          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbUp(
-    const std::string& creative_instance_id,
-    const int action) {
+void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& json) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", result);
+  ads::AdContentInfo ad_content;
+  const bool success = ad_content.FromJson(json);
+  DCHECK(success);
+
+  const base::Value value = ad_content.ToValue();
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbUp", value);
 }
 
 void RewardsDOMHandler::ToggleAdThumbDown(base::Value::ConstListView args) {
-  CHECK_EQ(3U, args.size());
+  CHECK_EQ(1U, args.size());
+
   if (!ads_service_) {
     return;
   }
 
   AllowJavascript();
 
-  const std::string id = args[0].GetString();
-  const std::string creative_set_id = args[1].GetString();
-  const int action = args[2].GetInt();
+  ads::AdContentInfo ad_content;
+  const base::Value& value = args[0];
+  ad_content.FromValue(value);
+
   ads_service_->ToggleAdThumbDown(
-      id, creative_set_id, action,
+      ad_content.ToJson(),
       base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbDown,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbDown(
-    const std::string& creative_instance_id,
-    const int action) {
+void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& json) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", result);
+  ads::AdContentInfo ad_content;
+  const bool success = ad_content.FromJson(json);
+  DCHECK(success);
+
+  const base::Value value = ad_content.ToValue();
+  CallJavascriptFunction("brave_rewards.onToggleAdThumbDown", value);
 }
 
-void RewardsDOMHandler::ToggleAdOptInAction(base::Value::ConstListView args) {
+void RewardsDOMHandler::ToggleAdOptIn(base::Value::ConstListView args) {
   CHECK_EQ(2U, args.size());
+
   if (!ads_service_) {
     return;
   }
@@ -1349,26 +1350,27 @@ void RewardsDOMHandler::ToggleAdOptInAction(base::Value::ConstListView args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleAdOptInAction(
+  ads_service_->ToggleAdOptIn(
       category, action,
-      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptInAction,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptIn,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptInAction(const std::string& category,
-                                              int action) {
+void RewardsDOMHandler::OnToggleAdOptIn(const std::string& category,
+                                        int action) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("category", base::Value(category));
-  result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptInAction", result);
+  base::Value value(base::Value::Type::DICTIONARY);
+  value.SetKey("category", base::Value(category));
+  value.SetKey("action", base::Value(action));
+  CallJavascriptFunction("brave_rewards.onToggleAdOptIn", value);
 }
 
-void RewardsDOMHandler::ToggleAdOptOutAction(base::Value::ConstListView args) {
+void RewardsDOMHandler::ToggleAdOptOut(base::Value::ConstListView args) {
   CHECK_EQ(2U, args.size());
+
   if (!ads_service_) {
     return;
   }
@@ -1377,78 +1379,84 @@ void RewardsDOMHandler::ToggleAdOptOutAction(base::Value::ConstListView args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleAdOptOutAction(
+  ads_service_->ToggleAdOptOut(
       category, action,
-      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOutAction,
+      base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOut,
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdOptOutAction(const std::string& category,
-                                               int action) {
+void RewardsDOMHandler::OnToggleAdOptOut(const std::string& category,
+                                         int action) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("category", base::Value(category));
-  result.SetKey("action", base::Value(action));
-  CallJavascriptFunction("brave_rewards.onToggleAdOptOutAction", result);
+  base::Value value(base::Value::Type::DICTIONARY);
+  value.SetKey("category", base::Value(category));
+  value.SetKey("action", base::Value(action));
+  CallJavascriptFunction("brave_rewards.onToggleAdOptOut", value);
 }
 
-void RewardsDOMHandler::ToggleSaveAd(base::Value::ConstListView args) {
-  CHECK_EQ(3U, args.size());
+void RewardsDOMHandler::ToggleSavedAd(base::Value::ConstListView args) {
+  CHECK_EQ(1U, args.size());
+
   if (!ads_service_) {
     return;
   }
 
   AllowJavascript();
 
-  const std::string creative_instance_id = args[0].GetString();
-  const std::string creative_set_id = args[1].GetString();
-  const bool saved = args[2].GetBool();
-  ads_service_->ToggleSaveAd(creative_instance_id, creative_set_id, saved,
-                             base::BindOnce(&RewardsDOMHandler::OnToggleSaveAd,
-                                            weak_factory_.GetWeakPtr()));
+  ads::AdContentInfo ad_content;
+  const base::Value& value = args[0];
+  ad_content.FromValue(value);
+
+  ads_service_->ToggleSavedAd(
+      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
+                                          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleSaveAd(const std::string& creative_instance_id,
-                                       bool saved) {
+void RewardsDOMHandler::OnToggleSavedAd(const std::string& json) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  result.SetKey("saved", base::Value(saved));
-  CallJavascriptFunction("brave_rewards.onToggleSaveAd", result);
+  ads::AdContentInfo ad_content;
+  const bool success = ad_content.FromJson(json);
+  DCHECK(success);
+
+  const base::Value value = ad_content.ToValue();
+  CallJavascriptFunction("brave_rewards.onToggleSavedAd", value);
 }
 
-void RewardsDOMHandler::ToggleFlagAd(base::Value::ConstListView args) {
-  CHECK_EQ(3U, args.size());
+void RewardsDOMHandler::ToggleFlaggedAd(base::Value::ConstListView args) {
+  CHECK_EQ(1U, args.size());
+
   if (!ads_service_) {
     return;
   }
 
   AllowJavascript();
 
-  const std::string creative_instance_id = args[0].GetString();
-  const std::string creative_set_id = args[1].GetString();
-  const bool flagged = args[2].GetBool();
-  ads_service_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged,
-                             base::BindOnce(&RewardsDOMHandler::OnToggleFlagAd,
-                                            weak_factory_.GetWeakPtr()));
+  ads::AdContentInfo ad_content;
+  const base::Value& value = args[0];
+  ad_content.FromValue(value);
+
+  ads_service_->ToggleFlaggedAd(
+      ad_content.ToJson(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
+                                          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleFlagAd(const std::string& creative_instance_id,
-                                       bool flagged) {
+void RewardsDOMHandler::OnToggleFlaggedAd(const std::string& json) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  result.SetKey("flagged", base::Value(flagged));
-  CallJavascriptFunction("brave_rewards.onToggleFlagAd", result);
+  ads::AdContentInfo ad_content;
+  const bool success = ad_content.FromJson(json);
+  DCHECK(success);
+
+  const base::Value value = ad_content.ToValue();
+  CallJavascriptFunction("brave_rewards.onToggleFlaggedAd", value);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(base::Value::ConstListView args) {

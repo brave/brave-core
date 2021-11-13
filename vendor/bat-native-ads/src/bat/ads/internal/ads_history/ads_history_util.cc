@@ -17,7 +17,7 @@ namespace ads {
 AdHistoryInfo BuildAdHistory(const AdInfo& ad,
                              const ConfirmationType& confirmation_type,
                              const std::string& title,
-                             const std::string& body) {
+                             const std::string& description) {
   AdHistoryInfo ad_history;
 
   ad_history.timestamp = base::Time::Now().ToDoubleT();
@@ -28,16 +28,15 @@ AdHistoryInfo BuildAdHistory(const AdInfo& ad,
   ad_history.ad_content.creative_set_id = ad.creative_set_id;
   ad_history.ad_content.campaign_id = ad.campaign_id;
   ad_history.ad_content.brand = title;
-  ad_history.ad_content.brand_info = body;
+  ad_history.ad_content.brand_info = description;
   ad_history.ad_content.brand_display_url = GetHostFromUrl(ad.target_url);
   ad_history.ad_content.brand_url = ad.target_url;
-  ad_history.ad_content.ad_action = confirmation_type;
-  ad_history.ad_content.like_action =
-      Client::Get()->GetLikeActionForSegment(ad.segment);
-
+  ad_history.ad_content.like_action_type =
+      Client::Get()->GetAdContentLikeActionTypeForSegment(ad.segment);
+  ad_history.ad_content.confirmation_type = confirmation_type;
+  ad_history.category_content.opt_action_type =
+      Client::Get()->GetCategoryContentOptActionTypeForSegment(ad.segment);
   ad_history.category_content.category = ad.segment;
-  ad_history.category_content.opt_action =
-      Client::Get()->GetOptActionForSegment(ad.segment);
 
   return ad_history;
 }

@@ -40,7 +40,7 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
 
   // Act
   const AdHistoryInfo ad_history =
-      BuildAdHistory(ad, ConfirmationType::kViewed, "title", "body");
+      BuildAdHistory(ad, ConfirmationType::kViewed, "title", "description");
 
   // Assert
   AdHistoryInfo expected_ad_history;
@@ -52,16 +52,17 @@ TEST_F(BatAdsAdsHistoryUtilTest, BuildAd) {
   expected_ad_history.ad_content.creative_set_id = ad.creative_set_id;
   expected_ad_history.ad_content.campaign_id = ad.campaign_id;
   expected_ad_history.ad_content.brand = "title";
-  expected_ad_history.ad_content.brand_info = "body";
+  expected_ad_history.ad_content.brand_info = "description";
   expected_ad_history.ad_content.brand_display_url =
       GetHostFromUrl(ad.target_url);
   expected_ad_history.ad_content.brand_url = ad.target_url;
-  expected_ad_history.ad_content.ad_action = ConfirmationType::kViewed;
-  expected_ad_history.ad_content.like_action = AdContentActionType::kNeutral;
+  expected_ad_history.ad_content.confirmation_type = ConfirmationType::kViewed;
+  expected_ad_history.ad_content.like_action_type =
+      AdContentLikeActionType::kNeutral;
 
   expected_ad_history.category_content.category = ad.segment;
-  expected_ad_history.category_content.opt_action =
-      CategoryContentActionType::kNone;
+  expected_ad_history.category_content.opt_action_type =
+      CategoryContentOptActionType::kNone;
 
   EXPECT_EQ(expected_ad_history, ad_history);
 }

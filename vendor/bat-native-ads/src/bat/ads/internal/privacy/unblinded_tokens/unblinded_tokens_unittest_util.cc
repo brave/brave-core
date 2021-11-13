@@ -8,9 +8,11 @@
 #include <utility>
 
 #include "base/check.h"
+#include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/tokens/token_generator.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "wrapper.hpp"
 
 namespace ads {
@@ -18,6 +20,16 @@ namespace privacy {
 
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::UnblindedToken;
+
+UnblindedTokens* get_unblinded_tokens() {
+  return ConfirmationsState::Get()->get_unblinded_tokens();
+}
+
+UnblindedTokenList SetUnblindedTokens(const int count) {
+  const UnblindedTokenList& unblinded_tokens = GetUnblindedTokens(count);
+  get_unblinded_tokens()->SetTokens(unblinded_tokens);
+  return unblinded_tokens;
+}
 
 UnblindedTokenInfo CreateUnblindedToken(
     const std::string& unblinded_token_base64) {
@@ -38,7 +50,7 @@ UnblindedTokenList CreateUnblindedTokens(
   UnblindedTokenList unblinded_tokens;
 
   for (const auto& unblinded_token_base64 : unblinded_tokens_base64) {
-    UnblindedTokenInfo unblinded_token =
+    const UnblindedTokenInfo& unblinded_token =
         CreateUnblindedToken(unblinded_token_base64);
 
     unblinded_tokens.push_back(unblinded_token);
@@ -48,7 +60,7 @@ UnblindedTokenList CreateUnblindedTokens(
 }
 
 UnblindedTokenList GetUnblindedTokens(const int count) {
-  const std::vector<std::string> unblinded_tokens_base64 = {
+  const std::vector<std::string>& unblinded_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
       R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
       R"(bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa)",
@@ -67,7 +79,7 @@ UnblindedTokenList GetUnblindedTokens(const int count) {
   for (int i = 0; i < count; i++) {
     const std::string unblinded_token_base64 =
         unblinded_tokens_base64.at(i % modulo);
-    const UnblindedTokenInfo unblinded_token =
+    const UnblindedTokenInfo& unblinded_token =
         CreateUnblindedToken(unblinded_token_base64);
 
     unblinded_tokens.push_back(unblinded_token);
@@ -80,10 +92,10 @@ UnblindedTokenList GetRandomUnblindedTokens(const int count) {
   UnblindedTokenList unblinded_tokens;
 
   TokenGenerator token_generator;
-  const std::vector<Token> tokens = token_generator.Generate(count);
+  const std::vector<Token>& tokens = token_generator.Generate(count);
   for (const auto& token : tokens) {
-    const std::string token_base64 = token.encode_base64();
-    const UnblindedTokenInfo unblinded_token =
+    const std::string& token_base64 = token.encode_base64();
+    const UnblindedTokenInfo& unblinded_token =
         CreateUnblindedToken(token_base64);
 
     unblinded_tokens.push_back(unblinded_token);
@@ -95,7 +107,7 @@ UnblindedTokenList GetRandomUnblindedTokens(const int count) {
 base::Value GetUnblindedTokensAsList(const int count) {
   base::Value list(base::Value::Type::LIST);
 
-  const UnblindedTokenList unblinded_tokens = GetUnblindedTokens(count);
+  const UnblindedTokenList& unblinded_tokens = GetUnblindedTokens(count);
 
   for (const auto& unblinded_token : unblinded_tokens) {
     base::Value dictionary(base::Value::Type::DICTIONARY);

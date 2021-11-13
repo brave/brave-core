@@ -46,12 +46,12 @@ bool AdsHistoryInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& ads_history) {
+void SaveToJson(JsonWriter* writer, const AdsHistoryInfo& info) {
   writer->StartObject();
 
   writer->String("ads_history");
   writer->StartArray();
-  for (const auto& item : ads_history.items) {
+  for (const auto& item : info.items) {
     SaveToJson(writer, item);
   }
   writer->EndArray();

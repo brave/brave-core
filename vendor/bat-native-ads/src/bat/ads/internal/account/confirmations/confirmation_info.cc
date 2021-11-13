@@ -18,7 +18,8 @@ ConfirmationInfo::~ConfirmationInfo() = default;
 
 bool ConfirmationInfo::operator==(const ConfirmationInfo& rhs) const {
   return id == rhs.id && creative_instance_id == rhs.creative_instance_id &&
-         type == rhs.type && unblinded_token == rhs.unblinded_token &&
+         type == rhs.type && ad_type == rhs.ad_type &&
+         unblinded_token == rhs.unblinded_token &&
          payment_token.encode_base64() == rhs.payment_token.encode_base64() &&
          blinded_payment_token.encode_base64() ==
              rhs.blinded_payment_token.encode_base64() &&
@@ -33,7 +34,8 @@ bool ConfirmationInfo::operator!=(const ConfirmationInfo& rhs) const {
 
 bool ConfirmationInfo::IsValid() const {
   if (id.empty() || creative_instance_id.empty() ||
-      type == ConfirmationType::kUndefined || created_at.is_null()) {
+      type == ConfirmationType::kUndefined || ad_type == AdType::kUndefined ||
+      created_at.is_null()) {
     return false;
   }
 

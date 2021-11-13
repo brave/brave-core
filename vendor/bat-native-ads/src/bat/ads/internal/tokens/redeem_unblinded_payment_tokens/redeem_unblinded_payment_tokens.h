@@ -9,7 +9,7 @@
 #include "base/check_op.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info_aliases.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -39,11 +39,12 @@ class RedeemUnblindedPaymentTokens final {
   Timer timer_;
 
   void Redeem();
-  void OnRedeem(const mojom::UrlResponse& url_response,
-                const privacy::UnblindedTokenList unblinded_tokens);
+  void OnRedeem(
+      const mojom::UrlResponse& url_response,
+      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
   void OnDidRedeemUnblindedPaymentTokens(
-      const privacy::UnblindedTokenList unblinded_tokens);
+      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
   void OnFailedToRedeemUnblindedPaymentTokens();
 

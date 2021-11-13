@@ -126,20 +126,20 @@ function onToggleAdThumbDown (result: Rewards.ToggleLikeAction) {
   getActions().onToggleAdThumbDown(result)
 }
 
-function onToggleAdOptInAction (result: Rewards.ToggleOptAction) {
-  getActions().onToggleAdOptInAction(result)
+function onToggleAdOptIn (result: Rewards.ToggleOptAction) {
+  getActions().onToggleAdOptIn(result)
 }
 
-function onToggleAdOptOutAction (result: Rewards.ToggleOptAction) {
-  getActions().onToggleAdOptOutAction(result)
+function onToggleAdOptOut (result: Rewards.ToggleOptAction) {
+  getActions().onToggleAdOptOut(result)
 }
 
-function onToggleSaveAd (result: Rewards.ToggleSaveAd) {
-  getActions().onToggleSaveAd(result)
+function onToggleSavedAd (result: Rewards.ToggleSavedAd) {
+  getActions().onToggleSavedAd(result)
 }
 
-function onToggleFlagAd (result: Rewards.ToggleFlagAd) {
-  getActions().onToggleFlagAd(result)
+function onToggleFlaggedAd (result: Rewards.ToggleFlaggedAd) {
+  getActions().onToggleFlaggedAd(result)
 }
 
 function onPendingContributionSaved (result: number) {
@@ -299,10 +299,10 @@ window.brave_rewards = {
   adsHistory,
   onToggleAdThumbUp,
   onToggleAdThumbDown,
-  onToggleAdOptInAction,
-  onToggleAdOptOutAction,
-  onToggleSaveAd,
-  onToggleFlagAd,
+  onToggleAdOptIn,
+  onToggleAdOptOut,
+  onToggleSavedAd,
+  onToggleFlaggedAd,
   pendingContributions,
   onPendingContributionSaved,
   statement,

@@ -15,7 +15,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
 namespace database {
 namespace table {
 

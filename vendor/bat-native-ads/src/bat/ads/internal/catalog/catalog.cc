@@ -10,7 +10,6 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/catalog/catalog_info.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
@@ -48,10 +47,6 @@ int Catalog::GetVersion() const {
 
 int64_t Catalog::GetPing() const {
   return catalog_->ping / base::Time::kMillisecondsPerSecond;
-}
-
-CatalogIssuersInfo Catalog::GetIssuers() const {
-  return catalog_->catalog_issuers;
 }
 
 CatalogCampaignList Catalog::GetCampaigns() const {

@@ -42,8 +42,6 @@ class RefillUnblindedTokens final {
  private:
   WalletInfo wallet_;
 
-  std::string public_key_;
-
   std::string nonce_;
 
   std::vector<Token> tokens_;

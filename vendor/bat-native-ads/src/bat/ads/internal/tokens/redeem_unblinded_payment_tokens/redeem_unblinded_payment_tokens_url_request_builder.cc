@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
 #include "bat/ads/internal/server/via_header_util.h"
 #include "wrapper.hpp"
@@ -27,16 +27,16 @@ using challenge_bypass_ristretto::VerificationSignature;
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
         const WalletInfo& wallet,
-        const privacy::UnblindedTokenList& unblinded_tokens)
-    : wallet_(wallet), unblinded_tokens_(unblinded_tokens) {
+        const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens)
+    : wallet_(wallet), unblinded_payment_tokens_(unblinded_payment_tokens) {
   DCHECK(wallet_.IsValid());
-  DCHECK(!unblinded_tokens_.empty());
+  DCHECK(!unblinded_payment_tokens_.empty());
 }
 
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     ~RedeemUnblindedPaymentTokensUrlRequestBuilder() = default;
 
-// PUT /v1/confirmation/payment/{payment_id}
+// PUT /v2/confirmation/payment/{payment_id}
 
 mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
   mojom::UrlRequestPtr url_request = mojom::UrlRequest::New();
@@ -53,7 +53,7 @@ mojom::UrlRequestPtr RedeemUnblindedPaymentTokensUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildUrl() const {
-  return base::StringPrintf("%s/v1/confirmation/payment/%s",
+  return base::StringPrintf("%s/v2/confirmation/payment/%s",
                             confirmations::server::GetHost().c_str(),
                             wallet_.id.c_str());
 }
@@ -106,14 +106,19 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
 
   base::Value payment_request_dto(base::Value::Type::LIST);
 
-  for (const auto& unblinded_token : unblinded_tokens_) {
+  for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
     base::Value payment_credential(base::Value::Type::DICTIONARY);
 
-    base::Value credential = CreateCredential(unblinded_token, payload);
+    base::Value credential = CreateCredential(unblinded_payment_token, payload);
     payment_credential.SetKey("credential", base::Value(std::move(credential)));
 
     payment_credential.SetKey(
-        "publicKey", base::Value(unblinded_token.public_key.encode_base64()));
+        "confirmationType",
+        base::Value(std::string(unblinded_payment_token.confirmation_type)));
+
+    payment_credential.SetKey(
+        "publicKey",
+        base::Value(unblinded_payment_token.public_key.encode_base64()));
 
     payment_request_dto.Append(std::move(payment_credential));
   }
@@ -122,14 +127,14 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
 }
 
 base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
-    const privacy::UnblindedTokenInfo& unblinded_token,
+    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
   base::Value credential(base::Value::Type::DICTIONARY);
 
   VerificationKey verification_key =
-      unblinded_token.value.derive_verification_key();
+      unblinded_payment_token.value.derive_verification_key();
   VerificationSignature verification_signature = verification_key.sign(payload);
   if (privacy::ExceptionOccurred()) {
     NOTREACHED();
@@ -143,7 +148,7 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
     return credential;
   }
 
-  TokenPreimage token_preimage = unblinded_token.value.preimage();
+  TokenPreimage token_preimage = unblinded_payment_token.value.preimage();
   if (privacy::ExceptionOccurred()) {
     NOTREACHED();
     return credential;

@@ -348,74 +348,74 @@ storiesOf('Rewards/Modal', module)
           {
             uuid: adUuid.toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'Pepsi',
-              brandLogo: '',
               brandUrl: 'https://www.pepsi.com',
               brandDisplayUrl: 'pepsi.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'view',
               likeAction: 1,
+              savedAd: false,
+              flaggedAd: false,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: false,
-              flaggedAd: false
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Entertainment',
               optAction: 0,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           },
           {
             uuid: (adUuid + 1).toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'TESLA',
-              brandLogo: '',
               brandUrl: 'https://www.tesla.com',
               brandDisplayUrl: 'tesla.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'click',
               likeAction: 2,
+              savedAd: true,
+              flaggedAd: false,
+              logoUrl: tesla,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: true,
-              flaggedAd: false,
-              logoUrl: tesla
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Technology & Computing',
               optAction: 0,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           },
           {
             uuid: (adUuid + 2).toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'Disney',
-              brandLogo: '',
               brandUrl: 'https://www.disney.com',
               brandDisplayUrl: 'disney.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'click',
               likeAction: 0,
+              savedAd: false,
+              flaggedAd: false,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: false,
-              flaggedAd: false
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Travel',
               optAction: 0,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           }
         ]
@@ -427,73 +427,73 @@ storiesOf('Rewards/Modal', module)
           {
             uuid: (adUuid + 3).toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'Puma',
-              brandLogo: '',
               brandUrl: 'https://www.puma.com',
               brandDisplayUrl: 'puma.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'landed',
               likeAction: 1,
+              savedAd: false,
+              flaggedAd: false,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: false,
-              flaggedAd: false
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Sports',
               optAction: 1,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           },
           {
             uuid: (adUuid + 4).toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'Expedia.com',
-              brandLogo: '',
               brandUrl: 'https://www.expedia.com',
               brandDisplayUrl: 'expedia.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'view',
               likeAction: 0,
+              savedAd: true,
+              flaggedAd: true,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: true,
-              flaggedAd: true
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Travel',
               optAction: 2,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           },
           {
             uuid: (adUuid + 5).toString(),
             adContent: {
+              adType: 'ad_notification',
               brand: 'H&M',
-              brandLogo: '',
               brandUrl: 'https://www.hm.com',
               brandDisplayUrl: 'hm.com',
               brandInfo: 'Animation & VFX Degree - Degree in Animation |',
               adAction: 'dismiss',
               likeAction: 0,
+              savedAd: true,
+              flaggedAd: false,
               onThumbUpPress: doNothing,
               onThumbDownPress: doNothing,
               onMenuFlag: doNothing,
-              onMenuSave: doNothing,
-              savedAd: true,
-              flaggedAd: false
+              onMenuSave: doNothing
             },
             categoryContent: {
               category: 'Fashion',
               optAction: 1,
-              onOptInAction: doNothing,
-              onOptOutAction: doNothing
+              onOptIn: doNothing,
+              onOptOut: doNothing
             }
           }
         ]

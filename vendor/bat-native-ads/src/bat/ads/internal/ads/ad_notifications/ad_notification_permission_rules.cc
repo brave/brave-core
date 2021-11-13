@@ -12,6 +12,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/network_connection_frequency_cap.h"
@@ -55,6 +56,11 @@ bool PermissionRules::HasPermission() const {
 
   CatalogFrequencyCap catalog_frequency_cap;
   if (!ShouldAllow(&catalog_frequency_cap)) {
+    return false;
+  }
+
+  IssuersFrequencyCap issuers_frequency_cap;
+  if (!ShouldAllow(&issuers_frequency_cap)) {
     return false;
   }
 

@@ -60,7 +60,42 @@ class BatAdsAdPriorityTest : public UnitTestBase {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
-        {"/v8/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}}};
+        {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
+        {// Get issuers request
+         R"(/v1/issuers/)",
+         {{net::HTTP_OK, R"(
+        {
+          "ping": 7200000,
+          "issuers": [
+            {
+              "name": "confirmations",
+              "publicKeys": [
+                {
+                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                  "associatedValue": ""
+                }
+              ]
+            },
+            {
+              "name": "payments",
+              "publicKeys": [
+                {
+                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+                  "associatedValue": "0.0"
+                },
+                {
+                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                  "associatedValue": "0.1"
+                }
+              ]
+            }
+          ]
+        }
+        )"}}}};
     MockUrlRequest(ads_client_mock_, endpoints);
 
     InitializeAds();

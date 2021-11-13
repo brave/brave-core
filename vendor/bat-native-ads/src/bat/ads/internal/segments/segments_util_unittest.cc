@@ -109,8 +109,8 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, GetParentSegmentsForEmptyList) {
 TEST_F(BatAdsAdTargetingSegmentUtilTest,
        ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent-child",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent-child",
+                                CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent-child");
@@ -122,8 +122,8 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest,
 TEST_F(BatAdsAdTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent-child",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent-child",
+                                CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo-bar");
@@ -134,8 +134,7 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest,
 
 TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent");
@@ -147,8 +146,7 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 TEST_F(BatAdsAdTargetingSegmentUtilTest,
        ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo");
@@ -160,8 +158,7 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest,
 TEST_F(BatAdsAdTargetingSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("parent-child");
@@ -173,8 +170,7 @@ TEST_F(BatAdsAdTargetingSegmentUtilTest,
 TEST_F(BatAdsAdTargetingSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  Client::Get()->ToggleAdOptOutAction("parent",
-                                      CategoryContentActionType::kNone);
+  Client::Get()->ToggleAdOptOut("parent", CategoryContentOptActionType::kNone);
 
   // Act
   const bool should_filter_segment = ShouldFilterSegment("foo-bar");

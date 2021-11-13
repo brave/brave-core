@@ -18,9 +18,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-struct CreativeInlineContentAdInfo;
-
 namespace database {
 namespace table {
 

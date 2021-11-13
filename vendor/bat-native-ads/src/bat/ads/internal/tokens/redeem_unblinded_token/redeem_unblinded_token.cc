@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/guid.h"
 #include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/values.h"
@@ -22,8 +23,10 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
-#include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/security/confirmations/confirmations_util.h"
+#include "bat/ads/internal/tokens/issuers/issuer_types.h"
+#include "bat/ads/internal/tokens/issuers/issuers_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
@@ -52,6 +55,11 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 
   BLOG(1, "Redeem unblinded token");
 
+  if (!IssuerExistsForType(IssuerType::kPayments)) {
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
+
   if (!confirmation.was_created) {
     CreateConfirmation(confirmation);
     return;
@@ -65,7 +73,7 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 void RedeemUnblindedToken::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
-  BLOG(2, "POST /v1/confirmation/{confirmation_id}/{credential}");
+  BLOG(2, "POST /v2/confirmation/{confirmation_id}/{credential}");
 
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
@@ -109,7 +117,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 void RedeemUnblindedToken::FetchPaymentToken(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "FetchPaymentToken");
-  BLOG(2, "GET /v1/confirmation/{confirmation_id}/paymentToken");
+  BLOG(2, "GET /v2/confirmation/{confirmation_id}/paymentToken");
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestPtr url_request = url_request_builder.Build();
@@ -205,10 +213,19 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }
+
   PublicKey public_key = PublicKey::decode_base64(*public_key_base64);
   if (privacy::ExceptionOccurred()) {
     BLOG(0, "Invalid public key");
     NOTREACHED();
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
+
+  if (!PublicKeyExistsForIssuerType(IssuerType::kPayments,
+                                    *public_key_base64)) {
+    BLOG(0, "Response public key " << *public_key_base64 << " does not match"
+                                   << "any payments public key");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }
@@ -277,16 +294,19 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     return;
   }
 
-  privacy::UnblindedTokenInfo unblinded_payment_token;
+  privacy::UnblindedPaymentTokenInfo unblinded_payment_token;
+  unblinded_payment_token.transaction_id = base::GenerateGUID();
   unblinded_payment_token.value = batch_dleq_proof_unblinded_tokens.front();
   unblinded_payment_token.public_key = public_key;
+  unblinded_payment_token.confirmation_type = confirmation.type;
+  unblinded_payment_token.ad_type = confirmation.ad_type;
 
   OnDidRedeemUnblindedToken(confirmation, unblinded_payment_token);
 }
 
 void RedeemUnblindedToken::OnDidRedeemUnblindedToken(
     const ConfirmationInfo& confirmation,
-    const privacy::UnblindedTokenInfo& unblinded_payment_token) {
+    const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
   if (!delegate_) {
     return;
   }

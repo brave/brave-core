@@ -118,6 +118,7 @@ void Database::RunTransaction(mojom::DBTransactionPtr transaction,
                               mojom::DBCommandResponse* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  DCHECK(transaction);
   DCHECK(command_response);
 
   if (!db_.is_open() && !db_.Open(db_path_)) {

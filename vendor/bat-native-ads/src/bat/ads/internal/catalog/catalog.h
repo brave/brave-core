@@ -15,7 +15,6 @@
 namespace ads {
 
 struct CatalogInfo;
-struct CatalogIssuersInfo;
 
 class Catalog final {
  public:
@@ -29,7 +28,6 @@ class Catalog final {
   std::string GetId() const;
   int GetVersion() const;
   int64_t GetPing() const;
-  CatalogIssuersInfo GetIssuers() const;
   CatalogCampaignList GetCampaigns() const;
 
  private:

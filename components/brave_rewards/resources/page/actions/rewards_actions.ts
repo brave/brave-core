@@ -143,61 +143,53 @@ export const onAdsHistory = (adsHistory: Rewards.AdsHistory[]) => action(types.O
   adsHistory
 })
 
-export const toggleAdThumbUp = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_UP, {
-  uuid,
-  creativeSetId,
-  likeAction
+export const toggleAdThumbUp = (adContent: Rewards.AdContent) => action(types.TOGGLE_AD_THUMB_UP, {
+  adContent
 })
 
 export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
   result
 })
 
-export const toggleAdThumbDown = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_DOWN, {
-  uuid,
-  creativeSetId,
-  likeAction
+export const toggleAdThumbDown = (adContent: Rewards.AdContent) => action(types.TOGGLE_AD_THUMB_DOWN, {
+  adContent
 })
 
 export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
   result
 })
 
-export const toggleAdOptInAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN_ACTION, {
+export const toggleAdOptIn = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN, {
   category,
   optAction
 })
 
-export const onToggleAdOptInAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN_ACTION, {
+export const onToggleAdOptIn = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN, {
   result
 })
 
-export const toggleAdOptOutAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT_ACTION, {
+export const toggleAdOptOut = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT, {
   category,
   optAction
 })
 
-export const onToggleAdOptOutAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT_ACTION, {
+export const onToggleAdOptOut = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT, {
   result
 })
 
-export const toggleSaveAd = (uuid: string, creativeSetId: string, savedAd: boolean) => action(types.TOGGLE_SAVE_AD, {
-  uuid,
-  creativeSetId,
-  savedAd
+export const toggleSavedAd = (adContent: Rewards.AdContent) => action(types.TOGGLE_SAVED_AD, {
+  adContent
 })
 
-export const onToggleSaveAd = (result: Rewards.ToggleSaveAd) => action(types.ON_TOGGLE_SAVE_AD, {
+export const onToggleSavedAd = (result: Rewards.ToggleSavedAd) => action(types.ON_TOGGLE_SAVED_AD, {
   result
 })
 
-export const toggleFlagAd = (uuid: string, creativeSetId: string, flaggedAd: boolean) => action(types.TOGGLE_FLAG_AD, {
-  uuid,
-  creativeSetId,
-  flaggedAd
+export const toggleFlaggedAd = (adContent: Rewards.AdContent) => action(types.TOGGLE_FLAGGED_AD, {
+  adContent
 })
 
-export const onToggleFlagAd = (result: Rewards.ToggleFlagAd) => action(types.ON_TOGGLE_FLAG_AD, {
+export const onToggleFlaggedAd = (result: Rewards.ToggleFlaggedAd) => action(types.ON_TOGGLE_FLAGGED_AD, {
   result
 })
 

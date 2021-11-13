@@ -39,11 +39,11 @@ bool FilteredCategoryInfo::FromJson(const std::string& json) {
   return true;
 }
 
-void SaveToJson(JsonWriter* writer, const FilteredCategoryInfo& category) {
+void SaveToJson(JsonWriter* writer, const FilteredCategoryInfo& info) {
   writer->StartObject();
 
   writer->String("name");
-  writer->String(category.name.c_str());
+  writer->String(info.name.c_str());
 
   writer->EndObject();
 }

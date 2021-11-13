@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
 
+#include "bat/ads/ad_content_info.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -28,6 +29,7 @@ class BatAdsMarkedAsInappropriateFrequencyCapTest : public UnitTestBase {
 TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest, AllowAd) {
   // Arrange
   CreativeAdInfo creative_ad;
+  creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.creative_set_id = kCreativeSetId;
 
   // Act
@@ -44,8 +46,11 @@ TEST_F(BatAdsMarkedAsInappropriateFrequencyCapTest, DoNotAllowAd) {
   creative_ad.creative_instance_id = kCreativeInstanceId;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  Client::Get()->ToggleFlagAd(creative_ad.creative_instance_id,
-                              creative_ad.creative_set_id, false);
+  AdContentInfo ad_content;
+  ad_content.creative_set_id = kCreativeSetId;
+  ad_content.is_flagged = false;
+
+  Client::Get()->ToggleFlaggedAd(ad_content);
 
   // Act
   MarkedAsInappropriateFrequencyCap frequency_cap;

@@ -18,7 +18,9 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
+#include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
+#include "bat/ads/internal/tokens/issuers/issuers_value_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
@@ -38,7 +40,8 @@ const char kConfirmationsFilename[] = "confirmations.json";
 ConfirmationsState::ConfirmationsState(AdRewards* ad_rewards)
     : ad_rewards_(ad_rewards),
       unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
-      unblinded_payment_tokens_(std::make_unique<privacy::UnblindedTokens>()) {
+      unblinded_payment_tokens_(
+          std::make_unique<privacy::UnblindedPaymentTokens>()) {
   DCHECK(ad_rewards_);
 
   DCHECK_EQ(g_confirmations_state, nullptr);
@@ -117,16 +120,6 @@ void ConfirmationsState::Save() {
       });
 }
 
-CatalogIssuersInfo ConfirmationsState::GetCatalogIssuers() const {
-  return catalog_issuers_;
-}
-
-void ConfirmationsState::SetCatalogIssuers(
-    const CatalogIssuersInfo& catalog_issuers) {
-  DCHECK(is_initialized_);
-  catalog_issuers_ = catalog_issuers;
-}
-
 ConfirmationList ConfirmationsState::GetFailedConfirmations() const {
   DCHECK(is_initialized_);
   return failed_confirmations_;
@@ -189,9 +182,9 @@ void ConfirmationsState::SetNextTokenRedemptionDate(
 std::string ConfirmationsState::ToJson() {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  // Catalog issuers
-  base::Value catalog_issuers_dictionary = catalog_issuers_.ToDictionary();
-  dictionary.SetKey("catalog_issuers", std::move(catalog_issuers_dictionary));
+  // Issuers
+  base::Value issuers = IssuerListToValue(issuers_);
+  dictionary.SetKey("issuers", std::move(issuers));
 
   // Next token redemption date
   dictionary.SetKey("next_token_redemption_date_in_seconds",
@@ -241,8 +234,8 @@ bool ConfirmationsState::FromJson(const std::string& json) {
     return false;
   }
 
-  if (!ParseCatalogIssuersFromDictionary(dictionary)) {
-    BLOG(1, "Failed to parse catalog issuers");
+  if (!ParseIssuersFromDictionary(dictionary)) {
+    BLOG(1, "Failed to parse issuers");
   }
 
   if (!ParseNextTokenRedemptionDateFromDictionary(dictionary)) {
@@ -272,21 +265,14 @@ bool ConfirmationsState::FromJson(const std::string& json) {
   return true;
 }
 
-bool ConfirmationsState::ParseCatalogIssuersFromDictionary(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
+void ConfirmationsState::SetIssuers(const IssuerList& issuers) {
+  DCHECK(is_initialized_);
+  issuers_ = issuers;
+}
 
-  base::Value* catalog_issuers_dictionary =
-      dictionary->FindDictKey("catalog_issuers");
-  if (!catalog_issuers_dictionary) {
-    return false;
-  }
-
-  if (!catalog_issuers_.FromDictionary(catalog_issuers_dictionary)) {
-    return false;
-  }
-
-  return true;
+IssuerList ConfirmationsState::GetIssuers() const {
+  DCHECK(is_initialized_);
+  return issuers_;
 }
 
 base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
@@ -306,6 +292,9 @@ base::Value ConfirmationsState::GetFailedConfirmationsAsDictionary(
 
     std::string type = std::string(confirmation.type);
     confirmation_dictionary.SetKey("type", base::Value(type));
+
+    std::string ad_type = std::string(confirmation.ad_type);
+    confirmation_dictionary.SetKey("ad_type", base::Value(ad_type));
 
     base::Value token_info_dictionary(base::Value::Type::DICTIONARY);
     const std::string unblinded_token_base64 =
@@ -409,6 +398,13 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
     }
     ConfirmationType confirmation_type(*type);
     confirmation.type = confirmation_type;
+
+    // Ad type
+    const std::string* ad_type =
+        confirmation_dictionary->FindStringKey("ad_type");
+    if (ad_type) {
+      confirmation.ad_type = AdType(*ad_type);
+    }
 
     // Token info
     const base::Value* token_info_dictionary =
@@ -514,6 +510,25 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
   }
 
   *confirmations = new_failed_confirmations;
+
+  return true;
+}
+
+bool ConfirmationsState::ParseIssuersFromDictionary(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  base::Value* value = dictionary->FindListKey("issuers");
+  if (!value || !value->is_list()) {
+    return false;
+  }
+
+  const absl::optional<IssuerList>& issuers = ValueToIssuerList(*value);
+  if (!issuers) {
+    return false;
+  }
+
+  issuers_ = issuers.value();
 
   return true;
 }

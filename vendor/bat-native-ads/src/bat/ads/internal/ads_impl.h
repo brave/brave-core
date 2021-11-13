@@ -197,26 +197,19 @@ class AdsImpl final : public Ads,
 
   void GetAdDiagnostics(GetAdDiagnosticsCallback callback) override;
 
-  AdContentActionType ToggleAdThumbUp(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentActionType& action) override;
-  AdContentActionType ToggleAdThumbDown(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const AdContentActionType& action) override;
-  CategoryContentActionType ToggleAdOptInAction(
+  AdContentLikeActionType ToggleAdThumbUp(const std::string& json) override;
+  AdContentLikeActionType ToggleAdThumbDown(const std::string& json) override;
+
+  CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentActionType& action) override;
-  CategoryContentActionType ToggleAdOptOutAction(
+      const CategoryContentOptActionType& action) override;
+  CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentActionType& action) override;
-  bool ToggleSaveAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool saved) override;
-  bool ToggleFlagAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool flagged) override;
+      const CategoryContentOptActionType& action) override;
+
+  bool ToggleSavedAd(const std::string& json) override;
+
+  bool ToggleFlaggedAd(const std::string& json) override;
 
  private:
   bool is_initialized_ = false;
@@ -274,8 +267,6 @@ class AdsImpl final : public Ads,
 
   bool ShouldServeAdNotificationsAtRegularIntervals() const;
   void MaybeServeAdNotificationsAtRegularIntervals();
-
-  void MaybeTopUpUnblindedTokens();
 
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;

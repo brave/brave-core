@@ -8,7 +8,7 @@
 
 namespace ads {
 
-enum class CategoryContentActionType { kNone = 0, kOptIn, kOptOut };
+enum class CategoryContentOptActionType { kNone = 0, kOptIn, kOptOut };
 
 }  // namespace ads
 

@@ -19,7 +19,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/bundle/bundle.h"
 #include "bat/ads/internal/catalog/catalog.h"
-#include "bat/ads/internal/catalog/catalog_version.h"
+#include "bat/ads/internal/catalog/catalog_constants.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"
 #include "bat/ads/internal/server/ads_server_util.h"
@@ -64,7 +64,7 @@ void AdServer::Fetch() {
   DCHECK(!is_processing_);
 
   BLOG(1, "GetCatalog");
-  BLOG(2, "GET /v" << kCurrentCatalogVersion << "/catalog");
+  BLOG(2, "GET /v" << kCatalogVersion << "/catalog");
 
   is_processing_ = true;
 

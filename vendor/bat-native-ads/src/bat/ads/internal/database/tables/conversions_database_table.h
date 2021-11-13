@@ -15,9 +15,6 @@
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
-
-struct ConversionInfo;
-
 namespace database {
 namespace table {
 

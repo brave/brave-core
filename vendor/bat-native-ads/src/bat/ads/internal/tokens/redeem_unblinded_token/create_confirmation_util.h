@@ -10,11 +10,11 @@
 
 namespace ads {
 
-struct ConfirmationInfo;
-
 namespace privacy {
 struct UnblindedTokenInfo;
 }  // namespace privacy
+
+struct ConfirmationInfo;
 
 std::string CreateConfirmationRequestDTO(const ConfirmationInfo& confirmation);
 

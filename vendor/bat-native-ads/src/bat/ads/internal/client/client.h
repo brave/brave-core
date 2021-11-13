@@ -33,6 +33,7 @@ struct PurchaseIntentSignalHistoryInfo;
 }  // namespace ad_targeting
 
 class AdType;
+struct AdContentInfo;
 struct AdHistoryInfo;
 struct AdInfo;
 struct ClientInfo;
@@ -61,30 +62,24 @@ class Client final {
   const ad_targeting::PurchaseIntentSignalHistoryMap&
   GetPurchaseIntentSignalHistory() const;
 
-  AdContentActionType ToggleAdThumbUp(const std::string& creative_instance_id,
-                                      const std::string& creative_set_id,
-                                      const AdContentActionType action);
-  AdContentActionType ToggleAdThumbDown(const std::string& creative_instance_id,
-                                        const std::string& creative_set_id,
-                                        const AdContentActionType action);
-  AdContentActionType GetLikeActionForSegment(const std::string& segment);
+  AdContentLikeActionType ToggleAdThumbUp(const AdContentInfo& ad_content);
+  AdContentLikeActionType ToggleAdThumbDown(const AdContentInfo& ad_content);
+  AdContentLikeActionType GetAdContentLikeActionTypeForSegment(
+      const std::string& segment);
 
-  CategoryContentActionType ToggleAdOptInAction(
+  CategoryContentOptActionType ToggleAdOptIn(
       const std::string& category,
-      const CategoryContentActionType action);
-  CategoryContentActionType ToggleAdOptOutAction(
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType ToggleAdOptOut(
       const std::string& category,
-      const CategoryContentActionType action);
-  CategoryContentActionType GetOptActionForSegment(const std::string& segment);
+      const CategoryContentOptActionType action_type);
+  CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
+      const std::string& segment);
 
-  bool ToggleSaveAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool saved);
+  bool ToggleSavedAd(const AdContentInfo& ad_content);
   bool GetSavedAdForCreativeInstanceId(const std::string& creative_instance_id);
 
-  bool ToggleFlagAd(const std::string& creative_instance_id,
-                    const std::string& creative_set_id,
-                    const bool flagged);
+  bool ToggleFlaggedAd(const AdContentInfo& ad_content);
   bool GetFlaggedAdForCreativeInstanceId(
       const std::string& creative_instance_id);
 

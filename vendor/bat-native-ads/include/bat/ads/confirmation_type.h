@@ -22,6 +22,7 @@ class ConfirmationType final {
     kServed,
     kTransferred,
     kFlagged,
+    kSaved,
     kUpvoted,
     kDownvoted,
     kConversion

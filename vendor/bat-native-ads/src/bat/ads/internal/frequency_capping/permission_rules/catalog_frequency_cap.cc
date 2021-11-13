@@ -5,8 +5,6 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/catalog_frequency_cap.h"
 
-#include "bat/ads/internal/account/confirmations/confirmations_state.h"
-#include "bat/ads/internal/catalog/catalog_issuers_info.h"
 #include "bat/ads/internal/catalog/catalog_util.h"
 
 namespace ads {
@@ -31,13 +29,6 @@ bool CatalogFrequencyCap::DoesRespectCap() {
 
   if (HasCatalogExpired()) {
     last_message_ = "Catalog has expired";
-    return false;
-  }
-
-  const CatalogIssuersInfo catalog_issuers =
-      ConfirmationsState::Get()->GetCatalogIssuers();
-  if (!catalog_issuers.IsValid()) {
-    last_message_ = "Invalid catalog issuers";
     return false;
   }
 

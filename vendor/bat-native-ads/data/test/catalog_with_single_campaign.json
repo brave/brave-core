@@ -1,19 +1,5 @@
 {
-  "version": 8,
-  "issuers": [
-    {
-      "name": "confirmation",
-      "publicKey": "qi1Vl8YrPEZliN5wmBgLTuGkbk8K505QwlXLTZjUd34="
-    },
-    {
-      "name": "0.01BAT",
-      "publicKey": "VihGXGoiQ5Fjxe4SrskIVMcmERa1LoAgvhFxxfLmNEI="
-    },
-    {
-      "name": "0.05BAT",
-      "publicKey": "mmXlFlskcF+LjQmJTPQUmoDMV8Co2r+0eNqSyzCywmk="
-    }
-  ],
+  "version": 9,
   "ping": 7200000,
   "campaigns": [
     {

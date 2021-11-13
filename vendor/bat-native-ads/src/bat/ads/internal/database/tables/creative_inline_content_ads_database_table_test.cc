@@ -32,7 +32,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
        GetCreativeInlineContentAdsForSegmentsAndDimensionsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -57,7 +57,7 @@ TEST_F(BatAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
        GetCreativeInlineContentAdsForDimensionsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v8/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

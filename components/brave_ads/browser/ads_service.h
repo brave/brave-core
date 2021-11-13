@@ -38,18 +38,18 @@ namespace brave_ads {
 using OnGetAdsHistoryCallback =
     base::OnceCallback<void(const base::ListValue&)>;
 
-using OnToggleAdThumbUpCallback =
-    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdThumbUpCallback = base::OnceCallback<void(const std::string&)>;
 using OnToggleAdThumbDownCallback =
+    base::OnceCallback<void(const std::string&)>;
+
+using OnToggleAdOptInCallback =
     base::OnceCallback<void(const std::string&, int)>;
-using OnToggleAdOptInActionCallback =
+using OnToggleAdOptOutCallback =
     base::OnceCallback<void(const std::string&, int)>;
-using OnToggleAdOptOutActionCallback =
-    base::OnceCallback<void(const std::string&, int)>;
-using OnToggleSaveAdCallback =
-    base::OnceCallback<void(const std::string&, bool)>;
-using OnToggleFlagAdCallback =
-    base::OnceCallback<void(const std::string&, bool)>;
+
+using OnToggleSavedAdCallback = base::OnceCallback<void(const std::string&)>;
+
+using OnToggleFlaggedAdCallback = base::OnceCallback<void(const std::string&)>;
 
 using OnGetInlineContentAdCallback = base::OnceCallback<
     void(const bool, const std::string&, const base::DictionaryValue&)>;
@@ -155,29 +155,23 @@ class AdsService : public KeyedService {
 
   virtual void GetAdDiagnostics(GetAdDiagnosticsCallback callback) = 0;
 
-  virtual void ToggleAdThumbUp(const std::string& creative_instance_id,
-                               const std::string& creative_set_id,
-                               const int action,
+  virtual void ToggleAdThumbUp(const std::string& json,
                                OnToggleAdThumbUpCallback callback) = 0;
-  virtual void ToggleAdThumbDown(const std::string& creative_instance_id,
-                                 const std::string& creative_set_id,
-                                 const int action,
+  virtual void ToggleAdThumbDown(const std::string& json,
                                  OnToggleAdThumbDownCallback callback) = 0;
-  virtual void ToggleAdOptInAction(const std::string& category,
-                                   const int action,
-                                   OnToggleAdOptInActionCallback callback) = 0;
-  virtual void ToggleAdOptOutAction(
-      const std::string& category,
-      const int action,
-      OnToggleAdOptOutActionCallback callback) = 0;
-  virtual void ToggleSaveAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool saved,
-                            OnToggleSaveAdCallback callback) = 0;
-  virtual void ToggleFlagAd(const std::string& creative_instance_id,
-                            const std::string& creative_set_id,
-                            const bool flagged,
-                            OnToggleFlagAdCallback callback) = 0;
+
+  virtual void ToggleAdOptIn(const std::string& category,
+                             const int action,
+                             OnToggleAdOptInCallback callback) = 0;
+  virtual void ToggleAdOptOut(const std::string& category,
+                              const int action,
+                              OnToggleAdOptOutCallback callback) = 0;
+
+  virtual void ToggleSavedAd(const std::string& json,
+                             OnToggleSavedAdCallback callback) = 0;
+
+  virtual void ToggleFlaggedAd(const std::string& json,
+                               OnToggleFlaggedAdCallback callback) = 0;
 
   virtual void ResetAllState(const bool should_shutdown) = 0;
 
