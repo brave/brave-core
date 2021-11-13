@@ -372,12 +372,12 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7427567994475794038">Slå på Personvernrapporter for å se hvor mange trackere og annonser som har blitt blokkert de siste 3 timene.</translation>
 <translation id="2053891538879944400">Du lagret <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave-nettleseren.</translation>
 <translation id="8640064498452534195">Slå på Personvernrapporter for å se hvor mye data du har spart.</translation>
-<translation id="2252497442547961651">Brave-nettleseren bruker i gjennomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-nettleseren bruker i gjennomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blokkerte <ph name="COUNT"/> trackere &amp; annonser med Brave-nettleseren  forrige uke.</translation>
 <translation id="2883868922264431515">Tjen polletter ved å se annonser som repekterer personvernet ditt og støtt favorittnettstedene dine.</translation>
-<translation id="5678925890616256956">Flott! Du har blokkert 250 sporingskapsler og annonser med Brave-nettleseren.&#128293;</translation>
-<translation id="9199047775708635708">Flott! Du har spart 10 MB med Brave-nettleseren.&#128267;</translation>
-<translation id="1880168210969863408">Flott! Du har spart ti minutters innlastingstid med Brave-nettleseren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Flott! Du har blokkert 250 sporingskapsler og annonser med Brave-nettleseren.🔥</translation>
+<translation id="9199047775708635708">Flott! Du har spart 10 MB med Brave-nettleseren.🔋</translation>
+<translation id="1880168210969863408">Flott! Du har spart ti minutters innlastingstid med Brave-nettleseren.💨💨</translation>
 <translation id="7408493389591475748">Begynn å bruke nettleseren for å se personvernrapportering</translation>
 <translation id="9080777565335515917">Sett Brave som din standardnettleser for privat og trygg weblesing.</translation>
 <translation id="1390943217516275883">Lar Brave vise statistikken din for personvern</translation>
@@ -715,4 +715,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1133619932669546254">Aktiver <ph name="TOKEN"/></translation>
 <translation id="2199215899212542417">FUNKSJONSTYPE: <ph name="FTYPE"/></translation>
 <translation id="4803003663447398145">Ingen data</translation>
+<translation id="7685607706678113458">I neste trinn får du se 12 ord du må bruke til å gjenopprette kryptolommeboken din.</translation>
+<translation id="6202787708155200390">Trykk på ordene for å legge dem inn etter hverandre i riktig rekkefølge.</translation>
+<translation id="745115390910697838">Frasene stemte ikke. Prøv igjen.</translation>
+<translation id="5867778679088331977">Prøv gratis i 7 dager. Etter 7 dager belastes du prisen for abonnementet. Alle abonnementer fornyes automatisk, men kan kanselleres før de fornyes.</translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">በዚህ ወር የሚያገኙት ቶከኖች <ph name="DATE"/> ላይ መስራት ይጀምራሉ።</translation>
 <translation id="1029300693989825319">ይህ በገበያ ተለዋዋጭነት ላይ ተመስርቶ ሊለያይ ይችላል።</translation>
 <translation id="8334559352278209120">መስጠት</translation>
-<translation id="3903419925307046908">ቶከኖችን ያግኙ እና መልሰው ይስጡ</translation>
-<translation id="244362569344671266">Brave የግል ማስታወቂያዎች በማየት ማስመሰያዎች ያግኙ እና የሚወዷቸውን የ ይዘት ፈጣሪዎች በራስ-ሰር ይደግፉ።</translation>
 <translation id="5095252080770652994">እድገት</translation>
 <translation id="6278643716658443228">የሽልማት ቅንብሮች</translation>
 <translation id="6777169449483742979">እርስዎ ይህን ስፖንሰር የተደረገበት ምስል በማየትዎ ቶክኖች እያገኙ ነው።</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>ስፖንሰር ስለተደረጉ ምስሎች<ph name="LINK_END"/> በ Brave ወሮታዎች ውስጥ ተጨማሪ መረጃ ያግኙ።</translation>
 <translation id="6113004497629356998">ስፖንሰር የተደረጉ ምስሎችን ደብቅ</translation>
 <translation id="8511604585939286108">[[title]] 'ን ጠቅ በማድረግ፣ በ <ph name="BEGIN_LINK1"/>የአገልግሎት ውሎች<ph name="END_LINK1"/> እና በ <ph name="BEGIN_LINK2"/>የግላዊነት ፖሊሲ<ph name="END_LINK2"/> ይስማማሉ።</translation>
+<translation id="5850325887346946383">የቪድዮ ጥሪ ይጀምሩ</translation>
+<translation id="7619826778671319444">የግብይቱን የነዳጅ ወሰን ማግኘት አልተሳካም</translation>
+<translation id="7631054302129692654">ለ EIP-1559 ግብይት የነዳጅ ግምት ማግኘት አልተሳካም</translation>
+<translation id="5420730209575475110">አይደገፍም</translation>
+<translation id="692381016487372902">የማለፊያ ቃሉን በድጋሚ ይጻፉ</translation>
+<translation id="3527905866577245691">የማረጋገጫ የይለፍ ቃል አይዛመድም</translation>
+<translation id="6932355307691676490">የሚከተውን ያገናኙ</translation>
+<translation id="4513956488935671725">ከዋሌት በቀጥታ ወደ ኮምፒዩተር</translation>
+<translation id="871696868578199698">ትክክለኛነት አስርዮሽ</translation>
+<translation id="6637540491667802882">እንደ ብጁ መለያ ምልክት</translation>
+<translation id="6082785102488657349">Etherን ከfaucet ያግኙ</translation>
+<translation id="7065157926159745595">ይህ መተግበሪያ የእርስዎን ... እንዲልክ ይፍቀዱለት</translation>
+<translation id="4015195974325151180">የእርስዎን ... አድራሻ ይመልከቱ</translation>
+<translation id="3587259018193837508">የተፈቀዱ መለያዎች (አስፈላጊ)</translation>
+<translation id="8449314044437208543">ከሚከተለው አስገባ</translation>
+<translation id="4428111176561355185">የእርስዎን ... ያስመጡ</translation>
+<translation id="8929587248006013051">MetaMask መለያዎች ወደ Brave Wallet ያስገቡ። የክሪፕቶ ንብረትዎን ለማስተዳደር እና ከweb 3 DApps ጋር መስተጋብር ለመፍጠር በፈጣን እና ደህንነቱ በተጠበቀ መንገድ ይዝናኑ።</translation>
+<translation id="913613743605881268">ማስመጣቱን ለመዝለል እና የድሮውን የ Crypto Wallets ተሞክሮ ማቆየት ከፈለጉ ፣ ወደ Brave አሳሽ ይሂዱ</translation>
+<translation id="5886242758142314994">እና ነባሩን ወደ Crypto Wallets ይለውጡ። እንዲሁም ማስመጣት፣ አዲሱን Brave Wallet መሞከር እና በማንኛውም ጊዜ መልሰው መለወጥ ይችላሉ።</translation>
+<translation id="480319080797177742">ተገናኝቷል</translation>
+<translation id="4203566092423620442">ከግንኙነት ወጥቷል</translation>
+<translation id="1952715382071350669">የሃርድዌር wallet የግብይት ማረጋገጫ ይፈልጋል።</translation>
+<translation id="6687008710463927359">መለያ <ph name="VALUE"/></translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Le traitement des jetons obtenus ce mois-ci commencera le <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Cela peut varier selon la volatilité du marché.</translation>
 <translation id="8334559352278209120">Don</translation>
-<translation id="3903419925307046908">Obtenez des jetons et donnez en retour</translation>
-<translation id="244362569344671266">Gagnez des jetons en visualisant des publicités plus respectueuses de la vie privée et soutenez automatiquement vos créateurs de contenu préférés.</translation>
 <translation id="5095252080770652994">Progression</translation>
 <translation id="6278643716658443228">Paramètres de récompenses</translation>
 <translation id="6777169449483742979">Vous gagnez des jetons en visualisant cette image sponsorisée.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/> sur les images sponsorisées dans les Récompenses Brave.</translation>
 <translation id="6113004497629356998">Cacher les images sponsorisées</translation>
 <translation id="8511604585939286108">En cliquant sur [[title]], vous acceptez les <ph name="BEGIN_LINK1"/>conditions d'utilisation<ph name="END_LINK1"/> et la <ph name="BEGIN_LINK2"/>politique de confidentialité<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Démarrer l'appel vidéo</translation>
+<translation id="7619826778671319444">Impossible d'obtenir la limite de gaz pour la transaction</translation>
+<translation id="7631054302129692654">Impossible d'obtenir l'estimation du gaz pour la transaction EIP-1559</translation>
+<translation id="5420730209575475110">non compatible</translation>
+<translation id="692381016487372902">Saisissez à nouveau le mot de passe</translation>
+<translation id="3527905866577245691">La vérification du mot de passe ne correspond pas</translation>
+<translation id="6932355307691676490">Connectez votre portefeuille</translation>
+<translation id="4513956488935671725">directement à votre ordinateur.</translation>
+<translation id="871696868578199698">Décimales de précision</translation>
+<translation id="6637540491667802882">en tant que jeton personnalisé</translation>
+<translation id="6082785102488657349">Obtenir de l'Ether d'un faucet pour</translation>
+<translation id="7065157926159745595">Autoriser cette application à dépenser vos</translation>
+<translation id="4015195974325151180">Afficher les adresses de vos</translation>
+<translation id="3587259018193837508">comptes autorisés (requis)</translation>
+<translation id="8449314044437208543">Importer de</translation>
+<translation id="4428111176561355185">Importez vos</translation>
+<translation id="8929587248006013051">comptes MetaMask dans le portefeuille Brave. Profitez d'un moyen plus rapide et plus sûr de gérer les actifs cryptos et d'interagir avec les DApps Web3.</translation>
+<translation id="913613743605881268">Si vous préférez ignorer l'importation et conserver l'ancienne expérience des portefeuilles cryptos, accédez au navigateur Brave</translation>
+<translation id="5886242758142314994">et revenez par défaut aux portefeuilles cryptos. Vous pouvez également procéder à l'importation, essayer le nouveau portefeuille Brave et revenir en arrière à tout moment.</translation>
+<translation id="480319080797177742">connecté</translation>
+<translation id="4203566092423620442">déconnecté</translation>
+<translation id="1952715382071350669">Le portefeuille hardware nécessite une confirmation de transaction.</translation>
+<translation id="6687008710463927359">Compte <ph name="VALUE"/></translation>
 </translationbundle>

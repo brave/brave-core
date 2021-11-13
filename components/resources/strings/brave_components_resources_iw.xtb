@@ -794,8 +794,6 @@
 <translation id="3273637494083639780">עיבוד אסימונים שהרווחת החודש יתחיל ב-<ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">זה עשוי להשתנות בהתבסס על תנודתיות השוק.</translation>
 <translation id="8334559352278209120">נתינה</translation>
-<translation id="3903419925307046908">הרוויחו טוקנים ותנו בחזרה</translation>
-<translation id="244362569344671266">הרוויחו טוקנים על ידי צפייה בפרסומות Brave פרטיות ותמכו ביוצרי תוכן באופן אוטומטי.</translation>
 <translation id="5095252080770652994">התקדמות</translation>
 <translation id="6278643716658443228">הגדרות תשלומים</translation>
 <translation id="6777169449483742979">אתה’re הנך מרוויח טוקנים עבור צפייה בתמונה ממומנת זו.</translation>
@@ -1159,4 +1157,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> על אודות תמונות ממומנות ב-Brave Rewards.</translation>
 <translation id="6113004497629356998">הסתר תמונות ממומנות</translation>
 <translation id="8511604585939286108">על ידי לחיצה על [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">התחל שיחת וידאו</translation>
+<translation id="7619826778671319444">קבלת הגבלת הדלק לעסקה נכשל</translation>
+<translation id="7631054302129692654">השגת אומדן הדלק לעסקת EIP-1559 נכשלה</translation>
+<translation id="5420730209575475110">לא נתמך</translation>
+<translation id="692381016487372902">הקש מחדש את הסיסמה</translation>
+<translation id="3527905866577245691">אימות סיסמה אינו תואם</translation>
+<translation id="6932355307691676490">חבר את</translation>
+<translation id="4513956488935671725">ארנק ישירות למחשב שלך.</translation>
+<translation id="871696868578199698">רמת דיוק עשרוני</translation>
+<translation id="6637540491667802882">כאסימון מותאם אישית</translation>
+<translation id="6082785102488657349">השג Ether מברז עבור</translation>
+<translation id="7065157926159745595">אפשר לאפליקציה זו להוציא את</translation>
+<translation id="4015195974325151180">צפה בכתובות של</translation>
+<translation id="3587259018193837508">חשבונות מותרים (חובה)</translation>
+<translation id="8449314044437208543">ייבוא מתוך</translation>
+<translation id="4428111176561355185">ייבא את</translation>
+<translation id="8929587248006013051">חשבונות MetaMask נכנסים ל-Brave Wallet. תהנה מדרך מהירה ובטוחה יותר לנהל נכסי קריפטו ואינטראקציה עם Web 3 DApps.</translation>
+<translation id="913613743605881268">אם אתה מעדיף לדלג על הייבוא ולשמור על חוויית ה-Crypto Wallets הישנה, פשוט נווט ל-Brave Browser</translation>
+<translation id="5886242758142314994">ושנה את ברירת המחדל בחזרה ל-Crypto Wallets. תוכל גם לייבא, לנסות את ה-Brave Wallet החדש ולשנות בכל עת.</translation>
+<translation id="480319080797177742">מחובר</translation>
+<translation id="4203566092423620442">מנותק</translation>
+<translation id="1952715382071350669">חומרת ארנק דורשת אישור עסקה.</translation>
+<translation id="6687008710463927359">חשבון <ph name="VALUE"/></translation>
 </translationbundle>

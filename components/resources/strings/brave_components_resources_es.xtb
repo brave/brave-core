@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Los tokens que ganes este mes empezarán a procesarse el <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Podría variar debido a la inestabilidad del mercado.</translation>
 <translation id="8334559352278209120">Entrega</translation>
-<translation id="3903419925307046908">Gana y restituye vales</translation>
-<translation id="244362569344671266">Gane tokens por ver Brave Ads privados y apoye a los creadores de contenido automáticamente.</translation>
 <translation id="5095252080770652994">Progreso</translation>
 <translation id="6278643716658443228">Configuración de las recompensas</translation>
 <translation id="6777169449483742979">Estás ganando tokens por ver esta imagen promocionada.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saber más<ph name="LINK_END"/> sobre las imágenes patrocinadas en Brave Rewards.</translation>
 <translation id="6113004497629356998">Ocultar imágenes patrocinadas</translation>
 <translation id="8511604585939286108">Al hacer clic en [[title]], aceptas las <ph name="BEGIN_LINK1"/>Condiciones de uso<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>Política de privacidad<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Iniciar videollamada</translation>
+<translation id="7619826778671319444">No se ha podido obtener el límite de gas para la transacción</translation>
+<translation id="7631054302129692654">No se ha podido obtener la estimación de gas para la transacción EIP-1559</translation>
+<translation id="5420730209575475110">no compatible</translation>
+<translation id="692381016487372902">Vuelve a introducir la contraseña</translation>
+<translation id="3527905866577245691">La contraseña de verificación es distinta</translation>
+<translation id="6932355307691676490">Conecta tu</translation>
+<translation id="4513956488935671725">directamente a tu ordenador.</translation>
+<translation id="871696868578199698">Decimales de precisión</translation>
+<translation id="6637540491667802882">como token personalizado</translation>
+<translation id="6082785102488657349">Obtener Ether de un faucet para</translation>
+<translation id="7065157926159745595">Permite que esta aplicación gaste tus</translation>
+<translation id="4015195974325151180">Ver las direcciones de tus</translation>
+<translation id="3587259018193837508">cuentas permitidas (obligatorio)</translation>
+<translation id="8449314044437208543">Importar de</translation>
+<translation id="4428111176561355185">Importa tus</translation>
+<translation id="8929587248006013051">cuentas de MetaMask en Brave Wallet. Administra criptoactivos de forma más rápida y segura e interactúa con aplicaciones descentralizadas de Web3.</translation>
+<translation id="913613743605881268">Si prefieres no hacer la importación y seguir en la antigua experiencia de monederos de criptomonedas, solo tienes que ir al navegador de Brave</translation>
+<translation id="5886242758142314994">y cambia el valor predeterminado para volver a usar monederos de criptomonedas. También puedes hacer la importación, probar la nueva experiencia Brave Wallet y volver atrás en cualquier momento.</translation>
+<translation id="480319080797177742">conectado</translation>
+<translation id="4203566092423620442">desconectado</translation>
+<translation id="1952715382071350669">El monedero físico requiere la confirmación de la transacción.</translation>
+<translation id="6687008710463927359">Cuenta <ph name="VALUE"/></translation>
 </translationbundle>

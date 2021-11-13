@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Žetoni, ki jih zaslužite ta mesec, se bodo začeli obdelovati <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">To se lahko razlikuje glede na nestanovitnost trga.</translation>
 <translation id="8334559352278209120">Dajanje</translation>
-<translation id="3903419925307046908">Prejmite žetone in vračajte</translation>
-<translation id="244362569344671266">Prejmite žetone z ogledom oglasov Brave Ads in samodejno podprite ustvarjalce vsebin.</translation>
 <translation id="5095252080770652994">Napredek</translation>
 <translation id="6278643716658443228">Nastavitve za nagrade Rewards</translation>
 <translation id="6777169449483742979">Za ogled te sponzorirane slike dobivate žetone.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Več<ph name="LINK_END"/> o sponzoriranih slikah v storitvi Brave Rewards.</translation>
 <translation id="6113004497629356998">Skrij sponzorirano sliko</translation>
 <translation id="8511604585939286108">S klikom na [[title]] se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti <ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Začni videoklic</translation>
+<translation id="7619826778671319444">Pridobitev omejitve za plin za transakcijo neuspešna</translation>
+<translation id="7631054302129692654">Pridobitev ocene za plin za transakcijo EIP-1559 neuspešna</translation>
+<translation id="5420730209575475110">ni podprto</translation>
+<translation id="692381016487372902">Ponovno vnesite geslo</translation>
+<translation id="3527905866577245691">Preverite, geslo se ne ujema</translation>
+<translation id="6932355307691676490">Povežite svojo</translation>
+<translation id="4513956488935671725">denarnico neposredno z računalnikom.</translation>
+<translation id="871696868578199698">Natančno na decimalko</translation>
+<translation id="6637540491667802882">kot žeton po meri</translation>
+<translation id="6082785102488657349">Pridobite Ether iz pipe za</translation>
+<translation id="7065157926159745595">Dovolite tej aplikaciji, da porabi vaš denar</translation>
+<translation id="4015195974325151180">Oglejte si naslove vaših</translation>
+<translation id="3587259018193837508">dovoljenih računov (obvezno)</translation>
+<translation id="8449314044437208543">Uvozi iz</translation>
+<translation id="4428111176561355185">Uvozite vaš</translation>
+<translation id="8929587248006013051">Računi MetaMask v Brave denarnici. Uživajte v hitrejšem in varnejšem načinu upravljanja s kripto sredstvi in v interakciji z web3 DApps.</translation>
+<translation id="913613743605881268">Če bi raje preskočili uvoz in ohranili staro izkušnjo kripto denarnic, se pomaknite do brskalnika Brave</translation>
+<translation id="5886242758142314994">in privzeto spremenite nazaj v kripto denarnice. Novo Brave denarnico lahko uvozite, poskusite ali jo vrnete v prejšnjo stanje.</translation>
+<translation id="480319080797177742">povezava vzpostavljena</translation>
+<translation id="4203566092423620442">povezava prekinjena</translation>
+<translation id="1952715382071350669">Hardverska denarnica zahteva potrditev transakcije.</translation>
+<translation id="6687008710463927359">Račun <ph name="VALUE"/></translation>
 </translationbundle>

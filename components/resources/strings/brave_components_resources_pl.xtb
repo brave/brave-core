@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Przetwarzanie tokenów, które zarobisz w tym miesiącu, rozpocznie się<ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Może się różnić w zależności od zmienności rynku.</translation>
 <translation id="8334559352278209120">Wspieranie</translation>
-<translation id="3903419925307046908">Zdobywaj żetony i oddawaj je</translation>
-<translation id="244362569344671266">Zarabiaj tokeny, oglądając reklamy z poszanowaniem prywatności i automatycznie wspieraj ulubione strony oraz twórców treści.</translation>
 <translation id="5095252080770652994">Postęp</translation>
 <translation id="6278643716658443228">Ustawienia nagród</translation>
 <translation id="6777169449483742979">Zarabiasz tokeny za oglądanie tego sponsorowanego obrazu.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o sponsorowanych obrazach w nagrodach Brave.</translation>
 <translation id="6113004497629356998">Ukryj obrazy sponsorowane</translation>
 <translation id="8511604585939286108">Klikając [[title]], zgadzasz się na <ph name="BEGIN_LINK1"/>Warunki użytkowania<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politykę prywatności<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Rozpocznij połączenie wideo</translation>
+<translation id="7619826778671319444">Nie udało się pozyskać limitu gazu do tej transakcji</translation>
+<translation id="7631054302129692654">Nie udało się pozyskać danych szacunkowych gazu do transakcji EIP-1559</translation>
+<translation id="5420730209575475110">nieobsługiwane</translation>
+<translation id="692381016487372902">Wpisz ponownie hasło</translation>
+<translation id="3527905866577245691">Hasło w polu weryfikacyjnym nie zgadza się</translation>
+<translation id="6932355307691676490">Podłącz swój</translation>
+<translation id="4513956488935671725">portfel bezpośrednio do komputera.</translation>
+<translation id="871696868578199698">Dokładność liczb po przecinku</translation>
+<translation id="6637540491667802882">jako token spersonalizowany</translation>
+<translation id="6082785102488657349">Uzyskaj Ether z kranika za</translation>
+<translation id="7065157926159745595">Zezwól tej aplikacji na wydawanie</translation>
+<translation id="4015195974325151180">Zobacz adresy swoich</translation>
+<translation id="3587259018193837508">kont, które mają pozwolenia (wymagane)</translation>
+<translation id="8449314044437208543">Importuj z</translation>
+<translation id="4428111176561355185">Importuj swój</translation>
+<translation id="8929587248006013051">konta MetaMask do portfela Brave. Korzystaj z szybszej i bezpieczniejszej metody zarządzania kryptoaktywami i wychodzenia w interakcje z aplikacjami web 3 DApps.</translation>
+<translation id="913613743605881268">Jeżeli nie chcesz importować i wolisz zachować swoje poprzednie portfele kryptowalutowe, po prostu przejdź do przeglądarki Brave</translation>
+<translation id="5886242758142314994">i zmień ustawienie domyślne z powrotem na portfele kryptowalutowe. Możesz również importować, wypróbować nowy portfel Brave, a następnie w dowolnym momencie wrócić do poprzednich portfeli.</translation>
+<translation id="480319080797177742">podłączony</translation>
+<translation id="4203566092423620442">rozłączony</translation>
+<translation id="1952715382071350669">Portfel sprzętowy wymaga potwierdzenia transakcji.</translation>
+<translation id="6687008710463927359">Konto <ph name="VALUE"/></translation>
 </translationbundle>

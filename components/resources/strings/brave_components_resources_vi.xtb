@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Các token mà bạn kiếm được trong tháng này sẽ bắt đầu xử lý vào <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Điều này có thể khác nhau dựa vào sự biến động của thị trường.</translation>
 <translation id="8334559352278209120">Cho</translation>
-<translation id="3903419925307046908">Kiếm token và báo đáp</translation>
-<translation id="244362569344671266">Kiếm token bằng cách xem Brave Private Ads và tự động hỗ trợ người sáng tạo nội dung.</translation>
 <translation id="5095252080770652994">Tiến độ</translation>
 <translation id="6278643716658443228">Cài đặt Phần thưởng</translation>
 <translation id="6777169449483742979">Bạn đang kiếm được token khi xem hình ảnh được tài trợ này.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về hình được tài trợ trong Phần thưởng Brave.</translation>
 <translation id="6113004497629356998">Ẩn hình được tài trợ</translation>
 <translation id="8511604585939286108">Với việc nhấp vào [[title]], bạn đồng ý với <ph name="BEGIN_LINK1"/>Điều khoản Dịch vụ<ph name="END_LINK1"/> và <ph name="BEGIN_LINK2"/>Chính sách Quyền riêng tư<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Bắt đầu cuộc gọi video</translation>
+<translation id="7619826778671319444">Không lấy được giới hạn xăng cho giao dịch</translation>
+<translation id="7631054302129692654">Không lấy được ước tính xăng cho giao dịch EIP-1559</translation>
+<translation id="5420730209575475110">không hỗ trợ</translation>
+<translation id="692381016487372902">Gõ lại mật khẩu</translation>
+<translation id="3527905866577245691">Xác thực mật khẩu không khớp</translation>
+<translation id="6932355307691676490">Kết nối</translation>
+<translation id="4513956488935671725">ví của bạn trực tiếp với máy tính của bạn.</translation>
+<translation id="871696868578199698">Số thập phân chính xác</translation>
+<translation id="6637540491667802882">làm token tùy chỉnh</translation>
+<translation id="6082785102488657349">Nhận Ether từ vòi nước cho</translation>
+<translation id="7065157926159745595">Cho phép ứng dụng này sử dụng</translation>
+<translation id="4015195974325151180">Xem địa chỉ của</translation>
+<translation id="3587259018193837508">các tài khoản được phép của bạn (bắt buộc)</translation>
+<translation id="8449314044437208543">Nhập từ</translation>
+<translation id="4428111176561355185">Nhập</translation>
+<translation id="8929587248006013051">tài khoản MetaMask của bạn vào Ví Brave. Tận hưởng một phương thức nhanh hơn và bảo mật hơn để quản lý tài sản tiền mã hóa và tương tác với các ứng dụng phi tập trung web 3.</translation>
+<translation id="913613743605881268">Nếu bạn muốn bỏ qua việc nhập và giữ lại trải nghiệm Ví tiền mã hóa cũ, chỉ cần di chuyển đến Trình duyệt Brave</translation>
+<translation id="5886242758142314994">và thay đổi tùy chọn mặc định lại thành Ví tiền mã hóa. Bạn cũng có thể nhập, dùng thử Ví Brave mới và thay đổi lại bất cứ lúc nào.</translation>
+<translation id="480319080797177742">đã kết nối</translation>
+<translation id="4203566092423620442">đã ngắt kết nối</translation>
+<translation id="1952715382071350669">Ví phần cứng yêu cầu xác nhận giao dịch.</translation>
+<translation id="6687008710463927359">Tài khoản <ph name="VALUE"/></translation>
 </translationbundle>

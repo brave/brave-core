@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Sel kuul teenitud tokenite töötlemine algab <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">See võib turu volatiilsusest sõltuvalt erineda.</translation>
 <translation id="8334559352278209120">Andmine</translation>
-<translation id="3903419925307046908">Teenige ja andke tokeneid</translation>
-<translation id="244362569344671266">Brave'i erareklaamide vaatamisega saate teenida tokeneid ja toetada automaatselt sisuloojaid.</translation>
 <translation id="5095252080770652994">Edenemine</translation>
 <translation id="6278643716658443228">Preemiate seaded</translation>
 <translation id="6777169449483742979">Teenite selle spondeeritud kujutise vaatamise eest tokeneid.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/> Brave Rewardsi esiletõstetud piltide kohta.</translation>
 <translation id="6113004497629356998">Peida esiletõstetavad pildid</translation>
 <translation id="8511604585939286108">Klõpsates pealkirjal [[title]], nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Alustage videokõnet</translation>
+<translation id="7619826778671319444">Gaasilimiidi toomine tehingu jaoks nurjus</translation>
+<translation id="7631054302129692654">Gaasihinnangu toomine EIP-1559 tehingu jaoks nurjus</translation>
+<translation id="5420730209575475110">ei toetata</translation>
+<translation id="692381016487372902">Sisestage parool uuesti</translation>
+<translation id="3527905866577245691">Parooli kinnitus ei sobi</translation>
+<translation id="6932355307691676490">Ühendage oma</translation>
+<translation id="4513956488935671725">rahakott otse arvutiga.</translation>
+<translation id="871696868578199698">Täpsuse kümnendkohad</translation>
+<translation id="6637540491667802882">kohandatud tokenina</translation>
+<translation id="6082785102488657349">Hangi kraanist eetrit</translation>
+<translation id="7065157926159745595">Luba sellel rakendusel kulutada</translation>
+<translation id="4015195974325151180">Vaadake aadresse:</translation>
+<translation id="3587259018193837508">lubatud kontode kohta (nõutav)</translation>
+<translation id="8449314044437208543">Impordi asukohast</translation>
+<translation id="4428111176561355185">Importige oma</translation>
+<translation id="8929587248006013051">MetaMaski kontod Brave'i rahakotti. Saate nautida kiiremat ja turvalisemat krüptovarade haldamise viisi ning suhelda Web 3 detsentraliseeritud rakenduste abil.</translation>
+<translation id="913613743605881268">Kui soovite importimise vahele jätta ja säilitada vana krüptorahakoti, siis navigeerige lihtsalt Brave'i brauserisse</translation>
+<translation id="5886242758142314994">ja määrake vaikeseadistuseks jälle krüptorahakott. Võite ka importida, proovida uut Brave'i rahakotti ja igal ajal tagasi vahetada.</translation>
+<translation id="480319080797177742">ühendatud</translation>
+<translation id="4203566092423620442">on ühenduseta</translation>
+<translation id="1952715382071350669">Riistvararahakott nõuab tehingu kinnitamist.</translation>
+<translation id="6687008710463927359">Konto <ph name="VALUE"/></translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Žetoni, ko nopelnīsiet šomēnes, tiks apstrādāti <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Daudzums var mainīties atkarībā no tirgus svārstībām.</translation>
 <translation id="8334559352278209120">Dod</translation>
-<translation id="3903419925307046908">Pelnīt žetonus un atdot atpakaļ</translation>
-<translation id="244362569344671266">Nopelniet žetonus, apskatot Brave privātās reklāmas, un automātiski atbalstiet satura veidotājus.</translation>
 <translation id="5095252080770652994">Progress</translation>
 <translation id="6278643716658443228">Rewards iestatījumi</translation>
 <translation id="6777169449483742979">Jūs pelnāt žetonus par šī sponsorētā attēla skatīšanu.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/> par Brave Rewards pakalpojumā sponsorētajiem attēliem.</translation>
 <translation id="6113004497629356998">Paslēpt sponsorētos attēlus</translation>
 <translation id="8511604585939286108">Nokllikšķinot uz [[title]], jūs piekrītat <ph name="BEGIN_LINK1"/>pakalpojumu sniegšanas noteikumiem<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>konfidencialitātes politikai<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Sākt video zvanu</translation>
+<translation id="7619826778671319444">Neizdevās uzzināt darījuma Gas ierobežojumu.</translation>
+<translation id="7631054302129692654">Neizdevās uzzināt Gas aprēķinu EIP-1559 darījumam.</translation>
+<translation id="5420730209575475110">nav atbalstīts</translation>
+<translation id="692381016487372902">Atkārtoti ievadiet paroli</translation>
+<translation id="3527905866577245691">Verficēšanas parole nesakrīt.</translation>
+<translation id="6932355307691676490">Savienojiet savu</translation>
+<translation id="4513956488935671725">maku tieši ar datoru.</translation>
+<translation id="871696868578199698">Precizitātes decimāldaļas</translation>
+<translation id="6637540491667802882">kā pielāgotu marķieri</translation>
+<translation id="6082785102488657349">Saņemt Ether no krāna vietnes</translation>
+<translation id="7065157926159745595">Ļaujiet šai lietotnei tērēt jūsu</translation>
+<translation id="4015195974325151180">Skatiet</translation>
+<translation id="3587259018193837508">atļauto kontu adreses (jānorāda obligāti).</translation>
+<translation id="8449314044437208543">Importēt no</translation>
+<translation id="4428111176561355185">Importējiet</translation>
+<translation id="8929587248006013051">MetaMask kontus Brave makā. Izbaudiet ātrāku un drošāku veidu, kā pārvaldīt kriptovalūtu līdzekļus un mijiedarboties ar tīmekļa 3 DApps.</translation>
+<translation id="913613743605881268">Ja vēlaties izlaist importēšanu un saglabāt veco Brave maku, vienkārši dodieties uz Brave pārlūkprogrammu</translation>
+<translation id="5886242758142314994">un nomainiet noklusējuma iestatījumus atpakaļ uz Crypto makiem. Varat arī importēt un izmēģināt jauno Brave maku, lai jebkurā laikā atgrieztos pie vecā maka.</translation>
+<translation id="480319080797177742">savienots</translation>
+<translation id="4203566092423620442">atvienots</translation>
+<translation id="1952715382071350669">Aparatūras makam ir nepieciešams darījuma apstiprinājums.</translation>
+<translation id="6687008710463927359">Konts <ph name="VALUE"/></translation>
 </translationbundle>

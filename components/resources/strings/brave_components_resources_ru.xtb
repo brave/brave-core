@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Обработка баллов, заработанных в этом месяце, начнется <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Из-за колебания рынка курс может изменяться.</translation>
 <translation id="8334559352278209120">Взносы</translation>
-<translation id="3903419925307046908">Зарабатывайте токены и жертвуйте</translation>
-<translation id="244362569344671266">Зарабатывайте жетоны, просматривая Brave Private Ads, и поддерживайте создателей контента автоматически.</translation>
 <translation id="5095252080770652994">Прогресс</translation>
 <translation id="6278643716658443228">Настройки Rewards</translation>
 <translation id="6777169449483742979">Вы получите баллы за просмотр этого рекламного изображения.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о рекламных изображениях в Brave Rewards.</translation>
 <translation id="6113004497629356998">Скрыть рекламные изображения</translation>
 <translation id="8511604585939286108">Нажимая «[[title]]», вы соглашаетесь с <ph name="BEGIN_LINK1"/>Условиями использования<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политикой конфиденциальности<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Начать видеозвонок</translation>
+<translation id="7619826778671319444">Не удалось узнать лимит газа для транзакции.</translation>
+<translation id="7631054302129692654">Не удалось оценить газ для транзакции EIP-1559.</translation>
+<translation id="5420730209575475110">(не поддерживается)</translation>
+<translation id="692381016487372902">Введите пароль еще раз</translation>
+<translation id="3527905866577245691">Пароли не совпадают.</translation>
+<translation id="6932355307691676490">Подключите</translation>
+<translation id="4513956488935671725">непосредственно к компьютеру.</translation>
+<translation id="871696868578199698">Количество знаков после запятой</translation>
+<translation id="6637540491667802882">в качестве пользовательского токена</translation>
+<translation id="6082785102488657349">Получите Ethereum из крана за</translation>
+<translation id="7065157926159745595">Разрешите приложению тратить</translation>
+<translation id="4015195974325151180">Показать адреса</translation>
+<translation id="3587259018193837508">разрешенных аккаунтов (обязательно)</translation>
+<translation id="8449314044437208543">Импорт из…</translation>
+<translation id="4428111176561355185">Импортируйте</translation>
+<translation id="8929587248006013051">аккаунты MetaMask в кошелек Brave. Управляйте криптоактивами и взаимодействуйте с DApps Web3 еще быстрее и безопаснее.</translation>
+<translation id="913613743605881268">Если вы не хотите импортировать новые криптокошельки, перейдите в браузер Brave</translation>
+<translation id="5886242758142314994">и измените кошелек по умолчанию. Вы также можете их импортировать и попробовать возможности нового кошелька Brave, а затем отменить изменения в любой момент.</translation>
+<translation id="480319080797177742">подключен</translation>
+<translation id="4203566092423620442">отключен</translation>
+<translation id="1952715382071350669">Для проведения транзакции в аппаратном кошельке требуется подтверждение.</translation>
+<translation id="6687008710463927359">Аккаунт <ph name="VALUE"/></translation>
 </translationbundle>

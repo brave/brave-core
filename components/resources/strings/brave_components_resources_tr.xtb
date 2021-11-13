@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Bu ay kazandığınız token'lar <ph name="DATE"/> itibarıyla işlenmeye başlayacak.</translation>
 <translation id="1029300693989825319">Bu, piyasa volatilitesine göre değişebilir.</translation>
 <translation id="8334559352278209120">Veriyor</translation>
-<translation id="3903419925307046908">Jeton kazanın ve geri verin</translation>
-<translation id="244362569344671266">Brave Özel Reklamları'nı görüntüleyerek jeton kazanın ve içerik üreticilerini otomatik olarak destekleyin.</translation>
 <translation id="5095252080770652994">İlerleme</translation>
 <translation id="6278643716658443228">Ödüller ayarları</translation>
 <translation id="6777169449483742979">Bu sponsorlu görseli görüntülediğiniz için token kazanıyorsunuz.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444">Brave Rewards'daki sponsorlu görsellerle ilgili <ph name="LINK_BEGIN"/>daha fazla öğren<ph name="LINK_END"/>.</translation>
 <translation id="6113004497629356998">Sponsorlu görselleri sakla</translation>
 <translation id="8511604585939286108">[[title]] öğesine tıklayarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
+<translation id="5850325887346946383">Görüntülü arama başlat</translation>
+<translation id="7619826778671319444">İşlem için GAS sınırı alınamadı</translation>
+<translation id="7631054302129692654">EIP-1559 işlemi için GAS tahmini alınamadı</translation>
+<translation id="5420730209575475110">desteklenmiyor</translation>
+<translation id="692381016487372902">Şifreyi Tekrar Yazın</translation>
+<translation id="3527905866577245691">Doğrulama şifresi uyuşmuyor</translation>
+<translation id="6932355307691676490">Şunu bağlayın:</translation>
+<translation id="4513956488935671725">cüzdanınızı doğrudan bilgisayarınıza bağlayın.</translation>
+<translation id="871696868578199698">Kesinlik ondalıkları</translation>
+<translation id="6637540491667802882">özel bir token olarak</translation>
+<translation id="6082785102488657349">Bir musluktan Ether al, şunun için:</translation>
+<translation id="7065157926159745595">Bu uygulamanın paranızı harcamasına izin verin:</translation>
+<translation id="4015195974325151180">Şunlara ait adreslerinizi görüntüleyin:</translation>
+<translation id="3587259018193837508">izin verilen hesaplar (gerekli)</translation>
+<translation id="8449314044437208543">Şuradan içeri aktar:</translation>
+<translation id="4428111176561355185">İçe aktarma işlemi yapın:</translation>
+<translation id="8929587248006013051">MetaMask hesaplarınızı Brave Cüzdan'a aktarın. Kripto varlıklarınızı yönetmenin ve web 3 DApps ile etkileşime geçmenin daha hızlı ve güvenli yolunun tadını çıkarın.</translation>
+<translation id="913613743605881268">İçe aktarmayı atlamak ve eski Crypto Wallets deneyimini korumak istiyorsanız, Brave Tarayıcı'ya gidin</translation>
+<translation id="5886242758142314994">ve varsayılanı tekrar Crypto Wallets olarak değiştirin. Aynı zamanda cüzdanınızı içe aktarabilir yeni Brave Cüzdan'ı deneyebilir ve istediğiniz zaman kendi cüzdanınıza dönebilirsiniz.</translation>
+<translation id="480319080797177742">bağlı</translation>
+<translation id="4203566092423620442">bağlantısı kesildi</translation>
+<translation id="1952715382071350669">Donanım cüzdanı işlem doğrulaması gerektirir.</translation>
+<translation id="6687008710463927359">Hesap <ph name="VALUE"/></translation>
 </translationbundle>

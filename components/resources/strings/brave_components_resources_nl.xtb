@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">De tokens die je deze maand verdient, worden verwerkt vanaf <ph name="DATE"/></translation>
 <translation id="1029300693989825319">Dit is mogelijk afhankelijk van de kwetsbaarheid van de markt.</translation>
 <translation id="8334559352278209120">Schenken</translation>
-<translation id="3903419925307046908">Verdien tokens en geef terug</translation>
-<translation id="244362569344671266">Verdien tokens door het bekijken van Brave Private Ads en ondersteun automatisch makers van inhoud.</translation>
 <translation id="5095252080770652994">Voortgang</translation>
 <translation id="6278643716658443228">Instellingen voor beloningen</translation>
 <translation id="6777169449483742979">Je verdient tokens voor het bekijken van deze gesponsorde afbeelding.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over gesponsorde afbeeldingen in Brave Rewards.</translation>
 <translation id="6113004497629356998">Verberg gesponsorde afbeeldingen</translation>
 <translation id="8511604585939286108">Door te klikken op [[title]], ga je akkoord met de <ph name="BEGIN_LINK1"/>Gebruiksvoorwaarden<ph name="END_LINK1"/> en het <ph name="BEGIN_LINK2"/>Privacybeleid<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Start videogesprek</translation>
+<translation id="7619826778671319444">Fout bij het ophalen van de gaslimiet voor de transactie</translation>
+<translation id="7631054302129692654">Fout bij het ophalen van de gasschatting voor de EIP-1559-transactie</translation>
+<translation id="5420730209575475110">niet ondersteund</translation>
+<translation id="692381016487372902">Wachtwoord opnieuw invoeren</translation>
+<translation id="3527905866577245691">Geverifieerd wachtwoord komt niet overeen</translation>
+<translation id="6932355307691676490">Koppel je</translation>
+<translation id="4513956488935671725">wallet rechtstreeks naar je computer.</translation>
+<translation id="871696868578199698">Zichtbare decimalen</translation>
+<translation id="6637540491667802882">als een aangepaste token</translation>
+<translation id="6082785102488657349">Haal Ether op uit een kraan voor</translation>
+<translation id="7065157926159745595">Geef deze app toestemming om het volgende voor je uit te geven:</translation>
+<translation id="4015195974325151180">Bekijk de adressen van je</translation>
+<translation id="3587259018193837508">toegestane accounts (vereist)</translation>
+<translation id="8449314044437208543">Importeren van</translation>
+<translation id="4428111176561355185">Importeer je</translation>
+<translation id="8929587248006013051">MetaMask-accounts in Brave-wallet. Profiteer van een snellere en veiligere manier om cryptoassets te beheren en met web 3 DApps te communiceren.</translation>
+<translation id="913613743605881268">Als je het importeren liever wilt overslaan en de oude cryptowalletervaring wilt houden, navigeer dan gewoon naar de Brave Browser</translation>
+<translation id="5886242758142314994">en stel de standaardinstellingen weer in op cryptowallets. Je kunt ook de nieuwe Brave-wallet importeren en uitproberen en op elk moment weer terug veranderen.</translation>
+<translation id="480319080797177742">verbonden</translation>
+<translation id="4203566092423620442">verbinding verbroken</translation>
+<translation id="1952715382071350669">Er is een transactiebevestiging vereist voor hardwarewallet.</translation>
+<translation id="6687008710463927359">Account <ph name="VALUE"/></translation>
 </translationbundle>

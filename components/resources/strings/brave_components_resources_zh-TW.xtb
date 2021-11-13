@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">您本月賺取的代幣將於 <ph name="DATE"/> 開始處理。</translation>
 <translation id="1029300693989825319">這可能隨著市場波動而變化。</translation>
 <translation id="8334559352278209120">捐贈</translation>
-<translation id="3903419925307046908">賺取代幣並回饋</translation>
-<translation id="244362569344671266">透過檢視 Brave 的私人廣告來賺取代幣，並自動支持內容創作者。</translation>
 <translation id="5095252080770652994">進度</translation>
 <translation id="6278643716658443228">Rewards 設定</translation>
 <translation id="6777169449483742979">藉由檢視此提議的影像，您可以賺取代幣</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards 的贊助影像。</translation>
 <translation id="6113004497629356998">隱藏贊助影像</translation>
 <translation id="8511604585939286108">按一下 [[title]] 即表示您同意<ph name="BEGIN_LINK1"/>服務條款<ph name="END_LINK1"/>與<ph name="BEGIN_LINK2"/>隱私權政策<ph name="END_LINK2"/>。</translation>
+<translation id="5850325887346946383">開始視訊通話</translation>
+<translation id="7619826778671319444">無法獲取交易的 GAS 限制</translation>
+<translation id="7631054302129692654">無法獲取 EIP-1559 交易的 GAS 預估</translation>
+<translation id="5420730209575475110">不支援</translation>
+<translation id="692381016487372902">重新輸入密碼</translation>
+<translation id="3527905866577245691">驗證密碼不一致</translation>
+<translation id="6932355307691676490">連接</translation>
+<translation id="4513956488935671725">錢包直接連接到電腦。</translation>
+<translation id="871696868578199698">小數點精度</translation>
+<translation id="6637540491667802882">作為自訂代幣</translation>
+<translation id="6082785102488657349">從水管取得乙太幣</translation>
+<translation id="7065157926159745595">允許此應用程式花您的</translation>
+<translation id="4015195974325151180">檢視位址</translation>
+<translation id="3587259018193837508">允許的帳戶（必需）</translation>
+<translation id="8449314044437208543">匯入自</translation>
+<translation id="4428111176561355185">匯入您的</translation>
+<translation id="8929587248006013051">將 MetaMask 帳戶匯入 Brave錢包。享受以更快、更安全的方式管理加密資產以及與 web 3 DApps 互動。</translation>
+<translation id="913613743605881268">如果想跳過匯入，而保留舊的 Crypto Wallets 體驗，只需導覽到 Brave 瀏覽器</translation>
+<translation id="5886242758142314994">將預設值變回 Crypto Wallets。您亦可匯入、嘗試新的 Brave 錢包，並隨時改回。</translation>
+<translation id="480319080797177742">已連線</translation>
+<translation id="4203566092423620442">已中斷連線</translation>
+<translation id="1952715382071350669">硬體錢包需要交易確認。</translation>
+<translation id="6687008710463927359">帳戶 <ph name="VALUE"/></translation>
 </translationbundle>

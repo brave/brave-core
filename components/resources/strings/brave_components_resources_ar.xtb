@@ -794,8 +794,6 @@
 <translation id="3273637494083639780">ستبدأ معالجة الرموز التي تربحها هذا الشهر في <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">قد يختلف هذا بناءً على تقلبات السوق.</translation>
 <translation id="8334559352278209120">إعطاء</translation>
-<translation id="3903419925307046908">اربح العملات الرمزية وامنح مرة أخرى</translation>
-<translation id="244362569344671266">اربح العملات الرمزية من خلال عرض إعلانات Brave الخاصة وادعم منشئي المحتوى تلقائياً.</translation>
 <translation id="5095252080770652994">أحرز تقدمًا</translation>
 <translation id="6278643716658443228">إعدادات المكافآت</translation>
 <translation id="6777169449483742979">أنت ’re تكسب رموزًا مقابل مشاهدة هذه الصورة الدعائية.</translation>
@@ -1158,4 +1156,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>أعرف أكثر <ph name="LINK_END"/> عن الصور الدعائية في Brave Rewards.</translation>
 <translation id="6113004497629356998">إخفاء الصور الدعائية</translation>
 <translation id="8511604585939286108">بالنقر فوق [[title]], فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">بدء مكالمة مرئية</translation>
+<translation id="7619826778671319444">تعذّر الحصول على حد الغاز للمعاملة</translation>
+<translation id="7631054302129692654">تعذّر الحصول على تقدير الغاز للمعاملة EIP-1559</translation>
+<translation id="5420730209575475110">غير مدعوم</translation>
+<translation id="692381016487372902">إعادة كتابة المرور</translation>
+<translation id="3527905866577245691">التحقق من عدم تطابق كلمة المرور</translation>
+<translation id="6932355307691676490">قم بتوصيل</translation>
+<translation id="4513956488935671725">المحفظة مباشرة إلى جهاز الكمبيوتر الخاص بك.</translation>
+<translation id="871696868578199698">الكسور العشرية للتقريب</translation>
+<translation id="6637540491667802882">كرمز مميز مخصص</translation>
+<translation id="6082785102488657349">الحصول على الأثير من صنبور مقابل</translation>
+<translation id="7065157926159745595">اسمح لهذا التطبيق بإنفاق الخاص بك</translation>
+<translation id="4015195974325151180">عرض عناوين</translation>
+<translation id="3587259018193837508">الحسابات المُصرح بها (مطلوب)</translation>
+<translation id="8449314044437208543">توريد من</translation>
+<translation id="4428111176561355185">توريد</translation>
+<translation id="8929587248006013051">حسابات MetaMask في Brave Wallet. استمتع بطريقة أسرع وأكثر أمانًا لإدارة أصول التشفير والتفاعل مع 3 DApps على الويب.</translation>
+<translation id="913613743605881268">إذا كنت تفضل حذف تجربة استخدامك القديمة في Crypto Wallets وتوريدها والاحتفاظ بها، يمكنك الانتقال فقط إلى Brave Browser</translation>
+<translation id="5886242758142314994">وقم بتغيير الافتراضي مرة أخرى إلى محافظ العملات الرقمية. يمكنك أيضًا استيراد Brave Wallet الجديدة وتجربتها والتغيير مرة أخرى في أي وقت.</translation>
+<translation id="480319080797177742">متصل</translation>
+<translation id="4203566092423620442">غير متصل</translation>
+<translation id="1952715382071350669">تتطلب محفظة الأجهزة تأكيد المعاملة.</translation>
+<translation id="6687008710463927359">Account <ph name="VALUE"/></translation>
 </translationbundle>

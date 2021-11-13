@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">پردازش توکن‌هایی که در این ماه کسب می‌کنید در تاریخ <ph name="DATE"/> شروع خواهد شد.</translation>
 <translation id="1029300693989825319">این مورد ممکن است بر اساس نوسان بازار متفاوت باشد.</translation>
 <translation id="8334559352278209120">ارائه</translation>
-<translation id="3903419925307046908">کسب توکن و برگرداندن</translation>
-<translation id="244362569344671266">با مشاهده «آگهی‌های خصوصی Brave»، توکن کسب کنید و به‌طور خودکار از سازندگان محتوا پشتیبانی کنید.</translation>
 <translation id="5095252080770652994">پیشرفت</translation>
 <translation id="6278643716658443228">تنظیمات پاداش‌ها</translation>
 <translation id="6777169449483742979">برای مشاهده این تصویر دارای حامی مالی، توکن کسب می‌کنید.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444">درباره تصاویر حمایت‌شده در Brave Rewards،‏ <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="6113004497629356998">پنهان کردن تصاویر حمایت‌شده</translation>
 <translation id="8511604585939286108">با کلیک کردن روی [[title]]، شما با <ph name="BEGIN_LINK1"/>شرایط خدمات<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>خط‌مشی رازداری<ph name="END_LINK2"/> موافقت می‌کنید.</translation>
+<translation id="5850325887346946383">شروع تماس تصویری</translation>
+<translation id="7619826778671319444">دریافت محدوده گس برای تراکنش انجام نشد</translation>
+<translation id="7631054302129692654">دریافت نخمین گس برای تراکنش EIP-1559 انجام نشد</translation>
+<translation id="5420730209575475110">پشتیبانی نمی‌شو</translation>
+<translation id="692381016487372902">گذرواژه را مجدداً تایپ کنید</translation>
+<translation id="3527905866577245691">گذرواژه تأیید مطابقت ندارد</translation>
+<translation id="6932355307691676490">کیف پول</translation>
+<translation id="4513956488935671725">کیفتان را مستقیماً به رایانه‌تان وصل کنید.</translation>
+<translation id="871696868578199698">رقم اعشار</translation>
+<translation id="6637540491667802882">به‌عنوان توکن سفارشی</translation>
+<translation id="6082785102488657349">دریافت اتر از یک فاست برای</translation>
+<translation id="7065157926159745595">این برنامه مجاز شود تا حداکثر مبلغ زیر را هزینه کند</translation>
+<translation id="4015195974325151180">آدرس‌های حساب‌های مجاز خود</translation>
+<translation id="3587259018193837508">را مشاهده کنید (الزامی)</translation>
+<translation id="8449314044437208543">وارد کردن از</translation>
+<translation id="4428111176561355185">حساب‌های</translation>
+<translation id="8929587248006013051">MetaMask خود را در کیف پول Brave وارد کنید. از روشی سریع‌تر و امن‌تر برای مدیریت دارایی‌های رمزارز و تعامل با web 3 DApps بهره‌مند شوید.</translation>
+<translation id="913613743605881268">اگر ترجیح می‌دهید از وارد کردن صرف نظر کنید و همچنان تجربه کیف پول‌های رمزارز قدیمی را داشته باشید، کافی است به مرورگر Brave بروید</translation>
+<translation id="5886242758142314994">و کیف پول پیش‌فرض را به کیف پول‌های رمزارز تغییر دهید. همچنین می‌توانید کیف پول Brave جدید را وارد و امتحان کنید و در هر زمان که خواستید آن را به کیف پول قبلی تغییر دهید.</translation>
+<translation id="480319080797177742">متصل‌شده</translation>
+<translation id="4203566092423620442">قطع‌شده</translation>
+<translation id="1952715382071350669">کیف پول سخت‌افزاری نیازمند تأیید تراکنش است.</translation>
+<translation id="6687008710463927359">حساب <ph name="VALUE"/></translation>
 </translationbundle>

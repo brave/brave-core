@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Tässä kuussa ansaitsemiesi tokenien käsittely alkaa <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Tämä voi vaihdella markkinoiden volatiliteetin mukaan.</translation>
 <translation id="8334559352278209120">Lahjoittaminen</translation>
-<translation id="3903419925307046908">Ansaitse maksutunnuksia ja auta muita</translation>
-<translation id="244362569344671266">Ansaitse maksutunnuksia katsomalla Braven yksityismainoksia sekä tukemalla sisällönkehittäjiä automaattisesti.</translation>
 <translation id="5095252080770652994">Edistyminen</translation>
 <translation id="6278643716658443228">Palkintoasetukset</translation>
 <translation id="6777169449483742979">Ansaitset tokeneita tämän sponsoroidun kuvan katselusta.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> maksetuista kuvista Brave Rewards -palvelussa.</translation>
 <translation id="6113004497629356998">Piilota maksetut kuvat</translation>
 <translation id="8511604585939286108">Napsautttamalla {{title}} hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Aloita videopuhelu</translation>
+<translation id="7619826778671319444">Gas-rajan haku maksutapahtumaa varten epäonnistui</translation>
+<translation id="7631054302129692654">Gas-tokenin arvion haku EIP-1559-maksutapahtumaa varten epäonnistui</translation>
+<translation id="5420730209575475110">ei tueta</translation>
+<translation id="692381016487372902">Kirjoita salasana uudelleen</translation>
+<translation id="3527905866577245691">Vahvista salasana -kentässä annettu salasana ei täsmää</translation>
+<translation id="6932355307691676490">Liitä</translation>
+<translation id="4513956488935671725">lompakko suoraan tietokoneeseen.</translation>
+<translation id="871696868578199698">Desimaalitarkkuus</translation>
+<translation id="6637540491667802882">mukautettuna tokenina</translation>
+<translation id="6082785102488657349">Hanki Ether-kolikkoa kolikoita jakavasta palvelusta</translation>
+<translation id="7065157926159745595">Anna tälle sovellukselle käyttöoikeus käyttää kohdetta</translation>
+<translation id="4015195974325151180">Katso osoitteet</translation>
+<translation id="3587259018193837508">sallitut tilit (pakollinen)</translation>
+<translation id="8449314044437208543">Tuo kohteesta</translation>
+<translation id="4428111176561355185">Tuo kohde</translation>
+<translation id="8929587248006013051">MetaMask-tilit Brave Wallet -lompakkoon. Nauti nopeammasta ja turvallisemmasta tavasta hallita kryptovaroja ja olla vuorovaikutuksessa web3-sovellusten ja hajautettujen sovellusten kanssa.</translation>
+<translation id="913613743605881268">Jos haluat mieluummin ohittaa tuonnin ja säilyttää vanhan Crypto Wallet -lompakkokokemuksen, siirry Brave-selaimeen</translation>
+<translation id="5886242758142314994">ja muuta oletusarvoinen asetus Crypto Wallet -lompakoksi. Voit myös tuoda, kokeilla uutta Brave Wallet -lompakkoa ja vaihtaa takaisin milloin tahansa.</translation>
+<translation id="480319080797177742">yhdistetty</translation>
+<translation id="4203566092423620442">yhteys katkaistu</translation>
+<translation id="1952715382071350669">Laitelompakko vaatii maksutapahtumavahvistuksen.</translation>
+<translation id="6687008710463927359">Tili <ph name="VALUE"/></translation>
 </translationbundle>

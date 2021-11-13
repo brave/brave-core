@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">The tokens you earn this month will begin processing on <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">This may vary based on market volatility.</translation>
 <translation id="8334559352278209120">Giving</translation>
-<translation id="3903419925307046908">Earn tokens and give back</translation>
-<translation id="244362569344671266">Earn tokens by viewing Brave Private Ads and support content creators automatically.</translation>
 <translation id="5095252080770652994">Progress</translation>
 <translation id="6278643716658443228">Rewards settings</translation>
 <translation id="6777169449483742979">You’re earning tokens for viewing this sponsored image.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about sponsored images in Brave Rewards.</translation>
 <translation id="6113004497629356998">Hide sponsored images</translation>
 <translation id="8511604585939286108">By clicking [[title]], you agree to the <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Start video call</translation>
+<translation id="7619826778671319444">Failed to get the gas limit for the transaction</translation>
+<translation id="7631054302129692654">Failed to get the gas estimation for EIP-1559 transaction</translation>
+<translation id="5420730209575475110">not supported</translation>
+<translation id="692381016487372902">Re-type password</translation>
+<translation id="3527905866577245691">Verify password does not match</translation>
+<translation id="6932355307691676490">Connect your</translation>
+<translation id="4513956488935671725">wallet directly to your computer.</translation>
+<translation id="871696868578199698">Decimals of percision</translation>
+<translation id="6637540491667802882">as a custom token</translation>
+<translation id="6082785102488657349">Get Ether from a faucet for</translation>
+<translation id="7065157926159745595">Allow this app to spend your</translation>
+<translation id="4015195974325151180">View the addressess of your</translation>
+<translation id="3587259018193837508">permitted accounts (required)</translation>
+<translation id="8449314044437208543">Import from</translation>
+<translation id="4428111176561355185">Import your</translation>
+<translation id="8929587248006013051">MetaMask accounts into Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with web 3 DApps.</translation>
+<translation id="913613743605881268">If you'd rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser</translation>
+<translation id="5886242758142314994">and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet and change back at any time.</translation>
+<translation id="480319080797177742">connected</translation>
+<translation id="4203566092423620442">disconnected</translation>
+<translation id="1952715382071350669">Hardware wallet requires transaction confirmation.</translation>
+<translation id="6687008710463927359">Account <ph name="VALUE"/></translation>
 </translationbundle>

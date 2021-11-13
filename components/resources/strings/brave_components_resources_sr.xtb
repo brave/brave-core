@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Obrada tokena koje ste zaradili ovog meseca počeće <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">To može da varira zbog nestabilnosti tržišta.</translation>
 <translation id="8334559352278209120">Davanje</translation>
-<translation id="3903419925307046908">Zaradite tokene i vratite zajednici</translation>
-<translation id="244362569344671266">Zaradite tokene gledajući Brave privatne reklame i podržavajte automatski sadržaj kreatora.</translation>
 <translation id="5095252080770652994">Napredak</translation>
 <translation id="6278643716658443228">Postavke nagrada</translation>
 <translation id="6777169449483742979">Zarađujete tokene za gledanje ove slike sponzora.</translation>
@@ -1158,4 +1156,27 @@ ažuriranja.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saznaj više<ph name="LINK_END"/> o sponzorisanim slikama u Brave Nagradama.</translation>
 <translation id="6113004497629356998">Sakrijte sponzorisane slike</translation>
 <translation id="8511604585939286108">Klikom na [[title]], prihvatate <ph name="BEGIN_LINK1"/>Uslove korišćenja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>Politiku privatnosti<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Započni video razgovor</translation>
+<translation id="7619826778671319444">Dobijanje limita gasa za transakciju nije uspelo</translation>
+<translation id="7631054302129692654">Dobijanje procene gasa za EIP-1559 transakciju nije uspelo</translation>
+<translation id="5420730209575475110">nije podržano</translation>
+<translation id="692381016487372902">Ponovo otkucajte lozinku</translation>
+<translation id="3527905866577245691">Lozinka za verifikaciju se ne poklapa</translation>
+<translation id="6932355307691676490">Povežite svoj</translation>
+<translation id="4513956488935671725">novčanik direktno sa kompjuterom.</translation>
+<translation id="871696868578199698">Decimale preciznosti</translation>
+<translation id="6637540491667802882">kao sopstveni token</translation>
+<translation id="6082785102488657349">Preuzmite Ether sa slavine za</translation>
+<translation id="7065157926159745595">Dozvolite ovoj aplikaciji da potroši</translation>
+<translation id="4015195974325151180">Pogledajte adrese vaših</translation>
+<translation id="3587259018193837508">dozvoljenih naloga (obavezno)</translation>
+<translation id="8449314044437208543">Uvezi iz</translation>
+<translation id="4428111176561355185">Uvezite</translation>
+<translation id="8929587248006013051">MetaMask naloge u Brave novčanik. Uživajte u bržem i bezbednijem upravljanju kripto sredstvima i interakciji sa veb 3 decentralizovanim aplikacijama (dapps).</translation>
+<translation id="913613743605881268">Ako želite da preskočite uvoz i zadržite stare kripto novčanike, jednostavno idite u Brave pregledač</translation>
+<translation id="5886242758142314994">i vratite standardno podešavanje na kripto novčanike (Crypto Wallets). Takođe možete uvesti i isprobati nov Brave novčanik i vratiti se na stara podešavanja kad god poželite.</translation>
+<translation id="480319080797177742">povezan</translation>
+<translation id="4203566092423620442">nepovezan</translation>
+<translation id="1952715382071350669">Hardverski novčanik zahteva potvrdu transakcije.</translation>
+<translation id="6687008710463927359">Nalog <ph name="VALUE"/></translation>
 </translationbundle>

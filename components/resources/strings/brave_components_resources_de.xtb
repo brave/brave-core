@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Die Verarbeitung der Token, die Sie diesen Monat verdienen, beginnt am <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Dies kann aufgrund von Marktschwankungen variieren.</translation>
 <translation id="8334559352278209120">Geschenk</translation>
-<translation id="3903419925307046908">Verdienen Sie Tokens und geben Sie zurück</translation>
-<translation id="244362569344671266">Verdienen Sie Token, indem Sie private Werbeanzeigen von Brave ansehen und automatisch Inhaltsersteller unterstützen.</translation>
 <translation id="5095252080770652994">Fortschritt</translation>
 <translation id="6278643716658443228">Einstellungen für Prämien</translation>
 <translation id="6777169449483742979">Sie verdienen Token für das Ansehen dieses gesponserten Bildes.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Erfahren Sie mehr<ph name="LINK_END"/> über gesponserte Bilder in Brave Rewards.</translation>
 <translation id="6113004497629356998">Gesponserte Bilder verbergen</translation>
 <translation id="8511604585939286108">Durch Klicken auf [[title]] akzeptieren Sie die <ph name="BEGIN_LINK1"/>Nutzungsbedingungen<ph name="END_LINK1"/> und <ph name="BEGIN_LINK2"/>Datenschutzerklärung<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Videoanruf starten</translation>
+<translation id="7619826778671319444">Das Gebührenlimit für die Transaktion konnte nicht abgerufen werden</translation>
+<translation id="7631054302129692654">Fehler beim Abrufen der Gebührenschätzung für die EIP-1559-Transaktion</translation>
+<translation id="5420730209575475110">nicht unterstützt</translation>
+<translation id="692381016487372902">Passwort erneut eingeben</translation>
+<translation id="3527905866577245691">Überprüfen Sie, ob das Passwort nicht übereinstimmt</translation>
+<translation id="6932355307691676490">Verbinden Sie Ihre</translation>
+<translation id="4513956488935671725">Wallet direkt mit Ihrem Computer.</translation>
+<translation id="871696868578199698">Dezimalstellen der Präzision</translation>
+<translation id="6637540491667802882">als benutzerdefiniertes Token</translation>
+<translation id="6082785102488657349">Holen Sie sich Ether aus einem Faucet für</translation>
+<translation id="7065157926159745595">Geben Sie dieser App die Erlaubnis zum Ausgeben Ihrer</translation>
+<translation id="4015195974325151180">Adressen ansehen Ihrer</translation>
+<translation id="3587259018193837508">erlaubten Konten (erforderlich)</translation>
+<translation id="8449314044437208543">Import aus</translation>
+<translation id="4428111176561355185">Importieren Sie Ihre</translation>
+<translation id="8929587248006013051">MetaMask-Konten in Brave Wallet. Genießen Sie eine schnellere und sicherere Möglichkeit, Krypto-Assets zu verwalten und mit Web-3-DApps zu interagieren.</translation>
+<translation id="913613743605881268">Wenn Sie den Import lieber überspringen und die alte Krypto-Wallets-Version beibehalten möchten, navigieren Sie einfach zum Brave Browser</translation>
+<translation id="5886242758142314994">und ändern Sie die Standardeinstellung wieder in Krypto-Wallets. Sie können die neue Brave Wallet auch importieren, ausprobieren und jederzeit wieder ändern.</translation>
+<translation id="480319080797177742">verbunden</translation>
+<translation id="4203566092423620442">Verbindung getrennt</translation>
+<translation id="1952715382071350669">Hardware Wallet erfordert Transaktionsbestätigung.</translation>
+<translation id="6687008710463927359">Konto <ph name="VALUE"/></translation>
 </translationbundle>

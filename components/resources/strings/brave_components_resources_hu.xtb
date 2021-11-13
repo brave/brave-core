@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Az ebben a hónapban megszerzett tokenek feldolgozása ekkor fog megkezdődni: <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Ez a piac volatilitásától függően változhat.</translation>
 <translation id="8334559352278209120">Adás</translation>
-<translation id="3903419925307046908">Szerezz tokeneket és adj vissza</translation>
-<translation id="244362569344671266">Szerezzen tokeneket Brave privát hirdetések nézésével, és támogassa automatikusan a tartalomkészítőket.</translation>
 <translation id="5095252080770652994">Előrehaladás</translation>
 <translation id="6278643716658443228">Rewards beállítások</translation>
 <translation id="6777169449483742979">Ennek a szponzorált képnek a megtekintéséért tokeneket kap.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/> a Brave Rewards-on található szponzorált képekről.</translation>
 <translation id="6113004497629356998">Szponzorált képek elrejtése</translation>
 <translation id="8511604585939286108">Ide kattintva elfogadja a <ph name="BEGIN_LINK1"/>Szolgáltatási feltételeket<ph name="END_LINK1"/> és az <ph name="BEGIN_LINK2"/>Adatvédelmi szabályzatot<ph name="END_LINK2"/>: [[title]].</translation>
+<translation id="5850325887346946383">Videóhívás indítása</translation>
+<translation id="7619826778671319444">Nem sikerült lehívni a gas határértékét a tranzakcióhoz</translation>
+<translation id="7631054302129692654">Nem sikerült lehívni a gas becslését az EIP-1559 tranzakcióhoz</translation>
+<translation id="5420730209575475110">nem támogatott</translation>
+<translation id="692381016487372902">Adja meg újra a jelszót</translation>
+<translation id="3527905866577245691">A megerősítő jelszó nem egyezik</translation>
+<translation id="6932355307691676490">Csatlakoztassa</translation>
+<translation id="4513956488935671725">tárcáját közvetlenül a számítógépéhez.</translation>
+<translation id="871696868578199698">A pontosság tizedesjegyei</translation>
+<translation id="6637540491667802882">egyéni tokenként</translation>
+<translation id="6082785102488657349">Szerezzen Ethert pénzcsapból ennyiért:</translation>
+<translation id="7065157926159745595">Engedélyezze az alkalmazást, hogy elköltse ezt:</translation>
+<translation id="4015195974325151180">Tekintse meg az ezekhez tartozó címeket:</translation>
+<translation id="3587259018193837508">engedélyezett számlák (kötelező)</translation>
+<translation id="8449314044437208543">Importálás innen:</translation>
+<translation id="4428111176561355185">Importálja</translation>
+<translation id="8929587248006013051">MetaMask-fiókjait a Brave pénztárcába. Élvezze, hogy gyorsabb és biztonságosabb módon kezelheti a kriptoeszközeit és léphet interakcióba web 3 decentralizált applikációkkal.</translation>
+<translation id="913613743605881268">Ha kihagyná az importálást, és megtartaná a régi kriptotárcáját, lépjen a Brave böngészőbe</translation>
+<translation id="5886242758142314994">és állítsa vissza alapértelmezettre a kriptotárcákat. Importálhat, kipróbálhatja az új Brave pénztárcát, és visszaválthat bármikor.</translation>
+<translation id="480319080797177742">csatlakoztatva</translation>
+<translation id="4203566092423620442">kapcsolata megbontva</translation>
+<translation id="1952715382071350669">A hardveres tárca tranzakciós jóváhagyást igényel.</translation>
+<translation id="6687008710463927359">Számla: <ph name="VALUE"/></translation>
 </translationbundle>

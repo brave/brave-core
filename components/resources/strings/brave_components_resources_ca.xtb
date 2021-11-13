@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Les fitxes que has guanyat aquest mes començaran a processar-se el <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Això pot variar depenent de la volatilitat del mercat.</translation>
 <translation id="8334559352278209120">Entrega</translation>
-<translation id="3903419925307046908">Guanyeu tokens i retorneu-los</translation>
-<translation id="244362569344671266">Guanyeu fitxes mirant anuncis Privats de Brave i doneu suport als creadors de contingut de manera automàtica.</translation>
 <translation id="5095252080770652994">Progrés</translation>
 <translation id="6278643716658443228">Configuració de premis</translation>
 <translation id="6777169449483742979">Guanyes fitxes per veure aquesta imatge patrocinada.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre imatges patrocinades a Recompenses de Brave.</translation>
 <translation id="6113004497629356998">Amaga imatges patrocinades</translation>
 <translation id="8511604585939286108">En fer clic a [[title]], acceptes les <ph name="BEGIN_LINK1"/>Condicions del servei<ph name="END_LINK1"/> i la <ph name="BEGIN_LINK2"/>Política de privacitat<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Comença la videotrucada</translation>
+<translation id="7619826778671319444">No ha estat possible obtenir el límit de gas per a la transacció</translation>
+<translation id="7631054302129692654">No ha estat possible obtenir l'estimació de gas per a la transacció EIP-1559</translation>
+<translation id="5420730209575475110">no compatible</translation>
+<translation id="692381016487372902">Torneu a introduir la contrasenya</translation>
+<translation id="3527905866577245691">La contrasenya de verificació no coincideix</translation>
+<translation id="6932355307691676490">Connecteu la vostra</translation>
+<translation id="4513956488935671725">cartera directament al vostre ordinador.</translation>
+<translation id="871696868578199698">Decimals de precisió</translation>
+<translation id="6637540491667802882">com a criptovalor personalitzat</translation>
+<translation id="6082785102488657349">Obteniu Ether des d'un faucet per</translation>
+<translation id="7065157926159745595">Permeteu que aquesta aplicació gasti les vostres</translation>
+<translation id="4015195974325151180">Vegeu les adreces dels vostres</translation>
+<translation id="3587259018193837508">comptes permesos (obligatori)</translation>
+<translation id="8449314044437208543">Importeu des de</translation>
+<translation id="4428111176561355185">Importeu les vostres</translation>
+<translation id="8929587248006013051">comptes de MetaMask a la cartera de Brave. Gaudiu d'una manera més ràpida i segura de gestionar actius en criptomoneda i interactueu amb aplicacions descentralitzades de Web3.</translation>
+<translation id="913613743605881268">En cas que preferiu ometre la importació i mantenir l’experiència de carteres de criptomoneda anterior, aneu al navegador de Brave</translation>
+<translation id="5886242758142314994">i canvieu el valor predeterminat a Carteres de criptomoneda. També podeu importar, provar la nova cartera de Brave i canviar-la en qualsevol moment.</translation>
+<translation id="480319080797177742">connectat</translation>
+<translation id="4203566092423620442">desconnectat</translation>
+<translation id="1952715382071350669">La cartera de maquinari requereix confirmació de la transacció.</translation>
+<translation id="6687008710463927359">Nom del <ph name="VALUE"/></translation>
 </translationbundle>

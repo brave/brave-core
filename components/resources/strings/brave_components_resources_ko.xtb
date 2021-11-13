@@ -791,8 +791,6 @@
 <translation id="3273637494083639780">이번 달 적립된 토큰은 <ph name="DATE"/>에 처리 시작됩니다.</translation>
 <translation id="1029300693989825319">시장 변동성에 따라 달라질 수 있습니다.</translation>
 <translation id="8334559352278209120">주기</translation>
-<translation id="3903419925307046908">토큰을 획득하고 돌려주기</translation>
-<translation id="244362569344671266">Brave Private Ads를 보고 토큰을 얻고 콘텐츠 크리에이터를 자동으로 지원하세요.</translation>
 <translation id="5095252080770652994">진행</translation>
 <translation id="6278643716658443228">리워드 설정</translation>
 <translation id="6777169449483742979">이 스폰서 이미지를 보며 토큰이 적립되고 있습니다.</translation>
@@ -1156,4 +1154,27 @@
 <translation id="1749232564087138444">Brave 상금의 스폰서 이미지에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
 <translation id="6113004497629356998">스폰서 이미지 숨기기</translation>
 <translation id="8511604585939286108">[[title]]를 클릭하면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
+<translation id="5850325887346946383">화상 통화 시작</translation>
+<translation id="7619826778671319444">트랜잭션에 대한 가스 한도 가져오기 실패</translation>
+<translation id="7631054302129692654">EIP-1559 트랜잭션에 대한 가스 환전 예상액 가져오기 실패</translation>
+<translation id="5420730209575475110">지원되지 않음</translation>
+<translation id="692381016487372902">비밀번호 다시 입력</translation>
+<translation id="3527905866577245691">검증 비밀번호가 일치하지 않음</translation>
+<translation id="6932355307691676490">연결 -</translation>
+<translation id="4513956488935671725">월렛을 컴퓨터에 직접 연결합니다.</translation>
+<translation id="871696868578199698">소수 자릿수</translation>
+<translation id="6637540491667802882">사용자 정의 토큰 역할</translation>
+<translation id="6082785102488657349">파우싯에서 이더 얻기</translation>
+<translation id="7065157926159745595">이 앱이 다음을 지출할 수 있도록 허용</translation>
+<translation id="4015195974325151180">권한이 있는 계정</translation>
+<translation id="3587259018193837508">주소 보기(필수)</translation>
+<translation id="8449314044437208543">다음에서 가져오기</translation>
+<translation id="4428111176561355185">가지고 있는</translation>
+<translation id="8929587248006013051">MetaMask 계정을 Brave 월렛 속으로 가져오세요. 더욱 빠르고 안전하게 암호화폐 자산을 관리하고 web 3 DApps를 이용하세요.</translation>
+<translation id="913613743605881268">가져오기를 건너뛰고 기존 암호화폐 월렛 경험을 유지하려면 Brave 브라우저로 이동하고</translation>
+<translation id="5886242758142314994">기본값 암호화폐 월렛으로 변경하세요. 언제든지 가져와 새 Brave 월렛을 이용해보거나 되돌릴 수 있습니다.</translation>
+<translation id="480319080797177742">연결됨</translation>
+<translation id="4203566092423620442">연결 해제됨</translation>
+<translation id="1952715382071350669">하드웨어 월렛에는 트랜잭션 확인이 필요합니다.</translation>
+<translation id="6687008710463927359">계정 <ph name="VALUE"/></translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Obrada tokena koje zaradite ovaj mjesec započinje <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">To se može mijenjati ovisno o stanju tržišta.</translation>
 <translation id="8334559352278209120">Davanje</translation>
-<translation id="3903419925307046908">Zaradite tokene i odužite se</translation>
-<translation id="244362569344671266">Zaradite tokene pregledavanjem privatnih oglasa preglednika Brave i automatski dajte podršku autorima sadržaja.</translation>
 <translation id="5095252080770652994">Napredak</translation>
 <translation id="6278643716658443228">Postavke nagrada</translation>
 <translation id="6777169449483742979">Zarađujete tokene pregledavanjem ove sponzorirane slike.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/>o sponzoriranim slikama u značajki Brave Rewards.</translation>
 <translation id="6113004497629356998">Sakrij sponzorirane slike</translation>
 <translation id="8511604585939286108">Klikom na [[title]] pristajete na <ph name="BEGIN_LINK1"/>uvjete pružanja usluge<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>pravilnik o privatnosti<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Pokreni videopoziv</translation>
+<translation id="7619826778671319444">Neuspješno dohvaćanje najveće naknade za transakciju</translation>
+<translation id="7631054302129692654">Neuspješno dohvaćanje procjene naknade za transakciju EIP-1559</translation>
+<translation id="5420730209575475110">nije podržano</translation>
+<translation id="692381016487372902">Ponovno upiši lozinku</translation>
+<translation id="3527905866577245691">Nepodudaranje upisa u polje Provjeri lozinku</translation>
+<translation id="6932355307691676490">Poveži svoj novčanik</translation>
+<translation id="4513956488935671725">novčanik izravno na svoje računalo.</translation>
+<translation id="871696868578199698">Precizni decimalni brojevi</translation>
+<translation id="6637540491667802882">kao prilagođeni token</translation>
+<translation id="6082785102488657349">Dohvati Ether iz svežnja za</translation>
+<translation id="7065157926159745595">Dopusti aplikaciji trošenje</translation>
+<translation id="4015195974325151180">Prikaži adrese</translation>
+<translation id="3587259018193837508">dopuštenih računa (obvezno)</translation>
+<translation id="8449314044437208543">Uvezi iz</translation>
+<translation id="4428111176561355185">Uvezi</translation>
+<translation id="8929587248006013051">račune MetaMask u novčanik preglednika Brave. Uživajte u bržem i sigurnijem načinu upravljanja kriptoimovinom i upotrijebite 3 mrežne decentralizirane aplikacije.</translation>
+<translation id="913613743605881268">Ako želite preskočiti uvoz i zadržati staro iskustvo novčanika za kriptovalute, idite do preglednika Brave</translation>
+<translation id="5886242758142314994">i promijenite zadano natrag na novčanike za kriptovalute. Možete također uvesti, isprobati novi novčanik preglednika Brave i vratiti natrag u bilo kojem trenutku.</translation>
+<translation id="480319080797177742">povezan</translation>
+<translation id="4203566092423620442">odspojen</translation>
+<translation id="1952715382071350669">Za hardverski novčanik treba potvrda transakcije.</translation>
+<translation id="6687008710463927359">Račun <ph name="VALUE"/></translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Tokeny, ktoré tento mesiac získate, sa začnú spracúvať <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Môže sa to líšiť v závislosti od trhovej volatility.</translation>
 <translation id="8334559352278209120">Dáva</translation>
-<translation id="3903419925307046908">Zarobte žetóny a vráťte ich späť</translation>
-<translation id="244362569344671266">Zarábajte žetóny zobrazením súkromných reklám Brave a automaticky podporujte tvorcov obsahu.</translation>
 <translation id="5095252080770652994">Postup</translation>
 <translation id="6278643716658443228">Nastavenia odmien</translation>
 <translation id="6777169449483742979">Získavate tokeny za zobrazenie tohto sponzorovaného obrázka.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Zistite viac<ph name="LINK_END"/>o sponzorovaných obrázkoch v Odmenách Brave.</translation>
 <translation id="6113004497629356998">Skryť sponzorované obrázky</translation>
 <translation id="8511604585939286108">Kliknutím na [[title]] vyjadrujete súhlas s <ph name="BEGIN_LINK1"/>Podmienkami poskytovaných služieb<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Pravidlami ochrany súkromia<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Začať videohovor</translation>
+<translation id="7619826778671319444">Limit paliva pre transakciu sa neporadilo získať</translation>
+<translation id="7631054302129692654">Odhad paliva pre transakciu EIP-1559 sa nepodarilo získať</translation>
+<translation id="5420730209575475110">nepodporuje sa</translation>
+<translation id="692381016487372902">Znova zadajte heslo</translation>
+<translation id="3527905866577245691">Overenie hesla sa nezhoduje</translation>
+<translation id="6932355307691676490">Pripojte svoj</translation>
+<translation id="4513956488935671725">peňaženku priamo k počítaču.</translation>
+<translation id="871696868578199698">Počet desatinných miest presnosti</translation>
+<translation id="6637540491667802882">ako vlastný token</translation>
+<translation id="6082785102488657349">Získajte Ether z faucetu za</translation>
+<translation id="7065157926159745595">Povoliť tejto aplikácii míňať vaše</translation>
+<translation id="4015195974325151180">Zobraziť adresy</translation>
+<translation id="3587259018193837508">povolené účty (vyžaduje sa)</translation>
+<translation id="8449314044437208543">Importovať z</translation>
+<translation id="4428111176561355185">Importujte svoje</translation>
+<translation id="8929587248006013051">účty MetaMask do peňaženky Brave. Užívajte si rýchlejší a bezpečnejší spôsob spravovania kryptoaktív a interagujte s webovými aplikáciami 3 DApps.</translation>
+<translation id="913613743605881268">Ak chcete importovanie radšej preskočiť a ponechať si starú verziu kryptopeňaženiek, stačí prejsť do prehliadača Brave</translation>
+<translation id="5886242758142314994">a zmeňte predvolené nastavenie späť na kryptopeňaženky. Tiež môžete importovať, vyskúšať novú peňaženku Brave a vrátiť sa späť kedykoľvek.</translation>
+<translation id="480319080797177742">pripojené</translation>
+<translation id="4203566092423620442">odpojené</translation>
+<translation id="1952715382071350669">Peňaženka hardvéru vyžaduje potvrdenie transakcie.</translation>
+<translation id="6687008710463927359">Názov <ph name="VALUE"/></translation>
 </translationbundle>

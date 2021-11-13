@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">এই মাসে আপনি যে টোকেনগুলি উপার্জন করেছেন তার প্রক্রিয়াকরণ <ph name="DATE"/> শুরু হবে।</translation>
 <translation id="1029300693989825319">এটি বাজারের অস্থিরতার উপর ভিত্তি করে ভিন্ন হতে পারে।</translation>
 <translation id="8334559352278209120">দিচ্ছেন</translation>
-<translation id="3903419925307046908">টোকেন উপার্জন করুন এবং ফেরত দিন</translation>
-<translation id="244362569344671266">Brave Private Ads দেখে টোকেন উপার্জন করুন এবং স্বয়ংক্রিয়ভাবে সামগ্রী নির্মাতাদের সমর্থন করুন।</translation>
 <translation id="5095252080770652994">প্রগতি</translation>
 <translation id="6278643716658443228">পুরষ্কার সেটিংস</translation>
 <translation id="6777169449483742979">আপনি এই প্রযোজিত ছবিটি দেখার জন্য টোকেন উপার্জন করছেন।</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444">Brave Rewards এ স্পন্সর করা ছবিগুলি সম্পর্কে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/>।</translation>
 <translation id="6113004497629356998">স্পন্সর করা ছবিগুলি লুকান</translation>
 <translation id="8511604585939286108">[[title]] এ ক্লিক করে, আপনি <ph name="BEGIN_LINK1"/>পরিষেবার শর্তাবলী<ph name="END_LINK1"/> এবং <ph name="BEGIN_LINK2"/>গোপনীয়তা নীতি<ph name="END_LINK2"/>তে সম্মত হচ্ছেন।</translation>
+<translation id="5850325887346946383">ভিডিও কল শুরু করুন</translation>
+<translation id="7619826778671319444">লেনদেনের জন্য গ্যাসের সীমা পেতে ব্যর্থ হয়েছে</translation>
+<translation id="7631054302129692654">EIP-1559 লেনদেনের জন্য গ্যাসের অনুমান পেতে ব্যর্থ হয়েছে</translation>
+<translation id="5420730209575475110">সমর্থিত নয়</translation>
+<translation id="692381016487372902">পাসওয়ার্ড পুনরায় টাইপ করুন</translation>
+<translation id="3527905866577245691">পাসওয়ার্ড যাচাই মিলছে না</translation>
+<translation id="6932355307691676490">আপনার সংযোগ করুন</translation>
+<translation id="4513956488935671725">আপনার কম্পিউটারে সরাসরি ওয়ালেট।</translation>
+<translation id="871696868578199698">নির্ভুলতার দশমিক</translation>
+<translation id="6637540491667802882">একটি কাস্টম টোকেন হিসাবে</translation>
+<translation id="6082785102488657349">একটি ফসেট থেকে এর জন্য ইথার পান</translation>
+<translation id="7065157926159745595">এই অ্যাপটিকে আপনার খরচ করার অনুমতি দিন</translation>
+<translation id="4015195974325151180">আপনার এর ঠিকানা দেখুন</translation>
+<translation id="3587259018193837508">অনুমোদিত অ্যাকাউন্ট (প্রয়োজন)</translation>
+<translation id="8449314044437208543">এটি থেকে আমদানি করুন</translation>
+<translation id="4428111176561355185">আপনার আমদানি করুন</translation>
+<translation id="8929587248006013051">Brave ওয়ালেটে MetaMask অ্যাকাউন্টসমূহ। ক্রিপ্টো অ্যাসেটগুলো পরিচালনা করতে আরও দ্রুত এবং আরও সুরক্ষিত উপায় উপভোগ করুন এবং ওয়েব 3D অ্যাপগুলো দিয়ে ইন্ট্যারাক্ট করুন।</translation>
+<translation id="913613743605881268">আপনি যদি আমদানি এড়িয়ে যান এবং পুরানো ক্রিপ্টো ওয়ালেট এক্সপিরিয়েন্স রাখেন, তবে শুধু Brave ব্রাউজারে নেভিগেট করুন</translation>
+<translation id="5886242758142314994">এবং ডিফল্টটি ক্রিপ্টো ওয়ালেটে ফিরিয়ে আনতে পরিবর্তন করুন। আপনিও আমদানি করতে পারেন, নতুন Brave ওয়ালেটটি চেষ্টা করে দেখুন এবং যে কোনও সময়ে ফেরাতে পরিবর্তন করুন।</translation>
+<translation id="480319080797177742">সংযুক্ত</translation>
+<translation id="4203566092423620442">সংযোগ বিচ্ছিন্ন</translation>
+<translation id="1952715382071350669">হার্ডওয়্যার ওয়ালেটের লেনদেন নিশ্চিতকরণ প্রয়োজন।</translation>
+<translation id="6687008710463927359">অ্যাকাউন্ট <ph name="VALUE"/></translation>
 </translationbundle>

@@ -794,8 +794,6 @@
 <translation id="3273637494083639780">आप इस महीने जो टोकन कमाते हैं, उनकी प्रोसेसिंग <ph name="DATE"/> से शुरू होगी.</translation>
 <translation id="1029300693989825319">बाज़ार के उतार-चढ़ाव के मुताबिक अलग हो सकता है.</translation>
 <translation id="8334559352278209120">दान</translation>
-<translation id="3903419925307046908">टोकन अर्जित करें और लौटाएँ</translation>
-<translation id="244362569344671266">ब्रेव निजी विज्ञापनों को देखकर टोकन कमाएँ और स्वचालित रूप से कंटेंट रचनाकारों को सपोर्ट करें।</translation>
 <translation id="5095252080770652994">प्रगति</translation>
 <translation id="6278643716658443228">रिवॉर्ड से जुड़ी सेटिंग</translation>
 <translation id="6777169449483742979">इस प्रायोजित तस्वीर को देखने के लिए आप टोकन कमा रहे हैं.</translation>
@@ -1158,4 +1156,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स में<ph name="LINK_END"/> स्पांसर्ड इमेजों के बारे में अधिक जानें।</translation>
 <translation id="6113004497629356998">स्पांसर्ड इमेजों को छिपाएँ</translation>
 <translation id="8511604585939286108">{{title}} पर क्लिक करके, आप <ph name="BEGIN_LINK1"/>सेवा की शर्तें<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>गोपनीयता नीति<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">वीडियो कॉल शुरू करें</translation>
+<translation id="7619826778671319444">ट्रांज़ैक्शन की गैस की सीमा नहीं मिल पाई</translation>
+<translation id="7631054302129692654">EIP-1559 लेनदेन के लिए गैस अनुमान नहीं हो पाया</translation>
+<translation id="5420730209575475110">सपोर्टेड नहीं है</translation>
+<translation id="692381016487372902">दोबारा पासवर्ड टाइप करें</translation>
+<translation id="3527905866577245691">वेरीफ़ाई किया गया पासवर्ड मेल नहीं खाता</translation>
+<translation id="6932355307691676490">अपना कनेक्ट करें</translation>
+<translation id="4513956488935671725">सीधे आपके कंप्यूटर पर वॉलेट.</translation>
+<translation id="871696868578199698">डेसीमल ऑफ़ प्रिसिशन</translation>
+<translation id="6637540491667802882">कस्टम टोकन की तरह</translation>
+<translation id="6082785102488657349">में फ़ॉसेट से Ether प्राप्त करें</translation>
+<translation id="7065157926159745595">इस ऐप को खर्च करने दें आपका</translation>
+<translation id="4015195974325151180">अपने पते देखें</translation>
+<translation id="3587259018193837508">परमिटेड अकाउंट (आवश्यक)</translation>
+<translation id="8449314044437208543">से इम्पोर्ट करें</translation>
+<translation id="4428111176561355185">इम्पोर्ट करें अपना</translation>
+<translation id="8929587248006013051">MetaMask Brave Wallet में अकाउंट है. क्रिप्टो संपत्तियों को मैनेज करने और वेब 3 DApps के साथ बातचीत करने के लिए एक तेज़ और अधिक सुरक्षित तरीके का आनंद लें.</translation>
+<translation id="913613743605881268">अगर आप इम्पोर्ट करना छोड़ना चाहते हैं और पुराने क्रिप्टो वॉलेट अनुभव को बनाए रखना चाहते हैं, तो बस Brave ब्राउज़र पर नेविगेट करें</translation>
+<translation id="5886242758142314994">और डिफ़ॉल्ट को वापस क्रिप्टो वॉलेट में बदलें. आप आयात भी कर सकते हैं, नया ब्रेव वॉलेट आज़मा सकते हैं, और किसी भी समय वापस बदल सकते हैं.</translation>
+<translation id="480319080797177742">कनेक्टेड</translation>
+<translation id="4203566092423620442">डिसकनेक्ट हो गया है</translation>
+<translation id="1952715382071350669">Hardware wallet को लेनदेन की पुष्टि की आवश्यकता होती है.</translation>
+<translation id="6687008710463927359">अकाउंट <ph name="VALUE"/></translation>
 </translationbundle>

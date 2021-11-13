@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Token yang anda dapat bulan ini akan mula diproses pada <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Ini mungkin akan berbeza berdasarkan ketaktentuan pasaran.</translation>
 <translation id="8334559352278209120">Memberi</translation>
-<translation id="3903419925307046908">Peroleh token dan berikan balik</translation>
-<translation id="244362569344671266">Dapatkan token dengan melihat Iklan Peribadi Brave dan sokong pencipta kandungan secara automatik.</translation>
 <translation id="5095252080770652994">Kemajuan</translation>
 <translation id="6278643716658443228">Tetapan ganjaran</translation>
 <translation id="6777169449483742979">Anda’ mendapat token kerana melihat imej tajaan ini.</translation>
@@ -1158,4 +1156,27 @@ Anda juga boleh memilih untuk <ph name="LINK_BEGIN"/>hide sponsored images<ph na
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Ketahui Lebih Lanjut<ph name="LINK_END"/> mengenai imej tajaan di Brave Rewards.</translation>
 <translation id="6113004497629356998">Sembunyikan imej tajaan</translation>
 <translation id="8511604585939286108">Dengan mengklik [[title]], anda bersetuju dengan <ph name="BEGIN_LINK1"/>Terma Perkhidmatan<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>Polisi Privasi<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Mulakan panggilan video</translation>
+<translation id="7619826778671319444">Gagal mendapatkan had gas untuk transaksi</translation>
+<translation id="7631054302129692654">Gagal mendapatkan anggaran transaksi EIP-1559 gas</translation>
+<translation id="5420730209575475110">tidak disokong</translation>
+<translation id="692381016487372902">Taipkan Semula Kata Laluan</translation>
+<translation id="3527905866577245691">Kata laluan tidak sepadan</translation>
+<translation id="6932355307691676490">Sambungkan kepada</translation>
+<translation id="4513956488935671725">dompet secara terus pada komputer anda.</translation>
+<translation id="871696868578199698">Titik perpuluhan tepat</translation>
+<translation id="6637540491667802882">sebagai token tersuai</translation>
+<translation id="6082785102488657349">Dapatkan Ether dari faucet untuk</translation>
+<translation id="7065157926159745595">Benarkan aplikasi ini untuk membelanjakan ... anda</translation>
+<translation id="4015195974325151180">Lihat alamat ... anda</translation>
+<translation id="3587259018193837508">akaun dibenarkan (diperlukan)</translation>
+<translation id="8449314044437208543">Import daripada</translation>
+<translation id="4428111176561355185">Import</translation>
+<translation id="8929587248006013051">akaun MetaMask ke Dompet Brave. Nikmati cara yang lebih pantas dan selamat untuk menguruskan aset kripto dan berinteraksi melalui web 3 DApps.</translation>
+<translation id="913613743605881268">Sekiranya anda mahu melangkau import dan mengekalkan pengalaman Crypto Wallets yang terdahulu, hanya perlu navigasi ke Brave Browser</translation>
+<translation id="5886242758142314994">dan tukar kepada Dompet Crypto lalai kembali. Anda juga boleh mengimport, cuba Dompet Brave baharu, dan tukar kembali pada bila-bila masa.</translation>
+<translation id="480319080797177742">disambungkan</translation>
+<translation id="4203566092423620442">dinyahsambung</translation>
+<translation id="1952715382071350669">Dompet perkakasan memerlukan pengesahan transaksi.</translation>
+<translation id="6687008710463927359">Akaun <ph name="VALUE"/></translation>
 </translationbundle>

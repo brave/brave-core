@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Per šį mėnesį gauti žetonai bus pradėti apdoroti <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Tai gali kisti dėl rinkos nepastovumo.</translation>
 <translation id="8334559352278209120">Dalijimasis</translation>
-<translation id="3903419925307046908">Gaukite žetonų ir pasidalykite jais</translation>
-<translation id="244362569344671266">Gaukite žetonų žiūrėdami privatumo nepažeidžiančias „Brave“ reklamas ir automatiškai paremkite turinio kūrėjus.</translation>
 <translation id="5095252080770652994">Progresas</translation>
 <translation id="6278643716658443228">„Rewards“ nuostatos</translation>
 <translation id="6777169449483742979">Už šio vaizdo peržiūrą uždirbate žetonų.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/> apie per „Brave Rewards“ remiamus vaizdus.</translation>
 <translation id="6113004497629356998">Slėpti remiamus vaizdus</translation>
 <translation id="8511604585939286108">Spustelėdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Pradėti vaizdo skambutį</translation>
+<translation id="7619826778671319444">Gauti operacijos dujų limito nepavyko</translation>
+<translation id="7631054302129692654">Gauti operacijos EIP-1559 numatomo dujų kiekio nepavyko</translation>
+<translation id="5420730209575475110">nepalaikoma</translation>
+<translation id="692381016487372902">Įveskite slaptažodį iš naujo</translation>
+<translation id="3527905866577245691">Patvirtinimo slaptažodis nesutampa</translation>
+<translation id="6932355307691676490">Prijunkite</translation>
+<translation id="4513956488935671725">piniginę tiesiai prie savo kompiuterio.</translation>
+<translation id="871696868578199698">Skaičiai po kablelio</translation>
+<translation id="6637540491667802882">kaip pasirinktinį žetoną</translation>
+<translation id="6082785102488657349">Gaukite eterių iš čiaupo</translation>
+<translation id="7065157926159745595">Leisti šiai programai leisti jūsų</translation>
+<translation id="4015195974325151180">Peržiūrėkite adresus, skirtus</translation>
+<translation id="3587259018193837508">leidžiamoms sąskaitoms (privaloma)</translation>
+<translation id="8449314044437208543">Importuoti iš</translation>
+<translation id="4428111176561355185">Importuokite</translation>
+<translation id="8929587248006013051">„MetaMask“ sąskaitas į „Brave“ piniginę. Tvarkykite kriptoaktyvus sparčiau ir saugiau bei sąveikaukite naudodami „Web3 DApps“.</translation>
+<translation id="913613743605881268">Jei importavimo veiksmą pageidaujate praleisti ir toliau naudoti senąsias kriptovaliutų pinigines, tiesiog eikite į „Brave“ naršyklę</translation>
+<translation id="5886242758142314994">ir numatytąjį nustatymą vėl pakeiskite į kriptovaliutų pinigines. Taip pat galite bet kada importuoti, išbandyti naująją „Brave“ piniginę ir vėl nustatyti ankstesnius nustatymus.</translation>
+<translation id="480319080797177742">prijungta</translation>
+<translation id="4203566092423620442">atjungta</translation>
+<translation id="1952715382071350669">Aparatinės įrangos slaptažodinėje reikia pateikti operacijos patvirtinimą.</translation>
+<translation id="6687008710463927359">Sąskaita <ph name="VALUE"/></translation>
 </translationbundle>

@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Tokeni unazopata mwezi huu zitaanza kuchakatwa mnamo <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Hii inaweza kutofautiana kulingana na ubadilikaji wa soko.</translation>
 <translation id="8334559352278209120">Kutoa</translation>
-<translation id="3903419925307046908">Pata tokeni na utoe shukrani</translation>
-<translation id="244362569344671266">Pata tokeni kwa kutazama Matangazo ya Faragha ya Brave na uwafadhili waundaji wako wa maudhui kiotomatiki.</translation>
 <translation id="5095252080770652994">Maendeleo</translation>
 <translation id="6278643716658443228">Mipangilio ya Rewards</translation>
 <translation id="6777169449483742979">Unapata tokeni kwa kutazama picha hii inayodhaminiwa.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Pata maelezo zaidi<ph name="LINK_END"/> kuhusu picha zinazodhaminiwa katika Brave Rewards.</translation>
 <translation id="6113004497629356998">Ficha picha zinazodhaminiwa</translation>
 <translation id="8511604585939286108">Kwa kubofya [[title]], unakubali <ph name="BEGIN_LINK1"/>Sheria na Masharti<ph name="END_LINK1"/> na <ph name="BEGIN_LINK2"/>Sera ya Faragha<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Anzisha simu ya video</translation>
+<translation id="7619826778671319444">Imeshindwa kupata kikomo cha gesi ya muamala</translation>
+<translation id="7631054302129692654">Imeshindwa kupata kadirio la gesi ya muamala wa EIP-1559</translation>
+<translation id="5420730209575475110">haitumiki</translation>
+<translation id="692381016487372902">Andika Tena Nenosiri</translation>
+<translation id="3527905866577245691">Thibitisha kuwa nenosiri halilingani</translation>
+<translation id="6932355307691676490">Unganisha pochi</translation>
+<translation id="4513956488935671725">yako moja kwa moja kwenye kompyuta yako.</translation>
+<translation id="871696868578199698">Desimali za tarakimu</translation>
+<translation id="6637540491667802882">kama tokeni maalum</translation>
+<translation id="6082785102488657349">Pata Ether kutoka kwenye mfereji wa</translation>
+<translation id="7065157926159745595">Ruhusu programu hii itume</translation>
+<translation id="4015195974325151180">Tazama anwani za akaunti</translation>
+<translation id="3587259018193837508">zako zilizoruhusiwa (inahitajika)</translation>
+<translation id="8449314044437208543">Leta kutoka</translation>
+<translation id="4428111176561355185">Leta</translation>
+<translation id="8929587248006013051">akaunti zako za MetaMask ndani ya Brave Wallet. Furahia njia ya haraka na salama sana kudhibiti rasilimali za crypto na utumie web 3 DApps.</translation>
+<translation id="913613743605881268">Ikiwa ni heri uruke kuleta na kuendelea kutumia hali ya zamani ya Crypto Wallet, nenda tu kwenye Brave Browser</translation>
+<translation id="5886242758142314994">na ubadilishe chaguomsingi kurudi kwenye Crypto Wallets. Pia unaweza kuleta, jaribu Brave Wallet mpya na ubadilishe kurudi wakati wowote.</translation>
+<translation id="480319080797177742">imeunganishwa</translation>
+<translation id="4203566092423620442">imetenganishwa</translation>
+<translation id="1952715382071350669">Pochi ya maunzi inahitaji thibitisho la muamala.</translation>
+<translation id="6687008710463927359">Akaunti <ph name="VALUE"/></translation>
 </translationbundle>

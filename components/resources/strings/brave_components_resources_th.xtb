@@ -794,8 +794,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3273637494083639780">โทเค็นที่คุณได้รับในเดือนนี้จะเริ่มดำเนินการในวันที่ <ph name="DATE"/></translation>
 <translation id="1029300693989825319">นี่อาจแตกต่างกันไปตามความผันผวนของตลาด</translation>
 <translation id="8334559352278209120">การให้</translation>
-<translation id="3903419925307046908">รับโทเค็นเพื่อนำไปตอบแทน</translation>
-<translation id="244362569344671266">รับโทเค็นผ่านการดูโฆษณาส่วนตัวของ Brave เพื่อนำไปสนับสนุนผู้สร้างเนื้อหาโดยอัตโนมัติ</translation>
 <translation id="5095252080770652994">ความคืบหน้า</translation>
 <translation id="6278643716658443228">การตั้งค่า Rewards</translation>
 <translation id="6777169449483742979">คุณได้รับโทเค็นจากการดูภาพที่ได้รับการสนับสนุนภาพนี้</translation>
@@ -1158,4 +1156,27 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>เรียนรู้เพิ่มเติม<ph name="LINK_END"/> เกี่ยวกับรูปที่ได้รับการสนับสนุนใน Brave Rewards</translation>
 <translation id="6113004497629356998">ซ่อนรูปที่ได้รับการสนับสนุน</translation>
 <translation id="8511604585939286108">เมื่อคลิก [[title]] คุณได้ยอมรับ <ph name="BEGIN_LINK1"/>เงื่อนไขการให้บริการ<ph name="END_LINK1"/> และ <ph name="BEGIN_LINK2"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK2"/></translation>
+<translation id="5850325887346946383">เริ่มวิดีโอคอล</translation>
+<translation id="7619826778671319444">เรียกข้อมูลวงเงินค่าแก๊สสำหรับธุรกรรมไม่สำเร็จ</translation>
+<translation id="7631054302129692654">เรียกข้อมูลประมาณการค่าแก๊สสำหรับธุรกรรม EIP-1559 ไม่สำเร็จ</translation>
+<translation id="5420730209575475110">ไม่รองรับ</translation>
+<translation id="692381016487372902">พิมพ์รหัสผ่านอีกครั้ง</translation>
+<translation id="3527905866577245691">รหัสผ่านที่ยืนยันไม่ตรงกัน</translation>
+<translation id="6932355307691676490">เชื่อมต่อวอลเล็ต</translation>
+<translation id="4513956488935671725">ของคุณกับคอมพิวเตอร์ของคุณโดยตรง</translation>
+<translation id="871696868578199698">จำนวนหลักทศนิยมเลขฐาน</translation>
+<translation id="6637540491667802882">เป็นโทเค็นที่กำหนดเอง</translation>
+<translation id="6082785102488657349">รับ Ether จาก Faucet สำหรับ</translation>
+<translation id="7065157926159745595">อนุญาตให้แอปนี้ใช้จ่ายสินทรัพย์ต่อไปนี้ของคุณ:</translation>
+<translation id="4015195974325151180">ดูแอดเดรสของบัญชี</translation>
+<translation id="3587259018193837508">ที่คุณอนุญาต (จำเป็น)</translation>
+<translation id="8449314044437208543">นำเข้าจาก</translation>
+<translation id="4428111176561355185">นำเข้า</translation>
+<translation id="8929587248006013051">บัญชี MetaMask ของคุณไปยัง Brave วอลเล็ต แล้วเพลิดเพลินไปกับวิธีที่เร็วขึ้นและปลอดภัยยิ่งขึ้นในการจัดการสินทรัพย์คริปโตและโต้ตอบกับ web3 DApps</translation>
+<translation id="913613743605881268">หากคุณต้องการข้ามการนำเข้าและเก็บประสบการณ์การใช้งานคริปโตวอลเล็ตเดิมของคุณไว้ ก็เพียงแค่ไปที่ เบราว์เซอร์ Brave</translation>
+<translation id="5886242758142314994">แล้วเปลี่ยนค่าเริ่มต้นกลับไปที่คริปโตวอลเล็ต นอกจากนี้คุณยังสามารถนำเข้า ลองใช้งาน Brave วอลเล็ตใหม่ และเปลี่ยนกลับมาได้ทุกเมื่อ</translation>
+<translation id="480319080797177742">เชื่อมต่อแล้ว</translation>
+<translation id="4203566092423620442">ยกเลิกการเชื่อมต่อแล้ว</translation>
+<translation id="1952715382071350669">ฮาร์ดแวร์วอลเล็ตต้องการให้ยืนยันการทำธุรกรรม</translation>
+<translation id="6687008710463927359">บัญชี <ph name="VALUE"/></translation>
 </translationbundle>

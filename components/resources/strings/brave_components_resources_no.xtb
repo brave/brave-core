@@ -761,8 +761,6 @@
 <translation id="3273637494083639780">Tokenene du tjener denne måneden vil begynne å behandles <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Dette kan variere basert på markedsvolatilitet.</translation>
 <translation id="8334559352278209120">Gir</translation>
-<translation id="3903419925307046908">Tjen polletter og gi tilbake</translation>
-<translation id="244362569344671266">Tjen tokener ved å se på private Brave-annonser og støtt innholdsprodusenter automatisk.</translation>
 <translation id="5095252080770652994">Fremgang</translation>
 <translation id="6278643716658443228">Rewards-innstillinger</translation>
 <translation id="6777169449483742979">Du tjener tokener for å se dette sponsede bildet.</translation>
@@ -1125,4 +1123,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mer informasjon<ph name="LINK_END"/> om sponsede bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponsede bilder</translation>
 <translation id="8511604585939286108">Ved å klikke på [[title]], samtykker du til <ph name="BEGIN_LINK1"/>bruksvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>retningslinjene for personvern<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Start videosamtale</translation>
+<translation id="7619826778671319444">Kunne ikke hente «gas»-grensen for transaksjonen</translation>
+<translation id="7631054302129692654">Kunne ikke hente «gas»-beregningen for EIP-1559-transaksjonen</translation>
+<translation id="5420730209575475110">støttes ikke</translation>
+<translation id="692381016487372902">Skriv inn passord på nytt</translation>
+<translation id="3527905866577245691">Passordene samsvarer ikke</translation>
+<translation id="6932355307691676490">Koble til</translation>
+<translation id="4513956488935671725">lommeboken direkte til datamaskinen din.</translation>
+<translation id="871696868578199698">Desimaler</translation>
+<translation id="6637540491667802882">som egendefinert token</translation>
+<translation id="6082785102488657349">Få Ether fra en faucet for</translation>
+<translation id="7065157926159745595">Tillat at denne appen bruker</translation>
+<translation id="4015195974325151180">Vis adressene til</translation>
+<translation id="3587259018193837508">tillatte kontoer (obligatorisk)</translation>
+<translation id="8449314044437208543">Importer fra</translation>
+<translation id="4428111176561355185">Importer</translation>
+<translation id="8929587248006013051">MetaMask-kontoer til Brave-lommeboken. Opplev en raskere og sikrere måte å administrere kryptoressurser på og ha interaksjon med web 3 DApps.</translation>
+<translation id="913613743605881268">Hvis du heller vil hoppe over importen og beholde den gamle utgaven av Crypto Wallets, kan du bare navigere til Brave-nettleseren</translation>
+<translation id="5886242758142314994">og endre standardinnstillingen tilbake til Kryptolommebøker. Du kan også importere, prøve den nye Brave-lommeboken og endre tilbake når du vil.</translation>
+<translation id="480319080797177742">tilkoblet</translation>
+<translation id="4203566092423620442">er frakoblet</translation>
+<translation id="1952715382071350669">Maskinvarelommeboken krever bekreftelse av transaksjonen.</translation>
+<translation id="6687008710463927359">Konto <ph name="VALUE"/></translation>
 </translationbundle>

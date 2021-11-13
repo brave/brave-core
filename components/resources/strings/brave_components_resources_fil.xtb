@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Ang mga token na kinita mo sa buwang ito ay sisimulang iproseso sa <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Maaaring iba ito batay sa volatility ng merkado.</translation>
 <translation id="8334559352278209120">Pagbibigay</translation>
-<translation id="3903419925307046908">Makakuha ng mga token at tumulong</translation>
-<translation id="244362569344671266">Makakuha ng mga token sa pamamagitan ng pagtingin sa Mga Pribadong Brave Ad at awtomatikong suportahan ang mga creator ng content.</translation>
 <translation id="5095252080770652994">Usad</translation>
 <translation id="6278643716658443228">Mga setting ng mga reward</translation>
 <translation id="6777169449483742979">Kumikita ka ng mga token sa pagtingin sa sponsored na larawang ito.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa mga naka-sponsor na larawan sa Brave Rewards.</translation>
 <translation id="6113004497629356998">Itago ang mga naka-sponsor na larawan</translation>
 <translation id="8511604585939286108">Sa pamamagitan ng pag-click sa [[title]], sumasang-ayon ka sa <ph name="BEGIN_LINK1"/>Mga Tuntunin ng Serbisyo<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>Patakaran sa Privacy<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Simulan ang video call</translation>
+<translation id="7619826778671319444">Hindi nakuha ang limit ng gas para sa transaksyon</translation>
+<translation id="7631054302129692654">Hindi nakuha ang pagtantsa ng gas para sa transaksyong EIP-1559</translation>
+<translation id="5420730209575475110">hindi sinusuportahan</translation>
+<translation id="692381016487372902">I-Type Ulit Ang Password</translation>
+<translation id="3527905866577245691">Hindi tumutugma ang password sa pag-verify</translation>
+<translation id="6932355307691676490">Ikonekta ang iyong</translation>
+<translation id="4513956488935671725">wallet direkta sa iyong computer.</translation>
+<translation id="871696868578199698">Bilang ng decimal</translation>
+<translation id="6637540491667802882">bilang custom na token</translation>
+<translation id="6082785102488657349">Kumuha ng Ether mula sa isang faucet para sa</translation>
+<translation id="7065157926159745595">Pahintulutan ang app na ito na gastusin ang iyong</translation>
+<translation id="4015195974325151180">Tingnan ang mga address ng iyong</translation>
+<translation id="3587259018193837508">mga pinapahintulutang account (kinakailangan)</translation>
+<translation id="8449314044437208543">I-import mula sa</translation>
+<translation id="4428111176561355185">I-import ang iyong</translation>
+<translation id="8929587248006013051">mga MetaMask account sa Brave Wallet. I-enjoy ang mas mabilis at mas ligtas na paraan para pamahalaan ang mga asset ng cryptocurrency at makipag-ugnayan sa mga web 3 DApp.</translation>
+<translation id="913613743605881268">Kung mas gusto mong i-skip ang pag-import at panatilihin ang lumang karanasan sa mga Wallet ng Cryptocurrency, mag-navigate lang sa Brave Browser</translation>
+<translation id="5886242758142314994">at baguhin ang default pabalik sa Mga Wallet ng Cryptocurrency. Pwede mo ring i-import, o subukan ang bagong Brave Walllet, at bumalik sa dati anumang oras.</translation>
+<translation id="480319080797177742">nakakonekta</translation>
+<translation id="4203566092423620442">ay nakadiskonekta</translation>
+<translation id="1952715382071350669">Nangangailangan ng pagkumpirma ng transaksyon ang hardware wallet.</translation>
+<translation id="6687008710463927359">Account <ph name="VALUE"/></translation>
 </translationbundle>

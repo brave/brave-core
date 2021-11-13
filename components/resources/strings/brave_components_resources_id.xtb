@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Token yang Anda dapatkan bulan ini akan mulai diproses pada <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Ini mungkin bervariasi berdasarkan volatilitas pasar.</translation>
 <translation id="8334559352278209120">Memberikan</translation>
-<translation id="3903419925307046908">Dapatkan token dan beri kembali</translation>
-<translation id="244362569344671266">Dapatkan token dengan melihat Iklan Pribadi Brave dan dukung pembuat konten secara otomatis.</translation>
 <translation id="5095252080770652994">Perkembangan</translation>
 <translation id="6278643716658443228">Pengaturan Rewards</translation>
 <translation id="6777169449483742979">Anda memperoleh token dengan melihat gambar bersponsor ini.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/> tentang gambar bersponsor di Brave Rewards.</translation>
 <translation id="6113004497629356998">Sembunyikan gambar bersponsor</translation>
 <translation id="8511604585939286108">Dengan mengklik [[title]], Anda menyetujui the <ph name="BEGIN_LINK1"/>Syarat Layanan<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Kebijakan Privasi<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Mulai panggilan video</translation>
+<translation id="7619826778671319444">Gagal mendapatkan batas maksimum bensin untuk transaksi</translation>
+<translation id="7631054302129692654">Gagal mendapatkan estimasi bensin untuk transaksi EIP-1559</translation>
+<translation id="5420730209575475110">tidak didukung</translation>
+<translation id="692381016487372902">Ketik Ulang Kata Sandi</translation>
+<translation id="3527905866577245691">Kata sandi verifikasi tidak sesuai</translation>
+<translation id="6932355307691676490">Sambungkan ... Anda</translation>
+<translation id="4513956488935671725">dompet Anda langsung ke komputer.</translation>
+<translation id="871696868578199698">Desimal presisi</translation>
+<translation id="6637540491667802882">sebagai token khusus</translation>
+<translation id="6082785102488657349">Dapatkan Ether dari faucet untuk</translation>
+<translation id="7065157926159745595">Izinkan aplikasi ini untuk menggunakan ... Anda</translation>
+<translation id="4015195974325151180">Tampilkan alamat akun</translation>
+<translation id="3587259018193837508">Anda yang diizinkan (wajib)</translation>
+<translation id="8449314044437208543">Impor dari</translation>
+<translation id="4428111176561355185">Impor ... Anda</translation>
+<translation id="8929587248006013051">Impor akun MetaMask Anda ke dalam Brave Wallet. Nikmati cara yang lebih cepat dan lebih aman untuk mengelola aset kripto dan berinteraksi dengan web 3 DApps.</translation>
+<translation id="913613743605881268">Jika Anda memilih untuk melewatkan impor dan menyimpan pengalaman Crypto Wallet yang lama, navigasikan ke Brave Browser</translation>
+<translation id="5886242758142314994">dan ganti setelan bawaan kembali menjadi Crypto Wallet. Anda dapat juga mengimpor, mencoba Brave Wallet yang baru, dan menggantinya kembali kapan saja.</translation>
+<translation id="480319080797177742">tersambung</translation>
+<translation id="4203566092423620442">diputuskan</translation>
+<translation id="1952715382071350669">Dompet peranti keras memerlukan konfirmasi transaksi.</translation>
+<translation id="6687008710463927359">Akun <ph name="VALUE"/></translation>
 </translationbundle>

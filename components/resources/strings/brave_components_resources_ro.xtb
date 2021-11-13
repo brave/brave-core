@@ -793,8 +793,6 @@
 <translation id="3273637494083639780">Procesarea token-urilor pe care le câștigați luna aceasta va începe în data de <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Aceasta poate varia în funcție de volatilitatea pieței.</translation>
 <translation id="8334559352278209120">Sumă oferită</translation>
-<translation id="3903419925307046908">Câștigi tokeni și ești generos la rândul tău</translation>
-<translation id="244362569344671266">Câștigați tokenuri vizualizând reclame private Brave și susțineți automat creatorii de conținut.</translation>
 <translation id="5095252080770652994">Progres</translation>
 <translation id="6278643716658443228">Setări Rewards</translation>
 <translation id="6777169449483742979">Câștigați token-uri prin afișarea acestei imagini sponsorizate.</translation>
@@ -1157,4 +1155,27 @@
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre imaginile sponsorizate în Brave Rewards.</translation>
 <translation id="6113004497629356998">Ascunde imaginile sponsorizate</translation>
 <translation id="8511604585939286108">Printr-un clic pe [[title]], accceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
+<translation id="5850325887346946383">Pornire apel video</translation>
+<translation id="7619826778671319444">Nu s-a reușit obținerea limitei gas pentru tranzacție</translation>
+<translation id="7631054302129692654">Nu s-a reușit obținerea estimării gas pentru tranzacția EIP-1559</translation>
+<translation id="5420730209575475110">nu este acceptat</translation>
+<translation id="692381016487372902">Reintroduceți parola</translation>
+<translation id="3527905866577245691">Parola introdusă a doua oară nu este identică cu prima</translation>
+<translation id="6932355307691676490">Conectați</translation>
+<translation id="4513956488935671725">direct la computerul dvs.</translation>
+<translation id="871696868578199698">Zecimale de precizie</translation>
+<translation id="6637540491667802882">ca token personalizat</translation>
+<translation id="6082785102488657349">Obțineți Ether de la un robinet pentru</translation>
+<translation id="7065157926159745595">Permiteți acestei aplicații să cheltuiască</translation>
+<translation id="4015195974325151180">Vedeți adresele</translation>
+<translation id="3587259018193837508">conturilor permise (obligatorii)</translation>
+<translation id="8449314044437208543">Importați din</translation>
+<translation id="4428111176561355185">Importați</translation>
+<translation id="8929587248006013051">conturile MetaMask în portofelul Brave. Beneficiați de o modalitate mai rapidă și mai sigură de a gestiona activele de criptomonede și interacționați cu aplicațiile descentralizate web 3.</translation>
+<translation id="913613743605881268">Dacă doriți să treceți peste importare și să rămâneți la vechea experiență cu portofelele de criptomonede, trebuie doar să navigați la browserul Brave</translation>
+<translation id="5886242758142314994">și să modificați opțiunea implicită înapoi la portofele de criptomonede. De asemenea, puteți realiza importarea, puteți încerca noul portofel Brave și puteți reveni oricând doriți.</translation>
+<translation id="480319080797177742">conectat</translation>
+<translation id="4203566092423620442">deconectat</translation>
+<translation id="1952715382071350669">Portofelul hardware necesită confirmarea tranzacției.</translation>
+<translation id="6687008710463927359">Contul <ph name="VALUE"/></translation>
 </translationbundle>

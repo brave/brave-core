@@ -796,8 +796,6 @@
 <translation id="3273637494083639780">あなたが今月獲得したトークンは<ph name="DATE"/>に処理が開始されます。</translation>
 <translation id="1029300693989825319">これは、市場のボラティリティに応じて変化する可能性があります。</translation>
 <translation id="8334559352278209120">次の額を還元:</translation>
-<translation id="3903419925307046908">トークンを獲得して還元する</translation>
-<translation id="244362569344671266">Braveによるプライバシーを尊重した広告を表示することでトークンを獲得し、コンテンツクリエイターを自動的にサポートします。</translation>
 <translation id="5095252080770652994">進行状況</translation>
 <translation id="6278643716658443228">Rewards設定</translation>
 <translation id="6777169449483742979">このスポンサー画像を見ることでトークンを獲得できます。</translation>
@@ -1160,4 +1158,27 @@
 <translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
 <translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
 <translation id="8511604585939286108">[[title]]をクリックすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
+<translation id="5850325887346946383">ビデオ通話を開始</translation>
+<translation id="7619826778671319444">トランザクションのガスリミットを取得できませんでした</translation>
+<translation id="7631054302129692654">EIP-1559 トランザクションのガス推定値を取得できませんでした</translation>
+<translation id="5420730209575475110">サポートされていません</translation>
+<translation id="692381016487372902">パスワードを再入力</translation>
+<translation id="3527905866577245691">確認用パスワードが一致しません</translation>
+<translation id="6932355307691676490">ウォレットを</translation>
+<translation id="4513956488935671725">あなたのコンピュータに直接接続。</translation>
+<translation id="871696868578199698">小数点桁数</translation>
+<translation id="6637540491667802882">カスタムトークンとして</translation>
+<translation id="6082785102488657349">Faucet から次の Ether を入手する</translation>
+<translation id="7065157926159745595">このアプリが次を使うことを許可する</translation>
+<translation id="4015195974325151180">次のアドレスを表示します</translation>
+<translation id="3587259018193837508">許可されたアカウント (必須)</translation>
+<translation id="8449314044437208543">インポート元</translation>
+<translation id="4428111176561355185">インポート：</translation>
+<translation id="8929587248006013051">Brave WalletにMetaMaskアカウントを追加します。暗号資産の管理と Web 3 DApp とのやり取りを、より高速で安全に行うことができます。</translation>
+<translation id="913613743605881268">インポートをスキップして従来のように暗号資産ウォレットを利用したい場合は、Brave Browser に移動してください</translation>
+<translation id="5886242758142314994">デフォルトを暗号資産ウォレットに戻します。また、いつでもインポートして新しい Brave Wallet を試して、元に戻すことができます。</translation>
+<translation id="480319080797177742">接続済み</translation>
+<translation id="4203566092423620442">切断されています</translation>
+<translation id="1952715382071350669">ハードウェアウォレットがトランザクションの確認を要求しています。</translation>
+<translation id="6687008710463927359">アカウント <ph name="VALUE"/></translation>
 </translationbundle>
