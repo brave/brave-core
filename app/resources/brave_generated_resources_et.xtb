@@ -54,6 +54,27 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="1144810021918451336">Ei kaitse sind ohtlike veebisaitide, allalaaditavate failide ja laienduste eest.</translation>
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
 <translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
+<translation id="6821903322090655051">Brave'i preemiad on keelatud</translation>
+<translation id="9184430019924125685">Klõpsake lisateabe saamiseks siin</translation>
+<translation id="3849957491997306859">Tuvastati automaatselt</translation>
+<translation id="8798099450830957504">Vaikimisi</translation>
+<translation id="4176463684765177261">Keelatud</translation>
+<translation id="4851215387785619212">Brave'i privaatsed reklaamid</translation>
+<translation id="7808122468353671181">Brave'i reklaamide vaatamisega saate teenida tokeneid. Kuvatavad reklaamid põhinevad teie huvidel, mis on järeldatud teie sirvimiskäitumise alusel. Isikuandmed ega sirvimisajalugu ei lähe kunagi teie brauserist välja.</translation>
+<translation id="1758947220824279023">Maksimaalne kuvatavate reklaamide arv</translation>
+<translation id="8578912649458880781">Reklaamide suunamine riigi tasandil</translation>
+<translation id="3678362265519557511">See võimaldab Brave'il näidata teile konkreetselt teie riigi jaoks mõeldud reklaame. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automaatne panustamine</translation>
+<translation id="9132509928968869844">Igakuise automaatse panustamise limiit</translation>
+<translation id="7286722244752781970">Minimaalne külastusaeg, millest alates külastust logitakse</translation>
+<translation id="4424486208397124985">Minimaalne külastuste arv, millest alates väljaandjat välja tuuakse</translation>
+<translation id="6248554379744796526">Näidake kinnitamata veebilehti loendis</translation>
+<translation id="3241299447027267831">Luba videotesse panustamine</translation>
+<translation id="924777189963477634">Automaatse panustamise sisselülitamisega nõustute <ph name="BEGIN_LINK_TOS"/>teenusetingimuste<ph name="END_LINK_TOS"/> ja <ph name="BEGIN_LINK_PP"/>privaatsuspõhimõtetega<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Preemianupud</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Uus vaheleht</translation>
 <translation id="1988804048511540801">Kuvatakse uus vaheleht</translation>
 <translation id="2970343821770026391">Töölaud</translation>
@@ -69,10 +90,12 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8934172355414207733">Tor'iga privaatne</translation>
 <translation id="1970435562892104727">See on Tor'iga privaatne aken</translation>
 <translation id="1037341607922068025">Ava Tor'iga privaatne aken</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Ava Tor’is</translation>
 <translation id="7643538479215207633">Ava IPFS-i abil</translation>
 <translation id="3094628781200061820">Failide avaldamine ja toomine IPFS-ist</translation>
 <translation id="1672270084584211506">Onion on saadaval</translation>
+<translation id="406832631167785034">Kasuta avamiseks .onion-i aadressi</translation>
 <translation id="4901618511712685702">Import IPFS-i</translation>
 <translation id="6794469945030154569">See leht</translation>
 <translation id="5037852323412456577">Valitud pilt</translation>
@@ -95,7 +118,6 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2638041073279639246">Ava link Tor'iga privaatses aknas</translation>
 <translation id="3425600262621021599">Ava link Brave'i Tor'iga privaatses aknas</translation>
 <translation id="575838692088926391">Jaga kohalikku kataloogi IPFSi kaudu</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat reklaamide teenus</translation>
 <translation id="7924918279836988121">BAT-registri teenus</translation>
 <translation id="4472575034687746823">Alustamine</translation>
@@ -122,13 +144,11 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
 <translation id="4078738236287221428">Agressiivne</translation>
 <translation id="7740996059027112821">Tavapärane</translation>
-<translation id="4176463684765177261">Keelatud</translation>
 <translation id="5770288601196774623">Ainult saitidevahelised</translation>
 <translation id="3587482841069643663">Kõik</translation>
 <translation id="5533533363827555308">Piiratud, võib saite lõhkuda</translation>
 <translation id="8792121506918889955">WebRTC IP lahendamise kord</translation>
 <translation id="6165508094623778733">Lisateave</translation>
-<translation id="8798099450830957504">Vaikimisi</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
@@ -175,6 +195,11 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2339730291919608488">Välju ajakohastamisahelast</translation>
 <translation id="115699408012835975">Kui lähtestad sünkroonimise, siis pead sünkroonimiskoodi uuesti teisest seadmest sisestama, et sellega sünkroonida. Kas soovid kindlasti jätkata?</translation>
 <translation id="6092564993102418148">Kas soovite valitud seadme kindlasti sünkroonimisahelast kustutada?</translation>
+<translation id="2936582902048232286">Hoiatus: see jagab teie Brave'i andmeid, sealhulgas võib-olla ka teie paroole, seadmega, mis genereeris need koodisõnad.
+
+Kontrollige üle, kas koodisõnad on loodud teile kuuluvas seadmes.
+
+Kas soovite seda kindlasti teha?</translation>
 <translation id="3396347744975515056">Brave sünkroonimine on täiendatud ja vajab seadistamist</translation>
 <translation id="7473245612074035141">Alusta seadistust</translation>
 <translation id="3411013544209536575">Abi preemiad</translation>
@@ -188,8 +213,11 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8488282162676695335">Brave'i rahakott</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="7701040980221191251">Mitte ükski</translation>
-<translation id="1274962333945373242">Ebasoovitatav krüptorahakottide laiend</translation>
+<translation id="1274962333945373242">Krüptorahakotid (iganenud)</translation>
+<translation id="3695088618483091287">Brave'i rahakott (eelistatud laiendused)</translation>
 <translation id="9131889008937672866">Krüptoraha vaikerahakott</translation>
+<translation id="4718664830805652430">Vaike-põhivaluuta</translation>
+<translation id="7992507032049865603">Vaike-põhikrüptoraha</translation>
 <translation id="1834467296210148203">Näita tööriistaribal Brave Walleti ikooni</translation>
 <translation id="8239147115686034860">Lukusta Brave'i rahakott automaatselt</translation>
 <translation id="414639769490080648">Minutite arv enne Brave’i rahakoti automaatset lukustamist</translation>
@@ -220,6 +248,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="616058968889448209">IPFS-i teenuse käivitamise tõrge, lisateavet leiate veebisaidilt <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/>.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' võtme importimine ebaõnnestus</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' võtme eksport ebaõnnestus</translation>
+<translation id="8860039076160511438">Lähtesta rahakott</translation>
+<translation id="6369495274982305511">Kas soovite kindlasti rahakoti lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="1426410128494586442">Jah</translation>
 <translation id="8275038454117074363">Impordi</translation>
 <translation id="3654980960391973513">Genereeri</translation>
 <translation id="5531501313997312487">Käivita sõlm</translation>
@@ -362,6 +393,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4235920711083356755">Kuva VPN-i nupp</translation>
 <translation id="4070612712151038707">Kuvab tööriistaribal VPN-i nupu</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Lülita VPN-i</translation>
 <translation id="3960619311638643872">Brave'i VPN</translation>
 <translation id="2345974803401546682">Teave Brave'i VPN-i kohta</translation>
 <translation id="4378551569595875038">Ühendamine...</translation>
@@ -387,4 +419,31 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2808630562319398131">Taasta Brave Rewardsi andmed...</translation>
 <translation id="2273851479262317744">Määra Brave vaikebrauseriks</translation>
 <translation id="8581710194025054669">Kui soovite tagada endale võrgus suurima privaatsuse, siis kaaluge Brave'i määramist oma arvuti vaikebrauseriks. Kui kasutate vaikimisi Brave'i, kasutatakse iga klõpsatud veebilingi avamisel Brave'i privaatsuskaitseid.</translation>
+<translation id="1241283133946520352">Võrgud</translation>
+<translation id="8205945804087322170">Lisa uus võrk</translation>
+<translation id="2156993118928861787">Kehtetu aadress</translation>
+<translation id="2653659639078652383">Esita</translation>
+<translation id="2556708692502648323">Rahakoti võrgud</translation>
+<translation id="1330032157352961756">Uue ahela tunnus</translation>
+<translation id="9053905035135220650">Kuueteistkümnendstring prefiksiga 0x</translation>
+<translation id="726121047592132939">Uue ahela nimi</translation>
+<translation id="1034112277864078119">Sisestage ahela nimi</translation>
+<translation id="4672314527143443556">Ahela vääringu nimetus</translation>
+<translation id="4652114030688989556">Sisestage vääringu nimetus</translation>
+<translation id="1079960017149736097">Ahela vääringu tähis</translation>
+<translation id="1288105009659846362">Sisestage vääringu tähis</translation>
+<translation id="665660671251623018">Ahela vääringu kümnendkohad</translation>
+<translation id="2978054488731497946">Sisestage ahela vääringu kümnendkohad</translation>
+<translation id="2727514928168763432">RPC URL-id</translation>
+<translation id="7059127752542505809">Sisestage URL</translation>
+<translation id="3047726704186619366">Ikoonide URL-id</translation>
+<translation id="2487558607408469181">Plokiuurijate URL-id</translation>
+<translation id="6301398959353668507">See väli ei tohi olla tühi.</translation>
+<translation id="4514843126085243862">Vigane vorming, ahela tunnus on kuueteistkümnendstring prefiksiga 0x</translation>
+<translation id="8325036459845654666">See võrk on juba lisatud.</translation>
+<translation id="650071759190249039">Sisetõrge, võrku ei õnnestu lisada.</translation>
+<translation id="868529041590572443">Palun sisestage kõik omavääringu andmed</translation>
+<translation id="1062463687579789365">Rahakoti võrkude kohandamine</translation>
+<translation id="2234108191702901162">Võrku ei õnnestu lisada</translation>
+<translation id="2618193846561624884">Kas soovite olemasolevat võrku uuendada?</translation>
 </translationbundle>

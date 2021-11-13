@@ -238,10 +238,6 @@
     "message": "Ongeza Fedha",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Jifunze Zaidi",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Unganisha upya",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Una zawadi ambazo hazijatolewa kwa sababu huna fedha za kutosha",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Uunganishaji wa pochi haujafaulu",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Pochi yako haiwezi kuthibitishwa kwa sababu umefikisha kikomo cha kifaa kilichothibitishwa cha juu zaidi.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Hmm, inaonekana pochi yako ya Brave Rewards tayari imethibitishwa na akaunti nyingine ya $provider$. Tafadhali jaribu kuthibitisha tena ukitumia akaunti yako ya awali.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT bado haitumiki katika eneo lako kwenye pochi za Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Akaunti yako kwenye Uphold imefungwa kwa sasa.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Akaunti yako kwenye Uphold bado inasubiri.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Akaunti yako kwenye Uphold imewekewa vikwazo kwa sasa.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Kwa kubofya, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$. Lemaza wakati wowote katika Mipangilio.",
+    "message": "Kwa kuwezesha, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Washa Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Kwa kuwasha Ads, unakubali $tos_link_begin$Sheria na Masharti$tos_link_end$ na $pp_link_begin$Sera ya Faragha$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Sasa unaweza kuanza simu ya bila malipo",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Gusa popote kwenye skrini ili uende kwenye Brave Talk.",
+    "message": "Bofya au gusa popote kwenye skrini ili uende kwenye Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

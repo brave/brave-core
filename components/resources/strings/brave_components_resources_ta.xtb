@@ -30,7 +30,7 @@
 <translation id="5313967007315987356">தளத்தைச் சேர்</translation>
 <translation id="5052499409147950210">தளத்தைத் திருத்து</translation>
 <translation id="1181037720776840403">நீக்கு</translation>
-<translation id="7400418766976504921">URL</translation>
+<translation id="7400418766976504921">உரலி</translation>
 <translation id="5327248766486351172">பெயர்</translation>
 <translation id="5317780077021120954">சேமி</translation>
 <translation id="7658239707568436148">ரத்து செய்</translation>
@@ -65,6 +65,8 @@
 <translation id="6975708438781948564">பிரேவில் Tor பற்றி மேலும் அறிக</translation>
 <translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="4272382368346338917">கூடுதல் வடிகட்டிகள்</translation>
+<translation id="5201560661339344083">வடிப்புப்பட்டியலை உரலிமூலஞ்சேர்</translation>
+<translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
 <translation id="2653659639078652383">சமர்ப்பி</translation>
 <translation id="6745592621698551453">இப்போது புதுப்பி</translation>
 <translation id="1209739344687072997">உடைந்த தளத்தைப் புகாரளி</translation>
@@ -107,7 +109,6 @@
 <translation id="6239274080752256452">நிதிகளை திரும்பப்பெறு</translation>
 <translation id="2726674968268546964">கிள்ளாக்குகள்</translation>
 <translation id="7286722244752781970">வருகையை பதிவு செய்வதற்கு முன் குறைந்தபட்ச பக்க நேரம்</translation>
-<translation id="5510618543889994434">காணொளிகளுக்கு பங்களிப்பை அனுமதி</translation>
 <translation id="8933202740471878108">1 வருகை</translation>
 <translation id="354797634123275103">5 வருகைகள்</translation>
 <translation id="3583700907990488238">10 வருகைகள்</translation>
@@ -251,6 +252,7 @@
 <translation id="1987317783729300807">கணக்குகள்</translation>
 <translation id="629730747756840877">கணக்கு</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
+<translation id="8093033115658137576">0x முகவரி அ உரலி</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="6972754398087986839">தொடங்குக</translation>
 <translation id="6657585470893396449">கடவுச்சொல்</translation>
@@ -267,10 +269,13 @@
 <translation id="4378551569595875038">இணைக்கிறது...</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
 <translation id="9220525904950070496">கணக்கை நீக்கு</translation>
-<translation id="3512100619724810532">எல்லாம்</translation>
 <translation id="9065203028668620118">திருத்து</translation>
 <translation id="6452181791372256707">நிராகரி</translation>
 <translation id="8131740175452115882">உறுதிப்படுத்து</translation>
+<translation id="5052727830821470769">பிணைய உரலி</translation>
 <translation id="8030852056903932865">அனுமதி</translation>
+<translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
+<translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
+<translation id="1116694919640316211">அறிமுகம்</translation>
 </translationbundle>

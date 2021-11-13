@@ -238,10 +238,6 @@
     "message": "Pievienot līdzekļus",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Uzziniet vairāk",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Atkārtoti izveidot savienojumu",
     "description": ""
@@ -329,7 +325,7 @@
     "description": ""
   },
   "notificationInsufficientFundsText": {
-    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt iedots nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
+    "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
@@ -365,39 +361,6 @@
     "message": "Jums ir nesamaksātas dzeramnaudas nepietiekamu līdzekļu dēļ",
     "description": ""
   },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Maka piesaiste neizdevās",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Jūsu maku nevar verificēt, jo ir sasniegts ierīces maksimālais verifikāciju limits.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Šķiet, ka jūsu Brave Rewards maks jau ir verificēts, izmantojot citu $provider$ kontu. Mēģiniet verifikāciju veikt vēlreiz, izmantojot savu iepriekšējo kontu.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT jūsu reģionā Uphold makos vēl netiek atbalstīts.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Jūsu Uphold konts ir bloķēts.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Jūsu Uphold konts vēl nav apstiprināts.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Jūsu Uphold konts šobrīd ir ierobežots.",
-    "description": ""
-  },
   "onboardingEarnHeader": {
     "message": "Pelnīt žetonus un Atdot atpakaļ",
     "description": ""
@@ -415,7 +378,7 @@
     "description": ""
   },
   "onboardingSetupContributeHeader": {
-    "message": "Cik lielu atbalstu katru mēnesi vēlaties sniegt saviem iecienītākajiem veidotājiem?",
+    "message": "Cik lielu atbalstu katru mēnesi vēlaties sniegt saviem iecienītākajiem satura veidotājiem?",
     "description": ""
   },
   "onboardingSetupContributeSubheader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Noklikšķinot jūs piekrītat $tos_link_begin$pakalpojumu sniegšanas noteikumiem$tos_link_end$ un $pp_link_begin$privātuma politikai$pp_link_end$. Jebkurā brīdī varat to atspējot iestatījumos.",
+    "message": "Iespējojot jūs piekrītat $tos_link_begin$Pakalpojumu noteikumiem$tos_link_end$ un $pp_link_begin$Privātuma politikai $pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Ieslēgt Brave privātās reklāmas.",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ieslēdzot Ads, jūs piekrītat $tos_link_begin$pakalpojumu sniegšanas noteikumiem$tos_link_end$ un $pp_link_begin$privātuma politikai$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Tagad varat sākt bezmaksas zvanu.",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Noklikšķiniet jebkur ekrānā, lai turpinātu Brave zvanus.",
+    "message": "Noklikšķiniet vai pieskarieties jebkur uz ekrāna, lai atvērtu Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

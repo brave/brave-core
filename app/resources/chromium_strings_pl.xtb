@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">Brave musi mieć dostęp do pamięci, by pobierać pliki</translation>
 <translation id="8447483940522230788">Pomoc Brave</translation>
 <translation id="7933006624150961626">Aby mieć dostęp do danych z Brave na wszystkich swoich urządzeniach, zaloguj się, co umożliwi włączenie synchronizacji.</translation>
-<translation id="5486618155264784386">Zainstaluj system operacyjny Brave</translation>
 <translation id="7291143854620707672">Wszystkie dane Brave wygenerowane podczas używania tego profilu (takie jak zakładki, historia, hasła i inne ustawienia) mogą zostać usunięte przez administratora profilu służbowego. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Zastosowanie aktualizacji wymaga ponownego uruchomienia systemu operacyjnego Brave.</translation>
 <translation id="7387051847644272380">Podczas instalacji wystąpił błąd systemu operacyjnego. Pobierz Brave ponownie.</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">Usuń z Brave...</translation>
 <translation id="2885378588091291677">Menedżer zadań</translation>
 <translation id="2176825726964012531">&amp;Brave – informacje</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Ostatnie przypomnienie: instalacja <ph name="BEGIN_BOLD"/>wykasuje wszystkie dane z dysku twardego<ph name="END_BOLD"/>. Upewnij się, że masz kopię zapasową wszystkich ważnych danych.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Rozpoczętej instalacji nie będzie można anulować.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Masz aktualną wersję Brave</translation>
 <translation id="2953892977076487219">Brave próbuje edytować hasła.</translation>
 <translation id="8755404239607088219">Brave nie może sprawdzić Twoich haseł. Spróbuj później.</translation>
@@ -73,7 +70,6 @@
 <translation id="2711887072399498551">Już istnieje profil Brave z tym kontem</translation>
 <translation id="2297290224191497273">Przełączyć na istniejący profil Brave?</translation>
 <translation id="2450003541323895471">Dzięki profilom Brave wszystkie swoje rzeczy z tej przeglądarki możesz przechowywać osobno. Utwórz profile dla znajomych i rodziny albo oddziel pracę od rozrywki.</translation>
-<translation id="7275165473619697274">Trwa instalowanie systemu operacyjnego Brave</translation>
 <translation id="9216183508558772570">Brave powiadomi Cię w razie logowania za pomocą przejętego hasła</translation>
 <translation id="5853262807109651878">Spowoduje to usunięcie <ph name="ITEMS_COUNT"/> elementów z tego urządzenia. Aby później odzyskać dane, zaloguj się w Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Profile Brave przełącza skrót <ph name="SHORTCUT"/></translation>
@@ -98,7 +94,6 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> wymaga, by przed korzystaniem z tego urządzenia przeczytać i zaakceptować Warunki korzystania z usługi. Nie rozszerzają, nie zmieniają ani nie ograniczają one Warunków korzystania z Brave OS.</translation>
 <translation id="3262506503470845422">Pomoc do Brave</translation>
 <translation id="7691786510374174420">Instalacja nie powiodła się z powodu nieokreślonego błędu. Jeśli Brave jest aktualnie uruchomiony, zamknij go i spróbuj ponownie.</translation>
-<translation id="429583012151745428">Trwa instalacja. Nie wyłączaj urządzenia. Nie powinno to zająć więcej niż 20 minut. Po zakończeniu instalacji komputer automatycznie się wyłączy.</translation>
 <translation id="9183662282810237335">Zamknąć Brave mimo to?</translation>
 <translation id="4065288863231444640">Zezwalaj Brave na działanie w tle</translation>
 <translation id="8148611988012584308">Dostosowywanie i kontrolowanie Brave</translation>
@@ -190,7 +185,6 @@ Niektóre funkcje mogą być niedostępne. Podaj inny katalog z profilem lub uż
 <translation id="6666624454809779082">Brave jest już zainstalowany dla wszystkich użytkowników tego komputera.</translation>
 <translation id="5360050006043219962">Aby mieć dostęp do danych z Brave na wszystkich swoich urządzeniach, zaloguj się i włącz synchronizację.</translation>
 <translation id="8291513491595858997">Rodzic wyłączył „Uprawnienia stron, aplikacji i rozszerzeń” dla Brave. Włączenie elementu <ph name="EXTENSION_TYPE_PARAMETER"/> jest niedozwolone.</translation>
-<translation id="1810203443153428607">Instalacja systemu operacyjnego Brave spowoduje zastąpienie wszystkich danych na urządzeniu.</translation>
 <translation id="8211837073776713955">Brave poinformuje Cię, jeśli Twoje hasła dostaną się w niepowołane ręce</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (skopiowana do Brave)</translation>
@@ -201,6 +195,7 @@ Niektóre funkcje mogą być niedostępne. Podaj inny katalog z profilem lub uż
 <translation id="3335606533094650083">Brave potrzebuje uprawnień dostępu do mikrofonu na tej stronie</translation>
 <translation id="1705567146636171298">Zaktualizuj Brave</translation>
 <translation id="5499063270485366718">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave.</translation>
+<translation id="151916274998710826">Dostosuj najważniejsze ustawienia prywatności Brave</translation>
 <translation id="1008530050039597147">Ta strona musi mieć w Brave dostęp do aparatu</translation>
 <translation id="1197672524850678392">Nie udało się uruchomić Brave. Spróbuj ponownie.</translation>
 <translation id="3405035915691517126">Brave nie może sprawdzić Twoich haseł. Spróbuj ponownie za 24 godziny.</translation>
@@ -224,10 +219,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="5657226924540934362">Jeśli ustawienia nie widać na tej stronie, zajrzyj do <ph name="LINK_BEGIN"/>ustawień systemu operacyjnego Brave<ph name="LINK_END"/></translation>
 <translation id="3293668930608086049">Brave używa Twojej kamery i mikrofonu.</translation>
 <translation id="2827121003398607864">Przeglądarka Brave jest jeszcze lepsza</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Zanim zaczniemy, zrób aktualną kopię swoich danych. Instalacja systemu operacyjnego Brave spowoduje zastąpienie wszystkich danych na dysku twardym.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave nie ponosi odpowiedzialności za utratę danych ani nie gwarantuje, że system operacyjny Brave będzie działać na urządzeniach bez certyfikatu. Więcej informacji o certyfikowanych modelach znajdziesz na stronie [TBD].<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Więcej informacji o instalowaniu systemu operacyjnego Brave i wymazywaniu danych: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Jeśli wszystko jest gotowe, kliknij „Zainstaluj system operacyjny Brave”, aby w kilku prostych krokach przeprowadzić instalację, korzystając z naszych instrukcji. Zanim wprowadzimy jakiekolwiek zmiany na Twoim komputerze, będziesz mieć jeszcze 1 możliwość potwierdzenia instalacji.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave nie jest domyślną przeglądarką</translation>
 <translation id="5477319665405831211">Synchronizuj dane Brave i korzystaj z własnych ustawień przeglądarki na wielu urządzeniach</translation>
 <translation id="5419189641394808652">Brave nie może zsynchronizować danych, ponieważ synchronizacja jest niedostępna w Twojej domenie.</translation>
@@ -292,5 +283,6 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację}=1{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację}=1{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="7914115000169617076">Prawie gotowe! Uruchom Brave ponownie, by ukończyć aktualizację. Prywatne okna nie otworzą się ponownie.</translation>
+<translation id="4703432949110765917">Ustawienia domyślne sprawdzają się w przypadku większości profili, ale możesz je dostosować do własnego sposobu korzystania z Brave.</translation>
 <translation id="2176087127109773485">Możesz zarządzać łańcuchami synchronizacji, do których się logujesz. Twoje łańcuchy synchronizacji Brave są używane także w przeglądarce Brave, sklepie Play, Gmailu i w innych miejscach. Jeśli chcesz dodać konto innego użytkownika, np. członka rodziny, dodaj nowy profil do Twojego <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 </translationbundle>

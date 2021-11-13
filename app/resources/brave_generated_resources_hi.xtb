@@ -77,6 +77,8 @@ Binance
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="1811404036171336214">हमेशा नए टैब पेज पर बुकमार्क दिखाएं</translation>
 <translation id="1643029991199044105">Ctrl-Tab के साथ सबसे हाल ही में इस्तेमाल किए गए टैब के माध्यम से साइकिल</translation>
+<translation id="1013121820689882118">स्पीडरीडर</translation>
+<translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
 <translation id="5802665280774361839">पता बार में ऑटोकम्पलीट दिखाएँ</translation>
 <translation id="597020512043916976">ऑटोकम्पलीट सुझावों में शीर्ष साइटें दिखाएँ</translation>
 <translation id="264150068416846820">ऑटोकम्पलीट सुझावों में Brave द्वारा सुझाए गए साइट दिखाएँ</translation>
@@ -86,6 +88,27 @@ Binance
 <translation id="1144810021918451336">हानिकारक वेबसाइट, डाउनलोड और एक्सटेंशन से आपकी सुरक्षा नहीं करता है।</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
+<translation id="6821903322090655051">Brave Rewards बंद किए गए हैं</translation>
+<translation id="9184430019924125685">ज़्यादा जानकारी के लिए यहाँ क्लिक करें</translation>
+<translation id="3849957491997306859">अपने-आप पहचान की गई</translation>
+<translation id="8798099450830957504">सामान्य</translation>
+<translation id="4176463684765177261">अक्षम</translation>
+<translation id="4851215387785619212">Brave प्राइवेट विज्ञापन</translation>
+<translation id="7808122468353671181">Brave के विज्ञापन देखकर टोकन कमाएँ. आप जिस तरह से ब्राउज़ करते हैं, उसी के मुताबिक आपकी पसंद को ध्यान में रखकर आपको विज्ञापन दिखाए जाते हैं. कोई भी निजी डेटा या आपने क्या ब्राउज़ किया, इसकी जानकारी आपके ब्राउज़र से कभी बाहर नहीं जाती.</translation>
+<translation id="1758947220824279023">दिखाए जाने वाले विज्ञापन की अधिकतम संख्या</translation>
+<translation id="8578912649458880781">राज्य स्तर पर विज्ञापन के लक्ष्य</translation>
+<translation id="3678362265519557511">इससे Brave आपको वो विज्ञापन दिखा पाता है, जो खास तौर पर आपके राज्य के लिए हैं. <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">स्वतः-योगदान</translation>
+<translation id="9132509928968869844">ऑटोमैटिक योगदान की हर महीने की सीमा</translation>
+<translation id="7286722244752781970">विजिट दर्ज़ करने के लिए न्यूनतम पेज समय</translation>
+<translation id="4424486208397124985">प्रकाशक की योग्यता के लिए न्यूनतम विज़िट</translation>
+<translation id="6248554379744796526">सूची में गैर-सत्यापित साइट दिखाएं</translation>
+<translation id="3241299447027267831">वीडियो के लिए योगदान की इजाज़त दें</translation>
+<translation id="924777189963477634">ऑटोमैटिक योगदान को चालू करके आप <ph name="BEGIN_LINK_TOS"/>सेवा की शर्तें<ph name="END_LINK_TOS"/> और <ph name="BEGIN_LINK_PP"/>निजता नीति<ph name="END_LINK_PP"/> पर अपनी सहमति देते हैं.</translation>
+<translation id="5733490796524078528">टिप बटन</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">ट्विटर</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">नया टैब पेज</translation>
 <translation id="1988804048511540801">नया टैब पेज दिखाता है</translation>
 <translation id="2970343821770026391">डैशबोर्ड</translation>
@@ -101,10 +124,12 @@ Binance
 <translation id="8934172355414207733">टोर के साथ निजी</translation>
 <translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
+<translation id="5410152065859052603">टोर</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
 <translation id="7643538479215207633">IPFS का उपयोग करके खोलें</translation>
 <translation id="3094628781200061820">IPFS से फ़ाइलें प्रकाशित और पुनर्प्राप्त करें</translation>
 <translation id="1672270084584211506">Onion उपलब्ध है</translation>
+<translation id="406832631167785034">.onion पते का इस्तेमाल कर खोलें</translation>
 <translation id="4901618511712685702">IPFS में इम्पोर्ट करें</translation>
 <translation id="6794469945030154569">यह पेज</translation>
 <translation id="5037852323412456577">चुनी गई इमेज</translation>
@@ -113,6 +138,8 @@ Binance
 <translation id="7895302206188277628">लिंक किया गया कंटेंट</translation>
 <translation id="3654831858282189202">IPNS की के साथ प्रकाशित करें</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">चुने गए टेक्स्ट IPFS में इम्पोर्ट करें</translation>
+<translation id="6925604404524625582">IPFS स्नैपशॉट में लिंक इम्पोर्ट और कॉपी करें</translation>
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
@@ -125,7 +152,6 @@ Binance
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="575838692088926391">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
-<translation id="5410152065859052603">टोर</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
@@ -152,13 +178,11 @@ Binance
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="4078738236287221428">एग्रेसिव</translation>
 <translation id="7740996059027112821">मानक</translation>
-<translation id="4176463684765177261">अक्षम</translation>
 <translation id="5770288601196774623">केवल क्रॉस-साइट</translation>
 <translation id="3587482841069643663">सभी</translation>
 <translation id="5533533363827555308">सख्त, साइटों को ब्रेक कर सकते हैं</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
-<translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
@@ -205,6 +229,11 @@ Binance
 <translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
 <translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
 <translation id="6092564993102418148">क्या आप वाकई में चुने गए डिवाइस को सिंक चेन से हटाना चाहते हैं?</translation>
+<translation id="2936582902048232286">चेतावनी : इससे आपका Brave डेटा शेयर किया जाएगा, जिसमें कोड शब्द बनाने वाले डिवाइस के साथ पासवर्ड शेयर करना भी शामिल है.
+
+कृपया यह एक बार फिर से जाँच लें कि ये कोड शब्द आपकी ही किसी डिवाइस से बनाए गए हैं.
+
+क्या आप वाकई यह करना चाहते हैं?</translation>
 <translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
 <translation id="7473245612074035141">सेटअप शुरू करें</translation>
 <translation id="3411013544209536575">सहायक सुझाव</translation>
@@ -218,29 +247,44 @@ Binance
 <translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
-<translation id="1274962333945373242">डेप्रीकेटेड Crypto Wallets एक्सटेंशन</translation>
+<translation id="1274962333945373242">क्रिप्टो वॉलेट (डेप्रीकेट किए हुए)</translation>
+<translation id="3695088618483091287">Brave Wallet (एक्सटेंशन हो तो बेहतर है)</translation>
 <translation id="9131889008937672866">डिफ़ॉल्ट क्रिप्टोक्यूरेंसी वॉलेट</translation>
+<translation id="4718664830805652430">डिफ़ॉल्ट बेस करेंसी</translation>
+<translation id="7992507032049865603">डिफ़ॉल्ट बेस क्रिप्टोकरेंसी</translation>
 <translation id="1834467296210148203">टूलबार पर Brave वॉलेट आइकन दिखाएं</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="5927916530277631319">Unstoppable डोमेन को हल करने की विधि</translation>
+<translation id="8412057160793088103">HTTPS और Ethereum गोपनीयता विचारों पर DNS के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="5248318250177143470">Ethereum नाम सेवा (ENS) को हल करने की विधि</translation>
+<translation id="7024553202001112871">अपना IPNS की सेट अप करें</translation>
 <translation id="951216659045543447">संबंधित निजी की द्वारा कंटेंट पर साइन करें और इसे IPNS पर प्रकाशित करें</translation>
 <translation id="7611728475758612204">प्रकाशन के लिए उपलब्ध की</translation>
 <translation id="911363100236037920">नई की के लिए नया नाम एंटर करें</translation>
 <translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
+<translation id="5761731140570209168">नई सहकर्मी कनेक्शन स्ट्रिंग जोड़ें</translation>
 <translation id="2082206983920804886">की घुमाएँ</translation>
 <translation id="2521133093532260474">लोकल नोड नहीं रोक पा रहे हैं</translation>
 <translation id="86879877003581729">लोकल नोड नहीं लांच कर पा रहे हैं</translation>
+<translation id="6476061084931271248">बदलाव लागू करने के लिए नोड को रीस्टार्ट करें</translation>
+<translation id="3754226427671882382">नोड रीस्टार्ट करें</translation>
 <translation id="949667118776341807">घुमाएँ</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
+<translation id="724513921936768901">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
+<translation id="6758961763875471084">साथियों की सूची में बदलाव करें</translation>
 <translation id="1295874070797049002">की एक्सपोर्ट करें</translation>
 <translation id="3946479342297227860">की हटाएँ</translation>
-<translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> हटाना चाहते हैं?</translation>
+<translation id="1534091531114892221">IPFS साथियों का विवरण सेट करें</translation>
+<translation id="8996633027318264334">क्या आप वाकई <ph name="KEY_NAME"/> को हटाना चाहते हैं?</translation>
 <translation id="910215077892371264">नोड लांच नहीं किया गया</translation>
 <translation id="616058968889448209">IPFS सर्विस लांच एरर, <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> पर अधिक जानकारी उपलब्ध है.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
+<translation id="8860039076160511438">वॉलेट रीसेट करें</translation>
+<translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="1426410128494586442">हां</translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="3654980960391973513">जेनरेट करें</translation>
 <translation id="5531501313997312487">नोड चालू करें</translation>
@@ -248,6 +292,7 @@ Binance
 <translation id="1327977588028644528">गेटवे</translation>
 <translation id="80225669816651290">लोकल नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
+<translation id="3399481770463167943">IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="BEGIN_LINK_MPL"/>और जानें<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -346,9 +391,15 @@ Binance
 <translation id="7060352228894039151">माउसओवर पर</translation>
 <translation id="407173827865827707">क्लिक करने पर</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
+<translation id="8981254605840444865">सेटिंग दिखाएँ</translation>
 <translation id="59174027418879706">सक्षम किया गया</translation>
 <translation id="8258999165172757081">जोड़ दिया गया</translation>
 <translation id="6959315322491671328">हटाने के लिए राइट क्लिक करें</translation>
+<translation id="4651504163033753423">क्या आप स्पीडरीडर चालू करना चाहते हैं?</translation>
+<translation id="9089090017461255038">स्पीडरीडर चालू करें</translation>
+<translation id="312393675740711187">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है.</translation>
+<translation id="3234744217174488546">केवल इस वेबसाइट के लिए रीडर मोड चालू/बंद करें. अपने पूरे ब्राउज़र प्रोफ़ाइल के लिए स्पीडरीडर को बंद करने के लिए, यहाँ जाएँ</translation>
+<translation id="7839742507462737706">स्पीडरीडर में</translation>
 <translation id="8490082094734500369">रीडर मोड बंद करें</translation>
 <translation id="2036503787657622020">रीडर मोड चालू करें</translation>
 <translation id="5226458915125328323">स्पीड रीडर सेटिंग्स</translation>
@@ -376,6 +427,7 @@ Binance
 <translation id="4235920711083356755">VPN बटन दिखाएं</translation>
 <translation id="4070612712151038707">टूलबार में VPN बटन दिखाता है</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPN टॉगल करें</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Brave VPN के बारे में</translation>
 <translation id="4378551569595875038">कनेक्ट हो रहा है...</translation>
@@ -401,4 +453,31 @@ Binance
 <translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 <translation id="2273851479262317744">Brave को अपने डिफ़ॉल्ट ब्राउज़र में सेट करें</translation>
 <translation id="8581710194025054669">ऑनलाइन सर्वश्रेष्ठ गोपनीयता सुनिश्चित करने के लिए, अपने कंप्यूटर पर Brave को डिफ़ॉल्ट ब्राउज़र के रूप में सेट करने के बारे में सोचें. डिफ़ॉल्ट रूप से Brave के साथ, आपके द्वारा क्लिक किया गया कोई भी वेब लिंक Brave की गोपनीयता सुरक्षा के साथ खुल जाएगी.</translation>
+<translation id="1241283133946520352">नेटवर्क</translation>
+<translation id="8205945804087322170">नया नेटवर्क जोड़ें</translation>
+<translation id="2156993118928861787">अमान्य पता</translation>
+<translation id="2653659639078652383">सबमिट करें</translation>
+<translation id="2556708692502648323">वॉलेट नेटवर्क</translation>
+<translation id="1330032157352961756">नई चेन की आईडी</translation>
+<translation id="9053905035135220650">0x से शुरू होने वाली हेक्साडेसिमल स्ट्रिंग</translation>
+<translation id="726121047592132939">चेन का नया नाम</translation>
+<translation id="1034112277864078119">चेन का नाम डालें</translation>
+<translation id="4672314527143443556">चेन की करेंसी का नाम</translation>
+<translation id="4652114030688989556">करेंसी का नाम डालें</translation>
+<translation id="1079960017149736097">चेन की करेंसी का चिह्न</translation>
+<translation id="1288105009659846362">करेंसी का चिह्न डालें</translation>
+<translation id="665660671251623018">चेन की करेंसी में डेसिमल</translation>
+<translation id="2978054488731497946">करेंसी के डेसिमल डालें</translation>
+<translation id="2727514928168763432">RPC के URL</translation>
+<translation id="7059127752542505809">URL डालें</translation>
+<translation id="3047726704186619366">आइकन के URL</translation>
+<translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
+<translation id="6301398959353668507">यह फ़ील्ड खाली नहीं रह सकता</translation>
+<translation id="4514843126085243862">फ़ॉर्मैट गलत है, चेन आईडी 0x से शुरू होने वाली हेक्साडेसिमल स्ट्रिंग होती है</translation>
+<translation id="8325036459845654666">यह नेटवर्क पहले ही जोड़ा जा चुका है.</translation>
+<translation id="650071759190249039">आंतरिक गड़बड़ी, नेटवर्क नहीं जोड़ा जा सका.</translation>
+<translation id="868529041590572443">मूल करेंसी के बारे में सभी जानकारी भरें</translation>
+<translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
+<translation id="2234108191702901162">नेटवर्क नहीं जोड़ा जा सका</translation>
+<translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
 </translationbundle>

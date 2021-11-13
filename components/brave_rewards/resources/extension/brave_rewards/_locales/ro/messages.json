@@ -238,10 +238,6 @@
     "message": "Adaugă fonduri",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Aflați mai multe",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Reconectați-vă",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Aveți bacșișuri în așteptare din cauza fondurilor insuficiente",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Asocierea portofelului a eșuat",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Portofelul dvs. nu poate fi confirmat deoarece ați atins limita maximă de dispozitive confirmate.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Se pare că portofelul dvs. Brave Rewards a fost confirmat deja cu un alt cont $provider$. Încercați să realizați confirmarea din nou utilizând celălalt cont.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Uphold nu acceptă încă BAT în regiunea dvs.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Contul dvs. Uphold este blocat în prezent.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Contul dvs. Uphold este încă în așteptare.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Contul dvs. Uphold este restricționat în prezent.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Dacă dați clic, acceptați $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$. Puteți dezactiva opțiunea în orice moment în Setări.",
+    "message": "Prin activare, acceptați $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Activați Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Prin activarea Brave Ads, acceptați $tos_link_begin$Termenii de utilizare$tos_link_end$ și $pp_link_begin$Politica de confidențialitate$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Acum puteți iniția un apel gratuit",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Dați clic în orice loc pe ecran pentru a continua la Brave Talk.",
+    "message": "Atingeți sau dați clic pe orice loc pe ecran pentru a continua la Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

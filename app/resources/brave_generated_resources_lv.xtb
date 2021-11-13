@@ -54,6 +54,27 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1144810021918451336">Nepasargā jūs no bīstamām vietnēm, lejupielādēm un paplašinājumiem.</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
+<translation id="6821903322090655051">Brave Rewards ir atspējots</translation>
+<translation id="9184430019924125685">Noklikšķiniet šeit, lai uzzinātu vairāk</translation>
+<translation id="3849957491997306859">Automātiski uztverts</translation>
+<translation id="8798099450830957504">Noklusējums</translation>
+<translation id="4176463684765177261">Atspējots</translation>
+<translation id="4851215387785619212">Brave privātās reklāmas</translation>
+<translation id="7808122468353671181">Nopelniet marķieri, apskatot Brave reklāmas. Parādītās reklāmas ir balstītas uz jūsu interesēm, ņemot vērā jūsu pārlūkošanas uzvedību. Personas dati un pārlūkošanas vēsture nekad netiek kopīgota ārpus jūsu pārlūka.</translation>
+<translation id="1758947220824279023">Maksimālais attēlojamo reklāmu skaits</translation>
+<translation id="8578912649458880781">Štata līmeņa reklāmu pielāgošana</translation>
+<translation id="3678362265519557511">Tas ļauj Brave parādīt jums reklāmas, kas paredzētas īpaši jūsu štatam. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automātiska ziedošana</translation>
+<translation id="9132509928968869844">Ikmēneša automātiskas ziedojumu limits</translation>
+<translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
+<translation id="4424486208397124985">Minimālais apmeklējumu skaits publicētāja būtiskumam</translation>
+<translation id="6248554379744796526">Parādīt nepārbaudītās vietnes sarakstā</translation>
+<translation id="3241299447027267831">Atļaut ziedot videoklipiem</translation>
+<translation id="924777189963477634">Ieslēdzot automātiskos ziedojumus, jūs piekrītat <ph name="BEGIN_LINK_TOS"/>Pakalpojumu noteikumiem<ph name="END_LINK_TOS"/> un <ph name="BEGIN_LINK_PP"/>Privātuma politikai<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Dzeramnaudas pogas</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Jaunas cilnes lapa</translation>
 <translation id="1988804048511540801">Jaunas cilnes lapa rāda</translation>
 <translation id="2970343821770026391">Informācijas panelis</translation>
@@ -69,10 +90,12 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8934172355414207733">Inkognito ar Tor</translation>
 <translation id="1970435562892104727">Šis ir inkognito logs ar Tor</translation>
 <translation id="1037341607922068025">Atvērt inkognito logu ar Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Atvērt Tor</translation>
 <translation id="7643538479215207633">Atvērt, izmantojot IPFS</translation>
 <translation id="3094628781200061820">Publicēt un izgūt datnes no IPFS</translation>
 <translation id="1672270084584211506">Onion ir pieejams</translation>
+<translation id="406832631167785034">Atvērt, izmantojot .onion adresi</translation>
 <translation id="4901618511712685702">Importēt IPFS</translation>
 <translation id="6794469945030154569">Šī lapa</translation>
 <translation id="5037852323412456577">Atlasītais attēls</translation>
@@ -81,6 +104,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7895302206188277628">Saistītais saturs</translation>
 <translation id="3654831858282189202">Publicēt ar IPNS atslēgu</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importēt atlasīto tekstu IPFS</translation>
 <translation id="6925604404524625582">Importēt un kopēt saiti uz IPFS momentuzņēmumu</translation>
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
 <translation id="4703780849509456860">Atvērt saiti inkognito logā Tor</translation>
@@ -88,13 +112,12 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7475547933708221517">Kopīgot lokālo failu, izmantojot IPFS</translation>
 <translation id="2286177249736199435">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 <translation id="4491895534716990473">Importēt atlasīto tekstu IPFS</translation>
-<translation id="8883166554766780543">Importēt un kopēt saili uz IPFS momentuzņēmumu</translation>
+<translation id="8883166554766780543">Importēt un kopēt saiti uz IPFS momentuzņēmumu</translation>
 <translation id="784573715436258741">Kopīgot lokālo failu, izmantojot IPFS</translation>
 <translation id="6313675821927505581">Jauns inkognito logs, izmantojot Tor</translation>
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
 <translation id="575838692088926391">Kopīgot lokālo mapi, izmantojot IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -121,13 +144,11 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
 <translation id="4078738236287221428">Agresīvais režīms</translation>
 <translation id="7740996059027112821">Standarta</translation>
-<translation id="4176463684765177261">Atspējots</translation>
 <translation id="5770288601196774623">Tikai starpvietņu</translation>
 <translation id="3587482841069643663">Visi</translation>
 <translation id="5533533363827555308">Stingrais režīms, var radīt vietņu darbības traucējumus</translation>
 <translation id="8792121506918889955">WebRTC IP apstrādes politika</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
-<translation id="8798099450830957504">Noklusējums</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
@@ -149,7 +170,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7885157704277298658">Nokopēts!</translation>
 <translation id="8802630444265810662">QR kods, kas jānoskenē ar mobilo ierīci, lai pārraidītu sinhronizācijas kodu</translation>
 <translation id="6221331245829088299">QR koda parādīšanas laikā radās kļūda, lūdzu, atsvaidziniet un mēģiniet vēlreiz.</translation>
-<translation id="298546024891487702">Vispirms, visās ierīcēs, kuras vēlaties sinhronizēt, jābūt instalētam Brave. Lai savienotu tās ķēdē, aktivizējiet sinhronizācijas ķēdi, ko izmantosiet, lai droši savienotu visas ierīces.</translation>
+<translation id="298546024891487702">Vispirms visās ierīcēs, kuras vēlaties sinhronizēt, jābūt instalētam Brave. Lai savienotu tās ķēdē, aktivizējiet sinhronizācijas ķēdi, ko izmantosiet, lai droši savienotu visas ierīces.</translation>
 <translation id="6200528822592747640">Sākt jaunu sinhronizācijas ķēdi</translation>
 <translation id="5184726904895809379">Man ir sinhronizācijas kods</translation>
 <translation id="8780295742023331191">Skatīt sinhronizācijas kodu</translation>
@@ -168,12 +189,17 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5373825572723282843">Ievadiet sinhronizācijas kodu</translation>
 <translation id="5734745018569675530">Ievadiet norādītos sinhronizācijas ķēdes koda vārdus lodziņā zemāk.</translation>
 <translation id="1061533051865606843">Pievienot jaunu ierīci</translation>
-<translation id="5093410893656857925">Ierīces veida izvēle</translation>
+<translation id="5093410893656857925">Izvēlieties ierīces veidu</translation>
 <translation id="4581190919849683048">Kāda veida ierīci jūs vēlaties sinhronizēt?</translation>
 <translation id="4112587618563511470">Nederīgs sinhronizācijas kods, lūdzu, pārbaudiet un mēģiniet vēlreiz.</translation>
 <translation id="2339730291919608488">Pamest sinhronizācijas ķēdi</translation>
 <translation id="115699408012835975">Ja atiestatīsiet sihronizāciju, jums būs atkārtoti jāievada sinhronizācijas kods no citas ierīces, lai veiktu ar to sinhronizāciju. Vai tiešām vēlaties turpināt?</translation>
 <translation id="6092564993102418148">Vai tiešām vēlaties dzēst atlasīto ierīci no sinhronizācijas ķēdes?</translation>
+<translation id="2936582902048232286">Šādi jūsu Brave dati, tostarp, iespējams, arī jūsu paroles, tiks kopīgoti ar ierīci, kas ģenerēja šos atslēgvārdus.
+
+ Lūdzu, pārbaudiet, vai šos atslēgvārdus ģenerēja ierīce, kas pieder jums.
+
+Vai tiešām vēlaties to darīt?</translation>
 <translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
 <translation id="7473245612074035141">Sākt iestatīšanu</translation>
 <translation id="3411013544209536575">Palīdzības padomi</translation>
@@ -187,8 +213,11 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
 <translation id="7701040980221191251">Neviens</translation>
-<translation id="1274962333945373242">Novecojis Crypto Wallets paplašinājums</translation>
+<translation id="1274962333945373242">Kriptovalūtas maciņi (samazināti)</translation>
+<translation id="3695088618483091287">Brave maciņš (priekšrocība paplašinājumi)</translation>
 <translation id="9131889008937672866">Noklusējuma kriptovalūtas maks</translation>
+<translation id="4718664830805652430">Noklusējuma pamata valūta</translation>
+<translation id="7992507032049865603">Noklusējuma pamata kriptovalūta</translation>
 <translation id="1834467296210148203">Rādīt Brave maka ikonu rīkjoslā</translation>
 <translation id="8239147115686034860">Automātiski bloķēt Brave maku</translation>
 <translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
@@ -208,6 +237,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6476061084931271248">Restartējiet mezglu, lai izmaiņas stātos spēkā</translation>
 <translation id="3754226427671882382">Restartēt mezglu</translation>
 <translation id="949667118776341807">Pagriezt</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Šis nosaukums nav derīgs</translation>
 <translation id="6758961763875471084">Modificēt vienrangu sarakstu</translation>
 <translation id="1295874070797049002">Eksportēt atslēgu</translation>
@@ -218,6 +248,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="616058968889448209">IPFS pakalpojuma palaišanas kļūda, papildu informācija ir pieejama <ph name="BEGIN_LINK"/>diagnostikas lapā<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' atslēgas importēšana neizdevās</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' atslēgu neizdevās eksportēt</translation>
+<translation id="8860039076160511438">Atiestatīt maciņu</translation>
+<translation id="6369495274982305511">Vai tiešām vēlaties atiestatīt maciņu? Ja jūsu maciņš nav dublēts, atiestatot jūs zaudēsiet visus konta datus (tostarp visus saistītos līdzekļus). Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
+<translation id="1426410128494586442">Jā</translation>
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="3654980960391973513">Ģenerēt</translation>
 <translation id="5531501313997312487">Palaist mezglu</translation>
@@ -354,16 +387,17 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8053093028263274061">Diemžēl, saglabātā versija nav pieejama.</translation>
 <translation id="8517321676372639828">Meklēt saglabāto versiju</translation>
 <translation id="191143826155037518">Brave pieejamu padarījusi <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0 (Mozilla publiskā licence 2.0)<ph name="END_LINK_MPL"/> (MPL) un tā ietver <ph name="BEGIN_LINK_OSS"/>atklātā pirmkoda programmatūras<ph name="END_LINK_OSS"/> ar daudzām citām licencēm.
-        Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
+        Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkrēto<ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="4235920711083356755">Rādīt VPN pogu</translation>
 <translation id="4070612712151038707">Rāda VPN pogu rīkjoslā</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Ieslēgt VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Par Brave VPN</translation>
-<translation id="4378551569595875038">Notiek pievienošana...</translation>
-<translation id="3368922792935385530">pievienots</translation>
+<translation id="4378551569595875038">Notiek savienojuma izveide...</translation>
+<translation id="3368922792935385530">Savienots</translation>
 <translation id="1536754031901697553">Notiek atvienošana...</translation>
 <translation id="8030169304546394654">Atvienots</translation>
 <translation id="1863950594388384201">Rādīt VPN pogu rīkjoslā</translation>
@@ -385,4 +419,31 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="2808630562319398131">Atiestatīt Brave Rewards datus...</translation>
 <translation id="2273851479262317744">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="8581710194025054669">Lai tiešsaistē nodrošinātu augstāko privātuma līmeni, apsveriet iespēju iestatīt Brave kā datora noklusējuma pārlūku. Izmantojot Brave kā noklusējuma pārlūku, jebkura tīmekļa saite, uz kuras noklikšķināsiet, tiks atvērta, piemērojot Brave privātuma aizsardzību.</translation>
+<translation id="1241283133946520352">Tīkli</translation>
+<translation id="8205945804087322170">Pievienot jaunu tīklu</translation>
+<translation id="2156993118928861787">Nederīga adrese</translation>
+<translation id="2653659639078652383">Iesniegt</translation>
+<translation id="2556708692502648323">Maciņa tīkli</translation>
+<translation id="1330032157352961756">Jaunās ķēdes ID</translation>
+<translation id="9053905035135220650">Heksadecimāla pavediens, kas sākas ar 0x</translation>
+<translation id="726121047592132939">Jaunas ķēdes nosaukums</translation>
+<translation id="1034112277864078119">Ievadīt ķēdes nosaukumu</translation>
+<translation id="4672314527143443556">Ķēdes valūtas nosaukums</translation>
+<translation id="4652114030688989556">Ievadīt valūtas nosaukumu</translation>
+<translation id="1079960017149736097">Ķēdes valūtas simbols</translation>
+<translation id="1288105009659846362">Ievadīt valūtas simbolu</translation>
+<translation id="665660671251623018">Ķēdes valūtas decimālskaitļi</translation>
+<translation id="2978054488731497946">Ievadīt valūtas decimālskaitļus</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">Ievadiet URL</translation>
+<translation id="3047726704186619366">Ikonas URL</translation>
+<translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
+<translation id="6301398959353668507">Šis lauks nevar būt tukšs.</translation>
+<translation id="4514843126085243862">Nederīgs formāts, ķēdes ID ir heksadecimāls pavediens, kas sākas ar 0x.</translation>
+<translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
+<translation id="650071759190249039">Iekšēja kļūda, nav iespējams pievienot tīklu.</translation>
+<translation id="868529041590572443">Lūdzu, ievadiet informāciju par pamata valūtu</translation>
+<translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
+<translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
+<translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
 </translationbundle>

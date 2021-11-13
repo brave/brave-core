@@ -238,10 +238,6 @@
     "message": "Добавяне на средства",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Научете повече",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Повторно свързване",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Имате чакащи бакшиши поради недостатъчно средства",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Неуспешно свързване на портфейла",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Портфейлът ви не може да бъде потвърден, защото сте достигнали максималния лимит за потвърдени устройства.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Хмм, изглежда, че вашият портфейл Brave Rewards вече е потвърден с друг акаунт за $provider$. Опитайте да го потвърдите отново, като използвате предишния си акаунт.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT все още не се поддържа във вашия регион в Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Вашият акаунт в Uphold в момента е блокиран.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Вашият акаунт в Uphold все още е изчакващ.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Вашият акаунт в Uphold в момента е ограничен.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Щраквайки, вие се съгласявате с $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$. Дезактивирайте по всяко време в настройките.",
+    "message": "Разрешавайки, се съгласявате с $tos_link_begin$Условията за ползване$tos_link_end$ и $pp_link_begin$Политиката за поверителност$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Включете Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Включвайки рекламите, вие се съгласявате с $tos_link_begin$Условия за ползване$tos_link_end$ и $pp_link_begin$Политика за поверителност$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Вече можете да започнете безплатно обаждане",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Щракнете където и да е по екрана, за да продължите към Brave Talk.",
+    "message": "Щракнете или натиснете където и да е по екрана, за да продължите към Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

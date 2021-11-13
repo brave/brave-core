@@ -36,6 +36,7 @@
 <translation id="2448893613530489637">Menghalang penjejak &amp; iklan daripada dimuatkan dan dipaparkan di laman web</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
 <translation id="7142548388914389999">Benarkan analitik produk pengekalan privasi (P3A)</translation>
+<translation id="5254037869598726291">Maklumat P3A tanpa nama membantu Brave menganggarkan penggunaan keseluruhan, dan memastikan kami’ meningkatkan ciri popular.</translation>
 <translation id="4272190451231642425">Hantar laporan nahas secara automatik</translation>
 <translation id="2239766974964486304">Laporan nahas membantu Brave meningkatkan kestabilan produk untuk semua pengguna.</translation>
 <translation id="7977176350719484850">Anggaran Data\nDijimatkan</translation>
@@ -219,6 +220,14 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="7173114856073700355">Buka Tetapan</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4450893287417543264">Jangan tunjuk lagi</translation>
+<translation id="1056898198331236512">Amaran</translation>
+<translation id="1426410128494586442">Ya</translation>
+<translation id="7811264919113243207">Ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, kepada peranti yang menghasilkan kod QR ini.
+Sila semak sekali lagi bahawa kod QR ini dihasilkan oleh peranti yang anda miliki.
+Anda pasti anda ingin melakukan tindakan ini?</translation>
+<translation id="3097089005389027085">Ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, kepada peranti yang menghasilkan perkataan kod ini.
+Sila semak sekali lagi bahawa perkataan kod ini dihasilkan oleh peranti yang anda miliki.
+Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="597993392929850353">Lesen Brave</translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="6199596294742117349">Ini Tab Persendirian</translation>
@@ -410,6 +419,8 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="6755546361496900700">Pralihat Penukaran</translation>
 <translation id="2882813124794301799">Widget Stack</translation>
 <translation id="13296465911709339">Teks anda telah disalin ke papan klip.</translation>
+<translation id="4670943871783273148">Teks anda telah disimpan ke fail teks.</translation>
+<translation id="4432845796903761592">Fail tidak disimpan.</translation>
 <translation id="7144878232160441200">Cuba Semula</translation>
 <translation id="2977461003134694205">Stat Privasi</translation>
 <translation id="4643117005422448078">Laman Popular</translation>
@@ -471,11 +482,12 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="8037420924417098685">Untuk memulakan panggilan percuma, hidupkan Brave Rewards</translation>
 <translation id="8961724619078500274">Dengan Brave Rewards, anda memperoleh token untuk melihat iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah; atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tiada penangguhan.</translation>
 <translation id="7307847920988946894">Hidupkan Rewards</translation>
+<translation id="7872993190040589450">Dengan mendayakan, anda bersetuju dengan <ph name="TERMS_OF_SERVICE"/> dan <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Untuk memulakan panggilan percuma, dayakan Brave Private Ads</translation>
 <translation id="7930006085154756245">Dengan Brave Private Ads, anda memperoleh token untuk melihat iklan peribadi (data anda selamat). Tukarkan token kepada wang tunai, kad hadiah; atau berikan tip kepada laman web yang anda gemari. Tiada penjejakan. Tiada penangguhan.</translation>
 <translation id="4992617448154987397">Hidupkan Brave Private Ads</translation>
 <translation id="3415016869273103668">Anda kini boleh memulakan panggilan percuma</translation>
-<translation id="7073631403665023390">Ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
+<translation id="7073631403665023390">Klik atau ketik di mana-mana sahaja pada skrin untuk terus ke Brave Talk.</translation>
 <translation id="626339649633171286">Mahu mengetahui lebih lanjut mengenai Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Anda telah menukar <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> kepada <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Sila periksa sambuangan rangkaian anda.</translation>
@@ -531,13 +543,15 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="5460364286096798286">Tahan kripto dalam jagaan anda. Dagangkan aset. Lihat Harga dan prestasi portfolio. Labur, Pinjam, dan beri pinjaman dengan DeFi.</translation>
 <translation id="1748009926009835882">Sediakan Kripto</translation>
 <translation id="2759836790106646094">Sandarkan dompet anda sekarang!</translation>
-<translation id="7685607706678113458">Pada langkah seterusnya, anda akan melihat 12 perkataan yang membolehkan anda memulihkan dompet kripto anda.</translation>
+<translation id="5156354224138379811">Pada langkah seterusnya, anda akan melihat 12 perkataan yang membolehkan anda memulihkan dompet kripto anda.</translation>
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="5024543173656851695">Saya faham bahawa jika saya kehilangan perkataan pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
 <translation id="3933122286596948824">Frasa pemulihan anda</translation>
 <translation id="6146351434671268516">Tulis atau salin perkataan ini dengan susunan yang betul dan simpan ia di tempat yang selamat.</translation>
 <translation id="7408247683131762445">AMARAN: Jangan sekali-kali mendedahkan frasa sandaran anda. Sesiapa yang mempunyai frasa ini dapat mengambil dana anda selama-lamanya.</translation>
 <translation id="939275786514736244">Saya telah menyandarkan frasa saya di tempat yang selamat</translation>
+<translation id="6896758677409633944">Salin</translation>
+<translation id="5317780077021120954">Simpan</translation>
 <translation id="2604744480284798833">Buat sandaran dompet anda sekarang untuk melindungi portfolio kripto anda daripada kehilangan akses.</translation>
 <translation id="1202920745614909195">Beli kripto dengan Apple Pay, kad kredit atau debit.</translation>
 <translation id="841880029259839903">Hantar kripto atau pindahkan dari satu akaun ke akaun lain.</translation>
@@ -559,13 +573,13 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Dayakan buka kunci cap jari?</translation>
 <translation id="5493402808936397665">Dayakan biometrik untuk membuka kunci dompet anda dengan cepat tanpa memasukkan kata laluan anda.</translation>
-<translation id="1544192797660353713">Dompet Brave</translation>
+<translation id="1544192797660353713">Dompet</translation>
 <translation id="6901810042765869341">Masukkan frasa pemulihan anda untuk memulihkan akaun kripto Brave Wallet anda.</translation>
 <translation id="1970161551843843564">Pulihkan Akaun Kripto</translation>
 <translation id="4811736040444856406">Tunjukkan frasa pemulihan</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan anda</translation>
 <translation id="2339124864228588937">Sahkan frasa pemulihan</translation>
-<translation id="6202787708155200390">Ketik perkataan untuk meletakkannya di sebelah satu sama lain mengikut urutan yang betul.</translation>
+<translation id="2718669004132381989">Ketik perkataan untuk meletakkan perkataan itu di sebelah satu sama lain mengikut urutan yang betul.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
@@ -573,7 +587,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="1569452037668432756">Masukkan kata laluan anda untuk membuka kunci</translation>
 <translation id="224719674509047150">Kata laluan mesti sekurang-kurangnya 7 aksara yang mengandungi sekurang-kurangnya satu nombor dan satu aksara khas</translation>
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
-<translation id="745115390910697838">Frasa tidak sepadan, Sila cuba lagi.</translation>
+<translation id="5760476995887363522">Frasa tidak sepadan. Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
 <translation id="6392640873800632439">Harga Pasaran dalam <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Daripada</translation>
@@ -587,6 +601,12 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="1987317783729300807">Akaun</translation>
 <translation id="3535654229833214438">Transaksi</translation>
 <translation id="4636930964841734540">Maklumat</translation>
+<translation id="2449682593754783720">1 Jam</translation>
+<translation id="969133700726811190">1 Hari</translation>
+<translation id="5882300031363619940">1 Minggu</translation>
+<translation id="5698094150392720512">1 Bulan</translation>
+<translation id="5483736362376139517">1 Tahun</translation>
+<translation id="6979737339423435258">Sepanjang masa</translation>
 <translation id="6284218950354553099">Hantar ping penggunaan harian secara automatik ke Brave</translation>
 <translation id="5288333155754958121">Ping peribadi, tanpa nama ini membolehkan Brave menganggarkan pengguna aktif.</translation>
 <translation id="3819257035322786455">Sandaran</translation>
@@ -627,7 +647,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="6277055349883621705">Perbaharui secara tahunan dan jimat 16%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / thn.</translation>
 <translation id="4487678670820292781">$119.88</translation>
-<translation id="5867778679088331977">Cuba secara percuma untuk 7 hari. Selepas 7 hari, anda akan dikenakan caj harga pelan. Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.</translation>
+<translation id="2655185358771731232">Cuba secara percuma untuk 7 hari. Selepas 7 hari, anda akan dikenakan caj harga pelan. Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.</translation>
 <translation id="6053992191006521518">Cuba secara PERCUMA</translation>
 <translation id="721747358270435486">Pasang VPN</translation>
 <translation id="836074276610740314">Pasang Profil VPN</translation>
@@ -701,4 +721,11 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="275990379543116961">Dana tidak mencukupi untuk gas</translation>
 <translation id="3292453499915466604">Kecairan tidak mencukupi</translation>
 <translation id="3380365263193509176">Ralat tidak diketahui</translation>
+<translation id="5932938770824268122">Kekunci Persendirian</translation>
+<translation id="2472882733835903303">Tunjukkan Kekunci Persendirian</translation>
+<translation id="4391056902675005799">Sembunyikan Kekunci Persendirian</translation>
+<translation id="5929798090073091848">Amaran: Jangan sekali-kali dedahkan kunci ini. Sesiapa sahaja dengan kunci persendirian boleh mencuri mana-mana aset yang tersimpan dalam akaun anda.</translation>
+<translation id="1133619932669546254">Aktifkan <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">JENIS FUNGSI: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Tiada data</translation>
 </translationbundle>

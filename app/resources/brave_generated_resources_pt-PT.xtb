@@ -54,6 +54,27 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="1144810021918451336">Não o protege contra websites, transferências e extensões perigosos.</translation>
 <translation id="6285118765755298263">Indexar outros motores de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente Web sites que seguem a especificação OpenSearch</translation>
+<translation id="6821903322090655051">Recompensas Brave desativadas</translation>
+<translation id="9184430019924125685">Clique aqui para obter mais informações</translation>
+<translation id="3849957491997306859">Detetado automaticamente</translation>
+<translation id="8798099450830957504">Predefinição</translation>
+<translation id="4176463684765177261">Desativada</translation>
+<translation id="4851215387785619212">Anúncios privados do Brave</translation>
+<translation id="7808122468353671181">Receba tokens ao visualizar os anúncios do Brave. Os anúncios apresentados são baseados nos interesses do utilizador conforme inferido pelo comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do navegador.</translation>
+<translation id="1758947220824279023">Número máximo de anúncios para apresentação</translation>
+<translation id="8578912649458880781">Segmentação de anúncios a nível de estado</translation>
+<translation id="3678362265519557511">Isto permite que o Brave apresente anúncios que correspondem especificamente ao seu estado. <ph name="BEGIN_LINK"/>Obter mais informações<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Contribuição Automática</translation>
+<translation id="9132509928968869844">Limite de contribuição automática mensal</translation>
+<translation id="7286722244752781970">Tempo mínimo de página até registar uma visita</translation>
+<translation id="4424486208397124985">Visitas mínimas por relevância do publicador</translation>
+<translation id="6248554379744796526">Mostrar sites não verificados na lista</translation>
+<translation id="3241299447027267831">Permitir contribuições para vídeos</translation>
+<translation id="924777189963477634">Ao ativar a opção Contribuição automática, concorda com os <ph name="BEGIN_LINK_TOS"/>Termos de Serviço<ph name="END_LINK_TOS"/> e a <ph name="BEGIN_LINK_PP"/>Política de Privacidade<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Botão Sugestões</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Nova ficha de registo</translation>
 <translation id="1988804048511540801">Aspeto novo separador</translation>
 <translation id="2970343821770026391">Painel de controlo</translation>
@@ -69,10 +90,12 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8934172355414207733">Privacidade com Tor</translation>
 <translation id="1970435562892104727">Esta é uma janela privada com Tor</translation>
 <translation id="1037341607922068025">Abrir Janela Privada com Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Abrir em Tor</translation>
 <translation id="7643538479215207633">Abrir pelo uso de IPFS</translation>
 <translation id="3094628781200061820">Publicar e recuperar ficheiros do IPFS</translation>
 <translation id="1672270084584211506">Onion Disponível</translation>
+<translation id="406832631167785034">Abrir através do endereço .onion</translation>
 <translation id="4901618511712685702">Importar para IPFS</translation>
 <translation id="6794469945030154569">Esta página</translation>
 <translation id="5037852323412456577">Imagem selecionada</translation>
@@ -94,7 +117,6 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2638041073279639246">Abrir ligação em janela privada com Tor</translation>
 <translation id="3425600262621021599">Abrir ligação em janela privada Brave com Tor</translation>
 <translation id="575838692088926391">Partilhar pasta local utilizando IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
 <translation id="7924918279836988121">Serviço de Ledger Bat</translation>
 <translation id="4472575034687746823">Começar</translation>
@@ -121,13 +143,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
 <translation id="4078738236287221428">Agressivo</translation>
 <translation id="7740996059027112821">Padrão</translation>
-<translation id="4176463684765177261">Desativada</translation>
 <translation id="5770288601196774623">Apenas no ''site''</translation>
 <translation id="3587482841069643663">Tudo</translation>
 <translation id="5533533363827555308">Estrito, pode causar problemas nos ''sites''</translation>
 <translation id="8792121506918889955">Política de utilização WebRTC IP</translation>
 <translation id="6165508094623778733">Aprenda mais</translation>
-<translation id="8798099450830957504">Predefinição</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas pré-definidas</translation>
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
@@ -174,6 +194,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
 <translation id="115699408012835975">Caso vise proceder à redefinição da Sincronização, precisará reintroduzir um código de sincronização de um outro dispositivo para os sincronizar. Tem a certeza que pretende continuar?</translation>
 <translation id="6092564993102418148">Tem a certeza de que pretende remover o dispositivo selecionado da cadeia de sincronização?</translation>
+<translation id="2936582902048232286">Aviso: esta ação irá partilhar os dados do Brave, incluindo potencialmente as palavras-passe, com o dispositivo que criou as palavras do código.
+
+Deve verificar com cuidado se as palavras do código foram criadas por um dispositivo do qual é proprietário.
+
+Tem a certeza de que pretende continuar?</translation>
 <translation id="3396347744975515056">A Brave Sync foi atualizada e precisa ser configurada</translation>
 <translation id="7473245612074035141">Iniciar Configuração</translation>
 <translation id="3411013544209536575">Ajuda</translation>
@@ -187,8 +212,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8488282162676695335">Wallet Brave</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="7701040980221191251">Nenhum</translation>
-<translation id="1274962333945373242">Extensão descontinuada Crypto Wallets</translation>
+<translation id="1274962333945373242">Carteiras de criptomoedas (descontinuada)</translation>
+<translation id="3695088618483091287">Carteira Brave (preferir extensões)</translation>
 <translation id="9131889008937672866">Carteira de criptomoedas predefinida</translation>
+<translation id="4718664830805652430">Moeda base predefinida</translation>
+<translation id="7992507032049865603">Criptomoeda base predefinida</translation>
 <translation id="1834467296210148203">Mostrar ícone da carteira do Brave na barra de ferramentas</translation>
 <translation id="8239147115686034860">Bloquear automaticamente a carteira Brave</translation>
 <translation id="414639769490080648">O número de minutos a aguardar até a Carteira Brave ser automaticamente bloqueada</translation>
@@ -207,6 +235,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="6476061084931271248">Reiniciar o nó para aplicar as alterações</translation>
 <translation id="3754226427671882382">Reiniciar nó</translation>
 <translation id="949667118776341807">Rodar</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Este nome não é válido</translation>
 <translation id="6758961763875471084">Modificar a lista de parceiros</translation>
 <translation id="1295874070797049002">Exportar chave</translation>
@@ -217,6 +246,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="616058968889448209">Erro de iniciação do serviço IPFS, mais informações disponíveis em <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Falha ao importar a chave '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' falha ao exportar a chave</translation>
+<translation id="8860039076160511438">Repor carteira</translation>
+<translation id="6369495274982305511">Tem a certeza de que pretende repor a carteira? Ao repor a carteira, irá perder todos os dados da conta (incluindo todos os fundos associados), se não existir uma cópia de segurança da mesma. Introduza "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="1426410128494586442">Sim</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="3654980960391973513">Gerar</translation>
 <translation id="5531501313997312487">Iniciar nó</translation>
@@ -358,6 +390,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4235920711083356755">Mostrar o botão VPN</translation>
 <translation id="4070612712151038707">Mostra o botão VPN na barra de tarefas</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Ativar/desativar VPN</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="2345974803401546682">Sobre a VPN Brave</translation>
 <translation id="4378551569595875038">A ligar...</translation>
@@ -383,4 +416,31 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2808630562319398131">Redefinir dados da Brave Rewards...</translation>
 <translation id="2273851479262317744">Definir o Brave como o navegador predefinido</translation>
 <translation id="8581710194025054669">Para garantir a melhor privacidade online, considere definir o Brave como o navegador predefinido no seu computador. Com o Brave como predefinição, qualquer ligação da Web em que clicar irá abrir com as proteções de privacidade do Brave.</translation>
+<translation id="1241283133946520352">Redes</translation>
+<translation id="8205945804087322170">Adicionar nova rede</translation>
+<translation id="2156993118928861787">Endereço não válido</translation>
+<translation id="2653659639078652383">Submeter</translation>
+<translation id="2556708692502648323">Redes da carteira</translation>
+<translation id="1330032157352961756">O ID da nova cadeia</translation>
+<translation id="9053905035135220650">Uma cadeia hexadecimal com um prefixo 0x</translation>
+<translation id="726121047592132939">O nome da nova cadeia</translation>
+<translation id="1034112277864078119">Introduzir nome da cadeia</translation>
+<translation id="4672314527143443556">Nome da moeda da cadeia</translation>
+<translation id="4652114030688989556">Introduzir nome da moeda</translation>
+<translation id="1079960017149736097">Símbolo da moeda da cadeia</translation>
+<translation id="1288105009659846362">Introduzir símbolo da moeda</translation>
+<translation id="665660671251623018">Decimais da moeda da cadeia</translation>
+<translation id="2978054488731497946">Introduzir decimais da moeda</translation>
+<translation id="2727514928168763432">URLs de RPC</translation>
+<translation id="7059127752542505809">Introduza o URL</translation>
+<translation id="3047726704186619366">URLs de ícones</translation>
+<translation id="2487558607408469181">URLs do Block Explorer</translation>
+<translation id="6301398959353668507">Este campo não pode estar em branco.</translation>
+<translation id="4514843126085243862">Formato inválido, o ID da cadeia é uma cadeia hexadecimal com um prefixo 0x</translation>
+<translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
+<translation id="650071759190249039">Erro interno. Não é possível adicionar a rede.</translation>
+<translation id="868529041590572443">Preencha todas as informações sobre a moeda nativa</translation>
+<translation id="1062463687579789365">Personalização das redes da carteira</translation>
+<translation id="2234108191702901162">Não é possível adicionar a rede</translation>
+<translation id="2618193846561624884">Pretende atualizar a rede existente?</translation>
 </translationbundle>

@@ -221,6 +221,14 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7173114856073700355">Obre Configuració</translation>
 <translation id="6965382102122355670">D'acord</translation>
 <translation id="4450893287417543264">No ho tornis a mostrar</translation>
+<translation id="1056898198331236512">Advertiment</translation>
+<translation id="1426410128494586442">Sí</translation>
+<translation id="7811264919113243207">Amb això es compartiran les teves dades de Brave, incloses les teves contrasenyes, amb el dispositiu que ha generat aquest codi QR.
+Si us plau, revisa que aquest codi QR s'hagi generat en un dels teus dispositius.
+Segur que vols continuar?</translation>
+<translation id="3097089005389027085">Amb això es compartiran les teves dades de Brave, incloses possiblement les teves contrasenyes, amb el dispositiu que ha generat aquestes paraules de codi.
+Si us plau, revisa que aquestes paraules de codi s'hagin generat en un dels teus dispositius.
+Segur que vols continuar?</translation>
 <translation id="597993392929850353">Llicència de Brave</translation>
 <translation id="6336451774241870485">Pestanya d'incògnit nova</translation>
 <translation id="6199596294742117349">Això és una pestanya privada</translation>
@@ -413,6 +421,8 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="6755546361496900700">Vista Prèvia de Conversió</translation>
 <translation id="2882813124794301799">Pila de Ginys</translation>
 <translation id="13296465911709339">El text s'ha copiat al porta-retalls.</translation>
+<translation id="4670943871783273148">El teu text s'ha desat en un document de text.</translation>
+<translation id="4432845796903761592">Arxiu no desat.</translation>
 <translation id="7144878232160441200">Torna-ho a intentar</translation>
 <translation id="2977461003134694205">Estadístiques de Privacitat</translation>
 <translation id="4643117005422448078">Principals llocs</translation>
@@ -475,11 +485,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="8037420924417098685">Per iniciar una trucada gratuïta, activeu Brave Rewards</translation>
 <translation id="8961724619078500274">Amb Brave Rewards guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
 <translation id="7307847920988946894">Activeu les recompenses</translation>
+<translation id="7872993190040589450">Si ho habilites, acceptes les <ph name="TERMS_OF_SERVICE"/> i la <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Per iniciar una trucada gratuïta, activeu Brave Private Ads</translation>
 <translation id="7930006085154756245">Amb Brave Private Ads guanyeu criptovalors per veure anuncis privats (les vostres dades estan segures). Convertiu aquests criptovalors en efectiu, targetes de regal, etc. o, fins i tot, doneu propina als llocs web que us agraden. Sense seguiment ni alentiments.</translation>
 <translation id="4992617448154987397">Activeu Brave Private Ads</translation>
 <translation id="3415016869273103668">Ara podeu iniciar una trucada gratuïta</translation>
-<translation id="7073631403665023390">Toqueu a qualsevol lloc de la pantalla per continuar cap a la conversa de Brave.</translation>
+<translation id="7073631403665023390">Fes clic o toca qualsevol lloc de la pantalla per continuar a Brave Talk.</translation>
 <translation id="626339649633171286">Voleu saber més sobre Brave Rewards? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Heu convertit <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> to <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Si us plau, comproveu la connexió a la xarxa.</translation>
@@ -535,13 +546,15 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="5460364286096798286">Conserveu les criptomonedes en custòdia. Comercialitzeu amb actius. Vegeu els preus i el rendiment de la cartera. Invertiu, demaneu i deixeu en préstec amb DeFi.</translation>
 <translation id="1748009926009835882">Configura les criptomonedes</translation>
 <translation id="2759836790106646094">Feu una còpia de seguretat de la cartera ara!</translation>
-<translation id="7685607706678113458">Al següent pas, veureu 12 paraules que us permetran recuperar el vostre criptomoneder.</translation>
+<translation id="5156354224138379811">En el pas següent veuràs 12 paraules que et permetran recuperar la teva cartera de criptomoneda.</translation>
 <translation id="2359808026110333948">Continua</translation>
 <translation id="5024543173656851695">Entenc que si perdo les meves paraules de recuperació, no podré accedir al meu criptomoneder</translation>
 <translation id="3933122286596948824">La vostra frase de recuperació</translation>
 <translation id="6146351434671268516">Anoteu o copieu aquestes paraules en l'ordre correcte i deseu-les en algun lloc segur.</translation>
 <translation id="7408247683131762445">ADVERTÈNCIA: no reveleu mai la frase de seguretat. Qualsevol que obtingui aquesta frase podrà obtenir sempre més els vostres fons.</translation>
 <translation id="939275786514736244">He fet una còpia de seguretat de la meva frase en algun lloc segur</translation>
+<translation id="6896758677409633944">Còpiar</translation>
+<translation id="5317780077021120954">Desa</translation>
 <translation id="2604744480284798833">Feu una còpia de seguretat de la vostra cartera ara per protegir-la de la pèrdua d'accés.</translation>
 <translation id="1202920745614909195">Compreu criptomonedes amb Apple Pay, targeta de crèdit o dèbit.</translation>
 <translation id="841880029259839903">Envieu criptomonedes o transferiu-les d'un compte a un altre.</translation>
@@ -563,13 +576,13 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Voleu permetre el desbloqueig de la identificació per empremta dactilar?</translation>
 <translation id="5493402808936397665">Permeteu que la biometria desbloquegi ràpidament la vostra cartera sense introduir la contrasenya.</translation>
-<translation id="1544192797660353713">Cartera Brave</translation>
+<translation id="1544192797660353713">Cartera</translation>
 <translation id="6901810042765869341">Introduïu la frase de recuperació per restaurar el vostre compte de criptomonedes de la cartera de Brave.</translation>
 <translation id="1970161551843843564">Restaura el compte de criptomonedes</translation>
 <translation id="4811736040444856406">Mostra la frase de recuperació</translation>
 <translation id="283071225285270357">Introduïu la frase de recuperació</translation>
 <translation id="2339124864228588937">Comproveu la frase de recuperació</translation>
-<translation id="6202787708155200390">Toqueu les paraules per col·locar-les una al costat de l'altra en l'ordre correcte.</translation>
+<translation id="2718669004132381989">Toca les paraules per posar-les unes al costat de les altres en l'ordre correcte.</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="3157931365184549694">Restaura</translation>
 <translation id="9111102763498581341">Desbloqueja</translation>
@@ -577,7 +590,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="1569452037668432756">Introduïu la contrasenya per desbloquejar</translation>
 <translation id="224719674509047150">La contrasenya ha de tenir com a mínim 7 caràcters que incloguin almenys un número i un caràcter especial</translation>
 <translation id="1144810021918451336">No us protegeix contra llocs web, descàrregues i extensions perilloses.</translation>
-<translation id="745115390910697838">Les frases no coincideixen. Torneu-ho a intentar.</translation>
+<translation id="5760476995887363522">Les frases no coincideixen. Si us plau, torna-ho a provar.</translation>
 <translation id="2360588547830602174">S'ha produït un error en la recuperació del compte. Torneu-ho a intentar.</translation>
 <translation id="6392640873800632439">Preu de mercat en <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Des de</translation>
@@ -591,6 +604,12 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3535654229833214438">Transaccions</translation>
 <translation id="4636930964841734540">Informació</translation>
+<translation id="2449682593754783720">1 hora</translation>
+<translation id="969133700726811190">1 dia</translation>
+<translation id="5882300031363619940">1 setmana</translation>
+<translation id="5698094150392720512">1 mes</translation>
+<translation id="5483736362376139517">1 any</translation>
+<translation id="6979737339423435258">Tot el període</translation>
 <translation id="6284218950354553099">Envieu automàticament el ping d'ús diari a Brave</translation>
 <translation id="5288333155754958121">Aquest ping anònim privat permet a Brave calcular els usuaris actius.</translation>
 <translation id="3819257035322786455">Còpia de seguretat</translation>
@@ -631,7 +650,7 @@ fins que es verifiqui o fins que hagin passat 90 dies.</translation>
 <translation id="6277055349883621705">Renoveu-la anualment per estalviar-vos un 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
 <translation id="4487678670820292781">119,88 $</translation>
-<translation id="5867778679088331977">Proveu-lo de franc durant 7 dies. Després de 7 dies, se us cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
+<translation id="2655185358771731232">Prova-ho de franc durant 7 dies. Passats aquests 7 dies, se't cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
 <translation id="6053992191006521518">Proveu-lo GRATIS</translation>
 <translation id="721747358270435486">Instal·leu la VPN</translation>
 <translation id="836074276610740314">Instal·leu el perfil de VPN</translation>
@@ -705,4 +724,11 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="275990379543116961">Fons insuficients per a gas</translation>
 <translation id="3292453499915466604">Liquiditat insuficient</translation>
 <translation id="3380365263193509176">Error desconegut</translation>
+<translation id="5932938770824268122">Clau privada</translation>
+<translation id="2472882733835903303">Mostrar clau privada</translation>
+<translation id="4391056902675005799">Amagar clau privada</translation>
+<translation id="5929798090073091848">Atenció: no divulguis mai aquesta clau. Qualsevol persona que tingui la clau privada pot robar-te els actius que tinguis al teu compte.</translation>
+<translation id="1133619932669546254">Activar <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">TIPUS DE FUNCIÓ: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">No hi ha dades</translation>
 </translationbundle>

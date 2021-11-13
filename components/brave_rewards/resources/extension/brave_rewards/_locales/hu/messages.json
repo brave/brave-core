@@ -238,10 +238,6 @@
     "message": "Pénz hozzáadása",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "További információ",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Újracsatlakozás",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Függőben lévő borravalóid vannak, mivel nincs elegendő fedezet",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Pénztárca hozzákapcsolása nem sikerült",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Pénztárcád nem ellenőrizhető, mert elérted a maximális ellenőrzött eszközhatárt.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Úgy tűnik, hogy a Brave Rewards pénztárcáját már egy másik fióknál ellenőrizték: $provider$ Próbálja meg újra ellenőrizni a korábbi fiókkal.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Az Upholdban a BAT egyelőre nem támogatott az Ön régiójában.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Uphold-fiókja jelenleg zárolva van.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Uphold-fiókja továbbra is függőben van.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Uphold-fiókja jelenleg korlátozva van.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "A folytatással elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$. Bármikor kikapcsolhatja a Beállításokban.",
+    "message": "Az engedélyezéssel elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads bekapcsolása",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Az Ads bekapcsolásával elfogadja a $tos_link_begin$Szolgáltatási feltételeket$tos_link_end$ és az $pp_link_begin$Adatvédelmi szabályzatot$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Most már indíthat ingyenes hívást",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Kattintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.",
+    "message": "Kattintson vagy koppintson bárhova a képernyőn, hogy továbblépjen a Brave Talkhoz.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

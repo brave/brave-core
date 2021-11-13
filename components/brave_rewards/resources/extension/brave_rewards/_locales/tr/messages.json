@@ -238,10 +238,6 @@
     "message": "Sermaye Ekle",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Daha Fazla Bilgi Edinin",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Tekrar bağlan",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Yetersiz fon nedeniyle bekleyen bahşişleriniz var",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Cüzdan bağlantısı başarısız oldu",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Cüzdanınız doğrulanamaz çünkü en fazla doğrulanmış cihaz limitine ulaştınız.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Brave Ödülleri cüzdanınız zaten başka bir $provider$ hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Uphold'daki hesabınız şu anda engelli.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Uphold'daki hesabınız hala beklemede.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Tıklayarak $tos_link_begin$Kullanım Koşulları$tos_link_end$'nı ve $pp_link_begin$Gizlilik İlkesi$pp_link_end$'ni kabul etmiş olursunuz. Ayarlar bölümünden istediğiniz zaman devre dışı bırakabilirsiniz.",
+    "message": "Etkinleştirerek, $tos_link_begin$Hizmet Koşullarını$tos_link_end$ ve $pp_link_begin$Gizlilik İlkesini$pp_link_end$ kabul etmiş sayılırsınız.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Özel Reklamlar'ı Aç",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ads'i açarak, $tos_link_begin$Kullanım Koşulları$tos_link_end$'nı  ve $pp_link_begin$Gizlilik İlkesi$pp_link_end$'ni kabul etmiş olursunuz.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Şimdi ücretsiz bir arama başlatabilirsiniz",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave Sohbet'e devam etmek için ekranın herhangi bir yerine tıklayın.",
+    "message": "Brave Sohbet'e devam etmek için ekranın herhangi bir yerine dokunun veya tıklayın.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

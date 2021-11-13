@@ -38,7 +38,6 @@
 <translation id="7798069806040634998">Brave tarvitsee tallennustilan käyttöoikeuden tiedostojen lataamiseen.</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="7933006624150961626">Jos haluat pääsyn Brave-sisältöösi kaikilla laitteilla, kirjaudu sisään voidaksesi laittaa synkronoinnin päälle.</translation>
-<translation id="5486618155264784386">Asenna Brave-käyttöjärjestelmä</translation>
 <translation id="7291143854620707672">Työprofiilin järjestelmänvalvoja voi poistaa tämän profiilin käytön aikana luotua Brave-dataa (esim. kirjanmerkit, historia, salasanat ja muut asetukset). <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Brave-käyttöjärjestelmä täytyy käynnistää uudelleen, jotta päivitys voidaan ottaa käyttöön.</translation>
 <translation id="7387051847644272380">Asennuksessa ilmeni käyttöjärjestelmävirhe. Lataa Brave uudelleen.</translation>
@@ -51,8 +50,6 @@
 <translation id="777113543093865885">Poista Braveista…</translation>
 <translation id="2885378588091291677">Tehtävänhallinta</translation>
 <translation id="2176825726964012531">Tietoja &amp;Braveista</translation>
-<translation id="2944515913673001130"><ph name="BEGIN_PARAGRAPH1"/>Muista: asennus <ph name="BEGIN_BOLD"/>tyhjentää koko kiintolevysi<ph name="END_BOLD"/>. Varmista, että olet varmuuskopioinut tärkeän datan.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Kun asennus on alkanut, sitä ei voi perua.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
 <translation id="2953892977076487219">Brave yrittää muuttaa salasanoja.</translation>
 <translation id="8755404239607088219">Brave ei voi tarkistaa salasanojasi. Yritä myöhemmin uudelleen.</translation>
@@ -75,7 +72,6 @@
 <translation id="2711887072399498551">Tällä tilillä on jo Brave-profiili</translation>
 <translation id="2297290224191497273">Vaihdetaanko nykyiseen Brave-profiiliin?</translation>
 <translation id="2450003541323895471">Kun käytät Brave-profiileja, voit pitää kaiken Brave-sisällön erillään. Luo profiileja kavereita ja perhettä varten tai tee ero työn ja hauskanpidon välille.</translation>
-<translation id="7275165473619697274">Brave-käyttöjärjestelmän asennus käynnissä</translation>
 <translation id="9216183508558772570">Brave ilmoittaa, kun kirjaudut sisään vaarantuneella salasanalla</translation>
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Valitsemalla <ph name="SHORTCUT"/> voit vaihdella eri Brave-profiilien välillä</translation>
@@ -100,7 +96,6 @@
 <translation id="8923080813984421771"><ph name="MANAGER"/> edellyttää, että luet ja hyväksyt seuraavat käyttöehdot ennen tämän laitteen käyttöä. Nämä ehdot eivät laajenna, muokkaa tai rajoita Brave-käyttöjärjestelmän ehtoja.</translation>
 <translation id="3262506503470845422">Ohjeita Bravein käyttöön</translation>
 <translation id="7691786510374174420">Asennus epäonnistui tuntemattoman virheen takia. Jos Brave on tällä hetkellä käynnissä, sulje se ja yritä uudelleen.</translation>
-<translation id="429583012151745428">Asennus on kesken. Älä sammuta laitetta. Asennuksen pitäisi kestää korkeintaan 20 minuuttia. Laite sammuu automaattisesti asennuksen jälkeen.</translation>
 <translation id="9183662282810237335">Suljetaanko Brave silti?</translation>
 <translation id="4065288863231444640">Jätä Brave käyntiin taustalle</translation>
 <translation id="8148611988012584308">Bravein muokkaus ja hallinta</translation>
@@ -192,7 +187,6 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="6666624454809779082">Brave on jo asennettuna kaikille tietokoneen käyttäjille.</translation>
 <translation id="5360050006043219962">Jos haluat pääsyn Brave-sisältöösi kaikilla laitteilla, kirjaudu sisään ja laita sitten synkronointi päälle.</translation>
 <translation id="8291513491595858997">Vanhempasi ovat laittaneet Bravein sivustojen, sovellusten ja laajennusten käyttöluvat pois päältä. Käyttöönottoa (<ph name="EXTENSION_TYPE_PARAMETER"/>) ei sallita.</translation>
-<translation id="1810203443153428607">Brave-käyttöjärjestelmän asentaminen korvaa kaiken laitteellasi olevan datan.</translation>
 <translation id="8211837073776713955">Brave ilmoittaa sinulle, jos salasanasi ovat vaarantuneet</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopioitu Braveiin)</translation>
@@ -204,6 +198,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="3335606533094650083">Brave tarvitsee oikeuden käyttää mikrofoniasi tällä sivustolla.</translation>
 <translation id="1705567146636171298">Päivitä Brave</translation>
 <translation id="5499063270485366718">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Bravelle kuvausten luomista varten.</translation>
+<translation id="151916274998710826">Muuta Bravein tärkeimpiä yksityisyysvalintoja</translation>
 <translation id="1008530050039597147">Brave tarvitsee kameran luvan tällä sivustolla</translation>
 <translation id="1197672524850678392">Bravein käynnistäminen epäonnistui. Yritä uudelleen.</translation>
 <translation id="3405035915691517126">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin päästä.</translation>
@@ -228,10 +223,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
     Brave-käyttöjärjestelmän asetuksiin<ph name="LINK_END"/>.</translation>
 <translation id="3293668930608086049">Brave käyttää kameraasi ja mikrofoniasi.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
-<translation id="1133082137044153811"><ph name="BEGIN_PARAGRAPH1"/>Ennen aloittamista varmista, että sinulla on ajan tasalla oleva varmuuskopio datastasi. Brave-käyttöjärjestelmän asentaminen korvaa kaiken kovalevylläsi olevan datan.<ph name="END_PARAGRAPH1"/>
-          <ph name="BEGIN_PARAGRAPH2"/>Brave ei vastaa menetetystä datasta eikä takaa, että Brave-käyttöjärjestelmä toimii sertifioimattomilla malleilla. Lisätietoja sertifioiduista malleista on täällä: [TBD].<ph name="END_PARAGRAPH2"/>
-          <ph name="BEGIN_PARAGRAPH3"/>Lue lisää Brave-käyttöjärjestelmän asentamisesta ja datan poistamisesta: [TBD URL]<ph name="END_PARAGRAPH3"/>
-          <ph name="BEGIN_PARAGRAPH4"/>Jos olet valmis jatkamaan, valitse "Asenna Brave-käyttöjärjestelmä", niin opastamme sinut helppojen asennusvaiheiden läpi. Voit vielä vahvistaa asennuksen, ennen kuin tietokoneellesi tehdään muutoksia.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="3343095737966473035">Brave ei ole oletusselain.</translation>
 <translation id="5477319665405831211">Voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="5419189641394808652">Brave ei voinut synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
@@ -296,5 +287,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Yksityiset ikkunat ei avata uudelleen.</translation>
+<translation id="4703432949110765917">Oletusasetukset toimivat useimmissa profiileissa, mutta voit mukauttaa ne Braven käyttötapaasi sopivaksi</translation>
 <translation id="2176087127109773485">Voit hallita sisäänkirjautuneita Brave-synkronointiketjujasi. Brave-synkronointiketjujasi käytetään Brave-selaimelle, Play-kaupalle, Gmailille ja muille. Jos haluat lisätä tilin toiselle käyttäjälle, esim. perheenjäsenelle, lisää uusi profiili kohteeseen <ph name="DEVICE_TYPE"/> sen sijaan. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 </translationbundle>

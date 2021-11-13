@@ -238,10 +238,6 @@
     "message": "Dodaj sredstva",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Saznajte više",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Ponovno poveži",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Imate napojnice na čekanju zbog nedovoljnog raspoloživog iznosa",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Neuspješno povezivanje novčanika",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Nije moguće potvrditi vaš novčanik jer ste dosegnuli najveće potvrđeno ograničenje uređaja.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Čini se da se vaš novčanik za značajku Brave Rewards već potvrdio za drugi račun $provider$. Pokušajte ponovno potvrditi upotrebom svog prethodnog računa.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Još se ne podržava BAT u vašoj regiji putem usluge Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Vaš račun za uslugu Uphold trenutačno je blokiran.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Vaš račun za uslugu Uphold još uvijek je na čekanju.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Vaš račun za uslugu Uphold trenutačno je ograničen.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Klikom potvrđujete da se slažete s $tos_link_begin$Odredbama pružanja usluge$tos_link_end$ i $pp_link_begin$Pravilnikom o privatnosti$pp_link_end$. Onemogućite u bilo kojem trenutku putem mogućnosti Postavke..",
+    "message": "Omogućavanjem slažete se s $tos_link_begin$Odredbama pružanja usluge$tos_link_end$ i $pp_link_begin$Pravilnikom o zaštiti prvatnosti$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Uključi značajku Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Uključivanjem značajke Ads potvrđujete da se slažete s $tos_link_begin$Odredbama pružanja usluge$tos_link_end$ i $pp_link_begin$Pravilnikom o privatnosti$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Sada možeš obaviti besplatan poziv",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Kliknite bilo gdje na zaslonu za nastavak do značajke Razgovor Brave.",
+    "message": "Kliknite ili dodirnite bilo gdje na zaslonu za nastavak do značajke Razgovor Brave.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

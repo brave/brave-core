@@ -238,10 +238,6 @@
     "message": "Konto aufladen",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Mehr...",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Verbindung wiederherstellen",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Ihr Kontostand reicht nicht aus um alle Spenden zu decken",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Verknüpfung der Wallet fehlgeschlagen",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Ihre Wallet kann nicht verifiziert werden, da Sie das maximale Limit für verifizierte Geräte erreicht haben.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Es sieht aus, als ob Ihre Brave Rewards-Wallet bereits mit einem anderen $provider$-Konto verifiziert wurde. Bitte versuchen Sie die Verifizierung mit dem vorherigen Konto erneut.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT wird in Ihrer Region auf Uphold noch nicht unterstützt.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ihr Konto bei Uphold ist derzeit gesperrt.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ihr Konto bei Uphold ist noch ausstehend.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Ihr Konto bei Uphold ist derzeit eingeschränkt.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Durch Klicken stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu. In den Einstellungen können Sie dies jederzeit widerrufen.",
+    "message": "Durch Aktivierung stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads aktivieren",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Durch das Aktivieren von Anzeigen stimmen Sie den $tos_link_begin$Nutzungsbedingungen$tos_link_end$ und der $pp_link_begin$Datenschutzrichtlinie$pp_link_end$ zu.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Sie können jetzt einen kostenlosen Anruf starten",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Klicken Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.",
+    "message": "Klicken oder tippen Sie auf eine beliebige Stelle auf dem Bildschirm, um mit Brave Talk fortzufahren.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

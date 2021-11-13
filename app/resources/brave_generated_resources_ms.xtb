@@ -54,6 +54,27 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
 <translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
+<translation id="6821903322090655051">Ganjaran Brave dilumpuhkan</translation>
+<translation id="9184430019924125685">Klik di sini untuk ketahui lebih lanjut</translation>
+<translation id="3849957491997306859">Dikesan secara automatik</translation>
+<translation id="8798099450830957504">Lalai</translation>
+<translation id="4176463684765177261">Dilumpuhkan</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Dapatkan token dengan melihat Iklan Brave. Iklan yang dipaparkan adalah berdasarkan minat anda, serta berdasarkan tingkah laku pelayaran anda. Tiada data peribadi atau sejarah pelayaran akan keluar daripada pelayar anda.</translation>
+<translation id="1758947220824279023">Bilangan maksimum iklan untuk dipaparkan</translation>
+<translation id="8578912649458880781">Penyasaran iklan tahap negeri</translation>
+<translation id="3678362265519557511">Ini membolehkan Brave menunjukkan kepada anda iklan yang dikhususkan untuk negeri anda. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Auto-Sumbang</translation>
+<translation id="9132509928968869844">Had autosumbangan bulanan</translation>
+<translation id="7286722244752781970">Masa halaman minimum sebelum mengelog ke laman</translation>
+<translation id="4424486208397124985">Kunjungan minimum untuk kerelevanan penerbit</translation>
+<translation id="6248554379744796526">Tunjukkan laman web yang tidak disahkan dalam senarai</translation>
+<translation id="3241299447027267831">Benarkan sumbangan untuk video</translation>
+<translation id="924777189963477634">Dengan menghidupkan Autosumbang, anda bersetuju dengan <ph name="BEGIN_LINK_TOS"/>Syarat Perkhidmatan<ph name="END_LINK_TOS"/> dan <ph name="BEGIN_LINK_PP"/>Dasar Privasi<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Butang petua</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Halaman Tab Baharu</translation>
 <translation id="1988804048511540801">Paparan halaman tab baru</translation>
 <translation id="2970343821770026391">Papan Pemuka</translation>
@@ -69,10 +90,12 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8934172355414207733">Peribadi dengan Tor</translation>
 <translation id="1970435562892104727">Ini tetingkap peribadi dengan Tor</translation>
 <translation id="1037341607922068025">Buka Tetingkap Peribadi dengan Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Buka dalam Tor</translation>
 <translation id="7643538479215207633">Buka menggunakan IPFS</translation>
 <translation id="3094628781200061820">Terbitkan dan dapatkan semula fail dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
+<translation id="406832631167785034">Buka menggunakan alamat .onion</translation>
 <translation id="4901618511712685702">Import ke IPFS</translation>
 <translation id="6794469945030154569">Halaman ini</translation>
 <translation id="5037852323412456577">Imej dipilih</translation>
@@ -94,7 +117,6 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2638041073279639246">Buka pautan dalam tetingkap persendirian dengan Tor</translation>
 <translation id="3425600262621021599">Buka pautan dalam tetingkap persendirian Brave dengan Tor</translation>
 <translation id="575838692088926391">Kongsi folder setempat menggunakan IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Perkhidmatan Bat Ads</translation>
 <translation id="7924918279836988121">Perkhidmatan Lejar BAT</translation>
 <translation id="4472575034687746823">Bermula</translation>
@@ -121,13 +143,11 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
 <translation id="4078738236287221428">Agresif</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Dilumpuhkan</translation>
 <translation id="5770288601196774623">Hanya merentas laman</translation>
 <translation id="3587482841069643663">Semua</translation>
 <translation id="5533533363827555308">Ketat, mungkin akan melanggar laman</translation>
 <translation id="8792121506918889955">Polisi menguruskan IP WebRTC</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
-<translation id="8798099450830957504">Lalai</translation>
 <translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
@@ -174,6 +194,11 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2339730291919608488">Tinggalkan Rantaian Segerak</translation>
 <translation id="115699408012835975">Sekiranya anda menetapkan semula Penyegerakan, anda perlu memasukkan semula kod penyegerakan daripada peranti yang lain untuk menyegerak dengannya. Adakah anda pasti anda ingin meneruskannya?</translation>
 <translation id="6092564993102418148">Adakah anda pasti anda mahu mengalih keluar peranti yang dipilih dari rantaian segerak?</translation>
+<translation id="2936582902048232286">Amaran: ini akan mengongsikan data Brave anda, termasuk kemungkinan kata laluan anda, kepada peranti yang menghasilkan perkataan kod ini.
+
+Sila semak sekali lagi bahawa perkataan kod ini dihasilkan oleh peranti yang anda miliki.
+
+Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="3396347744975515056">Segerakan Brave telah dinaik taraf dan memerlukan penetapan</translation>
 <translation id="7473245612074035141">Mulakan Tetapan</translation>
 <translation id="3411013544209536575">Tip Bantuan</translation>
@@ -187,8 +212,11 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="2356070529366658676">Tanya</translation>
 <translation id="7701040980221191251">Tiada</translation>
-<translation id="1274962333945373242">Sambungan Dompet Kripto yang tidak digunakan</translation>
+<translation id="1274962333945373242">Dompet Kripto (Tidak Digunakan)</translation>
+<translation id="3695088618483091287">Dompet Brave (Lebih suka sambungan)</translation>
 <translation id="9131889008937672866">Dompet mata wang kripto lalai</translation>
+<translation id="4718664830805652430">Mata wang asas lalai</translation>
+<translation id="7992507032049865603">Mata wang kripto asas lalai</translation>
 <translation id="1834467296210148203">Tunjukkan ikon Dompet Brave pada bar alat</translation>
 <translation id="8239147115686034860">Kunci Brave Wallet secara automatik</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
@@ -207,6 +235,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="6476061084931271248">Mulakan semula nod untuk menggunakan perubahan</translation>
 <translation id="3754226427671882382">Mulakan semula nod</translation>
 <translation id="949667118776341807">Putar</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Nama ini tidak sah</translation>
 <translation id="6758961763875471084">Ubah suai senarai rakan</translation>
 <translation id="1295874070797049002">Eksport kekunci</translation>
@@ -217,6 +246,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="616058968889448209">Kesalahan pelancaran perkhidmatan IPFS, maklumat lanjut tersedia di <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import kunci gagal</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' eksport kekunci gagal</translation>
+<translation id="8860039076160511438">Tetapkan Semula Dompet</translation>
+<translation id="6369495274982305511">Adakah anda pasti anda ingin menetapkan semula dompet anda? Sekiranya dompet anda tidak disandarkan, penetapan semula akan menyebabkan anda kehilangan semua data akaun (termasuk apa-apa dana yang berkaitan). Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk membuat pengesahan.</translation>
+<translation id="1426410128494586442">Ya</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="3654980960391973513">Jana</translation>
 <translation id="5531501313997312487">Mulakan nod</translation>
@@ -358,6 +390,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4235920711083356755">Tunjukkan butang VPN</translation>
 <translation id="4070612712151038707">Menunjukkan butang VPN dalam bar alat</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Togol VPN</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="2345974803401546682">Perihal VPN Brave</translation>
 <translation id="4378551569595875038">Menyambung...</translation>
@@ -383,4 +416,31 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 <translation id="2273851479262317744">Tetapkan Brave sebagai pelayar lalai</translation>
 <translation id="8581710194025054669">Untuk memastikan privasi terbaik dalam talian, pertimbangkan untuk menetapkan Brave sebagai pelayar lalai pada komputer anda. Dengan Brave sebagai lalai, mana-mana pautan web yang anda klik akan dibuka dengan perlindungan privasi Brave.</translation>
+<translation id="1241283133946520352">Rangkaian</translation>
+<translation id="8205945804087322170">Tambah rangkaian baharu</translation>
+<translation id="2156993118928861787">Alamat tidak sah</translation>
+<translation id="2653659639078652383">Serah</translation>
+<translation id="2556708692502648323">Rangkaian dompet</translation>
+<translation id="1330032157352961756">id rantaian baharu</translation>
+<translation id="9053905035135220650">Rentetan perenambelasan kata awalan 0x</translation>
+<translation id="726121047592132939">Nama rantaian baharu</translation>
+<translation id="1034112277864078119">Masukkan nama rantaian</translation>
+<translation id="4672314527143443556">Nama mata wang rantaian</translation>
+<translation id="4652114030688989556">Masukkan nama mata wang</translation>
+<translation id="1079960017149736097">Simbol mata wang rantaian</translation>
+<translation id="1288105009659846362">Masukkan simbol mata wang</translation>
+<translation id="665660671251623018">Titik perpuluhan mata wang rantaian</translation>
+<translation id="2978054488731497946">Masukkan titik perpuluhan mata wang</translation>
+<translation id="2727514928168763432">URL RPC</translation>
+<translation id="7059127752542505809">Masukkan URL</translation>
+<translation id="3047726704186619366">Ikon URL</translation>
+<translation id="2487558607408469181">Sekat URL penjelajah</translation>
+<translation id="6301398959353668507">Medan ini tidak boleh kosong.</translation>
+<translation id="4514843126085243862">Format tidak sah, id rantaian ialah rentetan perenambelasan kata awalan 0x</translation>
+<translation id="8325036459845654666">Rangkaian ini telah ditambah.</translation>
+<translation id="650071759190249039">Ralat Dalaman, gagal menambah rangkaian.</translation>
+<translation id="868529041590572443">Sila isi semua maklumat tentang mata wang natif</translation>
+<translation id="1062463687579789365">Penyesuaian rangkaian dompet</translation>
+<translation id="2234108191702901162">Tidak dapat menambah rangkaian</translation>
+<translation id="2618193846561624884">Adakah anda mahu mengemas kini rangkaian sedia ada?</translation>
 </translationbundle>

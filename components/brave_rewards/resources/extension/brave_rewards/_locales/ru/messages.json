@@ -238,10 +238,6 @@
     "message": "Внести средства",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Подробнее…",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Переподключиться",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Из-за нехватки средств у вас есть чаевые в статусе ожидания",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Не удалось подключиться к кошельку.",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Ваш кошелек не может быть подтвержден, потому что вы достигли максимального количества подтвержденных устройств.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Кажется, кошелек Brave Rewards был подтвержден с помощью другого аккаунта ($provider$). Войдите в аккаунт, который использовали в тот раз.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Баллы BAT в Uphold еще не поддерживаются в вашем регионе.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Ваш аккаунт Uphold сейчас заблокирован.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Ваш аккаунт Uphold находится на рассмотрении.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Доступ к вашему аккаунту Uphold сейчас ограничен.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Продолжая, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$. Функцию можно в любой момент отключить в настройках.",
+    "message": "Продолжив, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -637,24 +600,6 @@
   "braveTalkTurnOnPrivateAds": {
     "message": "Включить Brave Private Ads",
     "description": ""
-  },
-  "braveTalkOptInAdsTerms": {
-    "message": "Включая Brave Ads, вы принимаете $tos_link_begin$Условия использования$tos_link_end$ и $pp_link_begin$Политику конфиденциальности$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
   },
   "braveTalkCanStartFreeCall": {
     "message": "Теперь вы можете начать бесплатный звонок.",
