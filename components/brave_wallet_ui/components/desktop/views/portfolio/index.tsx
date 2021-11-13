@@ -63,7 +63,8 @@ import {
   TransactionPlaceholderText,
   AssetBalanceDisplay,
   DividerRow,
-  Spacer
+  Spacer,
+  CoinGeckoText
 } from './style'
 
 export interface Props {
@@ -364,7 +365,7 @@ const Portfolio = (props: Props) => {
               <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
             </EmptyTransactionContainer>
           )}
-
+          <CoinGeckoText>{getLocale('braveWalletPoweredByCoinGecko')}</CoinGeckoText>
         </>
       }
       {!selectedAsset &&
