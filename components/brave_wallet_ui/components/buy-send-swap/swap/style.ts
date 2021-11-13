@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { CaratStrongDownIcon } from 'brave-ui/components/icons'
+import { CaratStrongDownIcon, AlertCircleIcon } from 'brave-ui/components/icons'
 import { StyledButton } from '../../extension/buttons/nav-button/style'
 import { WalletButton } from '../../shared/style'
 
@@ -48,4 +48,42 @@ export const SwapButtonText = styled.span`
 
 export const SwapButtonLoader = styled(SwapButtonText)`
   width: 15px;
+`
+
+export const SwapDisclaimerRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+`
+
+export const SwapDisclaimerText = styled.span`
+  font-family: Poppins;
+  letter-spacing: 0.01em;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${(p) => p.theme.color.text02};
+  word-break: break-word;
+  margin-right: 6px;
+`
+
+export const SwapDisclaimerButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  margin: 0px;
+  padding: 0px;
+`
+
+export const AlertIcon = styled(AlertCircleIcon)`
+  width: 14px;
+  height: 14px;
+  color: ${(p) => p.theme.color.interactive05};
 `
