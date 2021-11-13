@@ -54,6 +54,27 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1144810021918451336">Non ti protegge da siti web, download, ed estensioni pericolose.</translation>
 <translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
 <translation id="919715748352669592">Indicizza automaticamente i siti web che seguono le specifiche OpenSearch.</translation>
+<translation id="6821903322090655051">Ricompense Brave disabilitate</translation>
+<translation id="9184430019924125685">Clicca qui per saperne di più</translation>
+<translation id="3849957491997306859">Rilevamento automatico</translation>
+<translation id="8798099450830957504">Default</translation>
+<translation id="4176463684765177261">Disabilitato</translation>
+<translation id="4851215387785619212">Annunci privati Brave</translation>
+<translation id="7808122468353671181">Guadagna token con gli annunci di Brave. Gli annunci pubblicitari che vedi si basano sugli interessi che mostri con il comportamento di navigazione. I tuoi dati personali e la cronologia di navigazione non lasceranno mai il browser.</translation>
+<translation id="1758947220824279023">Numero massimo di annunci da visualizzare</translation>
+<translation id="8578912649458880781">Targeting pubblicitario a livello statale</translation>
+<translation id="3678362265519557511">Consente a Brave di mostrarti annunci pensati appositamente per il tuo stato. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Contribuisci automaticamente</translation>
+<translation id="9132509928968869844">Limite mensile del contributo automatico</translation>
+<translation id="7286722244752781970">Tempo sulla pagina minimo prima di registrare una visita</translation>
+<translation id="4424486208397124985">Visite minime per pertinenza degli editori</translation>
+<translation id="6248554379744796526">Mostra siti non verificati in lista</translation>
+<translation id="3241299447027267831">Consenti i contributi ai video</translation>
+<translation id="924777189963477634">Attivando il contributo automatico, accetti i <ph name="BEGIN_LINK_TOS"/>Termini di servizio<ph name="END_LINK_TOS"/> e l’<ph name="BEGIN_LINK_PP"/>Informativa sulla privacy<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Pulsanti donazioni</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Nuova pagina</translation>
 <translation id="1988804048511540801">La pagina nuova scheda mostra</translation>
 <translation id="2970343821770026391">Pannello di controllo</translation>
@@ -69,10 +90,12 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="8934172355414207733">Private con Tor</translation>
 <translation id="1970435562892104727">Questo è un Private Window con Tor</translation>
 <translation id="1037341607922068025">Apri Private Window con Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Apri in Tor</translation>
 <translation id="7643538479215207633">Apri utilizzando IPFS</translation>
 <translation id="3094628781200061820">Pubblicare contenuti e ottenere file tramite IPFS</translation>
 <translation id="1672270084584211506">Onion disponibile</translation>
+<translation id="406832631167785034">Apri utilizzando l'indirizzo .onion</translation>
 <translation id="4901618511712685702">Importa su IPFS</translation>
 <translation id="6794469945030154569">Questa pagina</translation>
 <translation id="5037852323412456577">Immagine selezionata</translation>
@@ -81,6 +104,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="7895302206188277628">Contenuto collegato</translation>
 <translation id="3654831858282189202">Pubblica con chiave IPNS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">Importa il testo selezionato su IPFS</translation>
 <translation id="6925604404524625582">Importa e copia il collegamento allo snapshot IPFS</translation>
 <translation id="1434416574322382019">Nuova finestra privata con Tor</translation>
 <translation id="4703780849509456860">Apri il collegamento in una finestra privata con Tor</translation>
@@ -94,7 +118,6 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2638041073279639246">Apri il link in una finestra privata con Tor</translation>
 <translation id="3425600262621021599">Apri il link in una finestra privata Brave con Tor</translation>
 <translation id="575838692088926391">Condividi una cartella locale usando l’IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Servizio pubblicità Bat</translation>
 <translation id="7924918279836988121">Servizio Libro Mastro Bat</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
@@ -112,7 +135,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4385707520896576447">Blocco dei cookie</translation>
 <translation id="4978786495456601191">Blocco del fingerprinting</translation>
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
-<translation id="4824468494729001999">Script di blocco</translation>
+<translation id="4824468494729001999">Blocco degli script</translation>
 <translation id="4395160081588457461">Aspetto</translation>
 <translation id="4800195524776354947">Mostra il numero di oggetti bloccati sull'icona di Shields</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
@@ -121,13 +144,11 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
 <translation id="4078738236287221428">Aggressivo</translation>
 <translation id="7740996059027112821">Standard</translation>
-<translation id="4176463684765177261">Disabilitato</translation>
 <translation id="5770288601196774623">Solo tra siti</translation>
 <translation id="3587482841069643663">Tutti</translation>
 <translation id="5533533363827555308">Rigido, potrebbe non far funzionare alcuni siti</translation>
 <translation id="8792121506918889955">Gestione politica IP WebRTC</translation>
 <translation id="6165508094623778733">Scopri di più</translation>
-<translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
@@ -174,6 +195,11 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2339730291919608488">Esci dalla catena di sincronizzazione</translation>
 <translation id="115699408012835975">Se reimposti la sincronizzazione, dovrai reinserire un codice di sincronizzazione da un altro dispositivo per sincronizzarti ad esso. Sei sicuro di voler procedere?</translation>
 <translation id="6092564993102418148">Vuoi davvero rimuovere il dispositivo selezionato dalla sincronizzazione?</translation>
+<translation id="2936582902048232286">Attenzione: in questo modo condividerai i tuoi dati Brave, tra cui potenzialmente anche le password, con il dispositivo che ha generato queste parole d'ordine.
+
+Controlla che le parole d'ordine siano state generate da un tuo dispositivo.
+
+Confermi di voler procedere?</translation>
 <translation id="3396347744975515056">Brave Sync è stato aggiornato e deve essere configurato</translation>
 <translation id="7473245612074035141">Inizia configurazione</translation>
 <translation id="3411013544209536575">Suggerimenti</translation>
@@ -187,13 +213,17 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="8488282162676695335">Portafoglio Brave</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="7701040980221191251">Nessuno</translation>
-<translation id="1274962333945373242">Estensione Crypto Wallet deprecata</translation>
+<translation id="1274962333945373242">Portafogli cripto (obsoleto)</translation>
+<translation id="3695088618483091287">Portafoglio Brave (estensioni preferite)</translation>
 <translation id="9131889008937672866">Portafoglio di criptovalute predefinito</translation>
+<translation id="4718664830805652430">Valuta base predefinita</translation>
+<translation id="7992507032049865603">Criptovaluta base predefinita</translation>
 <translation id="1834467296210148203">Mostra l’icona del portafoglio Brave nella barra degli strumenti</translation>
 <translation id="8239147115686034860">Blocca automaticamente il portafoglio Brave</translation>
 <translation id="414639769490080648">Il numero di minuti di attesa per il blocco automatico del portafoglio Brave</translation>
 <translation id="6864914031231797928">Consenti l'accesso a Google per le estensioni</translation>
 <translation id="5927916530277631319">Metodo per risolvere Unstoppable Domains</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/> sulla privacy del protocollo DNS over HTTPS e di Ethereum.</translation>
 <translation id="5248318250177143470">Metodo per risolvere Ethereum Name Service (ENS)</translation>
 <translation id="7024553202001112871">Imposta le tue chiavi IPNS</translation>
 <translation id="951216659045543447">Firma il contenuto con la chiave privata corrispondente e pubblicalo su IPNS</translation>
@@ -207,6 +237,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="6476061084931271248">Riavvia il nodo per applicare le modifiche.</translation>
 <translation id="3754226427671882382">Riavvia nodo</translation>
 <translation id="949667118776341807">Fai ruotare</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Questo nome non è valido</translation>
 <translation id="6758961763875471084">Modificare l'elenco dei peer</translation>
 <translation id="1295874070797049002">Esporta chiave</translation>
@@ -217,6 +248,9 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="616058968889448209">Errore di avvio del servizio IPFS. Per maggiori informazioni consultare la <ph name="BEGIN_LINK"/>pagina di diagnostica<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">L’importazione della chiave “<ph name="KEY_NAME"/>” non è riuscita</translation>
 <translation id="3364053282600191535">L’esportazione della chiave “<ph name="KEY_NAME"/>” non è riuscita</translation>
+<translation id="8860039076160511438">Ripristina portafoglio</translation>
+<translation id="6369495274982305511">Vuoi davvero ripristinare il portafoglio? Se non hai eseguito un backup, perderai tutti i dati dell’account (inclusi tutti i fondi associati). Digita “<ph name="CONFIRMATION_PHRASE"/>” per confermare.</translation>
+<translation id="1426410128494586442">Sì</translation>
 <translation id="8275038454117074363">Importa</translation>
 <translation id="3654980960391973513">Genera</translation>
 <translation id="5531501313997312487">Avvia nodo</translation>
@@ -224,6 +258,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="80225669816651290">Nodo locale</translation>
 <translation id="4927734062756955434">Indirizzo del gateway pubblico IPFS</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Scopri di più<ph name="END_LINK_MPL"/> sulle questioni di privacy del nodo locale e del gateway IPFS.</translation>
 <translation id="8425213833346101688">Cambia</translation>
 <translation id="557281710253742286">Imposta gateway IPFS</translation>
 <translation id="8571837315037233299">Indirizzo gateway</translation>
@@ -358,6 +393,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4235920711083356755">Mostra il pulsante della VPN</translation>
 <translation id="4070612712151038707">Mostra il pulsante della VPN nella barra degli strumenti</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Attiva/disattiva VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Informazioni sulla VPN di Brave</translation>
 <translation id="4378551569595875038">Connessione...</translation>
@@ -383,4 +419,31 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2808630562319398131">Resetta dati Brave Rewards...</translation>
 <translation id="2273851479262317744">Imposta Brave come browser predefinito</translation>
 <translation id="8581710194025054669">Per garantire la migliore privacy online, imposta Brave come browser predefinito sul tuo computer. Con Brave qualsiasi collegamento web su cui fai clic si aprirà con le protezioni della privacy di Brave.</translation>
+<translation id="1241283133946520352">Reti</translation>
+<translation id="8205945804087322170">Aggiungi nuova rete</translation>
+<translation id="2156993118928861787">Indirizzo non valido</translation>
+<translation id="2653659639078652383">Invia</translation>
+<translation id="2556708692502648323">Reti del portafoglio</translation>
+<translation id="1330032157352961756">L'id della nuova catena</translation>
+<translation id="9053905035135220650">Stringa esadecimale che inizia con 0x</translation>
+<translation id="726121047592132939">Il nome della nuova catena</translation>
+<translation id="1034112277864078119">Inserisci il nome della catena</translation>
+<translation id="4672314527143443556">Nome della valuta della catena</translation>
+<translation id="4652114030688989556">Inserisci il nome della valuta</translation>
+<translation id="1079960017149736097">Simbolo della valuta della catena</translation>
+<translation id="1288105009659846362">Inserisci il simbolo della valuta</translation>
+<translation id="665660671251623018">Decimali della valuta della catena</translation>
+<translation id="2978054488731497946">Inserisci decimali della valuta</translation>
+<translation id="2727514928168763432">URL RPC</translation>
+<translation id="7059127752542505809">Inserisci l’URL</translation>
+<translation id="3047726704186619366">URL icona</translation>
+<translation id="2487558607408469181">URL dell'esploratore di blocchi</translation>
+<translation id="6301398959353668507">Questo campo non può essere vuoto.</translation>
+<translation id="4514843126085243862">Formato non valido, l’id della catena catena è una stringa esadecimale che inizia con 0x</translation>
+<translation id="8325036459845654666">Questa rete è già stata aggiunta.</translation>
+<translation id="650071759190249039">Errore interno, impossibile aggiungere la rete</translation>
+<translation id="868529041590572443">Inserisci tutte le informazioni relative alla valuta nativa</translation>
+<translation id="1062463687579789365">Personalizzazione delle reti del portafoglio</translation>
+<translation id="2234108191702901162">Impossibile aggiungere la rete</translation>
+<translation id="2618193846561624884">Vuoi aggiornare la rete esistente?</translation>
 </translationbundle>

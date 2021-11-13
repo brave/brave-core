@@ -238,10 +238,6 @@
     "message": "Voeg geld toe",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Meer informatie",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Opnieuw verbinding maken",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "U hebt openstaande fooien door ontoereikende fondsen",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Wallet koppelen mislukt",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Uw wallet kan niet worden geverifieerd omdat u de maximale limiet aan geverifieerde apparaten heeft bereikt.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Het ziet ernaar uit dat je Brave Rewards-wallet al is geverifieerd met een ander $provider$-account. Probeer opnieuw te verifiëren met je eerdere account.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT wordt in Uphold nog niet ondersteund in jouw regio.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Je account in Uphold is momenteel geblokkeerd.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Je account in Uphold is nog steeds in behandeling.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Je account in Uphold is momenteel beperkt.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Door te klikken ga je akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$. Dit kun je op welk moment dan ook uitschakelen via Instellingen.",
+    "message": "Door deze functie in te schakelen ga je akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads aanzetten",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Door Ads aan te zetten, ga je akkoord met de $tos_link_begin$servicevoorwaarden$tos_link_end$ en het $pp_link_begin$privacybeleid$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Je kunt nu een gratis telefoongesprek starten",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Klik ergens op het scherm om door te gaan naar Brave Talk.",
+    "message": "Klik of tik ergens op het scherm om door te gaan naar Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

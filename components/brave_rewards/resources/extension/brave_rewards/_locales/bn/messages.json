@@ -238,10 +238,6 @@
     "message": "অর্থ যোগ করুন",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "আরও জানুন",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "পুনঃসংযোগ করুন",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "অপর্যাপ্ত ফান্ডের জন্য আপনার পরামর্শ বাকি আছে",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "ওয়ালেট লিঙ্ক করার কাজটি ব্যর্থ হয়েছে",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "আপনি যাচাইকৃত ডিভাইসের সংখ্যার সর্বোচ্চ সীমায় পৌঁছেছেন বিধায় আপনার ওয়ালেটটি ভেরিফাই করা যাবে না।",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "দেখে মনে হচ্ছে Brave Rewards-এর ওয়ালেট অন্য $provider$ অ্যাকাউন্ট দিয়ে ইতিমধ্যে যাচাই করা হয়েছে। অনুগ্রহ করে আপনার আগের অ্যাকাউন্ট ব্যবহার করে আবার যাচাই করার চেষ্টা করুন।",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "আপনার অঞ্চলে আপহোল্ডে BAT এখনও সমর্থিত নয়।",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে ব্লক রয়েছে।",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট এখনও বাকি রয়েছে।",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "আপহোল্ডে আপনার অ্যাকাউন্ট বর্তমানে সীমাবদ্ধ।",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "ক্লিক করে আপনি $tos_link_begin$পরিষেবার শর্তাবলী$tos_link_end$ এবং $pp_link_begin$গোপনীয়তা নীতির$pp_link_end$ সাথে সম্মত হন। যে কোনও সময়ে সেটিংসে অক্ষম করুন।",
+    "message": "সক্ষম করার অর্থ হল, আপনি $tos_link_begin$পরিষেবার শর্তাবলী$tos_link_end$ এবং $pp_link_begin$গোপনীয়তা নীতি$pp_link_end$-র সাথে সম্মত।",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave ব্যক্তিগত বিজ্ঞাপনগুলো চালু করুন",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "বিজ্ঞাপনগুলো চালু করে আপনি $tos_link_begin$পরিষেবার বিধি$tos_link_end$ ও $pp_link_begin$গোপনীয়তা নীতির$pp_link_end$ সাথে সম্মত হন।",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "আপনি এখন বিনামূল্যে কল শুরু করতে পারেন",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave টক চালিয়ে যেতে স্ক্রিনে যে কোনও স্থানে ক্লিক করুন।",
+    "message": "Brave টক অবিরত রাখতে স্ক্রিনের যেকোনো জায়গায় ক্লিক বা ট্যাপ করুন।",
     "description": ""
   },
   "braveTalkWantLearnMore": {

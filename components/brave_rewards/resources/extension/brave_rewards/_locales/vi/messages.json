@@ -238,10 +238,6 @@
     "message": "Thêm Nguồn tiền",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Tìm hiểu thêm",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Kết nối lại",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Bạn có các gợi ý đang chờ xử lý do không đủ tiền",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Liên kết ví không thành công",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản $provider$ khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT chưa được hỗ trợ trong khu vực của bạn trên Uphold.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Tài khoản của bạn tại Uphold hiện đang bị khóa.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Tài khoản của bạn tại Uphold vẫn đang chờ xử lý.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Tài khoản của bạn tại Uphold hiện đang bị hạn chế.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Với việc nhấp vào, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$. Tắt đi bất cứ lúc nào trong Cài đặt.",
+    "message": "Với việc bật, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách Quyền riêng tư$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Bật Quảng cáo Riêng tư Brave",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Với việc bật Quảng cáo, bạn đồng ý với $tos_link_begin$Điều khoản Dịch vụ$tos_link_end$ và $pp_link_begin$Chính sách quyền riêng tư$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.",
+    "message": "Nhấp hoặc chạm vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
 <translation id="4424486208397124985">Yayıncı alaka düzeyi için minimum ziyaret sayısı</translation>
 <translation id="6248554379744796526">Doğrulanmamış siteleri listede göster</translation>
-<translation id="5510618543889994434">Videolara katkıyı etkinleştir</translation>
+<translation id="5510618543889994434">Videolar için katkıları etkinleştir</translation>
 <translation id="8933202740471878108">1 ziyaret</translation>
 <translation id="354797634123275103">5 ziyaret</translation>
 <translation id="3583700907990488238">10 ziyaret</translation>
@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Tıklandı</translation>
 <translation id="7119308337584989771">Görevden alındı</translation>
 <translation id="6805660603861526473">Görüldü</translation>
+<translation id="4014166694178311757">Cüzdanınız doğrulanamaz çünkü en fazla doğrulanmış cihaz limitine ulaştınız.</translation>
+<translation id="1221593978088944142">Hata: Cihaz limitine ulaşıldı</translation>
 <translation id="3113653894794167793">Üzgünüz, isteğinizi işlemekle ilgili bir sorun oluştu, lütfen tekrar deneyin.</translation>
-<translation id="8832187864682447273">Oturum açmak için doğrulanmış bir cüzdana ihtiyacınız var</translation>
-<translation id="2607420597216860026">Lütfen <ph name="PROVIDER"/> üzerinde kimlik doğrulamayı tamamladıktan sonra tekrar deneyin.</translation>
+<translation id="2607420597216860026">Lütfen <ph name="PROVIDER"/> üzerinde kimlik doğrulamayı tamamlandıktan sonra tekrar deneyin.</translation>
+<translation id="8832187864682447273">Hata: Giriş yapabilmek için doğrulanmış bir cüzdana ihtiyacınız var</translation>
 <translation id="1501075228659004450">Brave Rewards cüzdanınız halihazırda başka bir <ph name="PROVIDER"/> hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.</translation>
 <translation id="5111921830714291902">Hata: Farklı hesap</translation>
+<translation id="5382684862562314222">Uphold'da BAT henüz sizin bölgenizde desteklenmiyor.</translation>
+<translation id="9074594632540931067">Hata: BAT kullanılamıyor</translation>
+<translation id="413458922997276130">Uphold'daki hesabınız şu anda engelli.</translation>
+<translation id="3579959767665130790">Hata: Engelli hesap</translation>
+<translation id="819370426249314592">Uphold'daki hesabınız hala beklemede.</translation>
+<translation id="4530453398914580957">Hata: Bekleyen hesap</translation>
+<translation id="2388470740942086608">Uphold'daki hesabınız şu anda kısıtlanmış durumdadır.</translation>
+<translation id="3605236342612716051">Hata: Kısıtlanmış hesap</translation>
 <translation id="1737873393693460829">[[title]] öğesini açarak <ph name="BEGIN_LINK1"/>Hizmet Koşullarını<ph name="END_LINK1"/> ve <ph name="BEGIN_LINK2"/>Gizlilik Politikasını<ph name="END_LINK2"/> kabul edersiniz.</translation>
+<translation id="901298512318791028"><ph name="AMOUNT"/> tutarlı ödemenizin işlenmeye başlamasına kalan süre: <ph name="DAYS"/></translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Not: <ph name="BOLD_END"/>Ödemenizin işlenmesi ve BAT'nizin gelmesi birkaç gün sürebilir.</translation>
 <translation id="4672975606583962967">Bir cüzdan hizmeti seç</translation>
 <translation id="1815503044492647974">Bir korumalı cüzdan ortağı seçin. Hesabınız varsa bağlanmak için oturum açmanız istenecektir.</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">Kullanıcı kimliği</translation>
 <translation id="4235360514405112390">Geçerli</translation>
 <translation id="3902084968737576005">Cüzdan adresi:</translation>
+<translation id="3653417592104122757">Cüzdan Geçmişi</translation>
 <translation id="2326487656644542536">Cüzdan bilgisi</translation>
 <translation id="3506182299017414175">Henüz cüzdan yaratılmadı</translation>
 <translation id="8559420016582377654">Cüzdan ödeme kimliği:</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">Kurtarma anahtarınızı girin veya</translation>
 <translation id="1209382772199769572">Yenileme öncesi cüzdanınızı yedekleyin. Yoksa mevcut cüzdanınızdaki [[funds]] meblağını kaybedersiniz.</translation>
 <translation id="5423214929210538027">Kazanç Cüzdanını sıfırlamak istediğinize emin misiniz?</translation>
+<translation id="4749947664556704604">Cüzdanınızı sıfırlarsanız <ph name="BAT_AMOUNT"/> ve diğer Ödüller verileriniz kalıcı olarak kaybolacaktır. BAT'nizi elinizde tutmak için lütfen <ph name="LINK_BEGIN"/>cüzdanınızı doğruladığınızdan<ph name="LINK_END"/> emin olun.</translation>
 <translation id="2028613172174411919">Cüzdanınızı sıfırlarsanız Kazanç verileriniz kalıcı olarak kaybedilecektir.</translation>
 <translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">Popüler hisselere 1$ kadar az miktarda yatırım yapın ve AAPL, TSLA ya da AMZN gibi alınıp satılan fonları değiştirin</translation>
 <translation id="3787061634640932557">Kartları düzenle</translation>
 <translation id="5977237145327845546">Arkadaşlarınız ve iş arkadaşlarınız ile özel görüntülü bir arama başlatın.</translation>
-<translation id="5850325887346946383">Görüntülü arama başlat</translation>
+<translation id="8863928195533744356">Arama başlat</translation>
 <translation id="3651550649176056334">Verileriniz hakkında</translation>
 <translation id="223536150967420869">Satın Al</translation>
 <translation id="5110244215256675209">Kripto Para Birimi Satın Al</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">Tümünü gör</translation>
 <translation id="3026978804849658576">Bildirimi görüntüle</translation>
 <translation id="8494748383523030337">Bakiyeniz</translation>
+<translation id="3343165035032571678">Brave Özel Reklamları görüntüleyerek <ph name="AMOUNT"/> kazandınız!</translation>
+<translation id="6618415862402597254">Reklam kazançları alındı</translation>
+<translation id="5981646694027725752">Kazanımları al</translation>
+<translation id="2556441076129789027">Token'ları al</translation>
+<translation id="5544777623605368410">Kazanıyor</translation>
+<translation id="3273637494083639780">Bu ay kazandığınız token'lar <ph name="DATE"/> itibarıyla işlenmeye başlayacak.</translation>
+<translation id="1029300693989825319">Bu, piyasa volatilitesine göre değişebilir.</translation>
+<translation id="8334559352278209120">Veriyor</translation>
+<translation id="3903419925307046908">Jeton kazanın ve geri verin</translation>
+<translation id="244362569344671266">Brave Özel Reklamları'nı görüntüleyerek jeton kazanın ve içerik üreticilerini otomatik olarak destekleyin.</translation>
+<translation id="5095252080770652994">İlerleme</translation>
+<translation id="6278643716658443228">Ödüller ayarları</translation>
+<translation id="6777169449483742979">Bu sponsorlu görseli görüntülediğiniz için token kazanıyorsunuz.</translation>
+<translation id="5486114327664215175">Bu görseli görüntüleyerek token kazanın ve içerik üreticilerini destekleyin.</translation>
+<translation id="2940863921746574646">Token Bakiyesi</translation>
+<translation id="1714906256929297600">Tanıtım token'larını zamanı dolmadan kullanın ve geliştiricilere katkıda bulunun!</translation>
+<translation id="2426048501007152001">Mevcut token'lar</translation>
 <translation id="7701466644604753106">Speedreader'ı Aç</translation>
 <translation id="763042262431778831">Speedreader'ı Kapat</translation>
 <translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="1148827340205946630">Kullanıcı isteği reddetti.</translation>
 <translation id="2403819048476450281">Geçersiz parametreler.</translation>
+<translation id="3955144560853195652">Zincir <ph name="VALUE"/> eklenmemiş</translation>
 <translation id="9161147058107529840">Beklenen tek nesne parametresi.</translation>
 <translation id="1875861420974447980">Bu Zincir Kimliği şu anda kullanılıyor</translation>
 <translation id="167698752210114155">Dahili bir hata oluştu</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">İşlem verisi dönüştürülemedi</translation>
 <translation id="3829038878925630240">'from' işlem verisi belirtilmelidir</translation>
 <translation id="4732386285392573809">İşlem için GAS ücreti alınamadı</translation>
-<translation id="7619826778671319444">İşlem için GAS sınırı alınamadı</translation>
 <translation id="4232775951515678071">İşlem için tip alınamadı</translation>
-<translation id="7631054302129692654">EIP-1559 işlemi için GAS tahmini alınamadı</translation>
+<translation id="2080935885647755539">EIP-1559 işlemi için GAS ücretleri alınamadı</translation>
+<translation id="4843814354611030845">Kullanıcı işlemi reddetti</translation>
+<translation id="1462494615260983714">İşlem işlenirken hata</translation>
+<translation id="4886059598718763020">"<ph name="VALUE"/>" mesajı imzalamaya yetkili değil</translation>
 <translation id="4958950550253325418">Merkeziyetsiz finans uygulamaları</translation>
 <translation id="735961408871282410">NFT piyasaları</translation>
 <translation id="7740287852186792672">Arama sonuçları</translation>
@@ -833,13 +866,17 @@
 <translation id="2267753748892043616">Hesap Ekle</translation>
 <translation id="1483493594462132177">Gönder</translation>
 <translation id="538450413584738399">Takas</translation>
-<translation id="5420730209575475110">desteklenmiyor</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> desteklenmiyor</translation>
+<translation id="1191686659164947414">İşlem frontrunning manipülasyonuna uğramış olabilir</translation>
+<translation id="632241521608275119">Slipaj toleransı</translation>
+<translation id="4500473291496079954">Süre dolumu:</translation>
+<translation id="8093033115658137576">0x adresi veya url'si</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="1420318137760245955">Yeni Brave Cüzdan'a hoş geldiniz</translation>
 <translation id="8303434745767477417">Kripto varlıklarınızı himayenizde tutun. Portföy performansınızı izleyin ve web 3 DApps ile etkileşime geçin. DeFi sayesinde alım-satım yapın, yatırım yapın, ödünç alın ve ödünç verin. Hepsi doğrudan Brave gizlilik tarayıcısı üzerinden. Eklentiye, indirmeye gerek yok.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Kripto cüzdanınızı yedekleyin</translation>
-<translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma cümlesi göreceksiniz. Bu cümleyi güvenli bir yerde saklayın. Kurtarma cümleniz şifreyi unutmanız, cihazınızın kaybolması/çalınması veya cüzdanınızı değiştirmek istemeniz durumlarında hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
+<translation id="1078873179929044999">Bir sonraki adımda, ana kripto hesaplarınızı kurtarmak için kullanabileceğiniz 12 kelimelik bir kurtarma tümcesi göreceksiniz. Bu tümceyi güvenli bir yerde saklayın. Kurtarma tümceniz; şifreyi unutmanız, cihazınızın kaybolması veya çalınması ya da cüzdanınızı değiştirmek istemeniz halinde hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
 <translation id="5024543173656851695">Kurtarma sözcüklerimi kaybedersem kripto cüzdanıma erişemeyeceğimi anlıyorum.</translation>
 <translation id="3933122286596948824">Kurtarma ifadeniz</translation>
 <translation id="5077747669435508720">Bu sözcükleri aşağıda gösterilenle aynı sırada bir yere yazın veya kopyalayın ve güvenli bir yerde saklayın. Kurtarma cümleniz şifreyi unutmanız, cihazınızın kaybolması/çalınması veya cüzdanınızı değiştirmek istemeniz durumlarında hesabınıza yeniden erişim sağlamanın tek yoludur.</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">Kripto varlıklarınızı bir şifreyle güvenceye alın</translation>
 <translation id="6901073872645365201">Şifreler en az 7 karakterden oluşmalı, en az bir rakam ve bir özel karakter içermelidir.</translation>
 <translation id="6657585470893396449">Şifre</translation>
-<translation id="692381016487372902">Şifreyi Tekrar Yazın</translation>
-<translation id="3527905866577245691">Doğrulama şifresi uyuşmuyor</translation>
+<translation id="5486261815000869482">Şifreyi Onayla</translation>
+<translation id="467510802200863975">Parolalar eşleşmiyor</translation>
 <translation id="5168349973342709369">Cüzdan kilidini açmak için şifreyi girin</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="5045550434625856497">Hatalı parola</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">Varlıklar</translation>
 <translation id="2236507293802791911">Görünür varlıklar</translation>
 <translation id="7525067979554623046">Yarat</translation>
+<translation id="4771176409524282426">Hesap oluştur</translation>
 <translation id="4324198334837993695">Donanım</translation>
 <translation id="3067168166931605141">Hesap adı</translation>
 <translation id="1136772623587250243">Özel anahtarı panodan yapıştır</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">Hiçbir dosya seçilmedi</translation>
 <translation id="5891811606602061966">Hesabın içe aktarımı başarısız oldu, lütfen tekrar deneyin.</translation>
 <translation id="5051929972046200722">Donanım cüzdanı cihazınızı seçin</translation>
-<translation id="6932355307691676490">Şunu bağlayın:</translation>
-<translation id="4513956488935671725">cüzdanınızı doğrudan bilgisayarınıza bağlayın.</translation>
+<translation id="5745936663807461565"><ph name="HARDWARE_DEVICE"/> cüzdanınızı doğrudan bilgisayarınıza bağlayın.</translation>
 <translation id="5041211872515579638">Cihazınızın kilidini açın ve Ethereum uygulamasını seçin.</translation>
+<translation id="6892232036314454524">Bu hata, Ledger cihazında yanlış uygulama açıkken yaşanabilir.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Connecting...</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">Token adı</translation>
 <translation id="4432966365400169165">Token kontrat adresi</translation>
 <translation id="4092152169181928870">Token sembolü</translation>
-<translation id="871696868578199698">Kesinlik ondalıkları</translation>
-<translation id="6637540491667802882">özel bir token olarak</translation>
+<translation id="4351811224047421378">Ondalık basamak sayısı</translation>
+<translation id="4982060163914604175"><ph name="CONTRACT_ADDRESS"/> token'ını, özel bir token olarak ekle</translation>
 <translation id="7978047524114351365">İsimlendirilmiş varlık yok</translation>
 <translation id="9040455159722359521">Varlıkları veya kontrat adresini ara</translation>
 <translation id="6018178824574796106">Özel token eklenmesi başarısız, lütfen tekrar deneyin.</translation>
+<translation id="547122651977318828">Token Kimliği (sadece ERC721 için)</translation>
+<translation id="7544552854944350190">Token kimliği gereklidir</translation>
 <translation id="2708402071160162126">UYARI: Kurtarma cümlenizi asla paylaşmayın. Bu cümleyi bilen herkes varlıklarınızı sonsuza dek sizden alabilir.</translation>
 <translation id="2902856457593699108">Anahtarı göster</translation>
 <translation id="8033497299373164724">Anahtarı gizle</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">%25</translation>
 <translation id="2636487255623744079">%50</translation>
 <translation id="8654192805213365413">%75</translation>
-<translation id="3512100619724810532">Tümü</translation>
+<translation id="3512100619724810532">%100</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Ağı Test Et</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">Limit</translation>
 <translation id="8569380433211549748">Şuradaki fiyat:</translation>
 <translation id="2490428413101944234">Test musluğu</translation>
-<translation id="6082785102488657349">Bir musluktan Ether al, şunun için:</translation>
+<translation id="3352959425838279177"><ph name="SELECTED_NETWORK"/> için bir musluktan Ether alın</translation>
 <translation id="7420359180991315365">Continue to Wyre</translation>
 <translation id="2581671693710952401">Ether Al</translation>
 <translation id="8009571545960303544">İmzanız isteniyor</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">İmza riski size aittir</translation>
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="3586752056660754651">İmza</translation>
-<translation id="7065157926159745595">Bu uygulamanın paranızı harcamasına izin verin:</translation>
+<translation id="9032898664193335413">Bu uygulamanın size ait <ph name="TOKEN_SYMBOL"/> parasını harcamasına izin vermek istiyor musunuz?</translation>
+<translation id="854606191596163710">Bu izni vererek, bu uygulamanın hesabınızdaki <ph name="VALUE"/> parasını çekmesine ve sizin için işlemleri otomatikleştirmesine izin vermiş olursunuz.</translation>
 <translation id="8786100550345425552">İzinleri düzenle</translation>
 <translation id="7710469167917867539">İşlem bedeli</translation>
 <translation id="9065203028668620118">Düzenle</translation>
 <translation id="7968982339740310781">Detayları görüntüle</translation>
 <translation id="6452181791372256707">Reddetmek</translation>
+<translation id="8904889345035514635">Mevcut karşılık</translation>
+<translation id="7073918978411974168">Önerilen karşılık</translation>
 <translation id="4717431746210146708">Bu sitenin bir ağ eklemesine izin verilsin mi?</translation>
 <translation id="2521480044079508357">Bu işlem bu ağın Brave Cüzdan'da kullanılmasına izin verecek.</translation>
 <translation id="1982257600591932657">Ağ adı</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Para birimi sembolü</translation>
 <translation id="4693057234255364395">Blok gezgini URL'si</translation>
+<translation id="1060221736464994328">Bu sitenin ağı değiştirmesine izin verilsin mi?</translation>
+<translation id="2478788592457735063">Bu, ağı daha önce eklenmiş bir ağa çevirir.</translation>
+<translation id="8756686998207163764">Ağı değiştir</translation>
 <translation id="3948067511324628726">GAS ücreti</translation>
 <translation id="7163997622278957886">Teklif</translation>
 <translation id="1074360622426001342">Tutar + GAS</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">sıradaki</translation>
 <translation id="793994607260936590">birinci</translation>
 <translation id="4709524402122994378">işlemler</translation>
+<translation id="523862956770478816">Site izinleri</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> hesap bağlı</translation>
 <translation id="4460220693591349571">FONKSİYON TİPİ</translation>
 <translation id="838933475572692615">HEX VERİSİ</translation>
 <translation id="2240831799756994975">BAYT</translation>
 <translation id="4874303883488468190">Hesabı/Hesapları seç</translation>
-<translation id="4015195974325151180">Şunlara ait adreslerinizi görüntüleyin:</translation>
-<translation id="3587259018193837508">izin verilen hesaplar (gerekli)</translation>
+<translation id="2018472018751735678">İzin verilen hesaplarınızın adreslerini görüntüleyin (gerekli)</translation>
 <translation id="7029403458170657879">Brave Cüzdan'la bağlan</translation>
 <translation id="7982184974053636367">Brave Cüzdan için daha güvenli bir şifre gerekiyor</translation>
 <translation id="2372897697869224590">Bir Brave cüzdanı şifresi belirleyin</translation>
 <translation id="7739762330714405363">Aynı şifreyi kullanın</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Şuradan içeri aktar:</translation>
-<translation id="4428111176561355185">İçe aktarma işlemi yapın:</translation>
-<translation id="8929587248006013051">MetaMask hesaplarınızı Brave Cüzdan'a aktarın. Kripto varlıklarınızı yönetmenin ve web 3 DApps ile etkileşime geçmenin daha hızlı ve güvenli yolunun tadını çıkarın.</translation>
+<translation id="7102907656918333773"><ph name="WALLET_EXTENSION"/> cüzdanından içe aktar</translation>
+<translation id="8897114903450789862"><ph name="WALLET_EXTENSION"/> hesaplarınızı Brave Cüzdan'a aktarın. Kripto varlıkları yönetmenin ve web 3 DApps'le etkileşim kurmanın daha hızlı ve daha güvenli bir yolunun keyfini sürün.</translation>
 <translation id="4237840336687249184">MetaMask şifresi</translation>
 <translation id="2381605201035323535">kripto cüzdanlarınızı aktarın</translation>
 <translation id="2770851145415891830">Var olan kripto cüzdanları tespit edildi</translation>
 <translation id="4938145712652668388">"Başlarken" bağlantısına tıklayarak daha önceki Crypto Wallet'ınızı Brave Cüzdan deneyimine aktarabilir ve yukarıda özetlenen tüm avantajlardan faydalanabilirsiniz. Lütfen deneyin ve düşüncelerinizi bizimle paylaşın!</translation>
-<translation id="913613743605881268">İçe aktarmayı atlamak ve eski Crypto Wallets deneyimini korumak istiyorsanız, Brave Tarayıcı'ya gidin</translation>
-<translation id="5886242758142314994">ve varsayılanı tekrar Crypto Wallets olarak değiştirin. Aynı zamanda cüzdanınızı içe aktarabilir yeni Brave Cüzdan'ı deneyebilir ve istediğiniz zaman kendi cüzdanınıza dönebilirsiniz.</translation>
+<translation id="2237759620789871865">İçe aktarma işlemini atlamak ve eski Kripto Cüzdanları deneyimine devam etmek isterseniz, Brave Tarayıcı <ph name="LINK_BEFORE"/>Ayarlarına<ph name="LINK_AFTER"/> gidin ve varsayılanı tekrar Kripto Cüzdanlarına çevirin. Ek olarak istediğiniz zaman içe aktarma yapabilir, yeni Brave Cüzdanı deneyebilir ve tekrar eskiye dönebilirsiniz.</translation>
 <translation id="3301259443293676544">Brave Cüzdan'a aktarmak için var olan kripto cüzdan şifrelerinizi girin. Kripto varlıklarınızı yönetmenin ve web 3 DApps ile etkileşime geçmenin daha hızlı ve daha güvenli bir yolunun tadını çıkarın.</translation>
 <translation id="9099900965604225657">Kripto cüzdanlar şifresi</translation>
 <translation id="4020495774166914146">Şifremi ve kurtarma cümlemi kaybettim, yeni bir cüzdan oluştur.</translation>
-<translation id="480319080797177742">bağlı</translation>
-<translation id="4203566092423620442">bağlantısı kesildi</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> bağlandı</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
 <translation id="5317781812114905957">Talimatlar</translation>
-<translation id="1952715382071350669">Donanım cüzdanı işlem doğrulaması gerektirir.</translation>
+<translation id="1178198982208000092"><ph name="DEVICE_NAME"/> cihazını bağla</translation>
+<translation id="3301417531330431881">Donanım cüzdanı, işlem onaylaması gerektiriyor. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">gönderildi</translation>
 <translation id="5013754027092416509">alındı</translation>
 <translation id="5867988533873716616">Blok gezgini URL'si mevcut değil.</translation>
 <translation id="4255623233927788178">Blok gezgininde görüntüleyin</translation>
 <translation id="6383204195803840504">İşlemler burada görünür</translation>
+<translation id="2916401020782528840">İşlem bulunamadı</translation>
 <translation id="8941851657764077659">Azami öncelikli ücret</translation>
 <translation id="8047527352810290817">GAS'ı düzenle</translation>
 <translation id="9091334651803050473">Bir garantisi olmasa da, daha yüksek bir ücret ödemeniz halinde madencilerin işleminize öncelik vermesi muhtemeldir.</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Şunun için özel değer ayarla:</translation>
 <translation id="7400927223938424379">Şunun için önerilen değer ayarla:</translation>
+<translation id="1599636444563952897">Harcama limiti izni, <ph name="SITE_ORIGIN"/> sitesinin aşağıdaki miktara kadar çekim ve harcama yapmasına izin verir:</translation>
+<translation id="4512871563176965522">Özel karşılık</translation>
+<translation id="749944179568745958">Geçerli bir ETH adresi değil</translation>
+<translation id="882486206986535424">Geçerli bir adres değil</translation>
+<translation id="6825399159373612149"><ph name="DOMAIN_NAME"/> etki alanı kaydedilmemiş</translation>
+<translation id="862585889767884824">of</translation>
+<translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> işlemi reddet</translation>
 <translation id="1118876217803190221">Yetersiz bakiye</translation>
 <translation id="275990379543116961">GAS için yetersiz bakiye</translation>
 <translation id="3292453499915466604">Yetersiz likidite</translation>
 <translation id="805808215102934711"><ph name="FROM_ASSET_SYMBOL"/> öğesini etkinleştir</translation>
 <translation id="3380365263193509176">Bilinmeyen hata</translation>
-<translation id="6687008710463927359">Hesap <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Hesap <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Önce cüzdan kilidinin açılması gereklidir</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> geçerli bir adres değil</translation>
+<translation id="7340805872138998391">Cihazın kilidi açılamıyor, yeniden bağlanmayı deneyin</translation>
+<translation id="1984410139271779110">İç hata, bilinmeyen şema</translation>
+<translation id="8682200134223578011">onaylandı</translation>
+<translation id="4674380028960132654">Ledger: İmza, doğru adresle eşleşmiyor</translation>
+<translation id="3183932890629254743">Donanım hesabı bulunamadı</translation>
+<translation id="4287068151777838754">JSON verisi beklenmiyor</translation>
+<translation id="3282936527763045737">Parola doğru değil</translation>
+<translation id="1119447706177454957">İç hata</translation>
+<translation id="3327639091470204775">İç hata, iframe bridget oluşturulamıyor</translation>
+<translation id="6672377693827764095">İç hata, Hesaplar getirilemiyor</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">Tor Proxy URL'si</translation>
 <translation id="1671503397662036257">Tor Bağlantı Durumu</translation>
 <translation id="6024292492796847324">Tor Başlatma İlerlemesi</translation>
+<translation id="1742469581923031760">Bağlanıyor…</translation>
+<translation id="1287487756047817908">Bağlantı kesiliyor…</translation>
+<translation id="2325196879156848326">Bağlantı Başarısız Oldu</translation>
+<translation id="745054660363064771">Sunucuya bağlanamıyor</translation>
+<translation id="3936826714240735937">Başka bir sunucu seç</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/>, <ph name="REGION_NAME"/> sunucusuna bağlanamadı. Tekrar deneyebilir veya başka bir sunucu seçebilirsiniz</translation>
+<translation id="1664949222596149258"><ph name="PRODUCE_PRICE"/> karşılığında satın al</translation>
+<translation id="1024255913009642477">Zaten VPN satın aldınız mı?</translation>
+<translation id="8814357473522731680">Destekleyen:</translation>
+<translation id="5747552184818312860">Süre sonu tarihi</translation>
+<translation id="1691256669639196606">Aboneliği yönet</translation>
+<translation id="434523916398030617">Teknik destekle iletişime geçin</translation>
+<translation id="1116694919640316211">Hakkında</translation>
+<translation id="8670386189340362926">Tüm uygulamalardaki izleyicileri ve reklamları engelleyin</translation>
+<translation id="4860763498907927955">Sizi istenmeyen ağ bağlantılarından korur</translation>
+<translation id="3181339219453722970">VPN konumunuzu seçin</translation>
+<translation id="1751947227857853925">100 Mbps'ye kadar hızlı ve sınırsız</translation>
+<translation id="1400240082805528049">7/24 destek</translation>
 <translation id="7586151660465233733">Daha fazla piyasa <ph name="SITE_NAME"/> adresinde</translation>
 <translation id="952067063131306699">FTX'de piyasaları görüntüleyin ve kripto ticareti yapın</translation>
 <translation id="5963745988819586370">Piyasalar</translation>

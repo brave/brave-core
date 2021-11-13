@@ -54,6 +54,27 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="1144810021918451336">Ne štiti vas od opasnih veb lokacija, preuzimanja i proširenja.</translation>
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
+<translation id="6821903322090655051">Brave nagrade su onemogućene</translation>
+<translation id="9184430019924125685">Kliknite ovde kako biste saznali više</translation>
+<translation id="3849957491997306859">Automatsko otkrivanje</translation>
+<translation id="8798099450830957504">Подразумевано</translation>
+<translation id="4176463684765177261">Onemogućeno</translation>
+<translation id="4851215387785619212">Brave privatni oglasi</translation>
+<translation id="7808122468353671181">Zaradite tokene gledajući Brave Ads. Oglasi koji se prikazuju zasnivaju se na vašim interesovanjima, na osnovu vašeg ponašanja tokom pretraživanja. Nijedan lični podatak niti istorija pretraživanja ne napuštaju vaš pretraživač.</translation>
+<translation id="1758947220824279023">Maksimalan broj oglasa za prikazivanje</translation>
+<translation id="8578912649458880781">Formulisanje nivoa reklamnog targetiranja</translation>
+<translation id="3678362265519557511">Ovo omogućava da Brave prikaže oglase koji su posebno namenjeni vašoj formulaciji. <ph name="BEGIN_LINK"/>Saznati više<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Automatski doprinosi</translation>
+<translation id="9132509928968869844">Mesečni limit automatskog doprinosa</translation>
+<translation id="7286722244752781970">Minimalno vreme na stranici pre evidentiranja posete</translation>
+<translation id="4424486208397124985">Minimalni broj poseta za relevantnost objavljivača</translation>
+<translation id="6248554379744796526">Pokaži nepotvrđene lokacije na listi</translation>
+<translation id="3241299447027267831">Dozvoliti doprinose video snimcima</translation>
+<translation id="924777189963477634">Uključivanjem automatskog doprinosa, prihvatate <ph name="BEGIN_LINK_TOS"/>Uslove korišćenja<ph name="END_LINK_TOS"/> i <ph name="BEGIN_LINK_PP"/>Politiku privatnosti<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Dugmići za savet</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Tviter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">Stranica nove kartice</translation>
 <translation id="1988804048511540801">Prikazi stranice nove kartice</translation>
 <translation id="2970343821770026391">Kontrolna tabla</translation>
@@ -69,10 +90,12 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8934172355414207733">Privatno uz pomoć Tora</translation>
 <translation id="1970435562892104727">Ovo je privatni prozor sa Tor-om</translation>
 <translation id="1037341607922068025">Otvori privatni prozor sa Tor-om</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Otorite u Toru</translation>
 <translation id="7643538479215207633">Otvorite pomoću IPFS</translation>
 <translation id="3094628781200061820">Objavite i preuzmite datoteke sa IPFS</translation>
 <translation id="1672270084584211506">Onion dostupan</translation>
+<translation id="406832631167785034">Otvoriti pomoću .onion adrese</translation>
 <translation id="4901618511712685702">Uvezi u IPFS</translation>
 <translation id="6794469945030154569">Ova stranica</translation>
 <translation id="5037852323412456577">Odabrana slika</translation>
@@ -94,7 +117,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2638041073279639246">Otvori vezu u privatnom prozoru sa Tor-om</translation>
 <translation id="3425600262621021599">Otvori vezu u Brave privatnom prozoru sa Tor-om</translation>
 <translation id="575838692088926391">Podeliti lokalnu datoteku IPFS-om</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="4472575034687746823">Започнимо</translation>
@@ -121,13 +143,11 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
 <translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Стандардно</translation>
-<translation id="4176463684765177261">Онемогућено</translation>
 <translation id="5770288601196774623">Samo više-lokacijski</translation>
 <translation id="3587482841069643663">Све</translation>
 <translation id="5533533363827555308">Strogo, može da probija lokacije</translation>
 <translation id="8792121506918889955">Smernice za rukovanje WebRTC IP</translation>
 <translation id="6165508094623778733">Nauči više</translation>
-<translation id="8798099450830957504">Подразумевано</translation>
 <translation id="1822560017823072927">Podrazumevane vrednosti interfejsa, javnih i privatnih</translation>
 <translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
 <translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
@@ -174,6 +194,11 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
 <translation id="115699408012835975">Ako ponovo postavite sinhronizaciju, moraćete da ponovo unesete kod za sinhronizaciju sa drugog uređaja da biste ga sinhronizovali sa njim. Da li ste sigurni da želite da nastavite?</translation>
 <translation id="6092564993102418148">Da li ste sigurni da želite da izbrišete izabrani uređaj iz sinhronizovanog lanca?</translation>
+<translation id="2936582902048232286">Upozorenje: ovim će se deliti vaši Brave podaci, uključujući i eventualno vaše lozinke, sa uređajima koji su generisali ovaj kod.
+
+Molimo vas da dobro proverite da li je ovaj kod generisao uređaj koji vi posedujete.
+
+Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="3396347744975515056">Brave sinhronizacija je nadograđena i zahteva podešavanje</translation>
 <translation id="7473245612074035141">Počni podešavanje</translation>
 <translation id="3411013544209536575">Pomoć i saveti</translation>
@@ -187,8 +212,11 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="8488282162676695335">Brave novčanik</translation>
 <translation id="2356070529366658676">Питај</translation>
 <translation id="7701040980221191251">Ниједна</translation>
-<translation id="1274962333945373242">Zastarelo proširenje kripto novčanika</translation>
+<translation id="1274962333945373242">Kripto novčanici (zastareli)</translation>
+<translation id="3695088618483091287">Brave novčanik (preferira ekstenzije)</translation>
 <translation id="9131889008937672866">Standardan novčanik za kriptovalutu</translation>
+<translation id="4718664830805652430">Podrazumevana osnovna valuta</translation>
+<translation id="7992507032049865603">Podrazumevana osnovna kriptovaluta</translation>
 <translation id="1834467296210148203">Prikazati ikonicu Brave novčanika na traci sa alatkama</translation>
 <translation id="8239147115686034860">Automatsko zaključavanje za Brave novčanik</translation>
 <translation id="414639769490080648">Broj minuta koliko treba sačekati da se Brave novčanik automatski zaključa</translation>
@@ -207,6 +235,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="6476061084931271248">Ponovo pokrenuti čvor da bi izmene bile primenjene</translation>
 <translation id="3754226427671882382">Ponovno pokretanje čvora</translation>
 <translation id="949667118776341807">Rotiraj</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ovo ime nije validno</translation>
 <translation id="6758961763875471084">Modifikovanje spiska korisnika</translation>
 <translation id="1295874070797049002">Izvezi ključ</translation>
@@ -217,6 +246,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="616058968889448209">Greška u pokretanju IPFS servisa, više informacija je dostupno na <ph name="BEGIN_LINK"/>dijagnostičkoj stranici<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Uvoz ključa '<ph name="KEY_NAME"/>' nije uspeo</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' uvoz ključa nije uspeo</translation>
+<translation id="8860039076160511438">Resetovati novčanik</translation>
+<translation id="6369495274982305511">Da li ste sigurni da želite da resetujete svoj novčanik? Ako nemate rezervnu kopiju vašeg novčanika, njegovo resetovanje će dovesti do toga da izgubite sve podatke o računu (uključujući i sva povezana sredstva). Unesite "<ph name="CONFIRMATION_PHRASE"/>" za potvrdu.</translation>
+<translation id="1426410128494586442">Да</translation>
 <translation id="8275038454117074363">Uvoz</translation>
 <translation id="3654980960391973513">Generisati</translation>
 <translation id="5531501313997312487">Pokreni čvor</translation>
@@ -358,6 +390,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4235920711083356755">Prikaži VPN dugme</translation>
 <translation id="4070612712151038707">Prikazuje VPN dugme na traci sa alatkama</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Uključiti/isključiti VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">O Brave VPN-u</translation>
 <translation id="4378551569595875038">Повезује се...</translation>
@@ -383,4 +416,31 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2808630562319398131">Ponovo postavi Brave Rewards podatke...</translation>
 <translation id="2273851479262317744">Podesi Brave kao podrazumevani pretraživač</translation>
 <translation id="8581710194025054669">Da biste obezbedili najbolju privatnost na internetu, podesite Brave kao podrazumevani pregledač na vašem računaru. Tako će svaki veb-link na koji budete kliknuli biti otvoren u skladu sa Brave zaštitom privatnosti.</translation>
+<translation id="1241283133946520352">Mreže</translation>
+<translation id="8205945804087322170">Dodati novu mrežu</translation>
+<translation id="2156993118928861787">Nevažeća adresa</translation>
+<translation id="2653659639078652383">Пошаљи</translation>
+<translation id="2556708692502648323">Mreže novčanika</translation>
+<translation id="1330032157352961756">ID novog lanca</translation>
+<translation id="9053905035135220650">Heksadecimalni string sa prefiksom 0x</translation>
+<translation id="726121047592132939">Naziv novog lanca</translation>
+<translation id="1034112277864078119">Uneti naziv lanca</translation>
+<translation id="4672314527143443556">Naziv valute lanca</translation>
+<translation id="4652114030688989556">Uneti naziv valute</translation>
+<translation id="1079960017149736097">Simbol valute lanca</translation>
+<translation id="1288105009659846362">Uneti simbol valute</translation>
+<translation id="665660671251623018">Decimale valute lanca</translation>
+<translation id="2978054488731497946">Uneti decimale valute</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">Upišite URL adresu</translation>
+<translation id="3047726704186619366">URL ikonice</translation>
+<translation id="2487558607408469181">URL blok istraživača</translation>
+<translation id="6301398959353668507">Ovo polje ne može biti prazno</translation>
+<translation id="4514843126085243862">Neispravan format, id lanca je heksadecimalni string sa prefiksom 0x</translation>
+<translation id="8325036459845654666">Ova mreža je već dodata.</translation>
+<translation id="650071759190249039">Interna greška, nije moguće dodati mrežu.</translation>
+<translation id="868529041590572443">Unesite sve informacije o domaćoj valuti</translation>
+<translation id="1062463687579789365">Prilagođavanje mreže novčanika</translation>
+<translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
+<translation id="2618193846561624884">Da li želite da ažurirate postojeću mrežu?</translation>
 </translationbundle>

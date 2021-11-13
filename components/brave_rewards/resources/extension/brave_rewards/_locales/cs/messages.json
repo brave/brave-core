@@ -238,10 +238,6 @@
     "message": "Přidat prostředky ",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Zjistit více",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Znovu připojit",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Vzhledem k nedostatečnému zůstatku máte nevyřízená spropitná",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Propojení peněženky se nezdařilo",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Vaši peněženku nelze ověřit, protože jste dosáhli maximálního počtu ověřených zařízení.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Zdá se, že vaše peněženka odměn Brave Rewards už byla ověřená jiným účtem $provider$. Zkuste ověření provést znovu pomocí předchozího účtu.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Služba BAT zatím není ve vašem regionu v systému Uphold podporována.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Váš účet je v systému Uphold momentálně zablokován.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Váš účet je v systému Uphold stále nedokončený.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Váš účet je v systému Uphold momentálně uzavřený. ",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Kliknutím souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobních údajů$pp_link_end$. V Nastavení je můžete kdykoli zakázat. ",
+    "message": "Povolením souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobních údajů$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Zapněte si funkci Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Zapnutím reklam souhlasíte s $tos_link_begin$Podmínkami služby$tos_link_end$ a $pp_link_begin$Zásadami ochrany osobních údajů$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Nyní můžete zahájit bezplatný hovor",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Kliknutím kdekoli na obrazovce můžete pokračovat v Brave Talk.",
+    "message": "Kliknutím nebo klepnutím kdekoli na obrazovce můžete pokračovat v Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

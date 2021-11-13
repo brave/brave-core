@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Tempo mínimo de página até registar uma visita</translation>
 <translation id="4424486208397124985">Visitas mínimas por relevância do publicador</translation>
 <translation id="6248554379744796526">Mostrar sites não verificados na lista</translation>
-<translation id="5510618543889994434">Permitir contribuição para vídeos</translation>
+<translation id="5510618543889994434">Permitir contribuições nos vídeos</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visitas</translation>
 <translation id="3583700907990488238">10 visitas</translation>
@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Clicado</translation>
 <translation id="7119308337584989771">Declinado</translation>
 <translation id="6805660603861526473">Visualizado</translation>
+<translation id="4014166694178311757">Não é possível verificar a sua wallet, porque atingiu limite máximo verificado de dispositivos.</translation>
+<translation id="1221593978088944142">Erro: limite de dispositivos alcançado</translation>
 <translation id="3113653894794167793">Lamentavelmente, ocorreu um problema aquando do processamento do seu pedido; por favor, tenta de novo.</translation>
-<translation id="8832187864682447273">É necessário ter uma carteira verificada para iniciar sessão</translation>
-<translation id="2607420597216860026">Tente novamente após ter concluído a verificação do ID em <ph name="PROVIDER"/>.</translation>
+<translation id="2607420597216860026">Tente novamente após ter concluído a verificação de ID em <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Erro: é necessário ter uma carteira verificada para iniciar sessão</translation>
 <translation id="1501075228659004450">Parece que a sua carteira de recompensas Brave já foi verificada com outra conta <ph name="PROVIDER"/>. Tente verificar novamente com a sua conta anterior.</translation>
 <translation id="5111921830714291902">Erro: conta diferente</translation>
+<translation id="5382684862562314222">Os token BAT ainda não são suportados em carteiras Uphold na sua região.</translation>
+<translation id="9074594632540931067">Erro: BAT indisponível</translation>
+<translation id="413458922997276130">A sua conta Uphold está atualmente bloqueada.</translation>
+<translation id="3579959767665130790">Erro: conta bloqueada</translation>
+<translation id="819370426249314592">A sua conta Uphold ainda está pendente.</translation>
+<translation id="4530453398914580957">Erro: conta pendente</translation>
+<translation id="2388470740942086608">A sua conta Uphold está atualmente restrita.</translation>
+<translation id="3605236342612716051">Erro: conta restrita</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], aceita os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
+<translation id="901298512318791028">O pagamento de <ph name="AMOUNT"/> será processado dentro de <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Pode demorar alguns dias até ao pagamento processar e o seu BAT chegar.</translation>
 <translation id="4672975606583962967">Selecione um serviço de carteira</translation>
 <translation id="1815503044492647974">Selecione um parceiro de carteira de salvaguarda. Se já tem uma conta, ser-lhe-á pedido que inicie sessão para estabelecer ligação.</translation>
@@ -333,6 +344,7 @@
 <translation id="2223892939866251845">ID do utilizador</translation>
 <translation id="4235360514405112390">Válido</translation>
 <translation id="3902084968737576005">Endereço da carteira:</translation>
+<translation id="3653417592104122757">Histórico da carteira</translation>
 <translation id="2326487656644542536">Informações da Wallet</translation>
 <translation id="3506182299017414175">A Carteira ainda não foi criada</translation>
 <translation id="8559420016582377654">ID da Carteira de pagamento:</translation>
@@ -584,7 +596,7 @@
 <translation id="3345432088196080137">Invista tão pouco quanto 1$ em ações em alta e troque fundos negociados como AAPL, TSLA ou AMZN</translation>
 <translation id="3787061634640932557">Editar Cartões</translation>
 <translation id="5977237145327845546">Inicie uma videochamada particular com os seus amigos e colegas.</translation>
-<translation id="5850325887346946383">Iniciar videochamada</translation>
+<translation id="8863928195533744356">Iniciar chamada</translation>
 <translation id="3651550649176056334">Sobre os seus dados</translation>
 <translation id="223536150967420869">Comprar</translation>
 <translation id="5110244215256675209">Comprar Crypto</translation>
@@ -769,11 +781,29 @@
 <translation id="4989163558385430922">Ver tudo</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
 <translation id="8494748383523030337">O seu saldo</translation>
+<translation id="3343165035032571678">Recebeu <ph name="AMOUNT"/> por visualizar os anúncios privados do Brave!</translation>
+<translation id="6618415862402597254">Lucros de anúncio recebidos</translation>
+<translation id="5981646694027725752">Reivindicar lucros</translation>
+<translation id="2556441076129789027">Reivindicar tokens</translation>
+<translation id="5544777623605368410">Lucros</translation>
+<translation id="3273637494083639780">Os tokens que recebeu este mês serão processados a <ph name="DATE"/>.</translation>
+<translation id="1029300693989825319">Isto pode variar consoante a volatilidade do mercado.</translation>
+<translation id="8334559352278209120">Dar</translation>
+<translation id="3903419925307046908">Ganhe tokens e retribua</translation>
+<translation id="244362569344671266">Ganhe tokens ao visualizar os Anúncios Privados Brave e apoie os criadores de conteúdo automaticamente.</translation>
+<translation id="5095252080770652994">Progresso</translation>
+<translation id="6278643716658443228">Definições das Recompensas</translation>
+<translation id="6777169449483742979">Está a receber tokens por visualizar esta imagem patrocionada.</translation>
+<translation id="5486114327664215175">Obtenha tokens ao visualizar esta imagem e apoie os criadores de conteúdo.</translation>
+<translation id="2940863921746574646">Saldo de token</translation>
+<translation id="1714906256929297600">Utilize os tokens promocionais para dar contribuições aos criadores antes que expirem!</translation>
+<translation id="2426048501007152001">Tokens disponíveis</translation>
 <translation id="7701466644604753106">LIGAR Speedreader</translation>
 <translation id="763042262431778831">DESLIGAR Speedreader</translation>
 <translation id="8488282162676695335">Wallet Brave</translation>
 <translation id="1148827340205946630">O utilizador rejeitou o pedido.</translation>
 <translation id="2403819048476450281">Parâmetros inválidos.</translation>
+<translation id="3955144560853195652">A cadeia <ph name="VALUE"/> não foi adicionada</translation>
 <translation id="9161147058107529840">Deve ser um parâmetro de objeto único.</translation>
 <translation id="1875861420974447980">Este ID de cadeia está em utilização</translation>
 <translation id="167698752210114155">Ocorreu um erro interno</translation>
@@ -793,9 +823,11 @@
 <translation id="7381733147588397055">Não foi possível converter os dados de transação</translation>
 <translation id="3829038878925630240">Dados de transação 'from' têm de ser especificados</translation>
 <translation id="4732386285392573809">Falha ao obter o preço da taxa (gas) para a transação</translation>
-<translation id="7619826778671319444">Falha ao obter o limite da taxa (gas) para a transação</translation>
 <translation id="4232775951515678071">Falha ao obter o tipo para a transação</translation>
-<translation id="7631054302129692654">Falha ao obter a estimativa da taxa (gas) para a transação EIP-1559</translation>
+<translation id="2080935885647755539">Falha ao obter as taxas para a transação EIP-1559</translation>
+<translation id="4843814354611030845">O utilizador rejeitou a transação</translation>
+<translation id="1462494615260983714">Erro ao processar a transação</translation>
+<translation id="4886059598718763020">'<ph name="VALUE"/>' não tem autorização para assinar a mensagem</translation>
 <translation id="4958950550253325418">Aplicações DeFi</translation>
 <translation id="735961408871282410">Mercados NFT</translation>
 <translation id="7740287852186792672">Pesquisar resultados</translation>
@@ -830,13 +862,17 @@
 <translation id="2267753748892043616">Adicionar conta</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Trocar</translation>
-<translation id="5420730209575475110">não suportado</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> não é suportado</translation>
+<translation id="1191686659164947414">Esta transação pode ser uma prática de "front running"</translation>
+<translation id="632241521608275119">Tolerância de desvio</translation>
+<translation id="4500473291496079954">Expira em</translation>
+<translation id="8093033115658137576">endereço ou url 0x</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Bem-vindo à nova Carteira Brave</translation>
 <translation id="8303434745767477417">Mantenha os ativos cripto na sua custódia. Controle o desempenho da carteira, e interaja com as DApps de Web3. Negocie, invista, peça emprestado e empreste com o DeFi. Tudo bem a partir do navegador privado Brave. Sem extensões, sem transferências obrigatórias.</translation>
 <translation id="6972754398087986839">Começar</translation>
 <translation id="375882617301124395">Faça uma cópia de segurança da sua carteira cripto</translation>
-<translation id="1078873179929044999">No próximo passo verá uma frase de recuperação de 12 palavras, que pode utilizar para recuperar as suas contas cripto primárias. Guarde-a nalgum lugar seguro. A sua frase de recuperação é a única forma de recuperar o acesso à conta no caso de se esquecer da palavra-passe, de perder o dispositivo ou de lho roubarem, ou se pretender trocar de carteiras.</translation>
+<translation id="1078873179929044999">No próximo passo, será apresentada uma frase de recuperação de 12 palavras, que pode utilizar para recuperar as suas contas principais de criptomoedas. Guarde-a num lugar seguro. A sua frase de recuperação é a única forma de recuperar o acesso à conta no caso de se esquecer da palavra-passe, de perder o dispositivo ou de furto do mesmo, ou se pretender trocar de carteira.</translation>
 <translation id="5024543173656851695">Compreendo que se perder as minhas palavras de recuperação, não poderei aceder à minha carteira de criptomoedas.</translation>
 <translation id="3933122286596948824">A sua frase de recuperação</translation>
 <translation id="5077747669435508720">Escreva ou copie estas palavras na ordem exata apresentada abaixo e guarde-as nalgum local seguro. A sua frase de recuperação é a única forma de recuperar o acesso à conta no caso de se esquecer da palavra-passe, de perder ou de lhe roubarem o dispositivo, ou no caso de pretender mudar de carteiras.</translation>
@@ -850,8 +886,8 @@
 <translation id="2813156651070657572">Mantenha os seus ativos cripto seguros com uma palavra-passe</translation>
 <translation id="6901073872645365201">As palavras-passe tem de ter, pelo menos, 7 caracteres e conter, pelo menos, um número e um caracter especial.</translation>
 <translation id="6657585470893396449">Palavra-passe</translation>
-<translation id="692381016487372902">Digitar novamente a palavra-passe</translation>
-<translation id="3527905866577245691">A palavra-passe verificada não corresponde</translation>
+<translation id="5486261815000869482">Confirmar a palavra-passe</translation>
+<translation id="467510802200863975">As palavras-passe não correspondem</translation>
 <translation id="5168349973342709369">Introduza a palavra-passe para desbloquear a carteira</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="5045550434625856497">Palavra-passe incorrecta</translation>
@@ -875,6 +911,7 @@
 <translation id="1940465339426637378">Ativos</translation>
 <translation id="2236507293802791911">Ativos visíveis</translation>
 <translation id="7525067979554623046">Criar</translation>
+<translation id="4771176409524282426">Criar conta</translation>
 <translation id="4324198334837993695">hardware</translation>
 <translation id="3067168166931605141">Nome da conta</translation>
 <translation id="1136772623587250243">Colar a chave privada da área de transferência</translation>
@@ -884,9 +921,9 @@
 <translation id="795667975304826397">Nenhum ficheiro escolhido</translation>
 <translation id="5891811606602061966">Falha ao importar a conta, tente novamente.</translation>
 <translation id="5051929972046200722">Selecione o dispositivo da sua carteira de hardware</translation>
-<translation id="6932355307691676490">Ligue a sua</translation>
-<translation id="4513956488935671725">carteira diretamente ao seu computador.</translation>
+<translation id="5745936663807461565">Ligue diretamente a carteira <ph name="HARDWARE_DEVICE"/> no computador.</translation>
 <translation id="5041211872515579638">Desbloqueie o seu dispositivo e selecione a aplicação Ethereum.</translation>
+<translation id="6892232036314454524">Este erro pode ocorrer quando a aplicação incorreta está aberta no dispositivo Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">A ligar...</translation>
@@ -904,11 +941,13 @@
 <translation id="6600400596821238377">Nome do token</translation>
 <translation id="4432966365400169165">Endereço de contacto do token</translation>
 <translation id="4092152169181928870">Símbolo do Token</translation>
-<translation id="871696868578199698">Decimais de precisão</translation>
-<translation id="6637540491667802882">como um token personalizado</translation>
+<translation id="4351811224047421378">Decimais de precisão</translation>
+<translation id="4982060163914604175">Adicionar <ph name="CONTRACT_ADDRESS"/> como um token personalizado</translation>
 <translation id="7978047524114351365">Sem ativos designados</translation>
 <translation id="9040455159722359521">Pesquisar ativos ou endereço de contacto</translation>
 <translation id="6018178824574796106">Falha ao adicionar token personalizado, tente novamente.</translation>
+<translation id="547122651977318828">ID de token (apenas para ERC721)</translation>
+<translation id="7544552854944350190">É necessário o ID de token</translation>
 <translation id="2708402071160162126">AVISO: Nunca divulgue a sua frase de recuperação. Qualquer pessoa na posse desta frase pode roubar os seus ativos permanentemente.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
@@ -916,7 +955,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">Tudo</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Testar rede</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -937,7 +976,7 @@
 <translation id="59223531494896848">Limite</translation>
 <translation id="8569380433211549748">Preço em</translation>
 <translation id="2490428413101944234">Testar faucet</translation>
-<translation id="6082785102488657349">Obter Ether de uma faucet para</translation>
+<translation id="3352959425838279177">Obter Ether de uma "faucet" para <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">Prosseguir para o Wyre</translation>
 <translation id="2581671693710952401">Obter Ether</translation>
 <translation id="8009571545960303544">A sua assinatura é necessária</translation>
@@ -945,12 +984,15 @@
 <translation id="3474375934783434676">Assinar por sua própria conta e risco</translation>
 <translation id="5488357322146334497">Mensagem</translation>
 <translation id="3586752056660754651">Assinar</translation>
-<translation id="7065157926159745595">Permitir que esta aplicação gaste o seu</translation>
+<translation id="9032898664193335413">Permitir que esta aplicação envie <ph name="TOKEN_SYMBOL"/>?</translation>
+<translation id="854606191596163710">Ao autorizar esta permissão, está a permitir que esta aplicação possa retirar <ph name="VALUE"/> e efetuar transações automaticamente por si.</translation>
 <translation id="8786100550345425552">Editar permissões</translation>
 <translation id="7710469167917867539">Taxa de transação</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="7968982339740310781">Ver detalhes</translation>
 <translation id="6452181791372256707">Rejeitar</translation>
+<translation id="8904889345035514635">Permissão atual</translation>
+<translation id="7073918978411974168">Permissão proposta</translation>
 <translation id="4717431746210146708">Permitir que este site adicione uma rede?</translation>
 <translation id="2521480044079508357">Isto permitirá que esta rede seja usada na Carteira Brave.</translation>
 <translation id="1982257600591932657">Nome da rede</translation>
@@ -960,6 +1002,9 @@
 <translation id="4822132585477111396">ID da Chain</translation>
 <translation id="7131971375297699539">Símbolo da moeda</translation>
 <translation id="4693057234255364395">URL do Block Explorer</translation>
+<translation id="1060221736464994328">Permitir que este site altere a rede?</translation>
+<translation id="2478788592457735063">Esta ação irá alterar a rede para uma rede adicionada anteriormente.</translation>
+<translation id="8756686998207163764">Alterar rede</translation>
 <translation id="3948067511324628726">Taxa "gas"</translation>
 <translation id="7163997622278957886">Licitação</translation>
 <translation id="1074360622426001342">Valor + taxa (gas)</translation>
@@ -967,38 +1012,39 @@
 <translation id="5821668936183240062">seguinte</translation>
 <translation id="793994607260936590">primeira</translation>
 <translation id="4709524402122994378">transações</translation>
+<translation id="523862956770478816">Permissões do site</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> contas ligadas</translation>
 <translation id="4460220693591349571">TIPO DE FUNÇÃO</translation>
 <translation id="838933475572692615">DADOS HEXADECIMAIS</translation>
 <translation id="2240831799756994975">BYTES</translation>
 <translation id="4874303883488468190">Selecionar conta(s)</translation>
-<translation id="4015195974325151180">Ver os endereços das suas</translation>
-<translation id="3587259018193837508">contas permitidas (obrigatório)</translation>
+<translation id="2018472018751735678">Visualizar os endereços das suas contas permitidas (obrigatório)</translation>
 <translation id="7029403458170657879">Ligue com a Carteira Brave</translation>
 <translation id="7982184974053636367">É requerida uma palavra-passe mais segura para a Carteira Brave</translation>
 <translation id="2372897697869224590">Definir uma palavra-passe da carteira Brave</translation>
 <translation id="7739762330714405363">Utilizar a mesma palavra-passe</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Importar de</translation>
-<translation id="4428111176561355185">Importar o seu</translation>
-<translation id="8929587248006013051">Contas MetaMask para a Carteira Brave. Desfrute de uma forma mais rápida e mais segura de gerir os ativos cripto e de interagir com as DApps de Web3.</translation>
+<translation id="7102907656918333773">Importar de<ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Importe as contas <ph name="WALLET_EXTENSION"/> para a carteira Brave. Desfrute de uma forma mais rápida e segura de gerir os ativos das criptomoedas e interagir com as aplicações Web3.</translation>
 <translation id="4237840336687249184">Palavra-passe MetaMask</translation>
 <translation id="2381605201035323535">carteiras cripto</translation>
 <translation id="2770851145415891830">Carteiras cripto existentes detetadas</translation>
 <translation id="4938145712652668388">Quando clica em "Começar" importará a sua Carteira Cripto anterior para a nova experiência da Carteira Brave, e desfrutará de todos os benefícios destacados acima. Experimente, e diga-nos o que pensa!</translation>
-<translation id="913613743605881268">Se preferir ignorar a importação e manter a experiência antiga das Moedas Cripto, basta navegar no Navegador Brave</translation>
-<translation id="5886242758142314994">e altere a predefinição novamente para Carteiras Cripto. Pode também importar, experimentar a nova Carteira Brave, e alterar novamente a qualquer momento.</translation>
+<translation id="2237759620789871865">Se preferir ignorar a importação e manter a experiência Carteiras de criptomoedas, apenas tem de aceder às <ph name="LINK_BEFORE"/>Definições<ph name="LINK_AFTER"/> do navegador Brave e alterar a predefinição para a opção Carteiras de criptomoedas. Também pode importar, experimentar a nova carteira Brave e alterar novamente a qualquer momento.</translation>
 <translation id="3301259443293676544">Introduza a palavra-passe das suas carteiras cripto existentes de modo a importar para a Carteira Brave. Desfrute de uma forma mais rápida e mais segura de gerir os ativos cripto e interagir com as DApps de Web3.</translation>
 <translation id="9099900965604225657">Palavra-passe das carteiras cripto</translation>
 <translation id="4020495774166914146">Perdi a minha palavra-passe e frase de recuperação, criar uma nova carteira.</translation>
-<translation id="480319080797177742">ligada</translation>
-<translation id="4203566092423620442">desligada</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ligado</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desligado</translation>
 <translation id="5317781812114905957">Instruções</translation>
-<translation id="1952715382071350669">A carteira de hardware requer confirmação da transação.</translation>
+<translation id="1178198982208000092">Ligar <ph name="DEVICE_NAME"/></translation>
+<translation id="3301417531330431881">A carteira de hardware requer confirmação da transação. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviado</translation>
 <translation id="5013754027092416509">recebido</translation>
 <translation id="5867988533873716616">O URL do Block Explorer não está disponível.</translation>
 <translation id="4255623233927788178">Ver no Block Explorer</translation>
 <translation id="6383204195803840504">As transações aparecerão aqui</translation>
+<translation id="2916401020782528840">Transação não encontrada</translation>
 <translation id="8941851657764077659">Taxa de prioridade máxima</translation>
 <translation id="8047527352810290817">Editar taxa (gas)</translation>
 <translation id="9091334651803050473">Enquanto não há uma garantia, os "mineiros" provavelmente darão prioridade à sua transação se pagar uma taxa mais elevada.</translation>
@@ -1015,12 +1061,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Definir personalizada</translation>
 <translation id="7400927223938424379">Definir sugerida</translation>
+<translation id="1599636444563952897">A permissão de limite de gastos permite a <ph name="SITE_ORIGIN"/> retirar e gastar até ao seguinte valor:</translation>
+<translation id="4512871563176965522">Permissão personalizada</translation>
+<translation id="749944179568745958">Não é um endereço ETH válido</translation>
+<translation id="882486206986535424">Não é um endereço válido</translation>
+<translation id="6825399159373612149">O domínio<ph name="DOMAIN_NAME"/> não está registado</translation>
+<translation id="862585889767884824">de</translation>
+<translation id="9106265941552476098">Rejeitar <ph name="TRANSACTION_LENGTH"/> transações</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
 <translation id="275990379543116961">Fundos insuficientes para gás</translation>
 <translation id="3292453499915466604">Liquidez insuficiente</translation>
 <translation id="805808215102934711">Ativar <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Erro desconhecido</translation>
-<translation id="6687008710463927359">Conta <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Conta <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Primeiro, é necessário desbloquear a carteira</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> não é um endereço válido</translation>
+<translation id="7340805872138998391">Não é possível desbloquear o dispositivo. Tente estabelecer ligação novamente.</translation>
+<translation id="1984410139271779110">Erro interno. Esquema desconhecido</translation>
+<translation id="8682200134223578011">aprovado</translation>
+<translation id="4674380028960132654">Ledger: a assinatura não corresponde ao endereço correto</translation>
+<translation id="3183932890629254743">Conta de hardware não encontrada</translation>
+<translation id="4287068151777838754">Os dados JSON não são o esperado</translation>
+<translation id="3282936527763045737">A palavra-passe não está correta</translation>
+<translation id="1119447706177454957">Erro interno</translation>
+<translation id="3327639091470204775">Erro interno. Não é possível criar "iframe bridge"</translation>
+<translation id="6672377693827764095">Erro interno. Não é possível obter as contas</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação geral</translation>
 <translation id="4045404575593562245">Eventos de controlo do Tor</translation>
@@ -1029,6 +1094,24 @@
 <translation id="6951743416068151209">URI de proxy do Tor</translation>
 <translation id="1671503397662036257">Estadp da Ligação Tor</translation>
 <translation id="6024292492796847324">Progresso de inicialização do Tor</translation>
+<translation id="1742469581923031760">A estabelecer ligação...</translation>
+<translation id="1287487756047817908">A desligar…</translation>
+<translation id="2325196879156848326">Falha ao estabelecer ligação</translation>
+<translation id="745054660363064771">Não é possível estabelecer ligação ao servidor</translation>
+<translation id="3936826714240735937">Selecionar outro servidor</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> não é possível estabelecer ligação ao servidor de <ph name="REGION_NAME"/>. Pode tentar novamente ou selecionar outro servidor</translation>
+<translation id="1664949222596149258">Comprar por <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">Já adquiriu uma VPN?</translation>
+<translation id="8814357473522731680">Desenvolvido por</translation>
+<translation id="5747552184818312860">Expira</translation>
+<translation id="1691256669639196606">Gerir assinatura</translation>
+<translation id="434523916398030617">Contactar apoio técnico</translation>
+<translation id="1116694919640316211">Acerca de</translation>
+<translation id="8670386189340362926">Bloquear rastreadores e anúncios em todas as aplicações</translation>
+<translation id="4860763498907927955">Protege o utilizador de ligações de rede indesejáveis</translation>
+<translation id="3181339219453722970">Selecione a localização da VPN</translation>
+<translation id="1751947227857853925">Rápido e ilimitado até 100 Mbps</translation>
+<translation id="1400240082805528049">Apoio 24/7</translation>
 <translation id="7586151660465233733">Mais mercados em <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Ver mercados e trocar criptomoeda em FTX</translation>
 <translation id="5963745988819586370">Mercados</translation>

@@ -221,6 +221,18 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="7173114856073700355">Atidaryti nustatymus</translation>
 <translation id="6965382102122355670">Gerai</translation>
 <translation id="4450893287417543264">Neberodyti</translation>
+<translation id="1056898198331236512">Įspėjimas</translation>
+<translation id="1426410128494586442">Taip</translation>
+<translation id="7811264919113243207">Pasirinkus šią parinktį su šį QR kodą sukūrusiu įrenginiu bus bendrinami jūsų „Brave“ duomenys, galbūt ir jūsų slaptažodžiai.
+
+Įsitikinkite, ar šis QR kodas buvo sukurtas jums priklausančiame įrenginyje.
+
+Ar tikrai norite tai padaryti?</translation>
+<translation id="3097089005389027085">Pasirinkus šią parinktį su šiuos žodinius kodus sukūrusiu įrenginiu bus bendrinami jūsų „Brave“ duomenys, galbūt ir jūsų slaptažodžiai.
+
+Įsitikinkite, ar šie žodiniai kodai buvo sukurti jums priklausančiame įrenginyje.
+
+Ar tikrai norite tai padaryti?</translation>
 <translation id="597993392929850353">„Brave“ licencija</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6199596294742117349">Tai inkognito skirtukas</translation>
@@ -413,6 +425,8 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="6755546361496900700">Peržiūrėti konvertavimą</translation>
 <translation id="2882813124794301799">Valdiklių dėklas</translation>
 <translation id="13296465911709339">Jūsų tekstas nukopijuotas į iškarpinę.</translation>
+<translation id="4670943871783273148">Jūsų tekstas išsaugotas tekstiniame faile.</translation>
+<translation id="4432845796903761592">Failas neišsaugotas.</translation>
 <translation id="7144878232160441200">Kartoti</translation>
 <translation id="2977461003134694205">Privatumo statistiniai duomenys</translation>
 <translation id="4643117005422448078">Populiariausios svetainės</translation>
@@ -474,11 +488,12 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="8037420924417098685">Norėdami pradėti nemokamą skambutį, įjunkite „Brave Rewards“.</translation>
 <translation id="8961724619078500274">Naudojant „Brave Rewards“ suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.</translation>
 <translation id="7307847920988946894">Įjungti atlygio funkciją</translation>
+<translation id="7872993190040589450">Įjungdami šią funkciją sutinkate su <ph name="TERMS_OF_SERVICE"/> ir <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="6128511569382736135">Norėdami pradėti nemokamą skambutį, įjunkite privatumo nepažeidžiančias „Brave“ reklamas</translation>
 <translation id="7930006085154756245">Naudojant privatumo nepažeidžiančias „Brave“ reklamas suteikiama žetonų už privačių reklamų peržiūrą (jūsų duomenys lieka saugūs). Iškeiskite šiuos žetonus į grynuosius pinigus ar dovanų korteles arba skirkite arbatpinigių mėgstamiausioms svetainėms. Jokio sekimo ar sulėtėjusio naršymo.</translation>
 <translation id="4992617448154987397">Įjungti privatumo nepažeidžiančias „Brave“ reklamas</translation>
 <translation id="3415016869273103668">Dabar galite pradėti nemokamą pokalbį</translation>
-<translation id="7073631403665023390">Bakstelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.</translation>
+<translation id="7073631403665023390">Spustelėkite ar bakstelėkite bet kurią ekrano vietą, kad toliau naudotumėtės „Brave Talk“.</translation>
 <translation id="626339649633171286">Norite sužinoti daugiau apie „Brave Rewards“? <ph name="TAKE_QUICK_TOUR"/>.</translation>
 <translation id="3604285424134705930">Konvertavote <ph name="FROM_VALUE"/> <ph name="FROM_CURRENCY"/> į <ph name="TO_VALUE"/> <ph name="TO_CURRENCY"/>!</translation>
 <translation id="392587271502873865">Patikrinkite tinklo ryšį.</translation>
@@ -534,13 +549,15 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="5460364286096798286">Laikykite kriptovaliutą savo žinioje. Prekiaukite aktyvais. Peržiūrėkite kainas ir savo investicijų portfelio rezultatus. Investuokite, skolinkitės ir skolinkite naudodami „DeFi“.</translation>
 <translation id="1748009926009835882">Nustatyti kriptovaliutą</translation>
 <translation id="2759836790106646094">Kurti atsarginę piniginės kopiją dabar!</translation>
-<translation id="7685607706678113458">Kitame žingsnyje pamatysite 12 žodžių, kurie leis jums atkurti savo kriptopiniginę.</translation>
+<translation id="5156354224138379811">Kitame žingsnyje pamatysite 12 žodžių, kurie leis jums atkurti savo kriptovaliutų piniginę.</translation>
 <translation id="2359808026110333948">Tęsti</translation>
 <translation id="5024543173656851695">Suprantu, kad praradęs atkūrimo žodžius neteksiu prieigos prie savo kriptopiniginės.</translation>
 <translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
 <translation id="6146351434671268516">Užsirašykite arba nusifotografuokite šiuos žodžius tokia seka, kokia jie pateikti, ir laikykite saugioje vietoje.</translation>
 <translation id="7408247683131762445">ĮSPĖJIMAS. Niekada neatskleiskite savo atsarginės frazės. Bet kas, žinantis šią frazę, gali visiems laikams pasisavinti jūsų lėšas.</translation>
 <translation id="939275786514736244">Savo frazę išsaugojau saugioje vietoje</translation>
+<translation id="6896758677409633944">Kopijuoti</translation>
+<translation id="5317780077021120954">Išsaugoti</translation>
 <translation id="2604744480284798833">Susikurkite atsarginę piniginės kopiją dabar ir apsaugokite kriptovaliutų portfelį nuo prieigos netekimo.</translation>
 <translation id="1202920745614909195">Pirkite kriptovaliutą naudodami „Apple Pay“, kredito ar debeto kortelę.</translation>
 <translation id="841880029259839903">Siųskite kriptovaliutą arba perveskite iš vienos sąskaitos į kitą.</translation>
@@ -562,13 +579,13 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="7666788964154917731"><ph name="NUMBER"/>. <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="8100001366858145406">Įgalinti atrakinimą naudojant kontrolinį kodą?</translation>
 <translation id="5493402808936397665">Įjunkite biometrinių duomenų naudojimą, kad galėtumėte prisijungti prie savo piniginės be slaptažodžio.</translation>
-<translation id="1544192797660353713">„Brave“ piniginė</translation>
+<translation id="1544192797660353713">Piniginė</translation>
 <translation id="6901810042765869341">Norėdami atkurti savo „Brave Wallet“ kriptovaliutos sąskaitą, įveskite savo atkūrimo frazę.</translation>
 <translation id="1970161551843843564">Atkurti kriptosąskaitą</translation>
 <translation id="4811736040444856406">Rodyti atkūrimo frazę</translation>
 <translation id="283071225285270357">Įveskite atkūrimo frazę</translation>
 <translation id="2339124864228588937">Patikrinkite atkūrimo frazę</translation>
-<translation id="6202787708155200390">Spustelėkite ant žodžių viršuje ir sudėliokite greta vienas kito teisinga seka.</translation>
+<translation id="2718669004132381989">Spustelėkite ant žodžių ir sudėliokite greta vienas kito teisinga seka.</translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
 <translation id="3157931365184549694">Atkurti</translation>
 <translation id="9111102763498581341">Atrakinti</translation>
@@ -576,7 +593,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="1569452037668432756">Įveskite savo slaptažodį, kad atrakintumėte</translation>
 <translation id="224719674509047150">Slaptažodį turi sudaryti mažiausiai 7 simboliai, kurių bent vienas turi būti skaičius ir bent vienas specialusis simbolis</translation>
 <translation id="1144810021918451336">Neapsaugo nuo pavojingų svetainių, siuntų ir plėtinių.</translation>
-<translation id="745115390910697838">Frazės nesutampa. Bandykite dar kartą.</translation>
+<translation id="5760476995887363522">Frazės nesutampa. Bandykite dar kartą.</translation>
 <translation id="2360588547830602174">Sąskaitos atkurti nepavyko. Bandykite dar kartą.</translation>
 <translation id="6392640873800632439">Rinkos kaina, <ph name="ASSET"/></translation>
 <translation id="6748108480210050150">Nuo</translation>
@@ -590,6 +607,12 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="1987317783729300807">Paskyros</translation>
 <translation id="3535654229833214438">Operacijos</translation>
 <translation id="4636930964841734540">Informacija</translation>
+<translation id="2449682593754783720">1 valanda</translation>
+<translation id="969133700726811190">1 diena</translation>
+<translation id="5882300031363619940">1 savaitė</translation>
+<translation id="5698094150392720512">1 mėnuo</translation>
+<translation id="5483736362376139517">1 metai</translation>
+<translation id="6979737339423435258">Visas laikotarpis</translation>
 <translation id="6284218950354553099">Automatiškai siųsti „Brave“ kasdienio naudojimo signalą</translation>
 <translation id="5288333155754958121">Šis anoniminis inkognito signalas leidžia „Brave“ įvertinti aktyvius naudotojus.</translation>
 <translation id="3819257035322786455">Kurti atsarginę kopiją</translation>
@@ -630,7 +653,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="6277055349883621705">Atnaujinkite kasmet, sutaupykite 16 %</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / m.</translation>
 <translation id="4487678670820292781">119,88 USD</translation>
-<translation id="5867778679088331977">Išbandykite nemokamai 7 dienas. Vėliau būsite apmokestinti pagal atitinkamo plano kainą. Visos prenumeratos atnaujinamos automatiškai, tačiau prieš atnaujinant galima atšaukti.</translation>
+<translation id="2655185358771731232">Išbandykite nemokamai 7 dienas. Vėliau būsite apmokestinti pagal atitinkamo plano kainą. Visos prenumeratos atnaujinamos automatiškai, tačiau prieš atnaujinant galima atšaukti.</translation>
 <translation id="6053992191006521518">Išbandykite NEMOKAMAI</translation>
 <translation id="721747358270435486">Įdiegti VPN</translation>
 <translation id="836074276610740314">Įdiegti VPN profilį</translation>
@@ -704,4 +727,11 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="275990379543116961">Nepakanka lėšų dujoms</translation>
 <translation id="3292453499915466604">Nepakankamas likvidumas</translation>
 <translation id="3380365263193509176">Nežinoma klaida</translation>
+<translation id="5932938770824268122">Asmeninis raktas</translation>
+<translation id="2472882733835903303">Rodyti asmeninį raktą</translation>
+<translation id="4391056902675005799">Paslėpti asmeninį raktą</translation>
+<translation id="5929798090073091848">Dėmesio. Niekada neatskleiskite šio rakto kitiems. Bet kuris jūsų asmeninį raktą turintis asmuo gali pavogti bet kokį jūsų paskyroje laikomą turtą.</translation>
+<translation id="1133619932669546254">Aktyvinti <ph name="TOKEN"/></translation>
+<translation id="2199215899212542417">FUNKCIJOS TIPAS: <ph name="FTYPE"/></translation>
+<translation id="4803003663447398145">Duomenų nėra</translation>
 </translationbundle>

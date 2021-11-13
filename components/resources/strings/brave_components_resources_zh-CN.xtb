@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
-<translation id="5510618543889994434">允许对视频付款</translation>
+<translation id="5510618543889994434">允许打赏视频</translation>
 <translation id="8933202740471878108">访问量为 1 次</translation>
 <translation id="354797634123275103">访问量为5次</translation>
 <translation id="3583700907990488238">访问量为10次</translation>
@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">已单击</translation>
 <translation id="7119308337584989771">已放弃</translation>
 <translation id="6805660603861526473">已查看</translation>
+<translation id="4014166694178311757">无法验证您的钱包，因为您已达到验证设备的最大限量。</translation>
+<translation id="1221593978088944142">错误：已达到设备上限</translation>
 <translation id="3113653894794167793">抱歉，无法处理您的请求，请重试。</translation>
-<translation id="8832187864682447273">您需要有一个经过验证的钱包才能登录</translation>
-<translation id="2607420597216860026">请在 <ph name="PROVIDER"/> 上完成身份验证后重试。</translation>
+<translation id="2607420597216860026">请在 <ph name="PROVIDER"/> 上完成身份验证后再试一次。</translation>
+<translation id="8832187864682447273">错误：您需要有一个经过验证的钱包才能登录</translation>
 <translation id="1501075228659004450">哎呀，看来您的 Brave Rewards 钱包已使用其他 <ph name="PROVIDER"/> 账号验证。请尝试使用您先前的账户验证。</translation>
 <translation id="5111921830714291902">错误：不同的账户</translation>
+<translation id="5382684862562314222">您所在地区的 Uphold 尚不支持 BAT。</translation>
+<translation id="9074594632540931067">错误：BAT 不可用</translation>
+<translation id="413458922997276130">您在 Uphold 的账户目前已被屏蔽。</translation>
+<translation id="3579959767665130790">错误：账户被屏蔽</translation>
+<translation id="819370426249314592">您在 Uphold 的账户仍处于待处理状态。</translation>
+<translation id="4530453398914580957">错误：待处理账户</translation>
+<translation id="2388470740942086608">您在 Uphold 的账户目前受到限制。</translation>
+<translation id="3605236342612716051">错误：受限账户</translation>
 <translation id="1737873393693460829">开启 [[title]]，即意味着您同意了 <ph name="BEGIN_LINK1"/>服务条款<ph name="END_LINK1"/> 和 <ph name="BEGIN_LINK2"/>隐私政策<ph name="END_LINK2"/>。</translation>
+<translation id="901298512318791028">您的 <ph name="AMOUNT"/> 支付将在 <ph name="DAYS"/>内开始处理。</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note:<ph name="BOLD_END"/>处理支付以及 BAT 到账可能需要几天。</translation>
 <translation id="4672975606583962967">选择钱包服务</translation>
 <translation id="1815503044492647974">选择一个托管钱包合作伙伴。如果已有账户，那么需要登录以进行连接。</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">用户ID</translation>
 <translation id="4235360514405112390">有效</translation>
 <translation id="3902084968737576005">钱包地址：</translation>
+<translation id="3653417592104122757">钱包记录</translation>
 <translation id="2326487656644542536">钱包信息</translation>
 <translation id="3506182299017414175">钱包尚未创建</translation>
 <translation id="8559420016582377654">钱包付款 ID：</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">输入恢复密钥或</translation>
 <translation id="1209382772199769572">请在更换钱包之前先备份，否则，您会失去您的当前钱包中的这笔资金 [[funds]]。</translation>
 <translation id="5423214929210538027">您确定要重置您的奖励钱包吗？</translation>
+<translation id="4749947664556704604">如果重置您的钱包，您的 <ph name="BAT_AMOUNT"/> 和其他奖励数据会永久丢失。请确保您已<ph name="LINK_BEGIN"/>验证了您的钱包<ph name="LINK_END"/>，这样您就可以保留您的 BAT 了。</translation>
 <translation id="2028613172174411919">如果您重置钱包，则将永久失去您的奖励数据。</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">只需投资 $1 即可买入热门股票和交易所买卖基金，例如 AAPL、TSLA 或 AMZN</translation>
 <translation id="3787061634640932557">编辑卡</translation>
 <translation id="5977237145327845546">与朋友和同事进行私人视频通话。</translation>
-<translation id="5850325887346946383">开始视频通话</translation>
+<translation id="8863928195533744356">开始通话</translation>
 <translation id="3651550649176056334">关于您的数据</translation>
 <translation id="223536150967420869">购买</translation>
 <translation id="5110244215256675209">购买 Crypto</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">查看全部</translation>
 <translation id="3026978804849658576">查看月结单</translation>
 <translation id="8494748383523030337">您的余额</translation>
+<translation id="3343165035032571678">您已通过查看 Brave 专属广告赚取了 <ph name="AMOUNT"/>！</translation>
+<translation id="6618415862402597254">广告收入已收到</translation>
+<translation id="5981646694027725752">领取收益</translation>
+<translation id="2556441076129789027">领取代币</translation>
+<translation id="5544777623605368410">收益</translation>
+<translation id="3273637494083639780">您本月赚取的代币将于 <ph name="DATE"/>开始处理。</translation>
+<translation id="1029300693989825319">这可能随市场波动而变化。</translation>
+<translation id="8334559352278209120">捐赠</translation>
+<translation id="3903419925307046908">赚取代币和回报</translation>
+<translation id="244362569344671266">通过查看 Brave Private Ads 赚取代币并自动支持内容创作者。</translation>
+<translation id="5095252080770652994">进度</translation>
+<translation id="6278643716658443228">奖励设置</translation>
+<translation id="6777169449483742979">您通过查看此赞助图片赚取了代币。</translation>
+<translation id="5486114327664215175">通过查看此图片赚取代币并支持内容创作者。</translation>
+<translation id="2940863921746574646">代币余额</translation>
+<translation id="1714906256929297600">在促销代币过期前将其用于向创作者打赏！</translation>
+<translation id="2426048501007152001">可用代币</translation>
 <translation id="7701466644604753106">开启 Speedreader</translation>
 <translation id="763042262431778831">关闭 Speedreader</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="1148827340205946630">用户拒绝了此请求</translation>
 <translation id="2403819048476450281">参数无效</translation>
+<translation id="3955144560853195652">尚未添加 <ph name="VALUE"/> 链</translation>
 <translation id="9161147058107529840">预期的单个对象参数。</translation>
 <translation id="1875861420974447980">此链 ID 已有人使用</translation>
 <translation id="167698752210114155">发生了一个内部的错误</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">无法转换交易数据</translation>
 <translation id="3829038878925630240">必须指定交易数据“from”</translation>
 <translation id="4732386285392573809">获取交易的 gas 价格失败</translation>
-<translation id="7619826778671319444">获取交易的 gas 限制失败</translation>
 <translation id="4232775951515678071">未能获取交易类型</translation>
-<translation id="7631054302129692654">未能获取 EIP-1559 交易的 gas 预估值</translation>
+<translation id="2080935885647755539">未能获取 EIP-1559 交易的 gas 费用</translation>
+<translation id="4843814354611030845">用户拒绝了交易</translation>
+<translation id="1462494615260983714">交易处理出错</translation>
+<translation id="4886059598718763020">“<ph name="VALUE"/>”未被授权签署消息</translation>
 <translation id="4958950550253325418">Defi 应用</translation>
 <translation id="735961408871282410">NFT 市场</translation>
 <translation id="7740287852186792672">搜索结果</translation>
@@ -833,7 +866,11 @@
 <translation id="2267753748892043616">添加账户</translation>
 <translation id="1483493594462132177">发送</translation>
 <translation id="538450413584738399">交换</translation>
-<translation id="5420730209575475110">不支持</translation>
+<translation id="7020187418439030877">不支持 <ph name="NETWORK"/></translation>
+<translation id="1191686659164947414">交易可能超前了</translation>
+<translation id="632241521608275119">滑点公差</translation>
+<translation id="4500473291496079954">到期时间</translation>
+<translation id="8093033115658137576">0x 地址或 url</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="1420318137760245955">欢迎来到新的 Brave 钱包</translation>
 <translation id="8303434745767477417">保管加密资产。跟踪投资组合表现，并与 web 3 DApps 交互。使用 DeFi 交易、投资、借贷和贷款。所有操作都可以在 Brave 无痕浏览器中完成。无需扩展程序，不需要下载。</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">用密码保护您的加密资产</translation>
 <translation id="6901073872645365201">密码必须具有至少 7 个字符，至少包含 1 个数字和 1 个特殊字符。</translation>
 <translation id="6657585470893396449">密码</translation>
-<translation id="692381016487372902">重新输入密码</translation>
-<translation id="3527905866577245691">验证密码不匹配</translation>
+<translation id="5486261815000869482">确认密码</translation>
+<translation id="467510802200863975">密码不匹配</translation>
 <translation id="5168349973342709369">输入密码以解锁钱包</translation>
 <translation id="9111102763498581341">解锁</translation>
 <translation id="5045550434625856497">密码不正确</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">资产</translation>
 <translation id="2236507293802791911">可见资产</translation>
 <translation id="7525067979554623046">创建</translation>
+<translation id="4771176409524282426">创建账户</translation>
 <translation id="4324198334837993695">硬件设施</translation>
 <translation id="3067168166931605141">账户名称</translation>
 <translation id="1136772623587250243">从剪贴板粘贴私钥</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">未选中文件</translation>
 <translation id="5891811606602061966">导入账户失败，请重试。</translation>
 <translation id="5051929972046200722">选择您的硬件钱包设备</translation>
-<translation id="6932355307691676490">直接将您的</translation>
-<translation id="4513956488935671725">钱包连接到计算机。</translation>
+<translation id="5745936663807461565">直接将您的 <ph name="HARDWARE_DEVICE"/>钱包连接到计算机。</translation>
 <translation id="5041211872515579638">解锁设备并选择以太坊应用。</translation>
+<translation id="6892232036314454524">当在 Ledger 设备上打开错误的应用程序时，可能会发生此错误。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">正在连接…</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">代币名称</translation>
 <translation id="4432966365400169165">代币合约地址</translation>
 <translation id="4092152169181928870">代币符号</translation>
-<translation id="871696868578199698">小数点位数</translation>
-<translation id="6637540491667802882">作为定制代币</translation>
+<translation id="4351811224047421378">精确小数点</translation>
+<translation id="4982060163914604175">将 <ph name="CONTRACT_ADDRESS"/>添加为自定义代币</translation>
 <translation id="7978047524114351365">没有具有指定名称的资产</translation>
 <translation id="9040455159722359521">搜索资产或合约地址</translation>
 <translation id="6018178824574796106">添加定制代币失败，请重试。</translation>
+<translation id="547122651977318828">令牌 ID（仅对于 ERC721）</translation>
+<translation id="7544552854944350190">令牌 ID 是必填项</translation>
 <translation id="2708402071160162126">警告：切勿分享您的恢复密语。任何人一旦持有该密语，即可永久取走您的资产。</translation>
 <translation id="2902856457593699108">显示密钥</translation>
 <translation id="8033497299373164724">隐藏密钥</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">全部</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">测试网络</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">限制</translation>
 <translation id="8569380433211549748">价格单位</translation>
 <translation id="2490428413101944234">测试水龙头</translation>
-<translation id="6082785102488657349">从水管获取 Ether</translation>
+<translation id="3352959425838279177">从水管获取 Ether 以用于 <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">继续前往 Wyre</translation>
 <translation id="2581671693710952401">获取 Ether</translation>
 <translation id="8009571545960303544">正在请求你的签名</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">签名风险自担</translation>
 <translation id="5488357322146334497">消息</translation>
 <translation id="3586752056660754651">签名</translation>
-<translation id="7065157926159745595">允许此应用消费您的</translation>
+<translation id="9032898664193335413">允许此应用花费您的 <ph name="TOKEN_SYMBOL"/>吗？</translation>
+<translation id="854606191596163710">授予此权限，您将允许该应用提取您的<ph name="VALUE"/>并为您自动处理交易。</translation>
 <translation id="8786100550345425552">编辑权限</translation>
 <translation id="7710469167917867539">交易费用</translation>
 <translation id="9065203028668620118">编辑</translation>
 <translation id="7968982339740310781">查看详情</translation>
 <translation id="6452181791372256707">拒绝</translation>
+<translation id="8904889345035514635">当前津贴</translation>
+<translation id="7073918978411974168">计划的津贴</translation>
 <translation id="4717431746210146708">允许此站点添加一个网络？</translation>
 <translation id="2521480044079508357">这将允许在 Brave 钱包内使用该网络。</translation>
 <translation id="1982257600591932657">网络名称</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">链 ID</translation>
 <translation id="7131971375297699539">货币符号</translation>
 <translation id="4693057234255364395">区块探索者 URL</translation>
+<translation id="1060221736464994328">允许此站点切换网络？</translation>
+<translation id="2478788592457735063">这将把网络切换到先前添加的网络。</translation>
+<translation id="8756686998207163764">切换网络</translation>
 <translation id="3948067511324628726">Gas 费用</translation>
 <translation id="7163997622278957886">出价</translation>
 <translation id="1074360622426001342">数量 + gas</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">下一笔</translation>
 <translation id="793994607260936590">第一笔</translation>
 <translation id="4709524402122994378">交易</translation>
+<translation id="523862956770478816">站点权限</translation>
+<translation id="1575262454612599115">连接了 <ph name="NUMBER_OF_ACCOUNTS"/> 个账户</translation>
 <translation id="4460220693591349571">功能类型</translation>
 <translation id="838933475572692615">HEX 数据</translation>
 <translation id="2240831799756994975">字节</translation>
 <translation id="4874303883488468190">选择账户</translation>
-<translation id="4015195974325151180">查看已允许账户的</translation>
-<translation id="3587259018193837508">地址（必填）</translation>
+<translation id="2018472018751735678">查看您的已允许账户的地址（必填）</translation>
 <translation id="7029403458170657879">关联 Brave 钱包</translation>
 <translation id="7982184974053636367">Brave 钱包需要一个更安全的密码</translation>
 <translation id="2372897697869224590">设置 Brave 钱包密码</translation>
 <translation id="7739762330714405363">使用相同密码</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">导入自</translation>
-<translation id="4428111176561355185">导入您的</translation>
-<translation id="8929587248006013051">将 MetaMask 账户与 Brave 钱包关联。享受以更快、更安全的方式管理加密资产并与 web 3 DApps 交互。</translation>
+<translation id="7102907656918333773">从 <ph name="WALLET_EXTENSION"/> 导入</translation>
+<translation id="8897114903450789862">将您的 <ph name="WALLET_EXTENSION"/>账户导入 Brave 钱包。以更快、更安全的方式管理加密资产及与 web 3 DApps 交互。</translation>
 <translation id="4237840336687249184">MetaMask 密码</translation>
 <translation id="2381605201035323535">加密货币钱包</translation>
 <translation id="2770851145415891830">检测到现有的加密货币钱包</translation>
 <translation id="4938145712652668388">点击“开始”后，您将把之前的加密钱包导入到新的 Brave 钱包中，并享受上面列出的所有福利。试试吧，让我们知道您的想法！</translation>
-<translation id="913613743605881268">如果想跳过导入，保留旧的 Crypto Wallets 体验，只需导航到 Brave 浏览器</translation>
-<translation id="5886242758142314994">将默认值改为 Crypto Wallets。您还可以导入、尝试新的 Brave 钱包，并能够随时改回去。</translation>
+<translation id="2237759620789871865">如果您想跳过导入，保留旧的 Crypto Wallets 体验，只需浏览到 Brave 浏览器<ph name="LINK_BEFORE"/>设置<ph name="LINK_AFTER"/>并将默认值更改为 Crypto Wallets。您还可以导入、尝试新的 Brave 钱包，并随时改回来。</translation>
 <translation id="3301259443293676544">输入您现有的加密钱包密码以导入到 Brave 钱包。享受以更快、更安全的方式管理加密资产并与 web 3 DApps 交互。</translation>
 <translation id="9099900965604225657">加密货币钱包密码</translation>
 <translation id="4020495774166914146">我丢失了密码和恢复短语，创建新钱包。</translation>
-<translation id="480319080797177742">已连接</translation>
-<translation id="4203566092423620442">已断开连接</translation>
+<translation id="6344138931392227467">已连接 <ph name="DEVICE_NAME"/></translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> 已断开连接</translation>
 <translation id="5317781812114905957">说明</translation>
-<translation id="1952715382071350669">硬件钱包需要交易确认。</translation>
+<translation id="1178198982208000092">连接 <ph name="DEVICE_NAME"/></translation>
+<translation id="3301417531330431881">硬件钱包需要交易确认。<ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">已发送</translation>
 <translation id="5013754027092416509">已接收</translation>
 <translation id="5867988533873716616">区块浏览器 URL 不可用</translation>
 <translation id="4255623233927788178">在区块浏览器器上查看</translation>
 <translation id="6383204195803840504">交易将出现在此处</translation>
+<translation id="2916401020782528840">未找到交易</translation>
 <translation id="8941851657764077659">最高优先费用</translation>
 <translation id="8047527352810290817">编辑 gas</translation>
 <translation id="9091334651803050473">如果支付更高的费用，矿商可能会优先考虑您的交易，但我们不能对此做出保证。</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">设置自定义值</translation>
 <translation id="7400927223938424379">设置建议值</translation>
+<translation id="1599636444563952897">花费限制权限允许 <ph name="SITE_ORIGIN"/>提取和使用金额限制如下：</translation>
+<translation id="4512871563176965522">自定义津贴</translation>
+<translation id="749944179568745958">不是有效的 ETH 地址</translation>
+<translation id="882486206986535424">不是有效的地址</translation>
+<translation id="6825399159373612149">域名 <ph name="DOMAIN_NAME"/> 未注册</translation>
+<translation id="862585889767884824">/</translation>
+<translation id="9106265941552476098">拒绝 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
 <translation id="1118876217803190221">余额不足</translation>
 <translation id="275990379543116961">gas 资金不足</translation>
 <translation id="3292453499915466604">流动性不足</translation>
 <translation id="805808215102934711">激活 <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">未知错误</translation>
-<translation id="6687008710463927359">账户<ph name="VALUE"/></translation>
+<translation id="5071303414930953888">账户 <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">需要先解锁钱包</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> 不是有效的地址</translation>
+<translation id="7340805872138998391">无法解锁设备，尝试重新连接</translation>
+<translation id="1984410139271779110">内部错误，未知架构</translation>
+<translation id="8682200134223578011">已批准</translation>
+<translation id="4674380028960132654">Ledger：签名和正确的地址不匹配</translation>
+<translation id="3183932890629254743">未找到硬件账户</translation>
+<translation id="4287068151777838754">异常 JSON 数据</translation>
+<translation id="3282936527763045737">密码错误</translation>
+<translation id="1119447706177454957">内部错误</translation>
+<translation id="3327639091470204775">内部错误，无法创建 iframe brigdet</translation>
+<translation id="6672377693827764095">内部错误，无法获取账户</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">Tor 代理 URI</translation>
 <translation id="1671503397662036257">Tor 连接状态</translation>
 <translation id="6024292492796847324">Tor 的初始化进度</translation>
+<translation id="1742469581923031760">正在连接...</translation>
+<translation id="1287487756047817908">正在断开连接...</translation>
+<translation id="2325196879156848326">连接失败</translation>
+<translation id="745054660363064771">无法连接到服务器</translation>
+<translation id="3936826714240735937">选择另一个服务器</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> 无法连接至 <ph name="REGION_NAME"/> 服务器。您可以再试一次或选择连接另一个服务器</translation>
+<translation id="1664949222596149258">以 <ph name="PRODUCE_PRICE"/>的价格购买</translation>
+<translation id="1024255913009642477">已经购买了 VPN？</translation>
+<translation id="8814357473522731680">技术支持：</translation>
+<translation id="5747552184818312860">到期时间</translation>
+<translation id="1691256669639196606">管理订阅</translation>
+<translation id="434523916398030617">联系技术支持</translation>
+<translation id="1116694919640316211">关于</translation>
+<translation id="8670386189340362926">拦截所有应用的跟踪器和广告</translation>
+<translation id="4860763498907927955">避免了不必要的网络连接</translation>
+<translation id="3181339219453722970">选择您的 VPN 位置</translation>
+<translation id="1751947227857853925">高速和无限流量，高达 100 Mbps</translation>
+<translation id="1400240082805528049">24/7 支持</translation>
 <translation id="7586151660465233733">访问 <ph name="SITE_NAME"/> 探索更多市场</translation>
 <translation id="952067063131306699">在 FTX 查看市场和交易加密货币</translation>
 <translation id="5963745988819586370">市场</translation>

@@ -54,6 +54,27 @@
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
+<translation id="6821903322090655051">Brave Rewardsは無効です</translation>
+<translation id="9184430019924125685">こちらをクリックして詳細を確認</translation>
+<translation id="3849957491997306859">自動検出</translation>
+<translation id="8798099450830957504">既定</translation>
+<translation id="4176463684765177261">無効</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Brave Adsを表示することでトークンを獲得できます。表示される広告は、閲覧行動から推測される興味や関心に基づきます。個人情報や閲覧履歴が、ブラウザから外部に送られることはありません。</translation>
+<translation id="1758947220824279023">表示する広告の最大数</translation>
+<translation id="8578912649458880781">州レベルの広告ターゲティング</translation>
+<translation id="3678362265519557511">これにより、Braveはあなたの州に特化した広告を表示することができます。<ph name="BEGIN_LINK"/>詳しくはこちら<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">自動支援</translation>
+<translation id="9132509928968869844">毎月の自動支援上限</translation>
+<translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
+<translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
+<translation id="6248554379744796526">リスト内に未検証のサイトを表示する</translation>
+<translation id="3241299447027267831">動画への支援を許可する</translation>
+<translation id="924777189963477634">自動支援を有効にすることで、お客様は<ph name="BEGIN_LINK_TOS"/>利用規約<ph name="END_LINK_TOS"/>と<ph name="BEGIN_LINK_PP"/>プライバシーポリシー<ph name="END_LINK_PP"/>に同意したものとみなされます。</translation>
+<translation id="5733490796524078528">チップボタン</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">Github</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="1988804048511540801">新しいタブページが表示されます</translation>
 <translation id="2970343821770026391">ダッシュボード</translation>
@@ -69,10 +90,12 @@
 <translation id="8934172355414207733">Torを備えたプライベート</translation>
 <translation id="1970435562892104727">これはTorを備えたプライベートウィンドウです</translation>
 <translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Torで開く</translation>
 <translation id="7643538479215207633">IPFSを使用して開く</translation>
 <translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="1672270084584211506">利用できるオニオン</translation>
+<translation id="406832631167785034">.onionアドレスを使用して開く</translation>
 <translation id="4901618511712685702">IPFSにインポート</translation>
 <translation id="6794469945030154569">このページ</translation>
 <translation id="5037852323412456577">選択された画像</translation>
@@ -81,6 +104,7 @@
 <translation id="7895302206188277628">リンクされたコンテンツ</translation>
 <translation id="3654831858282189202">IPNSキーで公開</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="1047401034925735299">選択したテキストをIPFSにインポート</translation>
 <translation id="6925604404524625582">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
@@ -94,7 +118,6 @@
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
 <translation id="575838692088926391">IPFSを使用してローカルフォルダを共有</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -121,13 +144,11 @@
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
 <translation id="4078738236287221428">積極的</translation>
 <translation id="7740996059027112821">標準</translation>
-<translation id="4176463684765177261">無効</translation>
 <translation id="5770288601196774623">サイト間のみ</translation>
 <translation id="3587482841069643663">すべて</translation>
 <translation id="5533533363827555308">厳格、サイトの表示が崩れる可能性</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="6165508094623778733">詳細情報</translation>
-<translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
@@ -175,6 +196,11 @@
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
 <translation id="115699408012835975">Syncをリセットすると、データを同期するためには別なデバイスから同期コードを再入力する必要があります。本当に続行してもよろしいですか？</translation>
 <translation id="6092564993102418148">選択したデバイスを同期チェーンから削除してもよろしいですか？</translation>
+<translation id="2936582902048232286">警告: この操作を行うと、パスワードを含むBraveのデータが、これらのコードを生成したデバイスと共有されます。
+
+これらのコードがあなたの所有するデバイスによって生成されたものであることを再確認してください。
+
+続行してよろしいですか？</translation>
 <translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
 <translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="3411013544209536575">ヘルプのヒント</translation>
@@ -188,13 +214,17 @@
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="7701040980221191251">なし</translation>
-<translation id="1274962333945373242">非推奨のCryptoウォレット拡張機能</translation>
+<translation id="1274962333945373242">仮想通貨ウォレット (非推奨)</translation>
+<translation id="3695088618483091287">Braveウォレット (拡張機能の利用を推奨)</translation>
 <translation id="9131889008937672866">デフォルトの暗号資産ウォレット</translation>
+<translation id="4718664830805652430">デフォルトのベース通貨</translation>
+<translation id="7992507032049865603">デフォルトのベース仮想通貨</translation>
 <translation id="1834467296210148203">Brave Walletのアイコンをツールバーに表示</translation>
 <translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="5927916530277631319">「Unstoppable Domains」を解決する方法</translation>
+<translation id="8412057160793088103"><ph name="BEGIN_LINK"/>こちら<ph name="END_LINK"/>からDNS over HTTPSとイーサリアムのプライバシーへの考慮に関する詳細をご確認ください。</translation>
 <translation id="5248318250177143470">イーサリアムネームサービス（ENS）を解決する方法</translation>
 <translation id="7024553202001112871">IPNSキーを設定</translation>
 <translation id="951216659045543447">対応する秘密キーでコンテンツに署名しIPNSへ公開</translation>
@@ -208,6 +238,7 @@
 <translation id="6476061084931271248">変更を適用するにはノードを再起動します</translation>
 <translation id="3754226427671882382">ノードを再起動</translation>
 <translation id="949667118776341807">ローテーション</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">この名前は無効です</translation>
 <translation id="6758961763875471084">ピアリストを修正</translation>
 <translation id="1295874070797049002">キーのエクスポート</translation>
@@ -218,6 +249,9 @@
 <translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' キーのインポートに失敗しました</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' キーのエクスポートに失敗しました</translation>
+<translation id="8860039076160511438">ウォレットをリセット</translation>
+<translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、すべてのアカウントデータ (関連する資金を含みます) が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="1426410128494586442">はい</translation>
 <translation id="8275038454117074363">追加</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">ノードの開始</translation>
@@ -225,6 +259,7 @@
 <translation id="1327977588028644528">ゲートウェイ</translation>
 <translation id="80225669816651290">ローカルノード</translation>
 <translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からIPFSローカルノードとゲートウェイのプライバシーへの考慮に関する詳細をご確認ください。</translation>
 <translation id="8425213833346101688">変更</translation>
 <translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
@@ -359,6 +394,7 @@
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">VPNの切り替え</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">Brave VPNについて</translation>
 <translation id="4378551569595875038">接続しています...</translation>
@@ -384,4 +420,31 @@
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="2273851479262317744">Braveをデフォルトのブラウザとして設定</translation>
 <translation id="8581710194025054669">オンラインでのプライバシーを確保するには、Braveをコンピューターのデフォルトブラウザとして設定しましょう。Braveをデフォルトにすると、クリックしたすべてのウェブリンクがBraveでプライバシー保護されて開きます。</translation>
+<translation id="1241283133946520352">ネットワーク</translation>
+<translation id="8205945804087322170">新しいネットワークを追加</translation>
+<translation id="2156993118928861787">アドレスが無効です。</translation>
+<translation id="2653659639078652383">送信</translation>
+<translation id="2556708692502648323">ウォレットネットワーク</translation>
+<translation id="1330032157352961756">新規チェーンID</translation>
+<translation id="9053905035135220650">0xから始まる16進文字列</translation>
+<translation id="726121047592132939">新規チェーン名</translation>
+<translation id="1034112277864078119">チェーン名を入力</translation>
+<translation id="4672314527143443556">チェーン通貨名</translation>
+<translation id="4652114030688989556">通貨名を入力</translation>
+<translation id="1079960017149736097">チェーン通貨記号</translation>
+<translation id="1288105009659846362">通貨記号を入力</translation>
+<translation id="665660671251623018">チェーン通貨の小数点桁数</translation>
+<translation id="2978054488731497946">通貨の小数点桁数を入力</translation>
+<translation id="2727514928168763432">RPC URL</translation>
+<translation id="7059127752542505809">URLを入力</translation>
+<translation id="3047726704186619366">アイコンURL</translation>
+<translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
+<translation id="6301398959353668507">この項目は必須です。</translation>
+<translation id="4514843126085243862">形式が無効です。チェーンIDは0xから始まる16進文字列にしてください</translation>
+<translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
+<translation id="650071759190249039">内部エラーが発生しました。ネットワークを追加できません。</translation>
+<translation id="868529041590572443">ネイティブ通貨についての情報をすべて入力してください</translation>
+<translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
+<translation id="2234108191702901162">ネットワークを追加できません</translation>
+<translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
 </translationbundle>

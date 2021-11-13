@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Klikket</translation>
 <translation id="7119308337584989771">Afvist</translation>
 <translation id="6805660603861526473">Set</translation>
+<translation id="4014166694178311757">Din wallet kunne ikke verificeres, da du har nået den maksimalt verificerede enhedsgrænse.</translation>
+<translation id="1221593978088944142">Fejl: Enhedsgrænse nået</translation>
 <translation id="3113653894794167793">Beklager, der opstod et problem under behandlingen af din anmodning, prøv igen.</translation>
-<translation id="8832187864682447273">Du skal have en bekræftet wallet, før du kan logge ind</translation>
 <translation id="2607420597216860026">Prøv igen, når du har udført ID-validering på <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Fejl: Du skal have en bekræftet wallet, før du kan logge ind</translation>
 <translation id="1501075228659004450">Hmm, det ser ud til, at din Brave Rewards-wallet allerede er blevet verificeret med en anden <ph name="PROVIDER"/>-konto. Prøv at validere igen ved at bruge din forrige konto.</translation>
 <translation id="5111921830714291902">Fejl: En anden konto</translation>
+<translation id="5382684862562314222">BAT understøttes endnu ikke i din region på Uphold.</translation>
+<translation id="9074594632540931067">Fejl: BAT ikke tilgængelig</translation>
+<translation id="413458922997276130">Din konto på Uphold er i øjeblikket blokeret.</translation>
+<translation id="3579959767665130790">Fejl: Blokeret konto</translation>
+<translation id="819370426249314592">Din konto på Udhold afventer stadig</translation>
+<translation id="4530453398914580957">Fejl: Afventende konto</translation>
+<translation id="2388470740942086608">Din konto hos Uphold er i øjeblikket begrænset.</translation>
+<translation id="3605236342612716051">Fejl: Konto med begrænsninger</translation>
 <translation id="1737873393693460829">Ved at aktivere [[title]] accepterer du <ph name="BEGIN_LINK1"/>Brugsvilkårene<ph name="END_LINK1"/> og <ph name="BEGIN_LINK2"/>Databeskyttelsespolitikken<ph name="END_LINK2"/>.</translation>
+<translation id="901298512318791028"><ph name="AMOUNT"/> udbetaling bliver behandlet om <ph name="DAYS"/></translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>It kan tage et par dage for udbetalingen at blive behandlet og dine BAT at ankomme.</translation>
 <translation id="4672975606583962967">Vælg en tegnebogstjeneste</translation>
 <translation id="1815503044492647974">Vælg en sikret tegnebogspartner. Hvis du allerede har en konto, vil du blive bedt om at logge ind.</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">Bruger-ID</translation>
 <translation id="4235360514405112390">Gyldig</translation>
 <translation id="3902084968737576005">Wallet-adresse:</translation>
+<translation id="3653417592104122757">Wallet-historik</translation>
 <translation id="2326487656644542536">Oplysninger om tegnebog</translation>
 <translation id="3506182299017414175">Pung er ikke oprettet endnu</translation>
 <translation id="8559420016582377654">Wallet-betalingsidentifikation:</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">Indtast din gendannelsesnøgle eller</translation>
 <translation id="1209382772199769572">Sikkerhedskopiér din tegnebog, før du erstatter den. Ellers vil du miste et beløb på [[funds]] i din nuværende tegnebog.</translation>
 <translation id="5423214929210538027">Er du sikker på, at du vil nulstille din Belønnings-tegnebog?</translation>
+<translation id="4749947664556704604">Dine <ph name="BAT_AMOUNT"/> og andre belønningsdata vil gå tabt permanent, hvis du nulstiller din wallet. Sørg for, at du har <ph name="LINK_BEGIN"/>verificeret din wallet<ph name="LINK_END"/>, så du kan beholde dine BAT.</translation>
 <translation id="2028613172174411919">Dine Belønnings-data bliver mistet permanent, hvis du nulstiller din tegnebog.</translation>
 <translation id="4914597931214386232">Token-Tilskud Taget</translation>
 <translation id="3494964159182650590">Belønningsoversigt</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">Investér helt ned til $1 i populære aktier og børshandlede fonde såsom AAPL, TSLA eller AMZN</translation>
 <translation id="3787061634640932557">Redigér kort</translation>
 <translation id="5977237145327845546">Start et privat video-opkald med dine venner og kollegaer.</translation>
-<translation id="5850325887346946383">Start video-opkald</translation>
+<translation id="8863928195533744356">Start opkald</translation>
 <translation id="3651550649176056334">Om dine data</translation>
 <translation id="223536150967420869">Køb</translation>
 <translation id="5110244215256675209">Køb krypto</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">Se alle</translation>
 <translation id="3026978804849658576">Se opgørelse</translation>
 <translation id="8494748383523030337">Din saldo</translation>
+<translation id="3343165035032571678">Du tjente <ph name="AMOUNT"/> ved at se Brave Private Ads!</translation>
+<translation id="6618415862402597254">Reklameindtjening modtaget</translation>
+<translation id="5981646694027725752">Få indtjening</translation>
+<translation id="2556441076129789027">Få tokens</translation>
+<translation id="5544777623605368410">Indtjening</translation>
+<translation id="3273637494083639780">De tokens, du har tjent denne måned, vil blive behandlet den <ph name="DATE"/>.</translation>
+<translation id="1029300693989825319">Dette kan variere baseret på markedsvolatilitet.</translation>
+<translation id="8334559352278209120">Giver</translation>
+<translation id="3903419925307046908">Optjen tokens og giv feedback</translation>
+<translation id="244362569344671266">Optjen tokens ved at se private Brave-annoncer og støtte indholdsskabere automatisk.</translation>
+<translation id="5095252080770652994">Fremskridt</translation>
+<translation id="6278643716658443228">Rewards-indstillinger</translation>
+<translation id="6777169449483742979">Du tjener tokens for at se dette sponsorerede billede.</translation>
+<translation id="5486114327664215175">Tjen tokens ved at se dette billede og støtte indholdsskabere.</translation>
+<translation id="2940863921746574646">Tokensaldo</translation>
+<translation id="1714906256929297600">Brug dine kampagnetokens til at bidrage til skabere, inden de udløber!</translation>
+<translation id="2426048501007152001">Tokens tilgængelige</translation>
 <translation id="7701466644604753106">Tænd for speedreader</translation>
 <translation id="763042262431778831">SLUK for speedreader</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="1148827340205946630">Brugeren afviste anmodningen.</translation>
 <translation id="2403819048476450281">Ugyldige parametre.</translation>
+<translation id="3955144560853195652">Kæden <ph name="VALUE"/> er ikke tilføjet</translation>
 <translation id="9161147058107529840">Forventet enkelt objektparameter.</translation>
 <translation id="1875861420974447980">Dette kæde-id er allerede i brug</translation>
 <translation id="167698752210114155">Der opstod en intern fejl</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">Kunne ikke konvertere transaktionsdata</translation>
 <translation id="3829038878925630240">Transaktionsdata 'from' skal udspecificeres</translation>
 <translation id="4732386285392573809">Kunne ikke finde gasprisen for denne transaktion</translation>
-<translation id="7619826778671319444">Kunne ikke finde gasgrænsen for transaktionen</translation>
 <translation id="4232775951515678071">Kunne ikke finde typen for denne transaktion</translation>
-<translation id="7631054302129692654">Kunne ikke få gasestimering for EIP-1559-transaktion</translation>
+<translation id="2080935885647755539">Kunne ikke hente gasgebyrer for EIP-1559-transaktion</translation>
+<translation id="4843814354611030845">Brugeren afviste transaktionen</translation>
+<translation id="1462494615260983714">Fejl i behandlingen af transaktionen</translation>
+<translation id="4886059598718763020">'<ph name="VALUE"/>' er ikke autoriseret til at underskrive denne besked</translation>
 <translation id="4958950550253325418">Defi-apps</translation>
 <translation id="735961408871282410">NFT-markedspladser</translation>
 <translation id="7740287852186792672">Søgeresultater</translation>
@@ -833,7 +866,11 @@
 <translation id="2267753748892043616">Tilføj konto</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">ikke understøttet</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> ikke understøttet</translation>
+<translation id="1191686659164947414">Transaktionen kan blive udsat for frontrun</translation>
+<translation id="632241521608275119">Afvigelsestolerance</translation>
+<translation id="4500473291496079954">Udløber om</translation>
+<translation id="8093033115658137576">0x-adresse eller -url</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="1420318137760245955">Velkommen til den nye Brave Wallet</translation>
 <translation id="8303434745767477417">Behold crypto-aktiver i dine varetægt. Følg porteføljepræstation, og interagér med web 3 DApps. Handl, investér, lån og udlån med DeFi. Det hele direkte fra din Brave-browser. Ingen udvidelser, ingen downloads kræves.</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">Gør dine crypto-aktiver sikre med en adgangskode</translation>
 <translation id="6901073872645365201">Adgangskoden skal indholde mindst 7 tegn og indeholde mindst ét tal og ét særligt tegn.</translation>
 <translation id="6657585470893396449">Adgangskode</translation>
-<translation id="692381016487372902">Indtast adgangskode igen</translation>
-<translation id="3527905866577245691">Bekræftede adgangskode stemte ikke overens</translation>
+<translation id="5486261815000869482">Bekræft kodeord</translation>
+<translation id="467510802200863975">Adgangskoder er ikke ens</translation>
 <translation id="5168349973342709369">Indtast adgangskode for at åbne wallet</translation>
 <translation id="9111102763498581341">Lås op</translation>
 <translation id="5045550434625856497">Ugyldig adgangskode</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">Aktiver</translation>
 <translation id="2236507293802791911">Synlige aktiver</translation>
 <translation id="7525067979554623046">Opret</translation>
+<translation id="4771176409524282426">Opret konto</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Kontonavn</translation>
 <translation id="1136772623587250243">Indsæt privat nøgle fra udklipsholderen</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">Ingen fil valgt</translation>
 <translation id="5891811606602061966">Kunne ikke importere konto. Prøv igen.</translation>
 <translation id="5051929972046200722">Vælg din hardware-walletenhed</translation>
-<translation id="6932355307691676490">Opret forbindelse til din</translation>
-<translation id="4513956488935671725">wallet direkte til din computer.</translation>
+<translation id="5745936663807461565">Opret forbindelse fra din <ph name="HARDWARE_DEVICE"/>-wallet direkte til din computer.</translation>
 <translation id="5041211872515579638">Lås op for din enhed, og vælg Ethereum-appen.</translation>
+<translation id="6892232036314454524">Denne fejl kan opstå, når den forkerte applikation er åben på Ledger-enheden.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Opretter forbindelse...</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">Poletnavn</translation>
 <translation id="4432966365400169165">Polet-kontaktadresse</translation>
 <translation id="4092152169181928870">Polet-symbol</translation>
-<translation id="871696868578199698">Decimalpræcision</translation>
-<translation id="6637540491667802882">som en brugerdefineret polet</translation>
+<translation id="4351811224047421378">Decimalpræcision</translation>
+<translation id="4982060163914604175">Tilføj <ph name="CONTRACT_ADDRESS"/>som brugerdefineret token</translation>
 <translation id="7978047524114351365">Ingen aktiver valgt</translation>
 <translation id="9040455159722359521">Søg aktiver eller kontaktadresse</translation>
 <translation id="6018178824574796106">Kunne ikke tilføje tilpasset polet. Prøv igen.</translation>
+<translation id="547122651977318828">Token-id (kun for ERC721)</translation>
+<translation id="7544552854944350190">Token-id kræves</translation>
 <translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
 <translation id="2902856457593699108">Vis nøgle</translation>
 <translation id="8033497299373164724">Skjul nøgle</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
 <translation id="8654192805213365413">75 %</translation>
-<translation id="3512100619724810532">Alle</translation>
+<translation id="3512100619724810532">100 %</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Test netværk</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">Grænse</translation>
 <translation id="8569380433211549748">Pris i</translation>
 <translation id="2490428413101944234">Test hane</translation>
-<translation id="6082785102488657349">Få Ether fra en hane for</translation>
+<translation id="3352959425838279177">Få Ether fra en hane for <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">Fortsæt til Wyre</translation>
 <translation id="2581671693710952401">Hent Ether</translation>
 <translation id="8009571545960303544">Din signatur er ønsket</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">Skriv under på eget ansvar</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="3586752056660754651">Underskriv</translation>
-<translation id="7065157926159745595">Giv denne app tilladelse til at bruge din</translation>
+<translation id="9032898664193335413">Tillad, at denne app bruger dine <ph name="TOKEN_SYMBOL"/>?</translation>
+<translation id="854606191596163710">Ved at give tilladelse giver du denne app adgang til at hæve din <ph name="VALUE"/> og automatisere transaktioner for dig.</translation>
 <translation id="8786100550345425552">Redigér tilladelser</translation>
 <translation id="7710469167917867539">Transaktionsgebyr</translation>
 <translation id="9065203028668620118">Rediger</translation>
 <translation id="7968982339740310781">Se detaljer</translation>
 <translation id="6452181791372256707">Afvis</translation>
+<translation id="8904889345035514635">Nuværende godtgørelse</translation>
+<translation id="7073918978411974168">Foreslået godtgørelse</translation>
 <translation id="4717431746210146708">Tillad denne side at tilføje te netværk?</translation>
 <translation id="2521480044079508357">Dette giver tilladelse til, at netværket bruges inden i Brave Wallet.</translation>
 <translation id="1982257600591932657">Netværksnavn</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">Kæde-ID</translation>
 <translation id="7131971375297699539">Valutasymbol</translation>
 <translation id="4693057234255364395">Blokér Explorer-url</translation>
+<translation id="1060221736464994328">Tillad denne side at skifte netværk?</translation>
+<translation id="2478788592457735063">Dette vil skifte netværket til et tidligere tilføjet netværk.</translation>
+<translation id="8756686998207163764">Skift netværk</translation>
 <translation id="3948067511324628726">Gasgebyr</translation>
 <translation id="7163997622278957886">Byd</translation>
 <translation id="1074360622426001342">Beløb + gas</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">næste</translation>
 <translation id="793994607260936590">første</translation>
 <translation id="4709524402122994378">transaktioner</translation>
+<translation id="523862956770478816">Sidetilladelser</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> konti forbundet</translation>
 <translation id="4460220693591349571">Funktionstype</translation>
 <translation id="838933475572692615">HEXDATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
 <translation id="4874303883488468190">Vælg konto/konti</translation>
-<translation id="4015195974325151180">Se adresserne på dine</translation>
-<translation id="3587259018193837508">tilladte konti (påkrævet)</translation>
+<translation id="2018472018751735678">Se adresserne på dine tilladte konti (påkrævet)</translation>
 <translation id="7029403458170657879">Opret forbindelse til Brave Wallet</translation>
 <translation id="7982184974053636367">En mere sikker adgangskode kræves til Brave Wallet</translation>
 <translation id="2372897697869224590">Opret Brave Wallet-adgangskode</translation>
 <translation id="7739762330714405363">Brug samme adgangskode</translation>
 <translation id="1085027414516521238">MetaMask\n</translation>
-<translation id="8449314044437208543">Importér fra</translation>
-<translation id="4428111176561355185">Importér din</translation>
-<translation id="8929587248006013051">MetaMask-konti i Brave Wallet. Nyd en hurtigere og mere sikker måde at håndtere crypto-aktiver med 3 DApps.</translation>
+<translation id="7102907656918333773">Importér fra <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Importér dine <ph name="WALLET_EXTENSION"/>-konti til Brave Wallet. Nyd godt at en hurtigere og mere sikker måde at administrere cryptoaktiver på, og interagér med web 3 DApps.</translation>
 <translation id="4237840336687249184">Adgangskode til MetaMask</translation>
 <translation id="2381605201035323535">crypto-wallets</translation>
 <translation id="2770851145415891830">Eksisterende crypto-wallets fundet</translation>
 <translation id="4938145712652668388">Når du klikker på "Get started", vil du importere din tidligere Crypto Wallet til din nye Brave Wallet-oplevelse, og du kan nyde godt af ovenstående fordele. Prøv det, og fortæl os, hvad du synes!</translation>
-<translation id="913613743605881268">Hvis du hellere vil springe importeringen over og beholde den gamle Crypto Wallet-oplevelse, skal du bare gå til Brave Browser</translation>
-<translation id="5886242758142314994">og ændre standarden tilbage til Crypto Wallets. Du kan også importere. Prøv den nye Brave Wallet, og skift tilbage når som helst.</translation>
+<translation id="2237759620789871865">Hvis du hellere vil springe over importen og beholde den gamle Crypto Wallet-oplevelse, så gå til Brave Browser-<ph name="LINK_BEFORE"/>indstillingerne<ph name="LINK_AFTER"/>, og skift standarden tilbage til Crypto Wallets. Du kan også importere, prøve den nye Brave Wallet og dernæst skifte tilbage når som helst.</translation>
 <translation id="3301259443293676544">Indtast din eksisterende crypto wallet-adgangskode for at importere Brave Wallet. Nyd en hurtigere og mere sikker måde at håndtere crypto-aktiver og interagere med 3 DApps til web.</translation>
 <translation id="9099900965604225657">Adgangskode til crypto-wallet</translation>
 <translation id="4020495774166914146">Jeg har mistet min adgangskode og gendannelsessætning. Opret en ny wallet.</translation>
-<translation id="480319080797177742">forbundet</translation>
-<translation id="4203566092423620442">Afbrudt</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> forbundet</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> afbrudt</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
-<translation id="1952715382071350669">Hardware-wallet kræver transaktionsbekræftelse.</translation>
+<translation id="1178198982208000092">Opret forbindelse til <ph name="DEVICE_NAME"/></translation>
+<translation id="3301417531330431881">Hardware Wallet kræver transaktionsbekræftelse. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
 <translation id="5013754027092416509">modtaget</translation>
 <translation id="5867988533873716616">Blokér Explorer-url ikke tilgængelig.</translation>
 <translation id="4255623233927788178">Se på Block Explorer</translation>
 <translation id="6383204195803840504">Transaktioner vil blive vist her</translation>
+<translation id="2916401020782528840">Transaktion ikke fundet</translation>
 <translation id="8941851657764077659">Maks. prioritetsgebyr</translation>
 <translation id="8047527352810290817">Redigér gas</translation>
 <translation id="9091334651803050473">Det er ikke garantere, men miners vil sikkert prioritere din transaktion, hvis du betaler et højere gebyr.</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Indstil tilpasset</translation>
 <translation id="7400927223938424379">Indstil forslag</translation>
+<translation id="1599636444563952897">Tilladelse til forbrugsgrænse giver <ph name="SITE_ORIGIN"/> tilladelse til at hæve og forbruge op til følgende beløb:</translation>
+<translation id="4512871563176965522">Brugerdefineret godtgørelse</translation>
+<translation id="749944179568745958">Ikke gyldig ETH-adresse</translation>
+<translation id="882486206986535424">Ikke gyldig adresse</translation>
+<translation id="6825399159373612149">Domænet <ph name="DOMAIN_NAME"/> blev ikke registreret</translation>
+<translation id="862585889767884824">af</translation>
+<translation id="9106265941552476098">Afvis <ph name="TRANSACTION_LENGTH"/> transaktioner</translation>
 <translation id="1118876217803190221">Utilstrækkelig saldo</translation>
 <translation id="275990379543116961">Ikke nok midler til gas</translation>
 <translation id="3292453499915466604">Utilstrækkelig likviditet</translation>
 <translation id="805808215102934711">Aktivér <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Ukendt fejl</translation>
-<translation id="6687008710463927359">Konto <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Konto <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Wallet skal låses op først</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> er ikke en gyldig adresse</translation>
+<translation id="7340805872138998391">Kunne ikke låse op for enhed. Prøv at oprette forbindelse igen</translation>
+<translation id="1984410139271779110">Intern fejl. Ukendt grund.</translation>
+<translation id="8682200134223578011">godkendt</translation>
+<translation id="4674380028960132654">Ledger: Denne signatur matching ikke den rigtige adresse</translation>
+<translation id="3183932890629254743">Hardware-konto ikke fundet</translation>
+<translation id="4287068151777838754">JSON-data ikke forventet</translation>
+<translation id="3282936527763045737">Adgangskoden er ikke korrekt</translation>
+<translation id="1119447706177454957">Intern fejl.</translation>
+<translation id="3327639091470204775">Intern fejl. Kunne ikke oprette iframe-bro</translation>
+<translation id="6672377693827764095">Intern fejl. Kunne ikke hente konti</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="3745016858329272300">Generel info</translation>
 <translation id="4045404575593562245">Tor kontrolhændelser</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">Tor proxy URI</translation>
 <translation id="1671503397662036257">Tor-forbindelsesstatus</translation>
 <translation id="6024292492796847324">Tor initialiseringsfremgang</translation>
+<translation id="1742469581923031760">Oprette forbindelse …</translation>
+<translation id="1287487756047817908">Afbryder forbindelse ...</translation>
+<translation id="2325196879156848326">Forbindelse fejlede</translation>
+<translation id="745054660363064771">Kan ikke oprette forbindelse til server</translation>
+<translation id="3936826714240735937">Vælg en anden server</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> kunne ikke oprette forbindelse til <ph name="REGION_NAME"/>-serveren. Prøv igen, eller vælg en anden</translation>
+<translation id="1664949222596149258">Køb for <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">Har du allerede købt en VPN?</translation>
+<translation id="8814357473522731680">Køres af</translation>
+<translation id="5747552184818312860">Udløber</translation>
+<translation id="1691256669639196606">Administrér abonnement</translation>
+<translation id="434523916398030617">Kontakt teknisk support</translation>
+<translation id="1116694919640316211">Om</translation>
+<translation id="8670386189340362926">Blokér trackere &amp; reklamer fra alle apps</translation>
+<translation id="4860763498907927955">Beskytter dig fra uønskede netværksforbindelser</translation>
+<translation id="3181339219453722970">Vælg din VPN-placering</translation>
+<translation id="1751947227857853925">Hurtig og ubegrænset op til 100 Mbps</translation>
+<translation id="1400240082805528049">24/7 support</translation>
 <translation id="7586151660465233733">Flere markeder på <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Se markeder og krypto på FTX</translation>
 <translation id="5963745988819586370">Markeder</translation>

@@ -238,10 +238,6 @@
     "message": "افزودن سرمایه",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "بیشتر بدانید",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "اتصال مجدد",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "به‌دلیل سرمایه ناکافی، نکات معلقی دارید",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "کیف پول پیوند داده نشد",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "کیف پول شما تأیید نشد زیرا به حداکثر مجاز دستگاه تأییدشده رسیده‌اید.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "به نظر می‌رسد کیف پول «پاداش‌های Brave» شما قبلاً با یک حساب $provider$ دیگر تأیید شده است. لطفاً با استفاده از حساب قبلی خود، دوباره تأیید کنید.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "توکن بت هنوز در منطقه شما در Uphold پشتیبانی نمی‌شود.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "درحال‌حاضر حسابتان در Uphold مسدود شده است.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "حسابتان در Uphold هنوز تأیید نشده است.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "درحال‌حاضر حسابتان در Uphold محدود شده است.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "کلیک کردن به منزله موافقت شما با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ است. هر زمان که بخواهید می‌توانید آن را در «تنظیمات» غیرفعال کنید.",
+    "message": "با فعال‌سازی، با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ موافقت می‌کنید.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "روشن کردن Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "روشن کردن آگهی‌ها به‌منزله موافقت شما با $tos_link_begin$شرایط سرویس$tos_link_end$ و $pp_link_begin$خط مشی حریم خصوصی$pp_link_end$ است.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "اکنون می‌توانید تماس رایگان برقرار کنید",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "برای رفتن به Brave Talk در ادامه، روی نقطه‌ای دلخواه از صفحه کلیک کنید.",
+    "message": "برای ادامه و رفتن به Brave Talk، روی جایی از صفحه کلیک کنید یا ضربه بزنید.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

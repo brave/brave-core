@@ -54,6 +54,27 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1144810021918451336">Nie chroni przed niebezpiecznymi witrynami internetowymi, pobieranymi plikami ani rozszerzeniami.</translation>
 <translation id="6285118765755298263">Indeksowanie innych wyszukiwarek</translation>
 <translation id="919715748352669592">Automatycznie indeksuje strony internetowe, które są zgodne ze specyfikacją OpenSearch.</translation>
+<translation id="6821903322090655051">Nagrody Brave są wyłączone</translation>
+<translation id="9184430019924125685">Kliknij tutaj, aby dowiedzieć się więcej.</translation>
+<translation id="3849957491997306859">Wykryte automatycznie</translation>
+<translation id="8798099450830957504">Domyślna</translation>
+<translation id="4176463684765177261">Wyłączone</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="7808122468353671181">Zarabiaj tokeny, oglądając reklamy Brave. Te reklamy odpowiadają Twoim zainteresowaniom, które są określane na podstawie przeglądanych przez Ciebie stron internetowych. Twoje dane osobowe oraz historia przeglądania przez cały czas pozostają wyłącznie w Twojej przeglądarce.</translation>
+<translation id="1758947220824279023">Maksymalna liczba reklam do wyświetlenia</translation>
+<translation id="8578912649458880781">Kierowanie reklam na poziomie regionalnym</translation>
+<translation id="3678362265519557511">Dzięki temu Brave może przedstawiać Ci reklamy przeznaczone specjalnie dla Twojego regionu. <ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/></translation>
+<translation id="6112368337882254910">Wspieraj automatycznie</translation>
+<translation id="9132509928968869844">Miesięczny limit automatycznego wsparcia</translation>
+<translation id="7286722244752781970">Minimalny czas spędzony na stronie przed zalogowaniem odwiedzin</translation>
+<translation id="4424486208397124985">Minimalna liczba wizyt określająca istotność wydawcy</translation>
+<translation id="6248554379744796526">Pokaż niezweryfikowane witryny na liście</translation>
+<translation id="3241299447027267831">Zezwalaj na wspieranie nagrań wideo</translation>
+<translation id="924777189963477634">Włączając opcję Wspieraj automatycznie, wyrażasz zgodę na <ph name="BEGIN_LINK_TOS"/>Warunki użytkowania<ph name="END_LINK_TOS"/> i <ph name="BEGIN_LINK_PP"/>Politykę prywatności<ph name="END_LINK_PP"/>.</translation>
+<translation id="5733490796524078528">Przyciski napiwku</translation>
+<translation id="3905400818082450708">Reddit</translation>
+<translation id="2635094637295383009">Twitter</translation>
+<translation id="7038489306457318096">GitHub</translation>
 <translation id="7781069478569868053">Strona nowej karty</translation>
 <translation id="1988804048511540801">Strona nowej karty pokazuje</translation>
 <translation id="2970343821770026391">Panel kontrolny</translation>
@@ -69,10 +90,12 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8934172355414207733">Prywatnie z Torem</translation>
 <translation id="1970435562892104727">To prywatne okno z Torem.</translation>
 <translation id="1037341607922068025">Otwórz prywatne okno z Torem.</translation>
+<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Otwórz w sieci Tor</translation>
 <translation id="7643538479215207633">Otwórz, korzystając z IPFS</translation>
 <translation id="3094628781200061820">Publikować i odzyskiwać pliki z IPFS</translation>
 <translation id="1672270084584211506">Dostępne usługi cebulowe</translation>
+<translation id="406832631167785034">Otwórz za pomocą adresu .onion</translation>
 <translation id="4901618511712685702">Import do IPFS</translation>
 <translation id="6794469945030154569">Ta strona</translation>
 <translation id="5037852323412456577">Wybrane zdjęcie</translation>
@@ -94,7 +117,6 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="575838692088926391">Udostępnij lokalny folder, używając IPFS</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="2515126961943087659">Usługa reklam Bat</translation>
 <translation id="7924918279836988121">Usługa Ledger Bat</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
@@ -121,13 +143,11 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="4078738236287221428">Agresywne</translation>
 <translation id="7740996059027112821">Standardowe</translation>
-<translation id="4176463684765177261">Wyłączone</translation>
 <translation id="5770288601196774623">Tylko stron trzecich</translation>
 <translation id="3587482841069643663">Wszystkie</translation>
 <translation id="5533533363827555308">Ścisłe, strona może nie działać</translation>
 <translation id="8792121506918889955">Zasady obsługi IP WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
-<translation id="8798099450830957504">Domyślna</translation>
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
 <translation id="1689062823386843231">Wyłącz UDP bez proxy</translation>
@@ -174,6 +194,11 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2339730291919608488">Opuść łańcuch synchronizacji</translation>
 <translation id="115699408012835975">Jeśli zresetujesz synchronizację, będziesz musiał ponownie wpisać kod synchronizacji z innego urządzenia, aby zsynchronizować się z nim. Na pewno chcesz kontynuować?</translation>
 <translation id="6092564993102418148">Czy na pewno chcesz usunąć wybrane urządzenie z łańcucha synchronizacji?</translation>
+<translation id="2936582902048232286">Ostrzeżenie: spowoduje to udostępnienie danych Brave, w tym potencjalnie haseł, urządzeniu, które wygenerowało te słowa kodu.
+
+Sprawdź, czy te słowa kodu zostały wygenerowane przez urządzenie, które należy do Ciebie.
+
+Czy na pewno chcesz to zrobić?</translation>
 <translation id="3396347744975515056">Synchronizacja Brave została zaktualizowana i wymaga skonfigurowania</translation>
 <translation id="7473245612074035141">Rozpocznij konfigurację</translation>
 <translation id="3411013544209536575">Pomocne podpowiedzi</translation>
@@ -187,8 +212,11 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="2356070529366658676">Zapytaj</translation>
 <translation id="7701040980221191251">Brak</translation>
-<translation id="1274962333945373242">Stare rozszerzenie portfeli kryptowaluty</translation>
+<translation id="1274962333945373242">Portfele kryptowalut (przestarzałe)</translation>
+<translation id="3695088618483091287">Portfel Brave (preferowane rozszerzenia)</translation>
 <translation id="9131889008937672866">Domyślny portfel kryptowalutowy</translation>
+<translation id="4718664830805652430">Domyślna podstawowa waluta</translation>
+<translation id="7992507032049865603">Domyślna podstawowa kryptowaluta</translation>
 <translation id="1834467296210148203">Pokaż ikonę Brave Wallet na pasku narzędzi</translation>
 <translation id="8239147115686034860">Automatycznie zablokuj portfel Brave</translation>
 <translation id="414639769490080648">Czas, w minutach, po upływie którego portfel Brave zostanie automatycznie zablokowany</translation>
@@ -207,6 +235,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="6476061084931271248">Uruchom ponownie węzeł, aby zastosować zmiany</translation>
 <translation id="3754226427671882382">Zrestartuj węzeł</translation>
 <translation id="949667118776341807">Obróć</translation>
+<translation id="1381002020878144739">/ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2</translation>
 <translation id="724513921936768901">Ta nazwa jest nieprawidłowa</translation>
 <translation id="6758961763875471084">Modyfikuj listę peerów</translation>
 <translation id="1295874070797049002">Eksportuj klucz</translation>
@@ -217,6 +246,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="616058968889448209">Błąd uruchomienia usługi IPFS; więcej informacji dostępnych jest na <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' import klucza nie powiódł się</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
+<translation id="8860039076160511438">Resetuj portfel</translation>
+<translation id="6369495274982305511">Czy na pewno chcesz zresetować portfel? Jeśli portfel nie ma kopii zapasowej, zresetowanie go spowoduje utratę wszystkich danych konta (w tym wszelkich powiązanych środków). Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
+<translation id="1426410128494586442">Tak</translation>
 <translation id="8275038454117074363">Importuj</translation>
 <translation id="3654980960391973513">Wygeneruj</translation>
 <translation id="5531501313997312487">Węzeł wyjściowy</translation>
@@ -357,6 +389,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4235920711083356755">Pokaż przycisk VPN</translation>
 <translation id="4070612712151038707">Pokazuje przycisk VPN na pasku narzędzi</translation>
 <translation id="7705524343798198388">VPN</translation>
+<translation id="8593397073757037946">Przełącz sieć VPN</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="2345974803401546682">O Brave VPN</translation>
 <translation id="4378551569595875038">Łączenie...</translation>
@@ -382,4 +415,31 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2808630562319398131">Zresetuj dane nagród przeglądarki Brave...</translation>
 <translation id="2273851479262317744">Ustaw Brave jako domyślną przeglądarkę</translation>
 <translation id="8581710194025054669">Aby zapewnić sobie najlepszą ochronę prywatności w Internecie, rozważ ustawienie Brave jako domyślnej przeglądarki na swoim komputerze. Jeśli to zrobisz, każde kliknięte łącze internetowe będzie otwierane z wykorzystaniem ochrony prywatności Brave.</translation>
+<translation id="1241283133946520352">Sieci</translation>
+<translation id="8205945804087322170">Dodawanie nowej sieci</translation>
+<translation id="2156993118928861787">Nieprawidłowy adres</translation>
+<translation id="2653659639078652383">Prześlij</translation>
+<translation id="2556708692502648323">Sieci portfela</translation>
+<translation id="1330032157352961756">Identyfikator nowego łańcucha</translation>
+<translation id="9053905035135220650">Ciąg szesnastkowy z prefiksem 0x</translation>
+<translation id="726121047592132939">Nazwa nowego łańcucha</translation>
+<translation id="1034112277864078119">Wprowadź nazwę łańcucha</translation>
+<translation id="4672314527143443556">Nazwa waluty łańcucha</translation>
+<translation id="4652114030688989556">Wprowadź nazwę waluty</translation>
+<translation id="1079960017149736097">Symbol waluty łańcucha</translation>
+<translation id="1288105009659846362">Wprowadź symbol waluty</translation>
+<translation id="665660671251623018">Liczba miejsc po przecinku waluty łańcucha</translation>
+<translation id="2978054488731497946">Wprowadź liczbę miejsc po przecinku waluty</translation>
+<translation id="2727514928168763432">Adresy URL RPC</translation>
+<translation id="7059127752542505809">Podaj adres URL</translation>
+<translation id="3047726704186619366">Adresy URL ikon</translation>
+<translation id="2487558607408469181">Adresy URL eksploratorów bloków</translation>
+<translation id="6301398959353668507">To pole nie może być puste.</translation>
+<translation id="4514843126085243862">Nieprawidłowy format. Identyfikator łańcucha jest ciągiem szesnastkowym z prefiksem 0x.</translation>
+<translation id="8325036459845654666">Ta sieć jest już dodana.</translation>
+<translation id="650071759190249039">Błąd wewnętrzny. Nie można dodać sieci.</translation>
+<translation id="868529041590572443">Podaj wszystkie informacje o natywnej walucie</translation>
+<translation id="1062463687579789365">Dostosowywanie sieci portfela</translation>
+<translation id="2234108191702901162">Nie można dodać sieci</translation>
+<translation id="2618193846561624884">Czy chcesz zaktualizować istniejącą sieć?</translation>
 </translationbundle>

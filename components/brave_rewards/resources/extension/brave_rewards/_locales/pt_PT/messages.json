@@ -238,10 +238,6 @@
     "message": "Adicione Fundos",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Obter mais informações",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Reconectar",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Dispõe de dicas pendentes por fundos insuficientes",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Falha na ligação à carteira",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Não é possível verificar a sua wallet, porque atingiu limite máximo verificado de dispositivos.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Parece que a sua carteira de Brave Rewards já foi verificada com outra conta $provider$. Tente verificar novamente com a sua conta anterior.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "Os token BAT ainda não são suportados em carteiras Uphold na sua região.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "A sua conta Uphold está atualmente bloqueada.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "A sua conta Uphold ainda está pendente.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "A sua conta Uphold está atualmente restrita.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Ao clicar, concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e com a $pp_link_begin$Política de Privacidade$pp_link_end$. Desative a qualquer momento nas Definições.",
+    "message": "Ao ativar, concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e a $pp_link_begin$Política de Privacidade$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Ativar os Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Ao ativar os Ads (anúncios), concorda com os $tos_link_begin$Termos de Serviço$tos_link_end$ e com a $pp_link_begin$Política de Privacidade$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Pode agora iniciar uma chamada gratuita",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Clique em qualquer parte do ecrã para continuar a Brave Talk.",
+    "message": "Clique ou toque em qualquer parte do ecrã para continuar a Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

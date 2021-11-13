@@ -215,7 +215,7 @@
 <translation id="7286722244752781970">Tempo sulla pagina minimo prima di registrare una visita</translation>
 <translation id="4424486208397124985">Visite minime per pertinenza degli editori</translation>
 <translation id="6248554379744796526">Mostra siti non verificati in lista</translation>
-<translation id="5510618543889994434">Consenti il contributo ai video</translation>
+<translation id="5510618543889994434">Consenti i contributi per i video</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visite</translation>
 <translation id="3583700907990488238">10 visite</translation>
@@ -244,12 +244,23 @@
 <translation id="3082557070674409251">Cliccato</translation>
 <translation id="7119308337584989771">Archiviato</translation>
 <translation id="6805660603861526473">Visualizzati</translation>
+<translation id="4014166694178311757">Il tuo portafoglio non può essere verificato perché hai raggiunto il limite massimo di dispositivi verificati.</translation>
+<translation id="1221593978088944142">Errore: limite di dispositivi raggiunto</translation>
 <translation id="3113653894794167793">Spiacenti, si è verificato un problema durante l'elaborazione della tua richiesta, riprova.</translation>
-<translation id="8832187864682447273">Hai bisogno di un portafoglio verificato per accedere</translation>
 <translation id="2607420597216860026">Riprova dopo aver completato la verifica dell’ID su <ph name="PROVIDER"/>.</translation>
+<translation id="8832187864682447273">Errore: hai bisogno di un portafoglio verificato per accedere</translation>
 <translation id="1501075228659004450">A quanto pare il tuo portafoglio Brave Rewards è già stato verificato con un altro account <ph name="PROVIDER"/>. Prova a verificarlo di nuovo utilizzando il tuo account precedente.</translation>
 <translation id="5111921830714291902">Errore: account diverso</translation>
+<translation id="5382684862562314222">BAT non è ancora supportato nella tua area geografica su Uphold.</translation>
+<translation id="9074594632540931067">Errore: BAT non disponibile</translation>
+<translation id="413458922997276130">Al momento il tuo account su Uphold è bloccato.</translation>
+<translation id="3579959767665130790">Errore: account bloccato</translation>
+<translation id="819370426249314592">Il tuo account su Uphold è ancora in sospeso.</translation>
+<translation id="4530453398914580957">Errore: account in sospeso</translation>
+<translation id="2388470740942086608">Al momento il tuo account su Uphold è limitato.</translation>
+<translation id="3605236342612716051">Errore: account limitato</translation>
 <translation id="1737873393693460829">Attivando [[title]], accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
+<translation id="901298512318791028">L'elaborazione del pagamento di <ph name="AMOUNT"/> inizia fra <ph name="DAYS"/>.</translation>
 <translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Nota: <ph name="BOLD_END"/>l'elaborazione del pagamento e l'arrivo dei BAT potrebbero richiedere qualche giorno.</translation>
 <translation id="4672975606583962967">Scegli un servizio di portafoglio</translation>
 <translation id="1815503044492647974">Seleziona un partner per il custodial wallet. Se hai già un account, ti verrà chiesto di accedere per connetterti.</translation>
@@ -334,6 +345,7 @@
 <translation id="2223892939866251845">ID Utente</translation>
 <translation id="4235360514405112390">Valido</translation>
 <translation id="3902084968737576005">Indirizzo portafoglio:</translation>
+<translation id="3653417592104122757">Cronologia del portafoglio</translation>
 <translation id="2326487656644542536">Informazioni portafoglio</translation>
 <translation id="3506182299017414175">Il portafoglio non è ancora stato creato</translation>
 <translation id="8559420016582377654">ID acconto portafoglio</translation>
@@ -530,6 +542,7 @@
 <translation id="3267911153934785912">Inserisci la tua chiave di ripristino o</translation>
 <translation id="1209382772199769572">Prima di sostituire il portafoglio esegui un backup, altrimenti perderai il denaro presente nel portafoglio, [[funds]].</translation>
 <translation id="5423214929210538027">Sei sicuro di voler resettare il tuo portafoglio delle ricompense?</translation>
+<translation id="4749947664556704604">I tuoi <ph name="BAT_AMOUNT"/> e altri dati relativi alle ricompense verranno definitivamente persi se ripristini il portafoglio. Assicurati di aver <ph name="LINK_BEGIN"/>verificato il tuo portafoglio<ph name="LINK_END"/> in modo da poter conservare i tuoi BAT.</translation>
 <translation id="2028613172174411919">Se ripristini il tuo portafoglio, i dati delle tue ricompense verranno persi in modo permanente.</translation>
 <translation id="4914597931214386232">Contributi in Token Riscossi</translation>
 <translation id="3494964159182650590">Riepilogo ricompense</translation>
@@ -587,7 +600,7 @@
 <translation id="3345432088196080137">Investi a partire da $1 in azioni popolari e scambia i fondi negoziati come AAPL, TSLA o AMZN</translation>
 <translation id="3787061634640932557">Modifica Carte</translation>
 <translation id="5977237145327845546">Avvia una videochiamata privata con amici e colleghi.</translation>
-<translation id="5850325887346946383">Avvia videochiamata</translation>
+<translation id="8863928195533744356">Avvia chiamata</translation>
 <translation id="3651550649176056334">Sui tuoi dati</translation>
 <translation id="223536150967420869">Acquista</translation>
 <translation id="5110244215256675209">Acquista criptovalute</translation>
@@ -772,11 +785,29 @@
 <translation id="4989163558385430922">Visualizza tutto</translation>
 <translation id="3026978804849658576">Visualizza l’estratto conto</translation>
 <translation id="8494748383523030337">Il tuo saldo</translation>
+<translation id="3343165035032571678">Hai guadagnato <ph name="AMOUNT"/> visualizzando gli annunci privati Brave!</translation>
+<translation id="6618415862402597254">Guadagni ottenuti con l'annuncio</translation>
+<translation id="5981646694027725752">Richiedi guadagni</translation>
+<translation id="2556441076129789027">Richiedi token</translation>
+<translation id="5544777623605368410">Guadagno</translation>
+<translation id="3273637494083639780">I token che hai guadagnato questo mese verranno elaborati a partire dal giorno <ph name="DATE"/></translation>
+<translation id="1029300693989825319">Può variare in base alla volatilità del mercato.</translation>
+<translation id="8334559352278209120">Donazioni</translation>
+<translation id="3903419925307046908">Guadagna token e restituisci</translation>
+<translation id="244362569344671266">Guadagna gettoni visualizzando le pubblicità di Brave Private e supporta automaticamente i creatori di contenuti.</translation>
+<translation id="5095252080770652994">Avanzamento</translation>
+<translation id="6278643716658443228">Impostazioni Ricompense</translation>
+<translation id="6777169449483742979">Stai guadagnando token per la visualizzazione di questa immagine sponsorizzata.</translation>
+<translation id="5486114327664215175">Guadagna token visualizzando l'immagine e supporta gli autori di contenuti.</translation>
+<translation id="2940863921746574646">Saldo token</translation>
+<translation id="1714906256929297600">Usa i token promozionali per inviare contributi agli autori prima che scadano!</translation>
+<translation id="2426048501007152001">Token disponibili</translation>
 <translation id="7701466644604753106">Attiva Speedreader</translation>
 <translation id="763042262431778831">Disattiva Speedreader</translation>
 <translation id="8488282162676695335">Portafoglio Brave</translation>
 <translation id="1148827340205946630">L’utente ha rifiutato la richiesta</translation>
 <translation id="2403819048476450281">Parametri non validi</translation>
+<translation id="3955144560853195652">La catena <ph name="VALUE"/> non è stata aggiunta</translation>
 <translation id="9161147058107529840">Serve un unico parametro di oggetto.</translation>
 <translation id="1875861420974447980">Questo ID di catena è in uso</translation>
 <translation id="167698752210114155">Si è verificato un errore interno</translation>
@@ -796,9 +827,11 @@
 <translation id="7381733147588397055">Impossibile convertire i dati della transazione</translation>
 <translation id="3829038878925630240">Il campo 'from' dei dati della transazione deve essere specificato</translation>
 <translation id="4732386285392573809">Impossibile ottenere il prezzo di gas per la transazione</translation>
-<translation id="7619826778671319444">Impossibile ottenere il limite di gas per la transazione</translation>
 <translation id="4232775951515678071">Impossibile ottenere il tipo di transazione</translation>
-<translation id="7631054302129692654">Impossibile ottenere la stima di gas per la transazione EIP-1559</translation>
+<translation id="2080935885647755539">Impossibile ottenere il prezzo di gas per la transazione EIP-1559</translation>
+<translation id="4843814354611030845">L'utente ha rifiutato la transazione</translation>
+<translation id="1462494615260983714">Errore nell'elaborazione della transazione</translation>
+<translation id="4886059598718763020">“<ph name="VALUE"/>” non è autorizzato a firmare il messaggio</translation>
 <translation id="4958950550253325418">App DeFi</translation>
 <translation id="735961408871282410">Mercati NFT</translation>
 <translation id="7740287852186792672">Risultati di ricerca</translation>
@@ -833,13 +866,17 @@
 <translation id="2267753748892043616">Aggiungi conto</translation>
 <translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="5420730209575475110">non supportata</translation>
+<translation id="7020187418439030877"><ph name="NETWORK"/> non supportata</translation>
+<translation id="1191686659164947414">La transazione potrebbe essere anticipata</translation>
+<translation id="632241521608275119">Tolleranza di slippage</translation>
+<translation id="4500473291496079954">Scade tra</translation>
+<translation id="8093033115658137576">Indirizzo 0x o URL</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
 <translation id="8303434745767477417">Tieni le criptovalute sotto la tua custodia. Traccia le prestazioni del portfolio e interagisci con le dApp web 3. Scambia, investi, prendi in prestito e presta con DeFi. Tutto direttamente dal browser della privacy Brave. Non sono richiesti né estensioni né download.</translation>
 <translation id="6972754398087986839">Inizia</translation>
 <translation id="375882617301124395">Esegui il backup al tuo portafoglio di criptovalute</translation>
-<translation id="1078873179929044999">Nel prossimo passaggio vedrai la frase di recupero di 12 parole che puoi utilizzare per recuperare i tuoi account di criptovalute principali. Salvala in un posto sicuro. La tua frase di recupero è l'unico modo per recuperare l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
+<translation id="1078873179929044999">Nel prossimo passaggio vedrai la frase di recupero di 12 parole che puoi utilizzare per recuperare i tuoi account di criptovalute principali. Salvala in un posto sicuro. La frase di recupero è l'unico modo per recuperare l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
 <translation id="5024543173656851695">Comprendo che se perdo le parole di recupero non sarò in grado di accedere al portafoglio cripto.</translation>
 <translation id="3933122286596948824">La tua frase di recupero</translation>
 <translation id="5077747669435508720">Annota o copia queste parole nell'ordine esatto mostrato di seguito e salvale in un posto sicuro. La tua frase di recupero è l'unico modo per riottenere l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
@@ -853,8 +890,8 @@
 <translation id="2813156651070657572">Proteggi le tue criptovalute con una password</translation>
 <translation id="6901073872645365201">Le password devono essere composte da almeno 7 caratteri e contenere almeno un numero e un carattere speciale.</translation>
 <translation id="6657585470893396449">Password</translation>
-<translation id="692381016487372902">Digita di nuovo la password</translation>
-<translation id="3527905866577245691">La password di verifica non corrisponde</translation>
+<translation id="5486261815000869482">Conferma la password</translation>
+<translation id="467510802200863975">Le password non corrispondono</translation>
 <translation id="5168349973342709369">Inserisci la password per sbloccare il portafoglio</translation>
 <translation id="9111102763498581341">Sblocca</translation>
 <translation id="5045550434625856497">Password non corretta</translation>
@@ -878,6 +915,7 @@
 <translation id="1940465339426637378">Beni</translation>
 <translation id="2236507293802791911">Asset visibili</translation>
 <translation id="7525067979554623046">Crea</translation>
+<translation id="4771176409524282426">Crea account</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Nome dell'account</translation>
 <translation id="1136772623587250243">Incolla la chiave privata dagli appunti</translation>
@@ -887,9 +925,9 @@
 <translation id="795667975304826397">Nessun file scelto</translation>
 <translation id="5891811606602061966">Impossibile importare l'account. Riprova.</translation>
 <translation id="5051929972046200722">Seleziona il dispositivo del tuo portafoglio hardware</translation>
-<translation id="6932355307691676490">Collega il tuo portafoglio</translation>
-<translation id="4513956488935671725">direttamente dal tuo computer.</translation>
+<translation id="5745936663807461565">Collega il tuo portafoglio <ph name="HARDWARE_DEVICE"/> direttamente al tuo computer.</translation>
 <translation id="5041211872515579638">Sblocca il tuo dispositivo e seleziona l'app Ethereum.</translation>
+<translation id="6892232036314454524">Questo errore si verifica quando viene aperta l'applicazione sbagliata sul dispositivo Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="4378551569595875038">Connessione...</translation>
@@ -907,11 +945,13 @@
 <translation id="6600400596821238377">Nome del token</translation>
 <translation id="4432966365400169165">Indirizzo del contratto del token</translation>
 <translation id="4092152169181928870">Simbolo del token</translation>
-<translation id="871696868578199698">Decimali di precisione</translation>
-<translation id="6637540491667802882">come token personalizzato</translation>
+<translation id="4351811224047421378">Precisione decimale</translation>
+<translation id="4982060163914604175">Aggiungi <ph name="CONTRACT_ADDRESS"/> come token personalizzato</translation>
 <translation id="7978047524114351365">Nessun asset denominato</translation>
 <translation id="9040455159722359521">Cerca asset o indirizzo del contratto</translation>
 <translation id="6018178824574796106">Aggiunta del token personalizzato non riuscita. Riprova.</translation>
+<translation id="547122651977318828">ID token (solo per ERC721)</translation>
+<translation id="7544552854944350190">ID token richiesto</translation>
 <translation id="2708402071160162126">AVVISO: non condividere mai la tua chiave di recupero. Chiunque entri in possesso di questa frase può impossessarsi dei tuoi asset per sempre.</translation>
 <translation id="2902856457593699108">Mostra chiave</translation>
 <translation id="8033497299373164724">Nascondi chiave</translation>
@@ -919,7 +959,7 @@
 <translation id="3318280255740629162">25%</translation>
 <translation id="2636487255623744079">50%</translation>
 <translation id="8654192805213365413">75%</translation>
-<translation id="3512100619724810532">Tutti</translation>
+<translation id="3512100619724810532">100%</translation>
 <translation id="1530109021798294736">Mainnet</translation>
 <translation id="1613627717923045622">Rete di test</translation>
 <translation id="4245123003308024264">Ropsten</translation>
@@ -940,7 +980,7 @@
 <translation id="59223531494896848">Limite</translation>
 <translation id="8569380433211549748">Prezzo in</translation>
 <translation id="2490428413101944234">Prova faucet</translation>
-<translation id="6082785102488657349">Ottieni Ether da un faucet per</translation>
+<translation id="3352959425838279177">Ottieni Ether da un faucet per <ph name="SELECTED_NETWORK"/></translation>
 <translation id="7420359180991315365">Continua su Wyre</translation>
 <translation id="2581671693710952401">Ottieni Ether</translation>
 <translation id="8009571545960303544">E' richiesta la tua firma</translation>
@@ -948,12 +988,15 @@
 <translation id="3474375934783434676">Firma a tuo rischio e pericolo</translation>
 <translation id="5488357322146334497">Messaggio</translation>
 <translation id="3586752056660754651">Firma</translation>
-<translation id="7065157926159745595">Consenti a quest'app di spendere</translation>
+<translation id="9032898664193335413">Vuoi consentire a questa app di spendere i tuoi <ph name="TOKEN_SYMBOL"/>?</translation>
+<translation id="854606191596163710">Se concedi l'autorizzazione, consenti a questa app di prelevare i tuoi <ph name="VALUE"/> e automatizzare le transazioni.</translation>
 <translation id="8786100550345425552">Modifica autorizzazioni</translation>
 <translation id="7710469167917867539">Commissione per la transazione</translation>
 <translation id="9065203028668620118">Modifica</translation>
 <translation id="7968982339740310781">Visualizza dettagli</translation>
 <translation id="6452181791372256707">Annulla</translation>
+<translation id="8904889345035514635">Indennità attuale</translation>
+<translation id="7073918978411974168">Indennità proposta</translation>
 <translation id="4717431746210146708">Consentire a questo sito di aggiungere una rete?</translation>
 <translation id="2521480044079508357">Questa operazione consentirà di utilizzare questa rete all'interno del portafoglio Brave.</translation>
 <translation id="1982257600591932657">Nome della rete</translation>
@@ -963,6 +1006,9 @@
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="7131971375297699539">Simbolo della moneta</translation>
 <translation id="4693057234255364395">URL dell'esploratore di blocchi</translation>
+<translation id="1060221736464994328">Consentire a questo sito di cambiare la rete?</translation>
+<translation id="2478788592457735063">Cambia la rete con una rete aggiunta in precedenza.</translation>
+<translation id="8756686998207163764">Cambia rete</translation>
 <translation id="3948067511324628726">Costo gas</translation>
 <translation id="7163997622278957886">Offerta</translation>
 <translation id="1074360622426001342">Importo + gas</translation>
@@ -970,38 +1016,39 @@
 <translation id="5821668936183240062">avanti</translation>
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">transazioni</translation>
+<translation id="523862956770478816">Autorizzazioni del sito</translation>
+<translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> account collegati</translation>
 <translation id="4460220693591349571">TIPO DI FUNZIONE</translation>
 <translation id="838933475572692615">Dati esadecimali</translation>
 <translation id="2240831799756994975">BYTE</translation>
 <translation id="4874303883488468190">Seleziona uno o più account</translation>
-<translation id="4015195974325151180">Visualizza gli indirizzi dei tuoi</translation>
-<translation id="3587259018193837508">account consentiti (obbligatorio)</translation>
+<translation id="2018472018751735678">Visualizza gli indirizzi dei tuoi conti consentiti (obbligatorio)</translation>
 <translation id="7029403458170657879">Connettiti con il portafoglio Brave</translation>
 <translation id="7982184974053636367">Per il portafoglio Brave è richiesta una password più sicura</translation>
 <translation id="2372897697869224590">Imposta una password per il portafoglio Brave</translation>
 <translation id="7739762330714405363">Usa la stessa password</translation>
 <translation id="1085027414516521238">MetaMask</translation>
-<translation id="8449314044437208543">Importa da</translation>
-<translation id="4428111176561355185">Importa i tuoi</translation>
-<translation id="8929587248006013051">account MetaMask nel portafoglio Brave. Goditi un modo più veloce e sicuro per gestire le criptovalute e interagire con le dApp web 3.</translation>
+<translation id="7102907656918333773">Importa da <ph name="WALLET_EXTENSION"/></translation>
+<translation id="8897114903450789862">Importa i tuoi account <ph name="WALLET_EXTENSION"/> nel portafoglio Brave, per un modo più veloce e sicuro di gestire le criptovalute e interagire con le dApp web 3.</translation>
 <translation id="4237840336687249184">Password di MetaMask</translation>
 <translation id="2381605201035323535">portafogli di criptovalute</translation>
 <translation id="2770851145415891830">Rilevati portafogli di criptovalute esistenti</translation>
 <translation id="4938145712652668388">Quando clicchi su "Inizia" importerai il tuo portafoglio di criptovalute precedente nel nuovo portafoglio Brave e godrai di tutti i vantaggi descritti sopra. Provalo e facci sapere cosa ne pensi!</translation>
-<translation id="913613743605881268">Se preferisci saltare l'importazione e mantenere i vecchi portafogli di criptovalute, naviga semplicemente al browser Brave</translation>
-<translation id="5886242758142314994">e ripristina l'impostazione predefinita a Portafogli di criptovalute. Puoi anche importare, provare il nuovo portafoglio Brave e tornare alle impostazioni precedenti in qualsiasi momento.</translation>
+<translation id="2237759620789871865">Se preferisci saltare l'importazione e mantenere i vecchi portafogli di criptovalute, vai alle <ph name="LINK_BEFORE"/>Impostazioni<ph name="LINK_AFTER"/> del browser Brave e ripristina l'impostazione predefinita a Portafogli di criptovalute. Puoi anche importare, provare il nuovo portafoglio Brave e tornare alle impostazioni precedenti in qualsiasi momento.</translation>
 <translation id="3301259443293676544">Inserisci la password dei tuoi portafogli di criptovalute esistenti per importare il portafoglio Brave. Goditi un modo più veloce e sicuro per gestire le criptovalute e interagire con le dApp web 3.</translation>
 <translation id="9099900965604225657">Password dei portafogli di criptovalute</translation>
 <translation id="4020495774166914146">Ho perso la mia password e la frase di recupero, crea un nuovo portafoglio.</translation>
-<translation id="480319080797177742">collegato</translation>
-<translation id="4203566092423620442">scollegato</translation>
+<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> collegato</translation>
+<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> scollegato</translation>
 <translation id="5317781812114905957">Istruzioni</translation>
-<translation id="1952715382071350669">Il portafoglio hardware richiede la conferma della transazione.</translation>
+<translation id="1178198982208000092">Collega il tuo <ph name="DEVICE_NAME"/></translation>
+<translation id="3301417531330431881">Il portafoglio hardware richiede la conferma della transazione. <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">inviata</translation>
 <translation id="5013754027092416509">ricevuta</translation>
 <translation id="5867988533873716616">L'URL dell'esploratore di blocchi non è disponibile.</translation>
 <translation id="4255623233927788178">Visualizza sull'esploratore di blocchi</translation>
 <translation id="6383204195803840504">Le transazioni verranno visualizzate qui</translation>
+<translation id="2916401020782528840">Transazione non trovata</translation>
 <translation id="8941851657764077659">Commissione per la massima priorità</translation>
 <translation id="8047527352810290817">Modifica gas</translation>
 <translation id="9091334651803050473">Anche se non è una garanzia, se paghi una commissione più alta i minatori daranno probabilmente priorità alla tua transazione.</translation>
@@ -1018,12 +1065,31 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Imposta personalizzato</translation>
 <translation id="7400927223938424379">Imposta suggerito</translation>
+<translation id="1599636444563952897">L'autorizzazione al limite di spesa consente a <ph name="SITE_ORIGIN"/> di prelevare e spendere fino al seguente importo:</translation>
+<translation id="4512871563176965522">Indennità personalizzata</translation>
+<translation id="749944179568745958">Indirizzo ETH non valido</translation>
+<translation id="882486206986535424">Indirizzo non valido</translation>
+<translation id="6825399159373612149">Il dominio <ph name="DOMAIN_NAME"/> non è registrato</translation>
+<translation id="862585889767884824">di</translation>
+<translation id="9106265941552476098">Rifiuta <ph name="TRANSACTION_LENGTH"/> transazioni</translation>
 <translation id="1118876217803190221">Saldo insufficiente</translation>
 <translation id="275990379543116961">Fondi insufficienti per gas</translation>
 <translation id="3292453499915466604">Liquidità insufficiente</translation>
 <translation id="805808215102934711">Attiva <ph name="FROM_ASSET_SYMBOL"/></translation>
 <translation id="3380365263193509176">Errore sconosciuto</translation>
-<translation id="6687008710463927359">Account <ph name="VALUE"/></translation>
+<translation id="5071303414930953888">Account <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="2330177808960134000">Il portafoglio deve prima essere sbloccato</translation>
+<translation id="7930338223819368854"><ph name="ADDRESS"/> non è un indirizzo valido</translation>
+<translation id="7340805872138998391">Impossibile sbloccare il dispositivo, prova a ricollegarlo</translation>
+<translation id="1984410139271779110">Errore interno, schema sconosciuto</translation>
+<translation id="8682200134223578011">approvato</translation>
+<translation id="4674380028960132654">Ledger: la firma non corrisponde all'indirizzo corretto</translation>
+<translation id="3183932890629254743">Account hardware non trovato</translation>
+<translation id="4287068151777838754">Dati JSON non previsti</translation>
+<translation id="3282936527763045737">La password non è corretta</translation>
+<translation id="1119447706177454957">Errore interno</translation>
+<translation id="3327639091470204775">Errore interno, impossibile creare il bridge iframe</translation>
+<translation id="6672377693827764095">Errore interno, impossibile recuperare gli account</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Informazioni generali</translation>
 <translation id="4045404575593562245">Eventi di controllo di Tor</translation>
@@ -1032,6 +1098,24 @@
 <translation id="6951743416068151209">URI proxy Tor</translation>
 <translation id="1671503397662036257">Stato della connessione Tor</translation>
 <translation id="6024292492796847324">Progresso dell'inizializzazione di Tor</translation>
+<translation id="1742469581923031760">Connessione in corso…</translation>
+<translation id="1287487756047817908">Disconnessione in corso…</translation>
+<translation id="2325196879156848326">Connessione non riuscita</translation>
+<translation id="745054660363064771">Impossibile connettersi al server</translation>
+<translation id="3936826714240735937">Scegli un altro server</translation>
+<translation id="8006923044496340707"><ph name="PRODUCT_NAME"/> non è riuscita a connettersi al server di <ph name="REGION_NAME"/>. Puoi riprovare o sceglierne un altro</translation>
+<translation id="1664949222596149258">Acquista per <ph name="PRODUCE_PRICE"/></translation>
+<translation id="1024255913009642477">VPN già acquistata?</translation>
+<translation id="8814357473522731680">Con tecnologia</translation>
+<translation id="5747552184818312860">Scadenza</translation>
+<translation id="1691256669639196606">Gestisci abbonamento</translation>
+<translation id="434523916398030617">Contatta l'assistenza tecnica</translation>
+<translation id="1116694919640316211">Informazioni</translation>
+<translation id="8670386189340362926">Blocca tracker e annunci in tutte le app</translation>
+<translation id="4860763498907927955">Ti protegge dalle connessioni di rete indesiderate</translation>
+<translation id="3181339219453722970">Scegli la posizione della VPN</translation>
+<translation id="1751947227857853925">Rapida e illimitata fino a 100 Mbps</translation>
+<translation id="1400240082805528049">Assistenza 24 ore su 24, 7 giorni su 7</translation>
 <translation id="7586151660465233733">Più mercati su <ph name="SITE_NAME"/></translation>
 <translation id="952067063131306699">Controlla i mercati e scambia criptovalute su FTX</translation>
 <translation id="5963745988819586370">Mercati</translation>

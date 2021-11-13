@@ -238,10 +238,6 @@
     "message": "Tambah Dana",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "Pelajari Selengkapnya",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "Hubungkan kembali",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "Anda memiliki tip tertunda akibat dana kurang",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "Tautan dompet telah gagal",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "Dompet Anda tidak dapat diverifikasi karena Anda telah mencapai batas maksimal perangkat terverifikasi.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "Sepertinya dompet Brave Rewards Anda telah diverifikasi dengan akun$provider$ lainnya. Silakan mencoba verifikasi kembali dengan menggunakan akun Anda yang sebelumnya.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "BAT belum didukung di dompet Uphold wilayah Anda.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "Akun Anda di Uphold saat ini diblokir.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "Akun Anda di Uphold saat ini ditangguhkan.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "Akun Anda di Uphold saat ini dibatasi.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "Dengan mengklik, Anda menyetujui $tos_link_begin$Syarat Layanan$tos_link_end$ dan $pp_link_begin$Kebijakan Privasi$pp_link_end$. Nonaktifkan kapan saja di Pengaturan.",
+    "message": "Dengan mengaktifkan, Ana menyetujui $tos_link_begin$Syarat Layanan$tos_link_end$ dan $pp_link_begin$Kebijakan Privasi$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Aktifkan Brave Private Ads",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "Dengan melanjutkan, Anda menyetujui $tos_link_begin$Syarat Layanan$tos_link_end$ dan $pp_link_begin$Kebijakan Privasi$pp_link_end$.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "Kini Anda dapat mulai melakukan panggilan gratis",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Klik layar di mana pun untuk melanjutkan ke Brave Talk.",
+    "message": "Klik atau ketuk layar di mana pun untuk melanjutkan ke Brave Talk.",
     "description": ""
   },
   "braveTalkWantLearnMore": {

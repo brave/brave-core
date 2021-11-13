@@ -238,10 +238,6 @@
     "message": "자금 추가",
     "description": ""
   },
-  "notificationLearnMore": {
-    "message": "자세히 알아보기",
-    "description": ""
-  },
   "notificationReconnect": {
     "message": "재연결",
     "description": ""
@@ -363,39 +359,6 @@
   },
   "notificationPendingTipFailedText": {
     "message": "부족한 자금으로 인해 보류 중인 팁이 있습니다",
-    "description": ""
-  },
-  "notificationWalletLinkingFailedTitle": {
-    "message": "월렛 연결 실패",
-    "description": ""
-  },
-  "notificationDeviceLimitReachedText": {
-    "message": "승인 기기 최대한도에 도달하였으므로, 귀하의 월렛은 승인될 수 없습니다.",
-    "description": ""
-  },
-  "notificationMismatchedProviderAccountsText": {
-    "message": "다른 $provider$ 계정에서 이미 확인을 완료한 Brave Rewards 월렛인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.",
-    "description": "",
-    "placeholders": {
-      "provider": {
-        "content": "$1"
-      }
-    }
-  },
-  "notificationUpholdBatNotSupportedText": {
-    "message": "거주하고 계신 지역에서는 Uphold에 BAT가 아직 지원되지 않습니다.",
-    "description": ""
-  },
-  "notificationUpholdUserBlockedText": {
-    "message": "귀하의 Uphold 계정이 현재 차단되어 있습니다.",
-    "description": ""
-  },
-  "notificationUpholdUserPendingText": {
-    "message": "귀하의 Uphold 계정이 아직 보류 중입니다.",
-    "description": ""
-  },
-  "notificationUpholdUserRestrictedText": {
-    "message": "귀하의 Uphold 계정이 현재 이용 제한되어 있습니다.",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -609,7 +572,7 @@
     "description": ""
   },
   "braveTalkOptInRewardsTerms": {
-    "message": "클릭하면 $tos_link_begin$이용 약관$tos_link_end$, $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의하게 됩니다.",
+    "message": "활성화하면 $tos_link_begin$이용 약관$tos_link_end$, $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의하게 됩니다.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -638,30 +601,12 @@
     "message": "Brave Private Ads 켜기",
     "description": ""
   },
-  "braveTalkOptInAdsTerms": {
-    "message": "광고를 켜면 $tos_link_begin$이용 약관$tos_link_end$, $pp_link_begin$개인 정보 처리 방침$pp_link_end$에 동의하게 됩니다.",
-    "description": "",
-    "placeholders": {
-      "tos_link_begin": {
-        "content": "$1"
-      },
-      "tos_link_end": {
-        "content": "$2"
-      },
-      "pp_link_begin": {
-        "content": "$3"
-      },
-      "pp_link_end": {
-        "content": "$4"
-      }
-    }
-  },
   "braveTalkCanStartFreeCall": {
     "message": "이제 무료 통화 시작 가능",
     "description": ""
   },
   "braveTalkClickAnywhereToBraveTalk": {
-    "message": "Brave Talk로 이동하려면 화면의 아무데나 클릭하세요.",
+    "message": "Brave Talk로 이동하려면 화면의 아무데나 클릭 또는 탭하세요.",
     "description": ""
   },
   "braveTalkWantLearnMore": {
