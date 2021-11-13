@@ -89,11 +89,6 @@ const PortfolioAccountItem = (props: Props) => {
               onClick={onClickViewOnBlockExplorer}
               text={getLocale('braveWalletTransactionExplorer')}
             />
-
-            <TransactionPopupItem
-              onClick={onClickViewOnBlockExplorer}
-              text={getLocale('braveWalletTransactionExplorer')}
-            />
           </TransactionPopup>
         }
       </RightSide>
