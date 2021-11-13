@@ -23,7 +23,6 @@ program
   .option('--init', 'initialize all dependencies')
   .option('--all', 'This flag is deprecated and no longer has any effect')
   .option('--force', 'force reset all projects to origin/ref')
-  .option('--create', 'create a new branch if needed for [ref]')
   .option('--ignore_chromium', 'do not update chromium version even if it is stale')
 
 const installDepotTools = (options = config.defaultOptions) => {
@@ -63,6 +62,12 @@ async function RunCommand () {
     Log.warn('--all, --run_hooks and --run_sync are deprecated. Will behave as if flag was not passed. Please update your command to `npm run sync` in the future.')
   }
 
+  let braveCoreRef = program.args[0]
+  if (braveCoreRef && !program.init) {
+    Log.error('[ref] option requies --init to work correctly')
+    process.exit(1)
+  }
+
   if (program.init || !fs.existsSync(config.depotToolsDir)) {
     installDepotTools()
   }
@@ -71,7 +76,6 @@ async function RunCommand () {
     util.buildGClientConfig()
   }
 
-  let braveCoreRef = program.args[0]
   if (!braveCoreRef) {
     braveCoreRef = program.init ? config.getProjectVersion('brave-core') : null
   }
@@ -80,23 +84,6 @@ async function RunCommand () {
     // we're doing a reset of brave-core so try to stash any changes
     Log.progress('Stashing any local changes')
     util.runGit(config.braveCoreDir, ['stash'], true)
-  }
-
-  if (braveCoreRef) {
-    Log.progress(`Resetting brave core to "${braveCoreRef}"...`)
-    // try to checkout to the right ref if possible
-    util.runGit(config.braveCoreDir, ['reset', '--hard', 'HEAD'], true)
-    let checkoutResult = util.runGit(config.braveCoreDir, ['checkout', braveCoreRef], true)
-    if (checkoutResult === null && program.create) {
-      checkoutResult = util.runGit(config.braveCoreDir, ['checkout', '-b', braveCoreRef], true)
-    }
-    // Handle checkout failure
-    if (checkoutResult === null) {
-      Log.error('Could not checkout: ' + braveCoreRef)
-    }
-    // Checkout was successful
-    const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
-    Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
   }
 
   Log.progress('Running gclient sync...')
