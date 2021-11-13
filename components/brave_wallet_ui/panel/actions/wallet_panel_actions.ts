@@ -18,7 +18,8 @@ import {
   SwapErrorResponse,
   SwapResponse,
   SignMessageRequest,
-  SwitchChainRequest
+  SwitchChainRequest,
+  HardwareWalletErrorType
 } from '../../constants/types'
 import { SwapParamsPayloadType } from '../../common/constants/action_types'
 import { TransactionInfo } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
@@ -47,3 +48,4 @@ export const signMessageProcessed = createAction<SignMessageProcessedPayload>('s
 export const signMessageHardware = createAction<SignMessageRequest>('signMessageHardware')
 export const signMessageHardwareProcessed = createAction<SignMessageHardwareProcessedPayload>('signMessageHardwareProcessed')
 export const approveHardwareTransaction = createAction<TransactionInfo>('approveHardwareTransaction')
+export const setHardwareWalletInteractionError = createAction<HardwareWalletErrorType | undefined>('setHardwareWalletInteractionError')

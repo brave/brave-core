@@ -31,7 +31,8 @@ import {
   SwitchEthereumChainProcessedPayload
 } from '../constants/action_types'
 import {
-  findHardwareAccountInfo
+  findHardwareAccountInfo,
+  refreshTransactionHistory
 } from '../../common/async/lib'
 import {
   signTrezorTransaction,
@@ -150,13 +151,42 @@ handler.on(PanelActions.approveHardwareTransaction.getType(), async (store: Stor
   if (!hardwareAccount || !hardwareAccount.hardware) {
     return
   }
+
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.setCloseOnDeactivate(false)
+
   if (hardwareAccount.hardware.vendor === LEDGER_HARDWARE_VENDOR) {
-    await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    await store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+    await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+
+    const { success, error, deviceError } = await signLedgerTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    if (!success) {
+      if (deviceError) {
+        if (deviceError === 'transactionRejected') {
+          await store.dispatch(WalletActions.rejectTransaction(txInfo))
+          await store.dispatch(PanelActions.navigateTo('main'))
+        } else {
+          await store.dispatch(PanelActions.setHardwareWalletInteractionError(deviceError))
+        }
+      } else if (error) {
+        // TODO: handle non-device errors
+        console.log(error)
+      }
+    } else {
+      await store.dispatch(PanelActions.navigateTo('main'))
+      await store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+      refreshTransactionHistory(txInfo.fromAddress)
+    }
   } else if (hardwareAccount.hardware.vendor === TREZOR_HARDWARE_VENDOR) {
-    await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    const { success, error } = await signTrezorTransaction(apiProxy, hardwareAccount.hardware.path, txInfo)
+    if (!success) {
+      console.log(error)
+      await store.dispatch(WalletActions.rejectTransaction(txInfo))
+    } else {
+      refreshTransactionHistory(txInfo.fromAddress)
+    }
   }
+
   apiProxy.panelHandler.setCloseOnDeactivate(true)
   apiProxy.panelHandler.showUI()
 })
